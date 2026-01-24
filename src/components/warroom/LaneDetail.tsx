@@ -1,18 +1,39 @@
 import Link from "next/link";
-import { useState, useEffect } from "react";
-import { LaneKey, laneMeta, seedEvents, formatMoney, WarEvent } from "@/lib/warroom/mock";
+import { useMemo } from "react";
+import { LaneKey } from "@/lib/warroom/types";
 import { TickerMarquee } from "@/components/warroom/TickerMarquee";
+import { useWarRoomStream } from "@/components/warroom/useWarRoomStream";
+
+const laneMeta: Record<LaneKey, { label: string; headline: string }> = {
+  value: { label: "Verified Savings Ledger", headline: "Reconcile value with receipts and owners." },
+  controls: { label: "Controls & Compliance", headline: "Continuous controls. Evidence-first posture." },
+  agentic: { label: "Agentic Ops & Sales", headline: "Governed automation with telemetry and gates." },
+  marketplace: { label: "Marketplace Execution", headline: "Ship once. Distribute with low delivery drag." },
+};
+
+function formatMoney(n: number) {
+  const abs = Math.abs(n);
+  const sign = n < 0 ? "-" : "";
+  if (abs >= 1_000_000_000) return `${sign}$${(abs / 1_000_000_000).toFixed(2)}B`;
+  if (abs >= 1_000_000) return `${sign}$${(abs / 1_000_000).toFixed(2)}M`;
+  if (abs >= 1_000) return `${sign}$${(abs / 1_000).toFixed(1)}K`;
+  return `${sign}$${abs.toFixed(0)}`;
+}
 
 export function LaneDetail({ lane }: { lane: string }) {
   const laneKey = lane as LaneKey;
   const meta = laneMeta[laneKey];
+  const { events, summaries, ticker } = useWarRoomStream();
   
-  const [events, setEvents] = useState<WarEvent[]>([]);
+  const laneEvents = useMemo(() => {
+    return events
+      .filter((e) => e.lane === laneKey)
+      .sort((a, b) => (b.amount * b.confidence * b.timeSensitivity) - (a.amount * a.confidence * a.timeSensitivity));
+  }, [events, laneKey]);
 
-  useEffect(() => {
-    const all = seedEvents();
-    setEvents(all.filter((e) => e.lane === laneKey));
-  }, [laneKey]);
+  const summary = useMemo(() => {
+    return summaries.find(s => s.lane === laneKey) || { identified: 0, approved: 0, realized: 0, atRisk: 0 };
+  }, [summaries, laneKey]);
 
   if (!meta) {
     return (
@@ -24,13 +45,6 @@ export function LaneDetail({ lane }: { lane: string }) {
       </div>
     );
   }
-
-  const totals = {
-    identified: events.filter(e => e.state === "IDENTIFIED").reduce((acc, e) => acc + e.amount, 0),
-    approved: events.filter(e => e.state === "APPROVED").reduce((acc, e) => acc + e.amount, 0),
-    realized: events.filter(e => e.state === "REALIZED").reduce((acc, e) => acc + e.amount, 0),
-    atRisk: events.filter(e => e.state === "AT_RISK").reduce((acc, e) => acc + Math.abs(e.amount), 0),
-  };
 
   return (
     <div className="py-8">
@@ -46,33 +60,33 @@ export function LaneDetail({ lane }: { lane: string }) {
       </div>
 
       <div className="mb-6">
-        <TickerMarquee events={events} totals={totals} />
+        <TickerMarquee items={ticker} />
       </div>
 
       <div className="grid md:grid-cols-4 gap-4 mb-8">
         <div className="k-panel p-4">
           <div className="text-xs uppercase tracking-wider text-white/55 mb-1">Identified</div>
-          <div className="text-2xl font-semibold text-amber-400">{formatMoney(totals.identified)}</div>
+          <div className="text-2xl font-semibold text-amber-400">{formatMoney(summary.identified)}</div>
         </div>
         <div className="k-panel p-4">
           <div className="text-xs uppercase tracking-wider text-white/55 mb-1">Approved</div>
-          <div className="text-2xl font-semibold text-cyan-400">{formatMoney(totals.approved)}</div>
+          <div className="text-2xl font-semibold text-cyan-400">{formatMoney(summary.approved)}</div>
         </div>
         <div className="k-panel p-4">
           <div className="text-xs uppercase tracking-wider text-white/55 mb-1">Realized</div>
-          <div className="text-2xl font-semibold text-emerald-400">{formatMoney(totals.realized)}</div>
+          <div className="text-2xl font-semibold text-emerald-400">{formatMoney(summary.realized)}</div>
         </div>
         <div className="k-panel p-4">
           <div className="text-xs uppercase tracking-wider text-white/55 mb-1">At Risk</div>
-          <div className="text-2xl font-semibold text-rose-400">{formatMoney(totals.atRisk)}</div>
+          <div className="text-2xl font-semibold text-rose-400">{formatMoney(summary.atRisk)}</div>
         </div>
       </div>
 
       <div className="k-panel p-5">
         <div className="text-lg font-semibold text-white mb-4">Events in this Lane</div>
-        {events.length > 0 ? (
+        {laneEvents.length > 0 ? (
           <div className="space-y-3">
-            {events.map((e) => (
+            {laneEvents.map((e) => (
               <div key={e.id} className="rounded-xl border border-white/10 bg-black/20 p-4 hover-lift">
                 <div className="flex items-start justify-between gap-3">
                   <div className="flex-1">

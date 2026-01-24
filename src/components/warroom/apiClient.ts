@@ -53,24 +53,19 @@ export async function updateNotes(eventId: string, notes: string, actor?: string
 export async function addAttachment(
   eventId: string,
   attachment: { title: string; url: string; hash?: string },
-  actor?: string
-): Promise<ApiResult<any>> {
-  const r = await fetch("/api/war-room/notes/attach", {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ eventId, attachment, actor }),
-  });
-  return r.json();
+  actor: string
+) {
+  return postJson<{ event: any; attachment: any }>("/api/war-room/notes/attach", { eventId, attachment, actor });
 }
 
-export async function submitPacketAction(eventId: string, actor: string, role: string) {
-  return postJson<{ event: any }>("/api/packet/submit", { eventId, actor, role });
+export async function submitPacket(eventId: string) {
+  return postJson<{ event: any }>("/api/packet/submit", { eventId });
 }
 
-export async function approvePacketAction(eventId: string, actor: string, role: string) {
-  return postJson<{ event: any }>("/api/packet/approve", { eventId, actor, role });
+export async function approvePacket(eventId: string) {
+  return postJson<{ event: any }>("/api/packet/approve", { eventId });
 }
 
-export async function closePacketAction(eventId: string, actor: string, role: string) {
-  return postJson<{ event: any }>("/api/packet/close", { eventId, actor, role });
+export async function closePacket(eventId: string) {
+  return postJson<{ event: any }>("/api/packet/close", { eventId });
 }

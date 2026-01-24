@@ -10,7 +10,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   try {
     const auth = await enforce("operator", req as any);
     if (!auth.ok) {
-      return res.status(auth.status).json({ ok: false, error: auth.error });
+      return res.status((auth as any).status).json({ ok: false, error: (auth as any).error });
     }
 
     const { eventId, owner } = req.body;

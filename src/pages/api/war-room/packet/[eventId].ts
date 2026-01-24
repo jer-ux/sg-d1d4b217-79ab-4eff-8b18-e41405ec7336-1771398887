@@ -129,9 +129,25 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     for (const a of atts.slice(0, 10)) {
       const line = `• ${safe(a.title)} — ${safe(a.url)}${a.hash ? ` (hash ${safe(a.hash)})` : ""}`;
       drawPara(line);
-      if (y < 90) break;
+      if (y < 120) break;
     }
   }
+  y -= 20;
+
+  // Signatures
+  page.drawText("Packet Signatures", { x: left, y, size: 12, font: bold, color: rgb(0.95, 0.95, 0.95) });
+  y -= 16;
+
+  const sigs = event.packetSignatures ?? [];
+  if (!sigs.length) {
+    drawPara("No signatures recorded.");
+  } else {
+    for (const s of sigs.slice(0, 12)) {
+      drawPara(`• ${safe(s.at)} • ${safe(s.action)} • ${safe(s.signer)} • role ${safe(s.role)}`);
+      if (y < 120) break;
+    }
+  }
+  y -= 10;
 
   y -= 10;
   page.drawLine({ start: { x: left, y }, end: { x: 564, y }, thickness: 1, color: rgb(0.2, 0.2, 0.22) });

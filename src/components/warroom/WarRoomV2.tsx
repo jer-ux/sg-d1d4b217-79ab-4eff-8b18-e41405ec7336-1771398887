@@ -2,16 +2,18 @@
 
 import Link from "next/link";
 import { useMemo, useState } from "react";
+import { toast } from "sonner";
+import clsx from "clsx";
 import type { LaneKey, LedgerState, WarEvent } from "@/lib/warroom/types";
 import { useWarRoomStream } from "@/components/warroom/useWarRoomStream";
-import { TickerMarquee } from "@/components/warroom/TickerMarquee";
-import { EvidenceDrawer } from "@/components/warroom/EvidenceDrawer";
+import TickerMarquee from "@/components/warroom/TickerMarquee";
+import EvidenceDrawer from "@/components/warroom/EvidenceDrawer";
 import { applyFilters, defaultFilters, formatMoney, score, type SortKey, type WarRoomFilters } from "@/components/warroom/filters";
 import { approveEvent, assignOwner, closeEvent, generateReceipt } from "@/components/warroom/apiClient";
 
 const laneMeta: Record<LaneKey, { label: string; headline: string }> = {
   value: { label: "Verified Savings Ledger", headline: "Identified → Approved → Realized with receipts and owners." },
-  controls: { label: "Controls & Compliance", headline: "Continuous controls monitoring; audit-first evidence posture." },
+  controls: { label: "Controls & Compliance", headline: "Continuous controls monitoring; evidence-first posture." },
   agentic: { label: "Agentic Ops & Sales", headline: "Governed automation with telemetry and gates." },
   marketplace: { label: "Marketplace Execution", headline: "Ship once. Distribute with low delivery drag." },
 };
@@ -21,9 +23,10 @@ function Pill({ on, label, onClick }: { on: boolean; label: string; onClick: () 
     <button
       type="button"
       onClick={onClick}
-      className={`px-3 py-2 rounded-xl border transition text-sm ${
+      className={clsx(
+        "px-3 py-2 rounded-xl border transition text-sm",
         on ? "border-white/25 bg-white/10 text-white" : "border-white/15 bg-white/5 text-white/80 hover:bg-white/10"
-      }`}
+      )}
     >
       {label}
     </button>
@@ -56,7 +59,7 @@ function ActionButton({
   const off = "opacity-50 pointer-events-none";
 
   return (
-    <button type="button" onClick={onClick} className={`${base} ${intent === "solid" ? solid : ghost} ${disabled ? off : ""}`}>
+    <button type="button" onClick={onClick} className={clsx(base, intent === "solid" ? solid : ghost, disabled && off)}>
       {label}
     </button>
   );
@@ -161,6 +164,22 @@ function FiltersBar({ f, setF }: { f: WarRoomFilters; setF: (next: WarRoomFilter
 function EventCard({ e, onEvidence }: { e: WarEvent; onEvidence: (e: WarEvent) => void }) {
   const s = score(e);
 
+  const handleAction = async (
+    action: () => Promise<{ ok: boolean; error?: string; policyReasons?: string[] }>,
+    successMsg: string
+  ) => {
+    const r = await action();
+    if (!r.ok) {
+      const reasons = r.policyReasons ?? [];
+      const msg = reasons.length
+        ? `Policy check failed:\n${reasons.map((reason) => `• ${reason}`).join("\n")}`
+        : r.error ?? "Action failed";
+      toast.error(msg);
+    } else {
+      toast.success(successMsg);
+    }
+  };
+
   return (
     <div className="rounded-xl border border-white/10 bg-black/20 p-4 transition hover:bg-black/15">
       <div className="flex items-start justify-between gap-4">
@@ -178,38 +197,27 @@ function EventCard({ e, onEvidence }: { e: WarEvent; onEvidence: (e: WarEvent) =
       <div className="mt-3 flex flex-wrap gap-2">
         <ActionButton
           label="Assign"
-          onClick={async () => {
+          onClick={() => {
             const owner = prompt("Assign to (name/role):", e.owner ?? "");
-            if (!owner) return;
-            const r = await assignOwner(e.id, owner);
-            if (!r.ok) alert(r.policyReasons?.length ? `Blocked:\n- ${r.policyReasons.join("\n- ")}` : r.error);
+            if (owner) handleAction(() => assignOwner(e.id, owner), `Assigned to ${owner}`);
           }}
         />
         {e.state === "IDENTIFIED" && (
           <ActionButton
             label="Approve"
             intent="solid"
-            onClick={async () => {
-              const r = await approveEvent(e.id);
-              if (!r.ok) alert(r.policyReasons?.length ? `Blocked:\n- ${r.policyReasons.join("\n- ")}` : r.error);
-            }}
+            onClick={() => handleAction(() => approveEvent(e.id), "Event approved")}
           />
         )}
         {e.state === "APPROVED" && (
           <ActionButton
             label="Close"
-            onClick={async () => {
-              const r = await closeEvent(e.id);
-              if (!r.ok) alert(r.policyReasons?.length ? `Blocked:\n- ${r.policyReasons.join("\n- ")}` : r.error);
-            }}
+            onClick={() => handleAction(() => closeEvent(e.id), "Event closed and realized")}
           />
         )}
         <ActionButton
           label="Generate receipt"
-          onClick={async () => {
-            const r = await generateReceipt(e.id, "Auto-generated receipt (stub)");
-            if (!r.ok) alert(r.policyReasons?.length ? `Blocked:\n- ${r.policyReasons.join("\n- ")}` : r.error);
-          }}
+          onClick={() => handleAction(() => generateReceipt(e.id, "Auto-generated receipt"), "Receipt generated")}
         />
         {(e.receipts?.length ?? 0) > 0 && (
           <ActionButton label={`Evidence (${e.receipts?.length})`} intent="solid" onClick={() => onEvidence(e)} />
@@ -225,7 +233,7 @@ function EventCard({ e, onEvidence }: { e: WarEvent; onEvidence: (e: WarEvent) =
   );
 }
 
-export function WarRoomV2() {
+export default function WarRoomV2() {
   const { connected, lastUpdated, events, summaries, totals, ticker } = useWarRoomStream();
   const [filters, setFilters] = useState(defaultFilters());
   const [evidenceOpen, setEvidenceOpen] = useState<WarEvent | null>(null);

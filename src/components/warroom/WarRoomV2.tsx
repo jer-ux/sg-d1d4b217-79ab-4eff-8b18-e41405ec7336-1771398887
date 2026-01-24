@@ -158,26 +158,8 @@ function FiltersBar({ f, setF }: { f: WarRoomFilters; setF: (next: WarRoomFilter
   );
 }
 
-function EventCard({
-  e,
-  onEvidence,
-}: {
-  e: WarEvent;
-  onEvidence: (e: WarEvent) => void;
-}) {
-  const [loading, setLoading] = useState(false);
+function EventCard({ e, onEvidence }: { e: WarEvent; onEvidence: (e: WarEvent) => void }) {
   const s = score(e);
-
-  async function handleAction(fn: () => Promise<any>) {
-    setLoading(true);
-    try {
-      await fn();
-    } catch (err: any) {
-      // Error already shown by apiClient
-    } finally {
-      setLoading(false);
-    }
-  }
 
   return (
     <div className="rounded-xl border border-white/10 bg-black/20 p-4 transition hover:bg-black/15">
@@ -186,59 +168,58 @@ function EventCard({
           <div className="text-sm text-white/90 font-medium truncate">{e.title}</div>
           {e.subtitle ? <div className="text-xs text-white/60 mt-1 line-clamp-2">{e.subtitle}</div> : null}
           <div className="text-xs text-white/55 mt-2">
-            {e.state.replace("_", " ")} • Owner {e.owner ?? "Unassigned"} • Conf {(e.confidence * 100).toFixed(0)}% • Score {s.toFixed(0)}
+            {e.state.replace("_", " ")} • Owner {e.owner ?? "Unassigned"} • Conf {(e.confidence * 100).toFixed(0)}% • Score{" "}
+            {s.toFixed(0)}
           </div>
         </div>
-        <div className={`text-sm font-semibold whitespace-nowrap ${e.amount < 0 ? "text-red-400" : "text-white/90"}`}>
-          {formatMoney(e.amount)}
-        </div>
+        <div className="text-sm text-white/90 font-semibold whitespace-nowrap">{formatMoney(e.amount)}</div>
       </div>
 
       <div className="mt-3 flex flex-wrap gap-2">
         <ActionButton
           label="Assign"
-          disabled={loading}
-          onClick={() =>
-            handleAction(async () => {
-              const owner = prompt("Assign to (name/role):", e.owner ?? "Finance Ops");
-              if (owner) await assignOwner(e.id, owner);
-            })
-          }
+          onClick={async () => {
+            const owner = prompt("Assign to (name/role):", e.owner ?? "");
+            if (!owner) return;
+            const r = await assignOwner(e.id, owner);
+            if (!r.ok) alert(r.policyReasons?.length ? `Blocked:\n- ${r.policyReasons.join("\n- ")}` : r.error);
+          }}
         />
-
         {e.state === "IDENTIFIED" && (
           <ActionButton
             label="Approve"
-            disabled={loading}
-            onClick={() =>
-              handleAction(async () => {
-                if (confirm("Approve this event?")) await approveEvent(e.id);
-              })
-            }
+            intent="solid"
+            onClick={async () => {
+              const r = await approveEvent(e.id);
+              if (!r.ok) alert(r.policyReasons?.length ? `Blocked:\n- ${r.policyReasons.join("\n- ")}` : r.error);
+            }}
           />
         )}
-
         {e.state === "APPROVED" && (
           <ActionButton
             label="Close"
-            disabled={loading}
-            onClick={() =>
-              handleAction(async () => {
-                if (confirm("Close and realize value?")) await closeEvent(e.id);
-              })
-            }
+            onClick={async () => {
+              const r = await closeEvent(e.id);
+              if (!r.ok) alert(r.policyReasons?.length ? `Blocked:\n- ${r.policyReasons.join("\n- ")}` : r.error);
+            }}
           />
         )}
-
         <ActionButton
           label="Generate receipt"
-          disabled={loading}
-          onClick={() => handleAction(async () => await generateReceipt(e.id))}
+          onClick={async () => {
+            const r = await generateReceipt(e.id, "Auto-generated receipt (stub)");
+            if (!r.ok) alert(r.policyReasons?.length ? `Blocked:\n- ${r.policyReasons.join("\n- ")}` : r.error);
+          }}
         />
-
         {(e.receipts?.length ?? 0) > 0 && (
           <ActionButton label={`Evidence (${e.receipts?.length})`} intent="solid" onClick={() => onEvidence(e)} />
         )}
+        <Link
+          href={`/war-room/${e.lane}`}
+          className="px-3 py-2 rounded-xl border border-white/15 bg-white/5 hover:bg-white/10 transition text-sm"
+        >
+          Open lane
+        </Link>
       </div>
     </div>
   );
@@ -246,10 +227,16 @@ function EventCard({
 
 export function WarRoomV2() {
   const { connected, lastUpdated, events, summaries, totals, ticker } = useWarRoomStream();
-  const [filters, setFilters] = useState<WarRoomFilters>(defaultFilters());
+  const [filters, setFilters] = useState(defaultFilters());
   const [evidenceOpen, setEvidenceOpen] = useState<WarEvent | null>(null);
 
   const filtered = useMemo(() => applyFilters(events, filters), [events, filters]);
+
+  const byLane = useMemo(() => {
+    const map: Record<LaneKey, WarEvent[]> = { value: [], controls: [], agentic: [], marketplace: [] };
+    for (const e of filtered) map[e.lane].push(e);
+    return map;
+  }, [filtered]);
 
   const summaryMap = useMemo(() => {
     const m = new Map<LaneKey, any>();
@@ -257,126 +244,74 @@ export function WarRoomV2() {
     return m;
   }, [summaries]);
 
-  const lanes: LaneKey[] = ["value", "controls", "agentic", "marketplace"];
-
   return (
-    <div className="py-10">
-      {/* Header */}
-      <div className="flex items-center justify-between gap-4 mb-6">
-        <div>
-          <div className="text-3xl font-semibold tracking-tight">Kincaid IQ War Room</div>
-          <div className="text-white/65 mt-2">Real-time value ledger with policy enforcement</div>
-        </div>
-        <div className="text-right">
-          <div className="flex items-center justify-end gap-2 text-xs text-white/50 mb-1">
-            <div
-              className={`w-2 h-2 rounded-full ${
-                connected ? "bg-green-500 shadow-[0_0_8px_rgba(34,197,94,0.6)]" : "bg-red-500"
-              }`}
-            />
-            {connected ? "Live Stream Active" : "Disconnected"}
+    <div className="min-h-[calc(100vh-72px)] py-10">
+      <div className="mx-auto max-w-6xl px-6">
+        <div className="flex flex-col lg:flex-row gap-4 lg:items-center lg:justify-between">
+          <div>
+            <div className="text-3xl font-semibold tracking-tight">Kincaid IQ War Room</div>
+            <div className="text-white/65 mt-2">Four tiles. One ledger. Evidence-first decisions.</div>
+            <div className="text-xs text-white/55 mt-2">
+              Status: <span className="text-white/80">{connected ? "Connected" : "Disconnected"}</span>
+              {lastUpdated ? (
+                <span className="text-white/50"> • Last update {new Date(lastUpdated).toLocaleTimeString()}</span>
+              ) : null}
+              <span className="text-white/50"> • Showing {filtered.length} event(s)</span>
+            </div>
           </div>
-          {lastUpdated && <div className="text-xs text-white/40">Last update: {new Date(lastUpdated).toLocaleTimeString()}</div>}
-        </div>
-      </div>
 
-      {/* Ticker */}
-      <TickerMarquee items={ticker} />
-
-      {/* Totals */}
-      <div className="mt-6 grid md:grid-cols-4 gap-4">
-        <div className="k-panel p-4 text-center">
-          <div className="text-xs text-white/50 uppercase tracking-widest mb-1">Portfolio Identified</div>
-          <div className="text-2xl font-bold text-blue-400">{formatMoney(totals.identified)}</div>
-        </div>
-        <div className="k-panel p-4 text-center">
-          <div className="text-xs text-white/50 uppercase tracking-widest mb-1">Approved Value</div>
-          <div className="text-2xl font-bold text-green-400">{formatMoney(totals.approved)}</div>
-        </div>
-        <div className="k-panel p-4 text-center">
-          <div className="text-xs text-white/50 uppercase tracking-widest mb-1">Realized P&L</div>
-          <div className="text-2xl font-bold text-emerald-400">{formatMoney(totals.realized)}</div>
-        </div>
-        <div className="k-panel p-4 text-center">
-          <div className="text-xs text-white/50 uppercase tracking-widest mb-1">Value At Risk</div>
-          <div className="text-2xl font-bold text-red-400">{formatMoney(totals.atRisk)}</div>
-        </div>
-      </div>
-
-      {/* Filters */}
-      <div className="mt-6">
-        <FiltersBar f={filters} setF={setFilters} />
-      </div>
-
-      {/* Results */}
-      <div className="mt-6 k-panel p-6">
-        <div className="flex items-center justify-between mb-4">
-          <div className="text-lg font-semibold">
-            Events ({filtered.length} of {events.length})
+          <div className="flex-1 lg:ml-6">
+            <TickerMarquee items={ticker} />
           </div>
         </div>
 
-        {filtered.length === 0 ? (
-          <div className="text-center py-12 text-white/40">
-            <div className="text-sm">No events match your filters</div>
-            <button
-              type="button"
-              onClick={() => setFilters(defaultFilters())}
-              className="mt-3 px-4 py-2 rounded-lg bg-white/10 hover:bg-white/15 transition text-sm"
-            >
-              Clear All Filters
-            </button>
-          </div>
-        ) : (
-          <div className="space-y-3">
-            {filtered.map((e) => (
-              <EventCard key={e.id} e={e} onEvidence={setEvidenceOpen} />
-            ))}
-          </div>
-        )}
-      </div>
+        <div className="mt-6">
+          <FiltersBar f={filters} setF={setFilters} />
+        </div>
 
-      {/* Lane Quick Links */}
-      <div className="mt-8 grid lg:grid-cols-4 gap-4">
-        {lanes.map((lane) => {
-          const s = summaryMap.get(lane) ?? { identified: 0, approved: 0, realized: 0, atRisk: 0 };
-          return (
-            <Link key={lane} href={`/war-room/${lane}`} className="k-panel p-5 hover:bg-white/5 transition group">
-              <div className="flex items-start justify-between gap-3">
-                <div>
-                  <div className="text-base font-semibold group-hover:text-white transition">{laneMeta[lane].label}</div>
-                  <div className="text-xs text-white/55 mt-1">{laneMeta[lane].headline}</div>
+        <div className="mt-6 grid lg:grid-cols-2 gap-4">
+          {(["value", "controls", "agentic", "marketplace"] as LaneKey[]).map((lane) => {
+            const s = summaryMap.get(lane) ?? { identified: 0, approved: 0, realized: 0, atRisk: 0 };
+            const laneEvents = byLane[lane].slice(0, 4);
+
+            return (
+              <div key={lane} className="k-panel p-6">
+                <div className="flex items-start justify-between gap-4">
+                  <div>
+                    <div className="text-lg font-semibold">{laneMeta[lane].label}</div>
+                    <div className="text-sm text-white/65 mt-1">{laneMeta[lane].headline}</div>
+                  </div>
+                  <Link
+                    href={`/war-room/${lane}`}
+                    className="px-4 py-2 rounded-xl bg-white text-black font-medium hover:bg-white/90 transition text-sm"
+                  >
+                    Open lane
+                  </Link>
                 </div>
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="16"
-                  height="16"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  className="text-white/30 group-hover:text-white/70 transition"
-                >
-                  <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
-                  <polyline points="15 3 21 3 21 9"></polyline>
-                  <line x1="10" y1="14" x2="21" y2="3"></line>
-                </svg>
-              </div>
-              <div className="mt-3 grid grid-cols-2 gap-2">
-                <SmallStat label="Identified" value={s.identified} />
-                <SmallStat label="Approved" value={s.approved} />
-                <SmallStat label="Realized" value={s.realized} />
-                <SmallStat label="At Risk" value={s.atRisk} />
-              </div>
-            </Link>
-          );
-        })}
-      </div>
 
-      {/* Evidence Drawer */}
-      <EvidenceDrawer openEvent={evidenceOpen} onClose={() => setEvidenceOpen(null)} />
+                <div className="mt-4 grid grid-cols-2 md:grid-cols-4 gap-2">
+                  <SmallStat label="Identified" value={s.identified} />
+                  <SmallStat label="Approved" value={s.approved} />
+                  <SmallStat label="Realized" value={s.realized} />
+                  <SmallStat label="At-risk" value={s.atRisk} />
+                </div>
+
+                <div className="mt-4 space-y-3">
+                  {laneEvents.length === 0 ? (
+                    <div className="rounded-xl border border-white/10 bg-white/5 p-4 text-sm text-white/65">
+                      No events match current filters for this lane.
+                    </div>
+                  ) : (
+                    laneEvents.map((e) => <EventCard key={e.id} e={e} onEvidence={setEvidenceOpen} />)
+                  )}
+                </div>
+              </div>
+            );
+          })}
+        </div>
+
+        <EvidenceDrawer openEvent={evidenceOpen} onClose={() => setEvidenceOpen(null)} />
+      </div>
     </div>
   );
 }

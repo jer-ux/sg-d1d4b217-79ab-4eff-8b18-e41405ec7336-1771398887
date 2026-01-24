@@ -21,6 +21,7 @@ export const primaryCtas: NavLink[] = [
   { label: "Investor access", href: "/capital-markets", description: "Capital markets overview." },
 ];
 
+// CLEAN NAV: only 5 dropdown boxes in the header
 export const megaNav: NavDropdown[] = [
   {
     label: "Platform",
@@ -42,7 +43,7 @@ export const megaNav: NavDropdown[] = [
           {
             label: "Security & Governance",
             href: "/security-governance",
-            description: "Controls, audit trail, access discipline, and evidence standards.",
+            description: "Controls, audit trail, access discipline, evidence standards.",
           },
         ],
       },
@@ -53,11 +54,6 @@ export const megaNav: NavDropdown[] = [
             label: "Case Studies",
             href: "/case-studies",
             description: "Decision-grade narratives with proof patterns (no hype).",
-          },
-          {
-            label: "Contact",
-            href: "/contact",
-            description: "Request demo, diligence sprint, or investor access.",
           },
         ],
       },
@@ -78,52 +74,23 @@ export const megaNav: NavDropdown[] = [
       {
         title: "Marketplaces",
         links: [
-          {
-            label: "Marketplace Practice (Hub)",
-            href: "/marketplace",
-            description: "Build once. Distribute through marketplace motions.",
-          },
-          {
-            label: "Snowflake Marketplace",
-            href: "/marketplace/snowflake",
-            description: "Snowflake-native delivery patterns for decision systems.",
-          },
-          {
-            label: "Databricks Marketplace",
-            href: "/marketplace/databricks",
-            description: "Lakehouse + governed agent pipelines and packaging.",
-          },
-          {
-            label: "ServiceNow Practice",
-            href: "/marketplace/servicenow",
-            description: "Workflow + approvals: Find → Assign → Prove → Close.",
-          },
+          { label: "Marketplace Practice (Hub)", href: "/marketplace", description: "Build once. Distribute through marketplace motions." },
+          { label: "Snowflake Marketplace", href: "/marketplace/snowflake", description: "Snowflake-native delivery patterns for decision systems." },
+          { label: "Databricks Marketplace", href: "/marketplace/databricks", description: "Lakehouse + governed pipelines and packaging." },
+          { label: "ServiceNow Practice", href: "/marketplace/servicenow", description: "Workflow + approvals: Find → Assign → Prove → Close." },
         ],
       },
       {
         title: "Transformation",
         links: [
-          {
-            label: "AI Agentic Transformation",
-            href: "/agentic-transformation",
-            description: "Analyze ops + sales, deploy governed agents, measure outcomes.",
-            badge: "12-month",
-          },
-          {
-            label: "12-Month Adoption Policy",
-            href: "/agentic-policy",
-            description: "Governed rollout plan designed for CFO/board scrutiny.",
-          },
+          { label: "AI Agentic Transformation", href: "/agentic-transformation", description: "Analyze ops + sales, deploy governed agents, measure outcomes.", badge: "12-month" },
+          { label: "12-Month Adoption Policy", href: "/agentic-policy", description: "Governed rollout plan designed for CFO/board scrutiny." },
         ],
       },
       {
         title: "Actuarial",
         links: [
-          {
-            label: "Actuarial Benefits Consulting",
-            href: "/actuarial-benefits",
-            description: "PBM/Rx intelligence, compliance, benchmarking, verified savings.",
-          },
+          { label: "Actuarial Benefits Consulting", href: "/actuarial-benefits", description: "PBM/Rx intelligence, compliance, benchmarking, verified savings." },
         ],
       },
     ],
@@ -143,36 +110,38 @@ export const megaNav: NavDropdown[] = [
       {
         title: "Capital",
         links: [
-          {
-            label: "Capital Markets & Investors",
-            href: "/capital-markets",
-            description: "Underwrite value with evidence packs and realization discipline.",
-          },
-          {
-            label: "M&A / VC / PE Diligence",
-            href: "/ma-vc-pe",
-            description: "Find leakage. Prove it. Underwrite it. Track realization.",
-            badge: "Diligence",
-          },
+          { label: "Capital Markets & Investors", href: "/capital-markets", description: "Underwrite value with evidence packs and realization discipline." },
+          { label: "M&A / VC / PE Diligence", href: "/ma-vc-pe", description: "Find leakage. Prove it. Underwrite it. Track realization.", badge: "Diligence" },
         ],
       },
       {
         title: "Owners",
         links: [
-          {
-            label: "Family Offices",
-            href: "/family-offices",
-            description: "Oversight-grade reporting and governance for complex holdings.",
-          },
+          { label: "Family Offices", href: "/family-offices", description: "Oversight-grade reporting and governance for complex holdings." },
         ],
       },
     ],
     featured: [
+      { label: "Diligence Proof Packs", href: "/ma-vc-pe", description: "Receipts + methodology + reconciliation outputs.", badge: "Proof" },
+    ],
+  },
+
+  {
+    label: "Resources",
+    sections: [
       {
-        label: "Diligence Proof Packs",
-        href: "/ma-vc-pe",
-        description: "Receipts + methodology + reconciliation outputs.",
-        badge: "Proof",
+        title: "Proof & Materials",
+        links: [
+          { label: "Case Studies", href: "/case-studies", description: "Evidence-led narratives and outcomes." },
+          { label: "Security & Governance", href: "/security-governance", description: "Controls-first posture for enterprise decision systems." },
+        ],
+      },
+      {
+        title: "Get Started",
+        links: [
+          { label: "Request demo", href: "/contact", description: "Start a scoped conversation." },
+          { label: "Investor access", href: "/capital-markets", description: "Capital markets overview." },
+        ],
       },
     ],
   },
@@ -183,31 +152,8 @@ export const megaNav: NavDropdown[] = [
       {
         title: "About",
         links: [
-          {
-            label: "Company",
-            href: "/company",
-            description: "Built for boards. Run by operators. Proof-first philosophy.",
-          },
-          {
-            label: "Contact",
-            href: "/contact",
-            description: "Start a scoped conversation.",
-          },
-        ],
-      },
-      {
-        title: "Proof",
-        links: [
-          {
-            label: "Case Studies",
-            href: "/case-studies",
-            description: "Evidence-led narratives and outcomes.",
-          },
-          {
-            label: "Security & Governance",
-            href: "/security-governance",
-            description: "Controls-first posture for enterprise decision systems.",
-          },
+          { label: "Company", href: "/company", description: "Built for boards. Run by operators. Proof-first philosophy." },
+          { label: "Contact", href: "/contact", description: "Request demo, diligence sprint, or investor access." },
         ],
       },
     ],

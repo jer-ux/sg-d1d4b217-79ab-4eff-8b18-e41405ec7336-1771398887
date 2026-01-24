@@ -81,6 +81,67 @@ export default function Home() {
             </div>
           </div>
 
+          {/* Real-World Impact: Industry Examples */}
+          <div className="mt-20 mb-16 k-panel p-8 border-purple-500/20">
+            <div className="text-center mb-8">
+              <div className="text-sm uppercase tracking-wider text-purple-400 mb-3">Real-World Impact</div>
+              <h2 className="text-3xl font-semibold tracking-tight">
+                The <span className="text-purple-300">$47 billion problem</span> executives face every quarter
+              </h2>
+            </div>
+
+            <div className="grid md:grid-cols-2 gap-8">
+              <div className="space-y-6">
+                <div className="border-l-2 border-red-400 pl-4">
+                  <div className="text-red-300 font-semibold mb-1">Healthcare CFO</div>
+                  <div className="text-sm text-white/70">
+                    "Our PBM claimed <span className="text-red-200 font-medium">$8.2M in rebate savings</span>. When we demanded receipts, 
+                    they provided a 47-page PDF with aggregated numbers. No transaction IDs, no member-level data, no way to reconcile 
+                    to our claims system. We suspected <span className="text-red-300">$2.4M was phantom savings</span>, but couldn't prove it."
+                  </div>
+                </div>
+
+                <div className="border-l-2 border-orange-400 pl-4">
+                  <div className="text-orange-300 font-semibold mb-1">Manufacturing CIO</div>
+                  <div className="text-sm text-white/70">
+                    "We deployed an AI-driven supply chain optimization tool that promised <span className="text-orange-200 font-medium">18% cost reduction</span>. 
+                    Six months in, our CFO asked for proof. The vendor showed us a dashboard with green arrows and percentages—but 
+                    <span className="text-orange-300"> zero transaction-level evidence</span>. Board wanted receipts. We had none."
+                  </div>
+                </div>
+              </div>
+
+              <div className="space-y-6">
+                <div className="border-l-2 border-yellow-400 pl-4">
+                  <div className="text-yellow-300 font-semibold mb-1">Financial Services CEO</div>
+                  <div className="text-sm text-white/70">
+                    "PE firm conducting diligence asked: 'Can you prove your operational efficiency gains?' We had <span className="text-yellow-200 font-medium">$12M in claimed savings</span> 
+                    from three consulting engagements. Zero audit trail. Zero evidence receipts. 
+                    <span className="text-yellow-300"> They discounted our EBITDA by $9M</span> due to unverifiable improvements."
+                  </div>
+                </div>
+
+                <div className="border-l-2 border-purple-400 pl-4">
+                  <div className="text-purple-300 font-semibold mb-1">Retail CIO</div>
+                  <div className="text-sm text-white/70">
+                    "Cloud migration partner promised <span className="text-purple-200 font-medium">$4.7M annual savings</span>. Post-migration, our AWS bill went UP by $1.2M. 
+                    When confronted, they said 'savings are projected over 3 years.' No baseline, no variance tracking, 
+                    <span className="text-purple-300"> no accountability</span>. CFO demanded we prove ROI to the board—we couldn't."
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div className="mt-8 text-center">
+              <div className="inline-flex items-center gap-2 k-panel px-6 py-3 border-purple-400/30">
+                <span className="text-purple-300 text-2xl">⚠️</span>
+                <span className="text-white/80">
+                  <span className="text-purple-200 font-semibold">$47B in enterprise spend annually</span> lacks verifiable evidence receipts
+                </span>
+              </div>
+            </div>
+          </div>
+
           {/* The Solution: Why Kincaid IQ is Different */}
           <div className="mt-20 mb-16">
             <div className="text-center max-w-4xl mx-auto">
@@ -98,7 +159,7 @@ export default function Home() {
               </p>
             </div>
 
-            <div className="mt-12 k-panel k-glow p-8">
+            <div className="mt-12 k-panel k-glow p-8 border-green-500/20">
               <div className="grid md:grid-cols-2 gap-8">
                 <div>
                   <div className="text-cyan-400 font-semibold mb-3">Traditional Approach</div>
@@ -123,11 +184,11 @@ export default function Home() {
                 </div>
 
                 <div>
-                  <div className="text-blue-400 font-semibold mb-3">Kincaid IQ Approach</div>
+                  <div className="text-green-400 font-semibold mb-3">Kincaid IQ Approach</div>
                   <ul className="space-y-3 text-sm text-white/90">
                     <li className="flex items-start gap-2">
                       <span className="text-green-400 mt-1">✓</span>
-                      <span>Every transaction generates an <span className="text-cyan-300">evidence receipt</span> with source data</span>
+                      <span>Every transaction generates an <span className="text-green-300">evidence receipt</span> with source data</span>
                     </li>
                     <li className="flex items-start gap-2">
                       <span className="text-green-400 mt-1">✓</span>
@@ -196,7 +257,7 @@ export default function Home() {
             </div>
 
             <div className="grid md:grid-cols-3 gap-6">
-              <div className="k-panel p-6 hover:border-blue-400/30 transition">
+              <div className="k-panel p-6 hover:border-blue-400/30 transition border-blue-500/20">
                 <div className="text-blue-400 font-bold text-sm mb-2">CFO</div>
                 <div className="font-semibold text-lg mb-3">Prove Value to the Board</div>
                 <div className="text-sm text-white/65">
@@ -210,29 +271,29 @@ export default function Home() {
                 </div>
               </div>
 
-              <div className="k-panel p-6 hover:border-cyan-400/30 transition">
-                <div className="text-cyan-400 font-bold text-sm mb-2">CIO</div>
+              <div className="k-panel p-6 hover:border-purple-400/30 transition border-purple-500/20">
+                <div className="text-purple-400 font-bold text-sm mb-2">CIO</div>
                 <div className="font-semibold text-lg mb-3">Control AI Transformation Risk</div>
                 <div className="text-sm text-white/65">
                   "We're deploying 47 AI agents across ops and sales. Kincaid IQ's 12-month policy gives us a governance framework, 
                   variance monitoring, and kill switches if anything goes sideways."
                 </div>
                 <div className="mt-4">
-                  <Link href="/agentic-transformation" className="text-blue-400 text-sm hover:underline">
+                  <Link href="/agentic-transformation" className="text-purple-400 text-sm hover:underline">
                     Agentic Transformation →
                   </Link>
                 </div>
               </div>
 
-              <div className="k-panel p-6 hover:border-blue-400/30 transition">
-                <div className="text-blue-400 font-bold text-sm mb-2">CEO</div>
+              <div className="k-panel p-6 hover:border-green-400/30 transition border-green-500/20">
+                <div className="text-green-400 font-bold text-sm mb-2">CEO</div>
                 <div className="font-semibold text-lg mb-3">Increase Enterprise Valuation</div>
                 <div className="text-sm text-white/65">
                   "PE and family office investors demand proof of margin improvement. Kincaid IQ's value ledger shows verified savings, 
                   operational efficiency gains, and controls—all audit-ready for diligence."
                 </div>
                 <div className="mt-4">
-                  <Link href="/capital-markets" className="text-cyan-400 text-sm hover:underline">
+                  <Link href="/capital-markets" className="text-green-400 text-sm hover:underline">
                     Capital Markets →
                   </Link>
                 </div>

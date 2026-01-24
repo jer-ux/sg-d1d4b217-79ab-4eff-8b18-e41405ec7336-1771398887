@@ -60,12 +60,12 @@ function FeaturedCard({ link }: { link: NavLink }) {
 
 function DropdownPanel({ item }: { item: NavDropdown }) {
   return (
-    <div className="k-panel k-glow w-[900px] max-w-[92vw] p-5">
+    <div className="k-panel k-glow w-[900px] max-w-[92vw] p-5 bg-[#0A0F19]/98 backdrop-blur-xl">
       <div className="grid grid-cols-12 gap-4">
         <div className={`col-span-12 ${item.featured?.length ? "md:col-span-8" : "md:col-span-12"}`}>
           <div className="grid md:grid-cols-2 gap-4">
             {item.sections.map((sec) => (
-              <div key={sec.title} className="border border-white/10 rounded-xl bg-black/20 p-4">
+              <div key={sec.title} className="border border-white/10 rounded-xl bg-black/40 p-4">
                 <div className="text-xs uppercase tracking-wider text-white/55 mb-2">{sec.title}</div>
                 <div className="space-y-1">
                   {sec.links.map((lnk) => (
@@ -79,7 +79,7 @@ function DropdownPanel({ item }: { item: NavDropdown }) {
 
         {item.featured?.length ? (
           <div className="col-span-12 md:col-span-4">
-            <div className="border border-white/10 rounded-xl bg-black/20 p-4 h-full">
+            <div className="border border-white/10 rounded-xl bg-black/40 p-4 h-full">
               <div className="text-xs uppercase tracking-wider text-white/55 mb-2">Featured</div>
               <div className="space-y-3">
                 {item.featured.map((f) => (

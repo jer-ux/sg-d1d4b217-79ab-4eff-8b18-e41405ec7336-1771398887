@@ -24,7 +24,8 @@ html, body {
 }
 
 .k-panel {
-  background: linear-gradient(180deg, var(--panel), transparent);
+  background: rgba(10, 15, 25, 0.95);
+  backdrop-filter: blur(20px);
   border: 1px solid var(--border);
   border-radius: 1.25rem;
 }

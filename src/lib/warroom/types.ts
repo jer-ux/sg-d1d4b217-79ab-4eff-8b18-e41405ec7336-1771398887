@@ -39,6 +39,11 @@ export type WarEvent = {
   packetSignatures?: PacketSignature[];
   createdAt: string;
   updatedAt: string;
+  
+  // External system integration fields
+  sourceSystem?: string;  // e.g., "snowflake", "servicenow", "databricks"
+  sourceRef?: string;      // e.g., query_id, ticket_id, job_id
+  tags?: string[];         // Custom tags for filtering/search
 };
 
 export type EventNotes = {

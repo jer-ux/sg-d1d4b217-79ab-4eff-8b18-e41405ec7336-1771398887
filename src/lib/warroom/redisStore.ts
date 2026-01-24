@@ -23,7 +23,7 @@ function getField(st: LedgerState): keyof Omit<LaneSummary, "lane"> {
   return "atRisk";
 }
 
-async function publish(msg: StreamMessage) {
+export async function publish(msg: StreamMessage) {
   try {
     const redis = getRedis();
     await redis.xadd(STREAM_KEY, "*", "msg", JSON.stringify(msg));
@@ -71,9 +71,10 @@ export async function snapshot() {
   return { events, summaries };
 }
 
-async function upsertEvent(e: WarEvent) {
+export async function upsertEvent(e: WarEvent) {
   const redis = getRedis();
   await redis.set(EVENT_KEY(e.id), JSON.stringify(e));
+  await redis.sadd(EVENT_IDS_KEY, e.id);
 }
 
 function setPacketStatus(e: WarEvent, status: PacketStatus): WarEvent {

@@ -1,6 +1,9 @@
 import type { LaneKey, WarEvent, LedgerState } from "@/lib/warroom/types";
 
-export type PolicyDecision = { ok: true } | { ok: false; reasons: string[] };
+export type PolicyDecision = {
+  ok: boolean;
+  reasons?: string[];
+};
 
 export type PolicyConfig = {
   requireOwner: boolean;

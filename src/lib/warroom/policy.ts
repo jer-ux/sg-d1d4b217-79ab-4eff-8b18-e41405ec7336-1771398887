@@ -50,69 +50,54 @@ const LANE_POLICY: Partial<Record<LaneKey, Partial<PolicyConfig>>> = {
   },
 };
 
-function getPolicy(lane: LaneKey): PolicyConfig {
-  return { ...DEFAULT_POLICY, ...LANE_POLICY[lane] };
+export function policyForLane(lane: LaneKey): PolicyConfig {
+  return { ...DEFAULT_POLICY, ...(LANE_POLICY[lane] ?? {}) };
 }
 
-export function canApprove(event: WarEvent): PolicyDecision {
-  const policy = getPolicy(event.lane);
+function receiptCount(e: WarEvent) {
+  return (e.receipts ?? []).length;
+}
+
+function hasOwner(e: WarEvent) {
+  return Boolean(e.owner && e.owner.trim().length > 0);
+}
+
+function hasControlsReceipt(e: WarEvent) {
+  const r = (e.receipts ?? []).map((x) => (x.title ?? "").toLowerCase());
+  return r.some((t) => t.includes("control") || t.includes("freshness") || t.includes("dq") || t.includes("quality"));
+}
+
+export function canTransition(e: WarEvent, target: LedgerState): PolicyDecision {
+  const cfg = policyForLane(e.lane);
   const reasons: string[] = [];
 
-  if (policy.requireOwner && !event.owner) {
-    reasons.push("Event must have an assigned owner before approval");
+  if (cfg.requireOwner && !hasOwner(e)) {
+    reasons.push("Missing decision owner assignment.");
   }
 
-  const receiptCount = event.receipts?.length ?? 0;
-  if (receiptCount < policy.minReceiptsToApprove) {
-    reasons.push(
-      `Minimum ${policy.minReceiptsToApprove} receipt(s) required (current: ${receiptCount})`
-    );
-  }
-
-  if (event.confidence < policy.minConfidenceToApprove) {
-    reasons.push(
-      `Confidence ${(event.confidence * 100).toFixed(0)}% is below minimum ${(policy.minConfidenceToApprove * 100).toFixed(0)}%`
-    );
-  }
-
-  if (event.state === "AT_RISK" && policy.requireControlsReceiptForAtRisk) {
-    const hasControlsReceipt = event.receipts?.some(
-      (r) => r.title.toLowerCase().includes("control") || r.title.toLowerCase().includes("check")
-    );
-    if (!hasControlsReceipt) {
-      reasons.push("AT_RISK events require a controls/compliance receipt");
+  if (target === "APPROVED") {
+    if (receiptCount(e) < cfg.minReceiptsToApprove) {
+      reasons.push(`Requires at least ${cfg.minReceiptsToApprove} evidence receipt(s) to approve.`);
+    }
+    if (e.confidence < cfg.minConfidenceToApprove) {
+      reasons.push(`Confidence ${(e.confidence * 100).toFixed(0)}% is below approval threshold ${(cfg.minConfidenceToApprove * 100).toFixed(0)}%.`);
     }
   }
 
-  return reasons.length === 0 ? { ok: true } : { ok: false, reasons };
-}
-
-export function canClose(event: WarEvent): PolicyDecision {
-  const policy = getPolicy(event.lane);
-  const reasons: string[] = [];
-
-  if (policy.requireOwner && !event.owner) {
-    reasons.push("Event must have an assigned owner before closing");
+  if (target === "REALIZED") {
+    if (receiptCount(e) < cfg.minReceiptsToClose) {
+      reasons.push(`Requires at least ${cfg.minReceiptsToClose} evidence receipt(s) to close.`);
+    }
+    if (e.confidence < cfg.minConfidenceToClose) {
+      reasons.push(`Confidence ${(e.confidence * 100).toFixed(0)}% is below close threshold ${(cfg.minConfidenceToClose * 100).toFixed(0)}%.`);
+    }
   }
 
-  const receiptCount = event.receipts?.length ?? 0;
-  if (receiptCount < policy.minReceiptsToClose) {
-    reasons.push(
-      `Minimum ${policy.minReceiptsToClose} receipt(s) required to close (current: ${receiptCount})`
-    );
+  if (cfg.requireControlsReceiptForAtRisk && e.state === "AT_RISK") {
+    if (!hasControlsReceipt(e)) {
+      reasons.push("AT-RISK events require at least one controls-related receipt (control/freshness/DQ).");
+    }
   }
 
-  if (event.confidence < policy.minConfidenceToClose) {
-    reasons.push(
-      `Confidence ${(event.confidence * 100).toFixed(0)}% is below minimum ${(policy.minConfidenceToClose * 100).toFixed(0)}% for closure`
-    );
-  }
-
-  return reasons.length === 0 ? { ok: true } : { ok: false, reasons };
-}
-
-export function checkPolicy(event: WarEvent, targetState: LedgerState): PolicyDecision {
-  if (targetState === "APPROVED") return canApprove(event);
-  if (targetState === "REALIZED") return canClose(event);
-  return { ok: true };
+  return reasons.length ? { ok: false, reasons } : { ok: true };
 }

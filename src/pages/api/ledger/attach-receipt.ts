@@ -7,12 +7,12 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   }
 
   try {
-    const { eventId, receipt } = req.body;
+    const { eventId, receipt, actor } = req.body;
     if (!eventId || !receipt) {
       return res.status(400).json({ error: "eventId and receipt required" });
     }
 
-    const updated = await attachReceipt(eventId, receipt);
+    const updated = await attachReceipt(eventId, receipt, actor);
     return res.status(200).json({ ok: true, event: updated });
   } catch (e: any) {
     return res.status(500).json({ ok: false, error: e?.message ?? "Unknown error" });

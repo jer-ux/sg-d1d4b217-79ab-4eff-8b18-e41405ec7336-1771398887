@@ -1,6 +1,8 @@
 import type { LaneKey, LaneSummary, LedgerState, StreamMessage, WarEvent } from "@/lib/warroom/types";
-import { getRedis, setJson, getJson } from "@/lib/warroom/redis";
+import { getRedis } from "@/lib/warroom/redis";
 import { seedEvents, seedSummaries } from "@/lib/warroom/seed";
+import { canTransition } from "@/lib/warroom/policy";
+import { auditFromEvent } from "@/lib/warroom/audit";
 
 const STREAM_KEY = "kiq:warroom:stream";
 const EVENT_IDS_KEY = "kiq:warroom:event_ids";
@@ -102,63 +104,155 @@ async function moveLedgerAmount(lane: LaneKey, from: LedgerState, to: LedgerStat
   await upsertSummary(next);
 }
 
-export async function assign(eventId: string, owner: string) {
+export async function assign(eventId: string, owner: string, actor?: string) {
   await ensureSeeded();
   const redis = getRedis();
   const raw = await redis.get(EVENT_KEY(eventId));
   if (!raw) throw new Error("Event not found");
 
   const e = JSON.parse(raw) as WarEvent;
+  const prior = e.state;
   const next: WarEvent = { ...e, owner, updatedAt: isoNow() };
+
   await upsertEvent(next);
+
+  await auditFromEvent({
+    action: "LEDGER_ASSIGN",
+    actor,
+    event: next,
+    priorState: prior,
+    nextState: next.state,
+    owner,
+    meta: { field: "owner", priorOwner: e.owner },
+  });
+
   return next;
 }
 
-export async function approve(eventId: string) {
+export async function approve(eventId: string, actor?: string) {
   await ensureSeeded();
   const redis = getRedis();
   const raw = await redis.get(EVENT_KEY(eventId));
   if (!raw) throw new Error("Event not found");
 
   const e = JSON.parse(raw) as WarEvent;
+  const prior = e.state;
 
+  // Policy check
+  const decision = canTransition(e, "APPROVED");
+  
+  // Audit the attempt
+  await auditFromEvent({
+    action: "LEDGER_APPROVE_ATTEMPT",
+    actor,
+    event: e,
+    priorState: prior,
+    nextState: "APPROVED",
+    policyOk: decision.ok,
+    policyReasons: decision.reasons,
+  });
+
+  // If policy fails, throw with reasons
+  if (!decision.ok) {
+    const err = new Error("Policy check failed");
+    (err as any).policyReasons = decision.reasons;
+    throw err;
+  }
+
+  // Move ledger amount if transitioning from IDENTIFIED
   if (e.state === "IDENTIFIED") {
     await moveLedgerAmount(e.lane, "IDENTIFIED", "APPROVED", e.amount);
   }
 
   const next: WarEvent = { ...e, state: "APPROVED", updatedAt: isoNow() };
   await upsertEvent(next);
+
+  // Audit success
+  await auditFromEvent({
+    action: "LEDGER_APPROVE",
+    actor,
+    event: next,
+    priorState: prior,
+    nextState: "APPROVED",
+    policyOk: true,
+  });
+
   return next;
 }
 
-export async function close(eventId: string) {
+export async function close(eventId: string, actor?: string) {
   await ensureSeeded();
   const redis = getRedis();
   const raw = await redis.get(EVENT_KEY(eventId));
   if (!raw) throw new Error("Event not found");
 
   const e = JSON.parse(raw) as WarEvent;
+  const prior = e.state;
 
+  // Policy check
+  const decision = canTransition(e, "REALIZED");
+  
+  // Audit the attempt
+  await auditFromEvent({
+    action: "LEDGER_CLOSE_ATTEMPT",
+    actor,
+    event: e,
+    priorState: prior,
+    nextState: "REALIZED",
+    policyOk: decision.ok,
+    policyReasons: decision.reasons,
+  });
+
+  // If policy fails, throw with reasons
+  if (!decision.ok) {
+    const err = new Error("Policy check failed");
+    (err as any).policyReasons = decision.reasons;
+    throw err;
+  }
+
+  // Move ledger amount if transitioning from APPROVED
   if (e.state === "APPROVED") {
     await moveLedgerAmount(e.lane, "APPROVED", "REALIZED", e.amount);
   }
 
   const next: WarEvent = { ...e, state: "REALIZED", updatedAt: isoNow() };
   await upsertEvent(next);
+
+  // Audit success
+  await auditFromEvent({
+    action: "LEDGER_CLOSE",
+    actor,
+    event: next,
+    priorState: prior,
+    nextState: "REALIZED",
+    policyOk: true,
+  });
+
   return next;
 }
 
-export async function attachReceipt(eventId: string, receipt: { id: string; title: string; hash?: string }) {
+export async function attachReceipt(eventId: string, receipt: { id: string; title: string; hash?: string }, actor?: string) {
   await ensureSeeded();
   const redis = getRedis();
   const raw = await redis.get(EVENT_KEY(eventId));
   if (!raw) throw new Error("Event not found");
 
   const e = JSON.parse(raw) as WarEvent;
+  const priorCount = (e.receipts ?? []).length;
   const receipts = [...(e.receipts ?? []), { ...receipt }];
 
   const next: WarEvent = { ...e, receipts, updatedAt: isoNow() };
   await upsertEvent(next);
+
+  await auditFromEvent({
+    action: "RECEIPT_ATTACH",
+    actor,
+    event: next,
+    priorState: e.state,
+    nextState: e.state,
+    meta: { receiptId: receipt.id, receiptTitle: receipt.title, priorCount, newCount: receipts.length },
+  });
+
   return next;
 }
 

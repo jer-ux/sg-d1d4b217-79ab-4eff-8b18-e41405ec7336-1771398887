@@ -11,19 +11,20 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   }
 
   try {
-    const { eventId, title } = req.body;
+    const { eventId, title, actor } = req.body;
     if (!eventId) {
       return res.status(400).json({ error: "eventId required" });
     }
 
-    const receipt = {
-      id: `rcpt-${Date.now()}`,
-      title: title ?? "Generated evidence receipt",
+    const receipt = { 
+      id: `rcpt-${Date.now()}`, 
+      title: title ?? "Generated evidence receipt", 
       hash: fakeHash(),
-      freshness: new Date().toISOString(),
+      freshness: new Date().toISOString()
     };
+    
+    const event = await attachReceipt(eventId, receipt, actor);
 
-    const event = await attachReceipt(eventId, receipt);
     return res.status(200).json({ ok: true, event, receipt });
   } catch (e: any) {
     return res.status(500).json({ ok: false, error: e?.message ?? "Unknown error" });

@@ -109,7 +109,7 @@ function DropdownPanel({ item }: { item: NavDropdown }) {
   );
 }
 
-export default function Nav() {
+export function Nav() {
   const pathname = usePathname();
 
   const [open, setOpen] = useState<string | null>(null);

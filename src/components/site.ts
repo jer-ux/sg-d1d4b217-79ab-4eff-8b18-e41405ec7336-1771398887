@@ -156,3 +156,51 @@ export const proofBar = [
   "Controls Monitoring",
   "Marketplace Delivery",
 ];
+
+// Flatten all links for search (command palette)
+export const allNavLinks: NavLink[] = (() => {
+  const seen = new Set<string>();
+  const out: NavLink[] = [];
+  for (const dd of megaNav) {
+    for (const sec of dd.sections) {
+      for (const l of sec.links) {
+        if (!seen.has(l.href)) {
+          seen.add(l.href);
+          out.push(l);
+        }
+      }
+    }
+    for (const f of dd.featured ?? []) {
+      if (!seen.has(f.href)) {
+        seen.add(f.href);
+        out.push(f);
+      }
+    }
+  }
+  for (const c of primaryCtas) {
+    if (!seen.has(c.href)) {
+      seen.add(c.href);
+      out.push(c);
+    }
+  }
+  return out;
+})();
+
+// Route → Top-level category mapping (for active indicator)
+export function topLevelForPath(pathname: string): string {
+  const p = (pathname || "/").toLowerCase();
+
+  if (p === "/" || p.startsWith("/platform") || p.startsWith("/verified-savings-ledger") || p.startsWith("/security-governance") || p.startsWith("/case-studies")) {
+    return "Platform";
+  }
+  if (p.startsWith("/marketplace") || p.startsWith("/agentic") || p.startsWith("/actuarial-benefits")) {
+    return "Practices";
+  }
+  if (p.startsWith("/capital-markets") || p.startsWith("/family-offices") || p.startsWith("/ma-vc-pe")) {
+    return "Audiences";
+  }
+  if (p.startsWith("/company") || p.startsWith("/contact")) {
+    return "About";
+  }
+  return "Platform";
+}

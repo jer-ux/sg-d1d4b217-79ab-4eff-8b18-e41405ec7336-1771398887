@@ -9,204 +9,186 @@ import { EvidenceDrawer } from "@/components/warroom/EvidenceDrawer";
 import { applyFilters, defaultFilters, formatMoney, score, type SortKey, type WarRoomFilters } from "@/components/warroom/filters";
 import { approveEvent, assignOwner, closeEvent, generateReceipt } from "@/components/warroom/apiClient";
 
-const laneMeta: Record<LaneKey, { label: string; headline: string; color: string }> = {
-  value: { label: "Verified Savings Ledger", headline: "Reconcile value with receipts and owners.", color: "blue" },
-  controls: { label: "Controls & Compliance", headline: "Continuous controls. Evidence-first posture.", color: "purple" },
-  agentic: { label: "Agentic Ops & Sales", headline: "Governed automation with telemetry and gates.", color: "green" },
-  marketplace: { label: "Marketplace Execution", headline: "Ship once. Distribute with low delivery drag.", color: "orange" },
+const laneMeta: Record<LaneKey, { label: string; headline: string }> = {
+  value: { label: "Verified Savings Ledger", headline: "Identified → Approved → Realized with receipts and owners." },
+  controls: { label: "Controls & Compliance", headline: "Continuous controls monitoring; audit-first evidence posture." },
+  agentic: { label: "Agentic Ops & Sales", headline: "Governed automation with telemetry and gates." },
+  marketplace: { label: "Marketplace Execution", headline: "Ship once. Distribute with low delivery drag." },
 };
 
-function FilterBar({ filters, onChange }: { filters: WarRoomFilters; onChange: (f: WarRoomFilters) => void }) {
-  const lanes: LaneKey[] = ["value", "controls", "agentic", "marketplace"];
-  const states: LedgerState[] = ["IDENTIFIED", "APPROVED", "REALIZED", "AT_RISK"];
-  const sortOptions: { key: SortKey; label: string }[] = [
-    { key: "score", label: "Action Score" },
-    { key: "amount", label: "Amount" },
-    { key: "confidence", label: "Confidence" },
-    { key: "updated", label: "Last Updated" },
-  ];
+function Pill({ on, label, onClick }: { on: boolean; label: string; onClick: () => void }) {
+  return (
+    <button
+      type="button"
+      onClick={onClick}
+      className={`px-3 py-2 rounded-xl border transition text-sm ${
+        on ? "border-white/25 bg-white/10 text-white" : "border-white/15 bg-white/5 text-white/80 hover:bg-white/10"
+      }`}
+    >
+      {label}
+    </button>
+  );
+}
+
+function SmallStat({ label, value }: { label: string; value: number }) {
+  return (
+    <div className="rounded-xl border border-white/10 bg-white/5 px-3 py-2">
+      <div className="text-[10px] uppercase tracking-wider text-white/55">{label}</div>
+      <div className="text-sm text-white/85 font-medium">{formatMoney(value)}</div>
+    </div>
+  );
+}
+
+function ActionButton({
+  label,
+  intent = "ghost",
+  disabled,
+  onClick,
+}: {
+  label: string;
+  intent?: "ghost" | "solid";
+  disabled?: boolean;
+  onClick: () => void;
+}) {
+  const base = "px-3 py-2 rounded-xl transition text-sm";
+  const solid = "bg-white text-black font-medium hover:bg-white/90";
+  const ghost = "border border-white/15 bg-white/5 hover:bg-white/10";
+  const off = "opacity-50 pointer-events-none";
 
   return (
-    <div className="k-panel p-4 space-y-4">
-      <div className="flex flex-wrap gap-4 items-end">
-        {/* Search */}
-        <div className="flex-1 min-w-[200px]">
-          <label className="text-xs text-white/60 uppercase tracking-wider block mb-1">Search</label>
+    <button type="button" onClick={onClick} className={`${base} ${intent === "solid" ? solid : ghost} ${disabled ? off : ""}`}>
+      {label}
+    </button>
+  );
+}
+
+function FiltersBar({ f, setF }: { f: WarRoomFilters; setF: (next: WarRoomFilters) => void }) {
+  const toggleLane = (lane: LaneKey) => {
+    const next = new Set(f.lanes);
+    next.has(lane) ? next.delete(lane) : next.add(lane);
+    setF({ ...f, lanes: next });
+  };
+
+  const toggleState = (st: LedgerState) => {
+    const next = new Set(f.states);
+    next.has(st) ? next.delete(st) : next.add(st);
+    setF({ ...f, states: next });
+  };
+
+  const setSort = (sortBy: SortKey) => setF({ ...f, sortBy });
+  const flipDir = () => setF({ ...f, descending: !f.descending });
+
+  return (
+    <div className="k-panel p-5">
+      <div className="flex flex-col lg:flex-row lg:items-center gap-4 justify-between">
+        <div className="flex flex-wrap gap-2">
+          <Pill on={f.lanes.has("value")} label="Value" onClick={() => toggleLane("value")} />
+          <Pill on={f.lanes.has("controls")} label="Controls" onClick={() => toggleLane("controls")} />
+          <Pill on={f.lanes.has("agentic")} label="Agentic" onClick={() => toggleLane("agentic")} />
+          <Pill on={f.lanes.has("marketplace")} label="Marketplace" onClick={() => toggleLane("marketplace")} />
+        </div>
+
+        <div className="flex flex-wrap gap-2">
+          <Pill on={f.states.has("IDENTIFIED")} label="Identified" onClick={() => toggleState("IDENTIFIED")} />
+          <Pill on={f.states.has("APPROVED")} label="Approved" onClick={() => toggleState("APPROVED")} />
+          <Pill on={f.states.has("REALIZED")} label="Realized" onClick={() => toggleState("REALIZED")} />
+          <Pill on={f.states.has("AT_RISK")} label="At-risk" onClick={() => toggleState("AT_RISK")} />
+        </div>
+      </div>
+
+      <div className="mt-4 grid lg:grid-cols-12 gap-3 items-center">
+        <div className="lg:col-span-5">
           <input
-            type="text"
-            value={filters.q}
-            onChange={(e) => onChange({ ...filters, q: e.target.value })}
-            placeholder="Search events..."
-            className="w-full px-3 py-2 rounded-lg bg-black/20 border border-white/10 text-white/90 text-sm placeholder:text-white/40 focus:outline-none focus:border-white/30"
+            value={f.q}
+            onChange={(e) => setF({ ...f, q: e.target.value })}
+            placeholder="Search events, owners, keywords…"
+            className="w-full rounded-xl bg-black/30 border border-white/10 px-4 py-3 text-white/90 placeholder:text-white/40 outline-none focus:border-white/25"
           />
         </div>
 
-        {/* Sort */}
-        <div className="min-w-[160px]">
-          <label className="text-xs text-white/60 uppercase tracking-wider block mb-1">Sort By</label>
-          <select
-            value={filters.sortBy}
-            onChange={(e) => onChange({ ...filters, sortBy: e.target.value as SortKey })}
-            className="w-full px-3 py-2 rounded-lg bg-black/20 border border-white/10 text-white/90 text-sm focus:outline-none focus:border-white/30"
-          >
-            {sortOptions.map((opt) => (
-              <option key={opt.key} value={opt.key}>
-                {opt.label}
-              </option>
-            ))}
-          </select>
-        </div>
-
-        {/* Sort Direction */}
-        <button
-          type="button"
-          onClick={() => onChange({ ...filters, descending: !filters.descending })}
-          className="px-3 py-2 rounded-lg border border-white/15 bg-white/5 hover:bg-white/10 transition text-sm"
-          title={filters.descending ? "Descending" : "Ascending"}
-        >
-          {filters.descending ? "↓" : "↑"}
-        </button>
-
-        {/* Min Confidence */}
-        <div className="min-w-[140px]">
-          <label className="text-xs text-white/60 uppercase tracking-wider block mb-1">
-            Min Confidence: {(filters.minConfidence * 100).toFixed(0)}%
-          </label>
+        <div className="lg:col-span-4 flex items-center gap-3">
+          <div className="text-xs text-white/55 w-28">Min confidence</div>
           <input
             type="range"
-            min="0"
-            max="100"
-            value={filters.minConfidence * 100}
-            onChange={(e) => onChange({ ...filters, minConfidence: parseInt(e.target.value) / 100 })}
+            min={0}
+            max={100}
+            value={Math.round(f.minConfidence * 100)}
+            onChange={(e) => setF({ ...f, minConfidence: Number(e.target.value) / 100 })}
             className="w-full"
           />
+          <div className="text-xs text-white/65 w-12">{Math.round(f.minConfidence * 100)}%</div>
         </div>
-      </div>
 
-      {/* Lane Filters */}
-      <div>
-        <label className="text-xs text-white/60 uppercase tracking-wider block mb-2">Lanes</label>
-        <div className="flex flex-wrap gap-2">
-          {lanes.map((lane) => (
-            <button
-              key={lane}
-              type="button"
-              onClick={() => {
-                const next = new Set(filters.lanes);
-                if (next.has(lane)) next.delete(lane);
-                else next.add(lane);
-                onChange({ ...filters, lanes: next });
-              }}
-              className={`px-3 py-1.5 rounded-lg border text-sm font-medium transition ${
-                filters.lanes.has(lane)
-                  ? "border-white/30 bg-white/10 text-white"
-                  : "border-white/10 bg-white/5 text-white/50 hover:bg-white/10"
-              }`}
-            >
-              {laneMeta[lane].label}
-            </button>
-          ))}
-        </div>
-      </div>
-
-      {/* State Filters */}
-      <div>
-        <label className="text-xs text-white/60 uppercase tracking-wider block mb-2">States</label>
-        <div className="flex flex-wrap gap-2">
-          {states.map((state) => (
-            <button
-              key={state}
-              type="button"
-              onClick={() => {
-                const next = new Set(filters.states);
-                if (next.has(state)) next.delete(state);
-                else next.add(state);
-                onChange({ ...filters, states: next });
-              }}
-              className={`px-3 py-1.5 rounded-lg border text-sm transition ${
-                filters.states.has(state)
-                  ? state === "AT_RISK"
-                    ? "border-red-500/50 bg-red-500/20 text-red-300"
-                    : state === "REALIZED"
-                    ? "border-emerald-500/50 bg-emerald-500/20 text-emerald-300"
-                    : "border-white/30 bg-white/10 text-white"
-                  : "border-white/10 bg-white/5 text-white/50 hover:bg-white/10"
-              }`}
-            >
-              {state.replace("_", " ")}
-            </button>
-          ))}
+        <div className="lg:col-span-3 flex items-center gap-2 justify-end">
+          <select
+            value={f.sortBy}
+            onChange={(e) => setSort(e.target.value as SortKey)}
+            className="rounded-xl bg-black/30 border border-white/10 px-3 py-2 text-sm text-white/90 outline-none focus:border-white/25"
+          >
+            <option value="score">Sort: Score</option>
+            <option value="amount">Sort: Amount</option>
+            <option value="confidence">Sort: Confidence</option>
+            <option value="updated">Sort: Updated</option>
+          </select>
+          <button
+            type="button"
+            onClick={flipDir}
+            className="px-3 py-2 rounded-xl border border-white/15 bg-white/5 hover:bg-white/10 transition text-sm"
+          >
+            {f.descending ? "Desc" : "Asc"}
+          </button>
+          <button
+            type="button"
+            onClick={() => setF(defaultFilters())}
+            className="px-3 py-2 rounded-xl border border-white/15 bg-white/5 hover:bg-white/10 transition text-sm"
+          >
+            Reset
+          </button>
         </div>
       </div>
     </div>
   );
 }
 
-function EventCard({ e, onEvidence }: { e: WarEvent; onEvidence: (e: WarEvent) => void }) {
+function EventCard({
+  e,
+  onEvidence,
+}: {
+  e: WarEvent;
+  onEvidence: (e: WarEvent) => void;
+}) {
   const [loading, setLoading] = useState(false);
+  const s = score(e);
 
-  async function handleAction(fn: () => Promise<any>, successMsg?: string) {
+  async function handleAction(fn: () => Promise<any>) {
     setLoading(true);
     try {
       await fn();
-      if (successMsg) alert(successMsg);
     } catch (err: any) {
-      alert(err.message || "Action failed");
+      // Error already shown by apiClient
     } finally {
       setLoading(false);
     }
   }
 
   return (
-    <div className="rounded-xl border border-white/10 bg-black/20 p-4 hover:bg-black/30 transition">
-      <div className="flex items-start justify-between gap-3">
-        <div className="flex-1">
-          <div className="text-sm text-white/90 font-medium">{e.title}</div>
-          {e.subtitle && <div className="text-xs text-white/60 mt-1">{e.subtitle}</div>}
-
-          <div className="text-xs text-white/45 mt-3 flex flex-wrap gap-2 items-center">
-            <span
-              className={`px-2 py-0.5 rounded ${
-                e.state === "AT_RISK"
-                  ? "bg-red-500/20 text-red-300"
-                  : e.state === "REALIZED"
-                  ? "bg-emerald-500/20 text-emerald-300"
-                  : e.state === "APPROVED"
-                  ? "bg-blue-500/20 text-blue-300"
-                  : "bg-white/10 text-white/70"
-              }`}
-            >
-              {e.state.replace("_", " ")}
-            </span>
-            <span>•</span>
-            <span>Conf. {(e.confidence * 100).toFixed(0)}%</span>
-            <span>•</span>
-            <span>Time {(e.timeSensitivity * 100).toFixed(0)}%</span>
-            <span>•</span>
-            <span>Score: {score(e).toFixed(0)}</span>
-            {e.owner && (
-              <>
-                <span>•</span>
-                <span>Owner: {e.owner}</span>
-              </>
-            )}
-            {(e.receipts?.length ?? 0) > 0 && (
-              <>
-                <span>•</span>
-                <span>{e.receipts?.length} receipt(s)</span>
-              </>
-            )}
+    <div className="rounded-xl border border-white/10 bg-black/20 p-4 transition hover:bg-black/15">
+      <div className="flex items-start justify-between gap-4">
+        <div className="min-w-0 flex-1">
+          <div className="text-sm text-white/90 font-medium truncate">{e.title}</div>
+          {e.subtitle ? <div className="text-xs text-white/60 mt-1 line-clamp-2">{e.subtitle}</div> : null}
+          <div className="text-xs text-white/55 mt-2">
+            {e.state.replace("_", " ")} • Owner {e.owner ?? "Unassigned"} • Conf {(e.confidence * 100).toFixed(0)}% • Score {s.toFixed(0)}
           </div>
         </div>
-
         <div className={`text-sm font-semibold whitespace-nowrap ${e.amount < 0 ? "text-red-400" : "text-white/90"}`}>
           {formatMoney(e.amount)}
         </div>
       </div>
 
       <div className="mt-3 flex flex-wrap gap-2">
-        <button
-          type="button"
+        <ActionButton
+          label="Assign"
           disabled={loading}
           onClick={() =>
             handleAction(async () => {
@@ -214,58 +196,40 @@ function EventCard({ e, onEvidence }: { e: WarEvent; onEvidence: (e: WarEvent) =
               if (owner) await assignOwner(e.id, owner);
             })
           }
-          className="px-3 py-1.5 rounded-lg border border-white/15 bg-white/5 hover:bg-white/10 transition text-xs disabled:opacity-50"
-        >
-          Assign
-        </button>
+        />
 
         {e.state === "IDENTIFIED" && (
-          <button
-            type="button"
+          <ActionButton
+            label="Approve"
             disabled={loading}
             onClick={() =>
               handleAction(async () => {
                 if (confirm("Approve this event?")) await approveEvent(e.id);
               })
             }
-            className="px-3 py-1.5 rounded-lg border border-white/15 bg-white/5 hover:bg-white/10 transition text-xs disabled:opacity-50"
-          >
-            Approve
-          </button>
+          />
         )}
 
         {e.state === "APPROVED" && (
-          <button
-            type="button"
+          <ActionButton
+            label="Close"
             disabled={loading}
             onClick={() =>
               handleAction(async () => {
                 if (confirm("Close and realize value?")) await closeEvent(e.id);
               })
             }
-            className="px-3 py-1.5 rounded-lg border border-white/15 bg-white/5 hover:bg-white/10 transition text-xs disabled:opacity-50"
-          >
-            Close
-          </button>
+          />
         )}
 
-        <button
-          type="button"
+        <ActionButton
+          label="Generate receipt"
           disabled={loading}
-          onClick={() => handleAction(async () => await generateReceipt(e.id), "Receipt generated")}
-          className="px-3 py-1.5 rounded-lg border border-white/15 bg-white/5 hover:bg-white/10 transition text-xs disabled:opacity-50"
-        >
-          Generate Receipt
-        </button>
+          onClick={() => handleAction(async () => await generateReceipt(e.id))}
+        />
 
         {(e.receipts?.length ?? 0) > 0 && (
-          <button
-            type="button"
-            onClick={() => onEvidence(e)}
-            className="px-3 py-1.5 rounded-lg bg-white/10 hover:bg-white/15 transition text-xs"
-          >
-            View Evidence ({e.receipts?.length})
-          </button>
+          <ActionButton label={`Evidence (${e.receipts?.length})`} intent="solid" onClick={() => onEvidence(e)} />
         )}
       </div>
     </div>
@@ -273,7 +237,7 @@ function EventCard({ e, onEvidence }: { e: WarEvent; onEvidence: (e: WarEvent) =
 }
 
 export function WarRoomV2() {
-  const { connected, lastUpdated, events, summaries, totals } = useWarRoomStream();
+  const { connected, lastUpdated, events, summaries, totals, ticker } = useWarRoomStream();
   const [filters, setFilters] = useState<WarRoomFilters>(defaultFilters());
   const [evidenceOpen, setEvidenceOpen] = useState<WarEvent | null>(null);
 
@@ -297,7 +261,11 @@ export function WarRoomV2() {
         </div>
         <div className="text-right">
           <div className="flex items-center justify-end gap-2 text-xs text-white/50 mb-1">
-            <div className={`w-2 h-2 rounded-full ${connected ? "bg-green-500 shadow-[0_0_8px_rgba(34,197,94,0.6)]" : "bg-red-500"}`} />
+            <div
+              className={`w-2 h-2 rounded-full ${
+                connected ? "bg-green-500 shadow-[0_0_8px_rgba(34,197,94,0.6)]" : "bg-red-500"
+              }`}
+            />
             {connected ? "Live Stream Active" : "Disconnected"}
           </div>
           {lastUpdated && <div className="text-xs text-white/40">Last update: {new Date(lastUpdated).toLocaleTimeString()}</div>}
@@ -305,7 +273,7 @@ export function WarRoomV2() {
       </div>
 
       {/* Ticker */}
-      <TickerMarquee items={[]} />
+      <TickerMarquee items={ticker} />
 
       {/* Totals */}
       <div className="mt-6 grid md:grid-cols-4 gap-4">
@@ -329,7 +297,7 @@ export function WarRoomV2() {
 
       {/* Filters */}
       <div className="mt-6">
-        <FilterBar filters={filters} onChange={setFilters} />
+        <FiltersBar f={filters} setF={setFilters} />
       </div>
 
       {/* Results */}
@@ -338,13 +306,6 @@ export function WarRoomV2() {
           <div className="text-lg font-semibold">
             Events ({filtered.length} of {events.length})
           </div>
-          <button
-            type="button"
-            onClick={() => setFilters(defaultFilters())}
-            className="px-3 py-1.5 rounded-lg border border-white/15 bg-white/5 hover:bg-white/10 transition text-xs"
-          >
-            Reset Filters
-          </button>
         </div>
 
         {filtered.length === 0 ? (
@@ -395,23 +356,11 @@ export function WarRoomV2() {
                   <line x1="10" y1="14" x2="21" y2="3"></line>
                 </svg>
               </div>
-              <div className="mt-3 grid grid-cols-2 gap-2 text-xs">
-                <div>
-                  <div className="text-white/50">Identified</div>
-                  <div className="text-white/80 font-medium">{formatMoney(s.identified)}</div>
-                </div>
-                <div>
-                  <div className="text-white/50">Approved</div>
-                  <div className="text-white/80 font-medium">{formatMoney(s.approved)}</div>
-                </div>
-                <div>
-                  <div className="text-white/50">Realized</div>
-                  <div className="text-emerald-400 font-medium">{formatMoney(s.realized)}</div>
-                </div>
-                <div>
-                  <div className="text-white/50">At Risk</div>
-                  <div className="text-red-400 font-medium">{formatMoney(s.atRisk)}</div>
-                </div>
+              <div className="mt-3 grid grid-cols-2 gap-2">
+                <SmallStat label="Identified" value={s.identified} />
+                <SmallStat label="Approved" value={s.approved} />
+                <SmallStat label="Realized" value={s.realized} />
+                <SmallStat label="At Risk" value={s.atRisk} />
               </div>
             </Link>
           );

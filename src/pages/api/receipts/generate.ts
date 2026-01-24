@@ -1,32 +1,28 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 import { attachReceipt } from "@/lib/warroom/redisStore";
-
-function fakeHash() {
-  return "0x" + Math.floor(Math.random() * 1e16).toString(16).padStart(16, "0");
-}
+import { enforce } from "@/lib/auth/enforce";
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   if (req.method !== "POST") {
-    return res.status(405).json({ error: "Method not allowed" });
+    return res.status(405).json({ ok: false, error: "Method not allowed" });
   }
 
   try {
-    const { eventId, title, actor } = req.body;
-    if (!eventId) {
-      return res.status(400).json({ error: "eventId required" });
+    const auth = await enforce("operator", req as any);
+    if (!auth.ok) {
+      return res.status(auth.status).json({ ok: false, error: auth.error });
     }
 
-    const receipt = { 
-      id: `rcpt-${Date.now()}`, 
-      title: title ?? "Generated evidence receipt", 
-      hash: fakeHash(),
-      freshness: new Date().toISOString()
+    const { eventId, title } = req.body;
+    const receipt = {
+      id: `rec-${Date.now()}`,
+      title: String(title),
+      hash: `hash-${Math.random().toString(16).slice(2)}`,
     };
-    
-    const event = await attachReceipt(eventId, receipt, actor);
 
-    return res.status(200).json({ ok: true, event, receipt });
+    const event = await attachReceipt(String(eventId), receipt, auth.user.email);
+    return res.json({ ok: true, event, receipt });
   } catch (e: any) {
-    return res.status(500).json({ ok: false, error: e?.message ?? "Unknown error" });
+    return res.status(400).json({ ok: false, error: e.message });
   }
 }

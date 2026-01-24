@@ -1,35 +1,27 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 import { approve } from "@/lib/warroom/redisStore";
-import { getRedis } from "@/lib/warroom/redis";
+import { enforce } from "@/lib/auth/enforce";
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   if (req.method !== "POST") {
-    return res.status(405).json({ error: "Method not allowed" });
+    return res.status(405).json({ ok: false, error: "Method not allowed" });
   }
 
   try {
-    const { eventId, actor } = req.body;
-    if (!eventId) {
-      return res.status(400).json({ error: "eventId required" });
+    const auth = await enforce("approver", req as any);
+    if (!auth.ok) {
+      return res.status(auth.status).json({ ok: false, error: auth.error });
     }
 
-    // Fetch event for policy check
-    const raw = await getRedis().get(`kiq:warroom:event:${eventId}`);
-    if (!raw) {
-      return res.status(404).json({ ok: false, error: "Event not found" });
-    }
-
-    const updated = await approve(eventId, actor);
-    return res.status(200).json({ ok: true, event: updated });
+    const { eventId } = req.body;
+    const event = await approve(String(eventId), auth.user.email);
+    return res.json({ ok: true, event });
   } catch (e: any) {
-    // Check if it's a policy error
-    if (e.message === "Policy check failed" && e.policyReasons) {
-      return res.status(400).json({ 
-        ok: false, 
-        error: "Policy check failed", 
-        reasons: e.policyReasons 
-      });
-    }
-    return res.status(500).json({ ok: false, error: e?.message ?? "Unknown error" });
+    const reasons = (e as any).policyReasons;
+    return res.status(400).json({
+      ok: false,
+      error: e.message,
+      policyReasons: reasons,
+    });
   }
 }

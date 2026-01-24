@@ -2,10 +2,7 @@ import type { NextApiRequest, NextApiResponse } from "next";
 import { PutObjectCommand } from "@aws-sdk/client-s3";
 import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
 import { r2Client, r2Bucket, r2PublicBaseUrl } from "@/lib/storage/r2";
-
-export const config = {
-  runtime: "nodejs",
-};
+import { enforce } from "@/lib/auth/enforce";
 
 function safeExt(filename: string) {
   const parts = filename.split(".");
@@ -27,10 +24,18 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   }
 
   try {
+    const auth = await enforce("operator", req as any);
+    if (!auth.ok) {
+      return res.status(auth.status).json({ ok: false, error: auth.error });
+    }
+
     const { eventId, filename, contentType } = req.body;
 
     if (!eventId || !filename || !contentType) {
-      return res.status(400).json({ ok: false, error: "eventId, filename, contentType required" });
+      return res.status(400).json({ 
+        ok: false, 
+        error: "eventId, filename, contentType required" 
+      });
     }
 
     const key = makeKey(String(eventId), String(filename));
@@ -47,7 +52,6 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
     return res.json({ ok: true, uploadUrl, publicUrl, key });
   } catch (e: any) {
-    console.error("Presign error:", e);
     return res.status(500).json({ ok: false, error: e?.message ?? "Unknown error" });
   }
 }

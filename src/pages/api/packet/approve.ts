@@ -1,5 +1,6 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 import { approvePacket } from "@/lib/warroom/redisStore";
+import { enforce } from "@/lib/auth/enforce";
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   if (req.method !== "POST") {
@@ -7,17 +8,27 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   }
 
   try {
-    const { eventId, actor, role } = req.body;
-
-    if (!eventId || !actor || !role) {
-      return res.status(400).json({ ok: false, error: "eventId, actor, role required" });
+    // Enforce approver role or higher
+    const auth = await enforce("approver", req as any);
+    if (!auth.ok) {
+      return res.status(auth.status).json({ ok: false, error: auth.error });
     }
 
-    const event = await approvePacket(String(eventId), String(actor), String(role));
+    const { eventId } = req.body;
+    if (!eventId) {
+      return res.status(400).json({ ok: false, error: "eventId required" });
+    }
+
+    // Use authenticated user info for audit trail
+    const event = await approvePacket(
+      String(eventId),
+      auth.user.email,
+      auth.user.role
+    );
+
     return res.json({ ok: true, event });
   } catch (e: any) {
-    const status = e.policyReasons ? 400 : 500;
-    return res.status(status).json({
+    return res.status(400).json({
       ok: false,
       error: e.message,
       policyReasons: e.policyReasons || undefined,

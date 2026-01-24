@@ -1,20 +1,22 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 import { assign } from "@/lib/warroom/redisStore";
+import { enforce } from "@/lib/auth/enforce";
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   if (req.method !== "POST") {
-    return res.status(405).json({ error: "Method not allowed" });
+    return res.status(405).json({ ok: false, error: "Method not allowed" });
   }
 
   try {
-    const { eventId, owner, actor } = req.body;
-    if (!eventId || !owner) {
-      return res.status(400).json({ error: "eventId and owner required" });
+    const auth = await enforce("operator", req as any);
+    if (!auth.ok) {
+      return res.status(auth.status).json({ ok: false, error: auth.error });
     }
 
-    const updated = await assign(eventId, owner, actor);
-    return res.status(200).json({ ok: true, event: updated });
+    const { eventId, owner } = req.body;
+    const event = await assign(String(eventId), String(owner), auth.user.email);
+    return res.json({ ok: true, event });
   } catch (e: any) {
-    return res.status(500).json({ ok: false, error: e?.message ?? "Unknown error" });
+    return res.status(400).json({ ok: false, error: e.message });
   }
 }

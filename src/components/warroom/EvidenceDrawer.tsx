@@ -109,6 +109,46 @@ export default function EvidenceDrawer({
               )}
             </div>
 
+            {openEvent.notes && (openEvent.notes.notes || openEvent.notes.attachments?.length) ? (
+              <div className="mt-5">
+                <div className="text-xs uppercase tracking-wider text-white/55 mb-2">Decision Notes</div>
+                
+                {openEvent.notes.notes ? (
+                  <div className="rounded-xl border border-white/10 bg-white/5 p-4 mb-3">
+                    <div className="text-sm text-white/80 whitespace-pre-wrap">{openEvent.notes.notes}</div>
+                  </div>
+                ) : null}
+
+                {openEvent.notes.attachments?.length ? (
+                  <>
+                    <div className="text-xs uppercase tracking-wider text-white/55 mb-2 mt-4">
+                      Attachments ({openEvent.notes.attachments.length})
+                    </div>
+                    <div className="space-y-2">
+                      {openEvent.notes.attachments.map((att) => (
+                        <div key={att.id} className="rounded-xl border border-white/10 bg-white/5 p-3">
+                          <div className="text-sm font-medium text-white/90">{att.title}</div>
+                          <div className="mt-1 text-xs text-white/60 truncate">
+                            <a 
+                              href={att.url} 
+                              target="_blank" 
+                              rel="noopener noreferrer"
+                              className="hover:text-white/90 transition"
+                            >
+                              {att.url}
+                            </a>
+                          </div>
+                          {att.hash ? (
+                            <div className="mt-1 text-xs text-white/50 font-mono">Hash: {att.hash}</div>
+                          ) : null}
+                        </div>
+                      ))}
+                    </div>
+                  </>
+                ) : null}
+              </div>
+            ) : null}
+
             <div className="mt-6 flex flex-wrap gap-2">
               <button
                 type="button"

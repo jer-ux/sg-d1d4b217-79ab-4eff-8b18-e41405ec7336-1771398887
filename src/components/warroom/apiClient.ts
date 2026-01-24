@@ -32,6 +32,33 @@ export async function closeEvent(eventId: string) {
   return postJson<{ event: any }>("/api/ledger/close", { eventId });
 }
 
-export async function generateReceipt(eventId: string, title?: string) {
-  return postJson<{ event: any; receipt: any }>("/api/receipts/generate", { eventId, title });
+export async function generateReceipt(eventId: string, title: string): Promise<ApiResult<any>> {
+  const r = await fetch("/api/receipts/generate", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ eventId, title }),
+  });
+  return r.json();
+}
+
+export async function updateNotes(eventId: string, notes: string, actor?: string): Promise<ApiResult<any>> {
+  const r = await fetch("/api/war-room/notes/update", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ eventId, notes: { notes }, actor }),
+  });
+  return r.json();
+}
+
+export async function addAttachment(
+  eventId: string,
+  attachment: { title: string; url: string; hash?: string },
+  actor?: string
+): Promise<ApiResult<any>> {
+  const r = await fetch("/api/war-room/notes/attach", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ eventId, attachment, actor }),
+  });
+  return r.json();
 }

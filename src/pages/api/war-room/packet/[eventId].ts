@@ -110,6 +110,33 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   page.drawLine({ start: { x: left, y }, end: { x: 564, y }, thickness: 1, color: rgb(0.2, 0.2, 0.22) });
   y -= 18;
 
+  const notes = event.notes;
+
+  page.drawText("Decision Notes", { x: left, y, size: 12, font: bold, color: rgb(0.95, 0.95, 0.95) });
+  y -= 16;
+
+  const noteText = String(notes?.notes ?? "").trim();
+  drawPara(noteText ? noteText : "No decision notes recorded.");
+  y -= 8;
+
+  page.drawText("Attachments", { x: left, y, size: 12, font: bold, color: rgb(0.95, 0.95, 0.95) });
+  y -= 16;
+
+  const atts = notes?.attachments ?? [];
+  if (!atts.length) {
+    drawPara("No attachments recorded.");
+  } else {
+    for (const a of atts.slice(0, 10)) {
+      const line = `• ${safe(a.title)} — ${safe(a.url)}${a.hash ? ` (hash ${safe(a.hash)})` : ""}`;
+      drawPara(line);
+      if (y < 90) break;
+    }
+  }
+
+  y -= 10;
+  page.drawLine({ start: { x: left, y }, end: { x: 564, y }, thickness: 1, color: rgb(0.2, 0.2, 0.22) });
+  y -= 18;
+
   page.drawText("Audit Trail (latest)", { x: left, y, size: 12, font: bold, color: rgb(0.95, 0.95, 0.95) });
   y -= 16;
 
@@ -132,7 +159,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         });
         y -= 11;
       }
-      if (y < 90) break;
+      if (y < 60) break;
     }
   }
 

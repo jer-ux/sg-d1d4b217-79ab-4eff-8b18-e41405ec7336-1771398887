@@ -16,15 +16,31 @@ export type EvidenceReceipt = {
 export type WarEvent = {
   id: string;
   lane: LaneKey;
+  state: LedgerState;
   title: string;
   subtitle?: string;
-  amount: number; // + value, - risk/cost
-  confidence: number; // 0..1
-  timeSensitivity: number; // 0..1
-  state: LedgerState;
+  amount: number;
+  confidence: number;
+  timeSensitivity?: "low" | "medium" | "high";
   owner?: string;
   receipts?: EvidenceReceipt[];
-  updatedAt: string; // ISO
+  notes?: EventNotes;
+  createdAt: string;
+  updatedAt: string;
+};
+
+export type EventNotes = {
+  notes?: string;
+  attachments?: Attachment[];
+};
+
+export type Attachment = {
+  id: string;
+  title: string;
+  url: string;
+  hash?: string;
+  addedAt: string;
+  addedBy?: string;
 };
 
 export type LaneSummary = {

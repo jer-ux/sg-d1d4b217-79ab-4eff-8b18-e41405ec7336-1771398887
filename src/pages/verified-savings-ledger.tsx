@@ -1,59 +1,58 @@
 import { SEO } from "@/components/SEO";
-import { Container, PageHero, CardGrid } from "@/components/Blocks";
+import { Container, PageHero, CardGrid, CTA, ProofBar } from "@/components/Blocks";
 
-export default function ValueLedgerPage() {
+export default function VerifiedSavingsLedger() {
   return (
     <>
       <SEO
         title="Verified Savings Ledger — Kincaid IQ"
-        description="CFO-grade value tracking with evidence receipts, controls monitoring, and variance analysis."
+        description="Stop arguing about 'opportunities.' Start reconciling an auditable value ledger with receipts, owners, and board-ready reporting."
       />
       <Container>
         <PageHero
           title="Verified Savings Ledger"
-          subtitle="Auditable value tracking with controls monitoring and variance analysis built in. Every dollar tracked, every decision verified."
+          subtitle="Stop arguing about 'opportunities.' Start reconciling an auditable value ledger with receipts, owners, and board-ready reporting."
         />
 
-        <section className="mb-16">
-          <h2 className="text-2xl font-semibold mb-6">Ledger Features</h2>
-          <CardGrid
-            items={[
-              {
-                title: "Evidence-Based Entries",
-                body: "Every ledger entry backed by immutable evidence receipts with full audit trails.",
-              },
-              {
-                title: "Controls Monitoring",
-                body: "Real-time oversight of financial and operational controls with automated variance detection.",
-              },
-              {
-                title: "Variance Analysis",
-                body: "Identify deviations from expected outcomes and trace them to root causes instantly.",
-              },
-              {
-                title: "CFO-Grade Reporting",
-                body: "Reports that meet the standards of CFOs, auditors, and boards of directors.",
-              },
-              {
-                title: "Actuarial Metrics",
-                body: "Actuarial-grade metrics for portfolio value verification and risk assessment.",
-              },
-              {
-                title: "Integration Ready",
-                body: "Native integration with Snowflake, Databricks, ServiceNow, and your existing stack.",
-              },
-            ]}
-          />
-        </section>
+        <div className="mb-8">
+          <ProofBar />
+        </div>
 
-        <section className="mb-16">
-          <div className="k-panel p-8">
-            <h2 className="text-2xl font-semibold mb-4">Make Value Provable</h2>
-            <div className="text-white/70">
-              The Verified Savings Ledger turns cost and operational opacity into an auditable record with evidence receipts, controls, and action workflows that drive verified outcomes.
+        <CardGrid
+          items={[
+            { title: "Ledger States", body: "Identified → Approved → Realized → At-risk. Each state change is logged, attributable, and supported by evidence receipts." },
+            { title: "Evidence Receipts", body: "Source artifacts, lineage, tests, transform versions, and confidence—so the CFO can click into proof, not slides." },
+            { title: "Journal-Entry Thinking", body: "Management-accounting entries with clear recognition logic and reconciliation cadence—finance-native behavior, not dashboard theater." },
+          ]}
+        />
+
+        <div className="mt-8 grid md:grid-cols-2 gap-4">
+          <div className="k-panel p-6">
+            <div className="font-semibold">What a CFO sees</div>
+            <div className="text-sm text-white/70 mt-2">
+              A controlled register of economic claims: owners, due dates, receipts, aging/decay, and realized outcomes tied to action.
             </div>
+            <ul className="mt-4 text-sm text-white/70 list-disc pl-5 space-y-2">
+              <li>Reconciliation report by category and counterparty</li>
+              <li>Exceptions queue (blocked approvals, missing receipts, stale disputes)</li>
+              <li>Audit trail of every change (append-only events)</li>
+            </ul>
           </div>
-        </section>
+
+          <div className="k-panel p-6">
+            <div className="font-semibold">What capital sees</div>
+            <div className="text-sm text-white/70 mt-2">
+              Reduced uncertainty: evidence packs for diligence, underwriteable value, and repeatable realization discipline post-close.
+            </div>
+            <ul className="mt-4 text-sm text-white/70 list-disc pl-5 space-y-2">
+              <li>Diligence-ready "Proof Packs"</li>
+              <li>Repeatable post-close value realization</li>
+              <li>Governance posture that survives scrutiny</li>
+            </ul>
+          </div>
+        </div>
+
+        <CTA />
       </Container>
     </>
   );

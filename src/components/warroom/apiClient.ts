@@ -69,3 +69,14 @@ export async function approvePacket(eventId: string) {
 export async function closePacket(eventId: string) {
   return postJson<{ event: any }>("/api/packet/close", { eventId });
 }
+
+export async function bulkSubmitPackets(lane: string, max = 50) {
+  return postJson<{
+    ok: boolean;
+    lane: string;
+    attempted: number;
+    okCount: number;
+    failCount: number;
+    results: Array<{ eventId: string; ok: boolean; error?: string; policyReasons?: string[] }>;
+  }>("/api/packet/bulk-submit", { lane, max });
+}

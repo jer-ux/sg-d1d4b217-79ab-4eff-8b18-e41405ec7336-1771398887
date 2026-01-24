@@ -11,6 +11,8 @@ import EvidenceDrawer from "@/components/warroom/EvidenceDrawer";
 import { AuditTicker } from "@/components/warroom/AuditTicker";
 import { applyFilters, defaultFilters, formatMoney, score, type SortKey, type WarRoomFilters } from "@/components/warroom/filters";
 import { approveEvent, assignOwner, closeEvent, generateReceipt } from "@/components/warroom/apiClient";
+import { useToast } from "@/hooks/use-toast";
+import CommandPalette from "@/components/CommandPalette";
 
 const laneMeta: Record<LaneKey, { label: string; headline: string }> = {
   value: { label: "Verified Savings Ledger", headline: "Identified → Approved → Realized with receipts and owners." },
@@ -270,7 +272,8 @@ export default function WarRoomV2() {
           </div>
 
           <div className="flex-1 lg:ml-6">
-            <TickerMarquee items={ticker} />
+            <TickerMarquee events={ticker} />
+            <CommandPalette events={ticker as any} onOpenEvidence={setEvidenceOpen} />
             <AuditTicker />
           </div>
         </div>

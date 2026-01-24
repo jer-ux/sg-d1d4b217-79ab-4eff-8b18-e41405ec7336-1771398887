@@ -17,10 +17,10 @@ export default function Home() {
           <div className="pt-14 pb-10 grid lg:grid-cols-2 gap-8 items-center">
             <div>
               <div className="text-5xl font-semibold tracking-tight">
-                Decision-grade value systems for capital, operators, and advisors.
+                <span className="bg-gradient-to-r from-blue-400 to-cyan-300 bg-clip-text text-transparent">Decision-grade</span> value systems for capital, operators, and advisors.
               </div>
               <div className="mt-5 text-white/70 text-lg">
-                Evidence receipts, CFO-grade value accounting, and marketplace-native delivery across Snowflake, Databricks, and ServiceNow.
+                <span className="text-blue-300">Evidence receipts</span>, <span className="text-cyan-300">CFO-grade value accounting</span>, and <span className="text-blue-200">marketplace-native delivery</span> across Snowflake, Databricks, and ServiceNow.
               </div>
               <div className="mt-6">
                 <ProofBar />

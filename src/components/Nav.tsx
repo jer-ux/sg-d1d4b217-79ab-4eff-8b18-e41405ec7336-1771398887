@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { useRouter } from "next/router";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { megaNav, primaryCtas, NavDropdown, NavLink } from "@/components/site";
 
@@ -110,7 +110,7 @@ function DropdownPanel({ item }: { item: NavDropdown }) {
 }
 
 export function Nav() {
-  const pathname = usePathname();
+  const router = useRouter();
 
   const [open, setOpen] = useState<string | null>(null);
   const [mobileOpen, setMobileOpen] = useState(false);
@@ -134,7 +134,7 @@ export function Nav() {
   useEffect(() => {
     setOpen(null);
     setMobileOpen(false);
-  }, [pathname]);
+  }, [router.pathname]);
 
   // ESC closes
   useEffect(() => {

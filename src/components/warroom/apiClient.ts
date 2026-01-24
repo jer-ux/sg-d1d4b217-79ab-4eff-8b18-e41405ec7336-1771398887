@@ -1,44 +1,37 @@
-import { toast } from "sonner";
+export type ApiFail = { ok: false; error: string; policyReasons?: string[] };
+export type ApiOk<T> = { ok: true; data: T };
+export type ApiResult<T> = ApiOk<T> | ApiFail;
 
-async function postJson(url: string, body: any) {
+async function postJson<T>(url: string, body: any): Promise<ApiResult<T>> {
   const res = await fetch(url, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(body),
   });
 
-  const json = await res.json();
-
-  if (!res.ok || !json.ok) {
-    const reasons = json.policyReasons ?? [];
-    const msg = reasons.length
-      ? `Policy check failed:\n${reasons.map((r: string) => `• ${r}`).join("\n")}`
-      : json.error ?? "Request failed";
-    
-    toast.error(msg);
-    return { ok: false, error: json.error, policyReasons: reasons };
+  const j = await res.json().catch(() => ({}));
+  if (!res.ok || !j.ok) {
+    return {
+      ok: false,
+      error: j.error || "Request failed",
+      policyReasons: j.policyReasons || undefined,
+    };
   }
-
-  toast.success("Action completed successfully");
-  return { ok: true, data: json.data };
+  return { ok: true, data: j as T };
 }
 
 export async function assignOwner(eventId: string, owner: string) {
-  return postJson("/api/ledger/assign", { eventId, owner });
+  return postJson<{ event: any }>("/api/ledger/assign", { eventId, owner });
 }
 
 export async function approveEvent(eventId: string) {
-  return postJson("/api/ledger/approve", { eventId });
+  return postJson<{ event: any }>("/api/ledger/approve", { eventId });
 }
 
 export async function closeEvent(eventId: string) {
-  return postJson("/api/ledger/close", { eventId });
+  return postJson<{ event: any }>("/api/ledger/close", { eventId });
 }
 
 export async function generateReceipt(eventId: string, title?: string) {
-  return postJson("/api/receipts/generate", { eventId, title: title ?? "Generated evidence receipt" });
-}
-
-export async function attachReceipt(eventId: string, receipt: { id: string; title: string; url?: string; freshness?: string; hash?: string }) {
-  return postJson("/api/ledger/attach-receipt", { eventId, receipt });
+  return postJson<{ event: any; receipt: any }>("/api/receipts/generate", { eventId, title });
 }

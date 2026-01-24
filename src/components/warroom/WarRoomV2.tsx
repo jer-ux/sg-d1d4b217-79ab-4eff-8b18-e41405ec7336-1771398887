@@ -65,13 +65,21 @@ function ActionButton({
 function FiltersBar({ f, setF }: { f: WarRoomFilters; setF: (next: WarRoomFilters) => void }) {
   const toggleLane = (lane: LaneKey) => {
     const next = new Set(f.lanes);
-    next.has(lane) ? next.delete(lane) : next.add(lane);
+    if (next.has(lane)) {
+      next.delete(lane);
+    } else {
+      next.add(lane);
+    }
     setF({ ...f, lanes: next });
   };
 
   const toggleState = (st: LedgerState) => {
     const next = new Set(f.states);
-    next.has(st) ? next.delete(st) : next.add(st);
+    if (next.has(st)) {
+      next.delete(st);
+    } else {
+      next.add(st);
+    }
     setF({ ...f, states: next });
   };
 

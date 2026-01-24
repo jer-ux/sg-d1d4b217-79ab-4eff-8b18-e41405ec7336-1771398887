@@ -1,4 +1,5 @@
 import { NextRequest } from "next/server";
+import type { NextApiRequest } from "next";
 
 export type Role = "operator" | "approver" | "admin" | "viewer";
 
@@ -20,17 +21,36 @@ export type EnforceResult =
  */
 export async function enforce(
   requiredRole: Role | Role[],
-  req?: Request | NextRequest
+  req?: Request | NextRequest | NextApiRequest
 ): Promise<EnforceResult> {
   // Development mode: check headers for demo purposes
   if (process.env.NODE_ENV === "development" || process.env.KIQ_AUTH_MODE === "dev") {
-    const userId = req?.headers.get("x-kiq-user-id") || process.env.KIQ_DEFAULT_USER_ID || "dev-user";
-    const userEmail = req?.headers.get("x-kiq-user-email") || process.env.KIQ_DEFAULT_USER_EMAIL || "dev@kiq.local";
-    const userRole = (req?.headers.get("x-kiq-user-role") || process.env.KIQ_DEFAULT_USER_ROLE || "admin") as Role;
+    // Handle NextApiRequest (Pages Router)
+    let userId: string | null = null;
+    let userEmail: string | null = null;
+    let userRole: string | null = null;
+
+    if (req && "headers" in req) {
+      if (typeof req.headers.get === "function") {
+        // NextRequest or Request
+        userId = req.headers.get("x-kiq-user-id");
+        userEmail = req.headers.get("x-kiq-user-email");
+        userRole = req.headers.get("x-kiq-user-role");
+      } else {
+        // NextApiRequest
+        userId = req.headers["x-kiq-user-id"] as string | undefined || null;
+        userEmail = req.headers["x-kiq-user-email"] as string | undefined || null;
+        userRole = req.headers["x-kiq-user-role"] as string | undefined || null;
+      }
+    }
+
+    userId = userId || process.env.KIQ_DEFAULT_USER_ID || "dev-user";
+    userEmail = userEmail || process.env.KIQ_DEFAULT_USER_EMAIL || "dev@kiq.local";
+    userRole = (userRole || process.env.KIQ_DEFAULT_USER_ROLE || "admin") as Role;
 
     // Check if user has required role
     const required = Array.isArray(requiredRole) ? requiredRole : [requiredRole];
-    if (!hasRole(userRole, required)) {
+    if (!hasRole(userRole as Role, required)) {
       return {
         ok: false,
         error: `Insufficient permissions. Required: ${required.join(" or ")}`,
@@ -40,12 +60,21 @@ export async function enforce(
 
     return {
       ok: true,
-      user: { sub: userId, email: userEmail, role: userRole },
+      user: { sub: userId, email: userEmail, role: userRole as Role },
     };
   }
 
   // Production mode: verify JWT or session
-  const authHeader = req?.headers.get("authorization");
+  let authHeader: string | null = null;
+
+  if (req && "headers" in req) {
+    if (typeof req.headers.get === "function") {
+      authHeader = req.headers.get("authorization");
+    } else {
+      authHeader = (req.headers["authorization"] as string | undefined) || null;
+    }
+  }
+
   if (!authHeader || !authHeader.startsWith("Bearer ")) {
     return {
       ok: false,

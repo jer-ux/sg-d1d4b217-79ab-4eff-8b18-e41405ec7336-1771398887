@@ -1,5 +1,6 @@
 import { SEO } from "@/components/SEO";
 import { Container, PageHero, CardGrid, CTA, ProofBar } from "@/components/Blocks";
+import { Hero3D } from "@/components/Hero3D";
 
 export default function PlatformPage() {
   return (
@@ -13,6 +14,10 @@ export default function PlatformPage() {
           title="Kincaid IQ Platform"
           subtitle="A controls-first operating system for converting enterprise opacity into verified value—built on evidence receipts, a CFO-grade ledger, and action workflows."
         />
+
+        <div className="mb-8">
+          <Hero3D />
+        </div>
 
         <div className="mb-8">
           <ProofBar />

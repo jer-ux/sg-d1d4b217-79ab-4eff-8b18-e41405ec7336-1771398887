@@ -1,6 +1,7 @@
 import { SEO } from "@/components/SEO";
 import Link from "next/link";
 import { Container, PageHero, CardGrid, CTA, ProofBar } from "@/components/Blocks";
+import { Hero3D } from "@/components/Hero3D";
 
 function MarketplaceTile({ title, body, href }: { title: string; body: string; href: string }) {
   return (
@@ -28,6 +29,10 @@ export default function Marketplace() {
           title="Marketplace Practice"
           subtitle="Build once. Distribute through Snowflake, Databricks, and ServiceNow-aligned delivery motions—high trust, low delivery drag."
         />
+
+        <div className="mb-8">
+          <Hero3D />
+        </div>
 
         <div className="mb-8">
           <ProofBar />

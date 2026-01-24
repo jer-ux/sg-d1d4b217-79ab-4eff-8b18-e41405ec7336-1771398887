@@ -1,6 +1,7 @@
 import { SEO } from "@/components/SEO";
 import Link from "next/link";
 import { Container, PageHero, CardGrid, CTA, ProofBar } from "@/components/Blocks";
+import { Hero3D } from "@/components/Hero3D";
 
 export default function AgenticTransformation() {
   return (
@@ -14,6 +15,10 @@ export default function AgenticTransformation() {
           title="AI Agentic Transformation"
           subtitle="Agent deployment that survives governance. We analyze operating and sales systems, deploy controlled agent workflows, and measure realized outcomes."
         />
+
+        <div className="mb-8">
+          <Hero3D />
+        </div>
 
         <div className="mb-8">
           <ProofBar />

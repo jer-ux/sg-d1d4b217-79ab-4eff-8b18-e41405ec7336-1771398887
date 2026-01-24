@@ -1,5 +1,6 @@
 import { SEO } from "@/components/SEO";
 import { Container, PageHero, CardGrid, CTA, ProofBar } from "@/components/Blocks";
+import { Hero3D } from "@/components/Hero3D";
 
 export default function VerifiedSavingsLedger() {
   return (
@@ -13,6 +14,10 @@ export default function VerifiedSavingsLedger() {
           title="Verified Savings Ledger"
           subtitle="Stop arguing about 'opportunities.' Start reconciling an auditable value ledger with receipts, owners, and board-ready reporting."
         />
+
+        <div className="mb-8">
+          <Hero3D />
+        </div>
 
         <div className="mb-8">
           <ProofBar />

@@ -14,7 +14,7 @@ Snowflake Tables → CDC Procedure → External Function → Vercel API → Redi
 - ✅ Delivery idempotency (hash-based deduplication)
 - ✅ Automated scheduling (runs every 5 minutes)
 - ✅ Delivery audit log (track all API calls)
-- ✅ Token authentication (secure API access)
+- ✅ Secrets management (secure token storage)
 
 ---
 
@@ -71,138 +71,195 @@ CREATE OR REPLACE NETWORK RULE KIQ_VERCEL_API_RULE
   VALUE_LIST = ('your-domain.vercel.app:443');  -- Replace with your actual domain
 
 -- Create external access integration
-CREATE OR REPLACE EXTERNAL ACCESS INTEGRATION KIQ_VERCEL_INTEGRATION
+CREATE OR REPLACE EXTERNAL ACCESS INTEGRATION KIQ_VERCEL_EAI
   ALLOWED_NETWORK_RULES = (KIQ_VERCEL_API_RULE)
   ENABLED = TRUE;
 ```
 
 ---
 
-## Step 3: Create External Function
+## Step 3: Create Secret for Token Management
 
 ```sql
--- External function that calls War Room ingest API
-CREATE OR REPLACE EXTERNAL FUNCTION KIQ.DELIVER_TO_WARROOM(payload VARIANT)
-  RETURNS VARIANT
-  API_INTEGRATION = KIQ_VERCEL_INTEGRATION
-  HEADERS = (
-    'Content-Type' = 'application/json',
-    'x-kiq-ingest-token' = '<YOUR_KIQ_INGEST_TOKEN>'  -- Replace with your actual token
-  )
-  MAX_BATCH_ROWS = 50                    -- Send up to 50 events per HTTP call
-  AS 'https://your-domain.vercel.app/api/war-room/ingest';  -- Replace with your actual domain
+-- Store ingest token as Snowflake secret (run as ACCOUNTADMIN)
+USE ROLE ACCOUNTADMIN;
+
+CREATE OR REPLACE SECRET KIQ_INGEST_TOKEN_SECRET
+  TYPE = GENERIC_STRING
+  SECRET_STRING = 'YOUR_LONG_RANDOM_TOKEN';  -- Replace with token from: openssl rand -hex 32
+
+-- Grant usage to service role
+GRANT USAGE ON SECRET KIQ_INGEST_TOKEN_SECRET TO ROLE KIQ_SERVICE_ROLE;
 ```
 
-**Important:** Replace `<YOUR_KIQ_INGEST_TOKEN>` with the value from your `.env.local`:
+**Generate Secure Token:**
 ```bash
-# Generate a secure token
+# Generate 64-character token
 openssl rand -hex 32
 
-# Add to .env.local
-KIQ_INGEST_TOKEN=your-generated-token-here
+# Add to both Snowflake (above) and Vercel (.env.local)
+KIQ_INGEST_TOKEN=your-generated-token
 ```
 
 ---
 
 ## Step 4: Create CDC Stored Procedure
 
+This Python procedure implements change-data-capture logic with batching, secrets management, and comprehensive error handling.
+
 ```sql
-CREATE OR REPLACE PROCEDURE KIQ.SYNC_WARROOM_EVENTS()
-RETURNS STRING
-LANGUAGE SQL
+CREATE OR REPLACE PROCEDURE KIQ.PUSH_WARROOM_EVENTS()
+RETURNS VARIANT
+LANGUAGE PYTHON
+RUNTIME_VERSION = 3.11
+PACKAGES = ('requests')
+HANDLER = 'run'
+EXTERNAL_ACCESS_INTEGRATIONS = (KIQ_VERCEL_EAI)
+SECRETS = ('INGEST_TOKEN' = KIQ_INGEST_TOKEN_SECRET)
 AS
 $$
-DECLARE
-  rows_delivered INT DEFAULT 0;
-  batch_size INT DEFAULT 50;
-  current_hash STRING;
-  payload VARIANT;
-  response VARIANT;
-BEGIN
-  -- Find events that have changed since last delivery
-  FOR event_record IN (
-    SELECT
-      EVENT_ID,
-      LANE,
-      TITLE,
-      SUBTITLE,
-      AMOUNT,
-      CONFIDENCE,
-      TIME_SENSITIVITY,
-      LEDGER_STATE AS state,
-      OWNER,
-      UPDATED_AT,
-      SOURCE_SYSTEM,
-      SOURCE_REF,
-      RECEIPTS_JSON,
-      DELIVERY_HASH
-    FROM KIQ.WARROOM_EVENTS
-    WHERE
-      -- Event has been updated since last delivery
-      (LAST_DELIVERED_AT IS NULL OR UPDATED_AT > LAST_DELIVERED_AT)
-      
-      -- Only deliver "hot" events (skip old stale data)
-      AND UPDATED_AT > DATEADD(day, -30, CURRENT_TIMESTAMP())
-    
-    ORDER BY UPDATED_AT DESC
-    LIMIT :batch_size
-  ) DO
-    -- Calculate hash of current event state
-    SET current_hash = SHA2(TO_JSON(event_record), 256);
-    
-    -- Skip if hash unchanged (idempotency check)
-    IF (event_record.DELIVERY_HASH = current_hash) THEN
-      CONTINUE;
-    END IF;
-    
-    -- Build payload
-    SET payload = OBJECT_CONSTRUCT(
-      'id', event_record.EVENT_ID,
-      'lane', event_record.LANE,
-      'title', event_record.TITLE,
-      'subtitle', event_record.SUBTITLE,
-      'amount', event_record.AMOUNT,
-      'confidence', event_record.CONFIDENCE,
-      'timeSensitivity', event_record.TIME_SENSITIVITY,
-      'state', event_record.state,
-      'owner', event_record.OWNER,
-      'updatedAt', event_record.UPDATED_AT,
-      'sourceSystem', event_record.SOURCE_SYSTEM,
-      'sourceRef', event_record.SOURCE_REF,
-      'receipts', event_record.RECEIPTS_JSON
-    );
-    
-    -- Call external function (delivers to War Room API)
-    SET response = KIQ.DELIVER_TO_WARROOM(payload);
-    
-    -- Update delivery tracking
-    UPDATE KIQ.WARROOM_EVENTS
-    SET
-      LAST_DELIVERED_AT = CURRENT_TIMESTAMP(),
-      DELIVERY_HASH = :current_hash
-    WHERE EVENT_ID = event_record.EVENT_ID;
-    
-    -- Log delivery
-    INSERT INTO KIQ.WARROOM_DELIVERY_LOG (
-      EVENT_ID,
-      DELIVERY_HASH,
-      DELIVERED_AT,
-      HTTP_STATUS,
-      RESPONSE_SNIPPET
-    ) VALUES (
-      event_record.EVENT_ID,
-      :current_hash,
-      CURRENT_TIMESTAMP(),
-      response:statusCode::NUMBER,
-      SUBSTR(response:body::STRING, 1, 500)
-    );
-    
-    SET rows_delivered = rows_delivered + 1;
-  END FOR;
-  
-  RETURN 'Delivered ' || rows_delivered || ' events to War Room';
-END;
+import json
+import hashlib
+import requests
+from datetime import datetime, timezone
+
+def _iso_now():
+    return datetime.now(timezone.utc).isoformat().replace("+00:00","Z")
+
+def _hash_payload(payload: dict) -> str:
+    """Hash the payload to detect meaningful changes"""
+    s = json.dumps(payload, sort_keys=True, separators=(",",":")).encode("utf-8")
+    return hashlib.sha256(s).hexdigest()
+
+def run(session):
+    # Configure
+    endpoint = "https://your-domain.vercel.app/api/war-room/ingest"  # UPDATE THIS
+    token = session.get_secret("INGEST_TOKEN")
+    batch_size = 50
+
+    # Pull candidates: never delivered OR updated after last delivered
+    rows = session.sql("""
+        SELECT
+          EVENT_ID, LANE, TITLE, SUBTITLE, AMOUNT, CONFIDENCE, TIME_SENSITIVITY,
+          LEDGER_STATE, OWNER, UPDATED_AT, SOURCE_SYSTEM, SOURCE_REF, RECEIPTS_JSON,
+          LAST_DELIVERED_AT, DELIVERY_HASH
+        FROM KIQ.WARROOM_EVENTS
+        WHERE LAST_DELIVERED_AT IS NULL
+           OR UPDATED_AT > LAST_DELIVERED_AT
+        ORDER BY UPDATED_AT DESC
+        LIMIT 500
+    """).collect()
+
+    events_to_send = []
+    meta = []
+
+    # Build payloads and check if hash changed
+    for r in rows:
+        payload = {
+            "id": r["EVENT_ID"],
+            "lane": r["LANE"],
+            "title": r["TITLE"],
+            "subtitle": r["SUBTITLE"],
+            "amount": float(r["AMOUNT"]) if r["AMOUNT"] is not None else 0.0,
+            "confidence": float(r["CONFIDENCE"]) if r["CONFIDENCE"] is not None else 0.0,
+            "timeSensitivity": float(r["TIME_SENSITIVITY"]) if r["TIME_SENSITIVITY"] is not None else 0.0,
+            "state": r["LEDGER_STATE"],
+            "owner": r["OWNER"],
+            "updatedAt": r["UPDATED_AT"].isoformat() if r["UPDATED_AT"] else _iso_now(),
+            "sourceSystem": r["SOURCE_SYSTEM"],
+            "sourceRef": r["SOURCE_REF"],
+            "receipts": r["RECEIPTS_JSON"] if r["RECEIPTS_JSON"] is not None else [],
+            "packetStatus": "DRAFT",
+            "packetSignatures": []
+        }
+
+        h = _hash_payload(payload)
+        
+        # Skip if hash unchanged (no meaningful changes)
+        if r["DELIVERY_HASH"] == h:
+            continue
+
+        events_to_send.append(payload)
+        meta.append((r["EVENT_ID"], h))
+
+    sent = 0
+    failures = []
+
+    # Send in batches
+    for i in range(0, len(events_to_send), batch_size):
+        batch = events_to_send[i:i+batch_size]
+        batch_meta = meta[i:i+batch_size]
+
+        try:
+            resp = requests.post(
+                endpoint,
+                headers={
+                    "Content-Type": "application/json",
+                    "x-kiq-ingest-token": token
+                },
+                data=json.dumps(batch),
+                timeout=20
+            )
+
+            status = resp.status_code
+            snippet = resp.text[:400] if resp.text else ""
+            now = _iso_now()
+
+            # Log every delivery attempt
+            for (event_id, hsh) in batch_meta:
+                session.sql("""
+                    INSERT INTO KIQ.WARROOM_DELIVERY_LOG(
+                        EVENT_ID, DELIVERY_HASH, DELIVERED_AT, HTTP_STATUS, RESPONSE_SNIPPET
+                    )
+                    VALUES(%s, %s, TO_TIMESTAMP_NTZ(%s), %s, %s)
+                """, (event_id, hsh, now, status, snippet)).collect()
+
+            # Update delivery markers only on success
+            if 200 <= status < 300:
+                sent += len(batch)
+                for (event_id, hsh) in batch_meta:
+                    session.sql("""
+                        UPDATE KIQ.WARROOM_EVENTS
+                        SET LAST_DELIVERED_AT = TO_TIMESTAMP_NTZ(%s),
+                            DELIVERY_HASH = %s
+                        WHERE EVENT_ID = %s
+                    """, (now, hsh, event_id)).collect()
+            else:
+                failures.append({"status": status, "snippet": snippet})
+
+        except Exception as e:
+            failures.append({"error": str(e)})
+
+    return {
+        "ok": True,
+        "attempted": len(events_to_send),
+        "sent": sent,
+        "failures": failures[:10]  # Return first 10 failures for debugging
+    }
 $$;
+```
+
+**Key Features:**
+- **Secrets Management**: Token retrieved from Snowflake secrets (not hardcoded)
+- **Smart CDC**: Hash-based comparison skips unchanged events
+- **Batch Processing**: Sends up to 50 events per HTTP request
+- **Comprehensive Logging**: Every attempt logged to `WARROOM_DELIVERY_LOG`
+- **Error Handling**: Try/catch with detailed failure tracking
+- **Idempotency**: `DELIVERY_HASH` prevents duplicate deliveries
+
+### Test the Procedure
+
+```sql
+-- Manual test
+CALL KIQ.PUSH_WARROOM_EVENTS();
+
+-- Expected output
+{
+  "ok": true,
+  "attempted": 12,
+  "sent": 12,
+  "failures": []
+}
 ```
 
 ---
@@ -211,19 +268,19 @@ $$;
 
 ```sql
 -- Run sync every 5 minutes
-CREATE OR REPLACE TASK KIQ.SYNC_WARROOM_TASK
+CREATE OR REPLACE TASK KIQ.WARROOM_DELIVERY_TASK
   WAREHOUSE = COMPUTE_WH            -- Replace with your warehouse name
   SCHEDULE = 'USING CRON */5 * * * * UTC'  -- Every 5 minutes
 AS
-  CALL KIQ.SYNC_WARROOM_EVENTS();
+  CALL KIQ.PUSH_WARROOM_EVENTS();
 
 -- Enable the task
-ALTER TASK KIQ.SYNC_WARROOM_TASK RESUME;
+ALTER TASK KIQ.WARROOM_DELIVERY_TASK RESUME;
 
 -- Check task history
 SELECT *
 FROM TABLE(INFORMATION_SCHEMA.TASK_HISTORY(
-  TASK_NAME => 'SYNC_WARROOM_TASK',
+  TASK_NAME => 'WARROOM_DELIVERY_TASK',
   SCHEDULED_TIME_RANGE_START => DATEADD(hour, -24, CURRENT_TIMESTAMP())
 ))
 ORDER BY SCHEDULED_TIME DESC;
@@ -310,7 +367,7 @@ INSERT INTO KIQ.WARROOM_EVENTS (
 );
 
 -- Trigger immediate delivery (don't wait for scheduled task)
-CALL KIQ.SYNC_WARROOM_EVENTS();
+CALL KIQ.PUSH_WARROOM_EVENTS();
 ```
 
 ---
@@ -356,7 +413,7 @@ SET
 WHERE EVENT_ID = 'EVT-PBM-001';
 
 -- Trigger sync
-CALL KIQ.SYNC_WARROOM_EVENTS();
+CALL KIQ.PUSH_WARROOM_EVENTS();
 
 -- Verify new delivery was logged
 SELECT * FROM KIQ.WARROOM_DELIVERY_LOG
@@ -461,154 +518,231 @@ CREATE OR REPLACE TASK KIQ.SYNC_WARROOM_STREAM_TASK
   SCHEDULE = 'USING CRON */1 * * * * UTC'  -- Every minute
   WHEN SYSTEM$STREAM_HAS_DATA('KIQ.WARROOM_EVENTS_STREAM')
 AS
-  CALL KIQ.SYNC_WARROOM_EVENTS();
+  CALL KIQ.PUSH_WARROOM_EVENTS();
 
 ALTER TASK KIQ.SYNC_WARROOM_STREAM_TASK RESUME;
 ```
 
 ---
 
-## Monitoring & Troubleshooting
+## Security: Token Rotation
 
-### Check Task Execution History
+When rotating your ingest token:
 
 ```sql
-SELECT
+-- 1. Generate new token (use: openssl rand -hex 32)
+
+-- 2. Update Snowflake secret
+CREATE OR REPLACE SECRET KIQ_INGEST_TOKEN_SECRET
+  TYPE = GENERIC_STRING
+  SECRET_STRING = 'NEW_TOKEN_HERE';
+
+-- 3. Update Vercel environment variable
+-- vercel env rm KIQ_INGEST_TOKEN production
+-- vercel env add KIQ_INGEST_TOKEN production
+-- (paste new token)
+
+-- 4. Deploy Vercel
+-- vercel --prod
+
+-- 5. Test delivery
+CALL KIQ.PUSH_WARROOM_EVENTS();
+
+-- 6. Verify in delivery log
+SELECT * FROM KIQ.WARROOM_DELIVERY_LOG
+WHERE DELIVERED_AT > DATEADD('minute', -5, CURRENT_TIMESTAMP())
+  AND HTTP_STATUS BETWEEN 200 AND 299;
+```
+
+**No procedure redeployment needed!** Token is read from secret at runtime.
+
+---
+
+## Monitoring & Debugging
+
+### Check Recent Deliveries
+```sql
+SELECT 
+  EVENT_ID,
+  DELIVERY_HASH,
+  DELIVERED_AT,
+  HTTP_STATUS,
+  RESPONSE_SNIPPET
+FROM KIQ.WARROOM_DELIVERY_LOG
+ORDER BY DELIVERED_AT DESC
+LIMIT 50;
+```
+
+### Find Failed Deliveries
+```sql
+SELECT 
+  EVENT_ID,
+  HTTP_STATUS,
+  RESPONSE_SNIPPET,
+  DELIVERED_AT
+FROM KIQ.WARROOM_DELIVERY_LOG
+WHERE HTTP_STATUS NOT BETWEEN 200 AND 299
+ORDER BY DELIVERED_AT DESC;
+```
+
+### Check Pending Events
+```sql
+-- Events that need delivery (never sent OR updated since last delivery)
+SELECT 
+  EVENT_ID,
+  TITLE,
+  AMOUNT,
+  UPDATED_AT,
+  LAST_DELIVERED_AT,
+  DATEDIFF('minute', LAST_DELIVERED_AT, UPDATED_AT) AS minutes_since_update
+FROM KIQ.WARROOM_EVENTS
+WHERE LAST_DELIVERED_AT IS NULL
+   OR UPDATED_AT > LAST_DELIVERED_AT
+ORDER BY UPDATED_AT DESC;
+```
+
+### Delivery Success Rate
+```sql
+SELECT 
+  DATE_TRUNC('hour', DELIVERED_AT) AS hour,
+  COUNT(*) AS total_attempts,
+  SUM(CASE WHEN HTTP_STATUS BETWEEN 200 AND 299 THEN 1 ELSE 0 END) AS successful,
+  SUM(CASE WHEN HTTP_STATUS NOT BETWEEN 200 AND 299 THEN 1 ELSE 0 END) AS failed,
+  ROUND(100.0 * successful / total_attempts, 2) AS success_rate_pct
+FROM KIQ.WARROOM_DELIVERY_LOG
+WHERE DELIVERED_AT > DATEADD('day', -7, CURRENT_TIMESTAMP())
+GROUP BY 1
+ORDER BY 1 DESC;
+```
+
+### Event Freshness (Time from creation to delivery)
+```sql
+SELECT 
+  e.EVENT_ID,
+  e.TITLE,
+  e.UPDATED_AT AS event_updated,
+  l.DELIVERED_AT,
+  DATEDIFF('minute', e.UPDATED_AT, l.DELIVERED_AT) AS delivery_latency_minutes
+FROM KIQ.WARROOM_EVENTS e
+JOIN KIQ.WARROOM_DELIVERY_LOG l ON e.EVENT_ID = l.EVENT_ID
+WHERE l.HTTP_STATUS BETWEEN 200 AND 299
+  AND l.DELIVERED_AT > DATEADD('day', -1, CURRENT_TIMESTAMP())
+ORDER BY delivery_latency_minutes DESC
+LIMIT 100;
+```
+
+---
+
+## Troubleshooting
+
+### Issue: "Unauthorized ingest" errors in delivery log
+
+**Cause**: Token mismatch between Snowflake secret and Vercel environment variable
+
+**Solution**:
+```sql
+-- Check current secret (won't show actual value)
+DESC SECRET KIQ_INGEST_TOKEN_SECRET;
+
+-- Verify Vercel env: vercel env ls
+-- Ensure they match, then redeploy: vercel --prod
+```
+
+### Issue: No events being delivered
+
+**Cause**: All events already delivered (DELIVERY_HASH matches)
+
+**Solution**:
+```sql
+-- Force re-delivery by clearing delivery markers
+UPDATE KIQ.WARROOM_EVENTS
+SET DELIVERY_HASH = NULL,
+    LAST_DELIVERED_AT = NULL
+WHERE EVENT_ID IN ('EVT-001', 'EVT-002');
+
+-- Then run procedure
+CALL KIQ.PUSH_WARROOM_EVENTS();
+```
+
+### Issue: Task not running
+
+**Check task status**:
+```sql
+SHOW TASKS LIKE 'WARROOM_DELIVERY_TASK';
+
+-- If suspended
+ALTER TASK WARROOM_DELIVERY_TASK RESUME;
+```
+
+**Check task history**:
+```sql
+SELECT 
   NAME,
   STATE,
   SCHEDULED_TIME,
   COMPLETED_TIME,
-  RETURN_VALUE,
   ERROR_CODE,
   ERROR_MESSAGE
 FROM TABLE(INFORMATION_SCHEMA.TASK_HISTORY(
-  TASK_NAME => 'SYNC_WARROOM_TASK',
-  SCHEDULED_TIME_RANGE_START => DATEADD(day, -7, CURRENT_TIMESTAMP())
+  TASK_NAME => 'WARROOM_DELIVERY_TASK',
+  SCHEDULED_TIME_RANGE_START => DATEADD('hour', -24, CURRENT_TIMESTAMP())
 ))
-ORDER BY SCHEDULED_TIME DESC;
+ORDER BY SCHEDULED_TIME DESC
+LIMIT 50;
 ```
 
-### Check External Function Logs
+### Issue: Slow procedure execution
 
+**Optimize batch size**:
+```python
+# In procedure, adjust:
+batch_size = 25  # Reduce if network latency is high
+batch_size = 100 # Increase if latency is low and events are small
+```
+
+**Add index on UPDATED_AT**:
 ```sql
--- Failed deliveries
-SELECT *
-FROM KIQ.WARROOM_DELIVERY_LOG
-WHERE HTTP_STATUS <> 200
-ORDER BY DELIVERED_AT DESC;
-
--- Delivery rate (events per hour)
-SELECT
-  DATE_TRUNC('hour', DELIVERED_AT) AS hour,
-  COUNT(*) AS events_delivered,
-  COUNT(DISTINCT EVENT_ID) AS unique_events
-FROM KIQ.WARROOM_DELIVERY_LOG
-WHERE DELIVERED_AT > DATEADD(day, -1, CURRENT_TIMESTAMP())
-GROUP BY hour
-ORDER BY hour DESC;
-```
-
-### Common Issues
-
-**Issue 1: "Unauthorized ingest" error**
-```
-Solution: Verify KIQ_INGEST_TOKEN matches in both:
-- Snowflake External Function HEADERS
-- Vercel .env.local (or Vercel dashboard environment variables)
-```
-
-**Issue 2: Network rule prevents egress**
-```sql
--- Check if your domain is allowlisted
-SHOW NETWORK RULES LIKE 'KIQ_VERCEL_API_RULE';
-
--- Update if needed
-ALTER NETWORK RULE KIQ_VERCEL_API_RULE
-  SET VALUE_LIST = ('your-actual-domain.vercel.app:443');
-```
-
-**Issue 3: Task not running**
-```sql
--- Check task state
-SHOW TASKS LIKE 'SYNC_WARROOM_TASK';
-
--- Resume if suspended
-ALTER TASK KIQ.SYNC_WARROOM_TASK RESUME;
-
--- Check warehouse status
-SHOW WAREHOUSES LIKE 'COMPUTE_WH';
+CREATE INDEX IF NOT EXISTS idx_warroom_events_updated 
+ON KIQ.WARROOM_EVENTS(UPDATED_AT);
 ```
 
 ---
 
 ## Security Best Practices
 
-### 1. Rotate Ingest Token Regularly
+### 1. Use Secrets (Not Hardcoded Tokens)
 
-```bash
-# Generate new token
-openssl rand -hex 32
+See `docs/snowflake-secrets-guide.md` for complete guide.
 
-# Update Vercel environment variable
-vercel env add KIQ_INGEST_TOKEN production
+### 2. Rotate Tokens Regularly
 
-# Update Snowflake external function
-ALTER EXTERNAL FUNCTION KIQ.DELIVER_TO_WARROOM
-  SET HEADERS = (
-    'Content-Type' = 'application/json',
-    'x-kiq-ingest-token' = '<NEW_TOKEN>'
-  );
-```
+Recommended: Every 90 days minimum.
 
-### 2. Use IP Allowlisting
-
-```typescript
-// src/pages/api/war-room/ingest.ts
-const ALLOWED_IPS = [
-  '34.215.32.0/24',  // Snowflake US West 2
-  '52.40.192.0/24',  // Snowflake US West 2
-  // Add your Snowflake account's egress IPs
-];
-
-function assertIngestAuth(req: NextApiRequest) {
-  const clientIP = req.headers['x-forwarded-for'] || req.socket.remoteAddress;
-  
-  if (!ALLOWED_IPS.some(range => ipInRange(clientIP, range))) {
-    throw Object.assign(
-      new Error("IP not allowlisted"),
-      { status: 403 }
-    );
-  }
-  
-  // ... token check
-}
-```
-
-### 3. Add HMAC Signatures
+### 3. Grant Minimal Permissions
 
 ```sql
--- Snowflake external function with HMAC
-CREATE OR REPLACE EXTERNAL FUNCTION KIQ.DELIVER_TO_WARROOM_SECURE(payload VARIANT)
-  RETURNS VARIANT
-  API_INTEGRATION = KIQ_VERCEL_INTEGRATION
-  HEADERS = (
-    'Content-Type' = 'application/json',
-    'x-kiq-ingest-token' = '<TOKEN>',
-    'x-kiq-signature' = SHA2_HEX(CONCAT(payload::STRING, '<SHARED_SECRET>'))
-  )
-  AS 'https://your-domain.vercel.app/api/war-room/ingest';
+-- Service role with minimal grants
+CREATE ROLE IF NOT EXISTS KIQ_SERVICE_ROLE;
+
+GRANT USAGE ON SECRET KIQ_INGEST_TOKEN_SECRET TO ROLE KIQ_SERVICE_ROLE;
+GRANT USAGE ON PROCEDURE KIQ.PUSH_WARROOM_EVENTS() TO ROLE KIQ_SERVICE_ROLE;
+GRANT SELECT, INSERT, UPDATE ON TABLE KIQ.WARROOM_EVENTS TO ROLE KIQ_SERVICE_ROLE;
+GRANT INSERT ON TABLE KIQ.WARROOM_DELIVERY_LOG TO ROLE KIQ_SERVICE_ROLE;
 ```
 
-```typescript
-// Verify HMAC in API
-const expectedSig = crypto
-  .createHmac('sha256', process.env.KIQ_SHARED_SECRET!)
-  .update(JSON.stringify(req.body))
-  .digest('hex');
+### 4. Monitor Access Logs
 
-if (req.headers['x-kiq-signature'] !== expectedSig) {
-  throw new Error("Invalid signature");
-}
+```sql
+-- Track procedure executions
+SELECT 
+  USER_NAME,
+  ROLE_NAME,
+  START_TIME,
+  QUERY_TEXT
+FROM SNOWFLAKE.ACCOUNT_USAGE.QUERY_HISTORY
+WHERE QUERY_TEXT ILIKE '%PUSH_WARROOM_EVENTS%'
+  AND START_TIME > DATEADD('day', -7, CURRENT_TIMESTAMP())
+ORDER BY START_TIME DESC;
 ```
 
 ---
@@ -617,28 +751,25 @@ if (req.headers['x-kiq-signature'] !== expectedSig) {
 
 ### Batch Size Optimization
 
-```sql
--- Adjust batch size based on event payload size
--- Small events (< 1KB): MAX_BATCH_ROWS = 100
--- Large events (> 10KB): MAX_BATCH_ROWS = 10
-
-ALTER EXTERNAL FUNCTION KIQ.DELIVER_TO_WARROOM
-  SET MAX_BATCH_ROWS = 100;
+```python
+# Small events (< 1KB): batch_size = 100
+# Medium events (1-5KB): batch_size = 50
+# Large events (> 10KB): batch_size = 10
 ```
 
 ### Task Scheduling
 
 ```sql
--- High-frequency (every minute, for real-time alerts)
-ALTER TASK KIQ.SYNC_WARROOM_TASK
+# High-frequency (every minute, for real-time alerts)
+ALTER TASK KIQ.WARROOM_DELIVERY_TASK
   SET SCHEDULE = 'USING CRON */1 * * * * UTC';
 
--- Low-frequency (every 30 minutes, for bulk analytics)
-ALTER TASK KIQ.SYNC_WARROOM_TASK
+# Low-frequency (every 30 minutes, for bulk analytics)
+ALTER TASK KIQ.WARROOM_DELIVERY_TASK
   SET SCHEDULE = 'USING CRON */30 * * * * UTC';
 
--- Business hours only (9 AM - 6 PM weekdays)
-ALTER TASK KIQ.SYNC_WARROOM_TASK
+# Business hours only (9 AM - 6 PM weekdays)
+ALTER TASK KIQ.WARROOM_DELIVERY_TASK
   SET SCHEDULE = 'USING CRON 0 9-18 * * 1-5 UTC';
 ```
 
@@ -677,7 +808,7 @@ For integration issues:
 
 For security questions:
 - Token rotation: Every 90 days minimum
-- IP allowlisting: Add all Snowflake egress IPs for your region
-- HMAC signatures: Recommended for production
+- Secrets management: See `docs/snowflake-secrets-guide.md`
+- Access control: Grant minimal permissions to service role
 
 **Status: Production-Ready** ✅

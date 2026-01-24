@@ -60,7 +60,7 @@ function FeaturedCard({ link }: { link: NavLink }) {
 
 function DropdownPanel({ item }: { item: NavDropdown }) {
   return (
-    <div className="k-panel k-glow w-[860px] max-w-[92vw] p-5">
+    <div className="k-panel k-glow w-[900px] max-w-[92vw] p-5">
       <div className="grid grid-cols-12 gap-4">
         <div className={`col-span-12 ${item.featured?.length ? "md:col-span-8" : "md:col-span-12"}`}>
           <div className="grid md:grid-cols-2 gap-4">
@@ -119,24 +119,18 @@ export function Nav() {
   const wrapperRef = useRef<HTMLDivElement>(null);
   const panelRef = useRef<HTMLDivElement>(null);
 
-  // hover-intent timers (prevents accidental opens)
   const openTimer = useRef<number | null>(null);
   const closeTimer = useRef<number | null>(null);
 
-  // button refs so we can center + clamp dropdown
   const btnRefs = useRef<Record<string, HTMLButtonElement | null>>({});
 
-  useOnClickOutside(wrapperRef, () => {
-    setOpen(null);
-  });
+  useOnClickOutside(wrapperRef, () => setOpen(null));
 
-  // Close menus on route change
   useEffect(() => {
     setOpen(null);
     setMobileOpen(false);
   }, [router.pathname]);
 
-  // ESC closes
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
       if (e.key === "Escape") {
@@ -171,33 +165,24 @@ export function Nav() {
     const desiredLeft = btnRect.left + btnRect.width / 2 - panelRect.width / 2;
     const left = clamp(desiredLeft, gutter, vw - panelRect.width - gutter);
 
-    // panel is positioned absolute within header wrapper; convert viewport-left to wrapper-left
     const wrapperRect = wrapperRef.current?.getBoundingClientRect();
     const wrapperLeft = wrapperRect?.left ?? 0;
 
-    setPanelStyle({
-      left: left - wrapperLeft,
-    });
+    setPanelStyle({ left: left - wrapperLeft });
   }
 
   function openWithIntent(label: string) {
     clearTimers();
-    openTimer.current = window.setTimeout(() => {
-      setOpen(label);
-    }, 120);
+    openTimer.current = window.setTimeout(() => setOpen(label), 120);
   }
 
   function closeWithIntent() {
     clearTimers();
-    closeTimer.current = window.setTimeout(() => {
-      setOpen(null);
-    }, 180);
+    closeTimer.current = window.setTimeout(() => setOpen(null), 180);
   }
 
-  // When open changes, compute position after render so panelRef has size
   useEffect(() => {
     if (!open) return;
-    // allow layout to settle
     const t = window.setTimeout(() => computePanelPosition(open), 0);
     const onResize = () => computePanelPosition(open);
     window.addEventListener("resize", onResize);
@@ -211,26 +196,25 @@ export function Nav() {
 
   return (
     <header className="sticky top-0 z-50 backdrop-blur-xl bg-black/30 border-b border-white/10">
-      <div className="mx-auto max-w-6xl px-6 py-4 flex items-center justify-between" ref={wrapperRef}>
+      <div className="mx-auto max-w-6xl px-6 py-4 flex items-center justify-between relative" ref={wrapperRef}>
         <Link href="/" className="font-semibold tracking-tight">
           <span className="text-white">Kincaid</span> <span className="text-white/70">IQ</span>
         </Link>
 
-        {/* Desktop: only the handful of dropdown boxes */}
+        {/* Desktop: only 4 dropdown boxes */}
         <nav className="hidden lg:flex items-center gap-1 text-sm text-white/75">
           {dropdowns.map((item) => {
             const isOpen = open === item.label;
             return (
-              <div key={item.label} className="relative">
+              <div key={item.label}>
                 <button
                   ref={(el) => {
                     btnRefs.current[item.label] = el;
                   }}
                   type="button"
-                  onClick={() => {
-                    clearTimers();
-                    setOpen(isOpen ? null : item.label);
-                  }}
+                  aria-haspopup="menu"
+                  aria-expanded={isOpen}
+                  onClick={() => setOpen(isOpen ? null : item.label)}
                   onMouseEnter={() => openWithIntent(item.label)}
                   onMouseLeave={() => closeWithIntent()}
                   className={`px-3 py-2 rounded-xl hover:bg-white/5 transition flex items-center gap-2 ${
@@ -240,37 +224,17 @@ export function Nav() {
                   {item.label}
                   <span className={`text-white/50 transition ${isOpen ? "rotate-180" : ""}`}>▾</span>
                 </button>
-
-                {isOpen ? (
-                  <div
-                    ref={panelRef}
-                    style={panelStyle}
-                    className="absolute top-[52px]"
-                    onMouseEnter={() => {
-                      clearTimers();
-                    }}
-                    onMouseLeave={() => closeWithIntent()}
-                  >
-                    <DropdownPanel item={item} />
-                  </div>
-                ) : null}
               </div>
             );
           })}
         </nav>
 
-        {/* Desktop CTAs */}
+        {/* CTAs */}
         <div className="hidden lg:flex gap-2">
-          <Link
-            href="/contact"
-            className="px-4 py-2 rounded-xl border border-white/15 bg-white/5 hover:bg-white/10 transition text-sm"
-          >
+          <Link href="/contact" className="px-4 py-2 rounded-xl border border-white/15 bg-white/5 hover:bg-white/10 transition text-sm">
             Request demo
           </Link>
-          <Link
-            href="/capital-markets"
-            className="px-4 py-2 rounded-xl bg-white text-black hover:bg-white/90 transition text-sm font-medium"
-          >
+          <Link href="/capital-markets" className="px-4 py-2 rounded-xl bg-white text-black hover:bg-white/90 transition text-sm font-medium">
             Investor access
           </Link>
         </div>
@@ -283,6 +247,19 @@ export function Nav() {
         >
           Menu
         </button>
+
+        {/* Desktop dropdown panel (single panel, centered + clamped) */}
+        {open ? (
+          <div
+            className="hidden lg:block absolute top-[64px]"
+            style={panelStyle}
+            onMouseEnter={() => clearTimers()}
+            onMouseLeave={() => closeWithIntent()}
+            ref={panelRef}
+          >
+            <DropdownPanel item={dropdowns.find((d) => d.label === open)!} />
+          </div>
+        ) : null}
       </div>
 
       {/* Mobile drawer */}
@@ -290,18 +267,10 @@ export function Nav() {
         <div className="lg:hidden border-t border-white/10 bg-black/40 backdrop-blur-xl">
           <div className="mx-auto max-w-6xl px-6 py-5 space-y-4">
             <div className="grid grid-cols-2 gap-2">
-              <Link
-                href="/contact"
-                className="px-4 py-2 rounded-xl border border-white/15 bg-white/5 hover:bg-white/10 transition text-sm"
-                onClick={() => setMobileOpen(false)}
-              >
+              <Link href="/contact" className="px-4 py-2 rounded-xl border border-white/15 bg-white/5 hover:bg-white/10 transition text-sm" onClick={() => setMobileOpen(false)}>
                 Request demo
               </Link>
-              <Link
-                href="/capital-markets"
-                className="px-4 py-2 rounded-xl bg-white text-black hover:bg-white/90 transition text-sm font-medium"
-                onClick={() => setMobileOpen(false)}
-              >
+              <Link href="/capital-markets" className="px-4 py-2 rounded-xl bg-white text-black hover:bg-white/90 transition text-sm font-medium" onClick={() => setMobileOpen(false)}>
                 Investor access
               </Link>
             </div>
@@ -323,11 +292,7 @@ function MobileSection({ dd, onNavigate }: { dd: NavDropdown; onNavigate: () => 
 
   return (
     <div className="k-panel p-4">
-      <button
-        type="button"
-        onClick={() => setOpen((v) => !v)}
-        className="w-full flex items-center justify-between text-white/90"
-      >
+      <button type="button" onClick={() => setOpen((v) => !v)} className="w-full flex items-center justify-between text-white/90">
         <span className="font-semibold">{dd.label}</span>
         <span className={`text-white/60 transition ${open ? "rotate-180" : ""}`}>▾</span>
       </button>
@@ -339,12 +304,7 @@ function MobileSection({ dd, onNavigate }: { dd: NavDropdown; onNavigate: () => 
               <div className="text-xs uppercase tracking-wider text-white/55 mb-2">{sec.title}</div>
               <div className="space-y-1">
                 {sec.links.map((lnk) => (
-                  <Link
-                    key={lnk.href}
-                    href={lnk.href}
-                    onClick={onNavigate}
-                    className="block rounded-lg px-3 py-2 hover:bg-white/5 transition"
-                  >
+                  <Link key={lnk.href} href={lnk.href} onClick={onNavigate} className="block rounded-lg px-3 py-2 hover:bg-white/5 transition">
                     <div className="text-sm text-white/90 flex items-center">
                       {lnk.label}
                       <Badge text={lnk.badge} />

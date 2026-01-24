@@ -1,6 +1,7 @@
 import { SEO } from "@/components/SEO";
 import { Container, ProofBar, CTA } from "@/components/Blocks";
 import Link from "next/link";
+import Hero3D from "@/components/Hero3D";
 
 export default function Home() {
   return (
@@ -41,6 +42,10 @@ export default function Home() {
                 >
                   Explore platform
                 </Link>
+              </div>
+
+              <div className="mb-10">
+                <Hero3D />
               </div>
 
               <ProofBar />

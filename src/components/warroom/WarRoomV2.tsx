@@ -8,6 +8,7 @@ import type { LaneKey, LedgerState, WarEvent } from "@/lib/warroom/types";
 import { useWarRoomStream } from "@/components/warroom/useWarRoomStream";
 import { TickerMarquee } from "@/components/warroom/TickerMarquee";
 import EvidenceDrawer from "@/components/warroom/EvidenceDrawer";
+import { AuditTicker } from "@/components/warroom/AuditTicker";
 import { applyFilters, defaultFilters, formatMoney, score, type SortKey, type WarRoomFilters } from "@/components/warroom/filters";
 import { approveEvent, assignOwner, closeEvent, generateReceipt } from "@/components/warroom/apiClient";
 
@@ -270,6 +271,7 @@ export default function WarRoomV2() {
 
           <div className="flex-1 lg:ml-6">
             <TickerMarquee items={ticker} />
+            <AuditTicker />
           </div>
         </div>
 

@@ -113,16 +113,17 @@ export default function EvidenceDrawer({
               <button
                 type="button"
                 className="px-4 py-2 rounded-xl bg-white text-black font-medium hover:bg-white/90 transition"
-                onClick={() => alert("Wire PDF action packet export next")}
+                onClick={() => {
+                  window.open(`/api/war-room/packet/${openEvent.id}`, "_blank");
+                }}
               >
-                Open action packet
+                Download action packet (PDF)
               </button>
               <button
                 type="button"
                 className="px-4 py-2 rounded-xl border border-white/15 bg-white/5 hover:bg-white/10 transition"
                 onClick={() => {
                   navigator.clipboard.writeText(JSON.stringify(openEvent, null, 2));
-                  alert("Receipt JSON copied to clipboard");
                 }}
               >
                 Copy receipt JSON

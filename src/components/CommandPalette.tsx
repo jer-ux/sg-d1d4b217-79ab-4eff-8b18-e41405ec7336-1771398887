@@ -3,11 +3,11 @@
 import { useEffect, useState, useCallback } from "react";
 import { Command } from "cmdk";
 import { useRouter } from "next/router";
-import type { WarEvent } from "@/lib/warroom/types";
+import type { WarEvent, LaneKey } from "@/lib/warroom/types";
 import type { NavLink } from "@/components/site";
 import { getPacketStatus } from "@/components/warroom/packetUi";
-import { submitPacket, approvePacket, closePacket } from "@/components/warroom/apiClient";
-import { toast } from "@/hooks/use-toast";
+import { submitPacket, approvePacket, closePacket, macroSubmitDrafts, macroGenerateReceipts } from "@/components/warroom/apiClient";
+import { toast } from "sonner";
 
 type CommandPaletteProps = {
   // War Room mode
@@ -19,6 +19,24 @@ type CommandPaletteProps = {
   open?: boolean;
   onClose?: () => void;
 };
+
+function laneLabel(lane: string): string {
+  const labels: Record<string, string> = {
+    value: "Value",
+    controls: "Controls",
+    agentic: "Agentic",
+    marketplace: "Marketplace",
+  };
+  return labels[lane] ?? lane;
+}
+
+function PolicyToast(result: any) {
+  const reasons = result.policyReasons ?? [];
+  const msg = reasons.length
+    ? `Policy check failed:\n${reasons.map((r: string) => `• ${r}`).join("\n")}`
+    : result.error ?? "Action failed";
+  toast.error(msg);
+}
 
 export default function CommandPalette({ 
   events = [], 
@@ -92,61 +110,17 @@ export default function CommandPalette({
         else result = await closePacket(selectedEvent.id);
 
         if (!result.ok) {
-          toast({
-            title: "Action failed",
-            description: result.policyReasons?.length
-              ? result.policyReasons.join(" • ")
-              : result.error,
-            variant: "destructive",
-          });
+          PolicyToast(result);
         } else {
-          toast({
-            title: "Success",
-            description: `Packet ${action}ed successfully`,
-          });
+          toast.success(`Packet ${action}ed successfully`);
           closePalette();
         }
       } catch (e: any) {
-        toast({
-          title: "Error",
-          description: e?.message ?? "Unknown error",
-          variant: "destructive",
-        });
+        toast.error(e?.message ?? "Unknown error");
       }
     },
     [selectedEvent, closePalette]
   );
-
-  const handleBulkSubmit = useCallback(async (lane: string) => {
-    try {
-      const res = await fetch("/api/packet/bulk-submit", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ lane, max: 50 }),
-      });
-      const result = await res.json();
-
-      if (!result.ok) {
-        toast({
-          title: "Bulk submit failed",
-          description: result.error,
-          variant: "destructive",
-        });
-      } else {
-        toast({
-          title: "Bulk submit complete",
-          description: `${result.okCount} packets submitted (${result.failCount} failed)`,
-        });
-        closePalette();
-      }
-    } catch (e: any) {
-      toast({
-        title: "Error",
-        description: e?.message ?? "Unknown error",
-        variant: "destructive",
-      });
-    }
-  }, [closePalette]);
 
   if (!isOpen) return null;
 
@@ -170,7 +144,7 @@ export default function CommandPalette({
           <Command.Input
             value={search}
             onValueChange={setSearch}
-            placeholder={page === "event" ? "Search actions..." : "Search events, links, or actions..."}
+            placeholder={page === "event" ? "Search actions..." : "Search events, links, or macros..."}
             className="flex h-12 w-full bg-transparent py-3 text-sm outline-none placeholder:text-white/40 text-white"
           />
           <kbd className="pointer-events-none ml-auto hidden h-6 select-none items-center gap-1 rounded border border-white/10 bg-white/5 px-2 text-[10px] font-medium text-white/60 sm:flex">
@@ -212,61 +186,97 @@ export default function CommandPalette({
                 </Command.Group>
               )}
 
-              {/* War Room Actions (only show if we have events context or search matches specific keywords) */}
-              {(events.length > 0 || search.includes("submit") || search.includes("draft")) && (
-                <Command.Group heading="War Room Actions" className="text-xs text-white/50 px-2 py-1.5 mt-2">
-                  <Command.Item
-                    onSelect={() => handleBulkSubmit("value")}
-                    className="flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm cursor-pointer hover:bg-white/5 aria-selected:bg-white/10 transition-colors"
+              {/* Macros - Only show if we have events context */}
+              {events.length > 0 && (
+                <>
+                  <div className="h-px bg-white/10 my-2" />
+                  <Command.Group 
+                    heading="Macros" 
+                    className="[&_[cmdk-group-heading]]:px-3 [&_[cmdk-group-heading]]:py-2 [&_[cmdk-group-heading]]:text-xs [&_[cmdk-group-heading]]:text-white/45"
                   >
-                    <span className="text-emerald-400">⚡</span>
-                    <span className="text-white/90">Submit all drafts in Value lane</span>
-                  </Command.Item>
-                  <Command.Item
-                    onSelect={() => handleBulkSubmit("control")}
-                    className="flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm cursor-pointer hover:bg-white/5 aria-selected:bg-white/10 transition-colors"
-                  >
-                    <span className="text-violet-400">⚡</span>
-                    <span className="text-white/90">Submit all drafts in Control lane</span>
-                  </Command.Item>
-                </Command.Group>
+                    {(["value", "controls", "agentic", "marketplace"] as LaneKey[]).map((lane) => (
+                      <Command.Item
+                        key={`submit-${lane}`}
+                        value={`submit-drafts-${lane}`}
+                        className="px-3 py-3 rounded-xl text-sm text-white/85 aria-selected:bg-white/10 cursor-pointer"
+                        onSelect={async () => {
+                          const t = toast.loading(`Submitting DRAFT packets in ${laneLabel(lane)}…`);
+                          const r = await macroSubmitDrafts(lane, 25);
+                          if (!r.ok) {
+                            toast.dismiss(t);
+                            return PolicyToast(r);
+                          }
+                          toast.success(`Submitted: ${r.data.okCount} • Blocked/Failed: ${r.data.failCount}`, { id: t });
+                          closePalette();
+                        }}
+                      >
+                        <span className="text-emerald-400 mr-2">⚡</span>
+                        Submit all DRAFT packets in {laneLabel(lane)} lane (max 25)
+                      </Command.Item>
+                    ))}
+
+                    {(["value", "controls", "agentic", "marketplace"] as LaneKey[]).map((lane) => (
+                      <Command.Item
+                        key={`rcpt-${lane}`}
+                        value={`generate-receipts-${lane}`}
+                        className="px-3 py-3 rounded-xl text-sm text-white/85 aria-selected:bg-white/10 cursor-pointer"
+                        onSelect={async () => {
+                          const t = toast.loading(`Generating receipts in ${laneLabel(lane)}…`);
+                          const r = await macroGenerateReceipts(lane, 15);
+                          if (!r.ok) {
+                            toast.dismiss(t);
+                            return PolicyToast(r);
+                          }
+                          toast.success(`Receipts added: ${r.data.okCount} • Failed: ${r.data.failCount}`, { id: t });
+                          closePalette();
+                        }}
+                      >
+                        <span className="text-violet-400 mr-2">📋</span>
+                        Generate receipts for top events in {laneLabel(lane)} lane (max 15)
+                      </Command.Item>
+                    ))}
+                  </Command.Group>
+                </>
               )}
 
               {/* War Room Events */}
               {events.length > 0 && (
-                <Command.Group heading="Events" className="text-xs text-white/50 px-2 py-1.5 mt-2">
-                  {events
-                    .filter((e) => {
-                      if (!search) return true;
-                      const s = search.toLowerCase();
-                      return (
-                        e.title.toLowerCase().includes(s) ||
-                        e.subtitle?.toLowerCase().includes(s) ||
-                        e.owner?.toLowerCase().includes(s) ||
-                        e.lane.toLowerCase().includes(s) ||
-                        e.id.toLowerCase().includes(s)
-                      );
-                    })
-                    .slice(0, 20)
-                    .map((e) => (
-                      <Command.Item
-                        key={e.id}
-                        value={e.id}
-                        onSelect={() => handleEventSelect(e)}
-                        className="flex items-center justify-between rounded-lg px-3 py-2.5 cursor-pointer hover:bg-white/5 aria-selected:bg-white/10 transition-colors"
-                      >
-                        <div className="flex-1 min-w-0">
-                          <div className="text-sm text-white truncate">{e.title}</div>
-                          <div className="text-xs text-white/50 mt-0.5">
-                            {e.lane} • ${Math.abs(e.amount).toLocaleString()} • {getPacketStatus(e)}
+                <>
+                  <div className="h-px bg-white/10 my-2" />
+                  <Command.Group heading="Events" className="text-xs text-white/50 px-2 py-1.5">
+                    {events
+                      .filter((e) => {
+                        if (!search) return true;
+                        const s = search.toLowerCase();
+                        return (
+                          e.title.toLowerCase().includes(s) ||
+                          e.subtitle?.toLowerCase().includes(s) ||
+                          e.owner?.toLowerCase().includes(s) ||
+                          e.lane.toLowerCase().includes(s) ||
+                          e.id.toLowerCase().includes(s)
+                        );
+                      })
+                      .slice(0, 20)
+                      .map((e) => (
+                        <Command.Item
+                          key={e.id}
+                          value={e.id}
+                          onSelect={() => handleEventSelect(e)}
+                          className="flex items-center justify-between rounded-lg px-3 py-2.5 cursor-pointer hover:bg-white/5 aria-selected:bg-white/10 transition-colors"
+                        >
+                          <div className="flex-1 min-w-0">
+                            <div className="text-sm text-white truncate">{e.title}</div>
+                            <div className="text-xs text-white/50 mt-0.5">
+                              {e.lane} • ${Math.abs(e.amount).toLocaleString()} • {getPacketStatus(e)}
+                            </div>
                           </div>
-                        </div>
-                        <kbd className="ml-3 hidden h-5 select-none items-center gap-1 rounded border border-white/10 bg-white/5 px-1.5 text-[10px] font-medium text-white/60 sm:flex">
-                          →
-                        </kbd>
-                      </Command.Item>
-                    ))}
-                </Command.Group>
+                          <kbd className="ml-3 hidden h-5 select-none items-center gap-1 rounded border border-white/10 bg-white/5 px-1.5 text-[10px] font-medium text-white/60 sm:flex">
+                            →
+                          </kbd>
+                        </Command.Item>
+                      ))}
+                  </Command.Group>
+                </>
               )}
             </>
           )}

@@ -80,3 +80,11 @@ export async function bulkSubmitPackets(lane: string, max = 50) {
     results: Array<{ eventId: string; ok: boolean; error?: string; policyReasons?: string[] }>;
   }>("/api/packet/bulk-submit", { lane, max });
 }
+
+export async function macroSubmitDrafts(lane: string, max = 25) {
+  return postJson<any>("/api/macros/submit-drafts", { lane, max });
+}
+
+export async function macroGenerateReceipts(lane: string, max = 15) {
+  return postJson<any>("/api/macros/generate-receipts", { lane, max });
+}

@@ -17,7 +17,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   }
 
   const gate = await enforce("operator", req);
-  if (!gate.ok) {
+  if (gate.ok === false) {
     return res.status(gate.status).json({ ok: false, error: gate.error });
   }
 

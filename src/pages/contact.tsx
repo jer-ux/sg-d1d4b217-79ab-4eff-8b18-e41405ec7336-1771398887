@@ -1,127 +1,145 @@
 import { SEO } from "@/components/SEO";
 import { Container, PageHero } from "@/components/Blocks";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
-import { Label } from "@/components/ui/label";
 
-export default function ContactPage() {
+export default function Contact() {
   return (
     <>
       <SEO
         title="Contact — Kincaid IQ"
-        description="Get in touch to learn how Kincaid IQ can deliver decision-grade value systems for your organization."
+        description="Request a demo, ask for investor access, or start a diligence conversation. We'll respond with a clear next step."
       />
       <Container>
         <PageHero
-          title="Contact Us"
-          subtitle="Get in touch to learn how Kincaid IQ can deliver decision-grade value systems for your organization."
+          title="Contact"
+          subtitle="Request a demo, ask for investor access, or start a diligence conversation. We'll respond with a clear next step."
         />
 
-        <section className="mb-16">
-          <div className="grid md:grid-cols-2 gap-10">
-            <div>
-              <div className="k-panel p-8 mb-6">
-                <h2 className="text-2xl font-semibold mb-4">Request a Demo</h2>
-                <p className="text-white/70 mb-6">
-                  See how Kincaid IQ delivers evidence receipts, CFO-grade value ledger, and marketplace-native delivery across your stack.
-                </p>
-
-                <form className="space-y-5">
-                  <div>
-                    <Label htmlFor="name" className="text-white/90">Name</Label>
-                    <Input
-                      id="name"
-                      type="text"
-                      placeholder="John Smith"
-                      className="mt-1.5 bg-white/5 border-white/15 text-white placeholder:text-white/40"
-                    />
-                  </div>
-
-                  <div>
-                    <Label htmlFor="email" className="text-white/90">Email</Label>
-                    <Input
-                      id="email"
-                      type="email"
-                      placeholder="john@company.com"
-                      className="mt-1.5 bg-white/5 border-white/15 text-white placeholder:text-white/40"
-                    />
-                  </div>
-
-                  <div>
-                    <Label htmlFor="company" className="text-white/90">Company</Label>
-                    <Input
-                      id="company"
-                      type="text"
-                      placeholder="Acme Corp"
-                      className="mt-1.5 bg-white/5 border-white/15 text-white placeholder:text-white/40"
-                    />
-                  </div>
-
-                  <div>
-                    <Label htmlFor="message" className="text-white/90">Message</Label>
-                    <Textarea
-                      id="message"
-                      placeholder="Tell us about your needs..."
-                      rows={5}
-                      className="mt-1.5 bg-white/5 border-white/15 text-white placeholder:text-white/40"
-                    />
-                  </div>
-
-                  <Button
-                    type="submit"
-                    className="w-full bg-white text-black hover:bg-white/90 font-medium"
-                  >
-                    Request Demo
-                  </Button>
-                </form>
+        <div className="grid lg:grid-cols-3 gap-4">
+          <div className="lg:col-span-2 k-panel p-6">
+            <form className="space-y-4">
+              <div className="grid md:grid-cols-2 gap-4">
+                <Field label="First name" name="firstName" placeholder="Jeremiah" />
+                <Field label="Last name" name="lastName" placeholder="Shrack" />
               </div>
+
+              <div className="grid md:grid-cols-2 gap-4">
+                <Field label="Email" name="email" placeholder="you@firm.com" type="email" />
+                <Field label="Company / Family Office" name="company" placeholder="Firm name" />
+              </div>
+
+              <div className="grid md:grid-cols-2 gap-4">
+                <Select
+                  label="Reason"
+                  name="reason"
+                  options={[
+                    "Request demo",
+                    "Investor access",
+                    "Family office conversation",
+                    "M&A / diligence sprint",
+                    "Marketplace partnership",
+                    "Actuarial benefits consulting",
+                    "Other",
+                  ]}
+                />
+                <Select label="Timeline" name="timeline" options={["This week", "Next 2 weeks", "This month", "Next quarter", "Exploring"]} />
+              </div>
+
+              <div>
+                <label className="text-sm text-white/70">Message</label>
+                <textarea
+                  name="message"
+                  rows={6}
+                  placeholder="What are you trying to decide? What systems are in scope (Snowflake/Databricks/ServiceNow/ERP)?"
+                  className="mt-2 w-full rounded-xl bg-black/30 border border-white/10 px-4 py-3 text-white/90 placeholder:text-white/40 outline-none focus:border-white/25"
+                />
+                <div className="text-xs text-white/50 mt-2">
+                  Note: This form is UI-only in the scaffold. Wire it to your CRM (HubSpot/Salesforce) or email handler when ready.
+                </div>
+              </div>
+
+              <div className="flex flex-wrap gap-2 pt-2">
+                <button type="button" className="px-4 py-2 rounded-xl bg-white text-black font-medium hover:bg-white/90 transition">
+                  Submit
+                </button>
+                <a href="/capital-markets" className="px-4 py-2 rounded-xl border border-white/15 bg-white/5 hover:bg-white/10 transition">
+                  Investor overview
+                </a>
+              </div>
+            </form>
+          </div>
+
+          <div className="k-panel p-6">
+            <div className="font-semibold">Direct lanes</div>
+            <div className="text-sm text-white/70 mt-2">
+              Pick the lane and we'll respond with a concrete plan, not a generic reply.
             </div>
 
-            <div className="space-y-6">
-              <div className="k-panel p-8">
-                <h3 className="text-xl font-semibold mb-3">Enterprise Sales</h3>
-                <p className="text-white/70 text-sm mb-4">
-                  For enterprise deployments, cost optimization programs, and agentic transformation pathways.
-                </p>
-                <a href="mailto:enterprise@kincaidiq.com" className="text-blue-400 hover:text-blue-300 text-sm">
-                  enterprise@kincaidiq.com
-                </a>
-              </div>
+            <div className="mt-5 space-y-3 text-sm">
+              <InfoRow title="Capital Markets / Strategic" body="Evidence packs, diligence, value realization ledger." />
+              <InfoRow title="Family Offices / HNW" body="Governance-grade reporting, clarity engines, oversight cadence." />
+              <InfoRow title="Marketplaces" body="Snowflake / Databricks / ServiceNow packaging and GTM." />
+              <InfoRow title="Agentic Transformation" body="12-month policy, measured rollouts, controls-first design." />
+              <InfoRow title="Actuarial Benefits" body="PBM/Rx intelligence, compliance, benchmarking, verified savings." />
+            </div>
 
-              <div className="k-panel p-8">
-                <h3 className="text-xl font-semibold mb-3">Investor Relations</h3>
-                <p className="text-white/70 text-sm mb-4">
-                  For capital markets professionals, family offices, and investment firms seeking portfolio verification.
-                </p>
-                <a href="mailto:investors@kincaidiq.com" className="text-blue-400 hover:text-blue-300 text-sm">
-                  investors@kincaidiq.com
-                </a>
-              </div>
-
-              <div className="k-panel p-8">
-                <h3 className="text-xl font-semibold mb-3">Security & Compliance</h3>
-                <p className="text-white/70 text-sm mb-4">
-                  For security inquiries, compliance documentation, and governance questions.
-                </p>
-                <a href="mailto:security@kincaidiq.com" className="text-blue-400 hover:text-blue-300 text-sm">
-                  security@kincaidiq.com
-                </a>
-              </div>
-
-              <div className="k-panel p-8">
-                <h3 className="text-xl font-semibold mb-3">General Inquiries</h3>
-                <p className="text-white/70 text-sm mb-4">
-                  For all other questions, partnership opportunities, and general information.
-                </p>
-                <a href="mailto:info@kincaidiq.com" className="text-blue-400 hover:text-blue-300 text-sm">
-                  info@kincaidiq.com
-                </a>
-              </div>
+            <div className="mt-6 text-xs text-white/55">
+              If you prefer email-only workflows, wire this page to your preferred intake path and keep the proof bar consistent.
             </div>
           </div>
-        </section>
+        </div>
       </Container>
     </>
+  );
+}
+
+function Field({
+  label,
+  name,
+  placeholder,
+  type = "text",
+}: {
+  label: string;
+  name: string;
+  placeholder?: string;
+  type?: string;
+}) {
+  return (
+    <div>
+      <label className="text-sm text-white/70">{label}</label>
+      <input
+        name={name}
+        type={type}
+        placeholder={placeholder}
+        className="mt-2 w-full rounded-xl bg-black/30 border border-white/10 px-4 py-3 text-white/90 placeholder:text-white/40 outline-none focus:border-white/25"
+      />
+    </div>
+  );
+}
+
+function Select({ label, name, options }: { label: string; name: string; options: string[] }) {
+  return (
+    <div>
+      <label className="text-sm text-white/70">{label}</label>
+      <select
+        name={name}
+        className="mt-2 w-full rounded-xl bg-black/30 border border-white/10 px-4 py-3 text-white/90 outline-none focus:border-white/25"
+        defaultValue={options[0]}
+      >
+        {options.map((opt) => (
+          <option key={opt} value={opt} className="bg-black">
+            {opt}
+          </option>
+        ))}
+      </select>
+    </div>
+  );
+}
+
+function InfoRow({ title, body }: { title: string; body: string }) {
+  return (
+    <div className="border border-white/10 rounded-xl bg-white/5 p-4">
+      <div className="text-white/90 font-medium">{title}</div>
+      <div className="text-white/65 mt-1">{body}</div>
+    </div>
   );
 }

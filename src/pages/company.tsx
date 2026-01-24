@@ -103,6 +103,29 @@ export default function Company() {
             <div className="text-sm text-white/70 mt-1">Diligence packs and realization discipline</div>
           </Link>
         </div>
+
+        <div className="mt-6 flex gap-2">
+          <Link href="/case-studies" className="px-4 py-2 rounded-xl border border-white/15 bg-white/5 hover:bg-white/10 transition">
+            View case studies
+          </Link>
+          <Link href="/contact" className="px-4 py-2 rounded-xl bg-white text-black font-medium hover:bg-white/90 transition">
+            Contact
+          </Link>
+        </div>
+
+        <div className="k-panel p-6">
+          <div className="font-semibold">Operating philosophy</div>
+          <ul className="mt-3 text-sm text-white/70 list-disc pl-5 space-y-2">
+            <li>Proof-first outputs beat persuasion.</li>
+            <li>Controls make scale safe.</li>
+            <li>Reconciliation beats debate.</li>
+            <li>Productized delivery increases trust and margin.</li>
+          </ul>
+
+          <div className="mt-6 text-xs text-white/55">
+            If you want a leadership module, add a "Leadership" section and keep it crisp: operator bios, not long narratives.
+          </div>
+        </div>
       </Container>
     </>
   );

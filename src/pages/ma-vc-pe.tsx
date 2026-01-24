@@ -1,64 +1,54 @@
 import { SEO } from "@/components/SEO";
-import { Container, PageHero, CardGrid, CTA } from "@/components/Blocks";
+import { Container, PageHero, CardGrid, CTA, ProofBar } from "@/components/Blocks";
 
-export default function MAVCPEPage() {
+export default function Mavcpe() {
   return (
     <>
       <SEO
-        title="M&A / VC / PE — Kincaid IQ"
-        description="Due diligence tools, value verification, and portfolio monitoring for M&A, VC, and PE professionals."
+        title="M&A / VC / PE Diligence — Kincaid IQ"
+        description="Find leakage. Prove it. Underwrite it. Then track realization with a ledger that survives integration reality."
       />
       <Container>
         <PageHero
-          title="M&A / VC / PE"
-          subtitle="Due diligence tools, value verification, and portfolio monitoring for M&A, venture capital, and private equity professionals."
+          title="M&A / VC / PE Diligence"
+          subtitle="Find leakage. Prove it. Underwrite it. Then track realization with a ledger that survives integration reality."
         />
 
-        <section className="mb-16">
-          <h2 className="text-2xl font-semibold mb-6">Deal Intelligence</h2>
-          <CardGrid
-            items={[
-              {
-                title: "Due Diligence",
-                body: "Comprehensive due diligence with evidence receipts, controls monitoring, and variance analysis.",
-              },
-              {
-                title: "Value Verification",
-                body: "Verify target company value with actuarial-grade metrics and auditable proof.",
-              },
-              {
-                title: "Portfolio Monitoring",
-                body: "Real-time portfolio company monitoring with CFO-grade value ledger.",
-              },
-              {
-                title: "Synergy Analysis",
-                body: "Evidence-based synergy identification and tracking for M&A transactions.",
-              },
-              {
-                title: "Exit Planning",
-                body: "Exit value optimization with controls-first analytics and verified outcomes.",
-              },
-              {
-                title: "LP Reporting",
-                body: "LP-grade reporting with evidence receipts and auditable performance tracking.",
-              },
-            ]}
-          />
-        </section>
+        <div className="mb-8">
+          <ProofBar />
+        </div>
 
-        <section className="mb-16">
-          <div className="k-panel p-8">
-            <h2 className="text-2xl font-semibold mb-4">Built for Deal Professionals</h2>
-            <div className="text-white/70 space-y-3">
-              <p>
-                Kincaid IQ provides decision-grade value systems that M&A, VC, and PE professionals rely on for due diligence, portfolio monitoring, and exit optimization.
-              </p>
-              <p>
-                From target value verification to portfolio company tracking, our platform delivers evidence-based insights and auditable outcomes at every stage of the investment lifecycle.
-              </p>
+        <CardGrid
+          items={[
+            { 
+              title: "Diligence Proof Packs", 
+              body: "Evidence receipts, methodology disclosure, and reconciliation outputs that reduce 'trust gaps.'" 
+            },
+            { 
+              title: "Integration-Ready Workflows", 
+              body: "Owner assignment, approvals, and closure loops—built for post-close execution, not slideware." 
+            },
+            { 
+              title: "Realization Governance", 
+              body: "At-risk decay logic, exception queues, and weekly/monthly reconciliation routines." 
+            },
+          ]}
+        />
+
+        <div className="mt-8 grid md:grid-cols-2 gap-4">
+          <div className="k-panel p-6">
+            <div className="font-semibold">Diligence sprint</div>
+            <div className="text-sm text-white/70 mt-2">
+              Rapid signal extraction with proof standards: what's real, what's recoverable, what's speculation.
             </div>
           </div>
-        </section>
+          <div className="k-panel p-6">
+            <div className="font-semibold">Post-close value office</div>
+            <div className="text-sm text-white/70 mt-2">
+              Convert identified value into realized value, with owners, dates, and evidence-backed accountability.
+            </div>
+          </div>
+        </div>
 
         <CTA />
       </Container>

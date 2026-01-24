@@ -21,13 +21,13 @@ export const primaryCtas: NavLink[] = [
   { label: "Investor access", href: "/capital-markets", description: "Capital markets overview." },
 ];
 
-// CLEAN NAV: only 5 dropdown boxes in the header
+// Ultra-clean nav: only 4 dropdown boxes in header
 export const megaNav: NavDropdown[] = [
   {
     label: "Platform",
     sections: [
       {
-        title: "Core",
+        title: "Core Platform",
         links: [
           {
             label: "Kincaid IQ Platform",
@@ -127,35 +127,25 @@ export const megaNav: NavDropdown[] = [
   },
 
   {
-    label: "Resources",
+    label: "About",
     sections: [
       {
-        title: "Proof & Materials",
-        links: [
-          { label: "Case Studies", href: "/case-studies", description: "Evidence-led narratives and outcomes." },
-          { label: "Security & Governance", href: "/security-governance", description: "Controls-first posture for enterprise decision systems." },
-        ],
-      },
-      {
-        title: "Get Started",
-        links: [
-          { label: "Request demo", href: "/contact", description: "Start a scoped conversation." },
-          { label: "Investor access", href: "/capital-markets", description: "Capital markets overview." },
-        ],
-      },
-    ],
-  },
-
-  {
-    label: "Company",
-    sections: [
-      {
-        title: "About",
+        title: "Company",
         links: [
           { label: "Company", href: "/company", description: "Built for boards. Run by operators. Proof-first philosophy." },
           { label: "Contact", href: "/contact", description: "Request demo, diligence sprint, or investor access." },
         ],
       },
+      {
+        title: "Trust & Proof",
+        links: [
+          { label: "Security & Governance", href: "/security-governance", description: "Controls-first posture for enterprise decision systems." },
+          { label: "Case Studies", href: "/case-studies", description: "Evidence-led narratives and outcomes." },
+        ],
+      },
+    ],
+    featured: [
+      { label: "Request demo", href: "/contact", description: "Start a scoped conversation.", badge: "Fast path" },
     ],
   },
 ];

@@ -23,16 +23,6 @@ function Orb() {
         <sphereGeometry args={[1.25, 128, 128]} />
         <MeshTransmissionMaterial {...config} />
       </mesh>
-
-      <mesh scale={1.38}>
-        <torusGeometry args={[1.05, 0.015, 16, 220]} />
-        <meshStandardMaterial color="#9bb4ff" emissive="#4b7cff" emissiveIntensity={0.6} />
-      </mesh>
-
-      <mesh scale={1.55} rotation={[0.2, 0.4, 0]}>
-        <torusGeometry args={[1.05, 0.01, 16, 220]} />
-        <meshStandardMaterial color="#66f2ff" emissive="#1ea7ff" emissiveIntensity={0.35} />
-      </mesh>
     </Float>
   );
 }

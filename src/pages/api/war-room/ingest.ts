@@ -102,6 +102,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         state: e.state ?? "IDENTIFIED",
         owner: e.owner ?? "Unassigned",
         updatedAt: e.updatedAt ?? new Date().toISOString(),
+        createdAt: e.createdAt ?? new Date().toISOString(),
         
         // Packet workflow defaults
         packetStatus: e.packetStatus ?? "DRAFT",

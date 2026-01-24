@@ -2,55 +2,84 @@
 
 import { useEffect, useState, useCallback } from "react";
 import { Command } from "cmdk";
+import { useRouter } from "next/router";
 import type { WarEvent } from "@/lib/warroom/types";
+import type { NavLink } from "@/components/site";
 import { getPacketStatus } from "@/components/warroom/packetUi";
 import { submitPacket, approvePacket, closePacket } from "@/components/warroom/apiClient";
 import { toast } from "@/hooks/use-toast";
 
 type CommandPaletteProps = {
-  events: WarEvent[];
-  onOpenEvidence: (event: WarEvent | null) => void;
+  // War Room mode
+  events?: WarEvent[];
+  onOpenEvidence?: (event: WarEvent | null) => void;
+  
+  // Site mode
+  links?: NavLink[];
+  open?: boolean;
+  onClose?: () => void;
 };
 
-export default function CommandPalette({ events, onOpenEvidence }: CommandPaletteProps) {
-  const [open, setOpen] = useState(false);
+export default function CommandPalette({ 
+  events = [], 
+  onOpenEvidence, 
+  links = [], 
+  open: controlledOpen, 
+  onClose 
+}: CommandPaletteProps) {
+  const router = useRouter();
+  const [internalOpen, setInternalOpen] = useState(false);
   const [search, setSearch] = useState("");
   const [page, setPage] = useState<"root" | "event">("root");
   const [selectedEvent, setSelectedEvent] = useState<WarEvent | null>(null);
 
-  // ⌘K / Ctrl+K to open
+  const isControlled = typeof controlledOpen === "boolean";
+  const isOpen = isControlled ? controlledOpen : internalOpen;
+
+  const closePalette = useCallback(() => {
+    setSearch("");
+    setPage("root");
+    setSelectedEvent(null);
+    
+    if (isControlled && onClose) {
+      onClose();
+    } else {
+      setInternalOpen(false);
+    }
+  }, [isControlled, onClose]);
+
+  // ⌘K / Ctrl+K to open (only if uncontrolled)
   useEffect(() => {
+    if (isControlled) return;
+
     const down = (e: KeyboardEvent) => {
       if (e.key === "k" && (e.metaKey || e.ctrlKey)) {
         e.preventDefault();
-        setOpen((open) => !open);
+        setInternalOpen((prev) => !prev);
       }
     };
 
     document.addEventListener("keydown", down);
     return () => document.removeEventListener("keydown", down);
-  }, []);
-
-  // Reset state when closing
-  useEffect(() => {
-    if (!open) {
-      setSearch("");
-      setPage("root");
-      setSelectedEvent(null);
-    }
-  }, [open]);
+  }, [isControlled]);
 
   const handleEventSelect = useCallback((event: WarEvent) => {
     setSelectedEvent(event);
     setPage("event");
+    setSearch("");
   }, []);
 
+  const handleLinkSelect = useCallback((href: string) => {
+    router.push(href);
+    closePalette();
+  }, [router, closePalette]);
+
   const handleViewEvidence = useCallback(() => {
-    if (selectedEvent) {
+    if (selectedEvent && onOpenEvidence) {
       onOpenEvidence(selectedEvent);
-      setOpen(false);
+      closePalette();
     }
-  }, [selectedEvent, onOpenEvidence]);
+  }, [selectedEvent, onOpenEvidence, closePalette]);
 
   const handleAction = useCallback(
     async (action: "submit" | "approve" | "close") => {
@@ -75,7 +104,7 @@ export default function CommandPalette({ events, onOpenEvidence }: CommandPalett
             title: "Success",
             description: `Packet ${action}ed successfully`,
           });
-          setOpen(false);
+          closePalette();
         }
       } catch (e: any) {
         toast({
@@ -85,7 +114,7 @@ export default function CommandPalette({ events, onOpenEvidence }: CommandPalett
         });
       }
     },
-    [selectedEvent]
+    [selectedEvent, closePalette]
   );
 
   const handleBulkSubmit = useCallback(async (lane: string) => {
@@ -108,7 +137,7 @@ export default function CommandPalette({ events, onOpenEvidence }: CommandPalett
           title: "Bulk submit complete",
           description: `${result.okCount} packets submitted (${result.failCount} failed)`,
         });
-        setOpen(false);
+        closePalette();
       }
     } catch (e: any) {
       toast({
@@ -117,14 +146,14 @@ export default function CommandPalette({ events, onOpenEvidence }: CommandPalett
         variant: "destructive",
       });
     }
-  }, []);
+  }, [closePalette]);
 
-  if (!open) return null;
+  if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 z-50 bg-black/50 backdrop-blur-sm flex items-start justify-center pt-[15vh]">
+    <div className="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm flex items-start justify-center pt-[15vh]">
       <Command
-        className="w-full max-w-2xl k-panel k-glow shadow-2xl"
+        className="w-full max-w-2xl k-panel k-glow shadow-2xl overflow-hidden"
         shouldFilter={false}
       >
         <div className="flex items-center border-b border-white/10 px-4">
@@ -141,7 +170,7 @@ export default function CommandPalette({ events, onOpenEvidence }: CommandPalett
           <Command.Input
             value={search}
             onValueChange={setSearch}
-            placeholder="Search events, take actions..."
+            placeholder={page === "event" ? "Search actions..." : "Search events, links, or actions..."}
             className="flex h-12 w-full bg-transparent py-3 text-sm outline-none placeholder:text-white/40 text-white"
           />
           <kbd className="pointer-events-none ml-auto hidden h-6 select-none items-center gap-1 rounded border border-white/10 bg-white/5 px-2 text-[10px] font-medium text-white/60 sm:flex">
@@ -149,76 +178,102 @@ export default function CommandPalette({ events, onOpenEvidence }: CommandPalett
           </kbd>
         </div>
 
-        <Command.List className="max-h-[400px] overflow-y-auto p-2">
+        <Command.List className="max-h-[400px] overflow-y-auto p-2 scrollbar-thin scrollbar-thumb-white/10 scrollbar-track-transparent">
           <Command.Empty className="py-6 text-center text-sm text-white/50">
             No results found.
           </Command.Empty>
 
           {page === "root" && (
             <>
-              <Command.Group heading="Quick Actions" className="text-xs text-white/50 px-2 py-1.5">
-                <Command.Item
-                  onSelect={() => handleBulkSubmit("value")}
-                  className="flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm cursor-pointer hover:bg-white/5 data-[selected=true]:bg-white/10"
-                >
-                  <span className="text-emerald-400">⚡</span>
-                  <span>Submit all drafts in Value lane</span>
-                </Command.Item>
-                <Command.Item
-                  onSelect={() => handleBulkSubmit("control")}
-                  className="flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm cursor-pointer hover:bg-white/5 data-[selected=true]:bg-white/10"
-                >
-                  <span className="text-violet-400">⚡</span>
-                  <span>Submit all drafts in Control lane</span>
-                </Command.Item>
-                <Command.Item
-                  onSelect={() => handleBulkSubmit("exposure")}
-                  className="flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm cursor-pointer hover:bg-white/5 data-[selected=true]:bg-white/10"
-                >
-                  <span className="text-rose-400">⚡</span>
-                  <span>Submit all drafts in Exposure lane</span>
-                </Command.Item>
-              </Command.Group>
-
-              <Command.Group heading="Events" className="text-xs text-white/50 px-2 py-1.5 mt-2">
-                {events
-                  .filter((e) => {
-                    if (!search) return true;
-                    const s = search.toLowerCase();
-                    return (
-                      e.title.toLowerCase().includes(s) ||
-                      e.subtitle?.toLowerCase().includes(s) ||
-                      e.owner?.toLowerCase().includes(s) ||
-                      e.lane.toLowerCase().includes(s) ||
-                      e.id.toLowerCase().includes(s)
-                    );
-                  })
-                  .slice(0, 20)
-                  .map((e) => (
-                    <Command.Item
-                      key={e.id}
-                      value={e.id}
-                      onSelect={() => handleEventSelect(e)}
-                      className="flex items-center justify-between rounded-lg px-3 py-2.5 cursor-pointer hover:bg-white/5 data-[selected=true]:bg-white/10"
-                    >
-                      <div className="flex-1 min-w-0">
-                        <div className="text-sm text-white truncate">{e.title}</div>
-                        <div className="text-xs text-white/50 mt-0.5">
-                          {e.lane} • ${Math.abs(e.amount).toLocaleString()} • {getPacketStatus(e)}
+              {/* Site Navigation Links */}
+              {links.length > 0 && (
+                <Command.Group heading="Navigation" className="text-xs text-white/50 px-2 py-1.5">
+                  {links
+                    .filter(l => !search || l.label.toLowerCase().includes(search.toLowerCase()))
+                    .slice(0, 5)
+                    .map((link) => (
+                      <Command.Item
+                        key={link.href}
+                        value={link.href}
+                        onSelect={() => handleLinkSelect(link.href)}
+                        className="flex items-center justify-between rounded-lg px-3 py-2.5 text-sm cursor-pointer hover:bg-white/5 aria-selected:bg-white/10 transition-colors"
+                      >
+                        <div className="flex items-center gap-3">
+                          <span className="text-white/60">🔗</span>
+                          <span className="text-white/90">{link.label}</span>
                         </div>
-                      </div>
-                      <kbd className="ml-3 hidden h-5 select-none items-center gap-1 rounded border border-white/10 bg-white/5 px-1.5 text-[10px] font-medium text-white/60 sm:flex">
-                        →
-                      </kbd>
-                    </Command.Item>
-                  ))}
-              </Command.Group>
+                        {link.badge && (
+                          <span className="text-[10px] px-1.5 py-0.5 rounded border border-white/10 bg-white/5 text-white/60">
+                            {link.badge}
+                          </span>
+                        )}
+                      </Command.Item>
+                    ))}
+                </Command.Group>
+              )}
+
+              {/* War Room Actions (only show if we have events context or search matches specific keywords) */}
+              {(events.length > 0 || search.includes("submit") || search.includes("draft")) && (
+                <Command.Group heading="War Room Actions" className="text-xs text-white/50 px-2 py-1.5 mt-2">
+                  <Command.Item
+                    onSelect={() => handleBulkSubmit("value")}
+                    className="flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm cursor-pointer hover:bg-white/5 aria-selected:bg-white/10 transition-colors"
+                  >
+                    <span className="text-emerald-400">⚡</span>
+                    <span className="text-white/90">Submit all drafts in Value lane</span>
+                  </Command.Item>
+                  <Command.Item
+                    onSelect={() => handleBulkSubmit("control")}
+                    className="flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm cursor-pointer hover:bg-white/5 aria-selected:bg-white/10 transition-colors"
+                  >
+                    <span className="text-violet-400">⚡</span>
+                    <span className="text-white/90">Submit all drafts in Control lane</span>
+                  </Command.Item>
+                </Command.Group>
+              )}
+
+              {/* War Room Events */}
+              {events.length > 0 && (
+                <Command.Group heading="Events" className="text-xs text-white/50 px-2 py-1.5 mt-2">
+                  {events
+                    .filter((e) => {
+                      if (!search) return true;
+                      const s = search.toLowerCase();
+                      return (
+                        e.title.toLowerCase().includes(s) ||
+                        e.subtitle?.toLowerCase().includes(s) ||
+                        e.owner?.toLowerCase().includes(s) ||
+                        e.lane.toLowerCase().includes(s) ||
+                        e.id.toLowerCase().includes(s)
+                      );
+                    })
+                    .slice(0, 20)
+                    .map((e) => (
+                      <Command.Item
+                        key={e.id}
+                        value={e.id}
+                        onSelect={() => handleEventSelect(e)}
+                        className="flex items-center justify-between rounded-lg px-3 py-2.5 cursor-pointer hover:bg-white/5 aria-selected:bg-white/10 transition-colors"
+                      >
+                        <div className="flex-1 min-w-0">
+                          <div className="text-sm text-white truncate">{e.title}</div>
+                          <div className="text-xs text-white/50 mt-0.5">
+                            {e.lane} • ${Math.abs(e.amount).toLocaleString()} • {getPacketStatus(e)}
+                          </div>
+                        </div>
+                        <kbd className="ml-3 hidden h-5 select-none items-center gap-1 rounded border border-white/10 bg-white/5 px-1.5 text-[10px] font-medium text-white/60 sm:flex">
+                          →
+                        </kbd>
+                      </Command.Item>
+                    ))}
+                </Command.Group>
+              )}
             </>
           )}
 
           {page === "event" && selectedEvent && (
             <>
-              <div className="px-3 py-2 border-b border-white/10">
+              <div className="px-3 py-2 border-b border-white/10 mb-2">
                 <div className="text-sm text-white font-medium">{selectedEvent.title}</div>
                 <div className="text-xs text-white/50 mt-1">
                   {selectedEvent.lane} • ${Math.abs(selectedEvent.amount).toLocaleString()} •{" "}
@@ -229,48 +284,48 @@ export default function CommandPalette({ events, onOpenEvidence }: CommandPalett
               <Command.Group heading="Actions" className="text-xs text-white/50 px-2 py-1.5">
                 <Command.Item
                   onSelect={handleViewEvidence}
-                  className="flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm cursor-pointer hover:bg-white/5 data-[selected=true]:bg-white/10"
+                  className="flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm cursor-pointer hover:bg-white/5 aria-selected:bg-white/10 transition-colors"
                 >
-                  <span>📋</span>
-                  <span>View evidence</span>
+                  <span className="text-white/60">📋</span>
+                  <span className="text-white/90">View evidence</span>
                 </Command.Item>
 
                 {getPacketStatus(selectedEvent) === "DRAFT" && (
                   <Command.Item
                     onSelect={() => handleAction("submit")}
-                    className="flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm cursor-pointer hover:bg-white/5 data-[selected=true]:bg-white/10"
+                    className="flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm cursor-pointer hover:bg-white/5 aria-selected:bg-white/10 transition-colors"
                   >
-                    <span>📤</span>
-                    <span>Submit packet</span>
+                    <span className="text-white/60">📤</span>
+                    <span className="text-white/90">Submit packet</span>
                   </Command.Item>
                 )}
 
                 {getPacketStatus(selectedEvent) === "SUBMITTED" && (
                   <Command.Item
                     onSelect={() => handleAction("approve")}
-                    className="flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm cursor-pointer hover:bg-white/5 data-[selected=true]:bg-white/10"
+                    className="flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm cursor-pointer hover:bg-white/5 aria-selected:bg-white/10 transition-colors"
                   >
-                    <span>✅</span>
-                    <span>Approve packet</span>
+                    <span className="text-white/60">✅</span>
+                    <span className="text-white/90">Approve packet</span>
                   </Command.Item>
                 )}
 
                 {getPacketStatus(selectedEvent) === "APPROVED" && (
                   <Command.Item
                     onSelect={() => handleAction("close")}
-                    className="flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm cursor-pointer hover:bg-white/5 data-[selected=true]:bg-white/10"
+                    className="flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm cursor-pointer hover:bg-white/5 aria-selected:bg-white/10 transition-colors"
                   >
-                    <span>🔒</span>
-                    <span>Close packet</span>
+                    <span className="text-white/60">🔒</span>
+                    <span className="text-white/90">Close packet</span>
                   </Command.Item>
                 )}
 
                 <Command.Item
                   onSelect={() => setPage("root")}
-                  className="flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm cursor-pointer hover:bg-white/5 data-[selected=true]:bg-white/10"
+                  className="flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm cursor-pointer hover:bg-white/5 aria-selected:bg-white/10 transition-colors"
                 >
-                  <span>←</span>
-                  <span>Back to search</span>
+                  <span className="text-white/60">←</span>
+                  <span className="text-white/90">Back to search</span>
                 </Command.Item>
               </Command.Group>
             </>
@@ -280,7 +335,7 @@ export default function CommandPalette({ events, onOpenEvidence }: CommandPalett
 
       <div
         className="fixed inset-0 -z-10"
-        onClick={() => setOpen(false)}
+        onClick={closePalette}
       />
     </div>
   );

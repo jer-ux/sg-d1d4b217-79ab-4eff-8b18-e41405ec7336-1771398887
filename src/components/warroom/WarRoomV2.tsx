@@ -272,7 +272,7 @@ export default function WarRoomV2() {
           </div>
 
           <div className="flex-1 lg:ml-6">
-            <TickerMarquee events={ticker} />
+            <TickerMarquee items={ticker} />
             <CommandPalette events={ticker as any} onOpenEvidence={setEvidenceOpen} />
             <AuditTicker />
           </div>

@@ -8,10 +8,7 @@ export async function listEventIds(limit = 200): Promise<string[]> {
   const ids: string[] = [];
 
   while (true) {
-    const [next, keys] = await redis.scan(cursor, {
-      MATCH: `${EVENT_KEY_PREFIX}*`,
-      COUNT: 200,
-    });
+    const [next, keys] = await redis.scan(cursor, "MATCH", `${EVENT_KEY_PREFIX}*`, "COUNT", 200);
     cursor = next;
 
     for (const k of keys) {

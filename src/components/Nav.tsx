@@ -1,7 +1,8 @@
 import Link from "next/link";
 import { useRouter } from "next/router";
-import { useEffect, useMemo, useRef, useState } from "react";
-import { CommandPalette } from "@/components/CommandPalette";
+import { useState, useEffect, useRef, useMemo } from "react";
+import CommandPalette from "@/components/CommandPalette";
+import { cn } from "@/lib/utils";
 import { megaNav, primaryCtas, allNavLinks, topLevelForPath, NavDropdown, NavLink } from "@/components/site";
 
 function useOnClickOutside(ref: React.RefObject<HTMLElement>, handler: () => void) {

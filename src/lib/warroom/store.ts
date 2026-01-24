@@ -12,6 +12,8 @@ function isoNow() {
 function seedSummaries(): LaneSummary[] {
   return lanes.map((lane) => ({
     lane,
+    label: lane === "value" ? "Value Creation" : lane === "controls" ? "Controls & Risk" : lane === "agentic" ? "Agentic Workflow" : "Marketplace",
+    headline: lane === "value" ? "EBITDA impact from realized opportunities" : lane === "controls" ? "Risk exposure and compliance gaps" : lane === "agentic" ? "Efficiency gains from AI agents" : "Vendor and partner ecosystem",
     identified: lane === "value" ? 7_800_000 : lane === "controls" ? 2_100_000 : lane === "agentic" ? 3_400_000 : 1_250_000,
     approved: lane === "value" ? 2_900_000 : lane === "controls" ? 850_000 : lane === "agentic" ? 1_100_000 : 420_000,
     realized: lane === "value" ? 1_650_000 : lane === "controls" ? 390_000 : lane === "agentic" ? 610_000 : 180_000,

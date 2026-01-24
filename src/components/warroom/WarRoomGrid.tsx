@@ -25,7 +25,15 @@ function formatMoney(n: number) {
 async function postJson(url: string, body: any) {
   const res = await fetch(url, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(body) });
   const j = await res.json();
-  if (!res.ok || !j.ok) throw new Error(j.error || "Request failed");
+  if (!res.ok || !j.ok) {
+    // Show policy reasons if available
+    if (j.reasons && Array.isArray(j.reasons)) {
+      alert("Policy check failed:\n\n" + j.reasons.map((r: string) => `• ${r}`).join("\n"));
+    } else {
+      alert(j.error || "Request failed");
+    }
+    throw new Error(j.error || "Request failed");
+  }
   return j;
 }
 

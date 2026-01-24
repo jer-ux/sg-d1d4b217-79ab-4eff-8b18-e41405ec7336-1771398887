@@ -1,5 +1,8 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 import { close } from "@/lib/warroom/redisStore";
+import { canClose } from "@/lib/warroom/policy";
+import { getRedis } from "@/lib/warroom/redis";
+import type { WarEvent } from "@/lib/warroom/types";
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   if (req.method !== "POST") {
@@ -10,6 +13,24 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     const { eventId } = req.body;
     if (!eventId) {
       return res.status(400).json({ error: "eventId required" });
+    }
+
+    // Fetch event to check policy
+    const redis = getRedis();
+    const raw = await redis.get(`kiq:warroom:event:${eventId}`);
+    if (!raw) {
+      return res.status(404).json({ error: "Event not found" });
+    }
+
+    const event = JSON.parse(raw) as WarEvent;
+    const decision = canClose(event);
+
+    if (!decision.ok) {
+      return res.status(400).json({
+        ok: false,
+        error: "Policy check failed",
+        reasons: decision.reasons,
+      });
     }
 
     const updated = await close(eventId);

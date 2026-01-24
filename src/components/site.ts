@@ -41,6 +41,12 @@ export const megaNav: NavDropdown[] = [
             badge: "Proof",
           },
           {
+            label: "War Room",
+            href: "/war-room",
+            description: "Live EBITDA ledger with real-time event tracking across all lanes.",
+            badge: "Live",
+          },
+          {
             label: "Security & Governance",
             href: "/security-governance",
             description: "Controls, audit trail, access discipline, evidence standards.",
@@ -190,7 +196,7 @@ export const allNavLinks: NavLink[] = (() => {
 export function topLevelForPath(pathname: string): string {
   const p = (pathname || "/").toLowerCase();
 
-  if (p === "/" || p.startsWith("/platform") || p.startsWith("/verified-savings-ledger") || p.startsWith("/security-governance") || p.startsWith("/case-studies")) {
+  if (p === "/" || p.startsWith("/platform") || p.startsWith("/verified-savings-ledger") || p.startsWith("/war-room") || p.startsWith("/security-governance") || p.startsWith("/case-studies")) {
     return "Platform";
   }
   if (p.startsWith("/marketplace") || p.startsWith("/agentic") || p.startsWith("/actuarial-benefits")) {

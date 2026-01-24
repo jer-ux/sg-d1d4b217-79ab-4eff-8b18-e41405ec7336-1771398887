@@ -93,7 +93,7 @@ export default function Home() {
             <div className="grid md:grid-cols-2 gap-8">
               <div className="space-y-6">
                 <div className="border-l-2 border-rose-400 pl-4 hover-lift">
-                  <div className="text-rose-300 font-semibold mb-1">Healthcare CFO</div>
+                  <div className="text-rose-300 font-semibold mb-1">Healthcare CFO, $250M Revenue</div>
                   <div className="text-sm text-white/70">
                     "Our PBM claimed <span className="text-rose-200 font-medium">$8.2M in rebate savings</span>. When we demanded receipts, 
                     they provided a 47-page PDF with aggregated numbers. No transaction IDs, no member-level data, no way to reconcile 
@@ -102,7 +102,7 @@ export default function Home() {
                 </div>
 
                 <div className="border-l-2 border-orange-400 pl-4 hover-lift">
-                  <div className="text-orange-300 font-semibold mb-1">Manufacturing CIO</div>
+                  <div className="text-orange-300 font-semibold mb-1">Manufacturing CIO, $180M Revenue</div>
                   <div className="text-sm text-white/70">
                     "We deployed an AI-driven supply chain optimization tool that promised <span className="text-orange-200 font-medium">18% cost reduction</span>. 
                     Six months in, our CFO asked for proof. The vendor showed us a dashboard with green arrows and percentages—but 
@@ -113,7 +113,7 @@ export default function Home() {
 
               <div className="space-y-6">
                 <div className="border-l-2 border-amber-400 pl-4 hover-lift">
-                  <div className="text-amber-300 font-semibold mb-1">Financial Services CEO</div>
+                  <div className="text-amber-300 font-semibold mb-1">Financial Services CEO, $320M Revenue</div>
                   <div className="text-sm text-white/70">
                     "PE firm conducting diligence asked: 'Can you prove your operational efficiency gains?' We had <span className="text-amber-200 font-medium">$12M in claimed savings</span> 
                     from three consulting engagements. Zero audit trail. Zero evidence receipts. 
@@ -122,7 +122,7 @@ export default function Home() {
                 </div>
 
                 <div className="border-l-2 border-violet-400 pl-4 hover-lift">
-                  <div className="text-violet-300 font-semibold mb-1">Retail CIO</div>
+                  <div className="text-violet-300 font-semibold mb-1">Retail CIO, $140M Revenue</div>
                   <div className="text-sm text-white/70">
                     "Cloud migration partner promised <span className="text-violet-200 font-medium">$4.7M annual savings</span>. Post-migration, our AWS bill went UP by $1.2M. 
                     When confronted, they said 'savings are projected over 3 years.' No baseline, no variance tracking, 
@@ -155,10 +155,10 @@ export default function Home() {
               <div className="k-panel p-6 hover-lift border-rose-500/20">
                 <div className="text-center mb-4">
                   <div className="text-5xl font-bold gradient-amber-rose animate-count-up">$47M</div>
-                  <div className="text-xs text-white/50 mt-2">Healthcare System PBM Claim</div>
+                  <div className="text-xs text-white/50 mt-2">Regional Healthcare System PBM Claim</div>
                 </div>
                 <div className="text-sm text-white/70 mb-3">
-                  Fortune 500 healthcare system with <span className="text-rose-300">$47M in "rebate savings"</span> promised by PBM over 3 years.
+                  $380M revenue healthcare system with <span className="text-rose-300">$47M in "rebate savings"</span> promised by PBM over 3 years.
                 </div>
                 <div className="border-t border-white/10 pt-3 mt-3">
                   <div className="flex justify-between items-center mb-2">
@@ -178,7 +178,7 @@ export default function Home() {
                   <div className="text-xs text-white/50 mt-2">AI "Opportunities" Identified</div>
                 </div>
                 <div className="text-sm text-white/70 mb-3">
-                  Fortune 1000 financial services firm committed to "AI transformation" with <span className="text-violet-300">200+ use cases</span>.
+                  $420M revenue financial services firm committed to "AI transformation" with <span className="text-violet-300">200+ use cases</span>.
                 </div>
                 <div className="border-t border-white/10 pt-3 mt-3">
                   <div className="flex justify-between items-center mb-2">
@@ -198,7 +198,7 @@ export default function Home() {
                   <div className="text-xs text-white/50 mt-2">PE Portfolio "Cost Synergies"</div>
                 </div>
                 <div className="text-sm text-white/70 mb-3">
-                  Mid-market PE firm post-acquisition with <span className="text-amber-300">$18M in claimed synergies</span>. Buyer demanded proof.
+                  Mid-market PE portfolio company with <span className="text-amber-300">$18M in claimed synergies</span>. Buyer demanded proof.
                 </div>
                 <div className="border-t border-white/10 pt-3 mt-3">
                   <div className="flex justify-between items-center mb-2">

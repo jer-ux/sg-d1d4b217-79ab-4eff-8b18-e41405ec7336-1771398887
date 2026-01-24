@@ -102,7 +102,7 @@ export async function submitPacket(eventId: string, actor: string, role: string)
   const e = JSON.parse(raw) as WarEvent;
 
   const decision = canTransitionPacket(e, "SUBMITTED");
-  const reasons = decision.ok ? [] : decision.reasons;
+  const reasons = "reasons" in decision ? decision.reasons : [];
 
   await auditFromEvent({
     action: "PACKET_SUBMIT_ATTEMPT",
@@ -148,7 +148,7 @@ export async function approvePacket(eventId: string, actor: string, role: string
   const signed = addSignature(e, { signer: actor, role, action: "APPROVE" });
 
   const decision = canTransitionPacket(signed, "APPROVED");
-  const reasons = decision.ok ? [] : decision.reasons;
+  const reasons = "reasons" in decision ? decision.reasons : [];
 
   await auditFromEvent({
     action: "PACKET_APPROVE_ATTEMPT",
@@ -189,7 +189,7 @@ export async function closePacket(eventId: string, actor: string, role: string) 
   const e = JSON.parse(raw) as WarEvent;
 
   const decision = canTransitionPacket(e, "CLOSED");
-  const reasons = decision.ok ? [] : decision.reasons;
+  const reasons = "reasons" in decision ? decision.reasons : [];
 
   if (!decision.ok) {
     const err: any = new Error("Packet close blocked by policy");

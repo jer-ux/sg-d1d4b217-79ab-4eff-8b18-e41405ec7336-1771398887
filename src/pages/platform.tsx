@@ -1,52 +1,41 @@
 import { SEO } from "@/components/SEO";
-import { Container, PageHero, CardGrid } from "@/components/Blocks";
+import { Container, PageHero, CardGrid, CTA, ProofBar } from "@/components/Blocks";
 
 export default function PlatformPage() {
   return (
     <>
       <SEO
         title="Platform — Kincaid IQ"
-        description="Evidence-based decision systems with controls monitoring, value ledger, and marketplace delivery."
+        description="A controls-first operating system for converting enterprise opacity into verified value—built on evidence receipts, a CFO-grade ledger, and action workflows."
       />
       <Container>
         <PageHero
-          title="Platform Overview"
-          subtitle="Evidence receipts, CFO-grade value ledger, and marketplace-native delivery across Snowflake, Databricks, and ServiceNow."
+          title="Kincaid IQ Platform"
+          subtitle="A controls-first operating system for converting enterprise opacity into verified value—built on evidence receipts, a CFO-grade ledger, and action workflows."
         />
 
-        <section className="mb-16">
-          <h2 className="text-2xl font-semibold mb-6">Core Capabilities</h2>
-          <CardGrid
-            items={[
-              {
-                title: "Evidence Receipts",
-                body: "Every decision backed by immutable proof. Track what changed, who approved it, and the verified impact.",
-              },
-              {
-                title: "CFO-Grade Ledger",
-                body: "Auditable value tracking with controls monitoring and variance analysis built in.",
-              },
-              {
-                title: "Marketplace Delivery",
-                body: "Native integrations across Snowflake, Databricks, and ServiceNow with automated workflows.",
-              },
-              {
-                title: "Controls Monitoring",
-                body: "Real-time oversight of operational and financial controls with automated alerting.",
-              },
-              {
-                title: "Variance Analysis",
-                body: "Identify deviations from expected outcomes and trace them to root causes.",
-              },
-              {
-                title: "Action Workflows",
-                body: "Automated workflows that turn insights into executable actions across your stack.",
-              },
-            ]}
-          />
-        </section>
+        <div className="mb-8">
+          <ProofBar />
+        </div>
 
-        <section className="mb-16">
+        <CardGrid
+          items={[
+            {
+              title: "Evidence Receipts",
+              body: "Every claim is backed by lineage, source artifacts, tests, and versioned transforms.",
+            },
+            {
+              title: "Value Ledger",
+              body: "Identified → Approved → Realized → At-risk, with accountable owners and audit-grade tracking.",
+            },
+            {
+              title: "Controls Monitoring",
+              body: "Validation gates, exceptions, and continuous controls reporting that holds up to CFO scrutiny.",
+            },
+          ]}
+        />
+
+        <section className="mt-16 mb-16">
           <div className="k-panel p-8">
             <h2 className="text-2xl font-semibold mb-4">Built for Enterprise Scale</h2>
             <div className="text-white/70 space-y-3">
@@ -59,6 +48,8 @@ export default function PlatformPage() {
             </div>
           </div>
         </section>
+
+        <CTA />
       </Container>
     </>
   );

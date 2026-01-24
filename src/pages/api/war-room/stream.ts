@@ -37,10 +37,10 @@ export default async function handler(req: any, res: any) {
   try {
     while (running) {
       const result = (await redis.xread(
-        "BLOCK",
-        20000,
         "COUNT",
         50,
+        "BLOCK",
+        20000,
         "STREAMS",
         AUDIT_STREAM_KEY,
         lastId

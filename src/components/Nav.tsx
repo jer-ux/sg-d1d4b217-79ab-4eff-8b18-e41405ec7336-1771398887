@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { megaNav, primaryCtas, NavDropdown, NavLink } from "@/components/site";
 
@@ -18,6 +19,10 @@ function useOnClickOutside(ref: React.RefObject<HTMLElement>, handler: () => voi
       document.removeEventListener("touchstart", listener);
     };
   }, [ref, handler]);
+}
+
+function clamp(n: number, min: number, max: number) {
+  return Math.max(min, Math.min(max, n));
 }
 
 function Badge({ text }: { text?: string }) {
@@ -104,13 +109,34 @@ function DropdownPanel({ item }: { item: NavDropdown }) {
   );
 }
 
-export function Nav() {
+export default function Nav() {
+  const pathname = usePathname();
+
   const [open, setOpen] = useState<string | null>(null);
   const [mobileOpen, setMobileOpen] = useState(false);
+  const [panelStyle, setPanelStyle] = useState<React.CSSProperties | undefined>(undefined);
+
   const wrapperRef = useRef<HTMLDivElement>(null);
+  const panelRef = useRef<HTMLDivElement>(null);
 
-  useOnClickOutside(wrapperRef, () => setOpen(null));
+  // hover-intent timers (prevents accidental opens)
+  const openTimer = useRef<number | null>(null);
+  const closeTimer = useRef<number | null>(null);
 
+  // button refs so we can center + clamp dropdown
+  const btnRefs = useRef<Record<string, HTMLButtonElement | null>>({});
+
+  useOnClickOutside(wrapperRef, () => {
+    setOpen(null);
+  });
+
+  // Close menus on route change
+  useEffect(() => {
+    setOpen(null);
+    setMobileOpen(false);
+  }, [pathname]);
+
+  // ESC closes
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
       if (e.key === "Escape") {
@@ -123,6 +149,65 @@ export function Nav() {
   }, []);
 
   const dropdowns = useMemo(() => megaNav, []);
+
+  function clearTimers() {
+    if (openTimer.current) window.clearTimeout(openTimer.current);
+    if (closeTimer.current) window.clearTimeout(closeTimer.current);
+    openTimer.current = null;
+    closeTimer.current = null;
+  }
+
+  function computePanelPosition(label: string) {
+    const btn = btnRefs.current[label];
+    const panel = panelRef.current;
+    if (!btn || !panel) return;
+
+    const btnRect = btn.getBoundingClientRect();
+    const panelRect = panel.getBoundingClientRect();
+
+    const vw = window.innerWidth;
+    const gutter = 12;
+
+    const desiredLeft = btnRect.left + btnRect.width / 2 - panelRect.width / 2;
+    const left = clamp(desiredLeft, gutter, vw - panelRect.width - gutter);
+
+    // panel is positioned absolute within header wrapper; convert viewport-left to wrapper-left
+    const wrapperRect = wrapperRef.current?.getBoundingClientRect();
+    const wrapperLeft = wrapperRect?.left ?? 0;
+
+    setPanelStyle({
+      left: left - wrapperLeft,
+    });
+  }
+
+  function openWithIntent(label: string) {
+    clearTimers();
+    openTimer.current = window.setTimeout(() => {
+      setOpen(label);
+    }, 120);
+  }
+
+  function closeWithIntent() {
+    clearTimers();
+    closeTimer.current = window.setTimeout(() => {
+      setOpen(null);
+    }, 180);
+  }
+
+  // When open changes, compute position after render so panelRef has size
+  useEffect(() => {
+    if (!open) return;
+    // allow layout to settle
+    const t = window.setTimeout(() => computePanelPosition(open), 0);
+    const onResize = () => computePanelPosition(open);
+    window.addEventListener("resize", onResize);
+    window.addEventListener("scroll", onResize, true);
+    return () => {
+      window.clearTimeout(t);
+      window.removeEventListener("resize", onResize);
+      window.removeEventListener("scroll", onResize, true);
+    };
+  }, [open]);
 
   return (
     <header className="sticky top-0 z-50 backdrop-blur-xl bg-black/30 border-b border-white/10">
@@ -138,9 +223,16 @@ export function Nav() {
             return (
               <div key={item.label} className="relative">
                 <button
+                  ref={(el) => {
+                    btnRefs.current[item.label] = el;
+                  }}
                   type="button"
-                  onClick={() => setOpen(isOpen ? null : item.label)}
-                  onMouseEnter={() => setOpen(item.label)}
+                  onClick={() => {
+                    clearTimers();
+                    setOpen(isOpen ? null : item.label);
+                  }}
+                  onMouseEnter={() => openWithIntent(item.label)}
+                  onMouseLeave={() => closeWithIntent()}
                   className={`px-3 py-2 rounded-xl hover:bg-white/5 transition flex items-center gap-2 ${
                     isOpen ? "bg-white/5 text-white" : ""
                   }`}
@@ -150,7 +242,15 @@ export function Nav() {
                 </button>
 
                 {isOpen ? (
-                  <div className="absolute left-0 top-[52px]" onMouseLeave={() => setOpen(null)}>
+                  <div
+                    ref={panelRef}
+                    style={panelStyle}
+                    className="absolute top-[52px]"
+                    onMouseEnter={() => {
+                      clearTimers();
+                    }}
+                    onMouseLeave={() => closeWithIntent()}
+                  >
                     <DropdownPanel item={item} />
                   </div>
                 ) : null}

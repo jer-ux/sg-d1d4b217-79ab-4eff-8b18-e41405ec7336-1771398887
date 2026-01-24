@@ -1,8 +1,9 @@
-import type { LaneKey, LaneSummary, LedgerState, StreamMessage, WarEvent } from "@/lib/warroom/types";
+import type { LaneKey, LaneSummary, LedgerState, StreamMessage, WarEvent, PacketStatus, PacketSignature } from "@/lib/warroom/types";
 import { getRedis } from "@/lib/warroom/redis";
 import { seedEvents, seedSummaries } from "@/lib/warroom/seed";
 import { canTransition } from "@/lib/warroom/policy";
 import { auditFromEvent } from "@/lib/warroom/audit";
+import { canTransitionPacket, packetStatus } from "@/lib/warroom/packetPolicy";
 
 const STREAM_KEY = "kiq:warroom:stream";
 const EVENT_IDS_KEY = "kiq:warroom:event_ids";
@@ -72,10 +73,142 @@ export async function snapshot() {
 
 async function upsertEvent(e: WarEvent) {
   const redis = getRedis();
-  await redis.multi().sadd(EVENT_IDS_KEY, e.id).set(EVENT_KEY(e.id), JSON.stringify(e)).exec();
+  await redis.set(EVENT_KEY(e.id), JSON.stringify(e));
+}
 
-  await publish({ type: "event_upsert", event: e });
-  await publish({ type: "ticker", text: e.title, amount: e.amount, state: e.state, lane: e.lane, at: e.updatedAt });
+function setPacketStatus(e: WarEvent, status: PacketStatus): WarEvent {
+  return { ...e, packetStatus: status, updatedAt: new Date().toISOString() };
+}
+
+function addSignature(e: WarEvent, sig: Omit<PacketSignature, "id" | "at">): WarEvent {
+  const newSig: PacketSignature = {
+    id: `sig-${Date.now()}-${Math.random().toString(16).slice(2, 8)}`,
+    at: new Date().toISOString(),
+    ...sig,
+  };
+  return {
+    ...e,
+    packetSignatures: [...(e.packetSignatures ?? []), newSig],
+    updatedAt: new Date().toISOString(),
+  };
+}
+
+export async function submitPacket(eventId: string, actor: string, role: string) {
+  await ensureSeeded();
+  const redis = getRedis();
+  const raw = await redis.get(EVENT_KEY(eventId));
+  if (!raw) throw new Error("Event not found");
+
+  const e = JSON.parse(raw) as WarEvent;
+
+  const decision = canTransitionPacket(e, "SUBMITTED");
+  const reasons = decision.ok ? [] : decision.reasons;
+
+  await auditFromEvent({
+    action: "PACKET_SUBMIT_ATTEMPT",
+    actor: `${actor} (${role})`,
+    event: e,
+    priorState: e.state,
+    nextState: e.state,
+    policyOk: decision.ok,
+    policyReasons: reasons,
+    meta: { packetFrom: packetStatus(e), packetTo: "SUBMITTED" },
+  });
+
+  if (!decision.ok) {
+    const err: any = new Error("Packet submission blocked by policy");
+    err.policyReasons = reasons;
+    throw err;
+  }
+
+  let next = setPacketStatus(e, "SUBMITTED");
+  next = addSignature(next, { signer: actor, role, action: "SUBMIT" });
+
+  await upsertEvent(next);
+
+  await auditFromEvent({
+    action: "PACKET_SUBMIT",
+    actor: `${actor} (${role})`,
+    event: next,
+    policyOk: true,
+    meta: { packetFrom: packetStatus(e), packetTo: "SUBMITTED" },
+  });
+
+  return next;
+}
+
+export async function approvePacket(eventId: string, actor: string, role: string) {
+  await ensureSeeded();
+  const redis = getRedis();
+  const raw = await redis.get(EVENT_KEY(eventId));
+  if (!raw) throw new Error("Event not found");
+
+  const e = JSON.parse(raw) as WarEvent;
+
+  const signed = addSignature(e, { signer: actor, role, action: "APPROVE" });
+
+  const decision = canTransitionPacket(signed, "APPROVED");
+  const reasons = decision.ok ? [] : decision.reasons;
+
+  await auditFromEvent({
+    action: "PACKET_APPROVE_ATTEMPT",
+    actor: `${actor} (${role})`,
+    event: signed,
+    policyOk: decision.ok,
+    policyReasons: reasons,
+    meta: { packetFrom: packetStatus(e), packetTo: "APPROVED" },
+  });
+
+  if (!decision.ok) {
+    await upsertEvent(signed);
+    const err: any = new Error("Packet approval blocked by policy");
+    err.policyReasons = reasons;
+    throw err;
+  }
+
+  const next = setPacketStatus(signed, "APPROVED");
+  await upsertEvent(next);
+
+  await auditFromEvent({
+    action: "PACKET_APPROVE",
+    actor: `${actor} (${role})`,
+    event: next,
+    policyOk: true,
+    meta: { packetFrom: packetStatus(e), packetTo: "APPROVED" },
+  });
+
+  return next;
+}
+
+export async function closePacket(eventId: string, actor: string, role: string) {
+  await ensureSeeded();
+  const redis = getRedis();
+  const raw = await redis.get(EVENT_KEY(eventId));
+  if (!raw) throw new Error("Event not found");
+
+  const e = JSON.parse(raw) as WarEvent;
+
+  const decision = canTransitionPacket(e, "CLOSED");
+  const reasons = decision.ok ? [] : decision.reasons;
+
+  if (!decision.ok) {
+    const err: any = new Error("Packet close blocked by policy");
+    err.policyReasons = reasons;
+    throw err;
+  }
+
+  const next = setPacketStatus(e, "CLOSED");
+  await upsertEvent(next);
+
+  await auditFromEvent({
+    action: "PACKET_CLOSE",
+    actor: `${actor} (${role})`,
+    event: next,
+    policyOk: true,
+    meta: { packetFrom: packetStatus(e), packetTo: "CLOSED" },
+  });
+
+  return next;
 }
 
 async function upsertSummary(s: LaneSummary) {
@@ -254,6 +387,65 @@ export async function attachReceipt(eventId: string, receipt: { id: string; titl
   });
 
   return next;
+}
+
+export async function updateNotes(eventId: string, notes: any, actor: string) {
+  await ensureSeeded();
+  const redis = getRedis();
+  const raw = await redis.get(EVENT_KEY(eventId));
+  if (!raw) throw new Error("Event not found");
+
+  const e = JSON.parse(raw) as WarEvent;
+  
+  // Merge notes
+  const nextNotes = { ...(e.notes || {}), ...notes };
+  const next: WarEvent = { ...e, notes: nextNotes, updatedAt: isoNow() };
+
+  await upsertEvent(next);
+
+  await auditFromEvent({
+    action: "NOTES_UPDATE",
+    actor,
+    event: next,
+    meta: { notesUpdated: true }
+  });
+
+  return next;
+}
+
+export async function attachFile(eventId: string, attachment: any, actor: string) {
+  await ensureSeeded();
+  const redis = getRedis();
+  const raw = await redis.get(EVENT_KEY(eventId));
+  if (!raw) throw new Error("Event not found");
+
+  const e = JSON.parse(raw) as WarEvent;
+  
+  const currentAtts = e.notes?.attachments || [];
+  const newAtt = {
+    ...attachment,
+    id: `att-${Date.now()}`,
+    addedAt: isoNow(),
+    addedBy: actor
+  };
+
+  const nextNotes = { 
+    ...(e.notes || {}), 
+    attachments: [newAtt, ...currentAtts] 
+  };
+  
+  const next: WarEvent = { ...e, notes: nextNotes, updatedAt: isoNow() };
+
+  await upsertEvent(next);
+
+  await auditFromEvent({
+    action: "ATTACHMENT_ADD",
+    actor,
+    event: next,
+    meta: { attachmentId: newAtt.id, title: newAtt.title }
+  });
+  
+  return { event: next, attachment: newAtt };
 }
 
 export const streamKey = STREAM_KEY;

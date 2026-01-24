@@ -5,6 +5,16 @@
 export type LaneKey = "value" | "controls" | "agentic" | "marketplace";
 export type LedgerState = "IDENTIFIED" | "APPROVED" | "REALIZED" | "AT_RISK";
 
+export type PacketStatus = "DRAFT" | "SUBMITTED" | "APPROVED" | "CLOSED";
+
+export type PacketSignature = {
+  id: string;
+  signer: string;
+  role: string;
+  action: "SUBMIT" | "APPROVE";
+  at: string;
+};
+
 export type EvidenceReceipt = {
   id: string;
   title: string;
@@ -21,10 +31,12 @@ export type WarEvent = {
   subtitle?: string;
   amount: number;
   confidence: number;
-  timeSensitivity?: "low" | "medium" | "high";
+  timeSensitivity: number;
   owner?: string;
   receipts?: EvidenceReceipt[];
   notes?: EventNotes;
+  packetStatus?: PacketStatus;
+  packetSignatures?: PacketSignature[];
   createdAt: string;
   updatedAt: string;
 };

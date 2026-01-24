@@ -8,7 +8,14 @@ export type AuditAction =
   | "LEDGER_APPROVE"
   | "LEDGER_CLOSE_ATTEMPT"
   | "LEDGER_CLOSE"
-  | "RECEIPT_ATTACH";
+  | "RECEIPT_ATTACH"
+  | "NOTES_UPDATE"
+  | "ATTACHMENT_ADD"
+  | "PACKET_SUBMIT_ATTEMPT"
+  | "PACKET_SUBMIT"
+  | "PACKET_APPROVE_ATTEMPT"
+  | "PACKET_APPROVE"
+  | "PACKET_CLOSE";
 
 export type AuditEntry = {
   id: string;

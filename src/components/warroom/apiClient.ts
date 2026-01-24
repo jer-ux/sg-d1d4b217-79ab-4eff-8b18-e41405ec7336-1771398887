@@ -62,3 +62,15 @@ export async function addAttachment(
   });
   return r.json();
 }
+
+export async function submitPacketAction(eventId: string, actor: string, role: string) {
+  return postJson<{ event: any }>("/api/packet/submit", { eventId, actor, role });
+}
+
+export async function approvePacketAction(eventId: string, actor: string, role: string) {
+  return postJson<{ event: any }>("/api/packet/approve", { eventId, actor, role });
+}
+
+export async function closePacketAction(eventId: string, actor: string, role: string) {
+  return postJson<{ event: any }>("/api/packet/close", { eventId, actor, role });
+}

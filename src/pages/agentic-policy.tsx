@@ -1,48 +1,37 @@
 import { SEO } from "@/components/SEO";
-import { Container, PageHero } from "@/components/Blocks";
+import { Container, PageHero, CardGrid, CTA } from "@/components/Blocks";
 
-export default function AgenticPolicyPage() {
+export default function AgenticPolicy() {
   return (
     <>
       <SEO
-        title="12-Month Agentic Policy — Kincaid IQ"
-        description="Verified delivery guarantee with evidence receipts and auditable outcomes."
+        title="12-Month Agentic Adoption Policy — Kincaid IQ"
+        description="A governed program to deploy agents safely and measurably—designed for CFO and board scrutiny."
       />
       <Container>
         <PageHero
-          title="12-Month Agentic Policy"
-          subtitle="Verified delivery guarantee with evidence receipts, controls monitoring, and auditable outcomes."
+          title="12-Month Agentic Adoption Policy"
+          subtitle="A governed program to deploy agents safely and measurably across operating and sales systems—designed for CFO and board scrutiny, not demo theater."
         />
 
-        <section className="mb-16">
-          <div className="k-panel p-8 space-y-6">
-            <div>
-              <h2 className="text-2xl font-semibold mb-3">Delivery Guarantee</h2>
-              <p className="text-white/70">
-                Kincaid IQ provides a 12-month delivery guarantee backed by evidence receipts, controls monitoring, and verified outcomes. Every milestone is tracked, every decision is auditable, and every result is provable.
-              </p>
-            </div>
+        <CardGrid
+          items={[
+            { 
+              title: "Months 0–2: Diagnose + Baseline", 
+              body: "Map operating and sales workflows, define value hypotheses, set KPIs, and establish controls, access boundaries, and evidence standards." 
+            },
+            { 
+              title: "Months 3–6: Deploy High-ROI Agents", 
+              body: "Launch agent workflows with human-in-the-loop approvals, telemetry, and exception handling. Measure cycle-time and cost impacts." 
+            },
+            { 
+              title: "Months 7–12: Scale + Control", 
+              body: "Harden governance: policy enforcement, model drift controls, audit trails, and a continuous-improvement cadence tied to realized outcomes." 
+            },
+          ]}
+        />
 
-            <div>
-              <h3 className="text-xl font-semibold mb-3">What's Included</h3>
-              <ul className="space-y-2 text-white/70">
-                <li>✓ Evidence receipts for every decision and milestone</li>
-                <li>✓ CFO-grade value ledger with controls monitoring</li>
-                <li>✓ Variance analysis and automated alerting</li>
-                <li>✓ Quarterly verified outcomes reviews</li>
-                <li>✓ Action workflows with automated execution</li>
-                <li>✓ Full audit trail and compliance reporting</li>
-              </ul>
-            </div>
-
-            <div>
-              <h3 className="text-xl font-semibold mb-3">Verified Outcomes</h3>
-              <p className="text-white/70">
-                Our 12-month policy ensures that every transformation delivers verified, measurable outcomes. If we don't deliver, we don't get paid. It's that simple.
-              </p>
-            </div>
-          </div>
-        </section>
+        <CTA />
       </Container>
     </>
   );

@@ -1,64 +1,46 @@
 import { SEO } from "@/components/SEO";
-import { Container, PageHero, CardGrid, CTA } from "@/components/Blocks";
+import { Container, PageHero, CardGrid, CTA, ProofBar } from "@/components/Blocks";
 
-export default function FamilyOfficesPage() {
+export default function FamilyOffices() {
   return (
     <>
       <SEO
         title="Family Offices — Kincaid IQ"
-        description="Comprehensive value tracking, portfolio verification, and decision-grade analytics for family offices."
+        description="A clarity engine for complex holdings, vendor ecosystems, and operational cost structures—built for oversight and decision confidence."
       />
       <Container>
         <PageHero
           title="Family Offices"
-          subtitle="Comprehensive value tracking, portfolio verification, and decision-grade analytics tailored for family offices."
+          subtitle="A clarity engine for complex holdings, vendor ecosystems, and operational cost structures—built for oversight and decision confidence."
         />
 
-        <section className="mb-16">
-          <h2 className="text-2xl font-semibold mb-6">Family Office Solutions</h2>
-          <CardGrid
-            items={[
-              {
-                title: "Portfolio Dashboard",
-                body: "Unified dashboard for tracking portfolio value across all asset classes and investments.",
-              },
-              {
-                title: "Evidence-Based Reporting",
-                body: "Every portfolio decision backed by evidence receipts and auditable proof.",
-              },
-              {
-                title: "Multi-Generation Planning",
-                body: "Long-term value tracking and planning tools for multi-generational wealth management.",
-              },
-              {
-                title: "Privacy & Security",
-                body: "Enterprise-grade security with controls monitoring and compliance built in.",
-              },
-              {
-                title: "Actuarial Metrics",
-                body: "Actuarial-grade metrics for risk assessment and portfolio optimization.",
-              },
-              {
-                title: "Fiduciary Standards",
-                body: "Reports and analytics that meet fiduciary and regulatory standards.",
-              },
-            ]}
-          />
-        </section>
+        <div className="mb-8">
+          <ProofBar />
+        </div>
 
-        <section className="mb-16">
-          <div className="k-panel p-8">
-            <h2 className="text-2xl font-semibold mb-4">Trusted by Family Offices</h2>
-            <div className="text-white/70 space-y-3">
-              <p>
-                Kincaid IQ provides the decision-grade value systems that family offices need to manage complex portfolios with confidence and clarity.
-              </p>
-              <p>
-                From portfolio verification to long-term planning, our platform delivers evidence-based insights and auditable outcomes across all asset classes.
-              </p>
-            </div>
+        <CardGrid
+          items={[
+            { 
+              title: "Governance-Grade Reporting", 
+              body: "Board-safe reporting cadence with evidence packs, ledger movements, and exceptions surfaced early." 
+            },
+            { 
+              title: "Vendor + Cost Opacity", 
+              body: "Identify leakage, prove it, assign owners, and track closure with reconciliation discipline." 
+            },
+            { 
+              title: "Risk and Controls", 
+              body: "Controls monitoring, access boundaries, and audit trails that scale across holdings and teams." 
+            },
+          ]}
+        />
+
+        <div className="mt-8 k-panel p-6">
+          <div className="font-semibold">Why families need this</div>
+          <div className="text-sm text-white/70 mt-2">
+            Holdings complexity explodes faster than internal capacity. Evidence-led oversight prevents fire drills and keeps governance posture defensible.
           </div>
-        </section>
+        </div>
 
         <CTA />
       </Container>

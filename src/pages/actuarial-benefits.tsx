@@ -1,50 +1,56 @@
 import { SEO } from "@/components/SEO";
-import { Container, PageHero, CardGrid } from "@/components/Blocks";
+import { Container, PageHero, CardGrid, CTA, ProofBar } from "@/components/Blocks";
 
-export default function ActuarialBenefitsPage() {
+export default function ActuarialBenefits() {
   return (
     <>
       <SEO
-        title="Actuarial Benefits — Kincaid IQ"
-        description="Actuarial-grade metrics for portfolio value verification and risk assessment."
+        title="Actuarial Employee Benefits Consulting — Kincaid IQ"
+        description="Actuarial-led benefits intelligence with audit-grade proof—built for CFO scrutiny and procurement reality."
       />
       <Container>
         <PageHero
-          title="Actuarial Benefits"
-          subtitle="Actuarial-grade metrics for portfolio value verification, risk assessment, and investment decision-making."
+          title="Actuarial Employee Benefits Consulting"
+          subtitle="Actuarial-led benefits intelligence with audit-grade proof—built for CFO scrutiny and procurement reality."
         />
 
-        <section className="mb-16">
-          <h2 className="text-2xl font-semibold mb-6">Actuarial Framework</h2>
-          <CardGrid
-            items={[
-              {
-                title: "Portfolio Verification",
-                body: "Actuarial-grade verification of portfolio value with evidence-based proof.",
-              },
-              {
-                title: "Risk Assessment",
-                body: "Quantitative risk analysis using actuarial methods and historical data.",
-              },
-              {
-                title: "Value Modeling",
-                body: "Actuarial models for value projection, scenario analysis, and sensitivity testing.",
-              },
-              {
-                title: "Loss Forecasting",
-                body: "Predictive models for loss forecasting and reserve estimation.",
-              },
-              {
-                title: "Return Analysis",
-                body: "Actuarial analysis of investment returns and performance attribution.",
-              },
-              {
-                title: "Compliance Reporting",
-                body: "Actuarial reports that meet regulatory and fiduciary standards.",
-              },
-            ]}
-          />
-        </section>
+        <div className="mb-8">
+          <ProofBar />
+        </div>
+
+        <CardGrid
+          items={[
+            { 
+              title: "PBM / Rx Contract Intelligence", 
+              body: "Price protection, guarantees, and leakage detection backed by receipts and reconciliation workflows." 
+            },
+            { 
+              title: "Deterministic Benchmarking", 
+              body: "Variance attribution and trend drivers with methodology disclosure—board-ready, not hand-wavy." 
+            },
+            { 
+              title: "Compliance + Controls", 
+              body: "Scenario modeling, evidence chains, and control testing to reduce regulatory and litigation exposure." 
+            },
+          ]}
+        />
+
+        <div className="mt-8 grid md:grid-cols-2 gap-4">
+          <div className="k-panel p-6">
+            <div className="font-semibold">What's different</div>
+            <div className="text-sm text-white/70 mt-2">
+              Not "analytics." A decision system: evidence receipts, an auditable ledger, and workflows that close value.
+            </div>
+          </div>
+          <div className="k-panel p-6">
+            <div className="font-semibold">Where it fits</div>
+            <div className="text-sm text-white/70 mt-2">
+              Employers, advisors, and sponsors who need defensible, measurable outcomes—not another dashboard.
+            </div>
+          </div>
+        </div>
+
+        <CTA />
       </Container>
     </>
   );

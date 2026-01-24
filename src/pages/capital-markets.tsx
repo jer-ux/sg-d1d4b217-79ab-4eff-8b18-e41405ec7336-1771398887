@@ -1,64 +1,48 @@
 import { SEO } from "@/components/SEO";
-import { Container, PageHero, CardGrid, CTA } from "@/components/Blocks";
+import { Container, PageHero, CardGrid, CTA, ProofBar } from "@/components/Blocks";
 
-export default function CapitalMarketsPage() {
+export default function CapitalMarkets() {
   return (
     <>
       <SEO
-        title="Investor Access — Kincaid IQ"
-        description="Portfolio value verification, actuarial-grade metrics, and M&A due diligence tools for investors."
+        title="Capital Markets & Investors — Kincaid IQ"
+        description="Reduce uncertainty. Underwrite value with evidence receipts, controlled ledgers, and repeatable realization discipline."
       />
       <Container>
         <PageHero
-          title="Investor Access"
-          subtitle="Portfolio value verification, actuarial-grade metrics, and M&A due diligence tools for capital markets professionals."
+          title="Capital Markets & Investors"
+          subtitle="Reduce uncertainty. Underwrite value with evidence receipts, controlled ledgers, and repeatable realization discipline."
         />
 
-        <section className="mb-16">
-          <h2 className="text-2xl font-semibold mb-6">For Investors</h2>
-          <CardGrid
-            items={[
-              {
-                title: "Portfolio Verification",
-                body: "Verify portfolio value with actuarial-grade metrics and evidence-based proof.",
-              },
-              {
-                title: "Due Diligence Tools",
-                body: "Comprehensive M&A due diligence with controls monitoring and variance analysis.",
-              },
-              {
-                title: "Risk Assessment",
-                body: "Quantitative risk analysis using actuarial methods and historical data.",
-              },
-              {
-                title: "Value Tracking",
-                body: "Real-time value tracking with CFO-grade ledger and evidence receipts.",
-              },
-              {
-                title: "Performance Analytics",
-                body: "Actuarial analysis of investment returns and performance attribution.",
-              },
-              {
-                title: "Compliance Reporting",
-                body: "Reports that meet regulatory and fiduciary standards for investors.",
-              },
-            ]}
-          />
-        </section>
+        <div className="mb-8">
+          <ProofBar />
+        </div>
 
-        <section className="mb-16">
-          <div className="k-panel p-8">
-            <h2 className="text-2xl font-semibold mb-4">Built for Capital Markets</h2>
-            <div className="text-white/70 space-y-3">
-              <p>
-                Kincaid IQ provides decision-grade value systems that meet the rigorous requirements of investors, family offices, and capital markets professionals.
-              </p>
-              <p>
-                From portfolio value verification to M&A due diligence, our platform turns opacity into clarity with evidence-based insights and auditable outcomes.
-              </p>
-            </div>
+        <CardGrid
+          items={[
+            { 
+              title: "Diligence Acceleration", 
+              body: "Evidence packs and reconciliation artifacts that reduce time-to-truth and stabilize investment narratives." 
+            },
+            { 
+              title: "Value Realization Discipline", 
+              body: "Ledger states and owner-driven workflows to ensure value doesn't evaporate post-close." 
+            },
+            { 
+              title: "Governance Posture", 
+              body: "Controls-first design that withstands audit, board scrutiny, and integration complexity." 
+            },
+          ]}
+        />
+
+        <div className="mt-8 k-panel p-6">
+          <div className="font-semibold">Typical engagement shapes</div>
+          <div className="mt-3 grid md:grid-cols-3 gap-3 text-sm text-white/70">
+            <div className="border border-white/10 rounded-xl bg-white/5 p-4">Diligence sprint</div>
+            <div className="border border-white/10 rounded-xl bg-white/5 p-4">Post-close realization</div>
+            <div className="border border-white/10 rounded-xl bg-white/5 p-4">Marketplace packaging</div>
           </div>
-        </section>
+        </div>
 
         <CTA />
       </Container>

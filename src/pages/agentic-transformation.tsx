@@ -1,50 +1,54 @@
 import { SEO } from "@/components/SEO";
-import { Container, PageHero, CardGrid } from "@/components/Blocks";
+import Link from "next/link";
+import { Container, PageHero, CardGrid, CTA, ProofBar } from "@/components/Blocks";
 
-export default function AgenticTransformationPage() {
+export default function AgenticTransformation() {
   return (
     <>
       <SEO
-        title="Agentic Transformation — Kincaid IQ"
-        description="Evidence-based transformation pathways with controls monitoring and verified outcomes."
+        title="AI Agentic Transformation — Kincaid IQ"
+        description="Agent deployment that survives governance. Analyze systems, deploy controlled workflows, and measure realized outcomes."
       />
       <Container>
         <PageHero
-          title="Agentic Transformation"
-          subtitle="Evidence-based transformation pathways with controls monitoring, variance analysis, and verified outcomes."
+          title="AI Agentic Transformation"
+          subtitle="Agent deployment that survives governance. We analyze operating and sales systems, deploy controlled agent workflows, and measure realized outcomes."
         />
 
-        <section className="mb-16">
-          <h2 className="text-2xl font-semibold mb-6">Transformation Framework</h2>
-          <CardGrid
-            items={[
-              {
-                title: "Evidence-Based Planning",
-                body: "Transformation roadmaps backed by evidence receipts and verified impact analysis.",
-              },
-              {
-                title: "Controls-First Approach",
-                body: "Built-in controls monitoring ensures transformation stays on track and on budget.",
-              },
-              {
-                title: "Verified Outcomes",
-                body: "Every transformation milestone verified with evidence and auditable proof.",
-              },
-              {
-                title: "Continuous Monitoring",
-                body: "Real-time tracking of transformation progress with variance detection and alerts.",
-              },
-              {
-                title: "Action Workflows",
-                body: "Automated workflows that turn transformation insights into executable actions.",
-              },
-              {
-                title: "12-Month Guarantee",
-                body: "Our 12-month agentic policy ensures verified delivery and measurable outcomes.",
-              },
-            ]}
-          />
-        </section>
+        <div className="mb-8">
+          <ProofBar />
+        </div>
+
+        <CardGrid
+          items={[
+            { 
+              title: "Operating + Sales System Analysis", 
+              body: "Map workflows, bottlenecks, controls, and handoffs. Identify where agents produce measurable leverage." 
+            },
+            { 
+              title: "Governed Agent Workflows", 
+              body: "Human approvals, telemetry, exception handling, and policy enforcement. No black-box chaos." 
+            },
+            { 
+              title: "Value Measurement + Ledger", 
+              body: "Tie outcomes to a ledger discipline: what's identified, approved, realized, and decaying—owned and reconciled." 
+            },
+          ]}
+        />
+
+        <div className="mt-8 k-panel p-6 flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+          <div>
+            <div className="font-semibold">Want the 12-month policy blueprint?</div>
+            <div className="text-sm text-white/70 mt-1">
+              A structured adoption policy with controls-first gating and board-safe reporting.
+            </div>
+          </div>
+          <Link href="/agentic-policy" className="px-4 py-2 rounded-xl bg-white text-black font-medium hover:bg-white/90 transition w-fit">
+            View the policy
+          </Link>
+        </div>
+
+        <CTA />
       </Container>
     </>
   );

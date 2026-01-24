@@ -1,4 +1,5 @@
 import { SEO } from "@/components/SEO";
+import Link from "next/link";
 import { Container, PageHero } from "@/components/Blocks";
 
 export default function Contact() {
@@ -61,9 +62,9 @@ export default function Contact() {
                 <button type="button" className="px-4 py-2 rounded-xl bg-white text-black font-medium hover:bg-white/90 transition">
                   Submit
                 </button>
-                <a href="/capital-markets" className="px-4 py-2 rounded-xl border border-white/15 bg-white/5 hover:bg-white/10 transition">
+                <Link href="/capital-markets" className="px-4 py-2 rounded-xl border border-white/15 bg-white/5 hover:bg-white/10 transition">
                   Investor overview
-                </a>
+                </Link>
               </div>
             </form>
           </div>

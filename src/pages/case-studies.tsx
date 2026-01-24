@@ -1,5 +1,6 @@
 import { SEO } from "@/components/SEO";
 import { Container, PageHero, CTA } from "@/components/Blocks";
+import Link from "next/link";
 
 const cases = [
   {
@@ -52,6 +53,18 @@ export default function CaseStudies() {
           <div className="font-semibold">Want a deeper case study?</div>
           <div className="text-sm text-white/70 mt-2">
             We can provide more detailed proof narratives, evidence packs, and reconciliation artifacts for qualified prospects.
+          </div>
+        </div>
+
+        <div className="mt-4 k-panel p-6">
+          <div className="font-semibold">Want the investor-ready evidence pack format?</div>
+          <div className="text-sm text-white/70 mt-2">
+            We can provide a templated "Evidence Pack" structure: receipts, lineage, controls, ledger movement, and board-ready reconciliation.
+          </div>
+          <div className="mt-4">
+            <Link href="/contact" className="px-4 py-2 rounded-xl bg-white text-black font-medium">
+              Request demo
+            </Link>
           </div>
         </div>
 

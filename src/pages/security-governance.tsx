@@ -1,97 +1,60 @@
 import { SEO } from "@/components/SEO";
 import { Container, PageHero, CardGrid, CTA } from "@/components/Blocks";
 
-export default function SecurityGovernancePage() {
+export default function SecurityGovernance() {
   return (
     <>
       <SEO
         title="Security & Governance — Kincaid IQ"
-        description="Enterprise-grade security, controls monitoring, and compliance built for decision-grade value systems."
+        description="Controls-first analytics. Evidence chains, access discipline, and audit trails that keep decision systems safe at scale."
       />
       <Container>
         <PageHero
           title="Security & Governance"
-          subtitle="Enterprise-grade security, controls monitoring, and compliance built into every layer of our decision-grade value systems."
+          subtitle="Controls-first analytics. Evidence chains, access discipline, and audit trails that keep decision systems safe at scale."
         />
 
-        <section className="mb-16">
-          <h2 className="text-2xl font-semibold mb-6">Security Framework</h2>
-          <CardGrid
-            items={[
-              {
-                title: "SOC 2 Type II",
-                body: "SOC 2 Type II certified with continuous compliance monitoring and annual audits.",
-              },
-              {
-                title: "Data Encryption",
-                body: "End-to-end encryption for data at rest and in transit using industry-standard protocols.",
-              },
-              {
-                title: "Access Controls",
-                body: "Role-based access controls with multi-factor authentication and audit logging.",
-              },
-              {
-                title: "Compliance Ready",
-                body: "Built-in compliance frameworks for GDPR, CCPA, SOX, and industry regulations.",
-              },
-              {
-                title: "Disaster Recovery",
-                body: "Automated backup and disaster recovery with 99.9% uptime SLA guarantee.",
-              },
-              {
-                title: "Penetration Testing",
-                body: "Regular third-party penetration testing and vulnerability assessments.",
-              },
-            ]}
-          />
-        </section>
+        <CardGrid
+          items={[
+            { 
+              title: "Evidence Receipts Standard", 
+              body: "Every claim is linked to sources, lineage, tests, and versioning—designed to be replayable and reviewable." 
+            },
+            { 
+              title: "Access + Segregation", 
+              body: "Role-based access and separation of duties patterns aligned to finance-grade controls." 
+            },
+            { 
+              title: "Audit Trail and Monitoring", 
+              body: "Append-only event journals, exception queues, and control checks to reduce governance risk." 
+            },
+          ]}
+        />
 
-        <section className="mb-16">
-          <h2 className="text-2xl font-semibold mb-6">Governance & Controls</h2>
-          <div className="grid md:grid-cols-2 gap-6">
-            <div className="k-panel p-8">
-              <h3 className="text-xl font-semibold mb-3">Evidence Receipts</h3>
-              <p className="text-white/70 text-sm">
-                Every decision backed by immutable evidence receipts with cryptographic proof and full audit trails.
-              </p>
-            </div>
-
-            <div className="k-panel p-8">
-              <h3 className="text-xl font-semibold mb-3">Controls Monitoring</h3>
-              <p className="text-white/70 text-sm">
-                Real-time controls monitoring with automated variance detection and alerting for operational and financial controls.
-              </p>
-            </div>
-
-            <div className="k-panel p-8">
-              <h3 className="text-xl font-semibold mb-3">Audit Trails</h3>
-              <p className="text-white/70 text-sm">
-                Comprehensive audit trails for all actions, decisions, and data changes with tamper-proof logging.
-              </p>
-            </div>
-
-            <div className="k-panel p-8">
-              <h3 className="text-xl font-semibold mb-3">Compliance Reporting</h3>
-              <p className="text-white/70 text-sm">
-                Automated compliance reporting for regulatory requirements with evidence-based proof and auditable outcomes.
-              </p>
+        <div className="mt-8 grid md:grid-cols-2 gap-4">
+          <div className="k-panel p-6">
+            <div className="font-semibold">Governance principle</div>
+            <div className="text-sm text-white/70 mt-2">
+              If it can't be explained, replayed, and reconciled, it's not decision-grade.
             </div>
           </div>
-        </section>
-
-        <section className="mb-16">
-          <div className="k-panel p-8">
-            <h2 className="text-2xl font-semibold mb-4">Built for Trust</h2>
-            <div className="text-white/70 space-y-3">
-              <p>
-                Security and governance aren't add-ons at Kincaid IQ—they're foundational. Our decision-grade value systems are built with controls-first architecture that meets the requirements of CFOs, auditors, and boards.
-              </p>
-              <p>
-                From evidence receipts to controls monitoring, every layer of our platform is designed for auditability, compliance, and trust.
-              </p>
+          <div className="k-panel p-6">
+            <div className="font-semibold">Security posture</div>
+            <div className="text-sm text-white/70 mt-2">
+              Access controls, data lineage, and exception monitoring built into every workflow—not bolted on after.
             </div>
           </div>
-        </section>
+        </div>
+
+        <div className="mt-8 k-panel p-6">
+          <div className="font-semibold">Why it matters for boards</div>
+          <div className="text-sm text-white/70 mt-3 space-y-2">
+            <div>• Regulatory audit readiness without scrambling</div>
+            <div>• Clear accountability chains for high-impact decisions</div>
+            <div>• Risk reduction through controlled, measurable workflows</div>
+            <div>• No black-box AI or opaque analytics</div>
+          </div>
+        </div>
 
         <CTA />
       </Container>

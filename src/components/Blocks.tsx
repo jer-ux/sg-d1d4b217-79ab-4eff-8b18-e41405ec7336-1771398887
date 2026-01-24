@@ -48,15 +48,33 @@ export function PageHero({ title, subtitle }: { title: string; subtitle: string 
   );
 }
 
-export function CardGrid({ items }: { items: { title: string; body: string }[] }) {
+export function CardGrid({ items }: { items: { title: string; body: string; highlight?: string; color?: string }[] }) {
   return (
     <div className="grid md:grid-cols-3 gap-4">
-      {items.map((it) => (
-        <div key={it.title} className="k-panel p-6">
-          <div className="font-semibold">{it.title}</div>
-          <div className="text-sm text-white/70 mt-2">{it.body}</div>
-        </div>
-      ))}
+      {items.map((it) => {
+        const bodyParts = it.highlight ? it.body.split(it.highlight) : [it.body];
+        const colorClass = 
+          it.color === "cyan" ? "text-cyan-300" :
+          it.color === "blue" ? "text-blue-300" :
+          "text-blue-200";
+
+        return (
+          <div key={it.title} className="k-panel p-6 hover:border-white/20 transition-all duration-300">
+            <div className="font-semibold text-lg">{it.title}</div>
+            <div className="text-sm text-white/70 mt-2">
+              {it.highlight ? (
+                <>
+                  {bodyParts[0]}
+                  <span className={colorClass + " font-medium"}>{it.highlight}</span>
+                  {bodyParts[1]}
+                </>
+              ) : (
+                it.body
+              )}
+            </div>
+          </div>
+        );
+      })}
     </div>
   );
 }

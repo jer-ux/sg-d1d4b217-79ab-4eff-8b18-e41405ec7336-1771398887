@@ -35,6 +35,11 @@ export function PageHero({ title, subtitle }: { title: string; subtitle: string 
   );
 }
 
+// Deprecated: Navigation moved to Header Dropdowns. Kept for backward compatibility.
+export function ProofBar() {
+  return null;
+}
+
 export function CardGrid({ items }: { items: { title: string; body: string; highlight?: string; color?: string }[] }) {
   return (
     <div className="grid md:grid-cols-3 gap-4">

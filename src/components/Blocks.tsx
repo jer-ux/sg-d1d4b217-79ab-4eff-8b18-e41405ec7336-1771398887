@@ -1,20 +1,7 @@
 import Link from "next/link";
-import { proofBar } from "@/components/site";
 
 export function Container({ children }: { children: React.ReactNode }) {
   return <div className="mx-auto max-w-6xl px-6">{children}</div>;
-}
-
-export function ProofBar() {
-  return (
-    <div className="k-panel px-5 py-3 text-xs text-white/70 flex flex-wrap gap-3">
-      {proofBar.map((x) => (
-        <span key={x} className="px-3 py-1 rounded-full border border-white/10 bg-white/5">
-          {x}
-        </span>
-      ))}
-    </div>
-  );
 }
 
 export function CTA() {

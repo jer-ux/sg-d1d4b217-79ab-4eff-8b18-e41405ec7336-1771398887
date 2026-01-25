@@ -1,7 +1,7 @@
 import "@/styles/globals.css";
 import type { AppProps } from "next/app";
 import { Toaster } from "sonner";
-import { Nav } from "@/components/Nav";
+import Nav from "@/components/Nav";
 import { Footer } from "@/components/Footer";
 
 export default function App({ Component, pageProps }: AppProps) {

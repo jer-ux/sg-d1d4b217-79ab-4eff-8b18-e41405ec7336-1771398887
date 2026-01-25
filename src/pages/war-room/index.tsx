@@ -2,7 +2,7 @@ import { SEO } from "@/components/SEO";
 import { SplitPane } from "@/components/SplitPane";
 import React, { useEffect, useMemo, useState } from "react";
 
-type TileAccent = "neutral" | "good" | "warn" | "bad";
+type TileAccent = "neutral" | "good" | "warn" | "bad" | "purple" | "blue" | "amber";
 type TileView = "VARIANCE" | "VALIDATED" | "IN_FLIGHT" | "TRUST";
 
 interface MockEvent {
@@ -57,7 +57,28 @@ function Tile({
       ? "border-yellow-400/30 bg-yellow-400/10"
       : accent === "bad"
       ? "border-red-400/30 bg-red-400/10"
+      : accent === "purple"
+      ? "border-purple-400/30 bg-purple-400/10"
+      : accent === "blue"
+      ? "border-blue-400/30 bg-blue-400/10"
+      : accent === "amber"
+      ? "border-amber-400/30 bg-amber-400/10"
       : "border-gray-600/40 bg-gray-800/40";
+
+  const glowCls =
+    accent === "good"
+      ? "bg-emerald-300/10"
+      : accent === "warn"
+      ? "bg-yellow-300/10"
+      : accent === "bad"
+      ? "bg-red-300/10"
+      : accent === "purple"
+      ? "bg-purple-300/10"
+      : accent === "blue"
+      ? "bg-blue-300/10"
+      : accent === "amber"
+      ? "bg-amber-300/10"
+      : "bg-gray-300/10";
 
   return (
     <div
@@ -80,7 +101,7 @@ function Tile({
 
       <div className="pointer-events-none absolute inset-0 rounded-2xl">
         <div className="absolute -top-24 left-10 h-48 w-96 rounded-full bg-gray-700/20 blur-3xl opacity-60" />
-        <div className="absolute -top-10 right-6 h-24 w-56 rounded-full bg-emerald-300/10 blur-2xl opacity-60" />
+        <div className={`absolute -top-10 right-6 h-24 w-56 rounded-full blur-2xl opacity-60 ${glowCls}`} />
       </div>
     </div>
   );
@@ -216,8 +237,10 @@ function Badge({ status }: { status: string }) {
     status === "VERIFIED"
       ? "bg-emerald-400/20 text-emerald-300 border-emerald-400/30"
       : status === "DEGRADED"
-      ? "bg-yellow-400/20 text-yellow-300 border-yellow-400/30"
-      : "bg-red-400/20 text-red-300 border-red-400/30";
+      ? "bg-amber-400/20 text-amber-300 border-amber-400/30"
+      : status === "UNVERIFIED"
+      ? "bg-purple-400/20 text-purple-300 border-purple-400/30"
+      : "bg-blue-400/20 text-blue-300 border-blue-400/30";
 
   return (
     <span className={`text-[10px] px-2 py-0.5 rounded-full border ${cls}`}>
@@ -247,10 +270,10 @@ export default function WarRoom4Tile() {
     data.data_health.verified_receipts_rate >= 0.85 &&
     data.data_health.dq_pass_rate >= 0.95 &&
     data.data_health.freshness_hours <= 24
-      ? "good"
-      : "warn";
+      ? "amber"
+      : "amber";
 
-  const varianceAccent: TileAccent = data.delta > 0 ? "bad" : "good";
+  const varianceAccent: TileAccent = "purple";
 
   const open = (v: TileView) => {
     setView(v);
@@ -331,7 +354,7 @@ export default function WarRoom4Tile() {
               value={money(data.ledger.approved)}
               subLeft={`Identified ${money(data.ledger.identified)}`}
               subRight={`At-risk ${money(data.ledger.at_risk)}`}
-              accent="warn"
+              accent="blue"
               onClick={() => open("IN_FLIGHT")}
             />
             <Tile
@@ -399,7 +422,12 @@ export default function WarRoom4Tile() {
                       </div>
                       <div className="mt-2 flex gap-2">
                         <Badge status={e.receipt_status} />
-                        <span className="text-[10px] px-2 py-0.5 rounded-full border border-white/20 text-white/60">{e.status}</span>
+                        <span className={`text-[10px] px-2 py-0.5 rounded-full border ${
+                          e.status === "VALIDATED" ? "border-emerald-400/30 bg-emerald-400/10 text-emerald-300" :
+                          e.status === "IMPLEMENTED" ? "border-blue-400/30 bg-blue-400/10 text-blue-300" :
+                          e.status === "ACCEPTED" ? "border-purple-400/30 bg-purple-400/10 text-purple-300" :
+                          "border-amber-400/30 bg-amber-400/10 text-amber-300"
+                        }`}>{e.status}</span>
                       </div>
                     </div>
                   ))}
@@ -446,8 +474,17 @@ export default function WarRoom4Tile() {
 
                       <div className="mt-3 flex gap-2">
                         <Badge status={activeEvent.receipt_status} />
-                        <span className="text-[10px] px-2 py-0.5 rounded-full border border-white/20 text-white/60">{activeEvent.type}</span>
-                        <span className="text-[10px] px-2 py-0.5 rounded-full border border-white/20 text-white/60">{activeEvent.status}</span>
+                        <span className={`text-[10px] px-2 py-0.5 rounded-full border ${
+                          activeEvent.type === "PBM" ? "border-blue-400/30 bg-blue-400/10 text-blue-300" :
+                          activeEvent.type === "MEDICAL" ? "border-emerald-400/30 bg-emerald-400/10 text-emerald-300" :
+                          "border-purple-400/30 bg-purple-400/10 text-purple-300"
+                        }`}>{activeEvent.type}</span>
+                        <span className={`text-[10px] px-2 py-0.5 rounded-full border ${
+                          activeEvent.status === "VALIDATED" ? "border-emerald-400/30 bg-emerald-400/10 text-emerald-300" :
+                          activeEvent.status === "IMPLEMENTED" ? "border-blue-400/30 bg-blue-400/10 text-blue-300" :
+                          activeEvent.status === "ACCEPTED" ? "border-purple-400/30 bg-purple-400/10 text-purple-300" :
+                          "border-amber-400/30 bg-amber-400/10 text-amber-300"
+                        }`}>{activeEvent.status}</span>
                       </div>
                     </div>
 

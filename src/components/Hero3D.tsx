@@ -26,35 +26,37 @@ function Earth() {
 
   return (
     <group>
-      {/* Main Earth sphere */}
+      {/* Main Earth sphere - Brighter colors */}
       <mesh ref={earthRef}>
         <sphereGeometry args={[1.25, 64, 64]} />
         <meshStandardMaterial
-          color="#1e3a8a"
-          roughness={0.7}
-          metalness={0.2}
+          color="#3b82f6"
+          roughness={0.5}
+          metalness={0.4}
+          emissive="#1e40af"
+          emissiveIntensity={0.3}
         />
       </mesh>
 
-      {/* Cloud layer */}
+      {/* Cloud layer - More visible */}
       <mesh ref={cloudsRef}>
         <sphereGeometry args={[1.27, 64, 64]} />
         <meshStandardMaterial
           color="#ffffff"
           transparent
-          opacity={0.15}
-          roughness={0.9}
-          metalness={0.1}
+          opacity={0.25}
+          roughness={0.8}
+          metalness={0.2}
         />
       </mesh>
 
-      {/* Atmosphere glow */}
+      {/* Atmosphere glow - Brighter */}
       <mesh ref={atmosphereRef}>
         <sphereGeometry args={[1.35, 64, 64]} />
         <meshBasicMaterial
-          color="#3b82f6"
+          color="#60a5fa"
           transparent
-          opacity={0.08}
+          opacity={0.2}
           side={THREE.BackSide}
         />
       </mesh>
@@ -65,7 +67,7 @@ function Earth() {
   );
 }
 
-// Tech grid overlay on globe
+// Tech grid overlay on globe - Brighter
 function GridLines() {
   const linesRef = useRef<THREE.LineSegments>(null);
 
@@ -108,12 +110,12 @@ function GridLines() {
 
   return (
     <lineSegments ref={linesRef} geometry={geometry}>
-      <lineBasicMaterial color="#60a5fa" transparent opacity={0.25} />
+      <lineBasicMaterial color="#93c5fd" transparent opacity={0.5} />
     </lineSegments>
   );
 }
 
-// Orbiting data nodes
+// Orbiting data nodes - Brighter and glowing
 function DataNodes() {
   const groupRef = useRef<THREE.Group>(null);
 
@@ -125,10 +127,10 @@ function DataNodes() {
 
   const nodes = useMemo(() => {
     return [
-      { pos: [1.8, 0.5, 0], color: "#3b82f6" },
-      { pos: [-1.6, 0.8, 0.4], color: "#06b6d4" },
-      { pos: [0.3, -1.7, 0.6], color: "#8b5cf6" },
-      { pos: [0.8, 1.5, -0.8], color: "#10b981" },
+      { pos: [1.8, 0.5, 0], color: "#60a5fa" },
+      { pos: [-1.6, 0.8, 0.4], color: "#22d3ee" },
+      { pos: [0.3, -1.7, 0.6], color: "#a78bfa" },
+      { pos: [0.8, 1.5, -0.8], color: "#34d399" },
     ];
   }, []);
 
@@ -137,14 +139,18 @@ function DataNodes() {
       {nodes.map((node, i) => (
         <mesh key={i} position={node.pos as [number, number, number]}>
           <sphereGeometry args={[0.08, 16, 16]} />
-          <meshBasicMaterial color={node.color} />
+          <meshStandardMaterial 
+            color={node.color} 
+            emissive={node.color}
+            emissiveIntensity={0.8}
+          />
         </mesh>
       ))}
     </group>
   );
 }
 
-// Floating data particles
+// Floating data particles - Much brighter
 function Particles() {
   const particlesRef = useRef<THREE.Points>(null);
 
@@ -164,17 +170,20 @@ function Particles() {
 
       const colorChoice = Math.random();
       if (colorChoice < 0.33) {
-        col[i * 3] = 0.23;
-        col[i * 3 + 1] = 0.51;
-        col[i * 3 + 2] = 0.96;
+        // Blue - brighter
+        col[i * 3] = 0.38;
+        col[i * 3 + 1] = 0.65;
+        col[i * 3 + 2] = 0.98;
       } else if (colorChoice < 0.66) {
-        col[i * 3] = 0.02;
-        col[i * 3 + 1] = 0.71;
-        col[i * 3 + 2] = 0.83;
+        // Cyan - brighter
+        col[i * 3] = 0.13;
+        col[i * 3 + 1] = 0.83;
+        col[i * 3 + 2] = 0.93;
       } else {
-        col[i * 3] = 0.54;
-        col[i * 3 + 1] = 0.36;
-        col[i * 3 + 2] = 0.96;
+        // Purple - brighter
+        col[i * 3] = 0.66;
+        col[i * 3 + 1] = 0.54;
+        col[i * 3 + 2] = 0.98;
       }
     }
 
@@ -204,20 +213,23 @@ function Particles() {
           itemSize={3}
         />
       </bufferGeometry>
-      <pointsMaterial size={0.03} vertexColors transparent opacity={0.7} />
+      <pointsMaterial size={0.04} vertexColors transparent opacity={0.9} />
     </points>
   );
 }
 
 export function Hero3D() {
   return (
-    <div className="relative h-[420px] w-full k-panel k-glow overflow-hidden">
-      <div className="absolute inset-0 k-grid opacity-70" />
+    <div className="relative h-[420px] w-full rounded-2xl overflow-hidden border border-white/20 bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 shadow-2xl">
+      <div className="absolute inset-0 bg-gradient-to-br from-blue-500/5 via-purple-500/5 to-cyan-500/5" />
       <Canvas camera={{ position: [0, 0, 5], fov: 45 }}>
-        <ambientLight intensity={0.4} />
-        <directionalLight position={[5, 3, 5]} intensity={1.5} color="#ffffff" />
-        <pointLight position={[-5, -3, -5]} intensity={0.8} color="#3b82f6" />
-        <pointLight position={[3, 2, -3]} intensity={0.6} color="#06b6d4" />
+        {/* Much brighter lighting */}
+        <ambientLight intensity={1.2} />
+        <directionalLight position={[5, 3, 5]} intensity={2.5} color="#ffffff" />
+        <directionalLight position={[-5, 3, -5]} intensity={1.5} color="#60a5fa" />
+        <pointLight position={[-5, -3, -5]} intensity={1.5} color="#3b82f6" />
+        <pointLight position={[3, 2, -3]} intensity={1.2} color="#06b6d4" />
+        <pointLight position={[0, 5, 0]} intensity={1.0} color="#a78bfa" />
         
         <Earth />
         <DataNodes />
@@ -232,7 +244,7 @@ export function Hero3D() {
           maxPolarAngle={Math.PI / 1.5}
         />
       </Canvas>
-      <div className="absolute inset-x-0 bottom-0 p-5 text-xs text-white/65 backdrop-blur-sm bg-black/20">
+      <div className="absolute inset-x-0 bottom-0 p-5 text-sm text-gray-300 backdrop-blur-sm bg-gradient-to-t from-gray-900/90 to-transparent">
         Evidence Receipts • Value Ledger • Controls • Marketplace Delivery
       </div>
     </div>

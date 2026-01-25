@@ -1,3 +1,104 @@
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&display=swap');
+
+:root {
+  --bg0:#050608;
+  --bg1:#070a10;
+  --grid: rgba(255,255,255,0.07);
+  --line: rgba(255,255,255,0.10);
+  --glowG: rgba(80, 255, 170, 0.16);
+  --glowB: rgba(80, 160, 255, 0.12);
+}
+
+/* Base site look */
+html, body { 
+  background: var(--bg0); 
+  color: rgba(255,255,255,0.88); 
+}
+
+/* Premium console background wrapper */
+.console-bg{
+  position: relative;
+  min-height: 100vh;
+  background:
+    radial-gradient(1200px 700px at 18% 0%, var(--glowG), transparent 55%),
+    radial-gradient(900px 600px at 88% 10%, var(--glowB), transparent 58%),
+    linear-gradient(180deg, var(--bg1), var(--bg0) 55%, #040507);
+  overflow: hidden;
+}
+
+/* Subtle grid (masked so it doesn't look like graph paper) */
+.console-bg::before{
+  content:"";
+  position:absolute; 
+  inset:0;
+  pointer-events:none;
+  background:
+    linear-gradient(var(--grid) 1px, transparent 1px),
+    linear-gradient(90deg, var(--grid) 1px, transparent 1px);
+  background-size: 44px 44px;
+  opacity: 0.24;
+  mask-image: radial-gradient(70% 55% at 50% 18%, black 38%, transparent 74%);
+}
+
+/* Tiny noise so gradients feel expensive, not flat */
+.console-bg::after{
+  content:"";
+  position:absolute; 
+  inset:0;
+  pointer-events:none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='180' height='180' filter='url(%23n)' opacity='.35'/%3E%3C/svg%3E");
+  opacity: 0.06;
+  mix-blend-mode: overlay;
+}
+
+/* Glass + depth panel */
+.glass-3d{
+  position: relative;
+  border: 1px solid rgba(255,255,255,0.10);
+  background: rgba(255,255,255,0.045);
+  backdrop-filter: blur(18px);
+  box-shadow:
+    0 14px 40px rgba(0,0,0,0.55),
+    inset 0 1px 0 rgba(255,255,255,0.08);
+}
+
+/* Specular highlights */
+.glass-3d::before{
+  content:"";
+  position:absolute; 
+  inset:0;
+  border-radius: inherit;
+  pointer-events:none;
+  background:
+    radial-gradient(700px 180px at 18% 10%, rgba(255,255,255,0.16), transparent 60%),
+    radial-gradient(520px 160px at 88% 0%, rgba(80,255,170,0.10), transparent 65%);
+  opacity: 0.95;
+}
+
+.glass-3d::after{
+  content:"";
+  position:absolute; 
+  inset:0;
+  border-radius: inherit;
+  pointer-events:none;
+  background: linear-gradient(180deg, rgba(255,255,255,0.06), transparent 45%, rgba(0,0,0,0.18));
+  opacity: 0.9;
+}
+
+/* Premium hover lift (subtle) */
+.premium-hover{
+  transform: translateZ(0);
+  transition: transform 180ms ease, box-shadow 180ms ease, border-color 180ms ease;
+}
+
+@media (prefers-reduced-motion: no-preference){
+  .premium-hover:hover{
+    transform: translateY(-2px) scale(1.01);
+    border-color: rgba(255,255,255,0.16);
+    box-shadow: 0 18px 60px rgba(0,0,0,0.62), inset 0 1px 0 rgba(255,255,255,0.10);
+  }
+}
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -31,6 +132,18 @@ body {
   body {
     @apply bg-background text-foreground;
   }
+}
+
+/* War Room: force any accidental black text to be readable on dark UI */
+.warroom-console .text-black,
+.warroom-console [style*="color: black"],
+.warroom-console [style*="color:black"] {
+  color: rgba(255, 255, 255, 0.92) !important;
+}
+
+/* Optional: if you also have "bg-black" blocks with default text, ensure a base */
+.warroom-console {
+  color: rgba(255, 255, 255, 0.88);
 }
 
 /* War Room Console Styles */

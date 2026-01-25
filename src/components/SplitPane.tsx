@@ -12,7 +12,7 @@ function useLocalStorageNumber(key: string, initial: number) {
         if (!Number.isNaN(n)) setValue(n);
       }
     } catch {}
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+     
   }, [key]);
 
   useEffect(() => {

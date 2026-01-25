@@ -244,7 +244,7 @@ export function Hero3D() {
           maxPolarAngle={Math.PI / 1.5}
         />
       </Canvas>
-      <div className="absolute inset-x-0 bottom-0 p-5 text-sm text-gray-300 backdrop-blur-sm bg-gradient-to-t from-gray-900/90 to-transparent">
+      <div className="absolute inset-x-0 bottom-0 p-5 text-sm text-orange-500 backdrop-blur-sm bg-gradient-to-t from-gray-900/90 to-transparent font-medium">
         Evidence Receipts • Value Ledger • Controls • Marketplace Delivery
       </div>
     </div>

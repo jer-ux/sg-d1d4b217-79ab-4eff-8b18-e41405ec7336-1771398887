@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Link from "next/link";
 import { nav } from "@/components/site";
 import type { NavLink } from "@/components/site";
@@ -8,6 +8,47 @@ import { ChevronDown } from "lucide-react";
 
 export default function Nav() {
   const [openDropdown, setOpenDropdown] = useState<string | null>(null);
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  if (!mounted) {
+    return (
+      <header className="sticky top-0 z-50 backdrop-blur-xl bg-black/30 border-b border-white/10">
+        <div className="mx-auto max-w-7xl px-6 py-4 flex items-center justify-between">
+          <Link href="/" className="font-semibold tracking-tight text-lg">
+            <span className="text-white">Kincaid</span>{" "}
+            <span className="text-white/70">IQ</span>
+          </Link>
+
+          <nav className="hidden lg:flex items-center gap-1 text-sm text-white/75">
+            {nav.map((item) => (
+              <div key={item.label} className="px-3 py-2">
+                {item.label}
+              </div>
+            ))}
+          </nav>
+
+          <div className="flex gap-2">
+            <Link
+              href="/contact"
+              className="px-4 py-2 rounded-xl border border-white/15 bg-white/5 hover:bg-white/10 transition text-sm"
+            >
+              Request demo
+            </Link>
+            <Link
+              href="/capital-markets"
+              className="px-4 py-2 rounded-xl bg-orange-500 text-white hover:bg-orange-600 transition text-sm font-medium"
+            >
+              Investor access
+            </Link>
+          </div>
+        </div>
+      </header>
+    );
+  }
 
   return (
     <header className="sticky top-0 z-50 backdrop-blur-xl bg-black/30 border-b border-white/10">

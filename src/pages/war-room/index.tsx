@@ -19,33 +19,49 @@ interface WarEvent {
   score: number;
   receipt_status: string;
   evidence_receipt_id: string;
-  created_at: string;
+  due_date: string;
+  created_at?: string;
+  updated_at: string;
 }
 
 interface WarRoomData {
   tenant: string;
   range: string;
+  asOf: string;
   events: WarEvent[];
   ebitda: {
-    ytd_savings: number;
+    ytd_validated: number;
+    mtd_validated: number;
     run_rate: number;
     confidence: number;
+    as_of: string;
   };
   ledger: {
     realized: number;
     identified: number;
     approved: number;
     at_risk: number;
+    as_of: string;
+  };
+  drivers: {
+    baseline_trend_pct: number;
+    actual_trend_pct: number;
+    delta_pct: number;
+    attribution: Array<{
+      label: string;
+      delta_pct: number;
+      note: string;
+    }>;
+  };
+  data_health: {
+    freshness_hours: number;
+    dq_pass_rate: number;
+    verified_receipts_rate: number;
+    open_incidents: number;
+    last_replay: string;
   };
   ticker: Array<{
-    label: string;
-    value: string;
-    trend?: string;
-  }>;
-  incidentFeed: Array<{
-    t: string;
-    s: string;
-    msg: string;
+    text: string;
     ts: string;
   }>;
 }
@@ -89,7 +105,9 @@ export default function WarRoomHome() {
   const load = async () => {
     setLoading(true);
     try {
-      const res = await fetch(`/api/mock/war-room?tenant=${tenant}&range=${range}`);
+      const res = await fetch(`/api/mock/war-room?tenant=${encodeURIComponent(tenant)}&range=${encodeURIComponent(range)}`, {
+        cache: "no-store" as any,
+      });
       const json = await res.json();
       setData(json);
     } catch (error) {
@@ -186,11 +204,10 @@ export default function WarRoomHome() {
 
   const nextStatuses = (current: string): string[] => {
     const map: Record<string, string[]> = {
-      IDENTIFIED: ["NEGOTIATING", "APPROVED", "CLOSED"],
-      NEGOTIATING: ["APPROVED", "CLOSED"],
-      APPROVED: ["REALIZED", "CLOSED"],
-      REALIZED: ["CLOSED"],
-      CLOSED: [],
+      RECOMMENDED: ["ACCEPTED", "IMPLEMENTED", "VALIDATED"],
+      ACCEPTED: ["IMPLEMENTED", "VALIDATED"],
+      IMPLEMENTED: ["VALIDATED"],
+      VALIDATED: [],
     };
     return map[current] || [];
   };
@@ -220,7 +237,6 @@ export default function WarRoomHome() {
   });
 
   const top4 = eventsFiltered.slice(0, 4);
-  const incidentFeed = data.incidentFeed || [];
 
   const trendA = [3, 5, 4, 8, 7, 9, 11, 10, 12, 13, 12, 14];
   const trendB = [9, 8, 7, 7, 6, 6, 5, 6, 5, 4, 4, 3];
@@ -300,6 +316,32 @@ export default function WarRoomHome() {
           </div>
         </div>
 
+        {/* Executive Summary */}
+        <div className="mx-auto max-w-[1400px] px-4 pt-5">
+          <div className="rounded-2xl border border-white/10 bg-white/5 p-4">
+            <div className="flex flex-wrap items-start justify-between gap-4">
+              <div>
+                <div className="text-[11px] text-white/50">Executive Summary</div>
+                <div className="mt-1 text-xl font-semibold tracking-tight tabular-nums">
+                  EBITDA Protected (Validated): {money(data.ebitda.ytd_validated)}
+                  <span className="text-sm text-white/50 font-normal"> • +{money(data.ebitda.mtd_validated)} MTD</span>
+                </div>
+                <div className="mt-1 text-[12px] text-white/60 tabular-nums">
+                  Identified {money(data.ledger.identified)} • Approved {money(data.ledger.approved)} • Realized {money(data.ledger.realized)} • At-risk {money(data.ledger.at_risk)}
+                </div>
+              </div>
+
+              <div className="flex flex-wrap gap-2">
+                <Pill>As of {new Date(data.asOf).toLocaleString()}</Pill>
+                <Pill>Freshness {data.data_health.freshness_hours}h</Pill>
+                <Pill>DQ {(data.data_health.dq_pass_rate * 100).toFixed(1)}%</Pill>
+                <Pill>Receipts VERIFIED {Math.round(data.data_health.verified_receipts_rate * 100)}%</Pill>
+                <Pill>Open incidents {data.data_health.open_incidents}</Pill>
+              </div>
+            </div>
+          </div>
+        </div>
+
         {/* Main Layout */}
         <div className="mx-auto max-w-[1400px] px-4 py-5 grid grid-cols-1 xl:grid-cols-12 gap-4">
           {/* Left: Events Table */}
@@ -342,12 +384,12 @@ export default function WarRoomHome() {
 
           {/* Center: KPI Tiles */}
           <div className="xl:col-span-4 space-y-4">
-            <Ticker items={data.ticker} />
+            <Ticker items={data.ticker.map((t) => ({ label: t.text, value: "", trend: "" }))} />
 
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div className="rounded-2xl border border-white/10 bg-white/5 p-4">
                 <div className="text-xs text-white/50">EBITDA Defense</div>
-                <div className="mt-2 text-3xl font-semibold">{money(data.ebitda.ytd_savings)}</div>
+                <div className="mt-2 text-3xl font-semibold">{money(data.ebitda.ytd_validated)}</div>
                 <div className="mt-2 flex items-center justify-between text-sm text-white/70">
                   <span>Run-rate</span>
                   <span className="font-medium">{money(data.ebitda.run_rate)}/mo</span>
@@ -411,19 +453,30 @@ export default function WarRoomHome() {
             </div>
           </div>
 
-          {/* Right Rail: Incidents + Evidence + Activity */}
+          {/* Right Rail: Variance Drivers + Data Health */}
           <div className="xl:col-span-2 space-y-4">
             <div className="rounded-2xl border border-white/10 bg-white/5 p-4">
-              <div className="text-xs text-white/50">Incidents</div>
-              <div className="mt-3 space-y-2">
-                {incidentFeed.map((x, idx) => (
+              <div className="text-xs text-white/50">Variance Drivers</div>
+              <div className="mt-3 space-y-3">
+                <div className="rounded-xl border border-white/10 bg-black/20 p-3">
+                  <div className="text-[11px] text-white/50">Baseline vs Actual</div>
+                  <div className="mt-1 text-sm font-semibold">
+                    {data.drivers.baseline_trend_pct.toFixed(1)}% → {data.drivers.actual_trend_pct.toFixed(1)}%
+                  </div>
+                  <div className="mt-1 text-xs text-white/60">
+                    Delta: {data.drivers.delta_pct > 0 ? "+" : ""}{data.drivers.delta_pct.toFixed(1)}%
+                  </div>
+                </div>
+
+                {data.drivers.attribution.map((d, idx) => (
                   <div key={idx} className="rounded-xl border border-white/10 bg-black/20 p-3">
                     <div className="flex items-center justify-between">
-                      <Pill>{x.t}</Pill>
-                      <Pill>{x.s}</Pill>
+                      <div className="text-sm font-medium">{d.label}</div>
+                      <div className={`text-sm font-semibold ${d.delta_pct > 0 ? "text-red-300" : "text-emerald-300"}`}>
+                        {d.delta_pct > 0 ? "+" : ""}{d.delta_pct.toFixed(1)}%
+                      </div>
                     </div>
-                    <div className="mt-2 text-sm">{x.msg}</div>
-                    <div className="mt-2 text-[11px] text-white/40">{new Date(x.ts).toLocaleString()}</div>
+                    <div className="mt-1 text-[11px] text-white/50">{d.note}</div>
                   </div>
                 ))}
               </div>
@@ -638,8 +691,7 @@ Kincaid IQ Ops`}
                   <div className="text-xs text-white/50">Owner + timeline</div>
                   <div className="mt-2 flex flex-wrap gap-2">
                     <Pill>Owner role: {activeEvent.owner_role}</Pill>
-                    <Pill>SLA: 5 business days</Pill>
-                    <Pill>Escalate: Day 7</Pill>
+                    <Pill>Due: {new Date(activeEvent.due_date).toLocaleDateString()}</Pill>
                   </div>
                 </div>
 

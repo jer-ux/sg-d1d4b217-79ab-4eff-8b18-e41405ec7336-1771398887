@@ -30,12 +30,12 @@ function Tile({
 }) {
   const accentCls =
     accent === "good"
-      ? "border-emerald-400/20 bg-emerald-400/5"
+      ? "border-emerald-400/30 bg-emerald-400/10"
       : accent === "warn"
-      ? "border-yellow-400/20 bg-yellow-400/5"
+      ? "border-yellow-400/30 bg-yellow-400/10"
       : accent === "bad"
-      ? "border-red-400/20 bg-red-400/5"
-      : "border-white/10 bg-white/5";
+      ? "border-red-400/30 bg-red-400/10"
+      : "border-gray-600/40 bg-gray-800/40";
 
   return (
     <div
@@ -49,15 +49,15 @@ function Tile({
         accentCls,
       ].join(" ")}
     >
-      <div className="text-[11px] text-white/55">{label}</div>
-      <div className="mt-2 text-3xl font-semibold tracking-tight tabular-nums">{value}</div>
-      <div className="mt-2 flex items-center justify-between text-[12px] text-white/55">
+      <div className="text-[11px] text-gray-400">{label}</div>
+      <div className="mt-2 text-3xl font-semibold tracking-tight tabular-nums text-gray-100">{value}</div>
+      <div className="mt-2 flex items-center justify-between text-[12px] text-gray-400">
         <span className="tabular-nums">{subLeft ?? ""}</span>
         <span className="tabular-nums">{subRight ?? ""}</span>
       </div>
 
       <div className="pointer-events-none absolute inset-0 rounded-2xl">
-        <div className="absolute -top-24 left-10 h-48 w-96 rounded-full bg-white/10 blur-3xl opacity-60" />
+        <div className="absolute -top-24 left-10 h-48 w-96 rounded-full bg-gray-700/20 blur-3xl opacity-60" />
         <div className="absolute -top-10 right-6 h-24 w-56 rounded-full bg-emerald-300/10 blur-2xl opacity-60" />
       </div>
     </div>
@@ -79,12 +79,12 @@ function Drawer({
   return (
     <div className="fixed inset-0 z-[70]">
       <div className="absolute inset-0 bg-black/60" onClick={onClose} />
-      <div className="absolute right-0 top-0 h-full w-full max-w-[520px] border-l border-white/10 bg-[#05070c]/90 backdrop-blur-xl">
-        <div className="flex items-center justify-between px-4 py-3 border-b border-white/10">
-          <div className="text-sm font-semibold">{title}</div>
+      <div className="absolute right-0 top-0 h-full w-full max-w-[520px] border-l border-gray-700 bg-gray-900/95 backdrop-blur-xl">
+        <div className="flex items-center justify-between px-4 py-3 border-b border-gray-700">
+          <div className="text-sm font-semibold text-gray-100">{title}</div>
           <button
             onClick={onClose}
-            className="text-xs px-3 py-2 rounded-xl border border-white/10 hover:bg-white/5"
+            className="text-xs px-3 py-2 rounded-xl border border-gray-600 hover:bg-gray-800 text-gray-200"
           >
             Close
           </button>
@@ -152,10 +152,10 @@ function mockWarRoom() {
 function Badge({ status }: { status: string }) {
   const cls =
     status === "VERIFIED"
-      ? "bg-emerald-400/10 text-emerald-200 border-emerald-400/20"
+      ? "bg-emerald-400/20 text-emerald-300 border-emerald-400/30"
       : status === "DEGRADED"
-      ? "bg-yellow-400/10 text-yellow-200 border-yellow-400/20"
-      : "bg-red-400/10 text-red-200 border-red-400/20";
+      ? "bg-yellow-400/20 text-yellow-300 border-yellow-400/30"
+      : "bg-red-400/20 text-red-300 border-red-400/30";
 
   return (
     <span className={`text-[10px] px-2 py-0.5 rounded-full border ${cls}`}>
@@ -253,16 +253,16 @@ export default function WarRoom4Tile() {
         title="War Room - SiriusB iQ AI Data Sciences Lab"
         description="CFO War Room - Real-time financial operations intelligence"
       />
-      <div className="min-h-screen text-white bg-[#050608]">
+      <div className="min-h-screen bg-gradient-to-b from-gray-900 via-gray-950 to-black text-gray-100">
         <div className="pointer-events-none fixed inset-0 -z-10">
-          <div className="absolute inset-0 bg-gradient-to-b from-[#070a10] via-[#050608] to-[#040507]" />
-          <div className="absolute -top-24 left-10 h-[520px] w-[920px] rounded-full bg-emerald-300/10 blur-3xl" />
-          <div className="absolute -top-20 right-10 h-[420px] w-[760px] rounded-full bg-sky-300/10 blur-3xl" />
+          <div className="absolute inset-0 bg-gradient-to-b from-gray-800/50 via-gray-900/50 to-black/50" />
+          <div className="absolute -top-24 left-10 h-[520px] w-[920px] rounded-full bg-emerald-300/5 blur-3xl" />
+          <div className="absolute -top-20 right-10 h-[420px] w-[760px] rounded-full bg-sky-300/5 blur-3xl" />
           <div
-            className="absolute inset-0 opacity-[0.22]"
+            className="absolute inset-0 opacity-[0.15]"
             style={{
               backgroundImage:
-                "linear-gradient(rgba(255,255,255,.08) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,.08) 1px, transparent 1px)",
+                "linear-gradient(rgba(255,255,255,.05) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,.05) 1px, transparent 1px)",
               backgroundSize: "44px 44px",
               maskImage: "radial-gradient(70% 55% at 50% 20%, black 40%, transparent 75%)",
             }}
@@ -272,108 +272,108 @@ export default function WarRoom4Tile() {
         <div ref={containerRef} className="flex h-screen">
           <div
             style={{ width: `${leftWidth}px` }}
-            className="hidden xl:flex flex-col border-r border-white/10 bg-black/20 backdrop-blur-sm overflow-y-auto"
+            className="hidden xl:flex flex-col border-r border-gray-700 bg-gray-900/40 backdrop-blur-sm overflow-y-auto"
           >
             <div className="p-4 space-y-4">
               <div>
-                <div className="text-[11px] text-white/50 mb-1">WAR ROOM</div>
-                <div className="text-lg font-semibold tracking-tight">/war-room</div>
+                <div className="text-[11px] text-gray-500 mb-1">WAR ROOM</div>
+                <div className="text-lg font-semibold tracking-tight text-gray-100">/war-room</div>
               </div>
 
-              <div className="h-px bg-gradient-to-r from-white/20 via-white/5 to-transparent" />
+              <div className="h-px bg-gradient-to-r from-gray-600/40 via-gray-700/20 to-transparent" />
 
               <div className="space-y-2">
-                <div className="text-[11px] text-white/50 uppercase tracking-wider">Tenant</div>
-                <div className="px-3 py-2 rounded-lg border border-white/10 bg-white/5 text-sm">
+                <div className="text-[11px] text-gray-500 uppercase tracking-wider">Tenant</div>
+                <div className="px-3 py-2 rounded-lg border border-gray-700 bg-gray-800/50 text-sm text-gray-200">
                   tenant_demo
                 </div>
               </div>
 
               <div className="space-y-2">
-                <div className="text-[11px] text-white/50 uppercase tracking-wider">Range</div>
-                <div className="px-3 py-2 rounded-lg border border-white/10 bg-white/5 text-sm">
+                <div className="text-[11px] text-gray-500 uppercase tracking-wider">Range</div>
+                <div className="px-3 py-2 rounded-lg border border-gray-700 bg-gray-800/50 text-sm text-gray-200">
                   Last 30 days
                 </div>
               </div>
 
-              <div className="h-px bg-gradient-to-r from-white/20 via-white/5 to-transparent" />
+              <div className="h-px bg-gradient-to-r from-gray-600/40 via-gray-700/20 to-transparent" />
 
               <div className="space-y-2">
-                <div className="text-[11px] text-white/50 uppercase tracking-wider">Quick Stats</div>
+                <div className="text-[11px] text-gray-500 uppercase tracking-wider">Quick Stats</div>
                 <div className="space-y-1.5 text-sm">
-                  <div className="flex justify-between px-2 py-1.5 rounded-lg hover:bg-white/5">
-                    <span className="text-white/70">Identified</span>
-                    <span className="font-semibold tabular-nums">{money(data.ledger.identified)}</span>
+                  <div className="flex justify-between px-2 py-1.5 rounded-lg hover:bg-gray-800/50">
+                    <span className="text-gray-400">Identified</span>
+                    <span className="font-semibold tabular-nums text-gray-200">{money(data.ledger.identified)}</span>
                   </div>
-                  <div className="flex justify-between px-2 py-1.5 rounded-lg hover:bg-white/5">
-                    <span className="text-white/70">Approved</span>
-                    <span className="font-semibold tabular-nums">{money(data.ledger.approved)}</span>
+                  <div className="flex justify-between px-2 py-1.5 rounded-lg hover:bg-gray-800/50">
+                    <span className="text-gray-400">Approved</span>
+                    <span className="font-semibold tabular-nums text-gray-200">{money(data.ledger.approved)}</span>
                   </div>
-                  <div className="flex justify-between px-2 py-1.5 rounded-lg hover:bg-white/5">
-                    <span className="text-white/70">Realized</span>
-                    <span className="font-semibold text-emerald-200 tabular-nums">{money(data.ledger.realized)}</span>
+                  <div className="flex justify-between px-2 py-1.5 rounded-lg hover:bg-gray-800/50">
+                    <span className="text-gray-400">Realized</span>
+                    <span className="font-semibold text-emerald-300 tabular-nums">{money(data.ledger.realized)}</span>
                   </div>
-                  <div className="flex justify-between px-2 py-1.5 rounded-lg hover:bg-white/5">
-                    <span className="text-white/70">At-risk</span>
-                    <span className="font-semibold text-red-200 tabular-nums">{money(data.ledger.at_risk)}</span>
+                  <div className="flex justify-between px-2 py-1.5 rounded-lg hover:bg-gray-800/50">
+                    <span className="text-gray-400">At-risk</span>
+                    <span className="font-semibold text-red-300 tabular-nums">{money(data.ledger.at_risk)}</span>
                   </div>
                 </div>
               </div>
 
-              <div className="h-px bg-gradient-to-r from-white/20 via-white/5 to-transparent" />
+              <div className="h-px bg-gradient-to-r from-gray-600/40 via-gray-700/20 to-transparent" />
 
               <div className="space-y-2">
-                <div className="text-[11px] text-white/50 uppercase tracking-wider">Data Health</div>
+                <div className="text-[11px] text-gray-500 uppercase tracking-wider">Data Health</div>
                 <div className="space-y-1.5 text-sm">
-                  <div className="flex justify-between px-2 py-1.5 rounded-lg hover:bg-white/5">
-                    <span className="text-white/70">Verified</span>
-                    <span className="font-semibold tabular-nums">{pct(data.data_health.verified_receipts_rate)}</span>
+                  <div className="flex justify-between px-2 py-1.5 rounded-lg hover:bg-gray-800/50">
+                    <span className="text-gray-400">Verified</span>
+                    <span className="font-semibold tabular-nums text-gray-200">{pct(data.data_health.verified_receipts_rate)}</span>
                   </div>
-                  <div className="flex justify-between px-2 py-1.5 rounded-lg hover:bg-white/5">
-                    <span className="text-white/70">DQ Pass</span>
-                    <span className="font-semibold tabular-nums">{pct(data.data_health.dq_pass_rate)}</span>
+                  <div className="flex justify-between px-2 py-1.5 rounded-lg hover:bg-gray-800/50">
+                    <span className="text-gray-400">DQ Pass</span>
+                    <span className="font-semibold tabular-nums text-gray-200">{pct(data.data_health.dq_pass_rate)}</span>
                   </div>
-                  <div className="flex justify-between px-2 py-1.5 rounded-lg hover:bg-white/5">
-                    <span className="text-white/70">Freshness</span>
-                    <span className="font-semibold tabular-nums">{data.data_health.freshness_hours}h</span>
+                  <div className="flex justify-between px-2 py-1.5 rounded-lg hover:bg-gray-800/50">
+                    <span className="text-gray-400">Freshness</span>
+                    <span className="font-semibold tabular-nums text-gray-200">{data.data_health.freshness_hours}h</span>
                   </div>
-                  <div className="flex justify-between px-2 py-1.5 rounded-lg hover:bg-white/5">
-                    <span className="text-white/70">Incidents</span>
-                    <span className="font-semibold text-yellow-200 tabular-nums">{data.data_health.open_incidents}</span>
+                  <div className="flex justify-between px-2 py-1.5 rounded-lg hover:bg-gray-800/50">
+                    <span className="text-gray-400">Incidents</span>
+                    <span className="font-semibold text-yellow-300 tabular-nums">{data.data_health.open_incidents}</span>
                   </div>
                 </div>
               </div>
 
-              <div className="h-px bg-gradient-to-r from-white/20 via-white/5 to-transparent" />
+              <div className="h-px bg-gradient-to-r from-gray-600/40 via-gray-700/20 to-transparent" />
 
-              <div className="flex flex-wrap gap-2 text-[11px] text-white/55">
-                <span className="px-2 py-1 rounded-full border border-white/10 bg-white/5">Tenant: tenant_demo</span>
-                <span className="px-2 py-1 rounded-full border border-white/10 bg-white/5">Range: 30d</span>
+              <div className="flex flex-wrap gap-2 text-[11px] text-gray-500">
+                <span className="px-2 py-1 rounded-full border border-gray-700 bg-gray-800/50">Tenant: tenant_demo</span>
+                <span className="px-2 py-1 rounded-full border border-gray-700 bg-gray-800/50">Range: 30d</span>
                 {mounted && (
-                  <span className="px-2 py-1 rounded-full border border-white/10 bg-white/5">
+                  <span className="px-2 py-1 rounded-full border border-gray-700 bg-gray-800/50">
                     As of {new Date(data.asOf).toLocaleString()}
                   </span>
                 )}
               </div>
             </div>
-            <div className="mt-auto p-4 border-t border-white/10 text-[11px] text-white/40">
+            <div className="mt-auto p-4 border-t border-gray-700 text-[11px] text-gray-500">
               {mounted ? `As of ${new Date(data.asOf).toLocaleString()}` : "Loading..."}
             </div>
           </div>
 
           <div
-            className="hidden xl:block w-2 cursor-col-resize hover:bg-white/5 transition relative group"
+            className="hidden xl:block w-2 cursor-col-resize hover:bg-gray-700/30 transition relative group"
             onMouseDown={handleMouseDown}
           >
-            <div className="h-full w-px mx-auto bg-gradient-to-b from-white/15 via-white/5 to-white/15" />
+            <div className="h-full w-px mx-auto bg-gradient-to-b from-gray-600/30 via-gray-700/15 to-gray-600/30" />
             <div className="absolute inset-y-0 left-1/2 -translate-x-1/2 w-1 bg-emerald-400/40 opacity-0 group-hover:opacity-100 transition" />
           </div>
 
           <div className="flex-1 overflow-y-auto">
             <div className="mx-auto max-w-[1400px] px-4 py-6">
               <div className="xl:hidden mb-5">
-                <div className="text-[11px] text-white/50">Kincaid IQ • CFO War Room</div>
-                <div className="text-lg font-semibold tracking-tight">/war-room</div>
+                <div className="text-[11px] text-gray-500">Kincaid IQ • CFO War Room</div>
+                <div className="text-lg font-semibold tracking-tight text-gray-100">/war-room</div>
               </div>
 
               <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-4">
@@ -411,7 +411,7 @@ export default function WarRoom4Tile() {
                 />
               </div>
 
-              <div className="mt-4 text-[12px] text-white/55">
+              <div className="mt-4 text-[12px] text-gray-500">
                 Identified {money(data.ledger.identified)} • Approved {money(data.ledger.approved)} • Realized{" "}
                 {money(data.ledger.realized)} • At-risk {money(data.ledger.at_risk)} • Incidents{" "}
                 {data.data_health.open_incidents}
@@ -423,34 +423,34 @@ export default function WarRoom4Tile() {
         <Drawer open={drawerOpen} title={title} onClose={() => setDrawerOpen(false)}>
           {view === "VARIANCE" && (
             <div className="space-y-3">
-              <div className="rounded-xl border border-white/10 bg-white/5 p-3">
-                <div className="text-[11px] text-white/55">Trend Summary</div>
-                <div className="mt-2 text-sm tabular-nums">
+              <div className="rounded-xl border border-gray-700 bg-gray-800/50 p-3">
+                <div className="text-[11px] text-gray-500">Trend Summary</div>
+                <div className="mt-2 text-sm tabular-nums text-gray-200">
                   Baseline {data.baseline.toFixed(1)}% → Actual {data.actual.toFixed(1)}%{" "}
-                  <span className={`ml-2 font-semibold ${data.delta > 0 ? "text-red-200" : "text-emerald-200"}`}>
+                  <span className={`ml-2 font-semibold ${data.delta > 0 ? "text-red-300" : "text-emerald-300"}`}>
                     {data.delta > 0 ? "+" : ""}
                     {data.delta.toFixed(1)}%
                   </span>
                 </div>
-                <div className="mt-2 text-[11px] text-white/50">
+                <div className="mt-2 text-[11px] text-gray-500">
                   CFO note: This is attribution-style mock data. In prod, ties to claims trend decomposition.
                 </div>
               </div>
 
-              <div className="rounded-xl border border-white/10 bg-white/5 overflow-hidden">
-                <div className="px-3 py-2 border-b border-white/10 text-[11px] text-white/55">
+              <div className="rounded-xl border border-gray-700 bg-gray-800/50 overflow-hidden">
+                <div className="px-3 py-2 border-b border-gray-700 text-[11px] text-gray-500">
                   Attribution (Drivers)
                 </div>
-                <div className="divide-y divide-white/5">
+                <div className="divide-y divide-gray-700/50">
                   {data.drivers.map((d) => (
                     <div key={d.label} className="px-3 py-3 flex items-center justify-between">
                       <div>
-                        <div className="text-sm font-medium">{d.label}</div>
-                        <div className="text-[11px] text-white/50">{d.note}</div>
+                        <div className="text-sm font-medium text-gray-200">{d.label}</div>
+                        <div className="text-[11px] text-gray-500">{d.note}</div>
                       </div>
                       <div
                         className={`text-sm font-semibold tabular-nums ${
-                          d.delta_pct > 0 ? "text-red-200" : "text-emerald-200"
+                          d.delta_pct > 0 ? "text-red-300" : "text-emerald-300"
                         }`}
                       >
                         {d.delta_pct > 0 ? "+" : ""}
@@ -465,29 +465,29 @@ export default function WarRoom4Tile() {
 
           {view === "VALIDATED" && (
             <div className="space-y-3">
-              <div className="rounded-xl border border-white/10 bg-white/5 p-3">
-                <div className="text-[11px] text-white/55">Validated Total (ties to ledger.realized)</div>
-                <div className="mt-1 text-2xl font-semibold tabular-nums">{money(data.ledger.realized)}</div>
-                <div className="mt-1 text-[11px] text-white/50">
+              <div className="rounded-xl border border-gray-700 bg-gray-800/50 p-3">
+                <div className="text-[11px] text-gray-500">Validated Total (ties to ledger.realized)</div>
+                <div className="mt-1 text-2xl font-semibold tabular-nums text-gray-100">{money(data.ledger.realized)}</div>
+                <div className="mt-1 text-[11px] text-gray-500">
                   Rule: Only VALIDATED events with VERIFIED receipts belong here.
                 </div>
               </div>
 
-              <div className="rounded-xl border border-white/10 bg-white/5 overflow-hidden">
-                <div className="px-3 py-2 border-b border-white/10 text-[11px] text-white/55">
+              <div className="rounded-xl border border-gray-700 bg-gray-800/50 overflow-hidden">
+                <div className="px-3 py-2 border-b border-gray-700 text-[11px] text-gray-500">
                   Journal Entries (Validated)
                 </div>
-                <div className="divide-y divide-white/5">
+                <div className="divide-y divide-gray-700/50">
                   {data.validated.map((v) => (
                     <div key={v.id} className="px-3 py-3">
                       <div className="flex items-start justify-between">
                         <div className="min-w-0">
-                          <div className="text-sm font-medium">{v.id}</div>
-                          <div className="text-[11px] text-white/50 mt-0.5">{v.title}</div>
+                          <div className="text-sm font-medium text-gray-200">{v.id}</div>
+                          <div className="text-[11px] text-gray-500 mt-0.5">{v.title}</div>
                         </div>
-                        <div className="text-sm font-semibold tabular-nums">{money(v.amount)}</div>
+                        <div className="text-sm font-semibold tabular-nums text-gray-200">{money(v.amount)}</div>
                       </div>
-                      <div className="text-[11px] text-white/50 mt-2">Method: {v.method}</div>
+                      <div className="text-[11px] text-gray-500 mt-2">Method: {v.method}</div>
                     </div>
                   ))}
                 </div>
@@ -497,29 +497,29 @@ export default function WarRoom4Tile() {
 
           {view === "IN_FLIGHT" && (
             <div className="space-y-3">
-              <div className="rounded-xl border border-white/10 bg-white/5 p-3">
-                <div className="text-[11px] text-white/55">Approved Total (ties to ledger.approved)</div>
-                <div className="mt-1 text-2xl font-semibold tabular-nums">{money(data.ledger.approved)}</div>
-                <div className="mt-1 text-[11px] text-white/50">
+              <div className="rounded-xl border border-gray-700 bg-gray-800/50 p-3">
+                <div className="text-[11px] text-gray-500">Approved Total (ties to ledger.approved)</div>
+                <div className="mt-1 text-2xl font-semibold tabular-nums text-gray-100">{money(data.ledger.approved)}</div>
+                <div className="mt-1 text-[11px] text-gray-500">
                   Scope: ACCEPTED + IMPLEMENTED. These are "in flight" with owners and due dates.
                 </div>
               </div>
 
-              <div className="rounded-xl border border-white/10 bg-white/5 overflow-hidden">
-                <div className="px-3 py-2 border-b border-white/10 text-[11px] text-white/55">In-Flight Queue</div>
-                <div className="divide-y divide-white/5">
+              <div className="rounded-xl border border-gray-700 bg-gray-800/50 overflow-hidden">
+                <div className="px-3 py-2 border-b border-gray-700 text-[11px] text-gray-500">In-Flight Queue</div>
+                <div className="divide-y divide-gray-700/50">
                   {data.inFlight.map((f) => (
                     <div key={f.id} className="px-3 py-3">
                       <div className="flex items-start justify-between mb-2">
                         <div className="min-w-0">
-                          <div className="text-sm font-medium">{f.id}</div>
-                          <div className="text-[11px] text-white/50 mt-0.5">{f.title}</div>
+                          <div className="text-sm font-medium text-gray-200">{f.id}</div>
+                          <div className="text-[11px] text-gray-500 mt-0.5">{f.title}</div>
                         </div>
-                        <div className="text-sm font-semibold tabular-nums">{money(f.amount)}</div>
+                        <div className="text-sm font-semibold tabular-nums text-gray-200">{money(f.amount)}</div>
                       </div>
                       <div className="flex items-center gap-3 text-[11px]">
-                        <span className="text-white/70">Stage: {f.stage}</span>
-                        <span className="text-white/70">Owner: {f.owner}</span>
+                        <span className="text-gray-400">Stage: {f.stage}</span>
+                        <span className="text-gray-400">Owner: {f.owner}</span>
                         <Badge status={f.receipt} />
                       </div>
                     </div>
@@ -531,50 +531,50 @@ export default function WarRoom4Tile() {
 
           {view === "TRUST" && (
             <div className="space-y-3">
-              <div className="rounded-xl border border-white/10 bg-white/5 p-3">
-                <div className="text-[11px] text-white/55">Controls Summary</div>
+              <div className="rounded-xl border border-gray-700 bg-gray-800/50 p-3">
+                <div className="text-[11px] text-gray-500">Controls Summary</div>
                 <div className="mt-2 grid grid-cols-2 gap-3 text-sm">
-                  <div className="rounded-xl border border-white/10 bg-black/20 p-3">
-                    <div className="text-[11px] text-white/55">Receipts VERIFIED</div>
-                    <div className="mt-1 text-xl font-semibold tabular-nums">
+                  <div className="rounded-xl border border-gray-700 bg-gray-900/60 p-3">
+                    <div className="text-[11px] text-gray-500">Receipts VERIFIED</div>
+                    <div className="mt-1 text-xl font-semibold tabular-nums text-gray-100">
                       {Math.round(data.data_health.verified_receipts_rate * 100)}%
                     </div>
                   </div>
-                  <div className="rounded-xl border border-white/10 bg-black/20 p-3">
-                    <div className="text-[11px] text-white/55">DQ pass rate</div>
-                    <div className="mt-1 text-xl font-semibold tabular-nums">
+                  <div className="rounded-xl border border-gray-700 bg-gray-900/60 p-3">
+                    <div className="text-[11px] text-gray-500">DQ pass rate</div>
+                    <div className="mt-1 text-xl font-semibold tabular-nums text-gray-100">
                       {(data.data_health.dq_pass_rate * 100).toFixed(1)}%
                     </div>
                   </div>
-                  <div className="rounded-xl border border-white/10 bg-black/20 p-3">
-                    <div className="text-[11px] text-white/55">Freshness</div>
-                    <div className="mt-1 text-xl font-semibold tabular-nums">{data.data_health.freshness_hours}h</div>
+                  <div className="rounded-xl border border-gray-700 bg-gray-900/60 p-3">
+                    <div className="text-[11px] text-gray-500">Freshness</div>
+                    <div className="mt-1 text-xl font-semibold tabular-nums text-gray-100">{data.data_health.freshness_hours}h</div>
                   </div>
-                  <div className="rounded-xl border border-white/10 bg-black/20 p-3">
-                    <div className="text-[11px] text-white/55">Open incidents</div>
-                    <div className="mt-1 text-xl font-semibold tabular-nums">{data.data_health.open_incidents}</div>
+                  <div className="rounded-xl border border-gray-700 bg-gray-900/60 p-3">
+                    <div className="text-[11px] text-gray-500">Open incidents</div>
+                    <div className="mt-1 text-xl font-semibold tabular-nums text-gray-100">{data.data_health.open_incidents}</div>
                   </div>
                 </div>
-                <div className="mt-3 text-[11px] text-white/50">
+                <div className="mt-3 text-[11px] text-gray-500">
                   Gate policy: No REALIZED without VERIFIED receipt + validation artifacts + packet locked.
                 </div>
               </div>
 
-              <div className="rounded-xl border border-white/10 bg-white/5 overflow-hidden">
-                <div className="px-3 py-2 border-b border-white/10 text-[11px] text-white/55">
+              <div className="rounded-xl border border-gray-700 bg-gray-800/50 overflow-hidden">
+                <div className="px-3 py-2 border-b border-gray-700 text-[11px] text-gray-500">
                   Unverified / Degraded Items
                 </div>
-                <div className="divide-y divide-white/5">
+                <div className="divide-y divide-gray-700/50">
                   {data.unverified.map((u) => (
                     <div key={u.id} className="px-3 py-3">
                       <div className="flex items-start justify-between mb-2">
                         <div className="min-w-0">
-                          <div className="text-sm font-medium">{u.id}</div>
-                          <div className="text-[11px] text-white/50 mt-0.5">{u.title}</div>
+                          <div className="text-sm font-medium text-gray-200">{u.id}</div>
+                          <div className="text-[11px] text-gray-500 mt-0.5">{u.title}</div>
                         </div>
                         <Badge status={u.receipt} />
                       </div>
-                      <div className="flex items-center gap-3 text-[11px] text-white/70">
+                      <div className="flex items-center gap-3 text-[11px] text-gray-400">
                         <span>{u.type}</span>
                         <span>{u.status}</span>
                       </div>

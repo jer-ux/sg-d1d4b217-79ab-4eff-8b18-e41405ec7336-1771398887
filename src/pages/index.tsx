@@ -19,7 +19,7 @@ export default function Home() {
           <div className="pt-14 pb-10 grid lg:grid-cols-2 gap-8 items-center">
             <div>
               <div className="text-5xl font-semibold tracking-tight">
-                <span className="bg-gradient-to-r from-blue-400 via-violet-400 to-cyan-300 bg-clip-text text-transparent animate-gradient">
+                <span className="text-orange-500">
                   Decision-grade
                 </span>{" "}
                 value systems for capital, operators, and advisors.

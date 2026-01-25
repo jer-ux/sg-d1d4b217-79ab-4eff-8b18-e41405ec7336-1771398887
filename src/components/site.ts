@@ -1,212 +1,51 @@
-export type NavLink = {
-  label: string;
-  href: string;
-  description?: string;
-  badge?: string;
-};
+export type NavItem = { label: string; href: string; description?: string };
+export type NavGroup = { label: string; items: NavItem[] };
+export type NavLink = { label: string; href?: string; groups?: NavGroup[] };
 
-export type NavSection = {
-  title: string;
-  links: NavLink[];
-};
-
-export type NavDropdown = {
-  label: string;
-  sections: NavSection[];
-  featured?: NavLink[];
-};
-
-export const primaryCtas: NavLink[] = [
-  { label: "Request demo", href: "/contact", description: "Fast path to a scoped plan." },
-  { label: "Investor access", href: "/capital-markets", description: "Capital markets overview." },
-];
-
-// Ultra-clean nav: only 4 dropdown boxes in header
-export const megaNav: NavDropdown[] = [
+export const nav: NavLink[] = [
+  { label: "War Room", href: "/war-room" },
+  { label: "Value Ledger", href: "/verified-savings-ledger" },
+  { label: "Arbitrage Events", href: "/arbitrage-events" },
+  { label: "Proof Library", href: "/proof-library" },
   {
     label: "Platform",
-    sections: [
+    groups: [
       {
-        title: "Core Platform",
-        links: [
-          {
-            label: "Kincaid IQ Platform",
-            href: "/platform",
-            description: "Evidence receipts, value ledger, and controls-first decision systems.",
-          },
-          {
-            label: "Verified Savings Ledger",
-            href: "/verified-savings-ledger",
-            description: "Identified → Approved → Realized → At-risk with auditable proof.",
-            badge: "Proof",
-          },
-          {
-            label: "War Room",
-            href: "/war-room",
-            description: "Live EBITDA ledger with real-time event tracking across all lanes.",
-            badge: "Live",
-          },
-          {
-            label: "Security & Governance",
-            href: "/security-governance",
-            description: "Controls, audit trail, access discipline, evidence standards.",
-          },
+        label: "Trust Spine",
+        items: [
+          { label: "Evidence Receipts", href: "/platform/evidence", description: "Lineage, hashes, freshness, confidence" },
+          { label: "DQ + Deterministic Replay", href: "/platform/dq", description: "Gates, drift, replay checks" },
+          { label: "Incidents", href: "/platform/incidents", description: "Mismatch, staleness, failures" },
         ],
       },
       {
-        title: "Proof Outputs",
-        links: [
-          {
-            label: "Case Studies",
-            href: "/case-studies",
-            description: "Decision-grade narratives with proof patterns (no hype).",
-          },
+        label: "Ops & Catalog",
+        items: [
+          { label: "Connectors", href: "/platform/connectors", description: "Status, uptime, last seen, SLAs" },
+          { label: "KPI Catalog", href: "/platform/kpis", description: "Definitions, owners, thresholds" },
+          { label: "Admin", href: "/platform/admin", description: "Tenants, roles, policies" },
         ],
-      },
-    ],
-    featured: [
-      {
-        label: "Make value provable",
-        href: "/verified-savings-ledger",
-        description: "Stop arguing. Start reconciling.",
-        badge: "CFO-grade",
       },
     ],
   },
-
   {
-    label: "Practices",
-    sections: [
+    label: "Company",
+    groups: [
       {
-        title: "Marketplaces",
-        links: [
-          { label: "Marketplace Practice (Hub)", href: "/marketplace", description: "Build once. Distribute through marketplace motions." },
-          { label: "Snowflake Marketplace", href: "/marketplace/snowflake", description: "Snowflake-native delivery patterns for decision systems." },
-          { label: "Databricks Marketplace", href: "/marketplace/databricks", description: "Lakehouse + governed pipelines and packaging." },
-          { label: "ServiceNow Practice", href: "/marketplace/servicenow", description: "Workflow + approvals: Find → Assign → Prove → Close." },
+        label: "Learn",
+        items: [
+          { label: "Docs", href: "/docs" },
+          { label: "Security", href: "/security-governance" },
         ],
       },
       {
-        title: "Transformation",
-        links: [
-          { label: "AI Agentic Transformation", href: "/agentic-transformation", description: "Analyze ops + sales, deploy governed agents, measure outcomes.", badge: "12-month" },
-          { label: "12-Month Adoption Policy", href: "/agentic-policy", description: "Governed rollout plan designed for CFO/board scrutiny." },
+        label: "Contact",
+        items: [
+          { label: "Talk to Us", href: "/contact" },
         ],
       },
-      {
-        title: "Actuarial",
-        links: [
-          { label: "Actuarial Benefits Consulting", href: "/actuarial-benefits", description: "PBM/Rx intelligence, compliance, benchmarking, verified savings." },
-        ],
-      },
-    ],
-    featured: [
-      {
-        label: "Marketplace-native delivery",
-        href: "/marketplace",
-        description: "High trust. Low delivery drag. Higher gross margin.",
-        badge: "GTM",
-      },
-    ],
-  },
-
-  {
-    label: "Audiences",
-    sections: [
-      {
-        title: "Capital",
-        links: [
-          { label: "Capital Markets & Investors", href: "/capital-markets", description: "Underwrite value with evidence packs and realization discipline." },
-          { label: "M&A / VC / PE Diligence", href: "/ma-vc-pe", description: "Find leakage. Prove it. Underwrite it. Track realization.", badge: "Diligence" },
-        ],
-      },
-      {
-        title: "Owners",
-        links: [
-          { label: "Family Offices", href: "/family-offices", description: "Oversight-grade reporting and governance for complex holdings." },
-        ],
-      },
-    ],
-    featured: [
-      { label: "Diligence Proof Packs", href: "/ma-vc-pe", description: "Receipts + methodology + reconciliation outputs.", badge: "Proof" },
-    ],
-  },
-
-  {
-    label: "About",
-    sections: [
-      {
-        title: "Company",
-        links: [
-          { label: "Company", href: "/company", description: "Built for boards. Run by operators. Proof-first philosophy." },
-          { label: "Contact", href: "/contact", description: "Request demo, diligence sprint, or investor access." },
-        ],
-      },
-      {
-        title: "Trust & Proof",
-        links: [
-          { label: "Security & Governance", href: "/security-governance", description: "Controls-first posture for enterprise decision systems." },
-          { label: "Case Studies", href: "/case-studies", description: "Evidence-led narratives and outcomes." },
-        ],
-      },
-    ],
-    featured: [
-      { label: "Request demo", href: "/contact", description: "Start a scoped conversation.", badge: "Fast path" },
     ],
   },
 ];
 
-export const proofBar = [
-  "Evidence Receipts",
-  "CFO-Grade Value Ledger",
-  "Controls Monitoring",
-  "Marketplace Delivery",
-];
-
-// Flatten all links for search (command palette)
-export const allNavLinks: NavLink[] = (() => {
-  const seen = new Set<string>();
-  const out: NavLink[] = [];
-  for (const dd of megaNav) {
-    for (const sec of dd.sections) {
-      for (const l of sec.links) {
-        if (!seen.has(l.href)) {
-          seen.add(l.href);
-          out.push(l);
-        }
-      }
-    }
-    for (const f of dd.featured ?? []) {
-      if (!seen.has(f.href)) {
-        seen.add(f.href);
-        out.push(f);
-      }
-    }
-  }
-  for (const c of primaryCtas) {
-    if (!seen.has(c.href)) {
-      seen.add(c.href);
-      out.push(c);
-    }
-  }
-  return out;
-})();
-
-// Route → Top-level category mapping (for active indicator)
-export function topLevelForPath(pathname: string): string {
-  const p = (pathname || "/").toLowerCase();
-
-  if (p === "/" || p.startsWith("/platform") || p.startsWith("/verified-savings-ledger") || p.startsWith("/war-room") || p.startsWith("/security-governance") || p.startsWith("/case-studies")) {
-    return "Platform";
-  }
-  if (p.startsWith("/marketplace") || p.startsWith("/agentic") || p.startsWith("/actuarial-benefits")) {
-    return "Practices";
-  }
-  if (p.startsWith("/capital-markets") || p.startsWith("/family-offices") || p.startsWith("/ma-vc-pe")) {
-    return "Audiences";
-  }
-  if (p.startsWith("/company") || p.startsWith("/contact")) {
-    return "About";
-  }
-  return "Platform";
-}
+export type NavItem_Old = { label: string; href: string };

@@ -59,7 +59,7 @@ export default function Contact() {
               </div>
 
               <div className="flex flex-wrap gap-2 pt-2">
-                <button type="button" className="px-4 py-2 rounded-xl bg-white text-black font-medium hover:bg-white/90 transition">
+                <button type="button" className="px-4 py-2 rounded-xl bg-orange-500 text-white font-medium hover:bg-orange-600 transition">
                   Submit
                 </button>
                 <Link href="/capital-markets" className="px-4 py-2 rounded-xl border border-white/15 bg-white/5 hover:bg-white/10 transition">

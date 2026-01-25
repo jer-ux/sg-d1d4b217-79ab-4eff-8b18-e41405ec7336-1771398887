@@ -6,18 +6,21 @@ export function Container({ children }: { children: React.ReactNode }) {
 
 export function CTA() {
   return (
-    <div className="k-panel p-8 mt-10">
-      <div className="text-xl font-semibold text-white">Make value provable.</div>
-      <div className="text-white/65 mt-2 max-w-2xl">
+    <div className="k-panel p-8 mt-10 border-orange-500/20 hover-lift">
+      <div className="text-2xl font-bold text-white">Make value provable.</div>
+      <div className="text-white/80 mt-3 max-w-2xl text-lg">
         Kincaid IQ turns complex cost and operational opacity into an auditable ledger with evidence receipts, controls, and action workflows.
       </div>
-      <div className="mt-5 flex gap-2">
-        <Link href="/contact" className="px-4 py-2 rounded-xl bg-orange-500 text-white font-medium hover:bg-orange-600 transition">
+      <div className="mt-6 flex gap-3">
+        <Link 
+          href="/contact" 
+          className="px-6 py-3 rounded-xl bg-gradient-to-r from-orange-500 to-orange-600 text-white font-semibold hover:from-orange-600 hover:to-orange-700 transition-all duration-300 shadow-lg shadow-orange-500/30 hover:shadow-orange-500/50 hover:scale-105"
+        >
           Request demo
         </Link>
         <Link
           href="/capital-markets"
-          className="px-4 py-2 rounded-xl border border-white/15 bg-white/5 hover:bg-white/10 transition"
+          className="px-6 py-3 rounded-xl border-2 border-orange-400/50 bg-orange-500/10 text-orange-300 font-semibold hover:bg-orange-500/20 hover:border-orange-400 transition-all duration-300 hover:scale-105"
         >
           Investor access
         </Link>

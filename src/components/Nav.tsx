@@ -38,7 +38,7 @@ export default function Nav() {
           </Link>
           <Link
             href="/capital-markets"
-            className="px-4 py-2 rounded-xl bg-white text-black hover:bg-white/90 transition text-sm font-medium"
+            className="px-4 py-2 rounded-xl bg-orange-500 text-white hover:bg-orange-600 transition text-sm font-medium"
           >
             Investor access
           </Link>

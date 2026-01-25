@@ -12,7 +12,7 @@ export function CTA() {
         Kincaid IQ turns complex cost and operational opacity into an auditable ledger with evidence receipts, controls, and action workflows.
       </div>
       <div className="mt-5 flex gap-2">
-        <Link href="/contact" className="px-4 py-2 rounded-xl bg-white text-black font-medium">
+        <Link href="/contact" className="px-4 py-2 rounded-xl bg-orange-500 text-white font-medium hover:bg-orange-600 transition">
           Request demo
         </Link>
         <Link

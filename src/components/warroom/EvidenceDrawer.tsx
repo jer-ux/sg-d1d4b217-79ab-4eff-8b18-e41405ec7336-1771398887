@@ -152,7 +152,7 @@ export default function EvidenceDrawer({
             <div className="mt-6 flex flex-wrap gap-2">
               <button
                 type="button"
-                className="px-4 py-2 rounded-xl bg-white text-black font-medium hover:bg-white/90 transition"
+                className="px-4 py-2 rounded-xl bg-orange-500 text-white font-medium hover:bg-orange-600 transition"
                 onClick={() => {
                   window.open(`/api/war-room/packet/${openEvent.id}`, "_blank");
                 }}

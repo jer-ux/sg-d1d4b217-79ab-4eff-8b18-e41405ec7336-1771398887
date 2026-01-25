@@ -48,7 +48,7 @@ export default function AgenticTransformation() {
               A structured adoption policy with controls-first gating and board-safe reporting.
             </div>
           </div>
-          <Link href="/agentic-policy" className="px-4 py-2 rounded-xl bg-white text-black font-medium hover:bg-white/90 transition w-fit">
+          <Link href="/agentic-policy" className="px-4 py-2 rounded-xl bg-orange-500 text-white font-medium hover:bg-orange-600 transition w-fit">
             View the policy
           </Link>
         </div>

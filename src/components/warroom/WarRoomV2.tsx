@@ -57,7 +57,7 @@ function ActionButton({
   onClick: () => void;
 }) {
   const base = "px-3 py-2 rounded-xl transition text-sm";
-  const solid = "bg-white text-black font-medium hover:bg-white/90";
+  const solid = "bg-orange-500 text-white font-medium hover:bg-orange-600";
   const ghost = "border border-white/15 bg-white/5 hover:bg-white/10";
   const off = "opacity-50 pointer-events-none";
 
@@ -296,7 +296,7 @@ export default function WarRoomV2() {
                   </div>
                   <Link
                     href={`/war-room/${lane}`}
-                    className="px-4 py-2 rounded-xl bg-white text-black font-medium hover:bg-white/90 transition text-sm"
+                    className="px-4 py-2 rounded-xl bg-orange-500 text-white font-medium hover:bg-orange-600 transition text-sm"
                   >
                     Open lane
                   </Link>

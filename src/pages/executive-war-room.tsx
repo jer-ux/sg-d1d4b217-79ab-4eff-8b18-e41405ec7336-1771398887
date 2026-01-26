@@ -1,4 +1,4 @@
-import { ExecutiveWarRoom } from "@/components/warroom/ExecutiveWarRoom";
+import { WarRoom } from "@/components/warroom/WarRoom";
 import { SEO } from "@/components/SEO";
 
 export default function ExecutiveWarRoomPage() {
@@ -8,7 +8,7 @@ export default function ExecutiveWarRoomPage() {
         title="Executive War Room | SiriusB iQ"
         description="Executive War Room with Evidence Receipts — Verified or it's not real."
       />
-      <ExecutiveWarRoom />
+      <WarRoom />
     </>
   );
 }

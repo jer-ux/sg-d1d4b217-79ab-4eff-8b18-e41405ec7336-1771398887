@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { SEO } from "@/components/SEO";
-import { Nav } from "@/components/Nav";
+import Nav from "@/components/Nav";
 import { Footer } from "@/components/Footer";
 import { CreateReceiptModal } from "@/components/ledger/CreateReceiptModal";
 import { LillyEdgarEvidenceCard } from "@/components/ledger/LillyEdgarEvidenceCard";

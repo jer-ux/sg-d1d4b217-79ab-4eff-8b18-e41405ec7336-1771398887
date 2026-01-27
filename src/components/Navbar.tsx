@@ -7,6 +7,8 @@ const navItems = [
   { label: "War Room", href: "/war-room" },
   { label: "Evidence Receipts", href: "/evidence-receipts" },
   { label: "Gen AI Agents", href: "/gen-ai-agents" },
+  { label: "Agentic Transformation", href: "/agentic-transformation" },
+  { label: "Actuarial Benefits", href: "/actuarial-benefits" },
 ];
 
 export default function Navbar() {

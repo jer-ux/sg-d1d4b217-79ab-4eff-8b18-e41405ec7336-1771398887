@@ -16,7 +16,7 @@ const productItems = [
   { label: "Actuarial Employee Benefits", href: "/actuarial-benefits" },
 ];
 
-export default function Navbar() {
+export function Navbar() {
   const pathname = usePathname();
   const [productsOpen, setProductsOpen] = useState(false);
 
@@ -38,10 +38,9 @@ export default function Navbar() {
               <Link
                 key={item.href}
                 href={item.href}
-                className={[
-                  "text-sm font-semibold transition",
-                  active ? "text-white" : "text-white/70 hover:text-white",
-                ].join(" ")}
+                className={`text-sm font-semibold transition ${
+                  active ? "text-white" : "text-white/70 hover:text-white"
+                }`}
               >
                 {item.label}
               </Link>
@@ -55,10 +54,9 @@ export default function Navbar() {
             onMouseLeave={() => setProductsOpen(false)}
           >
             <button
-              className={[
-                "flex items-center gap-1 text-sm font-semibold transition",
-                isProductsActive ? "text-white" : "text-white/70 hover:text-white",
-              ].join(" ")}
+              className={`flex items-center gap-1 text-sm font-semibold transition ${
+                isProductsActive ? "text-white" : "text-white/70 hover:text-white"
+              }`}
             >
               Products
               <ChevronDown className="h-4 w-4" />
@@ -73,12 +71,11 @@ export default function Navbar() {
                       <Link
                         key={item.href}
                         href={item.href}
-                        className={[
-                          "block rounded-md px-4 py-2.5 text-sm font-medium transition",
+                        className={`block rounded-md px-4 py-2.5 text-sm font-medium transition ${
                           active
                             ? "bg-white/10 text-white"
-                            : "text-white/70 hover:bg-white/5 hover:text-white",
-                        ].join(" ")}
+                            : "text-white/70 hover:bg-white/5 hover:text-white"
+                        }`}
                       >
                         {item.label}
                       </Link>
@@ -93,3 +90,5 @@ export default function Navbar() {
     </header>
   );
 }
+
+export default Navbar;

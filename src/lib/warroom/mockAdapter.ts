@@ -165,22 +165,25 @@ export const mockWarRoomAdapter = {
     const rng = mulberry32(seed);
 
     const lanes: WarRoomLaneId[] = ["ebitda", "ar", "claims", "workforce"];
-    const laneSummaries = lanes.map((lane) => buildLane(mulberry32(seedFromString(lane) + seed), lane));
+    const laneSummaries: LaneData[] = lanes.map((lane) => buildLane(mulberry32(seedFromString(lane) + seed), lane));
 
     const ticker: TickerItem[] = [
-      { id: "t1", text: `EBITDA: ${money(1_200_000 + rng() * 3_200_000)} verified recovery pipeline`, tone: "good" as const },
-      { id: "t2", text: `AR: ${(6 + rng() * 18).toFixed(1)}% >90 days (payer mix drag detected)`, tone: "warn" as const },
-      { id: "t3", text: `Claims: ${Math.floor(40 + rng() * 180)} eligibility discrepancies staged`, tone: "neutral" as const },
-      { id: "t4", text: `Workforce: cycle time improved ${(2 + rng() * 6).toFixed(1)}% WoW`, tone: "good" as const },
+      { id: "t1", text: `EBITDA: ${money(1_200_000 + rng() * 3_200_000)} verified recovery pipeline`, tone: "good" },
+      { id: "t2", text: `AR: ${(6 + rng() * 18).toFixed(1)}% >90 days (payer mix drag detected)`, tone: "warn" },
+      { id: "t3", text: `Claims: ${Math.floor(40 + rng() * 180)} eligibility discrepancies staged`, tone: "neutral" },
+      { id: "t4", text: `Workforce: cycle time improved ${(2 + rng() * 6).toFixed(1)}% WoW`, tone: "good" },
     ];
 
-    const summary: WarRoomSummary = {
-      asOfIso: now.toISOString(),
+    const asOfIso: string = now.toISOString();
+
+    // Construct with explicit types to satisfy TypeScript
+    const result: WarRoomSummary = {
+      asOfIso,
       ticker,
       lanes: laneSummaries,
     };
 
     // Zod gate: if mocks drift, you find out immediately
-    return WarRoomSummarySchema.parse(summary);
+    return WarRoomSummarySchema.parse(result);
   },
 };

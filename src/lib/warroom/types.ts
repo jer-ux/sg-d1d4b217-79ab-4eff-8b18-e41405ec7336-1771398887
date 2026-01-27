@@ -1,3 +1,5 @@
+import { z } from "zod";
+
 // ===============================
 // War Room Type Definitions
 // ===============================
@@ -77,3 +79,88 @@ export type StreamMessage =
   | { type: "summary_upsert"; summary: LaneSummary }
   | { type: "ticker"; text: string; amount: number; state: LedgerState; lane: LaneKey; at: string }
   | { type: "error"; message: string };
+
+// ===============================
+// New Adapter Pattern Types
+// ===============================
+
+export type WarRoomLaneId = "ebitda" | "ar" | "claims" | "workforce";
+
+export type ReceiptData = {
+  receiptId: string;
+  verified: boolean;
+  freshnessMinutes: number;
+  dqPassRate: number;
+  sourceHash: string;
+  transformHash: string;
+  owner: string;
+  confidence: number;
+  reasons: string[];
+};
+
+export type KpiData = {
+  label: string;
+  value: string;
+  trend?: string;
+  receipt: ReceiptData;
+};
+
+export type LaneData = {
+  lane: WarRoomLaneId;
+  title: string;
+  subtitle: string;
+  primaryKpi: KpiData;
+  secondaryKpis: KpiData[];
+};
+
+export type TickerItem = {
+  id: string;
+  text: string;
+  tone: "good" | "warn" | "neutral";
+};
+
+export type WarRoomSummary = {
+  asOfIso: string;
+  ticker: TickerItem[];
+  lanes: LaneData[];
+};
+
+// Zod schemas for runtime validation
+const ReceiptDataSchema = z.object({
+  receiptId: z.string(),
+  verified: z.boolean(),
+  freshnessMinutes: z.number(),
+  dqPassRate: z.number(),
+  sourceHash: z.string(),
+  transformHash: z.string(),
+  owner: z.string(),
+  confidence: z.number(),
+  reasons: z.array(z.string()),
+});
+
+const KpiDataSchema = z.object({
+  label: z.string(),
+  value: z.string(),
+  trend: z.string().optional(),
+  receipt: ReceiptDataSchema,
+});
+
+const LaneDataSchema = z.object({
+  lane: z.enum(["ebitda", "ar", "claims", "workforce"]),
+  title: z.string(),
+  subtitle: z.string(),
+  primaryKpi: KpiDataSchema,
+  secondaryKpis: z.array(KpiDataSchema),
+});
+
+const TickerItemSchema = z.object({
+  id: z.string(),
+  text: z.string(),
+  tone: z.enum(["good", "warn", "neutral"]),
+});
+
+export const WarRoomSummarySchema = z.object({
+  asOfIso: z.string(),
+  ticker: z.array(TickerItemSchema),
+  lanes: z.array(LaneDataSchema),
+});

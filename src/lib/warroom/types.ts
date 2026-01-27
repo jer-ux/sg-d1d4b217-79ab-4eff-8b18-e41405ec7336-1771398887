@@ -81,52 +81,13 @@ export type StreamMessage =
   | { type: "error"; message: string };
 
 // ===============================
-// New Adapter Pattern Types
+// New Adapter Pattern Types (Zod-First)
 // ===============================
 
 export type WarRoomLaneId = "ebitda" | "ar" | "claims" | "workforce";
 
-export type ReceiptData = {
-  receiptId: string;
-  verified: boolean;
-  freshnessMinutes: number;
-  dqPassRate: number;
-  sourceHash: string;
-  transformHash: string;
-  owner: string;
-  confidence: number;
-  reasons: string[];
-};
-
-export type KpiData = {
-  label: string;
-  value: string;
-  trend?: string;
-  receipt: ReceiptData;
-};
-
-export type LaneData = {
-  lane: WarRoomLaneId;
-  title: string;
-  subtitle: string;
-  primaryKpi: KpiData;
-  secondaryKpis: KpiData[];
-};
-
-export type TickerItem = {
-  id: string;
-  text: string;
-  tone: "good" | "warn" | "neutral";
-};
-
-export type WarRoomSummary = {
-  asOfIso: string;
-  ticker: TickerItem[];
-  lanes: LaneData[];
-};
-
-// Zod schemas for runtime validation
-const ReceiptDataSchema = z.object({
+// 1. Define Schemas
+export const ReceiptDataSchema = z.object({
   receiptId: z.string(),
   verified: z.boolean(),
   freshnessMinutes: z.number(),
@@ -138,14 +99,14 @@ const ReceiptDataSchema = z.object({
   reasons: z.array(z.string()),
 });
 
-const KpiDataSchema = z.object({
+export const KpiDataSchema = z.object({
   label: z.string(),
   value: z.string(),
   trend: z.string().optional(),
   receipt: ReceiptDataSchema,
 });
 
-const LaneDataSchema = z.object({
+export const LaneDataSchema = z.object({
   lane: z.enum(["ebitda", "ar", "claims", "workforce"]),
   title: z.string(),
   subtitle: z.string(),
@@ -153,7 +114,7 @@ const LaneDataSchema = z.object({
   secondaryKpis: z.array(KpiDataSchema),
 });
 
-const TickerItemSchema = z.object({
+export const TickerItemSchema = z.object({
   id: z.string(),
   text: z.string(),
   tone: z.enum(["good", "warn", "neutral"]),
@@ -164,3 +125,10 @@ export const WarRoomSummarySchema = z.object({
   ticker: z.array(TickerItemSchema),
   lanes: z.array(LaneDataSchema),
 });
+
+// 2. Infer Types
+export type ReceiptData = z.infer<typeof ReceiptDataSchema>;
+export type KpiData = z.infer<typeof KpiDataSchema>;
+export type LaneData = z.infer<typeof LaneDataSchema>;
+export type TickerItem = z.infer<typeof TickerItemSchema>;
+export type WarRoomSummary = z.infer<typeof WarRoomSummarySchema>;

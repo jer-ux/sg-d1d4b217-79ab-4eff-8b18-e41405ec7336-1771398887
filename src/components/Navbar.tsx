@@ -11,16 +11,16 @@ const navItems = [
   { label: "Agentic Transformation", href: "/agentic-transformation" },
 ];
 
-const solutionsItems = [
+const productItems = [
   { label: "Gen AI Agents", href: "/gen-ai-agents" },
   { label: "Actuarial Employee Benefits", href: "/actuarial-benefits" },
 ];
 
 export default function Navbar() {
   const pathname = usePathname();
-  const [solutionsOpen, setSolutionsOpen] = useState(false);
+  const [productsOpen, setProductsOpen] = useState(false);
 
-  const isSolutionsActive = solutionsItems.some(
+  const isProductsActive = productItems.some(
     (item) => pathname === item.href || pathname.startsWith(item.href + "/")
   );
 
@@ -48,26 +48,26 @@ export default function Navbar() {
             );
           })}
 
-          {/* Solutions Dropdown */}
+          {/* Products Dropdown */}
           <div
             className="relative"
-            onMouseEnter={() => setSolutionsOpen(true)}
-            onMouseLeave={() => setSolutionsOpen(false)}
+            onMouseEnter={() => setProductsOpen(true)}
+            onMouseLeave={() => setProductsOpen(false)}
           >
             <button
               className={[
                 "flex items-center gap-1 text-sm font-semibold transition",
-                isSolutionsActive ? "text-white" : "text-white/70 hover:text-white",
+                isProductsActive ? "text-white" : "text-white/70 hover:text-white",
               ].join(" ")}
             >
-              Solutions
+              Products
               <ChevronDown className="h-4 w-4" />
             </button>
 
-            {solutionsOpen && (
+            {productsOpen && (
               <div className="absolute top-full right-0 mt-2 w-64 rounded-lg border border-white/10 bg-black/95 backdrop-blur shadow-xl">
                 <div className="p-2">
-                  {solutionsItems.map((item) => {
+                  {productItems.map((item) => {
                     const active = pathname === item.href || pathname.startsWith(item.href + "/");
                     return (
                       <Link

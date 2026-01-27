@@ -1,3 +1,4 @@
+import { mockWarRoomAdapter } from "./mockAdapter";
 import type { WarRoomSummary } from "./types";
 
 export type WarRoomAdapter = {
@@ -8,8 +9,8 @@ export type WarRoomAdapter = {
 export function getWarRoomAdapter(): WarRoomAdapter {
   // Later: add env var check to switch to Snowflake/streaming adapter
   // if (process.env.WARROOM_ADAPTER === "snowflake") {
-  //   return require("./snowflakeAdapter").snowflakeWarRoomAdapter;
+  //   return snowflakeWarRoomAdapter;
   // }
   
-  return require("./mockAdapter").mockWarRoomAdapter as WarRoomAdapter;
+  return mockWarRoomAdapter;
 }

@@ -1,4 +1,4 @@
-import { WarRoomSummarySchema, type WarRoomSummary, type WarRoomLaneId } from "./types";
+import { WarRoomSummarySchema, type WarRoomSummary, type WarRoomLaneId, type LaneData, type TickerItem } from "./types";
 
 function mulberry32(seed: number) {
   return function () {
@@ -70,7 +70,7 @@ function laneMeta(lane: WarRoomLaneId) {
   }
 }
 
-function buildLane(rng: () => number, lane: WarRoomLaneId) {
+function buildLane(rng: () => number, lane: WarRoomLaneId): LaneData {
   const { title, subtitle } = laneMeta(lane);
   const owner = lane === "claims" ? "Data Governance" : lane === "ar" ? "RevCycle Ops" : "Finance Ops";
 
@@ -167,14 +167,14 @@ export const mockWarRoomAdapter = {
     const lanes: WarRoomLaneId[] = ["ebitda", "ar", "claims", "workforce"];
     const laneSummaries = lanes.map((lane) => buildLane(mulberry32(seedFromString(lane) + seed), lane));
 
-    const ticker = [
+    const ticker: TickerItem[] = [
       { id: "t1", text: `EBITDA: ${money(1_200_000 + rng() * 3_200_000)} verified recovery pipeline`, tone: "good" as const },
       { id: "t2", text: `AR: ${(6 + rng() * 18).toFixed(1)}% >90 days (payer mix drag detected)`, tone: "warn" as const },
       { id: "t3", text: `Claims: ${Math.floor(40 + rng() * 180)} eligibility discrepancies staged`, tone: "neutral" as const },
       { id: "t4", text: `Workforce: cycle time improved ${(2 + rng() * 6).toFixed(1)}% WoW`, tone: "good" as const },
     ];
 
-    const summary = {
+    const summary: WarRoomSummary = {
       asOfIso: now.toISOString(),
       ticker,
       lanes: laneSummaries,

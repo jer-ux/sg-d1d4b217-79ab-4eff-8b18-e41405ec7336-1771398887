@@ -4,6 +4,7 @@ import React, { useMemo, useState } from "react";
 import { SEO } from "@/components/SEO";
 import Nav from "@/components/Nav";
 import { Footer } from "@/components/Footer";
+import { CheckCircle2, AlertTriangle, XCircle, Download, ExternalLink } from "lucide-react";
 import { CreateReceiptModal } from "@/components/ledger/CreateReceiptModal";
 
 type VerificationStatus = "VERIFIED" | "PARTIAL" | "BLOCKED";
@@ -11,7 +12,7 @@ type VerificationStatus = "VERIFIED" | "PARTIAL" | "BLOCKED";
 type Artifact = {
   id: string;
   sourceSystem: string;
-  sourceType: string; // 834/835/837/PBM/etc
+  sourceType: string;
   uri: string;
   fileName: string;
   checksum: string;
@@ -53,7 +54,7 @@ type EvidenceReceipt = {
   periodEnd: string;
   grain: string;
   freshnessTs: string;
-  confidence: number; // 0-1
+  confidence: number;
   verificationStatus: VerificationStatus;
   owner: string;
   approver: string;
@@ -70,7 +71,7 @@ type EvidenceReceipt = {
   auditLog: { at: string; actor: string; action: string; note?: string }[];
 };
 
-const MOCK: EvidenceReceipt[] = [
+const INITIAL_MOCK: EvidenceReceipt[] = [
   {
     receiptId: "RCP-2026-01-KPI_TOTAL_COST_PMPM-0007",
     subjectType: "KPI",
@@ -180,367 +181,324 @@ function classNames(...xs: Array<string | undefined | false>) {
   return xs.filter(Boolean).join(" ");
 }
 
-function StatusPill({ status }: { status: VerificationStatus }) {
-  const styles =
-    status === "VERIFIED"
-      ? "bg-emerald-500/15 text-emerald-200 ring-1 ring-emerald-500/30"
-      : status === "PARTIAL"
-      ? "bg-amber-500/15 text-amber-200 ring-1 ring-amber-500/30"
-      : "bg-rose-500/15 text-rose-200 ring-1 ring-rose-500/30";
-
-  return (
-    <span className={classNames("px-2 py-1 rounded-full text-xs font-semibold tracking-wide", styles)}>
-      {status}
-    </span>
-  );
-}
-
-function MetricBadge({ label, value }: { label: string; value: string }) {
-  return (
-    <div className="rounded-xl border border-white/10 bg-white/5 px-3 py-2">
-      <div className="text-xs text-white/60">{label}</div>
-      <div className="text-sm font-semibold text-white">{value}</div>
-    </div>
-  );
-}
-
-function LineageGraph({ receipt }: { receipt: EvidenceReceipt }) {
-  return (
-    <div className="rounded-2xl border border-white/10 bg-gradient-to-b from-white/5 to-white/[0.02] p-4">
-      <div className="flex items-center justify-between gap-3">
-        <div className="text-sm font-semibold text-white">Lineage Graph</div>
-        <div className="text-xs text-white/60">Artifacts → Transforms → Evidence Receipt</div>
-      </div>
-
-      <div className="mt-4 overflow-x-auto">
-        <svg width={920} height={220} className="min-w-[920px]">
-          {receipt.artifacts.slice(0, 6).map((a, i) => (
-            <g key={a.id} transform={`translate(20, ${20 + i * 32})`}>
-              <rect rx="8" width="260" height="26" fill="rgba(255,255,255,0.06)" stroke="rgba(255,255,255,0.12)" />
-              <text x="10" y="17" fontSize="11" fill="rgba(255,255,255,0.85)">
-                {a.sourceType} • {a.fileName.length > 24 ? a.fileName.slice(0, 24) + "…" : a.fileName}
-              </text>
-            </g>
-          ))}
-
-          {receipt.transforms.slice(0, 6).map((t, i) => (
-            <g key={t.id} transform={`translate(340, ${40 + i * 32})`}>
-              <rect rx="8" width="300" height="26" fill="rgba(255,255,255,0.06)" stroke="rgba(255,255,255,0.12)" />
-              <text x="10" y="17" fontSize="11" fill="rgba(255,255,255,0.85)">
-                {t.name} ({t.version})
-              </text>
-            </g>
-          ))}
-
-          <g transform="translate(700, 92)">
-            <rect rx="10" width="200" height="44" fill="rgba(16,185,129,0.10)" stroke="rgba(16,185,129,0.35)" />
-            <text x="12" y="18" fontSize="11" fill="rgba(255,255,255,0.92)">
-              Evidence Receipt
-            </text>
-            <text x="12" y="34" fontSize="10" fill="rgba(255,255,255,0.70)">
-              {receipt.receiptId.length > 18 ? receipt.receiptId.slice(0, 18) + "…" : receipt.receiptId}
-            </text>
-          </g>
-
-          {receipt.artifacts.slice(0, 6).map((a, i) => (
-            <line
-              key={"edgeA" + a.id}
-              x1={280}
-              y1={33 + i * 32}
-              x2={340}
-              y2={53 + (i % receipt.transforms.length) * 32}
-              stroke="rgba(255,255,255,0.14)"
-            />
-          ))}
-          {receipt.transforms.slice(0, 6).map((t, i) => (
-            <line
-              key={"edgeT" + t.id}
-              x1={640}
-              y1={53 + i * 32}
-              x2={700}
-              y2={114}
-              stroke="rgba(255,255,255,0.14)"
-            />
-          ))}
-        </svg>
-      </div>
-
-      <div className="mt-3 text-xs text-white/55">
-        Real prod would render full DAG + query IDs; this demo shows the receipt inheritance model.
-      </div>
-    </div>
-  );
-}
-
-function IframeOrFallback({
-  src,
-  fallbackImg,
-  title,
-}: {
-  src: string;
-  fallbackImg: string;
-  title: string;
-}) {
-  const [blocked, setBlocked] = useState(false);
-
-  return (
-    <div className="rounded-2xl border border-white/10 bg-white/5 overflow-hidden">
-      <div className="flex items-center justify-between gap-3 px-4 py-3 border-b border-white/10">
-        <div className="text-sm font-semibold text-white">{title}</div>
-        <div className="flex items-center gap-2">
-          <a
-            href={src}
-            target="_blank"
-            rel="noreferrer"
-            className="rounded-xl border border-white/10 bg-white/5 px-3 py-2 text-xs font-semibold text-white hover:bg-white/10"
-          >
-            Open live ↗
-          </a>
-        </div>
-      </div>
-
-      {!blocked ? (
-        <iframe
-          src={src}
-          className="w-full h-[520px] bg-black"
-          title={title}
-          onLoad={() => {
-            // If the site blocks framing, browser won't always fire a clean error.
-            // So we provide a manual fallback control below.
-          }}
-        />
-      ) : (
-        <div className="p-4">
-          <div className="text-xs text-white/60 mb-3">
-            Framing is blocked by site headers (X-Frame-Options / CSP). Showing snapshot instead.
-          </div>
-          <img
-            src={fallbackImg}
-            alt="Kincaid IQ snapshot"
-            className="w-full rounded-xl border border-white/10"
-          />
-        </div>
-      )}
-
-      <div className="px-4 py-3 border-t border-white/10 flex items-center justify-between gap-3">
-        <div className="text-xs text-white/60">
-          If the embed is blank, click "Use snapshot" (framing is likely blocked).
-        </div>
-        <button
-          onClick={() => setBlocked(true)}
-          className="rounded-xl border border-white/10 bg-white/5 px-3 py-2 text-xs font-semibold text-white hover:bg-white/10"
-        >
-          Use snapshot
-        </button>
-      </div>
-    </div>
-  );
-}
-
 export default function EvidenceReceiptsPage() {
-  const [receipts, setReceipts] = useState<EvidenceReceipt[]>(MOCK);
-  const [selected, setSelected] = useState<EvidenceReceipt>(MOCK[0]);
+  const [receipts, setReceipts] = useState<EvidenceReceipt[]>(INITIAL_MOCK);
+  const [selectedId, setSelectedId] = useState<string>(INITIAL_MOCK[0].receiptId);
+  const [createOpen, setCreateOpen] = useState(false);
   const [tab, setTab] = useState<
     "overview" | "lineage" | "artifacts" | "transforms" | "dq" | "recon" | "audit"
   >("overview");
-  const [createOpen, setCreateOpen] = useState(false);
 
+  const selected = useMemo(() => receipts.find((r) => r.receiptId === selectedId) || receipts[0], [receipts, selectedId]);
   const confidencePct = useMemo(() => Math.round(selected.confidence * 100), [selected.confidence]);
+
+  const statusConfig: Record<VerificationStatus, { label: string; icon: React.ReactNode; bg: string; text: string }> = {
+    VERIFIED: {
+      label: "Verified",
+      icon: <CheckCircle2 className="h-4 w-4" />,
+      bg: "bg-emerald-500/20",
+      text: "text-emerald-300",
+    },
+    PARTIAL: {
+      label: "Partial",
+      icon: <AlertTriangle className="h-4 w-4" />,
+      bg: "bg-amber-500/20",
+      text: "text-amber-300",
+    },
+    BLOCKED: {
+      label: "Blocked",
+      icon: <XCircle className="h-4 w-4" />,
+      bg: "bg-red-500/20",
+      text: "text-red-300",
+    },
+  };
+
+  const cfg = statusConfig[selected.verificationStatus];
+
+  const tabs = [
+    { key: "overview", label: "Overview" },
+    { key: "lineage", label: "Lineage Graph" },
+    { key: "artifacts", label: "Artifacts" },
+    { key: "transforms", label: "Transforms" },
+    { key: "dq", label: "Data Quality" },
+    { key: "recon", label: "Reconciliation" },
+    { key: "audit", label: "Audit Log" },
+  ] as const;
+
+  const downloadJSON = () => {
+    const blob = new Blob([JSON.stringify(selected, null, 2)], { type: "application/json" });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = `${selected.receiptId}.json`;
+    a.click();
+    URL.revokeObjectURL(url);
+  };
 
   return (
     <>
       <SEO
-        title="Evidence Receipts • SiriusB iQ"
-        description="Audit-grade lineage you can defend in the boardroom. Every KPI backed by cryptographically verifiable evidence receipts."
+        title="Evidence Receipts | SiriusB iQ"
+        description="Audit-grade evidence receipts with full data lineage, DQ gates, and reconciliation proofs"
       />
-      <Nav />
-      <div className="min-h-screen bg-[#070B12] text-white">
-        <div className="mx-auto max-w-7xl px-6 py-10">
-          <div className="flex flex-col gap-2">
-            <div className="text-xs font-semibold tracking-wider text-white/60">
-              KINCAID IQ • EVIDENCE RECEIPTS
+      <div className="relative min-h-screen bg-[#0A0118] text-white">
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-purple-900/20 via-transparent to-transparent" />
+        <Nav />
+        <div className="relative mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8">
+          <div className="mb-8 flex items-start justify-between">
+            <div>
+              <h1 className="text-4xl font-bold tracking-tight">Evidence Receipts</h1>
+              <p className="mt-2 text-lg text-purple-200/60">
+                Audit-grade evidence with full data lineage, DQ gates, and reconciliation proofs.
+              </p>
             </div>
-            <div className="text-2xl font-semibold">
-              Audit-grade lineage you can defend in the boardroom 🧾
-            </div>
-            <div className="text-sm text-white/65 max-w-3xl">
-              Every KPI, tile, and arbitrage event is backed by an Evidence Receipt: source artifacts,
-              transform hashes, data-quality gates, reconciliation checks, and signoff.
-              No receipt → no metric. Period.
-            </div>
-
             <button
               onClick={() => setCreateOpen(true)}
-              className="mt-4 inline-flex items-center gap-2 rounded-xl border border-white/10 bg-white/5 px-4 py-3 text-sm font-semibold hover:bg-white/10"
+              className="inline-flex items-center gap-2 rounded-xl border border-white/10 bg-white/5 px-4 py-3 text-sm font-semibold hover:bg-white/10"
             >
               Create Receipt (Demo) 🧾
             </button>
           </div>
 
-          <div className="mt-8 grid grid-cols-1 lg:grid-cols-3 gap-4">
-            <div className="rounded-2xl border border-white/10 bg-white/5 p-5">
-              <div className="flex items-center justify-between">
-                <div className="text-sm font-semibold">Current Receipt</div>
-                <StatusPill status={selected.verificationStatus} />
+          {/* Receipt Selector */}
+          <div className="mb-6">
+            <div className="rounded-2xl border border-white/10 bg-gradient-to-b from-white/5 to-white/[0.02] p-6">
+              <div className="mb-3 text-sm font-semibold uppercase tracking-wider text-purple-300/70">
+                Available Receipts ({receipts.length})
               </div>
-              <div className="mt-3 text-xs text-white/60">Receipt ID</div>
-              <div className="mt-1 font-mono text-sm text-white/90 break-all">{selected.receiptId}</div>
-
-              <div className="mt-5 grid grid-cols-2 gap-3">
-                <MetricBadge label="Subject" value={`${selected.subjectType}: ${selected.subjectId}`} />
-                <MetricBadge label="Grain" value={selected.grain} />
-                <MetricBadge label="Period" value={`${selected.periodStart} → ${selected.periodEnd}`} />
-                <MetricBadge label="Confidence" value={`${confidencePct}%`} />
-              </div>
-            </div>
-
-            <div className="rounded-2xl border border-white/10 bg-white/5 p-5">
-              <div className="text-sm font-semibold">What makes this "CFO-grade"</div>
-              <ul className="mt-3 space-y-2 text-sm text-white/70">
-                <li>• Immutable artifact signatures + ingestion timestamps</li>
-                <li>• Transform hash + query ID ties output to exact logic</li>
-                <li>• DQ suite gates VERIFIED / PARTIAL / BLOCKED</li>
-                <li>• Reconciliation proves dollars tie to finance reality</li>
-                <li>• Owner + approver signoff = accountable truth</li>
-              </ul>
-            </div>
-
-            <div className="rounded-2xl border border-white/10 bg-gradient-to-b from-white/8 to-white/[0.02] p-5">
-              <div className="text-sm font-semibold">Receipt Selector (demo)</div>
-              <div className="mt-3 text-xs text-white/60">
-                {receipts.length === 1 
-                  ? "Create a new receipt to see multiple options here."
-                  : `${receipts.length} receipts available. Select to view details.`}
-              </div>
-              <div className="mt-4 space-y-2 max-h-64 overflow-y-auto">
-                {receipts.map((receipt) => (
-                  <button
-                    key={receipt.receiptId}
-                    className={classNames(
-                      "w-full rounded-xl border px-4 py-3 text-left text-sm font-semibold transition-colors",
-                      selected.receiptId === receipt.receiptId
-                        ? "border-white/20 bg-white/10"
-                        : "border-white/10 bg-white/5 hover:bg-white/10"
-                    )}
-                    onClick={() => setSelected(receipt)}
-                  >
-                    <div className="flex items-center justify-between gap-2">
-                      <span className="truncate">{receipt.subjectId}</span>
-                      <StatusPill status={receipt.verificationStatus} />
-                    </div>
-                    <div className="mt-1 text-xs text-white/60">
-                      {receipt.periodStart} → {receipt.periodEnd}
-                    </div>
-                  </button>
-                ))}
+              <div className="flex flex-wrap gap-3">
+                {receipts.map((r) => {
+                  const isSelected = r.receiptId === selectedId;
+                  const rCfg = statusConfig[r.verificationStatus];
+                  return (
+                    <button
+                      key={r.receiptId}
+                      onClick={() => setSelectedId(r.receiptId)}
+                      className={classNames(
+                        "group relative flex flex-col items-start gap-2 rounded-xl border p-4 text-left transition-all",
+                        isSelected
+                          ? "border-purple-500 bg-purple-500/10 shadow-lg shadow-purple-500/20"
+                          : "border-white/10 bg-white/5 hover:border-purple-500/50 hover:bg-white/10"
+                      )}
+                    >
+                      <div className="flex items-center gap-2">
+                        <span className="text-xs font-mono text-purple-300">{r.receiptId}</span>
+                        <span className={classNames("flex items-center gap-1 rounded-full px-2 py-0.5 text-xs font-semibold", rCfg.bg, rCfg.text)}>
+                          {rCfg.icon}
+                          {rCfg.label}
+                        </span>
+                      </div>
+                      <div className="text-sm font-semibold">{r.subjectId}</div>
+                      <div className="text-xs text-white/50">
+                        {r.periodStart} → {r.periodEnd}
+                      </div>
+                    </button>
+                  );
+                })}
               </div>
             </div>
           </div>
 
-          <div className="mt-8 flex flex-wrap gap-2">
-            {[
-              ["overview", "Overview"],
-              ["lineage", "Lineage Graph"],
-              ["artifacts", "Artifacts"],
-              ["transforms", "Transforms"],
-              ["dq", "Data Quality"],
-              ["recon", "Reconciliation"],
-              ["audit", "Audit Log"],
-            ].map(([k, label]) => (
+          {/* Receipt Header */}
+          <div className="mb-6 rounded-2xl border border-white/10 bg-gradient-to-b from-white/5 to-white/[0.02] p-6">
+            <div className="mb-4 flex items-start justify-between">
+              <div>
+                <div className="mb-2 flex items-center gap-3">
+                  <h2 className="text-2xl font-bold">{selected.receiptId}</h2>
+                  <span className={classNames("flex items-center gap-1.5 rounded-full px-3 py-1 text-sm font-semibold", cfg.bg, cfg.text)}>
+                    {cfg.icon}
+                    {cfg.label}
+                  </span>
+                </div>
+                <div className="text-sm text-purple-200/60">
+                  {selected.subjectType} → {selected.subjectId}
+                </div>
+              </div>
               <button
-                key={k}
-                onClick={() => setTab(k as any)}
+                onClick={downloadJSON}
+                className="flex items-center gap-2 rounded-lg border border-white/10 bg-white/5 px-4 py-2 text-sm font-semibold hover:bg-white/10"
+              >
+                <Download className="h-4 w-4" />
+                Export JSON
+              </button>
+            </div>
+            <div className="grid grid-cols-2 gap-4 text-sm md:grid-cols-4">
+              <div>
+                <div className="mb-1 text-xs uppercase tracking-wide text-purple-300/50">Period</div>
+                <div className="font-mono text-purple-100">
+                  {selected.periodStart} → {selected.periodEnd}
+                </div>
+              </div>
+              <div>
+                <div className="mb-1 text-xs uppercase tracking-wide text-purple-300/50">Grain</div>
+                <div className="font-mono text-purple-100">{selected.grain}</div>
+              </div>
+              <div>
+                <div className="mb-1 text-xs uppercase tracking-wide text-purple-300/50">Confidence</div>
+                <div className="font-mono text-purple-100">{confidencePct}%</div>
+              </div>
+              <div>
+                <div className="mb-1 text-xs uppercase tracking-wide text-purple-300/50">Freshness</div>
+                <div className="font-mono text-purple-100">{new Date(selected.freshnessTs).toLocaleString()}</div>
+              </div>
+            </div>
+            <div className="mt-4 grid grid-cols-2 gap-4 border-t border-white/10 pt-4 text-sm">
+              <div>
+                <div className="mb-1 text-xs uppercase tracking-wide text-purple-300/50">Owner</div>
+                <div className="text-purple-100">{selected.owner}</div>
+              </div>
+              <div>
+                <div className="mb-1 text-xs uppercase tracking-wide text-purple-300/50">Approver</div>
+                <div className="text-purple-100">{selected.approver}</div>
+              </div>
+            </div>
+          </div>
+
+          {/* Tabs */}
+          <div className="mb-6 flex gap-2 overflow-x-auto border-b border-white/10 pb-2">
+            {tabs.map((t) => (
+              <button
+                key={t.key}
+                onClick={() => setTab(t.key)}
                 className={classNames(
-                  "rounded-xl px-4 py-2 text-sm font-semibold border",
-                  tab === k
-                    ? "bg-white/10 border-white/20"
-                    : "bg-white/5 border-white/10 hover:bg-white/10"
+                  "whitespace-nowrap rounded-lg px-4 py-2 text-sm font-semibold transition-colors",
+                  tab === t.key
+                    ? "bg-purple-500/20 text-purple-200"
+                    : "text-purple-200/60 hover:bg-white/5 hover:text-purple-200"
                 )}
               >
-                {label}
+                {t.label}
               </button>
             ))}
           </div>
 
-          <div className="mt-4">
+          {/* Tab Content */}
+          <div className="rounded-2xl border border-white/10 bg-gradient-to-b from-white/5 to-white/[0.02] p-6">
             {tab === "overview" && (
-              <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
-                <div className="rounded-2xl border border-white/10 bg-white/5 p-5">
-                  <div className="text-sm font-semibold">Receipt Summary</div>
-                  <div className="mt-3 text-sm text-white/70 space-y-2">
-                    <div>
-                      Freshness: <span className="font-mono text-white/90">{selected.freshnessTs}</span>
+              <div className="space-y-6">
+                <div>
+                  <h3 className="mb-4 text-xl font-semibold">Evidence Summary</h3>
+                  <div className="grid gap-4 md:grid-cols-3">
+                    <div className="rounded-xl border border-white/10 bg-white/5 p-4">
+                      <div className="mb-2 text-sm text-purple-300/70">Artifacts</div>
+                      <div className="text-3xl font-bold">{selected.artifacts.length}</div>
                     </div>
-                    <div>
-                      Artifacts: <span className="text-white/90">{selected.artifacts.length}</span> sources
+                    <div className="rounded-xl border border-white/10 bg-white/5 p-4">
+                      <div className="mb-2 text-sm text-purple-300/70">Transforms</div>
+                      <div className="text-3xl font-bold">{selected.transforms.length}</div>
                     </div>
-                    <div>
-                      Transforms: <span className="text-white/90">{selected.transforms.length}</span> steps
-                    </div>
-                    <div>
-                      DQ Suite: <span className="text-white/90">{selected.dq.suite}</span> ({selected.dq.status})
-                    </div>
-                    <div>
-                      Owner/Approver: <span className="text-white/90">{selected.owner}</span> →{" "}
-                      <span className="text-white/90">{selected.approver}</span>
-                    </div>
-                  </div>
-
-                  <div className="mt-5 rounded-xl border border-white/10 bg-black/30 p-4">
-                    <div className="text-xs font-semibold text-white/60 mb-2">Hard Gate</div>
-                    <div className="text-sm text-white/80">
-                      VERIFIED requires: DQ PASS/WARN policy + confidence ≥ threshold + freshness within SLA + reconciliation within tolerance.
+                    <div className="rounded-xl border border-white/10 bg-white/5 p-4">
+                      <div className="mb-2 text-sm text-purple-300/70">DQ Tests</div>
+                      <div className="text-3xl font-bold">{selected.dq.tests.length}</div>
                     </div>
                   </div>
                 </div>
-
-                <div className="rounded-2xl border border-white/10 bg-white/5 p-5">
-                  <div className="text-sm font-semibold">Executive Interpretation</div>
-                  <div className="mt-3 text-sm text-white/70">
-                    This receipt supports the KPI output and makes it defensible:
-                    the numbers can be reproduced from the exact artifacts listed, using the exact transforms listed,
-                    and are gated by explicit tests. If anything fails, status downgrades automatically.
-                  </div>
-
-                  <div className="mt-5 grid grid-cols-1 gap-3">
-                    <div className="rounded-xl border border-white/10 bg-white/5 p-4">
-                      <div className="text-xs text-white/60">Risk posture</div>
-                      <div className="text-sm font-semibold">
-                        {selected.reconciliation.some(r => r.status === "FAIL")
-                          ? "Elevated (reconciliation failure)"
-                          : selected.reconciliation.some(r => r.status === "WARN")
-                          ? "Moderate (reconciliation variance)"
-                          : "Low (reconciled)"}
-                      </div>
-                    </div>
-                    <div className="rounded-xl border border-white/10 bg-white/5 p-4">
-                      <div className="text-xs text-white/60">Actionability</div>
-                      <div className="text-sm font-semibold">Immediate drill-through to claim lines, invoices, eligibility rows</div>
+                <div>
+                  <h3 className="mb-4 text-xl font-semibold">Kincaid IQ Embed</h3>
+                  <div className="overflow-hidden rounded-xl border border-white/10 bg-black/20">
+                    <iframe
+                      src="https://app.kincaid.io/embed/receipt-demo"
+                      className="h-[600px] w-full"
+                      title="Kincaid iQ Receipt Demo"
+                      sandbox="allow-scripts allow-same-origin"
+                    />
+                    <div className="border-t border-white/10 bg-white/5 p-4 text-center text-sm text-purple-200/60">
+                      If you see a blank frame, the embed may be blocked. See static snapshot above.
                     </div>
                   </div>
                 </div>
               </div>
             )}
 
-            {tab === "lineage" && <LineageGraph receipt={selected} />}
+            {tab === "lineage" && (
+              <div>
+                <h3 className="mb-4 text-xl font-semibold">Data Lineage Graph</h3>
+                <svg viewBox="0 0 800 500" className="w-full rounded-xl border border-white/10 bg-black/20 p-4">
+                  <defs>
+                    <marker id="arrowhead" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto">
+                      <polygon points="0 0, 10 3, 0 6" fill="#a78bfa" />
+                    </marker>
+                  </defs>
+                  {selected.artifacts.map((art, i) => {
+                    const y = 50 + i * 80;
+                    return (
+                      <g key={art.id}>
+                        <rect x="20" y={y} width="180" height="60" rx="8" fill="#7c3aed" fillOpacity="0.2" stroke="#a78bfa" strokeWidth="2" />
+                        <text x="110" y={y + 25} textAnchor="middle" fill="#e9d5ff" fontSize="12" fontWeight="600">
+                          {art.sourceType}
+                        </text>
+                        <text x="110" y={y + 42} textAnchor="middle" fill="#c4b5fd" fontSize="10">
+                          {art.fileName.slice(0, 20)}
+                        </text>
+                        <line x1="200" y1={y + 30} x2="250" y2="250" stroke="#a78bfa" strokeWidth="2" markerEnd="url(#arrowhead)" />
+                      </g>
+                    );
+                  })}
+                  {selected.transforms.map((trn, i) => {
+                    const y = 150 + i * 100;
+                    return (
+                      <g key={trn.id}>
+                        <rect x="270" y={y} width="200" height="70" rx="8" fill="#6366f1" fillOpacity="0.2" stroke="#818cf8" strokeWidth="2" />
+                        <text x="370" y={y + 30} textAnchor="middle" fill="#e0e7ff" fontSize="12" fontWeight="600">
+                          {trn.name.slice(0, 24)}
+                        </text>
+                        <text x="370" y={y + 48} textAnchor="middle" fill="#c7d2fe" fontSize="10">
+                          {trn.version}
+                        </text>
+                        <line x1="470" y1={y + 35} x2="520" y2="250" stroke="#818cf8" strokeWidth="2" markerEnd="url(#arrowhead)" />
+                      </g>
+                    );
+                  })}
+                  <rect x="540" y="220" width="220" height="80" rx="12" fill="#10b981" fillOpacity="0.2" stroke="#34d399" strokeWidth="3" />
+                  <text x="650" y="250" textAnchor="middle" fill="#d1fae5" fontSize="14" fontWeight="700">
+                    Receipt
+                  </text>
+                  <text x="650" y="270" textAnchor="middle" fill="#a7f3d0" fontSize="11">
+                    {selected.receiptId.slice(0, 30)}
+                  </text>
+                  <text x="650" y="288" textAnchor="middle" fill="#6ee7b7" fontSize="10">
+                    {selected.verificationStatus} • {confidencePct}%
+                  </text>
+                </svg>
+              </div>
+            )}
 
             {tab === "artifacts" && (
-              <div className="rounded-2xl border border-white/10 bg-white/5 p-5">
-                <div className="text-sm font-semibold">Artifacts</div>
-                <div className="mt-3 grid grid-cols-1 gap-3">
-                  {selected.artifacts.map((a) => (
-                    <div key={a.id} className="rounded-xl border border-white/10 bg-black/20 p-4">
-                      <div className="flex items-center justify-between gap-3">
-                        <div className="font-semibold text-sm">{a.sourceType} • {a.sourceSystem}</div>
-                        <div className="text-xs text-white/60">{a.loadedAt}</div>
+              <div>
+                <h3 className="mb-4 text-xl font-semibold">Source Artifacts</h3>
+                <div className="space-y-4">
+                  {selected.artifacts.map((art) => (
+                    <div key={art.id} className="rounded-xl border border-white/10 bg-white/5 p-4">
+                      <div className="mb-3 flex items-start justify-between">
+                        <div>
+                          <div className="mb-1 font-mono text-sm text-purple-300">{art.id}</div>
+                          <div className="font-semibold">{art.fileName}</div>
+                        </div>
+                        <span className="rounded-full bg-purple-500/20 px-3 py-1 text-xs font-semibold text-purple-200">
+                          {art.sourceType}
+                        </span>
                       </div>
-                      <div className="mt-2 text-sm text-white/70">
-                        <div className="font-mono break-all text-xs text-white/70">{a.uri}</div>
-                        <div className="mt-2 text-xs text-white/60">Checksum</div>
-                        <div className="font-mono text-xs break-all">{a.checksum}</div>
-                        {typeof a.rowCount === "number" && (
-                          <div className="mt-2 text-xs text-white/60">Rows: <span className="text-white/85">{a.rowCount.toLocaleString()}</span></div>
-                        )}
+                      <div className="grid gap-3 text-sm md:grid-cols-2">
+                        <div>
+                          <span className="text-purple-300/70">System: </span>
+                          <span className="font-mono text-purple-100">{art.sourceSystem}</span>
+                        </div>
+                        <div>
+                          <span className="text-purple-300/70">Rows: </span>
+                          <span className="font-mono text-purple-100">{art.rowCount?.toLocaleString() || "N/A"}</span>
+                        </div>
+                        <div>
+                          <span className="text-purple-300/70">Loaded: </span>
+                          <span className="font-mono text-purple-100">{new Date(art.loadedAt).toLocaleString()}</span>
+                        </div>
+                        <div>
+                          <span className="text-purple-300/70">Checksum: </span>
+                          <span className="font-mono text-xs text-purple-100">{art.checksum}</span>
+                        </div>
+                      </div>
+                      <div className="mt-3 border-t border-white/10 pt-3">
+                        <div className="text-xs text-purple-300/70">URI</div>
+                        <div className="font-mono text-xs text-purple-100">{art.uri}</div>
                       </div>
                     </div>
                   ))}
@@ -549,32 +507,46 @@ export default function EvidenceReceiptsPage() {
             )}
 
             {tab === "transforms" && (
-              <div className="rounded-2xl border border-white/10 bg-white/5 p-5">
-                <div className="text-sm font-semibold">Transforms</div>
-                <div className="mt-3 grid grid-cols-1 gap-3">
-                  {selected.transforms.map((t) => (
-                    <div key={t.id} className="rounded-xl border border-white/10 bg-black/20 p-4">
-                      <div className="flex items-center justify-between gap-3">
-                        <div className="font-semibold text-sm">{t.name}</div>
-                        <div className="text-xs text-white/60">{t.ranAt}</div>
+              <div>
+                <h3 className="mb-4 text-xl font-semibold">Transform Pipeline</h3>
+                <div className="space-y-4">
+                  {selected.transforms.map((trn, i) => (
+                    <div key={trn.id} className="rounded-xl border border-white/10 bg-white/5 p-4">
+                      <div className="mb-3 flex items-start justify-between">
+                        <div>
+                          <div className="mb-1 flex items-center gap-2">
+                            <span className="flex h-6 w-6 items-center justify-center rounded-full bg-purple-500/20 text-xs font-bold text-purple-200">
+                              {i + 1}
+                            </span>
+                            <span className="font-mono text-sm text-purple-300">{trn.id}</span>
+                          </div>
+                          <div className="font-semibold">{trn.name}</div>
+                        </div>
+                        <span className="rounded-full bg-blue-500/20 px-3 py-1 text-xs font-semibold text-blue-200">
+                          {trn.version}
+                        </span>
                       </div>
-                      <div className="mt-2 text-sm text-white/70 grid grid-cols-1 md:grid-cols-2 gap-3">
+                      <div className="grid gap-3 text-sm md:grid-cols-2">
                         <div>
-                          <div className="text-xs text-white/60">Version</div>
-                          <div className="font-mono text-xs">{t.version}</div>
+                          <span className="text-purple-300/70">Warehouse: </span>
+                          <span className="font-mono text-purple-100">{trn.warehouse}</span>
                         </div>
                         <div>
-                          <div className="text-xs text-white/60">Query ID</div>
-                          <div className="font-mono text-xs break-all">{t.queryId}</div>
+                          <span className="text-purple-300/70">Ran By: </span>
+                          <span className="font-mono text-purple-100">{trn.ranBy}</span>
                         </div>
                         <div>
-                          <div className="text-xs text-white/60">Code Hash</div>
-                          <div className="font-mono text-xs break-all">{t.codeHash}</div>
+                          <span className="text-purple-300/70">Ran At: </span>
+                          <span className="font-mono text-purple-100">{new Date(trn.ranAt).toLocaleString()}</span>
                         </div>
                         <div>
-                          <div className="text-xs text-white/60">Warehouse / Actor</div>
-                          <div className="text-xs">{t.warehouse} • <span className="font-mono">{t.ranBy}</span></div>
+                          <span className="text-purple-300/70">Query ID: </span>
+                          <span className="font-mono text-xs text-purple-100">{trn.queryId}</span>
                         </div>
+                      </div>
+                      <div className="mt-3 border-t border-white/10 pt-3">
+                        <div className="text-xs text-purple-300/70">Code Hash</div>
+                        <div className="font-mono text-xs text-purple-100">{trn.codeHash}</div>
                       </div>
                     </div>
                   ))}
@@ -583,31 +555,57 @@ export default function EvidenceReceiptsPage() {
             )}
 
             {tab === "dq" && (
-              <div className="rounded-2xl border border-white/10 bg-white/5 p-5">
-                <div className="flex items-center justify-between">
-                  <div className="text-sm font-semibold">Data Quality Gate</div>
-                  <span className="text-xs text-white/60">{selected.dq.suite} • {selected.dq.version}</span>
-                </div>
-
-                <div className="mt-3 rounded-xl border border-white/10 bg-black/20 p-4">
-                  <div className="text-sm">
-                    Status: <span className="font-semibold">{selected.dq.status}</span>
+              <div>
+                <h3 className="mb-4 text-xl font-semibold">Data Quality Suite</h3>
+                <div className="mb-6 rounded-xl border border-white/10 bg-white/5 p-4">
+                  <div className="mb-4 flex items-center justify-between">
+                    <div>
+                      <div className="mb-1 font-semibold">{selected.dq.suite}</div>
+                      <div className="text-sm text-purple-200/60">Version {selected.dq.version}</div>
+                    </div>
+                    <span
+                      className={classNames(
+                        "rounded-full px-3 py-1 text-sm font-semibold",
+                        selected.dq.status === "PASS"
+                          ? "bg-emerald-500/20 text-emerald-300"
+                          : selected.dq.status === "WARN"
+                          ? "bg-amber-500/20 text-amber-300"
+                          : "bg-red-500/20 text-red-300"
+                      )}
+                    >
+                      {selected.dq.status}
+                    </span>
                   </div>
-                  <div className="text-xs text-white/60 mt-1">Ran at {selected.dq.ranAt}</div>
+                  <div className="text-sm text-purple-200/60">
+                    Ran At: {new Date(selected.dq.ranAt).toLocaleString()}
+                  </div>
                 </div>
-
-                <div className="mt-3 grid grid-cols-1 gap-2">
-                  {selected.dq.tests.map((t) => (
-                    <div key={t.name} className="rounded-xl border border-white/10 bg-black/20 px-4 py-3 flex items-center justify-between">
-                      <div className="text-sm text-white/80">{t.name}</div>
-                      <div className={classNames(
-                        "text-xs font-semibold px-2 py-1 rounded-full border",
-                        t.status === "PASS" ? "border-emerald-500/30 bg-emerald-500/10 text-emerald-200"
-                        : t.status === "WARN" ? "border-amber-500/30 bg-amber-500/10 text-amber-200"
-                        : "border-rose-500/30 bg-rose-500/10 text-rose-200"
-                      )}>
-                        {t.status}
+                <div className="space-y-3">
+                  {selected.dq.tests.map((test, i) => (
+                    <div key={i} className="flex items-center justify-between rounded-xl border border-white/10 bg-white/5 p-4">
+                      <div>
+                        <div className="font-semibold">{test.name}</div>
+                        {test.details && <div className="mt-1 text-sm text-purple-200/60">{test.details}</div>}
                       </div>
+                      <span
+                        className={classNames(
+                          "flex items-center gap-1.5 rounded-full px-3 py-1 text-sm font-semibold",
+                          test.status === "PASS"
+                            ? "bg-emerald-500/20 text-emerald-300"
+                            : test.status === "WARN"
+                            ? "bg-amber-500/20 text-amber-300"
+                            : "bg-red-500/20 text-red-300"
+                        )}
+                      >
+                        {test.status === "PASS" ? (
+                          <CheckCircle2 className="h-4 w-4" />
+                        ) : test.status === "WARN" ? (
+                          <AlertTriangle className="h-4 w-4" />
+                        ) : (
+                          <XCircle className="h-4 w-4" />
+                        )}
+                        {test.status}
+                      </span>
                     </div>
                   ))}
                 </div>
@@ -615,39 +613,57 @@ export default function EvidenceReceiptsPage() {
             )}
 
             {tab === "recon" && (
-              <div className="rounded-2xl border border-white/10 bg-white/5 p-5">
-                <div className="text-sm font-semibold">Reconciliation</div>
-                <div className="mt-3 grid grid-cols-1 gap-3">
-                  {selected.reconciliation.map((r) => (
-                    <div key={r.name} className="rounded-xl border border-white/10 bg-black/20 p-4">
-                      <div className="flex items-center justify-between gap-3">
-                        <div className="text-sm font-semibold">{r.name}</div>
-                        <div className={classNames(
-                          "text-xs font-semibold px-2 py-1 rounded-full border",
-                          r.status === "PASS" ? "border-emerald-500/30 bg-emerald-500/10 text-emerald-200"
-                          : r.status === "WARN" ? "border-amber-500/30 bg-amber-500/10 text-amber-200"
-                          : "border-rose-500/30 bg-rose-500/10 text-rose-200"
-                        )}>
-                          {r.status}
-                        </div>
+              <div>
+                <h3 className="mb-4 text-xl font-semibold">Reconciliation Checks</h3>
+                <div className="space-y-4">
+                  {selected.reconciliation.map((rec, i) => (
+                    <div key={i} className="rounded-xl border border-white/10 bg-white/5 p-4">
+                      <div className="mb-3 flex items-start justify-between">
+                        <div className="font-semibold">{rec.name}</div>
+                        <span
+                          className={classNames(
+                            "flex items-center gap-1.5 rounded-full px-3 py-1 text-sm font-semibold",
+                            rec.status === "PASS"
+                              ? "bg-emerald-500/20 text-emerald-300"
+                              : rec.status === "WARN"
+                              ? "bg-amber-500/20 text-amber-300"
+                              : "bg-red-500/20 text-red-300"
+                          )}
+                        >
+                          {rec.status === "PASS" ? (
+                            <CheckCircle2 className="h-4 w-4" />
+                          ) : rec.status === "WARN" ? (
+                            <AlertTriangle className="h-4 w-4" />
+                          ) : (
+                            <XCircle className="h-4 w-4" />
+                          )}
+                          {rec.status}
+                        </span>
                       </div>
-
-                      <div className="mt-3 grid grid-cols-1 md:grid-cols-4 gap-3 text-sm text-white/75">
+                      <div className="grid gap-4 text-sm md:grid-cols-3">
                         <div>
-                          <div className="text-xs text-white/60">Expected</div>
-                          <div className="font-mono">{r.expected.toLocaleString()}</div>
+                          <div className="mb-1 text-xs uppercase tracking-wide text-purple-300/50">Expected</div>
+                          <div className="font-mono text-lg font-bold text-purple-100">
+                            {rec.expected.toLocaleString()} {rec.unit}
+                          </div>
                         </div>
                         <div>
-                          <div className="text-xs text-white/60">Actual</div>
-                          <div className="font-mono">{r.actual.toLocaleString()}</div>
+                          <div className="mb-1 text-xs uppercase tracking-wide text-purple-300/50">Actual</div>
+                          <div className="font-mono text-lg font-bold text-purple-100">
+                            {rec.actual.toLocaleString()} {rec.unit}
+                          </div>
                         </div>
                         <div>
-                          <div className="text-xs text-white/60">Delta</div>
-                          <div className="font-mono">{r.delta.toLocaleString()}</div>
-                        </div>
-                        <div>
-                          <div className="text-xs text-white/60">Unit</div>
-                          <div>{r.unit}</div>
+                          <div className="mb-1 text-xs uppercase tracking-wide text-purple-300/50">Delta</div>
+                          <div
+                            className={classNames(
+                              "font-mono text-lg font-bold",
+                              rec.delta > 0 ? "text-red-300" : rec.delta < 0 ? "text-emerald-300" : "text-purple-100"
+                            )}
+                          >
+                            {rec.delta > 0 ? "+" : ""}
+                            {rec.delta.toLocaleString()} {rec.unit}
+                          </div>
                         </div>
                       </div>
                     </div>
@@ -657,18 +673,23 @@ export default function EvidenceReceiptsPage() {
             )}
 
             {tab === "audit" && (
-              <div className="rounded-2xl border border-white/10 bg-white/5 p-5">
-                <div className="text-sm font-semibold">Audit Log</div>
-                <div className="mt-3 grid grid-cols-1 gap-2">
-                  {selected.auditLog.map((e, idx) => (
-                    <div key={idx} className="rounded-xl border border-white/10 bg-black/20 px-4 py-3">
-                      <div className="flex items-center justify-between gap-3">
-                        <div className="text-sm font-semibold">{e.action}</div>
-                        <div className="text-xs text-white/60 font-mono">{e.at}</div>
+              <div>
+                <h3 className="mb-4 text-xl font-semibold">Audit Log</h3>
+                <div className="space-y-3">
+                  {selected.auditLog.map((log, i) => (
+                    <div key={i} className="flex gap-4 rounded-xl border border-white/10 bg-white/5 p-4">
+                      <div className="flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-full bg-purple-500/20 text-xs font-bold text-purple-200">
+                        {i + 1}
                       </div>
-                      <div className="mt-1 text-sm text-white/75">
-                        <span className="text-white/60">Actor:</span> {e.actor}
-                        {e.note ? <span className="text-white/60"> • Note:</span> : null} {e.note}
+                      <div className="flex-1">
+                        <div className="mb-1 flex items-center gap-3">
+                          <span className="font-semibold">{log.action}</span>
+                          <span className="text-sm text-purple-200/60">{log.actor}</span>
+                        </div>
+                        {log.note && <div className="mb-2 text-sm text-purple-200/70">{log.note}</div>}
+                        <div className="text-xs font-mono text-purple-300/50">
+                          {new Date(log.at).toLocaleString()}
+                        </div>
                       </div>
                     </div>
                   ))}
@@ -676,101 +697,84 @@ export default function EvidenceReceiptsPage() {
               </div>
             )}
           </div>
-
-          <div className="mt-10">
-            <div className="text-xs font-semibold tracking-wider text-white/60">LIVE PRODUCT PROOF</div>
-            <div className="mt-2 text-xl font-semibold">Snapshot of Kincaid IQ (kincaidrmc.com)</div>
-            <div className="mt-2 text-sm text-white/65 max-w-3xl">
-              This is a demo embed of the public site so viewers connect the governance engine (receipts) to the real
-              Kincaid IQ interface. If framing is blocked, we fall back to a crisp snapshot image.
-            </div>
-
-            <div className="mt-4">
-              <IframeOrFallback
-                src={"https://kincaidrmc.com"}
-                fallbackImg={"/kincaid-iq-snapshot.png"}
-                title={"Kincaid IQ • Public Site Snapshot"}
-              />
-            </div>
-          </div>
         </div>
-      </div>
-      <Footer />
+        <Footer />
 
-      <CreateReceiptModal
-        open={createOpen}
-        onClose={() => setCreateOpen(false)}
-        subjectType={selected.subjectType}
-        subjectId={selected.subjectId}
-        periodStart={selected.periodStart}
-        periodEnd={selected.periodEnd}
-        grain={selected.grain}
-        onApplyReceipt={(r: any) => {
-          // Map snake_case JSON receipt to our internal EvidenceReceipt model
-          const newReceipt: EvidenceReceipt = {
-            receiptId: r.receipt_id,
-            subjectType: r.subject.type,
-            subjectId: r.subject.id,
-            periodStart: r.subject.period_start,
-            periodEnd: r.subject.period_end,
-            grain: r.subject.grain,
-            freshnessTs: r.verification.freshness_ts,
-            confidence: r.verification.confidence_score,
-            verificationStatus: r.verification.status,
-            owner: r.verification.owner,
-            approver: r.verification.approver,
-            artifacts: r.evidence.internal_artifacts.map((a: any) => ({
-              id: a.artifact_id,
-              sourceSystem: a.source_system,
-              sourceType: a.source_type,
-              uri: a.storage_uri,
-              fileName: a.storage_uri.split("/").pop() || "unknown",
-              checksum: a.checksum_sha256 || "sha256:unknown",
-              loadedAt: a.loaded_at,
-              rowCount: a.row_count,
-            })),
-            transforms: r.evidence.transforms.map((t: any) => ({
-              id: t.transform_id,
-              name: t.name,
-              version: t.version,
-              codeHash: t.code_hash_sha256,
-              queryId: t.query_id,
-              ranAt: t.ran_at,
-              ranBy: "svc_kincaid_iq", // Default since not in JSON
-              warehouse: "WH_CORE3_XS", // Default since not in JSON
-            })),
-            dq: {
-              suite: r.evidence.dq.suite,
-              version: r.evidence.dq.version,
-              ranAt: r.verification.freshness_ts, // Use receipt freshness as proxy
-              status: r.evidence.dq.status,
-              tests: r.evidence.dq.tests.map((t: any) => ({
-                name: t.name,
-                status: t.status,
-                details: t.details,
+        <CreateReceiptModal
+          open={createOpen}
+          onClose={() => setCreateOpen(false)}
+          subjectType={selected.subjectType}
+          subjectId={selected.subjectId}
+          periodStart={selected.periodStart}
+          periodEnd={selected.periodEnd}
+          grain={selected.grain}
+          onApplyReceipt={(r: any) => {
+            const newReceipt: EvidenceReceipt = {
+              receiptId: r.receipt_id,
+              subjectType: r.subject.type,
+              subjectId: r.subject.id,
+              periodStart: r.subject.period_start,
+              periodEnd: r.subject.period_end,
+              grain: r.subject.grain,
+              freshnessTs: r.verification.freshness_ts,
+              confidence: r.verification.confidence_score,
+              verificationStatus: r.verification.status,
+              owner: r.verification.owner,
+              approver: r.verification.approver,
+              artifacts: r.evidence.internal_artifacts.map((a: any) => ({
+                id: a.artifact_id || `ART-${Date.now()}-${Math.random().toString(36).substr(2, 4)}`,
+                sourceSystem: a.source_system,
+                sourceType: a.source_type,
+                uri: a.storage_uri,
+                fileName: a.storage_uri.split("/").pop() || "unknown",
+                checksum: a.checksum_sha256 || "sha256:unknown",
+                loadedAt: a.loaded_at,
+                rowCount: a.row_count,
               })),
-            },
-            reconciliation: r.evidence.reconciliation.map((rec: any) => ({
-              name: rec.name,
-              status: rec.status,
-              expected: rec.expected,
-              actual: rec.actual,
-              delta: rec.delta,
-              unit: rec.unit,
-            })),
-            // Generate a synthetic audit log since the JSON doesn't contain one
-            auditLog: [
-              { at: r.verification.freshness_ts, actor: "svc_kincaid_iq", action: "RECEIPT_GENERATED", note: `Confidence: ${r.verification.confidence_score}` },
-              { at: new Date().toISOString(), actor: r.verification.owner, action: "OWNER_ATTESTATION", note: "Manual creation via demo UI" },
-              { at: new Date().toISOString(), actor: r.verification.approver, action: "APPROVAL_SIGNOFF", note: "Auto-approved in demo" },
-            ],
-          };
-          
-          setReceipts((prev) => [newReceipt, ...prev]);
-          setSelected(newReceipt);
-          setCreateOpen(false);
-        }}
-      />
+              transforms: r.evidence.transforms.map((t: any) => ({
+                id: t.transform_id || `TRN-${Date.now()}-${Math.random().toString(36).substr(2, 4)}`,
+                name: t.name,
+                version: t.version,
+                codeHash: t.code_hash_sha256 || t.code_hash,
+                queryId: t.query_id,
+                ranAt: t.ran_at,
+                ranBy: t.ran_by || "svc_kincaid_iq",
+                warehouse: t.warehouse || "WH_CORE3_XS",
+              })),
+              dq: {
+                suite: r.evidence.dq.suite,
+                version: r.evidence.dq.version,
+                ranAt: r.verification.freshness_ts, // Fallback as dq.ran_at might be missing
+                status: r.evidence.dq.status,
+                tests: r.evidence.dq.tests.map((test: any) => ({
+                  name: test.name,
+                  status: test.status,
+                  details: test.details,
+                })),
+              },
+              reconciliation: r.evidence.reconciliation.map((rec: any) => ({
+                name: rec.name,
+                status: rec.status,
+                expected: rec.expected,
+                actual: rec.actual,
+                delta: rec.delta,
+                unit: rec.unit,
+              })),
+              auditLog: [
+                {
+                  at: new Date().toISOString(),
+                  actor: "system",
+                  action: "RECEIPT_CREATED",
+                  note: "Created via demo modal",
+                },
+              ],
+            };
+            setReceipts((prev) => [newReceipt, ...prev]);
+            setSelectedId(newReceipt.receiptId);
+            setCreateOpen(false);
+          }}
+        />
+      </div>
     </>
   );
 }

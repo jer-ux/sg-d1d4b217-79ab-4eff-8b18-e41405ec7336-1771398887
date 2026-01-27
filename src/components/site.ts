@@ -7,21 +7,20 @@ export const nav: NavLink[] = [
     label: "Platform",
     groups: [
       {
-        label: "Core Platform",
+        label: "Core Products",
         items: [
-          { label: "Evidence receipts", href: "/platform/evidence", description: "Cryptographic proof for every value claim" },
-          { label: "Data quality", href: "/platform/dq", description: "Automated DQ monitoring and remediation" },
-          { label: "Incidents", href: "/platform/incidents", description: "Real-time issue tracking and resolution" },
-          { label: "Connectors", href: "/platform/connectors", description: "Pre-built integrations for major platforms" },
+          { label: "War Room", href: "/war-room", description: "Real-time operations monitoring" },
+          { label: "Evidence Receipts", href: "/evidence-receipts", description: "Cryptographic proof of value" },
+          { label: "Verified Savings Ledger", href: "/verified-savings-ledger", description: "CFO-grade accounting" },
+          { label: "Gen AI Agents", href: "/gen-ai-agents", description: "Governed AI deployment" },
         ],
       },
       {
-        label: "Value Management",
+        label: "Extended Capabilities",
         items: [
-          { label: "War Room", href: "/war-room", description: "Real-time operational command center" },
-          { label: "Verified Savings Ledger", href: "/ledger", description: "CFO-grade value tracking with evidence receipts" },
-          { label: "KPIs", href: "/platform/kpis", description: "Real-time business metrics and analytics" },
-          { label: "Admin", href: "/platform/admin", description: "User management and system configuration" },
+          { label: "Agentic Transformation", href: "/agentic-transformation", description: "12-month AI policy framework" },
+          { label: "Agentic Policy", href: "/agentic-policy", description: "Governance controls" },
+          { label: "Actuarial Benefits", href: "/actuarial-benefits", description: "Healthcare value verification" },
         ],
       },
     ],

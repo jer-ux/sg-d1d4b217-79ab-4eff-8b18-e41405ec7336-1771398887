@@ -46,6 +46,17 @@ export interface EvidenceReceipt {
   lineage?: string[];
 }
 
+export interface ExternalSource {
+  name: string;
+  type: string;
+  authority: string;
+  url: string;
+  evidenceRule: string;
+  description: string;
+  usageNotes: string[];
+  citation?: string;
+}
+
 export interface LedgerEntry {
   id: string;
   title: string;
@@ -66,6 +77,7 @@ export interface LedgerEntry {
   
   // Evidence & Audit
   receipts: EvidenceReceipt[];
+  externalSources?: ExternalSource[];
   auditTrail: AuditEntry[];
   confidence: number;
   

@@ -3,6 +3,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/u
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { ExternalSourceReceiptCard } from "@/components/ledger/ExternalSourceReceiptCard";
 import { 
   Receipt, 
   User, 
@@ -91,6 +92,11 @@ export function LedgerDetailModal({
             <TabsTrigger value="receipts">
               Receipts ({entry.receipts.length})
             </TabsTrigger>
+            {entry.externalSources && entry.externalSources.length > 0 && (
+              <TabsTrigger value="external">
+                External Sources ({entry.externalSources.length})
+              </TabsTrigger>
+            )}
             {entry.dqTests && entry.dqTests.length > 0 && (
               <TabsTrigger value="dq">
                 DQ Tests ({entry.dqTests.length})
@@ -243,6 +249,24 @@ export function LedgerDetailModal({
                   <Button variant="outline" className="mt-4">
                     <Receipt className="w-4 h-4 mr-2" />
                     Attach Receipt
+                  </Button>
+                </div>
+              )}
+            </div>
+          </TabsContent>
+
+          <TabsContent value="external" className="mt-4">
+            <div className="space-y-4">
+              {entry.externalSources && entry.externalSources.map((source, idx) => (
+                <ExternalSourceReceiptCard key={idx} source={source} />
+              ))}
+              {(!entry.externalSources || entry.externalSources.length === 0) && (
+                <div className="rounded-2xl border border-white/10 bg-white/5 p-8 text-center">
+                  <ExternalLink className="w-12 h-12 text-white/20 mx-auto mb-3" />
+                  <div className="text-white/60">No external sources attached yet</div>
+                  <Button variant="outline" className="mt-4">
+                    <ExternalLink className="w-4 h-4 mr-2" />
+                    Add External Source
                   </Button>
                 </div>
               )}

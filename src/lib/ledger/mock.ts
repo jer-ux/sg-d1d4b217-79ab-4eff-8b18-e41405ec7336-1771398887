@@ -39,6 +39,22 @@ export const mockLedgerEntries: LedgerEntry[] = [
         confidence: 1.0
       }
     ],
+    externalSources: [
+      {
+        name: "Snowflake Documentation",
+        type: "Technical Reference",
+        authority: "Snowflake Inc.",
+        url: "https://docs.snowflake.com/en/user-guide/views-materialized",
+        evidenceRule: "Link-out for methodology",
+        description: "Official documentation for materialized views optimization best practices",
+        usageNotes: [
+          "Reference for optimization methodology validation",
+          "Supports technical claims about 40% compute reduction",
+          "Provides benchmark data for similar workloads"
+        ],
+        citation: "Source: Snowflake Documentation - Materialized Views"
+      }
+    ],
     dqTests: [
       {
         name: "Query execution completeness",
@@ -414,6 +430,35 @@ export const mockLedgerEntries: LedgerEntry[] = [
         uploadedBy: "james.martinez@company.com",
         uploadedAt: "2025-11-30T16:00:00Z",
         confidence: 0.90
+      }
+    ],
+    externalSources: [
+      {
+        name: "SEC EDGAR",
+        type: "External Filing Search",
+        authority: "SEC.gov",
+        url: "https://www.sec.gov/edgar/search/",
+        evidenceRule: "Link-out required",
+        description: "Public filings are treated as \"authoritative external artifacts\" for market / company truth claims.",
+        usageNotes: [
+          "Store the EDGAR URL as an artifact pointer (no scraping required).",
+          "Attach it to KPI narratives as \"External Evidence (Authoritative).\"",
+          "Require an internal receipt for any derived metric (transform hash + DQ + reconciliation)."
+        ],
+        citation: "Source: SEC EDGAR full text search (filings since 2001)."
+      },
+      {
+        name: "Informatica Investor Relations",
+        type: "Public Company Filing",
+        authority: "SEC.gov / Informatica",
+        url: "https://investors.informatica.com",
+        evidenceRule: "Authoritative for pricing validation",
+        description: "Public company information used to validate market pricing and license costs",
+        usageNotes: [
+          "Cross-reference contract pricing with public disclosures",
+          "Validate vendor financial health and contract stability",
+          "Support business case with market pricing benchmarks"
+        ]
       }
     ],
     dqTests: [

@@ -338,6 +338,7 @@ function IframeOrFallback({
 }
 
 export default function EvidenceReceiptsPage() {
+  const [receipts, setReceipts] = useState<EvidenceReceipt[]>(MOCK);
   const [selected, setSelected] = useState<EvidenceReceipt>(MOCK[0]);
   const [tab, setTab] = useState<
     "overview" | "lineage" | "artifacts" | "transforms" | "dq" | "recon" | "audit"
@@ -407,14 +408,32 @@ export default function EvidenceReceiptsPage() {
             <div className="rounded-2xl border border-white/10 bg-gradient-to-b from-white/8 to-white/[0.02] p-5">
               <div className="text-sm font-semibold">Receipt Selector (demo)</div>
               <div className="mt-3 text-xs text-white/60">
-                In prod: filter by KPI, client, plan, period, status, confidence.
+                {receipts.length === 1 
+                  ? "Create a new receipt to see multiple options here."
+                  : `${receipts.length} receipts available. Select to view details.`}
               </div>
-              <button
-                className="mt-4 w-full rounded-xl border border-white/10 bg-white/5 px-4 py-3 text-sm font-semibold hover:bg-white/10"
-                onClick={() => setSelected(MOCK[0])}
-              >
-                KPI_TOTAL_COST_PMPM • Jan 2026
-              </button>
+              <div className="mt-4 space-y-2 max-h-64 overflow-y-auto">
+                {receipts.map((receipt) => (
+                  <button
+                    key={receipt.receiptId}
+                    className={classNames(
+                      "w-full rounded-xl border px-4 py-3 text-left text-sm font-semibold transition-colors",
+                      selected.receiptId === receipt.receiptId
+                        ? "border-white/20 bg-white/10"
+                        : "border-white/10 bg-white/5 hover:bg-white/10"
+                    )}
+                    onClick={() => setSelected(receipt)}
+                  >
+                    <div className="flex items-center justify-between gap-2">
+                      <span className="truncate">{receipt.subjectId}</span>
+                      <StatusPill status={receipt.verificationStatus} />
+                    </div>
+                    <div className="mt-1 text-xs text-white/60">
+                      {receipt.periodStart} → {receipt.periodEnd}
+                    </div>
+                  </button>
+                ))}
+              </div>
             </div>
           </div>
 
@@ -687,7 +706,67 @@ export default function EvidenceReceiptsPage() {
         periodEnd={selected.periodEnd}
         grain={selected.grain}
         onApplyReceipt={(r) => {
-          console.log("Applied receipt", r);
+          const newReceipt: EvidenceReceipt = {
+            receiptId: r.receiptId,
+            subjectType: r.subjectType as "KPI" | "TILE" | "EVENT",
+            subjectId: r.subjectId,
+            periodStart: r.periodStart,
+            periodEnd: r.periodEnd,
+            grain: r.grain,
+            freshnessTs: r.freshnessTs,
+            confidence: r.confidence,
+            verificationStatus: r.verificationStatus as VerificationStatus,
+            owner: r.owner,
+            approver: r.approver,
+            artifacts: r.artifacts.map((a) => ({
+              id: a.id,
+              sourceSystem: a.sourceSystem,
+              sourceType: a.sourceType,
+              uri: a.uri,
+              fileName: a.fileName,
+              checksum: a.checksum,
+              loadedAt: a.loadedAt,
+              rowCount: a.rowCount,
+            })),
+            transforms: r.transforms.map((t) => ({
+              id: t.id,
+              name: t.name,
+              version: t.version,
+              codeHash: t.codeHash,
+              queryId: t.queryId,
+              ranAt: t.ranAt,
+              ranBy: t.ranBy,
+              warehouse: t.warehouse,
+            })),
+            dq: {
+              suite: r.dq.suite,
+              version: r.dq.version,
+              ranAt: r.dq.ranAt,
+              status: r.dq.status as "PASS" | "WARN" | "FAIL",
+              tests: r.dq.tests.map((t) => ({
+                name: t.name,
+                status: t.status as "PASS" | "WARN" | "FAIL",
+                details: t.details,
+              })),
+            },
+            reconciliation: r.reconciliation.map((rec) => ({
+              name: rec.name,
+              status: rec.status as "PASS" | "WARN" | "FAIL",
+              expected: rec.expected,
+              actual: rec.actual,
+              delta: rec.delta,
+              unit: rec.unit,
+            })),
+            auditLog: r.auditLog.map((log) => ({
+              at: log.at,
+              actor: log.actor,
+              action: log.action,
+              note: log.note,
+            })),
+          };
+          
+          setReceipts((prev) => [newReceipt, ...prev]);
+          setSelected(newReceipt);
           setCreateOpen(false);
         }}
       />

@@ -705,64 +705,65 @@ export default function EvidenceReceiptsPage() {
         periodStart={selected.periodStart}
         periodEnd={selected.periodEnd}
         grain={selected.grain}
-        onApplyReceipt={(r) => {
+        onApplyReceipt={(r: any) => {
+          // Map snake_case JSON receipt to our internal EvidenceReceipt model
           const newReceipt: EvidenceReceipt = {
-            receiptId: r.receiptId,
-            subjectType: r.subjectType as "KPI" | "TILE" | "EVENT",
-            subjectId: r.subjectId,
-            periodStart: r.periodStart,
-            periodEnd: r.periodEnd,
-            grain: r.grain,
-            freshnessTs: r.freshnessTs,
-            confidence: r.confidence,
-            verificationStatus: r.verificationStatus as VerificationStatus,
-            owner: r.owner,
-            approver: r.approver,
-            artifacts: r.artifacts.map((a) => ({
-              id: a.id,
-              sourceSystem: a.sourceSystem,
-              sourceType: a.sourceType,
-              uri: a.uri,
-              fileName: a.fileName,
-              checksum: a.checksum,
-              loadedAt: a.loadedAt,
-              rowCount: a.rowCount,
+            receiptId: r.receipt_id,
+            subjectType: r.subject.type,
+            subjectId: r.subject.id,
+            periodStart: r.subject.period_start,
+            periodEnd: r.subject.period_end,
+            grain: r.subject.grain,
+            freshnessTs: r.verification.freshness_ts,
+            confidence: r.verification.confidence_score,
+            verificationStatus: r.verification.status,
+            owner: r.verification.owner,
+            approver: r.verification.approver,
+            artifacts: r.evidence.internal_artifacts.map((a: any) => ({
+              id: a.artifact_id,
+              sourceSystem: a.source_system,
+              sourceType: a.source_type,
+              uri: a.storage_uri,
+              fileName: a.storage_uri.split("/").pop() || "unknown",
+              checksum: a.checksum_sha256 || "sha256:unknown",
+              loadedAt: a.loaded_at,
+              rowCount: a.row_count,
             })),
-            transforms: r.transforms.map((t) => ({
-              id: t.id,
+            transforms: r.evidence.transforms.map((t: any) => ({
+              id: t.transform_id,
               name: t.name,
               version: t.version,
-              codeHash: t.codeHash,
-              queryId: t.queryId,
-              ranAt: t.ranAt,
-              ranBy: t.ranBy,
-              warehouse: t.warehouse,
+              codeHash: t.code_hash_sha256,
+              queryId: t.query_id,
+              ranAt: t.ran_at,
+              ranBy: "svc_kincaid_iq", // Default since not in JSON
+              warehouse: "WH_CORE3_XS", // Default since not in JSON
             })),
             dq: {
-              suite: r.dq.suite,
-              version: r.dq.version,
-              ranAt: r.dq.ranAt,
-              status: r.dq.status as "PASS" | "WARN" | "FAIL",
-              tests: r.dq.tests.map((t) => ({
+              suite: r.evidence.dq.suite,
+              version: r.evidence.dq.version,
+              ranAt: r.verification.freshness_ts, // Use receipt freshness as proxy
+              status: r.evidence.dq.status,
+              tests: r.evidence.dq.tests.map((t: any) => ({
                 name: t.name,
-                status: t.status as "PASS" | "WARN" | "FAIL",
+                status: t.status,
                 details: t.details,
               })),
             },
-            reconciliation: r.reconciliation.map((rec) => ({
+            reconciliation: r.evidence.reconciliation.map((rec: any) => ({
               name: rec.name,
-              status: rec.status as "PASS" | "WARN" | "FAIL",
+              status: rec.status,
               expected: rec.expected,
               actual: rec.actual,
               delta: rec.delta,
               unit: rec.unit,
             })),
-            auditLog: r.auditLog.map((log) => ({
-              at: log.at,
-              actor: log.actor,
-              action: log.action,
-              note: log.note,
-            })),
+            // Generate a synthetic audit log since the JSON doesn't contain one
+            auditLog: [
+              { at: r.verification.freshness_ts, actor: "svc_kincaid_iq", action: "RECEIPT_GENERATED", note: `Confidence: ${r.verification.confidence_score}` },
+              { at: new Date().toISOString(), actor: r.verification.owner, action: "OWNER_ATTESTATION", note: "Manual creation via demo UI" },
+              { at: new Date().toISOString(), actor: r.verification.approver, action: "APPROVAL_SIGNOFF", note: "Auto-approved in demo" },
+            ],
           };
           
           setReceipts((prev) => [newReceipt, ...prev]);

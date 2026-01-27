@@ -13,6 +13,28 @@ export type LedgerCategory =
   | "working-capital"
   | "capex-avoidance";
 
+export type DQTestStatus = "PASS" | "WARN" | "FAIL";
+
+export type ReconciliationStatus = "PASS" | "WARN" | "FAIL";
+
+export interface DQTest {
+  name: string;
+  status: DQTestStatus;
+  description?: string;
+  lastRun?: string;
+  details?: string;
+}
+
+export interface ReconciliationCheck {
+  name: string;
+  status: ReconciliationStatus;
+  expected: number;
+  actual: number;
+  delta: number;
+  unit: string;
+  description?: string;
+}
+
 export interface EvidenceReceipt {
   id: string;
   type: "source-artifact" | "test-result" | "transform-version" | "approval-doc" | "realization-proof";
@@ -47,6 +69,10 @@ export interface LedgerEntry {
   auditTrail: AuditEntry[];
   confidence: number;
   
+  // Data Quality & Reconciliation
+  dqTests?: DQTest[];
+  reconciliation?: ReconciliationCheck[];
+  
   // Metadata
   createdAt: string;
   updatedAt: string;
@@ -63,12 +89,13 @@ export interface LedgerEntry {
 export interface AuditEntry {
   timestamp: string;
   actor: string;
-  action: "created" | "assigned" | "approved" | "realized" | "disputed" | "rejected" | "receipt-attached" | "value-adjusted";
+  action: "created" | "assigned" | "approved" | "realized" | "disputed" | "rejected" | "receipt-attached" | "value-adjusted" | "dq-test-run" | "reconciliation-check";
   previousState?: LedgerState;
   newState?: LedgerState;
   previousValue?: number;
   newValue?: number;
   reason?: string;
+  note?: string;
   metadata?: Record<string, any>;
 }
 

@@ -39,19 +39,73 @@ export const mockLedgerEntries: LedgerEntry[] = [
         confidence: 1.0
       }
     ],
+    dqTests: [
+      {
+        name: "Query execution completeness",
+        status: "PASS",
+        description: "All queries migrated successfully",
+        lastRun: "2026-01-15T08:00:00Z"
+      },
+      {
+        name: "Performance baseline validation",
+        status: "PASS",
+        description: "40% reduction confirmed across 30-day window",
+        lastRun: "2026-01-15T08:05:00Z"
+      },
+      {
+        name: "Cost calculation accuracy",
+        status: "PASS",
+        description: "Billing data reconciled with estimates",
+        lastRun: "2026-01-16T09:00:00Z"
+      }
+    ],
+    reconciliation: [
+      {
+        name: "Estimated vs Actual Savings",
+        status: "PASS",
+        expected: 480000,
+        actual: 510000,
+        delta: 30000,
+        unit: "USD",
+        description: "Actual savings exceeded estimate by 6.25%"
+      },
+      {
+        name: "Query Migration Count",
+        status: "PASS",
+        expected: 847,
+        actual: 847,
+        delta: 0,
+        unit: "queries",
+        description: "All planned queries successfully migrated"
+      }
+    ],
     auditTrail: [
       {
         timestamp: "2025-12-01T14:00:00Z",
         actor: "sarah.chen@company.com",
         action: "created",
-        newState: "identified"
+        newState: "identified",
+        note: "Initial opportunity identified from query performance analysis"
+      },
+      {
+        timestamp: "2025-12-10T10:30:00Z",
+        actor: "sarah.chen@company.com",
+        action: "receipt-attached",
+        note: "Attached query performance analysis report"
       },
       {
         timestamp: "2025-12-15T10:00:00Z",
         actor: "cfo@company.com",
         action: "approved",
         previousState: "identified",
-        newState: "approved"
+        newState: "approved",
+        reason: "Strong evidence and clear ROI"
+      },
+      {
+        timestamp: "2026-01-15T08:00:00Z",
+        actor: "system",
+        action: "dq-test-run",
+        note: "All DQ tests passed successfully"
       },
       {
         timestamp: "2026-01-15T16:00:00Z",
@@ -61,7 +115,14 @@ export const mockLedgerEntries: LedgerEntry[] = [
         newState: "realized",
         previousValue: 480000,
         newValue: 510000,
-        reason: "Actual savings exceeded estimate"
+        reason: "Actual savings exceeded estimate",
+        note: "January billing confirmed $42.5K monthly savings"
+      },
+      {
+        timestamp: "2026-01-16T09:00:00Z",
+        actor: "system",
+        action: "reconciliation-check",
+        note: "Reconciliation passed: actual vs estimated within acceptable variance"
       }
     ],
     confidence: 0.95,
@@ -104,12 +165,45 @@ export const mockLedgerEntries: LedgerEntry[] = [
         confidence: 1.0
       }
     ],
+    dqTests: [
+      {
+        name: "Contract value verification",
+        status: "PASS",
+        description: "All vendor contracts validated",
+        lastRun: "2025-11-20T12:00:00Z"
+      },
+      {
+        name: "User migration readiness",
+        status: "WARN",
+        description: "15% of users need additional training",
+        lastRun: "2026-01-10T14:00:00Z",
+        details: "Training program scheduled for Q1 2026"
+      }
+    ],
+    reconciliation: [
+      {
+        name: "License Count Validation",
+        status: "PASS",
+        expected: 450,
+        actual: 447,
+        delta: -3,
+        unit: "licenses",
+        description: "3 users retired, adjustment within tolerance"
+      }
+    ],
     auditTrail: [
       {
         timestamp: "2025-11-15T09:00:00Z",
         actor: "mike.rivera@company.com",
         action: "created",
-        newState: "identified"
+        newState: "identified",
+        note: "Opportunity identified during annual vendor review"
+      },
+      {
+        timestamp: "2025-11-20T11:30:00Z",
+        actor: "procurement@company.com",
+        action: "receipt-attached",
+        note: "Contract analysis attached"
       },
       {
         timestamp: "2025-12-05T14:30:00Z",
@@ -118,6 +212,12 @@ export const mockLedgerEntries: LedgerEntry[] = [
         previousState: "identified",
         newState: "approved",
         reason: "Strategic alignment with Databricks investment"
+      },
+      {
+        timestamp: "2026-01-10T14:00:00Z",
+        actor: "system",
+        action: "dq-test-run",
+        note: "User readiness check shows training gap"
       }
     ],
     confidence: 0.85,
@@ -149,20 +249,60 @@ export const mockLedgerEntries: LedgerEntry[] = [
         confidence: 0.80
       }
     ],
+    dqTests: [
+      {
+        name: "Response time baseline",
+        status: "PASS",
+        description: "Baseline metrics captured",
+        lastRun: "2025-12-19T10:00:00Z"
+      },
+      {
+        name: "Load test validation",
+        status: "PASS",
+        description: "60% improvement confirmed under load",
+        lastRun: "2025-12-20T14:00:00Z"
+      },
+      {
+        name: "Business impact quantification",
+        status: "FAIL",
+        description: "Customer satisfaction metrics not available",
+        lastRun: "2026-01-20T10:00:00Z",
+        details: "Need to establish methodology for productivity gain calculation"
+      }
+    ],
+    reconciliation: [
+      {
+        name: "Value Calculation Methodology",
+        status: "FAIL",
+        expected: 150000,
+        actual: 0,
+        delta: -150000,
+        unit: "USD",
+        description: "Disputed methodology for productivity gain valuation"
+      }
+    ],
     auditTrail: [
       {
         timestamp: "2025-12-15T10:00:00Z",
         actor: "alex.kim@company.com",
         action: "created",
-        newState: "identified"
+        newState: "identified",
+        note: "Performance improvement from Redis implementation"
+      },
+      {
+        timestamp: "2025-12-20T15:30:00Z",
+        actor: "alex.kim@company.com",
+        action: "receipt-attached",
+        note: "Load test results attached"
       },
       {
         timestamp: "2026-01-20T11:00:00Z",
-        actor: "alex.kim@company.com",
+        actor: "finance@company.com",
         action: "disputed",
         previousState: "identified",
         newState: "at-risk",
-        reason: "Missing customer satisfaction metrics and business impact quantification"
+        reason: "Missing customer satisfaction metrics and business impact quantification",
+        note: "Need methodology review before approval"
       }
     ],
     confidence: 0.60,
@@ -196,12 +336,45 @@ export const mockLedgerEntries: LedgerEntry[] = [
         lineage: ["jira.INCIDENTS", "time_tracking.HOURS"]
       }
     ],
+    dqTests: [
+      {
+        name: "Incident data completeness",
+        status: "PASS",
+        description: "All 2025 incidents captured",
+        lastRun: "2026-01-10T12:00:00Z"
+      },
+      {
+        name: "Cost calculation validation",
+        status: "WARN",
+        description: "Some indirect costs estimated",
+        lastRun: "2026-01-10T12:30:00Z",
+        details: "15% of costs based on time estimates rather than actuals"
+      }
+    ],
+    reconciliation: [
+      {
+        name: "Incident Count Verification",
+        status: "PASS",
+        expected: 247,
+        actual: 247,
+        delta: 0,
+        unit: "incidents",
+        description: "All data quality incidents accounted for"
+      }
+    ],
     auditTrail: [
       {
         timestamp: "2026-01-10T13:00:00Z",
         actor: "priya.sharma@company.com",
         action: "created",
-        newState: "identified"
+        newState: "identified",
+        note: "Risk avoidance opportunity from automated DQ checks"
+      },
+      {
+        timestamp: "2026-01-10T13:15:00Z",
+        actor: "system",
+        action: "dq-test-run",
+        note: "Initial DQ validation completed"
       }
     ],
     confidence: 0.70,
@@ -243,12 +416,57 @@ export const mockLedgerEntries: LedgerEntry[] = [
         confidence: 0.90
       }
     ],
+    dqTests: [
+      {
+        name: "Contract value verification",
+        status: "PASS",
+        description: "License costs validated against contract",
+        lastRun: "2025-10-15T11:00:00Z"
+      },
+      {
+        name: "Workload inventory completeness",
+        status: "PASS",
+        description: "All ETL jobs catalogued",
+        lastRun: "2025-11-25T14:00:00Z"
+      },
+      {
+        name: "Migration risk assessment",
+        status: "WARN",
+        description: "12 critical jobs require manual review",
+        lastRun: "2025-11-30T15:00:00Z",
+        details: "Complex transformations need architecture review"
+      }
+    ],
+    reconciliation: [
+      {
+        name: "ETL Job Migration",
+        status: "WARN",
+        expected: 342,
+        actual: 330,
+        delta: -12,
+        unit: "jobs",
+        description: "12 jobs flagged for manual review"
+      }
+    ],
     auditTrail: [
       {
         timestamp: "2025-10-10T09:00:00Z",
         actor: "james.martinez@company.com",
         action: "created",
-        newState: "identified"
+        newState: "identified",
+        note: "Legacy decommission opportunity identified"
+      },
+      {
+        timestamp: "2025-10-15T10:30:00Z",
+        actor: "legal@company.com",
+        action: "receipt-attached",
+        note: "Contract documentation attached"
+      },
+      {
+        timestamp: "2025-11-30T16:00:00Z",
+        actor: "james.martinez@company.com",
+        action: "receipt-attached",
+        note: "Migration plan v2 completed"
       },
       {
         timestamp: "2025-12-01T10:00:00Z",
@@ -256,7 +474,8 @@ export const mockLedgerEntries: LedgerEntry[] = [
         action: "approved",
         previousState: "identified",
         newState: "approved",
-        reason: "Strategic priority for platform modernization"
+        reason: "Strategic priority for platform modernization",
+        note: "Proceed with phased migration approach"
       }
     ],
     confidence: 0.88,

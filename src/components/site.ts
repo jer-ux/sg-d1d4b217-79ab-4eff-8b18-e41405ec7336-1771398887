@@ -3,27 +3,25 @@ export type NavGroup = { label: string; items: NavItem[] };
 export type NavLink = { label: string; href?: string; groups?: NavGroup[] };
 
 export const nav: NavLink[] = [
-  { label: "War Room", href: "/war-room" },
-  { label: "Value Ledger", href: "/verified-savings-ledger" },
-  { label: "Arbitrage Events", href: "/arbitrage-events" },
-  { label: "Proof Library", href: "/proof-library" },
   {
     label: "Platform",
     groups: [
       {
-        label: "Trust Spine",
+        label: "Core Platform",
         items: [
-          { label: "Evidence Receipts", href: "/platform/evidence", description: "Lineage, hashes, freshness, confidence" },
-          { label: "DQ + Deterministic Replay", href: "/platform/dq", description: "Gates, drift, replay checks" },
-          { label: "Incidents", href: "/platform/incidents", description: "Mismatch, staleness, failures" },
+          { label: "Evidence receipts", href: "/platform/evidence", description: "Cryptographic proof for every value claim" },
+          { label: "Data quality", href: "/platform/dq", description: "Automated DQ monitoring and remediation" },
+          { label: "Incidents", href: "/platform/incidents", description: "Real-time issue tracking and resolution" },
+          { label: "Connectors", href: "/platform/connectors", description: "Pre-built integrations for major platforms" },
         ],
       },
       {
-        label: "Ops & Catalog",
+        label: "Value Management",
         items: [
-          { label: "Connectors", href: "/platform/connectors", description: "Status, uptime, last seen, SLAs" },
-          { label: "KPI Catalog", href: "/platform/kpis", description: "Definitions, owners, thresholds" },
-          { label: "Admin", href: "/platform/admin", description: "Tenants, roles, policies" },
+          { label: "War Room", href: "/war-room", description: "Real-time operational command center" },
+          { label: "Verified Savings Ledger", href: "/ledger", description: "CFO-grade value tracking with evidence receipts" },
+          { label: "KPIs", href: "/platform/kpis", description: "Real-time business metrics and analytics" },
+          { label: "Admin", href: "/platform/admin", description: "User management and system configuration" },
         ],
       },
     ],

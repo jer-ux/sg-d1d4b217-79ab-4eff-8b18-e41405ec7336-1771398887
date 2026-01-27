@@ -345,7 +345,10 @@ export default function Home() {
                   "Our PBM claims $4.2M in rebate savings. Kincaid IQ's evidence receipts proved only $2.8M was real. 
                   We renegotiated the contract with audit-ready data. Board confidence restored."
                 </div>
-                <div className="mt-4">
+                <div className="mt-4 space-y-2">
+                  <Link href="/ledger" className="text-emerald-400 text-sm hover:underline flex items-center gap-1">
+                    Verified Savings Ledger <span>→</span>
+                  </Link>
                   <Link href="/actuarial-benefits" className="text-emerald-400 text-sm hover:underline flex items-center gap-1">
                     Actuarial Benefits Practice <span>→</span>
                   </Link>

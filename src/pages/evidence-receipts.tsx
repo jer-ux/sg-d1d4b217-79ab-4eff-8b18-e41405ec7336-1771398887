@@ -681,11 +681,15 @@ export default function EvidenceReceiptsPage() {
       <CreateReceiptModal
         open={createOpen}
         onClose={() => setCreateOpen(false)}
-        subjectType="KPI"
-        subjectId="KPI_TOTAL_COST_PMPM"
-        periodStart="2026-01-01"
-        periodEnd="2026-01-31"
-        grain="employer_month"
+        subjectType={selected.subjectType}
+        subjectId={selected.subjectId}
+        periodStart={selected.periodStart}
+        periodEnd={selected.periodEnd}
+        grain={selected.grain}
+        onApplyReceipt={(r) => {
+          console.log("Applied receipt", r);
+          setCreateOpen(false);
+        }}
       />
     </>
   );

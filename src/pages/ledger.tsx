@@ -1,79 +1,181 @@
-import { useState } from "react";
+import { useState, useMemo } from "react";
+import Link from "next/link";
 import { SEO } from "@/components/SEO";
 import { LedgerEntry, LedgerState, LedgerCategory } from "@/lib/ledger/types";
 import { mockLedgerEntries, mockLedgerSummary } from "@/lib/ledger/mock";
 import { LedgerSummaryCards } from "@/components/ledger/LedgerSummaryCards";
-import { LedgerTable } from "@/components/ledger/LedgerTable";
 import { LedgerFilters } from "@/components/ledger/LedgerFilters";
+import { LedgerTable } from "@/components/ledger/LedgerTable";
 import { LedgerDetailModal } from "@/components/ledger/LedgerDetailModal";
+import { useToast } from "@/hooks/use-toast";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Search, Plus, Download, FileSpreadsheet } from "lucide-react";
-import Link from "next/link";
+import { FileSpreadsheet, Plus, Search, Download } from "lucide-react";
 
 export default function LedgerPage() {
+  // State
   const [entries, setEntries] = useState<LedgerEntry[]>(mockLedgerEntries);
   const [selectedEntry, setSelectedEntry] = useState<LedgerEntry | null>(null);
   const [isDetailOpen, setIsDetailOpen] = useState(false);
-  const [searchQuery, setSearchQuery] = useState("");
+  
+  // Filters
   const [selectedStates, setSelectedStates] = useState<LedgerState[]>([]);
   const [selectedCategories, setSelectedCategories] = useState<LedgerCategory[]>([]);
+  const [searchQuery, setSearchQuery] = useState("");
+  
+  const { toast } = useToast();
 
-  const filteredEntries = entries.filter((entry) => {
-    const matchesSearch =
-      searchQuery === "" ||
-      entry.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      entry.id.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      entry.description.toLowerCase().includes(searchQuery.toLowerCase());
+  // Filter Logic
+  const filteredEntries = useMemo(() => {
+    return entries.filter(entry => {
+      // Search
+      const searchLower = searchQuery.toLowerCase();
+      const matchesSearch = 
+        entry.id.toLowerCase().includes(searchLower) ||
+        entry.title.toLowerCase().includes(searchLower) ||
+        entry.description.toLowerCase().includes(searchLower);
 
-    const matchesState = selectedStates.length === 0 || selectedStates.includes(entry.state);
-    const matchesCategory = selectedCategories.length === 0 || selectedCategories.includes(entry.category);
+      if (!matchesSearch) return false;
 
-    return matchesSearch && matchesState && matchesCategory;
-  });
+      // State Filter
+      if (selectedStates.length > 0 && !selectedStates.includes(entry.state)) {
+        return false;
+      }
+
+      // Category Filter
+      if (selectedCategories.length > 0 && !selectedCategories.includes(entry.category)) {
+        return false;
+      }
+
+      return true;
+    });
+  }, [entries, searchQuery, selectedStates, selectedCategories]);
+
+  // Handlers
+  const handleEntryClick = (entry: LedgerEntry) => {
+    setSelectedEntry(entry);
+    setIsDetailOpen(true);
+  };
 
   const handleStateToggle = (state: LedgerState) => {
-    setSelectedStates((prev) =>
-      prev.includes(state) ? prev.filter((s) => s !== state) : [...prev, state]
+    setSelectedStates(prev => 
+      prev.includes(state) 
+        ? prev.filter(s => s !== state)
+        : [...prev, state]
     );
   };
 
   const handleCategoryToggle = (category: LedgerCategory) => {
-    setSelectedCategories((prev) =>
-      prev.includes(category) ? prev.filter((c) => c !== category) : [...prev, category]
+    setSelectedCategories(prev => 
+      prev.includes(category) 
+        ? prev.filter(c => c !== category)
+        : [...prev, category]
     );
   };
 
   const handleClearFilters = () => {
     setSelectedStates([]);
     setSelectedCategories([]);
-  };
-
-  const handleEntryClick = (entry: LedgerEntry) => {
-    setSelectedEntry(entry);
-    setIsDetailOpen(true);
+    setSearchQuery("");
   };
 
   const handleApprove = (entryId: string) => {
-    console.log("Approve:", entryId);
+    setEntries(prev => prev.map(e => 
+      e.id === entryId 
+        ? { 
+            ...e, 
+            state: "approved" as LedgerState,
+            auditTrail: [
+              ...e.auditTrail,
+              {
+                timestamp: new Date().toISOString(),
+                actor: "current-user@company.com",
+                action: "approved" as const,
+                previousState: e.state,
+                newState: "approved" as LedgerState,
+                reason: "Approved via ledger interface"
+              }
+            ]
+          }
+        : e
+    ));
+    
+    toast({
+      title: "Entry Approved",
+      description: `${entryId} has been approved and is ready for realization.`,
+    });
+    
     setIsDetailOpen(false);
   };
 
   const handleRealize = (entryId: string) => {
-    console.log("Realize:", entryId);
+    setEntries(prev => prev.map(e => 
+      e.id === entryId 
+        ? { 
+            ...e, 
+            state: "realized" as LedgerState,
+            realizedValue: e.estimatedValue,
+            recognitionDate: new Date().toISOString(),
+            auditTrail: [
+              ...e.auditTrail,
+              {
+                timestamp: new Date().toISOString(),
+                actor: "current-user@company.com",
+                action: "realized" as const,
+                previousState: e.state,
+                newState: "realized" as LedgerState,
+                previousValue: 0,
+                newValue: e.estimatedValue,
+                reason: "Value realized and confirmed"
+              }
+            ]
+          }
+        : e
+    ));
+    
+    toast({
+      title: "Value Realized",
+      description: `${entryId} has been marked as realized.`,
+    });
+    
     setIsDetailOpen(false);
   };
 
   const handleDispute = (entryId: string) => {
-    console.log("Dispute:", entryId);
+    setEntries(prev => prev.map(e => 
+      e.id === entryId 
+        ? { 
+            ...e, 
+            state: "at-risk" as LedgerState,
+            auditTrail: [
+              ...e.auditTrail,
+              {
+                timestamp: new Date().toISOString(),
+                actor: "current-user@company.com",
+                action: "disputed" as const,
+                previousState: e.state,
+                newState: "at-risk" as LedgerState,
+                reason: "Dispute raised - requires review"
+              }
+            ]
+          }
+        : e
+    ));
+    
+    toast({
+      title: "Dispute Raised",
+      description: `${entryId} has been flagged for review.`,
+      variant: "destructive"
+    });
+    
     setIsDetailOpen(false);
   };
 
   return (
     <>
-      <SEO
-        title="Verified Savings Ledger — Kincaid IQ"
-        description="Finance-native value tracking with evidence receipts, audit trails, and reconciliation reporting."
+      <SEO 
+        title="Verified Savings Ledger | SiriusB iQ"
+        description="Finance-grade value tracking with evidence receipts and audit trails"
       />
       <div className="min-h-screen bg-gradient-to-br from-[#0a0a0f] via-[#1a0a2e] to-[#0a0a0f]">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">

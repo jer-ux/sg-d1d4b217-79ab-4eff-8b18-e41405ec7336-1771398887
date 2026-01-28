@@ -20,6 +20,7 @@ import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
 import { CalendlyPopupButton } from "@/components/calendly/CalendlyPopupButton";
 import { LuxBackground } from "@/components/LuxBackground";
+import { HowItWorksFlow } from "@/components/HowItWorksFlow";
 
 const fadeUp: Variants = {
   hidden: { opacity: 0, y: 18 },
@@ -408,6 +409,17 @@ export default function HomePage() {
                   </div>
                 </div>
               </div>
+            </motion.div>
+          </motion.div>
+        </div>
+
+        <Separator className="mx-auto max-w-6xl bg-white/10" />
+
+        {/* How It Works Flow */}
+        <div className="mx-auto max-w-6xl px-6 py-12">
+          <motion.div initial="hidden" whileInView="show" viewport={{ once: true, amount: 0.2 }} variants={stagger}>
+            <motion.div variants={fadeUp}>
+              <HowItWorksFlow />
             </motion.div>
           </motion.div>
         </div>

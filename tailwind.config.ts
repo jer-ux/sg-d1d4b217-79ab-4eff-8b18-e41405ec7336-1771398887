@@ -85,8 +85,11 @@ const config: Config = {
           },
         },
         scan: {
-          "0%": { transform: "translateX(-100%)" },
-          "100%": { transform: "translateX(100%)" },
+          "0%": { transform: "translateY(60px)", opacity: "0.25" },
+          "10%": { opacity: "0.8" },
+          "50%": { opacity: "0.35" },
+          "90%": { opacity: "0.8" },
+          "100%": { transform: "translateY(980px)", opacity: "0.25" },
         },
       },
       animation: {

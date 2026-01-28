@@ -2,7 +2,7 @@
 
 import * as React from "react";
 import Link from "next/link";
-import { motion } from "framer-motion";
+import { motion, Variants } from "framer-motion";
 import { ArrowRight, ShieldCheck, Sparkles, Layers, Radar, Box, Database, Gavel, Cpu, Lock, LineChart } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
@@ -18,12 +18,12 @@ type Why = {
   outcome: string;
 };
 
-const fadeUp = {
+const fadeUp: Variants = {
   hidden: { opacity: 0, y: 14 },
   show: { opacity: 1, y: 0, transition: { duration: 0.5, ease: "easeOut" } },
 };
 
-const stagger = {
+const stagger: Variants = {
   hidden: { opacity: 0 },
   show: { opacity: 1, transition: { staggerChildren: 0.06 } },
 };

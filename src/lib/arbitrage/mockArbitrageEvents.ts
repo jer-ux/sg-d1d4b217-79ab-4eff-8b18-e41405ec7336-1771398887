@@ -209,6 +209,70 @@ ORDER BY 1;`,
         },
       })),
     },
+
+    realization: {
+      owner: "Benefits Ops Lead",
+      forecast_value: 742_000,
+      realized_value: 185_400,
+      currency: "$",
+      stage: "SUBMITTED",
+      milestones: [
+        {
+          stage: "IDENTIFIED",
+          ts: new Date(Date.now() - 1000 * 60 * 40).toISOString(),
+          actor: "events-engine",
+          notes: "Detected via deterministic ruleset; 37 member-episodes flagged",
+        },
+        {
+          stage: "VALIDATED",
+          ts: new Date(Date.now() - 1000 * 60 * 28).toISOString(),
+          actor: "dq-gate",
+          notes: "Evidence receipt VERIFIED; all critical DQ tests passed",
+        },
+        {
+          stage: "SUBMITTED",
+          ts: new Date(Date.now() - 1000 * 60 * 12).toISOString(),
+          actor: "ops-lead",
+          notes: "Recovery packet submitted to payer for 37 claims totaling $185.4K",
+        },
+        {
+          stage: "APPROVED",
+          ts: "",
+          actor: "payer",
+          notes: "Pending payer review (14-day SLA)",
+        },
+        {
+          stage: "RECOVERED",
+          ts: "",
+          actor: "finance",
+          notes: "Awaiting credit memo from payer",
+        },
+        {
+          stage: "BOOKED",
+          ts: "",
+          actor: "finance",
+          notes: "Pending EBITDA booking confirmation",
+        },
+        {
+          stage: "CLOSED",
+          ts: "",
+          actor: "ops-lead",
+          notes: "Pending final reconciliation",
+        },
+      ],
+      risks: [
+        {
+          label: "Payer recovery rate uncertainty",
+          severity: "MED",
+          mitigation: "Historical recovery rate is 62%; $460K forecasted recovery at risk if lower",
+        },
+        {
+          label: "HRIS mapping fix delayed",
+          severity: "HIGH",
+          mitigation: "New leakage continues at ~$6K/day until mapping corrected; freeze file layout",
+        },
+      ],
+    },
   },
 
   {
@@ -398,6 +462,73 @@ GROUP BY 1;`,
             : "Rebate captured but trending below contractual guarantee floor. Recommend vendor discussion.",
         },
       })),
+    },
+
+    realization: {
+      owner: "Pharmacy Lead",
+      forecast_value: 318_000,
+      realized_value: 0,
+      currency: "$",
+      stage: "VALIDATED",
+      milestones: [
+        {
+          stage: "IDENTIFIED",
+          ts: new Date(Date.now() - 1000 * 60 * 138).toISOString(),
+          actor: "events-engine",
+          notes: "PBM rebate guarantee below floor; specialty mix shift detected",
+        },
+        {
+          stage: "VALIDATED",
+          ts: new Date(Date.now() - 1000 * 60 * 120).toISOString(),
+          actor: "pharmacy-analytics",
+          notes: "NDC normalization gap identified (4%); forecast adjusted to $318K pending fix",
+        },
+        {
+          stage: "SUBMITTED",
+          ts: "",
+          actor: "vendor-manager",
+          notes: "Pending NDC fix completion before vendor submission",
+        },
+        {
+          stage: "APPROVED",
+          ts: "",
+          actor: "pbm",
+          notes: "Awaiting vendor governance meeting",
+        },
+        {
+          stage: "RECOVERED",
+          ts: "",
+          actor: "finance",
+          notes: "Annual true-up mechanism per contract Section 4.2",
+        },
+        {
+          stage: "BOOKED",
+          ts: "",
+          actor: "finance",
+        },
+        {
+          stage: "CLOSED",
+          ts: "",
+          actor: "pharmacy-lead",
+        },
+      ],
+      risks: [
+        {
+          label: "NDC normalization incomplete",
+          severity: "MED",
+          mitigation: "4% of rows unmapped; evidence receipt not VERIFIED until fix complete",
+        },
+        {
+          label: "Specialty trend acceleration",
+          severity: "HIGH",
+          mitigation: "+11% QoQ specialty share increases exposure; forecast may be conservative",
+        },
+        {
+          label: "Vendor negotiation timeline",
+          severity: "LOW",
+          mitigation: "Year-end true-up window closes in 21 days; early submission critical",
+        },
+      ],
     },
   },
 
@@ -607,6 +738,73 @@ ORDER BY 3 DESC;`,
         },
       })),
     },
+
+    realization: {
+      owner: "Pharmacy Lead + PBM Vendor Manager",
+      forecast_value: 890_000,
+      realized_value: 0,
+      currency: "$",
+      stage: "VALIDATED",
+      milestones: [
+        {
+          stage: "IDENTIFIED",
+          ts: new Date(Date.now() - 1000 * 60 * 218).toISOString(),
+          actor: "events-engine",
+          notes: "AWP variance outside contract tolerance; 14 NDCs flagged",
+        },
+        {
+          stage: "VALIDATED",
+          ts: new Date(Date.now() - 1000 * 60 * 205).toISOString(),
+          actor: "dq-gate",
+          notes: "Evidence receipt VERIFIED; deterministic contract pricing join validated",
+        },
+        {
+          stage: "SUBMITTED",
+          ts: "",
+          actor: "vendor-manager",
+          notes: "Pending variance report generation and vendor submission (due in 7 days)",
+        },
+        {
+          stage: "APPROVED",
+          ts: "",
+          actor: "pbm",
+          notes: "Quarterly true-up per contract Section 4.2",
+        },
+        {
+          stage: "RECOVERED",
+          ts: "",
+          actor: "finance",
+          notes: "Credit memo expected within 30 days of approval",
+        },
+        {
+          stage: "BOOKED",
+          ts: "",
+          actor: "finance",
+        },
+        {
+          stage: "CLOSED",
+          ts: "",
+          actor: "pharmacy-lead",
+        },
+      ],
+      risks: [
+        {
+          label: "Pricing file version dispute",
+          severity: "MED",
+          mitigation: "PBM may claim 'list price' fallback was documented; contract language review ready",
+        },
+        {
+          label: "Quarterly true-up window",
+          severity: "HIGH",
+          mitigation: "Window closes in 21 days; late submission reduces recovery probability",
+        },
+        {
+          label: "Specialty utilization growth",
+          severity: "LOW",
+          mitigation: "If specialty trend continues, forecast may be conservative (upside risk)",
+        },
+      ],
+    },
   },
 
   {
@@ -813,6 +1011,74 @@ GROUP BY 1, 2, 3;`,
             : "Member traveled 20+ miles to nearest in-network PCP. Indicates network adequacy gap despite technical compliance.",
         },
       })),
+    },
+
+    realization: {
+      owner: "Network Strategy Lead",
+      forecast_value: 220_000,
+      realized_value: 0,
+      currency: "$",
+      stage: "ACTIONED",
+      milestones: [
+        {
+          stage: "IDENTIFIED",
+          ts: new Date(Date.now() - 1000 * 60 * 378).toISOString(),
+          actor: "events-engine",
+          notes: "Network adequacy gap detected; 34% OON rate in affected zips",
+        },
+        {
+          stage: "VALIDATED",
+          ts: new Date(Date.now() - 1000 * 60 * 365).toISOString(),
+          actor: "network-lead",
+          notes: "PCP ratio 3,200:1 confirmed; contract adequacy requirement breached",
+        },
+        {
+          stage: "SUBMITTED",
+          ts: new Date(Date.now() - 1000 * 60 * 360).toISOString(),
+          actor: "network-lead",
+          notes: "Payer network development engaged; member comms scheduled",
+        },
+        {
+          stage: "APPROVED",
+          ts: "",
+          actor: "payer",
+          notes: "Awaiting payer recruitment timeline (6-month SLA per contract)",
+        },
+        {
+          stage: "RECOVERED",
+          ts: "",
+          actor: "network-lead",
+          notes: "OON cost premium reduction tied to network recruitment completion",
+        },
+        {
+          stage: "BOOKED",
+          ts: "",
+          actor: "finance",
+          notes: "EBITDA impact realized over 12-month member retention cycle",
+        },
+        {
+          stage: "CLOSED",
+          ts: "",
+          actor: "network-lead",
+        },
+      ],
+      risks: [
+        {
+          label: "Payer recruitment timeline",
+          severity: "HIGH",
+          mitigation: "6-month SLA; evaluating direct contracting or clinic partnership as backstop",
+        },
+        {
+          label: "Member attrition",
+          severity: "MED",
+          mitigation: "Member satisfaction 6.2/10 in affected zips; risk of enrollment loss if not addressed",
+        },
+        {
+          label: "OON cost multiplier variance",
+          severity: "LOW",
+          mitigation: "Assumed 2.4x in-network; actual variance 2.1-2.7x depending on service mix",
+        },
+      ],
     },
   },
 ];

@@ -4,6 +4,23 @@ import { useMemo, useState } from "react";
 type Severity = "LOW" | "MED" | "HIGH" | "CRITICAL";
 type Status = "NEW" | "INVESTIGATING" | "ACTIONED" | "REALIZED" | "DISMISSED";
 
+type RealizationStage = "IDENTIFIED" | "VALIDATED" | "SUBMITTED" | "APPROVED" | "RECOVERED" | "BOOKED" | "CLOSED";
+
+type RealizationTracker = {
+  owner: string;
+  forecast_value: number;
+  realized_value: number;
+  currency: string;
+  stage: RealizationStage;
+  milestones: Array<{
+    stage: RealizationStage;
+    ts: string;
+    actor: string;
+    notes?: string;
+  }>;
+  risks: Array<{ label: string; severity: "LOW" | "MED" | "HIGH"; mitigation: string }>;
+};
+
 type LedgerDetails = {
   header: Array<{ label: string; value: string }>;
   financial: Array<{ label: string; value: string }>;
@@ -104,6 +121,8 @@ export type ArbitrageEvent = {
     summary: Array<{ label: string; value: string; note?: string }>;
     transactions: RelatedTransaction[];
   };
+
+  realization?: RealizationTracker;
 };
 
 function formatMoney(n: number) {
@@ -134,7 +153,7 @@ function pct(x: number) {
   return `${Math.round(x * 100)}%`;
 }
 
-type TabKey = "SUMMARY" | "EVIDENCE" | "MODEL" | "LINEAGE" | "ACTIONS" | "AUDIT" | "SQL" | "TRANSACTIONS";
+type TabKey = "SUMMARY" | "EVIDENCE" | "MODEL" | "LINEAGE" | "ACTIONS" | "AUDIT" | "SQL" | "TRANSACTIONS" | "REALIZATION";
 
 export function ArbitrageEventsPanel({
   events,
@@ -285,7 +304,7 @@ export function ArbitrageEventsPanel({
 
               <div className="mt-4 flex flex-wrap gap-2">
                 {(
-                  ["SUMMARY", "EVIDENCE", "MODEL", "LINEAGE", "ACTIONS", "AUDIT", "SQL", "TRANSACTIONS"] as TabKey[]
+                  ["SUMMARY", "EVIDENCE", "MODEL", "LINEAGE", "TRANSACTIONS", "REALIZATION", "ACTIONS", "AUDIT", "SQL"] as TabKey[]
                 ).map((k) => (
                   <button
                     key={k}
@@ -311,6 +330,7 @@ export function ArbitrageEventsPanel({
               {tab === "AUDIT" && <AuditTab e={selected} />}
               {tab === "SQL" && <SqlTab e={selected} />}
               {tab === "TRANSACTIONS" && <TransactionsTab e={selected} />}
+              {tab === "REALIZATION" && <RealizationTab e={selected} />}
             </div>
           </div>
         )}
@@ -428,7 +448,7 @@ function ModelTab({ e }: { e: ArbitrageEvent }) {
           {m.assumptions.map((a) => (
             <div key={a.key} className="rounded-xl border border-zinc-800 p-3">
               <div className="text-xs text-zinc-400">{a.key}</div>
-              <div className="text-sm font-semibold text-zinc-100">{a.value}</div>
+              <div className="mt-1 text-sm font-semibold text-zinc-100">{a.value}</div>
             </div>
           ))}
         </div>
@@ -916,6 +936,185 @@ function PacketSection({ title, children }: { title: string; children: React.Rea
     <div className="mb-4">
       <div className="mb-2 text-sm font-semibold text-zinc-100">{title}</div>
       {children}
+    </div>
+  );
+}
+
+function RealizationTab({ e }: { e: ArbitrageEvent }) {
+  const r = e.realization;
+
+  if (!r) {
+    return (
+      <Section title="Realization Tracker">
+        <div className="text-xs text-zinc-400">
+          No realization tracker attached. Add e.realization to show forecast vs realized EBITDA, owner, milestones, and risks.
+        </div>
+      </Section>
+    );
+  }
+
+  const pctRealized = r.forecast_value > 0 ? Math.min(1, r.realized_value / r.forecast_value) : 0;
+
+  const stageOrder: RealizationStage[] = [
+    "IDENTIFIED",
+    "VALIDATED",
+    "SUBMITTED",
+    "APPROVED",
+    "RECOVERED",
+    "BOOKED",
+    "CLOSED",
+  ];
+
+  const currentStageIndex = stageOrder.indexOf(r.stage);
+
+  return (
+    <>
+      <div className="grid grid-cols-3 gap-3">
+        <Section title="Forecast Value">
+          <div className="text-2xl font-semibold text-zinc-100">
+            {r.currency}
+            {formatMoney(r.forecast_value)}
+          </div>
+          <div className="text-xs text-zinc-400">Annualized opportunity</div>
+        </Section>
+
+        <Section title="Realized Value">
+          <div className="text-2xl font-semibold text-emerald-400">
+            {r.currency}
+            {formatMoney(r.realized_value)}
+          </div>
+          <div className="text-xs text-zinc-400">Recovered / confirmed</div>
+        </Section>
+
+        <Section title="Realization %">
+          <div className="text-2xl font-semibold text-zinc-100">{pct(pctRealized)}</div>
+          <div className="text-xs text-zinc-400">Of forecast</div>
+        </Section>
+      </div>
+
+      <Section title="Realization Stage">
+        <div className="flex items-center gap-2">
+          {stageOrder.map((stage, idx) => {
+            const isComplete = idx < currentStageIndex;
+            const isCurrent = idx === currentStageIndex;
+            return (
+              <div key={stage} className="flex flex-1 items-center gap-2">
+                <div
+                  className={`flex-1 rounded-full px-3 py-2 text-center text-xs ${
+                    isComplete
+                      ? "bg-emerald-950 text-emerald-200 border border-emerald-700"
+                      : isCurrent
+                      ? "bg-zinc-900 text-zinc-100 border border-zinc-600"
+                      : "bg-zinc-950 text-zinc-500 border border-zinc-800"
+                  }`}
+                >
+                  {stage}
+                </div>
+                {idx < stageOrder.length - 1 && (
+                  <div
+                    className={`h-0.5 w-4 ${
+                      isComplete ? "bg-emerald-700" : "bg-zinc-800"
+                    }`}
+                  />
+                )}
+              </div>
+            );
+          })}
+        </div>
+        <div className="mt-2 text-xs text-zinc-400">
+          Current stage: <span className="text-zinc-100">{r.stage}</span> • Owner:{" "}
+          <span className="text-zinc-100">{r.owner}</span>
+        </div>
+      </Section>
+
+      <Section title="Progress Bar">
+        <div className="relative h-8 overflow-hidden rounded-full border border-zinc-800 bg-zinc-950">
+          <div
+            className="h-full bg-gradient-to-r from-emerald-900 to-emerald-700"
+            style={{ width: `${pctRealized * 100}%` }}
+          />
+          <div className="absolute inset-0 flex items-center justify-center text-xs font-semibold text-zinc-100">
+            {formatMoney(r.realized_value)} / {formatMoney(r.forecast_value)} ({pct(pctRealized)})
+          </div>
+        </div>
+      </Section>
+
+      <Section title="Milestones">
+        <div className="space-y-2">
+          {r.milestones.map((m, i) => (
+            <div key={i} className="rounded-xl border border-zinc-800 p-3">
+              <div className="flex items-start justify-between gap-3">
+                <div className="min-w-0">
+                  <div className="text-xs font-semibold text-zinc-100">{m.stage}</div>
+                  <div className="mt-1 text-xs text-zinc-400">
+                    {new Date(m.ts).toLocaleString()} • {m.actor}
+                  </div>
+                  {m.notes ? <div className="mt-1 text-xs text-zinc-200">{m.notes}</div> : null}
+                </div>
+                <div
+                  className={`rounded-full border px-2 py-0.5 text-[11px] ${
+                    stageOrder.indexOf(m.stage) <= currentStageIndex
+                      ? "border-emerald-700 bg-emerald-950 text-emerald-200"
+                      : "border-zinc-800 bg-zinc-950 text-zinc-400"
+                  }`}
+                >
+                  {stageOrder.indexOf(m.stage) <= currentStageIndex ? "COMPLETE" : "PENDING"}
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+      </Section>
+
+      {r.risks && r.risks.length > 0 && (
+        <Section title="Risks & Mitigation">
+          <div className="space-y-2">
+            {r.risks.map((risk, i) => (
+              <div key={i} className="rounded-xl border border-zinc-800 p-3">
+                <div className="flex items-start justify-between gap-3">
+                  <div className="min-w-0">
+                    <div className="text-xs font-semibold text-zinc-100">{risk.label}</div>
+                    <div className="mt-1 text-xs text-zinc-200">{risk.mitigation}</div>
+                  </div>
+                  <span
+                    className={`shrink-0 rounded-full border px-2 py-0.5 text-[11px] ${
+                      risk.severity === "HIGH"
+                        ? "border-red-700 bg-red-950 text-red-200"
+                        : risk.severity === "MED"
+                        ? "border-yellow-700 bg-yellow-950 text-yellow-200"
+                        : "border-zinc-700 bg-zinc-900 text-zinc-200"
+                    }`}
+                  >
+                    {risk.severity}
+                  </span>
+                </div>
+              </div>
+            ))}
+          </div>
+        </Section>
+      )}
+    </>
+  );
+}
+
+function LedgerBlock({ title, children }: { title: string; children: React.ReactNode }) {
+  return (
+    <div className="mb-3 rounded-2xl border border-zinc-800 bg-zinc-950 p-4">
+      <div className="mb-2 text-sm font-semibold text-zinc-100">{title}</div>
+      {children}
+    </div>
+  );
+}
+
+function KVGrid({ rows }: { rows: Array<{ label: string; value: string }> }) {
+  return (
+    <div className="grid grid-cols-2 gap-2">
+      {rows.map((r) => (
+        <div key={r.label} className="rounded-xl border border-zinc-800 p-3">
+          <div className="text-[11px] text-zinc-400">{r.label}</div>
+          <div className="mt-0.5 break-words text-xs font-semibold text-zinc-100">{r.value}</div>
+        </div>
+      ))}
     </div>
   );
 }

@@ -1,7 +1,7 @@
 import * as React from "react";
 import Head from "next/head";
 import Link from "next/link";
-import { motion } from "framer-motion";
+import { motion, Variants } from "framer-motion";
 import {
   ShieldCheck,
   Receipt,
@@ -20,12 +20,12 @@ import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
 import { CalendlyPopupButton } from "@/components/calendly/CalendlyPopupButton";
 
-const fadeUp = {
+const fadeUp: Variants = {
   hidden: { opacity: 0, y: 18 },
   show: { opacity: 1, y: 0, transition: { duration: 0.55, ease: "easeOut" } },
 };
 
-const stagger = {
+const stagger: Variants = {
   hidden: {},
   show: { transition: { staggerChildren: 0.08 } },
 };
@@ -401,7 +401,7 @@ export default function HomePage() {
                       <div className="text-sm font-semibold text-white">Procurement-safe positioning</div>
                       <div className="mt-1 text-sm text-white/65">
                         Kincaid IQ is designed to reduce buyer risk: auditability, governance, and integrity controls
-                        aren&apos;t &quot;extra features&quot; — they&apos;re the core product.
+                        aren&apos;re the core product.
                       </div>
                       <div className="mt-4 flex gap-2">
                         <Button asChild variant="outline" className="rounded-2xl border-white/15 bg-white/5 text-white hover:bg-white/10">

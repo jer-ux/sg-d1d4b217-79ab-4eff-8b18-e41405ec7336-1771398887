@@ -19,6 +19,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
 import { CalendlyPopupButton } from "@/components/calendly/CalendlyPopupButton";
+import { LuxBackground } from "@/components/LuxBackground";
 
 const fadeUp: Variants = {
   hidden: { opacity: 0, y: 18 },
@@ -29,16 +30,6 @@ const stagger: Variants = {
   hidden: {},
   show: { transition: { staggerChildren: 0.08 } },
 };
-
-function Glow() {
-  return (
-    <div aria-hidden className="pointer-events-none absolute inset-0">
-      <div className="absolute -top-24 left-1/2 h-[520px] w-[520px] -translate-x-1/2 rounded-full bg-[radial-gradient(circle,rgba(245,212,142,0.16),rgba(0,0,0,0)_60%)] blur-2xl" />
-      <div className="absolute -bottom-40 right-[-120px] h-[520px] w-[520px] rounded-full bg-[radial-gradient(circle,rgba(140,165,255,0.14),rgba(0,0,0,0)_60%)] blur-2xl" />
-      <div className="absolute left-[-180px] top-[22%] h-[520px] w-[520px] rounded-full bg-[radial-gradient(circle,rgba(96,255,196,0.10),rgba(0,0,0,0)_60%)] blur-2xl" />
-    </div>
-  );
-}
 
 function LuxTag({ children }: { children: React.ReactNode }) {
   return (
@@ -146,7 +137,7 @@ export default function HomePage() {
       </Head>
 
       <div className="relative min-h-screen bg-[#070A12] text-white">
-        <Glow />
+        <LuxBackground />
 
         {/* Top Nav */}
         <div className="sticky top-0 z-30 border-b border-white/10 bg-[#070A12]/70 backdrop-blur">

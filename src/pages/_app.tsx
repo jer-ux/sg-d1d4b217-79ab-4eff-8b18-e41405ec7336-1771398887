@@ -4,6 +4,7 @@ import "@/styles/globals.css";
 import Nav from "@/components/Nav";
 import { Footer } from "@/components/Footer";
 import { saveDemoReceipt } from "@/lib/demoReceipts";
+import { ReceiptToastHost } from "@/components/marketing/ReceiptToastHost";
 
 function isCalendlyEvent(e: MessageEvent) {
   return Boolean((e as any)?.data?.event && String((e as any).data.event).indexOf("calendly") === 0);
@@ -53,6 +54,7 @@ export default function App({ Component, pageProps }: AppProps) {
       <Nav />
       <Component {...pageProps} />
       <Footer />
+      <ReceiptToastHost />
     </div>
   );
 }

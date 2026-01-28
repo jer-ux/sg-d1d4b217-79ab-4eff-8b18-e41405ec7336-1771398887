@@ -1018,7 +1018,7 @@ GROUP BY 1, 2, 3;`,
       forecast_value: 220_000,
       realized_value: 0,
       currency: "$",
-      stage: "ACTIONED",
+      stage: "SUBMITTED",
       milestones: [
         {
           stage: "IDENTIFIED",

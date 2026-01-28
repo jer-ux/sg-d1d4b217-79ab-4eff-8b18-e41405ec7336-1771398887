@@ -160,6 +160,55 @@ WHERE t.termination_effective_ts >= DATEADD(day, -30, CURRENT_TIMESTAMP())
 GROUP BY 1
 ORDER BY 1;`,
     },
+
+    related: {
+      summary: [
+        { label: "Rows", value: "37", note: "member-episodes" },
+        { label: "High-dollar", value: "2", note: "claims > $50k" },
+        { label: "Top reason", value: "TERM_LAG", note: "dominant exception" },
+      ],
+      transactions: Array.from({ length: 37 }).map((_, i) => ({
+        row_id: `AE-10831-${i + 1}`,
+        type: "CLAIM" as const,
+        member_id: `M-${100000 + i}`,
+        claim_id: `C-${900000 + i}`,
+        service_date: new Date(Date.now() - 1000 * 60 * 60 * 24 * (i % 35)).toISOString(),
+        paid_amount: 1200 + (i % 7) * 780,
+        allowed_amount: 2400 + (i % 7) * 920,
+        vendor: i % 3 === 0 ? "Hospital Network A" : i % 3 === 1 ? "Specialist Group B" : "Primary Care C",
+        status: i % 9 === 0 ? "High-dollar cluster" : "Paid post-term",
+        reason: i % 9 === 0 ? "Paid after termination; high-dollar stop-loss exposure" : "Service date exceeds coverage window (term lag)",
+        ledger: {
+          header: [
+            { label: "Claim ID", value: `C-${900000 + i}` },
+            { label: "Member ID", value: `M-${100000 + i}` },
+            { label: "Service Date", value: new Date(Date.now() - 1000 * 60 * 60 * 24 * (i % 35)).toLocaleDateString() },
+            { label: "Processed Date", value: new Date(Date.now() - 1000 * 60 * 60 * 24 * (i % 30)).toLocaleDateString() },
+          ],
+          financial: [
+            { label: "Billed Amount", value: `$${(2400 + (i % 7) * 920).toLocaleString()}` },
+            { label: "Allowed Amount", value: `$${(2400 + (i % 7) * 920).toLocaleString()}` },
+            { label: "Paid Amount", value: `$${(1200 + (i % 7) * 780).toLocaleString()}` },
+            { label: "Member Responsibility", value: `$${(1200).toLocaleString()}` },
+          ],
+          mapping: [
+            { label: "Provider", value: i % 3 === 0 ? "Hospital Network A" : i % 3 === 1 ? "Specialist Group B" : "Primary Care C" },
+            { label: "Network Status", value: "IN-NETWORK" },
+            { label: "Procedure Code", value: `99${213 + (i % 5)}` },
+            { label: "Diagnosis Code", value: `Z00.${i % 9}` },
+          ],
+          controls: [
+            { label: "Eligibility Check", value: "FAILED" },
+            { label: "Termination Date", value: new Date(Date.now() - 1000 * 60 * 60 * 24 * (i % 35 + 5)).toLocaleDateString() },
+            { label: "Coverage Window", value: "EXPIRED" },
+            { label: "Stop-Loss Flag", value: i % 9 === 0 ? "YES" : "NO" },
+          ],
+          notes: i % 9 === 0
+            ? "High-dollar claim paid after member termination. Stop-loss notification required within 14 days. Recovery probability: 85%."
+            : "Claim paid after eligibility termination due to HRIS feed lag. Standard recovery process applicable.",
+        },
+      })),
+    },
   },
 
   {
@@ -300,6 +349,55 @@ SELECT
 FROM RAW.PBM_RX_CLAIMS
 WHERE service_date >= DATEADD(day, -90, CURRENT_DATE())
 GROUP BY 1;`,
+    },
+
+    related: {
+      summary: [
+        { label: "NDCs impacted", value: "112", note: "rebate class mapping" },
+        { label: "Unmapped NDCs", value: "4%", note: "needs normalization patch" },
+        { label: "Specialty share", value: "+11%", note: "QoQ" },
+      ],
+      transactions: Array.from({ length: 60 }).map((_, i) => ({
+        row_id: `AE-10852-${i + 1}`,
+        type: "RX" as const,
+        member_id: `RXM-${200000 + i}`,
+        claim_id: `RXC-${700000 + i}`,
+        service_date: new Date(Date.now() - 1000 * 60 * 60 * 24 * (i % 60)).toISOString(),
+        paid_amount: 220 + (i % 5) * 140,
+        allowed_amount: 310 + (i % 5) * 160,
+        payer: "Express Scripts",
+        status: i % 10 === 0 ? "Unmapped NDC" : "Mapped",
+        reason: i % 10 === 0 ? "NDC not normalized to 11-digit; rebate class unknown" : "Rebate below contractual floor trend",
+        ledger: {
+          header: [
+            { label: "Claim ID", value: `RXC-${700000 + i}` },
+            { label: "Member ID", value: `RXM-${200000 + i}` },
+            { label: "Fill Date", value: new Date(Date.now() - 1000 * 60 * 60 * 24 * (i % 60)).toLocaleDateString() },
+            { label: "Pharmacy", value: `Pharmacy #${1001 + (i % 15)}` },
+          ],
+          financial: [
+            { label: "AWP", value: `$${(310 + (i % 5) * 160).toLocaleString()}` },
+            { label: "Allowed Amount", value: `$${(310 + (i % 5) * 160).toLocaleString()}` },
+            { label: "Paid Amount", value: `$${(220 + (i % 5) * 140).toLocaleString()}` },
+            { label: "Expected Rebate", value: `$${(28 + (i % 5) * 18).toLocaleString()}` },
+          ],
+          mapping: [
+            { label: "NDC", value: i % 10 === 0 ? `UNMAPPED-${i}` : `00024-${5500 + i}-01` },
+            { label: "Drug Name", value: i % 3 === 0 ? "Specialty Drug A" : i % 3 === 1 ? "Specialty Drug B" : "Brand Drug C" },
+            { label: "Rebate Class", value: i % 10 === 0 ? "UNKNOWN" : "SPECIALTY_TIER_1" },
+            { label: "Formulary Tier", value: "SPECIALTY" },
+          ],
+          controls: [
+            { label: "NDC Normalized", value: i % 10 === 0 ? "NO" : "YES" },
+            { label: "Rebate Eligible", value: i % 10 === 0 ? "UNKNOWN" : "YES" },
+            { label: "Contract Floor", value: "$32/script" },
+            { label: "Actual Rebate", value: i % 10 === 0 ? "N/A" : `$${(24 + (i % 5) * 3).toLocaleString()}` },
+          ],
+          notes: i % 10 === 0
+            ? "NDC requires normalization patch. Rebate class unknown; cannot validate guarantee compliance until mapping complete."
+            : "Rebate captured but trending below contractual guarantee floor. Recommend vendor discussion.",
+        },
+      })),
     },
   },
 
@@ -460,6 +558,55 @@ WHERE service_date >= DATEADD(day, -90, CURRENT_DATE())
 GROUP BY 1
 ORDER BY 3 DESC;`,
     },
+
+    related: {
+      summary: [
+        { label: "NDCs Affected", value: "14", note: "High-cost specialty" },
+        { label: "Member-Months", value: "89", note: "Unique utilization" },
+        { label: "Avg Variance", value: "AWP-12%", note: "vs AWP-18% contract" },
+      ],
+      transactions: Array.from({ length: 89 }).map((_, i) => ({
+        row_id: `AE-10877-${i + 1}`,
+        type: "RX" as const,
+        member_id: `SPEC-${300000 + i}`,
+        claim_id: `SPEC-${800000 + i}`,
+        service_date: new Date(Date.now() - 1000 * 60 * 60 * 24 * (i % 89)).toISOString(),
+        paid_amount: 4200 + (i % 8) * 1800,
+        allowed_amount: 5100 + (i % 8) * 2200,
+        payer: "CVS Caremark",
+        status: i % 6 === 0 ? "High Variance" : "Moderate Variance",
+        reason: i % 6 === 0 ? "AWP discount below contract floor by >4 points" : "AWP discount variance 2-4 points",
+        ledger: {
+          header: [
+            { label: "Claim ID", value: `SPEC-${800000 + i}` },
+            { label: "Member ID", value: `SPEC-${300000 + i}` },
+            { label: "Fill Date", value: new Date(Date.now() - 1000 * 60 * 60 * 24 * (i % 89)).toLocaleDateString() },
+            { label: "Pharmacy", value: `Specialty Pharmacy ${(i % 3) + 1}` },
+          ],
+          financial: [
+            { label: "AWP", value: `$${(5100 + (i % 8) * 2200).toLocaleString()}` },
+            { label: "Contract Price", value: `$${Math.round((5100 + (i % 8) * 2200) * 0.82).toLocaleString()}` },
+            { label: "Actual Paid", value: `$${(4200 + (i % 8) * 1800).toLocaleString()}` },
+            { label: "Overpayment", value: `$${((4200 + (i % 8) * 1800) - Math.round((5100 + (i % 8) * 2200) * 0.82)).toLocaleString()}` },
+          ],
+          mapping: [
+            { label: "NDC", value: `00024-${6000 + (i % 14)}-01` },
+            { label: "Drug Name", value: i % 3 === 0 ? "Oncology Drug A" : i % 3 === 1 ? "Immunology Drug B" : "Specialty Drug C" },
+            { label: "Drug Class", value: i % 3 === 0 ? "ONCOLOGY" : i % 3 === 1 ? "IMMUNOLOGY" : "SPECIALTY_OTHER" },
+            { label: "Formulary Status", value: "SPECIALTY_TIER" },
+          ],
+          controls: [
+            { label: "Contract Discount", value: "AWP-18%" },
+            { label: "Actual Discount", value: `AWP-${Math.round(12 + (i % 6))}%` },
+            { label: "Variance", value: `${Math.round(6 - (i % 6))} points` },
+            { label: "Tolerance", value: "±2 points" },
+          ],
+          notes: i % 6 === 0
+            ? "Pricing variance exceeds contract tolerance significantly. High-priority recovery candidate with strong contract language support."
+            : "Moderate pricing variance. Aggregate for quarterly true-up discussion with PBM.",
+        },
+      })),
+    },
   },
 
   {
@@ -617,6 +764,55 @@ FROM REF.PROVIDER_NETWORK
 WHERE provider_type = 'PRIMARY_CARE'
   AND provider_zip IN ('12345', '12346')
 GROUP BY 1, 2, 3;`,
+    },
+
+    related: {
+      summary: [
+        { label: "Members Affected", value: "380", note: "In affected zips" },
+        { label: "OON Rate", value: "34%", note: "vs 12% network avg" },
+        { label: "PCP Ratio", value: "3,200:1", note: "vs 1,800:1 target" },
+      ],
+      transactions: Array.from({ length: 120 }).map((_, i) => ({
+        row_id: `AE-10903-${i + 1}`,
+        type: "CLAIM" as const,
+        member_id: `NET-${400000 + i}`,
+        claim_id: `NET-${500000 + i}`,
+        service_date: new Date(Date.now() - 1000 * 60 * 60 * 24 * (i % 120)).toISOString(),
+        paid_amount: 180 + (i % 6) * 120,
+        allowed_amount: 150 + (i % 6) * 90,
+        vendor: i % 2 === 0 ? "Out-of-Network PCP" : "In-Network PCP (20mi away)",
+        status: i % 2 === 0 ? "OON" : "INN - Distance",
+        reason: i % 2 === 0 ? "No in-network PCP within 15 miles" : "Nearest in-network PCP 20+ miles away",
+        ledger: {
+          header: [
+            { label: "Claim ID", value: `NET-${500000 + i}` },
+            { label: "Member ID", value: `NET-${400000 + i}` },
+            { label: "Service Date", value: new Date(Date.now() - 1000 * 60 * 60 * 24 * (i % 120)).toLocaleDateString() },
+            { label: "Member Zip", value: i % 2 === 0 ? "12345" : "12346" },
+          ],
+          financial: [
+            { label: "Billed Amount", value: `$${(250 + (i % 6) * 80).toLocaleString()}` },
+            { label: "Allowed Amount", value: `$${(150 + (i % 6) * 90).toLocaleString()}` },
+            { label: "Paid Amount", value: `$${(180 + (i % 6) * 120).toLocaleString()}` },
+            { label: "Member Balance Bill", value: i % 2 === 0 ? `$${(70 + (i % 4) * 20).toLocaleString()}` : "$0" },
+          ],
+          mapping: [
+            { label: "Provider", value: i % 2 === 0 ? `OON PCP ${i % 15}` : `INN PCP ${i % 8}` },
+            { label: "Network Status", value: i % 2 === 0 ? "OUT-OF-NETWORK" : "IN-NETWORK" },
+            { label: "Distance", value: i % 2 === 0 ? "3.2 miles" : "22.4 miles" },
+            { label: "Procedure Code", value: `99${213 + (i % 3)}` },
+          ],
+          controls: [
+            { label: "Network Adequacy", value: "FAILED" },
+            { label: "PCP Count (15mi)", value: i % 2 === 0 ? "0" : "1" },
+            { label: "Member-PCP Ratio", value: "3,200:1" },
+            { label: "Cost Multiplier", value: i % 2 === 0 ? "2.4x" : "1.0x" },
+          ],
+          notes: i % 2 === 0
+            ? "Member used out-of-network provider due to lack of in-network PCPs within reasonable distance. Network adequacy issue; payer responsibility per contract."
+            : "Member traveled 20+ miles to nearest in-network PCP. Indicates network adequacy gap despite technical compliance.",
+        },
+      })),
     },
   },
 ];

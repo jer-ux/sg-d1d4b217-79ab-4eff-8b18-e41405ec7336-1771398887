@@ -4,6 +4,14 @@ import { useMemo, useState } from "react";
 type Severity = "LOW" | "MED" | "HIGH" | "CRITICAL";
 type Status = "NEW" | "INVESTIGATING" | "ACTIONED" | "REALIZED" | "DISMISSED";
 
+type LedgerDetails = {
+  header: Array<{ label: string; value: string }>;
+  financial: Array<{ label: string; value: string }>;
+  mapping: Array<{ label: string; value: string }>;
+  controls: Array<{ label: string; value: string }>;
+  notes?: string;
+};
+
 type EvidenceReceipt = {
   receipt_id: string;
   verified: boolean;
@@ -46,6 +54,7 @@ type RelatedTransaction = {
   payer?: string;
   status?: string;
   reason?: string;
+  ledger?: LedgerDetails;
 };
 
 export type ArbitrageEvent = {
@@ -545,6 +554,8 @@ function SqlTab({ e }: { e: ArbitrageEvent }) {
 }
 
 function TransactionsTab({ e }: { e: ArbitrageEvent }) {
+  const [selectedTx, setSelectedTx] = React.useState<RelatedTransaction | null>(null);
+
   if (!e.related || !e.related.transactions.length) {
     return (
       <Section title="Related Transactions">
@@ -584,6 +595,7 @@ function TransactionsTab({ e }: { e: ArbitrageEvent }) {
                 <th className="pb-2 pr-3 text-right">Allowed</th>
                 <th className="pb-2 pr-3">Vendor/Payer</th>
                 <th className="pb-2 pr-3">Status</th>
+                <th className="pb-2 pr-3"></th>
               </tr>
             </thead>
             <tbody>
@@ -603,13 +615,129 @@ function TransactionsTab({ e }: { e: ArbitrageEvent }) {
                   </td>
                   <td className="py-2 pr-3 text-zinc-200">{t.vendor || t.payer || "—"}</td>
                   <td className="py-2 pr-3 text-zinc-200">{t.status || "—"}</td>
+                  <td className="py-2 pr-3">
+                    {t.ledger && (
+                      <button
+                        onClick={() => setSelectedTx(t)}
+                        className="rounded border border-zinc-700 bg-zinc-900 px-2 py-0.5 text-[11px] text-zinc-100 hover:bg-zinc-800"
+                      >
+                        View Details →
+                      </button>
+                    )}
+                  </td>
                 </tr>
               ))}
             </tbody>
           </table>
         </div>
+
+        <div className="mt-2 text-[11px] text-zinc-400">
+          Showing {transactions.length} transaction{transactions.length !== 1 ? "s" : ""}
+          {transactions.some((t) => t.ledger) && " • Click 'View Details' for full ledger context"}
+        </div>
       </Section>
+
+      {selectedTx?.ledger && (
+        <LedgerDrawer
+          transaction={selectedTx}
+          onClose={() => setSelectedTx(null)}
+        />
+      )}
     </>
+  );
+}
+
+function LedgerDrawer({
+  transaction,
+  onClose,
+}: {
+  transaction: RelatedTransaction;
+  onClose: () => void;
+}) {
+  const ledger = transaction.ledger!;
+
+  return (
+    <div className="fixed inset-0 z-[70] flex items-center justify-center bg-black/80 p-4">
+      <div className="w-full max-w-4xl overflow-hidden rounded-2xl border border-zinc-800 bg-zinc-950 shadow-2xl">
+        <div className="flex items-center justify-between border-b border-zinc-800 p-4">
+          <div>
+            <div className="text-sm font-semibold text-zinc-100">
+              Ledger Detail — {transaction.row_id}
+            </div>
+            <div className="text-xs text-zinc-400">
+              {transaction.type} • {transaction.member_id} • {transaction.claim_id || transaction.invoice_id}
+            </div>
+          </div>
+          <button
+            onClick={onClose}
+            className="rounded-full border border-zinc-800 bg-zinc-950 px-3 py-1 text-xs text-zinc-300 hover:bg-zinc-900/60"
+          >
+            Close ✕
+          </button>
+        </div>
+
+        <div className="max-h-[70vh] overflow-auto p-6">
+          <LedgerSection title="Header">
+            <div className="grid grid-cols-2 gap-3">
+              {ledger.header.map((item) => (
+                <div key={item.label}>
+                  <div className="text-xs text-zinc-400">{item.label}</div>
+                  <div className="text-sm font-semibold text-zinc-100">{item.value}</div>
+                </div>
+              ))}
+            </div>
+          </LedgerSection>
+
+          <LedgerSection title="Financial">
+            <div className="grid grid-cols-2 gap-3">
+              {ledger.financial.map((item) => (
+                <div key={item.label}>
+                  <div className="text-xs text-zinc-400">{item.label}</div>
+                  <div className="text-sm font-semibold text-zinc-100">{item.value}</div>
+                </div>
+              ))}
+            </div>
+          </LedgerSection>
+
+          <LedgerSection title="Mapping">
+            <div className="grid grid-cols-2 gap-3">
+              {ledger.mapping.map((item) => (
+                <div key={item.label}>
+                  <div className="text-xs text-zinc-400">{item.label}</div>
+                  <div className="text-sm font-semibold text-zinc-100">{item.value}</div>
+                </div>
+              ))}
+            </div>
+          </LedgerSection>
+
+          <LedgerSection title="Controls">
+            <div className="grid grid-cols-2 gap-3">
+              {ledger.controls.map((item) => (
+                <div key={item.label}>
+                  <div className="text-xs text-zinc-400">{item.label}</div>
+                  <div className="text-sm font-semibold text-zinc-100">{item.value}</div>
+                </div>
+              ))}
+            </div>
+          </LedgerSection>
+
+          {ledger.notes && (
+            <LedgerSection title="Notes">
+              <div className="text-sm text-zinc-200">{ledger.notes}</div>
+            </LedgerSection>
+          )}
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function LedgerSection({ title, children }: { title: string; children: React.ReactNode }) {
+  return (
+    <div className="mb-4 rounded-xl border border-zinc-800 bg-zinc-900/30 p-4">
+      <div className="mb-3 text-xs font-semibold uppercase tracking-wide text-zinc-300">{title}</div>
+      {children}
+    </div>
   );
 }
 

@@ -19,9 +19,15 @@ export function saveDemoReceipt(r: DemoReceipt) {
   const existing = loadDemoReceipts();
   const next = [r, ...existing].slice(0, 25);
   window.localStorage.setItem(KEY, JSON.stringify(next));
+  
+  // Dispatch custom event so other components can react
+  window.dispatchEvent(new CustomEvent("kincaid:receipt_created", { detail: r }));
 }
 
 export function clearDemoReceipts() {
   if (typeof window === "undefined") return;
   window.localStorage.removeItem(KEY);
+  
+  // Dispatch event so UI can update
+  window.dispatchEvent(new CustomEvent("kincaid:receipts_cleared"));
 }

@@ -20,15 +20,14 @@ export default function App({ Component, pageProps }: AppProps) {
 
       if (data.event === "calendly.event_scheduled") {
         try {
-          const res = await fetch("/api/receipts/generate", {
+          const res = await fetch("/api/receipts/calendly-booked", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({
-              action: "calendly_booking",
-              metadata: {
-                event: "calendly.event_scheduled",
-                ts: new Date().toISOString(),
+              calendlyEvent: data,
+              client: {
                 userAgent: navigator.userAgent,
+                ts: new Date().toISOString(),
               },
             }),
           });
@@ -36,6 +35,8 @@ export default function App({ Component, pageProps }: AppProps) {
           if (!res.ok) return;
 
           const receipt = await res.json();
+          
+          // saveDemoReceipt() now dispatches the custom event internally
           saveDemoReceipt(receipt);
         } catch {
           // Swallow errors — never break UX on booking

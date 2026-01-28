@@ -21,6 +21,30 @@ type RealizationTracker = {
   risks: Array<{ label: string; severity: "LOW" | "MED" | "HIGH"; mitigation: string }>;
 };
 
+type ScoreFactor = {
+  name: "delta_value" | "confidence" | "time_sensitivity" | "policy_gate" | string;
+  weight: number;
+  raw: number;
+  normalized: number;
+  contribution: number;
+  notes?: string;
+};
+
+type WhyRanked = {
+  final_score: number;
+  rank_reason: string;
+  factors: ScoreFactor[];
+  comparisons?: Array<{
+    event_id: string;
+    title: string;
+    final_score: number;
+    delta_value: number;
+    confidence: number;
+    time_sensitivity: number;
+    verified: boolean;
+  }>;
+};
+
 type LedgerDetails = {
   header: Array<{ label: string; value: string }>;
   financial: Array<{ label: string; value: string }>;
@@ -123,6 +147,7 @@ export type ArbitrageEvent = {
   };
 
   realization?: RealizationTracker;
+  why_ranked?: WhyRanked;
 };
 
 function formatMoney(n: number) {
@@ -153,7 +178,7 @@ function pct(x: number) {
   return `${Math.round(x * 100)}%`;
 }
 
-type TabKey = "SUMMARY" | "EVIDENCE" | "MODEL" | "LINEAGE" | "ACTIONS" | "AUDIT" | "SQL" | "TRANSACTIONS" | "REALIZATION";
+type TabKey = "WHY_RANKED" | "SUMMARY" | "EVIDENCE" | "MODEL" | "LINEAGE" | "ACTIONS" | "AUDIT" | "SQL" | "TRANSACTIONS" | "REALIZATION";
 
 export function ArbitrageEventsPanel({
   events,
@@ -171,7 +196,7 @@ export function ArbitrageEventsPanel({
 
   const open = (e: ArbitrageEvent) => {
     setSelected(e);
-    setTab("SUMMARY");
+    setTab("WHY_RANKED");
     onSelect?.(e);
   };
 
@@ -304,7 +329,7 @@ export function ArbitrageEventsPanel({
 
               <div className="mt-4 flex flex-wrap gap-2">
                 {(
-                  ["SUMMARY", "EVIDENCE", "MODEL", "LINEAGE", "TRANSACTIONS", "REALIZATION", "ACTIONS", "AUDIT", "SQL"] as TabKey[]
+                  ["WHY_RANKED", "SUMMARY", "EVIDENCE", "MODEL", "LINEAGE", "TRANSACTIONS", "REALIZATION", "ACTIONS", "AUDIT", "SQL"] as TabKey[]
                 ).map((k) => (
                   <button
                     key={k}
@@ -322,6 +347,7 @@ export function ArbitrageEventsPanel({
             </div>
 
             <div className="flex-1 overflow-auto p-4">
+              {tab === "WHY_RANKED" && <WhyRankedTab e={selected} />}
               {tab === "SUMMARY" && <SummaryTab e={selected} />}
               {tab === "EVIDENCE" && <EvidenceTab e={selected} />}
               {tab === "MODEL" && <ModelTab e={selected} />}
@@ -345,6 +371,124 @@ function Section({ title, children }: { title: string; children: React.ReactNode
       <div className="mb-2 text-sm font-semibold text-zinc-100">{title}</div>
       <div className="text-sm text-zinc-200">{children}</div>
     </div>
+  );
+}
+
+function WhyRankedTab({ e }: { e: ArbitrageEvent }) {
+  const w = e.why_ranked;
+
+  if (!w) {
+    return (
+      <Section title="Why This Rank?">
+        <div className="text-xs text-zinc-400">
+          No scoring breakdown attached. Add e.why_ranked to show CFO-grade explainability: which factors drove priority, how they were weighted, and comparisons to other events.
+        </div>
+      </Section>
+    );
+  }
+
+  return (
+    <>
+      <Section title="Final Score & Rank Reason">
+        <div className="grid grid-cols-2 gap-4">
+          <div>
+            <div className="text-xs text-zinc-400">Final Score</div>
+            <div className="text-3xl font-semibold text-zinc-100">{w.final_score.toFixed(2)}</div>
+            <div className="mt-1 text-xs text-zinc-400">Rank #{e.score.rank}</div>
+          </div>
+          <div>
+            <div className="text-xs text-zinc-400">Why This Rank?</div>
+            <div className="mt-1 text-sm text-zinc-200">{w.rank_reason}</div>
+          </div>
+        </div>
+      </Section>
+
+      <Section title="Score Factor Breakdown">
+        <div className="space-y-3">
+          {w.factors.map((f, i) => {
+            const barWidth = Math.round(f.contribution * 100);
+            return (
+              <div key={i} className="rounded-xl border border-zinc-800 p-3">
+                <div className="flex items-start justify-between gap-3">
+                  <div className="min-w-0">
+                    <div className="text-sm font-semibold text-zinc-100">{f.name}</div>
+                    {f.notes ? <div className="mt-1 text-xs text-zinc-400">{f.notes}</div> : null}
+                  </div>
+                  <div className="text-right">
+                    <div className="text-xs text-zinc-400">Weight: {(f.weight * 100).toFixed(0)}%</div>
+                    <div className="text-xs text-zinc-300">Raw: {f.raw.toLocaleString()}</div>
+                  </div>
+                </div>
+
+                <div className="mt-2 flex items-center gap-2">
+                  <div className="text-xs text-zinc-400">Contribution:</div>
+                  <div className="flex-1">
+                    <div className="h-2 overflow-hidden rounded-full border border-zinc-800 bg-zinc-950">
+                      <div
+                        className="h-full bg-gradient-to-r from-zinc-700 to-zinc-500"
+                        style={{ width: `${barWidth}%` }}
+                      />
+                    </div>
+                  </div>
+                  <div className="text-xs font-semibold text-zinc-100">{f.contribution.toFixed(2)}</div>
+                </div>
+              </div>
+            );
+          })}
+        </div>
+
+        <div className="mt-3 text-xs text-zinc-400">
+          Pro tip: This is the "show your work" tab. No black-box scoring. Every factor, every weight, fully transparent.
+        </div>
+      </Section>
+
+      {w.comparisons && w.comparisons.length > 0 && (
+        <Section title="How This Compares">
+          <div className="overflow-hidden rounded-xl border border-zinc-800">
+            <table className="w-full text-xs">
+              <thead className="bg-zinc-950">
+                <tr className="border-b border-zinc-800 text-left text-zinc-400">
+                  <th className="px-3 py-2">Event ID</th>
+                  <th className="px-3 py-2">Title</th>
+                  <th className="px-3 py-2 text-right">Score</th>
+                  <th className="px-3 py-2 text-right">Delta Value</th>
+                  <th className="px-3 py-2 text-right">Confidence</th>
+                  <th className="px-3 py-2 text-right">Time Sens.</th>
+                  <th className="px-3 py-2">Verified</th>
+                </tr>
+              </thead>
+              <tbody>
+                {w.comparisons.map((c) => {
+                  const isCurrent = c.event_id === e.event_id;
+                  return (
+                    <tr
+                      key={c.event_id}
+                      className={`border-b border-zinc-900 ${
+                        isCurrent ? "bg-zinc-900/60 text-zinc-100" : "text-zinc-200"
+                      }`}
+                    >
+                      <td className="px-3 py-2 font-mono">{c.event_id}</td>
+                      <td className="px-3 py-2 max-w-[300px] truncate" title={c.title}>
+                        {c.title}
+                      </td>
+                      <td className="px-3 py-2 text-right font-semibold">{c.final_score.toFixed(2)}</td>
+                      <td className="px-3 py-2 text-right">{formatMoney(c.delta_value)}</td>
+                      <td className="px-3 py-2 text-right">{pct(c.confidence)}</td>
+                      <td className="px-3 py-2 text-right">{pct(c.time_sensitivity)}</td>
+                      <td className="px-3 py-2">{c.verified ? "✓" : "—"}</td>
+                    </tr>
+                  );
+                })}
+              </tbody>
+            </table>
+          </div>
+
+          <div className="mt-2 text-xs text-zinc-400">
+            Current event highlighted. Comparisons show why this event ranks where it does relative to others.
+          </div>
+        </Section>
+      )}
+    </>
   );
 }
 
@@ -374,7 +518,7 @@ function SummaryTab({ e }: { e: ArbitrageEvent }) {
               >
                 <div className="text-[11px] text-zinc-400">{k.label}</div>
                 <div className="text-xs font-semibold text-zinc-100">{k.value}</div>
-                {k.note ? <div className="mt-1 text-[11px] text-zinc-400">{k.note}</div> : null}
+                {k.note ? <div className="mt-1 text-xs text-zinc-400">{k.note}</div> : null}
               </div>
             ))}
           </div>

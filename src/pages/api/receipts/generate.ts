@@ -1,28 +1,73 @@
 import type { NextApiRequest, NextApiResponse } from "next";
-import { attachReceipt } from "@/lib/warroom/redisStore";
-import { enforce } from "@/lib/auth/enforce";
 
-export default async function handler(req: NextApiRequest, res: NextApiResponse) {
-  if (req.method !== "POST") {
-    return res.status(405).json({ ok: false, error: "Method not allowed" });
-  }
+function mulberry32(seed: number) {
+  return function () {
+    let t = (seed += 0x6d2b79f5);
+    t = Math.imul(t ^ (t >>> 15), t | 1);
+    t ^= t + Math.imul(t ^ (t >>> 7), t | 61);
+    return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+  };
+}
 
-  try {
-    const auth = await enforce("operator", req as any);
-    if (!auth.ok) {
-      return res.status((auth as any).status).json({ ok: false, error: (auth as any).error });
-    }
+function hex32(rng: () => number) {
+  const chars = "abcdef0123456789";
+  let out = "";
+  for (let i = 0; i < 32; i++) out += chars[Math.floor(rng() * chars.length)];
+  return out;
+}
 
-    const { eventId, title } = req.body;
-    const receipt = {
-      id: `rec-${Date.now()}`,
-      title: String(title),
-      hash: `hash-${Math.random().toString(16).slice(2)}`,
-    };
+export type DemoReceipt = {
+  receiptId: string;
+  createdAtIso: string;
+  subject: string;
+  verified: boolean;
+  freshnessMinutes: number;
+  dqPassRate: number;
+  sourceHash: string;
+  transformHash: string;
+  owner: string;
+  confidence: number;
+  reasons: string[];
+  meta?: {
+    name?: string;
+    email?: string;
+    company?: string;
+  };
+};
 
-    const event = await attachReceipt(String(eventId), receipt, auth.user.email);
-    return res.json({ ok: true, event, receipt });
-  } catch (e: any) {
-    return res.status(400).json({ ok: false, error: e.message });
-  }
+export default function handler(req: NextApiRequest, res: NextApiResponse) {
+  if (req.method !== "POST") return res.status(405).json({ error: "Method not allowed" });
+
+  const { name, email, company } = (req.body ?? {}) as { name?: string; email?: string; company?: string };
+
+  const seed = Date.now() ^ (email?.length ?? 17) ^ (company?.length ?? 23);
+  const rng = mulberry32(seed);
+
+  const freshnessMinutes = Math.floor(rng() * 45);
+  const dqPassRate = 0.94 + rng() * 0.06;
+  const confidence = 0.9 + rng() * 0.09;
+
+  const reasons: string[] = [];
+  const verified = reasons.length === 0;
+
+  const receipt: DemoReceipt = {
+    receiptId: `RCPT-DEMO-${Math.floor(100000 + rng() * 900000)}`,
+    createdAtIso: new Date().toISOString(),
+    subject: "DEMO ACCESS — Private Terminal Invite",
+    verified,
+    freshnessMinutes,
+    dqPassRate,
+    sourceHash: hex32(rng),
+    transformHash: hex32(rng),
+    owner: "Integrity OS",
+    confidence,
+    reasons,
+    meta: {
+      name: name?.trim() || undefined,
+      email: email?.trim() || undefined,
+      company: company?.trim() || undefined,
+    },
+  };
+
+  res.status(200).json(receipt);
 }

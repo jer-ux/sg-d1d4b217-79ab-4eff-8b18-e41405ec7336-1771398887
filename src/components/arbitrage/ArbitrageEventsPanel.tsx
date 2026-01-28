@@ -128,7 +128,6 @@ export function ArbitrageEventsPanel({
 
   return (
     <div className="flex h-full w-full gap-3">
-      {/* Left: Event list */}
       <div className="w-[420px] shrink-0 overflow-auto rounded-2xl border border-zinc-800 bg-zinc-950 p-3">
         <div className="mb-3 flex items-center justify-between">
           <div className="text-sm font-semibold text-zinc-100">Arbitrage Events</div>
@@ -186,7 +185,6 @@ export function ArbitrageEventsPanel({
         </div>
       </div>
 
-      {/* Right: Detail drawer */}
       <div className="flex-1 overflow-hidden rounded-2xl border border-zinc-800 bg-zinc-950">
         {!selected ? (
           <div className="flex h-full items-center justify-center text-sm text-zinc-400">
@@ -194,7 +192,6 @@ export function ArbitrageEventsPanel({
           </div>
         ) : (
           <div className="flex h-full flex-col">
-            {/* Header */}
             <div className="border-b border-zinc-800 p-4">
               <div className="flex items-start justify-between gap-4">
                 <div className="min-w-0">
@@ -230,7 +227,6 @@ export function ArbitrageEventsPanel({
                 </div>
               </div>
 
-              {/* Tabs */}
               <div className="mt-4 flex flex-wrap gap-2">
                 {(
                   ["SUMMARY", "EVIDENCE", "MODEL", "LINEAGE", "ACTIONS", "AUDIT", "SQL"] as TabKey[]
@@ -250,7 +246,6 @@ export function ArbitrageEventsPanel({
               </div>
             </div>
 
-            {/* Body */}
             <div className="flex-1 overflow-auto p-4">
               {tab === "SUMMARY" && <SummaryTab e={selected} />}
               {tab === "EVIDENCE" && <EvidenceTab e={selected} />}
@@ -313,68 +308,41 @@ function SummaryTab({ e }: { e: ArbitrageEvent }) {
 }
 
 function EvidenceTab({ e }: { e: ArbitrageEvent }) {
-  const ev = e.evidence;
+  const r = e.evidence;
   return (
     <>
-      <Section title="Evidence Receipt">
-        <div className="space-y-2 text-xs">
-          <div className="flex justify-between">
-            <span className="text-zinc-400">Receipt ID:</span>
-            <span className="font-mono text-zinc-100">{ev.receipt_id}</span>
+      <div className="grid grid-cols-2 gap-3">
+        <Section title="Evidence Receipt">
+          <div className="text-xs text-zinc-300">
+            Receipt ID: <span className="text-zinc-100">{r.receipt_id}</span>
           </div>
-          <div className="flex justify-between">
-            <span className="text-zinc-400">Verified:</span>
-            <span className={pill(ev.verified)}>{ev.verified ? "YES" : "NO"}</span>
+          <div className="mt-2 flex flex-wrap gap-2">
+            <span className={pill(r.verified)}>VERIFIED: {r.verified ? "YES" : "NO"}</span>
+            <span className={pill(true)}>CONFIDENCE: {pct(r.confidence)}</span>
+            <span className={pill(true)}>FRESHNESS: {r.freshness_minutes}m</span>
+            <span className={pill(true)}>OWNER: {r.owner}</span>
+            <span className={pill(true)}>SOURCE: {r.source_system}</span>
           </div>
-          <div className="flex justify-between">
-            <span className="text-zinc-400">Confidence:</span>
-            <span className="text-zinc-100">{pct(ev.confidence)}</span>
-          </div>
-          <div className="flex justify-between">
-            <span className="text-zinc-400">Freshness:</span>
-            <span className="text-zinc-100">{ev.freshness_minutes} min</span>
-          </div>
-          <div className="flex justify-between">
-            <span className="text-zinc-400">Owner:</span>
-            <span className="text-zinc-100">{ev.owner}</span>
-          </div>
-          <div className="flex justify-between">
-            <span className="text-zinc-400">Source System:</span>
-            <span className="text-zinc-100">{ev.source_system}</span>
-          </div>
-        </div>
-      </Section>
 
-      <Section title="Data Quality Tests">
-        <div className="space-y-2">
-          {ev.dq_tests.map((t, i) => (
-            <div key={i} className="flex items-start justify-between gap-3">
-              <div className="min-w-0">
-                <div className="text-xs font-semibold text-zinc-100">{t.name}</div>
-                {t.details ? <div className="text-xs text-zinc-400">{t.details}</div> : null}
+          <div className="mt-3 text-xs text-zinc-400">
+            Source Artifact Hash: <span className="text-zinc-200">{r.source_artifact_hash}</span>
+          </div>
+          <div className="mt-1 text-xs text-zinc-400">
+            Transform Hash: <span className="text-zinc-200">{r.transform_hash}</span>
+          </div>
+        </Section>
+
+        <Section title="Data Quality Tests">
+          <div className="space-y-2">
+            {r.dq_tests.map((t) => (
+              <div key={t.name} className="flex items-start justify-between gap-3">
+                <div className="text-xs text-zinc-200">{t.name}</div>
+                <div className="text-xs text-zinc-300">{t.pass ? "PASS" : "FAIL"}</div>
               </div>
-              <span className={pill(t.pass)}>{t.pass ? "PASS" : "FAIL"}</span>
-            </div>
-          ))}
-        </div>
-      </Section>
-
-      <Section title="Hashes">
-        <div className="space-y-2 text-xs">
-          <div>
-            <div className="text-zinc-400">Source Artifact Hash:</div>
-            <div className="mt-1 break-all font-mono text-[11px] text-zinc-100">
-              {ev.source_artifact_hash}
-            </div>
+            ))}
           </div>
-          <div>
-            <div className="text-zinc-400">Transform Hash:</div>
-            <div className="mt-1 break-all font-mono text-[11px] text-zinc-100">
-              {ev.transform_hash}
-            </div>
-          </div>
-        </div>
-      </Section>
+        </Section>
+      </div>
     </>
   );
 }
@@ -383,51 +351,39 @@ function ModelTab({ e }: { e: ArbitrageEvent }) {
   const m = e.model;
   return (
     <>
-      <Section title="Financial Model">
-        <div className="space-y-2 text-xs">
-          <div className="flex justify-between">
-            <span className="text-zinc-400">Baseline Cost:</span>
-            <span className="font-semibold text-zinc-100">{formatMoney(m.baseline_cost)}</span>
-          </div>
-          <div className="flex justify-between">
-            <span className="text-zinc-400">Expected Cost:</span>
-            <span className="font-semibold text-zinc-100">{formatMoney(m.expected_cost)}</span>
-          </div>
-          <div className="flex justify-between">
-            <span className="text-zinc-400">Delta Value:</span>
-            <span className="font-semibold text-emerald-200">
-              {formatMoney(m.delta_value)} {m.units}
-            </span>
-          </div>
-        </div>
-      </Section>
+      <div className="grid grid-cols-3 gap-3">
+        <Section title="Baseline Cost">
+          <div className="text-xl font-semibold text-zinc-100">{formatMoney(m.baseline_cost)}</div>
+          <div className="text-xs text-zinc-400">{m.units}</div>
+        </Section>
+        <Section title="Expected Cost">
+          <div className="text-xl font-semibold text-zinc-100">{formatMoney(m.expected_cost)}</div>
+          <div className="text-xs text-zinc-400">{m.units}</div>
+        </Section>
+        <Section title="Delta Value">
+          <div className="text-xl font-semibold text-zinc-100">{formatMoney(m.delta_value)}</div>
+          <div className="text-xs text-zinc-400">{m.units}</div>
+        </Section>
+      </div>
 
       <Section title="Assumptions">
-        <div className="space-y-2">
-          {m.assumptions.map((a, i) => (
-            <div key={i} className="flex justify-between gap-3 text-xs">
-              <span className="text-zinc-400">{a.key}:</span>
-              <span className="text-zinc-100">{a.value}</span>
+        <div className="grid grid-cols-2 gap-2">
+          {m.assumptions.map((a) => (
+            <div key={a.key} className="rounded-xl border border-zinc-800 p-3">
+              <div className="text-xs text-zinc-400">{a.key}</div>
+              <div className="text-sm font-semibold text-zinc-100">{a.value}</div>
             </div>
           ))}
         </div>
       </Section>
 
-      <Section title="Sensitivity Analysis">
+      <Section title="Sensitivity">
         <div className="space-y-2">
-          {m.sensitivity.map((s, i) => (
-            <div key={i} className="text-xs">
-              <div className="mb-1 text-zinc-400">{s.variable}</div>
-              <div className="flex gap-2">
-                <span className="rounded border border-zinc-800 bg-zinc-950 px-2 py-1 text-zinc-100">
-                  Low: {formatMoney(s.low)}
-                </span>
-                <span className="rounded border border-zinc-800 bg-zinc-950 px-2 py-1 text-zinc-100">
-                  Base: {formatMoney(s.base)}
-                </span>
-                <span className="rounded border border-zinc-800 bg-zinc-950 px-2 py-1 text-zinc-100">
-                  High: {formatMoney(s.high)}
-                </span>
+          {m.sensitivity.map((s) => (
+            <div key={s.variable} className="rounded-xl border border-zinc-800 p-3">
+              <div className="text-xs text-zinc-400">{s.variable}</div>
+              <div className="mt-1 text-xs text-zinc-200">
+                Low {formatMoney(s.low)} • Base {formatMoney(s.base)} • High {formatMoney(s.high)}
               </div>
             </div>
           ))}
@@ -438,23 +394,27 @@ function ModelTab({ e }: { e: ArbitrageEvent }) {
 }
 
 function LineageTab({ e }: { e: ArbitrageEvent }) {
-  const lineage = e.evidence.lineage;
+  const l = e.evidence.lineage;
   return (
-    <Section title="Data Lineage">
-      <div className="space-y-2">
-        {lineage.map((node, i) => (
-          <div key={i} className="flex items-start gap-3">
-            <div className="mt-1 rounded border border-zinc-800 bg-zinc-950 px-2 py-1 text-[11px] text-zinc-300">
-              {node.kind}
+    <>
+      <Section title="Lineage Graph (Readable)">
+        <div className="space-y-2">
+          {l.map((n, idx) => (
+            <div key={`${n.node}-${idx}`} className="flex items-center gap-2 text-xs">
+              <span className="rounded-full border border-zinc-800 px-2 py-0.5 text-zinc-300">
+                {n.kind}
+              </span>
+              <span className="text-zinc-100">{n.node}</span>
+              {n.ref ? <span className="text-zinc-400">({n.ref})</span> : null}
             </div>
-            <div className="min-w-0 flex-1">
-              <div className="text-xs font-semibold text-zinc-100">{node.node}</div>
-              {node.ref ? <div className="text-xs text-zinc-400">{node.ref}</div> : null}
-            </div>
-          </div>
-        ))}
-      </div>
-    </Section>
+          ))}
+        </div>
+      </Section>
+      <Section title="Why this matters">
+        The event is only as trustworthy as its upstream lineage. This tab proves traceability from
+        raw source → transforms → KPI/event logic.
+      </Section>
+    </>
   );
 }
 
@@ -462,26 +422,17 @@ function ActionsTab({ e }: { e: ArbitrageEvent }) {
   const p = e.packet;
   return (
     <>
-      <Section title="Recommended Owner">
-        <div className="text-xs text-zinc-100">{p.recommended_owner}</div>
-      </Section>
+      <Section title="Recommended Owner">{p.recommended_owner}</Section>
 
       <Section title="Action Steps">
-        <div className="space-y-3">
+        <div className="space-y-2">
           {p.actions.map((a, i) => (
-            <div key={i} className="rounded-xl border border-zinc-800 bg-zinc-950 p-3">
-              <div className="flex items-start justify-between gap-3">
-                <div className="min-w-0">
-                  <div className="text-xs font-semibold text-zinc-100">{a.step}</div>
-                  <div className="mt-1 text-xs text-zinc-400">{a.rationale}</div>
-                </div>
-                <div className="text-right">
-                  <div className="rounded border border-zinc-800 bg-zinc-950 px-2 py-1 text-[11px] text-zinc-300">
-                    {a.system}
-                  </div>
-                  <div className="mt-1 text-[11px] text-zinc-400">Due: {a.due_in_days}d</div>
-                </div>
+            <div key={i} className="rounded-xl border border-zinc-800 p-3">
+              <div className="text-sm font-semibold text-zinc-100">{a.step}</div>
+              <div className="mt-1 text-xs text-zinc-400">
+                System: {a.system} • Due: {a.due_in_days} days
               </div>
+              <div className="mt-2 text-xs text-zinc-200">{a.rationale}</div>
             </div>
           ))}
         </div>
@@ -489,15 +440,12 @@ function ActionsTab({ e }: { e: ArbitrageEvent }) {
 
       <Section title="Artifacts">
         <div className="space-y-2">
-          {p.artifacts.map((art, i) => (
-            <div key={i} className="flex items-center justify-between gap-3">
-              <div className="min-w-0">
-                <div className="text-xs font-semibold text-zinc-100">{art.name}</div>
-                <div className="truncate text-xs text-zinc-400">{art.value}</div>
+          {p.artifacts.map((x, i) => (
+            <div key={i} className="rounded-xl border border-zinc-800 p-3">
+              <div className="text-xs text-zinc-400">
+                {x.type} • {x.name}
               </div>
-              <span className="rounded border border-zinc-800 bg-zinc-950 px-2 py-1 text-[11px] text-zinc-300">
-                {art.type}
-              </span>
+              <div className="mt-1 text-xs text-zinc-200 break-all">{x.value}</div>
             </div>
           ))}
         </div>
@@ -510,16 +458,13 @@ function AuditTab({ e }: { e: ArbitrageEvent }) {
   return (
     <Section title="Audit Log">
       <div className="space-y-2">
-        {e.audit_log.map((log, i) => (
-          <div key={i} className="rounded-xl border border-zinc-800 bg-zinc-950 p-3">
-            <div className="flex items-start justify-between gap-3">
-              <div className="min-w-0">
-                <div className="text-xs font-semibold text-zinc-100">{log.action}</div>
-                <div className="mt-1 text-xs text-zinc-400">{log.actor}</div>
-                {log.notes ? <div className="mt-1 text-xs text-zinc-300">{log.notes}</div> : null}
-              </div>
-              <div className="text-xs text-zinc-400">{new Date(log.ts).toLocaleString()}</div>
+        {e.audit_log.map((x, i) => (
+          <div key={i} className="rounded-xl border border-zinc-800 p-3">
+            <div className="text-xs text-zinc-400">
+              {new Date(x.ts).toLocaleString()} • {x.actor}
             </div>
+            <div className="mt-1 text-sm font-semibold text-zinc-100">{x.action}</div>
+            {x.notes ? <div className="mt-1 text-xs text-zinc-200">{x.notes}</div> : null}
           </div>
         ))}
       </div>
@@ -530,22 +475,20 @@ function AuditTab({ e }: { e: ArbitrageEvent }) {
 function SqlTab({ e }: { e: ArbitrageEvent }) {
   if (!e.sql) {
     return (
-      <div className="flex h-full items-center justify-center text-sm text-zinc-400">
-        No SQL queries available for this event.
-      </div>
+      <Section title="SQL">
+        No SQL attached to this event. Add detection_query and validation_query for auditability.
+      </Section>
     );
   }
-
   return (
     <>
       <Section title="Detection Query">
-        <pre className="overflow-auto rounded-xl border border-zinc-800 bg-zinc-950 p-3 text-[11px] text-zinc-100">
+        <pre className="whitespace-pre-wrap break-words rounded-xl border border-zinc-800 bg-black/30 p-3 text-xs text-zinc-200">
           {e.sql.detection_query}
         </pre>
       </Section>
-
       <Section title="Validation Query">
-        <pre className="overflow-auto rounded-xl border border-zinc-800 bg-zinc-950 p-3 text-[11px] text-zinc-100">
+        <pre className="whitespace-pre-wrap break-words rounded-xl border border-zinc-800 bg-black/30 p-3 text-xs text-zinc-200">
           {e.sql.validation_query}
         </pre>
       </Section>

@@ -22,6 +22,8 @@ import { CalendlyPopupButton } from "@/components/calendly/CalendlyPopupButton";
 import { LuxBackground } from "@/components/marketing/LuxBackground";
 import { HowItWorksFlow } from "@/components/marketing/HowItWorksFlow";
 import { TrustBar } from "@/components/marketing/TrustBar";
+import { CaseStudyTeaser } from "@/components/marketing/CaseStudyTeaser";
+import { TerminalInviteCTA } from "@/components/marketing/TerminalInviteCTA";
 
 const fadeUp: Variants = {
   hidden: { opacity: 0, y: 18 },
@@ -438,6 +440,17 @@ export default function HomePage() {
 
         <Separator className="mx-auto max-w-6xl bg-white/10" />
 
+        {/* Case Study Teaser */}
+        <div className="mx-auto max-w-6xl px-6 py-12">
+          <motion.div initial="hidden" whileInView="show" viewport={{ once: true, amount: 0.2 }} variants={stagger}>
+            <motion.div variants={fadeUp}>
+              <CaseStudyTeaser />
+            </motion.div>
+          </motion.div>
+        </div>
+
+        <Separator className="mx-auto max-w-6xl bg-white/10" />
+
         {/* War Room Lanes */}
         <div className="mx-auto max-w-6xl px-6 py-12">
           <motion.div initial="hidden" whileInView="show" viewport={{ once: true, amount: 0.2 }} variants={stagger}>
@@ -491,36 +504,7 @@ export default function HomePage() {
 
         {/* Bottom CTA */}
         <div className="mx-auto max-w-6xl px-6 pb-14">
-          <div className="rounded-[2rem] border border-white/10 bg-[linear-gradient(180deg,rgba(255,255,255,0.06),rgba(255,255,255,0.03))] p-8 shadow-[0_0_0_1px_rgba(255,255,255,0.04)]">
-            <div className="flex flex-col gap-6 md:flex-row md:items-center md:justify-between">
-              <div className="max-w-2xl">
-                <div className="text-xs uppercase tracking-[0.22em] text-white/45">Next step</div>
-                <div className="mt-2 text-2xl font-semibold text-white">
-                  Want the &quot;real as hell&quot; demo? Let&apos;s run it live.
-                </div>
-                <div className="mt-2 text-white/65">
-                  We&apos;ll walk the War Room, drill into lane datasets, and show Evidence Receipts proving every KPI.
-                </div>
-              </div>
-
-              <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
-                <CalendlyPopupButton
-                  url="https://calendly.com/jer-kincaidrmc/30min"
-                  className="h-11 rounded-2xl bg-white text-black hover:bg-white/90"
-                >
-                  Book 30 min <ArrowRight className="ml-2 h-4 w-4" />
-                </CalendlyPopupButton>
-
-                <Button asChild variant="outline" className="h-11 rounded-2xl border-white/15 bg-white/5 text-white hover:bg-white/10">
-                  <Link href="/evidence-receipts">Open Evidence Receipts</Link>
-                </Button>
-              </div>
-            </div>
-
-            <div className="mt-6 text-xs text-white/45">
-              Kincaid IQ is built for internal governance and enterprise decision support. It&apos;s not personal investing advice.
-            </div>
-          </div>
+          <TerminalInviteCTA />
         </div>
       </div>
     </>

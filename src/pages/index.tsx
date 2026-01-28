@@ -1,423 +1,512 @@
-import { SEO } from "@/components/SEO";
-import { Container, ProofBar, CTA, CardGrid } from "@/components/Blocks";
-import { Hero3D } from "@/components/Hero3D";
+import * as React from "react";
+import Head from "next/head";
 import Link from "next/link";
+import { motion } from "framer-motion";
+import {
+  ShieldCheck,
+  Receipt,
+  Activity,
+  Layers,
+  ChevronRight,
+  Sparkles,
+  Lock,
+  BadgeCheck,
+  ArrowRight,
+} from "lucide-react";
 
-export default function Home() {
+import { Button } from "@/components/ui/button";
+import { Card, CardContent } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
+import { Separator } from "@/components/ui/separator";
+import { CalendlyPopupButton } from "@/components/calendly/CalendlyPopupButton";
+
+const fadeUp = {
+  hidden: { opacity: 0, y: 18 },
+  show: { opacity: 1, y: 0, transition: { duration: 0.55, ease: "easeOut" } },
+};
+
+const stagger = {
+  hidden: {},
+  show: { transition: { staggerChildren: 0.08 } },
+};
+
+function Glow() {
+  return (
+    <div aria-hidden className="pointer-events-none absolute inset-0">
+      <div className="absolute -top-24 left-1/2 h-[520px] w-[520px] -translate-x-1/2 rounded-full bg-[radial-gradient(circle,rgba(245,212,142,0.16),rgba(0,0,0,0)_60%)] blur-2xl" />
+      <div className="absolute -bottom-40 right-[-120px] h-[520px] w-[520px] rounded-full bg-[radial-gradient(circle,rgba(140,165,255,0.14),rgba(0,0,0,0)_60%)] blur-2xl" />
+      <div className="absolute left-[-180px] top-[22%] h-[520px] w-[520px] rounded-full bg-[radial-gradient(circle,rgba(96,255,196,0.10),rgba(0,0,0,0)_60%)] blur-2xl" />
+    </div>
+  );
+}
+
+function LuxTag({ children }: { children: React.ReactNode }) {
+  return (
+    <span className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-3 py-1 text-xs text-white/70">
+      <Sparkles className="h-3.5 w-3.5 text-amber-200/80" />
+      {children}
+    </span>
+  );
+}
+
+function StatPill({ label, value }: { label: string; value: string }) {
+  return (
+    <div className="rounded-2xl border border-white/10 bg-white/5 px-4 py-3">
+      <div className="text-[11px] tracking-wide text-white/45">{label}</div>
+      <div className="mt-1 text-sm font-semibold text-white/85">{value}</div>
+    </div>
+  );
+}
+
+function FeatureCard({
+  icon,
+  title,
+  desc,
+  bullets,
+}: {
+  icon: React.ReactNode;
+  title: string;
+  desc: string;
+  bullets: string[];
+}) {
+  return (
+    <Card className="rounded-3xl border-white/10 bg-white/[0.04] shadow-[0_0_0_1px_rgba(255,255,255,0.04)]">
+      <CardContent className="p-6">
+        <div className="flex items-start gap-3">
+          <div className="mt-0.5 rounded-2xl border border-white/10 bg-black/30 p-3">
+            {icon}
+          </div>
+          <div>
+            <div className="text-lg font-semibold text-white">{title}</div>
+            <div className="mt-1 text-sm text-white/60">{desc}</div>
+          </div>
+        </div>
+
+        <div className="mt-5 space-y-2">
+          {bullets.map((b) => (
+            <div key={b} className="flex items-start gap-2 text-sm text-white/70">
+              <BadgeCheck className="mt-0.5 h-4 w-4 text-emerald-300/80" />
+              <span>{b}</span>
+            </div>
+          ))}
+        </div>
+      </CardContent>
+    </Card>
+  );
+}
+
+function LaneTile({
+  title,
+  subtitle,
+  kpi,
+  href,
+}: {
+  title: string;
+  subtitle: string;
+  kpi: string;
+  href: string;
+}) {
+  return (
+    <Link
+      href={href}
+      className="group rounded-3xl border border-white/10 bg-white/[0.04] p-6 shadow-[0_0_0_1px_rgba(255,255,255,0.04)] transition hover:bg-white/[0.07]"
+    >
+      <div className="flex items-start justify-between gap-6">
+        <div>
+          <div className="text-lg font-semibold text-white">{title}</div>
+          <div className="mt-1 text-sm text-white/60">{subtitle}</div>
+        </div>
+        <Badge className="rounded-2xl border border-white/10 bg-black/30 px-3 py-1 text-white/80">
+          {kpi}
+        </Badge>
+      </div>
+
+      <div className="mt-6 flex items-center justify-between text-sm text-white/60">
+        <span className="inline-flex items-center gap-2">
+          <span className="h-2 w-2 rounded-full bg-emerald-400/80" />
+          VERIFIED PIPELINE
+        </span>
+        <span className="inline-flex items-center gap-1 text-white/75 group-hover:text-white">
+          Open <ChevronRight className="h-4 w-4" />
+        </span>
+      </div>
+    </Link>
+  );
+}
+
+export default function HomePage() {
   return (
     <>
-      <SEO
-        title="Kincaid IQ — Decision-Grade Value Systems"
-        description="Evidence receipts, CFO-grade value ledger, and marketplace-native delivery across Snowflake, Databricks, and ServiceNow."
-      />
+      <Head>
+        <title>Kincaid IQ — Integrity Engineering for CFO-Grade Enterprise Intelligence</title>
+        <meta
+          name="description"
+          content="Kincaid IQ is an integrity-first enterprise intelligence platform that turns operational and financial data into CFO/Board-grade decisions with Evidence Receipts and Verified Value tracking."
+        />
+      </Head>
 
-      <div className="relative overflow-hidden">
-        <div className="absolute inset-0 k-grid pointer-events-none" />
+      <div className="relative min-h-screen bg-[#070A12] text-white">
+        <Glow />
 
-        <Container>
-          {/* Hero Section */}
-          <div className="pt-14 pb-10 grid lg:grid-cols-2 gap-8 items-center">
-            <div>
-              <div className="text-5xl font-semibold tracking-tight">
-                <span className="text-orange-500">
-                  Decision-grade
-                </span>{" "}
-                value systems for capital, operators, and advisors.
+        {/* Top Nav */}
+        <div className="sticky top-0 z-30 border-b border-white/10 bg-[#070A12]/70 backdrop-blur">
+          <div className="mx-auto flex max-w-6xl items-center justify-between px-6 py-4">
+            <Link href="/" className="flex items-center gap-2">
+              <div className="h-9 w-9 rounded-2xl border border-white/10 bg-white/5" />
+              <div className="leading-tight">
+                <div className="text-sm font-semibold text-white/90">Kincaid IQ</div>
+                <div className="text-[11px] text-white/50">Integrity Engineering</div>
               </div>
-              <div className="mt-5 text-white/70 text-lg">
-                <span className="text-blue-300 animate-fade-in-1">Evidence receipts</span>,{" "}
-                <span className="text-violet-300 animate-fade-in-2">CFO-grade value accounting</span>, and{" "}
-                <span className="text-cyan-300 animate-fade-in-3">marketplace-native delivery</span> across Snowflake, Databricks, and ServiceNow.
-              </div>
-              <div className="mt-6">
-                <ProofBar />
-              </div>
+            </Link>
+
+            <div className="hidden items-center gap-6 text-sm text-white/70 md:flex">
+              <Link className="hover:text-white" href="/platform">
+                Platform
+              </Link>
+              <Link className="hover:text-white" href="/war-room">
+                War Room
+              </Link>
+              <Link className="hover:text-white" href="/evidence-receipts">
+                Evidence Receipts
+              </Link>
+              <Link className="hover:text-white" href="/verified-savings-ledger">
+                Verified Value
+              </Link>
+              <Link className="hover:text-white" href="/security-governance">
+                Security
+              </Link>
             </div>
-            <Hero3D />
-          </div>
 
-          {/* The Problem: Why Kincaid IQ Exists */}
-          <div className="mt-20 mb-16">
-            <div className="text-center max-w-4xl mx-auto">
-              <div className="text-sm uppercase tracking-wider text-amber-400 mb-3 animate-fade-in">The Problem</div>
-              <h2 className="text-4xl font-semibold tracking-tight animate-fade-in">
-                Cost and operational opacity is{" "}
-                <span className="gradient-amber-rose">killing enterprise value</span>
-              </h2>
-              <p className="mt-5 text-white/70 text-lg animate-fade-in">
-                CFOs, CIOs, and CEOs face the same recurring nightmare: vendors claim savings, consultants promise transformation, 
-                but <span className="text-rose-300 font-medium">no one can prove it</span>. Millions are spent on initiatives with no auditable ledger, 
-                no evidence trail, and no way to verify actual value delivered.
+            <div className="flex items-center gap-2">
+              <Button asChild variant="ghost" className="hidden rounded-2xl md:inline-flex">
+                <Link href="/contact">Contact</Link>
+              </Button>
+              <CalendlyPopupButton
+                url="https://calendly.com/jer-kincaidrmc/30min"
+                className="rounded-2xl bg-white text-black hover:bg-white/90"
+              >
+                Book 30 min
+              </CalendlyPopupButton>
+            </div>
+          </div>
+        </div>
+
+        {/* Hero */}
+        <div className="mx-auto max-w-6xl px-6 pt-12">
+          <motion.div initial="hidden" animate="show" variants={stagger}>
+            <motion.div variants={fadeUp} className="flex flex-wrap items-center gap-2">
+              <LuxTag>Audit-grade truth, not dashboard vibes</LuxTag>
+              <span className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-3 py-1 text-xs text-white/70">
+                <Lock className="h-3.5 w-3.5 text-white/60" />
+                Fail-closed integrity gates
+              </span>
+              <span className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-3 py-1 text-xs text-white/70">
+                <Receipt className="h-3.5 w-3.5 text-white/60" />
+                Evidence Receipts on every KPI
+              </span>
+            </motion.div>
+
+            <motion.div variants={fadeUp} className="mt-6">
+              <h1 className="text-4xl font-semibold tracking-tight text-white md:text-5xl">
+                Kincaid IQ turns operational + financial reality into{" "}
+                <span className="text-amber-200/90">CFO/Board-grade decisions</span>.
+              </h1>
+              <p className="mt-4 max-w-2xl text-base leading-relaxed text-white/65">
+                Not a BI layer. Not a chatbot. Kincaid IQ is an integrity-first enterprise intelligence platform:
+                every KPI, savings claim, and recommendation is provable, reconciled, and auditable — with an Evidence
+                Receipt attached.
               </p>
-            </div>
+            </motion.div>
 
-            <div className="mt-12 grid md:grid-cols-3 gap-6">
-              <div className="k-panel p-6 hover-lift border-rose-500/20">
-                <div className="text-rose-400 text-3xl mb-3 animate-fade-in">💸</div>
-                <div className="font-semibold text-lg gradient-amber-rose">Unverifiable Savings Claims</div>
-                <div className="text-sm text-white/65 mt-2">
-                  PBM rebates, software "optimizations," and AI tools promise millions in savings—but provide zero evidence receipts. 
-                  Finance teams can't audit, boards can't verify, and value evaporates.
-                </div>
+            <motion.div variants={fadeUp} className="mt-7 flex flex-col gap-3 sm:flex-row sm:items-center">
+              <CalendlyPopupButton
+                url="https://calendly.com/jer-kincaidrmc/30min"
+                className="h-11 rounded-2xl bg-white text-black hover:bg-white/90"
+              >
+                See the War Room demo <ArrowRight className="ml-2 h-4 w-4" />
+              </CalendlyPopupButton>
+
+              <Button asChild variant="outline" className="h-11 rounded-2xl border-white/15 bg-white/5 text-white hover:bg-white/10">
+                <Link href="/war-room">Explore War Room</Link>
+              </Button>
+
+              <div className="text-xs text-white/45">
+                Typical buyer reaction: &quot;Finally… numbers we can defend.&quot; 😄
               </div>
+            </motion.div>
 
-              <div className="k-panel p-6 hover-lift border-amber-500/20">
-                <div className="text-amber-400 text-3xl mb-3 animate-fade-in">🚨</div>
-                <div className="font-semibold text-lg text-amber-300">No Controls, No Accountability</div>
-                <div className="text-sm text-white/65 mt-2">
-                  Transformation initiatives lack monitoring frameworks. When things go wrong, there's no audit trail, no rollback capability, 
-                  and no way to prove fiduciary duty was maintained.
-                </div>
-              </div>
+            <motion.div variants={fadeUp} className="mt-10 grid grid-cols-1 gap-3 md:grid-cols-4">
+              <StatPill label="Integrity Mode" value="Fail-closed (UNVERIFIED if broken)" />
+              <StatPill label="Proof Object" value="Evidence Receipt (source → transform → tests)" />
+              <StatPill label="Value Trail" value="Modeled → Verified → Realized" />
+              <StatPill label="Audience" value="CFO / CHRO / COO / Board" />
+            </motion.div>
+          </motion.div>
+        </div>
 
-              <div className="k-panel p-6 hover-lift border-orange-500/20">
-                <div className="text-orange-400 text-3xl mb-3 animate-fade-in">📊</div>
-                <div className="font-semibold text-lg text-orange-300">Opacity Kills Valuation</div>
-                <div className="text-sm text-white/65 mt-2">
-                  Private equity, family offices, and capital markets demand proof of value creation. Without a ledger-based system, 
-                  enterprises can't demonstrate margin improvement or operational efficiency gains.
-                </div>
-              </div>
-            </div>
-          </div>
+        <Separator className="mx-auto mt-12 max-w-6xl bg-white/10" />
 
-          {/* Real-World Impact: Industry Examples */}
-          <div className="mt-20 mb-16 k-panel p-8 border-purple-500/20 hover-lift">
-            <div className="text-center mb-8">
-              <div className="text-sm uppercase tracking-wider text-violet-400 mb-3">Real-World Impact</div>
-              <h2 className="text-3xl font-semibold tracking-tight">
-                The <span className="gradient-violet-fuchsia">$47 billion problem</span> executives face every quarter
+        {/* The Way */}
+        <div className="mx-auto max-w-6xl px-6 py-12">
+          <motion.div initial="hidden" whileInView="show" viewport={{ once: true, amount: 0.2 }} variants={stagger}>
+            <motion.div variants={fadeUp} className="max-w-3xl">
+              <div className="text-xs uppercase tracking-[0.22em] text-white/45">The Way behind Kincaid IQ</div>
+              <h2 className="mt-3 text-2xl font-semibold text-white md:text-3xl">
+                If it can&apos;t be proven, it&apos;s not real.
               </h2>
-            </div>
-
-            <div className="grid md:grid-cols-2 gap-8">
-              <div className="space-y-6">
-                <div className="border-l-2 border-rose-400 pl-4 hover-lift">
-                  <div className="text-rose-300 font-semibold mb-1">Healthcare CFO, $250M Revenue</div>
-                  <div className="text-sm text-white/70">
-                    "Our PBM claimed <span className="text-rose-200 font-medium">$8.2M in rebate savings</span>. When we demanded receipts, 
-                    they provided a 47-page PDF with aggregated numbers. No transaction IDs, no member-level data, no way to reconcile 
-                    to our claims system. We suspected <span className="text-rose-300">$2.4M was phantom savings</span>, but couldn't prove it."
-                  </div>
-                </div>
-
-                <div className="border-l-2 border-orange-400 pl-4 hover-lift">
-                  <div className="text-orange-300 font-semibold mb-1">Manufacturing CIO, $180M Revenue</div>
-                  <div className="text-sm text-white/70">
-                    "We deployed an AI-driven supply chain optimization tool that promised <span className="text-orange-200 font-medium">18% cost reduction</span>. 
-                    Six months in, our CFO asked for proof. The vendor showed us a dashboard with green arrows and percentages—but 
-                    <span className="text-orange-300"> zero transaction-level evidence</span>. Board wanted receipts. We had none."
-                  </div>
-                </div>
-              </div>
-
-              <div className="space-y-6">
-                <div className="border-l-2 border-amber-400 pl-4 hover-lift">
-                  <div className="text-amber-300 font-semibold mb-1">Financial Services CEO, $320M Revenue</div>
-                  <div className="text-sm text-white/70">
-                    "PE firm conducting diligence asked: 'Can you prove your operational efficiency gains?' We had <span className="text-amber-200 font-medium">$12M in claimed savings</span> 
-                    from three consulting engagements. Zero audit trail. Zero evidence receipts. 
-                    <span className="text-amber-300"> They discounted our EBITDA by $9M</span> due to unverifiable improvements."
-                  </div>
-                </div>
-
-                <div className="border-l-2 border-violet-400 pl-4 hover-lift">
-                  <div className="text-violet-300 font-semibold mb-1">Retail CIO, $140M Revenue</div>
-                  <div className="text-sm text-white/70">
-                    "Cloud migration partner promised <span className="text-violet-200 font-medium">$4.7M annual savings</span>. Post-migration, our AWS bill went UP by $1.2M. 
-                    When confronted, they said 'savings are projected over 3 years.' No baseline, no variance tracking, 
-                    <span className="text-violet-300"> no accountability</span>. CFO demanded we prove ROI to the board—we couldn't."
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <div className="mt-8 text-center">
-              <div className="inline-flex items-center gap-2 k-panel px-6 py-3 border-fuchsia-400/30 animate-pulse-glow">
-                <span className="text-fuchsia-300 text-2xl">⚠️</span>
-                <span className="text-white/80">
-                  <span className="gradient-violet-fuchsia font-semibold">$47B in enterprise spend annually</span> lacks verifiable evidence receipts
-                </span>
-              </div>
-            </div>
-          </div>
-
-          {/* The Cost of Opacity: Real Examples with Animated Stats */}
-          <div className="mt-20 mb-16">
-            <div className="text-center mb-12">
-              <div className="text-sm uppercase tracking-wider text-rose-400 mb-3">The Cost of Opacity</div>
-              <h2 className="text-3xl font-semibold tracking-tight">
-                Real examples: <span className="gradient-amber-rose">Where millions evaporate</span>
-              </h2>
-            </div>
-
-            <div className="grid md:grid-cols-3 gap-6">
-              <div className="k-panel p-6 hover-lift border-rose-500/20">
-                <div className="text-center mb-4">
-                  <div className="text-5xl font-bold gradient-amber-rose animate-count-up">$47M</div>
-                  <div className="text-xs text-white/50 mt-2">Regional Healthcare System PBM Claim</div>
-                </div>
-                <div className="text-sm text-white/70 mb-3">
-                  $380M revenue healthcare system with <span className="text-rose-300">$47M in "rebate savings"</span> promised by PBM over 3 years.
-                </div>
-                <div className="border-t border-white/10 pt-3 mt-3">
-                  <div className="flex justify-between items-center mb-2">
-                    <span className="text-xs text-white/50">Proven & Realized</span>
-                    <span className="text-emerald-300 font-semibold">$11M</span>
-                  </div>
-                  <div className="flex justify-between items-center">
-                    <span className="text-xs text-white/50">Evaporated Value</span>
-                    <span className="text-rose-300 font-semibold">$36M (76%)</span>
-                  </div>
-                </div>
-              </div>
-
-              <div className="k-panel p-6 hover-lift border-violet-500/20">
-                <div className="text-center mb-4">
-                  <div className="text-5xl font-bold gradient-violet-fuchsia animate-count-up">200+</div>
-                  <div className="text-xs text-white/50 mt-2">AI "Opportunities" Identified</div>
-                </div>
-                <div className="text-sm text-white/70 mb-3">
-                  $420M revenue financial services firm committed to "AI transformation" with <span className="text-violet-300">200+ use cases</span>.
-                </div>
-                <div className="border-t border-white/10 pt-3 mt-3">
-                  <div className="flex justify-between items-center mb-2">
-                    <span className="text-xs text-white/50">Controlled Deployments</span>
-                    <span className="text-emerald-300 font-semibold">12 agents</span>
-                  </div>
-                  <div className="flex justify-between items-center">
-                    <span className="text-xs text-white/50">Measured ROI</span>
-                    <span className="text-violet-300 font-semibold">$3.2M verified</span>
-                  </div>
-                </div>
-              </div>
-
-              <div className="k-panel p-6 hover-lift border-amber-500/20">
-                <div className="text-center mb-4">
-                  <div className="text-5xl font-bold text-amber-300 animate-count-up">$18M</div>
-                  <div className="text-xs text-white/50 mt-2">PE Portfolio "Cost Synergies"</div>
-                </div>
-                <div className="text-sm text-white/70 mb-3">
-                  Mid-market PE portfolio company with <span className="text-amber-300">$18M in claimed synergies</span>. Buyer demanded proof.
-                </div>
-                <div className="border-t border-white/10 pt-3 mt-3">
-                  <div className="flex justify-between items-center mb-2">
-                    <span className="text-xs text-white/50">Proven Realized</span>
-                    <span className="text-emerald-300 font-semibold">$7.4M</span>
-                  </div>
-                  <div className="flex justify-between items-center">
-                    <span className="text-xs text-white/50">In-Flight (Tracked)</span>
-                    <span className="text-cyan-300 font-semibold">$4.1M</span>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          {/* The Solution: Why Kincaid IQ is Different */}
-          <div className="mt-20 mb-16">
-            <div className="text-center max-w-4xl mx-auto">
-              <div className="text-sm uppercase tracking-wider text-emerald-400 mb-3">The Kincaid IQ Difference</div>
-              <h2 className="text-4xl font-semibold tracking-tight">
-                Make every dollar of value{" "}
-                <span className="gradient-emerald-teal">
-                  provable and auditable
-                </span>
-              </h2>
-              <p className="mt-5 text-white/70 text-lg">
-                Kincaid IQ transforms cost and operational opacity into a <span className="text-emerald-300 font-medium">decision-grade value ledger</span>. 
-                Every savings claim gets an evidence receipt. Every transformation gets controls monitoring. 
-                Every board report becomes audit-ready with one click.
+              <p className="mt-4 text-white/65">
+                Organizations don&apos;t fail because they lack dashboards. They fail because they can&apos;t trust the numbers,
+                can&apos;t reconcile the story, and can&apos;t prove impact. Kincaid IQ treats truth like an engineered system:
+                every metric ships with provenance, quality tests, freshness, and ownership.
               </p>
-            </div>
+              <p className="mt-4 text-white/65">
+                The UI is the surface. The asset is Integrity Engineering — the discipline that prevents &quot;pretty lies&quot;
+                and forces operational reality to be auditable.
+              </p>
+            </motion.div>
 
-            <div className="mt-12 k-panel k-glow p-8 border-emerald-500/20">
-              <div className="grid md:grid-cols-2 gap-8">
-                <div>
-                  <div className="text-rose-400 font-semibold mb-3 flex items-center gap-2">
-                    <span className="text-xl">✗</span> Traditional Approach
+            <motion.div variants={fadeUp} className="mt-8 grid grid-cols-1 gap-4 md:grid-cols-3">
+              <FeatureCard
+                icon={<ShieldCheck className="h-5 w-5 text-emerald-200/90" />}
+                title="Integrity Gates"
+                desc="KPIs render only when receipts verify. Otherwise: UNVERIFIED."
+                bullets={[
+                  "Freshness + DQ tests enforced",
+                  "Definition versioning (no silent drift)",
+                  "Explicit reasons when blocked",
+                ]}
+              />
+              <FeatureCard
+                icon={<Receipt className="h-5 w-5 text-amber-200/90" />}
+                title="Evidence Receipts"
+                desc="Audit-grade proof object attached to every number."
+                bullets={[
+                  "Source + transform hash lineage",
+                  "Owner + confidence scoring",
+                  "Reconciliation metadata",
+                ]}
+              />
+              <FeatureCard
+                icon={<Activity className="h-5 w-5 text-sky-200/90" />}
+                title="Verified Value"
+                desc="Modeled → Verified → Realized impact, tracked like finance."
+                bullets={[
+                  "Variance attribution narratives",
+                  "Action packets with owners + SLA",
+                  "Realization tracking (closed loop)",
+                ]}
+              />
+            </motion.div>
+          </motion.div>
+        </div>
+
+        <Separator className="mx-auto max-w-6xl bg-white/10" />
+
+        {/* What it is + Who it is for */}
+        <div className="mx-auto max-w-6xl px-6 py-12">
+          <motion.div initial="hidden" whileInView="show" viewport={{ once: true, amount: 0.2 }} variants={stagger}>
+            <motion.div variants={fadeUp} className="grid grid-cols-1 gap-8 md:grid-cols-2">
+              <div>
+                <div className="text-xs uppercase tracking-[0.22em] text-white/45">What it is</div>
+                <h2 className="mt-3 text-2xl font-semibold text-white md:text-3xl">
+                  A CFO-grade intelligence platform, engineered for trust.
+                </h2>
+                <p className="mt-4 text-white/65">
+                  Kincaid IQ is an enterprise intelligence system that converts operational + financial data into
+                  decisions you can defend. It combines a War Room (real-time executive lanes), Evidence Receipts (audit
+                  trail), and a Verified Value Ledger (impact tracking).
+                </p>
+
+                <div className="mt-6 grid grid-cols-1 gap-3 sm:grid-cols-2">
+                  <div className="rounded-2xl border border-white/10 bg-white/5 p-4">
+                    <div className="flex items-center gap-2 text-sm font-semibold text-white">
+                      <Layers className="h-4 w-4 text-white/70" />
+                      War Room
+                    </div>
+                    <div className="mt-2 text-sm text-white/60">
+                      Executive lanes for EBITDA, AR, claims integrity, and workforce efficiency.
+                    </div>
                   </div>
-                  <ul className="space-y-3 text-sm text-white/60">
-                    <li className="flex items-start gap-2">
-                      <span className="text-rose-400 mt-1">✗</span>
-                      <span>Vendor provides savings estimate in PowerPoint deck</span>
-                    </li>
-                    <li className="flex items-start gap-2">
-                      <span className="text-rose-400 mt-1">✗</span>
-                      <span>Finance team manually reconciles invoices months later</span>
-                    </li>
-                    <li className="flex items-start gap-2">
-                      <span className="text-rose-400 mt-1">✗</span>
-                      <span>No audit trail, no evidence receipts, no accountability</span>
-                    </li>
-                    <li className="flex items-start gap-2">
-                      <span className="text-rose-400 mt-1">✗</span>
-                      <span>Board asks "where's the value?" — no clear answer</span>
-                    </li>
-                  </ul>
-                </div>
 
-                <div>
-                  <div className="text-emerald-400 font-semibold mb-3 flex items-center gap-2">
-                    <span className="text-xl">✓</span> Kincaid IQ Approach
+                  <div className="rounded-2xl border border-white/10 bg-white/5 p-4">
+                    <div className="flex items-center gap-2 text-sm font-semibold text-white">
+                      <Receipt className="h-4 w-4 text-white/70" />
+                      Evidence
+                    </div>
+                    <div className="mt-2 text-sm text-white/60">
+                      Provenance + quality + freshness + owner, per metric, per claim.
+                    </div>
                   </div>
-                  <ul className="space-y-3 text-sm text-white/90">
-                    <li className="flex items-start gap-2">
-                      <span className="text-emerald-400 mt-1">✓</span>
-                      <span>Every transaction generates an <span className="text-emerald-300">evidence receipt</span> with source data</span>
-                    </li>
-                    <li className="flex items-start gap-2">
-                      <span className="text-emerald-400 mt-1">✓</span>
-                      <span>Real-time value ledger updates automatically in CFO dashboard</span>
-                    </li>
-                    <li className="flex items-start gap-2">
-                      <span className="text-emerald-400 mt-1">✓</span>
-                      <span>Controls monitoring tracks variance, alerts on anomalies</span>
-                    </li>
-                    <li className="flex items-start gap-2">
-                      <span className="text-emerald-400 mt-1">✓</span>
-                      <span>Board-ready reports: auditable, explainable, defensible</span>
-                    </li>
-                  </ul>
+
+                  <div className="rounded-2xl border border-white/10 bg-white/5 p-4">
+                    <div className="flex items-center gap-2 text-sm font-semibold text-white">
+                      <ShieldCheck className="h-4 w-4 text-white/70" />
+                      Governance
+                    </div>
+                    <div className="mt-2 text-sm text-white/60">
+                      Fail-closed controls that prevent silent errors and uncontrolled narratives.
+                    </div>
+                  </div>
+
+                  <div className="rounded-2xl border border-white/10 bg-white/5 p-4">
+                    <div className="flex items-center gap-2 text-sm font-semibold text-white">
+                      <Activity className="h-4 w-4 text-white/70" />
+                      Verified Value
+                    </div>
+                    <div className="mt-2 text-sm text-white/60">
+                      Modeled → Verified → Realized value, tracked like finance.
+                    </div>
+                  </div>
                 </div>
               </div>
+
+              <div>
+                <div className="text-xs uppercase tracking-[0.22em] text-white/45">Who it&apos;s for</div>
+                <h2 className="mt-3 text-2xl font-semibold text-white md:text-3xl">
+                  Leaders who get punished for unprovable numbers.
+                </h2>
+                <p className="mt-4 text-white/65">
+                  If your job requires explaining performance, reconciling financial truth, or defending decisions to a
+                  board… this is built for you.
+                </p>
+
+                <div className="mt-6 flex flex-wrap gap-2">
+                  {[
+                    "CFO",
+                    "CHRO",
+                    "COO",
+                    "VP Finance / RevCycle",
+                    "Benefits Leaders",
+                    "Controllers",
+                    "Risk & Compliance",
+                    "Board / Audit Committee",
+                    "PE / M&A Operators",
+                    "Family Office Governance",
+                  ].map((x) => (
+                    <Badge
+                      key={x}
+                      className="rounded-2xl border border-white/10 bg-white/5 px-3 py-1 text-white/75"
+                    >
+                      {x}
+                    </Badge>
+                  ))}
+                </div>
+
+                <div className="mt-7 rounded-3xl border border-amber-400/15 bg-[linear-gradient(180deg,rgba(245,212,142,0.10),rgba(255,255,255,0.03))] p-6">
+                  <div className="flex items-start gap-3">
+                    <div className="rounded-2xl border border-white/10 bg-black/30 p-3">
+                      <Lock className="h-5 w-5 text-amber-200/90" />
+                    </div>
+                    <div>
+                      <div className="text-sm font-semibold text-white">Procurement-safe positioning</div>
+                      <div className="mt-1 text-sm text-white/65">
+                        Kincaid IQ is designed to reduce buyer risk: auditability, governance, and integrity controls
+                        aren&apos;t &quot;extra features&quot; — they&apos;re the core product.
+                      </div>
+                      <div className="mt-4 flex gap-2">
+                        <Button asChild variant="outline" className="rounded-2xl border-white/15 bg-white/5 text-white hover:bg-white/10">
+                          <Link href="/security-governance">Security & Governance</Link>
+                        </Button>
+                        <Button asChild variant="ghost" className="rounded-2xl text-white/80 hover:text-white">
+                          <Link href="/evidence-receipts">
+                            See Evidence Receipts <ChevronRight className="ml-1 h-4 w-4" />
+                          </Link>
+                        </Button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </motion.div>
+          </motion.div>
+        </div>
+
+        <Separator className="mx-auto max-w-6xl bg-white/10" />
+
+        {/* War Room Lanes */}
+        <div className="mx-auto max-w-6xl px-6 py-12">
+          <motion.div initial="hidden" whileInView="show" viewport={{ once: true, amount: 0.2 }} variants={stagger}>
+            <motion.div variants={fadeUp} className="flex items-end justify-between gap-6">
+              <div>
+                <div className="text-xs uppercase tracking-[0.22em] text-white/45">War Room Lanes</div>
+                <h2 className="mt-3 text-2xl font-semibold text-white md:text-3xl">
+                  Executive lanes that drill into ledger-level truth.
+                </h2>
+                <p className="mt-3 max-w-2xl text-white/65">
+                  The tiles are buttons. Every click reveals the underlying dataset, KPI badges, and the Evidence Receipt
+                  behind the number.
+                </p>
+              </div>
+
+              <Button asChild className="hidden rounded-2xl bg-white text-black hover:bg-white/90 md:inline-flex">
+                <Link href="/war-room">
+                  Open War Room <ChevronRight className="ml-1 h-4 w-4" />
+                </Link>
+              </Button>
+            </motion.div>
+
+            <motion.div variants={fadeUp} className="mt-7 grid grid-cols-1 gap-4 md:grid-cols-2">
+              <LaneTile
+                title="EBITDA Recovery"
+                subtitle="Verified arbitrage events + realization tracking"
+                kpi="Recoverable EBITDA"
+                href="/war-room/ebitda"
+              />
+              <LaneTile
+                title="AR & Cash Velocity"
+                subtitle="Aging, denials, collections, payer mix drag"
+                kpi="DSO • AR>90"
+                href="/war-room/ar"
+              />
+              <LaneTile
+                title="Claims Integrity"
+                subtitle="Eligibility, COB, pricing variance, contract compliance"
+                kpi="Leakage • Variance"
+                href="/war-room/claims"
+              />
+              <LaneTile
+                title="Workforce Efficiency"
+                subtitle="Throughput, cycle time, utilization, staffing constraints"
+                kpi="FTE/1k • Cycle"
+                href="/war-room/workforce"
+              />
+            </motion.div>
+          </motion.div>
+        </div>
+
+        {/* Bottom CTA */}
+        <div className="mx-auto max-w-6xl px-6 pb-14">
+          <div className="rounded-[2rem] border border-white/10 bg-[linear-gradient(180deg,rgba(255,255,255,0.06),rgba(255,255,255,0.03))] p-8 shadow-[0_0_0_1px_rgba(255,255,255,0.04)]">
+            <div className="flex flex-col gap-6 md:flex-row md:items-center md:justify-between">
+              <div className="max-w-2xl">
+                <div className="text-xs uppercase tracking-[0.22em] text-white/45">Next step</div>
+                <div className="mt-2 text-2xl font-semibold text-white">
+                  Want the &quot;real as hell&quot; demo? Let&apos;s run it live.
+                </div>
+                <div className="mt-2 text-white/65">
+                  We&apos;ll walk the War Room, drill into lane datasets, and show Evidence Receipts proving every KPI.
+                </div>
+              </div>
+
+              <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
+                <CalendlyPopupButton
+                  url="https://calendly.com/jer-kincaidrmc/30min"
+                  className="h-11 rounded-2xl bg-white text-black hover:bg-white/90"
+                >
+                  Book 30 min <ArrowRight className="ml-2 h-4 w-4" />
+                </CalendlyPopupButton>
+
+                <Button asChild variant="outline" className="h-11 rounded-2xl border-white/15 bg-white/5 text-white hover:bg-white/10">
+                  <Link href="/evidence-receipts">Open Evidence Receipts</Link>
+                </Button>
+              </div>
+            </div>
+
+            <div className="mt-6 text-xs text-white/45">
+              Kincaid IQ is built for internal governance and enterprise decision support. It&apos;s not personal investing advice.
             </div>
           </div>
-
-          {/* Core Pillars with Interactive Cards */}
-          <div className="mt-20 mb-16">
-            <div className="text-center mb-12">
-              <div className="text-sm uppercase tracking-wider text-cyan-400 mb-3">Core System Pillars</div>
-              <h2 className="text-3xl font-semibold tracking-tight">
-                Built for <span className="gradient-blue-cyan">CFO rigor</span>, delivered through <span className="gradient-emerald-teal">marketplace scale</span>
-              </h2>
-            </div>
-
-            <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
-              <div className="k-panel p-6 hover-lift border-blue-500/20">
-                <div className="text-3xl mb-3">📋</div>
-                <div className="font-semibold text-lg gradient-blue-cyan mb-2">Evidence Receipts</div>
-                <div className="text-sm text-white/65">
-                  Every cost reduction, optimization, or transformation action generates a <span className="text-blue-300">cryptographically-signed evidence receipt</span> with source data, calculation methodology, and audit trail.
-                </div>
-              </div>
-
-              <div className="k-panel p-6 hover-lift border-cyan-500/20">
-                <div className="text-3xl mb-3">💎</div>
-                <div className="font-semibold text-lg text-cyan-300 mb-2">CFO-Grade Value Ledger</div>
-                <div className="text-sm text-white/65">
-                  A real-time, <span className="text-cyan-300">auditable ledger</span> that tracks verified savings, cost avoidance, and margin improvements with full reconciliation to source systems and general ledger.
-                </div>
-              </div>
-
-              <div className="k-panel p-6 hover-lift border-violet-500/20">
-                <div className="text-3xl mb-3">🛡️</div>
-                <div className="font-semibold text-lg gradient-violet-fuchsia mb-2">Controls Monitoring</div>
-                <div className="text-sm text-white/65">
-                  Continuous surveillance of transformation initiatives with <span className="text-violet-300">variance detection, anomaly alerts</span>, and automated rollback capabilities to maintain fiduciary duty.
-                </div>
-              </div>
-
-              <div className="k-panel p-6 hover-lift border-emerald-500/20">
-                <div className="text-3xl mb-3">🌐</div>
-                <div className="font-semibold text-lg gradient-emerald-teal mb-2">Marketplace-Native Delivery</div>
-                <div className="text-sm text-white/65">
-                  Built-in distribution through <span className="text-emerald-300">Snowflake, Databricks, and ServiceNow</span> marketplaces. Low delivery friction, high trust, instant provisioning for enterprise buyers.
-                </div>
-              </div>
-            </div>
-          </div>
-
-          {/* Use Cases by Role */}
-          <div className="mt-20 mb-16">
-            <div className="text-center mb-12">
-              <div className="text-sm uppercase tracking-wider text-violet-400 mb-3">Decision-Maker Scenarios</div>
-              <h2 className="text-3xl font-semibold tracking-tight">
-                Purpose-built for <span className="gradient-violet-fuchsia">C-suite accountability</span>
-              </h2>
-            </div>
-
-            <div className="grid md:grid-cols-3 gap-6">
-              <div className="k-panel p-6 hover-lift border-emerald-500/20">
-                <div className="text-emerald-400 font-bold text-sm mb-2">CFO</div>
-                <div className="font-semibold text-lg mb-3 gradient-emerald-teal">Prove Value to the Board</div>
-                <div className="text-sm text-white/65">
-                  "Our PBM claims $4.2M in rebate savings. Kincaid IQ's evidence receipts proved only $2.8M was real. 
-                  We renegotiated the contract with audit-ready data. Board confidence restored."
-                </div>
-                <div className="mt-4 space-y-2">
-                  <Link href="/ledger" className="text-emerald-400 text-sm hover:underline flex items-center gap-1">
-                    Verified Savings Ledger <span>→</span>
-                  </Link>
-                  <Link href="/actuarial-benefits" className="text-emerald-400 text-sm hover:underline flex items-center gap-1">
-                    Actuarial Benefits Practice <span>→</span>
-                  </Link>
-                </div>
-              </div>
-
-              <div className="k-panel p-6 hover-lift border-violet-500/20">
-                <div className="text-violet-400 font-bold text-sm mb-2">CIO</div>
-                <div className="font-semibold text-lg mb-3 gradient-violet-fuchsia">Control AI Transformation Risk</div>
-                <div className="text-sm text-white/65">
-                  "We're deploying 47 AI agents across ops and sales. Kincaid IQ's 12-month policy gives us a governance framework, 
-                  variance monitoring, and kill switches if anything goes sideways."
-                </div>
-                <div className="mt-4">
-                  <Link href="/agentic-transformation" className="text-violet-400 text-sm hover:underline flex items-center gap-1">
-                    Agentic Transformation <span>→</span>
-                  </Link>
-                </div>
-              </div>
-
-              <div className="k-panel p-6 hover-lift border-cyan-500/20">
-                <div className="text-cyan-400 font-bold text-sm mb-2">CEO</div>
-                <div className="font-semibold text-lg mb-3 gradient-blue-cyan">Increase Enterprise Valuation</div>
-                <div className="text-sm text-white/65">
-                  "PE and family office investors demand proof of margin improvement. Kincaid IQ's value ledger shows verified savings, 
-                  operational efficiency gains, and controls—all audit-ready for diligence."
-                </div>
-                <div className="mt-4">
-                  <Link href="/capital-markets" className="text-cyan-400 text-sm hover:underline flex items-center gap-1">
-                    Capital Markets <span>→</span>
-                  </Link>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          {/* Trust Indicators with Animated Elements */}
-          <div className="mt-20 mb-16 k-panel p-8 border-violet-500/20">
-            <div className="text-center mb-8">
-              <h3 className="text-2xl font-semibold gradient-violet-fuchsia">Enterprise-Grade Security and Governance</h3>
-              <p className="text-white/60 mt-2">Built for regulated industries with fiduciary duty requirements</p>
-            </div>
-
-            <div className="grid md:grid-cols-4 gap-6 text-center">
-              <div className="hover-lift">
-                <div className="text-3xl mb-2">🔒</div>
-                <div className="font-semibold text-sm text-violet-300">SOC 2 Type II</div>
-                <div className="text-xs text-white/50 mt-1">Audited controls</div>
-              </div>
-              <div className="hover-lift">
-                <div className="text-3xl mb-2">🛡️</div>
-                <div className="font-semibold text-sm text-emerald-300">HIPAA Compliant</div>
-                <div className="text-xs text-white/50 mt-1">Healthcare-ready</div>
-              </div>
-              <div className="hover-lift">
-                <div className="text-3xl mb-2">📋</div>
-                <div className="font-semibold text-sm text-cyan-300">Audit-Ready Trails</div>
-                <div className="text-xs text-white/50 mt-1">Full provenance</div>
-              </div>
-              <div className="hover-lift">
-                <div className="text-3xl mb-2">⚡</div>
-                <div className="font-semibold text-sm text-amber-300">Real-Time Monitoring</div>
-                <div className="text-xs text-white/50 mt-1">Continuous controls</div>
-              </div>
-            </div>
-          </div>
-
-          <CTA />
-        </Container>
+        </div>
       </div>
     </>
   );

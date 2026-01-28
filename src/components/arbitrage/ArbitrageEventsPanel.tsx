@@ -32,6 +32,22 @@ type ActionPacket = {
   artifacts: Array<{ name: string; type: "PDF" | "LINK" | "SQL" | "TICKET"; value: string }>;
 };
 
+type RelatedTransaction = {
+  row_id: string;
+  type: "CLAIM" | "INVOICE" | "ELIGIBILITY" | "RX";
+  member_id?: string;
+  claim_id?: string;
+  invoice_id?: string;
+  service_date?: string;
+  paid_amount?: number;
+  allowed_amount?: number;
+  units?: number;
+  vendor?: string;
+  payer?: string;
+  status?: string;
+  reason?: string;
+};
+
 export type ArbitrageEvent = {
   event_id: string;
   title: string;
@@ -74,6 +90,11 @@ export type ArbitrageEvent = {
     detection_query: string;
     validation_query: string;
   };
+
+  related?: {
+    summary: Array<{ label: string; value: string; note?: string }>;
+    transactions: RelatedTransaction[];
+  };
 };
 
 function formatMoney(n: number) {
@@ -104,7 +125,7 @@ function pct(x: number) {
   return `${Math.round(x * 100)}%`;
 }
 
-type TabKey = "SUMMARY" | "EVIDENCE" | "MODEL" | "LINEAGE" | "ACTIONS" | "AUDIT" | "SQL";
+type TabKey = "SUMMARY" | "EVIDENCE" | "MODEL" | "LINEAGE" | "ACTIONS" | "AUDIT" | "SQL" | "TRANSACTIONS";
 
 export function ArbitrageEventsPanel({
   events,
@@ -227,9 +248,35 @@ export function ArbitrageEventsPanel({
                 </div>
               </div>
 
+              <div className="mt-3 flex flex-wrap items-center gap-2">
+                <span
+                  className={`rounded-full border px-3 py-1 text-xs ${
+                    selected.evidence.verified
+                      ? "border-zinc-700 bg-zinc-900 text-zinc-100"
+                      : "border-zinc-700 bg-zinc-950 text-zinc-300"
+                  }`}
+                  title={
+                    selected.evidence.verified
+                      ? "Evidence receipt VERIFIED"
+                      : "Not VERIFIED. Complete DQ + lineage validation to unlock exports."
+                  }
+                >
+                  {selected.evidence.verified ? "VERIFIED ✅" : "NOT VERIFIED ⚠️"}
+                </span>
+
+                <ExportPacketButton event={selected} disabled={!selected.evidence.verified} />
+
+                <button
+                  className="rounded-full border border-zinc-800 bg-zinc-950 px-3 py-1 text-xs text-zinc-300 hover:bg-zinc-900/60"
+                  onClick={() => alert(`Create ticket for ${selected.event_id} (wire to ServiceNow/Jira next)`)}
+                >
+                  Create Ticket →
+                </button>
+              </div>
+
               <div className="mt-4 flex flex-wrap gap-2">
                 {(
-                  ["SUMMARY", "EVIDENCE", "MODEL", "LINEAGE", "ACTIONS", "AUDIT", "SQL"] as TabKey[]
+                  ["SUMMARY", "EVIDENCE", "MODEL", "LINEAGE", "ACTIONS", "AUDIT", "SQL", "TRANSACTIONS"] as TabKey[]
                 ).map((k) => (
                   <button
                     key={k}
@@ -254,6 +301,7 @@ export function ArbitrageEventsPanel({
               {tab === "ACTIONS" && <ActionsTab e={selected} />}
               {tab === "AUDIT" && <AuditTab e={selected} />}
               {tab === "SQL" && <SqlTab e={selected} />}
+              {tab === "TRANSACTIONS" && <TransactionsTab e={selected} />}
             </div>
           </div>
         )}
@@ -493,5 +541,253 @@ function SqlTab({ e }: { e: ArbitrageEvent }) {
         </pre>
       </Section>
     </>
+  );
+}
+
+function TransactionsTab({ e }: { e: ArbitrageEvent }) {
+  if (!e.related || !e.related.transactions.length) {
+    return (
+      <Section title="Related Transactions">
+        No transactions attached. Add related transactions to prove provenance at the row level.
+      </Section>
+    );
+  }
+
+  const { summary, transactions } = e.related;
+
+  return (
+    <>
+      {summary && summary.length > 0 && (
+        <Section title="Transaction Summary">
+          <div className="grid grid-cols-3 gap-3">
+            {summary.map((s) => (
+              <div key={s.label} className="rounded-xl border border-zinc-800 p-3">
+                <div className="text-xs text-zinc-400">{s.label}</div>
+                <div className="text-sm font-semibold text-zinc-100">{s.value}</div>
+                {s.note ? <div className="mt-1 text-[11px] text-zinc-400">{s.note}</div> : null}
+              </div>
+            ))}
+          </div>
+        </Section>
+      )}
+
+      <Section title="Transaction Details">
+        <div className="overflow-x-auto">
+          <table className="w-full text-xs">
+            <thead>
+              <tr className="border-b border-zinc-800 text-left text-zinc-400">
+                <th className="pb-2 pr-3">Type</th>
+                <th className="pb-2 pr-3">Member ID</th>
+                <th className="pb-2 pr-3">Claim/Invoice ID</th>
+                <th className="pb-2 pr-3">Service Date</th>
+                <th className="pb-2 pr-3 text-right">Paid</th>
+                <th className="pb-2 pr-3 text-right">Allowed</th>
+                <th className="pb-2 pr-3">Vendor/Payer</th>
+                <th className="pb-2 pr-3">Status</th>
+              </tr>
+            </thead>
+            <tbody>
+              {transactions.map((t) => (
+                <tr key={t.row_id} className="border-b border-zinc-800/50">
+                  <td className="py-2 pr-3 text-zinc-200">{t.type}</td>
+                  <td className="py-2 pr-3 text-zinc-200">{t.member_id ?? "—"}</td>
+                  <td className="py-2 pr-3 text-zinc-200">{t.claim_id || t.invoice_id || "—"}</td>
+                  <td className="py-2 pr-3 text-zinc-200">
+                    {t.service_date ? new Date(t.service_date).toLocaleDateString() : "—"}
+                  </td>
+                  <td className="py-2 pr-3 text-right text-zinc-200">
+                    {t.paid_amount != null ? formatMoney(t.paid_amount) : "—"}
+                  </td>
+                  <td className="py-2 pr-3 text-right text-zinc-200">
+                    {t.allowed_amount != null ? formatMoney(t.allowed_amount) : "—"}
+                  </td>
+                  <td className="py-2 pr-3 text-zinc-200">{t.vendor || t.payer || "—"}</td>
+                  <td className="py-2 pr-3 text-zinc-200">{t.status || "—"}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </Section>
+    </>
+  );
+}
+
+function ExportPacketButton({ event, disabled }: { event: ArbitrageEvent; disabled: boolean }) {
+  const [open, setOpen] = React.useState(false);
+
+  return (
+    <>
+      <button
+        className={`rounded-full border px-3 py-1 text-xs ${
+          disabled
+            ? "cursor-not-allowed border-zinc-800 bg-zinc-950 text-zinc-500"
+            : "border-zinc-700 bg-zinc-900 text-zinc-100 hover:bg-zinc-800"
+        }`}
+        disabled={disabled}
+        onClick={() => setOpen(true)}
+        title={disabled ? "Requires VERIFIED evidence receipt" : "Open print-ready action packet"}
+      >
+        Export Packet ⤓
+      </button>
+
+      {open ? <PacketModal event={event} onClose={() => setOpen(false)} /> : null}
+    </>
+  );
+}
+
+function PacketModal({ event, onClose }: { event: ArbitrageEvent; onClose: () => void }) {
+  const printPacket = () => window.print();
+
+  return (
+    <div className="fixed inset-0 z-[60] flex items-center justify-center bg-black/70 p-4">
+      <div className="w-full max-w-5xl overflow-hidden rounded-2xl border border-zinc-800 bg-zinc-950 shadow-2xl">
+        <div className="flex items-center justify-between border-b border-zinc-800 p-4">
+          <div>
+            <div className="text-sm font-semibold text-zinc-100">
+              Action Packet — {event.event_id}
+            </div>
+            <div className="text-xs text-zinc-400">
+              Print-ready executive packet (summary + evidence + model + actions)
+            </div>
+          </div>
+
+          <div className="flex items-center gap-2">
+            <button
+              onClick={printPacket}
+              className="rounded-full border border-zinc-700 bg-zinc-900 px-3 py-1 text-xs text-zinc-100 hover:bg-zinc-800"
+            >
+              Print / Save PDF 🖨️
+            </button>
+            <button
+              onClick={onClose}
+              className="rounded-full border border-zinc-800 bg-zinc-950 px-3 py-1 text-xs text-zinc-300 hover:bg-zinc-900/60"
+            >
+              Close ✕
+            </button>
+          </div>
+        </div>
+
+        <div className="max-h-[75vh] overflow-auto p-6">
+          <div className="mb-4">
+            <div className="text-xl font-semibold text-zinc-100">{event.title}</div>
+            <div className="mt-1 text-xs text-zinc-400">
+              Severity: {event.severity} • Category: {event.category} • Status: {event.status}
+            </div>
+          </div>
+
+          <PacketSection title="Executive Summary">
+            <p className="text-sm text-zinc-200">{event.narrative.executive_summary}</p>
+          </PacketSection>
+
+          <div className="grid grid-cols-2 gap-4">
+            <PacketSection title="Why It Matters">
+              <p className="text-sm text-zinc-200">{event.narrative.why_it_matters}</p>
+            </PacketSection>
+            <PacketSection title="Scope">
+              <p className="text-sm text-zinc-200">{event.narrative.scope}</p>
+            </PacketSection>
+          </div>
+
+          <PacketSection title="Evidence Receipt (VERIFIED)">
+            <div className="grid grid-cols-2 gap-3 text-xs text-zinc-200">
+              <div>
+                <div className="text-zinc-400">Receipt ID</div>
+                <div className="text-zinc-100">{event.evidence.receipt_id}</div>
+              </div>
+              <div>
+                <div className="text-zinc-400">Owner</div>
+                <div className="text-zinc-100">{event.evidence.owner}</div>
+              </div>
+              <div>
+                <div className="text-zinc-400">Source System</div>
+                <div className="text-zinc-100">{event.evidence.source_system}</div>
+              </div>
+              <div>
+                <div className="text-zinc-400">Freshness</div>
+                <div className="text-zinc-100">{event.evidence.freshness_minutes} minutes</div>
+              </div>
+              <div className="col-span-2">
+                <div className="text-zinc-400">Artifact Hash</div>
+                <div className="break-all text-zinc-100">{event.evidence.source_artifact_hash}</div>
+              </div>
+              <div className="col-span-2">
+                <div className="text-zinc-400">Transform Hash</div>
+                <div className="break-all text-zinc-100">{event.evidence.transform_hash}</div>
+              </div>
+            </div>
+
+            <div className="mt-3 rounded-xl border border-zinc-800 p-3">
+              <div className="mb-2 text-xs font-semibold text-zinc-100">DQ Tests</div>
+              <div className="space-y-1 text-xs text-zinc-200">
+                {event.evidence.dq_tests.map((t) => (
+                  <div key={t.name} className="flex items-start justify-between gap-3">
+                    <div className="text-zinc-200">{t.name}</div>
+                    <div className="text-zinc-300">{t.pass ? "PASS" : "FAIL"}</div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </PacketSection>
+
+          <PacketSection title="Financial Model">
+            <div className="grid grid-cols-3 gap-3">
+              <div className="rounded-xl border border-zinc-800 p-3">
+                <div className="text-xs text-zinc-400">Baseline</div>
+                <div className="text-sm font-semibold text-zinc-100">
+                  {formatMoney(event.model.baseline_cost)}
+                </div>
+              </div>
+              <div className="rounded-xl border border-zinc-800 p-3">
+                <div className="text-xs text-zinc-400">Expected</div>
+                <div className="text-sm font-semibold text-zinc-100">
+                  {formatMoney(event.model.expected_cost)}
+                </div>
+              </div>
+              <div className="rounded-xl border border-zinc-800 p-3">
+                <div className="text-xs text-zinc-400">Delta</div>
+                <div className="text-sm font-semibold text-zinc-100">
+                  {formatMoney(event.model.delta_value)}
+                </div>
+              </div>
+            </div>
+
+            <div className="mt-3 rounded-xl border border-zinc-800 p-3">
+              <div className="mb-2 text-xs font-semibold text-zinc-100">Assumptions</div>
+              <div className="space-y-1 text-xs text-zinc-200">
+                {event.model.assumptions.map((a) => (
+                  <div key={a.key}>
+                    <span className="text-zinc-400">{a.key}:</span> {a.value}
+                  </div>
+                ))}
+              </div>
+            </div>
+          </PacketSection>
+
+          <PacketSection title="Recommended Actions">
+            <div className="space-y-2">
+              {event.packet.actions.map((a, i) => (
+                <div key={i} className="rounded-xl border border-zinc-800 p-3">
+                  <div className="text-sm font-semibold text-zinc-100">{a.step}</div>
+                  <div className="mt-1 text-xs text-zinc-400">
+                    System: {a.system} • Due: {a.due_in_days} days
+                  </div>
+                  <div className="mt-2 text-xs text-zinc-200">{a.rationale}</div>
+                </div>
+              ))}
+            </div>
+          </PacketSection>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function PacketSection({ title, children }: { title: string; children: React.ReactNode }) {
+  return (
+    <div className="mb-4">
+      <div className="mb-2 text-sm font-semibold text-zinc-100">{title}</div>
+      {children}
+    </div>
   );
 }

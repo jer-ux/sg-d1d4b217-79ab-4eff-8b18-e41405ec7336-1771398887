@@ -19,8 +19,9 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
 import { CalendlyPopupButton } from "@/components/calendly/CalendlyPopupButton";
-import { LuxBackground } from "@/components/LuxBackground";
-import { HowItWorksFlow } from "@/components/HowItWorksFlow";
+import { LuxBackground } from "@/components/marketing/LuxBackground";
+import { HowItWorksFlow } from "@/components/marketing/HowItWorksFlow";
+import { TrustBar } from "@/components/marketing/TrustBar";
 
 const fadeUp: Variants = {
   hidden: { opacity: 0, y: 18 },
@@ -288,6 +289,17 @@ export default function HomePage() {
                   "Realization tracking (closed loop)",
                 ]}
               />
+            </motion.div>
+          </motion.div>
+        </div>
+
+        <Separator className="mx-auto max-w-6xl bg-white/10" />
+
+        {/* Trust Bar */}
+        <div className="mx-auto max-w-6xl px-6 py-12">
+          <motion.div initial="hidden" whileInView="show" viewport={{ once: true, amount: 0.2 }} variants={stagger}>
+            <motion.div variants={fadeUp}>
+              <TrustBar />
             </motion.div>
           </motion.div>
         </div>

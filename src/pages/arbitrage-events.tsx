@@ -130,7 +130,7 @@ function EventCard({ event, onClick }: { event: any; onClick: () => void }) {
           {event.severity === "CRITICAL" && (
             <AlertTriangle className="h-6 w-6 shrink-0 text-rose-400" />
           )}
-        </motion.div>
+        </div>
 
         <div className="space-y-3 border-t border-white/10 pt-4">
           <div className="flex items-center justify-between text-sm">

@@ -43,6 +43,23 @@ function JsonPretty({ value }: { value: any }) {
   );
 }
 
+function StatusPill({ status }: { status?: string }) {
+  const s = (status ?? "NONE").toUpperCase();
+  const base = "inline-flex items-center rounded-full border px-2.5 py-1 text-xs";
+  const cls =
+    s === "CLOSED"
+      ? "border-emerald-400/20 bg-emerald-400/10 text-emerald-200"
+      : s === "IN_PROGRESS"
+      ? "border-sky-400/20 bg-sky-400/10 text-sky-200"
+      : s === "ASSIGNED"
+      ? "border-amber-400/20 bg-amber-400/10 text-amber-200"
+      : s === "OPEN"
+      ? "border-white/15 bg-white/[0.06] text-white/75"
+      : "border-white/10 bg-white/[0.03] text-white/45";
+
+  return <span className={`${base} ${cls}`}>{s}</span>;
+}
+
 function ReceiptPanel({ receiptId }: { receiptId?: string | null }) {
   const [data, setData] = React.useState<any | null>(null);
   const [loading, setLoading] = React.useState(false);
@@ -220,6 +237,16 @@ export function ArbitrageEventDrawer({
   const [data, setData] = React.useState<EventDetail | null>(null);
   const [loading, setLoading] = React.useState(false);
 
+  // Action packet generation
+  const [packet, setPacket] = React.useState<any | null>(null);
+  const [packetErr, setPacketErr] = React.useState<string | null>(null);
+  const [packetLoading, setPacketLoading] = React.useState(false);
+
+  // Latest packet tracking
+  const [latestPacket, setLatestPacket] = React.useState<any | null>(null);
+  const [pktLoading, setPktLoading] = React.useState(false);
+  const [pktErr, setPktErr] = React.useState<string | null>(null);
+
   React.useEffect(() => {
     if (!open || !eventId) return;
     let alive = true;
@@ -238,6 +265,87 @@ export function ArbitrageEventDrawer({
 
   const ev = data?.event;
   const verified: Verification | undefined = ev?.verification_status;
+
+  async function loadLatestPacket() {
+    if (!ev?.event_id) return;
+    setPktLoading(true);
+    setPktErr(null);
+    try {
+      const res = await fetch(`/api/action-packets/latest?event_id=${encodeURIComponent(ev.event_id)}`);
+      const j = await res.json();
+      setLatestPacket(j?.packet ?? null);
+    } catch (e: any) {
+      setPktErr(e?.message ?? "Failed to load packet");
+    } finally {
+      setPktLoading(false);
+    }
+  }
+
+  React.useEffect(() => {
+    if (ev?.event_id) {
+      loadLatestPacket();
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [ev?.event_id]);
+
+  async function generatePacket() {
+    if (!ev?.event_id) return;
+    setPacket(null);
+    setPacketErr(null);
+    setPacketLoading(true);
+
+    try {
+      const res = await fetch("/api/action-packets", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ event_id: ev.event_id, created_by: "war-room-ui" }),
+      });
+
+      const j = await res.json();
+
+      if (!res.ok) {
+        setPacketErr(j?.message ?? j?.error ?? "Failed to generate packet");
+        return;
+      }
+
+      setPacket(j);
+      // Reload latest packet after generation
+      await loadLatestPacket();
+    } finally {
+      setPacketLoading(false);
+    }
+  }
+
+  async function advancePacketStatus(nextStatus: "OPEN" | "ASSIGNED" | "IN_PROGRESS" | "CLOSED") {
+    if (!latestPacket?.packet_id) return;
+    setPktErr(null);
+
+    try {
+      const res = await fetch(`/api/action-packets/${encodeURIComponent(latestPacket.packet_id)}`, {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          status: nextStatus,
+          changed_by: "war-room-ui",
+          notes: `Status advanced to ${nextStatus}`,
+          resolution_note: nextStatus === "CLOSED" ? "Resolved and re-verified with receipts." : undefined,
+          closing_receipt_ids:
+            nextStatus === "CLOSED" ? [ev?.ingest_receipt_id, ev?.receipt_id].filter(Boolean) : undefined,
+        }),
+      });
+
+      const j = await res.json();
+
+      if (!res.ok) {
+        setPktErr(j?.error ?? j?.message ?? "Status update failed");
+        return;
+      }
+
+      await loadLatestPacket();
+    } catch (e: any) {
+      setPktErr(e?.message ?? "Failed to update status");
+    }
+  }
 
   return (
     <AnimatePresence>
@@ -278,7 +386,9 @@ export function ArbitrageEventDrawer({
                       />
                     )}
                     {ev?.quarter && <Chip label={ev.quarter} className="border-white/15 bg-white/[0.05] text-white/80" />}
-                    {ev?.company_name && <Chip label={ev.company_name} className="border-white/15 bg-white/[0.05] text-white/80" />}
+                    {ev?.company_name && (
+                      <Chip label={ev.company_name} className="border-white/15 bg-white/[0.05] text-white/80" />
+                    )}
                   </div>
                 </div>
 
@@ -416,14 +526,15 @@ export function ArbitrageEventDrawer({
                 <div className="text-sm font-medium">Actions</div>
                 <div className="mt-3 flex flex-wrap gap-2">
                   <button
-                    disabled={verified !== "VERIFIED"}
+                    onClick={generatePacket}
+                    disabled={verified !== "VERIFIED" || packetLoading}
                     className={`rounded-xl px-4 py-2 text-sm border ${
                       verified === "VERIFIED"
                         ? "border-white/15 bg-white/[0.07] hover:bg-white/[0.10]"
                         : "border-white/10 bg-white/[0.03] text-white/35 cursor-not-allowed"
                     }`}
                   >
-                    Generate Action Packet
+                    {packetLoading ? "Generating…" : "Generate Action Packet"}
                   </button>
                   <button
                     disabled={verified !== "VERIFIED"}
@@ -443,6 +554,69 @@ export function ArbitrageEventDrawer({
                   <div className="mt-3 text-xs text-white/55">
                     Actions are disabled until upstream receipts are VERIFIED. (This is the moat.)
                   </div>
+                )}
+                {packetErr && <div className="mt-3 text-xs text-rose-200/80">{packetErr}</div>}
+                {packet && (
+                  <div className="mt-3 rounded-xl border border-emerald-400/20 bg-emerald-400/5 p-3">
+                    <div className="text-xs text-emerald-200">
+                      ✓ Action packet generated: <span className="font-mono">{packet.packet_id}</span>
+                    </div>
+                  </div>
+                )}
+              </div>
+
+              {/* Latest packet status panel */}
+              <div className="mt-4 rounded-2xl border border-white/10 bg-white/[0.03] p-4">
+                <div className="flex items-start justify-between gap-4">
+                  <div>
+                    <div className="text-sm font-medium">Latest Action Packet</div>
+                    <div className="mt-1 text-xs text-white/55">
+                      {pktLoading
+                        ? "Loading…"
+                        : latestPacket?.packet_id
+                        ? `packet_id: ${latestPacket.packet_id}`
+                        : "No packet yet."}
+                    </div>
+                  </div>
+                  {latestPacket && <StatusPill status={latestPacket?.status} />}
+                </div>
+
+                {pktErr && <div className="mt-2 text-xs text-rose-200/80">{pktErr}</div>}
+
+                {latestPacket && (
+                  <>
+                    <div className="mt-3 text-sm text-white/80">{latestPacket.summary ?? ""}</div>
+
+                    <div className="mt-3 flex flex-wrap gap-2">
+                      <button
+                        onClick={() => advancePacketStatus("ASSIGNED")}
+                        disabled={!latestPacket?.packet_id}
+                        className="rounded-xl border border-white/10 bg-white/[0.04] px-3 py-2 text-xs text-white/75 hover:bg-white/[0.08] disabled:opacity-40 disabled:cursor-not-allowed"
+                      >
+                        Assign
+                      </button>
+                      <button
+                        onClick={() => advancePacketStatus("IN_PROGRESS")}
+                        disabled={!latestPacket?.packet_id}
+                        className="rounded-xl border border-white/10 bg-white/[0.04] px-3 py-2 text-xs text-white/75 hover:bg-white/[0.08] disabled:opacity-40 disabled:cursor-not-allowed"
+                      >
+                        Start
+                      </button>
+                      <button
+                        onClick={() => advancePacketStatus("CLOSED")}
+                        disabled={!latestPacket?.packet_id}
+                        className="rounded-xl border border-white/10 bg-white/[0.04] px-3 py-2 text-xs text-white/75 hover:bg-white/[0.08] disabled:opacity-40 disabled:cursor-not-allowed"
+                      >
+                        Close (attach receipts)
+                      </button>
+                    </div>
+
+                    {latestPacket?.receipt_ids && (
+                      <div className="mt-3 text-xs text-white/55">
+                        receipts: <span className="text-white/75">{(latestPacket.receipt_ids ?? []).length}</span>
+                      </div>
+                    )}
+                  </>
                 )}
               </div>
 

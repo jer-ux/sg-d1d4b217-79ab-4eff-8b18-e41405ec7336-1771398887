@@ -11,6 +11,14 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/com
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
 import { Hero3D } from "@/components/Hero3D";
+import {
+  DataFlowVisualization,
+  KPIDashboardPreview,
+  EvidenceReceipt3D,
+  ArbitrageDetectionViz,
+  NetworkGraphAnimation,
+  GradientMeshBackground
+} from "@/components/platform/PremiumGraphics";
 
 type Why = {
   buyer: string;
@@ -41,41 +49,6 @@ function GlassPanel(props: React.PropsWithChildren<{ className?: string }>) {
     >
       <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(1000px_500px_at_20%_10%,rgba(56,189,248,0.12),transparent_60%),radial-gradient(800px_400px_at_80%_40%,rgba(168,85,247,0.10),transparent_55%)]" />
       <div className="relative">{props.children}</div>
-    </div>
-  );
-}
-
-function Orb3DPlaceholder({ label }: { label: string }) {
-  return (
-    <div className="relative h-full min-h-[280px] w-full overflow-hidden rounded-2xl border border-white/10 bg-gradient-to-b from-white/[0.06] to-white/[0.02]">
-      <div className="absolute inset-0">
-        <div className="absolute -left-24 -top-24 h-72 w-72 rounded-full bg-white/10 blur-2xl" />
-        <div className="absolute right-[-80px] top-10 h-80 w-80 rounded-full bg-white/10 blur-2xl" />
-        <div className="absolute left-10 top-24 h-56 w-56 rounded-full bg-white/10 blur-2xl" />
-      </div>
-
-      <div className="absolute inset-0 bg-[linear-gradient(to_right,rgba(255,255,255,0.08)_1px,transparent_1px),linear-gradient(to_bottom,rgba(255,255,255,0.08)_1px,transparent_1px)] bg-[size:52px_52px] opacity-[0.15]" />
-
-      <motion.div
-        className="absolute left-1/2 top-1/2 h-40 w-40 -translate-x-1/2 -translate-y-1/2 rounded-full border border-white/20 bg-white/[0.06] shadow-[0_0_120px_rgba(56,189,248,0.20)]"
-        animate={{ y: [0, -10, 0], rotate: [0, 6, 0] }}
-        transition={{ duration: 5.5, repeat: Infinity, ease: "easeInOut" }}
-      />
-      <motion.div
-        className="absolute left-1/2 top-1/2 h-64 w-64 -translate-x-1/2 -translate-y-1/2 rounded-full border border-white/10"
-        animate={{ rotate: [0, 360] }}
-        transition={{ duration: 18, repeat: Infinity, ease: "linear" }}
-      />
-      <motion.div
-        className="absolute left-1/2 top-1/2 h-80 w-80 -translate-x-1/2 -translate-y-1/2 rounded-full border border-white/5"
-        animate={{ rotate: [360, 0] }}
-        transition={{ duration: 28, repeat: Infinity, ease: "linear" }}
-      />
-
-      <div className="absolute bottom-4 left-4 flex items-center gap-2">
-        <Badge className="border-white/20 bg-white/[0.06] text-white/90">3D Asset</Badge>
-        <span className="text-sm text-white/70">{label}</span>
-      </div>
     </div>
   );
 }
@@ -341,6 +314,8 @@ export default function PlatformPage() {
         description="A controls-first operating system for converting enterprise opacity into verified value—built on evidence receipts, a CFO-grade ledger, and action workflows."
       />
       
+      <GradientMeshBackground />
+      
       <div className="min-h-screen bg-[#070A12] text-white">
         {/* Background */}
         <div className="pointer-events-none fixed inset-0">
@@ -495,7 +470,7 @@ export default function PlatformPage() {
               </div>
 
               <div className="lg:col-span-5">
-                <Orb3DPlaceholder label="Hero 3D — Operator Console Render" />
+                <EvidenceReceipt3D />
                 <div className="mt-4 rounded-2xl border border-white/10 bg-white/[0.03] p-5">
                   <div className="flex items-center justify-between">
                     <div className="text-sm font-medium">Operating Principle</div>
@@ -508,9 +483,30 @@ export default function PlatformPage() {
               </div>
             </motion.div>
 
+            {/* Premium Graphics Section - Data Flow */}
+            <motion.div variants={fadeUp} className="mt-10">
+              <div className="mb-4">
+                <h3 className="text-xl font-semibold">Deterministic Data Pipeline</h3>
+                <p className="mt-2 text-sm text-white/70">
+                  Every transformation is repeatable, testable, and traceable—from source to insight.
+                </p>
+              </div>
+              <DataFlowVisualization />
+            </motion.div>
+
+            {/* Premium Graphics Section - KPI Dashboard */}
+            <motion.div variants={fadeUp} className="mt-10">
+              <KPIDashboardPreview />
+            </motion.div>
+
             {/* Hero3D Component */}
             <motion.div variants={fadeUp} className="mt-10">
               <Hero3D />
+            </motion.div>
+
+            {/* Premium Graphics Section - Network Graph */}
+            <motion.div variants={fadeUp} className="mt-10">
+              <NetworkGraphAnimation />
             </motion.div>
 
             {/* MODULES */}
@@ -545,6 +541,17 @@ export default function PlatformPage() {
                   </motion.div>
                 ))}
               </motion.div>
+            </motion.div>
+
+            {/* Premium Graphics Section - Arbitrage Detection */}
+            <motion.div variants={fadeUp} className="mt-14">
+              <div className="mb-4">
+                <h3 className="text-xl font-semibold">Real-Time Arbitrage Detection</h3>
+                <p className="mt-2 text-sm text-white/70">
+                  Continuous monitoring across SEC filings, Form 5500, and internal ledgers—surface variances instantly.
+                </p>
+              </div>
+              <ArbitrageDetectionViz />
             </motion.div>
 
             {/* 24 WHYS */}

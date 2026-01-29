@@ -43,6 +43,171 @@ function JsonPretty({ value }: { value: any }) {
   );
 }
 
+function ReceiptPanel({ receiptId }: { receiptId?: string | null }) {
+  const [data, setData] = React.useState<any | null>(null);
+  const [loading, setLoading] = React.useState(false);
+
+  React.useEffect(() => {
+    if (!receiptId) return;
+    let alive = true;
+    setLoading(true);
+    setData(null);
+
+    fetch(`/api/receipts/${encodeURIComponent(receiptId)}`)
+      .then((r) => r.json())
+      .then((j) => alive && setData(j.receipt))
+      .finally(() => alive && setLoading(false));
+
+    return () => {
+      alive = false;
+    };
+  }, [receiptId]);
+
+  return (
+    <div className="rounded-2xl border border-white/10 bg-white/[0.03] p-4">
+      <div className="flex items-center justify-between">
+        <div className="text-sm font-medium">Evidence Receipt Explorer</div>
+        <span className="text-xs text-white/55">{receiptId ?? "—"}</span>
+      </div>
+
+      {loading && <div className="mt-3 text-sm text-white/60">Loading receipt…</div>}
+
+      {!loading && !data && (
+        <div className="mt-3 text-sm text-white/60">
+          No receipt loaded. (Event may be missing `ingest_receipt_id`.)
+        </div>
+      )}
+
+      {!loading && data && (
+        <div className="mt-3 space-y-2 text-xs text-white/70">
+          <div className="flex justify-between">
+            <span>Type</span>
+            <span className="text-white/85">{data.receipt_type ?? "—"}</span>
+          </div>
+          <div className="flex justify-between">
+            <span>Verified</span>
+            <span className="text-white/85">{String(data.verified)}</span>
+          </div>
+          <div className="flex justify-between">
+            <span>Confidence</span>
+            <span className="text-white/85">{data.confidence ?? "—"}</span>
+          </div>
+          <div className="flex justify-between">
+            <span>Source</span>
+            <span className="text-white/85">{data.source_system ?? "—"}</span>
+          </div>
+          <div className="flex justify-between">
+            <span>Artifact</span>
+            <span className="text-white/85 truncate max-w-[260px]">{data.source_artifact_name ?? "—"}</span>
+          </div>
+          <div className="flex justify-between">
+            <span>Artifact hash</span>
+            <span className="text-white/85 truncate max-w-[260px]">{data.source_artifact_hash ?? "—"}</span>
+          </div>
+          <div className="flex justify-between">
+            <span>Transform</span>
+            <span className="text-white/85 truncate max-w-[260px]">{data.transform_name ?? "—"}</span>
+          </div>
+          <div className="flex justify-between">
+            <span>Transform hash</span>
+            <span className="text-white/85 truncate max-w-[260px]">{data.transform_hash ?? "—"}</span>
+          </div>
+          <div className="flex justify-between">
+            <span>Period key</span>
+            <span className="text-white/85">{data.period_key ?? "—"}</span>
+          </div>
+          <div className="flex justify-between">
+            <span>DQ Run</span>
+            <span className="text-white/85">{data.dq_run_id ?? "—"}</span>
+          </div>
+
+          <div className="mt-3 text-xs text-white/55">Lineage payload</div>
+          <JsonPretty value={data.lineage_json ?? {}} />
+        </div>
+      )}
+    </div>
+  );
+}
+
+function DQPanel({ dqRunId }: { dqRunId?: string | null }) {
+  const [rows, setRows] = React.useState<any[]>([]);
+  const [loading, setLoading] = React.useState(false);
+  const [onlyFail, setOnlyFail] = React.useState(true);
+
+  React.useEffect(() => {
+    if (!dqRunId) return;
+    let alive = true;
+    setLoading(true);
+    setRows([]);
+
+    fetch(`/api/dq?dq_run_id=${encodeURIComponent(dqRunId)}&only_fail=${onlyFail ? "1" : "0"}`)
+      .then((r) => r.json())
+      .then((j) => alive && setRows(j.rows ?? []))
+      .finally(() => alive && setLoading(false));
+
+    return () => {
+      alive = false;
+    };
+  }, [dqRunId, onlyFail]);
+
+  return (
+    <div className="rounded-2xl border border-white/10 bg-white/[0.03] p-4">
+      <div className="flex items-center justify-between gap-3">
+        <div>
+          <div className="text-sm font-medium">DQ Failures & Gates</div>
+          <div className="text-xs text-white/55 mt-1">dq_run_id: {dqRunId ?? "—"}</div>
+        </div>
+        <button
+          onClick={() => setOnlyFail((v) => !v)}
+          className="rounded-xl border border-white/10 bg-white/[0.04] px-3 py-2 text-xs text-white/75 hover:bg-white/[0.08]"
+        >
+          {onlyFail ? "Showing FAIL only" : "Showing ALL"}
+        </button>
+      </div>
+
+      {loading && <div className="mt-3 text-sm text-white/60">Loading DQ results…</div>}
+
+      {!loading && dqRunId && rows.length === 0 && (
+        <div className="mt-3 text-sm text-white/60">
+          No rows returned. If this is unexpected, check `GOV.DQ_RESULTS` and dq_run_id mapping.
+        </div>
+      )}
+
+      {!loading && rows.length > 0 && (
+        <div className="mt-4 space-y-3">
+          {rows.slice(0, 25).map((r) => (
+            <div key={`${r.test_id}-${r.executed_ts}`} className="rounded-xl border border-white/10 bg-black/25 p-3">
+              <div className="flex items-start justify-between gap-3">
+                <div>
+                  <div className="text-xs text-white/55">{r.test_id} • {r.severity} • {r.status}</div>
+                  <div className="mt-1 text-sm font-medium">{r.test_name}</div>
+                  <div className="mt-1 text-xs text-white/60">{r.object_name}</div>
+                </div>
+                <div className="text-right text-xs text-white/60">
+                  <div>metric: <span className="text-white/80">{r.metric_value ?? "—"}</span></div>
+                  <div>threshold: <span className="text-white/80">{r.threshold_value ?? "—"}</span></div>
+                  <div>fails: <span className="text-white/80">{r.fail_count ?? "—"}</span></div>
+                </div>
+              </div>
+
+              {r.notes && <div className="mt-2 text-xs text-white/60">{r.notes}</div>}
+
+              {r.sample_json && (
+                <>
+                  <div className="mt-3 text-xs text-white/55">sample_json</div>
+                  <JsonPretty value={r.sample_json} />
+                </>
+              )}
+            </div>
+          ))}
+
+          {rows.length > 25 && <div className="text-xs text-white/55">Showing first 25 rows.</div>}
+        </div>
+      )}
+    </div>
+  );
+}
+
 export function ArbitrageEventDrawer({
   open,
   onClose,
@@ -203,77 +368,89 @@ export function ArbitrageEventDrawer({
 
                 <div className="rounded-2xl border border-white/10 bg-white/[0.03] p-4">
                   <div className="flex items-center gap-2 text-sm font-medium">
-                    {verified === "VERIFIED" ? (
-                      <CheckCircle2 className="h-4 w-4 text-emerald-400" />
-                    ) : (
-                      <Lock className="h-4 w-4 text-white/70" />
-                    )}
-                    Verification
+                    <Hash className="h-4 w-4 text-white/70" />
+                    Evidence + gates
                   </div>
                   <div className="mt-3 space-y-2 text-xs text-white/70">
-                    <div className="flex justify-between">
-                      <span>Status</span>
-                      <span className={verified === "VERIFIED" ? "text-emerald-400" : "text-white/85"}>
+                    <div className="flex items-center justify-between">
+                      <span>Verification</span>
+                      <span className="inline-flex items-center gap-2 text-white/85">
+                        {verified === "VERIFIED" ? (
+                          <CheckCircle2 className="h-4 w-4 text-emerald-200" />
+                        ) : (
+                          <Lock className="h-4 w-4 text-white/60" />
+                        )}
                         {verified ?? "—"}
                       </span>
                     </div>
-                    {ev?.evidence_hash && (
-                      <div className="flex justify-between">
-                        <span>Evidence hash</span>
-                        <span className="font-mono text-white/85">{ev.evidence_hash.slice(0, 8)}…</span>
-                      </div>
-                    )}
-                    {ev?.receipt_id && (
-                      <div className="flex justify-between">
-                        <span>Receipt ID</span>
-                        <span className="font-mono text-white/85">{ev.receipt_id.slice(0, 8)}…</span>
-                      </div>
-                    )}
-                    {ev?.created_at && (
-                      <div className="flex justify-between">
-                        <span>Created</span>
-                        <span className="text-white/85">{new Date(ev.created_at).toLocaleDateString()}</span>
-                      </div>
-                    )}
+                    <div className="flex justify-between">
+                      <span>Ingest receipt</span>
+                      <span className="text-white/85">{ev?.ingest_receipt_id ?? ev?.receipt_id ?? "—"}</span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span>DQ run</span>
+                      <span className="text-white/85">{ev?.ingest_dq_run_id ?? "—"}</span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span>Event ID</span>
+                      <span className="text-white/85">{ev?.event_id ?? "—"}</span>
+                    </div>
                   </div>
                 </div>
               </div>
 
-              {/* Event payload */}
+              {/* Raw payload */}
               <div className="mt-4 rounded-2xl border border-white/10 bg-white/[0.03] p-4">
                 <div className="flex items-center gap-2 text-sm font-medium">
-                  <Hash className="h-4 w-4 text-white/70" />
-                  Event payload (JSON)
+                  <ShieldCheck className="h-4 w-4 text-white/70" />
+                  Details payload (governed)
                 </div>
-                {ev && <JsonPretty value={ev} />}
+                <div className="text-xs text-white/55 mt-2">
+                  This is the machine payload that powers action packets, audit packets, and downstream KPIs.
+                </div>
+                <JsonPretty value={ev?.details_json ?? ev} />
               </div>
 
               {/* Actions */}
-              {verified === "VERIFIED" && (
-                <div className="mt-4 flex flex-wrap gap-3">
-                  <button className="rounded-xl border border-emerald-400/25 bg-emerald-400/10 px-4 py-2 text-sm text-emerald-100 hover:bg-emerald-400/15">
+              <div className="mt-4 rounded-2xl border border-white/10 bg-white/[0.03] p-4">
+                <div className="text-sm font-medium">Actions</div>
+                <div className="mt-3 flex flex-wrap gap-2">
+                  <button
+                    disabled={verified !== "VERIFIED"}
+                    className={`rounded-xl px-4 py-2 text-sm border ${
+                      verified === "VERIFIED"
+                        ? "border-white/15 bg-white/[0.07] hover:bg-white/[0.10]"
+                        : "border-white/10 bg-white/[0.03] text-white/35 cursor-not-allowed"
+                    }`}
+                  >
                     Generate Action Packet
                   </button>
-                  <button className="rounded-xl border border-white/10 bg-white/[0.03] px-4 py-2 text-sm text-white/85 hover:bg-white/[0.05]">
+                  <button
+                    disabled={verified !== "VERIFIED"}
+                    className={`rounded-xl px-4 py-2 text-sm border ${
+                      verified === "VERIFIED"
+                        ? "border-white/15 bg-white/[0.07] hover:bg-white/[0.10]"
+                        : "border-white/10 bg-white/[0.03] text-white/35 cursor-not-allowed"
+                    }`}
+                  >
+                    Export Audit Packet
+                  </button>
+                  <button className="rounded-xl px-4 py-2 text-sm border border-white/10 bg-white/[0.03] text-white/70 hover:bg-white/[0.06]">
                     Assign Owner
                   </button>
-                  <button className="rounded-xl border border-white/10 bg-white/[0.03] px-4 py-2 text-sm text-white/85 hover:bg-white/[0.05]">
-                    Export to Snowflake
-                  </button>
                 </div>
-              )}
+                {verified !== "VERIFIED" && (
+                  <div className="mt-3 text-xs text-white/55">
+                    Actions are disabled until upstream receipts are VERIFIED. (This is the moat.)
+                  </div>
+                )}
+              </div>
 
-              {verified === "NOT_VERIFIED" && (
-                <div className="mt-4 rounded-xl border border-amber-300/25 bg-amber-300/10 p-4 text-sm text-amber-100">
-                  <div className="flex items-center gap-2 font-medium">
-                    <Lock className="h-4 w-4" />
-                    Actions disabled
-                  </div>
-                  <div className="mt-2 text-xs text-amber-100/80">
-                    This event is NOT VERIFIED. Complete upstream receipts and DQ gates to unlock action packets.
-                  </div>
-                </div>
-              )}
+              {/* Receipts + DQ (the "audit OS" panels) */}
+              <div className="mt-4 grid gap-3">
+                <ReceiptPanel receiptId={ev?.ingest_receipt_id ?? ev?.receipt_id ?? null} />
+                <DQPanel dqRunId={ev?.ingest_dq_run_id ?? ev?.dq_run_id ?? null} />
+              </div>
             </div>
           </motion.aside>
         </>

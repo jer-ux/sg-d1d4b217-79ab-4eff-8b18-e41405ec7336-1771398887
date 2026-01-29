@@ -1,4 +1,5 @@
 @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap');
 
 :root {
   --bg0:#050608;
@@ -7,6 +8,14 @@
   --line: rgba(255,255,255,0.10);
   --glowG: rgba(80, 255, 170, 0.16);
   --glowB: rgba(80, 160, 255, 0.12);
+  
+  /* New design system variables */
+  --bg-primary: #070A12;
+  --bg-panel: rgba(255,255,255,0.03);
+  --border-soft: rgba(255,255,255,0.08);
+  --border-strong: rgba(255,255,255,0.16);
+  
+  --font-inter: 'Inter', sans-serif;
 }
 
 /* Base site look */
@@ -117,6 +126,17 @@ body {
   color: var(--foreground);
   background: var(--background);
   font-family: Arial, Helvetica, sans-serif;
+}
+
+/* Kill default focus ugliness */
+*:focus-visible {
+  outline: 2px solid rgba(120,140,255,0.5);
+  outline-offset: 2px;
+}
+
+/* Smooth everything */
+html {
+  scroll-behavior: smooth;
 }
 
 @layer utilities {

@@ -2,7 +2,7 @@
 
 import { useRef, useMemo } from "react";
 import { Canvas, useFrame } from "@react-three/fiber";
-import { OrbitControls, PerspectiveCamera, Float, Text, MeshDistortMaterial } from "@react-three/drei";
+import { OrbitControls, PerspectiveCamera, Float, Text, MeshDistortMaterial, Line } from "@react-three/drei";
 import * as THREE from "three";
 
 type Accent = "governance" | "data" | "ai" | "people" | "value";
@@ -52,15 +52,14 @@ function ConnectionLine({ start, end, color }: { start: [number, number, number]
     return [new THREE.Vector3(...start), new THREE.Vector3(...end)];
   }, [start, end]);
 
-  const lineGeometry = useMemo(() => {
-    const geometry = new THREE.BufferGeometry().setFromPoints(points);
-    return geometry;
-  }, [points]);
-
   return (
-    <line geometry={lineGeometry}>
-      <lineBasicMaterial color={color} opacity={0.3} transparent />
-    </line>
+    <Line
+      points={points}
+      color={color}
+      opacity={0.3}
+      transparent
+      lineWidth={1}
+    />
   );
 }
 

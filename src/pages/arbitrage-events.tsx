@@ -236,13 +236,13 @@ function EventCard({ event, onClick }: { event: any; onClick: () => void }) {
     <motion.div
       variants={fadeUp}
       onClick={onClick}
-      className="group relative cursor-pointer overflow-hidden rounded-2xl border border-white/10 bg-white/[0.03] p-6 transition-all duration-300 hover:border-white/20 hover:bg-white/[0.06] hover:shadow-[0_20px_80px_rgba(0,0,0,0.4)]"
+      className={`group relative cursor-pointer overflow-hidden rounded-2xl border-2 ${categoryTheme.border} bg-gradient-to-br ${categoryTheme.gradient} p-6 transition-all duration-300 hover:scale-[1.02] hover:shadow-[0_20px_80px_rgba(0,0,0,0.6)]`}
     >
-      {/* Animated gradient background based on category */}
-      <div className={`absolute inset-0 bg-gradient-to-br ${categoryTheme.gradient} opacity-0 transition-opacity duration-300 group-hover:opacity-100`} />
+      {/* Enhanced animated gradient background based on category */}
+      <div className={`absolute inset-0 bg-gradient-to-br ${categoryTheme.gradient} opacity-40 transition-opacity duration-300 group-hover:opacity-70`} />
       
-      {/* Accent bar on left */}
-      <div className={`absolute left-0 top-0 h-full w-1 ${categoryTheme.bg} opacity-60`} />
+      {/* Bold accent bar on left with glow effect */}
+      <div className={`absolute left-0 top-0 h-full w-2 ${categoryTheme.bg} opacity-100 shadow-lg`} />
       
       <div className="relative">
         <div className="mb-4 flex items-start justify-between gap-4">
@@ -250,25 +250,25 @@ function EventCard({ event, onClick }: { event: any; onClick: () => void }) {
             <div className="mb-3 flex flex-wrap items-center gap-2">
               <Chip 
                 label={event.severity} 
-                className={`${severityTheme.bg} ${severityTheme.border} ${severityTheme.text} shadow-lg ${severityTheme.glow}`}
+                className={`${severityTheme.bg} ${severityTheme.border} ${severityTheme.text} shadow-xl ${severityTheme.glow} border-2 font-bold`}
               />
               <Chip
                 label={verified ? "✓ VERIFIED" : "⚠ NOT VERIFIED"}
                 className={
                   verified
-                    ? "border-emerald-400/30 bg-emerald-400/15 text-emerald-200 shadow-emerald-500/10"
-                    : "border-amber-400/30 bg-amber-400/15 text-amber-200 shadow-amber-500/10"
+                    ? "border-2 border-emerald-400/50 bg-emerald-400/25 text-emerald-100 shadow-emerald-500/30 shadow-xl font-bold"
+                    : "border-2 border-amber-400/50 bg-amber-400/25 text-amber-100 shadow-amber-500/30 shadow-xl font-bold"
                 }
               />
               <Chip
                 label={event.category}
-                className={`${categoryTheme.bg} ${categoryTheme.border} ${categoryTheme.text}`}
+                className={`${categoryTheme.bg} ${categoryTheme.border} ${categoryTheme.text} border-2 font-semibold shadow-lg`}
               />
             </div>
-            <h3 className="text-lg font-semibold text-white group-hover:text-white/95">
+            <h3 className="text-lg font-bold text-white drop-shadow-lg group-hover:text-white">
               {event.event_type}
             </h3>
-            <div className="mt-3 flex items-center gap-3 text-sm text-white/60">
+            <div className="mt-3 flex items-center gap-3 text-sm text-white/80 font-medium">
               <span className="flex items-center gap-1.5">
                 <Calendar className="h-3.5 w-3.5" />
                 {event.quarter}
@@ -279,21 +279,21 @@ function EventCard({ event, onClick }: { event: any; onClick: () => void }) {
               </span>
             </div>
           </div>
-          <div className={`flex h-12 w-12 shrink-0 items-center justify-center rounded-xl ${categoryTheme.bg} ${categoryTheme.border} border`}>
-            <IconComponent className={`h-6 w-6 ${categoryTheme.icon}`} />
+          <div className={`flex h-14 w-14 shrink-0 items-center justify-center rounded-xl ${categoryTheme.bg} ${categoryTheme.border} border-2 shadow-xl`}>
+            <IconComponent className={`h-7 w-7 ${categoryTheme.icon} drop-shadow-lg`} />
           </div>
         </div>
 
-        <div className="space-y-3 border-t border-white/10 pt-4">
+        <div className="space-y-3 border-t border-white/20 pt-4">
           <div className="flex items-center justify-between text-sm">
-            <span className="text-white/60">Company</span>
-            <span className="font-medium text-white/90">{event.company_name}</span>
+            <span className="text-white/70 font-medium">Company</span>
+            <span className="font-semibold text-white drop-shadow">{event.company_name}</span>
           </div>
           
           {typeof event.variance_value === "number" && event.variance_value > 0 && (
             <div className="flex items-center justify-between text-sm">
-              <span className="text-white/60">Variance</span>
-              <span className={`font-mono font-semibold ${categoryTheme.text}`}>
+              <span className="text-white/70 font-medium">Variance</span>
+              <span className={`font-mono text-lg font-bold ${categoryTheme.text} drop-shadow-lg`}>
                 ${(event.variance_value / 1000000).toFixed(2)}M
               </span>
             </div>
@@ -301,27 +301,27 @@ function EventCard({ event, onClick }: { event: any; onClick: () => void }) {
           
           {typeof event.drop_rate === "number" && (
             <div className="flex items-center justify-between text-sm">
-              <span className="text-white/60">Drop Rate</span>
-              <span className="font-mono font-semibold text-rose-300">
+              <span className="text-white/70 font-medium">Drop Rate</span>
+              <span className="font-mono text-lg font-bold text-rose-300 drop-shadow-lg">
                 {(event.drop_rate * 100).toFixed(1)}%
               </span>
             </div>
           )}
 
           <div className="flex items-center justify-between text-sm">
-            <span className="text-white/60">Status</span>
-            <span className={`rounded-full border px-3 py-1 text-xs font-medium ${statusTheme.bg} ${statusTheme.border} ${statusTheme.text}`}>
+            <span className="text-white/70 font-medium">Status</span>
+            <span className={`rounded-full border-2 px-4 py-1.5 text-xs font-bold shadow-lg ${statusTheme.bg} ${statusTheme.border} ${statusTheme.text}`}>
               {event.status.replace(/_/g, " ")}
             </span>
           </div>
 
           <div className="flex items-center justify-between text-sm">
-            <span className="text-white/60">Event ID</span>
-            <span className="font-mono text-xs text-white/70">{event.event_id}</span>
+            <span className="text-white/70 font-medium">Event ID</span>
+            <span className="font-mono text-xs text-white/90 font-semibold">{event.event_id}</span>
           </div>
         </div>
 
-        <div className="mt-4 flex items-center text-sm text-white/50 opacity-0 transition-opacity duration-300 group-hover:opacity-100">
+        <div className="mt-4 flex items-center text-sm text-white/70 font-medium opacity-0 transition-all duration-300 group-hover:opacity-100 group-hover:text-white">
           <span>Click to view details</span>
           <svg
             className="ml-1 h-4 w-4 transition-transform duration-300 group-hover:translate-x-1"

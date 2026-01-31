@@ -154,7 +154,12 @@ export default function HomePage() {
       </Head>
 
       <div className="relative min-h-screen bg-[#070A12] text-white">
-        <LuxBackground />
+        {/* Background Elements */}
+        <div className="pointer-events-none fixed inset-0 -z-10">
+          <div className="absolute inset-0 bg-gradient-to-b from-[#0A0118] via-[#0A0118] to-[#050008]" />
+          <div className="absolute left-1/4 top-1/4 h-[500px] w-[500px] rounded-full bg-purple-500/8 blur-[120px]" />
+          <div className="absolute right-1/4 bottom-1/3 h-[400px] w-[400px] rounded-full bg-blue-500/8 blur-[120px]" />
+        </div>
 
         {/* Top Nav */}
         <div className="sticky top-0 z-30 border-b border-white/15 bg-[#070A12]/80 shadow-[0_8px_32px_rgba(0,0,0,0.4)] backdrop-blur-xl">

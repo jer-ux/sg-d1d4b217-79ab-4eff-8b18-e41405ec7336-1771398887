@@ -48,7 +48,7 @@ function GlassPanel(props: React.PropsWithChildren<{ className?: string }>) {
         props.className ?? "",
       ].join(" ")}
     >
-      <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(1000px_500px_at_20%_10%,rgba(56,189,248,0.15),transparent_60%),radial-gradient(800px_400px_at_80%_40%,rgba(168,85,247,0.12),transparent_55%)]" />
+      <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(1000px_500px_at_20%_10%,rgba(56,189,248,0.12),transparent_60%)]" />
       <div className="relative">{props.children}</div>
     </div>
   );
@@ -320,10 +320,8 @@ export default function PlatformPage() {
       <div className="min-h-screen bg-[#070A12] text-white">
         {/* Enhanced Background */}
         <div className="pointer-events-none fixed inset-0">
-          <div className="absolute inset-0 bg-[radial-gradient(1200px_600px_at_15%_10%,rgba(56,189,248,0.14),transparent_55%),radial-gradient(900px_500px_at_75%_30%,rgba(168,85,247,0.12),transparent_60%)]" />
+          <div className="absolute inset-0 bg-[radial-gradient(1200px_600px_at_15%_10%,rgba(56,189,248,0.12),transparent_55%),radial-gradient(900px_500px_at_75%_30%,rgba(168,85,247,0.10),transparent_60%)]" />
           <div className="absolute inset-0 bg-[linear-gradient(to_right,rgba(255,255,255,0.06)_1px,transparent_1px),linear-gradient(to_bottom,rgba(255,255,255,0.06)_1px,transparent_1px)] bg-[size:80px_80px] opacity-[0.12]" />
-          <div className="absolute left-1/4 top-1/4 h-[600px] w-[600px] rounded-full bg-purple-500/10 blur-[150px]" />
-          <div className="absolute right-1/4 bottom-1/3 h-[500px] w-[500px] rounded-full bg-blue-500/10 blur-[140px]" />
         </div>
 
         <div className="relative mx-auto w-full max-w-7xl px-6 py-16">

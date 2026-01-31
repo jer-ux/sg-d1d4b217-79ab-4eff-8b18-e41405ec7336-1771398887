@@ -53,33 +53,18 @@ function Tile({
 }) {
   const accentCls =
     accent === "good"
-      ? "border-emerald-400/40 bg-gradient-to-br from-emerald-400/15 to-emerald-600/10 shadow-[0_0_40px_rgba(16,185,129,0.2)]"
+      ? "border-emerald-400/40 bg-gradient-to-br from-emerald-400/15 to-emerald-600/10 shadow-[0_0_30px_rgba(16,185,129,0.2)]"
       : accent === "warn"
-      ? "border-amber-400/40 bg-gradient-to-br from-amber-400/15 to-amber-600/10 shadow-[0_0_40px_rgba(251,191,36,0.2)]"
+      ? "border-amber-400/40 bg-gradient-to-br from-amber-400/15 to-amber-600/10 shadow-[0_0_30px_rgba(251,191,36,0.2)]"
       : accent === "bad"
-      ? "border-rose-400/40 bg-gradient-to-br from-rose-400/15 to-rose-600/10 shadow-[0_0_40px_rgba(244,63,94,0.2)]"
+      ? "border-rose-400/40 bg-gradient-to-br from-rose-400/15 to-rose-600/10 shadow-[0_0_30px_rgba(244,63,94,0.2)]"
       : accent === "purple"
-      ? "border-purple-400/40 bg-gradient-to-br from-purple-400/15 to-purple-600/10 shadow-[0_0_40px_rgba(168,85,247,0.2)]"
+      ? "border-purple-400/40 bg-gradient-to-br from-purple-400/15 to-purple-600/10 shadow-[0_0_30px_rgba(168,85,247,0.2)]"
       : accent === "blue"
-      ? "border-blue-400/40 bg-gradient-to-br from-blue-400/15 to-blue-600/10 shadow-[0_0_40px_rgba(59,130,246,0.2)]"
+      ? "border-blue-400/40 bg-gradient-to-br from-blue-400/15 to-blue-600/10 shadow-[0_0_30px_rgba(59,130,246,0.2)]"
       : accent === "amber"
-      ? "border-amber-400/40 bg-gradient-to-br from-amber-400/15 to-orange-600/10 shadow-[0_0_40px_rgba(251,191,36,0.2)]"
+      ? "border-amber-400/40 bg-gradient-to-br from-amber-400/15 to-orange-600/10 shadow-[0_0_30px_rgba(251,191,36,0.2)]"
       : "border-gray-600/40 bg-gray-800/40";
-
-  const glowCls =
-    accent === "good"
-      ? "bg-emerald-400/20"
-      : accent === "warn"
-      ? "bg-amber-400/20"
-      : accent === "bad"
-      ? "bg-rose-400/20"
-      : accent === "purple"
-      ? "bg-purple-400/20"
-      : accent === "blue"
-      ? "bg-blue-400/20"
-      : accent === "amber"
-      ? "bg-amber-400/20"
-      : "bg-gray-300/10";
 
   return (
     <div
@@ -87,7 +72,7 @@ function Tile({
       role={onClick ? "button" : undefined}
       className={[
         "relative rounded-2xl border p-5 backdrop-blur-xl",
-        "shadow-[0_20px_70px_rgba(0,0,0,0.6)]",
+        "shadow-[0_20px_60px_rgba(0,0,0,0.5)]",
         "transition-all duration-300 transform-gpu",
         "hover:-translate-y-1 hover:scale-[1.02] cursor-pointer",
         accentCls,
@@ -98,11 +83,6 @@ function Tile({
       <div className="mt-3 flex items-center justify-between text-[13px] text-white/70">
         <span className="tabular-nums font-medium">{subLeft ?? ""}</span>
         <span className="tabular-nums font-medium">{subRight ?? ""}</span>
-      </div>
-
-      <div className="pointer-events-none absolute inset-0 rounded-2xl">
-        <div className="absolute -top-28 left-12 h-56 w-[420px] rounded-full bg-gray-600/15 blur-3xl" />
-        <div className={`absolute -top-12 right-8 h-32 w-72 rounded-full blur-2xl ${glowCls}`} />
       </div>
     </div>
   );
@@ -308,14 +288,14 @@ function WarRoom4TileContent() {
   return (
     <div className="warroom-console min-h-screen bg-gradient-to-b from-gray-900 via-gray-950 to-black text-gray-100">
       <div className="pointer-events-none fixed inset-0 -z-10">
-        <div className="absolute inset-0 bg-gradient-to-b from-gray-800/60 via-gray-900/60 to-black/60" />
-        <div className="absolute -top-32 left-12 h-[600px] w-[1000px] rounded-full bg-emerald-400/8 blur-3xl" />
-        <div className="absolute -top-24 right-12 h-[520px] w-[840px] rounded-full bg-sky-400/8 blur-3xl" />
+        <div className="absolute inset-0 bg-gradient-to-b from-gray-800/50 via-gray-900/50 to-black/50" />
+        <div className="absolute -top-32 left-12 h-[500px] w-[800px] rounded-full bg-emerald-400/6 blur-[100px]" />
+        <div className="absolute -top-24 right-12 h-[420px] w-[700px] rounded-full bg-sky-400/6 blur-[100px]" />
         <div
-          className="absolute inset-0 opacity-[0.18]"
+          className="absolute inset-0 opacity-[0.15]"
           style={{
             backgroundImage:
-              "linear-gradient(rgba(255,255,255,.06) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,.06) 1px, transparent 1px)",
+              "linear-gradient(rgba(255,255,255,.05) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,.05) 1px, transparent 1px)",
             backgroundSize: "48px 48px",
             maskImage: "radial-gradient(70% 55% at 50% 20%, black 40%, transparent 75%)",
           }}

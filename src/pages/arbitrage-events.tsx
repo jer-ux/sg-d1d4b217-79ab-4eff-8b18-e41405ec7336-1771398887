@@ -2,606 +2,400 @@
 
 import * as React from "react";
 import { motion, Variants } from "framer-motion";
-import { AlertTriangle, TrendingDown, DollarSign, Shield, Calendar, User, TrendingUp, Activity, Zap } from "lucide-react";
-import { SEO } from "@/components/SEO";
-import { Container, PageHero, CTA, CardGrid } from "@/components/Blocks";
+import {
+  ShieldAlert,
+  Building2,
+  Pill,
+  Activity,
+  BadgeDollarSign,
+  FileWarning,
+  TrendingUp,
+  Clock,
+  DollarSign,
+  ChevronRight,
+} from "lucide-react";
 import { ArbitrageEventDrawer } from "@/components/arbitrage/ArbitrageEventDrawer";
 
-const fadeUp: Variants = {
-  hidden: { opacity: 0, y: 14 },
-  show: { opacity: 1, y: 0, transition: { duration: 0.5, ease: "easeOut" } },
+type Severity = "Critical" | "High" | "Medium" | "Low";
+type Status = "Open" | "Investigating" | "Monitoring" | "Resolved";
+type ThemeKey = "rose" | "blue" | "amber" | "emerald" | "cyan" | "violet";
+
+type ArbitrageEvent = {
+  id: string;
+  carrier: string;
+  title: string;
+  description: string;
+  severity: Severity;
+  status: Status;
+  estImpact: string;
+  updated: string;
+  theme: ThemeKey;
+  icon: React.ComponentType<{ className?: string }>;
 };
 
-const stagger: Variants = {
-  hidden: { opacity: 0 },
-  show: { opacity: 1, transition: { staggerChildren: 0.08 } },
+const THEME: Record<
+  ThemeKey,
+  {
+    bar: string;
+    g1: string;
+    g2: string;
+    g3: string;
+    title: string;
+    subtle: string;
+    iconBg: string;
+    iconRing: string;
+    iconGlow: string;
+    hoverRing: string;
+  }
+> = {
+  rose: {
+    bar: "bg-gradient-to-b from-rose-400 via-pink-500 to-fuchsia-500",
+    g1: "rgba(244,63,94,0.55)",
+    g2: "rgba(236,72,153,0.45)",
+    g3: "rgba(217,70,239,0.40)",
+    title: "text-rose-200",
+    subtle: "text-rose-100/70",
+    iconBg: "bg-rose-500/15",
+    iconRing: "ring-rose-400/40",
+    iconGlow: "shadow-[0_0_0_1px_rgba(251,113,133,0.25),0_0_24px_rgba(244,63,94,0.25)]",
+    hoverRing:
+      "group-hover:shadow-[0_0_0_1px_rgba(251,113,133,0.35),0_0_48px_rgba(236,72,153,0.20)]",
+  },
+  blue: {
+    bar: "bg-gradient-to-b from-sky-400 via-blue-500 to-indigo-500",
+    g1: "rgba(59,130,246,0.50)",
+    g2: "rgba(14,165,233,0.40)",
+    g3: "rgba(99,102,241,0.35)",
+    title: "text-sky-200",
+    subtle: "text-sky-100/70",
+    iconBg: "bg-sky-500/15",
+    iconRing: "ring-sky-400/40",
+    iconGlow: "shadow-[0_0_0_1px_rgba(56,189,248,0.25),0_0_24px_rgba(59,130,246,0.22)]",
+    hoverRing:
+      "group-hover:shadow-[0_0_0_1px_rgba(56,189,248,0.35),0_0_48px_rgba(99,102,241,0.18)]",
+  },
+  amber: {
+    bar: "bg-gradient-to-b from-amber-300 via-orange-500 to-rose-500",
+    g1: "rgba(245,158,11,0.55)",
+    g2: "rgba(249,115,22,0.45)",
+    g3: "rgba(244,63,94,0.25)",
+    title: "text-amber-200",
+    subtle: "text-amber-100/70",
+    iconBg: "bg-amber-500/15",
+    iconRing: "ring-amber-400/40",
+    iconGlow: "shadow-[0_0_0_1px_rgba(252,211,77,0.25),0_0_24px_rgba(249,115,22,0.22)]",
+    hoverRing:
+      "group-hover:shadow-[0_0_0_1px_rgba(252,211,77,0.35),0_0_48px_rgba(249,115,22,0.18)]",
+  },
+  emerald: {
+    bar: "bg-gradient-to-b from-emerald-300 via-emerald-500 to-teal-500",
+    g1: "rgba(16,185,129,0.55)",
+    g2: "rgba(20,184,166,0.40)",
+    g3: "rgba(34,197,94,0.30)",
+    title: "text-emerald-200",
+    subtle: "text-emerald-100/70",
+    iconBg: "bg-emerald-500/15",
+    iconRing: "ring-emerald-400/40",
+    iconGlow: "shadow-[0_0_0_1px_rgba(52,211,153,0.25),0_0_24px_rgba(16,185,129,0.22)]",
+    hoverRing:
+      "group-hover:shadow-[0_0_0_1px_rgba(52,211,153,0.35),0_0_48px_rgba(20,184,166,0.18)]",
+  },
+  cyan: {
+    bar: "bg-gradient-to-b from-cyan-300 via-cyan-500 to-blue-500",
+    g1: "rgba(6,182,212,0.55)",
+    g2: "rgba(34,211,238,0.40)",
+    g3: "rgba(59,130,246,0.30)",
+    title: "text-cyan-200",
+    subtle: "text-cyan-100/70",
+    iconBg: "bg-cyan-500/15",
+    iconRing: "ring-cyan-400/40",
+    iconGlow: "shadow-[0_0_0_1px_rgba(34,211,238,0.25),0_0_24px_rgba(6,182,212,0.22)]",
+    hoverRing:
+      "group-hover:shadow-[0_0_0_1px_rgba(34,211,238,0.35),0_0_48px_rgba(59,130,246,0.16)]",
+  },
+  violet: {
+    bar: "bg-gradient-to-b from-violet-400 via-purple-500 to-fuchsia-500",
+    g1: "rgba(139,92,246,0.55)",
+    g2: "rgba(168,85,247,0.45)",
+    g3: "rgba(217,70,239,0.30)",
+    title: "text-violet-200",
+    subtle: "text-violet-100/70",
+    iconBg: "bg-violet-500/15",
+    iconRing: "ring-violet-400/40",
+    iconGlow: "shadow-[0_0_0_1px_rgba(167,139,250,0.25),0_0_24px_rgba(168,85,247,0.22)]",
+    hoverRing:
+      "group-hover:shadow-[0_0_0_1px_rgba(167,139,250,0.35),0_0_48px_rgba(217,70,239,0.18)]",
+  },
 };
 
-function getCategoryTheme(category: string) {
-  const themes: Record<string, { bg: string; border: string; text: string; icon: string; gradient: string; cardBg: string; accentBar: string }> = {
-    "Eligibility Leakage": {
-      bg: "bg-rose-500/40",
-      border: "border-rose-400/60",
-      text: "text-rose-200",
-      icon: "text-rose-300",
-      gradient: "from-rose-500/40 via-rose-500/20 to-rose-500/10",
-      cardBg: "bg-rose-950/40",
-      accentBar: "bg-gradient-to-b from-rose-400 via-rose-500 to-rose-600",
-    },
-    "PBM / Rx Economics": {
-      bg: "bg-blue-500/40",
-      border: "border-blue-400/60",
-      text: "text-blue-200",
-      icon: "text-blue-300",
-      gradient: "from-blue-500/40 via-blue-500/20 to-blue-500/10",
-      cardBg: "bg-blue-950/40",
-      accentBar: "bg-gradient-to-b from-blue-400 via-blue-500 to-blue-600",
-    },
-    "Pharmacy Pricing": {
-      bg: "bg-violet-500/40",
-      border: "border-violet-400/60",
-      text: "text-violet-200",
-      icon: "text-violet-300",
-      gradient: "from-violet-500/40 via-violet-500/20 to-violet-500/10",
-      cardBg: "bg-violet-950/40",
-      accentBar: "bg-gradient-to-b from-violet-400 via-violet-500 to-violet-600",
-    },
-    "Network / Access": {
-      bg: "bg-emerald-500/40",
-      border: "border-emerald-400/60",
-      text: "text-emerald-200",
-      icon: "text-emerald-300",
-      gradient: "from-emerald-500/40 via-emerald-500/20 to-emerald-500/10",
-      cardBg: "bg-emerald-950/40",
-      accentBar: "bg-gradient-to-b from-emerald-400 via-emerald-500 to-emerald-600",
-    },
-    "Contract Leakage": {
-      bg: "bg-amber-500/40",
-      border: "border-amber-400/60",
-      text: "text-amber-200",
-      icon: "text-amber-300",
-      gradient: "from-amber-500/40 via-amber-500/20 to-amber-500/10",
-      cardBg: "bg-amber-950/40",
-      accentBar: "bg-gradient-to-b from-amber-400 via-amber-500 to-amber-600",
-    },
-    "Cloud Waste": {
-      bg: "bg-cyan-500/40",
-      border: "border-cyan-400/60",
-      text: "text-cyan-200",
-      icon: "text-cyan-300",
-      gradient: "from-cyan-500/40 via-cyan-500/20 to-cyan-500/10",
-      cardBg: "bg-cyan-950/40",
-      accentBar: "bg-gradient-to-b from-cyan-400 via-cyan-500 to-cyan-600",
-    },
+function SeverityBadge({ severity }: { severity: Severity }) {
+  const map: Record<Severity, string> = {
+    Critical:
+      "bg-rose-500/20 text-rose-200 ring-1 ring-rose-400/40 shadow-[0_0_18px_rgba(244,63,94,0.22)]",
+    High: "bg-orange-500/20 text-orange-200 ring-1 ring-orange-400/40 shadow-[0_0_18px_rgba(249,115,22,0.20)]",
+    Medium:
+      "bg-yellow-500/20 text-yellow-200 ring-1 ring-yellow-400/40 shadow-[0_0_18px_rgba(234,179,8,0.18)]",
+    Low: "bg-emerald-500/20 text-emerald-200 ring-1 ring-emerald-400/40 shadow-[0_0_18px_rgba(16,185,129,0.16)]",
   };
 
-  return themes[category] || {
-    bg: "bg-white/20",
-    border: "border-white/30",
-    text: "text-white",
-    icon: "text-white/80",
-    gradient: "from-white/20 via-white/10 to-white/5",
-    cardBg: "bg-white/10",
-    accentBar: "bg-gradient-to-b from-white/60 via-white/40 to-white/20",
-  };
-}
-
-function getSeverityTheme(severity?: string) {
-  if (severity === "CRITICAL") return { 
-    bg: "bg-rose-500/30", 
-    border: "border-rose-300/70", 
-    text: "text-rose-100",
-    dot: "bg-rose-400",
-    glow: "shadow-[0_0_20px_rgba(244,63,94,0.5)]"
-  };
-  if (severity === "HIGH") return { 
-    bg: "bg-orange-500/30", 
-    border: "border-orange-300/70", 
-    text: "text-orange-100",
-    dot: "bg-orange-400",
-    glow: "shadow-[0_0_20px_rgba(251,146,60,0.5)]"
-  };
-  if (severity === "MEDIUM") return { 
-    bg: "bg-yellow-500/30", 
-    border: "border-yellow-300/70", 
-    text: "text-yellow-100",
-    dot: "bg-yellow-400",
-    glow: "shadow-[0_0_20px_rgba(250,204,21,0.5)]"
-  };
-  return { 
-    bg: "bg-emerald-500/30", 
-    border: "border-emerald-300/70", 
-    text: "text-emerald-100",
-    dot: "bg-emerald-400",
-    glow: "shadow-[0_0_20px_rgba(52,211,153,0.5)]"
-  };
-}
-
-function getStatusTheme(status: string) {
-  const themes: Record<string, { bg: string; border: string; text: string }> = {
-    "IN_REVIEW": { bg: "bg-blue-500/30", border: "border-blue-300/70", text: "text-blue-100" },
-    "SUBMITTED": { bg: "bg-violet-500/30", border: "border-violet-300/70", text: "text-violet-100" },
-    "DRAFT": { bg: "bg-zinc-500/30", border: "border-zinc-300/70", text: "text-zinc-200" },
-    "APPROVED": { bg: "bg-emerald-500/30", border: "border-emerald-300/70", text: "text-emerald-100" },
-    "ACTIONED": { bg: "bg-cyan-500/30", border: "border-cyan-300/70", text: "text-cyan-100" },
-  };
-  return themes[status] || { bg: "bg-white/20", border: "border-white/30", text: "text-white" };
-}
-
-function Chip({ label, className }: { label: string; className?: string }) {
   return (
-    <span className={`inline-flex items-center rounded-full border-2 px-3 py-1 text-xs font-bold ${className ?? ""}`}>
-      {label}
+    <span
+      className={`inline-flex items-center gap-1 rounded-full px-2.5 py-1 text-xs font-semibold tracking-wide ${map[severity]}`}
+    >
+      <span className="inline-block h-1.5 w-1.5 rounded-full bg-current opacity-80" />
+      {severity}
     </span>
   );
 }
 
-// Mock arbitrage events for the listing
-const mockEvents = [
+function StatusPill({ status }: { status: Status }) {
+  const map: Record<Status, string> = {
+    Open: "bg-sky-500/15 text-sky-200 ring-1 ring-sky-400/35",
+    Investigating: "bg-amber-500/15 text-amber-200 ring-1 ring-amber-400/35",
+    Monitoring: "bg-violet-500/15 text-violet-200 ring-1 ring-violet-400/35",
+    Resolved: "bg-emerald-500/15 text-emerald-200 ring-1 ring-emerald-400/35",
+  };
+
+  return (
+    <span
+      className={`inline-flex items-center rounded-full px-2.5 py-1 text-xs font-medium ${map[status]} shadow-[0_0_18px_rgba(255,255,255,0.06)]`}
+    >
+      {status}
+    </span>
+  );
+}
+
+const EVENTS: ArbitrageEvent[] = [
   {
-    event_id: "AE-10901",
-    event_type: "SEC × 5500 Plan Asset Variance",
-    category: "Eligibility Leakage",
-    severity: "CRITICAL",
-    verification_status: "VERIFIED",
-    quarter: "2024-Q3",
-    company_name: "Anthem BCBS",
-    variance_value: 2450000,
-    variance_pct: 0.087,
-    owner: "Sarah Chen",
-    status: "IN_REVIEW",
-    created_at: "2024-10-15T14:32:00Z",
-    icon_type: "alert" as const,
+    id: "AE-10901",
+    carrier: "Anthem",
+    title: "Carrier admin fee variance vs. disclosed Schedule C",
+    description:
+      "Detected mismatch between carrier-stated admin fees and 5500-derived compensation trail. Review contract exhibits + remittance.",
+    severity: "Critical",
+    status: "Investigating",
+    estImpact: "$420k–$780k",
+    updated: "Updated 2h ago",
+    theme: "rose",
+    icon: FileWarning,
   },
   {
-    event_id: "AE-10902",
-    event_type: "Benefits Disclosure Coverage Regression",
-    category: "PBM / Rx Economics",
-    severity: "HIGH",
-    verification_status: "VERIFIED",
-    quarter: "2024-Q3",
-    company_name: "UnitedHealth Group",
-    drop_rate: 0.124,
-    coverage_rate: 0.756,
-    prev_coverage: 0.88,
-    owner: "Michael Rodriguez",
-    status: "SUBMITTED",
-    created_at: "2024-10-14T09:15:00Z",
-    icon_type: "trending" as const,
+    id: "AE-10902",
+    carrier: "UnitedHealth",
+    title: "Network steering clause creates hidden unit-cost spread",
+    description:
+      "Plan design constraints appear to force utilization into higher-cost tiers. Validate pricing guarantees vs. actual allowed amounts.",
+    severity: "High",
+    status: "Open",
+    estImpact: "$310k–$540k",
+    updated: "Updated today",
+    theme: "blue",
+    icon: Activity,
   },
   {
-    event_id: "AE-10903",
-    event_type: "Form 5500 Schedule C Fee Disclosure Gap",
-    category: "Contract Leakage",
-    severity: "HIGH",
-    verification_status: "NOT_VERIFIED",
-    quarter: "2024-Q2",
-    company_name: "Cigna Health",
-    variance_value: 890000,
-    variance_pct: 0.034,
-    owner: "Jessica Park",
-    status: "DRAFT",
-    created_at: "2024-10-12T16:45:00Z",
-    icon_type: "dollar" as const,
+    id: "AE-10903",
+    carrier: "Cigna",
+    title: "Rx rebate definition weak; risk of under-remittance",
+    description:
+      "Rebate terms may exclude specialty and certain channels. Run a rebate completeness audit against claim-level aggregation.",
+    severity: "High",
+    status: "Monitoring",
+    estImpact: "$260k–$610k",
+    updated: "Updated yesterday",
+    theme: "amber",
+    icon: BadgeDollarSign,
   },
   {
-    event_id: "AE-10904",
-    event_type: "SEC × 5500 Participant Count Mismatch",
-    category: "Network / Access",
-    severity: "MEDIUM",
-    verification_status: "VERIFIED",
-    quarter: "2024-Q3",
-    company_name: "Aetna CVS Health",
-    variance_value: 0,
-    variance_pct: 0.012,
-    owner: "David Kim",
-    status: "APPROVED",
-    created_at: "2024-10-10T11:20:00Z",
-    icon_type: "shield" as const,
+    id: "AE-10904",
+    carrier: "Aetna",
+    title: "Stop-loss attachment point shifted; exposure increased",
+    description:
+      "Attachment point change creates EBITDA-at-risk variance under current claims trend. Verify renewal language and disclosure.",
+    severity: "Medium",
+    status: "Investigating",
+    estImpact: "$180k–$360k",
+    updated: "Updated 3d ago",
+    theme: "emerald",
+    icon: ShieldAlert,
   },
   {
-    event_id: "AE-10905",
-    event_type: "Cloud Resource Over-Provisioning",
-    category: "Cloud Waste",
-    severity: "HIGH",
-    verification_status: "VERIFIED",
-    quarter: "2024-Q3",
-    company_name: "Tech Corp",
-    variance_value: 1200000,
-    variance_pct: 0.045,
-    owner: "Alex Thompson",
-    status: "ACTIONED",
-    created_at: "2024-10-09T08:30:00Z",
-    icon_type: "activity" as const,
+    id: "AE-10905",
+    carrier: "Tech Corp",
+    title: "Vendor swap introduced duplicate PEPM charges",
+    description:
+      "Two overlapping vendors billing PEPM for similar services. Check termination dates + fee schedule alignment.",
+    severity: "Medium",
+    status: "Open",
+    estImpact: "$95k–$210k",
+    updated: "Updated 5d ago",
+    theme: "cyan",
+    icon: Building2,
   },
   {
-    event_id: "AE-10906",
-    event_type: "Specialty Drug Pricing Variance",
-    category: "Pharmacy Pricing",
-    severity: "CRITICAL",
-    verification_status: "VERIFIED",
-    quarter: "2024-Q3",
-    company_name: "Express Scripts",
-    variance_value: 1850000,
-    variance_pct: 0.092,
-    owner: "Emma Wilson",
-    status: "IN_REVIEW",
-    created_at: "2024-10-08T13:15:00Z",
-    icon_type: "zap" as const,
+    id: "AE-10906",
+    carrier: "Express Scripts",
+    title: "PBM spread pricing signal in MAC list behavior",
+    description:
+      "Observed spread indicators across generics vs. benchmark. Validate MAC transparency + audit rights + network terms.",
+    severity: "Critical",
+    status: "Open",
+    estImpact: "$520k–$1.1M",
+    updated: "Updated 1w ago",
+    theme: "violet",
+    icon: Pill,
   },
 ];
 
-function EventCard({ event, onClick }: { event: any; onClick: () => void }) {
-  const verified = event.verification_status === "VERIFIED";
-  const categoryTheme = getCategoryTheme(event.category);
-  const severityTheme = getSeverityTheme(event.severity);
-  const statusTheme = getStatusTheme(event.status);
-
-  const IconComponent = 
-    event.icon_type === "alert" ? AlertTriangle :
-    event.icon_type === "trending" ? TrendingDown :
-    event.icon_type === "dollar" ? DollarSign :
-    event.icon_type === "shield" ? Shield :
-    event.icon_type === "activity" ? Activity :
-    event.icon_type === "zap" ? Zap :
-    TrendingUp;
+function EventCard({ event, onClick }: { event: ArbitrageEvent; onClick: () => void }) {
+  const th = THEME[event.theme];
+  const Icon = event.icon;
 
   return (
     <motion.div
-      variants={fadeUp}
+      className="group relative overflow-hidden rounded-xl border border-white/10 bg-slate-900/60 backdrop-blur-md transition-all duration-300 hover:border-white/20 hover:bg-slate-900/80"
       onClick={onClick}
-      className={`group relative cursor-pointer overflow-hidden rounded-2xl border-2 ${categoryTheme.border} ${categoryTheme.cardBg} backdrop-blur-sm p-6 transition-all duration-300 hover:scale-[1.02] hover:shadow-[0_20px_100px_rgba(0,0,0,0.8)]`}
+      whileHover={{ y: -4 }}
+      style={{ cursor: "pointer" }}
     >
-      {/* SUPER VIBRANT animated gradient background */}
-      <div className={`absolute inset-0 bg-gradient-to-br ${categoryTheme.gradient} opacity-80 transition-opacity duration-300 group-hover:opacity-100`} />
-      
-      {/* THICK colorful accent bar on left with STRONG glow */}
-      <div className={`absolute left-0 top-0 h-full w-1.5 ${categoryTheme.accentBar} shadow-[0_0_30px_currentColor] opacity-100`} />
-      
-      <div className="relative">
+      {/* Left accent bar */}
+      <div className={`absolute left-0 top-0 h-full w-1.5 ${th.bar}`} />
+
+      {/* Animated gradient overlay */}
+      <motion.div
+        className="pointer-events-none absolute inset-0 opacity-0 transition-opacity duration-500 group-hover:opacity-100"
+        style={{
+          background: `radial-gradient(circle at 50% 0%, ${th.g1}, ${th.g2}, ${th.g3}, transparent)`,
+        }}
+      />
+
+      <div className="relative p-6 pl-8">
+        {/* Header row */}
         <div className="mb-4 flex items-start justify-between gap-4">
-          <div className="flex-1">
-            <div className="mb-3 flex flex-wrap items-center gap-2">
-              <Chip 
-                label={event.severity} 
-                className={`${severityTheme.bg} ${severityTheme.border} ${severityTheme.text} ${severityTheme.glow} font-black uppercase tracking-wider`}
-              />
-              <Chip
-                label={verified ? "✓ VERIFIED" : "⚠ NOT VERIFIED"}
-                className={
-                  verified
-                    ? "border-2 border-emerald-300/70 bg-emerald-500/40 text-emerald-50 shadow-[0_0_25px_rgba(52,211,153,0.6)] font-black uppercase"
-                    : "border-2 border-amber-300/70 bg-amber-500/40 text-amber-50 shadow-[0_0_25px_rgba(251,191,36,0.6)] font-black uppercase"
-                }
-              />
-              <Chip
-                label={event.category}
-                className={`${categoryTheme.bg} ${categoryTheme.border} ${categoryTheme.text} font-bold uppercase tracking-wide shadow-lg`}
-              />
+          <div className="flex items-center gap-3">
+            <div
+              className={`flex h-11 w-11 items-center justify-center rounded-lg ${th.iconBg} ring-1 ${th.iconRing} ${th.iconGlow} transition-all duration-300`}
+            >
+              <Icon className={`h-5 w-5 ${th.title}`} />
             </div>
-            <h3 className="text-xl font-black text-white drop-shadow-[0_2px_10px_rgba(0,0,0,0.8)] group-hover:text-white">
-              {event.event_type}
-            </h3>
-            <div className="mt-3 flex items-center gap-3 text-sm text-white/90 font-semibold">
-              <span className="flex items-center gap-1.5">
-                <Calendar className="h-4 w-4" />
-                {event.quarter}
-              </span>
-              <span className="flex items-center gap-1.5">
-                <User className="h-4 w-4" />
-                {event.owner}
-              </span>
+            <div>
+              <div className="flex items-center gap-2">
+                <span className={`text-sm font-semibold ${th.title}`}>{event.id}</span>
+                <span className="text-xs text-slate-400">•</span>
+                <span className="text-sm font-medium text-slate-300">{event.carrier}</span>
+              </div>
+              <div className="mt-1 flex items-center gap-2">
+                <SeverityBadge severity={event.severity} />
+                <StatusPill status={event.status} />
+              </div>
             </div>
           </div>
-          <div className={`flex h-16 w-16 shrink-0 items-center justify-center rounded-xl ${categoryTheme.bg} ${categoryTheme.border} border-2 shadow-[0_0_30px_currentColor]`}>
-            <IconComponent className={`h-8 w-8 ${categoryTheme.icon} drop-shadow-lg`} />
-          </div>
+          <ChevronRight className="h-5 w-5 text-slate-400 transition-all duration-300 group-hover:translate-x-1 group-hover:text-slate-200" />
         </div>
 
-        <div className="space-y-3 border-t-2 border-white/30 pt-4">
-          <div className="flex items-center justify-between text-sm">
-            <span className="text-white/80 font-semibold">Company</span>
-            <span className="font-bold text-white drop-shadow">{event.company_name}</span>
-          </div>
-          
-          {typeof event.variance_value === "number" && event.variance_value > 0 && (
-            <div className="flex items-center justify-between text-sm">
-              <span className="text-white/80 font-semibold">Variance</span>
-              <span className={`font-mono text-xl font-black ${categoryTheme.text} drop-shadow-[0_2px_15px_currentColor]`}>
-                ${(event.variance_value / 1000000).toFixed(2)}M
-              </span>
-            </div>
-          )}
-          
-          {typeof event.drop_rate === "number" && (
-            <div className="flex items-center justify-between text-sm">
-              <span className="text-white/80 font-semibold">Drop Rate</span>
-              <span className="font-mono text-xl font-black text-rose-300 drop-shadow-[0_2px_15px_rgba(244,63,94,0.8)]">
-                {(event.drop_rate * 100).toFixed(1)}%
-              </span>
-            </div>
-          )}
+        {/* Title */}
+        <h3 className={`mb-2 text-lg font-semibold leading-tight ${th.title} transition-colors duration-300`}>
+          {event.title}
+        </h3>
 
-          <div className="flex items-center justify-between text-sm">
-            <span className="text-white/80 font-semibold">Status</span>
-            <span className={`rounded-full border-2 px-5 py-1.5 text-xs font-black uppercase tracking-wider shadow-lg ${statusTheme.bg} ${statusTheme.border} ${statusTheme.text}`}>
-              {event.status.replace(/_/g, " ")}
-            </span>
-          </div>
+        {/* Description */}
+        <p className={`mb-4 text-sm leading-relaxed ${th.subtle}`}>{event.description}</p>
 
-          <div className="flex items-center justify-between text-sm">
-            <span className="text-white/80 font-semibold">Event ID</span>
-            <span className="font-mono text-sm text-white font-bold">{event.event_id}</span>
+        {/* Footer metrics */}
+        <div className="flex items-center gap-6 border-t border-white/5 pt-4">
+          <div className="flex items-center gap-2">
+            <DollarSign className="h-4 w-4 text-emerald-400" />
+            <span className="text-sm font-semibold text-emerald-300">{event.estImpact}</span>
           </div>
-        </div>
-
-        <div className="mt-5 flex items-center text-sm text-white/70 font-semibold opacity-0 transition-all duration-300 group-hover:opacity-100 group-hover:text-white">
-          <span>Click to view details →</span>
-          <svg
-            className="ml-1 h-4 w-4 transition-transform duration-300 group-hover:translate-x-2"
-            fill="none"
-            viewBox="0 0 24 24"
-            stroke="currentColor"
-          >
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M9 5l7 7-7 7" />
-          </svg>
+          <div className="flex items-center gap-2">
+            <Clock className="h-4 w-4 text-slate-400" />
+            <span className="text-xs text-slate-400">{event.updated}</span>
+          </div>
         </div>
       </div>
+
+      {/* Hover ring */}
+      <div className={`pointer-events-none absolute inset-0 rounded-xl transition-shadow duration-300 ${th.hoverRing}`} />
     </motion.div>
   );
 }
 
+const containerVariants: Variants = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: {
+      staggerChildren: 0.08,
+    },
+  },
+};
+
+const itemVariants: Variants = {
+  hidden: { opacity: 0, y: 20 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: { duration: 0.5, ease: "easeOut" },
+  },
+};
+
 export default function ArbitrageEventsPage() {
-  const [drawerOpen, setDrawerOpen] = React.useState(false);
   const [selectedEventId, setSelectedEventId] = React.useState<string | null>(null);
 
-  const handleEventClick = (eventId: string) => {
+  const handleOpenDrawer = (eventId: string) => {
     setSelectedEventId(eventId);
-    setDrawerOpen(true);
   };
 
   const handleCloseDrawer = () => {
-    setDrawerOpen(false);
-    setTimeout(() => setSelectedEventId(null), 300);
+    setSelectedEventId(null);
   };
 
   return (
     <>
-      <SEO
-        title="Arbitrage Events — Kincaid IQ"
-        description="Discover, validate, and act on value arbitrage opportunities across PBM rebates, cloud waste, contract leakage, and operational inefficiencies."
-      />
-      <Container>
-        <PageHero
-          title="Arbitrage Events"
-          subtitle="Discover, validate, and act on value arbitrage opportunities across PBM rebates, cloud waste, contract leakage, and operational inefficiencies."
-        />
+      <div className="relative min-h-screen bg-gradient-to-br from-slate-950 via-slate-900 to-slate-950">
+        {/* Background effects */}
+        <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_30%_20%,rgba(120,119,198,0.08),transparent_50%)]" />
+        <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_70%_60%,rgba(236,72,153,0.06),transparent_50%)]" />
 
-        <div className="space-y-16">
-          {/* Live Events Section */}
-          <section>
-            <div className="mb-6 flex items-center justify-between">
-              <h2 className="text-2xl font-semibold">Live Arbitrage Events</h2>
-              <div className="flex items-center gap-2">
-                <span className="h-2 w-2 animate-pulse rounded-full bg-emerald-400" />
-                <span className="text-sm text-white/60">{mockEvents.length} active events</span>
-              </div>
+        <div className="relative mx-auto max-w-7xl px-6 py-12">
+          {/* Header */}
+          <motion.div
+            className="mb-10"
+            initial={{ opacity: 0, y: -20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6 }}
+          >
+            <div className="mb-2 flex items-center gap-2 text-sm text-slate-400">
+              <TrendingUp className="h-4 w-4" />
+              <span>CFO Executive Dashboard</span>
             </div>
-            
-            <motion.div
-              className="grid gap-6 md:grid-cols-2"
-              variants={stagger}
-              initial="hidden"
-              animate="show"
-            >
-              {mockEvents.map((event) => (
-                <EventCard
-                  key={event.event_id}
-                  event={event}
-                  onClick={() => handleEventClick(event.event_id)}
-                />
-              ))}
-            </motion.div>
-          </section>
+            <h1 className="text-4xl font-bold text-white">Arbitrage Events</h1>
+            <p className="mt-2 text-slate-400">
+              Real-time monitoring of carrier contract variances, pricing anomalies, and value
+              leakage opportunities.
+            </p>
+          </motion.div>
 
-          <section>
-            <h2 className="mb-6 text-2xl font-semibold">What Are Arbitrage Events?</h2>
-            <div className="k-panel p-8">
-              <p className="leading-relaxed text-white/70">
-                Arbitrage events are specific, quantified opportunities where your organization can capture value by
-                identifying gaps between contractual guarantees and actual performance, inefficiencies in operational
-                processes, or misalignments between systems and policies.
-              </p>
-              <p className="mt-4 leading-relaxed text-white/70">
-                Each event is backed by <strong className="text-white">evidence receipts</strong> from your data warehouse
-                (Snowflake, Databricks) and operational systems (ServiceNow, Salesforce), ensuring CFO-grade confidence
-                before action is taken.
-              </p>
-            </div>
-          </section>
-
-          <section>
-            <h2 className="mb-6 text-2xl font-semibold">Types of Arbitrage Events</h2>
-            <CardGrid
-              items={[
-                {
-                  title: "PBM Rebate Shortfalls",
-                  body: "Contractual rebate guarantees vs. actual rebate payments. Automatically detect variance and trigger collection workflows.",
-                },
-                {
-                  title: "Cloud Waste",
-                  body: "Idle compute, over-provisioned storage, orphaned snapshots. Surface high-cost waste with evidence and recommended actions.",
-                },
-                {
-                  title: "Contract Leakage",
-                  body: "SaaS renewals without usage validation, vendor price increases without negotiation, auto-renew traps.",
-                },
-                {
-                  title: "Operational Inefficiency",
-                  body: "Manual processes that could be automated, duplicate efforts across teams, workflow bottlenecks causing delays.",
-                },
-                {
-                  title: "Regulatory Compliance Gaps",
-                  body: "Missing controls, incomplete audit trails, data quality issues that create regulatory risk and potential fines.",
-                },
-                {
-                  title: "Revenue Leakage",
-                  body: "Billing errors, unbilled services, pricing discrepancies. Capture lost revenue with automated detection and recovery.",
-                },
-              ]}
-            />
-          </section>
-
-          <section>
-            <h2 className="mb-6 text-2xl font-semibold">Event Lifecycle</h2>
-            <div className="space-y-4">
-              {[
-                {
-                  stage: "1. Discovery",
-                  desc: "Automated analytics in Snowflake/Databricks detect anomalies, variances, or policy violations.",
-                  color: "from-blue-500/40 to-blue-500/20",
-                  border: "border-blue-400/60",
-                  accentBar: "bg-gradient-to-r from-blue-400 to-blue-600",
-                },
-                {
-                  stage: "2. Validation",
-                  desc: "Evidence receipts generated with lineage, freshness, and confidence scores. DQ gates ensure data quality.",
-                  color: "from-violet-500/40 to-violet-500/20",
-                  border: "border-violet-400/60",
-                  accentBar: "bg-gradient-to-r from-violet-400 to-violet-600",
-                },
-                {
-                  stage: "3. War Room Ingestion",
-                  desc: "Event surfaces in War Room dashboard with dollar amount, time sensitivity, and actionability score.",
-                  color: "from-emerald-500/40 to-emerald-500/20",
-                  border: "border-emerald-400/60",
-                  accentBar: "bg-gradient-to-r from-emerald-400 to-emerald-600",
-                },
-                {
-                  stage: "4. Assignment",
-                  desc: "Decision owner assigned via Command Palette or workflow automation. Packet status moves to SUBMITTED.",
-                  color: "from-amber-500/40 to-amber-500/20",
-                  border: "border-amber-400/60",
-                  accentBar: "bg-gradient-to-r from-amber-400 to-amber-600",
-                },
-                {
-                  stage: "5. Approval",
-                  desc: "CFO/controller reviews evidence, signs packet, moves to APPROVED. Value moved to Verified Savings Ledger.",
-                  color: "from-cyan-500/40 to-cyan-500/20",
-                  border: "border-cyan-400/60",
-                  accentBar: "bg-gradient-to-r from-cyan-400 to-cyan-600",
-                },
-                {
-                  stage: "6. Realization",
-                  desc: "Action taken (rebate collected, waste eliminated, contract renegotiated). Ledger updated to REALIZED.",
-                  color: "from-rose-500/40 to-rose-500/20",
-                  border: "border-rose-400/60",
-                  accentBar: "bg-gradient-to-r from-rose-400 to-rose-600",
-                },
-              ].map((step) => (
-                <div key={step.stage} className={`relative overflow-hidden rounded-2xl border-2 ${step.border} bg-white/[0.02] p-6`}>
-                  <div className={`absolute inset-0 bg-gradient-to-r ${step.color} opacity-60`} />
-                  <div className={`absolute left-0 top-0 h-full w-1.5 ${step.accentBar} shadow-[0_0_20px_currentColor]`} />
-                  <div className="relative flex gap-4">
-                    <div className="font-mono font-bold text-lg text-white">{step.stage}</div>
-                    <div className="text-white/80 font-medium">{step.desc}</div>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </section>
-
-          <section>
-            <h2 className="mb-6 text-2xl font-semibold">Evidence-Backed Decision Making</h2>
-            <div className="k-panel p-8">
-              <div className="space-y-4 leading-relaxed text-white/70">
-                <p>
-                  Every arbitrage event includes <strong className="text-white">evidence receipts</strong> that trace back
-                  to source data, ensuring auditability and CFO-grade confidence.
-                </p>
-                <p className="rounded-lg border border-white/10 bg-white/5 p-4 font-mono text-sm">
-                  <strong className="text-white">Example Receipt:</strong><br />
-                  {`{`}<br />
-                  &nbsp;&nbsp;"id": "rcpt-pbm-001",<br />
-                  &nbsp;&nbsp;"title": "PBM rebate variance query",<br />
-                  &nbsp;&nbsp;"hash": "sha256:abc123...",<br />
-                  &nbsp;&nbsp;"freshness": "PT5M",<br />
-                  &nbsp;&nbsp;"confidence": 0.94,<br />
-                  &nbsp;&nbsp;"sourceSystem": "snowflake",<br />
-                  &nbsp;&nbsp;"sourceRef": "query-123-456",<br />
-                  &nbsp;&nbsp;"url": "https://snowflake.com/..."{`}`}
-                  <br />{`}`}
-                </p>
-                <p>
-                  This receipt includes:
-                </p>
-                <ul className="ml-4 list-inside list-disc space-y-2">
-                  <li><strong className="text-white">Lineage:</strong> Trace back to source query/table in Snowflake</li>
-                  <li><strong className="text-white">Hash:</strong> Cryptographic proof of data integrity</li>
-                  <li><strong className="text-white">Freshness:</strong> How recent is this data? (ISO 8601 duration)</li>
-                  <li><strong className="text-white">Confidence:</strong> Model confidence score (0.0 - 1.0)</li>
-                  <li><strong className="text-white">Source Ref:</strong> Direct link to query/record in source system</li>
-                </ul>
-              </div>
-            </div>
-          </section>
-
-          <section>
-            <h2 className="mb-6 text-2xl font-semibold">Integration with War Room</h2>
-            <div className="k-panel p-8">
-              <p className="leading-relaxed text-white/70">
-                Arbitrage events are automatically ingested into the <strong className="text-white">War Room</strong> from
-                your data warehouse via secure API. The War Room dashboard organizes events into four lanes:
-              </p>
-              <div className="mt-6 grid gap-4 md:grid-cols-2">
-                <div className="relative overflow-hidden rounded-lg border-2 border-emerald-400/60 bg-emerald-950/40 p-4">
-                  <div className="absolute inset-0 bg-gradient-to-br from-emerald-500/40 to-transparent" />
-                  <div className="relative">
-                    <div className="mb-2 font-bold text-lg text-emerald-300">Value Lane</div>
-                    <div className="text-sm text-white/80">
-                      High-dollar opportunities (rebate shortfalls, revenue leakage, contract savings)
-                    </div>
-                  </div>
-                </div>
-                <div className="relative overflow-hidden rounded-lg border-2 border-blue-400/60 bg-blue-950/40 p-4">
-                  <div className="absolute inset-0 bg-gradient-to-br from-blue-500/40 to-transparent" />
-                  <div className="relative">
-                    <div className="mb-2 font-bold text-lg text-blue-300">Controls Lane</div>
-                    <div className="text-sm text-white/80">
-                      Compliance gaps, audit risks, data quality incidents, policy violations
-                    </div>
-                  </div>
-                </div>
-                <div className="relative overflow-hidden rounded-lg border-2 border-violet-400/60 bg-violet-950/40 p-4">
-                  <div className="absolute inset-0 bg-gradient-to-br from-violet-500/40 to-transparent" />
-                  <div className="relative">
-                    <div className="mb-2 font-bold text-lg text-violet-300">Agentic Lane</div>
-                    <div className="text-sm text-white/80">
-                      AI-driven automation opportunities, workflow optimization, process improvement
-                    </div>
-                  </div>
-                </div>
-                <div className="relative overflow-hidden rounded-lg border-2 border-amber-400/60 bg-amber-950/40 p-4">
-                  <div className="absolute inset-0 bg-gradient-to-br from-amber-500/40 to-transparent" />
-                  <div className="relative">
-                    <div className="mb-2 font-bold text-lg text-amber-300">Marketplace Lane</div>
-                    <div className="text-sm text-white/80">
-                      Third-party integrations, vendor onboarding, marketplace health, SLA monitoring
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </section>
-
-          <CTA />
+          {/* Event grid */}
+          <motion.div
+            className="grid gap-6 md:grid-cols-2"
+            variants={containerVariants}
+            initial="hidden"
+            animate="visible"
+          >
+            {EVENTS.map((event) => (
+              <motion.div key={event.id} variants={itemVariants}>
+                <EventCard event={event} onClick={() => handleOpenDrawer(event.id)} />
+              </motion.div>
+            ))}
+          </motion.div>
         </div>
-      </Container>
+      </div>
 
+      {/* Drawer */}
       <ArbitrageEventDrawer
-        open={drawerOpen}
+        open={selectedEventId !== null}
         onClose={handleCloseDrawer}
-        eventId={selectedEventId}
+        eventId={selectedEventId || ""}
       />
     </>
   );

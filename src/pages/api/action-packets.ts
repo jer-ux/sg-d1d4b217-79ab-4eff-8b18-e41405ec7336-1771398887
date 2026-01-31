@@ -11,7 +11,7 @@ async function querySnowflake(_sql: string): Promise<any[]> {
 }
 
 function packetId() {
-  const t = new Date().toISOString().replace(/[-:.TZ]/g, "");
+  const t = new Date().toISOString().replace(/[^0-9]/g, "");
   return `AP-${t}-${Math.random().toString(16).slice(2, 10).toUpperCase()}`;
 }
 

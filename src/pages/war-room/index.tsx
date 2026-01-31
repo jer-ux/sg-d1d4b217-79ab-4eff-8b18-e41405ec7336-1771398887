@@ -2,6 +2,15 @@ import { SEO } from "@/components/SEO";
 import { SplitPane } from "@/components/SplitPane";
 import React, { useEffect, useMemo, useState } from "react";
 import dynamic from "next/dynamic";
+import { ChevronDown } from "lucide-react";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+
+type WarRoomView = "CFO_DASHBOARD" | "FOUR_LANE_LEDGER" | "EXECUTIVE_KPIS";
 
 type TileAccent = "neutral" | "good" | "warn" | "bad" | "purple" | "blue" | "amber";
 type TileView = "VARIANCE" | "VALIDATED" | "IN_FLIGHT" | "TRUST";
@@ -53,17 +62,17 @@ function Tile({
 }) {
   const accentCls =
     accent === "good"
-      ? "border-emerald-400/40 bg-gradient-to-br from-emerald-400/15 to-emerald-600/10 shadow-[0_0_30px_rgba(16,185,129,0.2)]"
+      ? "border-emerald-400/40 bg-gradient-to-br from-emerald-400/15 to-emerald-600/10 shadow-[0_0_20px_rgba(16,185,129,0.15)]"
       : accent === "warn"
-      ? "border-amber-400/40 bg-gradient-to-br from-amber-400/15 to-amber-600/10 shadow-[0_0_30px_rgba(251,191,36,0.2)]"
+      ? "border-amber-400/40 bg-gradient-to-br from-amber-400/15 to-amber-600/10 shadow-[0_0_20px_rgba(251,191,36,0.15)]"
       : accent === "bad"
-      ? "border-rose-400/40 bg-gradient-to-br from-rose-400/15 to-rose-600/10 shadow-[0_0_30px_rgba(244,63,94,0.2)]"
+      ? "border-rose-400/40 bg-gradient-to-br from-rose-400/15 to-rose-600/10 shadow-[0_0_20px_rgba(244,63,94,0.15)]"
       : accent === "purple"
-      ? "border-purple-400/40 bg-gradient-to-br from-purple-400/15 to-purple-600/10 shadow-[0_0_30px_rgba(168,85,247,0.2)]"
+      ? "border-purple-400/40 bg-gradient-to-br from-purple-400/15 to-purple-600/10 shadow-[0_0_20px_rgba(168,85,247,0.15)]"
       : accent === "blue"
-      ? "border-blue-400/40 bg-gradient-to-br from-blue-400/15 to-blue-600/10 shadow-[0_0_30px_rgba(59,130,246,0.2)]"
+      ? "border-blue-400/40 bg-gradient-to-br from-blue-400/15 to-blue-600/10 shadow-[0_0_20px_rgba(59,130,246,0.15)]"
       : accent === "amber"
-      ? "border-amber-400/40 bg-gradient-to-br from-amber-400/15 to-orange-600/10 shadow-[0_0_30px_rgba(251,191,36,0.2)]"
+      ? "border-amber-400/40 bg-gradient-to-br from-amber-400/15 to-orange-600/10 shadow-[0_0_20px_rgba(251,191,36,0.15)]"
       : "border-gray-600/40 bg-gray-800/40";
 
   return (
@@ -216,12 +225,12 @@ function mockWarRoom() {
 function Badge({ status }: { status: string }) {
   const cls =
     status === "VERIFIED"
-      ? "bg-emerald-400/25 text-emerald-200 border-emerald-400/40 shadow-[0_0_20px_rgba(16,185,129,0.3)]"
+      ? "bg-emerald-400/25 text-emerald-200 border-emerald-400/40 shadow-[0_0_15px_rgba(16,185,129,0.2)]"
       : status === "DEGRADED"
-      ? "bg-amber-400/25 text-amber-200 border-amber-400/40 shadow-[0_0_20px_rgba(251,191,36,0.3)]"
+      ? "bg-amber-400/25 text-amber-200 border-amber-400/40 shadow-[0_0_15px_rgba(251,191,36,0.2)]"
       : status === "UNVERIFIED"
-      ? "bg-purple-400/25 text-purple-200 border-purple-400/40 shadow-[0_0_20px_rgba(168,85,247,0.3)]"
-      : "bg-blue-400/25 text-blue-200 border-blue-400/40 shadow-[0_0_20px_rgba(59,130,246,0.3)]";
+      ? "bg-purple-400/25 text-purple-200 border-purple-400/40 shadow-[0_0_15px_rgba(168,85,247,0.2)]"
+      : "bg-blue-400/25 text-blue-200 border-blue-400/40 shadow-[0_0_15px_rgba(59,130,246,0.2)]";
 
   return (
     <span className={`text-[10px] font-semibold px-2.5 py-1 rounded-full border ${cls}`}>
@@ -230,7 +239,7 @@ function Badge({ status }: { status: string }) {
   );
 }
 
-function WarRoom4TileContent() {
+function CFODashboardContent() {
   const [data, setData] = useState(() => mockWarRoom());
   const [drawerOpen, setDrawerOpen] = useState(false);
   const [view, setView] = useState<TileView>("VARIANCE");
@@ -286,22 +295,7 @@ function WarRoom4TileContent() {
   }, [data.events, searchQuery, statusFilter]);
 
   return (
-    <div className="warroom-console min-h-screen bg-gradient-to-b from-gray-900 via-gray-950 to-black text-gray-100">
-      <div className="pointer-events-none fixed inset-0 -z-10">
-        <div className="absolute inset-0 bg-gradient-to-b from-gray-800/50 via-gray-900/50 to-black/50" />
-        <div className="absolute -top-32 left-12 h-[500px] w-[800px] rounded-full bg-emerald-400/6 blur-[100px]" />
-        <div className="absolute -top-24 right-12 h-[420px] w-[700px] rounded-full bg-sky-400/6 blur-[100px]" />
-        <div
-          className="absolute inset-0 opacity-[0.15]"
-          style={{
-            backgroundImage:
-              "linear-gradient(rgba(255,255,255,.05) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,.05) 1px, transparent 1px)",
-            backgroundSize: "48px 48px",
-            maskImage: "radial-gradient(70% 55% at 50% 20%, black 40%, transparent 75%)",
-          }}
-        />
-      </div>
-
+    <>
       <div className="mx-auto max-w-[1400px] px-4 py-6">
         <div className="mb-5">
           <div className="text-[11px] text-gray-500">SiriusB iQ • CFO War Room</div>
@@ -687,11 +681,15 @@ function WarRoom4TileContent() {
           </div>
         )}
       </Drawer>
-    </div>
+    </>
   );
 }
 
-const WarRoom4Tile = dynamic(() => Promise.resolve(WarRoom4TileContent), {
+// Dynamically import the other War Room components
+const FourLaneLedger = dynamic(() => import("@/components/warroom/WarRoomV2"), { ssr: false });
+const ExecutiveKPIs = dynamic(() => import("@/components/warroom/WarRoom").then(mod => ({ default: mod.WarRoom })), { ssr: false });
+
+const CFODashboard = dynamic(() => Promise.resolve(CFODashboardContent), {
   ssr: false,
   loading: () => (
     <div className="min-h-screen bg-gradient-to-b from-gray-900 via-gray-950 to-black text-gray-100">
@@ -707,14 +705,92 @@ const WarRoom4Tile = dynamic(() => Promise.resolve(WarRoom4TileContent), {
   ),
 });
 
-export default function WarRoom4TilePage() {
+export default function WarRoomPage() {
+  const [currentView, setCurrentView] = useState<WarRoomView>("CFO_DASHBOARD");
+
+  const viewMeta: Record<WarRoomView, { label: string; description: string }> = {
+    CFO_DASHBOARD: { label: "CFO Dashboard", description: "4-Tile Executive View with Ranked Events" },
+    FOUR_LANE_LEDGER: { label: "4-Lane Ledger", description: "Advanced Filtering with Redis Streaming" },
+    EXECUTIVE_KPIS: { label: "Executive KPIs", description: "Live SSE Stream with Org Filters" },
+  };
+
   return (
     <>
       <SEO
         title="War Room - SiriusB iQ AI Data Sciences Lab"
         description="CFO War Room - Real-time financial operations intelligence"
       />
-      <WarRoom4Tile />
+      <div className="warroom-console min-h-screen bg-gradient-to-b from-gray-900 via-gray-950 to-black text-gray-100">
+        <div className="pointer-events-none fixed inset-0 -z-10">
+          <div className="absolute inset-0 bg-gradient-to-b from-gray-800/50 via-gray-900/50 to-black/50" />
+          <div className="absolute -top-32 left-12 h-[500px] w-[800px] rounded-full bg-emerald-400/6 blur-[100px]" />
+          <div className="absolute -top-24 right-12 h-[420px] w-[700px] rounded-full bg-sky-400/6 blur-[100px]" />
+          <div
+            className="absolute inset-0 opacity-[0.15]"
+            style={{
+              backgroundImage:
+                "linear-gradient(rgba(255,255,255,.05) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,.05) 1px, transparent 1px)",
+              backgroundSize: "48px 48px",
+              maskImage: "radial-gradient(70% 55% at 50% 20%, black 40%, transparent 75%)",
+            }}
+          />
+        </div>
+
+        {/* View Selector Dropdown */}
+        <div className="sticky top-0 z-50 border-b border-white/10 bg-gray-900/95 backdrop-blur-xl">
+          <div className="mx-auto max-w-[1400px] px-4 py-3">
+            <div className="flex items-center justify-between">
+              <div>
+                <div className="text-xs text-gray-500">SiriusB iQ War Room</div>
+                <div className="text-sm font-medium text-white/90">{viewMeta[currentView].description}</div>
+              </div>
+              
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <button className="flex items-center gap-2 px-4 py-2 rounded-xl border border-white/20 bg-white/5 hover:bg-white/10 transition-all text-white font-medium">
+                    <span className="text-sm">{viewMeta[currentView].label}</span>
+                    <ChevronDown className="h-4 w-4" />
+                  </button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent align="end" className="w-64 bg-gray-900 border-white/20">
+                  <DropdownMenuItem
+                    onClick={() => setCurrentView("CFO_DASHBOARD")}
+                    className="cursor-pointer focus:bg-white/10"
+                  >
+                    <div className="flex flex-col gap-1">
+                      <div className="font-medium text-white">CFO Dashboard</div>
+                      <div className="text-xs text-gray-400">4-Tile Executive View with Ranked Events</div>
+                    </div>
+                  </DropdownMenuItem>
+                  <DropdownMenuItem
+                    onClick={() => setCurrentView("FOUR_LANE_LEDGER")}
+                    className="cursor-pointer focus:bg-white/10"
+                  >
+                    <div className="flex flex-col gap-1">
+                      <div className="font-medium text-white">4-Lane Ledger</div>
+                      <div className="text-xs text-gray-400">Advanced Filtering with Redis Streaming</div>
+                    </div>
+                  </DropdownMenuItem>
+                  <DropdownMenuItem
+                    onClick={() => setCurrentView("EXECUTIVE_KPIS")}
+                    className="cursor-pointer focus:bg-white/10"
+                  >
+                    <div className="flex flex-col gap-1">
+                      <div className="font-medium text-white">Executive KPIs</div>
+                      <div className="text-xs text-gray-400">Live SSE Stream with Org Filters</div>
+                    </div>
+                  </DropdownMenuItem>
+                </DropdownMenuContent>
+              </DropdownMenu>
+            </div>
+          </div>
+        </div>
+
+        {/* Render Selected View */}
+        {currentView === "CFO_DASHBOARD" && <CFODashboard />}
+        {currentView === "FOUR_LANE_LEDGER" && <FourLaneLedger />}
+        {currentView === "EXECUTIVE_KPIS" && <ExecutiveKPIs />}
+      </div>
     </>
   );
 }

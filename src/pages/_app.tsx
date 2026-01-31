@@ -1,6 +1,6 @@
 import type { AppProps } from "next/app";
 import { useEffect } from "react";
-import "@/styles/globals.css";
+import "@/styles/main.css";
 import Nav from "@/components/Nav";
 import { Footer } from "@/components/Footer";
 import { saveDemoReceipt } from "@/lib/demoReceipts";

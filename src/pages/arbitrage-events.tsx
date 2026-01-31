@@ -18,105 +18,119 @@ const stagger: Variants = {
 };
 
 function getCategoryTheme(category: string) {
-  const themes: Record<string, { bg: string; border: string; text: string; icon: string; gradient: string }> = {
+  const themes: Record<string, { bg: string; border: string; text: string; icon: string; gradient: string; cardBg: string; accentBar: string }> = {
     "Eligibility Leakage": {
-      bg: "bg-rose-500/10",
-      border: "border-rose-400/30",
-      text: "text-rose-300",
-      icon: "text-rose-400",
-      gradient: "from-rose-500/20 via-rose-500/5 to-transparent",
+      bg: "bg-rose-500/40",
+      border: "border-rose-400/60",
+      text: "text-rose-200",
+      icon: "text-rose-300",
+      gradient: "from-rose-500/40 via-rose-500/20 to-rose-500/10",
+      cardBg: "bg-rose-950/40",
+      accentBar: "bg-gradient-to-b from-rose-400 via-rose-500 to-rose-600",
     },
     "PBM / Rx Economics": {
-      bg: "bg-blue-500/10",
-      border: "border-blue-400/30",
-      text: "text-blue-300",
-      icon: "text-blue-400",
-      gradient: "from-blue-500/20 via-blue-500/5 to-transparent",
+      bg: "bg-blue-500/40",
+      border: "border-blue-400/60",
+      text: "text-blue-200",
+      icon: "text-blue-300",
+      gradient: "from-blue-500/40 via-blue-500/20 to-blue-500/10",
+      cardBg: "bg-blue-950/40",
+      accentBar: "bg-gradient-to-b from-blue-400 via-blue-500 to-blue-600",
     },
     "Pharmacy Pricing": {
-      bg: "bg-violet-500/10",
-      border: "border-violet-400/30",
-      text: "text-violet-300",
-      icon: "text-violet-400",
-      gradient: "from-violet-500/20 via-violet-500/5 to-transparent",
+      bg: "bg-violet-500/40",
+      border: "border-violet-400/60",
+      text: "text-violet-200",
+      icon: "text-violet-300",
+      gradient: "from-violet-500/40 via-violet-500/20 to-violet-500/10",
+      cardBg: "bg-violet-950/40",
+      accentBar: "bg-gradient-to-b from-violet-400 via-violet-500 to-violet-600",
     },
     "Network / Access": {
-      bg: "bg-emerald-500/10",
-      border: "border-emerald-400/30",
-      text: "text-emerald-300",
-      icon: "text-emerald-400",
-      gradient: "from-emerald-500/20 via-emerald-500/5 to-transparent",
+      bg: "bg-emerald-500/40",
+      border: "border-emerald-400/60",
+      text: "text-emerald-200",
+      icon: "text-emerald-300",
+      gradient: "from-emerald-500/40 via-emerald-500/20 to-emerald-500/10",
+      cardBg: "bg-emerald-950/40",
+      accentBar: "bg-gradient-to-b from-emerald-400 via-emerald-500 to-emerald-600",
     },
     "Contract Leakage": {
-      bg: "bg-amber-500/10",
-      border: "border-amber-400/30",
-      text: "text-amber-300",
-      icon: "text-amber-400",
-      gradient: "from-amber-500/20 via-amber-500/5 to-transparent",
+      bg: "bg-amber-500/40",
+      border: "border-amber-400/60",
+      text: "text-amber-200",
+      icon: "text-amber-300",
+      gradient: "from-amber-500/40 via-amber-500/20 to-amber-500/10",
+      cardBg: "bg-amber-950/40",
+      accentBar: "bg-gradient-to-b from-amber-400 via-amber-500 to-amber-600",
     },
     "Cloud Waste": {
-      bg: "bg-cyan-500/10",
-      border: "border-cyan-400/30",
-      text: "text-cyan-300",
-      icon: "text-cyan-400",
-      gradient: "from-cyan-500/20 via-cyan-500/5 to-transparent",
+      bg: "bg-cyan-500/40",
+      border: "border-cyan-400/60",
+      text: "text-cyan-200",
+      icon: "text-cyan-300",
+      gradient: "from-cyan-500/40 via-cyan-500/20 to-cyan-500/10",
+      cardBg: "bg-cyan-950/40",
+      accentBar: "bg-gradient-to-b from-cyan-400 via-cyan-500 to-cyan-600",
     },
   };
 
   return themes[category] || {
-    bg: "bg-white/5",
-    border: "border-white/15",
-    text: "text-white/80",
-    icon: "text-white/60",
-    gradient: "from-white/10 via-white/5 to-transparent",
+    bg: "bg-white/20",
+    border: "border-white/30",
+    text: "text-white",
+    icon: "text-white/80",
+    gradient: "from-white/20 via-white/10 to-white/5",
+    cardBg: "bg-white/10",
+    accentBar: "bg-gradient-to-b from-white/60 via-white/40 to-white/20",
   };
 }
 
 function getSeverityTheme(severity?: string) {
   if (severity === "CRITICAL") return { 
-    bg: "bg-rose-500/15", 
-    border: "border-rose-400/40", 
-    text: "text-rose-200",
+    bg: "bg-rose-500/30", 
+    border: "border-rose-300/70", 
+    text: "text-rose-100",
     dot: "bg-rose-400",
-    glow: "shadow-rose-500/20"
+    glow: "shadow-[0_0_20px_rgba(244,63,94,0.5)]"
   };
   if (severity === "HIGH") return { 
-    bg: "bg-orange-500/15", 
-    border: "border-orange-400/40", 
-    text: "text-orange-200",
+    bg: "bg-orange-500/30", 
+    border: "border-orange-300/70", 
+    text: "text-orange-100",
     dot: "bg-orange-400",
-    glow: "shadow-orange-500/20"
+    glow: "shadow-[0_0_20px_rgba(251,146,60,0.5)]"
   };
   if (severity === "MEDIUM") return { 
-    bg: "bg-yellow-500/15", 
-    border: "border-yellow-400/40", 
-    text: "text-yellow-200",
+    bg: "bg-yellow-500/30", 
+    border: "border-yellow-300/70", 
+    text: "text-yellow-100",
     dot: "bg-yellow-400",
-    glow: "shadow-yellow-500/20"
+    glow: "shadow-[0_0_20px_rgba(250,204,21,0.5)]"
   };
   return { 
-    bg: "bg-emerald-500/15", 
-    border: "border-emerald-400/40", 
-    text: "text-emerald-200",
+    bg: "bg-emerald-500/30", 
+    border: "border-emerald-300/70", 
+    text: "text-emerald-100",
     dot: "bg-emerald-400",
-    glow: "shadow-emerald-500/20"
+    glow: "shadow-[0_0_20px_rgba(52,211,153,0.5)]"
   };
 }
 
 function getStatusTheme(status: string) {
   const themes: Record<string, { bg: string; border: string; text: string }> = {
-    "IN_REVIEW": { bg: "bg-blue-500/10", border: "border-blue-400/30", text: "text-blue-200" },
-    "SUBMITTED": { bg: "bg-violet-500/10", border: "border-violet-400/30", text: "text-violet-200" },
-    "DRAFT": { bg: "bg-zinc-500/10", border: "border-zinc-400/30", text: "text-zinc-300" },
-    "APPROVED": { bg: "bg-emerald-500/10", border: "border-emerald-400/30", text: "text-emerald-200" },
-    "ACTIONED": { bg: "bg-cyan-500/10", border: "border-cyan-400/30", text: "text-cyan-200" },
+    "IN_REVIEW": { bg: "bg-blue-500/30", border: "border-blue-300/70", text: "text-blue-100" },
+    "SUBMITTED": { bg: "bg-violet-500/30", border: "border-violet-300/70", text: "text-violet-100" },
+    "DRAFT": { bg: "bg-zinc-500/30", border: "border-zinc-300/70", text: "text-zinc-200" },
+    "APPROVED": { bg: "bg-emerald-500/30", border: "border-emerald-300/70", text: "text-emerald-100" },
+    "ACTIONED": { bg: "bg-cyan-500/30", border: "border-cyan-300/70", text: "text-cyan-100" },
   };
-  return themes[status] || { bg: "bg-white/5", border: "border-white/15", text: "text-white/80" };
+  return themes[status] || { bg: "bg-white/20", border: "border-white/30", text: "text-white" };
 }
 
 function Chip({ label, className }: { label: string; className?: string }) {
   return (
-    <span className={`inline-flex items-center rounded-full border px-3 py-1 text-xs font-medium ${className ?? ""}`}>
+    <span className={`inline-flex items-center rounded-full border-2 px-3 py-1 text-xs font-bold ${className ?? ""}`}>
       {label}
     </span>
   );
@@ -236,13 +250,13 @@ function EventCard({ event, onClick }: { event: any; onClick: () => void }) {
     <motion.div
       variants={fadeUp}
       onClick={onClick}
-      className={`group relative cursor-pointer overflow-hidden rounded-2xl border-2 ${categoryTheme.border} bg-gradient-to-br ${categoryTheme.gradient} p-6 transition-all duration-300 hover:scale-[1.02] hover:shadow-[0_20px_80px_rgba(0,0,0,0.6)]`}
+      className={`group relative cursor-pointer overflow-hidden rounded-2xl border-2 ${categoryTheme.border} ${categoryTheme.cardBg} backdrop-blur-sm p-6 transition-all duration-300 hover:scale-[1.02] hover:shadow-[0_20px_100px_rgba(0,0,0,0.8)]`}
     >
-      {/* Enhanced animated gradient background based on category */}
-      <div className={`absolute inset-0 bg-gradient-to-br ${categoryTheme.gradient} opacity-40 transition-opacity duration-300 group-hover:opacity-70`} />
+      {/* SUPER VIBRANT animated gradient background */}
+      <div className={`absolute inset-0 bg-gradient-to-br ${categoryTheme.gradient} opacity-80 transition-opacity duration-300 group-hover:opacity-100`} />
       
-      {/* Bold accent bar on left with glow effect */}
-      <div className={`absolute left-0 top-0 h-full w-2 ${categoryTheme.bg} opacity-100 shadow-lg`} />
+      {/* THICK colorful accent bar on left with STRONG glow */}
+      <div className={`absolute left-0 top-0 h-full w-1.5 ${categoryTheme.accentBar} shadow-[0_0_30px_currentColor] opacity-100`} />
       
       <div className="relative">
         <div className="mb-4 flex items-start justify-between gap-4">
@@ -250,50 +264,50 @@ function EventCard({ event, onClick }: { event: any; onClick: () => void }) {
             <div className="mb-3 flex flex-wrap items-center gap-2">
               <Chip 
                 label={event.severity} 
-                className={`${severityTheme.bg} ${severityTheme.border} ${severityTheme.text} shadow-xl ${severityTheme.glow} border-2 font-bold`}
+                className={`${severityTheme.bg} ${severityTheme.border} ${severityTheme.text} ${severityTheme.glow} font-black uppercase tracking-wider`}
               />
               <Chip
                 label={verified ? "✓ VERIFIED" : "⚠ NOT VERIFIED"}
                 className={
                   verified
-                    ? "border-2 border-emerald-400/50 bg-emerald-400/25 text-emerald-100 shadow-emerald-500/30 shadow-xl font-bold"
-                    : "border-2 border-amber-400/50 bg-amber-400/25 text-amber-100 shadow-amber-500/30 shadow-xl font-bold"
+                    ? "border-2 border-emerald-300/70 bg-emerald-500/40 text-emerald-50 shadow-[0_0_25px_rgba(52,211,153,0.6)] font-black uppercase"
+                    : "border-2 border-amber-300/70 bg-amber-500/40 text-amber-50 shadow-[0_0_25px_rgba(251,191,36,0.6)] font-black uppercase"
                 }
               />
               <Chip
                 label={event.category}
-                className={`${categoryTheme.bg} ${categoryTheme.border} ${categoryTheme.text} border-2 font-semibold shadow-lg`}
+                className={`${categoryTheme.bg} ${categoryTheme.border} ${categoryTheme.text} font-bold uppercase tracking-wide shadow-lg`}
               />
             </div>
-            <h3 className="text-lg font-bold text-white drop-shadow-lg group-hover:text-white">
+            <h3 className="text-xl font-black text-white drop-shadow-[0_2px_10px_rgba(0,0,0,0.8)] group-hover:text-white">
               {event.event_type}
             </h3>
-            <div className="mt-3 flex items-center gap-3 text-sm text-white/80 font-medium">
+            <div className="mt-3 flex items-center gap-3 text-sm text-white/90 font-semibold">
               <span className="flex items-center gap-1.5">
-                <Calendar className="h-3.5 w-3.5" />
+                <Calendar className="h-4 w-4" />
                 {event.quarter}
               </span>
               <span className="flex items-center gap-1.5">
-                <User className="h-3.5 w-3.5" />
+                <User className="h-4 w-4" />
                 {event.owner}
               </span>
             </div>
           </div>
-          <div className={`flex h-14 w-14 shrink-0 items-center justify-center rounded-xl ${categoryTheme.bg} ${categoryTheme.border} border-2 shadow-xl`}>
-            <IconComponent className={`h-7 w-7 ${categoryTheme.icon} drop-shadow-lg`} />
+          <div className={`flex h-16 w-16 shrink-0 items-center justify-center rounded-xl ${categoryTheme.bg} ${categoryTheme.border} border-2 shadow-[0_0_30px_currentColor]`}>
+            <IconComponent className={`h-8 w-8 ${categoryTheme.icon} drop-shadow-lg`} />
           </div>
         </div>
 
-        <div className="space-y-3 border-t border-white/20 pt-4">
+        <div className="space-y-3 border-t-2 border-white/30 pt-4">
           <div className="flex items-center justify-between text-sm">
-            <span className="text-white/70 font-medium">Company</span>
-            <span className="font-semibold text-white drop-shadow">{event.company_name}</span>
+            <span className="text-white/80 font-semibold">Company</span>
+            <span className="font-bold text-white drop-shadow">{event.company_name}</span>
           </div>
           
           {typeof event.variance_value === "number" && event.variance_value > 0 && (
             <div className="flex items-center justify-between text-sm">
-              <span className="text-white/70 font-medium">Variance</span>
-              <span className={`font-mono text-lg font-bold ${categoryTheme.text} drop-shadow-lg`}>
+              <span className="text-white/80 font-semibold">Variance</span>
+              <span className={`font-mono text-xl font-black ${categoryTheme.text} drop-shadow-[0_2px_15px_currentColor]`}>
                 ${(event.variance_value / 1000000).toFixed(2)}M
               </span>
             </div>
@@ -301,35 +315,35 @@ function EventCard({ event, onClick }: { event: any; onClick: () => void }) {
           
           {typeof event.drop_rate === "number" && (
             <div className="flex items-center justify-between text-sm">
-              <span className="text-white/70 font-medium">Drop Rate</span>
-              <span className="font-mono text-lg font-bold text-rose-300 drop-shadow-lg">
+              <span className="text-white/80 font-semibold">Drop Rate</span>
+              <span className="font-mono text-xl font-black text-rose-300 drop-shadow-[0_2px_15px_rgba(244,63,94,0.8)]">
                 {(event.drop_rate * 100).toFixed(1)}%
               </span>
             </div>
           )}
 
           <div className="flex items-center justify-between text-sm">
-            <span className="text-white/70 font-medium">Status</span>
-            <span className={`rounded-full border-2 px-4 py-1.5 text-xs font-bold shadow-lg ${statusTheme.bg} ${statusTheme.border} ${statusTheme.text}`}>
+            <span className="text-white/80 font-semibold">Status</span>
+            <span className={`rounded-full border-2 px-5 py-1.5 text-xs font-black uppercase tracking-wider shadow-lg ${statusTheme.bg} ${statusTheme.border} ${statusTheme.text}`}>
               {event.status.replace(/_/g, " ")}
             </span>
           </div>
 
           <div className="flex items-center justify-between text-sm">
-            <span className="text-white/70 font-medium">Event ID</span>
-            <span className="font-mono text-xs text-white/90 font-semibold">{event.event_id}</span>
+            <span className="text-white/80 font-semibold">Event ID</span>
+            <span className="font-mono text-sm text-white font-bold">{event.event_id}</span>
           </div>
         </div>
 
-        <div className="mt-4 flex items-center text-sm text-white/70 font-medium opacity-0 transition-all duration-300 group-hover:opacity-100 group-hover:text-white">
-          <span>Click to view details</span>
+        <div className="mt-5 flex items-center text-sm text-white/70 font-semibold opacity-0 transition-all duration-300 group-hover:opacity-100 group-hover:text-white">
+          <span>Click to view details →</span>
           <svg
-            className="ml-1 h-4 w-4 transition-transform duration-300 group-hover:translate-x-1"
+            className="ml-1 h-4 w-4 transition-transform duration-300 group-hover:translate-x-2"
             fill="none"
             viewBox="0 0 24 24"
             stroke="currentColor"
           >
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M9 5l7 7-7 7" />
           </svg>
         </div>
       </div>
@@ -445,45 +459,52 @@ export default function ArbitrageEventsPage() {
                 {
                   stage: "1. Discovery",
                   desc: "Automated analytics in Snowflake/Databricks detect anomalies, variances, or policy violations.",
-                  color: "from-blue-500/20 to-blue-500/5",
-                  border: "border-blue-400/30",
+                  color: "from-blue-500/40 to-blue-500/20",
+                  border: "border-blue-400/60",
+                  accentBar: "bg-gradient-to-r from-blue-400 to-blue-600",
                 },
                 {
                   stage: "2. Validation",
                   desc: "Evidence receipts generated with lineage, freshness, and confidence scores. DQ gates ensure data quality.",
-                  color: "from-violet-500/20 to-violet-500/5",
-                  border: "border-violet-400/30",
+                  color: "from-violet-500/40 to-violet-500/20",
+                  border: "border-violet-400/60",
+                  accentBar: "bg-gradient-to-r from-violet-400 to-violet-600",
                 },
                 {
                   stage: "3. War Room Ingestion",
                   desc: "Event surfaces in War Room dashboard with dollar amount, time sensitivity, and actionability score.",
-                  color: "from-emerald-500/20 to-emerald-500/5",
-                  border: "border-emerald-400/30",
+                  color: "from-emerald-500/40 to-emerald-500/20",
+                  border: "border-emerald-400/60",
+                  accentBar: "bg-gradient-to-r from-emerald-400 to-emerald-600",
                 },
                 {
                   stage: "4. Assignment",
                   desc: "Decision owner assigned via Command Palette or workflow automation. Packet status moves to SUBMITTED.",
-                  color: "from-amber-500/20 to-amber-500/5",
-                  border: "border-amber-400/30",
+                  color: "from-amber-500/40 to-amber-500/20",
+                  border: "border-amber-400/60",
+                  accentBar: "bg-gradient-to-r from-amber-400 to-amber-600",
                 },
                 {
                   stage: "5. Approval",
                   desc: "CFO/controller reviews evidence, signs packet, moves to APPROVED. Value moved to Verified Savings Ledger.",
-                  color: "from-cyan-500/20 to-cyan-500/5",
-                  border: "border-cyan-400/30",
+                  color: "from-cyan-500/40 to-cyan-500/20",
+                  border: "border-cyan-400/60",
+                  accentBar: "bg-gradient-to-r from-cyan-400 to-cyan-600",
                 },
                 {
                   stage: "6. Realization",
                   desc: "Action taken (rebate collected, waste eliminated, contract renegotiated). Ledger updated to REALIZED.",
-                  color: "from-rose-500/20 to-rose-500/5",
-                  border: "border-rose-400/30",
+                  color: "from-rose-500/40 to-rose-500/20",
+                  border: "border-rose-400/60",
+                  accentBar: "bg-gradient-to-r from-rose-400 to-rose-600",
                 },
               ].map((step) => (
-                <div key={step.stage} className={`relative overflow-hidden rounded-2xl border ${step.border} bg-white/[0.02] p-6`}>
-                  <div className={`absolute inset-0 bg-gradient-to-r ${step.color}`} />
+                <div key={step.stage} className={`relative overflow-hidden rounded-2xl border-2 ${step.border} bg-white/[0.02] p-6`}>
+                  <div className={`absolute inset-0 bg-gradient-to-r ${step.color} opacity-60`} />
+                  <div className={`absolute left-0 top-0 h-full w-1.5 ${step.accentBar} shadow-[0_0_20px_currentColor]`} />
                   <div className="relative flex gap-4">
-                    <div className="font-mono font-semibold text-emerald-400">{step.stage}</div>
-                    <div className="text-white/70">{step.desc}</div>
+                    <div className="font-mono font-bold text-lg text-white">{step.stage}</div>
+                    <div className="text-white/80 font-medium">{step.desc}</div>
                   </div>
                 </div>
               ))}
@@ -533,38 +554,38 @@ export default function ArbitrageEventsPage() {
                 your data warehouse via secure API. The War Room dashboard organizes events into four lanes:
               </p>
               <div className="mt-6 grid gap-4 md:grid-cols-2">
-                <div className="relative overflow-hidden rounded-lg border border-emerald-400/30 bg-emerald-500/10 p-4">
-                  <div className="absolute inset-0 bg-gradient-to-br from-emerald-500/20 to-transparent" />
+                <div className="relative overflow-hidden rounded-lg border-2 border-emerald-400/60 bg-emerald-950/40 p-4">
+                  <div className="absolute inset-0 bg-gradient-to-br from-emerald-500/40 to-transparent" />
                   <div className="relative">
-                    <div className="mb-2 font-semibold text-emerald-400">Value Lane</div>
-                    <div className="text-sm text-white/70">
+                    <div className="mb-2 font-bold text-lg text-emerald-300">Value Lane</div>
+                    <div className="text-sm text-white/80">
                       High-dollar opportunities (rebate shortfalls, revenue leakage, contract savings)
                     </div>
                   </div>
                 </div>
-                <div className="relative overflow-hidden rounded-lg border border-blue-400/30 bg-blue-500/10 p-4">
-                  <div className="absolute inset-0 bg-gradient-to-br from-blue-500/20 to-transparent" />
+                <div className="relative overflow-hidden rounded-lg border-2 border-blue-400/60 bg-blue-950/40 p-4">
+                  <div className="absolute inset-0 bg-gradient-to-br from-blue-500/40 to-transparent" />
                   <div className="relative">
-                    <div className="mb-2 font-semibold text-blue-400">Controls Lane</div>
-                    <div className="text-sm text-white/70">
+                    <div className="mb-2 font-bold text-lg text-blue-300">Controls Lane</div>
+                    <div className="text-sm text-white/80">
                       Compliance gaps, audit risks, data quality incidents, policy violations
                     </div>
                   </div>
                 </div>
-                <div className="relative overflow-hidden rounded-lg border border-violet-400/30 bg-violet-500/10 p-4">
-                  <div className="absolute inset-0 bg-gradient-to-br from-violet-500/20 to-transparent" />
+                <div className="relative overflow-hidden rounded-lg border-2 border-violet-400/60 bg-violet-950/40 p-4">
+                  <div className="absolute inset-0 bg-gradient-to-br from-violet-500/40 to-transparent" />
                   <div className="relative">
-                    <div className="mb-2 font-semibold text-violet-400">Agentic Lane</div>
-                    <div className="text-sm text-white/70">
+                    <div className="mb-2 font-bold text-lg text-violet-300">Agentic Lane</div>
+                    <div className="text-sm text-white/80">
                       AI-driven automation opportunities, workflow optimization, process improvement
                     </div>
                   </div>
                 </div>
-                <div className="relative overflow-hidden rounded-lg border border-amber-400/30 bg-amber-500/10 p-4">
-                  <div className="absolute inset-0 bg-gradient-to-br from-amber-500/20 to-transparent" />
+                <div className="relative overflow-hidden rounded-lg border-2 border-amber-400/60 bg-amber-950/40 p-4">
+                  <div className="absolute inset-0 bg-gradient-to-br from-amber-500/40 to-transparent" />
                   <div className="relative">
-                    <div className="mb-2 font-semibold text-amber-400">Marketplace Lane</div>
-                    <div className="text-sm text-white/70">
+                    <div className="mb-2 font-bold text-lg text-amber-300">Marketplace Lane</div>
+                    <div className="text-sm text-white/80">
                       Third-party integrations, vendor onboarding, marketplace health, SLA monitoring
                     </div>
                   </div>

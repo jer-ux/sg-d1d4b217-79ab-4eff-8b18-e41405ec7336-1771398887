@@ -6,11 +6,31 @@ import { TickerMarquee } from "@/components/warroom/TickerMarquee";
 import { useWarRoomStream } from "@/components/warroom/useWarRoomStream";
 import type { LaneKey, WarEvent, EvidenceReceipt } from "@/lib/warroom/types";
 
-const laneMeta: Record<LaneKey, { label: string; headline: string }> = {
-  value: { label: "Verified Savings Ledger", headline: "Reconcile value with receipts and owners." },
-  controls: { label: "Controls & Compliance", headline: "Continuous controls. Evidence-first posture." },
-  agentic: { label: "Agentic Ops & Sales", headline: "Governed automation with telemetry and gates." },
-  marketplace: { label: "Marketplace Execution", headline: "Ship once. Distribute with low delivery drag." },
+const laneMeta: Record<LaneKey, { label: string; headline: string; color: string; bgGradient: string }> = {
+  value: { 
+    label: "Verified Savings Ledger", 
+    headline: "Reconcile value with receipts and owners.",
+    color: "emerald",
+    bgGradient: "from-emerald-500/10 to-emerald-600/5"
+  },
+  controls: { 
+    label: "Controls & Compliance", 
+    headline: "Continuous controls. Evidence-first posture.",
+    color: "blue",
+    bgGradient: "from-blue-500/10 to-blue-600/5"
+  },
+  agentic: { 
+    label: "Agentic Ops & Sales", 
+    headline: "Governed automation with telemetry and gates.",
+    color: "purple",
+    bgGradient: "from-purple-500/10 to-purple-600/5"
+  },
+  marketplace: { 
+    label: "Marketplace Execution", 
+    headline: "Ship once. Distribute with low delivery drag.",
+    color: "orange",
+    bgGradient: "from-orange-500/10 to-orange-600/5"
+  },
 };
 
 function formatMoney(n: number) {
@@ -26,7 +46,6 @@ async function postJson(url: string, body: any) {
   const res = await fetch(url, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(body) });
   const j = await res.json();
   if (!res.ok || !j.ok) {
-    // Show policy reasons if available
     if (j.reasons && Array.isArray(j.reasons)) {
       alert("Policy check failed:\n\n" + j.reasons.map((r: string) => `• ${r}`).join("\n"));
     } else {
@@ -37,27 +56,116 @@ async function postJson(url: string, body: any) {
   return j;
 }
 
-function TileButton({ label, onClick }: { label: string; onClick: () => void }) {
+function TileButton({ label, onClick, variant = "default" }: { label: string; onClick: () => void; variant?: "default" | "primary" }) {
   return (
     <button
       type="button"
       onClick={onClick}
-      className="px-3 py-2 rounded-xl border border-white/15 bg-white/5 hover:bg-white/10 transition text-xs font-medium"
+      className={`px-3 py-1.5 rounded-lg border text-xs font-medium transition-all ${
+        variant === "primary"
+          ? "border-emerald-500/50 bg-emerald-500/20 text-emerald-300 hover:bg-emerald-500/30"
+          : "border-white/15 bg-white/5 hover:bg-white/10"
+      }`}
     >
       {label}
     </button>
   );
 }
 
-function StatePill({ label, value }: { label: string; value: number }) {
+function StatePill({ label, value, color }: { label: string; value: number; color?: string }) {
+  const colorClasses = color === "emerald" 
+    ? "border-emerald-400/30 bg-emerald-400/10"
+    : color === "red"
+    ? "border-red-400/30 bg-red-400/10"
+    : color === "blue"
+    ? "border-blue-400/30 bg-blue-400/10"
+    : "border-white/15 bg-white/5";
+
+  const textColor = color === "emerald"
+    ? "text-emerald-400"
+    : color === "red"
+    ? "text-red-400"
+    : color === "blue"
+    ? "text-blue-400"
+    : "text-white/85";
+
   return (
-    <div className="rounded-xl border border-white/10 bg-white/5 px-3 py-2 text-center min-w-[80px]">
-      <div className="text-[10px] uppercase tracking-wider text-white/55">{label}</div>
-      <div className={`text-sm font-medium ${
-        label === "At Risk" ? "text-red-400" : 
-        label === "Realized" ? "text-emerald-400" : 
-        "text-white/85"
-      }`}>{formatMoney(value)}</div>
+    <div className={`rounded-xl border ${colorClasses} px-3 py-2 text-center min-w-[90px]`}>
+      <div className="text-[10px] uppercase tracking-wider text-white/55 font-medium">{label}</div>
+      <div className={`text-sm font-bold tabular-nums ${textColor}`}>{formatMoney(value)}</div>
+    </div>
+  );
+}
+
+function MiniSparkline({ data, color = "emerald" }: { data: number[]; color?: string }) {
+  if (!data || data.length === 0) return null;
+  
+  const max = Math.max(...data);
+  const min = Math.min(...data);
+  const range = max - min || 1;
+  
+  const points = data.map((val, i) => {
+    const x = (i / (data.length - 1)) * 100;
+    const y = 100 - ((val - min) / range) * 100;
+    return `${x},${y}`;
+  }).join(" ");
+
+  const strokeColor = color === "emerald" 
+    ? "#10b981" 
+    : color === "blue"
+    ? "#3b82f6"
+    : color === "purple"
+    ? "#a855f7"
+    : "#f97316";
+
+  return (
+    <svg width="60" height="20" className="opacity-70">
+      <polyline
+        fill="none"
+        stroke={strokeColor}
+        strokeWidth="2"
+        points={points}
+        vectorEffect="non-scaling-stroke"
+      />
+    </svg>
+  );
+}
+
+function PriorityBadge({ priority }: { priority?: string }) {
+  if (!priority) return null;
+  
+  const cls = priority === "CRITICAL"
+    ? "bg-red-500/20 text-red-300 border-red-400/40"
+    : priority === "HIGH"
+    ? "bg-orange-500/20 text-orange-300 border-orange-400/40"
+    : priority === "MEDIUM"
+    ? "bg-yellow-500/20 text-yellow-300 border-yellow-400/40"
+    : "bg-gray-500/20 text-gray-300 border-gray-400/40";
+
+  return (
+    <span className={`text-[9px] font-bold px-2 py-0.5 rounded-full border uppercase ${cls}`}>
+      {priority}
+    </span>
+  );
+}
+
+function ConfidenceBar({ confidence }: { confidence: number }) {
+  const pct = Math.round(confidence * 100);
+  const color = confidence >= 0.85 
+    ? "bg-emerald-500" 
+    : confidence >= 0.7 
+    ? "bg-blue-500" 
+    : "bg-amber-500";
+
+  return (
+    <div className="flex items-center gap-2">
+      <div className="flex-1 h-1.5 bg-white/10 rounded-full overflow-hidden">
+        <div 
+          className={`h-full ${color} transition-all duration-500`}
+          style={{ width: `${pct}%` }}
+        />
+      </div>
+      <span className="text-[10px] text-white/50 tabular-nums font-medium w-9">{pct}%</span>
     </div>
   );
 }
@@ -65,40 +173,78 @@ function StatePill({ label, value }: { label: string; value: number }) {
 function EventRow({
   e,
   onEvidence,
+  laneColor,
 }: {
   e: WarEvent;
   onEvidence: (e: WarEvent) => void;
+  laneColor: string;
 }) {
   const actionScore = e.amount * e.confidence * e.timeSensitivity;
+  const trend = e.trend || 0;
 
   return (
-    <div className="rounded-xl border border-white/10 bg-black/20 p-4 transition hover:bg-black/30">
-      <div className="flex items-start justify-between gap-3">
-        <div>
-          <div className="text-sm text-white/90 font-medium">{e.title}</div>
+    <div className="rounded-xl border border-white/10 bg-black/20 p-4 transition hover:bg-black/30 hover:border-white/20">
+      <div className="flex items-start justify-between gap-3 mb-3">
+        <div className="flex-1">
+          <div className="flex items-center gap-2 mb-1">
+            <div className="text-sm text-white/90 font-medium">{e.title}</div>
+          </div>
           {e.subtitle && <div className="text-xs text-white/60 mt-1">{e.subtitle}</div>}
-          <div className="text-xs text-white/45 mt-2 flex flex-wrap gap-2 items-center">
-            <span className={`px-1.5 py-0.5 rounded ${
-              e.state === "AT_RISK" ? "bg-red-500/20 text-red-300" :
-              e.state === "REALIZED" ? "bg-emerald-500/20 text-emerald-300" :
-              "bg-white/10 text-white/70"
-            }`}>
-              {e.state.replace("_", " ")}
-            </span>
-            <span>•</span>
-            <span>Conf. {(e.confidence * 100).toFixed(0)}%</span>
-            <span>•</span>
-            <span>Time {(e.timeSensitivity * 100).toFixed(0)}%</span>
-            <span>•</span>
-            <span>Owner: {e.owner ?? "Unassigned"}</span>
+          
+          <div className="flex items-center gap-2 mt-2">
+            <PriorityBadge priority={e.priority} />
+            {e.category && (
+              <span className="text-[9px] px-2 py-0.5 rounded-full bg-white/10 text-white/60 font-medium uppercase">
+                {e.category}
+              </span>
+            )}
+            {trend !== 0 && (
+              <span className={`text-[9px] px-2 py-0.5 rounded-full font-bold ${
+                trend > 0 
+                  ? "bg-emerald-500/20 text-emerald-300" 
+                  : "bg-red-500/20 text-red-300"
+              }`}>
+                {trend > 0 ? "↗" : "↘"} {Math.abs(trend).toFixed(1)}%
+              </span>
+            )}
           </div>
         </div>
-        <div className={`text-sm font-semibold whitespace-nowrap ${e.amount < 0 ? "text-red-400" : "text-white/90"}`}>
-          {formatMoney(e.amount)}
+        
+        <div className="text-right">
+          <div className={`text-lg font-bold whitespace-nowrap tabular-nums ${e.amount < 0 ? "text-red-400" : "text-white/90"}`}>
+            {formatMoney(e.amount)}
+          </div>
+          {e.daysInState && (
+            <div className="text-[10px] text-white/40 mt-1">
+              {e.daysInState}d in state
+            </div>
+          )}
         </div>
       </div>
 
-      <div className="mt-4 flex flex-wrap gap-2">
+      <div className="space-y-2 mb-3">
+        <div className="flex items-center justify-between text-[10px] text-white/50">
+          <span>Confidence</span>
+          <span>Time Sensitivity: {Math.round(e.timeSensitivity * 100)}%</span>
+        </div>
+        <ConfidenceBar confidence={e.confidence} />
+      </div>
+
+      <div className="flex items-center justify-between">
+        <div className="flex items-center gap-2 text-xs text-white/50">
+          <span className={`px-2 py-0.5 rounded font-medium ${
+            e.state === "AT_RISK" ? "bg-red-500/20 text-red-300" :
+            e.state === "REALIZED" ? "bg-emerald-500/20 text-emerald-300" :
+            e.state === "APPROVED" ? "bg-blue-500/20 text-blue-300" :
+            "bg-white/10 text-white/70"
+          }`}>
+            {e.state?.replace("_", " ")}
+          </span>
+          <span>Owner: {e.owner ?? "Unassigned"}</span>
+        </div>
+      </div>
+
+      <div className="mt-3 flex flex-wrap gap-2">
         <TileButton
           label="Assign"
           onClick={async () => {
@@ -109,7 +255,8 @@ function EventRow({
         />
         {e.state === "IDENTIFIED" && (
           <TileButton
-            label="Approve"
+            label="✓ Approve"
+            variant="primary"
             onClick={async () => {
               if (confirm("Approve this event?")) {
                 await postJson("/api/ledger/approve", { eventId: e.id });
@@ -119,7 +266,8 @@ function EventRow({
         )}
         {e.state === "APPROVED" && (
           <TileButton
-            label="Close"
+            label="Close & Realize"
+            variant="primary"
             onClick={async () => {
               if (confirm("Close and realize value?")) {
                 await postJson("/api/ledger/close", { eventId: e.id });
@@ -128,10 +276,10 @@ function EventRow({
           />
         )}
         {e.receipts && e.receipts.length > 0 && (
-          <TileButton label={`Evidence (${e.receipts.length})`} onClick={() => onEvidence(e)} />
+          <TileButton label={`📋 Evidence (${e.receipts.length})`} onClick={() => onEvidence(e)} />
         )}
         <TileButton
-          label="Add Receipt"
+          label="+ Receipt"
           onClick={async () => {
             await postJson("/api/ledger/attach-receipt", { 
               eventId: e.id, 
@@ -150,7 +298,7 @@ function EventRow({
 
 function EvidenceModal({ event, onClose }: { event: WarEvent; onClose: () => void }) {
   if (!event.receipts?.length) return null;
-  const receipt = event.receipts[0]; // Show first for simplicity in this view
+  const receipt = event.receipts[0];
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-sm" onClick={onClose}>
@@ -207,8 +355,14 @@ export function WarRoomGrid() {
     }
     for (const k of Object.keys(map) as LaneKey[]) {
       map[k] = map[k]
-        .sort((a, b) => (b.amount * b.confidence * b.timeSensitivity) - (a.amount * a.confidence * a.timeSensitivity))
-        .slice(0, 5);
+        .sort((a, b) => {
+          const priorityWeight = { CRITICAL: 4, HIGH: 3, MEDIUM: 2, LOW: 1 };
+          const aPriority = priorityWeight[a.priority as keyof typeof priorityWeight] || 0;
+          const bPriority = priorityWeight[b.priority as keyof typeof priorityWeight] || 0;
+          if (aPriority !== bPriority) return bPriority - aPriority;
+          return (b.amount * b.confidence * b.timeSensitivity) - (a.amount * a.confidence * a.timeSensitivity);
+        })
+        .slice(0, 8);
     }
     return map;
   }, [events]);
@@ -244,34 +398,57 @@ export function WarRoomGrid() {
       <TickerMarquee items={ticker} />
 
       <div className="mt-6 grid md:grid-cols-4 gap-4">
-         <div className="k-panel p-4 flex flex-col justify-center items-center text-center">
-             <div className="text-xs text-white/50 uppercase tracking-widest mb-1">Portfolio Identified</div>
-             <div className="text-2xl font-bold text-blue-400">{formatMoney(totals.identified)}</div>
+         <div className="k-panel p-5 flex flex-col justify-center items-center text-center bg-gradient-to-br from-blue-500/10 to-blue-600/5">
+             <div className="text-xs text-white/50 uppercase tracking-widest mb-2 font-semibold">Portfolio Identified</div>
+             <div className="text-3xl font-bold text-blue-400 tabular-nums">{formatMoney(totals.identified)}</div>
          </div>
-         <div className="k-panel p-4 flex flex-col justify-center items-center text-center">
-             <div className="text-xs text-white/50 uppercase tracking-widest mb-1">Approved Value</div>
-             <div className="text-2xl font-bold text-green-400">{formatMoney(totals.approved)}</div>
+         <div className="k-panel p-5 flex flex-col justify-center items-center text-center bg-gradient-to-br from-green-500/10 to-green-600/5">
+             <div className="text-xs text-white/50 uppercase tracking-widest mb-2 font-semibold">Approved Value</div>
+             <div className="text-3xl font-bold text-green-400 tabular-nums">{formatMoney(totals.approved)}</div>
          </div>
-         <div className="k-panel p-4 flex flex-col justify-center items-center text-center">
-             <div className="text-xs text-white/50 uppercase tracking-widest mb-1">Realized P&L</div>
-             <div className="text-2xl font-bold text-emerald-400">{formatMoney(totals.realized)}</div>
+         <div className="k-panel p-5 flex flex-col justify-center items-center text-center bg-gradient-to-br from-emerald-500/10 to-emerald-600/5">
+             <div className="text-xs text-white/50 uppercase tracking-widest mb-2 font-semibold">Realized P&L</div>
+             <div className="text-3xl font-bold text-emerald-400 tabular-nums">{formatMoney(totals.realized)}</div>
          </div>
-         <div className="k-panel p-4 flex flex-col justify-center items-center text-center">
-             <div className="text-xs text-white/50 uppercase tracking-widest mb-1">Value At Risk</div>
-             <div className="text-2xl font-bold text-red-400">{formatMoney(totals.atRisk)}</div>
+         <div className="k-panel p-5 flex flex-col justify-center items-center text-center bg-gradient-to-br from-red-500/10 to-red-600/5">
+             <div className="text-xs text-white/50 uppercase tracking-widest mb-2 font-semibold">Value At Risk</div>
+             <div className="text-3xl font-bold text-red-400 tabular-nums">{formatMoney(totals.atRisk)}</div>
          </div>
       </div>
 
       <div className="mt-8 grid lg:grid-cols-2 gap-6">
         {lanes.map((lane) => {
-          const s = summaryMap.get(lane) || { identified: 0, approved: 0, realized: 0, atRisk: 0 };
+          const s = summaryMap.get(lane) || { identified: 0, approved: 0, realized: 0, atRisk: 0, velocity: 0, avgConfidence: 0, criticalCount: 0, trendData: [] };
+          const meta = laneMeta[lane];
           
           return (
-            <div key={lane} className="k-panel p-6 flex flex-col h-full">
+            <div key={lane} className={`k-panel p-6 flex flex-col h-full bg-gradient-to-br ${meta.bgGradient}`}>
               <div className="flex items-start justify-between mb-4">
-                <div>
-                  <h3 className="text-xl font-semibold">{laneMeta[lane].label}</h3>
-                  <p className="text-sm text-white/60 mt-1">{laneMeta[lane].headline}</p>
+                <div className="flex-1">
+                  <div className="flex items-center gap-3 mb-1">
+                    <h3 className="text-xl font-semibold">{meta.label}</h3>
+                    {s.trendData && s.trendData.length > 0 && (
+                      <MiniSparkline data={s.trendData} color={meta.color} />
+                    )}
+                  </div>
+                  <p className="text-sm text-white/60 mt-1">{meta.headline}</p>
+                  
+                  <div className="flex items-center gap-4 mt-3 text-xs">
+                    <div className="flex items-center gap-1.5">
+                      <span className="text-white/50">Velocity:</span>
+                      <span className="font-semibold text-white/80">{formatMoney(s.velocity || 0)}/mo</span>
+                    </div>
+                    <div className="flex items-center gap-1.5">
+                      <span className="text-white/50">Avg Confidence:</span>
+                      <span className="font-semibold text-white/80">{Math.round((s.avgConfidence || 0) * 100)}%</span>
+                    </div>
+                    {s.criticalCount > 0 && (
+                      <div className="flex items-center gap-1.5">
+                        <span className="w-2 h-2 rounded-full bg-red-500 animate-pulse" />
+                        <span className="font-semibold text-red-400">{s.criticalCount} critical</span>
+                      </div>
+                    )}
+                  </div>
                 </div>
                 <Link 
                     href={`/war-room/${lane}`}
@@ -282,20 +459,20 @@ export function WarRoomGrid() {
               </div>
 
               <div className="flex gap-2 mb-6 overflow-x-auto pb-2">
-                <StatePill label="Identified" value={s.identified} />
+                <StatePill label="Identified" value={s.identified} color="blue" />
                 <StatePill label="Approved" value={s.approved} />
-                <StatePill label="Realized" value={s.realized} />
-                <StatePill label="At Risk" value={s.atRisk} />
+                <StatePill label="Realized" value={s.realized} color="emerald" />
+                <StatePill label="At Risk" value={s.atRisk} color="red" />
               </div>
 
-              <div className="space-y-3 flex-1">
+              <div className="space-y-3 flex-1 overflow-y-auto max-h-[800px] pr-2">
                  {laneEvents[lane].length === 0 ? (
                     <div className="text-center py-8 text-white/30 text-sm italic border border-dashed border-white/10 rounded-xl">
                         No active events in this lane
                     </div>
                  ) : (
                     laneEvents[lane].map(e => (
-                        <EventRow key={e.id} e={e} onEvidence={setEvidenceEvent} />
+                        <EventRow key={e.id} e={e} onEvidence={setEvidenceEvent} laneColor={meta.color} />
                     ))
                  )}
               </div>

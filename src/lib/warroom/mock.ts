@@ -1,46 +1,4 @@
-export type LaneKey = "value" | "controls" | "agentic" | "marketplace";
-
-export type LedgerState = "IDENTIFIED" | "APPROVED" | "REALIZED" | "AT_RISK";
-
-export type EvidenceReceipt = {
-  id: string;
-  title: string;
-  url?: string;
-  hash?: string;
-  freshness?: string;
-};
-
-export type WarEvent = {
-  id: string;
-  lane: LaneKey;
-  title: string;
-  subtitle?: string;
-  amount: number;
-  confidence: number;
-  timeSensitivity: number;
-  state?: LedgerState;
-  owner?: string;
-  receipts?: EvidenceReceipt[];
-  updatedAt: string;
-  category?: string;
-  priority?: "LOW" | "MEDIUM" | "HIGH" | "CRITICAL";
-  trend?: number;
-  daysInState?: number;
-};
-
-export type LaneSummary = {
-  lane: LaneKey;
-  label: string;
-  headline: string;
-  identified: number;
-  approved: number;
-  realized: number;
-  atRisk: number;
-  velocity?: number;
-  avgConfidence?: number;
-  criticalCount?: number;
-  trendData?: number[];
-};
+import type { LaneKey, WarEvent, LaneSummary } from "@/lib/warroom/types";
 
 export const laneMeta: Record<LaneKey, { label: string; headline: string }> = {
   value: { label: "Verified Savings Ledger", headline: "Reconcile value with receipts and owners." },

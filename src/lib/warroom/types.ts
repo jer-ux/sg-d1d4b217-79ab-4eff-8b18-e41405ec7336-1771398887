@@ -39,13 +39,19 @@ export type WarEvent = {
   notes?: EventNotes;
   packetStatus?: PacketStatus;
   packetSignatures?: PacketSignature[];
-  createdAt: string;
+  createdAt?: string;
   updatedAt: string;
   
   // External system integration fields
   sourceSystem?: string;  // e.g., "snowflake", "servicenow", "databricks"
   sourceRef?: string;      // e.g., query_id, ticket_id, job_id
   tags?: string[];         // Custom tags for filtering/search
+
+  // Visual/Dashboard fields
+  category?: string;
+  priority?: "LOW" | "MEDIUM" | "HIGH" | "CRITICAL";
+  trend?: number;
+  daysInState?: number;
 };
 
 export type EventNotes = {
@@ -70,6 +76,10 @@ export type LaneSummary = {
   approved: number;
   realized: number;
   atRisk: number;
+  velocity?: number;
+  avgConfidence?: number;
+  criticalCount?: number;
+  trendData?: number[];
 };
 
 export type StreamMessage =

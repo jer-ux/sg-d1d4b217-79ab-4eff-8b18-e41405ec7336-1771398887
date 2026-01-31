@@ -53,32 +53,32 @@ function Tile({
 }) {
   const accentCls =
     accent === "good"
-      ? "border-emerald-400/30 bg-emerald-400/10"
+      ? "border-emerald-400/40 bg-gradient-to-br from-emerald-400/15 to-emerald-600/10 shadow-[0_0_40px_rgba(16,185,129,0.2)]"
       : accent === "warn"
-      ? "border-yellow-400/30 bg-yellow-400/10"
+      ? "border-amber-400/40 bg-gradient-to-br from-amber-400/15 to-amber-600/10 shadow-[0_0_40px_rgba(251,191,36,0.2)]"
       : accent === "bad"
-      ? "border-red-400/30 bg-red-400/10"
+      ? "border-rose-400/40 bg-gradient-to-br from-rose-400/15 to-rose-600/10 shadow-[0_0_40px_rgba(244,63,94,0.2)]"
       : accent === "purple"
-      ? "border-purple-400/30 bg-purple-400/10"
+      ? "border-purple-400/40 bg-gradient-to-br from-purple-400/15 to-purple-600/10 shadow-[0_0_40px_rgba(168,85,247,0.2)]"
       : accent === "blue"
-      ? "border-blue-400/30 bg-blue-400/10"
+      ? "border-blue-400/40 bg-gradient-to-br from-blue-400/15 to-blue-600/10 shadow-[0_0_40px_rgba(59,130,246,0.2)]"
       : accent === "amber"
-      ? "border-amber-400/30 bg-amber-400/10"
+      ? "border-amber-400/40 bg-gradient-to-br from-amber-400/15 to-orange-600/10 shadow-[0_0_40px_rgba(251,191,36,0.2)]"
       : "border-gray-600/40 bg-gray-800/40";
 
   const glowCls =
     accent === "good"
-      ? "bg-emerald-300/10"
+      ? "bg-emerald-400/20"
       : accent === "warn"
-      ? "bg-yellow-300/10"
+      ? "bg-amber-400/20"
       : accent === "bad"
-      ? "bg-red-300/10"
+      ? "bg-rose-400/20"
       : accent === "purple"
-      ? "bg-purple-300/10"
+      ? "bg-purple-400/20"
       : accent === "blue"
-      ? "bg-blue-300/10"
+      ? "bg-blue-400/20"
       : accent === "amber"
-      ? "bg-amber-300/10"
+      ? "bg-amber-400/20"
       : "bg-gray-300/10";
 
   return (
@@ -86,23 +86,23 @@ function Tile({
       onClick={onClick}
       role={onClick ? "button" : undefined}
       className={[
-        "relative rounded-2xl border p-4 backdrop-blur-xl",
-        "shadow-[0_18px_60px_rgba(0,0,0,0.55)]",
-        "transition transform-gpu",
-        "hover:-translate-y-0.5 hover:scale-[1.01] cursor-pointer",
+        "relative rounded-2xl border p-5 backdrop-blur-xl",
+        "shadow-[0_20px_70px_rgba(0,0,0,0.6)]",
+        "transition-all duration-300 transform-gpu",
+        "hover:-translate-y-1 hover:scale-[1.02] cursor-pointer",
         accentCls,
       ].join(" ")}
     >
-      <div className="text-[11px] text-gray-400">{label}</div>
-      <div className="mt-2 text-3xl font-semibold tracking-tight tabular-nums text-gray-100">{value}</div>
-      <div className="mt-2 flex items-center justify-between text-[12px] text-gray-400">
-        <span className="tabular-nums">{subLeft ?? ""}</span>
-        <span className="tabular-nums">{subRight ?? ""}</span>
+      <div className="text-[11px] font-medium uppercase tracking-wider text-white/60">{label}</div>
+      <div className="mt-3 text-4xl font-bold tracking-tight tabular-nums text-white drop-shadow-lg">{value}</div>
+      <div className="mt-3 flex items-center justify-between text-[13px] text-white/70">
+        <span className="tabular-nums font-medium">{subLeft ?? ""}</span>
+        <span className="tabular-nums font-medium">{subRight ?? ""}</span>
       </div>
 
       <div className="pointer-events-none absolute inset-0 rounded-2xl">
-        <div className="absolute -top-24 left-10 h-48 w-96 rounded-full bg-gray-700/20 blur-3xl opacity-60" />
-        <div className={`absolute -top-10 right-6 h-24 w-56 rounded-full blur-2xl opacity-60 ${glowCls}`} />
+        <div className="absolute -top-28 left-12 h-56 w-[420px] rounded-full bg-gray-600/15 blur-3xl" />
+        <div className={`absolute -top-12 right-8 h-32 w-72 rounded-full blur-2xl ${glowCls}`} />
       </div>
     </div>
   );
@@ -122,18 +122,18 @@ function Drawer({
   if (!open) return null;
   return (
     <div className="fixed inset-0 z-[70]">
-      <div className="absolute inset-0 bg-black/60" onClick={onClose} />
-      <div className="absolute right-0 top-0 h-full w-full max-w-[520px] border-l border-gray-700 bg-gray-900/95 backdrop-blur-xl">
-        <div className="flex items-center justify-between px-4 py-3 border-b border-gray-700">
-          <div className="text-sm font-semibold text-gray-100">{title}</div>
+      <div className="absolute inset-0 bg-black/70 backdrop-blur-sm" onClick={onClose} />
+      <div className="absolute right-0 top-0 h-full w-full max-w-[540px] border-l border-white/15 bg-gradient-to-br from-gray-900/98 to-gray-950/98 backdrop-blur-xl shadow-2xl">
+        <div className="flex items-center justify-between px-5 py-4 border-b border-white/15 bg-gradient-to-r from-white/5 to-transparent">
+          <div className="text-sm font-semibold text-white">{title}</div>
           <button
             onClick={onClose}
-            className="text-xs px-3 py-2 rounded-xl border border-gray-600 hover:bg-gray-800 text-gray-200"
+            className="text-xs px-4 py-2 rounded-xl border border-white/15 hover:bg-white/10 text-white transition-all font-medium"
           >
             Close
           </button>
         </div>
-        <div className="p-4 overflow-auto h-[calc(100%-56px)]">{children}</div>
+        <div className="p-5 overflow-auto h-[calc(100%-64px)]">{children}</div>
       </div>
     </div>
   );
@@ -236,15 +236,15 @@ function mockWarRoom() {
 function Badge({ status }: { status: string }) {
   const cls =
     status === "VERIFIED"
-      ? "bg-emerald-400/20 text-emerald-300 border-emerald-400/30"
+      ? "bg-emerald-400/25 text-emerald-200 border-emerald-400/40 shadow-[0_0_20px_rgba(16,185,129,0.3)]"
       : status === "DEGRADED"
-      ? "bg-amber-400/20 text-amber-300 border-amber-400/30"
+      ? "bg-amber-400/25 text-amber-200 border-amber-400/40 shadow-[0_0_20px_rgba(251,191,36,0.3)]"
       : status === "UNVERIFIED"
-      ? "bg-purple-400/20 text-purple-300 border-purple-400/30"
-      : "bg-blue-400/20 text-blue-300 border-blue-400/30";
+      ? "bg-purple-400/25 text-purple-200 border-purple-400/40 shadow-[0_0_20px_rgba(168,85,247,0.3)]"
+      : "bg-blue-400/25 text-blue-200 border-blue-400/40 shadow-[0_0_20px_rgba(59,130,246,0.3)]";
 
   return (
-    <span className={`text-[10px] px-2 py-0.5 rounded-full border ${cls}`}>
+    <span className={`text-[10px] font-semibold px-2.5 py-1 rounded-full border ${cls}`}>
       {status}
     </span>
   );
@@ -308,15 +308,15 @@ function WarRoom4TileContent() {
   return (
     <div className="warroom-console min-h-screen bg-gradient-to-b from-gray-900 via-gray-950 to-black text-gray-100">
       <div className="pointer-events-none fixed inset-0 -z-10">
-        <div className="absolute inset-0 bg-gradient-to-b from-gray-800/50 via-gray-900/50 to-black/50" />
-        <div className="absolute -top-24 left-10 h-[520px] w-[920px] rounded-full bg-emerald-300/5 blur-3xl" />
-        <div className="absolute -top-20 right-10 h-[420px] w-[760px] rounded-full bg-sky-300/5 blur-3xl" />
+        <div className="absolute inset-0 bg-gradient-to-b from-gray-800/60 via-gray-900/60 to-black/60" />
+        <div className="absolute -top-32 left-12 h-[600px] w-[1000px] rounded-full bg-emerald-400/8 blur-3xl" />
+        <div className="absolute -top-24 right-12 h-[520px] w-[840px] rounded-full bg-sky-400/8 blur-3xl" />
         <div
-          className="absolute inset-0 opacity-[0.15]"
+          className="absolute inset-0 opacity-[0.18]"
           style={{
             backgroundImage:
-              "linear-gradient(rgba(255,255,255,.05) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,.05) 1px, transparent 1px)",
-            backgroundSize: "44px 44px",
+              "linear-gradient(rgba(255,255,255,.06) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,.06) 1px, transparent 1px)",
+            backgroundSize: "48px 48px",
             maskImage: "radial-gradient(70% 55% at 50% 20%, black 40%, transparent 75%)",
           }}
         />
@@ -418,7 +418,7 @@ function WarRoom4TileContent() {
                     </div>
                     <div className="mt-2 flex gap-2">
                       <Badge status={e.receipt_status} />
-                      <span className={`text-[10px] px-2 py-0.5 rounded-full border ${
+                      <span className={`text-[10px] px-2 py-0.5 rounded-full border font-semibold ${
                         e.status === "VALIDATED" ? "border-emerald-400/30 bg-emerald-400/10 text-emerald-300" :
                         e.status === "IMPLEMENTED" ? "border-blue-400/30 bg-blue-400/10 text-blue-300" :
                         e.status === "ACCEPTED" ? "border-purple-400/30 bg-purple-400/10 text-purple-300" :
@@ -470,12 +470,12 @@ function WarRoom4TileContent() {
 
                     <div className="mt-3 flex gap-2">
                       <Badge status={activeEvent.receipt_status} />
-                      <span className={`text-[10px] px-2 py-0.5 rounded-full border ${
+                      <span className={`text-[10px] px-2 py-0.5 rounded-full border font-semibold ${
                         activeEvent.type === "PBM" ? "border-blue-400/30 bg-blue-400/10 text-blue-300" :
                         activeEvent.type === "MEDICAL" ? "border-emerald-400/30 bg-emerald-400/10 text-emerald-300" :
                         "border-purple-400/30 bg-purple-400/10 text-purple-300"
                       }`}>{activeEvent.type}</span>
-                      <span className={`text-[10px] px-2 py-0.5 rounded-full border ${
+                      <span className={`text-[10px] px-2 py-0.5 rounded-full border font-semibold ${
                         activeEvent.status === "VALIDATED" ? "border-emerald-400/30 bg-emerald-400/10 text-emerald-300" :
                         activeEvent.status === "IMPLEMENTED" ? "border-blue-400/30 bg-blue-400/10 text-blue-300" :
                         activeEvent.status === "ACCEPTED" ? "border-purple-400/30 bg-purple-400/10 text-purple-300" :
@@ -490,7 +490,7 @@ function WarRoom4TileContent() {
                       <button className="w-full text-sm px-3 py-2 rounded-xl border border-white/10 hover:bg-white/5 text-left">
                         Open Evidence Receipt
                       </button>
-                      <button className="w-full text-sm px-3 py-2 rounded-xl bg-orange-500 text-white font-medium hover:bg-orange-600">
+                      <button className="w-full text-sm px-3 py-2 rounded-xl bg-gradient-to-r from-orange-500 to-orange-600 text-white font-medium hover:from-orange-600 hover:to-orange-700 shadow-lg">
                         Action Packet
                       </button>
                       <button className="w-full text-sm px-3 py-2 rounded-xl border border-white/10 hover:bg-white/5 text-left">
@@ -711,7 +711,6 @@ function WarRoom4TileContent() {
   );
 }
 
-// Client-side only rendering to prevent hydration mismatches from random demo data
 const WarRoom4Tile = dynamic(() => Promise.resolve(WarRoom4TileContent), {
   ssr: false,
   loading: () => (

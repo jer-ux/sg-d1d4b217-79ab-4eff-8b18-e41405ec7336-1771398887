@@ -78,9 +78,9 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     return res.status(405).json({ error: "Method not allowed" });
   }
 
-  const { id } = req.query;
+  const { event_id } = req.query;
 
-  if (!id || typeof id !== "string") {
+  if (!event_id || typeof event_id !== "string") {
     return res.status(400).json({ error: "Invalid event ID" });
   }
 
@@ -89,7 +89,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     // For now, use mock data from the arbitrage events library
     const { mockArbitrageEvents } = await import("@/lib/arbitrage/mockArbitrageEvents");
     
-    const ev = mockArbitrageEvents.find((e) => e.event_id === id);
+    const ev = mockArbitrageEvents.find((e) => e.event_id === event_id);
 
     if (!ev) {
       return res.status(404).json({ error: "Event not found" });

@@ -9,11 +9,89 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { motion } from "framer-motion";
 
 type WarRoomView = "CFO_DASHBOARD" | "FOUR_LANE_LEDGER" | "EXECUTIVE_KPIS";
 
 type TileAccent = "neutral" | "good" | "warn" | "bad" | "purple" | "blue" | "amber";
 type TileView = "VARIANCE" | "VALIDATED" | "IN_FLIGHT" | "TRUST";
+
+type ThemeKey = "rose" | "blue" | "amber" | "emerald" | "cyan" | "violet";
+
+const THEME: Record<
+  ThemeKey,
+  {
+    bar: string;
+    g1: string;
+    g2: string;
+    g3: string;
+    title: string;
+    bg: string;
+    border: string;
+    glow: string;
+  }
+> = {
+  rose: {
+    bar: "bg-gradient-to-b from-rose-400 via-pink-500 to-fuchsia-500",
+    g1: "rgba(244,63,94,0.35)",
+    g2: "rgba(236,72,153,0.25)",
+    g3: "rgba(217,70,239,0.20)",
+    title: "text-rose-200",
+    bg: "bg-rose-500/10",
+    border: "border-rose-400/30",
+    glow: "shadow-[0_0_20px_rgba(244,63,94,0.15)]",
+  },
+  blue: {
+    bar: "bg-gradient-to-b from-sky-400 via-blue-500 to-indigo-500",
+    g1: "rgba(59,130,246,0.35)",
+    g2: "rgba(14,165,233,0.25)",
+    g3: "rgba(99,102,241,0.20)",
+    title: "text-sky-200",
+    bg: "bg-blue-500/10",
+    border: "border-blue-400/30",
+    glow: "shadow-[0_0_20px_rgba(59,130,246,0.15)]",
+  },
+  amber: {
+    bar: "bg-gradient-to-b from-amber-300 via-orange-500 to-rose-500",
+    g1: "rgba(245,158,11,0.35)",
+    g2: "rgba(249,115,22,0.25)",
+    g3: "rgba(244,63,94,0.15)",
+    title: "text-amber-200",
+    bg: "bg-amber-500/10",
+    border: "border-amber-400/30",
+    glow: "shadow-[0_0_20px_rgba(249,115,22,0.15)]",
+  },
+  emerald: {
+    bar: "bg-gradient-to-b from-emerald-300 via-emerald-500 to-teal-500",
+    g1: "rgba(16,185,129,0.35)",
+    g2: "rgba(20,184,166,0.25)",
+    g3: "rgba(34,197,94,0.20)",
+    title: "text-emerald-200",
+    bg: "bg-emerald-500/10",
+    border: "border-emerald-400/30",
+    glow: "shadow-[0_0_20px_rgba(16,185,129,0.15)]",
+  },
+  cyan: {
+    bar: "bg-gradient-to-b from-cyan-300 via-cyan-500 to-blue-500",
+    g1: "rgba(6,182,212,0.35)",
+    g2: "rgba(34,211,238,0.25)",
+    g3: "rgba(59,130,246,0.20)",
+    title: "text-cyan-200",
+    bg: "bg-cyan-500/10",
+    border: "border-cyan-400/30",
+    glow: "shadow-[0_0_20px_rgba(6,182,212,0.15)]",
+  },
+  violet: {
+    bar: "bg-gradient-to-b from-violet-400 via-purple-500 to-fuchsia-500",
+    g1: "rgba(139,92,246,0.35)",
+    g2: "rgba(168,85,247,0.25)",
+    g3: "rgba(217,70,239,0.20)",
+    title: "text-violet-200",
+    bg: "bg-violet-500/10",
+    border: "border-violet-400/30",
+    glow: "shadow-[0_0_20px_rgba(168,85,247,0.15)]",
+  },
+};
 
 interface MockEvent {
   id: string;
@@ -33,6 +111,7 @@ interface MockEvent {
   owner?: string;
   receipt?: string;
   method?: string;
+  theme?: ThemeKey;
 }
 
 function money(n: number) {
@@ -180,7 +259,7 @@ function mockWarRoom() {
   ];
 
   const events: MockEvent[] = [
-    ...inFlight.map(e => ({
+    ...inFlight.map((e, i) => ({
       ...e,
       identified_value: e.amount || 0,
       confidence: 0.85,
@@ -192,8 +271,9 @@ function mockWarRoom() {
       receipt_status: e.receipt || "VERIFIED",
       type: "PBM",
       status: e.stage || "ACCEPTED",
+      theme: (["rose", "blue", "amber"] as ThemeKey[])[i % 3],
     })),
-    ...validated.map(e => ({
+    ...validated.map((e, i) => ({
       ...e,
       identified_value: e.amount || 0,
       confidence: 0.92,
@@ -205,8 +285,9 @@ function mockWarRoom() {
       receipt_status: "VERIFIED",
       type: "MEDICAL",
       status: "VALIDATED",
+      theme: (["emerald", "cyan", "violet"] as ThemeKey[])[i % 3],
     })),
-    ...unverified.map(e => ({
+    ...unverified.map((e, i) => ({
       ...e,
       identified_value: Math.round(Math.random() * 300000 + 100000),
       confidence: 0.65,
@@ -216,6 +297,7 @@ function mockWarRoom() {
       owner_role: "Benefits Ops",
       evidence_receipt_id: `RCP-${Math.floor(Math.random() * 90000) + 10000}`,
       receipt_status: e.receipt || "UNVERIFIED",
+      theme: (["rose", "amber", "violet"] as ThemeKey[])[i % 3],
     })),
   ];
 
@@ -236,6 +318,27 @@ function Badge({ status }: { status: string }) {
     <span className={`text-[10px] font-semibold px-2.5 py-1 rounded-full border ${cls}`}>
       {status}
     </span>
+  );
+}
+
+function AnimatedGradientOverlay({ theme }: { theme: (typeof THEME)[ThemeKey] }) {
+  return (
+    <motion.div
+      aria-hidden
+      className="absolute inset-0 opacity-20 transition-opacity duration-300 group-hover:opacity-40 pointer-events-none"
+      style={{
+        backgroundImage: `linear-gradient(135deg, ${theme.g1}, ${theme.g2}, ${theme.g3})`,
+        backgroundSize: "200% 200%",
+      }}
+      animate={{
+        backgroundPosition: ["0% 50%", "100% 50%", "0% 50%"],
+      }}
+      transition={{
+        duration: 10,
+        repeat: Infinity,
+        ease: "easeInOut",
+      }}
+    />
   );
 }
 
@@ -375,32 +478,52 @@ function CFODashboardContent() {
               </div>
 
               <div className="space-y-2">
-                {eventsFiltered.map((e) => (
-                  <div
-                    key={e.id}
-                    onClick={() => setActiveEvent(e)}
-                    className={`rounded-xl border p-3 hover:bg-white/5 cursor-pointer transition ${
-                      activeEvent?.id === e.id ? "border-emerald-400/50 bg-emerald-400/5" : "border-white/10 bg-black/20"
-                    }`}
-                  >
-                    <div className="flex items-center justify-between">
-                      <div className="text-sm font-medium">{e.id} • {e.title}</div>
-                      <div className="text-[11px] text-white/50 tabular-nums">Score {e.score.toLocaleString()}</div>
+                {eventsFiltered.map((e) => {
+                  const theme = e.theme ? THEME[e.theme] : THEME.blue;
+                  
+                  return (
+                    <div
+                      key={e.id}
+                      onClick={() => setActiveEvent(e)}
+                      className={`group relative overflow-hidden rounded-xl border p-3 hover:bg-white/5 cursor-pointer transition-all ${
+                        activeEvent?.id === e.id 
+                          ? `${theme.border} ${theme.bg} ${theme.glow}` 
+                          : "border-white/10 bg-black/20"
+                      }`}
+                    >
+                      {/* Left accent bar */}
+                      {e.theme && (
+                        <div className={`absolute left-0 top-0 h-full w-1 ${theme.bar}`} />
+                      )}
+                      
+                      {/* Animated gradient overlay */}
+                      {e.theme && <AnimatedGradientOverlay theme={theme} />}
+                      
+                      <div className="relative">
+                        <div className="flex items-center justify-between">
+                          <div className={`text-sm font-medium ${e.theme ? theme.title : "text-white"}`}>
+                            {e.id} • {e.title}
+                          </div>
+                          <div className="text-[11px] text-white/50 tabular-nums">
+                            Score {e.score.toLocaleString()}
+                          </div>
+                        </div>
+                        <div className="mt-1 text-[11px] text-white/50">
+                          Owner: {e.owner_role} • Receipt: {e.receipt_status} • Value: {money(e.identified_value)}
+                        </div>
+                        <div className="mt-2 flex gap-2">
+                          <Badge status={e.receipt_status} />
+                          <span className={`text-[10px] px-2 py-0.5 rounded-full border font-semibold ${
+                            e.status === "VALIDATED" ? "border-emerald-400/30 bg-emerald-400/10 text-emerald-300" :
+                            e.status === "IMPLEMENTED" ? "border-blue-400/30 bg-blue-400/10 text-blue-300" :
+                            e.status === "ACCEPTED" ? "border-purple-400/30 bg-purple-400/10 text-purple-300" :
+                            "border-amber-400/30 bg-amber-400/10 text-amber-300"
+                          }`}>{e.status}</span>
+                        </div>
+                      </div>
                     </div>
-                    <div className="mt-1 text-[11px] text-white/50">
-                      Owner: {e.owner_role} • Receipt: {e.receipt_status} • Value: {money(e.identified_value)}
-                    </div>
-                    <div className="mt-2 flex gap-2">
-                      <Badge status={e.receipt_status} />
-                      <span className={`text-[10px] px-2 py-0.5 rounded-full border font-semibold ${
-                        e.status === "VALIDATED" ? "border-emerald-400/30 bg-emerald-400/10 text-emerald-300" :
-                        e.status === "IMPLEMENTED" ? "border-blue-400/30 bg-blue-400/10 text-blue-300" :
-                        e.status === "ACCEPTED" ? "border-purple-400/30 bg-purple-400/10 text-purple-300" :
-                        "border-amber-400/30 bg-amber-400/10 text-amber-300"
-                      }`}>{e.status}</span>
-                    </div>
-                  </div>
-                ))}
+                  );
+                })}
               </div>
             </div>
           }
@@ -511,23 +634,43 @@ function CFODashboardContent() {
             </div>
 
             <div className="mt-3 space-y-2">
-              {eventsFiltered.map((e) => (
-                <div
-                  key={e.id}
-                  onClick={() => setActiveEvent(e)}
-                  className={`rounded-xl border p-3 hover:bg-white/5 cursor-pointer transition ${
-                    activeEvent?.id === e.id ? "border-emerald-400/50 bg-emerald-400/5" : "border-white/10 bg-black/20"
-                  }`}
-                >
-                  <div className="flex items-center justify-between">
-                    <div className="text-sm font-medium">{e.id} • {e.title}</div>
-                    <div className="text-[11px] text-white/50 tabular-nums">Score {e.score.toLocaleString()}</div>
+              {eventsFiltered.map((e) => {
+                const theme = e.theme ? THEME[e.theme] : THEME.blue;
+                
+                return (
+                  <div
+                    key={e.id}
+                    onClick={() => setActiveEvent(e)}
+                    className={`group relative overflow-hidden rounded-xl border p-3 hover:bg-white/5 cursor-pointer transition-all ${
+                      activeEvent?.id === e.id 
+                        ? `${theme.border} ${theme.bg} ${theme.glow}` 
+                        : "border-white/10 bg-black/20"
+                    }`}
+                  >
+                    {/* Left accent bar */}
+                    {e.theme && (
+                      <div className={`absolute left-0 top-0 h-full w-1 ${theme.bar}`} />
+                    )}
+                    
+                    {/* Animated gradient overlay */}
+                    {e.theme && <AnimatedGradientOverlay theme={theme} />}
+                    
+                    <div className="relative">
+                      <div className="flex items-center justify-between">
+                        <div className={`text-sm font-medium ${e.theme ? theme.title : "text-white"}`}>
+                          {e.id} • {e.title}
+                        </div>
+                        <div className="text-[11px] text-white/50 tabular-nums">
+                          Score {e.score.toLocaleString()}
+                        </div>
+                      </div>
+                      <div className="mt-1 text-[11px] text-white/50">
+                        Owner: {e.owner_role} • Receipt: {e.receipt_status}
+                      </div>
+                    </div>
                   </div>
-                  <div className="mt-1 text-[11px] text-white/50">
-                    Owner: {e.owner_role} • Receipt: {e.receipt_status}
-                  </div>
-                </div>
-              ))}
+                );
+              })}
             </div>
           </div>
 

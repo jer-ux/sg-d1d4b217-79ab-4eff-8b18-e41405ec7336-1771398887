@@ -20,7 +20,6 @@ import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
 import { CalendlyPopupButton } from "@/components/calendly/CalendlyPopupButton";
 import { LuxBackground } from "@/components/marketing/LuxBackground";
-import { HowItWorksFlow } from "@/components/marketing/HowItWorksFlow";
 import { TrustBar } from "@/components/marketing/TrustBar";
 import { CaseStudyTeaser } from "@/components/marketing/CaseStudyTeaser";
 import { TerminalInviteCTA } from "@/components/marketing/TerminalInviteCTA";
@@ -449,17 +448,6 @@ export default function HomePage() {
                   </div>
                 </div>
               </div>
-            </motion.div>
-          </motion.div>
-        </div>
-
-        <Separator className="mx-auto max-w-6xl bg-white/15" />
-
-        {/* How It Works Flow */}
-        <div className="mx-auto max-w-6xl px-6 py-12">
-          <motion.div initial="hidden" whileInView="show" viewport={{ once: true, amount: 0.2 }} variants={stagger}>
-            <motion.div variants={fadeUp}>
-              <HowItWorksFlow />
             </motion.div>
           </motion.div>
         </div>

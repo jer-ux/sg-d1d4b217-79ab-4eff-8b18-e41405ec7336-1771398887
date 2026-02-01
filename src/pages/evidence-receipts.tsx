@@ -1,9 +1,16 @@
-"use client";
-
+import Head from "next/head";
 import React, { useMemo, useState } from "react";
 import { SEO } from "@/components/SEO";
-import { Footer } from "@/components/Footer";
-import { CheckCircle2, AlertTriangle, XCircle, Download, ExternalLink } from "lucide-react";
+import Footer from "@/components/Footer";
+import { 
+  Shield, 
+  FileCheck, 
+  XCircle, 
+  Download, 
+  ExternalLink,
+  CheckCircle2,
+  AlertTriangle
+} from "lucide-react";
 import { CreateReceiptModal } from "@/components/ledger/CreateReceiptModal";
 
 type VerificationStatus = "VERIFIED" | "PARTIAL" | "BLOCKED";

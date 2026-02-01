@@ -3,86 +3,111 @@
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import { nav } from "@/components/site";
+import { motion } from "framer-motion";
+import { Menu, X } from "lucide-react";
 
 export default function Nav() {
-  const [mounted, setMounted] = useState(false);
+  const [isScrolled, setIsScrolled] = useState(false);
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const router = useRouter();
 
   useEffect(() => {
-    setMounted(true);
+    const handleScroll = () => {
+      setIsScrolled(window.scrollY > 20);
+    };
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  if (!mounted) {
-    return (
-      <header className="sticky top-0 z-50 backdrop-blur-xl bg-black/30 border-b border-white/10">
-        <div className="mx-auto max-w-7xl px-6 py-4 flex items-center justify-between">
-          <Link href="/" className="font-semibold tracking-tight text-lg">
-            <span className="text-white">Kincaid</span>{" "}
-            <span className="text-white/70">IQ</span>
-          </Link>
-
-          <nav className="hidden lg:flex items-center gap-8 text-sm text-white/75">
-            {nav.map((item) => (
-              <div key={item.label}>
-                {item.label}
-              </div>
-            ))}
-          </nav>
-
-          <div className="flex gap-3">
-            <Link
-              href="/contact"
-              className="px-5 py-2.5 rounded-xl bg-gradient-to-r from-purple-500 to-blue-500 text-white hover:from-purple-600 hover:to-blue-600 transition text-sm font-medium shadow-lg"
-            >
-              Request demo
-            </Link>
-          </div>
-        </div>
-      </header>
-    );
-  }
-
-  const isActive = (href: string) => {
-    if (href === "/") return router.pathname === "/";
-    return router.pathname.startsWith(href);
-  };
+  const navLinks = [
+    { href: "/platform", label: "Platform" },
+    { href: "/war-room", label: "War Room" },
+    { href: "/evidence-receipts", label: "Evidence" },
+    { href: "/company", label: "Company" },
+  ];
 
   return (
-    <header className="sticky top-0 z-50 backdrop-blur-xl bg-black/30 border-b border-white/10">
-      <div className="mx-auto max-w-7xl px-6 py-4 flex items-center justify-between">
-        <Link href="/" className="font-semibold tracking-tight text-lg">
-          <span className="text-white">Kincaid</span>{" "}
-          <span className="text-white/70">IQ</span>
-        </Link>
+    <motion.nav
+      initial={{ y: -100 }}
+      animate={{ y: 0 }}
+      transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
+      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${
+        isScrolled 
+          ? "bg-black/80 backdrop-blur-2xl border-b border-white/10" 
+          : "bg-transparent"
+      }`}
+    >
+      <div className="max-w-7xl mx-auto px-6">
+        <div className="flex items-center justify-between h-16">
+          {/* Logo */}
+          <Link href="/" className="flex items-center group">
+            <span className="text-xl font-semibold text-white group-hover:text-blue-400 transition-colors duration-300">
+              SiriusB iQ
+            </span>
+          </Link>
 
-        <nav className="hidden lg:flex items-center gap-8 text-sm">
-          {nav.map((item) => {
-            if (!item.href) return null;
-            const active = isActive(item.href);
-            return (
+          {/* Desktop Nav */}
+          <div className="hidden md:flex items-center gap-8">
+            {navLinks.map((link) => (
               <Link
-                key={item.label}
-                href={item.href}
-                className={`font-medium transition ${
-                  active ? "text-white" : "text-white/70 hover:text-white"
+                key={link.href}
+                href={link.href}
+                className={`text-sm font-medium transition-colors duration-300 ${
+                  router.pathname === link.href
+                    ? "text-white"
+                    : "text-gray-400 hover:text-white"
                 }`}
               >
-                {item.label}
+                {link.label}
               </Link>
-            );
-          })}
-        </nav>
+            ))}
+            <Link
+              href="/request-demo"
+              className="ml-4 px-5 py-2 bg-white text-black text-sm font-medium rounded-full hover:bg-gray-100 transition-all duration-300 hover:scale-105"
+            >
+              Request Demo
+            </Link>
+          </div>
 
-        <div className="flex gap-3">
-          <Link
-            href="/contact"
-            className="px-5 py-2.5 rounded-xl bg-gradient-to-r from-purple-500 to-blue-500 text-white hover:from-purple-600 hover:to-blue-600 transition text-sm font-medium shadow-lg"
+          {/* Mobile Menu Button */}
+          <button
+            onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+            className="md:hidden text-white p-2"
           >
-            Request demo
-          </Link>
+            {isMobileMenuOpen ? <X /> : <Menu />}
+          </button>
         </div>
       </div>
-    </header>
+
+      {/* Mobile Menu */}
+      {isMobileMenuOpen && (
+        <motion.div
+          initial={{ opacity: 0, height: 0 }}
+          animate={{ opacity: 1, height: "auto" }}
+          exit={{ opacity: 0, height: 0 }}
+          className="md:hidden bg-black/95 backdrop-blur-2xl border-t border-white/10"
+        >
+          <div className="px-6 py-6 space-y-4">
+            {navLinks.map((link) => (
+              <Link
+                key={link.href}
+                href={link.href}
+                onClick={() => setIsMobileMenuOpen(false)}
+                className="block text-white hover:text-blue-400 transition-colors py-2"
+              >
+                {link.label}
+              </Link>
+            ))}
+            <Link
+              href="/request-demo"
+              onClick={() => setIsMobileMenuOpen(false)}
+              className="block w-full px-5 py-3 bg-white text-black text-center font-medium rounded-full hover:bg-gray-100 transition-all"
+            >
+              Request Demo
+            </Link>
+          </div>
+        </motion.div>
+      )}
+    </motion.nav>
   );
 }

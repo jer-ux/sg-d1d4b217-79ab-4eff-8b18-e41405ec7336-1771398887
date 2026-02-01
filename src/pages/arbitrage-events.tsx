@@ -11,6 +11,7 @@ import {
   FileWarning,
 } from "lucide-react";
 import { ArbitrageEventDrawer } from "@/components/arbitrage/ArbitrageEventDrawer";
+import { ArbitrageDetectionViz, DataFlowVisualization, KPIDashboardPreview } from "@/components/platform/PremiumGraphics";
 
 type Severity = "Critical" | "High" | "Medium" | "Low";
 type Status = "Open" | "Investigating" | "Monitoring" | "Resolved";
@@ -281,6 +282,14 @@ export default function ArbitrageEventsPage() {
           <div className="hidden md:flex items-center gap-2 text-xs text-white/60">
             <span className="inline-flex h-2 w-2 rounded-full bg-emerald-400 shadow-[0_0_16px_rgba(16,185,129,0.35)]" />
             Live signals
+          </div>
+        </div>
+
+        {/* Premium Graphics Section */}
+        <div className="mb-8 grid grid-cols-1 gap-4 lg:grid-cols-2">
+          <ArbitrageDetectionViz />
+          <div className="grid gap-4">
+            <KPIDashboardPreview />
           </div>
         </div>
 

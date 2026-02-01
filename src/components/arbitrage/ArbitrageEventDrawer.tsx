@@ -2,7 +2,8 @@
 
 import * as React from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { X, ShieldCheck, AlertTriangle, FileText, Hash, CheckCircle2, Lock } from "lucide-react";
+import { X, ShieldCheck, AlertTriangle, FileText, Hash, CheckCircle2, Lock, Activity } from "lucide-react";
+import { EvidenceReceipt3D, DataFlowVisualization } from "@/components/platform/PremiumGraphics";
 
 type Verification = "VERIFIED" | "NOT_VERIFIED";
 
@@ -425,6 +426,26 @@ export function ArbitrageEventDrawer({
                   <span className="text-white/85">Fix next:</span> {data?.narrative?.what_to_do_next ?? "—"}
                 </div>
                 <div className="mt-3 text-xs text-white/55">{data?.narrative?.gating_note ?? ""}</div>
+              </div>
+
+              {/* Premium 3D Evidence Receipt Visualization */}
+              {verified === "VERIFIED" && (
+                <div className="mt-4">
+                  <div className="mb-3 flex items-center gap-2 text-sm font-medium text-white/90">
+                    <ShieldCheck className="h-4 w-4 text-emerald-400" />
+                    Evidence Receipt (Interactive)
+                  </div>
+                  <EvidenceReceipt3D />
+                </div>
+              )}
+
+              {/* Data Flow Visualization */}
+              <div className="mt-4">
+                <div className="mb-3 flex items-center gap-2 text-sm font-medium text-white/90">
+                  <Activity className="h-4 w-4 text-blue-400" />
+                  Data Lineage Pipeline
+                </div>
+                <DataFlowVisualization />
               </div>
 
               {/* Signals */}

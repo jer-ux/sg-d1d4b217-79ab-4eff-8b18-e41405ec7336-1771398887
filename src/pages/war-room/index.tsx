@@ -1,9 +1,13 @@
 import { SEO } from "@/components/SEO";
 import { SplitPane } from "@/components/SplitPane";
 import { Navbar } from "@/components/Navbar";
-import { useState } from "react";
+import { useState, useEffect, useMemo } from "react";
 import { Drawer } from "@/components/warroom/WarRoomDrawer";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
+import { ChevronDown } from "lucide-react";
+import { motion } from "framer-motion";
+import dynamic from "next/dynamic";
 import { mockWarRoomData as mockWarRoom } from "@/lib/mocks/mockWarRoom";
 
 type WarRoomView = "CFO_DASHBOARD" | "FOUR_LANE_LEDGER" | "EXECUTIVE_KPIS";
@@ -1120,9 +1124,23 @@ const CFODashboard = dynamic(() => Promise.resolve(CFODashboardContent), {
   ),
 });
 
+const viewMeta = {
+  CFO_DASHBOARD: {
+    label: "CFO Dashboard",
+    description: "4-Tile Executive View with Ranked Events",
+  },
+  FOUR_LANE_LEDGER: {
+    label: "4-Lane Ledger",
+    description: "Advanced Filtering with Redis Streaming",
+  },
+  EXECUTIVE_KPIS: {
+    label: "Executive KPIs",
+    description: "Live SSE Stream with Org Filters",
+  },
+};
+
 export default function WarRoomPage() {
-  const [view, setView] = useState<WarRoomView>("CFO_DASHBOARD");
-  const data = mockWarRoom;
+  const [currentView, setCurrentView] = useState<WarRoomView>("CFO_DASHBOARD");
 
   return (
     <>

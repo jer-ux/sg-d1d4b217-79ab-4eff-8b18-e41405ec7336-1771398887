@@ -12,6 +12,7 @@ import {
 import { motion } from "framer-motion";
 import { mockWarRoom } from "@/lib/warroom/mock";
 import { Drawer } from "@/components/warroom/WarRoomDrawer";
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 
 type WarRoomView = "CFO_DASHBOARD" | "FOUR_LANE_LEDGER" | "EXECUTIVE_KPIS";
 
@@ -272,6 +273,21 @@ function AnimatedGradientOverlay({ theme }: { theme: (typeof THEME)[ThemeKey] })
         ease: "easeInOut",
       }}
     />
+  );
+}
+
+function DetailModal({ open, title, onClose, children }: { open: boolean; title: string; onClose: () => void; children: React.ReactNode }) {
+  return (
+    <Dialog open={open} onOpenChange={(val) => !val && onClose()}>
+      <DialogContent className="max-w-2xl bg-gray-900 border-white/10 text-white sm:max-w-[700px]">
+        <DialogHeader>
+          <DialogTitle className="text-xl font-semibold">{title}</DialogTitle>
+        </DialogHeader>
+        <div className="mt-4">
+          {children}
+        </div>
+      </DialogContent>
+    </Dialog>
   );
 }
 
@@ -660,12 +676,12 @@ function CFODashboardContent() {
 
               <div className="space-y-2">
                 {eventsFiltered.map((e) => {
-                  const theme = e.theme ? THEME[e.theme] : THEME.blue;
+                  const theme = e.theme ? THEME[e.theme as ThemeKey] : THEME.blue;
                   
                   return (
                     <div
                       key={e.id}
-                      onClick={() => setActiveEvent(e)}
+                      onClick={() => setActiveEvent(e as unknown as MockEvent)}
                       className={`group relative overflow-hidden rounded-xl border p-3 hover:bg-white/5 cursor-pointer transition-all ${
                         activeEvent?.id === e.id 
                           ? `${theme.border} ${theme.bg} ${theme.glow}` 
@@ -889,12 +905,12 @@ function CFODashboardContent() {
 
             <div className="mt-3 space-y-2">
               {eventsFiltered.map((e) => {
-                const theme = e.theme ? THEME[e.theme] : THEME.blue;
+                const theme = e.theme ? THEME[e.theme as ThemeKey] : THEME.blue;
                 
                 return (
                   <div
                     key={e.id}
-                    onClick={() => setActiveEvent(e)}
+                    onClick={() => setActiveEvent(e as unknown as MockEvent)}
                     className={`group relative overflow-hidden rounded-xl border p-3 hover:bg-white/5 cursor-pointer transition-all ${
                       activeEvent?.id === e.id 
                         ? `${theme.border} ${theme.bg} ${theme.glow}` 

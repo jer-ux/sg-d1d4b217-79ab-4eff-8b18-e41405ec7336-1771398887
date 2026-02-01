@@ -142,3 +142,48 @@ export type KpiData = z.infer<typeof KpiDataSchema>;
 export type LaneData = z.infer<typeof LaneDataSchema>;
 export type TickerItem = z.infer<typeof TickerItemSchema>;
 export type WarRoomSummary = z.infer<typeof WarRoomSummarySchema>;
+
+// ===============================
+// Ranked Events Types (New)
+// ===============================
+
+export type Gate = "VERIFIED" | "UNVERIFIED";
+
+export type EventStatus = "OPEN" | "WATCH" | "RESOLVED";
+
+export type EventCategory =
+  | "Succession"
+  | "Governance"
+  | "Financial"
+  | "Talent"
+  | "Operational"
+  | "Compliance"
+  | "Reputation"
+  | "Unknown";
+
+export type WarRoomEvent = {
+  event_id: string;              // stable id (hashable)
+  title: string;
+  category: EventCategory;
+  status: EventStatus;
+
+  // ties back to evidence
+  receipt_ids: string[];
+  top_reason_codes: string[];
+
+  // time
+  first_seen_at: string;
+  last_seen_at: string;
+
+  // scoring inputs
+  severity: number;              // 0..100
+  velocity: number;              // 0..100
+  confidence_score: number;      // 0..1
+  confidence_gate: Gate;
+
+  // output score for ranking
+  rank_score: number;            // 0..100
+
+  // explainability
+  why: string[];                 // short reasons
+};

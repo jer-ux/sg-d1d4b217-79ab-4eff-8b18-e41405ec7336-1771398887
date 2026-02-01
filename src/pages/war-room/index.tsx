@@ -1,18 +1,10 @@
 import { SEO } from "@/components/SEO";
 import { SplitPane } from "@/components/SplitPane";
-import React, { useEffect, useMemo, useState } from "react";
-import dynamic from "next/dynamic";
-import { ChevronDown } from "lucide-react";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-import { motion } from "framer-motion";
-import { mockWarRoom } from "@/lib/mocks/mockWarRoom";
+import { Navbar } from "@/components/Navbar";
+import { useState } from "react";
 import { Drawer } from "@/components/warroom/WarRoomDrawer";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import { mockWarRoomData as mockWarRoom } from "@/lib/mocks/mockWarRoom";
 
 type WarRoomView = "CFO_DASHBOARD" | "FOUR_LANE_LEDGER" | "EXECUTIVE_KPIS";
 
@@ -292,7 +284,7 @@ function DetailModal({ open, title, onClose, children }: { open: boolean; title:
 }
 
 function CFODashboardContent() {
-  const [data, setData] = useState(() => mockWarRoom());
+  const [data, setData] = useState(() => mockWarRoom);
   const [drawerOpen, setDrawerOpen] = useState(false);
   const [view, setView] = useState<TileView>("VARIANCE");
   const [mounted, setMounted] = useState(false);
@@ -308,7 +300,7 @@ function CFODashboardContent() {
   }, []);
 
   useEffect(() => {
-    setData(mockWarRoom());
+    setData(mockWarRoom);
   }, []);
 
   const trustAccent: TileAccent =
@@ -1129,13 +1121,8 @@ const CFODashboard = dynamic(() => Promise.resolve(CFODashboardContent), {
 });
 
 export default function WarRoomPage() {
-  const [currentView, setCurrentView] = useState<WarRoomView>("CFO_DASHBOARD");
-
-  const viewMeta: Record<WarRoomView, { label: string; description: string }> = {
-    CFO_DASHBOARD: { label: "CFO Dashboard", description: "4-Tile Executive View with Ranked Events" },
-    FOUR_LANE_LEDGER: { label: "4-Lane Ledger", description: "Advanced Filtering with Redis Streaming" },
-    EXECUTIVE_KPIS: { label: "Executive KPIs", description: "Live SSE Stream with Org Filters" },
-  };
+  const [view, setView] = useState<WarRoomView>("CFO_DASHBOARD");
+  const data = mockWarRoom;
 
   return (
     <>

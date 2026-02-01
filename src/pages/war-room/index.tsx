@@ -16,6 +16,8 @@ type WarRoomView = "CFO_DASHBOARD" | "FOUR_LANE_LEDGER" | "EXECUTIVE_KPIS";
 type TileAccent = "neutral" | "good" | "warn" | "bad" | "purple" | "blue" | "amber";
 type TileView = "VARIANCE" | "VALIDATED" | "IN_FLIGHT" | "TRUST";
 
+type DetailModalView = "STATUS" | "CONFIDENCE" | "TIME_SENSITIVITY" | "FRICTION" | "RECEIPT" | "TYPE" | "CATEGORY" | "PRIORITY";
+
 type ThemeKey = "rose" | "blue" | "amber" | "emerald" | "cyan" | "violet";
 
 const THEME: Record<
@@ -114,6 +116,20 @@ interface MockEvent {
   theme?: ThemeKey;
 }
 
+type KPIMetric = {
+  label: string;
+  value: string;
+  trend?: string;
+  trendDirection?: "up" | "down" | "neutral";
+  receipt: {
+    id: string;
+    verified: boolean;
+    freshness: string;
+    dqPassRate: number;
+    confidence: number;
+  };
+};
+
 function money(n: number) {
   const sign = n < 0 ? "-" : "";
   const v = Math.abs(n);
@@ -176,135 +192,7 @@ function Tile({
   );
 }
 
-function Drawer({
-  open,
-  title,
-  onClose,
-  children,
-}: {
-  open: boolean;
-  title: string;
-  onClose: () => void;
-  children: React.ReactNode;
-}) {
-  if (!open) return null;
-  return (
-    <div className="fixed inset-0 z-[70]">
-      <div className="absolute inset-0 bg-black/70 backdrop-blur-sm" onClick={onClose} />
-      <div className="absolute right-0 top-0 h-full w-full max-w-[540px] border-l border-white/15 bg-gradient-to-br from-gray-900/98 to-gray-950/98 backdrop-blur-xl shadow-2xl">
-        <div className="flex items-center justify-between px-5 py-4 border-b border-white/15 bg-gradient-to-r from-white/5 to-transparent">
-          <div className="text-sm font-semibold text-white">{title}</div>
-          <button
-            onClick={onClose}
-            className="text-xs px-4 py-2 rounded-xl border border-white/15 hover:bg-white/10 text-white transition-all font-medium"
-          >
-            Close
-          </button>
-        </div>
-        <div className="p-5 overflow-auto h-[calc(100%-64px)]">{children}</div>
-      </div>
-    </div>
-  );
-}
-
-function mockWarRoom() {
-  const asOf = new Date().toISOString();
-
-  const baseline = 5.6;
-  const actual = 6.4;
-  const delta = +(actual - baseline).toFixed(1);
-
-  const ledger = {
-    identified: 4_820_000,
-    approved: 2_130_000,
-    realized: 1_620_000,
-    at_risk: 410_000,
-  };
-
-  const ebitda = {
-    ytd_validated: ledger.realized,
-    mtd_validated: 210_000,
-    confidence: 0.86,
-  };
-
-  const data_health = {
-    freshness_hours: 22,
-    dq_pass_rate: 0.973,
-    verified_receipts_rate: 0.84,
-    open_incidents: 3,
-  };
-
-  const drivers = [
-    { label: "Utilization", delta_pct: +0.9, note: "OP/ED mix shift" },
-    { label: "Unit cost", delta_pct: +0.6, note: "allowed amount inflation" },
-    { label: "Rx effective rate", delta_pct: -0.4, note: "rebate timing / NDC mix" },
-    { label: "Eligibility leakage", delta_pct: +0.3, note: "TERM lag / dependents" },
-  ];
-
-  const inFlight = [
-    { id: "EVT-014", title: "PBM rebate true-up variance", stage: "IMPLEMENTED", amount: 420_000, owner: "Finance", receipt: "VERIFIED" },
-    { id: "EVT-006", title: "Eligibility dependent leakage", stage: "ACCEPTED", amount: 190_000, owner: "Benefits Ops", receipt: "DEGRADED" },
-    { id: "EVT-009", title: "Stop-loss reimbursement lag", stage: "ACCEPTED", amount: 260_000, owner: "Vendor Manager", receipt: "VERIFIED" },
-  ];
-
-  const validated = [
-    { id: "EVT-003", title: "Duplicate claim line pattern", amount: 540_000, method: "reconciliation + reversal file" },
-    { id: "EVT-001", title: "Rx effective rate above guarantee", amount: 680_000, method: "guarantee true-up" },
-    { id: "EVT-011", title: "Carrier funding mismatch", amount: 400_000, method: "funding rec + credit memo" },
-  ];
-
-  const unverified = [
-    { id: "EVT-018", title: "Network disruption risk signal", type: "MEDICAL", status: "RECOMMENDED", receipt: "UNVERIFIED" },
-    { id: "EVT-022", title: "High-cost claimant emerging risk", type: "STOPLOSS", status: "ACCEPTED", receipt: "DEGRADED" },
-  ];
-
-  const events: MockEvent[] = [
-    ...inFlight.map((e, i) => ({
-      ...e,
-      identified_value: e.amount || 0,
-      confidence: 0.85,
-      time_sensitivity: 0.9,
-      execution_friction: 0.3,
-      score: Math.round((e.amount || 0) * 0.85 * 0.9 / 0.3),
-      owner_role: e.owner || "Finance",
-      evidence_receipt_id: `RCP-${Math.floor(Math.random() * 90000) + 10000}`,
-      receipt_status: e.receipt || "VERIFIED",
-      type: "PBM",
-      status: e.stage || "ACCEPTED",
-      theme: (["rose", "blue", "amber"] as ThemeKey[])[i % 3],
-    })),
-    ...validated.map((e, i) => ({
-      ...e,
-      identified_value: e.amount || 0,
-      confidence: 0.92,
-      time_sensitivity: 0.85,
-      execution_friction: 0.2,
-      score: Math.round((e.amount || 0) * 0.92 * 0.85 / 0.2),
-      owner_role: "Finance",
-      evidence_receipt_id: `RCP-${Math.floor(Math.random() * 90000) + 10000}`,
-      receipt_status: "VERIFIED",
-      type: "MEDICAL",
-      status: "VALIDATED",
-      theme: (["emerald", "cyan", "violet"] as ThemeKey[])[i % 3],
-    })),
-    ...unverified.map((e, i) => ({
-      ...e,
-      identified_value: Math.round(Math.random() * 300000 + 100000),
-      confidence: 0.65,
-      time_sensitivity: 0.7,
-      execution_friction: 0.5,
-      score: 0,
-      owner_role: "Benefits Ops",
-      evidence_receipt_id: `RCP-${Math.floor(Math.random() * 90000) + 10000}`,
-      receipt_status: e.receipt || "UNVERIFIED",
-      theme: (["rose", "amber", "violet"] as ThemeKey[])[i % 3],
-    })),
-  ];
-
-  return { asOf, baseline, actual, delta, ledger, ebitda, data_health, drivers, inFlight, validated, unverified, events };
-}
-
-function Badge({ status }: { status: string }) {
+function Badge({ status, onClick }: { status: string; onClick?: () => void }) {
   const cls =
     status === "VERIFIED"
       ? "bg-emerald-400/25 text-emerald-200 border-emerald-400/40 shadow-[0_0_15px_rgba(16,185,129,0.2)]"
@@ -315,9 +203,44 @@ function Badge({ status }: { status: string }) {
       : "bg-blue-400/25 text-blue-200 border-blue-400/40 shadow-[0_0_15px_rgba(59,130,246,0.2)]";
 
   return (
-    <span className={`text-[10px] font-semibold px-2.5 py-1 rounded-full border ${cls}`}>
+    <span 
+      onClick={onClick}
+      className={`text-[10px] font-semibold px-2.5 py-1 rounded-full border ${cls} ${onClick ? "cursor-pointer hover:opacity-80 transition-opacity" : ""}`}
+    >
       {status}
     </span>
+  );
+}
+
+function KPIBadge({ metric, onClick }: { metric: KPIMetric; onClick?: () => void }) {
+  const trendColor = metric.trendDirection === "up" 
+    ? "text-emerald-400" 
+    : metric.trendDirection === "down" 
+    ? "text-red-400" 
+    : "text-white/50";
+
+  const receiptColor = metric.receipt.verified 
+    ? "border-emerald-400/30 bg-emerald-400/10" 
+    : "border-amber-400/30 bg-amber-400/10";
+
+  return (
+    <div 
+      onClick={onClick}
+      className={`inline-flex items-center gap-2 px-3 py-1.5 rounded-xl border ${receiptColor} ${onClick ? "cursor-pointer hover:opacity-80 transition-opacity" : ""}`}
+    >
+      <div className="flex flex-col">
+        <span className="text-[9px] text-white/60 uppercase tracking-wider">{metric.label}</span>
+        <div className="flex items-center gap-2">
+          <span className="text-sm font-bold text-white">{metric.value}</span>
+          {metric.trend && (
+            <span className={`text-[10px] font-semibold ${trendColor}`}>
+              {metric.trendDirection === "up" ? "↗" : metric.trendDirection === "down" ? "↘" : "→"} {metric.trend}
+            </span>
+          )}
+        </div>
+      </div>
+      <div className={`w-2 h-2 rounded-full ${metric.receipt.verified ? "bg-emerald-400" : "bg-amber-400"}`} />
+    </div>
   );
 }
 
@@ -350,6 +273,9 @@ function CFODashboardContent() {
   const [activeEvent, setActiveEvent] = useState<MockEvent | null>(null);
   const [searchQuery, setSearchQuery] = useState("");
   const [statusFilter, setStatusFilter] = useState("All");
+  const [detailModalOpen, setDetailModalOpen] = useState(false);
+  const [detailModalView, setDetailModalView] = useState<DetailModalView>("STATUS");
+  const [detailModalData, setDetailModalData] = useState<any>(null);
 
   useEffect(() => {
     setMounted(true);
@@ -396,6 +322,251 @@ function CFODashboardContent() {
     
     return filtered.sort((a, b) => b.score - a.score);
   }, [data.events, searchQuery, statusFilter]);
+
+  const openDetailModal = (view: DetailModalView, data: any) => {
+    setDetailModalView(view);
+    setDetailModalData(data);
+    setDetailModalOpen(true);
+  };
+
+  const getStatusExplanation = (status: string) => {
+    switch (status) {
+      case "VERIFIED":
+        return {
+          title: "Evidence Receipt: VERIFIED",
+          description: "This event has been cryptographically verified with full chain-of-custody documentation.",
+          kpis: [
+            { label: "DQ Pass Rate", value: "97.8%", trend: "+2.3%", trendDirection: "up" as const, receipt: { id: "RCP-9832", verified: true, freshness: "< 1h", dqPassRate: 0.978, confidence: 0.95 } },
+            { label: "Freshness", value: "< 1h", receipt: { id: "RCP-9832", verified: true, freshness: "< 1h", dqPassRate: 0.978, confidence: 0.95 } },
+            { label: "Hash Verified", value: "Yes", receipt: { id: "RCP-9832", verified: true, freshness: "< 1h", dqPassRate: 0.978, confidence: 0.95 } },
+          ],
+          receipt: {
+            id: "RCP-9832",
+            hash: "0x7f9fade1c0d57a7af66ab4ead79fade1c0d57a7af66ab4ead7c2c2eb7b11a91385",
+            sourceSystem: "Snowflake + Carrier EDI",
+            lastVerified: new Date().toISOString(),
+            verificationMethod: "Cryptographic hash + DQ checks",
+            freshness: "< 1 hour",
+            dqPassRate: 0.978,
+          },
+          details: [
+            "Evidence has passed all data quality checks with 97.8% pass rate",
+            "Chain-of-custody is complete and auditable",
+            "Source data is fresh (< 1 hour old)",
+            "Cryptographic hash matches expected value",
+            "All control gates passed",
+          ],
+        };
+      case "DEGRADED":
+        return {
+          title: "Evidence Receipt: DEGRADED",
+          description: "Evidence exists but has quality or freshness issues that require attention.",
+          kpis: [
+            { label: "DQ Pass Rate", value: "84.2%", trend: "-5.1%", trendDirection: "down" as const, receipt: { id: "RCP-7721", verified: false, freshness: "4h", dqPassRate: 0.842, confidence: 0.72 } },
+            { label: "Freshness", value: "4h", receipt: { id: "RCP-7721", verified: false, freshness: "4h", dqPassRate: 0.842, confidence: 0.72 } },
+            { label: "Issues Found", value: "3", receipt: { id: "RCP-7721", verified: false, freshness: "4h", dqPassRate: 0.842, confidence: 0.72 } },
+          ],
+          receipt: {
+            id: "RCP-7721",
+            hash: "0x3c2f8b4e9a1d6c7e8f5a9b2c3d4e5f6a7b8c9d0e1f2a3b4c5d6e7f8a9b0c1d2",
+            sourceSystem: "Manual Entry + Carrier Portal",
+            lastVerified: new Date(Date.now() - 4 * 60 * 60 * 1000).toISOString(),
+            verificationMethod: "Partial verification",
+            freshness: "4 hours",
+            dqPassRate: 0.842,
+          },
+          details: [
+            "⚠️ Data quality below threshold (84.2% vs 95% target)",
+            "⚠️ Source data staleness exceeds 1 hour threshold",
+            "⚠️ Missing fields: dependent eligibility dates",
+            "✓ Hash verification passed",
+            "Action required: Refresh data source",
+          ],
+        };
+      case "UNVERIFIED":
+        return {
+          title: "Evidence Receipt: UNVERIFIED",
+          description: "Evidence has not been verified yet. Status changes are blocked until verification completes.",
+          kpis: [
+            { label: "Verification Status", value: "Pending", receipt: { id: "RCP-4556", verified: false, freshness: "N/A", dqPassRate: 0, confidence: 0 } },
+            { label: "Queue Position", value: "#7", receipt: { id: "RCP-4556", verified: false, freshness: "N/A", dqPassRate: 0, confidence: 0 } },
+            { label: "Estimated Time", value: "12m", receipt: { id: "RCP-4556", verified: false, freshness: "N/A", dqPassRate: 0, confidence: 0 } },
+          ],
+          receipt: {
+            id: "RCP-4556",
+            hash: "Pending...",
+            sourceSystem: "Awaiting source connection",
+            lastVerified: null,
+            verificationMethod: "Not yet verified",
+            freshness: "N/A",
+            dqPassRate: 0,
+          },
+          details: [
+            "⏳ Evidence receipt created but not yet verified",
+            "⏳ Waiting for source system connection",
+            "⏳ DQ checks not yet run",
+            "❌ No status transitions allowed until verified",
+            "Action required: Complete verification workflow",
+          ],
+        };
+      case "VALIDATED":
+        return {
+          title: "Event Status: VALIDATED",
+          description: "This event has been validated and value has been reconciled to the general ledger.",
+          kpis: [
+            { label: "GL Reconciled", value: "Yes", receipt: { id: "RCP-GL-001", verified: true, freshness: "< 1h", dqPassRate: 1.0, confidence: 0.98 } },
+            { label: "Audit Trail", value: "Complete", receipt: { id: "RCP-GL-001", verified: true, freshness: "< 1h", dqPassRate: 1.0, confidence: 0.98 } },
+            { label: "Journal Entry", value: "Posted", receipt: { id: "RCP-GL-001", verified: true, freshness: "< 1h", dqPassRate: 1.0, confidence: 0.98 } },
+          ],
+          receipt: null,
+          details: [
+            "✓ Value has been realized and posted to GL",
+            "✓ All supporting documentation verified",
+            "✓ Audit trail complete and immutable",
+            "✓ Reconciliation method documented",
+            "✓ Event closed and archived",
+          ],
+        };
+      case "IMPLEMENTED":
+        return {
+          title: "Event Status: IMPLEMENTED",
+          description: "Action has been implemented and is awaiting final validation.",
+          kpis: [
+            { label: "Implementation Date", value: new Date().toLocaleDateString(), receipt: { id: "RCP-IMP-001", verified: true, freshness: "< 1h", dqPassRate: 0.96, confidence: 0.91 } },
+            { label: "Validation Progress", value: "85%", trend: "+15%", trendDirection: "up" as const, receipt: { id: "RCP-IMP-001", verified: true, freshness: "< 1h", dqPassRate: 0.96, confidence: 0.91 } },
+            { label: "Days to Close", value: "3", receipt: { id: "RCP-IMP-001", verified: true, freshness: "< 1h", dqPassRate: 0.96, confidence: 0.91 } },
+          ],
+          receipt: null,
+          details: [
+            "✓ Implementation completed successfully",
+            "✓ Evidence receipts verified",
+            "⏳ Awaiting final reconciliation",
+            "⏳ Monitoring for impact validation",
+            "Next: Close and realize to GL",
+          ],
+        };
+      case "ACCEPTED":
+        return {
+          title: "Event Status: ACCEPTED",
+          description: "Event has been reviewed and accepted for implementation.",
+          kpis: [
+            { label: "Approval Date", value: new Date().toLocaleDateString(), receipt: { id: "RCP-ACC-001", verified: true, freshness: "< 1h", dqPassRate: 0.94, confidence: 0.88 } },
+            { label: "Owner Assigned", value: "Yes", receipt: { id: "RCP-ACC-001", verified: true, freshness: "< 1h", dqPassRate: 0.94, confidence: 0.88 } },
+            { label: "Priority", value: "High", receipt: { id: "RCP-ACC-001", verified: true, freshness: "< 1h", dqPassRate: 0.94, confidence: 0.88 } },
+          ],
+          receipt: null,
+          details: [
+            "✓ Event approved by stakeholders",
+            "✓ Owner assigned and notified",
+            "✓ Implementation plan documented",
+            "⏳ Awaiting implementation",
+            "Next: Execute action and track progress",
+          ],
+        };
+      case "RECOMMENDED":
+        return {
+          title: "Event Status: RECOMMENDED",
+          description: "System has identified and recommended this event for review.",
+          kpis: [
+            { label: "Confidence Score", value: "78%", receipt: { id: "RCP-REC-001", verified: false, freshness: "2h", dqPassRate: 0.87, confidence: 0.78 } },
+            { label: "Identified Value", value: "$280K", receipt: { id: "RCP-REC-001", verified: false, freshness: "2h", dqPassRate: 0.87, confidence: 0.78 } },
+            { label: "Time Sensitivity", value: "Medium", receipt: { id: "RCP-REC-001", verified: false, freshness: "2h", dqPassRate: 0.87, confidence: 0.78 } },
+          ],
+          receipt: null,
+          details: [
+            "⏳ Event identified by detection algorithms",
+            "⏳ Awaiting stakeholder review",
+            "⚠️ Evidence receipt may be degraded",
+            "Action required: Review and accept/reject",
+            "Next: Assign owner and approve",
+          ],
+        };
+      default:
+        return {
+          title: "Status Information",
+          description: "Status details not available.",
+          kpis: [],
+          receipt: null,
+          details: [],
+        };
+    }
+  };
+
+  const getConfidenceExplanation = (confidence: number) => {
+    const pct = Math.round(confidence * 100);
+    const level = confidence >= 0.9 ? "Very High" : confidence >= 0.8 ? "High" : confidence >= 0.7 ? "Medium" : "Low";
+    
+    return {
+      title: `Confidence Score: ${pct}%`,
+      description: `This event has ${level.toLowerCase()} confidence based on data quality, evidence strength, and historical patterns.`,
+      kpis: [
+        { label: "DQ Score", value: `${Math.round(confidence * 100)}%`, trend: "+3%", trendDirection: "up" as const, receipt: { id: "RCP-DQ-001", verified: true, freshness: "< 1h", dqPassRate: confidence, confidence } },
+        { label: "Evidence Strength", value: level, receipt: { id: "RCP-DQ-001", verified: true, freshness: "< 1h", dqPassRate: confidence, confidence } },
+        { label: "Historical Accuracy", value: `${Math.round(confidence * 98)}%`, receipt: { id: "RCP-DQ-001", verified: true, freshness: "< 1h", dqPassRate: confidence, confidence } },
+      ],
+      receipt: {
+        id: "RCP-CONF-001",
+        hash: "0x8a9fade1c0d57a7af66ab4ead79fade1c0d57a7af66ab4ead7c2c2eb7b11a914",
+        sourceSystem: "ML Confidence Engine",
+        lastVerified: new Date().toISOString(),
+        verificationMethod: "Multi-factor confidence scoring",
+        confidenceLevel: level,
+      },
+      details: [
+        `Confidence Level: ${level} (${pct}%)`,
+        `Data Quality Pass Rate: ${Math.round(confidence * 100)}%`,
+        `Evidence receipts: ${confidence >= 0.85 ? "VERIFIED" : "DEGRADED"}`,
+        `Historical prediction accuracy: ${Math.round(confidence * 98)}%`,
+        `Recommendation: ${confidence >= 0.85 ? "Safe to proceed" : "Review required"}`,
+      ],
+    };
+  };
+
+  const getTimeSensitivityExplanation = (timeSensitivity: number) => {
+    const pct = Math.round(timeSensitivity * 100);
+    const urgency = timeSensitivity >= 0.9 ? "Critical" : timeSensitivity >= 0.75 ? "High" : timeSensitivity >= 0.5 ? "Medium" : "Low";
+    
+    return {
+      title: `Time Sensitivity: ${pct}%`,
+      description: `This event has ${urgency.toLowerCase()} time sensitivity. Delay may impact value realization.`,
+      kpis: [
+        { label: "Urgency Level", value: urgency, receipt: { id: "RCP-TIME-001", verified: true, freshness: "< 1h", dqPassRate: 0.98, confidence: 0.93 } },
+        { label: "Days Until Deadline", value: Math.round((1 - timeSensitivity) * 30).toString(), receipt: { id: "RCP-TIME-001", verified: true, freshness: "< 1h", dqPassRate: 0.98, confidence: 0.93 } },
+        { label: "Value Decay Rate", value: `${Math.round(timeSensitivity * 5)}%/mo`, trend: "+1.2%", trendDirection: "up" as const, receipt: { id: "RCP-TIME-001", verified: true, freshness: "< 1h", dqPassRate: 0.98, confidence: 0.93 } },
+      ],
+      receipt: null,
+      details: [
+        `Time Sensitivity: ${urgency} (${pct}%)`,
+        `Estimated days until deadline: ${Math.round((1 - timeSensitivity) * 30)}`,
+        `Value decay rate: ${Math.round(timeSensitivity * 5)}% per month`,
+        `${timeSensitivity >= 0.9 ? "⚠️ Immediate action required" : timeSensitivity >= 0.75 ? "Action required within 7 days" : "Monitor and plan"}`,
+        `Impact of delay: ${timeSensitivity >= 0.8 ? "Significant value loss" : "Moderate impact"}`,
+      ],
+    };
+  };
+
+  const getFrictionExplanation = (friction: number) => {
+    const pct = Math.round(friction * 100);
+    const complexity = friction >= 0.7 ? "High" : friction >= 0.4 ? "Medium" : "Low";
+    
+    return {
+      title: `Execution Friction: ${pct}%`,
+      description: `This event has ${complexity.toLowerCase()} execution complexity and implementation friction.`,
+      kpis: [
+        { label: "Complexity", value: complexity, receipt: { id: "RCP-FRIC-001", verified: true, freshness: "< 1h", dqPassRate: 0.95, confidence: 0.89 } },
+        { label: "Stakeholders", value: Math.ceil(friction * 5).toString(), receipt: { id: "RCP-FRIC-001", verified: true, freshness: "< 1h", dqPassRate: 0.95, confidence: 0.89 } },
+        { label: "Est. Duration", value: `${Math.ceil(friction * 4)} weeks`, receipt: { id: "RCP-FRIC-001", verified: true, freshness: "< 1h", dqPassRate: 0.95, confidence: 0.89 } },
+      ],
+      receipt: null,
+      details: [
+        `Execution Friction: ${complexity} (${pct}%)`,
+        `Stakeholders involved: ${Math.ceil(friction * 5)}`,
+        `Estimated implementation time: ${Math.ceil(friction * 4)} weeks`,
+        `${friction >= 0.7 ? "⚠️ Complex cross-functional effort" : friction >= 0.4 ? "Moderate coordination required" : "Low friction, quick win"}`,
+        `Recommendation: ${friction >= 0.7 ? "Assign dedicated PM" : "Standard workflow"}`,
+      ],
+    };
+  };
 
   return (
     <>
@@ -512,8 +683,19 @@ function CFODashboardContent() {
                           Owner: {e.owner_role} • Receipt: {e.receipt_status} • Value: {money(e.identified_value)}
                         </div>
                         <div className="mt-2 flex gap-2">
-                          <Badge status={e.receipt_status} />
-                          <span className={`text-[10px] px-2 py-0.5 rounded-full border font-semibold ${
+                          <Badge 
+                            status={e.receipt_status}
+                            onClick={(evt) => {
+                              evt.stopPropagation();
+                              openDetailModal("RECEIPT", getStatusExplanation(e.receipt_status));
+                            }}
+                          />
+                          <span 
+                            onClick={(evt) => {
+                              evt.stopPropagation();
+                              openDetailModal("STATUS", getStatusExplanation(e.status));
+                            }}
+                            className={`text-[10px] px-2 py-0.5 rounded-full border font-semibold cursor-pointer hover:opacity-80 transition-opacity ${
                             e.status === "VALIDATED" ? "border-emerald-400/30 bg-emerald-400/10 text-emerald-300" :
                             e.status === "IMPLEMENTED" ? "border-blue-400/30 bg-blue-400/10 text-blue-300" :
                             e.status === "ACCEPTED" ? "border-purple-400/30 bg-purple-400/10 text-purple-300" :
@@ -542,19 +724,31 @@ function CFODashboardContent() {
                     <div className="text-sm text-white/70 mt-1">{activeEvent.title}</div>
                     
                     <div className="mt-4 grid grid-cols-2 gap-3 text-sm">
-                      <div>
+                      <div 
+                        className="cursor-pointer hover:bg-white/5 p-2 rounded-lg transition-colors"
+                        onClick={() => openDetailModal("CONFIDENCE", getConfidenceExplanation(activeEvent.confidence))}
+                      >
                         <div className="text-[11px] text-white/50">Value</div>
                         <div className="font-semibold tabular-nums">{money(activeEvent.identified_value)}</div>
                       </div>
-                      <div>
+                      <div 
+                        className="cursor-pointer hover:bg-white/5 p-2 rounded-lg transition-colors"
+                        onClick={() => openDetailModal("CONFIDENCE", getConfidenceExplanation(activeEvent.confidence))}
+                      >
                         <div className="text-[11px] text-white/50">Confidence</div>
                         <div className="font-semibold tabular-nums">{pct(activeEvent.confidence)}</div>
                       </div>
-                      <div>
+                      <div 
+                        className="cursor-pointer hover:bg-white/5 p-2 rounded-lg transition-colors"
+                        onClick={() => openDetailModal("TIME_SENSITIVITY", getTimeSensitivityExplanation(activeEvent.time_sensitivity))}
+                      >
                         <div className="text-[11px] text-white/50">Time Sensitivity</div>
                         <div className="font-semibold tabular-nums">{pct(activeEvent.time_sensitivity)}</div>
                       </div>
-                      <div>
+                      <div 
+                        className="cursor-pointer hover:bg-white/5 p-2 rounded-lg transition-colors"
+                        onClick={() => openDetailModal("FRICTION", getFrictionExplanation(activeEvent.execution_friction))}
+                      >
                         <div className="text-[11px] text-white/50">Friction</div>
                         <div className="font-semibold tabular-nums">{pct(activeEvent.execution_friction)}</div>
                       </div>
@@ -562,22 +756,72 @@ function CFODashboardContent() {
 
                     <div className="mt-4">
                       <div className="text-[11px] text-white/50">Evidence Receipt</div>
-                      <div className="text-sm font-mono">{activeEvent.evidence_receipt_id}</div>
+                      <div 
+                        className="text-sm font-mono cursor-pointer hover:text-white/90 transition-colors"
+                        onClick={() => openDetailModal("RECEIPT", getStatusExplanation(activeEvent.receipt_status))}
+                      >
+                        {activeEvent.evidence_receipt_id}
+                      </div>
                     </div>
 
-                    <div className="mt-3 flex gap-2">
-                      <Badge status={activeEvent.receipt_status} />
-                      <span className={`text-[10px] px-2 py-0.5 rounded-full border font-semibold ${
+                    <div className="mt-3 flex flex-wrap gap-2">
+                      <Badge 
+                        status={activeEvent.receipt_status}
+                        onClick={() => openDetailModal("RECEIPT", getStatusExplanation(activeEvent.receipt_status))}
+                      />
+                      <span 
+                        onClick={() => openDetailModal("TYPE", { 
+                          title: `Event Type: ${activeEvent.type}`,
+                          description: `This event is categorized as ${activeEvent.type} type.`,
+                          kpis: [],
+                          receipt: null,
+                          details: [`Type: ${activeEvent.type}`, "Category determines routing and approval workflow"]
+                        })}
+                        className={`text-[10px] px-2 py-0.5 rounded-full border font-semibold cursor-pointer hover:opacity-80 transition-opacity ${
                         activeEvent.type === "PBM" ? "border-blue-400/30 bg-blue-400/10 text-blue-300" :
                         activeEvent.type === "MEDICAL" ? "border-emerald-400/30 bg-emerald-400/10 text-emerald-300" :
                         "border-purple-400/30 bg-purple-400/10 text-purple-300"
                       }`}>{activeEvent.type}</span>
-                      <span className={`text-[10px] px-2 py-0.5 rounded-full border font-semibold ${
+                      <span 
+                        onClick={() => openDetailModal("STATUS", getStatusExplanation(activeEvent.status))}
+                        className={`text-[10px] px-2 py-0.5 rounded-full border font-semibold cursor-pointer hover:opacity-80 transition-opacity ${
                         activeEvent.status === "VALIDATED" ? "border-emerald-400/30 bg-emerald-400/10 text-emerald-300" :
                         activeEvent.status === "IMPLEMENTED" ? "border-blue-400/30 bg-blue-400/10 text-blue-300" :
                         activeEvent.status === "ACCEPTED" ? "border-purple-400/30 bg-purple-400/10 text-purple-300" :
                         "border-amber-400/30 bg-amber-400/10 text-amber-300"
                       }`}>{activeEvent.status}</span>
+                    </div>
+                  </div>
+
+                  <div className="rounded-xl border border-white/10 bg-white/5 p-4">
+                    <div className="text-[11px] text-white/50 mb-3">KPI Metrics</div>
+                    <div className="space-y-2">
+                      <KPIBadge 
+                        metric={{
+                          label: "Action Score",
+                          value: activeEvent.score.toLocaleString(),
+                          receipt: { id: "RCP-SCORE-001", verified: true, freshness: "< 1h", dqPassRate: 0.96, confidence: activeEvent.confidence }
+                        }}
+                        onClick={() => openDetailModal("CONFIDENCE", getConfidenceExplanation(activeEvent.confidence))}
+                      />
+                      <KPIBadge 
+                        metric={{
+                          label: "Confidence",
+                          value: pct(activeEvent.confidence),
+                          trend: "+5%",
+                          trendDirection: "up",
+                          receipt: { id: "RCP-CONF-002", verified: true, freshness: "< 1h", dqPassRate: 0.97, confidence: activeEvent.confidence }
+                        }}
+                        onClick={() => openDetailModal("CONFIDENCE", getConfidenceExplanation(activeEvent.confidence))}
+                      />
+                      <KPIBadge 
+                        metric={{
+                          label: "Time Sensitivity",
+                          value: pct(activeEvent.time_sensitivity),
+                          receipt: { id: "RCP-TIME-002", verified: true, freshness: "< 1h", dqPassRate: 0.98, confidence: 0.91 }
+                        }}
+                        onClick={() => openDetailModal("TIME_SENSITIVITY", getTimeSensitivityExplanation(activeEvent.time_sensitivity))}
+                      />
                     </div>
                   </div>
 
@@ -704,126 +948,136 @@ function CFODashboardContent() {
       </div>
 
       <Drawer open={drawerOpen} title={title} onClose={() => setDrawerOpen(false)}>
-        {view === "VARIANCE" && (
-          <div className="space-y-3">
-            <div className="rounded-xl border border-gray-700 bg-gray-800/50 p-3">
-              <div className="text-[11px] text-gray-500">Trend Summary</div>
-              <div className="mt-2 text-sm tabular-nums text-gray-200">
-                Baseline {data.baseline.toFixed(1)}% → Actual {data.actual.toFixed(1)}%{" "}
-                <span className={`ml-2 font-semibold ${data.delta > 0 ? "text-red-300" : "text-emerald-300"}`}>
-                  {data.delta > 0 ? "+" : ""}
-                  {data.delta.toFixed(1)}%
-                </span>
-              </div>
-            </div>
-
-            <div className="rounded-xl border border-gray-700 bg-gray-800/50 overflow-hidden">
-              <div className="px-3 py-2 border-b border-gray-700 text-[11px] text-gray-500">
-                Attribution (Drivers)
-              </div>
-              <div className="divide-y divide-gray-700/50">
-                {data.drivers.map((d) => (
-                  <div key={d.label} className="px-3 py-3 flex items-center justify-between">
-                    <div>
-                      <div className="text-sm font-medium text-gray-200">{d.label}</div>
-                      <div className="text-[11px] text-gray-500">{d.note}</div>
-                    </div>
-                    <div
-                      className={`text-sm font-semibold tabular-nums ${
-                        d.delta_pct > 0 ? "text-red-300" : "text-emerald-300"
-                      }`}
-                    >
-                      {d.delta_pct > 0 ? "+" : ""}
-                      {d.delta_pct.toFixed(1)}%
-                    </div>
-                  </div>
-                ))}
-              </div>
+        <div className="space-y-3">
+          <div className="rounded-xl border border-white/10 bg-white/5 p-4">
+            <div className="text-[11px] text-white/50">Trend Summary</div>
+            <div className="mt-2 text-sm tabular-nums text-white">
+              Baseline {data.baseline.toFixed(1)}% → Actual {data.actual.toFixed(1)}%{" "}
+              <span className={`ml-2 font-semibold ${data.delta > 0 ? "text-red-300" : "text-emerald-300"}`}>
+                {data.delta > 0 ? "+" : ""}
+                {data.delta.toFixed(1)}%
+              </span>
             </div>
           </div>
-        )}
 
-        {view === "VALIDATED" && (
-          <div className="space-y-3">
-            <div className="rounded-xl border border-gray-700 bg-gray-800/50 p-3">
-              <div className="text-[11px] text-gray-500">Validated Total</div>
-              <div className="mt-1 text-2xl font-semibold tabular-nums text-gray-100">{money(data.ledger.realized)}</div>
-            </div>
-
-            <div className="rounded-xl border border-gray-700 bg-gray-800/50 overflow-hidden">
-              <div className="px-3 py-2 border-b border-gray-700 text-[11px] text-gray-500">
-                Journal Entries (Validated)
-              </div>
-              <div className="divide-y divide-gray-700/50">
-                {data.validated.map((v) => (
-                  <div key={v.id} className="px-3 py-3">
-                    <div className="flex items-start justify-between">
-                      <div className="min-w-0">
-                        <div className="text-sm font-medium text-gray-200">{v.id}</div>
-                        <div className="text-[11px] text-gray-500 mt-0.5">{v.title}</div>
-                      </div>
-                      <div className="text-sm font-semibold tabular-nums text-gray-200">{money(v.amount)}</div>
-                    </div>
-                    <div className="text-[11px] text-gray-500 mt-2">Method: {v.method}</div>
-                  </div>
-                ))}
-              </div>
-            </div>
-          </div>
-        )}
-
-        {view === "IN_FLIGHT" && (
-          <div className="space-y-3">
-            <div className="rounded-xl border border-gray-700 bg-gray-800/50 p-3">
-              <div className="text-[11px] text-gray-500">Approved Total</div>
-              <div className="mt-1 text-2xl font-semibold tabular-nums text-gray-100">{money(data.ledger.approved)}</div>
-            </div>
-
-            <div className="rounded-xl border border-gray-700 bg-gray-800/50 overflow-hidden">
-              <div className="px-3 py-2 border-b border-gray-700 text-[11px] text-gray-500">In-Flight Queue</div>
-              <div className="divide-y divide-gray-700/50">
-                {data.inFlight.map((f) => (
-                  <div key={f.id} className="px-3 py-3">
-                    <div className="flex items-start justify-between mb-2">
-                      <div className="min-w-0">
-                        <div className="text-sm font-medium text-gray-200">{f.id}</div>
-                        <div className="text-[11px] text-gray-500 mt-0.5">{f.title}</div>
-                      </div>
-                      <div className="text-sm font-semibold tabular-nums text-gray-200">{money(f.amount)}</div>
-                    </div>
-                    <div className="flex items-center gap-3 text-[11px]">
-                      <span className="text-gray-400">Stage: {f.stage}</span>
-                      <Badge status={f.receipt} />
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
-          </div>
-        )}
-
-        {view === "TRUST" && (
-          <div className="space-y-3">
-            <div className="rounded-xl border border-gray-700 bg-gray-800/50 p-3">
-              <div className="text-[11px] text-gray-500">Controls Summary</div>
-              <div className="mt-2 grid grid-cols-2 gap-3 text-sm">
-                <div className="rounded-xl border border-gray-700 bg-gray-900/60 p-3">
-                  <div className="text-[11px] text-gray-500">Receipts VERIFIED</div>
-                  <div className="mt-1 text-xl font-semibold tabular-nums text-gray-100">
-                    {Math.round(data.data_health.verified_receipts_rate * 100)}%
+          <div className="rounded-xl border border-white/10 bg-white/5 p-4">
+            <div className="text-[11px] text-white/50">Attribution (Drivers)</div>
+            <div className="mt-3 space-y-2">
+              {data.drivers.map((d) => (
+                <div key={d.label} className="flex items-center justify-between">
+                  <div className="text-sm font-medium text-white">{d.label}</div>
+                  <div
+                    className={`text-sm font-semibold tabular-nums ${
+                      d.delta_pct > 0 ? "text-red-300" : "text-emerald-300"
+                    }`}
+                  >
+                    {d.delta_pct > 0 ? "+" : ""}
+                    {d.delta_pct.toFixed(1)}%
                   </div>
                 </div>
-                <div className="rounded-xl border border-gray-700 bg-gray-900/60 p-3">
-                  <div className="text-[11px] text-gray-500">DQ pass rate</div>
-                  <div className="mt-1 text-xl font-semibold tabular-nums text-gray-100">
-                    {(data.data_health.dq_pass_rate * 100).toFixed(1)}%
-                  </div>
-                </div>
-              </div>
+              ))}
             </div>
           </div>
-        )}
+        </div>
       </Drawer>
+
+      <DetailModal 
+        open={detailModalOpen} 
+        title={detailModalData?.title || "Details"} 
+        onClose={() => setDetailModalOpen(false)}
+      >
+        {detailModalData && (
+          <div className="space-y-6">
+            <div className="rounded-xl border border-white/10 bg-white/5 p-4">
+              <p className="text-white/80 text-sm leading-relaxed">{detailModalData.description}</p>
+            </div>
+
+            {detailModalData.kpis && detailModalData.kpis.length > 0 && (
+              <div>
+                <div className="text-xs text-white/50 uppercase tracking-wider mb-3">Key Performance Indicators</div>
+                <div className="space-y-2">
+                  {detailModalData.kpis.map((kpi: KPIMetric, idx: number) => (
+                    <KPIBadge key={idx} metric={kpi} />
+                  ))}
+                </div>
+              </div>
+            )}
+
+            {detailModalData.receipt && (
+              <div className="rounded-xl border border-white/10 bg-black/20 p-4">
+                <div className="text-xs text-white/50 uppercase tracking-wider mb-3">Evidence Receipt Details</div>
+                <div className="space-y-3 text-sm">
+                  <div className="flex justify-between">
+                    <span className="text-white/60">Receipt ID</span>
+                    <span className="font-mono text-white/90">{detailModalData.receipt.id}</span>
+                  </div>
+                  {detailModalData.receipt.hash && (
+                    <div className="flex flex-col gap-1">
+                      <span className="text-white/60 text-xs">Cryptographic Hash</span>
+                      <span className="font-mono text-[11px] text-white/90 break-all bg-black/40 p-2 rounded border border-white/10">{detailModalData.receipt.hash}</span>
+                    </div>
+                  )}
+                  {detailModalData.receipt.sourceSystem && (
+                    <div className="flex justify-between">
+                      <span className="text-white/60">Source System</span>
+                      <span className="text-white/90">{detailModalData.receipt.sourceSystem}</span>
+                    </div>
+                  )}
+                  {detailModalData.receipt.lastVerified && (
+                    <div className="flex justify-between">
+                      <span className="text-white/60">Last Verified</span>
+                      <span className="text-white/90">{new Date(detailModalData.receipt.lastVerified).toLocaleString()}</span>
+                    </div>
+                  )}
+                  {detailModalData.receipt.freshness && (
+                    <div className="flex justify-between">
+                      <span className="text-white/60">Data Freshness</span>
+                      <span className="text-white/90">{detailModalData.receipt.freshness}</span>
+                    </div>
+                  )}
+                  {detailModalData.receipt.dqPassRate !== undefined && (
+                    <div className="flex justify-between">
+                      <span className="text-white/60">DQ Pass Rate</span>
+                      <span className="text-white/90">{(detailModalData.receipt.dqPassRate * 100).toFixed(1)}%</span>
+                    </div>
+                  )}
+                </div>
+              </div>
+            )}
+
+            {detailModalData.details && detailModalData.details.length > 0 && (
+              <div className="rounded-xl border border-white/10 bg-gradient-to-br from-blue-500/10 to-purple-500/10 p-4">
+                <div className="text-xs text-white/50 uppercase tracking-wider mb-3">Detailed Analysis</div>
+                <ul className="space-y-2 text-sm">
+                  {detailModalData.details.map((detail: string, idx: number) => (
+                    <li key={idx} className="text-white/80 flex items-start gap-2">
+                      <span className="text-white/40 mt-0.5">•</span>
+                      <span>{detail}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            )}
+
+            <div className="flex gap-2">
+              <button 
+                className="flex-1 px-4 py-2.5 rounded-xl border border-white/15 hover:bg-white/5 text-white transition-all font-medium text-sm"
+                onClick={() => setDetailModalOpen(false)}
+              >
+                Close
+              </button>
+              <button 
+                className="flex-1 px-4 py-2.5 rounded-xl bg-gradient-to-r from-blue-500 to-purple-500 text-white font-medium hover:from-blue-600 hover:to-purple-600 shadow-lg text-sm"
+                onClick={() => {
+                  alert("Opening full documentation...");
+                }}
+              >
+                View Full Documentation
+              </button>
+            </div>
+          </div>
+        )}
+      </DetailModal>
     </>
   );
 }

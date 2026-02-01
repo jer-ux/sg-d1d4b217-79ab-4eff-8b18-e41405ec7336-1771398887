@@ -4,8 +4,6 @@ import { Building2, LineChart, Shield, Users } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
-import { SiteHeader } from "@/components/site/SiteHeader";
-import { SiteFooter } from "@/components/site/SiteFooter";
 import { FAQ } from "@/components/kincaid-iq/FAQ";
 import { WarRoomPreview } from "@/components/kincaid-iq/WarRoomPreview";
 
@@ -21,8 +19,6 @@ export default function KincaidIQHome() {
       </Head>
 
       <div className="min-h-screen bg-black text-white">
-        <SiteHeader active="kincaid-iq" />
-
         <main>
           {/* HERO */}
           <section className="relative overflow-hidden border-b border-white/10">
@@ -241,8 +237,6 @@ export default function KincaidIQHome() {
             </div>
           </section>
         </main>
-
-        <SiteFooter />
       </div>
     </>
   );

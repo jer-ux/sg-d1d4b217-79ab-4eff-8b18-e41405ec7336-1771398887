@@ -7,8 +7,6 @@ import { ArrowRight, ChevronLeft, ChevronRight, ShieldCheck, Database, Cpu, User
 
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
-import { SiriusBNav } from "@/components/siriusb/SiriusBNav";
-import { SiriusBFooter } from "@/components/siriusb/SiriusBFooter";
 
 const Exec3DDemo = dynamic(() => import("@/components/siriusb/Exec3DDemo"), { ssr: false });
 
@@ -125,8 +123,6 @@ export default function ExecWalkthroughPage() {
           content="Discover how SiriusB iQ delivers data certainty, governance, applied AI, adoption, and measurable value for enterprise decision-making."
         />
       </Head>
-
-      <SiriusBNav />
 
       <main className="min-h-screen bg-background pt-16">
         {/* Hero Section */}
@@ -294,8 +290,6 @@ export default function ExecWalkthroughPage() {
           </div>
         </section>
       </main>
-
-      <SiriusBFooter />
     </>
   );
 }

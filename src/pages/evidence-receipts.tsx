@@ -2,7 +2,6 @@
 
 import React, { useMemo, useState } from "react";
 import { SEO } from "@/components/SEO";
-import Nav from "@/components/Nav";
 import { Footer } from "@/components/Footer";
 import { CheckCircle2, AlertTriangle, XCircle, Download, ExternalLink } from "lucide-react";
 import { CreateReceiptModal } from "@/components/ledger/CreateReceiptModal";
@@ -243,7 +242,6 @@ export default function EvidenceReceiptsPage() {
       />
       <div className="relative min-h-screen bg-[#0A0118] text-white">
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-purple-900/20 via-transparent to-transparent" />
-        <Nav />
         <div className="relative mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8">
           <div className="mb-8 flex items-start justify-between">
             <div>
@@ -305,7 +303,7 @@ export default function EvidenceReceiptsPage() {
               <div>
                 <div className="mb-2 flex items-center gap-3">
                   <h2 className="text-2xl font-bold">{selected.receiptId}</h2>
-                  <span className={classNames("flex items-center gap-1.5 rounded-full px-3 py-1 text-sm font-semibold", cfg.bg, cfg.text)}>
+                  <span className={classNames("flex items-center gap-1.5 rounded-full px-3 py-1 text-xs font-semibold", cfg.bg, cfg.text)}>
                     {cfg.icon}
                     {cfg.label}
                   </span>

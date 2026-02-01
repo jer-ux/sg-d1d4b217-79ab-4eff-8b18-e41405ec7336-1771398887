@@ -110,10 +110,8 @@ export default function FamilyOffices() {
             Holdings complexity explodes faster than internal capacity. Evidence-led oversight prevents fire drills and keeps governance posture defensible during transitions, audits, and multi-generational planning.
           </div>
           <div className="grid md:grid-cols-2 gap-4 text-sm text-white/60">
-            <div>→ Succession planning requires audit-ready documentation</div>
-            <div>→ Tax efficiency depends on defensible cost allocation</div>
-            <div>→ Vendor consolidation needs evidence of redundancy</div>
-            <div>→ Fiduciary duty demands proof of value stewardship</div>
+            <div>→ Board reporting requires verified, time-stamped proof</div>
+            <div>→ Investors demand audit-ready documentation on demand</div>
           </div>
         </div>
 

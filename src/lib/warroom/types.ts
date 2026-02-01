@@ -152,7 +152,6 @@ export type Gate = "VERIFIED" | "UNVERIFIED";
 export type EventStatus = "OPEN" | "WATCH" | "RESOLVED";
 
 export type EventCategory =
-  | "Succession"
   | "Governance"
   | "Financial"
   | "Talent"
@@ -187,3 +186,10 @@ export type WarRoomEvent = {
   // explainability
   why: string[];                 // short reasons
 };
+
+export type TagCategory =
+  | "DQ"
+  | "Compliance"
+  | "Security"
+  | "Operational"
+  | "Financial";

@@ -1,22 +1,28 @@
 import Link from "next/link";
+import { FileText, Shield } from "lucide-react";
 
 function Pillar({
   title,
   tag,
   desc,
-  bullets,
+  bullets = [],
   href,
+  icon,
 }: {
   title: string;
   tag?: string;
   desc: string;
-  bullets: string[];
+  bullets?: string[];
   href: string;
+  icon?: React.ReactNode;
 }) {
   return (
     <div className="rounded-3xl border border-white/10 bg-white/5 p-6">
       <div className="flex items-center justify-between gap-3">
-        <div className="text-sm font-semibold text-white/90">{title}</div>
+        <div className="flex items-center gap-3">
+          {icon && <div className="text-white/70">{icon}</div>}
+          <div className="text-sm font-semibold text-white/90">{title}</div>
+        </div>
         {tag ? (
           <div className="rounded-full border border-white/10 bg-black/40 px-3 py-1 text-[11px] text-white/70">
             {tag}
@@ -26,14 +32,16 @@ function Pillar({
 
       <div className="mt-2 text-sm leading-relaxed text-white/65">{desc}</div>
 
-      <ul className="mt-4 space-y-2 text-sm text-white/70">
-        {bullets.map((b) => (
-          <li key={b} className="flex gap-2">
-            <span className="mt-[6px] h-1.5 w-1.5 rounded-full bg-white/40" />
-            <span>{b}</span>
-          </li>
-        ))}
-      </ul>
+      {bullets.length > 0 && (
+        <ul className="mt-4 space-y-2 text-sm text-white/70">
+          {bullets.map((b) => (
+            <li key={b} className="flex gap-2">
+              <span className="mt-[6px] h-1.5 w-1.5 rounded-full bg-white/40" />
+              <span>{b}</span>
+            </li>
+          ))}
+        </ul>
+      )}
 
       <div className="mt-6">
         <Link
@@ -198,15 +206,15 @@ export default function Platform() {
           />
           <Pillar
             title="Board Pack Exports"
-            tag="Portable truth"
-            desc="Generate a board-ready pack that travels with its integrity. PDF + manifests + download endpoints."
-            bullets={[
-              "Receipt manifest JSON + attachment manifest JSON",
-              "Artifact hash headers for external audit workflows",
-              "Designed for board, investor, lender scrutiny",
-              "No \"we'll send the backup later\" nonsense",
-            ]}
-            href="/succession-iq/board-pack-exports"
+            desc="One click → audit-ready board packs with provenance. Secure proof delivery to investors, auditors, board members."
+            icon={<FileText className="h-5 w-5" />}
+            href="/platform/evidence"
+          />
+          <Pillar
+            title="Investor Verification Portal"
+            desc="Time-stamped proof delivery with read receipts. Cryptographic chain-of-custody for sensitive financial disclosures."
+            icon={<Shield className="h-5 w-5" />}
+            href="/investor"
           />
           <Pillar
             title="Integrity Verification"
@@ -268,36 +276,13 @@ export default function Platform() {
           </div>
         </div>
 
-        {/* Succession IQ positioning */}
-        <div className="mt-12 rounded-3xl border border-white/10 bg-black/40 p-6">
-          <div className="text-sm font-semibold text-white/90">Succession IQ (module)</div>
-          <div className="mt-2 text-sm leading-relaxed text-white/70">
-            Succession IQ snaps onto this chassis. Same War Room behaviors, same receipts, same
-            export and verification mechanics—just a new KPI catalog and measurement loop for
-            multi-generational succession risk as EBITDA impact.
-          </div>
-
-          <div className="mt-6 flex flex-wrap gap-3">
-            <Link
-              href="/request-demo"
-              className="rounded-2xl border border-white/10 bg-white/10 px-5 py-2.5 text-sm text-white hover:bg-white/15"
-            >
-              Request demo →
-            </Link>
-            <Link
-              href="/platform"
-              className="rounded-2xl border border-white/10 bg-white/5 px-5 py-2.5 text-sm text-white/80 hover:bg-white/10"
-            >
-              View chassis details →
-            </Link>
-          </div>
-        </div>
-
         {/* Bottom CTA */}
         <div className="mt-10">
           <CTA />
         </div>
       </section>
+
+      {/* CTA */}
     </main>
   );
 }

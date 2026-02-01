@@ -1,4 +1,4 @@
-import type { Gate, EventCategory } from "./types";
+import type { Gate, EventCategory, TagCategory } from "./types";
 
 // 0..100 severity baseline by reason code (you can tune these anytime)
 const REASON_SEVERITY: Record<string, number> = {
@@ -7,9 +7,6 @@ const REASON_SEVERITY: Record<string, number> = {
   ATTACHMENT_MISSING: 80,
   RECEIPT_GATE_UNVERIFIED: 55,
 
-  SUCCESSION_SINGLE_POINT_FAILURE: 92,
-  SUCCESSION_NO_READY_NOW: 75,
-  CEO_EMERGENCY_PLAN_STALE: 88,
   LONG_TERM_PLAN_STALE: 70,
   HIPO_FLIGHT_RISK: 78,
 
@@ -21,7 +18,6 @@ const REASON_SEVERITY: Record<string, number> = {
 };
 
 export function categoryFromReason(reason: string): EventCategory {
-  if (reason.startsWith("SUCCESSION_") || reason.includes("CEO_")) return "Succession";
   if (reason.includes("EVIDENCE") || reason.includes("HASH") || reason.includes("ATTACHMENT"))
     return "Governance";
   if (reason.includes("EBITDA")) return "Financial";
@@ -119,4 +115,29 @@ export function rankScore(args: {
       `Final rank score: ${score}`,
     ],
   };
+}
+
+export const RISK_SCORES: Record<string, number> = {
+  DQ_MISSING_COLUMN: 85,
+  DQ_DUPLICATE_KEY: 90,
+  DQ_NULL_VIOLATION: 80,
+  POLICY_VIOLATION: 88,
+  SECURITY_PII_EXPOSURE: 95,
+  COMPLIANCE_SOX_FAIL: 92,
+  CEO_TRANSITION_RISK: 88,
+};
+
+const CATEGORY_MAP: Record<string, TagCategory> = {
+  DQ_: "DQ",
+  POLICY_: "Compliance",
+  SECURITY_: "Security",
+  COMPLIANCE_: "Compliance",
+  CEO_: "Operational",
+};
+
+export function categorizeReason(reason: string): TagCategory {
+  for (const [prefix, category] of Object.entries(CATEGORY_MAP)) {
+    if (reason.startsWith(prefix)) return category;
+  }
+  return "Operational";
 }

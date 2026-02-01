@@ -3,24 +3,26 @@ import Link from "next/link";
 function Block({
   title,
   desc,
-  bullets,
+  bullets = [],
 }: {
   title: string;
   desc: string;
-  bullets: string[];
+  bullets?: string[];
 }) {
   return (
     <div className="rounded-3xl border border-white/10 bg-white/5 p-6">
       <div className="text-sm font-semibold text-white/90">{title}</div>
       <div className="mt-2 text-sm text-white/70">{desc}</div>
-      <ul className="mt-4 space-y-2 text-sm text-white/70">
-        {bullets.map((b) => (
-          <li key={b} className="flex gap-2">
-            <span className="mt-[6px] h-1.5 w-1.5 rounded-full bg-white/40" />
-            <span>{b}</span>
-          </li>
-        ))}
-      </ul>
+      {bullets.length > 0 && (
+        <ul className="mt-4 space-y-2 text-sm text-white/70">
+          {bullets.map((b) => (
+            <li key={b} className="flex gap-2">
+              <span className="mt-[6px] h-1.5 w-1.5 rounded-full bg-white/40" />
+              <span>{b}</span>
+            </li>
+          ))}
+        </ul>
+      )}
     </div>
   );
 }
@@ -87,14 +89,8 @@ export default function Company() {
             ]}
           />
           <Block
-            title="Succession IQ (module)"
-            desc="Same chassis, new KPI catalog. Measures succession quality as EBITDA risk."
-            bullets={[
-              "Daily/hourly measurements (as available)",
-              "Multi-generational continuity signals",
-              "Western KPIs + Gulf-focused additions",
-              "Exportable board packs with PASS/FAIL verification",
-            ]}
+            title="Investor Verification Portal"
+            desc="Cryptographically signed proof delivery. Read receipts. Chain-of-custody for sensitive disclosures."
           />
         </div>
       </section>

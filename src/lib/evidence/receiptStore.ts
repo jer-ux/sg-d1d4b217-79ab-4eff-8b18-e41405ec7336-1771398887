@@ -1,5 +1,12 @@
 import type { EvidenceReceipt } from "@/lib/storage/adapters/types";
 
+const DEMO_RECEIPT_REASONS = [
+  "RECEIPT_GATE_UNVERIFIED",
+  "POLICY_APPROVAL_THRESHOLD_EXCEEDED",
+  "DQ_MISSING_COLUMN",
+  "SECURITY_PII_EXPOSURE",
+];
+
 // Temporary mock data generator until real store is connected
 function generateMockReceipts(count: number): EvidenceReceipt[] {
   const receipts: EvidenceReceipt[] = [];

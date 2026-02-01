@@ -207,7 +207,7 @@ export default function Platform() {
               "Receipt manifest JSON + attachment manifest JSON",
               "Artifact hash headers for external audit workflows",
               "Designed for board, investor, lender scrutiny",
-              "No "we'll send the backup later" nonsense",
+              "No \"we'll send the backup later\" nonsense",
             ]}
             href="/succession-iq/board-pack-exports"
           />

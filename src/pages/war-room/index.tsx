@@ -10,6 +10,8 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { motion } from "framer-motion";
+import { mockWarRoom } from "@/lib/warroom/mock";
+import { Drawer } from "@/components/warroom/WarRoomDrawer";
 
 type WarRoomView = "CFO_DASHBOARD" | "FOUR_LANE_LEDGER" | "EXECUTIVE_KPIS";
 
@@ -192,7 +194,7 @@ function Tile({
   );
 }
 
-function Badge({ status, onClick }: { status: string; onClick?: () => void }) {
+function Badge({ status, onClick }: { status: string; onClick?: (e: React.MouseEvent) => void }) {
   const cls =
     status === "VERIFIED"
       ? "bg-emerald-400/25 text-emerald-200 border-emerald-400/40 shadow-[0_0_15px_rgba(16,185,129,0.2)]"
@@ -200,6 +202,14 @@ function Badge({ status, onClick }: { status: string; onClick?: () => void }) {
       ? "bg-amber-400/25 text-amber-200 border-amber-400/40 shadow-[0_0_15px_rgba(251,191,36,0.2)]"
       : status === "UNVERIFIED"
       ? "bg-purple-400/25 text-purple-200 border-purple-400/40 shadow-[0_0_15px_rgba(168,85,247,0.2)]"
+      : status === "VALIDATED"
+      ? "bg-emerald-400/25 text-emerald-200 border-emerald-400/40 shadow-[0_0_15px_rgba(16,185,129,0.2)]"
+      : status === "IMPLEMENTED"
+      ? "bg-blue-400/25 text-blue-200 border-blue-400/40 shadow-[0_0_15px_rgba(59,130,246,0.2)]"
+      : status === "ACCEPTED"
+      ? "bg-purple-400/25 text-purple-200 border-purple-400/40 shadow-[0_0_15px_rgba(168,85,247,0.2)]"
+      : status === "RECOMMENDED"
+      ? "bg-amber-400/25 text-amber-200 border-amber-400/40 shadow-[0_0_15px_rgba(251,191,36,0.2)]"
       : "bg-blue-400/25 text-blue-200 border-blue-400/40 shadow-[0_0_15px_rgba(59,130,246,0.2)]";
 
   return (
@@ -212,7 +222,7 @@ function Badge({ status, onClick }: { status: string; onClick?: () => void }) {
   );
 }
 
-function KPIBadge({ metric, onClick }: { metric: KPIMetric; onClick?: () => void }) {
+function KPIBadge({ metric, onClick }: { metric: KPIMetric; onClick?: (e: React.MouseEvent) => void }) {
   const trendColor = metric.trendDirection === "up" 
     ? "text-emerald-400" 
     : metric.trendDirection === "down" 
@@ -581,7 +591,7 @@ function CFODashboardContent() {
             label="Trend vs Baseline"
             value={`${data.actual.toFixed(1)}%`}
             subLeft={`Baseline ${data.baseline.toFixed(1)}%`}
-            subRight={`${data.delta > 0 ? "+" : ""}${data.delta.toFixed(1)}%`}
+            subRight={`Conf ${pct(data.ebitda.confidence)}`}
             accent={varianceAccent}
             onClick={() => open("VARIANCE")}
           />

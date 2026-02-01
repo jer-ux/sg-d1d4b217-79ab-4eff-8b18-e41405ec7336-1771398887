@@ -540,3 +540,111 @@ export function formatMoney(n: number) {
   if (abs >= 1_000) return `${sign}$${(abs / 1_000).toFixed(1)}K`;
   return `${sign}$${abs.toFixed(0)}`;
 }
+
+export function mockWarRoom() {
+  return {
+    actual: 12.4,
+    baseline: 8.2,
+    delta: 4.2,
+    ebitda: {
+      ytd_validated: 4500000,
+      mtd_validated: 850000,
+      confidence: 0.92
+    },
+    ledger: {
+      identified: 12500000,
+      approved: 8400000,
+      realized: 4500000,
+      at_risk: 1200000
+    },
+    data_health: {
+      verified_receipts_rate: 0.88,
+      dq_pass_rate: 0.96,
+      freshness_hours: 1.2
+    },
+    events: [
+      {
+        id: "EVT-2024-001",
+        title: "PBM Contract Guarantee Variance",
+        type: "PBM",
+        status: "RECOMMENDED",
+        identified_value: 450000,
+        confidence: 0.85,
+        time_sensitivity: 0.92,
+        execution_friction: 0.65,
+        score: 92,
+        owner_role: "Director of Pharmacy",
+        evidence_receipt_id: "RCP-9832",
+        receipt_status: "VERIFIED",
+        theme: "rose"
+      },
+      {
+        id: "EVT-2024-002",
+        title: "High-Cost Claimant Stop-Loss Trigger",
+        type: "MEDICAL",
+        status: "ACCEPTED",
+        identified_value: 280000,
+        confidence: 0.94,
+        time_sensitivity: 0.88,
+        execution_friction: 0.35,
+        score: 88,
+        owner_role: "Benefits Manager",
+        evidence_receipt_id: "RCP-7721",
+        receipt_status: "DEGRADED",
+        theme: "blue"
+      },
+      {
+        id: "EVT-2024-003",
+        title: "Duplicate Specialty Drug Claim",
+        type: "PBM",
+        status: "VALIDATED",
+        identified_value: 125000,
+        confidence: 0.99,
+        time_sensitivity: 0.45,
+        execution_friction: 0.20,
+        score: 85,
+        owner_role: "Claims Auditor",
+        evidence_receipt_id: "RCP-GL-001",
+        receipt_status: "VERIFIED",
+        theme: "emerald"
+      },
+      {
+        id: "EVT-2024-004",
+        title: "Network Discount Leakage",
+        type: "MEDICAL",
+        status: "IMPLEMENTED",
+        identified_value: 340000,
+        confidence: 0.82,
+        time_sensitivity: 0.75,
+        execution_friction: 0.55,
+        score: 79,
+        owner_role: "Network Ops",
+        evidence_receipt_id: "RCP-IMP-001",
+        receipt_status: "VERIFIED",
+        theme: "cyan"
+      },
+      {
+        id: "EVT-2024-005",
+        title: "Rebate True-up Mismatch",
+        type: "PBM",
+        status: "UNVERIFIED",
+        identified_value: 180000,
+        confidence: 0.78,
+        time_sensitivity: 0.60,
+        execution_friction: 0.45,
+        score: 74,
+        owner_role: "Finance Lead",
+        evidence_receipt_id: "RCP-4556",
+        receipt_status: "UNVERIFIED",
+        theme: "amber"
+      }
+    ],
+    drivers: [
+      { label: "PBM Guarantees", delta_pct: 1.8 },
+      { label: "Stop-Loss Recoveries", delta_pct: 1.2 },
+      { label: "Network Discounts", delta_pct: 0.8 },
+      { label: "Clinical Edits", delta_pct: 0.4 }
+    ],
+    asOf: new Date().toISOString()
+  };
+}

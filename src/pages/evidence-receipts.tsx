@@ -394,16 +394,196 @@ export default function EvidenceReceiptsPage() {
                   </div>
                 </div>
                 <div>
-                  <h3 className="mb-4 text-xl font-semibold">Kincaid IQ Embed</h3>
-                  <div className="overflow-hidden rounded-xl border border-white/10 bg-black/20">
-                    <iframe
-                      src="https://app.kincaid.io/embed/receipt-demo"
-                      className="h-[600px] w-full"
-                      title="Kincaid iQ Receipt Demo"
-                      sandbox="allow-scripts allow-same-origin"
-                    />
-                    <div className="border-t border-white/10 bg-white/5 p-4 text-center text-sm text-purple-200/60">
-                      If you see a blank frame, the embed may be blocked. See static snapshot above.
+                  <h3 className="mb-4 text-xl font-semibold">Receipt Viewer</h3>
+                  <div className="rounded-xl border border-white/10 bg-gradient-to-br from-purple-900/20 via-black/40 to-black/40 p-6 shadow-2xl">
+                    {/* Receipt Header */}
+                    <div className="mb-6 flex items-start justify-between border-b border-white/10 pb-4">
+                      <div>
+                        <div className="mb-2 flex items-center gap-3">
+                          <span className="text-2xl font-bold text-white">{selected.receiptId}</span>
+                          <span className={classNames("flex items-center gap-1.5 rounded-full px-3 py-1 text-xs font-semibold", cfg.bg, cfg.text)}>
+                            {cfg.icon}
+                            {cfg.label}
+                          </span>
+                        </div>
+                        <div className="text-sm text-purple-300/70">
+                          {selected.subjectType} → {selected.subjectId}
+                        </div>
+                      </div>
+                      <div className="text-right">
+                        <div className="text-xs text-purple-300/50">Confidence</div>
+                        <div className="text-3xl font-bold text-emerald-400">{confidencePct}%</div>
+                      </div>
+                    </div>
+
+                    {/* Mini Lineage Flow */}
+                    <div className="mb-6">
+                      <div className="mb-3 text-sm font-semibold text-purple-300">Data Lineage Flow</div>
+                      <div className="flex items-center gap-2 overflow-x-auto pb-2">
+                        {selected.artifacts.map((art, i) => (
+                          <React.Fragment key={art.id}>
+                            <div className="flex-shrink-0 rounded-lg border border-purple-500/30 bg-purple-500/10 px-3 py-2">
+                              <div className="text-xs font-semibold text-purple-200">{art.sourceType}</div>
+                              <div className="text-[10px] text-purple-300/60">{art.rowCount?.toLocaleString()} rows</div>
+                            </div>
+                            {i < selected.artifacts.length - 1 && (
+                              <div className="text-purple-400">→</div>
+                            )}
+                          </React.Fragment>
+                        ))}
+                        <div className="text-purple-400">→</div>
+                        {selected.transforms.map((trn, i) => (
+                          <React.Fragment key={trn.id}>
+                            <div className="flex-shrink-0 rounded-lg border border-blue-500/30 bg-blue-500/10 px-3 py-2">
+                              <div className="text-xs font-semibold text-blue-200">{trn.name.slice(0, 20)}</div>
+                              <div className="text-[10px] text-blue-300/60">{trn.version}</div>
+                            </div>
+                            {i < selected.transforms.length - 1 && (
+                              <div className="text-blue-400">→</div>
+                            )}
+                          </React.Fragment>
+                        ))}
+                        <div className="text-emerald-400">→</div>
+                        <div className="flex-shrink-0 rounded-lg border border-emerald-500/50 bg-emerald-500/20 px-4 py-2">
+                          <div className="text-xs font-bold text-emerald-200">RECEIPT</div>
+                          <div className="text-[10px] text-emerald-300/70">{selected.verificationStatus}</div>
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* Key Metrics Grid */}
+                    <div className="mb-6 grid gap-4 md:grid-cols-3">
+                      <div className="rounded-lg border border-white/10 bg-white/5 p-4">
+                        <div className="mb-2 text-xs uppercase tracking-wide text-purple-300/60">Source Artifacts</div>
+                        <div className="text-2xl font-bold text-white">{selected.artifacts.length}</div>
+                        <div className="mt-2 space-y-1">
+                          {selected.artifacts.map((art) => (
+                            <div key={art.id} className="flex items-center gap-2 text-xs text-purple-200/70">
+                              <div className="h-1.5 w-1.5 rounded-full bg-purple-400" />
+                              {art.sourceType}
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+
+                      <div className="rounded-lg border border-white/10 bg-white/5 p-4">
+                        <div className="mb-2 text-xs uppercase tracking-wide text-blue-300/60">Transform Pipeline</div>
+                        <div className="text-2xl font-bold text-white">{selected.transforms.length}</div>
+                        <div className="mt-2 space-y-1">
+                          {selected.transforms.map((trn, i) => (
+                            <div key={trn.id} className="flex items-center gap-2 text-xs text-blue-200/70">
+                              <div className="flex h-4 w-4 items-center justify-center rounded-full bg-blue-500/20 text-[9px] font-bold text-blue-300">
+                                {i + 1}
+                              </div>
+                              {trn.name.slice(0, 18)}...
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+
+                      <div className="rounded-lg border border-white/10 bg-white/5 p-4">
+                        <div className="mb-2 text-xs uppercase tracking-wide text-emerald-300/60">Quality Gates</div>
+                        <div className="text-2xl font-bold text-white">
+                          {selected.dq.tests.filter((t) => t.status === "PASS").length}/{selected.dq.tests.length}
+                        </div>
+                        <div className="mt-2 space-y-1">
+                          {selected.dq.tests.map((test, i) => (
+                            <div key={i} className="flex items-center gap-2 text-xs">
+                              {test.status === "PASS" ? (
+                                <CheckCircle2 className="h-3 w-3 text-emerald-400" />
+                              ) : test.status === "WARN" ? (
+                                <AlertTriangle className="h-3 w-3 text-amber-400" />
+                              ) : (
+                                <XCircle className="h-3 w-3 text-red-400" />
+                              )}
+                              <span className="text-white/70">{test.name.slice(0, 20)}</span>
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* Reconciliation Summary */}
+                    <div className="mb-6">
+                      <div className="mb-3 text-sm font-semibold text-purple-300">Reconciliation Status</div>
+                      <div className="space-y-3">
+                        {selected.reconciliation.map((rec, i) => (
+                          <div key={i} className="rounded-lg border border-white/10 bg-white/5 p-4">
+                            <div className="mb-2 flex items-center justify-between">
+                              <div className="text-sm font-semibold text-white">{rec.name}</div>
+                              <span
+                                className={classNames(
+                                  "flex items-center gap-1 rounded-full px-2 py-1 text-xs font-semibold",
+                                  rec.status === "PASS"
+                                    ? "bg-emerald-500/20 text-emerald-300"
+                                    : rec.status === "WARN"
+                                    ? "bg-amber-500/20 text-amber-300"
+                                    : "bg-red-500/20 text-red-300"
+                                )}
+                              >
+                                {rec.status === "PASS" ? (
+                                  <CheckCircle2 className="h-3 w-3" />
+                                ) : rec.status === "WARN" ? (
+                                  <AlertTriangle className="h-3 w-3" />
+                                ) : (
+                                  <XCircle className="h-3 w-3" />
+                                )}
+                                {rec.status}
+                              </span>
+                            </div>
+                            <div className="grid grid-cols-3 gap-4 text-sm">
+                              <div>
+                                <div className="text-xs text-purple-300/50">Expected</div>
+                                <div className="font-mono text-purple-100">
+                                  {rec.expected.toLocaleString()} {rec.unit}
+                                </div>
+                              </div>
+                              <div>
+                                <div className="text-xs text-purple-300/50">Actual</div>
+                                <div className="font-mono text-purple-100">
+                                  {rec.actual.toLocaleString()} {rec.unit}
+                                </div>
+                              </div>
+                              <div>
+                                <div className="text-xs text-purple-300/50">Delta</div>
+                                <div
+                                  className={classNames(
+                                    "font-mono font-semibold",
+                                    rec.delta > 0 ? "text-red-300" : rec.delta < 0 ? "text-emerald-300" : "text-purple-100"
+                                  )}
+                                >
+                                  {rec.delta > 0 ? "+" : ""}
+                                  {rec.delta.toLocaleString()} {rec.unit}
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+
+                    {/* Footer Metadata */}
+                    <div className="border-t border-white/10 pt-4">
+                      <div className="grid gap-4 text-xs md:grid-cols-4">
+                        <div>
+                          <div className="mb-1 text-purple-300/50">Period</div>
+                          <div className="font-mono text-purple-100">
+                            {selected.periodStart} → {selected.periodEnd}
+                          </div>
+                        </div>
+                        <div>
+                          <div className="mb-1 text-purple-300/50">Grain</div>
+                          <div className="font-mono text-purple-100">{selected.grain}</div>
+                        </div>
+                        <div>
+                          <div className="mb-1 text-purple-300/50">Owner</div>
+                          <div className="text-purple-100">{selected.owner}</div>
+                        </div>
+                        <div>
+                          <div className="mb-1 text-purple-300/50">Freshness</div>
+                          <div className="font-mono text-purple-100">{new Date(selected.freshnessTs).toLocaleString()}</div>
+                        </div>
+                      </div>
                     </div>
                   </div>
                 </div>

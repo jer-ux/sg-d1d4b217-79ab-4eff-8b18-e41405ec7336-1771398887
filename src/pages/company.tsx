@@ -71,7 +71,7 @@ export default function Company() {
           />
           <Block
             title="How we operate"
-            desc="Systems thinking + governance engineering, not "consulting theater.""
+            desc='Systems thinking + governance engineering, not "consulting theater."'
             bullets={[
               "Versioned KPIs with lineage + data quality gates",
               "Immutable artifacts and reproducible transforms",

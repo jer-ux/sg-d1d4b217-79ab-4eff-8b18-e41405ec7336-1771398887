@@ -178,91 +178,106 @@ export default function Platform() {
           <Pillar
             title="SiriusB iQ War Room"
             tag="Executive view"
-            desc="4-Tile Executive View with Ranked Events. This is where EBITDA impact becomes visible, prioritized, and actionable."
+            desc="4-Tile Executive View with Ranked Events. Quantify impact, prioritize action, and drill into evidence."
             bullets={[
-              "Tile-level KPI snapshots with evidence lineage and confidence gating",
-              "Ranked events: severity, velocity, confidence, and recoverable EBITDA",
-              "One-click publish to board pack export (hashes + manifests + verification)",
-              "Drilldown: tile → receipt → attachment → download",
+              "Ranked events by severity, velocity, confidence, recoverable EBITDA",
+              "Tile drilldown: KPI → event → receipt → attachment",
+              "Confidence gating prevents authority inversion",
+              "Built to run as a daily operator, not a quarterly deck",
             ]}
             href="/war-room"
           />
-
           <Pillar
             title="Evidence Receipts"
             tag="Audit trail"
-            desc="Every claim is a receipt. Every receipt is hashable. Every export is verifiable."
+            desc="Every KPI is attached to receipts. Every receipt is hashable. Every decision is defensible."
             bullets={[
-              "Immutable raw artifacts + versioned transforms",
-              "VERIFIED / UNVERIFIED gates with reason codes",
-              "Attachment chain-of-custody (sha256 bytes hashing)",
-              "Export manifests and PASS/FAIL integrity verification",
+              "VERIFIED / UNVERIFIED gating with reason codes",
+              "Immutable artifact hashes + versioned transform hashes",
+              "Attachments hashed at the byte level (sha256)",
+              "Receipts become the system of record for claims",
             ]}
             href="/evidence-receipts"
           />
-
           <Pillar
-            title="Verified Savings Ledger"
-            tag="Finance-grade"
-            desc="Track recoverable value, EBITDA drag, and savings—backed by receipts, not spreadsheets."
+            title="Board Pack Exports"
+            tag="Portable truth"
+            desc="Generate a board-ready pack that travels with its integrity. PDF + manifests + download endpoints."
             bullets={[
-              "Line-item accounting with receipt linkage",
-              "Multi-party reconciliation (internal + external sources)",
-              "Approval workflows with override audit trail",
-              "Exportable board reports with integrity checks",
+              "Receipt manifest JSON + attachment manifest JSON",
+              "Artifact hash headers for external audit workflows",
+              "Designed for board, investor, lender scrutiny",
+              "No "we'll send the backup later" nonsense",
             ]}
-            href="/verified-savings-ledger"
+            href="/succession-iq/board-pack-exports"
           />
-
           <Pillar
-            title="Proof Library"
-            tag="Intelligence vault"
-            desc="Searchable, tagged repository of artifacts and receipts. No more lost evidence."
+            title="Integrity Verification"
+            tag="PASS/FAIL"
+            desc="Verify any export on demand. If anything was modified, swapped, or missing—verification fails with details."
             bullets={[
-              "Full-text search across receipts and attachments",
-              "Tag-based filtering and taxonomy",
-              "Provenance tracking (who uploaded, when, why)",
-              "Download with chain-of-custody manifest",
+              "Recomputes manifest hashes server-side",
+              "Checks receipt presence + hash/gate mismatches",
+              "Checks attachment bytes sha256 + content length",
+              "Returns exact mismatch diagnostics (audit-friendly)",
             ]}
-            href="/proof-library"
+            href="/api/succession-iq/board-pack-export/demo/verify"
           />
         </div>
-      </section>
 
-      {/* HOW IT WORKS */}
-      <section className="mx-auto max-w-7xl px-6 pb-14">
-        <div className="text-xs tracking-[0.2em] text-white/50">HOW IT WORKS</div>
-        <div className="mt-6 grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-4">
-          <FlowStep
-            n="1"
-            title="Artifact arrives"
-            desc="Raw data ingested from API, upload, or connector. No transforms yet—just the original."
-          />
-          <FlowStep
-            n="2"
-            title="Receipt generated"
-            desc="System creates immutable receipt: sha256 hash, timestamp, source metadata, confidence gates."
-          />
-          <FlowStep
-            n="3"
-            title="Export built"
-            desc="Board pack or report generated. Manifest JSON lists every receipt + attachment hash."
-          />
-          <FlowStep
-            n="4"
-            title="Integrity verified"
-            desc="Consumer runs verification script. PASS/FAIL + mismatch detail. Zero trust, total clarity."
-          />
+        {/* HOW IT WORKS */}
+        <div className="mt-12 grid grid-cols-1 gap-4 lg:grid-cols-12 lg:items-stretch">
+          <div className="lg:col-span-5 rounded-3xl border border-white/10 bg-white/5 p-6">
+            <div className="text-sm font-semibold text-white/90">How it works</div>
+            <div className="mt-2 text-sm leading-relaxed text-white/70">
+              The platform is built around a simple thesis: decision authority must be backed by
+              verifiable evidence. So we store raw artifacts, produce receipts with lineage, then
+              publish exports that can be verified independently.
+            </div>
+
+            <div className="mt-6 rounded-2xl border border-white/10 bg-black/40 p-4">
+              <div className="text-[11px] text-white/55">Truth Governance model</div>
+              <div className="mt-2 text-sm text-white/80">
+                Immutable artifacts → versioned transforms → evidence receipts → exports → verify
+              </div>
+            </div>
+
+            <div className="mt-6">
+              <CTA />
+            </div>
+          </div>
+
+          <div className="lg:col-span-7 grid grid-cols-1 gap-4 md:grid-cols-2">
+            <FlowStep
+              n="01"
+              title="Capture"
+              desc="Ingest raw artifacts (docs, files, feeds). Hash them. Store them immutably."
+            />
+            <FlowStep
+              n="02"
+              title="Receipt"
+              desc="Compute KPIs from versioned transforms. Emit receipts with lineage + confidence gates."
+            />
+            <FlowStep
+              n="03"
+              title="Export"
+              desc="Publish a board pack: PDF cover sheet + manifests for receipts and attachments."
+            />
+            <FlowStep
+              n="04"
+              title="Verify"
+              desc="Recompute hashes and validate existence. PASS/FAIL with mismatch diagnostics."
+            />
+          </div>
         </div>
-      </section>
 
-      {/* SUCCESSION IQ */}
-      <section className="mx-auto max-w-7xl px-6 pb-14">
-        <div className="rounded-3xl border border-white/10 bg-black/40 p-6">
-          <div className="text-sm font-semibold text-white/90">Where Succession IQ fits</div>
-          <div className="mt-2 text-sm text-white/70">
-            Succession IQ is a modular layer on top of this chassis. Same Evidence Receipts, same
-            exports, same verification—just a different KPI catalog and measurement loop.
+        {/* Succession IQ positioning */}
+        <div className="mt-12 rounded-3xl border border-white/10 bg-black/40 p-6">
+          <div className="text-sm font-semibold text-white/90">Succession IQ (module)</div>
+          <div className="mt-2 text-sm leading-relaxed text-white/70">
+            Succession IQ snaps onto this chassis. Same War Room behaviors, same receipts, same
+            export and verification mechanics—just a new KPI catalog and measurement loop for
+            multi-generational succession risk as EBITDA impact.
           </div>
 
           <div className="mt-6 flex flex-wrap gap-3">
@@ -273,18 +288,18 @@ export default function Platform() {
               Request demo →
             </Link>
             <Link
-              href="/war-room"
-              className="rounded-2xl border border-white/10 bg-black/40 px-5 py-2.5 text-sm text-white/80 hover:bg-white/5"
+              href="/platform"
+              className="rounded-2xl border border-white/10 bg-white/5 px-5 py-2.5 text-sm text-white/80 hover:bg-white/10"
             >
-              See War Room →
+              View chassis details →
             </Link>
           </div>
         </div>
-      </section>
 
-      {/* CTA */}
-      <section className="mx-auto max-w-7xl px-6 pb-20">
-        <CTA />
+        {/* Bottom CTA */}
+        <div className="mt-10">
+          <CTA />
+        </div>
       </section>
     </main>
   );

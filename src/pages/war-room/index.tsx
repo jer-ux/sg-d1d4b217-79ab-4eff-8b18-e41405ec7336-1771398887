@@ -10,7 +10,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { motion } from "framer-motion";
-import { mockWarRoom } from "@/lib/warroom/mock";
+import { mockWarRoom } from "@/lib/mocks/mockWarRoom";
 import { Drawer } from "@/components/warroom/WarRoomDrawer";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 

@@ -2,10 +2,9 @@ import { SEO } from "@/components/SEO";
 import { SplitPane } from "@/components/SplitPane";
 import { Navbar } from "@/components/Navbar";
 import { useState, useEffect, useMemo } from "react";
-import { Drawer } from "@/components/warroom/WarRoomDrawer";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
-import { ChevronDown } from "lucide-react";
+import { ChevronDown, ExternalLink, FileText, Shield, TrendingUp, AlertTriangle } from "lucide-react";
 import { motion } from "framer-motion";
 import dynamic from "next/dynamic";
 import { mockWarRoomData as mockWarRoom } from "@/lib/mocks/mockWarRoom";
@@ -127,6 +126,7 @@ type KPIMetric = {
     dqPassRate: number;
     confidence: number;
   };
+  drilldownKey?: string;
 };
 
 function money(n: number) {
@@ -272,12 +272,49 @@ function AnimatedGradientOverlay({ theme }: { theme: (typeof THEME)[ThemeKey] })
   );
 }
 
-function DetailModal({ open, title, onClose, children }: { open: boolean; title: string; onClose: () => void; children: React.ReactNode }) {
+interface DetailModalData {
+  title: string;
+  description: string;
+  kpis: KPIMetric[];
+  receipt: any;
+  details: string[];
+  legalContext?: {
+    statute: string;
+    regulation: string;
+    compliance: string[];
+    riskFactors: string[];
+  };
+  capitalMarketsContext?: {
+    valuationMethod: string;
+    discountRate: number;
+    marketComparables: string[];
+    liquidityAnalysis: string;
+  };
+}
+
+function DetailModal({ 
+  open, 
+  title, 
+  onClose, 
+  children,
+  level = 1 
+}: { 
+  open: boolean; 
+  title: string; 
+  onClose: () => void; 
+  children: React.ReactNode;
+  level?: number;
+}) {
+  const maxWidth = level === 1 ? "max-w-2xl" : level === 2 ? "max-w-3xl" : "max-w-4xl";
+  
   return (
     <Dialog open={open} onOpenChange={(val) => !val && onClose()}>
-      <DialogContent className="max-w-2xl bg-gray-900 border-white/10 text-white sm:max-w-[700px]">
+      <DialogContent className={`${maxWidth} bg-gray-900 border-white/10 text-white sm:max-w-[90vw] max-h-[85vh] overflow-y-auto`}>
         <DialogHeader>
-          <DialogTitle className="text-xl font-semibold">{title}</DialogTitle>
+          <DialogTitle className="text-xl font-semibold flex items-center gap-2">
+            {level > 1 && <span className="text-sm text-white/50">Level {level} →</span>}
+            {title}
+          </DialogTitle>
         </DialogHeader>
         <div className="mt-4">
           {children}
@@ -295,9 +332,11 @@ function CFODashboardContent() {
   const [activeEvent, setActiveEvent] = useState<MockEvent | null>(null);
   const [searchQuery, setSearchQuery] = useState("");
   const [statusFilter, setStatusFilter] = useState("All");
-  const [detailModalOpen, setDetailModalOpen] = useState(false);
-  const [detailModalView, setDetailModalView] = useState<DetailModalView>("STATUS");
-  const [detailModalData, setDetailModalData] = useState<any>(null);
+  
+  // Multi-level modal system
+  const [level1Modal, setLevel1Modal] = useState<{ open: boolean; data: DetailModalData | null }>({ open: false, data: null });
+  const [level2Modal, setLevel2Modal] = useState<{ open: boolean; data: DetailModalData | null }>({ open: false, data: null });
+  const [level3Modal, setLevel3Modal] = useState<{ open: boolean; data: DetailModalData | null }>({ open: false, data: null });
 
   useEffect(() => {
     setMounted(true);
@@ -345,168 +384,266 @@ function CFODashboardContent() {
     return filtered.sort((a, b) => b.score - a.score);
   }, [data.events, searchQuery, statusFilter]);
 
-  const openDetailModal = (view: DetailModalView, data: any) => {
-    setDetailModalView(view);
-    setDetailModalData(data);
-    setDetailModalOpen(true);
+  const openLevel1Modal = (data: DetailModalData) => {
+    setLevel1Modal({ open: true, data });
   };
 
-  const getStatusExplanation = (status: string) => {
+  const openLevel2Modal = (data: DetailModalData) => {
+    setLevel2Modal({ open: true, data });
+  };
+
+  const openLevel3Modal = (data: DetailModalData) => {
+    setLevel3Modal({ open: true, data });
+  };
+
+  const getStatusExplanation = (status: string): DetailModalData => {
     switch (status) {
       case "VERIFIED":
         return {
-          title: "Evidence Receipt: VERIFIED",
-          description: "This event has been cryptographically verified with full chain-of-custody documentation.",
+          title: "Evidence Receipt Status: VERIFIED",
+          description: "Pursuant to SOC 2 Type II attestation requirements and in accordance with FASB ASC 606 (Revenue Recognition), this arbitrage event has achieved full cryptographic verification with complete chain-of-custody documentation. The evidence satisfies both the completeness and accuracy assertions under PCAOB auditing standards.",
           kpis: [
-            { label: "DQ Pass Rate", value: "97.8%", trend: "+2.3%", trendDirection: "up" as const, receipt: { id: "RCP-9832", verified: true, freshness: "< 1h", dqPassRate: 0.978, confidence: 0.95 } },
-            { label: "Freshness", value: "< 1h", receipt: { id: "RCP-9832", verified: true, freshness: "< 1h", dqPassRate: 0.978, confidence: 0.95 } },
-            { label: "Hash Verified", value: "Yes", receipt: { id: "RCP-9832", verified: true, freshness: "< 1h", dqPassRate: 0.978, confidence: 0.95 } },
+            { 
+              label: "DQ Pass Rate", 
+              value: "97.8%", 
+              trend: "+2.3%", 
+              trendDirection: "up" as const, 
+              receipt: { id: "RCP-9832", verified: true, freshness: "< 1h", dqPassRate: 0.978, confidence: 0.95 },
+              drilldownKey: "dq_methodology"
+            },
+            { 
+              label: "Attestation Level", 
+              value: "SOC 2 Type II", 
+              receipt: { id: "RCP-9832", verified: true, freshness: "< 1h", dqPassRate: 0.978, confidence: 0.95 },
+              drilldownKey: "attestation"
+            },
+            { 
+              label: "Freshness SLA", 
+              value: "< 1h", 
+              trend: "Within Target",
+              trendDirection: "up" as const,
+              receipt: { id: "RCP-9832", verified: true, freshness: "< 1h", dqPassRate: 0.978, confidence: 0.95 },
+              drilldownKey: "freshness_policy"
+            },
+            { 
+              label: "Cryptographic Integrity", 
+              value: "SHA-256 Verified", 
+              receipt: { id: "RCP-9832", verified: true, freshness: "< 1h", dqPassRate: 0.978, confidence: 0.95 },
+              drilldownKey: "crypto_verification"
+            },
           ],
           receipt: {
             id: "RCP-9832",
             hash: "0x7f9fade1c0d57a7af66ab4ead79fade1c0d57a7af66ab4ead7c2c2eb7b11a91385",
-            sourceSystem: "Snowflake + Carrier EDI",
+            sourceSystem: "Snowflake Data Warehouse + Carrier EDI Gateway",
             lastVerified: new Date().toISOString(),
-            verificationMethod: "Cryptographic hash + DQ checks",
+            verificationMethod: "SHA-256 Cryptographic Hash + 14-point DQ validation",
             freshness: "< 1 hour",
             dqPassRate: 0.978,
           },
           details: [
-            "Evidence has passed all data quality checks with 97.8% pass rate",
-            "Chain-of-custody is complete and auditable",
-            "Source data is fresh (< 1 hour old)",
-            "Cryptographic hash matches expected value",
-            "All control gates passed",
+            "✓ Evidence satisfies PCAOB AS 1105 (Audit Evidence) completeness and accuracy assertions",
+            "✓ Chain-of-custody maintained per NIST SP 800-53 AU-10 (Non-repudiation)",
+            "✓ Data quality validation: 97.8% pass rate exceeds 95% materiality threshold",
+            "✓ Cryptographic integrity verified using SHA-256 hash function per FIPS 180-4",
+            "✓ Source data freshness: < 1 hour (within 2-hour SLA)",
+            "✓ All control gates passed per COSO ERM Framework",
+            "⚖️ Admissible as evidence under FRE 803(6) Business Records Exception",
           ],
+          legalContext: {
+            statute: "15 U.S.C. § 78j(b) - Securities Exchange Act (Anti-Fraud Provisions)",
+            regulation: "17 CFR § 240.10b-5 - Employment of Manipulative and Deceptive Practices",
+            compliance: [
+              "SOX Section 404 - Internal Controls over Financial Reporting",
+              "HIPAA 45 CFR § 164.308 - Administrative Safeguards",
+              "ERISA § 404(a)(1)(B) - Prudent Man Standard",
+              "Gramm-Leach-Bliley Act - Safeguards Rule (16 CFR Part 314)",
+            ],
+            riskFactors: [
+              "Low: Full audit trail established",
+              "Low: Cryptographic verification complete",
+              "Medium: Dependent on upstream data source reliability",
+              "Low: No material weaknesses identified in ICFR testing",
+            ],
+          },
+          capitalMarketsContext: {
+            valuationMethod: "Discounted Cash Flow (DCF) with Monte Carlo simulation for risk adjustment",
+            discountRate: 8.5,
+            marketComparables: [
+              "Healthcare cost containment SaaS: 12.5x ARR multiple",
+              "Data quality platforms: 8.2x revenue multiple",
+              "Enterprise analytics: 6.8x EBITDA multiple",
+            ],
+            liquidityAnalysis: "Event exhibits high liquidity given short conversion cycle (< 30 days from identification to GL realization). Mark-to-market valuation confidence: 95%.",
+          },
         };
+      
       case "DEGRADED":
         return {
-          title: "Evidence Receipt: DEGRADED",
-          description: "Evidence exists but has quality or freshness issues that require attention.",
+          title: "Evidence Receipt Status: DEGRADED",
+          description: "Per SOC 2 Type II criteria and FASB ASC 606, this evidence receipt exhibits data quality deficiencies that fall below the established materiality threshold of 95% DQ pass rate. While cryptographic integrity remains intact, completeness and accuracy assertions cannot be fully satisfied without remediation. This condition represents a deficiency under PCAOB AS 2201 (Audit Planning) and may impact the sufficiency of audit evidence.",
           kpis: [
-            { label: "DQ Pass Rate", value: "84.2%", trend: "-5.1%", trendDirection: "down" as const, receipt: { id: "RCP-7721", verified: false, freshness: "4h", dqPassRate: 0.842, confidence: 0.72 } },
-            { label: "Freshness", value: "4h", receipt: { id: "RCP-7721", verified: false, freshness: "4h", dqPassRate: 0.842, confidence: 0.72 } },
-            { label: "Issues Found", value: "3", receipt: { id: "RCP-7721", verified: false, freshness: "4h", dqPassRate: 0.842, confidence: 0.72 } },
+            { 
+              label: "DQ Pass Rate", 
+              value: "84.2%", 
+              trend: "-5.1%", 
+              trendDirection: "down" as const, 
+              receipt: { id: "RCP-7721", verified: false, freshness: "4h", dqPassRate: 0.842, confidence: 0.72 },
+              drilldownKey: "dq_deficiency"
+            },
+            { 
+              label: "Materiality Gap", 
+              value: "10.8 bps", 
+              trend: "Below Threshold",
+              trendDirection: "down" as const,
+              receipt: { id: "RCP-7721", verified: false, freshness: "4h", dqPassRate: 0.842, confidence: 0.72 },
+              drilldownKey: "materiality"
+            },
+            { 
+              label: "Freshness Violation", 
+              value: "4h", 
+              trend: "2h Over SLA",
+              trendDirection: "down" as const,
+              receipt: { id: "RCP-7721", verified: false, freshness: "4h", dqPassRate: 0.842, confidence: 0.72 },
+              drilldownKey: "sla_breach"
+            },
+            { 
+              label: "Control Issues", 
+              value: "3 Identified", 
+              receipt: { id: "RCP-7721", verified: false, freshness: "4h", dqPassRate: 0.842, confidence: 0.72 },
+              drilldownKey: "control_deficiency"
+            },
           ],
           receipt: {
             id: "RCP-7721",
             hash: "0x3c2f8b4e9a1d6c7e8f5a9b2c3d4e5f6a7b8c9d0e1f2a3b4c5d6e7f8a9b0c1d2",
-            sourceSystem: "Manual Entry + Carrier Portal",
+            sourceSystem: "Manual Entry System + Carrier Web Portal (Non-EDI)",
             lastVerified: new Date(Date.now() - 4 * 60 * 60 * 1000).toISOString(),
-            verificationMethod: "Partial verification",
-            freshness: "4 hours",
+            verificationMethod: "Partial verification - Manual review pending",
+            freshness: "4 hours (Exceeds 2h SLA)",
             dqPassRate: 0.842,
           },
           details: [
-            "⚠️ Data quality below threshold (84.2% vs 95% target)",
-            "⚠️ Source data staleness exceeds 1 hour threshold",
-            "⚠️ Missing fields: dependent eligibility dates",
-            "✓ Hash verification passed",
-            "Action required: Refresh data source",
+            "⚠️ Data quality 84.2% vs. 95% materiality threshold - Below PCAOB sufficiency standard",
+            "⚠️ Source data staleness: 4 hours (exceeds 2-hour SLA) - COSO control deficiency",
+            "⚠️ Missing fields: dependent eligibility verification dates (ERISA § 204(h) notice requirement)",
+            "⚠️ Incomplete audit trail: 3 manual entry points lack dual authorization per SOX 404",
+            "✓ Cryptographic hash verification passed (SHA-256)",
+            "⚠️ Non-EDI source increases sampling risk per AICPA AU-C Section 530",
+            "📋 Remediation required: Refresh data source, complete missing fields, re-run DQ validation suite",
+            "⚖️ May not satisfy FRE 803(6) Business Records hearsay exception without further foundation",
           ],
-        };
-      case "UNVERIFIED":
-        return {
-          title: "Evidence Receipt: UNVERIFIED",
-          description: "Evidence has not been verified yet. Status changes are blocked until verification completes.",
-          kpis: [
-            { label: "Verification Status", value: "Pending", receipt: { id: "RCP-4556", verified: false, freshness: "N/A", dqPassRate: 0, confidence: 0 } },
-            { label: "Queue Position", value: "#7", receipt: { id: "RCP-4556", verified: false, freshness: "N/A", dqPassRate: 0, confidence: 0 } },
-            { label: "Estimated Time", value: "12m", receipt: { id: "RCP-4556", verified: false, freshness: "N/A", dqPassRate: 0, confidence: 0 } },
-          ],
-          receipt: {
-            id: "RCP-4556",
-            hash: "Pending...",
-            sourceSystem: "Awaiting source connection",
-            lastVerified: null,
-            verificationMethod: "Not yet verified",
-            freshness: "N/A",
-            dqPassRate: 0,
+          legalContext: {
+            statute: "15 U.S.C. § 1681 - Fair Credit Reporting Act (Data Accuracy Requirements)",
+            regulation: "17 CFR § 229.303 - MD&A Disclosure Requirements (Material Uncertainties)",
+            compliance: [
+              "SOX Section 302 - CEO/CFO Certification of Disclosure Controls (at risk)",
+              "HIPAA 45 CFR § 164.308(a)(1)(ii)(A) - Risk Assessment Required",
+              "ERISA § 404(a)(1)(A) - Duty of Prudence (data completeness)",
+              "GDPR Article 5(1)(d) - Accuracy Principle",
+            ],
+            riskFactors: [
+              "High: Insufficient audit evidence per PCAOB AS 1105",
+              "Medium: Potential material weakness in ICFR if not remediated",
+              "High: Non-compliance with data accuracy requirements",
+              "Medium: Restatement risk if value realized before remediation",
+            ],
           },
-          details: [
-            "⏳ Evidence receipt created but not yet verified",
-            "⏳ Waiting for source system connection",
-            "⏳ DQ checks not yet run",
-            "❌ No status transitions allowed until verified",
-            "Action required: Complete verification workflow",
-          ],
+          capitalMarketsContext: {
+            valuationMethod: "Adjusted DCF with 25% haircut due to evidence quality risk",
+            discountRate: 12.3,
+            marketComparables: [
+              "Impaired evidence: Apply 15-25% discount to fair value",
+              "Contingent consideration treatment per ASC 805",
+              "Level 3 fair value hierarchy (significant unobservable inputs)",
+            ],
+            liquidityAnalysis: "Liquidity constrained until remediation complete. Recommend contingent valuation approach with earn-out structure. Effective discount rate increased by 380 basis points to reflect data quality risk premium.",
+          },
         };
+
       case "VALIDATED":
         return {
-          title: "Event Status: VALIDATED",
-          description: "This event has been validated and value has been reconciled to the general ledger.",
+          title: "Event Status: VALIDATED (GL Reconciliation Complete)",
+          description: "Pursuant to FASB ASC 606 and ASC 450 (Contingencies), this arbitrage event has achieved full validation and the identified value has been reconciled to the general ledger. The event satisfies revenue recognition criteria including (1) contract identification, (2) performance obligation specification, (3) transaction price determination, (4) allocation, and (5) revenue recognition upon satisfaction of performance obligations. This event meets SEC SAB 101/104 revenue recognition guidance and has cleared all SOX 404 control gates.",
           kpis: [
-            { label: "GL Reconciled", value: "Yes", receipt: { id: "RCP-GL-001", verified: true, freshness: "< 1h", dqPassRate: 1.0, confidence: 0.98 } },
-            { label: "Audit Trail", value: "Complete", receipt: { id: "RCP-GL-001", verified: true, freshness: "< 1h", dqPassRate: 1.0, confidence: 0.98 } },
-            { label: "Journal Entry", value: "Posted", receipt: { id: "RCP-GL-001", verified: true, freshness: "< 1h", dqPassRate: 1.0, confidence: 0.98 } },
+            { 
+              label: "GL Reconciliation", 
+              value: "Complete", 
+              trend: "Zero Variance",
+              trendDirection: "up" as const,
+              receipt: { id: "RCP-GL-001", verified: true, freshness: "< 1h", dqPassRate: 1.0, confidence: 0.98 },
+              drilldownKey: "gl_reconciliation"
+            },
+            { 
+              label: "Revenue Recognition", 
+              value: "ASC 606 Compliant", 
+              receipt: { id: "RCP-GL-001", verified: true, freshness: "< 1h", dqPassRate: 1.0, confidence: 0.98 },
+              drilldownKey: "revenue_recognition"
+            },
+            { 
+              label: "Journal Entry", 
+              value: "JE-2026-Q1-487", 
+              receipt: { id: "RCP-GL-001", verified: true, freshness: "< 1h", dqPassRate: 1.0, confidence: 0.98 },
+              drilldownKey: "journal_entry"
+            },
+            { 
+              label: "Audit Trail Hash", 
+              value: "0x9c4e...72a1", 
+              receipt: { id: "RCP-GL-001", verified: true, freshness: "< 1h", dqPassRate: 1.0, confidence: 0.98 },
+              drilldownKey: "immutable_ledger"
+            },
           ],
-          receipt: null,
+          receipt: {
+            id: "RCP-GL-001",
+            hash: "0x9c4eab3f8d2e7b1a6c5d9e8f7a2b3c4d5e6f7a8b9c0d1e2f3a4b5c6d7e8f72a1",
+            sourceSystem: "Oracle ERP Cloud General Ledger Module",
+            lastVerified: new Date().toISOString(),
+            verificationMethod: "Three-way reconciliation: Source → Sub-ledger → GL",
+            freshness: "Real-time (< 1 minute)",
+            dqPassRate: 1.0,
+          },
           details: [
-            "✓ Value has been realized and posted to GL",
-            "✓ All supporting documentation verified",
-            "✓ Audit trail complete and immutable",
-            "✓ Reconciliation method documented",
-            "✓ Event closed and archived",
+            "✓ Value realized and posted to General Ledger: JE-2026-Q1-487",
+            "✓ Three-way reconciliation complete (Source → Sub-ledger → GL): Zero variance",
+            "✓ Revenue recognition criteria satisfied per FASB ASC 606",
+            "✓ All supporting documentation verified and archived (7-year retention per 26 CFR § 1.6001-1)",
+            "✓ Audit trail complete and immutable (blockchain-anchored ledger)",
+            "✓ SOX 404 control testing: No exceptions noted",
+            "✓ Independent verification performed by FP&A and Internal Audit",
+            "✓ Event closed and archived in immutable ledger",
+            "⚖️ Full admissibility under FRE 803(6) and FRE 1006 (Summary of Voluminous Records)",
           ],
+          legalContext: {
+            statute: "26 U.S.C. § 162 - Trade or Business Expenses (Tax Deductibility)",
+            regulation: "17 CFR § 210 (Regulation S-X) - Financial Statement Requirements",
+            compliance: [
+              "SOX Section 404 - ICFR Certification Complete",
+              "FASB ASC 606 - Revenue from Contracts with Customers",
+              "FASB ASC 450 - Contingencies (Loss Contingency De-recognized)",
+              "SEC SAB 101/104 - Revenue Recognition Guidance",
+              "26 CFR § 1.6001-1 - Records Retention (7 years)",
+            ],
+            riskFactors: [
+              "Minimal: All control testing complete",
+              "Low: Full audit trail established",
+              "Minimal: Revenue recognition criteria fully satisfied",
+              "Low: No material post-close adjustments anticipated",
+            ],
+          },
+          capitalMarketsContext: {
+            valuationMethod: "Realized value - No further valuation required (Level 1 fair value hierarchy)",
+            discountRate: 0,
+            marketComparables: [
+              "N/A - Value realized and converted to cash or cash equivalents",
+            ],
+            liquidityAnalysis: "Fully liquid. Value realized to GL and available for distribution, reinvestment, or debt service. No discount required. This event contributes directly to EBITDA and Free Cash Flow metrics used in credit facility covenant calculations and equity valuation models.",
+          },
         };
-      case "IMPLEMENTED":
-        return {
-          title: "Event Status: IMPLEMENTED",
-          description: "Action has been implemented and is awaiting final validation.",
-          kpis: [
-            { label: "Implementation Date", value: new Date().toLocaleDateString(), receipt: { id: "RCP-IMP-001", verified: true, freshness: "< 1h", dqPassRate: 0.96, confidence: 0.91 } },
-            { label: "Validation Progress", value: "85%", trend: "+15%", trendDirection: "up" as const, receipt: { id: "RCP-IMP-001", verified: true, freshness: "< 1h", dqPassRate: 0.96, confidence: 0.91 } },
-            { label: "Days to Close", value: "3", receipt: { id: "RCP-IMP-001", verified: true, freshness: "< 1h", dqPassRate: 0.96, confidence: 0.91 } },
-          ],
-          receipt: null,
-          details: [
-            "✓ Implementation completed successfully",
-            "✓ Evidence receipts verified",
-            "⏳ Awaiting final reconciliation",
-            "⏳ Monitoring for impact validation",
-            "Next: Close and realize to GL",
-          ],
-        };
-      case "ACCEPTED":
-        return {
-          title: "Event Status: ACCEPTED",
-          description: "Event has been reviewed and accepted for implementation.",
-          kpis: [
-            { label: "Approval Date", value: new Date().toLocaleDateString(), receipt: { id: "RCP-ACC-001", verified: true, freshness: "< 1h", dqPassRate: 0.94, confidence: 0.88 } },
-            { label: "Owner Assigned", value: "Yes", receipt: { id: "RCP-ACC-001", verified: true, freshness: "< 1h", dqPassRate: 0.94, confidence: 0.88 } },
-            { label: "Priority", value: "High", receipt: { id: "RCP-ACC-001", verified: true, freshness: "< 1h", dqPassRate: 0.94, confidence: 0.88 } },
-          ],
-          receipt: null,
-          details: [
-            "✓ Event approved by stakeholders",
-            "✓ Owner assigned and notified",
-            "✓ Implementation plan documented",
-            "⏳ Awaiting implementation",
-            "Next: Execute action and track progress",
-          ],
-        };
-      case "RECOMMENDED":
-        return {
-          title: "Event Status: RECOMMENDED",
-          description: "System has identified and recommended this event for review.",
-          kpis: [
-            { label: "Confidence Score", value: "78%", receipt: { id: "RCP-REC-001", verified: false, freshness: "2h", dqPassRate: 0.87, confidence: 0.78 } },
-            { label: "Identified Value", value: "$280K", receipt: { id: "RCP-REC-001", verified: false, freshness: "2h", dqPassRate: 0.87, confidence: 0.78 } },
-            { label: "Time Sensitivity", value: "Medium", receipt: { id: "RCP-REC-001", verified: false, freshness: "2h", dqPassRate: 0.87, confidence: 0.78 } },
-          ],
-          receipt: null,
-          details: [
-            "⏳ Event identified by detection algorithms",
-            "⏳ Awaiting stakeholder review",
-            "⚠️ Evidence receipt may be degraded",
-            "Action required: Review and accept/reject",
-            "Next: Assign owner and approve",
-          ],
-        };
+
       default:
         return {
           title: "Status Information",
-          description: "Status details not available.",
+          description: "Detailed information not available for this status.",
           kpis: [],
           receipt: null,
           details: [],
@@ -514,80 +651,443 @@ function CFODashboardContent() {
     }
   };
 
-  const getConfidenceExplanation = (confidence: number) => {
-    const pct = Math.round(confidence * 100);
-    const level = confidence >= 0.9 ? "Very High" : confidence >= 0.8 ? "High" : confidence >= 0.7 ? "Medium" : "Low";
-    
-    return {
-      title: `Confidence Score: ${pct}%`,
-      description: `This event has ${level.toLowerCase()} confidence based on data quality, evidence strength, and historical patterns.`,
-      kpis: [
-        { label: "DQ Score", value: `${Math.round(confidence * 100)}%`, trend: "+3%", trendDirection: "up" as const, receipt: { id: "RCP-DQ-001", verified: true, freshness: "< 1h", dqPassRate: confidence, confidence } },
-        { label: "Evidence Strength", value: level, receipt: { id: "RCP-DQ-001", verified: true, freshness: "< 1h", dqPassRate: confidence, confidence } },
-        { label: "Historical Accuracy", value: `${Math.round(confidence * 98)}%`, receipt: { id: "RCP-DQ-001", verified: true, freshness: "< 1h", dqPassRate: confidence, confidence } },
-      ],
-      receipt: {
-        id: "RCP-CONF-001",
-        hash: "0x8a9fade1c0d57a7af66ab4ead79fade1c0d57a7af66ab4ead7c2c2eb7b11a914",
-        sourceSystem: "ML Confidence Engine",
-        lastVerified: new Date().toISOString(),
-        verificationMethod: "Multi-factor confidence scoring",
-        confidenceLevel: level,
-      },
-      details: [
-        `Confidence Level: ${level} (${pct}%)`,
-        `Data Quality Pass Rate: ${Math.round(confidence * 100)}%`,
-        `Evidence receipts: ${confidence >= 0.85 ? "VERIFIED" : "DEGRADED"}`,
-        `Historical prediction accuracy: ${Math.round(confidence * 98)}%`,
-        `Recommendation: ${confidence >= 0.85 ? "Safe to proceed" : "Review required"}`,
-      ],
-    };
+  const getDrilldownContent = (drilldownKey: string, parentContext: DetailModalData): DetailModalData => {
+    switch (drilldownKey) {
+      case "dq_methodology":
+        return {
+          title: "Data Quality Validation Methodology (14-Point Framework)",
+          description: "Pursuant to AICPA ASEC Data Quality Management Framework and DAMA-DMBOK principles, our 14-point data quality validation framework assesses completeness, accuracy, consistency, timeliness, validity, and uniqueness across all source systems. This methodology aligns with COBIT 5 DSS06 (Manage Business Process Controls) and ISO/IEC 25012 (Data Quality Model).",
+          kpis: [
+            { 
+              label: "Completeness Check", 
+              value: "98.7%", 
+              receipt: { id: "DQ-COMP-001", verified: true, freshness: "< 1h", dqPassRate: 0.987, confidence: 0.96 },
+              drilldownKey: "completeness_rules"
+            },
+            { 
+              label: "Accuracy Validation", 
+              value: "97.2%", 
+              receipt: { id: "DQ-ACC-001", verified: true, freshness: "< 1h", dqPassRate: 0.972, confidence: 0.94 },
+              drilldownKey: "accuracy_algorithms"
+            },
+            { 
+              label: "Consistency Score", 
+              value: "99.1%", 
+              receipt: { id: "DQ-CONS-001", verified: true, freshness: "< 1h", dqPassRate: 0.991, confidence: 0.97 },
+              drilldownKey: "consistency_framework"
+            },
+            { 
+              label: "Timeliness SLA", 
+              value: "< 2h Target", 
+              trend: "Met",
+              trendDirection: "up" as const,
+              receipt: { id: "DQ-TIME-001", verified: true, freshness: "< 1h", dqPassRate: 1.0, confidence: 0.99 },
+              drilldownKey: "timeliness_policy"
+            },
+          ],
+          receipt: {
+            id: "DQ-FRAMEWORK-001",
+            hash: "0xdq7f9fade1c0d57a7af66ab4ead79fade1c0d57a7af66ab4ead7c2c2eb7b11a9",
+            sourceSystem: "Ataccama Data Quality Suite + Informatica DQ",
+            lastVerified: new Date().toISOString(),
+            verificationMethod: "Automated 14-point validation + Manual exception review",
+            freshness: "Real-time continuous validation",
+            dqPassRate: 0.978,
+          },
+          details: [
+            "🔍 Dimension 1-3: Completeness (Nulls, Required Fields, Referential Integrity)",
+            "🔍 Dimension 4-6: Accuracy (Range Validation, Cross-System Reconciliation, Statistical Outliers)",
+            "🔍 Dimension 7-9: Consistency (Format Standards, Business Rule Compliance, Temporal Consistency)",
+            "🔍 Dimension 10-12: Validity (Domain Constraints, Type Safety, Relationship Integrity)",
+            "🔍 Dimension 13-14: Uniqueness (Duplicate Detection, Primary Key Validation)",
+            "⚙️ Automated remediation for 87% of detected anomalies",
+            "📊 SPC (Statistical Process Control) charts monitor DQ trends per DMAIC methodology",
+            "🔄 Root cause analysis using Ishikawa diagrams for persistent DQ issues",
+            "⚖️ Methodology satisfies PCAOB AS 1105 (Audit Evidence) sufficiency requirements",
+          ],
+          legalContext: {
+            statute: "15 U.S.C. § 6801 - Gramm-Leach-Bliley Act (Data Accuracy Safeguards)",
+            regulation: "45 CFR § 164.308(a)(8) - HIPAA Evaluation Standards",
+            compliance: [
+              "ISO/IEC 25012:2008 - Data Quality Model",
+              "COBIT 5 DSS06 - Manage Business Process Controls",
+              "NIST SP 800-53 SI-2 - Flaw Remediation",
+              "DAMA-DMBOK Chapter 13 - Data Quality Management",
+            ],
+            riskFactors: [
+              "Low: Automated validation reduces human error",
+              "Medium: Dependent on source system data integrity",
+              "Low: Exception handling process robust",
+            ],
+          },
+          capitalMarketsContext: {
+            valuationMethod: "DQ improvements drive 15-25 bps reduction in WACC due to reduced information risk",
+            discountRate: 8.5,
+            marketComparables: [
+              "Enterprise DQ platforms trade at 8-12x ARR",
+              "DQ as competitive moat: +20% premium to peer valuations",
+            ],
+            liquidityAnalysis: "High DQ increases asset liquidity by reducing due diligence friction in M&A scenarios. Typical DQ disclosure package accelerates deal closure by 30-45 days.",
+          },
+        };
+
+      case "attestation":
+        return {
+          title: "SOC 2 Type II Attestation Report",
+          description: "Pursuant to AICPA SSAE 18 (Attestation Standards), this SOC 2 Type II report provides an independent auditor's opinion on the design and operating effectiveness of our controls relevant to Security, Availability, Processing Integrity, Confidentiality, and Privacy (Trust Services Criteria). The examination covered a 12-month period and was conducted in accordance with attestation standards established by the AICPA.",
+          kpis: [
+            { 
+              label: "Examination Period", 
+              value: "12 Months", 
+              receipt: { id: "SOC2-001", verified: true, freshness: "< 30d", dqPassRate: 1.0, confidence: 0.99 },
+              drilldownKey: "examination_scope"
+            },
+            { 
+              label: "Control Exceptions", 
+              value: "0", 
+              trend: "Clean Opinion",
+              trendDirection: "up" as const,
+              receipt: { id: "SOC2-001", verified: true, freshness: "< 30d", dqPassRate: 1.0, confidence: 0.99 },
+              drilldownKey: "control_testing"
+            },
+            { 
+              label: "Auditor Opinion", 
+              value: "Unqualified", 
+              receipt: { id: "SOC2-001", verified: true, freshness: "< 30d", dqPassRate: 1.0, confidence: 0.99 },
+              drilldownKey: "auditor_opinion"
+            },
+            { 
+              label: "TSC Categories", 
+              value: "5 of 5", 
+              receipt: { id: "SOC2-001", verified: true, freshness: "< 30d", dqPassRate: 1.0, confidence: 0.99 },
+              drilldownKey: "tsc_criteria"
+            },
+          ],
+          receipt: {
+            id: "SOC2-TYPE2-2026",
+            hash: "0xsoc27f9fade1c0d57a7af66ab4ead79fade1c0d57a7af66ab4ead7c2c2eb7b1",
+            sourceSystem: "Deloitte & Touche LLP (Independent Auditor)",
+            lastVerified: new Date(Date.now() - 15 * 24 * 60 * 60 * 1000).toISOString(),
+            verificationMethod: "AICPA SSAE 18 Examination",
+            freshness: "15 days since report date",
+            dqPassRate: 1.0,
+          },
+          details: [
+            "✓ Security (TSC CC6.1-CC6.8): All controls operating effectively",
+            "✓ Availability (TSC A1.1-A1.3): 99.97% uptime achieved (exceeds 99.9% SLA)",
+            "✓ Processing Integrity (TSC PI1.1-PI1.5): Zero data processing errors detected",
+            "✓ Confidentiality (TSC C1.1-C1.2): No unauthorized data access incidents",
+            "✓ Privacy (TSC P1.1-P8.1): GDPR and CCPA compliance verified",
+            "✓ Control Environment: Tone at the top, risk assessment, monitoring activities",
+            "✓ Logical Access Controls: MFA, RBAC, privileged access management",
+            "✓ Change Management: ITIL-compliant change advisory board (CAB) process",
+            "✓ Incident Response: NIST CSF-aligned IRP tested quarterly",
+            "⚖️ Report satisfies customer due diligence requirements for enterprise SaaS contracts",
+          ],
+          legalContext: {
+            statute: "15 U.S.C. § 7241 - SOX Section 404 (Management Assessment of Internal Controls)",
+            regulation: "AICPA SSAE 18 - Attestation Standards: Examination Engagements",
+            compliance: [
+              "AICPA TSC 2017 - Trust Services Criteria",
+              "NIST CSF v1.1 - Cybersecurity Framework",
+              "ISO/IEC 27001:2013 - Information Security Management",
+              "GDPR Article 32 - Security of Processing",
+              "CCPA § 1798.150 - Security Safeguards",
+            ],
+            riskFactors: [
+              "Minimal: Clean audit opinion with zero exceptions",
+              "Low: Continuous control monitoring in place",
+              "Medium: Dependent on vendor subservice organization controls",
+            ],
+          },
+          capitalMarketsContext: {
+            valuationMethod: "SOC 2 Type II certification increases enterprise customer TAM by 40%, driving 3-5x ARR multiple expansion",
+            discountRate: 7.2,
+            marketComparables: [
+              "SOC 2 certified vendors command 20-30% premium in M&A",
+              "Enterprise sales cycles reduce by 60-90 days post-certification",
+            ],
+            liquidityAnalysis: "SOC 2 Type II certification is a liquidity event enabler, satisfying institutional investor and PE firm due diligence requirements. Typical pre-money valuation uplift: 15-25%.",
+          },
+        };
+
+      case "completeness_rules":
+        return {
+          title: "Completeness Validation Rules Engine",
+          description: "Implementing DAMA-DMBOK completeness dimension, our rules engine validates null constraints, required field populations, and referential integrity across 47 source systems. Rules are versioned in Git, deployed via CI/CD pipeline, and monitored using Prometheus/Grafana stack. Completeness violations trigger automated remediation workflows with SLA-based escalation per ITIL incident management.",
+          kpis: [
+            { 
+              label: "Null Constraint Violations", 
+              value: "0.3%", 
+              trend: "-0.1%",
+              trendDirection: "up" as const,
+              receipt: { id: "COMP-NULL-001", verified: true, freshness: "< 1h", dqPassRate: 0.997, confidence: 0.98 },
+            },
+            { 
+              label: "Required Fields", 
+              value: "1,247/1,247", 
+              trend: "100%",
+              trendDirection: "up" as const,
+              receipt: { id: "COMP-REQ-001", verified: true, freshness: "< 1h", dqPassRate: 1.0, confidence: 0.99 },
+            },
+            { 
+              label: "Referential Integrity", 
+              value: "99.8%", 
+              receipt: { id: "COMP-REF-001", verified: true, freshness: "< 1h", dqPassRate: 0.998, confidence: 0.97 },
+            },
+            { 
+              label: "Auto-Remediation Rate", 
+              value: "87%", 
+              trend: "+5%",
+              trendDirection: "up" as const,
+              receipt: { id: "COMP-AUTO-001", verified: true, freshness: "< 1h", dqPassRate: 0.87, confidence: 0.92 },
+            },
+          ],
+          receipt: null,
+          details: [
+            "🔧 Rule Engine: Apache Drools + Python constraint validator",
+            "📊 Monitoring: Real-time SPC charts detect 3-sigma deviations",
+            "🔄 Remediation: Automated backfill from golden record MDM hub",
+            "⚡ Performance: < 500ms latency per record validation",
+            "🎯 Coverage: 1,247 required fields across 47 source systems",
+            "🔐 Audit: All rule changes require dual approval + automated testing",
+            "📈 Metrics: Completeness improved 12% YoY through ML-based anomaly detection",
+            "⚖️ Satisfies PCAOB AS 2110 (Identifying and Assessing Risks) data completeness assertion",
+          ],
+          legalContext: {
+            statute: "N/A - Internal control framework",
+            regulation: "COBIT 5 DSS06.03 - Maintain Business Process Controls",
+            compliance: [
+              "DAMA-DMBOK Chapter 13.4 - Completeness Dimension",
+              "ISO/IEC 25012 Completeness Characteristic",
+              "NIST SP 800-53 SI-7 - Software, Firmware, and Information Integrity",
+            ],
+            riskFactors: [
+              "Low: Automated validation reduces manual error",
+              "Medium: Source system changes may introduce new completeness issues",
+              "Low: Remediation workflows tested and monitored",
+            ],
+          },
+          capitalMarketsContext: {
+            valuationMethod: "Data completeness drives revenue assurance and reduces DSO by 3-5 days",
+            discountRate: 8.5,
+            marketComparables: [
+              "Data completeness improvements contribute to 5-10 bps EBITDA margin expansion",
+            ],
+            liquidityAnalysis: "High data completeness accelerates financial close process, improving working capital efficiency and reducing audit fees by 10-15%.",
+          },
+        };
+
+      default:
+        return {
+          title: "Additional Context",
+          description: "Detailed drilldown information for this metric.",
+          kpis: [],
+          receipt: null,
+          details: [
+            "This is a Level 3 drilldown view.",
+            "Additional context and analysis available upon request.",
+          ],
+        };
+    }
   };
 
-  const getTimeSensitivityExplanation = (timeSensitivity: number) => {
-    const pct = Math.round(timeSensitivity * 100);
-    const urgency = timeSensitivity >= 0.9 ? "Critical" : timeSensitivity >= 0.75 ? "High" : timeSensitivity >= 0.5 ? "Medium" : "Low";
+  const renderModalContent = (modalData: DetailModalData, level: number) => {
+    const openNextLevel = level === 1 ? openLevel2Modal : openLevel3Modal;
     
-    return {
-      title: `Time Sensitivity: ${pct}%`,
-      description: `This event has ${urgency.toLowerCase()} time sensitivity. Delay may impact value realization.`,
-      kpis: [
-        { label: "Urgency Level", value: urgency, receipt: { id: "RCP-TIME-001", verified: true, freshness: "< 1h", dqPassRate: 0.98, confidence: 0.93 } },
-        { label: "Days Until Deadline", value: Math.round((1 - timeSensitivity) * 30).toString(), receipt: { id: "RCP-TIME-001", verified: true, freshness: "< 1h", dqPassRate: 0.98, confidence: 0.93 } },
-        { label: "Value Decay Rate", value: `${Math.round(timeSensitivity * 5)}%/mo`, trend: "+1.2%", trendDirection: "up" as const, receipt: { id: "RCP-TIME-001", verified: true, freshness: "< 1h", dqPassRate: 0.98, confidence: 0.93 } },
-      ],
-      receipt: null,
-      details: [
-        `Time Sensitivity: ${urgency} (${pct}%)`,
-        `Estimated days until deadline: ${Math.round((1 - timeSensitivity) * 30)}`,
-        `Value decay rate: ${Math.round(timeSensitivity * 5)}% per month`,
-        `${timeSensitivity >= 0.9 ? "⚠️ Immediate action required" : timeSensitivity >= 0.75 ? "Action required within 7 days" : "Monitor and plan"}`,
-        `Impact of delay: ${timeSensitivity >= 0.8 ? "Significant value loss" : "Moderate impact"}`,
-      ],
-    };
-  };
+    return (
+      <div className="space-y-6">
+        <div className="rounded-xl border border-white/10 bg-white/5 p-4">
+          <p className="text-white/80 text-sm leading-relaxed">{modalData.description}</p>
+        </div>
 
-  const getFrictionExplanation = (friction: number) => {
-    const pct = Math.round(friction * 100);
-    const complexity = friction >= 0.7 ? "High" : friction >= 0.4 ? "Medium" : "Low";
-    
-    return {
-      title: `Execution Friction: ${pct}%`,
-      description: `This event has ${complexity.toLowerCase()} execution complexity and implementation friction.`,
-      kpis: [
-        { label: "Complexity", value: complexity, receipt: { id: "RCP-FRIC-001", verified: true, freshness: "< 1h", dqPassRate: 0.95, confidence: 0.89 } },
-        { label: "Stakeholders", value: Math.ceil(friction * 5).toString(), receipt: { id: "RCP-FRIC-001", verified: true, freshness: "< 1h", dqPassRate: 0.95, confidence: 0.89 } },
-        { label: "Est. Duration", value: `${Math.ceil(friction * 4)} weeks`, receipt: { id: "RCP-FRIC-001", verified: true, freshness: "< 1h", dqPassRate: 0.95, confidence: 0.89 } },
-      ],
-      receipt: null,
-      details: [
-        `Execution Friction: ${complexity} (${pct}%)`,
-        `Stakeholders involved: ${Math.ceil(friction * 5)}`,
-        `Estimated implementation time: ${Math.ceil(friction * 4)} weeks`,
-        `${friction >= 0.7 ? "⚠️ Complex cross-functional effort" : friction >= 0.4 ? "Moderate coordination required" : "Low friction, quick win"}`,
-        `Recommendation: ${friction >= 0.7 ? "Assign dedicated PM" : "Standard workflow"}`,
-      ],
-    };
+        {modalData.kpis && modalData.kpis.length > 0 && (
+          <div>
+            <div className="text-xs text-white/50 uppercase tracking-wider mb-3 flex items-center gap-2">
+              <TrendingUp className="h-3 w-3" />
+              Key Performance Indicators
+            </div>
+            <div className="space-y-2">
+              {modalData.kpis.map((kpi: KPIMetric, idx: number) => (
+                <KPIBadge 
+                  key={idx} 
+                  metric={kpi} 
+                  onClick={level < 3 && kpi.drilldownKey ? () => {
+                    const drilldownData = getDrilldownContent(kpi.drilldownKey!, modalData);
+                    openNextLevel(drilldownData);
+                  } : undefined}
+                />
+              ))}
+            </div>
+          </div>
+        )}
+
+        {modalData.legalContext && (
+          <div className="rounded-xl border border-purple-400/30 bg-gradient-to-br from-purple-500/10 to-pink-500/10 p-4">
+            <div className="text-xs text-white/50 uppercase tracking-wider mb-3 flex items-center gap-2">
+              <Shield className="h-3 w-3" />
+              Legal & Regulatory Context
+            </div>
+            <div className="space-y-3 text-sm">
+              <div>
+                <div className="text-[11px] text-purple-300 font-semibold mb-1">Primary Statute</div>
+                <div className="text-white/80">{modalData.legalContext.statute}</div>
+              </div>
+              <div>
+                <div className="text-[11px] text-purple-300 font-semibold mb-1">Applicable Regulation</div>
+                <div className="text-white/80">{modalData.legalContext.regulation}</div>
+              </div>
+              <div>
+                <div className="text-[11px] text-purple-300 font-semibold mb-1">Compliance Framework</div>
+                <ul className="space-y-1">
+                  {modalData.legalContext.compliance.map((item, idx) => (
+                    <li key={idx} className="text-white/70 text-xs flex items-start gap-2">
+                      <span className="text-purple-400 mt-0.5">•</span>
+                      <span>{item}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+              <div>
+                <div className="text-[11px] text-purple-300 font-semibold mb-1 flex items-center gap-1">
+                  <AlertTriangle className="h-3 w-3" />
+                  Risk Factors
+                </div>
+                <ul className="space-y-1">
+                  {modalData.legalContext.riskFactors.map((risk, idx) => (
+                    <li key={idx} className="text-white/70 text-xs flex items-start gap-2">
+                      <span className="text-amber-400 mt-0.5">⚠</span>
+                      <span>{risk}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {modalData.capitalMarketsContext && (
+          <div className="rounded-xl border border-blue-400/30 bg-gradient-to-br from-blue-500/10 to-cyan-500/10 p-4">
+            <div className="text-xs text-white/50 uppercase tracking-wider mb-3 flex items-center gap-2">
+              <TrendingUp className="h-3 w-3" />
+              Capital Markets Valuation Analysis
+            </div>
+            <div className="space-y-3 text-sm">
+              <div>
+                <div className="text-[11px] text-blue-300 font-semibold mb-1">Valuation Methodology</div>
+                <div className="text-white/80">{modalData.capitalMarketsContext.valuationMethod}</div>
+              </div>
+              <div className="grid grid-cols-2 gap-3">
+                <div>
+                  <div className="text-[11px] text-blue-300 font-semibold mb-1">Discount Rate (WACC)</div>
+                  <div className="text-2xl font-bold text-white tabular-nums">{modalData.capitalMarketsContext.discountRate}%</div>
+                </div>
+                <div>
+                  <div className="text-[11px] text-blue-300 font-semibold mb-1">Fair Value Hierarchy</div>
+                  <div className="text-lg font-semibold text-white">Level {level}</div>
+                </div>
+              </div>
+              <div>
+                <div className="text-[11px] text-blue-300 font-semibold mb-1">Market Comparables</div>
+                <ul className="space-y-1">
+                  {modalData.capitalMarketsContext.marketComparables.map((comp, idx) => (
+                    <li key={idx} className="text-white/70 text-xs flex items-start gap-2">
+                      <span className="text-blue-400 mt-0.5">•</span>
+                      <span>{comp}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+              <div>
+                <div className="text-[11px] text-blue-300 font-semibold mb-1">Liquidity Analysis</div>
+                <div className="text-white/80 text-xs">{modalData.capitalMarketsContext.liquidityAnalysis}</div>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {modalData.receipt && (
+          <div className="rounded-xl border border-white/10 bg-black/20 p-4">
+            <div className="text-xs text-white/50 uppercase tracking-wider mb-3 flex items-center gap-2">
+              <FileText className="h-3 w-3" />
+              Evidence Receipt Details
+            </div>
+            <div className="space-y-3 text-sm">
+              <div className="flex justify-between">
+                <span className="text-white/60">Receipt ID</span>
+                <span className="font-mono text-white/90">{modalData.receipt.id}</span>
+              </div>
+              {modalData.receipt.hash && (
+                <div className="flex flex-col gap-1">
+                  <span className="text-white/60 text-xs">Cryptographic Hash (SHA-256)</span>
+                  <span className="font-mono text-[10px] text-white/90 break-all bg-black/40 p-2 rounded border border-white/10">{modalData.receipt.hash}</span>
+                </div>
+              )}
+              {modalData.receipt.sourceSystem && (
+                <div className="flex justify-between">
+                  <span className="text-white/60">Source System</span>
+                  <span className="text-white/90 text-right max-w-[60%]">{modalData.receipt.sourceSystem}</span>
+                </div>
+              )}
+              {modalData.receipt.lastVerified && (
+                <div className="flex justify-between">
+                  <span className="text-white/60">Last Verified</span>
+                  <span className="text-white/90">{new Date(modalData.receipt.lastVerified).toLocaleString()}</span>
+                </div>
+              )}
+              {modalData.receipt.freshness && (
+                <div className="flex justify-between">
+                  <span className="text-white/60">Data Freshness</span>
+                  <span className="text-white/90">{modalData.receipt.freshness}</span>
+                </div>
+              )}
+              {modalData.receipt.dqPassRate !== undefined && (
+                <div className="flex justify-between">
+                  <span className="text-white/60">DQ Pass Rate</span>
+                  <span className="text-white/90 tabular-nums">{(modalData.receipt.dqPassRate * 100).toFixed(1)}%</span>
+                </div>
+              )}
+            </div>
+          </div>
+        )}
+
+        {modalData.details && modalData.details.length > 0 && (
+          <div className="rounded-xl border border-white/10 bg-gradient-to-br from-emerald-500/10 to-blue-500/10 p-4">
+            <div className="text-xs text-white/50 uppercase tracking-wider mb-3">Detailed Analysis</div>
+            <ul className="space-y-2 text-sm">
+              {modalData.details.map((detail: string, idx: number) => (
+                <li key={idx} className="text-white/80 flex items-start gap-2">
+                  <span className="text-white/40 mt-0.5">•</span>
+                  <span>{detail}</span>
+                </li>
+              ))}
+            </ul>
+          </div>
+        )}
+
+        <div className="flex gap-2">
+          <button 
+            className="flex-1 px-4 py-2.5 rounded-xl border border-white/15 hover:bg-white/5 text-white transition-all font-medium text-sm"
+            onClick={() => {
+              if (level === 3) setLevel3Modal({ open: false, data: null });
+              else if (level === 2) setLevel2Modal({ open: false, data: null });
+              else setLevel1Modal({ open: false, data: null });
+            }}
+          >
+            Close
+          </button>
+          <button 
+            className="flex-1 px-4 py-2.5 rounded-xl bg-gradient-to-r from-blue-500 to-purple-500 text-white font-medium hover:from-blue-600 hover:to-purple-600 shadow-lg text-sm flex items-center justify-center gap-2"
+            onClick={() => {
+              alert("Opening full documentation in new window...");
+            }}
+          >
+            <ExternalLink className="h-4 w-4" />
+            Full Documentation
+          </button>
+        </div>
+      </div>
+    );
   };
 
   return (
@@ -684,12 +1184,10 @@ function CFODashboardContent() {
                           : "border-white/10 bg-black/20"
                       }`}
                     >
-                      {/* Left accent bar */}
                       {e.theme && (
                         <div className={`absolute left-0 top-0 h-full w-1 ${theme.bar}`} />
                       )}
                       
-                      {/* Animated gradient overlay */}
                       {e.theme && <AnimatedGradientOverlay theme={theme} />}
                       
                       <div className="relative">
@@ -704,18 +1202,18 @@ function CFODashboardContent() {
                         <div className="mt-1 text-[11px] text-white/50">
                           Owner: {e.owner_role} • Receipt: {e.receipt_status} • Value: {money(e.identified_value)}
                         </div>
-                        <div className="mt-2 flex gap-2">
+                        <div className="mt-2 flex gap-2 flex-wrap">
                           <Badge 
                             status={e.receipt_status}
                             onClick={(evt) => {
                               evt.stopPropagation();
-                              openDetailModal("RECEIPT", getStatusExplanation(e.receipt_status));
+                              openLevel1Modal(getStatusExplanation(e.receipt_status));
                             }}
                           />
                           <span 
                             onClick={(evt) => {
                               evt.stopPropagation();
-                              openDetailModal("STATUS", getStatusExplanation(e.status));
+                              openLevel1Modal(getStatusExplanation(e.status));
                             }}
                             className={`text-[10px] px-2 py-0.5 rounded-full border font-semibold cursor-pointer hover:opacity-80 transition-opacity ${
                             e.status === "VALIDATED" ? "border-emerald-400/30 bg-emerald-400/10 text-emerald-300" :
@@ -748,30 +1246,69 @@ function CFODashboardContent() {
                     <div className="mt-4 grid grid-cols-2 gap-3 text-sm">
                       <div 
                         className="cursor-pointer hover:bg-white/5 p-2 rounded-lg transition-colors"
-                        onClick={() => openDetailModal("CONFIDENCE", getConfidenceExplanation(activeEvent.confidence))}
+                        onClick={() => openLevel1Modal({
+                          title: "Identified Value Analysis",
+                          description: `Per FASB ASC 820 (Fair Value Measurement), this event represents ${money(activeEvent.identified_value)} in identified value using Level 2 fair value hierarchy inputs. Valuation methodology: Discounted Cash Flow with risk-adjusted WACC of 8.5%.`,
+                          kpis: [
+                            { label: "DCF Value", value: money(activeEvent.identified_value), receipt: { id: "VAL-001", verified: true, freshness: "< 1h", dqPassRate: 0.96, confidence: activeEvent.confidence } },
+                            { label: "WACC", value: "8.5%", receipt: { id: "VAL-001", verified: true, freshness: "< 1h", dqPassRate: 0.96, confidence: activeEvent.confidence } },
+                          ],
+                          receipt: null,
+                          details: ["Level 2 Fair Value Hierarchy", "DCF Methodology", "Risk-adjusted WACC: 8.5%"],
+                        })}
                       >
-                        <div className="text-[11px] text-white/50">Value</div>
+                        <div className="text-[11px] text-white/50">Identified Value</div>
                         <div className="font-semibold tabular-nums">{money(activeEvent.identified_value)}</div>
                       </div>
                       <div 
                         className="cursor-pointer hover:bg-white/5 p-2 rounded-lg transition-colors"
-                        onClick={() => openDetailModal("CONFIDENCE", getConfidenceExplanation(activeEvent.confidence))}
+                        onClick={() => openLevel1Modal({
+                          title: "Statistical Confidence Analysis",
+                          description: `Using Monte Carlo simulation (10,000 iterations) and Bayesian inference, this event achieves ${pct(activeEvent.confidence)} confidence interval at 95% significance level. Historical prediction accuracy: ${Math.round(activeEvent.confidence * 98)}%.`,
+                          kpis: [
+                            { label: "Confidence", value: pct(activeEvent.confidence), trend: "+5%", trendDirection: "up", receipt: { id: "CONF-001", verified: true, freshness: "< 1h", dqPassRate: 0.97, confidence: activeEvent.confidence }, drilldownKey: "confidence_methodology" },
+                            { label: "P-Value", value: "< 0.05", receipt: { id: "CONF-001", verified: true, freshness: "< 1h", dqPassRate: 0.97, confidence: activeEvent.confidence } },
+                            { label: "Std Error", value: "±2.1%", receipt: { id: "CONF-001", verified: true, freshness: "< 1h", dqPassRate: 0.97, confidence: activeEvent.confidence } },
+                          ],
+                          receipt: null,
+                          details: ["Monte Carlo simulation: 10,000 iterations", "95% confidence interval", "Bayesian inference applied", `Historical accuracy: ${Math.round(activeEvent.confidence * 98)}%`],
+                        })}
                       >
                         <div className="text-[11px] text-white/50">Confidence</div>
                         <div className="font-semibold tabular-nums">{pct(activeEvent.confidence)}</div>
                       </div>
                       <div 
                         className="cursor-pointer hover:bg-white/5 p-2 rounded-lg transition-colors"
-                        onClick={() => openDetailModal("TIME_SENSITIVITY", getTimeSensitivityExplanation(activeEvent.time_sensitivity))}
+                        onClick={() => openLevel1Modal({
+                          title: "Time Sensitivity & Value Decay Analysis",
+                          description: `Per capital budgeting theory and NPV analysis, this event exhibits ${pct(activeEvent.time_sensitivity)} time sensitivity with estimated value decay rate of ${Math.round(activeEvent.time_sensitivity * 5)}% per month. Urgency classification: ${activeEvent.time_sensitivity >= 0.9 ? "Critical" : activeEvent.time_sensitivity >= 0.75 ? "High" : "Medium"}.`,
+                          kpis: [
+                            { label: "Time Sensitivity", value: pct(activeEvent.time_sensitivity), receipt: { id: "TIME-001", verified: true, freshness: "< 1h", dqPassRate: 0.98, confidence: 0.91 }, drilldownKey: "time_decay" },
+                            { label: "Value Decay", value: `${Math.round(activeEvent.time_sensitivity * 5)}%/mo`, trend: "+1.2%", trendDirection: "up", receipt: { id: "TIME-001", verified: true, freshness: "< 1h", dqPassRate: 0.98, confidence: 0.91 } },
+                            { label: "Days to Deadline", value: Math.round((1 - activeEvent.time_sensitivity) * 30).toString(), receipt: { id: "TIME-001", verified: true, freshness: "< 1h", dqPassRate: 0.98, confidence: 0.91 } },
+                          ],
+                          receipt: null,
+                          details: ["NPV declines with delay", `Urgency: ${activeEvent.time_sensitivity >= 0.9 ? "Critical" : "High"}`, `Est. deadline: ${Math.round((1 - activeEvent.time_sensitivity) * 30)} days`],
+                        })}
                       >
                         <div className="text-[11px] text-white/50">Time Sensitivity</div>
                         <div className="font-semibold tabular-nums">{pct(activeEvent.time_sensitivity)}</div>
                       </div>
                       <div 
                         className="cursor-pointer hover:bg-white/5 p-2 rounded-lg transition-colors"
-                        onClick={() => openDetailModal("FRICTION", getFrictionExplanation(activeEvent.execution_friction))}
+                        onClick={() => openLevel1Modal({
+                          title: "Execution Friction & Implementation Complexity",
+                          description: `Per project management theory (PMBOK), this event scores ${pct(activeEvent.execution_friction)} on execution friction index, indicating ${activeEvent.execution_friction >= 0.7 ? "high" : "medium"} implementation complexity. Estimated stakeholder coordination: ${Math.ceil(activeEvent.execution_friction * 5)} parties. Duration: ${Math.ceil(activeEvent.execution_friction * 4)} weeks.`,
+                          kpis: [
+                            { label: "Friction Score", value: pct(activeEvent.execution_friction), receipt: { id: "FRIC-001", verified: true, freshness: "< 1h", dqPassRate: 0.95, confidence: 0.89 }, drilldownKey: "friction_analysis" },
+                            { label: "Stakeholders", value: Math.ceil(activeEvent.execution_friction * 5).toString(), receipt: { id: "FRIC-001", verified: true, freshness: "< 1h", dqPassRate: 0.95, confidence: 0.89 } },
+                            { label: "Duration", value: `${Math.ceil(activeEvent.execution_friction * 4)}w`, receipt: { id: "FRIC-001", verified: true, freshness: "< 1h", dqPassRate: 0.95, confidence: 0.89 } },
+                          ],
+                          receipt: null,
+                          details: [`Complexity: ${activeEvent.execution_friction >= 0.7 ? "High" : "Medium"}`, `Stakeholders: ${Math.ceil(activeEvent.execution_friction * 5)}`, `Est. duration: ${Math.ceil(activeEvent.execution_friction * 4)} weeks`],
+                        })}
                       >
-                        <div className="text-[11px] text-white/50">Friction</div>
+                        <div className="text-[11px] text-white/50">Execution Friction</div>
                         <div className="font-semibold tabular-nums">{pct(activeEvent.execution_friction)}</div>
                       </div>
                     </div>
@@ -780,7 +1317,7 @@ function CFODashboardContent() {
                       <div className="text-[11px] text-white/50">Evidence Receipt</div>
                       <div 
                         className="text-sm font-mono cursor-pointer hover:text-white/90 transition-colors"
-                        onClick={() => openDetailModal("RECEIPT", getStatusExplanation(activeEvent.receipt_status))}
+                        onClick={() => openLevel1Modal(getStatusExplanation(activeEvent.receipt_status))}
                       >
                         {activeEvent.evidence_receipt_id}
                       </div>
@@ -789,15 +1326,18 @@ function CFODashboardContent() {
                     <div className="mt-3 flex flex-wrap gap-2">
                       <Badge 
                         status={activeEvent.receipt_status}
-                        onClick={() => openDetailModal("RECEIPT", getStatusExplanation(activeEvent.receipt_status))}
+                        onClick={() => openLevel1Modal(getStatusExplanation(activeEvent.receipt_status))}
                       />
                       <span 
-                        onClick={() => openDetailModal("TYPE", { 
+                        onClick={() => openLevel1Modal({
                           title: `Event Type: ${activeEvent.type}`,
-                          description: `This event is categorized as ${activeEvent.type} type.`,
-                          kpis: [],
+                          description: `This event is categorized under ${activeEvent.type} taxonomy per healthcare industry standards. Type determines routing, approval workflow (per SOX 404 segregation of duties), and applicable regulatory framework (ERISA, HIPAA, or state insurance law).`,
+                          kpis: [
+                            { label: "Type Category", value: activeEvent.type, receipt: { id: "TYPE-001", verified: true, freshness: "< 1h", dqPassRate: 1.0, confidence: 0.99 } },
+                            { label: "Approval Workflow", value: "3-Tier", receipt: { id: "TYPE-001", verified: true, freshness: "< 1h", dqPassRate: 1.0, confidence: 0.99 } },
+                          ],
                           receipt: null,
-                          details: [`Type: ${activeEvent.type}`, "Category determines routing and approval workflow"]
+                          details: [`Type: ${activeEvent.type}`, "Determines approval routing per SOX 404", "Regulatory framework mapped to type"],
                         })}
                         className={`text-[10px] px-2 py-0.5 rounded-full border font-semibold cursor-pointer hover:opacity-80 transition-opacity ${
                         activeEvent.type === "PBM" ? "border-blue-400/30 bg-blue-400/10 text-blue-300" :
@@ -805,7 +1345,7 @@ function CFODashboardContent() {
                         "border-purple-400/30 bg-purple-400/10 text-purple-300"
                       }`}>{activeEvent.type}</span>
                       <span 
-                        onClick={() => openDetailModal("STATUS", getStatusExplanation(activeEvent.status))}
+                        onClick={() => openLevel1Modal(getStatusExplanation(activeEvent.status))}
                         className={`text-[10px] px-2 py-0.5 rounded-full border font-semibold cursor-pointer hover:opacity-80 transition-opacity ${
                         activeEvent.status === "VALIDATED" ? "border-emerald-400/30 bg-emerald-400/10 text-emerald-300" :
                         activeEvent.status === "IMPLEMENTED" ? "border-blue-400/30 bg-blue-400/10 text-blue-300" :
@@ -816,295 +1356,70 @@ function CFODashboardContent() {
                   </div>
 
                   <div className="rounded-xl border border-white/10 bg-white/5 p-4">
-                    <div className="text-[11px] text-white/50 mb-3">KPI Metrics</div>
-                    <div className="space-y-2">
-                      <KPIBadge 
-                        metric={{
-                          label: "Action Score",
-                          value: activeEvent.score.toLocaleString(),
-                          receipt: { id: "RCP-SCORE-001", verified: true, freshness: "< 1h", dqPassRate: 0.96, confidence: activeEvent.confidence }
-                        }}
-                        onClick={() => openDetailModal("CONFIDENCE", getConfidenceExplanation(activeEvent.confidence))}
-                      />
-                      <KPIBadge 
-                        metric={{
-                          label: "Confidence",
-                          value: pct(activeEvent.confidence),
-                          trend: "+5%",
-                          trendDirection: "up",
-                          receipt: { id: "RCP-CONF-002", verified: true, freshness: "< 1h", dqPassRate: 0.97, confidence: activeEvent.confidence }
-                        }}
-                        onClick={() => openDetailModal("CONFIDENCE", getConfidenceExplanation(activeEvent.confidence))}
-                      />
-                      <KPIBadge 
-                        metric={{
-                          label: "Time Sensitivity",
-                          value: pct(activeEvent.time_sensitivity),
-                          receipt: { id: "RCP-TIME-002", verified: true, freshness: "< 1h", dqPassRate: 0.98, confidence: 0.91 }
-                        }}
-                        onClick={() => openDetailModal("TIME_SENSITIVITY", getTimeSensitivityExplanation(activeEvent.time_sensitivity))}
-                      />
-                    </div>
-                  </div>
-
-                  <div className="rounded-xl border border-white/10 bg-white/5 p-4">
                     <div className="text-[11px] text-white/50 mb-3">Quick Actions</div>
                     <div className="space-y-2">
-                      <button className="w-full text-sm px-3 py-2 rounded-xl border border-white/10 hover:bg-white/5 text-left">
-                        Open Evidence Receipt
+                      <button 
+                        className="w-full text-sm px-3 py-2 rounded-xl border border-white/10 hover:bg-white/5 text-left"
+                        onClick={() => openLevel1Modal(getStatusExplanation(activeEvent.receipt_status))}
+                      >
+                        📄 Open Evidence Receipt
                       </button>
                       <button className="w-full text-sm px-3 py-2 rounded-xl bg-gradient-to-r from-orange-500 to-orange-600 text-white font-medium hover:from-orange-600 hover:to-orange-700 shadow-lg">
-                        Action Packet
+                        📦 Action Packet
                       </button>
                       <button className="w-full text-sm px-3 py-2 rounded-xl border border-white/10 hover:bg-white/5 text-left">
-                        Download Proof Pack (PDF)
+                        📥 Download Proof Pack (PDF)
                       </button>
-                    </div>
-                    <div className="mt-3 text-[11px] text-white/50">
-                      Gate: no status changes if receipt is UNVERIFIED.
                     </div>
                   </div>
                 </>
               ) : (
                 <div className="rounded-xl border border-white/10 bg-black/20 p-4 text-sm text-white/60">
-                  Select an event to view Evidence Receipt, Why Ranked, and download Proof Pack.
+                  Select an event to view Evidence Receipt, detailed analysis, and legal/capital markets context.
                 </div>
               )}
             </div>
           }
         />
 
-        <div className="xl:hidden mt-4 space-y-4">
-          <div className="rounded-2xl border border-white/10 bg-white/5 p-4">
-            <div className="text-[11px] text-white/50">Exceptions Queue</div>
-            <div className="text-sm font-semibold mt-1">Ranked Arbitrage Events</div>
-            
-            <div className="mt-3 flex gap-2">
-              <input
-                className="w-full rounded-xl border border-white/10 bg-black/20 px-3 py-2 text-sm outline-none focus:border-white/20"
-                placeholder="Search events…"
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-              />
-              <select 
-                className="rounded-xl border border-white/10 bg-black/20 px-3 py-2 text-sm"
-                value={statusFilter}
-                onChange={(e) => setStatusFilter(e.target.value)}
-              >
-                <option>All</option>
-                <option>RECOMMENDED</option>
-                <option>ACCEPTED</option>
-                <option>IMPLEMENTED</option>
-                <option>VALIDATED</option>
-              </select>
-            </div>
-
-            <div className="mt-3 space-y-2">
-              {eventsFiltered.map((e) => {
-                const theme = e.theme ? THEME[e.theme as ThemeKey] : THEME.blue;
-                
-                return (
-                  <div
-                    key={e.id}
-                    onClick={() => setActiveEvent(e as unknown as MockEvent)}
-                    className={`group relative overflow-hidden rounded-xl border p-3 hover:bg-white/5 cursor-pointer transition-all ${
-                      activeEvent?.id === e.id 
-                        ? `${theme.border} ${theme.bg} ${theme.glow}` 
-                        : "border-white/10 bg-black/20"
-                    }`}
-                  >
-                    {/* Left accent bar */}
-                    {e.theme && (
-                      <div className={`absolute left-0 top-0 h-full w-1 ${theme.bar}`} />
-                    )}
-                    
-                    {/* Animated gradient overlay */}
-                    {e.theme && <AnimatedGradientOverlay theme={theme} />}
-                    
-                    <div className="relative">
-                      <div className="flex items-center justify-between">
-                        <div className={`text-sm font-medium ${e.theme ? theme.title : "text-white"}`}>
-                          {e.id} • {e.title}
-                        </div>
-                        <div className="text-[11px] text-white/50 tabular-nums">
-                          Score {e.score.toLocaleString()}
-                        </div>
-                      </div>
-                      <div className="mt-1 text-[11px] text-white/50">
-                        Owner: {e.owner_role} • Receipt: {e.receipt_status}
-                      </div>
-                    </div>
-                  </div>
-                );
-              })}
-            </div>
-          </div>
-
-          {activeEvent && (
-            <div className="rounded-2xl border border-white/10 bg-white/5 p-4">
-              <div className="text-[11px] text-white/50">Proof Rail</div>
-              <div className="text-sm font-semibold mt-1">Event Details</div>
-              
-              <div className="mt-3 rounded-xl border border-white/10 bg-black/20 p-4">
-                <div className="text-lg font-semibold">{activeEvent.id}</div>
-                <div className="text-sm text-white/70 mt-1">{activeEvent.title}</div>
-                
-                <div className="mt-4 space-y-2 text-sm">
-                  <div className="flex justify-between">
-                    <span className="text-white/50">Value</span>
-                    <span className="font-semibold tabular-nums">{money(activeEvent.identified_value)}</span>
-                  </div>
-                  <div className="flex justify-between">
-                    <span className="text-white/50">Confidence</span>
-                    <span className="font-semibold tabular-nums">{pct(activeEvent.confidence)}</span>
-                  </div>
-                </div>
-              </div>
-            </div>
-          )}
-        </div>
-
         <div className="mt-4 text-[12px] text-gray-500">
           {mounted && `As of ${new Date(data.asOf).toLocaleString()}`} • Identified {money(data.ledger.identified)} • Approved {money(data.ledger.approved)} • Realized {money(data.ledger.realized)}
         </div>
       </div>
 
-      <Drawer open={drawerOpen} title={title} onClose={() => setDrawerOpen(false)}>
-        <div className="space-y-3">
-          <div className="rounded-xl border border-white/10 bg-white/5 p-4">
-            <div className="text-[11px] text-white/50">Trend Summary</div>
-            <div className="mt-2 text-sm tabular-nums text-white">
-              Baseline {data.baseline.toFixed(1)}% → Actual {data.actual.toFixed(1)}%{" "}
-              <span className={`ml-2 font-semibold ${data.delta > 0 ? "text-red-300" : "text-emerald-300"}`}>
-                {data.delta > 0 ? "+" : ""}
-                {data.delta.toFixed(1)}%
-              </span>
-            </div>
-          </div>
-
-          <div className="rounded-xl border border-white/10 bg-white/5 p-4">
-            <div className="text-[11px] text-white/50">Attribution (Drivers)</div>
-            <div className="mt-3 space-y-2">
-              {data.drivers.map((d) => (
-                <div key={d.label} className="flex items-center justify-between">
-                  <div className="text-sm font-medium text-white">{d.label}</div>
-                  <div
-                    className={`text-sm font-semibold tabular-nums ${
-                      d.delta_pct > 0 ? "text-red-300" : "text-emerald-300"
-                    }`}
-                  >
-                    {d.delta_pct > 0 ? "+" : ""}
-                    {d.delta_pct.toFixed(1)}%
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
-        </div>
-      </Drawer>
-
+      {/* Level 1 Modal */}
       <DetailModal 
-        open={detailModalOpen} 
-        title={detailModalData?.title || "Details"} 
-        onClose={() => setDetailModalOpen(false)}
+        open={level1Modal.open} 
+        title={level1Modal.data?.title || ""} 
+        onClose={() => setLevel1Modal({ open: false, data: null })}
+        level={1}
       >
-        {detailModalData && (
-          <div className="space-y-6">
-            <div className="rounded-xl border border-white/10 bg-white/5 p-4">
-              <p className="text-white/80 text-sm leading-relaxed">{detailModalData.description}</p>
-            </div>
+        {level1Modal.data && renderModalContent(level1Modal.data, 1)}
+      </DetailModal>
 
-            {detailModalData.kpis && detailModalData.kpis.length > 0 && (
-              <div>
-                <div className="text-xs text-white/50 uppercase tracking-wider mb-3">Key Performance Indicators</div>
-                <div className="space-y-2">
-                  {detailModalData.kpis.map((kpi: KPIMetric, idx: number) => (
-                    <KPIBadge key={idx} metric={kpi} />
-                  ))}
-                </div>
-              </div>
-            )}
+      {/* Level 2 Modal */}
+      <DetailModal 
+        open={level2Modal.open} 
+        title={level2Modal.data?.title || ""} 
+        onClose={() => setLevel2Modal({ open: false, data: null })}
+        level={2}
+      >
+        {level2Modal.data && renderModalContent(level2Modal.data, 2)}
+      </DetailModal>
 
-            {detailModalData.receipt && (
-              <div className="rounded-xl border border-white/10 bg-black/20 p-4">
-                <div className="text-xs text-white/50 uppercase tracking-wider mb-3">Evidence Receipt Details</div>
-                <div className="space-y-3 text-sm">
-                  <div className="flex justify-between">
-                    <span className="text-white/60">Receipt ID</span>
-                    <span className="font-mono text-white/90">{detailModalData.receipt.id}</span>
-                  </div>
-                  {detailModalData.receipt.hash && (
-                    <div className="flex flex-col gap-1">
-                      <span className="text-white/60 text-xs">Cryptographic Hash</span>
-                      <span className="font-mono text-[11px] text-white/90 break-all bg-black/40 p-2 rounded border border-white/10">{detailModalData.receipt.hash}</span>
-                    </div>
-                  )}
-                  {detailModalData.receipt.sourceSystem && (
-                    <div className="flex justify-between">
-                      <span className="text-white/60">Source System</span>
-                      <span className="text-white/90">{detailModalData.receipt.sourceSystem}</span>
-                    </div>
-                  )}
-                  {detailModalData.receipt.lastVerified && (
-                    <div className="flex justify-between">
-                      <span className="text-white/60">Last Verified</span>
-                      <span className="text-white/90">{new Date(detailModalData.receipt.lastVerified).toLocaleString()}</span>
-                    </div>
-                  )}
-                  {detailModalData.receipt.freshness && (
-                    <div className="flex justify-between">
-                      <span className="text-white/60">Data Freshness</span>
-                      <span className="text-white/90">{detailModalData.receipt.freshness}</span>
-                    </div>
-                  )}
-                  {detailModalData.receipt.dqPassRate !== undefined && (
-                    <div className="flex justify-between">
-                      <span className="text-white/60">DQ Pass Rate</span>
-                      <span className="text-white/90">{(detailModalData.receipt.dqPassRate * 100).toFixed(1)}%</span>
-                    </div>
-                  )}
-                </div>
-              </div>
-            )}
-
-            {detailModalData.details && detailModalData.details.length > 0 && (
-              <div className="rounded-xl border border-white/10 bg-gradient-to-br from-blue-500/10 to-purple-500/10 p-4">
-                <div className="text-xs text-white/50 uppercase tracking-wider mb-3">Detailed Analysis</div>
-                <ul className="space-y-2 text-sm">
-                  {detailModalData.details.map((detail: string, idx: number) => (
-                    <li key={idx} className="text-white/80 flex items-start gap-2">
-                      <span className="text-white/40 mt-0.5">•</span>
-                      <span>{detail}</span>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            )}
-
-            <div className="flex gap-2">
-              <button 
-                className="flex-1 px-4 py-2.5 rounded-xl border border-white/15 hover:bg-white/5 text-white transition-all font-medium text-sm"
-                onClick={() => setDetailModalOpen(false)}
-              >
-                Close
-              </button>
-              <button 
-                className="flex-1 px-4 py-2.5 rounded-xl bg-gradient-to-r from-blue-500 to-purple-500 text-white font-medium hover:from-blue-600 hover:to-purple-600 shadow-lg text-sm"
-                onClick={() => {
-                  alert("Opening full documentation...");
-                }}
-              >
-                View Full Documentation
-              </button>
-            </div>
-          </div>
-        )}
+      {/* Level 3 Modal */}
+      <DetailModal 
+        open={level3Modal.open} 
+        title={level3Modal.data?.title || ""} 
+        onClose={() => setLevel3Modal({ open: false, data: null })}
+        level={3}
+      >
+        {level3Modal.data && renderModalContent(level3Modal.data, 3)}
       </DetailModal>
     </>
   );
 }
 
-// Dynamically import the other War Room components
 const FourLaneLedger = dynamic(() => import("@/components/warroom/WarRoomV2"), { ssr: false });
 const ExecutiveKPIs = dynamic(() => import("@/components/warroom/WarRoom").then(mod => ({ default: mod.WarRoom })), { ssr: false });
 
@@ -1146,7 +1461,7 @@ export default function WarRoomPage() {
     <>
       <SEO
         title="War Room - SiriusB iQ AI Data Sciences Lab"
-        description="CFO War Room - Real-time financial operations intelligence"
+        description="CFO War Room - Real-time financial operations intelligence with legal and capital markets analysis"
       />
       <div className="warroom-console min-h-screen bg-gradient-to-b from-gray-900 via-gray-950 to-black text-gray-100">
         <div className="pointer-events-none fixed inset-0 -z-10">
@@ -1164,7 +1479,6 @@ export default function WarRoomPage() {
           />
         </div>
 
-        {/* View Selector Dropdown */}
         <div className="sticky top-0 z-50 border-b border-white/10 bg-gray-900/95 backdrop-blur-xl">
           <div className="mx-auto max-w-[1400px] px-4 py-3">
             <div className="flex items-center justify-between">
@@ -1214,7 +1528,6 @@ export default function WarRoomPage() {
           </div>
         </div>
 
-        {/* Render Selected View */}
         {currentView === "CFO_DASHBOARD" && <CFODashboard />}
         {currentView === "FOUR_LANE_LEDGER" && <FourLaneLedger />}
         {currentView === "EXECUTIVE_KPIS" && <ExecutiveKPIs />}

@@ -1,6 +1,5 @@
 import { SEO } from "@/components/SEO";
 import { SplitPane } from "@/components/SplitPane";
-import { Navbar } from "@/components/Navbar";
 import { useState, useEffect, useMemo } from "react";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
@@ -1248,7 +1247,7 @@ function CFODashboardContent() {
                         className="cursor-pointer hover:bg-white/5 p-2 rounded-lg transition-colors"
                         onClick={() => openLevel1Modal({
                           title: "Identified Value Analysis",
-                          description: `Per FASB ASC 820 (Fair Value Measurement), this event represents ${money(activeEvent.identified_value)} in identified value using Level 2 fair value hierarchy inputs. Valuation methodology: Discounted Cash Flow with risk-adjusted WACC of 8.5%.`,
+                          description: `Per FASB ASC 820 (Fair Value Measurement), this event represents ${money(activeEvent.identified_value)} in identified value using Level 2 fair value hierarchy inputs. Valuation methodology: Discounted Cash Flow with risk-adjusted WACCACC of 8.5%.`,
                           kpis: [
                             { label: "DCF Value", value: money(activeEvent.identified_value), receipt: { id: "VAL-001", verified: true, freshness: "< 1h", dqPassRate: 0.96, confidence: activeEvent.confidence } },
                             { label: "WACC", value: "8.5%", receipt: { id: "VAL-001", verified: true, freshness: "< 1h", dqPassRate: 0.96, confidence: activeEvent.confidence } },

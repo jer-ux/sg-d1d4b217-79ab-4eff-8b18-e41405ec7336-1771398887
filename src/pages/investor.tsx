@@ -1,77 +1,97 @@
 import Navbar from "@/components/Navbar";
-import Link from "next/link";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { useRouter } from "next/router";
 
 export default function InvestorAccess() {
-  const [accessCode, setAccessCode] = useState("");
-  const [error, setError] = useState("");
+  const router = useRouter();
+  const [code, setCode] = useState("");
+  const [ok, setOk] = useState(false);
+  const [err, setErr] = useState<string | null>(null);
+
+  useEffect(() => {
+    const saved = typeof window !== "undefined" ? localStorage.getItem("INV_ACCESS_OK") : null;
+    if (saved === "1") setOk(true);
+  }, []);
+
+  useEffect(() => {
+    if (ok) {
+      router.push("/capital-markets");
+    }
+  }, [ok, router]);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    // Placeholder for actual authentication
-    if (accessCode === "KINCAID2026") {
-      // Redirect to investor portal or show content
-      window.location.href = "/capital-markets";
+    setErr(null);
+
+    if (code.trim().toUpperCase() === "KINCAID2026") {
+      if (typeof window !== "undefined") {
+        localStorage.setItem("INV_ACCESS_OK", "1");
+      }
+      setOk(true);
     } else {
-      setError("Invalid access code");
+      setErr("Invalid access code.");
     }
   };
+
+  if (ok) {
+    return (
+      <main className="min-h-screen bg-black text-white">
+        <Navbar />
+        <section className="mx-auto max-w-7xl px-6 py-14">
+          <div className="max-w-2xl">
+            <div className="text-sm text-white/70">Redirecting to investor materials...</div>
+          </div>
+        </section>
+      </main>
+    );
+  }
 
   return (
     <main className="min-h-screen bg-black text-white">
       <Navbar />
 
-      <section className="mx-auto max-w-7xl px-6 py-20">
-        <div className="mx-auto max-w-md">
-          <div className="text-xs tracking-[0.2em] text-white/50">
-            INVESTOR ACCESS
-          </div>
+      <section className="mx-auto max-w-7xl px-6 py-14">
+        <div className="max-w-2xl">
+          <div className="text-xs tracking-[0.2em] text-white/50">INVESTOR ACCESS</div>
           <h1 className="mt-4 text-3xl font-semibold text-white/95">
-            Gated access for investors and strategic partners.
+            Enter your access code.
           </h1>
           <p className="mt-4 text-sm leading-relaxed text-white/70">
-            Enter your access code to view investor materials, financial models, and strategic roadmap.
+            This area contains confidential investor materials, board-level metrics, and capital
+            structure disclosures.
           </p>
+        </div>
 
-          <form onSubmit={handleSubmit} className="mt-8 space-y-4">
-            <div>
-              <label htmlFor="accessCode" className="block text-sm text-white/80">
-                Access Code
-              </label>
-              <input
-                id="accessCode"
-                type="password"
-                value={accessCode}
-                onChange={(e) => {
-                  setAccessCode(e.target.value);
-                  setError("");
-                }}
-                className="mt-2 w-full rounded-xl border border-white/10 bg-white/5 px-4 py-3 text-sm text-white placeholder-white/40 focus:border-white/20 focus:outline-none"
-                placeholder="Enter code"
-              />
-              {error && (
-                <div className="mt-2 text-sm text-red-400">{error}</div>
-              )}
-            </div>
+        <div className="mt-10 max-w-md rounded-3xl border border-white/10 bg-white/5 p-6">
+          <form onSubmit={handleSubmit} className="space-y-4">
+            <input
+              required
+              type="text"
+              placeholder="Access code"
+              value={code}
+              onChange={(e) => setCode(e.target.value)}
+              className="w-full rounded-2xl border border-white/10 bg-black/40 px-4 py-3 text-sm text-white/90 placeholder:text-white/40 outline-none focus:border-white/25"
+            />
 
             <button
               type="submit"
-              className="w-full rounded-2xl border border-white/10 bg-white/10 px-6 py-3 text-sm text-white hover:bg-white/15"
+              className="w-full rounded-2xl border border-white/10 bg-white/10 px-5 py-3 text-sm text-white hover:bg-white/15"
             >
-              Access investor portal →
+              Submit →
             </button>
+
+            {err ? (
+              <div className="rounded-2xl border border-red-400/20 bg-red-400/10 px-4 py-3 text-sm text-red-100">
+                {err}
+              </div>
+            ) : null}
           </form>
 
-          <div className="mt-8 rounded-2xl border border-white/10 bg-white/5 p-4">
-            <div className="text-xs font-semibold text-white/80">
-              Need access?
-            </div>
-            <div className="mt-1 text-sm text-white/60">
-              Contact your relationship manager or{" "}
-              <Link href="/contact" className="underline hover:text-white">
-                reach out to our team
-              </Link>
-              .
+          <div className="mt-6 rounded-2xl border border-white/10 bg-black/40 p-4 text-sm text-white/70">
+            <div className="font-semibold text-white/90">Need access?</div>
+            <div className="mt-2">
+              Contact your investor relations representative or email{" "}
+              <span className="text-white/90">ir@kincaid-iq.com</span> for credentials.
             </div>
           </div>
         </div>

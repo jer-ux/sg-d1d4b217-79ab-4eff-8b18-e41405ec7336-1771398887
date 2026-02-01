@@ -1,160 +1,125 @@
 import Navbar from "@/components/Navbar";
-import { useState } from "react";
+import Link from "next/link";
+import { useMemo, useState } from "react";
 
 export default function RequestDemo() {
-  const [formData, setFormData] = useState({
-    name: "",
-    email: "",
-    company: "",
-    role: "",
-    message: "",
-  });
-  const [submitted, setSubmitted] = useState(false);
+  const [sending, setSending] = useState(false);
+  const [sent, setSent] = useState(false);
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    // Placeholder for actual form submission
-    console.log("Demo request:", formData);
-    setSubmitted(true);
-  };
-
-  const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>
-  ) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
-  };
-
-  if (submitted) {
-    return (
-      <main className="min-h-screen bg-black text-white">
-        <Navbar />
-        <section className="mx-auto max-w-7xl px-6 py-20">
-          <div className="mx-auto max-w-md text-center">
-            <div className="text-xs tracking-[0.2em] text-white/50">
-              REQUEST RECEIVED
-            </div>
-            <h1 className="mt-4 text-3xl font-semibold text-white/95">
-              We'll be in touch shortly.
-            </h1>
-            <p className="mt-4 text-sm leading-relaxed text-white/70">
-              Our team will reach out within 24 hours to schedule your personalized demo.
-            </p>
-          </div>
-        </section>
-      </main>
-    );
-  }
+  const defaultMsg = useMemo(
+    () =>
+      `Interested in Kincaid IQ + SiriusB iQ War Room.\n\nCompany:\nHeadcount:\nCurrent broker/TPA/PBM:\nPrimary pain:\nTimeline:\n`,
+    []
+  );
 
   return (
     <main className="min-h-screen bg-black text-white">
       <Navbar />
 
-      <section className="mx-auto max-w-7xl px-6 py-20">
-        <div className="mx-auto max-w-md">
-          <div className="text-xs tracking-[0.2em] text-white/50">
-            REQUEST DEMO
-          </div>
+      <section className="mx-auto max-w-7xl px-6 py-14">
+        <div className="max-w-2xl">
+          <div className="text-xs tracking-[0.2em] text-white/50">REQUEST DEMO</div>
           <h1 className="mt-4 text-3xl font-semibold text-white/95">
-            See Kincaid IQ in action.
+            Get a war-room walkthrough.
           </h1>
           <p className="mt-4 text-sm leading-relaxed text-white/70">
-            Get a personalized walkthrough of the War Room, Evidence Receipts, and Truth Governance
-            framework—tailored to your organization's needs.
+            We'll show the platform in executive mode: ranked events, confidence gating, evidence
+            receipts, exports, and verification. Bring one ugly data problem — we love those 😄
           </p>
+        </div>
 
-          <form onSubmit={handleSubmit} className="mt-8 space-y-4">
-            <div>
-              <label htmlFor="name" className="block text-sm text-white/80">
-                Name
-              </label>
-              <input
-                id="name"
-                name="name"
-                type="text"
-                required
-                value={formData.name}
-                onChange={handleChange}
-                className="mt-2 w-full rounded-xl border border-white/10 bg-white/5 px-4 py-3 text-sm text-white placeholder-white/40 focus:border-white/20 focus:outline-none"
-                placeholder="Your name"
-              />
-            </div>
+        <div className="mt-10 grid grid-cols-1 gap-4 lg:grid-cols-5">
+          <div className="lg:col-span-3 rounded-3xl border border-white/10 bg-white/5 p-6">
+            <form
+              onSubmit={async (e) => {
+                e.preventDefault();
+                setSending(true);
+                setSent(false);
 
-            <div>
-              <label htmlFor="email" className="block text-sm text-white/80">
-                Email
-              </label>
-              <input
-                id="email"
-                name="email"
-                type="email"
-                required
-                value={formData.email}
-                onChange={handleChange}
-                className="mt-2 w-full rounded-xl border border-white/10 bg-white/5 px-4 py-3 text-sm text-white placeholder-white/40 focus:border-white/20 focus:outline-none"
-                placeholder="you@company.com"
-              />
-            </div>
-
-            <div>
-              <label htmlFor="company" className="block text-sm text-white/80">
-                Company
-              </label>
-              <input
-                id="company"
-                name="company"
-                type="text"
-                required
-                value={formData.company}
-                onChange={handleChange}
-                className="mt-2 w-full rounded-xl border border-white/10 bg-white/5 px-4 py-3 text-sm text-white placeholder-white/40 focus:border-white/20 focus:outline-none"
-                placeholder="Company name"
-              />
-            </div>
-
-            <div>
-              <label htmlFor="role" className="block text-sm text-white/80">
-                Role
-              </label>
-              <select
-                id="role"
-                name="role"
-                required
-                value={formData.role}
-                onChange={handleChange}
-                className="mt-2 w-full rounded-xl border border-white/10 bg-white/5 px-4 py-3 text-sm text-white focus:border-white/20 focus:outline-none"
-              >
-                <option value="">Select role</option>
-                <option value="cfo">CFO / Finance Executive</option>
-                <option value="benefits">Benefits / HR Executive</option>
-                <option value="operations">Operations Executive</option>
-                <option value="boardmember">Board Member</option>
-                <option value="consultant">Consultant / Advisor</option>
-                <option value="other">Other</option>
-              </select>
-            </div>
-
-            <div>
-              <label htmlFor="message" className="block text-sm text-white/80">
-                Message (optional)
-              </label>
-              <textarea
-                id="message"
-                name="message"
-                rows={4}
-                value={formData.message}
-                onChange={handleChange}
-                className="mt-2 w-full rounded-xl border border-white/10 bg-white/5 px-4 py-3 text-sm text-white placeholder-white/40 focus:border-white/20 focus:outline-none"
-                placeholder="Tell us about your use case..."
-              />
-            </div>
-
-            <button
-              type="submit"
-              className="w-full rounded-2xl border border-white/10 bg-white/10 px-6 py-3 text-sm text-white hover:bg-white/15"
+                // For demo: no backend email send. Just simulate + show success.
+                await new Promise((r) => setTimeout(r, 450));
+                setSent(true);
+                setSending(false);
+              }}
+              className="space-y-4"
             >
-              Request demo →
-            </button>
-          </form>
+              <div className="grid grid-cols-1 gap-3 md:grid-cols-2">
+                <input
+                  required
+                  placeholder="Full name"
+                  className="w-full rounded-2xl border border-white/10 bg-black/40 px-4 py-3 text-sm text-white/90 placeholder:text-white/40 outline-none focus:border-white/25"
+                />
+                <input
+                  required
+                  type="email"
+                  placeholder="Work email"
+                  className="w-full rounded-2xl border border-white/10 bg-black/40 px-4 py-3 text-sm text-white/90 placeholder:text-white/40 outline-none focus:border-white/25"
+                />
+                <input
+                  placeholder="Company"
+                  className="w-full rounded-2xl border border-white/10 bg-black/40 px-4 py-3 text-sm text-white/90 placeholder:text-white/40 outline-none focus:border-white/25 md:col-span-2"
+                />
+              </div>
+
+              <textarea
+                defaultValue={defaultMsg}
+                rows={8}
+                className="w-full rounded-2xl border border-white/10 bg-black/40 px-4 py-3 text-sm text-white/90 placeholder:text-white/40 outline-none focus:border-white/25"
+              />
+
+              <button
+                disabled={sending}
+                className="w-full rounded-2xl border border-white/10 bg-white/10 px-5 py-3 text-sm text-white hover:bg-white/15 disabled:opacity-60"
+              >
+                {sending ? "Sending…" : "Request demo →"}
+              </button>
+
+              {sent ? (
+                <div className="rounded-2xl border border-emerald-400/20 bg-emerald-400/10 px-4 py-3 text-sm text-emerald-100">
+                  Submitted ✅ We'll reply with scheduling options.
+                </div>
+              ) : null}
+            </form>
+          </div>
+
+          <div className="lg:col-span-2 rounded-3xl border border-white/10 bg-black/40 p-6">
+            <div className="text-sm font-semibold text-white/90">What you'll see</div>
+            <ul className="mt-4 space-y-2 text-sm text-white/70">
+              {[
+                "SiriusB iQ War Room (ranked events + executive tiles)",
+                "Evidence receipts (hashes, gates, reason codes)",
+                "Board pack exports (PDF + manifest JSON downloads)",
+                "Integrity verification (PASS/FAIL + mismatch detail)",
+              ].map((b) => (
+                <li key={b} className="flex gap-2">
+                  <span className="mt-[6px] h-1.5 w-1.5 rounded-full bg-white/40" />
+                  <span>{b}</span>
+                </li>
+              ))}
+            </ul>
+
+            <div className="mt-6 text-sm font-semibold text-white/90">Prefer to explore first?</div>
+            <div className="mt-3 flex flex-wrap gap-3">
+              <Link
+                href="/platform"
+                className="rounded-2xl border border-white/10 bg-white/5 px-4 py-2 text-sm text-white/80 hover:bg-white/10"
+              >
+                Platform →
+              </Link>
+              <Link
+                href="/war-room"
+                className="rounded-2xl border border-white/10 bg-white/5 px-4 py-2 text-sm text-white/80 hover:bg-white/10"
+              >
+                War Room →
+              </Link>
+              <Link
+                href="/evidence-receipts"
+                className="rounded-2xl border border-white/10 bg-white/5 px-4 py-2 text-sm text-white/80 hover:bg-white/10"
+              >
+                Receipts →
+              </Link>
+            </div>
+          </div>
         </div>
       </section>
     </main>

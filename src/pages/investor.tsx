@@ -1,4 +1,3 @@
-import Navbar from "@/components/Navbar";
 import { useEffect, useState } from "react";
 
 export default function InvestorAccess() {
@@ -29,8 +28,6 @@ export default function InvestorAccess() {
 
   return (
     <main className="min-h-screen bg-black text-white">
-      <Navbar />
-
       <section className="mx-auto max-w-5xl px-6 py-14">
         <div className="max-w-2xl">
           <div className="text-xs tracking-[0.2em] text-white/50">INVESTOR ACCESS</div>

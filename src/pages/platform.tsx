@@ -1,4 +1,3 @@
-import Navbar from "@/components/Navbar";
 import Link from "next/link";
 
 function Pillar({
@@ -104,8 +103,6 @@ function CTA() {
 export default function Platform() {
   return (
     <main className="min-h-screen bg-black text-white">
-      <Navbar />
-
       {/* HERO */}
       <section className="mx-auto max-w-7xl px-6 py-14">
         <div className="grid grid-cols-1 gap-8 lg:grid-cols-12 lg:items-end">

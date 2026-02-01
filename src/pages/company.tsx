@@ -1,4 +1,3 @@
-import Navbar from "@/components/Navbar";
 import Link from "next/link";
 
 function Block({
@@ -29,8 +28,6 @@ function Block({
 export default function Company() {
   return (
     <main className="min-h-screen bg-black text-white">
-      <Navbar />
-
       <section className="mx-auto max-w-7xl px-6 py-14">
         <div className="max-w-3xl">
           <div className="text-xs tracking-[0.2em] text-white/50">COMPANY</div>

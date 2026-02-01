@@ -1,4 +1,3 @@
-import Navbar from "@/components/Navbar";
 import Link from "next/link";
 import { useMemo, useState } from "react";
 
@@ -14,8 +13,6 @@ export default function RequestDemo() {
 
   return (
     <main className="min-h-screen bg-black text-white">
-      <Navbar />
-
       <section className="mx-auto max-w-7xl px-6 py-14">
         <div className="max-w-2xl">
           <div className="text-xs tracking-[0.2em] text-white/50">REQUEST DEMO</div>

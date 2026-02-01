@@ -160,49 +160,6 @@ export default function HomePage() {
           <div className="absolute right-1/4 bottom-1/3 h-[400px] w-[400px] rounded-full bg-blue-500/8 blur-[120px]" />
         </div>
 
-        {/* Top Nav */}
-        <div className="sticky top-0 z-30 border-b border-white/15 bg-[#070A12]/80 shadow-[0_8px_32px_rgba(0,0,0,0.4)] backdrop-blur-xl">
-          <div className="mx-auto flex max-w-6xl items-center justify-between px-6 py-4">
-            <Link href="/" className="flex items-center gap-2 group">
-              <div className="h-9 w-9 rounded-2xl border border-white/20 bg-gradient-to-br from-purple-500/30 to-blue-500/30 shadow-lg transition-all group-hover:shadow-[0_0_20px_rgba(139,92,246,0.5)]" />
-              <div className="leading-tight">
-                <div className="text-sm font-semibold text-white">Kincaid IQ</div>
-                <div className="text-[11px] text-white/60">Integrity Engineering</div>
-              </div>
-            </Link>
-
-            <div className="hidden items-center gap-6 text-sm text-white/70 md:flex">
-              <Link className="transition-colors hover:text-white" href="/platform">
-                Platform
-              </Link>
-              <Link className="transition-colors hover:text-white" href="/war-room">
-                War Room
-              </Link>
-              <Link className="transition-colors hover:text-white" href="/evidence-receipts">
-                Evidence Receipts
-              </Link>
-              <Link className="transition-colors hover:text-white" href="/verified-savings-ledger">
-                Verified Value
-              </Link>
-              <Link className="transition-colors hover:text-white" href="/security-governance">
-                Security
-              </Link>
-            </div>
-
-            <div className="flex items-center gap-2">
-              <Button asChild variant="ghost" className="hidden rounded-2xl md:inline-flex">
-                <Link href="/contact">Contact</Link>
-              </Button>
-              <CalendlyPopupButton
-                url="https://calendly.com/jer-kincaidrmc/30min"
-                className="rounded-2xl bg-gradient-to-r from-purple-500 to-blue-500 text-white shadow-lg hover:shadow-[0_0_30px_rgba(139,92,246,0.5)] transition-all"
-              >
-                Book 30 min
-              </CalendlyPopupButton>
-            </div>
-          </div>
-        </div>
-
         {/* Hero */}
         <div className="mx-auto max-w-6xl px-6 pt-12">
           <motion.div initial="hidden" animate="show" variants={stagger}>

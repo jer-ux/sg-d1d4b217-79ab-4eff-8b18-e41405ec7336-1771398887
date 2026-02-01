@@ -319,20 +319,6 @@ export default function HomePage() {
 
         <Separator className="mx-auto max-w-6xl bg-white/15" />
 
-        {/* Trust Bar + Bookings KPI */}
-        <div className="mx-auto max-w-6xl px-6 py-12">
-          <motion.div initial="hidden" whileInView="show" viewport={{ once: true, amount: 0.2 }} variants={stagger}>
-            <motion.div variants={fadeUp} className="grid grid-cols-1 gap-4 md:grid-cols-3">
-              <div className="md:col-span-2">
-                <TrustBar />
-              </div>
-              <BookingsKpiTile href="/evidence-receipts" />
-            </motion.div>
-          </motion.div>
-        </div>
-
-        <Separator className="mx-auto max-w-6xl bg-white/15" />
-
         {/* What it is + Who it is for */}
         <div className="mx-auto max-w-6xl px-6 py-12">
           <motion.div initial="hidden" whileInView="show" viewport={{ once: true, amount: 0.2 }} variants={stagger}>

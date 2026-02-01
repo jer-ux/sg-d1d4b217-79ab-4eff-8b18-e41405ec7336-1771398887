@@ -178,8 +178,8 @@ export default function WarRoomV2Page() {
   return (
     <>
       <SEO
-        title="War Room V2 - SiriusB iQ AI Data Sciences Lab"
-        description="CFO War Room with Evidence Receipts - Real-time financial operations intelligence"
+        title="War Room V2 - Kincaid IQ AI Data Sciences Lab"
+        description="Next-generation incident management with real-time streaming, evidence tracking, and governance automation"
       />
       <div className="min-h-screen bg-gradient-to-b from-gray-900 via-gray-950 to-black text-gray-100">
         <div className="pointer-events-none fixed inset-0 -z-10">

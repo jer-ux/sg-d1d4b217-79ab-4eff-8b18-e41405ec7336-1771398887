@@ -40,10 +40,11 @@ export default function Nav() {
       <div className="max-w-7xl mx-auto px-6">
         <div className="flex items-center justify-between h-16">
           {/* Logo */}
-          <Link href="/" className="flex items-center group">
-            <span className="text-xl font-semibold text-white group-hover:text-blue-400 transition-colors duration-300">
-              SiriusB iQ
-            </span>
+          <Link 
+            href="/" 
+            className="text-xl font-semibold tracking-tight hover:opacity-80 transition-opacity"
+          >
+            Kincaid IQ
           </Link>
 
           {/* Desktop Nav */}

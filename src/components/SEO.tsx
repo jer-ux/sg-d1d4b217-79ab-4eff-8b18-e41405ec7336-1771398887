@@ -39,10 +39,10 @@ export function SEOElements({
 // SEO component for use in pages/_app.tsx or individual pages (uses next/head)
 // Note: Flattened structure (no fragment) for better Next.js Head compatibility during hot reload
 export function SEO({
-  title = "Hello World",
-  description = "Welcome to my app",
+  title = "Kincaid IQ - Data Sciences Gen AI Labs",
+  description = "Enterprise AI-powered data intelligence platform for real-time incident management, cost optimization, and governance",
   image = "/og-image.png",
-  url,
+  url = "https://kincaid-iq.com"
 }: SEOProps) {
   return (
     <Head>

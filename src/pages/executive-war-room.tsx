@@ -22,8 +22,8 @@ export default function ExecutiveWarRoomPage() {
   return (
     <>
       <SEO
-        title="Executive War Room | SiriusB iQ"
-        description="Executive War Room with Evidence Receipts — Verified or it's not real."
+        title="Executive War Room | Kincaid IQ"
+        description="Real-time executive dashboard with KPIs, ranked events, and operational intelligence"
       />
       <WarRoom />
     </>

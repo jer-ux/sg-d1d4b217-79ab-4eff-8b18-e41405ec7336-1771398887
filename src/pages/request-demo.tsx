@@ -7,7 +7,7 @@ export default function RequestDemo() {
 
   const defaultMsg = useMemo(
     () =>
-      `Interested in Kincaid IQ + SiriusB iQ War Room.\n\nCompany:\nHeadcount:\nCurrent broker/TPA/PBM:\nPrimary pain:\nTimeline:\n`,
+      `Interested in Kincaid IQ War Room.\n\nCompany:\nHeadcount:\nCurrent broker/TPA/PBM:\nPrimary pain:\nTimeline:\n`,
     []
   );
 
@@ -83,7 +83,7 @@ export default function RequestDemo() {
             <div className="text-sm font-semibold text-white/90">What you'll see</div>
             <ul className="mt-4 space-y-2 text-sm text-white/70">
               {[
-                "SiriusB iQ War Room (ranked events + executive tiles)",
+                "Kincaid IQ War Room (ranked events + executive tiles)",
                 "Evidence receipts (hashes, gates, reason codes)",
                 "Board pack exports (PDF + manifest JSON downloads)",
                 "Integrity verification (PASS/FAIL + mismatch detail)",

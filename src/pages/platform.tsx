@@ -143,13 +143,11 @@ export default function Platform() {
 
           {/* "visual" placeholder (keeps premium feel without images) */}
           <div className="lg:col-span-5">
-            <div className="rounded-3xl border border-white/10 bg-gradient-to-b from-white/10 to-white/5 p-6">
-              <div className="text-sm font-semibold text-white/90">
-                SiriusB iQ War Room
-              </div>
-              <div className="mt-2 text-sm text-white/70">
+            <div className="bg-gradient-to-br from-white/5 to-transparent border border-white/10 rounded-2xl p-8 backdrop-blur-sm">
+              <h3 className="text-2xl font-semibold mb-4">Kincaid IQ War Room</h3>
+              <p className="text-gray-400 mb-6 leading-relaxed">
                 Executive tiles + ranked events, with receipts and verification behind every claim.
-              </div>
+              </p>
 
               <div className="mt-5 grid grid-cols-2 gap-3">
                 {[

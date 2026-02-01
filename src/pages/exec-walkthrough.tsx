@@ -117,10 +117,10 @@ export default function ExecWalkthroughPage() {
   return (
     <>
       <Head>
-        <title>Executive Walkthrough - SiriusB iQ AI Data Sciences Lab</title>
+        <title>Executive Walkthrough - Kincaid IQ AI Data Sciences Lab</title>
         <meta
           name="description"
-          content="Discover how SiriusB iQ delivers data certainty, governance, applied AI, adoption, and measurable value for enterprise decision-making."
+          content="Discover how Kincaid IQ delivers data certainty, governance, applied AI, adoption, and measurable value for enterprise decision-making."
         />
       </Head>
 
@@ -270,8 +270,8 @@ export default function ExecWalkthroughPage() {
               <h2 className="text-3xl md:text-4xl font-bold mb-6">
                 Ready to Build Institutional-Grade AI?
               </h2>
-              <p className="text-lg mb-8 text-white/90">
-                See how SiriusB iQ transforms data science into decision infrastructure.
+              <p className="text-xl text-gray-400 max-w-3xl mx-auto leading-relaxed">
+                See how Kincaid IQ transforms data science into decision infrastructure.
               </p>
               <div className="flex flex-col sm:flex-row gap-4 justify-center">
                 <Link href="/contact">

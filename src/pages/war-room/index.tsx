@@ -709,8 +709,8 @@ function CFODashboardContent() {
             regulation: "45 CFR § 164.308(a)(8) - HIPAA Evaluation Standards",
             compliance: [
               "ISO/IEC 25012:2008 - Data Quality Model",
-              "COBIT 5 DSS06 - Manage Business Process Controls",
-              "NIST SP 800-53 SI-2 - Flaw Remediation",
+              "COBIT 5 DSS06 - Flaw Remediation",
+              "NIST SP 800-53 SI-2 - Information Security Management",
               "DAMA-DMBOK Chapter 13 - Data Quality Management",
             ],
             riskFactors: [
@@ -1093,7 +1093,7 @@ function CFODashboardContent() {
     <>
       <div className="mx-auto max-w-[1400px] px-4 py-6">
         <div className="mb-5">
-          <div className="text-[11px] text-gray-500">SiriusB iQ • CFO War Room</div>
+          <div className="text-[11px] text-gray-500">Kincaid IQ • CFO War Room</div>
           <div className="text-lg font-semibold tracking-tight text-gray-100">/war-room</div>
         </div>
 
@@ -1459,8 +1459,8 @@ export default function WarRoomPage() {
   return (
     <>
       <SEO
-        title="War Room - SiriusB iQ AI Data Sciences Lab"
-        description="CFO War Room - Real-time financial operations intelligence with legal and capital markets analysis"
+        title="War Room - Kincaid IQ AI Data Sciences Lab"
+        description="Real-time incident management, evidence tracking, and governance automation for enterprise CFO and data teams"
       />
       <div className="warroom-console min-h-screen bg-gradient-to-b from-gray-900 via-gray-950 to-black text-gray-100">
         <div className="pointer-events-none fixed inset-0 -z-10">
@@ -1482,8 +1482,8 @@ export default function WarRoomPage() {
           <div className="mx-auto max-w-[1400px] px-4 py-3">
             <div className="flex items-center justify-between">
               <div>
-                <div className="text-xs text-gray-500">SiriusB iQ War Room</div>
-                <div className="text-sm font-medium text-white/90">{viewMeta[currentView].description}</div>
+                <div className="text-xs text-gray-500">Kincaid IQ War Room</div>
+                <h1 className="text-xl font-semibold tracking-tight">War Room</h1>
               </div>
               
               <DropdownMenu>

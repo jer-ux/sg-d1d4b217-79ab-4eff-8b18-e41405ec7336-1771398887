@@ -244,8 +244,8 @@ export default function EvidenceReceiptsPage() {
   return (
     <>
       <SEO
-        title="Evidence Receipts | SiriusB iQ"
-        description="Audit-grade evidence receipts with full data lineage, DQ gates, and reconciliation proofs"
+        title="Evidence Receipts | Kincaid IQ"
+        description="Blockchain-backed evidence receipts for verifiable business outcomes"
       />
       <div className="relative min-h-screen bg-[#0A0118] text-white">
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-purple-900/20 via-transparent to-transparent" />

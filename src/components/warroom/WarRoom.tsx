@@ -79,7 +79,7 @@ export function WarRoom() {
         <div className="mx-auto max-w-7xl px-6 py-5">
           <div className="flex items-start justify-between gap-4">
             <div>
-              <div className="text-xs tracking-wide text-zinc-400">SiriusB iQ</div>
+              <div className="text-xs tracking-wide text-zinc-400">Kincaid IQ</div>
               <h1 className="mt-1 text-2xl font-semibold tracking-tight">Executive War Room</h1>
               <div className="mt-1 text-sm text-zinc-400">
                 Evidence Receipts on every KPI. <span className="text-zinc-200">Verified</span> or it&apos;s not real.

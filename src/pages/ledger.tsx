@@ -173,9 +173,9 @@ export default function LedgerPage() {
 
   return (
     <>
-      <SEO 
-        title="Verified Savings Ledger | SiriusB iQ"
-        description="Finance-grade value tracking with evidence receipts and audit trails"
+      <SEO
+        title="Verified Savings Ledger | Kincaid IQ"
+        description="Track, verify, and audit cost savings with blockchain-backed evidence receipts"
       />
       <div className="min-h-screen bg-gradient-to-br from-[#0a0a0f] via-[#1a0a2e] to-[#0a0a0f]">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">

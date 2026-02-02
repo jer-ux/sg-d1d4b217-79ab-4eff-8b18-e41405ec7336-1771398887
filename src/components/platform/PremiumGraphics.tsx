@@ -14,6 +14,20 @@ import {
   Sparkles
 } from "lucide-react";
 
+export function PremiumGraphics() {
+  return (
+    <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+      <DataFlowVisualization />
+      <KPIDashboardPreview />
+      <EvidenceReceipt3D />
+      <ArbitrageDetectionViz />
+      <div className="lg:col-span-2">
+        <NetworkGraphAnimation />
+      </div>
+    </div>
+  );
+}
+
 // Animated Data Flow Visualization - ENHANCED
 export function DataFlowVisualization() {
   return (

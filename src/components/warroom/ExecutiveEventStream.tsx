@@ -1,6 +1,6 @@
 import { useMemo } from "react";
 import { AlertTriangle, TrendingUp, ShieldAlert, Pill, Users, FileCheck } from "lucide-react";
-import type { ExecutiveEvent } from "./useExecutiveStream";
+import type { ExecutiveEvent } from "./executiveTypes";
 
 const CATEGORY_CONFIG = {
   cost_trend: {

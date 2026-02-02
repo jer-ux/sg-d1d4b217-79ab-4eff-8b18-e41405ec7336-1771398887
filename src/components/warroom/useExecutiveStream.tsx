@@ -1,19 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import type { TileData, StreamMessage } from "./executiveTypes";
-
-export type ExecutiveEvent = {
-  id: string;
-  timestamp: string;
-  category: "cost_trend" | "contract" | "pharmacy" | "compliance" | "nps" | "plan_design";
-  severity: "critical" | "high" | "medium" | "low";
-  title: string;
-  description: string;
-  impact: string;
-  kpi: string;
-  framework: "McKinsey" | "Bain";
-};
+import type { TileData, StreamMessage, ExecutiveEvent } from "./executiveTypes";
 
 export function useExecutiveStream(query: string) {
   const [status, setStatus] = useState<"connecting" | "live" | "offline">("connecting");
@@ -40,8 +28,7 @@ export function useExecutiveStream(query: string) {
         }
         
         if (msg.type === "event") {
-          const event = msg.event as ExecutiveEvent;
-          setEvents((prev) => [event, ...prev].slice(0, 50));
+          setEvents((prev) => [msg.event, ...prev].slice(0, 50));
         }
         
         if (msg.type === "ping") {

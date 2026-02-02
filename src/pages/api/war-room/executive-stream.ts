@@ -1,7 +1,6 @@
 import type { NextApiRequest, NextApiResponse } from "next";
-import type { StreamMessage } from "@/components/warroom/executiveTypes";
+import type { StreamMessage, ExecutiveEvent } from "@/components/warroom/executiveTypes";
 import { buildStreamTick, buildStreamTiles } from "@/lib/warroom/demo";
-import type { ExecutiveEvent } from "@/components/warroom/useExecutiveStream";
 
 function generateExecutiveEvent(org: string, period: string): ExecutiveEvent {
   const categories = ["cost_trend", "contract", "pharmacy", "compliance", "nps", "plan_design"] as const;

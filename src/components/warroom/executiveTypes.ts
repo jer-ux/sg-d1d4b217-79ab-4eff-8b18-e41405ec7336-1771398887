@@ -54,6 +54,18 @@ export type TileData = {
   updatedAt?: string;
 };
 
+export type ExecutiveEvent = {
+  id: string;
+  timestamp: string;
+  category: "cost_trend" | "contract" | "pharmacy" | "compliance" | "nps" | "plan_design";
+  severity: "critical" | "high" | "medium" | "low";
+  title: string;
+  description: string;
+  impact: string;
+  kpi: string;
+  framework: "McKinsey" | "Bain";
+};
+
 export type SnapshotResponse = {
   tiles: TileData[];
   tickerItems: string[];
@@ -62,6 +74,7 @@ export type SnapshotResponse = {
 export type StreamMessage =
   | { type: "tiles"; tiles: TileData[] }
   | { type: "ticker"; item: string }
+  | { type: "event"; event: ExecutiveEvent }
   | { type: "ping" };
 
 export type KPIBadge = {

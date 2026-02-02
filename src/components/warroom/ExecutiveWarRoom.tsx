@@ -1,8 +1,17 @@
 import { useEffect, useMemo, useState } from "react";
+import { useRouter } from "next/router";
+import { ChevronDown } from "lucide-react";
 import type { Filters, Period, SnapshotResponse, TileData, TileKey, StreamMessage } from "./executiveTypes";
 import { ExecutiveTicker } from "./widgets/ExecutiveTicker";
 import { ExecutiveFiltersBar } from "./widgets/ExecutiveFiltersBar";
 import { KPITile } from "./tiles/KPITile";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 
 const DEFAULT_FILTERS: Filters = {
   org: "Portfolio",
@@ -12,10 +21,12 @@ const DEFAULT_FILTERS: Filters = {
 };
 
 export function ExecutiveWarRoom() {
+  const router = useRouter();
   const [filters, setFilters] = useState<Filters>(DEFAULT_FILTERS);
   const [tiles, setTiles] = useState<TileData[]>([]);
   const [tickerItems, setTickerItems] = useState<string[]>([]);
   const [status, setStatus] = useState<"connecting" | "live" | "offline">("connecting");
+  const [selectedDashboard, setSelectedDashboard] = useState<string>("executive-war-room");
 
   const query = useMemo(() => {
     const p = new URLSearchParams();
@@ -71,14 +82,36 @@ export function ExecutiveWarRoom() {
     return m;
   }, [tiles]);
 
+  const handleDashboardChange = (value: string) => {
+    setSelectedDashboard(value);
+    if (value === "kincaid-iq") {
+      router.push("/war-room");
+    }
+  };
+
   return (
     <div className="min-h-screen bg-zinc-950 text-zinc-100">
       <header className="border-b border-zinc-800/60 bg-zinc-950/80">
         <div className="mx-auto max-w-[1600px] px-6 py-5">
           <div className="flex items-start justify-between gap-4">
-            <div>
-              <div className="text-xs tracking-wide text-zinc-400">Kincaid IQ</div>
-              <h1 className="mt-1 text-2xl font-semibold tracking-tight">CFO Healthcare Dashboard</h1>
+            <div className="flex-1">
+              <div className="flex items-center gap-3">
+                <div className="text-xs tracking-wide text-zinc-400">Kincaid IQ</div>
+                <Select value={selectedDashboard} onValueChange={handleDashboardChange}>
+                  <SelectTrigger className="w-[280px] border-zinc-700 bg-zinc-900/60 text-zinc-100">
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent className="border-zinc-700 bg-zinc-900">
+                    <SelectItem value="kincaid-iq" className="text-zinc-100 focus:bg-zinc-800 focus:text-zinc-100">
+                      Kincaid IQ War Room
+                    </SelectItem>
+                    <SelectItem value="executive-war-room" className="text-zinc-100 focus:bg-zinc-800 focus:text-zinc-100">
+                      Executive War Room (CFO Dashboard)
+                    </SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+              <h1 className="mt-3 text-2xl font-semibold tracking-tight">CFO Healthcare Dashboard</h1>
               <div className="mt-1 text-sm text-zinc-400">
                 McKinsey + Bain KPIs with Evidence Receipts. <span className="text-zinc-200">Verified</span> or it&apos;s not real.
               </div>

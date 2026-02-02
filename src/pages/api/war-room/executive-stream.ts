@@ -2,11 +2,11 @@ import type { NextApiRequest, NextApiResponse } from "next";
 import type { StreamMessage, ExecutiveEvent } from "@/components/warroom/executiveTypes";
 import { buildStreamTick, buildStreamTiles } from "@/lib/warroom/demo";
 
-function generateExecutiveEvent(org: string, period: string): ExecutiveEvent {
-  const categories = ["cost_trend", "contract", "pharmacy", "compliance", "nps", "plan_design"] as const;
-  const severities = ["critical", "high", "medium", "low"] as const;
-  const frameworks = ["McKinsey", "Bain"] as const;
+const categories = ["cost_trend", "contract", "pharmacy", "compliance", "nps", "plan_design"] as const;
+const severities = ["critical", "high", "medium", "low"] as const;
+const frameworks = ["McKinsey", "Bain"] as const;
 
+function generateExecutiveEvent(org: string, period: string): ExecutiveEvent {
   const templates = [
     {
       category: "cost_trend",

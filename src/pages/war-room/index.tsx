@@ -111,6 +111,8 @@ interface MockEvent {
   receipt?: string;
   method?: string;
   theme?: ThemeKey;
+  carrier?: string;
+  estImpact?: string;
 }
 
 type KPIMetric = {

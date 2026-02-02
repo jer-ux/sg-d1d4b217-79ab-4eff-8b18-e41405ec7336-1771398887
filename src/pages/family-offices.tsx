@@ -1,122 +1,199 @@
-import { SEO } from "@/components/SEO";
-import { Container, PageHero, CardGrid, CTA, ProofBar } from "@/components/Blocks";
-import { Hero3D } from "@/components/Hero3D";
+import FamilyOfficesShell from "@/components/family-offices/FamilyOfficesShell";
+import { Card } from "@/components/family-offices/Card";
 
-export default function FamilyOffices() {
+function Pillar({
+  label,
+  value,
+  desc,
+}: {
+  label: string;
+  value: string;
+  desc: string;
+}) {
   return (
-    <>
-      <SEO
-        title="Family Offices — Kincaid IQ"
-        description="A clarity engine for complex holdings, vendor ecosystems, and operational cost structures—built for oversight and decision confidence."
-      />
-      <Container>
-        <PageHero
-          title="Family Offices"
-          subtitle="A clarity engine for complex holdings, vendor ecosystems, and operational cost structures—built for oversight and decision confidence."
+    <div className="rounded-2xl border border-white/10 bg-black/40 p-5">
+      <div className="text-[11px] tracking-[0.2em] text-white/50">{label}</div>
+      <div className="mt-2 text-sm font-semibold text-white/90">{value}</div>
+      <div className="mt-2 text-sm leading-relaxed text-white/70">{desc}</div>
+    </div>
+  );
+}
+
+export default function FamilyOfficesPage() {
+  return (
+    <FamilyOfficesShell
+      title="How We Serve Family Offices"
+      eyebrow="LOCAL • INTERNATIONAL • SOVEREIGN-ADJACENT"
+      subtitle="Governance-grade decision intelligence for family offices—evidence-first analysis, board-ready artifacts, and defensible oversight."
+    >
+      <p className="mt-5 max-w-3xl text-sm leading-relaxed text-white/70">
+        Family offices operate differently. Capital is permanent. Reputation is
+        inherited. Decisions must hold up over decades—not quarters. Kincaid
+        Risk Management Consultants strengthens fiduciary judgment with
+        evidence, governance, and defensibility.
+      </p>
+
+      {/* QUICK PILLARS */}
+      <div className="mt-10 grid grid-cols-1 gap-4 md:grid-cols-3">
+        <Pillar
+          label="POSITIONING"
+          value="Independent, conflict-free"
+          desc="No placement fees. No conflicted incentives. Governance comes first."
         />
+        <Pillar
+          label="METHOD"
+          value="Evidence-first decisioning"
+          desc="Traceable sources, clear limitations, and audit-ready outputs."
+        />
+        <Pillar
+          label="OUTPUT"
+          value="Board / council-ready artifacts"
+          desc="Clarity on scenarios, trade-offs, and defensible recommendations."
+        />
+      </div>
 
-        <div className="mb-8">
-          <Hero3D />
-        </div>
-
-        <div className="mb-8">
-          <ProofBar />
-        </div>
-
-        {/* Family Office Challenges */}
-        <div className="mb-12 k-panel p-8">
-          <div className="text-2xl font-semibold mb-6 bg-gradient-to-r from-amber-400 to-rose-300 bg-clip-text text-transparent">
-            The family office complexity trap
-          </div>
-          <div className="grid md:grid-cols-3 gap-6">
-            <div className="border-l-4 border-orange-500 pl-6">
-              <div className="font-semibold text-orange-300 mb-2">Holdings Sprawl</div>
-              <div className="text-sm text-white/70">
-                Real estate, operating companies, investments, foundations — each with its own vendors, costs, and reporting standards. Consolidation is a nightmare.
-              </div>
-            </div>
-            <div className="border-l-4 border-rose-500 pl-6">
-              <div className="font-semibold text-rose-300 mb-2">Vendor Opacity</div>
-              <div className="text-sm text-white/70">
-                Wealth managers, tax advisors, property managers, consultants — everyone claims value, nobody proves it. Fees compound while outcomes evaporate.
-              </div>
-            </div>
-            <div className="border-l-4 border-amber-500 pl-6">
-              <div className="font-semibold text-amber-300 mb-2">Governance Risk</div>
-              <div className="text-sm text-white/70">
-                Multi-generational transitions require audit trails, but legacy systems can't produce them. Compliance becomes a crisis during transitions.
-              </div>
-            </div>
-          </div>
-        </div>
-
-        {/* Core Capabilities */}
-        <CardGrid
-          items={[
-            { 
-              title: "Governance-Grade Reporting", 
-              body: "Board-safe reporting cadence with evidence packs, ledger movements, and exceptions surfaced early.",
-              highlight: "Family board ready"
-            },
-            { 
-              title: "Vendor + Cost Opacity", 
-              body: "Identify leakage, prove it, assign owners, and track closure with reconciliation discipline.",
-              highlight: "Fee transparency"
-            },
-            { 
-              title: "Risk and Controls", 
-              body: "Controls monitoring, access boundaries, and audit trails that scale across holdings and teams.",
-              highlight: "Multi-entity support"
-            },
+      {/* CORE SECTIONS */}
+      <div className="mt-10 grid grid-cols-1 gap-4 lg:grid-cols-3">
+        <Card
+          title="Governance & Decision Intelligence"
+          desc="Independent, conflict-free analysis and board/council-ready decision artifacts. No black boxes. No automated decisions."
+          bullets={[
+            "Evidence-first analysis across finance, ops, workforce, IT, and contracts",
+            "Scenario framing & trade-off clarity",
+            "Fiduciary documentation and audit-ready outputs",
           ]}
         />
 
-        {/* Real Scenario */}
-        <div className="mt-12 k-panel p-8">
-          <div className="text-xl font-semibold mb-6 bg-gradient-to-r from-violet-400 to-fuchsia-300 bg-clip-text text-transparent">
-            Real family office scenario
+        <Card
+          title="Venture Capital Support"
+          desc="For direct investing, venture studios, and strategic minority stakes—diligence and governance without chasing deal flow."
+          bullets={[
+            "Pre-investment diligence (financial, operational, governance risk)",
+            "Portfolio KPI systems for long-horizon oversight",
+            "Independent validation of management claims",
+          ]}
+          href="/venture-capital-support"
+          ctaLabel="Venture Capital Support"
+        />
+
+        <Card
+          title="M&A Support"
+          desc="Buy-side and sell-side diligence with integration-risk realism—so issues surface before they become permanent."
+          bullets={[
+            "Buy-side & sell-side diligence",
+            "Governance and integration risk assessment",
+            "Board reporting during transition periods",
+          ]}
+          href="/m-a-support"
+          ctaLabel="M&A Support"
+        />
+      </div>
+
+      {/* REACH */}
+      <div className="mt-12 grid grid-cols-1 gap-4 lg:grid-cols-12">
+        <div className="lg:col-span-6 rounded-3xl border border-white/10 bg-white/5 p-6">
+          <div className="text-xs tracking-[0.2em] text-white/50">
+            LOCAL & INTERNATIONAL REACH
           </div>
-          <div className="space-y-6">
-            <div className="border-l-4 border-rose-500 pl-6">
-              <div className="font-semibold text-rose-300 mb-2">The Problem</div>
-              <div className="text-sm text-white/70">
-                Multi-generational family office with $400M+ AUM across 12 operating entities, 8 properties, and 30+ advisors. 
-                Matriarch transitioning governance to next generation. No unified ledger. No audit trails. $2.8M in annual advisor fees with zero proof of value. 
-                Succession planning stalled due to opacity.
+          <h2 className="mt-3 text-xl font-semibold text-white/90">
+            Local & International Reach
+          </h2>
+          <p className="mt-2 text-sm leading-relaxed text-white/70">
+            Built for long-horizon capital environments—where governance needs
+            to survive scrutiny, transitions, and time.
+          </p>
+
+          <div className="mt-6 grid grid-cols-1 gap-3 md:grid-cols-2">
+            <div className="rounded-2xl border border-white/10 bg-black/40 p-5">
+              <div className="text-sm font-semibold text-white/90">
+                United States
               </div>
+              <ul className="mt-3 space-y-2 text-sm text-white/70">
+                <li className="flex gap-2">
+                  <span className="mt-[7px] h-1.5 w-1.5 rounded-full bg-white/35" />
+                  <span>Middle-market family offices</span>
+                </li>
+                <li className="flex gap-2">
+                  <span className="mt-[7px] h-1.5 w-1.5 rounded-full bg-white/35" />
+                  <span>
+                    Healthcare, technology, real estate, infrastructure exposure
+                  </span>
+                </li>
+                <li className="flex gap-2">
+                  <span className="mt-[7px] h-1.5 w-1.5 rounded-full bg-white/35" />
+                  <span>Regulatory and fiduciary complexity</span>
+                </li>
+              </ul>
             </div>
-            <div className="border-l-4 border-emerald-500 pl-6">
-              <div className="font-semibold text-emerald-300 mb-2">The Solution</div>
-              <div className="text-sm text-white/70">
-                90-day Kincaid IQ implementation: Unified value ledger across all entities, vendor evidence packs, governance framework with approval gates, 
-                and family board reporting templates. Every dollar tracked with owner assignment and quarterly reconciliation.
+
+            <div className="rounded-2xl border border-white/10 bg-black/40 p-5">
+              <div className="text-sm font-semibold text-white/90">
+                International & Gulf
               </div>
-            </div>
-            <div className="border-l-4 border-cyan-500 pl-6">
-              <div className="font-semibold text-cyan-300 mb-2">The Outcome</div>
-              <div className="text-sm text-white/70">
-                Identified $840K in duplicate vendor costs and unverifiable advisor fees. Consolidated to 18 advisors with evidence-based value propositions. 
-                Governance transition completed with full audit trail. Next generation has confidence and controls. Family board meetings now data-driven, not opinion-driven.
-              </div>
+              <ul className="mt-3 space-y-2 text-sm text-white/70">
+                <li className="flex gap-2">
+                  <span className="mt-[7px] h-1.5 w-1.5 rounded-full bg-white/35" />
+                  <span>Multi-generational governance structures</span>
+                </li>
+                <li className="flex gap-2">
+                  <span className="mt-[7px] h-1.5 w-1.5 rounded-full bg-white/35" />
+                  <span>Sovereign-adjacent capital environments</span>
+                </li>
+                <li className="flex gap-2">
+                  <span className="mt-[7px] h-1.5 w-1.5 rounded-full bg-white/35" />
+                  <span>Cross-border entities and long-horizon assets</span>
+                </li>
+              </ul>
             </div>
           </div>
         </div>
 
-        <div className="mt-12 k-panel p-8">
-          <div className="text-xl font-semibold mb-4 bg-gradient-to-r from-emerald-400 to-teal-300 bg-clip-text text-transparent">
-            Why families need this
+        {/* WHY */}
+        <div className="lg:col-span-6 rounded-3xl border border-white/10 bg-black/40 p-6">
+          <h2 className="text-xl font-semibold text-white/90">
+            Why Family Offices Work With Kincaid
+          </h2>
+
+          <div className="mt-4 grid grid-cols-1 gap-3 md:grid-cols-2">
+            {[
+              {
+                t: "Independent",
+                d: "No placement fees. No conflicted incentives.",
+              },
+              {
+                t: "Evidence-first",
+                d: "Traceable sources, clear limitations.",
+              },
+              {
+                t: "Governance-grade",
+                d: "Built for boards, councils, and regulators.",
+              },
+              {
+                t: "Global credibility",
+                d: "Local execution, international posture.",
+              },
+            ].map((x) => (
+              <div
+                key={x.t}
+                className="rounded-2xl border border-white/10 bg-white/5 p-5"
+              >
+                <div className="text-sm font-semibold text-white/90">{x.t}</div>
+                <div className="mt-2 text-sm text-white/70">{x.d}</div>
+              </div>
+            ))}
           </div>
-          <div className="text-white/70 mb-6">
-            Holdings complexity explodes faster than internal capacity. Evidence-led oversight prevents fire drills and keeps governance posture defensible during transitions, audits, and multi-generational planning.
-          </div>
-          <div className="grid md:grid-cols-2 gap-4 text-sm text-white/60">
-            <div>→ Board reporting requires verified, time-stamped proof</div>
-            <div>→ Investors demand audit-ready documentation on demand</div>
+
+          <div className="mt-6 rounded-2xl border border-white/10 bg-white/5 p-5">
+            <div className="text-sm font-semibold text-white/90">
+              Philosophy
+            </div>
+            <div className="mt-2 text-sm leading-relaxed text-white/70">
+              Technology should illuminate judgment, not replace it. Capital
+              stewardship demands evidence, humility, and accountability.
+            </div>
           </div>
         </div>
-
-        <CTA />
-      </Container>
-    </>
+      </div>
+    </FamilyOfficesShell>
   );
 }

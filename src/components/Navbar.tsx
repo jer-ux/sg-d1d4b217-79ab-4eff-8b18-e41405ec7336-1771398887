@@ -1,11 +1,11 @@
 import Link from "next/link";
 import { useRouter } from "next/router";
 
-const nav = [
+const navItems = [
   { label: "Platform", href: "/platform" },
   { label: "Company", href: "/company" },
+  { label: "Family Offices", href: "/family-offices" },
   { label: "Request demo", href: "/request-demo", cta: true },
-  { label: "Investor access", href: "/investor" },
 ];
 
 export default function Navbar() {
@@ -19,7 +19,7 @@ export default function Navbar() {
         </Link>
 
         <nav className="flex items-center gap-2">
-          {nav.map((item) => {
+          {navItems.map((item) => {
             const active = router.pathname === item.href;
             const base =
               "rounded-xl px-4 py-2 text-sm transition border border-transparent";

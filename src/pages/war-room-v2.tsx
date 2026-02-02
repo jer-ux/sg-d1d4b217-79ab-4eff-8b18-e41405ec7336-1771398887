@@ -1,224 +1,248 @@
+import { useState } from "react";
+import { motion } from "framer-motion";
+import { Activity, TrendingUp, AlertTriangle, CheckCircle, Zap } from "lucide-react";
+import Nav from "@/components/Nav";
+import Footer from "@/components/Footer";
 import { SEO } from "@/components/SEO";
-import { useState, useEffect } from "react";
-import { getWarRoomAdapter } from "@/lib/warroom/adapter";
-import type { WarRoomSummary, LaneData, ReceiptData } from "@/lib/warroom/types";
-import { AlertCircle, CheckCircle2, Clock, Database, TrendingDown, TrendingUp } from "lucide-react";
+import { WarRoomV2 } from "@/components/warroom/WarRoomV2";
+import { RankedEventsPanel } from "@/components/RankedEventsPanel";
 
-function ReceiptBadge({ receipt }: { receipt: ReceiptData }) {
-  if (receipt.verified) {
-    return (
-      <div className="inline-flex items-center gap-1.5 rounded-full border border-emerald-500/30 bg-emerald-500/10 px-2.5 py-1 text-xs font-medium text-emerald-300">
-        <CheckCircle2 className="h-3 w-3" />
-        VERIFIED
-      </div>
-    );
-  }
+const THEME = {
+  blue: {
+    bar: "bg-gradient-to-b from-sky-400 via-blue-500 to-indigo-500",
+    g1: "rgba(59,130,246,0.50)",
+    g2: "rgba(14,165,233,0.40)",
+    g3: "rgba(99,102,241,0.35)",
+    title: "text-sky-200",
+    iconBg: "bg-sky-500/15",
+    iconRing: "ring-sky-400/40",
+    iconGlow: "shadow-[0_0_0_1px_rgba(56,189,248,0.25),0_0_24px_rgba(59,130,246,0.22)]",
+    hoverRing: "group-hover:shadow-[0_0_0_1px_rgba(56,189,248,0.35),0_0_48px_rgba(99,102,241,0.18)]",
+  },
+  emerald: {
+    bar: "bg-gradient-to-b from-emerald-300 via-emerald-500 to-teal-500",
+    g1: "rgba(16,185,129,0.55)",
+    g2: "rgba(20,184,166,0.40)",
+    g3: "rgba(34,197,94,0.30)",
+    title: "text-emerald-200",
+    iconBg: "bg-emerald-500/15",
+    iconRing: "ring-emerald-400/40",
+    iconGlow: "shadow-[0_0_0_1px_rgba(52,211,153,0.25),0_0_24px_rgba(16,185,129,0.22)]",
+    hoverRing: "group-hover:shadow-[0_0_0_1px_rgba(52,211,153,0.35),0_0_48px_rgba(20,184,166,0.18)]",
+  },
+  violet: {
+    bar: "bg-gradient-to-b from-violet-400 via-purple-500 to-fuchsia-500",
+    g1: "rgba(139,92,246,0.55)",
+    g2: "rgba(168,85,247,0.45)",
+    g3: "rgba(217,70,239,0.30)",
+    title: "text-violet-200",
+    iconBg: "bg-violet-500/15",
+    iconRing: "ring-violet-400/40",
+    iconGlow: "shadow-[0_0_0_1px_rgba(167,139,250,0.25),0_0_24px_rgba(168,85,247,0.22)]",
+    hoverRing: "group-hover:shadow-[0_0_0_1px_rgba(167,139,250,0.35),0_0_48px_rgba(217,70,239,0.18)]",
+  },
+  rose: {
+    bar: "bg-gradient-to-b from-rose-400 via-pink-500 to-fuchsia-500",
+    g1: "rgba(244,63,94,0.55)",
+    g2: "rgba(236,72,153,0.45)",
+    g3: "rgba(217,70,239,0.40)",
+    title: "text-rose-200",
+    iconBg: "bg-rose-500/15",
+    iconRing: "ring-rose-400/40",
+    iconGlow: "shadow-[0_0_0_1px_rgba(251,113,133,0.25),0_0_24px_rgba(244,63,94,0.25)]",
+    hoverRing: "group-hover:shadow-[0_0_0_1px_rgba(251,113,133,0.35),0_0_48px_rgba(236,72,153,0.20)]",
+  },
+  amber: {
+    bar: "bg-gradient-to-b from-amber-300 via-orange-500 to-rose-500",
+    g1: "rgba(245,158,11,0.55)",
+    g2: "rgba(249,115,22,0.45)",
+    g3: "rgba(244,63,94,0.25)",
+    title: "text-amber-200",
+    iconBg: "bg-amber-500/15",
+    iconRing: "ring-amber-400/40",
+    iconGlow: "shadow-[0_0_0_1px_rgba(252,211,77,0.25),0_0_24px_rgba(249,115,22,0.22)]",
+    hoverRing: "group-hover:shadow-[0_0_0_1px_rgba(252,211,77,0.35),0_0_48px_rgba(249,115,22,0.18)]",
+  },
+};
 
+type ThemeKey = keyof typeof THEME;
+
+function AnimatedGradientOverlay({ theme }: { theme: typeof THEME[ThemeKey] }) {
   return (
-    <div className="inline-flex items-center gap-1.5 rounded-full border border-amber-500/30 bg-amber-500/10 px-2.5 py-1 text-xs font-medium text-amber-300">
-      <AlertCircle className="h-3 w-3" />
-      UNVERIFIED
-    </div>
+    <motion.div
+      aria-hidden
+      className="absolute inset-0 opacity-25 transition-opacity duration-300 group-hover:opacity-50"
+      style={{
+        backgroundImage: `linear-gradient(135deg, ${theme.g1}, ${theme.g2}, ${theme.g3})`,
+        backgroundSize: "200% 200%",
+      }}
+      animate={{
+        backgroundPosition: ["0% 50%", "100% 50%", "0% 50%"],
+      }}
+      transition={{
+        duration: 10,
+        repeat: Infinity,
+        ease: "easeInOut",
+      }}
+    />
   );
 }
 
-function LaneCard({ lane }: { lane: LaneData }) {
-  const [expanded, setExpanded] = useState(false);
+type StatCardProps = {
+  icon: React.ComponentType<{ className?: string }>;
+  label: string;
+  value: string;
+  themeKey: ThemeKey;
+  delay?: number;
+};
+
+function StatCard({ icon: Icon, label, value, themeKey, delay = 0 }: StatCardProps) {
+  const t = THEME[themeKey];
 
   return (
-    <div className="rounded-2xl border border-white/10 bg-gradient-to-br from-gray-900/90 to-gray-950/90 p-6 backdrop-blur-xl transition hover:border-white/20">
-      <div className="mb-4">
-        <div className="text-sm font-semibold text-gray-100">{lane.title}</div>
-        <div className="text-xs text-gray-500">{lane.subtitle}</div>
-      </div>
+    <motion.div
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ delay, duration: 0.5 }}
+      className={[
+        "group relative overflow-hidden rounded-2xl border border-white/10 bg-slate-950/60 p-6",
+        "backdrop-blur-xl transition-transform duration-200 hover:-translate-y-0.5",
+        t.hoverRing,
+      ].join(" ")}
+    >
+      <div className={`absolute left-0 top-0 h-full w-2 ${t.bar}`} />
+      <AnimatedGradientOverlay theme={t} />
+      <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(70%_55%_at_50%_15%,rgba(255,255,255,0.10),transparent_60%)] opacity-60" />
 
-      <div className="mb-4 rounded-xl border border-white/10 bg-black/30 p-4">
-        <div className="flex items-start justify-between">
-          <div>
-            <div className="text-xs text-gray-500">{lane.primaryKpi.label}</div>
-            <div className="mt-1 text-2xl font-bold tabular-nums text-gray-100">{lane.primaryKpi.value}</div>
-            {lane.primaryKpi.trend && (
-              <div className="mt-1 flex items-center gap-1 text-xs text-emerald-400">
-                <TrendingUp className="h-3 w-3" />
-                {lane.primaryKpi.trend}
-              </div>
-            )}
-          </div>
-          <ReceiptBadge receipt={lane.primaryKpi.receipt} />
+      <div className="relative flex items-start gap-4">
+        <div
+          className={[
+            "grid h-12 w-12 place-items-center rounded-2xl ring-1",
+            t.iconBg,
+            t.iconRing,
+            t.iconGlow,
+          ].join(" ")}
+        >
+          <Icon className={`h-6 w-6 ${t.title}`} />
         </div>
 
-        <button
-          onClick={() => setExpanded(!expanded)}
-          className="mt-3 text-xs text-blue-400 hover:text-blue-300"
-        >
-          {expanded ? "Hide" : "View"} Receipt Details
-        </button>
-
-        {expanded && (
-          <div className="mt-3 space-y-2 rounded-lg border border-white/10 bg-black/40 p-3 text-xs">
-            <div className="flex items-center justify-between">
-              <span className="text-gray-500">Receipt ID</span>
-              <span className="font-mono text-gray-300">{lane.primaryKpi.receipt.receiptId}</span>
-            </div>
-            <div className="flex items-center justify-between">
-              <span className="text-gray-500">Freshness</span>
-              <span className="text-gray-300">{lane.primaryKpi.receipt.freshnessMinutes}m</span>
-            </div>
-            <div className="flex items-center justify-between">
-              <span className="text-gray-500">DQ Pass Rate</span>
-              <span className="text-gray-300">{(lane.primaryKpi.receipt.dqPassRate * 100).toFixed(1)}%</span>
-            </div>
-            <div className="flex items-center justify-between">
-              <span className="text-gray-500">Confidence</span>
-              <span className="text-gray-300">{(lane.primaryKpi.receipt.confidence * 100).toFixed(1)}%</span>
-            </div>
-            {lane.primaryKpi.receipt.reasons.length > 0 && (
-              <div className="mt-2 rounded border border-amber-500/30 bg-amber-500/10 p-2">
-                <div className="text-amber-300">Issues:</div>
-                <ul className="mt-1 list-inside list-disc text-amber-200">
-                  {lane.primaryKpi.receipt.reasons.map((r, i) => (
-                    <li key={i}>{r}</li>
-                  ))}
-                </ul>
-              </div>
-            )}
-          </div>
-        )}
+        <div className="flex-1">
+          <div className="text-sm text-white/70">{label}</div>
+          <div className={`text-2xl font-bold ${t.title}`}>{value}</div>
+        </div>
       </div>
 
-      <div className="space-y-2">
-        {lane.secondaryKpis.map((kpi, i) => (
-          <div key={i} className="flex items-center justify-between rounded-lg border border-white/10 bg-black/20 p-3">
-            <div>
-              <div className="text-xs text-gray-500">{kpi.label}</div>
-              <div className="mt-0.5 text-sm font-semibold tabular-nums text-gray-200">{kpi.value}</div>
-            </div>
-            <ReceiptBadge receipt={kpi.receipt} />
-          </div>
-        ))}
+      <div className="pointer-events-none absolute inset-0 opacity-0 transition-opacity duration-300 group-hover:opacity-100">
+        <div className="absolute -inset-24 bg-[conic-gradient(from_180deg,rgba(255,255,255,0.0),rgba(255,255,255,0.14),rgba(255,255,255,0.0))] blur-2xl" />
       </div>
-    </div>
-  );
-}
-
-function TickerBar({ summary }: { summary: WarRoomSummary }) {
-  return (
-    <div className="overflow-hidden rounded-xl border border-white/10 bg-gradient-to-r from-gray-900/90 to-gray-950/90 backdrop-blur-xl">
-      <div className="flex animate-marquee items-center gap-8 px-4 py-3 whitespace-nowrap">
-        {summary.ticker.map((item) => (
-          <div key={item.id} className="flex items-center gap-2">
-            {item.tone === "good" && <TrendingUp className="h-4 w-4 text-emerald-400" />}
-            {item.tone === "warn" && <AlertCircle className="h-4 w-4 text-amber-400" />}
-            {item.tone === "neutral" && <Database className="h-4 w-4 text-gray-400" />}
-            <span
-              className={
-                item.tone === "good"
-                  ? "text-sm text-emerald-300"
-                  : item.tone === "warn"
-                  ? "text-sm text-amber-300"
-                  : "text-sm text-gray-300"
-              }
-            >
-              {item.text}
-            </span>
-          </div>
-        ))}
-      </div>
-    </div>
+    </motion.div>
   );
 }
 
 export default function WarRoomV2Page() {
-  const [summary, setSummary] = useState<WarRoomSummary | null>(null);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
-
-  useEffect(() => {
-    const adapter = getWarRoomAdapter();
-    adapter
-      .getSummary()
-      .then((data) => {
-        setSummary(data);
-        setLoading(false);
-      })
-      .catch((err) => {
-        console.error("Failed to load War Room data:", err);
-        setError(err.message);
-        setLoading(false);
-      });
-  }, []);
-
-  if (loading) {
-    return (
-      <div className="min-h-screen bg-gradient-to-b from-gray-900 via-gray-950 to-black text-gray-100">
-        <div className="mx-auto max-w-7xl px-6 py-10">
-          <div className="text-sm text-gray-400">Loading War Room…</div>
-          <div className="mt-4 grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-4">
-            {Array.from({ length: 4 }).map((_, i) => (
-              <div key={i} className="h-80 animate-pulse rounded-2xl border border-gray-800/60 bg-gray-950/60" />
-            ))}
-          </div>
-        </div>
-      </div>
-    );
-  }
-
-  if (error || !summary) {
-    return (
-      <div className="min-h-screen bg-gradient-to-b from-gray-900 via-gray-950 to-black text-gray-100">
-        <div className="mx-auto max-w-7xl px-6 py-10">
-          <div className="rounded-xl border border-red-500/30 bg-red-500/10 p-4 text-red-300">
-            Error loading War Room: {error || "Unknown error"}
-          </div>
-        </div>
-      </div>
-    );
-  }
-
   return (
     <>
       <SEO
-        title="War Room V2 - Kincaid IQ AI Data Sciences Lab"
-        description="Next-generation incident management with real-time streaming, evidence tracking, and governance automation"
+        title="War Room V2 - Real-Time Intelligence | Kincaid IQ"
+        description="AI-powered real-time event management with ranked intelligence and governance automation"
       />
-      <div className="min-h-screen bg-gradient-to-b from-gray-900 via-gray-950 to-black text-gray-100">
-        <div className="pointer-events-none fixed inset-0 -z-10">
-          <div className="absolute inset-0 bg-gradient-to-b from-gray-800/50 via-gray-900/50 to-black/50" />
-          <div className="absolute -top-24 left-10 h-[520px] w-[920px] rounded-full bg-emerald-300/5 blur-3xl" />
-          <div className="absolute -top-20 right-10 h-[420px] w-[760px] rounded-full bg-sky-300/5 blur-3xl" />
-        </div>
 
-        <div className="mx-auto max-w-7xl px-6 py-10">
-          <div className="mb-8">
-            <div className="flex items-center gap-2 text-xs text-gray-500">
-              <Clock className="h-3 w-3" />
-              <span>As of {new Date(summary.asOfIso).toLocaleString()}</span>
+      <Nav />
+
+      <main className="min-h-screen bg-gradient-to-br from-slate-950 via-slate-900 to-slate-950">
+        {/* Hero Section */}
+        <section className="relative pt-32 pb-12 px-4">
+          <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,rgba(99,102,241,0.15),transparent_50%)]" />
+
+          <div className="relative z-10 max-w-7xl mx-auto">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6 }}
+              className="text-center mb-12"
+            >
+              <div className="inline-flex items-center gap-2 rounded-full border border-violet-400/30 bg-violet-500/10 px-4 py-2 backdrop-blur-xl mb-6">
+                <Zap className="h-4 w-4 text-violet-300" />
+                <span className="text-sm text-violet-200">Real-Time Intelligence Platform</span>
+              </div>
+
+              <h1 className="text-5xl md:text-6xl font-bold bg-gradient-to-r from-blue-400 via-violet-400 to-fuchsia-400 bg-clip-text text-transparent mb-4">
+                War Room V2
+              </h1>
+
+              <p className="text-xl text-white/70 max-w-3xl mx-auto">
+                AI-powered event management with real-time ranking, governance automation, and verified evidence trails
+              </p>
+            </motion.div>
+
+            {/* Stats Grid */}
+            <div className="grid md:grid-cols-4 gap-6 mb-12">
+              <StatCard
+                icon={Activity}
+                label="Events Processed"
+                value="10M+"
+                themeKey="blue"
+                delay={0}
+              />
+              <StatCard
+                icon={TrendingUp}
+                label="Avg Response Time"
+                value="<100ms"
+                themeKey="emerald"
+                delay={0.1}
+              />
+              <StatCard
+                icon={AlertTriangle}
+                label="Active Incidents"
+                value="24"
+                themeKey="rose"
+                delay={0.2}
+              />
+              <StatCard
+                icon={CheckCircle}
+                label="Resolution Rate"
+                value="99.2%"
+                themeKey="violet"
+                delay={0.3}
+              />
             </div>
-            <h1 className="mt-2 text-3xl font-bold tracking-tight text-gray-100">CFO War Room</h1>
-            <p className="mt-1 text-sm text-gray-400">
-              Real-time operations intelligence with Evidence Receipt verification
-            </p>
           </div>
+        </section>
 
-          <div className="mb-6">
-            <TickerBar summary={summary} />
+        {/* Ranked Events Panel */}
+        <section className="px-4 pb-12">
+          <div className="max-w-7xl mx-auto">
+            <RankedEventsPanel />
           </div>
+        </section>
 
-          <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-4">
-            {summary.lanes.map((lane) => (
-              <LaneCard key={lane.lane} lane={lane} />
-            ))}
-          </div>
+        {/* War Room Grid */}
+        <section className="px-4 pb-16">
+          <div className="max-w-7xl mx-auto">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.2 }}
+              className="relative overflow-hidden rounded-3xl border border-white/10 bg-slate-950/60 backdrop-blur-xl p-8"
+            >
+              <div className={`absolute left-0 top-0 h-full w-2 ${THEME.blue.bar}`} />
+              <AnimatedGradientOverlay theme={THEME.blue} />
+              <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(70%_55%_at_50%_15%,rgba(255,255,255,0.10),transparent_60%)] opacity-60" />
 
-          <div className="mt-8 rounded-xl border border-white/10 bg-gray-900/50 p-4 text-xs text-gray-400">
-            <div className="font-semibold text-gray-300">🔒 Integrity Gates Active</div>
-            <div className="mt-1">
-              All metrics verified through Evidence Receipts. Unverified data is flagged and excluded from executive
-              reporting.
-            </div>
+              <div className="relative">
+                <div className="mb-6">
+                  <h2 className="text-2xl font-bold text-sky-200 mb-2">Live Event Stream</h2>
+                  <p className="text-white/70">Real-time intelligence feed with AI-powered governance</p>
+                </div>
+
+                <WarRoomV2 />
+              </div>
+            </motion.div>
           </div>
-        </div>
-      </div>
+        </section>
+      </main>
+
+      <Footer />
     </>
   );
 }

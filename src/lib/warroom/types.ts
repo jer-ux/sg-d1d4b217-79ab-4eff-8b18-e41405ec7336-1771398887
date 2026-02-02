@@ -52,6 +52,13 @@ export type WarEvent = {
   priority?: "LOW" | "MEDIUM" | "HIGH" | "CRITICAL";
   trend?: number;
   daysInState?: number;
+
+  // Arbitrage / New Fields
+  type?: "standard" | "arbitrage";
+  severity?: "critical" | "high" | "medium" | "low";
+  carrier?: string;
+  estImpact?: string;
+  priority_score?: number;
 };
 
 export type EventNotes = {

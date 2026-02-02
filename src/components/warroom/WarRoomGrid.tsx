@@ -5,6 +5,17 @@ import { useMemo, useState } from "react";
 import { TickerMarquee } from "@/components/warroom/TickerMarquee";
 import { useWarRoomStream } from "@/components/warroom/useWarRoomStream";
 import type { LaneKey, WarEvent, EvidenceReceipt } from "@/lib/warroom/types";
+import { motion } from "framer-motion";
+import { cn } from "@/lib/utils";
+import { Badge } from "@/components/ui/badge";
+import { BadgeDollarSign, TrendingUp } from "lucide-react";
+
+const severityColors = {
+  critical: "border-red-500/50 shadow-[0_0_15px_rgba(239,68,68,0.2)]",
+  high: "border-orange-500/50 shadow-[0_0_15px_rgba(249,115,22,0.2)]",
+  medium: "border-yellow-500/50 shadow-[0_0_15px_rgba(234,179,8,0.2)]",
+  low: "border-blue-500/50 shadow-[0_0_15px_rgba(59,130,246,0.2)]",
+};
 
 const laneMeta: Record<LaneKey, { label: string; headline: string; color: string; bgGradient: string }> = {
   value: { 
@@ -183,7 +194,41 @@ function EventRow({
   const trend = e.trend || 0;
 
   return (
-    <div className="rounded-xl border border-white/10 bg-black/20 p-4 transition hover:bg-black/30 hover:border-white/20">
+    <motion.div
+      layout
+      initial={{ opacity: 0, scale: 0.9 }}
+      animate={{ opacity: 1, scale: 1 }}
+      exit={{ opacity: 0, scale: 0.9 }}
+      transition={{ duration: 0.2 }}
+      className={cn(
+        "group relative overflow-hidden rounded-xl border backdrop-blur-xl p-4",
+        "cursor-pointer transition-all duration-200 hover:shadow-lg",
+        e.type === "arbitrage"
+          ? "border-amber-500/30 bg-amber-950/20 hover:border-amber-400/50 hover:shadow-amber-500/20"
+          : "border-white/10 bg-slate-950/60 hover:border-white/20",
+        severityColors[e.severity as keyof typeof severityColors]
+      )}
+      onClick={() => onEvidence(e)}
+    >
+      {/* Arbitrage Badge */}
+      {e.type === "arbitrage" && (
+        <div className="absolute top-2 right-2">
+          <span className="inline-flex items-center gap-1 rounded-full bg-amber-500/20 px-2 py-0.5 text-xs font-semibold text-amber-200 ring-1 ring-amber-400/40">
+            <BadgeDollarSign className="h-3 w-3" />
+            Arbitrage
+          </span>
+        </div>
+      )}
+
+      {/* Carrier Badge for Arbitrage Events */}
+      {e.type === "arbitrage" && e.carrier && (
+        <div className="mb-2">
+          <span className="inline-flex items-center gap-1 rounded-md bg-sky-500/10 px-2 py-0.5 text-xs font-medium text-sky-200 ring-1 ring-sky-400/30">
+            {e.carrier}
+          </span>
+        </div>
+      )}
+
       <div className="flex items-start justify-between gap-3 mb-3">
         <div className="flex-1">
           <div className="flex items-center gap-2 mb-1">
@@ -292,7 +337,7 @@ function EventRow({
           }}
         />
       </div>
-    </div>
+    </motion.div>
   );
 }
 

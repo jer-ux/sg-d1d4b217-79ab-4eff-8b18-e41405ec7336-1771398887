@@ -44,6 +44,8 @@ type NavSection = {
 };
 
 function NavigationCard({ card }: { card: NavCard }) {
+  const isPremium = card.category === "Core Platform";
+  
   return (
     <motion.div
       layout
@@ -53,30 +55,110 @@ function NavigationCard({ card }: { card: NavCard }) {
       transition={{ duration: 0.2 }}
     >
       <Link href={card.href}>
-        <div className="group relative h-full rounded-2xl border border-white/10 bg-white/5 p-5 transition-all duration-300 hover:bg-white/10 hover:border-white/20 cursor-pointer">
-          <div className="flex items-start justify-between gap-3 mb-3">
-            <div className="p-2 rounded-xl bg-white/10 group-hover:bg-white/15 transition-colors">
-              <card.icon className="h-5 w-5 text-white/80" />
-            </div>
+        <div className="group relative h-full rounded-2xl border border-white/10 bg-white/5 p-5 transition-all duration-300 hover:bg-white/10 hover:border-white/20 cursor-pointer overflow-hidden">
+          {/* Premium 3D Badge for Core Platform */}
+          {isPremium && (
+            <motion.div
+              className="absolute -top-6 -right-6 h-32 w-32 rounded-full bg-gradient-to-br from-blue-500/30 via-purple-500/20 to-transparent blur-2xl"
+              animate={{
+                scale: [1, 1.2, 1],
+                opacity: [0.3, 0.5, 0.3],
+              }}
+              transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
+            />
+          )}
+          
+          {/* Holographic shine effect for premium cards */}
+          {isPremium && (
+            <motion.div
+              className="absolute inset-0 bg-gradient-to-br from-transparent via-white/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"
+              animate={{
+                backgroundPosition: ["0% 0%", "100% 100%"],
+              }}
+              transition={{ duration: 2, repeat: Infinity, ease: "linear" }}
+              style={{
+                backgroundSize: "200% 200%",
+              }}
+            />
+          )}
+
+          <div className="relative z-10 flex items-start justify-between gap-3 mb-3">
+            <motion.div 
+              className={`p-2 rounded-xl transition-colors ${
+                isPremium 
+                  ? "bg-gradient-to-br from-blue-500/20 to-purple-500/20 border border-blue-400/30 shadow-[0_0_20px_rgba(59,130,246,0.3)]" 
+                  : "bg-white/10 group-hover:bg-white/15"
+              }`}
+              whileHover={isPremium ? { scale: 1.1, rotate: 5 } : {}}
+              transition={{ duration: 0.2 }}
+            >
+              <card.icon className={`h-5 w-5 ${isPremium ? "text-blue-300" : "text-white/80"}`} />
+            </motion.div>
+            
             {card.tag && (
-              <span className="text-[10px] px-2 py-1 rounded-full bg-white/10 text-white/70 uppercase tracking-wider">
+              <motion.span 
+                className={`text-[10px] px-2 py-1 rounded-full uppercase tracking-wider font-semibold ${
+                  card.tag === "Live" ? "bg-emerald-500/20 text-emerald-300 border border-emerald-400/40 shadow-[0_0_15px_rgba(16,185,129,0.3)]" :
+                  card.tag === "Executive" ? "bg-purple-500/20 text-purple-300 border border-purple-400/40 shadow-[0_0_15px_rgba(168,85,247,0.3)]" :
+                  card.tag === "Beta" ? "bg-blue-500/20 text-blue-300 border border-blue-400/40 shadow-[0_0_15px_rgba(59,130,246,0.3)]" :
+                  card.tag === "Verified" ? "bg-cyan-500/20 text-cyan-300 border border-cyan-400/40 shadow-[0_0_15px_rgba(6,182,212,0.3)]" :
+                  card.tag === "Ledger" ? "bg-amber-500/20 text-amber-300 border border-amber-400/40 shadow-[0_0_15px_rgba(245,158,11,0.3)]" :
+                  card.tag === "AI" ? "bg-violet-500/20 text-violet-300 border border-violet-400/40 shadow-[0_0_15px_rgba(139,92,246,0.3)]" :
+                  "bg-white/10 text-white/70"
+                }`}
+                animate={isPremium ? {
+                  boxShadow: [
+                    "0_0_15px_rgba(59,130,246,0.3)",
+                    "0_0_25px_rgba(59,130,246,0.5)",
+                    "0_0_15px_rgba(59,130,246,0.3)",
+                  ],
+                } : {}}
+                transition={{ duration: 2, repeat: Infinity }}
+              >
                 {card.tag}
-              </span>
+              </motion.span>
             )}
           </div>
           
-          <h3 className="text-base font-semibold text-white/90 mb-2 group-hover:text-white transition-colors">
-            {card.title}
-          </h3>
-          
-          <p className="text-sm text-white/60 leading-relaxed group-hover:text-white/70 transition-colors">
-            {card.description}
-          </p>
+          <div className="relative z-10">
+            <h3 className={`text-base font-semibold mb-2 transition-colors ${
+              isPremium 
+                ? "text-white group-hover:text-blue-100" 
+                : "text-white/90 group-hover:text-white"
+            }`}>
+              {card.title}
+            </h3>
+            
+            <p className={`text-sm leading-relaxed transition-colors ${
+              isPremium 
+                ? "text-white/70 group-hover:text-white/80" 
+                : "text-white/60 group-hover:text-white/70"
+            }`}>
+              {card.description}
+            </p>
 
-          <div className="mt-4 flex items-center gap-2 text-sm text-white/50 group-hover:text-white/70 transition-colors">
-            <span>Explore</span>
-            <span className="group-hover:translate-x-1 transition-transform">→</span>
+            <div className={`mt-4 flex items-center gap-2 text-sm transition-colors ${
+              isPremium 
+                ? "text-blue-300 group-hover:text-blue-200" 
+                : "text-white/50 group-hover:text-white/70"
+            }`}>
+              <span>Explore</span>
+              <span className="group-hover:translate-x-1 transition-transform">→</span>
+            </div>
           </div>
+
+          {/* Premium border glow effect */}
+          {isPremium && (
+            <motion.div
+              className="absolute inset-0 rounded-2xl border border-blue-400/0 group-hover:border-blue-400/40 transition-all duration-500"
+              style={{
+                boxShadow: "0 0 0 rgba(59, 130, 246, 0)",
+              }}
+              whileHover={{
+                boxShadow: "0 0 30px rgba(59, 130, 246, 0.3)",
+              }}
+            />
+          )}
         </div>
       </Link>
     </motion.div>

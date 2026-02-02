@@ -1,286 +1,420 @@
 import Link from "next/link";
-import { FileText, Shield } from "lucide-react";
+import { 
+  FileText, 
+  Shield, 
+  Zap, 
+  Database,
+  BarChart3,
+  Settings,
+  AlertTriangle,
+  Plug,
+  Users,
+  TrendingUp,
+  BookOpen,
+  Award,
+  Building2,
+  Bot,
+  Calculator,
+  GitBranch,
+  FileCheck,
+  Eye
+} from "lucide-react";
+import Nav from "@/components/Nav";
+import Footer from "@/components/Footer";
+import { SEO } from "@/components/SEO";
 
-function Pillar({
-  title,
-  tag,
-  desc,
-  bullets = [],
-  href,
-  icon,
-}: {
+type NavCard = {
   title: string;
-  tag?: string;
-  desc: string;
-  bullets?: string[];
+  description: string;
   href: string;
-  icon?: React.ReactNode;
-}) {
-  return (
-    <div className="rounded-3xl border border-white/10 bg-white/5 p-6">
-      <div className="flex items-center justify-between gap-3">
-        <div className="flex items-center gap-3">
-          {icon && <div className="text-white/70">{icon}</div>}
-          <div className="text-sm font-semibold text-white/90">{title}</div>
-        </div>
-        {tag ? (
-          <div className="rounded-full border border-white/10 bg-black/40 px-3 py-1 text-[11px] text-white/70">
-            {tag}
-          </div>
-        ) : null}
-      </div>
+  icon: React.ComponentType<{ className?: string }>;
+  tag?: string;
+};
 
-      <div className="mt-2 text-sm leading-relaxed text-white/65">{desc}</div>
-
-      {bullets.length > 0 && (
-        <ul className="mt-4 space-y-2 text-sm text-white/70">
-          {bullets.map((b) => (
-            <li key={b} className="flex gap-2">
-              <span className="mt-[6px] h-1.5 w-1.5 rounded-full bg-white/40" />
-              <span>{b}</span>
-            </li>
-          ))}
-        </ul>
-      )}
-
-      <div className="mt-6">
-        <Link
-          href={href}
-          className="inline-flex rounded-2xl border border-white/10 bg-black/40 px-4 py-2 text-sm text-white/80 hover:bg-white/5"
-        >
-          Open →
-        </Link>
-      </div>
-    </div>
-  );
-}
-
-function FlowStep({
-  n,
-  title,
-  desc,
-}: {
-  n: string;
+type NavSection = {
   title: string;
-  desc: string;
-}) {
+  description: string;
+  cards: NavCard[];
+};
+
+function NavigationCard({ card }: { card: NavCard }) {
   return (
-    <div className="rounded-3xl border border-white/10 bg-black/40 p-6">
-      <div className="flex items-start justify-between gap-4">
-        <div className="text-[11px] tracking-[0.2em] text-white/50">STEP {n}</div>
-        <div className="h-6 w-6 rounded-full border border-white/10 bg-white/5" />
+    <Link href={card.href}>
+      <div className="group relative h-full rounded-2xl border border-white/10 bg-white/5 p-5 transition-all duration-300 hover:bg-white/10 hover:border-white/20 cursor-pointer">
+        <div className="flex items-start justify-between gap-3 mb-3">
+          <div className="p-2 rounded-xl bg-white/10 group-hover:bg-white/15 transition-colors">
+            <card.icon className="h-5 w-5 text-white/80" />
+          </div>
+          {card.tag && (
+            <span className="text-[10px] px-2 py-1 rounded-full bg-white/10 text-white/70 uppercase tracking-wider">
+              {card.tag}
+            </span>
+          )}
+        </div>
+        
+        <h3 className="text-base font-semibold text-white/90 mb-2 group-hover:text-white transition-colors">
+          {card.title}
+        </h3>
+        
+        <p className="text-sm text-white/60 leading-relaxed group-hover:text-white/70 transition-colors">
+          {card.description}
+        </p>
+
+        <div className="mt-4 flex items-center gap-2 text-sm text-white/50 group-hover:text-white/70 transition-colors">
+          <span>Explore</span>
+          <span className="group-hover:translate-x-1 transition-transform">→</span>
+        </div>
       </div>
-      <div className="mt-3 text-sm font-semibold text-white/90">{title}</div>
-      <div className="mt-2 text-sm leading-relaxed text-white/70">{desc}</div>
-    </div>
+    </Link>
   );
 }
 
-function CTA() {
+function NavigationSection({ section }: { section: NavSection }) {
   return (
-    <div className="rounded-3xl border border-white/10 bg-white/5 p-6">
-      <div className="text-sm font-semibold text-white/90">Want the walkthrough?</div>
-      <div className="mt-2 text-sm text-white/70">
-        We'll demo the War Room in executive mode, then open the hood: receipts, attachments,
-        manifests, and PASS/FAIL verification.
+    <div className="mb-12">
+      <div className="mb-6">
+        <h2 className="text-2xl font-bold text-white/95 mb-2">{section.title}</h2>
+        <p className="text-sm text-white/60">{section.description}</p>
       </div>
-      <div className="mt-6 flex flex-wrap gap-3">
-        <Link
-          href="/request-demo"
-          className="rounded-2xl border border-white/10 bg-white/10 px-5 py-2.5 text-sm text-white hover:bg-white/15"
-        >
-          Request demo →
-        </Link>
-        <Link
-          href="/war-room"
-          className="rounded-2xl border border-white/10 bg-black/40 px-5 py-2.5 text-sm text-white/80 hover:bg-white/5"
-        >
-          Open War Room →
-        </Link>
-        <Link
-          href="/evidence-receipts"
-          className="rounded-2xl border border-white/10 bg-black/40 px-5 py-2.5 text-sm text-white/80 hover:bg-white/5"
-        >
-          Evidence Receipts →
-        </Link>
+      
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+        {section.cards.map((card) => (
+          <NavigationCard key={card.href} card={card} />
+        ))}
       </div>
     </div>
   );
 }
 
 export default function Platform() {
+  const sections: NavSection[] = [
+    {
+      title: "Core Platform",
+      description: "Mission-critical operational intelligence and governance",
+      cards: [
+        {
+          title: "War Room",
+          description: "Real-time incident management with AI-powered event ranking, severity scoring, and automated governance workflows",
+          href: "/war-room",
+          icon: Zap,
+          tag: "Live"
+        },
+        {
+          title: "Executive War Room",
+          description: "C-suite dashboard with 4-tile KPI view, ranked events by impact, and drill-down to evidence receipts",
+          href: "/executive-war-room",
+          icon: BarChart3,
+          tag: "Executive"
+        },
+        {
+          title: "War Room V2",
+          description: "Next-generation war room with enhanced streaming, real-time audit trails, and attachment management",
+          href: "/war-room-v2",
+          icon: Zap,
+          tag: "Beta"
+        },
+        {
+          title: "Evidence Receipts",
+          description: "Cryptographically signed proof of business outcomes with immutable audit trails and verification",
+          href: "/evidence-receipts",
+          icon: FileCheck,
+          tag: "Verified"
+        },
+        {
+          title: "Verified Savings Ledger",
+          description: "Blockchain-backed cost optimization tracking with immutable records and stakeholder accountability",
+          href: "/verified-savings-ledger",
+          icon: TrendingUp,
+          tag: "Ledger"
+        },
+        {
+          title: "General Ledger",
+          description: "Complete financial ledger with reconciliation, approvals, and external source integration",
+          href: "/ledger",
+          icon: Database,
+        },
+        {
+          title: "Ledger Reconciliation",
+          description: "Automated reconciliation dashboard with discrepancy detection and resolution workflows",
+          href: "/ledger/reconciliation",
+          icon: GitBranch,
+        },
+        {
+          title: "Arbitrage Events",
+          description: "Cross-system discrepancy detection with root cause analysis and resolution tracking",
+          href: "/arbitrage-events",
+          icon: AlertTriangle,
+        },
+        {
+          title: "Proof Library",
+          description: "Centralized repository of verified proofs, evidence packages, and audit artifacts",
+          href: "/proof-library",
+          icon: BookOpen,
+        },
+      ]
+    },
+    {
+      title: "Platform Features",
+      description: "Advanced capabilities and administrative tools",
+      cards: [
+        {
+          title: "Evidence Management",
+          description: "Comprehensive evidence artifact storage, versioning, and chain-of-custody tracking",
+          href: "/platform/evidence",
+          icon: FileText,
+        },
+        {
+          title: "Data Quality",
+          description: "Automated data quality checks, anomaly detection, and remediation workflows",
+          href: "/platform/dq",
+          icon: Shield,
+        },
+        {
+          title: "Incident Management",
+          description: "Structured incident response with automated escalation and resolution tracking",
+          href: "/platform/incidents",
+          icon: AlertTriangle,
+        },
+        {
+          title: "Connectors",
+          description: "Pre-built integrations for Snowflake, Databricks, ServiceNow, and enterprise systems",
+          href: "/platform/connectors",
+          icon: Plug,
+        },
+        {
+          title: "KPI Management",
+          description: "Configure, track, and visualize custom KPIs with automated threshold alerts",
+          href: "/platform/kpis",
+          icon: BarChart3,
+        },
+        {
+          title: "Platform Admin",
+          description: "User management, role-based access control, and system configuration",
+          href: "/platform/admin",
+          icon: Settings,
+        },
+      ]
+    },
+    {
+      title: "Solutions & Use Cases",
+      description: "Industry-specific solutions and transformational capabilities",
+      cards: [
+        {
+          title: "Gen AI Agents",
+          description: "Autonomous AI agents for workflow automation, policy enforcement, and intelligent decision support",
+          href: "/gen-ai-agents",
+          icon: Bot,
+          tag: "AI"
+        },
+        {
+          title: "Agentic Policy",
+          description: "AI-driven policy generation, compliance monitoring, and automated governance",
+          href: "/agentic-policy",
+          icon: Shield,
+        },
+        {
+          title: "Agentic Transformation",
+          description: "End-to-end business transformation powered by autonomous AI agents",
+          href: "/agentic-transformation",
+          icon: GitBranch,
+        },
+        {
+          title: "Family Offices",
+          description: "Comprehensive wealth management platform with portfolio tracking and family governance",
+          href: "/family-offices",
+          icon: Building2,
+        },
+        {
+          title: "Venture Capital Support",
+          description: "Portfolio monitoring, due diligence automation, and LP reporting for VC firms",
+          href: "/family-offices/venture-capital",
+          icon: TrendingUp,
+        },
+        {
+          title: "M&A Support",
+          description: "Deal pipeline management, due diligence tracking, and post-merger integration",
+          href: "/family-offices/ma",
+          icon: GitBranch,
+        },
+        {
+          title: "M&A / VC / PE",
+          description: "Unified platform for private equity, venture capital, and M&A operations",
+          href: "/ma-vc-pe",
+          icon: Building2,
+        },
+        {
+          title: "Capital Markets",
+          description: "Investor relations, capital raise tracking, and verified performance reporting",
+          href: "/capital-markets",
+          icon: TrendingUp,
+        },
+        {
+          title: "Capital Library",
+          description: "Curated investment insights, market intelligence, and LP communication templates",
+          href: "/capital-library",
+          icon: BookOpen,
+        },
+        {
+          title: "Actuarial Benefits",
+          description: "Benefits administration with actuarial modeling and compliance tracking",
+          href: "/actuarial-benefits",
+          icon: Calculator,
+        },
+      ]
+    },
+    {
+      title: "Marketplace & Integrations",
+      description: "Pre-built connectors and enterprise integrations",
+      cards: [
+        {
+          title: "Marketplace Hub",
+          description: "Browse and deploy pre-built integrations, agents, and solution accelerators",
+          href: "/marketplace",
+          icon: Plug,
+        },
+        {
+          title: "Snowflake Integration",
+          description: "Native Snowflake connector with zero-copy data sharing and secure views",
+          href: "/marketplace/snowflake",
+          icon: Database,
+        },
+        {
+          title: "Databricks Integration",
+          description: "Databricks Delta Lake integration with real-time data pipelines",
+          href: "/marketplace/databricks",
+          icon: Database,
+        },
+        {
+          title: "ServiceNow Practice",
+          description: "ServiceNow ITSM integration with automated ticket creation and resolution",
+          href: "/marketplace/servicenow",
+          icon: Settings,
+        },
+      ]
+    },
+    {
+      title: "Resources & Documentation",
+      description: "Learn, explore, and understand the platform",
+      cards: [
+        {
+          title: "Documentation",
+          description: "Complete platform documentation, API references, and integration guides",
+          href: "/docs",
+          icon: BookOpen,
+        },
+        {
+          title: "Case Studies",
+          description: "Real-world success stories, implementation patterns, and ROI analysis",
+          href: "/case-studies",
+          icon: Award,
+        },
+        {
+          title: "Platform Overview",
+          description: "Deep dive into platform architecture, governance model, and verification protocols",
+          href: "/platform-why",
+          icon: Eye,
+        },
+        {
+          title: "Executive Walkthrough",
+          description: "Guided tour of executive features, KPIs, and decision support capabilities",
+          href: "/exec-walkthrough",
+          icon: Users,
+        },
+        {
+          title: "Security & Governance",
+          description: "SOC 2 compliance, encryption standards, and security architecture",
+          href: "/security-governance",
+          icon: Shield,
+        },
+        {
+          title: "Kincaid IQ Product",
+          description: "Comprehensive product overview with feature roadmap and release notes",
+          href: "/kincaid-iq",
+          icon: Zap,
+        },
+      ]
+    },
+  ];
+
   return (
-    <main className="min-h-screen bg-black text-white">
-      {/* HERO */}
-      <section className="mx-auto max-w-7xl px-6 py-14">
-        <div className="grid grid-cols-1 gap-8 lg:grid-cols-12 lg:items-end">
-          <div className="lg:col-span-7">
-            <div className="text-xs tracking-[0.2em] text-white/50">PLATFORM</div>
-            <h1 className="mt-4 text-4xl font-semibold leading-tight text-white/95">
-              An operating system for fiduciary-grade decisions.
+    <>
+      <SEO
+        title="Platform - Kincaid IQ"
+        description="Comprehensive platform navigation for AI-powered data intelligence, governance, and verified outcomes"
+      />
+      
+      <Nav />
+
+      <main className="min-h-screen bg-black text-white">
+        {/* Hero */}
+        <section className="relative mx-auto max-w-7xl px-6 pt-24 pb-12">
+          <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,rgba(99,102,241,0.15),transparent_50%)]" />
+          
+          <div className="relative">
+            <div className="text-xs tracking-[0.2em] text-white/50 uppercase mb-4">Platform</div>
+            <h1 className="text-5xl md:text-6xl font-bold text-white/95 mb-6 leading-tight">
+              Explore the Platform
             </h1>
-            <p className="mt-5 text-sm leading-relaxed text-white/70">
-              Kincaid IQ converts messy reality into a board-ready posture: immutable artifacts,
-              evidence receipts, export manifests, and integrity verification. This is how you stop
-              "trust me" reporting and start provable decisioning.
+            <p className="text-lg text-white/70 max-w-3xl leading-relaxed">
+              A comprehensive operating system for fiduciary-grade decisions. Navigate through our core platform capabilities, 
+              industry solutions, integrations, and resources to find exactly what you need.
             </p>
 
             <div className="mt-8 flex flex-wrap gap-3">
               <Link
                 href="/request-demo"
-                className="rounded-2xl border border-white/10 bg-white/10 px-6 py-3 text-sm text-white hover:bg-white/15"
+                className="rounded-2xl border border-white/10 bg-white/10 px-6 py-3 text-sm text-white hover:bg-white/15 transition-colors"
               >
                 Request demo →
               </Link>
               <Link
                 href="/war-room"
-                className="rounded-2xl border border-white/10 bg-black/40 px-6 py-3 text-sm text-white/80 hover:bg-white/5"
+                className="rounded-2xl border border-white/10 bg-black/40 px-6 py-3 text-sm text-white/80 hover:bg-white/5 transition-colors"
               >
-                Open War Room →
+                Launch War Room →
               </Link>
             </div>
           </div>
+        </section>
 
-          {/* "visual" placeholder (keeps premium feel without images) */}
-          <div className="lg:col-span-5">
-            <div className="bg-gradient-to-br from-white/5 to-transparent border border-white/10 rounded-2xl p-8 backdrop-blur-sm">
-              <h3 className="text-2xl font-semibold mb-4">Kincaid IQ War Room</h3>
-              <p className="text-gray-400 mb-6 leading-relaxed">
-                Executive tiles + ranked events, with receipts and verification behind every claim.
+        {/* Navigation Sections */}
+        <section className="mx-auto max-w-7xl px-6 py-12">
+          {sections.map((section) => (
+            <NavigationSection key={section.title} section={section} />
+          ))}
+        </section>
+
+        {/* Footer CTA */}
+        <section className="mx-auto max-w-7xl px-6 pb-20">
+          <div className="rounded-3xl border border-white/10 bg-white/5 p-8 md:p-12">
+            <div className="max-w-2xl">
+              <h2 className="text-3xl font-bold text-white/95 mb-4">
+                Ready to see it in action?
+              </h2>
+              <p className="text-white/70 mb-6 leading-relaxed">
+                Schedule a personalized demo to see how Kincaid IQ can transform your operations 
+                with verifiable intelligence and automated governance.
               </p>
-
-              <div className="mt-5 grid grid-cols-2 gap-3">
-                {[
-                  { k: "Population Index", v: "Peer-indexed" },
-                  { k: "EBITDA Drag", v: "Live estimate" },
-                  { k: "Recoverable", v: "Ranked" },
-                  { k: "EBITDA at Risk", v: "Forward view" },
-                ].map((x) => (
-                  <div
-                    key={x.k}
-                    className="rounded-2xl border border-white/10 bg-black/40 p-4"
-                  >
-                    <div className="text-[11px] text-white/55">{x.k}</div>
-                    <div className="mt-2 text-sm font-semibold text-white/90">{x.v}</div>
-                  </div>
-                ))}
-              </div>
-
-              <div className="mt-5 rounded-2xl border border-white/10 bg-black/40 p-4">
-                <div className="text-[11px] text-white/55">Integrity posture</div>
-                <div className="mt-2 text-sm text-white/80">
-                  Receipts → attachments → manifests → PASS/FAIL verify
-                </div>
+              <div className="flex flex-wrap gap-3">
+                <Link
+                  href="/request-demo"
+                  className="rounded-2xl border border-white/10 bg-white text-black px-6 py-3 text-sm font-medium hover:bg-white/90 transition-colors"
+                >
+                  Request demo →
+                </Link>
+                <Link
+                  href="/company"
+                  className="rounded-2xl border border-white/10 bg-black/40 px-6 py-3 text-sm text-white/80 hover:bg-white/5 transition-colors"
+                >
+                  About us →
+                </Link>
               </div>
             </div>
           </div>
-        </div>
+        </section>
+      </main>
 
-        {/* PILLARS */}
-        <div className="mt-12 grid grid-cols-1 gap-4 md:grid-cols-2">
-          <Pillar
-            title="SiriusB iQ War Room"
-            tag="Executive view"
-            desc="4-Tile Executive View with Ranked Events. Quantify impact, prioritize action, and drill into evidence."
-            bullets={[
-              "Ranked events by severity, velocity, confidence, recoverable EBITDA",
-              "Tile drilldown: KPI → event → receipt → attachment",
-              "Confidence gating prevents authority inversion",
-              "Built to run as a daily operator, not a quarterly deck",
-            ]}
-            href="/war-room"
-          />
-          <Pillar
-            title="Evidence Receipts"
-            tag="Audit trail"
-            desc="Every KPI is attached to receipts. Every receipt is hashable. Every decision is defensible."
-            bullets={[
-              "VERIFIED / UNVERIFIED gating with reason codes",
-              "Immutable artifact hashes + versioned transform hashes",
-              "Attachments hashed at the byte level (sha256)",
-              "Receipts become the system of record for claims",
-            ]}
-            href="/evidence-receipts"
-          />
-          <Pillar
-            title="Board Pack Exports"
-            desc="One click → audit-ready board packs with provenance. Secure proof delivery to investors, auditors, board members."
-            icon={<FileText className="h-5 w-5" />}
-            href="/platform/evidence"
-          />
-          <Pillar
-            title="Investor Verification Portal"
-            desc="Time-stamped proof delivery with read receipts. Cryptographic chain-of-custody for sensitive financial disclosures."
-            icon={<Shield className="h-5 w-5" />}
-            href="/investor"
-          />
-          <Pillar
-            title="Integrity Verification"
-            tag="PASS/FAIL"
-            desc="Verify any export on demand. If anything was modified, swapped, or missing—verification fails with details."
-            bullets={[
-              "Recomputes manifest hashes server-side",
-              "Checks receipt presence + hash/gate mismatches",
-              "Checks attachment bytes sha256 + content length",
-              "Returns exact mismatch diagnostics (audit-friendly)",
-            ]}
-            href="/api/succession-iq/board-pack-export/demo/verify"
-          />
-        </div>
-
-        {/* HOW IT WORKS */}
-        <div className="mt-12 grid grid-cols-1 gap-4 lg:grid-cols-12 lg:items-stretch">
-          <div className="lg:col-span-5 rounded-3xl border border-white/10 bg-white/5 p-6">
-            <div className="text-sm font-semibold text-white/90">How it works</div>
-            <div className="mt-2 text-sm leading-relaxed text-white/70">
-              The platform is built around a simple thesis: decision authority must be backed by
-              verifiable evidence. So we store raw artifacts, produce receipts with lineage, then
-              publish exports that can be verified independently.
-            </div>
-
-            <div className="mt-6 rounded-2xl border border-white/10 bg-black/40 p-4">
-              <div className="text-[11px] text-white/55">Truth Governance model</div>
-              <div className="mt-2 text-sm text-white/80">
-                Immutable artifacts → versioned transforms → evidence receipts → exports → verify
-              </div>
-            </div>
-
-            <div className="mt-6">
-              <CTA />
-            </div>
-          </div>
-
-          <div className="lg:col-span-7 grid grid-cols-1 gap-4 md:grid-cols-2">
-            <FlowStep
-              n="01"
-              title="Capture"
-              desc="Ingest raw artifacts (docs, files, feeds). Hash them. Store them immutably."
-            />
-            <FlowStep
-              n="02"
-              title="Receipt"
-              desc="Compute KPIs from versioned transforms. Emit receipts with lineage + confidence gates."
-            />
-            <FlowStep
-              n="03"
-              title="Export"
-              desc="Publish a board pack: PDF cover sheet + manifests for receipts and attachments."
-            />
-            <FlowStep
-              n="04"
-              title="Verify"
-              desc="Recompute hashes and validate existence. PASS/FAIL with mismatch diagnostics."
-            />
-          </div>
-        </div>
-
-        {/* Bottom CTA */}
-        <div className="mt-10">
-          <CTA />
-        </div>
-      </section>
-
-      {/* CTA */}
-    </main>
+      <Footer />
+    </>
   );
 }

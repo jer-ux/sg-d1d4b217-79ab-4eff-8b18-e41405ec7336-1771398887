@@ -11,7 +11,7 @@ export function ExecutiveKPITile({ data }: { data?: TileData }) {
     );
   }
 
-  const { title, value, delta, subtitle, updatedAt, receipt, chartData, trend } = data;
+  const { title, value, delta, subtitle, updatedAt, receipt, chartData, trend, framework } = data;
 
   const getTrendIcon = () => {
     if (trend === "up") return <TrendingUp className="h-4 w-4 text-emerald-400" />;
@@ -25,11 +25,24 @@ export function ExecutiveKPITile({ data }: { data?: TileData }) {
     return "text-zinc-500";
   };
 
+  const frameworkBadge = (() => {
+    if (framework === "McKinsey") return { text: "McKinsey", cls: "border-blue-700/60 bg-blue-950/40 text-blue-300" };
+    if (framework === "Bain") return { text: "Bain NPS", cls: "border-violet-700/60 bg-violet-950/40 text-violet-300" };
+    return null;
+  })();
+
   return (
     <div className="group relative rounded-2xl border border-zinc-800/60 bg-gradient-to-br from-zinc-950/60 to-zinc-900/40 p-6 transition-all hover:border-zinc-700/80 hover:shadow-xl hover:shadow-zinc-900/20">
       <div className="mb-4 flex items-start justify-between">
         <div>
-          <div className="text-xs font-medium uppercase tracking-wide text-zinc-400">{title}</div>
+          <div className="flex items-center gap-2 mb-1">
+            <div className="text-xs font-medium uppercase tracking-wide text-zinc-400">{title}</div>
+            {frameworkBadge && (
+              <span className={`rounded-md border px-2 py-0.5 text-[10px] font-medium ${frameworkBadge.cls}`}>
+                {frameworkBadge.text}
+              </span>
+            )}
+          </div>
           <div className="mt-2 text-3xl font-bold tracking-tight text-zinc-100">{value}</div>
           {delta && (
             <div className={`mt-1 flex items-center gap-1 text-sm font-medium ${getTrendColor()}`}>

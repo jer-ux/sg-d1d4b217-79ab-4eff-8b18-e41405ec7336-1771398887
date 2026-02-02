@@ -51,6 +51,7 @@ export type TileData = {
   chartData?: Array<{ period: string; value: number }>;
   receipt?: EvidenceReceipt;
   framework?: "McKinsey" | "Bain";
+  updatedAt?: string;
 };
 
 export type SnapshotResponse = {

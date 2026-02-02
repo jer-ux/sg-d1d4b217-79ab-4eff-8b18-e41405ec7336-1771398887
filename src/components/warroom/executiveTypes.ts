@@ -8,6 +8,7 @@ export type Filters = {
 };
 
 export type TileKey = 
+  // New Healthcare CFO Keys
   | "costTrendStress" 
   | "planDesignAdoption" 
   | "pharmacyExposure" 
@@ -15,7 +16,12 @@ export type TileKey =
   | "contractAmbiguity" 
   | "contractCompliance" 
   | "benefitsNPS" 
-  | "employeeNPS";
+  | "employeeNPS"
+  // Legacy Keys (kept for compatibility with WarRoom.tsx)
+  | "cashflow"
+  | "recoverableEbitda"
+  | "healthIQ"
+  | "execution";
 
 export type EvidenceReceipt = {
   receipt_id: string;

@@ -1315,7 +1315,7 @@ function CFODashboardContent() {
             <div className="space-y-3 text-sm">
               <div>
                 <div className="text-[11px] text-blue-300 font-semibold mb-1">Valuation Methodology</div>
-                <div className="text-white/80">{modalData.capitalMarketsContext.valuationMethodology}</div>
+                <div className="text-white/80">{modalData.capitalMarketsContext.valuationMethod}</div>
               </div>
               <div className="grid grid-cols-2 gap-3">
                 <div>
@@ -1449,10 +1449,38 @@ function CFODashboardContent() {
               title: "Population Health Score (Risk-Adjusted Health Outcomes)",
               description: "Per CMS Star Ratings methodology and NCQA HEDIS measures, this composite score aggregates chronic condition management (diabetes HbA1c control, hypertension BP control, asthma controller medication ratio), preventive care compliance (mammography, colonoscopy, immunizations), and behavioral health engagement. Current score: 82.4/100 represents top quartile performance vs national benchmarks. Methodology aligns with value-based care (VBC) payment models and ACO quality metrics.",
               kpis: [
-                { label: "Composite Score", value: "82.4/100", trend: "+3.2 pts YoY", trendDirection: "up", receipt: { id: "PH-COMP-001", verified: true, freshness: "< 24h", dqPassRate: 0.96, confidence: 0.93 } },
-                { label: "Chronic Disease Mgmt", value: "78%", trend: "HEDIS 75th %ile", trendDirection: "up", receipt: { id: "PH-CDM-001", verified: true, freshness: "< 24h", dqPassRate: 0.97, confidence: 0.94 } },
-                { label: "Preventive Care Rate", value: "86%", trend: "+4% vs baseline", trendDirection: "up", receipt: { id: "PH-PREV-001", verified: true, freshness: "< 24h", dqPassRate: 0.98, confidence: 0.95 } },
-                { label: "High-Risk Members", value: "12.3%", trend: "-1.8% YoY", trendDirection: "up", receipt: { id: "PH-RISK-001", verified: true, freshness: "< 24h", dqPassRate: 0.95, confidence: 0.91 } },
+                { 
+                  label: "Composite Score", 
+                  value: "82.4/100", 
+                  trend: "+3.2 pts YoY", 
+                  trendDirection: "up" as const, 
+                  receipt: { id: "PH-COMP-001", verified: true, freshness: "< 24h", dqPassRate: 0.96, confidence: 0.93 },
+                  drilldownKey: "composite_calculation"
+                },
+                { 
+                  label: "Chronic Disease Mgmt", 
+                  value: "78%", 
+                  trend: "HEDIS 75th %ile", 
+                  trendDirection: "up" as const,
+                  receipt: { id: "PH-CDM-001", verified: true, freshness: "< 24h", dqPassRate: 0.97, confidence: 0.95 },
+                  drilldownKey: "chronic_management"
+                },
+                { 
+                  label: "Preventive Care Rate", 
+                  value: "86%", 
+                  trend: "+4% vs baseline", 
+                  trendDirection: "up" as const,
+                  receipt: { id: "PH-PREV-001", verified: true, freshness: "< 24h", dqPassRate: 0.98, confidence: 0.96 },
+                  drilldownKey: "preventive_compliance"
+                },
+                { 
+                  label: "High-Risk Members", 
+                  value: "12.3%", 
+                  trend: "-1.8% YoY", 
+                  trendDirection: "up" as const,
+                  receipt: { id: "PH-RISK-001", verified: true, freshness: "< 24h", dqPassRate: 0.95, confidence: 0.91 },
+                  drilldownKey: "risk_adjustment"
+                },
               ],
               receipt: {
                 id: "POP-HEALTH-Q1-2026",
@@ -1470,6 +1498,7 @@ function CFODashboardContent() {
                 "✓ High-risk stratification: 12.3% of population (down from 14.1% prior year) using Johns Hopkins ACG risk model",
                 "✓ Care management engagement: 67% of high-risk members actively enrolled in care coordination programs",
                 "✓ Behavioral health integration: 34% of diabetic members screened for depression (PHQ-9)",
+                "✓ Digital engagement: 62% of members use patient portal (4.2 logins/month)",
                 "⚖️ Satisfies CMS Quality Payment Program (QPP) MIPS quality measures and VBC contract requirements",
               ],
               legalContext: {
@@ -1509,10 +1538,38 @@ function CFODashboardContent() {
               title: "GLP-1 Weight Management Program (Ozempic, Wegovy, Mounjaro)",
               description: "Per clinical guidelines from ADA (American Diabetes Association) and AACE (American Association of Clinical Endocrinologists), GLP-1 receptor agonists (Ozempic/semaglutide, Wegovy, Mounjaro/tirzepatide) demonstrate significant cost savings through downstream medical cost reduction. Current program: 487 members enrolled, achieving avg $308 PMPM medical cost reduction (vs matched control cohort) driven by reduced hospitalizations, ER visits, and specialist encounters. Annualized ROI: 2.7x (program cost $1.1M, savings $2.9M). Cost offset model validated by actuarial review per ASB Monograph on Obesity.",
               kpis: [
-                { label: "YTD Net Savings", value: "$1.8M", trend: "+$420K vs Q4", trendDirection: "up", receipt: { id: "GLP1-SAV-001", verified: true, freshness: "< 24h", dqPassRate: 0.98, confidence: 0.95 } },
-                { label: "Enrolled Members", value: "487", trend: "+127 this quarter", trendDirection: "up", receipt: { id: "GLP1-MBR-001", verified: true, freshness: "< 24h", dqPassRate: 0.99, confidence: 0.97 } },
-                { label: "Avg PMPM Reduction", value: "$308", trend: "vs matched control", trendDirection: "up", receipt: { id: "GLP1-PMPM-001", verified: true, freshness: "< 24h", dqPassRate: 0.97, confidence: 0.93 } },
-                { label: "Program ROI", value: "2.7x", trend: "Actuarial validated", trendDirection: "up", receipt: { id: "GLP1-ROI-001", verified: true, freshness: "< 24h", dqPassRate: 0.96, confidence: 0.92 } },
+                { 
+                  label: "YTD Net Savings", 
+                  value: "$1.8M", 
+                  trend: "+$420K vs Q4", 
+                  trendDirection: "up" as const, 
+                  receipt: { id: "GLP1-SAV-001", verified: true, freshness: "< 24h", dqPassRate: 0.98, confidence: 0.95 },
+                  drilldownKey: "net_savings_calculation"
+                },
+                { 
+                  label: "Enrolled Members", 
+                  value: "487", 
+                  trend: "+127 this quarter", 
+                  trendDirection: "up" as const,
+                  receipt: { id: "GLP1-MBR-001", verified: true, freshness: "< 24h", dqPassRate: 0.99, confidence: 0.97 },
+                  drilldownKey: "member_enrollment"
+                },
+                { 
+                  label: "Avg PMPM Reduction", 
+                  value: "$308", 
+                  trend: "vs matched control", 
+                  trendDirection: "up" as const,
+                  receipt: { id: "GLP1-PMPM-001", verified: true, freshness: "< 24h", dqPassRate: 0.97, confidence: 0.93 },
+                  drilldownKey: "cost_reduction_analysis"
+                },
+                { 
+                  label: "Program ROI", 
+                  value: "2.7x", 
+                  trend: "Actuarial validated", 
+                  trendDirection: "up" as const,
+                  receipt: { id: "GLP1-ROI-001", verified: true, freshness: "< 24h", dqPassRate: 0.96, confidence: 0.92 },
+                  drilldownKey: "roi_calculation"
+                },
               ],
               receipt: {
                 id: "GLP1-PROGRAM-Q1-2026",
@@ -1551,7 +1608,7 @@ function CFODashboardContent() {
               },
               capitalMarketsContext: {
                 valuationMethod: "GLP-1 program contributes $1.8M annual EBITDA improvement with 2.7x ROI. Validates obesity as addressable cost driver, supporting 100-150 bps MLR favorability and enabling expanded VBC participation.",
-                discountRate: 9.2,
+                discountRate: 9.5,
                 marketComparables: [
                   "Obesity management programs with documented ROI trade at 12-18x EBITDA in benefits consulting M&A",
                   "GLP-1 savings models reduce medical trend by 1-2%, supporting premium rate competitiveness",
@@ -1571,10 +1628,34 @@ function CFODashboardContent() {
               title: "Medical Cost Trend (Year-over-Year PMPM Growth)",
               description: "Per actuarial standards (ASB Monograph #57 - Health Trend), medical cost trend measures the year-over-year growth in per-member-per-month (PMPM) healthcare expenditures, adjusted for changes in benefit design, demographics, and utilization. Current trend: +4.2% vs budget +5.5%, representing 130 bps favorable variance driven by specialty drug management (+8.2% vs +11% budget), inpatient utilization reduction (-2.1% admits per 1,000), and network steerage improvements (+4.8% Tier 1 utilization). Trend calculation uses completion factors for IBNR and seasonality adjustments per CAS principles.",
               kpis: [
-                { label: "Actual Trend", value: "+4.2%", trend: "130 bps favorable", trendDirection: "up", receipt: { id: "TREND-ACT-001", verified: true, freshness: "< 48h", dqPassRate: 0.97, confidence: 0.94 } },
-                { label: "Budget Trend", value: "+5.5%", receipt: { id: "TREND-BUD-001", verified: true, freshness: "< 48h", dqPassRate: 0.98, confidence: 0.96 } },
-                { label: "Current PMPM", value: "$487", trend: "+$20 vs PY", trendDirection: "down", receipt: { id: "TREND-PMPM-001", verified: true, freshness: "< 48h", dqPassRate: 0.99, confidence: 0.97 } },
-                { label: "Completion Factor", value: "98.2%", receipt: { id: "TREND-COMP-001", verified: true, freshness: "< 48h", dqPassRate: 0.96, confidence: 0.93 } },
+                { 
+                  label: "Actual Trend", 
+                  value: "+4.2%", 
+                  trend: "130 bps favorable", 
+                  trendDirection: "up" as const,
+                  receipt: { id: "TREND-ACT-001", verified: true, freshness: "< 48h", dqPassRate: 0.97, confidence: 0.94 },
+                  drilldownKey: "actual_trend_analysis"
+                },
+                { 
+                  label: "Budget Trend", 
+                  value: "+5.5%", 
+                  receipt: { id: "TREND-BUD-001", verified: true, freshness: "< 48h", dqPassRate: 0.98, confidence: 0.96 },
+                  drilldownKey: "budget_trend_forecast"
+                },
+                { 
+                  label: "Current PMPM", 
+                  value: "$487", 
+                  trend: "+$20 vs PY", 
+                  trendDirection: "down" as const,
+                  receipt: { id: "TREND-PMPM-001", verified: true, freshness: "< 48h", dqPassRate: 0.99, confidence: 0.97 },
+                  drilldownKey: "pmpm_breakdown"
+                },
+                { 
+                  label: "Completion Factor", 
+                  value: "98.2%", 
+                  receipt: { id: "TREND-COMP-001", verified: true, freshness: "< 48h", dqPassRate: 0.96, confidence: 0.93 },
+                  drilldownKey: "completion_factor_analysis"
+                },
               ],
               receipt: {
                 id: "MED-TREND-Q1-2026",
@@ -1615,7 +1696,7 @@ function CFODashboardContent() {
                 valuationMethod: "Medical cost trend performance vs budget drives earnings quality and predictability. 130 bps favorable variance = $2.6M annual EBITDA beat on 20K member base, supporting raised guidance and multiple expansion.",
                 discountRate: 8.8,
                 marketComparables: [
-                  "Managed care plans with consistent trend beats trade at 10-14x P/E vs 8-10x for volatile peers",
+                  "Managed care plans with consistent trend beats trade at 10-14x P/E vs 8-10x for peers",
                   "Trend favorability enables competitive pricing, supporting member growth and market share gains",
                   "Low medical cost volatility reduces equity risk premium by 50-100 bps in DCF models",
                 ],
@@ -1633,10 +1714,38 @@ function CFODashboardContent() {
               title: "Pharmacy Spend Management (Net Drug Cost & Rebate Optimization)",
               description: "Per PBM contract economics and pharmacy benefit design principles, this tile tracks net pharmacy cost PMPM after manufacturer rebates, generic utilization rates, and specialty drug management. Current performance: $142 PMPM net cost (vs $158 benchmark), driven by $31 PMPM rebate capture (22% of gross cost), 89% generic dispensing rate (vs 84% national), and specialty drug step therapy compliance. PBM contract includes transparent pass-through rebates, guarantees on AWP discounts (AWP -18% brand, AWP -85% generic), and specialty drug trend caps (+9% vs +12% market).",
               kpis: [
-                { label: "Net Drug Cost PMPM", value: "$142", trend: "-$16 vs benchmark", trendDirection: "up", receipt: { id: "RX-NET-001", verified: true, freshness: "< 24h", dqPassRate: 0.98, confidence: 0.96 } },
-                { label: "Rebate Capture PMPM", value: "$31", trend: "22% of gross cost", trendDirection: "up", receipt: { id: "RX-REB-001", verified: true, freshness: "< 24h", dqPassRate: 0.99, confidence: 0.97 } },
-                { label: "Generic Utilization", value: "89%", trend: "+5% vs national", trendDirection: "up", receipt: { id: "RX-GEN-001", verified: true, freshness: "< 24h", dqPassRate: 0.99, confidence: 0.98 } },
-                { label: "Specialty Drug Trend", value: "+9.2%", trend: "Below +12% market", trendDirection: "up", receipt: { id: "RX-SPEC-001", verified: true, freshness: "< 24h", dqPassRate: 0.97, confidence: 0.94 } },
+                { 
+                  label: "Net Drug Cost PMPM", 
+                  value: "$142", 
+                  trend: "-$16 vs benchmark", 
+                  trendDirection: "up" as const,
+                  receipt: { id: "RX-NET-001", verified: true, freshness: "< 24h", dqPassRate: 0.98, confidence: 0.96 },
+                  drilldownKey: "net_cost_calculation"
+                },
+                { 
+                  label: "Rebate Capture PMPM", 
+                  value: "$31", 
+                  trend: "22% of gross cost", 
+                  trendDirection: "up" as const,
+                  receipt: { id: "RX-REB-001", verified: true, freshness: "< 24h", dqPassRate: 0.99, confidence: 0.97 },
+                  drilldownKey: "rebate_optimization"
+                },
+                { 
+                  label: "Generic Utilization", 
+                  value: "89%", 
+                  trend: "+5% vs national", 
+                  trendDirection: "up" as const,
+                  receipt: { id: "RX-GEN-001", verified: true, freshness: "< 24h", dqPassRate: 0.99, confidence: 0.98 },
+                  drilldownKey: "generic_optimization"
+                },
+                { 
+                  label: "Specialty Drug Trend", 
+                  value: "+9.2%", 
+                  trend: "Below +12% market", 
+                  trendDirection: "up" as const,
+                  receipt: { id: "RX-SPEC-001", verified: true, freshness: "< 24h", dqPassRate: 0.97, confidence: 0.94 },
+                  drilldownKey: "specialty_trend_analysis"
+                },
               ],
               receipt: {
                 id: "PHARMACY-Q1-2026",
@@ -1696,10 +1805,38 @@ function CFODashboardContent() {
               title: "Stop-Loss Reinsurance Performance (Specific & Aggregate Coverage)",
               description: "Per reinsurance actuarial principles and ASB Monograph #54 (Individual and Aggregate Deductibles), stop-loss coverage protects self-funded health plans from catastrophic claim risk. Current performance: 92.8% loss ratio (claims ceded $1.84M / premiums paid $1.98M) with $250K specific attachment and 125% aggregate attachment. 7 claimants exceeded specific deductible YTD (neonatal ICU, cancer, transplant), with avg claim size $478K and max single claim $1.2M. Aggregate corridor not penetrated (claims at 118% of expected). Reinsurer: Swiss Re, rated A+ (S&P).",
               kpis: [
-                { label: "Loss Ratio", value: "92.8%", trend: "Below 100% breakeven", trendDirection: "up", receipt: { id: "SL-LR-001", verified: true, freshness: "< 30d", dqPassRate: 0.97, confidence: 0.94 } },
-                { label: "Specific Attachment", value: "$250K", trend: "7 claimants YTD", trendDirection: "neutral", receipt: { id: "SL-SPEC-001", verified: true, freshness: "< 30d", dqPassRate: 0.98, confidence: 0.96 } },
-                { label: "Aggregate Corridor", value: "118%", trend: "Below 125% attach", trendDirection: "up", receipt: { id: "SL-AGG-001", verified: true, freshness: "< 30d", dqPassRate: 0.99, confidence: 0.97 } },
-                { label: "Max Single Claim", value: "$1.2M", trend: "Neonatal ICU", trendDirection: "neutral", receipt: { id: "SL-MAX-001", verified: true, freshness: "< 30d", dqPassRate: 0.96, confidence: 0.93 } },
+                { 
+                  label: "Loss Ratio", 
+                  value: "92.8%", 
+                  trend: "Below 100% breakeven", 
+                  trendDirection: "up" as const,
+                  receipt: { id: "SL-LR-001", verified: true, freshness: "< 30d", dqPassRate: 0.97, confidence: 0.94 },
+                  drilldownKey: "loss_ratio_analysis"
+                },
+                { 
+                  label: "Specific Attachment", 
+                  value: "$250K", 
+                  trend: "7 claimants YTD", 
+                  trendDirection: "neutral" as const,
+                  receipt: { id: "SL-SPEC-001", verified: true, freshness: "< 30d", dqPassRate: 0.98, confidence: 0.96 },
+                  drilldownKey: "specific_coverage_analysis"
+                },
+                { 
+                  label: "Aggregate Corridor", 
+                  value: "118%", 
+                  trend: "Below 125% attach", 
+                  trendDirection: "up" as const,
+                  receipt: { id: "SL-AGG-001", verified: true, freshness: "< 30d", dqPassRate: 0.99, confidence: 0.97 },
+                  drilldownKey: "aggregate_coverage_analysis"
+                },
+                { 
+                  label: "Max Single Claim", 
+                  value: "$1.2M", 
+                  trend: "Neonatal ICU", 
+                  trendDirection: "neutral" as const,
+                  receipt: { id: "SL-MAX-001", verified: true, freshness: "< 30d", dqPassRate: 0.96, confidence: 0.93 },
+                  drilldownKey: "max_claim_analysis"
+                },
               ],
               receipt: {
                 id: "STOPLOSS-Q1-2026",
@@ -1758,10 +1895,38 @@ function CFODashboardContent() {
               title: "Network Steerage (High-Value Provider Utilization & Centers of Excellence)",
               description: "Per value-based purchasing and network design principles, network steerage measures member utilization of high-quality, cost-efficient providers (Tier 1/narrow network) and Centers of Excellence (COE) for complex procedures. Current performance: 78.4% overall in-network utilization, with 68% Tier 1 utilization (vs 62% benchmark) and 94% COE compliance for designated procedures (bariatric surgery, joint replacement, spine surgery, transplants). Tier 1 network delivers 12-18% cost savings vs Tier 2 while maintaining quality scores (HEDIS 90th percentile). COE program saves $1.2M annually through reduced complications and bundled pricing.",
               kpis: [
-                { label: "Overall In-Network", value: "78.4%", trend: "+3.2% vs PY", trendDirection: "up", receipt: { id: "NET-IN-001", verified: true, freshness: "< 24h", dqPassRate: 0.98, confidence: 0.96 } },
-                { label: "Tier 1 Utilization", value: "68%", trend: "+6% vs benchmark", trendDirection: "up", receipt: { id: "NET-T1-001", verified: true, freshness: "< 24h", dqPassRate: 0.97, confidence: 0.95 } },
-                { label: "COE Compliance", value: "94%", trend: "23 procedures YTD", trendDirection: "up", receipt: { id: "NET-COE-001", verified: true, freshness: "< 24h", dqPassRate: 0.99, confidence: 0.97 } },
-                { label: "Cost Differential", value: "-15%", trend: "Tier 1 vs Tier 2", trendDirection: "up", receipt: { id: "NET-COST-001", verified: true, freshness: "< 24h", dqPassRate: 0.96, confidence: 0.94 } },
+                { 
+                  label: "Overall In-Network", 
+                  value: "78.4%", 
+                  trend: "+3.2% vs PY", 
+                  trendDirection: "up" as const,
+                  receipt: { id: "NET-IN-001", verified: true, freshness: "< 24h", dqPassRate: 0.98, confidence: 0.96 },
+                  drilldownKey: "network_utilization_analysis"
+                },
+                { 
+                  label: "Tier 1 Utilization", 
+                  value: "68%", 
+                  trend: "+6% vs benchmark", 
+                  trendDirection: "up" as const,
+                  receipt: { id: "NET-T1-001", verified: true, freshness: "< 24h", dqPassRate: 0.97, confidence: 0.95 },
+                  drilldownKey: "tier1_savings_analysis"
+                },
+                { 
+                  label: "COE Compliance", 
+                  value: "94%", 
+                  trend: "23 procedures YTD", 
+                  trendDirection: "up" as const,
+                  receipt: { id: "NET-COE-001", verified: true, freshness: "< 24h", dqPassRate: 0.99, confidence: 0.97 },
+                  drilldownKey: "coe_outcome_analysis"
+                },
+                { 
+                  label: "Cost Differential", 
+                  value: "-15%", 
+                  trend: "Tier 1 vs Tier 2", 
+                  trendDirection: "up" as const,
+                  receipt: { id: "NET-COST-001", verified: true, freshness: "< 24h", dqPassRate: 0.96, confidence: 0.94 },
+                  drilldownKey: "cost_savings_analysis"
+                },
               ],
               receipt: {
                 id: "NETWORK-Q1-2026",
@@ -1820,10 +1985,38 @@ function CFODashboardContent() {
               title: "Member Engagement (Digital Tools, Care Management, Wellness Participation)",
               description: "Per consumer engagement theory and NCQA Population Health Management standards, member engagement measures active participation in digital health tools, care management programs, and wellness initiatives. Current performance: 64% overall engagement score (composite of portal usage, care management enrollment, wellness participation, and mobile app adoption). 12,400 members actively using patient portal (62% of total), 38% of high-risk members enrolled in care management (vs 28% national benchmark), and 4,200 annual wellness visit completions (21% participation rate). Engaged members demonstrate 8-12% lower total cost of care and 15% higher satisfaction scores.",
               kpis: [
-                { label: "Engagement Score", value: "64%", trend: "+7% vs PY", trendDirection: "up", receipt: { id: "ENG-SCORE-001", verified: true, freshness: "< 24h", dqPassRate: 0.96, confidence: 0.93 } },
-                { label: "Portal Active Users", value: "12.4K", trend: "62% of members", trendDirection: "up", receipt: { id: "ENG-PORT-001", verified: true, freshness: "< 24h", dqPassRate: 0.99, confidence: 0.97 } },
-                { label: "Care Mgmt Enrollment", value: "38%", trend: "+10% vs national", trendDirection: "up", receipt: { id: "ENG-CM-001", verified: true, freshness: "< 24h", dqPassRate: 0.97, confidence: 0.95 } },
-                { label: "Wellness Visit Rate", value: "21%", trend: "4,200 visits YTD", trendDirection: "up", receipt: { id: "ENG-WELL-001", verified: true, freshness: "< 24h", dqPassRate: 0.98, confidence: 0.96 } },
+                { 
+                  label: "Engagement Score", 
+                  value: "64%", 
+                  trend: "+7% vs PY", 
+                  trendDirection: "up" as const,
+                  receipt: { id: "ENG-SCORE-001", verified: true, freshness: "< 24h", dqPassRate: 0.96, confidence: 0.93 },
+                  drilldownKey: "engagement_score_calculation"
+                },
+                { 
+                  label: "Portal Active Users", 
+                  value: "12.4K", 
+                  trend: "62% of members", 
+                  trendDirection: "up" as const,
+                  receipt: { id: "ENG-PORT-001", verified: true, freshness: "< 24h", dqPassRate: 0.99, confidence: 0.97 },
+                  drilldownKey: "portal_utilization_analysis"
+                },
+                { 
+                  label: "Care Mgmt Enrollment", 
+                  value: "38%", 
+                  trend: "+10% vs national", 
+                  trendDirection: "up" as const,
+                  receipt: { id: "ENG-CM-001", verified: true, freshness: "< 24h", dqPassRate: 0.97, confidence: 0.95 },
+                  drilldownKey: "care_mgmt_participation"
+                },
+                { 
+                  label: "Wellness Visit Rate", 
+                  value: "21%", 
+                  trend: "4,200 visits YTD", 
+                  trendDirection: "up" as const,
+                  receipt: { id: "ENG-WELL-001", verified: true, freshness: "< 24h", dqPassRate: 0.98, confidence: 0.96 },
+                  drilldownKey: "wellness_participation_analysis"
+                },
               ],
               receipt: {
                 id: "ENGAGEMENT-Q1-2026",
@@ -1882,10 +2075,38 @@ function CFODashboardContent() {
               title: "Operational Cash Flow (Working Capital, Premium Collections, Claims Payable)",
               description: "Per financial management principles and healthcare working capital optimization, operational cash flow measures the timing and efficiency of premium collections, claims payments, and working capital management. Current performance: $8.2M positive operating cash flow YTD, driven by 42-day DSO (days sales outstanding for premium receivables, vs 48-day target), 18-day average claims payment cycle (improving provider relations and capturing early payment discounts), and $12.4M claims payable reserve (22 days of claims, within 18-25 day target range). Working capital ratio: 1.42x (current assets / current liabilities), exceeding 1.25x credit facility covenant.",
               kpis: [
-                { label: "YTD Operating CF", value: "$8.2M", trend: "+$1.8M vs budget", trendDirection: "up", receipt: { id: "CF-YTD-001", verified: true, freshness: "< 48h", dqPassRate: 0.98, confidence: 0.96 } },
-                { label: "DSO (Premium A/R)", value: "42d", trend: "-6d vs target", trendDirection: "up", receipt: { id: "CF-DSO-001", verified: true, freshness: "< 48h", dqPassRate: 0.99, confidence: 0.97 } },
-                { label: "Avg Claims Pay Cycle", value: "18d", trend: "2% early pay discount", trendDirection: "up", receipt: { id: "CF-PAY-001", verified: true, freshness: "< 48h", dqPassRate: 0.97, confidence: 0.95 } },
-                { label: "Working Capital Ratio", value: "1.42x", trend: "Above 1.25x covenant", trendDirection: "up", receipt: { id: "CF-WC-001", verified: true, freshness: "< 48h", dqPassRate: 0.98, confidence: 0.96 } },
+                { 
+                  label: "YTD Operating CF", 
+                  value: "$8.2M", 
+                  trend: "+$1.8M vs budget", 
+                  trendDirection: "up" as const,
+                  receipt: { id: "CF-YTD-001", verified: true, freshness: "< 48h", dqPassRate: 0.98, confidence: 0.96 },
+                  drilldownKey: "operational_cash_flow_analysis"
+                },
+                { 
+                  label: "DSO (Premium A/R)", 
+                  value: "42d", 
+                  trend: "-6d vs target", 
+                  trendDirection: "up" as const,
+                  receipt: { id: "CF-DSO-001", verified: true, freshness: "< 48h", dqPassRate: 0.99, confidence: 0.97 },
+                  drilldownKey: "premium_receivables_analysis"
+                },
+                { 
+                  label: "Avg Claims Pay Cycle", 
+                  value: "18d", 
+                  trend: "2% early pay discount", 
+                  trendDirection: "up" as const,
+                  receipt: { id: "CF-PAY-001", verified: true, freshness: "< 48h", dqPassRate: 0.97, confidence: 0.95 },
+                  drilldownKey: "claims_payment_analysis"
+                },
+                { 
+                  label: "Working Capital Ratio", 
+                  value: "1.42x", 
+                  trend: "Above 1.25x covenant", 
+                  trendDirection: "up" as const,
+                  receipt: { id: "CF-WC-001", verified: true, freshness: "< 48h", dqPassRate: 0.98, confidence: 0.96 },
+                  drilldownKey: "working_capital_analysis"
+                },
               ],
               receipt: {
                 id: "CASHFLOW-Q1-2026",
@@ -1903,7 +2124,7 @@ function CFODashboardContent() {
                 "✓ Credit facility: $15M revolving line of credit, $2.8M drawn, 4.2% interest rate (SOFR + 225 bps), covenant: Working capital ratio >1.25x (actual 1.42x), debt service coverage >1.5x (actual 2.8x)",
                 "✓ Cash flow drivers: Premium growth +8.4%, medical cost trend +4.2% (favorable), pharmacy rebates +$3.1M, stop-loss reimbursements +$1.84M",
                 "✓ Forecast: $24M annual operating cash flow (vs $21M budget), supporting $8M dividend capacity and $4M technology capex",
-                "⚖️ Cash management satisfies ERISA § 404(a)(1)(B) prudent investment of plan assets and SOX 404 cash controls",
+                "⚖️ Cash management satisfies ERISA § 404(a)(1)(A) exclusive benefit rule and SOX 404 cash controls",
               ],
               legalContext: {
                 statute: "29 U.S.C. § 1104 - ERISA Fiduciary Duty (Prudent Investment of Assets)",

@@ -715,8 +715,8 @@ function CFODashboardContent() {
             ],
             riskFactors: [
               "Low: Automated validation reduces human error",
-              "Medium: Dependent on source system data integrity",
-              "Low: Exception handling process robust",
+              "Medium: Source system changes may introduce new completeness issues",
+              "Low: Remediation workflows tested and monitored",
             ],
           },
           capitalMarketsContext: {
@@ -1220,6 +1220,21 @@ function CFODashboardContent() {
                             e.status === "ACCEPTED" ? "border-purple-400/30 bg-purple-400/10 text-purple-300" :
                             "border-amber-400/30 bg-amber-400/10 text-amber-300"
                           }`}>{e.status}</span>
+                          {e.type === "ARBITRAGE" && (
+                            <span className="text-[10px] px-2.5 py-1 rounded-full border border-purple-400/40 bg-gradient-to-r from-purple-500/20 to-pink-500/20 text-purple-200 font-bold shadow-[0_0_10px_rgba(168,85,247,0.3)]">
+                              🎯 ARBITRAGE
+                            </span>
+                          )}
+                          {e.carrier && (
+                            <span className="text-[10px] px-2 py-0.5 rounded-full border border-cyan-400/30 bg-cyan-400/10 text-cyan-300 font-medium">
+                              {e.carrier}
+                            </span>
+                          )}
+                          {e.estImpact && (
+                            <span className="text-[10px] px-2 py-0.5 rounded-full border border-emerald-400/30 bg-emerald-400/10 text-emerald-300 font-semibold">
+                              💰 {e.estImpact}
+                            </span>
+                          )}
                         </div>
                       </div>
                     </div>

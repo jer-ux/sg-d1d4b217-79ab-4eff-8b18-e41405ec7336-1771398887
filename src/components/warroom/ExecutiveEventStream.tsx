@@ -1,6 +1,7 @@
-import { useMemo } from "react";
+import { useMemo, useState } from "react";
 import { AlertTriangle, TrendingUp, ShieldAlert, Pill, Users, FileCheck } from "lucide-react";
 import type { ExecutiveEvent } from "./executiveTypes";
+import { ExecutiveEventDrawer } from "./ExecutiveEventDrawer";
 
 const CATEGORY_CONFIG = {
   cost_trend: {
@@ -55,6 +56,8 @@ const SEVERITY_CONFIG = {
 };
 
 export function ExecutiveEventStream({ events }: { events: ExecutiveEvent[] }) {
+  const [selectedEvent, setSelectedEvent] = useState<ExecutiveEvent | null>(null);
+
   const sortedEvents = useMemo(() => {
     return [...events].sort((a, b) => {
       return new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime();
@@ -108,7 +111,8 @@ export function ExecutiveEventStream({ events }: { events: ExecutiveEvent[] }) {
           return (
             <div
               key={event.id}
-              className={`rounded-xl border ${category.border} ${category.bg} p-4 transition-all hover:scale-[1.01] hover:shadow-lg`}
+              onClick={() => setSelectedEvent(event)}
+              className={`rounded-xl border ${category.border} ${category.bg} p-4 transition-all hover:scale-[1.01] hover:shadow-lg cursor-pointer`}
             >
               <div className="flex items-start gap-3">
                 <div className={`rounded-lg ${category.bg} p-2`}>
@@ -151,6 +155,8 @@ export function ExecutiveEventStream({ events }: { events: ExecutiveEvent[] }) {
           );
         })}
       </div>
+
+      <ExecutiveEventDrawer event={selectedEvent} onClose={() => setSelectedEvent(null)} />
     </div>
   );
 }

@@ -64,6 +64,11 @@ export type ExecutiveEvent = {
   impact: string;
   kpi: string;
   framework: "McKinsey" | "Bain";
+  details?: {
+    root_cause?: string;
+    affected_contracts?: string[];
+    recommended_actions?: string[];
+  };
 };
 
 export type SnapshotResponse = {

@@ -134,7 +134,91 @@ export default function handler(req: NextApiRequest, res: NextApiResponse) {
 
   // Live event generation - every 4-8 seconds
   const eventInterval = setInterval(() => {
-    send({ type: "event", event: generateExecutiveEvent(org, period) });
+    const category = categories[Math.floor(Math.random() * categories.length)];
+    const severity = severities[Math.floor(Math.random() * severities.length)];
+    const framework = Math.random() > 0.3 ? "McKinsey" : "Bain";
+
+    const titles: Record<typeof category, string[]> = {
+      cost_trend: [
+        "YoY PMPM trend exceeds McKinsey baseline",
+        "Medical cost inflation spike detected",
+        "Specialty pharmacy trend acceleration",
+      ],
+      contract: [
+        "Contract value leakage identified",
+        "Pricing term violation detected",
+        "Rebate recovery opportunity found",
+      ],
+      pharmacy: [
+        "Pharmacy rebate discrepancy detected",
+        "PBM reimbursement model exposure increased",
+        "Specialty drug cost anomaly",
+      ],
+      compliance: [
+        "Contract compliance rate declined",
+        "Off-contract spend detected",
+        "Audit rights enforcement opportunity",
+      ],
+      nps: [
+        "Benefits NPS declined below target",
+        "Employee NPS improvement detected",
+        "Navigation satisfaction increased",
+      ],
+      plan_design: [
+        "HDHP/HSA adoption acceleration",
+        "COE utilization increased",
+        "Plan design migration on track",
+      ],
+    };
+
+    const impacts: Record<typeof severity, string[]> = {
+      critical: ["$2.4M annual EBITDA at risk", "$1.8M immediate recovery opportunity", "$3.1M compliance exposure"],
+      high: ["$890K quarterly impact", "$1.2M annual savings potential", "$650K leakage identified"],
+      medium: ["$320K exposure identified", "$450K optimization opportunity", "$280K trend variance"],
+      low: ["$120K monitoring threshold", "$95K informational alert", "$150K quarterly variance"],
+    };
+
+    const kpis = [
+      "Cost Trend Stress Index",
+      "Contract Value Leakage Rate",
+      "Pharmacy Exposure Index",
+      "Contract Compliance Rate",
+      "Benefits NPS",
+      "Plan Design Adoption Rate",
+    ];
+
+    const details: ExecutiveEvent["details"] = {
+      root_cause: [
+        "Increased specialty pharmacy utilization",
+        "Contract pricing term ambiguity",
+        "PBM pass-through calculation error",
+        "Off-contract spend pattern identified",
+        "Claims adjudication variance",
+      ][Math.floor(Math.random() * 5)],
+      affected_contracts: ["CTR-2024-001", "CTR-2024-007", "CTR-2025-003"].slice(0, Math.floor(Math.random() * 3) + 1),
+      recommended_actions: [
+        "Escalate to procurement for contract review",
+        "Initiate rebate recovery process",
+        "Schedule vendor performance review",
+        "Update pricing terms in next renewal",
+        "Implement enhanced monitoring controls",
+      ].slice(0, Math.floor(Math.random() * 3) + 2),
+    };
+
+    const event: ExecutiveEvent = {
+      id: `EVT-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`,
+      timestamp: new Date().toISOString(),
+      category,
+      severity,
+      framework,
+      title: titles[category][Math.floor(Math.random() * titles[category].length)],
+      description: `Real-time ${framework} ${category} event detected requiring ${severity} priority attention`,
+      impact: impacts[severity][Math.floor(Math.random() * impacts[severity].length)],
+      kpi: kpis[Math.floor(Math.random() * kpis.length)],
+      details,
+    };
+
+    send({ type: "event", event });
   }, 4000 + Math.random() * 4000);
 
   // Keep-alive ping - every 15 seconds

@@ -7,7 +7,15 @@ export type Filters = {
   businessUnit: string;
 };
 
-export type TileKey = "cashflow" | "recoverableEbitda" | "healthIQ" | "execution";
+export type TileKey = 
+  | "costTrendStress" 
+  | "planDesignAdoption" 
+  | "pharmacyExposure" 
+  | "contractLeakage" 
+  | "contractAmbiguity" 
+  | "contractCompliance" 
+  | "benefitsNPS" 
+  | "employeeNPS";
 
 export type EvidenceReceipt = {
   receipt_id: string;

@@ -2,7 +2,7 @@ import { useEffect, useMemo, useState } from "react";
 import type { Filters, Period, SnapshotResponse, TileData, TileKey, StreamMessage } from "./executiveTypes";
 import { ExecutiveTicker } from "./widgets/ExecutiveTicker";
 import { ExecutiveFiltersBar } from "./widgets/ExecutiveFiltersBar";
-import { ExecutiveKPITile } from "./tiles/ExecutiveKPITile";
+import { KPITile } from "./tiles/KPITile";
 
 const DEFAULT_FILTERS: Filters = {
   org: "Portfolio",
@@ -26,7 +26,6 @@ export function ExecutiveWarRoom() {
     return p.toString();
   }, [filters]);
 
-  // Initial snapshot
   useEffect(() => {
     let cancelled = false;
     const run = async () => {
@@ -44,7 +43,6 @@ export function ExecutiveWarRoom() {
     };
   }, [query]);
 
-  // Live stream (SSE)
   useEffect(() => {
     setStatus("connecting");
     const es = new EventSource(`/api/war-room/executive-stream?${query}`);
@@ -76,13 +74,13 @@ export function ExecutiveWarRoom() {
   return (
     <div className="min-h-screen bg-zinc-950 text-zinc-100">
       <header className="border-b border-zinc-800/60 bg-zinc-950/80">
-        <div className="mx-auto max-w-7xl px-6 py-5">
+        <div className="mx-auto max-w-[1600px] px-6 py-5">
           <div className="flex items-start justify-between gap-4">
             <div>
               <div className="text-xs tracking-wide text-zinc-400">Kincaid IQ</div>
-              <h1 className="mt-1 text-2xl font-semibold tracking-tight">Executive War Room</h1>
+              <h1 className="mt-1 text-2xl font-semibold tracking-tight">CFO Healthcare Dashboard</h1>
               <div className="mt-1 text-sm text-zinc-400">
-                Evidence Receipts on every KPI. <span className="text-zinc-200">Verified</span> or it&apos;s not real.
+                McKinsey + Bain KPIs with Evidence Receipts. <span className="text-zinc-200">Verified</span> or it&apos;s not real.
               </div>
               <div className="mt-2 text-xs text-zinc-500">
                 Status:{" "}
@@ -105,18 +103,66 @@ export function ExecutiveWarRoom() {
 
       <ExecutiveTicker items={tickerItems} />
 
-      <main className="mx-auto max-w-7xl px-6 py-6">
-        <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
-          <ExecutiveKPITile data={tileMap.get("cashflow")} />
-          <ExecutiveKPITile data={tileMap.get("recoverableEbitda")} />
-          <ExecutiveKPITile data={tileMap.get("healthIQ")} />
-          <ExecutiveKPITile data={tileMap.get("execution")} />
-        </div>
+      <main className="mx-auto max-w-[1600px] px-6 py-6">
+        <section className="mb-8">
+          <div className="mb-4 flex items-baseline gap-3">
+            <h2 className="text-lg font-semibold text-zinc-100">Financial Risk & EBITDA Protection</h2>
+            <div className="text-xs text-zinc-500">McKinsey Framework</div>
+          </div>
+          <div className="grid grid-cols-1 gap-4 lg:grid-cols-2 xl:grid-cols-4">
+            <KPITile data={tileMap.get("costTrendStress")} />
+            <KPITile data={tileMap.get("contractLeakage")} />
+            <KPITile data={tileMap.get("contractCompliance")} />
+            <KPITile data={tileMap.get("contractAmbiguity")} />
+          </div>
+        </section>
 
-        <div className="mt-6 rounded-2xl border border-zinc-800/60 bg-zinc-950/60 p-5">
-          <div className="text-xs text-zinc-400">Operating cadence</div>
-          <div className="mt-2 text-sm text-zinc-200">
-            Detect → Prove → Act → Realize. This War Room is designed to run weekly exec rhythm and board updates with audit-grade defensibility.
+        <section className="mb-8">
+          <div className="mb-4 flex items-baseline gap-3">
+            <h2 className="text-lg font-semibold text-zinc-100">Strategic Plan Design & Risk Mitigation</h2>
+            <div className="text-xs text-zinc-500">McKinsey Framework</div>
+          </div>
+          <div className="grid grid-cols-1 gap-4 lg:grid-cols-2">
+            <KPITile data={tileMap.get("planDesignAdoption")} />
+            <KPITile data={tileMap.get("pharmacyExposure")} />
+          </div>
+        </section>
+
+        <section className="mb-8">
+          <div className="mb-4 flex items-baseline gap-3">
+            <h2 className="text-lg font-semibold text-zinc-100">Experience & Loyalty Metrics</h2>
+            <div className="text-xs text-zinc-500">Bain Net Promoter System</div>
+          </div>
+          <div className="grid grid-cols-1 gap-4 lg:grid-cols-2">
+            <KPITile data={tileMap.get("benefitsNPS")} />
+            <KPITile data={tileMap.get("employeeNPS")} />
+          </div>
+        </section>
+
+        <div className="rounded-2xl border border-zinc-800/60 bg-gradient-to-br from-zinc-950/60 to-zinc-900/40 p-6">
+          <div className="text-xs font-medium tracking-wide text-zinc-400">OPERATING CADENCE</div>
+          <div className="mt-3 text-sm leading-relaxed text-zinc-200">
+            <strong className="text-zinc-100">Detect → Prove → Act → Realize.</strong> This CFO Dashboard combines McKinsey's healthcare cost management framework with Bain's Net Promoter System to deliver audit-grade defensibility for weekly exec rhythm and board updates.
+          </div>
+          <div className="mt-4 grid grid-cols-1 gap-4 md:grid-cols-3">
+            <div className="rounded-xl border border-zinc-800/40 bg-zinc-950/40 p-4">
+              <div className="text-xs font-medium text-emerald-400">McKinsey Framework</div>
+              <div className="mt-2 text-xs text-zinc-300">
+                Cost trend stress, contract value leakage, pharmacy reimbursement exposure, compliance tracking, and innovative plan design adoption.
+              </div>
+            </div>
+            <div className="rounded-xl border border-zinc-800/40 bg-zinc-950/40 p-4">
+              <div className="text-xs font-medium text-blue-400">Bain Net Promoter</div>
+              <div className="mt-2 text-xs text-zinc-300">
+                Benefits NPS and eNPS metrics position loyalty and experience as leading indicators of adoption, retention, and program success.
+              </div>
+            </div>
+            <div className="rounded-xl border border-zinc-800/40 bg-zinc-950/40 p-4">
+              <div className="text-xs font-medium text-violet-400">Evidence Receipts</div>
+              <div className="mt-2 text-xs text-zinc-300">
+                Every KPI backed by cryptographic proof, DQ validation, source lineage, and confidence scoring. Verified or it's not real.
+              </div>
+            </div>
           </div>
         </div>
       </main>

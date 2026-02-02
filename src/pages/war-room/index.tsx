@@ -519,7 +519,7 @@ function CFODashboardContent() {
             sourceSystem: "Manual Entry System + Carrier Web Portal (Non-EDI)",
             lastVerified: new Date(Date.now() - 4 * 60 * 60 * 1000).toISOString(),
             verificationMethod: "Partial verification - Manual review pending",
-            freshness: "4 hours (Exceeds 2h SLA)",
+            freshness: "4 hours (Exceeds 2-hour SLA)",
             dqPassRate: 0.842,
           },
           details: [
@@ -1247,7 +1247,7 @@ function CFODashboardContent() {
                         className="cursor-pointer hover:bg-white/5 p-2 rounded-lg transition-colors"
                         onClick={() => openLevel1Modal({
                           title: "Identified Value Analysis",
-                          description: `Per FASB ASC 820 (Fair Value Measurement), this event represents ${money(activeEvent.identified_value)} in identified value using Level 2 fair value hierarchy inputs. Valuation methodology: Discounted Cash Flow with risk-adjusted WACCACC of 8.5%.`,
+                          description: `Per FASB ASC 820 (Fair Value Measurement), this event represents ${money(activeEvent.identified_value)} in identified value using Level 2 fair value hierarchy inputs. Valuation methodology: Discounted Cash Flow with risk-adjusted WACCACC 8.5%.`,
                           kpis: [
                             { label: "DCF Value", value: money(activeEvent.identified_value), receipt: { id: "VAL-001", verified: true, freshness: "< 1h", dqPassRate: 0.96, confidence: activeEvent.confidence } },
                             { label: "WACC", value: "8.5%", receipt: { id: "VAL-001", verified: true, freshness: "< 1h", dqPassRate: 0.96, confidence: activeEvent.confidence } },
@@ -1419,8 +1419,14 @@ function CFODashboardContent() {
   );
 }
 
-const FourLaneLedger = dynamic(() => import("@/components/warroom/WarRoomV2"), { ssr: false });
-const ExecutiveKPIs = dynamic(() => import("@/components/warroom/WarRoom").then(mod => ({ default: mod.WarRoom })), { ssr: false });
+// Lazy load V2 components
+const WarRoomV2 = dynamic(() => import("@/components/warroom/WarRoomV2").then(mod => mod.WarRoomV2), {
+  loading: () => <div className="p-12 text-center text-white/50">Loading War Room V2...</div>,
+  ssr: false
+});
+
+const FourLaneLedger = dynamic(() => import("@/components/warroom/WarRoomV2").then(mod => mod.WarRoomV2), { ssr: false });
+const ExecutiveKPIs = dynamic(() => import("@/components/warroom/WarRoom").then(mod => mod.WarRoom), { ssr: false });
 
 const CFODashboard = dynamic(() => Promise.resolve(CFODashboardContent), {
   ssr: false,

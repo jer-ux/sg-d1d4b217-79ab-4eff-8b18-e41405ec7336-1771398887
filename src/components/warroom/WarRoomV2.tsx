@@ -236,7 +236,7 @@ function EventCard({ e, onEvidence }: { e: WarEvent; onEvidence: (e: WarEvent) =
   );
 }
 
-export default function WarRoomV2() {
+export function WarRoomV2() {
   const { connected, lastUpdated, events, summaries, totals, ticker } = useWarRoomStream();
   const [filters, setFilters] = useState(defaultFilters());
   const [evidenceOpen, setEvidenceOpen] = useState<WarEvent | null>(null);

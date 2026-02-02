@@ -4,6 +4,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { Search, Filter, ArrowUpDown, AlertTriangle, CheckCircle, Eye, Zap, TrendingUp } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { WarRoomEvent } from "@/lib/warroom/types";
 
 type Gate = "VERIFIED" | "UNVERIFIED";
 type Status = "OPEN" | "WATCH" | "RESOLVED";
@@ -26,9 +27,15 @@ type Event = {
   why: string[];
 };
 
-export default function RankedEventsPanel() {
+export function RankedEventsPanel({
+  events = [],
+  onSelect,
+}: {
+  events?: WarRoomEvent[];
+  onSelect?: (e: WarRoomEvent) => void;
+}) {
   const [loading, setLoading] = useState(true);
-  const [events, setEvents] = useState<Event[]>([]);
+  const [eventsState, setEvents] = useState<Event[]>([]);
   const [err, setErr] = useState<string | null>(null);
   
   // Filters & Sort
@@ -62,7 +69,7 @@ export default function RankedEventsPanel() {
 
   // Filtered & Sorted Events
   const filteredEvents = useMemo(() => {
-    let filtered = events;
+    let filtered = eventsState;
 
     // Search
     if (searchQuery.trim()) {
@@ -111,7 +118,7 @@ export default function RankedEventsPanel() {
     });
 
     return filtered;
-  }, [events, searchQuery, statusFilter, gateFilter, sortBy, sortDesc]);
+  }, [eventsState, searchQuery, statusFilter, gateFilter, sortBy, sortDesc]);
 
   const badge = (status: Status) => {
     if (status === "OPEN") return "border-rose-400/30 bg-rose-500/15 text-rose-100";
@@ -126,11 +133,11 @@ export default function RankedEventsPanel() {
   };
 
   const stats = useMemo(() => {
-    const open = events.filter((e) => e.status === "OPEN").length;
-    const watch = events.filter((e) => e.status === "WATCH").length;
-    const verified = events.filter((e) => e.confidence_gate === "VERIFIED").length;
-    return { open, watch, verified, total: events.length };
-  }, [events]);
+    const open = eventsState.filter((e) => e.status === "OPEN").length;
+    const watch = eventsState.filter((e) => e.status === "WATCH").length;
+    const verified = eventsState.filter((e) => e.confidence_gate === "VERIFIED").length;
+    return { open, watch, verified, total: eventsState.length };
+  }, [eventsState]);
 
   return (
     <motion.div
@@ -192,7 +199,7 @@ export default function RankedEventsPanel() {
       )}
 
       {/* Search & Filters */}
-      {!loading && !err && events.length > 0 && (
+      {!loading && !err && eventsState.length > 0 && (
         <motion.div
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}

@@ -1,5 +1,7 @@
 import { SEO } from "@/components/SEO";
 import Link from "next/link";
+import { SiteHeader } from "@/components/site/SiteHeader";
+import { SiteFooter } from "@/components/site/SiteFooter";
 import { Container, PageHero, CardGrid, CTA, ProofBar } from "@/components/Blocks";
 import { Hero3D } from "@/components/Hero3D";
 
@@ -24,48 +26,56 @@ export default function Marketplace() {
         title="Marketplace Practice — Kincaid IQ"
         description="Build once. Distribute through Snowflake, Databricks, and ServiceNow-aligned delivery motions—high trust, low delivery drag."
       />
-      <Container>
-        <PageHero
-          title="Marketplace Practice"
-          subtitle="Build once. Distribute through Snowflake, Databricks, and ServiceNow-aligned delivery motions—high trust, low delivery drag."
-        />
+      <div className="min-h-screen bg-[#070B12] text-white">
+        <SiteHeader />
+        
+        <main>
+          <Container>
+            <PageHero
+              title="Marketplace Practice"
+              subtitle="Build once. Distribute through Snowflake, Databricks, and ServiceNow-aligned delivery motions—high trust, low delivery drag."
+            />
 
-        <div className="mb-8">
-          <Hero3D />
-        </div>
+            <div className="mb-8">
+              <Hero3D />
+            </div>
 
-        <div className="mb-8">
-          <ProofBar />
-        </div>
+            <div className="mb-8">
+              <ProofBar />
+            </div>
 
-        <CardGrid
-          items={[
-            { title: "Productized Delivery", body: "Repeatable packaging, deployment patterns, and governance primitives that reduce implementation variance." },
-            { title: "Distribution Advantage", body: "Marketplaces shorten procurement paths and anchor buyer trust when proof and controls are embedded." },
-            { title: "High-GM Operating Model", body: "Configuration over custom work. Evidence receipts and ledger outputs become standardized deliverables." },
-          ]}
-        />
+            <CardGrid
+              items={[
+                { title: "Productized Delivery", body: "Repeatable packaging, deployment patterns, and governance primitives that reduce implementation variance." },
+                { title: "Distribution Advantage", body: "Marketplaces shorten procurement paths and anchor buyer trust when proof and controls are embedded." },
+                { title: "High-GM Operating Model", body: "Configuration over custom work. Evidence receipts and ledger outputs become standardized deliverables." },
+              ]}
+            />
 
-        <div className="mt-8 grid md:grid-cols-3 gap-4">
-          <MarketplaceTile
-            title="Snowflake Marketplace"
-            body="Snowflake-native data apps, evidence-ledgers, and deterministic governance patterns."
-            href="/marketplace/snowflake"
-          />
-          <MarketplaceTile
-            title="Databricks Marketplace"
-            body="Lakehouse + agent pipelines with controlled lineage, measurement, and scale-ready patterns."
-            href="/marketplace/databricks"
-          />
-          <MarketplaceTile
-            title="ServiceNow Practice"
-            body="Workflow and approvals layer: actionability, assignment, closure, and audit trail."
-            href="/marketplace/servicenow"
-          />
-        </div>
+            <div className="mt-8 grid md:grid-cols-3 gap-4">
+              <MarketplaceTile
+                title="Snowflake Marketplace"
+                body="Snowflake-native data apps, evidence-ledgers, and deterministic governance patterns."
+                href="/marketplace/snowflake"
+              />
+              <MarketplaceTile
+                title="Databricks Marketplace"
+                body="Lakehouse + agent pipelines with controlled lineage, measurement, and scale-ready patterns."
+                href="/marketplace/databricks"
+              />
+              <MarketplaceTile
+                title="ServiceNow Practice"
+                body="Workflow and approvals layer: actionability, assignment, closure, and audit trail."
+                href="/marketplace/servicenow"
+              />
+            </div>
 
-        <CTA />
-      </Container>
+            <CTA />
+          </Container>
+        </main>
+
+        <SiteFooter />
+      </div>
     </>
   );
 }

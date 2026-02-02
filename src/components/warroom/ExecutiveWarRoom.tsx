@@ -1,10 +1,11 @@
-import { useEffect, useMemo, useState } from "react";
+import { useMemo, useState } from "react";
 import { useRouter } from "next/router";
-import { ChevronDown } from "lucide-react";
-import type { Filters, Period, SnapshotResponse, TileData, TileKey, StreamMessage } from "./executiveTypes";
+import type { Filters, TileData, TileKey } from "./executiveTypes";
 import { ExecutiveTicker } from "./widgets/ExecutiveTicker";
 import { ExecutiveFiltersBar } from "./widgets/ExecutiveFiltersBar";
 import { KPITile } from "./tiles/KPITile";
+import { ExecutiveEventStream } from "./ExecutiveEventStream";
+import { useExecutiveStream } from "./useExecutiveStream";
 import {
   Select,
   SelectContent,
@@ -23,9 +24,6 @@ const DEFAULT_FILTERS: Filters = {
 export function ExecutiveWarRoom() {
   const router = useRouter();
   const [filters, setFilters] = useState<Filters>(DEFAULT_FILTERS);
-  const [tiles, setTiles] = useState<TileData[]>([]);
-  const [tickerItems, setTickerItems] = useState<string[]>([]);
-  const [status, setStatus] = useState<"connecting" | "live" | "offline">("connecting");
   const [selectedDashboard, setSelectedDashboard] = useState<string>("executive-war-room");
 
   const query = useMemo(() => {
@@ -37,44 +35,7 @@ export function ExecutiveWarRoom() {
     return p.toString();
   }, [filters]);
 
-  useEffect(() => {
-    let cancelled = false;
-    const run = async () => {
-      setStatus("connecting");
-      const res = await fetch(`/api/war-room/executive-snapshot?${query}`, { cache: "no-store" });
-      const json = (await res.json()) as SnapshotResponse;
-      if (cancelled) return;
-      setTiles(json.tiles);
-      setTickerItems(json.tickerItems);
-      setStatus("live");
-    };
-    run().catch(() => setStatus("offline"));
-    return () => {
-      cancelled = true;
-    };
-  }, [query]);
-
-  useEffect(() => {
-    setStatus("connecting");
-    const es = new EventSource(`/api/war-room/executive-stream?${query}`);
-    es.onopen = () => setStatus("live");
-    es.onmessage = (evt) => {
-      try {
-        const msg = JSON.parse(evt.data) as StreamMessage;
-        if (msg.type === "tiles") setTiles(msg.tiles);
-        if (msg.type === "ticker") {
-          setTickerItems((prev) => [msg.item, ...prev].slice(0, 30));
-        }
-      } catch {
-        // ignore
-      }
-    };
-    es.onerror = () => {
-      setStatus("offline");
-      es.close();
-    };
-    return () => es.close();
-  }, [query]);
+  const { status, tiles, tickerItems, events } = useExecutiveStream(query);
 
   const tileMap = useMemo(() => {
     const m = new Map<TileKey, TileData>();
@@ -120,6 +81,8 @@ export function ExecutiveWarRoom() {
                 <span className={status === "live" ? "text-emerald-400" : status === "connecting" ? "text-amber-400" : "text-rose-400"}>
                   {status.toUpperCase()}
                 </span>
+                {" • "}
+                <span className="text-zinc-400">{events.length} live events</span>
               </div>
             </div>
 
@@ -170,6 +133,10 @@ export function ExecutiveWarRoom() {
             <KPITile data={tileMap.get("benefitsNPS")} />
             <KPITile data={tileMap.get("employeeNPS")} />
           </div>
+        </section>
+
+        <section className="mb-8">
+          <ExecutiveEventStream events={events} />
         </section>
 
         <div className="rounded-2xl border border-zinc-800/60 bg-gradient-to-br from-zinc-950/60 to-zinc-900/40 p-6">

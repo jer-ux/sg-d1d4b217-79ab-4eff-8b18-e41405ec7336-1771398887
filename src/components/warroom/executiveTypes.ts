@@ -47,10 +47,10 @@ export type TileData = {
   value: string;
   delta?: string;
   subtitle?: string;
-  updatedAt?: string;
-  receipt?: EvidenceReceipt;
-  chartData?: ChartDataPoint[];
   trend?: "up" | "down" | "flat";
+  chartData?: Array<{ period: string; value: number }>;
+  receipt?: EvidenceReceipt;
+  framework?: "McKinsey" | "Bain";
 };
 
 export type SnapshotResponse = {

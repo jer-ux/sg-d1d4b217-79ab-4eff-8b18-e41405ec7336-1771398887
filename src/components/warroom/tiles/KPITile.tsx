@@ -14,6 +14,7 @@ export function KPITile({ data }: { data?: TileData }) {
   const receipt = data?.receipt;
   const chartData = data?.chartData;
   const trend = data?.trend;
+  const framework = data?.framework;
 
   const verified = Boolean(receipt?.verified);
   const confidencePct = receipt ? Math.round(receipt.confidence * 100) : null;
@@ -23,6 +24,12 @@ export function KPITile({ data }: { data?: TileData }) {
     if (verified) return { text: "VERIFIED", cls: "border-emerald-700/60 text-emerald-300" };
     return { text: "UNVERIFIED", cls: "border-amber-700/60 text-amber-300" };
   }, [receipt, verified]);
+
+  const frameworkBadge = useMemo(() => {
+    if (framework === "McKinsey") return { text: "McKinsey", cls: "border-blue-700/60 bg-blue-950/40 text-blue-300" };
+    if (framework === "Bain") return { text: "Bain NPS", cls: "border-violet-700/60 bg-violet-950/40 text-violet-300" };
+    return null;
+  }, [framework]);
 
   const getTrendIcon = () => {
     if (trend === "up") return <TrendingUp className="h-4 w-4 text-emerald-400" />;
@@ -73,7 +80,14 @@ export function KPITile({ data }: { data?: TileData }) {
       <Link href={href} className="block p-5 rounded-2xl transition-colors hover:bg-zinc-950/40">
         <div className="relative flex items-start justify-between gap-3">
           <div className="min-w-0 flex-1">
-            <div className="text-sm text-zinc-400">{title}</div>
+            <div className="flex items-center gap-2 mb-1">
+              <div className="text-sm text-zinc-400">{title}</div>
+              {frameworkBadge && (
+                <span className={`rounded-md border px-2 py-0.5 text-[10px] font-medium ${frameworkBadge.cls}`}>
+                  {frameworkBadge.text}
+                </span>
+              )}
+            </div>
             <div className="mt-2 flex items-baseline gap-3">
               <div className="text-3xl font-semibold tracking-tight text-zinc-100">{value}</div>
               {delta && (

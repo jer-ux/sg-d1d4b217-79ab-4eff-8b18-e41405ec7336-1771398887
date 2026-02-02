@@ -6,6 +6,7 @@ import Nav from "@/components/Nav";
 import Footer from "@/components/Footer";
 import { SEO } from "@/components/SEO";
 import { Hero3D } from "@/components/Hero3D";
+import { TechBackdrop } from "@/components/TechBackdrop";
 
 export default function Home() {
   return (
@@ -19,32 +20,32 @@ export default function Home() {
 
       <main className="min-h-screen bg-gradient-to-br from-gray-50 via-white to-blue-50 dark:from-gray-950 dark:via-gray-900 dark:to-blue-950/20">
         
-        {/* Hero Section - Compact */}
-        <section className="relative pt-24 pb-12 px-4">
+        {/* Hero Section */}
+        <section className="relative pt-20 pb-0 px-4 flex items-center justify-center">
+          <TechBackdrop />
           <div className="relative z-10 max-w-5xl mx-auto text-center space-y-4">
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8 }}
+              transition={{ duration: 0.6 }}
             >
-              <h1 className="text-5xl md:text-7xl font-bold tracking-tight bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 bg-clip-text text-transparent">
+              <h1 className="text-5xl md:text-7xl font-bold bg-gradient-to-r from-blue-400 via-purple-400 to-pink-400 bg-clip-text text-transparent mb-4">
                 Kincaid IQ Data Sciences Gen AI Labs
               </h1>
-              <p className="mt-4 text-xl md:text-2xl text-gray-600 dark:text-gray-300 max-w-3xl mx-auto">
-                Real-time intelligence platform for enterprise operations, governance, and verified cost optimization
+              <p className="text-xl md:text-2xl text-gray-300 max-w-3xl mx-auto">
+                Enterprise-grade AI platform for autonomous operations, governance, and verified cost optimization
               </p>
             </motion.div>
 
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8, delay: 0.2 }}
-              className="flex flex-wrap gap-3 justify-center pt-4"
+              transition={{ duration: 0.6, delay: 0.2 }}
+              className="flex flex-wrap gap-4 justify-center"
             >
               <Link href="/war-room">
-                <Button size="lg" className="group">
-                  Launch War Room
-                  <ArrowRight className="ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform" />
+                <Button size="lg" className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700">
+                  Launch War Room <ArrowRight className="ml-2 h-5 w-5" />
                 </Button>
               </Link>
               <Link href="/request-demo">
@@ -56,11 +57,9 @@ export default function Home() {
           </div>
         </section>
 
-        {/* 3D Showcase - Compact */}
-        <section className="py-12 px-4">
-          <div className="max-w-7xl mx-auto">
-            <Hero3D />
-          </div>
+        {/* 3D Hero Showcase - No gap */}
+        <section className="py-0 px-4">
+          <Hero3D />
         </section>
 
         {/* Platform Features - Compact */}

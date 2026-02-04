@@ -1,7 +1,7 @@
 import { useMemo, useState } from "react";
 import Link from "next/link";
-import { TrendingUp, TrendingDown, Minus } from "lucide-react";
-import { LineChart, Line, ResponsiveContainer, AreaChart, Area } from "recharts";
+import { TrendingUp, TrendingDown, Minus, Shield, AlertTriangle } from "lucide-react";
+import { LineChart, Line, ResponsiveContainer, Area, AreaChart } from "recharts";
 import type { TileData } from "../executiveTypes";
 
 const TILE_THEMES = {
@@ -63,7 +63,15 @@ const TILE_THEMES = {
   },
 };
 
-export function KPITile({ data }: { data?: TileData }) {
+export function KPITile({ data, onClick }: { data?: TileData; onClick?: (tile: TileData) => void }) {
+  if (!data) {
+    return (
+      <div className="rounded-2xl border border-zinc-800/60 bg-zinc-950/60 p-6">
+        <div className="h-40 animate-pulse rounded-lg bg-zinc-900/50" />
+      </div>
+    );
+  }
+
   const [open, setOpen] = useState(false);
 
   const title = data?.title ?? "Loading…";
@@ -125,7 +133,10 @@ export function KPITile({ data }: { data?: TileData }) {
   const href = data?.key ? `/war-room/${data.key}` : "/war-room";
 
   return (
-    <div className={`group relative rounded-2xl border ${theme.border} bg-gradient-to-br ${theme.gradient} shadow-sm transition-all hover:shadow-xl ${theme.glow}`}>
+    <button
+      onClick={() => onClick?.(data)}
+      className={`group relative overflow-hidden rounded-2xl border ${theme.border} bg-gradient-to-br ${theme.gradient} p-6 text-left transition-all hover:shadow-2xl ${theme.glow} backdrop-blur-sm hover:scale-[1.02] active:scale-[0.98] cursor-pointer`}
+    >
       {/* 3D Floating Orbs */}
       <div className="absolute inset-0 overflow-hidden rounded-2xl pointer-events-none">
         <div className={`absolute -top-20 -right-20 h-40 w-40 ${theme.orb} blur-3xl opacity-30 animate-pulse`} />
@@ -278,7 +289,7 @@ export function KPITile({ data }: { data?: TileData }) {
           </div>
         )}
       </Link>
-    </div>
+    </button>
   );
 }
 

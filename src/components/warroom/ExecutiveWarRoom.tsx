@@ -6,6 +6,7 @@ import { ExecutiveFiltersBar } from "./widgets/ExecutiveFiltersBar";
 import { KPITile } from "./tiles/KPITile";
 import { ExecutiveEventStream } from "./ExecutiveEventStream";
 import { useExecutiveStream } from "./useExecutiveStream";
+import { ExecutiveKPIDrawer } from "./ExecutiveKPIDrawer";
 import {
   Select,
   SelectContent,
@@ -25,6 +26,8 @@ export function ExecutiveWarRoom() {
   const router = useRouter();
   const [filters, setFilters] = useState<Filters>(DEFAULT_FILTERS);
   const [selectedDashboard, setSelectedDashboard] = useState<string>("executive-war-room");
+  const [selectedTile, setSelectedTile] = useState<TileData | null>(null);
+  const [drawerOpen, setDrawerOpen] = useState(false);
 
   const query = useMemo(() => {
     const p = new URLSearchParams();
@@ -48,6 +51,16 @@ export function ExecutiveWarRoom() {
     if (value === "kincaid-iq") {
       router.push("/war-room");
     }
+  };
+
+  const handleTileClick = (tile: TileData) => {
+    setSelectedTile(tile);
+    setDrawerOpen(true);
+  };
+
+  const handleCloseDrawer = () => {
+    setDrawerOpen(false);
+    setSelectedTile(null);
   };
 
   return (
@@ -106,10 +119,10 @@ export function ExecutiveWarRoom() {
             <div className="text-xs text-zinc-500">McKinsey Framework</div>
           </div>
           <div className="grid grid-cols-1 gap-4 lg:grid-cols-2 xl:grid-cols-4">
-            <KPITile data={tileMap.get("costTrendStress")} />
-            <KPITile data={tileMap.get("contractLeakage")} />
-            <KPITile data={tileMap.get("contractCompliance")} />
-            <KPITile data={tileMap.get("contractAmbiguity")} />
+            <KPITile data={tileMap.get("costTrendStress")} onClick={handleTileClick} />
+            <KPITile data={tileMap.get("contractLeakage")} onClick={handleTileClick} />
+            <KPITile data={tileMap.get("contractCompliance")} onClick={handleTileClick} />
+            <KPITile data={tileMap.get("contractAmbiguity")} onClick={handleTileClick} />
           </div>
         </section>
 
@@ -119,8 +132,8 @@ export function ExecutiveWarRoom() {
             <div className="text-xs text-zinc-500">McKinsey Framework</div>
           </div>
           <div className="grid grid-cols-1 gap-4 lg:grid-cols-2">
-            <KPITile data={tileMap.get("planDesignAdoption")} />
-            <KPITile data={tileMap.get("pharmacyExposure")} />
+            <KPITile data={tileMap.get("planDesignAdoption")} onClick={handleTileClick} />
+            <KPITile data={tileMap.get("pharmacyExposure")} onClick={handleTileClick} />
           </div>
         </section>
 
@@ -130,8 +143,8 @@ export function ExecutiveWarRoom() {
             <div className="text-xs text-zinc-500">Bain Net Promoter System</div>
           </div>
           <div className="grid grid-cols-1 gap-4 lg:grid-cols-2">
-            <KPITile data={tileMap.get("benefitsNPS")} />
-            <KPITile data={tileMap.get("employeeNPS")} />
+            <KPITile data={tileMap.get("benefitsNPS")} onClick={handleTileClick} />
+            <KPITile data={tileMap.get("employeeNPS")} onClick={handleTileClick} />
           </div>
         </section>
 
@@ -166,6 +179,14 @@ export function ExecutiveWarRoom() {
           </div>
         </div>
       </main>
+
+      {selectedTile && (
+        <ExecutiveKPIDrawer
+          tile={selectedTile}
+          isOpen={drawerOpen}
+          onClose={handleCloseDrawer}
+        />
+      )}
     </div>
   );
 }

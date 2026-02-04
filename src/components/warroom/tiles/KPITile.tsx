@@ -133,8 +133,17 @@ export function KPITile({ data, onClick }: { data?: TileData; onClick?: (tile: T
   const href = data?.key ? `/war-room/${data.key}` : "/war-room";
 
   return (
-    <button
+    <div
       onClick={() => onClick?.(data)}
+      onKeyDown={(e) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          onClick?.(data);
+        }
+      }}
+      tabIndex={0}
+      role="button"
+      aria-label={`View details for ${title}`}
       className={`group relative overflow-hidden rounded-2xl border ${theme.border} bg-gradient-to-br ${theme.gradient} p-6 text-left transition-all hover:shadow-2xl ${theme.glow} backdrop-blur-sm hover:scale-[1.02] active:scale-[0.98] cursor-pointer`}
     >
       {/* 3D Floating Orbs */}
@@ -289,7 +298,7 @@ export function KPITile({ data, onClick }: { data?: TileData; onClick?: (tile: T
           </div>
         )}
       </div>
-    </button>
+    </div>
   );
 }
 

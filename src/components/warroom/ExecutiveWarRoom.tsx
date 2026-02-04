@@ -54,13 +54,16 @@ export function ExecutiveWarRoom() {
   };
 
   const handleTileClick = (tile: TileData) => {
+    console.log("Tile clicked:", tile.title);
     setSelectedTile(tile);
     setDrawerOpen(true);
   };
 
   const handleCloseDrawer = () => {
     setDrawerOpen(false);
-    setSelectedTile(null);
+    setTimeout(() => {
+      setSelectedTile(null);
+    }, 300);
   };
 
   return (

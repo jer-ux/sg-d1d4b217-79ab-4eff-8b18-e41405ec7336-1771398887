@@ -134,7 +134,13 @@ export function KPITile({ data, onClick }: { data?: TileData; onClick?: (tile: T
 
   return (
     <div
-      onClick={() => onClick?.(data)}
+      onClick={(e) => {
+        // Only trigger if not clicking on interactive elements
+        const target = e.target as HTMLElement;
+        if (!target.closest('button') || target.closest('[data-tile-content]')) {
+          onClick?.(data);
+        }
+      }}
       onKeyDown={(e) => {
         if (e.key === 'Enter' || e.key === ' ') {
           e.preventDefault();
@@ -176,7 +182,7 @@ export function KPITile({ data, onClick }: { data?: TileData; onClick?: (tile: T
       )}
 
       {/* Clickable Card Content */}
-      <div className="block p-5 rounded-2xl transition-colors hover:bg-zinc-950/40 backdrop-blur-sm">
+      <div data-tile-content className="block p-5 rounded-2xl transition-colors hover:bg-zinc-950/40 backdrop-blur-sm">
         <div className="relative flex items-start justify-between gap-3">
           <div className="min-w-0 flex-1">
             <div className="flex items-center gap-2 mb-1">

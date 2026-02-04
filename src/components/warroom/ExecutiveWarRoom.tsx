@@ -151,33 +151,6 @@ export function ExecutiveWarRoom() {
         <section className="mb-8">
           <ExecutiveEventStream events={events} />
         </section>
-
-        <div className="rounded-2xl border border-zinc-800/60 bg-gradient-to-br from-zinc-950/60 to-zinc-900/40 p-6">
-          <div className="text-xs font-medium tracking-wide text-zinc-400">OPERATING CADENCE</div>
-          <div className="mt-3 text-sm leading-relaxed text-zinc-200">
-            <strong className="text-zinc-100">Detect → Prove → Act → Realize.</strong> This CFO Dashboard combines McKinsey's healthcare cost management framework with Bain's Net Promoter System to deliver audit-grade defensibility for weekly exec rhythm and board updates.
-          </div>
-          <div className="mt-4 grid grid-cols-1 gap-4 md:grid-cols-3">
-            <div className="rounded-xl border border-zinc-800/40 bg-zinc-950/40 p-4">
-              <div className="text-xs font-medium text-emerald-400">McKinsey Framework</div>
-              <div className="mt-2 text-xs text-zinc-300">
-                Cost trend stress, contract value leakage, pharmacy reimbursement exposure, compliance tracking, and innovative plan design adoption.
-              </div>
-            </div>
-            <div className="rounded-xl border border-zinc-800/40 bg-zinc-950/40 p-4">
-              <div className="text-xs font-medium text-blue-400">Bain Net Promoter</div>
-              <div className="mt-2 text-xs text-zinc-300">
-                Benefits NPS and eNPS metrics position loyalty and experience as leading indicators of adoption, retention, and program success.
-              </div>
-            </div>
-            <div className="rounded-xl border border-zinc-800/40 bg-zinc-950/40 p-4">
-              <div className="text-xs font-medium text-violet-400">Evidence Receipts</div>
-              <div className="mt-2 text-xs text-zinc-300">
-                Every KPI backed by cryptographic proof, DQ validation, source lineage, and confidence scoring. Verified or it's not real.
-              </div>
-            </div>
-          </div>
-        </div>
       </main>
 
       {selectedTile && (

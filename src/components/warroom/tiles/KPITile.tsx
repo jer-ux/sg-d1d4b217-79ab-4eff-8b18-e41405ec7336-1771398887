@@ -135,16 +135,17 @@ export function KPITile({ data, onClick }: { data?: TileData; onClick?: (tile: T
   return (
     <div
       onClick={(e) => {
-        // Only trigger if not clicking on interactive elements
+        // Only prevent click if clicking the receipt toggle button
         const target = e.target as HTMLElement;
-        if (!target.closest('button') || target.closest('[data-tile-content]')) {
-          onClick?.(data);
+        const isReceiptButton = target.closest('[data-receipt-toggle]');
+        if (!isReceiptButton && onClick && data) {
+          onClick(data);
         }
       }}
       onKeyDown={(e) => {
-        if (e.key === 'Enter' || e.key === ' ') {
+        if ((e.key === 'Enter' || e.key === ' ') && onClick && data) {
           e.preventDefault();
-          onClick?.(data);
+          onClick(data);
         }
       }}
       tabIndex={0}
@@ -181,8 +182,8 @@ export function KPITile({ data, onClick }: { data?: TileData; onClick?: (tile: T
         </div>
       )}
 
-      {/* Clickable Card Content */}
-      <div data-tile-content className="block p-5 rounded-2xl transition-colors hover:bg-zinc-950/40 backdrop-blur-sm">
+      {/* Card Content */}
+      <div className="relative">
         <div className="relative flex items-start justify-between gap-3">
           <div className="min-w-0 flex-1">
             <div className="flex items-center gap-2 mb-1">
@@ -209,6 +210,7 @@ export function KPITile({ data, onClick }: { data?: TileData; onClick?: (tile: T
           <div className="shrink-0 flex flex-col gap-2 items-end">
             {/* Receipt toggle (stops navigation) */}
             <button
+              data-receipt-toggle
               onClick={(e) => {
                 e.preventDefault();
                 e.stopPropagation();
@@ -252,14 +254,7 @@ export function KPITile({ data, onClick }: { data?: TileData; onClick?: (tile: T
 
         {/* Evidence Receipt Drawer */}
         {open && (
-          <div
-            onClick={(e) => {
-              // Prevent clicks inside drawer from navigating
-              e.preventDefault();
-              e.stopPropagation();
-            }}
-            className="relative mt-4 rounded-xl border border-zinc-800/60 bg-zinc-950/90 backdrop-blur-sm p-4 text-sm"
-          >
+          <div className="relative mt-4 rounded-xl border border-zinc-800/60 bg-zinc-950/90 backdrop-blur-sm p-4 text-sm">
             <div className="mb-3 flex items-center justify-between border-b border-zinc-800/40 pb-2">
               <div className="text-xs font-medium text-zinc-400">Evidence Receipt</div>
               {receipt && (

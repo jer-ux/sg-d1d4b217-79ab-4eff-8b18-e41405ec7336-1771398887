@@ -64,14 +64,6 @@ const TILE_THEMES = {
 };
 
 export function KPITile({ data, onClick }: { data?: TileData; onClick?: (tile: TileData) => void }) {
-  if (!data) {
-    return (
-      <div className="rounded-2xl border border-zinc-800/60 bg-zinc-950/60 p-6">
-        <div className="h-40 animate-pulse rounded-lg bg-zinc-900/50" />
-      </div>
-    );
-  }
-
   const [open, setOpen] = useState(false);
 
   const title = data?.title ?? "Loading…";
@@ -111,6 +103,14 @@ export function KPITile({ data, onClick }: { data?: TileData; onClick?: (tile: T
     if (framework === "Bain") return { text: "Bain NPS", cls: "border-violet-700/60 bg-violet-950/40 text-violet-300" };
     return null;
   }, [framework]);
+
+  if (!data) {
+    return (
+      <div className="rounded-2xl border border-zinc-800/60 bg-zinc-950/60 p-6">
+        <div className="h-40 animate-pulse rounded-lg bg-zinc-900/50" />
+      </div>
+    );
+  }
 
   const getTrendIcon = () => {
     if (trend === "up") return <TrendingUp className="h-4 w-4 text-emerald-400" />;
@@ -167,7 +167,7 @@ export function KPITile({ data, onClick }: { data?: TileData; onClick?: (tile: T
       )}
 
       {/* Clickable Card Content */}
-      <Link href={href} className="block p-5 rounded-2xl transition-colors hover:bg-zinc-950/40 backdrop-blur-sm">
+      <div className="block p-5 rounded-2xl transition-colors hover:bg-zinc-950/40 backdrop-blur-sm">
         <div className="relative flex items-start justify-between gap-3">
           <div className="min-w-0 flex-1">
             <div className="flex items-center gap-2 mb-1">
@@ -288,7 +288,7 @@ export function KPITile({ data, onClick }: { data?: TileData; onClick?: (tile: T
             )}
           </div>
         )}
-      </Link>
+      </div>
     </button>
   );
 }

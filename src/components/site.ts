@@ -21,7 +21,7 @@ export const menuItems = [
   {
     label: "Platform",
     items: [
-      { label: "War Room", href: "/war-room" },
+      { label: "War Room", href: "/war-room-product" },
       { label: "Executive War Room", href: "/executive-war-room" },
       { label: "Verified Savings Ledger", href: "/verified-savings-ledger" },
       { label: "Evidence Receipts", href: "/evidence-receipts" },

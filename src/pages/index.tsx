@@ -194,7 +194,7 @@ export default function Home() {
               transition={{ duration: 0.6, delay: 0.1 }}
               className="text-5xl md:text-7xl font-bold bg-gradient-to-r from-blue-400 via-violet-400 to-fuchsia-400 bg-clip-text text-transparent"
             >
-              Kincaid IQ Data Sciences Gen AI Labs
+              Kincaid IQ AI
             </motion.h1>
             
             <motion.p

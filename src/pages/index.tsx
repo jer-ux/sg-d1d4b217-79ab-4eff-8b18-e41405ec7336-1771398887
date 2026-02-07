@@ -1,6 +1,6 @@
 import { motion, AnimatePresence } from "framer-motion";
 import Link from "next/link";
-import { ArrowRight, Shield, Zap, Users, TrendingUp, Award, CheckCircle, Sparkles, Database, Lock, Cpu, FileCheck, Receipt } from "lucide-react";
+import { ArrowRight, Shield, Zap, Users, TrendingUp, Award, CheckCircle, Sparkles, Database, Lock, Cpu, FileCheck, Receipt, FileText, BarChart3, Calculator, Heart, Briefcase, Target, CheckCircle2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import Nav from "@/components/Nav";
 import Footer from "@/components/Footer";
@@ -437,6 +437,168 @@ export default function Home() {
                 delay={0.3}
               />
             </div>
+          </div>
+        </section>
+
+        {/* Actuarial Employee Benefits Solutions Section */}
+        <section className="relative py-32 overflow-hidden">
+          {/* Animated Background */}
+          <div className="absolute inset-0 bg-gradient-to-b from-slate-950 via-purple-950/20 to-slate-950" />
+          <motion.div
+            className="absolute inset-0 opacity-30"
+            style={{
+              backgroundImage: "radial-gradient(circle at 2px 2px, rgba(168, 85, 247, 0.4) 1px, transparent 0)",
+              backgroundSize: "48px 48px",
+            }}
+            animate={{
+              backgroundPosition: ["0px 0px", "48px 48px"],
+            }}
+            transition={{
+              duration: 20,
+              repeat: Infinity,
+              ease: "linear",
+            }}
+          />
+
+          <div className="container mx-auto px-6 relative z-10">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              className="text-center mb-16"
+            >
+              <motion.h2
+                className="text-5xl md:text-6xl font-bold mb-6 bg-gradient-to-r from-purple-400 via-pink-400 to-blue-400 bg-clip-text text-transparent"
+                animate={{
+                  textShadow: [
+                    "0 0 20px rgba(168, 85, 247, 0.5)",
+                    "0 0 40px rgba(236, 72, 153, 0.5)",
+                    "0 0 20px rgba(59, 130, 246, 0.5)",
+                    "0 0 20px rgba(168, 85, 247, 0.5)",
+                  ],
+                }}
+                transition={{ duration: 4, repeat: Infinity }}
+              >
+                Actuarial Employee Benefits Solutions
+              </motion.h2>
+              <p className="text-xl text-slate-300 max-w-3xl mx-auto">
+                Comprehensive AI-powered solutions for modern employee benefits management
+              </p>
+            </motion.div>
+
+            {/* 12 Interactive Badges Grid */}
+            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 max-w-7xl mx-auto">
+              {[
+                { icon: Shield, label: "Risk Assessment", color: "from-purple-500 to-pink-500" },
+                { icon: Calculator, label: "Premium Calculation", color: "from-pink-500 to-red-500" },
+                { icon: Heart, label: "Health Benefits", color: "from-red-500 to-orange-500" },
+                { icon: TrendingUp, label: "Claims Analytics", color: "from-orange-500 to-yellow-500" },
+                { icon: Users, label: "Member Management", color: "from-yellow-500 to-green-500" },
+                { icon: FileText, label: "Policy Compliance", color: "from-green-500 to-teal-500" },
+                { icon: BarChart3, label: "Cost Optimization", color: "from-teal-500 to-cyan-500" },
+                { icon: Briefcase, label: "Plan Design", color: "from-cyan-500 to-blue-500" },
+                { icon: Target, label: "Loss Ratio Analysis", color: "from-blue-500 to-indigo-500" },
+                { icon: Award, label: "Performance Metrics", color: "from-indigo-500 to-purple-500" },
+                { icon: CheckCircle2, label: "Quality Assurance", color: "from-purple-500 to-pink-500" },
+                { icon: Sparkles, label: "AI Automation", color: "from-pink-500 to-purple-500" },
+              ].map((badge, index) => {
+                const Icon = badge.icon;
+                return (
+                  <motion.div
+                    key={index}
+                    initial={{ opacity: 0, scale: 0.8 }}
+                    whileInView={{ opacity: 1, scale: 1 }}
+                    viewport={{ once: true }}
+                    transition={{ delay: index * 0.1 }}
+                    whileHover={{ scale: 1.1, rotate: 5 }}
+                    className="group relative"
+                  >
+                    <motion.div
+                      className="relative p-6 rounded-2xl bg-slate-900/50 backdrop-blur-sm border border-slate-700/50 cursor-pointer overflow-hidden"
+                      whileHover={{ borderColor: "rgba(168, 85, 247, 0.8)" }}
+                    >
+                      {/* Vegas Glow Border */}
+                      <div className="absolute inset-0 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                        <div className="absolute inset-0 rounded-2xl bg-gradient-to-r from-purple-500/20 via-pink-500/20 to-blue-500/20 blur-xl" />
+                        <div className="absolute inset-0 rounded-2xl bg-gradient-to-r from-purple-500/10 via-pink-500/10 to-blue-500/10 blur-2xl" />
+                      </div>
+
+                      {/* Animated Background */}
+                      <motion.div
+                        className={`absolute inset-0 bg-gradient-to-br ${badge.color} opacity-0 group-hover:opacity-10 transition-opacity duration-300`}
+                        animate={{
+                          scale: [1, 1.2, 1],
+                        }}
+                        transition={{ duration: 3, repeat: Infinity }}
+                      />
+
+                      {/* Icon */}
+                      <motion.div
+                        className="relative mb-4 flex justify-center"
+                        whileHover={{ rotate: 360, scale: 1.2 }}
+                        transition={{ duration: 0.6 }}
+                      >
+                        <div className={`p-4 rounded-xl bg-gradient-to-br ${badge.color}`}>
+                          <Icon className="w-8 h-8 text-white" />
+                        </div>
+                      </motion.div>
+
+                      {/* Label */}
+                      <h3 className="relative text-center font-semibold text-white group-hover:text-transparent group-hover:bg-gradient-to-r group-hover:from-purple-400 group-hover:to-pink-400 group-hover:bg-clip-text transition-all duration-300">
+                        {badge.label}
+                      </h3>
+
+                      {/* Hover Shine Effect */}
+                      <motion.div
+                        className="absolute inset-0 rounded-2xl opacity-0 group-hover:opacity-100"
+                        style={{
+                          background: "linear-gradient(45deg, transparent 30%, rgba(255,255,255,0.1) 50%, transparent 70%)",
+                        }}
+                        animate={{
+                          x: ["-100%", "100%"],
+                        }}
+                        transition={{
+                          duration: 1.5,
+                          repeat: Infinity,
+                          repeatDelay: 2,
+                        }}
+                      />
+                    </motion.div>
+                  </motion.div>
+                );
+              })}
+            </div>
+
+            {/* CTA Button */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              className="text-center mt-16"
+            >
+              <Link href="/actuarial-benefits">
+                <motion.button
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
+                  className="relative px-12 py-6 text-xl font-bold text-white rounded-2xl overflow-hidden group"
+                >
+                  {/* Animated Border */}
+                  <div className="absolute inset-0 rounded-2xl p-[2px] bg-gradient-to-r from-purple-500 via-pink-500 to-blue-500 animate-pulse">
+                    <div className="h-full w-full rounded-2xl bg-slate-900" />
+                  </div>
+                  
+                  {/* Button Content */}
+                  <span className="relative z-10 flex items-center gap-3">
+                    <Sparkles className="w-6 h-6" />
+                    Explore All Solutions
+                    <Sparkles className="w-6 h-6" />
+                  </span>
+
+                  {/* Hover Glow */}
+                  <div className="absolute inset-0 rounded-2xl bg-gradient-to-r from-purple-500/20 via-pink-500/20 to-blue-500/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300 blur-xl" />
+                </motion.button>
+              </Link>
+            </motion.div>
           </div>
         </section>
 

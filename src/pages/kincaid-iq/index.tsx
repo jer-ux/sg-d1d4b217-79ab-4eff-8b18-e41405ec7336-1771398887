@@ -1,6 +1,6 @@
 import Head from "next/head";
 import Link from "next/link";
-import { Building2, LineChart, Shield, Users } from "lucide-react";
+import { Building2, LineChart, Shield, Users, Receipt, TrendingDown } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
@@ -11,10 +11,10 @@ export default function KincaidIQHome() {
   return (
     <>
       <Head>
-        <title>Kincaid IQ — Benefits Intelligence Built for Finance</title>
+        <title>Kincaid IQ — Fiduciary Grade Transparency Engine</title>
         <meta
           name="description"
-          content="Transform employer health plans with audit-grade analytics, defensible metrics, and CFO-ready insights that expose leakage and quantify decision levers."
+          content="Shows EBITDA drag with receipts. Transform employer health plans with audit-grade analytics, defensible metrics, and cryptographic evidence trails."
         />
       </Head>
 
@@ -25,16 +25,19 @@ export default function KincaidIQHome() {
             <div className="pointer-events-none absolute -top-40 left-1/2 h-[520px] w-[520px] -translate-x-1/2 rounded-full bg-white/10 blur-[90px]" />
             <div className="mx-auto max-w-7xl px-6 py-16 md:py-24">
               <div className="max-w-3xl">
-                <div className="text-xs text-white/60">Kincaid IQ Platform</div>
+                <div className="inline-flex items-center gap-2 rounded-full border border-violet-400/30 bg-violet-500/10 px-3 py-1 backdrop-blur-xl">
+                  <Receipt className="h-3.5 w-3.5 text-violet-300" />
+                  <span className="text-xs text-violet-200">Fiduciary Grade Transparency Engine</span>
+                </div>
 
                 <h1 className="mt-4 text-4xl font-semibold tracking-tight md:text-6xl">
-                  Benefits Intelligence
+                  Kincaid IQ
                 </h1>
-                <div className="mt-2 text-lg font-medium text-white/70">Built for Finance</div>
+                <div className="mt-2 text-lg font-medium text-white/70">Shows EBITDA Drag With Receipts</div>
 
                 <p className="mt-6 text-lg text-white/70 md:text-xl">
-                  Transform employer health plans with audit-grade analytics, defensible metrics, and CFO-ready insights
-                  that expose leakage and quantify decision levers.
+                  Transform employer health plans with audit-grade analytics, defensible metrics, and cryptographic evidence
+                  trails that expose leakage and quantify decision levers.
                 </p>
 
                 <div className="mt-8 flex flex-col gap-3 sm:flex-row">
@@ -52,16 +55,19 @@ export default function KincaidIQHome() {
 
                 <div className="mt-10 grid gap-4 md:grid-cols-3">
                   <ValueCard
-                    title="Audit-Grade Evidence"
-                    body="Every metric backed by verifiable claims data, contract terms, and defined methodologies. No black boxes."
+                    icon={Receipt}
+                    title="Evidence-Backed"
+                    body="Every metric backed by verifiable claims data, contract terms, and cryptographic signatures. No black boxes."
                   />
                   <ValueCard
-                    title="Real-Time Analytics"
-                    body="Live dashboards showing actual plan performance, spend patterns, and outlier detection across pharmacy and medical."
+                    icon={TrendingDown}
+                    title="EBITDA Attribution"
+                    body="Direct financial impact measurement with traceable inputs showing cost drag, leakage, and verified savings."
                   />
                   <ValueCard
-                    title="CFO-Ready Reports"
-                    body="Executive summaries with actionable insights, ranked decision levers, and exportable evidence packs for governance."
+                    icon={Shield}
+                    title="Fiduciary Grade"
+                    body="Board-ready reporting with audit trails, regulatory compliance, and defensible methodologies."
                   />
                 </div>
               </div>
@@ -77,7 +83,7 @@ export default function KincaidIQHome() {
                   <h2 className="mt-3 text-2xl font-semibold md:text-3xl">The Benefits War Room</h2>
                   <p className="mt-3 max-w-3xl text-white/70">
                     A transparency engine that exposes financial leakage, incentive misalignment, and structural blind
-                    spots in employer health plans.
+                    spots—backed by cryptographic evidence receipts.
                   </p>
                 </div>
 
@@ -93,7 +99,7 @@ export default function KincaidIQHome() {
               </div>
 
               <p className="mt-4 text-sm text-white/60">
-                Headline tiles only. Full app adds drill-downs, scenario controls, and exportable evidence packs.
+                Headline tiles only. Full app adds drill-downs, evidence trails, and exportable proof packs with receipts.
               </p>
 
               <div className="mt-6 md:hidden">
@@ -110,11 +116,11 @@ export default function KincaidIQHome() {
               <h2 className="text-2xl font-semibold md:text-3xl">What Kincaid IQ Does</h2>
 
               <div className="mt-8 grid gap-4 md:grid-cols-2">
-                <BulletCard text="Converts PBM + GLP-1 spend into a measurable model" />
-                <BulletCard text="Flags leakage and outliers at the drug/category level" />
-                <BulletCard text="Benchmarks vendor economics against defensible references" />
-                <BulletCard text="Quantifies decision levers (controls, plan design, funding strategy)" />
-                <BulletCard text="Produces board-ready reporting with traceable inputs" />
+                <BulletCard text="Converts PBM + GLP-1 spend into measurable EBITDA impact with receipts" />
+                <BulletCard text="Flags leakage and outliers at drug/category level with cryptographic evidence" />
+                <BulletCard text="Benchmarks vendor economics against defensible references with audit trails" />
+                <BulletCard text="Quantifies decision levers with verifiable cost attribution and traceable inputs" />
+                <BulletCard text="Produces fiduciary-grade reporting with blockchain-backed proof of outcomes" />
               </div>
             </div>
           </section>
@@ -130,17 +136,18 @@ export default function KincaidIQHome() {
                   title="Ingest"
                   body="Pharmacy + eligibility (minimum), then medical/contract/renewal inputs as available"
                 />
-                <StepCard n="02" title="Normalize" body="Clean, map, reconcile categories" />
-                <StepCard n="03" title="Score" body="Compute hero KPIs with evidence trails" />
-                <StepCard n="04" title="Act" body="Deliver a prioritized action path + reporting cadence" />
+                <StepCard n="02" title="Normalize" body="Clean, map, reconcile categories with evidence trails" />
+                <StepCard n="03" title="Score" body="Compute hero KPIs with cryptographic receipts and audit trails" />
+                <StepCard n="04" title="Act" body="Deliver prioritized action path with EBITDA attribution + reporting" />
               </div>
 
               <div className="mt-10 rounded-3xl border border-white/10 bg-white/5 p-6 md:p-8">
                 <div className="text-lg font-semibold">Dashboards show numbers.</div>
                 <div className="mt-1 text-lg font-semibold">Kincaid IQ shows receipts.</div>
                 <p className="mt-4 max-w-4xl text-white/70">
-                  Every KPI is tied back to the underlying inputs—claims, contracts, and defined methodologies—so
-                  leadership can defend decisions and challenge vendor narratives with confidence.
+                  Every KPI is tied back to the underlying inputs—claims, contracts, and defined methodologies—with
+                  cryptographic signatures and immutable audit trails so leadership can defend decisions and challenge
+                  vendor narratives with confidence.
                 </p>
               </div>
             </div>
@@ -159,8 +166,9 @@ export default function KincaidIQHome() {
                     </div>
                     <h3 className="mt-4 text-xl font-semibold">CFOs & Finance Leaders</h3>
                     <p className="mt-3 text-white/70">
-                      Replace opacity with precision. Defend budgets, expose vendor economics, and quantify the impact
-                      of every benefits decision with traceable inputs that survive audit and board scrutiny.
+                      Replace opacity with fiduciary-grade precision. Show EBITDA drag with receipts, defend budgets with
+                      cryptographic evidence, and quantify the impact of every benefits decision with traceable inputs that
+                      survive audit and board scrutiny.
                     </p>
                   </CardContent>
                 </Card>
@@ -172,8 +180,9 @@ export default function KincaidIQHome() {
                     </div>
                     <h3 className="mt-4 text-xl font-semibold">HR & Benefits Leaders</h3>
                     <p className="mt-3 text-white/70">
-                      Move from reactive reporting to strategic control. Get real-time visibility into plan performance,
-                      outlier members, and vendor accountability with insights that drive decisions—not just dashboards.
+                      Move from reactive reporting to strategic control with evidence receipts. Get real-time visibility into
+                      plan performance, outlier members, and vendor accountability with insights backed by cryptographic
+                      proof—not just dashboards.
                     </p>
                   </CardContent>
                 </Card>
@@ -196,9 +205,10 @@ export default function KincaidIQHome() {
             <div className="mx-auto max-w-7xl px-6 py-16 md:py-20">
               <Card className="rounded-3xl border-white/10 bg-white/5">
                 <CardContent className="p-8 md:p-10">
-                  <h3 className="text-2xl font-semibold md:text-3xl">Ready to Get Started?</h3>
+                  <h3 className="text-2xl font-semibold md:text-3xl">Ready to Show EBITDA Impact With Receipts?</h3>
                   <p className="mt-3 max-w-3xl text-white/70">
-                    Get in touch to see how Kincaid IQ can transform your benefits intelligence.
+                    Get in touch to see how Kincaid IQ's fiduciary-grade transparency engine can transform your benefits
+                    intelligence.
                   </p>
 
                   <div className="mt-6 flex flex-col gap-3 sm:flex-row">
@@ -242,10 +252,13 @@ export default function KincaidIQHome() {
   );
 }
 
-function ValueCard({ title, body }: { title: string; body: string }) {
+function ValueCard({ icon: Icon, title, body }: { icon: React.ComponentType<{ className?: string }>; title: string; body: string }) {
   return (
     <Card className="rounded-3xl border-white/10 bg-white/5">
       <CardContent className="p-6">
+        <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-white/10 mb-3">
+          <Icon className="h-4 w-4" />
+        </div>
         <h3 className="text-base font-semibold">{title}</h3>
         <p className="mt-2 text-sm text-white/70">{body}</p>
       </CardContent>

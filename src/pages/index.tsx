@@ -1,6 +1,6 @@
 import { motion, AnimatePresence } from "framer-motion";
 import Link from "next/link";
-import { ArrowRight, Shield, Zap, Users, TrendingUp, Award, CheckCircle, Sparkles, Database, Lock, Cpu } from "lucide-react";
+import { ArrowRight, Shield, Zap, Users, TrendingUp, Award, CheckCircle, Sparkles, Database, Lock, Cpu, FileCheck, Receipt } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import Nav from "@/components/Nav";
 import Footer from "@/components/Footer";
@@ -169,8 +169,8 @@ export default function Home() {
   return (
     <>
       <SEO
-        title="Kincaid IQ - AI Data Sciences Lab"
-        description="Enterprise AI-powered data intelligence platform for real-time incident management, cost optimization, and governance"
+        title="Kincaid IQ AI - Fiduciary Grade Transparency Engine"
+        description="Enterprise AI platform that shows EBITDA drag with receipts. Real-time incident management, verified cost optimization, and cryptographic evidence trails."
       />
       
       <Nav />
@@ -188,8 +188,8 @@ export default function Home() {
               transition={{ duration: 0.6 }}
               className="inline-flex items-center gap-2 rounded-full border border-violet-400/30 bg-violet-500/10 px-4 py-2 backdrop-blur-xl"
             >
-              <Sparkles className="h-4 w-4 text-violet-300" />
-              <span className="text-sm text-violet-200">Enterprise AI Data Sciences Platform</span>
+              <Receipt className="h-4 w-4 text-violet-300" />
+              <span className="text-sm text-violet-200">Fiduciary Grade Transparency Engine</span>
             </motion.div>
 
             <motion.h1
@@ -207,7 +207,16 @@ export default function Home() {
               transition={{ duration: 0.6, delay: 0.2 }}
               className="text-xl md:text-2xl text-white/80 max-w-3xl mx-auto"
             >
-              Enterprise-grade AI platform for autonomous operations, governance, and verified cost optimization
+              Shows EBITDA Drag With Receipts
+            </motion.p>
+
+            <motion.p
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.25 }}
+              className="text-base md:text-lg text-white/60 max-w-3xl mx-auto"
+            >
+              Enterprise AI platform for autonomous operations, governance, and cryptographically verified cost optimization
             </motion.p>
 
             <motion.div
@@ -235,6 +244,50 @@ export default function Home() {
           <Hero3D />
         </section>
 
+        {/* Value Proposition */}
+        <section className="py-16 px-4 border-t border-white/10">
+          <div className="max-w-7xl mx-auto">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              className="text-center mb-12"
+            >
+              <h2 className="text-4xl md:text-5xl font-bold text-white mb-4">Fiduciary Grade Intelligence</h2>
+              <p className="text-lg text-white/70 max-w-3xl mx-auto">
+                Every metric backed by cryptographic evidence trails. No black boxes, no trust-me numbers.
+              </p>
+            </motion.div>
+
+            <div className="grid md:grid-cols-3 gap-6">
+              <FeatureCard
+                icon={Receipt}
+                title="Evidence Receipts"
+                description="Every cost optimization claim backed by cryptographically signed proof and immutable audit trails"
+                href="/evidence-receipts"
+                themeKey="violet"
+                delay={0}
+              />
+              <FeatureCard
+                icon={TrendingUp}
+                title="EBITDA Impact"
+                description="Real-time visibility into financial leakage, cost drag, and verified savings with defensible attribution"
+                href="/verified-savings-ledger"
+                themeKey="emerald"
+                delay={0.1}
+              />
+              <FeatureCard
+                icon={FileCheck}
+                title="Fiduciary Grade"
+                description="Audit-ready documentation, regulatory compliance, and board-level reporting with traceable inputs"
+                href="/security-governance"
+                themeKey="cyan"
+                delay={0.2}
+              />
+            </div>
+          </div>
+        </section>
+
         {/* See It In Action */}
         <section className="py-16 px-4 border-t border-white/10">
           <div className="max-w-7xl mx-auto">
@@ -249,8 +302,8 @@ export default function Home() {
                   <div className="text-xs text-white/60 mb-3">Live Platform</div>
                   <h2 className="text-3xl md:text-4xl font-bold text-white mb-3">See It In Action</h2>
                   <p className="text-white/70 max-w-3xl">
-                    Real-time KPIs that expose financial leakage, incentive misalignment, and structural blind spots
-                    across your benefits program. Click any metric to explore receipts and evidence.
+                    Real-time KPIs that expose financial leakage, incentive misalignment, and structural blind spots.
+                    Every metric traceable to underlying evidence—claims, contracts, and verifiable inputs.
                   </p>
                 </div>
 
@@ -282,7 +335,7 @@ export default function Home() {
               transition={{ delay: 0.2 }}
               className="mt-4 text-sm text-white/60"
             >
-              Click any metric to explore drill-downs, scenario modeling, and exportable evidence packs.
+              Click any metric to explore drill-downs, evidence trails, and exportable proof packs.
             </motion.p>
 
             <motion.div
@@ -302,7 +355,7 @@ export default function Home() {
         </section>
 
         {/* Platform Features */}
-        <section className="py-16 px-4">
+        <section className="py-16 px-4 border-t border-white/10">
           <div className="max-w-7xl mx-auto">
             <motion.div
               initial={{ opacity: 0, y: 20 }}
@@ -326,7 +379,7 @@ export default function Home() {
               <FeatureCard
                 icon={TrendingUp}
                 title="Verified Savings Ledger"
-                description="Blockchain-backed cost optimization tracking with immutable audit trails"
+                description="Blockchain-backed cost optimization tracking with immutable audit trails and EBITDA attribution"
                 href="/verified-savings-ledger"
                 themeKey="emerald"
                 delay={0.1}
@@ -334,7 +387,7 @@ export default function Home() {
               <FeatureCard
                 icon={Database}
                 title="Evidence Receipts"
-                description="Cryptographically signed proof of business outcomes and operational metrics"
+                description="Cryptographically signed proof of business outcomes with defensible methodologies"
                 href="/evidence-receipts"
                 themeKey="violet"
                 delay={0.2}
@@ -353,14 +406,14 @@ export default function Home() {
               className="text-center mb-12"
             >
               <h2 className="text-4xl md:text-5xl font-bold text-white mb-4">Why Kincaid IQ</h2>
-              <p className="text-lg text-white/70">Enterprise-grade platform built for mission-critical operations</p>
+              <p className="text-lg text-white/70">Transparency engine built for fiduciary accountability</p>
             </motion.div>
 
             <div className="grid md:grid-cols-2 gap-6">
               <FeatureCard
                 icon={Award}
                 title="Verifiable Evidence"
-                description="Blockchain-backed proof of outcomes with cryptographic signatures and immutable audit trails"
+                description="Blockchain-backed proof with cryptographic signatures. Every claim traceable to source data, contracts, and defined methodologies."
                 href="/evidence-receipts"
                 themeKey="cyan"
                 delay={0}
@@ -368,23 +421,23 @@ export default function Home() {
               <FeatureCard
                 icon={Zap}
                 title="Real-time Intelligence"
-                description="Live event streaming, AI-powered ranking, and instant governance automation"
+                description="Live event streaming, AI-powered ranking, and instant governance automation with sub-100ms latency"
                 href="/war-room"
                 themeKey="violet"
                 delay={0.1}
               />
               <FeatureCard
                 icon={Lock}
-                title="Enterprise Security"
-                description="SOC 2 compliant infrastructure with end-to-end encryption and role-based access control"
+                title="Fiduciary Security"
+                description="SOC 2 Type II compliant with end-to-end encryption, audit trails, and role-based access control"
                 href="/security-governance"
                 themeKey="blue"
                 delay={0.2}
               />
               <FeatureCard
                 icon={Cpu}
-                title="Seamless Integration"
-                description="Native connectors for Snowflake, Databricks, ServiceNow, and leading enterprise platforms"
+                title="Enterprise Integration"
+                description="Native connectors for Snowflake, Databricks, ServiceNow with pre-built adapters for major platforms"
                 href="/marketplace"
                 themeKey="emerald"
                 delay={0.3}
@@ -400,7 +453,7 @@ export default function Home() {
               <StatCard value="99.9%" label="Uptime SLA" delay={0} />
               <StatCard value="<100ms" label="Event Latency" delay={0.1} />
               <StatCard value="10M+" label="Events/Day" delay={0.2} />
-              <StatCard value="Enterprise" label="Grade Security" delay={0.3} />
+              <StatCard value="100%" label="Traceable Metrics" delay={0.3} />
             </div>
           </div>
         </section>
@@ -418,10 +471,10 @@ export default function Home() {
               
               <div className="relative">
                 <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">
-                  Ready to Transform Your Operations?
+                  Ready to Show EBITDA Impact With Receipts?
                 </h2>
                 <p className="text-lg text-white/70 max-w-2xl mx-auto mb-8">
-                  Join industry leaders using Kincaid IQ for real-time intelligence and verified outcomes
+                  Join enterprises using Kincaid IQ for fiduciary-grade transparency and verified outcomes
                 </p>
                 <div className="flex flex-wrap gap-4 justify-center">
                   <Link href="/request-demo">

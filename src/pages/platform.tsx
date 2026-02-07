@@ -20,13 +20,20 @@ import {
   FileCheck,
   Eye,
   Search,
-  X
+  X,
+  Sparkles,
+  CheckCircle2,
+  Crown,
+  Lock,
+  Coins,
+  Brain
 } from "lucide-react";
 import Nav from "@/components/Nav";
 import Footer from "@/components/Footer";
 import { SEO } from "@/components/SEO";
 import { motion, AnimatePresence } from "framer-motion";
 import { PremiumGraphics } from "@/components/platform/PremiumGraphics";
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 
 type NavCard = {
   title: string;
@@ -43,8 +50,259 @@ type NavSection = {
   cards: NavCard[];
 };
 
+type BadgeInfo = {
+  name: string;
+  description: string;
+  icon: React.ComponentType<{ className?: string }>;
+  colorClass: string;
+  glowClass: string;
+  features: string[];
+  benefits: string[];
+};
+
+const badgeExplanations: Record<string, BadgeInfo> = {
+  Live: {
+    name: "Live",
+    description: "Production-ready features with real-time data streaming and active monitoring",
+    icon: Sparkles,
+    colorClass: "from-emerald-500/20 to-emerald-600/20 border-emerald-400/40",
+    glowClass: "shadow-[0_0_30px_rgba(16,185,129,0.4)]",
+    features: [
+      "Real-time data streaming and event processing",
+      "Active monitoring and alerting systems",
+      "Production-grade reliability (99.9% uptime)",
+      "24/7 support and incident response",
+      "Fully documented APIs and integrations"
+    ],
+    benefits: [
+      "Immediate insights without delays",
+      "Instant alerts on critical events",
+      "Battle-tested in production environments",
+      "Enterprise-ready security and compliance"
+    ]
+  },
+  Executive: {
+    name: "Executive",
+    description: "C-suite optimized dashboards with fiduciary-grade insights and decision support",
+    icon: Crown,
+    colorClass: "from-purple-500/20 to-purple-600/20 border-purple-400/40",
+    glowClass: "shadow-[0_0_30px_rgba(168,85,247,0.4)]",
+    features: [
+      "High-level KPI dashboards with drill-down capability",
+      "Executive summaries with actionable insights",
+      "Board-ready reporting and presentations",
+      "Strategic decision support systems",
+      "Fiduciary-grade verification and audit trails"
+    ],
+    benefits: [
+      "Make informed decisions with verified data",
+      "Present to boards with confidence",
+      "Track business impact at the highest level",
+      "Defend decisions with cryptographic evidence"
+    ]
+  },
+  Beta: {
+    name: "Beta",
+    description: "Preview features available for early access and testing with production quality",
+    icon: Zap,
+    colorClass: "from-blue-500/20 to-blue-600/20 border-blue-400/40",
+    glowClass: "shadow-[0_0_30px_rgba(59,130,246,0.4)]",
+    features: [
+      "Early access to cutting-edge capabilities",
+      "Production-quality code with active development",
+      "Frequent updates and feature enhancements",
+      "Direct feedback channel to product team",
+      "Gradual rollout with stability monitoring"
+    ],
+    benefits: [
+      "Get ahead with next-generation features",
+      "Influence product direction with feedback",
+      "Prepare for upcoming capabilities",
+      "Competitive advantage through early adoption"
+    ]
+  },
+  Verified: {
+    name: "Verified",
+    description: "Cryptographically signed evidence with immutable audit trails and compliance",
+    icon: CheckCircle2,
+    colorClass: "from-cyan-500/20 to-cyan-600/20 border-cyan-400/40",
+    glowClass: "shadow-[0_0_30px_rgba(6,182,212,0.4)]",
+    features: [
+      "Cryptographic signatures on all evidence",
+      "Immutable blockchain-backed audit trails",
+      "Tamper-proof verification protocols",
+      "SOC 2 Type II compliant infrastructure",
+      "Legal-grade evidence receipts"
+    ],
+    benefits: [
+      "Defend decisions with cryptographic proof",
+      "Meet regulatory compliance requirements",
+      "Build stakeholder trust with transparency",
+      "Eliminate disputes with verified evidence"
+    ]
+  },
+  Ledger: {
+    name: "Ledger",
+    description: "Financial ledger integration with reconciliation and accountability tracking",
+    icon: Coins,
+    colorClass: "from-amber-500/20 to-amber-600/20 border-amber-400/40",
+    glowClass: "shadow-[0_0_30px_rgba(245,158,11,0.4)]",
+    features: [
+      "Double-entry accounting system integration",
+      "Automated reconciliation workflows",
+      "Approval chains and audit trails",
+      "External source integration (banks, ERPs)",
+      "Cost optimization tracking"
+    ],
+    benefits: [
+      "Track every dollar with precision",
+      "Automate tedious reconciliation tasks",
+      "Prove ROI with verified savings",
+      "Ensure financial accountability"
+    ]
+  },
+  AI: {
+    name: "AI",
+    description: "Autonomous AI agents for intelligent automation and decision support",
+    icon: Brain,
+    colorClass: "from-violet-500/20 to-violet-600/20 border-violet-400/40",
+    glowClass: "shadow-[0_0_30px_rgba(139,92,246,0.4)]",
+    features: [
+      "Generative AI for policy creation and analysis",
+      "Autonomous agents for workflow automation",
+      "Natural language processing and understanding",
+      "Predictive analytics and forecasting",
+      "Intelligent decision support systems"
+    ],
+    benefits: [
+      "Automate complex decision-making",
+      "Scale expertise across the organization",
+      "Reduce manual work with intelligent agents",
+      "Uncover insights hidden in data"
+    ]
+  }
+};
+
+function BadgeExplanationModal({ badge, isOpen, onClose }: { badge: string | null; isOpen: boolean; onClose: () => void }) {
+  if (!badge || !badgeExplanations[badge]) return null;
+  
+  const info = badgeExplanations[badge];
+  const Icon = info.icon;
+
+  return (
+    <Dialog open={isOpen} onOpenChange={onClose}>
+      <DialogContent className="max-w-3xl max-h-[85vh] overflow-y-auto bg-black/95 border border-white/10 backdrop-blur-3xl">
+        <motion.div
+          initial={{ opacity: 0, scale: 0.95 }}
+          animate={{ opacity: 1, scale: 1 }}
+          exit={{ opacity: 0, scale: 0.95 }}
+          transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
+        >
+          {/* Glow effect */}
+          <div className={`absolute -top-20 -right-20 h-64 w-64 rounded-full bg-gradient-to-br ${info.colorClass} blur-3xl opacity-30`} />
+          
+          <DialogHeader>
+            <div className="flex items-start gap-4 mb-4">
+              <motion.div 
+                className={`p-4 rounded-2xl bg-gradient-to-br ${info.colorClass} ${info.glowClass}`}
+                animate={{
+                  boxShadow: [
+                    info.glowClass,
+                    info.glowClass.replace('0.4', '0.6'),
+                    info.glowClass,
+                  ],
+                }}
+                transition={{ duration: 2, repeat: Infinity }}
+              >
+                <Icon className="h-8 w-8 text-white" />
+              </motion.div>
+              
+              <div className="flex-1">
+                <DialogTitle className="text-3xl font-bold text-white mb-2">
+                  {info.name} Features
+                </DialogTitle>
+                <p className="text-white/70 text-base leading-relaxed">
+                  {info.description}
+                </p>
+              </div>
+            </div>
+          </DialogHeader>
+
+          <div className="space-y-8 mt-8">
+            {/* Features Section */}
+            <div>
+              <h3 className="text-xl font-semibold text-white mb-4 flex items-center gap-2">
+                <FileCheck className="h-5 w-5 text-white/70" />
+                Key Features
+              </h3>
+              <div className="space-y-3">
+                {info.features.map((feature, idx) => (
+                  <motion.div
+                    key={idx}
+                    initial={{ opacity: 0, x: -20 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ delay: idx * 0.1 }}
+                    className="flex items-start gap-3 p-3 rounded-xl bg-white/5 border border-white/10 hover:bg-white/10 transition-colors"
+                  >
+                    <CheckCircle2 className="h-5 w-5 text-emerald-400 flex-shrink-0 mt-0.5" />
+                    <p className="text-white/80 text-sm leading-relaxed">{feature}</p>
+                  </motion.div>
+                ))}
+              </div>
+            </div>
+
+            {/* Benefits Section */}
+            <div>
+              <h3 className="text-xl font-semibold text-white mb-4 flex items-center gap-2">
+                <TrendingUp className="h-5 w-5 text-white/70" />
+                Business Benefits
+              </h3>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                {info.benefits.map((benefit, idx) => (
+                  <motion.div
+                    key={idx}
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: 0.3 + idx * 0.1 }}
+                    className="p-4 rounded-xl bg-gradient-to-br from-white/5 to-white/10 border border-white/10 hover:border-white/20 transition-all group"
+                  >
+                    <p className="text-white/80 text-sm leading-relaxed group-hover:text-white transition-colors">
+                      {benefit}
+                    </p>
+                  </motion.div>
+                ))}
+              </div>
+            </div>
+
+            {/* CTA Section */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.6 }}
+              className="p-6 rounded-2xl bg-gradient-to-br from-white/5 to-white/10 border border-white/10"
+            >
+              <h4 className="text-lg font-semibold text-white mb-2">
+                Ready to explore {info.name} features?
+              </h4>
+              <p className="text-white/70 text-sm mb-4">
+                Discover how these capabilities can transform your operations with verified intelligence.
+              </p>
+              <Link
+                href="/request-demo"
+                className="inline-flex items-center gap-2 rounded-xl bg-white text-black px-6 py-3 text-sm font-medium hover:bg-white/90 transition-all apple-hover-lift"
+              >
+                Request Demo
+                <span className="group-hover:translate-x-1 transition-transform">→</span>
+              </Link>
+            </motion.div>
+          </div>
+        </motion.div>
+      </DialogContent>
+    </Dialog>
+  );
+}
+
 function NavigationCard({ card, onTagClick }: { card: NavCard; onTagClick?: (tag: string) => void }) {
-  // All cards get premium treatment now
   const isPremium = true;
   
   return (
@@ -57,7 +315,6 @@ function NavigationCard({ card, onTagClick }: { card: NavCard; onTagClick?: (tag
     >
       <Link href={card.href}>
         <div className="group relative h-full rounded-2xl border border-white/10 bg-white/5 p-5 transition-all duration-300 hover:bg-white/10 hover:border-white/20 cursor-pointer overflow-hidden">
-          {/* Premium 3D Badge for all cards */}
           <motion.div
             className="absolute -top-6 -right-6 h-32 w-32 rounded-full bg-gradient-to-br from-blue-500/30 via-purple-500/20 to-transparent blur-2xl"
             animate={{
@@ -67,7 +324,6 @@ function NavigationCard({ card, onTagClick }: { card: NavCard; onTagClick?: (tag
             transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
           />
           
-          {/* Holographic shine effect for all premium cards */}
           <motion.div
             className="absolute inset-0 bg-gradient-to-br from-transparent via-white/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"
             animate={{
@@ -137,7 +393,6 @@ function NavigationCard({ card, onTagClick }: { card: NavCard; onTagClick?: (tag
             </div>
           </div>
 
-          {/* Premium border glow effect */}
           <motion.div
             className="absolute inset-0 rounded-2xl border border-blue-400/0 group-hover:border-blue-400/40 transition-all duration-500"
             style={{
@@ -183,6 +438,13 @@ export default function Platform() {
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedCategory, setSelectedCategory] = useState<string>("All");
   const [selectedTag, setSelectedTag] = useState<string | null>(null);
+  const [badgeModalOpen, setBadgeModalOpen] = useState(false);
+  const [selectedBadge, setSelectedBadge] = useState<string | null>(null);
+
+  const handleTagClick = (tag: string) => {
+    setSelectedBadge(tag);
+    setBadgeModalOpen(true);
+  };
 
   const sections: NavSection[] = [
     {
@@ -468,12 +730,10 @@ export default function Platform() {
     },
   ];
 
-  // Flatten all cards for filtering
   const allCards = useMemo(() => {
     return sections.flatMap(section => section.cards);
   }, []);
 
-  // Extract unique categories and tags
   const categories = useMemo(() => {
     return ["All", ...sections.map(s => s.title)];
   }, []);
@@ -483,21 +743,17 @@ export default function Platform() {
     return Array.from(uniqueTags);
   }, [allCards]);
 
-  // Filter cards based on search and filters
   const filteredCards = useMemo(() => {
     let filtered = allCards;
 
-    // Apply category filter
     if (selectedCategory !== "All") {
       filtered = filtered.filter(card => card.category === selectedCategory);
     }
 
-    // Apply tag filter
     if (selectedTag) {
       filtered = filtered.filter(card => card.tag === selectedTag);
     }
 
-    // Apply search query
     if (searchQuery.trim()) {
       const query = searchQuery.toLowerCase();
       filtered = filtered.filter(card => 
@@ -527,7 +783,6 @@ export default function Platform() {
       <Nav />
 
       <main className="min-h-screen bg-black text-white">
-        {/* Hero with 3D Graphics */}
         <section className="relative mx-auto max-w-7xl px-6 pt-24 pb-12">
           <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,rgba(99,102,241,0.15),transparent_50%)]" />
           
@@ -557,16 +812,13 @@ export default function Platform() {
             </div>
           </div>
 
-          {/* Premium 3D Graphics */}
           <div className="relative -mx-6 mt-8">
             <PremiumGraphics />
           </div>
         </section>
 
-        {/* Search and Filter Bar */}
         <section className="mx-auto max-w-7xl px-6 py-8 sticky top-16 z-40 bg-black/80 backdrop-blur-xl border-b border-white/10">
           <div className="space-y-4">
-            {/* Search Bar */}
             <div className="relative">
               <Search className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-white/40" />
               <input
@@ -586,7 +838,6 @@ export default function Platform() {
               )}
             </div>
 
-            {/* Category Filters */}
             <div className="flex flex-wrap gap-2">
               {categories.map((category) => (
                 <button
@@ -603,7 +854,6 @@ export default function Platform() {
               ))}
             </div>
 
-            {/* Tag Filters */}
             {tags.length > 0 && (
               <div className="flex flex-wrap gap-2 items-center">
                 <span className="text-xs text-white/50 uppercase tracking-wider">Tags:</span>
@@ -623,7 +873,6 @@ export default function Platform() {
               </div>
             )}
 
-            {/* Active Filters Summary */}
             {hasActiveFilters && (
               <div className="flex items-center justify-between gap-4 pt-2 border-t border-white/10">
                 <div className="flex items-center gap-2 text-sm text-white/70">
@@ -641,7 +890,6 @@ export default function Platform() {
           </div>
         </section>
 
-        {/* Navigation Sections */}
         <section className="mx-auto max-w-7xl px-6 py-12">
           {filteredCards.length === 0 ? (
             <motion.div
@@ -667,17 +915,12 @@ export default function Platform() {
                 key={section.title} 
                 section={section} 
                 filteredCards={filteredCards}
-                onTagClick={(tag) => {
-                  setSelectedTag(selectedTag === tag ? null : tag);
-                  // Smooth scroll to filter bar
-                  window.scrollTo({ top: 0, behavior: 'smooth' });
-                }}
+                onTagClick={handleTagClick}
               />
             ))
           )}
         </section>
 
-        {/* Footer CTA */}
         <section className="mx-auto max-w-7xl px-6 pb-20">
           <div className="rounded-3xl border border-white/10 bg-white/5 p-8 md:p-12">
             <div className="max-w-2xl">
@@ -708,6 +951,15 @@ export default function Platform() {
       </main>
 
       <Footer />
+
+      <BadgeExplanationModal 
+        badge={selectedBadge}
+        isOpen={badgeModalOpen}
+        onClose={() => {
+          setBadgeModalOpen(false);
+          setSelectedBadge(null);
+        }}
+      />
     </>
   );
 }

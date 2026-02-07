@@ -241,7 +241,9 @@ export default function Home() {
 
         {/* 3D Hero Showcase */}
         <section className="px-4 pb-12">
-          <Hero3D />
+          <div className="max-w-4xl mx-auto scale-[0.6]">
+            <Hero3D />
+          </div>
         </section>
 
         {/* Value Proposition */}

@@ -911,16 +911,16 @@ export function WarRoomPreview() {
                             </div>
                             <div className="flex items-center gap-2">
                               <Button 
-                                variant="ghost" 
+                                variant="outline" 
                                 size="sm" 
                                 className="h-8 text-blue-400 opacity-0 group-hover:opacity-100 transition-opacity"
                                 onClick={(e) => {
                                   e.stopPropagation();
-                                  handleShowReceipts(`${reg.code} - ${reg.title}`);
+                                  handleShowReceipts(`Receipts for ${reg.code} - ${reg.title}`);
                                 }}
                               >
                                 <Receipt className="h-4 w-4 mr-1" />
-                                See Receipts
+                                {relatedKPI?.receiptsCount ? `${relatedKPI.receiptsCount} Receipts` : "See Receipts"}
                               </Button>
                               <Button variant="ghost" size="sm" className="h-8 text-blue-400">
                                 View Details <ChevronRight className="ml-1 h-3 w-3" />
@@ -1032,29 +1032,50 @@ export function WarRoomPreview() {
                   Related Regulations
                 </h3>
                 <div className="space-y-3">
-                  {selectedKPI?.relatedRegs.map((regCode, idx) => (
-                    <Card
-                      key={idx}
-                      className="cursor-pointer border-white/10 bg-white/5 hover:bg-white/10 transition-all group"
-                    >
-                      <CardContent className="p-4">
-                        <div className="flex items-center justify-between">
-                          <div className="flex items-center gap-2">
-                            <Scale className="h-4 w-4 text-blue-400" />
-                            <span className="text-sm text-white font-medium">{regCode}</span>
+                  {selectedKPI?.relatedRegs.map((regCode, idx) => {
+                    // Find the actual Regulation from the current metric data
+                    const relatedReg = currentData?.regulations.find(r => 
+                      r.code === regCode || r.title === regCode
+                    );
+                    return (
+                      <Card
+                        key={idx}
+                        className="cursor-pointer border-white/10 bg-white/5 hover:bg-white/10 transition-all group"
+                        onClick={() => {
+                          if (relatedReg) {
+                            setSelectedKPI(null);
+                            setSelectedReg(relatedReg);
+                          }
+                        }}
+                      >
+                        <CardContent className="p-4">
+                          <div className="flex items-center justify-between">
+                            <div className="flex items-center gap-2">
+                              <Scale className="h-4 w-4 text-blue-400" />
+                              <span className="text-sm text-white font-medium">{regCode}</span>
+                            </div>
+                            <div className="flex items-center gap-2">
+                              <Button 
+                                variant="outline" 
+                                size="sm" 
+                                className="h-8 text-blue-400 opacity-0 group-hover:opacity-100 transition-opacity"
+                                onClick={(e) => {
+                                  e.stopPropagation();
+                                  handleShowReceipts(`Receipts for ${relatedReg?.code || regCode}`);
+                                }}
+                              >
+                                <Receipt className="h-4 w-4 mr-1" />
+                                {relatedReg?.receiptsCount ? `${relatedReg.receiptsCount} Receipts` : "See Receipts"}
+                              </Button>
+                              <Button variant="ghost" size="sm" className="h-8 text-blue-400">
+                                View Regulation <ChevronRight className="ml-1 h-3 w-3" />
+                              </Button>
+                            </div>
                           </div>
-                          <div className="flex items-center gap-2">
-                            <Button variant="ghost" size="sm" className="h-8 text-blue-400 opacity-0 group-hover:opacity-100 transition-opacity">
-                              <Receipt className="h-4 w-4" />
-                            </Button>
-                            <Button variant="ghost" size="sm" className="h-8 text-blue-400">
-                              View Regulation <ChevronRight className="ml-1 h-3 w-3" />
-                            </Button>
-                          </div>
-                        </div>
-                      </CardContent>
-                    </Card>
-                  ))}
+                        </CardContent>
+                      </Card>
+                    );
+                  })}
                 </div>
               </div>
             </div>

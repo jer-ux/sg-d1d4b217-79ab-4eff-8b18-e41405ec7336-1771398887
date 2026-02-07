@@ -484,57 +484,61 @@ function MetricTile({
   receiptsCount?: number;
   onClick: () => void;
 }) {
-  const statusColor = {
-    good: "text-emerald-400",
-    warning: "text-yellow-400",
-    alert: "text-red-400",
+  const statusConfig = {
+    good: { color: "text-emerald-400", bg: "bg-emerald-500/10", border: "border-emerald-500/20", icon: CheckCircle2 },
+    warning: { color: "text-amber-400", bg: "bg-amber-500/10", border: "border-amber-500/20", icon: AlertTriangle },
+    alert: { color: "text-rose-400", bg: "bg-rose-500/10", border: "border-rose-500/20", icon: AlertTriangle },
   }[status || "good"];
 
-  const StatusIcon = {
-    good: CheckCircle2,
-    warning: AlertTriangle,
-    alert: AlertTriangle,
-  }[status || "good"];
+  const StatusIcon = statusConfig.icon;
 
   return (
-    <Card
-      className="group cursor-pointer border-white/10 bg-white/5 transition-all duration-300 hover:scale-105 hover:border-white/30 hover:bg-white/10 hover:shadow-lg hover:shadow-blue-500/20"
+    <div
       onClick={onClick}
+      className="group relative cursor-pointer overflow-hidden rounded-3xl border border-white/10 bg-black/40 backdrop-blur-xl transition-all duration-500 ease-out hover:scale-[1.02] hover:border-white/20 hover:bg-white/5 hover:shadow-2xl hover:shadow-blue-500/10"
     >
-      <CardContent className="p-5">
-        <div className="flex items-start justify-between">
-          <div className="text-xs text-white/60 group-hover:text-white/80 transition-colors">
+      <div className="relative z-10 p-6">
+        <div className="flex items-start justify-between mb-4">
+          <div className="text-sm font-medium tracking-wide text-white/50 transition-colors group-hover:text-white/70">
             {label}
           </div>
-          {status && (
-            <StatusIcon className={`h-4 w-4 ${statusColor} group-hover:scale-110 transition-transform`} />
-          )}
+          <div className={`flex h-8 w-8 items-center justify-center rounded-full ${statusConfig.bg} ${statusConfig.border} border transition-transform duration-500 group-hover:scale-110`}>
+            <StatusIcon className={`h-4 w-4 ${statusConfig.color}`} />
+          </div>
         </div>
-        <div className="mt-3 text-2xl font-semibold text-white group-hover:text-blue-300 transition-colors">
+        
+        <div className="mb-2 text-3xl font-bold tracking-tight text-white transition-all group-hover:text-blue-100">
           {value}
         </div>
+        
         {trend && (
-          <div className="mt-2 flex items-center gap-1 text-xs text-white/60 group-hover:text-white/80 transition-colors">
+          <div className="flex items-center gap-2 text-xs font-medium tracking-wide">
             {trend.startsWith("+") ? (
-              <TrendingUp className="h-3 w-3 text-red-400" />
+              <TrendingUp className="h-3 w-3 text-rose-400" />
             ) : (
               <TrendingDown className="h-3 w-3 text-emerald-400" />
             )}
-            <span>{trend}</span>
+            <span className="text-white/60 group-hover:text-white/80">{trend}</span>
           </div>
         )}
-        {receiptsCount !== undefined && (
-          <div className="mt-2 flex items-center gap-1 text-xs text-blue-400 opacity-0 group-hover:opacity-100 transition-opacity">
-            <Receipt className="h-3 w-3" />
-            <span>{receiptsCount} receipts</span>
+
+        <div className="mt-6 flex items-center justify-between border-t border-white/5 pt-4 opacity-80 transition-opacity group-hover:opacity-100">
+          {receiptsCount !== undefined && (
+            <div className="flex items-center gap-1.5 text-xs font-medium text-blue-400/80 transition-colors group-hover:text-blue-400">
+              <Receipt className="h-3.5 w-3.5" />
+              <span>{receiptsCount} receipts</span>
+            </div>
+          )}
+          <div className="flex items-center gap-1.5 text-xs text-white/40 transition-colors group-hover:text-white">
+            Explore <ChevronRight className="h-3 w-3" />
           </div>
-        )}
-        <div className="mt-3 flex items-center gap-1 text-xs text-blue-400 opacity-0 group-hover:opacity-100 transition-opacity">
-          <span>Click to explore</span>
-          <ChevronRight className="h-3 w-3" />
         </div>
-      </CardContent>
-    </Card>
+      </div>
+      
+      {/* Premium Glow Effect */}
+      <div className="absolute -right-10 -top-10 h-32 w-32 rounded-full bg-blue-500/10 blur-[50px] transition-all duration-700 group-hover:bg-blue-500/20" />
+      <div className="absolute -bottom-10 -left-10 h-32 w-32 rounded-full bg-purple-500/10 blur-[50px] transition-all duration-700 group-hover:bg-purple-500/20" />
+    </div>
   );
 }
 
@@ -555,7 +559,7 @@ export function WarRoomPreview() {
 
   return (
     <>
-      <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
+      <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4 p-4">
         <MetricTile
           label="Total Plan Spend (YTD)"
           value="$12.4M"
@@ -916,7 +920,7 @@ export function WarRoomPreview() {
                                 className="h-8 text-blue-400 opacity-0 group-hover:opacity-100 transition-opacity"
                                 onClick={(e) => {
                                   e.stopPropagation();
-                                  handleShowReceipts(`Receipts for ${reg.code} - ${reg.title}`);
+                                  handleShowReceipts(`Receipts for ${selectedReg?.code} - ${selectedReg?.title}`);
                                 }}
                               >
                                 <Receipt className="h-4 w-4 mr-1" />
@@ -1061,11 +1065,11 @@ export function WarRoomPreview() {
                                 className="h-8 text-blue-400 opacity-0 group-hover:opacity-100 transition-opacity"
                                 onClick={(e) => {
                                   e.stopPropagation();
-                                  handleShowReceipts(`Receipts for ${selectedKPI?.name || kpiId}`);
+                                  handleShowReceipts(selectedEvidence?.description || "");
                                 }}
                               >
                                 <Receipt className="h-4 w-4 mr-1" />
-                                {selectedKPI?.receiptsCount ? `${selectedKPI.receiptsCount} Receipts` : "See Receipts"}
+                                {selectedEvidence?.receiptsCount ? `${selectedEvidence.receiptsCount} Receipts` : "See Receipts"}
                               </Button>
                               <Button variant="ghost" size="sm" className="h-8 text-blue-400">
                                 View Regulation <ChevronRight className="ml-1 h-3 w-3" />

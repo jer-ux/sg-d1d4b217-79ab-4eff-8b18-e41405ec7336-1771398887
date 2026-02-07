@@ -200,10 +200,10 @@ function Tile({
       onClick={onClick}
       role={onClick ? "button" : undefined}
       className={[
-        "group relative overflow-hidden rounded-2xl border p-6 backdrop-blur-xl",
-        "shadow-[0_20px_60px_rgba(0,0,0,0.5)]",
+        "group relative overflow-hidden rounded-3xl border p-8 backdrop-blur-2xl",
+        "shadow-[0_20px_60px_rgba(0,0,0,0.6)]",
         "transition-all duration-500 transform-gpu",
-        "hover:-translate-y-2 hover:scale-[1.03] cursor-pointer",
+        "hover:-translate-y-3 hover:scale-[1.03] cursor-pointer",
         themeConfig.border,
         themeConfig.bg,
         themeConfig.glow,
@@ -212,7 +212,7 @@ function Tile({
       {/* Animated gradient overlay */}
       <motion.div
         aria-hidden
-        className="absolute inset-0 opacity-20 transition-opacity duration-300 group-hover:opacity-40 pointer-events-none"
+        className="absolute inset-0 opacity-20 transition-opacity duration-500 group-hover:opacity-50 pointer-events-none"
         style={{
           backgroundImage: `linear-gradient(135deg, ${themeConfig.g1}, ${themeConfig.g2}, ${themeConfig.g3})`,
           backgroundSize: "200% 200%",
@@ -227,13 +227,13 @@ function Tile({
         }}
       />
 
-      {/* 3D Floating Orbs */}
+      {/* 3D Floating Orbs with enhanced animation */}
       <motion.div
-        className={`absolute -top-12 -right-12 h-32 w-32 rounded-full ${themeConfig.orb1} blur-3xl`}
+        className={`absolute -top-16 -right-16 h-40 w-40 rounded-full ${themeConfig.orb1} blur-[100px]`}
         animate={{
-          y: [0, -20, 0],
-          x: [0, 10, 0],
-          scale: [1, 1.1, 1],
+          y: [0, -25, 0],
+          x: [0, 15, 0],
+          scale: [1, 1.2, 1],
         }}
         transition={{
           duration: 8,
@@ -242,11 +242,11 @@ function Tile({
         }}
       />
       <motion.div
-        className={`absolute -bottom-8 -left-8 h-24 w-24 rounded-full ${themeConfig.orb2} blur-2xl`}
+        className={`absolute -bottom-12 -left-12 h-32 w-32 rounded-full ${themeConfig.orb2} blur-[80px]`}
         animate={{
-          y: [0, 15, 0],
-          x: [0, -10, 0],
-          scale: [1, 1.15, 1],
+          y: [0, 20, 0],
+          x: [0, -15, 0],
+          scale: [1, 1.25, 1],
         }}
         transition={{
           duration: 6,
@@ -258,20 +258,20 @@ function Tile({
 
       {/* Content */}
       <div className="relative z-10">
-        <div className={`text-[11px] font-medium uppercase tracking-wider ${themeConfig.title} opacity-80`}>
+        <div className={`text-[11px] font-bold uppercase tracking-widest ${themeConfig.title} opacity-90 mb-1`}>
           {label}
         </div>
-        <div className="mt-4 text-5xl font-bold tracking-tight tabular-nums text-white drop-shadow-2xl">
+        <div className="mt-5 text-6xl font-bold tracking-tight tabular-nums text-white drop-shadow-2xl">
           {value}
         </div>
-        <div className="mt-4 flex items-center justify-between text-[13px] text-white/80">
-          <span className="tabular-nums font-semibold">{subLeft ?? ""}</span>
-          <span className="tabular-nums font-semibold">{subRight ?? ""}</span>
+        <div className="mt-6 flex items-center justify-between text-sm text-white/90 font-medium">
+          <span className="tabular-nums">{subLeft ?? ""}</span>
+          <span className="tabular-nums">{subRight ?? ""}</span>
         </div>
       </div>
 
-      {/* Accent bar */}
-      <div className={`absolute bottom-0 left-0 right-0 h-1.5 ${themeConfig.bar}`} />
+      {/* Accent bar with gradient */}
+      <div className={`absolute bottom-0 left-0 right-0 h-2 ${themeConfig.bar} transition-all duration-500 group-hover:h-3`} />
     </div>
   );
 }
@@ -1078,63 +1078,72 @@ export default function WarRoomPage() {
         title="War Room - Kincaid IQ AI Data Sciences Lab"
         description="Real-time incident management, evidence tracking, and governance automation for enterprise CFO and data teams"
       />
-      <div className="warroom-console min-h-screen bg-gradient-to-b from-gray-900 via-gray-950 to-black text-gray-100">
-        <div className="pointer-events-none fixed inset-0 -z-10">
-          <div className="absolute inset-0 bg-gradient-to-b from-gray-800/50 via-gray-900/50 to-black/50" />
-          <div className="absolute -top-32 left-12 h-[500px] w-[800px] rounded-full bg-emerald-400/6 blur-[100px]" />
-          <div className="absolute -top-24 right-12 h-[420px] w-[700px] rounded-full bg-sky-400/6 blur-[100px]" />
+      <div className="warroom-console min-h-screen bg-gradient-to-b from-slate-950 via-slate-900 to-black text-gray-100">
+        {/* Premium 3D Background Elements */}
+        <div className="pointer-events-none fixed inset-0 -z-10 overflow-hidden">
+          <div className="absolute inset-0 bg-gradient-to-b from-slate-900/80 via-slate-950/60 to-black" />
+          
+          {/* Animated Gradient Orbs */}
+          <div className="absolute top-0 left-1/4 h-[600px] w-[600px] rounded-full bg-gradient-to-br from-emerald-500/20 via-cyan-500/15 to-transparent blur-[120px] animate-pulse" />
+          <div className="absolute top-1/3 right-1/4 h-[500px] w-[500px] rounded-full bg-gradient-to-br from-blue-500/20 via-purple-500/15 to-transparent blur-[100px] animate-pulse" style={{ animationDelay: '1s' }} />
+          <div className="absolute bottom-1/4 left-1/3 h-[400px] w-[400px] rounded-full bg-gradient-to-br from-violet-500/20 via-pink-500/15 to-transparent blur-[90px] animate-pulse" style={{ animationDelay: '2s' }} />
+          
+          {/* Premium Grid Pattern */}
           <div
-            className="absolute inset-0 opacity-[0.15]"
+            className="absolute inset-0 opacity-[0.08]"
             style={{
               backgroundImage:
-                "linear-gradient(rgba(255,255,255,.05) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,.05) 1px, transparent 1px)",
-              backgroundSize: "48px 48px",
-              maskImage: "radial-gradient(70% 55% at 50% 20%, black 40%, transparent 75%)",
+                "linear-gradient(rgba(255,255,255,.08) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,.08) 1px, transparent 1px)",
+              backgroundSize: "64px 64px",
+              maskImage: "radial-gradient(ellipse 80% 60% at 50% 30%, black 30%, transparent 80%)",
             }}
           />
+          
+          {/* Radial Glow */}
+          <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-emerald-900/10 via-transparent to-transparent" />
         </div>
 
-        <div className="sticky top-0 z-50 border-b border-white/10 bg-gray-900/95 backdrop-blur-xl">
-          <div className="mx-auto max-w-[1400px] px-4 py-3">
+        <div className="sticky top-0 z-50 border-b border-white/10 bg-slate-900/80 backdrop-blur-2xl shadow-2xl">
+          <div className="mx-auto max-w-[1400px] px-4 py-4">
             <div className="flex items-center justify-between">
               <div>
-                <div className="text-xs text-gray-500">Kincaid IQ War Room</div>
-                <h1 className="text-xl font-semibold tracking-tight">War Room</h1>
+                <div className="text-xs text-emerald-400/80 font-medium uppercase tracking-wider">Kincaid IQ War Room</div>
+                <h1 className="text-2xl font-bold tracking-tight bg-gradient-to-r from-white via-emerald-200 to-cyan-300 bg-clip-text text-transparent">War Room</h1>
               </div>
               
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
-                  <button className="flex items-center gap-2 px-4 py-2 rounded-xl border border-white/20 bg-white/5 hover:bg-white/10 transition-all text-white font-medium">
+                  <button className="group flex items-center gap-2 px-6 py-3 rounded-2xl border border-white/20 bg-white/5 hover:bg-white/10 hover:border-white/30 transition-all duration-500 text-white font-semibold shadow-lg hover:shadow-2xl hover:shadow-emerald-500/20 hover:scale-[1.02]">
                     <span className="text-sm">{viewMeta[currentView].label}</span>
-                    <ChevronDown className="h-4 w-4" />
+                    <ChevronDown className="h-4 w-4 transition-transform duration-300 group-hover:rotate-180" />
                   </button>
                 </DropdownMenuTrigger>
-                <DropdownMenuContent align="end" className="w-64 bg-gray-900 border-white/20">
+                <DropdownMenuContent align="end" className="w-80 bg-slate-900/95 backdrop-blur-xl border-white/20 rounded-2xl shadow-2xl p-2">
                   <DropdownMenuItem
                     onClick={() => setCurrentView("CFO_DASHBOARD")}
-                    className="cursor-pointer focus:bg-white/10"
+                    className="cursor-pointer focus:bg-white/10 rounded-xl p-4 transition-all duration-300 hover:scale-[1.01]"
                   >
-                    <div className="flex flex-col gap-1">
-                      <div className="font-medium text-white">CFO Dashboard</div>
-                      <div className="text-xs text-gray-400">8 Healthcare KPIs with Premium 3D Graphics</div>
+                    <div className="flex flex-col gap-1.5">
+                      <div className="font-semibold text-white text-base">CFO Dashboard</div>
+                      <div className="text-xs text-gray-400 leading-relaxed">8 Healthcare KPIs with Premium 3D Graphics</div>
                     </div>
                   </DropdownMenuItem>
                   <DropdownMenuItem
                     onClick={() => setCurrentView("FOUR_LANE_LEDGER")}
-                    className="cursor-pointer focus:bg-white/10"
+                    className="cursor-pointer focus:bg-white/10 rounded-xl p-4 transition-all duration-300 hover:scale-[1.01]"
                   >
-                    <div className="flex flex-col gap-1">
-                      <div className="font-medium text-white">4-Lane Ledger</div>
-                      <div className="text-xs text-gray-400">Advanced Filtering with Redis Streaming</div>
+                    <div className="flex flex-col gap-1.5">
+                      <div className="font-semibold text-white text-base">4-Lane Ledger</div>
+                      <div className="text-xs text-gray-400 leading-relaxed">Advanced Filtering with Redis Streaming</div>
                     </div>
                   </DropdownMenuItem>
                   <DropdownMenuItem
                     onClick={() => setCurrentView("EXECUTIVE_KPIS")}
-                    className="cursor-pointer focus:bg-white/10"
+                    className="cursor-pointer focus:bg-white/10 rounded-xl p-4 transition-all duration-300 hover:scale-[1.01]"
                   >
-                    <div className="flex flex-col gap-1">
-                      <div className="font-medium text-white">Executive KPIs</div>
-                      <div className="text-xs text-gray-400">Live SSE Stream with Org Filters</div>
+                    <div className="flex flex-col gap-1.5">
+                      <div className="font-semibold text-white text-base">Executive KPIs</div>
+                      <div className="text-xs text-gray-400 leading-relaxed">Live SSE Stream with Org Filters</div>
                     </div>
                   </DropdownMenuItem>
                 </DropdownMenuContent>

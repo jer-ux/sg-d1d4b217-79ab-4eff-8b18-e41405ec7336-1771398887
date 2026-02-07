@@ -7,6 +7,7 @@ import Footer from "@/components/Footer";
 import { SEO } from "@/components/SEO";
 import { Hero3D } from "@/components/Hero3D";
 import { WarRoomPreview } from "@/components/kincaid-iq/WarRoomPreview";
+import { useState } from "react";
 
 const THEME = {
   blue: {
@@ -163,6 +164,8 @@ function StatCard({ value, label, delay = 0 }: { value: string; label: string; d
 }
 
 export default function Home() {
+  const [selectedPreviewMetric, setSelectedPreviewMetric] = useState<string | null>(null);
+
   return (
     <>
       <SEO
@@ -247,7 +250,7 @@ export default function Home() {
                   <h2 className="text-3xl md:text-4xl font-bold text-white mb-3">See It In Action</h2>
                   <p className="text-white/70 max-w-3xl">
                     Real-time KPIs that expose financial leakage, incentive misalignment, and structural blind spots
-                    across your benefits program.
+                    across your benefits program. Click any metric to explore receipts and evidence.
                   </p>
                 </div>
 
@@ -266,6 +269,8 @@ export default function Home() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ delay: 0.1 }}
+              onClick={() => setSelectedPreviewMetric("interactive")}
+              className="cursor-pointer"
             >
               <WarRoomPreview />
             </motion.div>
@@ -277,8 +282,7 @@ export default function Home() {
               transition={{ delay: 0.2 }}
               className="mt-4 text-sm text-white/60"
             >
-              Sample metrics shown. Full platform includes drill-downs, scenario modeling, and exportable evidence
-              packs.
+              Click any metric to explore drill-downs, scenario modeling, and exportable evidence packs.
             </motion.p>
 
             <motion.div

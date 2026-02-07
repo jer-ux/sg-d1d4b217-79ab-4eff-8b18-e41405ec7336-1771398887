@@ -43,7 +43,7 @@ type NavSection = {
   cards: NavCard[];
 };
 
-function NavigationCard({ card }: { card: NavCard }) {
+function NavigationCard({ card, onTagClick }: { card: NavCard; onTagClick?: (tag: string) => void }) {
   // All cards get premium treatment now
   const isPremium = true;
   
@@ -89,15 +89,22 @@ function NavigationCard({ card }: { card: NavCard }) {
             </motion.div>
             
             {card.tag && (
-              <motion.span 
-                className={`text-[10px] px-2 py-1 rounded-full uppercase tracking-wider font-semibold ${
-                  card.tag === "Live" ? "bg-emerald-500/20 text-emerald-300 border border-emerald-400/40 shadow-[0_0_15px_rgba(16,185,129,0.3)]" :
-                  card.tag === "Executive" ? "bg-purple-500/20 text-purple-300 border border-purple-400/40 shadow-[0_0_15px_rgba(168,85,247,0.3)]" :
-                  card.tag === "Beta" ? "bg-blue-500/20 text-blue-300 border border-blue-400/40 shadow-[0_0_15px_rgba(59,130,246,0.3)]" :
-                  card.tag === "Verified" ? "bg-cyan-500/20 text-cyan-300 border border-cyan-400/40 shadow-[0_0_15px_rgba(6,182,212,0.3)]" :
-                  card.tag === "Ledger" ? "bg-amber-500/20 text-amber-300 border border-amber-400/40 shadow-[0_0_15px_rgba(245,158,11,0.3)]" :
-                  card.tag === "AI" ? "bg-violet-500/20 text-violet-300 border border-violet-400/40 shadow-[0_0_15px_rgba(139,92,246,0.3)]" :
-                  "bg-white/10 text-white/70"
+              <motion.button
+                onClick={(e) => {
+                  e.preventDefault();
+                  e.stopPropagation();
+                  if (onTagClick) {
+                    onTagClick(card.tag!);
+                  }
+                }}
+                className={`text-[10px] px-2 py-1 rounded-full uppercase tracking-wider font-semibold transition-all duration-300 hover:scale-110 cursor-pointer ${
+                  card.tag === "Live" ? "bg-emerald-500/20 text-emerald-300 border border-emerald-400/40 shadow-[0_0_15px_rgba(16,185,129,0.3)] hover:bg-emerald-500/30 hover:shadow-[0_0_25px_rgba(16,185,129,0.5)]" :
+                  card.tag === "Executive" ? "bg-purple-500/20 text-purple-300 border border-purple-400/40 shadow-[0_0_15px_rgba(168,85,247,0.3)] hover:bg-purple-500/30 hover:shadow-[0_0_25px_rgba(168,85,247,0.5)]" :
+                  card.tag === "Beta" ? "bg-blue-500/20 text-blue-300 border border-blue-400/40 shadow-[0_0_15px_rgba(59,130,246,0.3)] hover:bg-blue-500/30 hover:shadow-[0_0_25px_rgba(59,130,246,0.5)]" :
+                  card.tag === "Verified" ? "bg-cyan-500/20 text-cyan-300 border border-cyan-400/40 shadow-[0_0_15px_rgba(6,182,212,0.3)] hover:bg-cyan-500/30 hover:shadow-[0_0_25px_rgba(6,182,212,0.5)]" :
+                  card.tag === "Ledger" ? "bg-amber-500/20 text-amber-300 border border-amber-400/40 shadow-[0_0_15px_rgba(245,158,11,0.3)] hover:bg-amber-500/30 hover:shadow-[0_0_25px_rgba(245,158,11,0.5)]" :
+                  card.tag === "AI" ? "bg-violet-500/20 text-violet-300 border border-violet-400/40 shadow-[0_0_15px_rgba(139,92,246,0.3)] hover:bg-violet-500/30 hover:shadow-[0_0_25px_rgba(139,92,246,0.5)]" :
+                  "bg-white/10 text-white/70 hover:bg-white/20"
                 }`}
                 animate={{
                   boxShadow: [
@@ -107,9 +114,11 @@ function NavigationCard({ card }: { card: NavCard }) {
                   ],
                 }}
                 transition={{ duration: 2, repeat: Infinity }}
+                whileHover={{ scale: 1.1 }}
+                whileTap={{ scale: 0.95 }}
               >
                 {card.tag}
-              </motion.span>
+              </motion.button>
             )}
           </div>
           
@@ -144,7 +153,7 @@ function NavigationCard({ card }: { card: NavCard }) {
   );
 }
 
-function NavigationSection({ section, filteredCards }: { section: NavSection; filteredCards: NavCard[] }) {
+function NavigationSection({ section, filteredCards, onTagClick }: { section: NavSection; filteredCards: NavCard[]; onTagClick?: (tag: string) => void }) {
   const sectionCards = filteredCards.filter(card => card.category === section.title);
   
   if (sectionCards.length === 0) return null;
@@ -162,7 +171,7 @@ function NavigationSection({ section, filteredCards }: { section: NavSection; fi
       <motion.div layout className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
         <AnimatePresence mode="popLayout">
           {sectionCards.map((card) => (
-            <NavigationCard key={card.href} card={card} />
+            <NavigationCard key={card.href} card={card} onTagClick={onTagClick} />
           ))}
         </AnimatePresence>
       </motion.div>
@@ -658,6 +667,11 @@ export default function Platform() {
                 key={section.title} 
                 section={section} 
                 filteredCards={filteredCards}
+                onTagClick={(tag) => {
+                  setSelectedTag(selectedTag === tag ? null : tag);
+                  // Smooth scroll to filter bar
+                  window.scrollTo({ top: 0, behavior: 'smooth' });
+                }}
               />
             ))
           )}

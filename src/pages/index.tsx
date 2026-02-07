@@ -6,6 +6,7 @@ import Nav from "@/components/Nav";
 import Footer from "@/components/Footer";
 import { SEO } from "@/components/SEO";
 import { Hero3D } from "@/components/Hero3D";
+import { WarRoomPreview } from "@/components/kincaid-iq/WarRoomPreview";
 
 const THEME = {
   blue: {
@@ -229,6 +230,71 @@ export default function Home() {
         {/* 3D Hero Showcase */}
         <section className="px-4 pb-12">
           <Hero3D />
+        </section>
+
+        {/* See It In Action */}
+        <section className="py-16 px-4 border-t border-white/10">
+          <div className="max-w-7xl mx-auto">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              className="mb-8"
+            >
+              <div className="flex items-end justify-between gap-6">
+                <div>
+                  <div className="text-xs text-white/60 mb-3">Live Platform</div>
+                  <h2 className="text-3xl md:text-4xl font-bold text-white mb-3">See It In Action</h2>
+                  <p className="text-white/70 max-w-3xl">
+                    Real-time KPIs that expose financial leakage, incentive misalignment, and structural blind spots
+                    across your benefits program.
+                  </p>
+                </div>
+
+                <div className="hidden md:block">
+                  <Link href="/war-room">
+                    <Button className="rounded-2xl bg-gradient-to-r from-blue-600 to-violet-600 hover:from-blue-700 hover:to-violet-700">
+                      Launch Full War Room <ArrowRight className="ml-2 h-4 w-4" />
+                    </Button>
+                  </Link>
+                </div>
+              </div>
+            </motion.div>
+
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: 0.1 }}
+            >
+              <WarRoomPreview />
+            </motion.div>
+
+            <motion.p
+              initial={{ opacity: 0 }}
+              whileInView={{ opacity: 1 }}
+              viewport={{ once: true }}
+              transition={{ delay: 0.2 }}
+              className="mt-4 text-sm text-white/60"
+            >
+              Sample metrics shown. Full platform includes drill-downs, scenario modeling, and exportable evidence
+              packs.
+            </motion.p>
+
+            <motion.div
+              initial={{ opacity: 0 }}
+              whileInView={{ opacity: 1 }}
+              viewport={{ once: true }}
+              transition={{ delay: 0.3 }}
+              className="mt-6 md:hidden"
+            >
+              <Link href="/war-room">
+                <Button className="w-full rounded-2xl bg-gradient-to-r from-blue-600 to-violet-600">
+                  Launch Full War Room <ArrowRight className="ml-2 h-4 w-4" />
+                </Button>
+              </Link>
+            </motion.div>
+          </div>
         </section>
 
         {/* Platform Features */}

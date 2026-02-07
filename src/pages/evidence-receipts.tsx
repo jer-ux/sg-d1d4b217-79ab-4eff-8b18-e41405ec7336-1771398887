@@ -247,31 +247,41 @@ export default function EvidenceReceiptsPage() {
         title="Evidence Receipts | Kincaid IQ"
         description="Blockchain-backed evidence receipts for verifiable business outcomes"
       />
-      <div className="relative min-h-screen bg-[#0A0118] text-white">
-        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-purple-900/20 via-transparent to-transparent" />
+      <div className="relative min-h-screen bg-gradient-to-b from-slate-950 via-slate-900 to-black text-white">
+        {/* Premium 3D Background */}
+        <div className="absolute inset-0 overflow-hidden pointer-events-none">
+          <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-purple-900/30 via-transparent to-transparent" />
+          <div className="absolute top-0 left-1/4 w-96 h-96 bg-purple-500/20 rounded-full blur-[120px] animate-pulse" />
+          <div className="absolute top-1/3 right-1/4 w-80 h-80 bg-blue-500/20 rounded-full blur-[100px] animate-pulse" style={{ animationDelay: '1s' }} />
+          <div className="absolute bottom-1/4 left-1/3 w-72 h-72 bg-emerald-500/20 rounded-full blur-[90px] animate-pulse" style={{ animationDelay: '2s' }} />
+        </div>
+
         <div className="relative mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8">
-          <div className="mb-8 flex items-start justify-between">
+          {/* Header with glassmorphism */}
+          <div className="mb-8 flex items-start justify-between backdrop-blur-xl bg-white/5 rounded-3xl border border-white/10 p-8 shadow-2xl">
             <div>
-              <h1 className="text-4xl font-bold tracking-tight">Evidence Receipts</h1>
-              <p className="mt-2 text-lg text-purple-200/60">
+              <h1 className="text-5xl font-bold tracking-tight bg-gradient-to-r from-white via-purple-200 to-purple-400 bg-clip-text text-transparent">
+                Evidence Receipts
+              </h1>
+              <p className="mt-3 text-lg text-purple-200/70 max-w-2xl">
                 Audit-grade evidence with full data lineage, DQ gates, and reconciliation proofs.
               </p>
             </div>
             <button
               onClick={() => setCreateOpen(true)}
-              className="inline-flex items-center gap-2 rounded-xl border border-white/10 bg-white/5 px-4 py-3 text-sm font-semibold hover:bg-white/10"
+              className="inline-flex items-center gap-2 rounded-2xl border border-white/20 bg-gradient-to-r from-purple-500/20 to-blue-500/20 backdrop-blur-xl px-6 py-3 text-sm font-semibold hover:from-purple-500/30 hover:to-blue-500/30 transition-all duration-500 shadow-lg hover:shadow-purple-500/50 hover:scale-105"
             >
               Create Receipt (Demo) 🧾
             </button>
           </div>
 
-          {/* Receipt Selector */}
+          {/* Receipt Selector with premium styling */}
           <div className="mb-6">
-            <div className="rounded-2xl border border-white/10 bg-gradient-to-b from-white/5 to-white/[0.02] p-6">
-              <div className="mb-3 text-sm font-semibold uppercase tracking-wider text-purple-300/70">
+            <div className="rounded-3xl border border-white/10 bg-gradient-to-br from-white/5 via-white/[0.03] to-transparent backdrop-blur-xl p-8 shadow-2xl">
+              <div className="mb-4 text-sm font-semibold uppercase tracking-wider text-purple-300/70">
                 Available Receipts ({receipts.length})
               </div>
-              <div className="flex flex-wrap gap-3">
+              <div className="flex flex-wrap gap-4">
                 {receipts.map((r) => {
                   const isSelected = r.receiptId === selectedId;
                   const rCfg = statusConfig[r.verificationStatus];
@@ -280,22 +290,27 @@ export default function EvidenceReceiptsPage() {
                       key={r.receiptId}
                       onClick={() => setSelectedId(r.receiptId)}
                       className={classNames(
-                        "group relative flex flex-col items-start gap-2 rounded-xl border p-4 text-left transition-all",
+                        "group relative flex flex-col items-start gap-2 rounded-2xl border p-5 text-left transition-all duration-500 hover:scale-105",
                         isSelected
-                          ? "border-purple-500 bg-purple-500/10 shadow-lg shadow-purple-500/20"
-                          : "border-white/10 bg-white/5 hover:border-purple-500/50 hover:bg-white/10"
+                          ? "border-purple-500/50 bg-gradient-to-br from-purple-500/20 to-blue-500/10 shadow-lg shadow-purple-500/30 backdrop-blur-xl"
+                          : "border-white/10 bg-white/5 backdrop-blur-xl hover:border-purple-500/30 hover:bg-white/10 hover:shadow-lg"
                       )}
                     >
-                      <div className="flex items-center gap-2">
-                        <span className="text-xs font-mono text-purple-300">{r.receiptId}</span>
-                        <span className={classNames("flex items-center gap-1 rounded-full px-2 py-0.5 text-xs font-semibold", rCfg.bg, rCfg.text)}>
-                          {rCfg.icon}
-                          {rCfg.label}
-                        </span>
-                      </div>
-                      <div className="text-sm font-semibold">{r.subjectId}</div>
-                      <div className="text-xs text-white/50">
-                        {r.periodStart} → {r.periodEnd}
+                      {isSelected && (
+                        <div className="absolute -inset-0.5 bg-gradient-to-r from-purple-500/50 to-blue-500/50 rounded-2xl blur opacity-30 group-hover:opacity-50 transition-opacity duration-500" />
+                      )}
+                      <div className="relative z-10 w-full">
+                        <div className="flex items-center gap-2 mb-2">
+                          <span className="text-xs font-mono text-purple-300">{r.receiptId}</span>
+                          <span className={classNames("flex items-center gap-1 rounded-full px-2 py-0.5 text-xs font-semibold", rCfg.bg, rCfg.text)}>
+                            {rCfg.icon}
+                            {rCfg.label}
+                          </span>
+                        </div>
+                        <div className="text-sm font-semibold text-white">{r.subjectId}</div>
+                        <div className="text-xs text-white/50 mt-1">
+                          {r.periodStart} → {r.periodEnd}
+                        </div>
                       </div>
                     </button>
                   );
@@ -304,13 +319,13 @@ export default function EvidenceReceiptsPage() {
             </div>
           </div>
 
-          {/* Receipt Header */}
-          <div className="mb-6 rounded-2xl border border-white/10 bg-gradient-to-b from-white/5 to-white/[0.02] p-6">
-            <div className="mb-4 flex items-start justify-between">
+          {/* Receipt Header with premium design */}
+          <div className="mb-6 rounded-3xl border border-white/10 bg-gradient-to-br from-white/5 via-white/[0.03] to-transparent backdrop-blur-xl p-8 shadow-2xl">
+            <div className="mb-6 flex items-start justify-between">
               <div>
-                <div className="mb-2 flex items-center gap-3">
-                  <h2 className="text-2xl font-bold">{selected.receiptId}</h2>
-                  <span className={classNames("flex items-center gap-1.5 rounded-full px-3 py-1 text-xs font-semibold", cfg.bg, cfg.text)}>
+                <div className="mb-3 flex items-center gap-3">
+                  <h2 className="text-3xl font-bold tracking-tight text-white">{selected.receiptId}</h2>
+                  <span className={classNames("flex items-center gap-1.5 rounded-full px-4 py-1.5 text-xs font-semibold backdrop-blur-xl", cfg.bg, cfg.text)}>
                     {cfg.icon}
                     {cfg.label}
                   </span>
@@ -321,55 +336,55 @@ export default function EvidenceReceiptsPage() {
               </div>
               <button
                 onClick={downloadJSON}
-                className="flex items-center gap-2 rounded-lg border border-white/10 bg-white/5 px-4 py-2 text-sm font-semibold hover:bg-white/10"
+                className="flex items-center gap-2 rounded-2xl border border-white/20 bg-white/5 backdrop-blur-xl px-5 py-2.5 text-sm font-semibold hover:bg-white/10 transition-all duration-500 hover:scale-105 hover:shadow-lg"
               >
                 <Download className="h-4 w-4" />
                 Export JSON
               </button>
             </div>
-            <div className="grid grid-cols-2 gap-4 text-sm md:grid-cols-4">
-              <div>
-                <div className="mb-1 text-xs uppercase tracking-wide text-purple-300/50">Period</div>
-                <div className="font-mono text-purple-100">
+            <div className="grid grid-cols-2 gap-6 text-sm md:grid-cols-4">
+              <div className="backdrop-blur-xl bg-white/5 rounded-2xl p-4 border border-white/10 hover:bg-white/10 transition-all duration-500">
+                <div className="mb-2 text-xs uppercase tracking-wide text-purple-300/50">Period</div>
+                <div className="font-mono text-purple-100 font-semibold">
                   {selected.periodStart} → {selected.periodEnd}
                 </div>
               </div>
-              <div>
-                <div className="mb-1 text-xs uppercase tracking-wide text-purple-300/50">Grain</div>
-                <div className="font-mono text-purple-100">{selected.grain}</div>
+              <div className="backdrop-blur-xl bg-white/5 rounded-2xl p-4 border border-white/10 hover:bg-white/10 transition-all duration-500">
+                <div className="mb-2 text-xs uppercase tracking-wide text-purple-300/50">Grain</div>
+                <div className="font-mono text-purple-100 font-semibold">{selected.grain}</div>
               </div>
-              <div>
-                <div className="mb-1 text-xs uppercase tracking-wide text-purple-300/50">Confidence</div>
-                <div className="font-mono text-purple-100">{confidencePct}%</div>
+              <div className="backdrop-blur-xl bg-white/5 rounded-2xl p-4 border border-white/10 hover:bg-white/10 transition-all duration-500">
+                <div className="mb-2 text-xs uppercase tracking-wide text-purple-300/50">Confidence</div>
+                <div className="font-mono text-purple-100 font-semibold text-2xl">{confidencePct}%</div>
               </div>
-              <div>
-                <div className="mb-1 text-xs uppercase tracking-wide text-purple-300/50">Freshness</div>
-                <div className="font-mono text-purple-100">{new Date(selected.freshnessTs).toLocaleString()}</div>
+              <div className="backdrop-blur-xl bg-white/5 rounded-2xl p-4 border border-white/10 hover:bg-white/10 transition-all duration-500">
+                <div className="mb-2 text-xs uppercase tracking-wide text-purple-300/50">Freshness</div>
+                <div className="font-mono text-purple-100 text-xs">{new Date(selected.freshnessTs).toLocaleString()}</div>
               </div>
             </div>
-            <div className="mt-4 grid grid-cols-2 gap-4 border-t border-white/10 pt-4 text-sm">
-              <div>
-                <div className="mb-1 text-xs uppercase tracking-wide text-purple-300/50">Owner</div>
-                <div className="text-purple-100">{selected.owner}</div>
+            <div className="mt-6 grid grid-cols-2 gap-6 border-t border-white/10 pt-6 text-sm">
+              <div className="backdrop-blur-xl bg-white/5 rounded-2xl p-4 border border-white/10">
+                <div className="mb-2 text-xs uppercase tracking-wide text-purple-300/50">Owner</div>
+                <div className="text-purple-100 font-semibold">{selected.owner}</div>
               </div>
-              <div>
-                <div className="mb-1 text-xs uppercase tracking-wide text-purple-300/50">Approver</div>
-                <div className="text-purple-100">{selected.approver}</div>
+              <div className="backdrop-blur-xl bg-white/5 rounded-2xl p-4 border border-white/10">
+                <div className="mb-2 text-xs uppercase tracking-wide text-purple-300/50">Approver</div>
+                <div className="text-purple-100 font-semibold">{selected.approver}</div>
               </div>
             </div>
           </div>
 
-          {/* Tabs */}
-          <div className="mb-6 flex gap-2 overflow-x-auto border-b border-white/10 pb-2">
+          {/* Tabs with premium styling */}
+          <div className="mb-6 flex gap-2 overflow-x-auto pb-2 backdrop-blur-xl">
             {tabs.map((t) => (
               <button
                 key={t.key}
                 onClick={() => setTab(t.key)}
                 className={classNames(
-                  "whitespace-nowrap rounded-lg px-4 py-2 text-sm font-semibold transition-colors",
+                  "whitespace-nowrap rounded-2xl px-5 py-2.5 text-sm font-semibold transition-all duration-500",
                   tab === t.key
-                    ? "bg-purple-500/20 text-purple-200"
-                    : "text-purple-200/60 hover:bg-white/5 hover:text-purple-200"
+                    ? "bg-gradient-to-r from-purple-500/30 to-blue-500/30 text-white shadow-lg scale-105 border border-purple-500/50"
+                    : "text-purple-200/60 hover:bg-white/5 hover:text-purple-200 border border-transparent hover:border-white/10"
                 )}
               >
                 {t.label}
@@ -377,30 +392,30 @@ export default function EvidenceReceiptsPage() {
             ))}
           </div>
 
-          {/* Tab Content */}
-          <div className="rounded-2xl border border-white/10 bg-gradient-to-b from-white/5 to-white/[0.02] p-6">
+          {/* Tab Content with premium styling */}
+          <div className="rounded-3xl border border-white/10 bg-gradient-to-br from-white/5 via-white/[0.03] to-transparent backdrop-blur-xl p-8 shadow-2xl">
             {tab === "overview" && (
-              <div className="space-y-6">
+              <div className="space-y-8">
                 <div>
-                  <h3 className="mb-4 text-xl font-semibold">Evidence Summary</h3>
-                  <div className="grid gap-4 md:grid-cols-3">
-                    <div className="rounded-xl border border-white/10 bg-white/5 p-4">
-                      <div className="mb-2 text-sm text-purple-300/70">Artifacts</div>
-                      <div className="text-3xl font-bold">{selected.artifacts.length}</div>
+                  <h3 className="mb-6 text-2xl font-semibold text-white">Evidence Summary</h3>
+                  <div className="grid gap-6 md:grid-cols-3">
+                    <div className="rounded-2xl border border-white/10 bg-gradient-to-br from-purple-500/10 to-transparent backdrop-blur-xl p-6 hover:scale-105 transition-all duration-500 hover:shadow-lg hover:shadow-purple-500/20">
+                      <div className="mb-3 text-sm text-purple-300/70">Artifacts</div>
+                      <div className="text-5xl font-bold bg-gradient-to-r from-purple-400 to-purple-200 bg-clip-text text-transparent">{selected.artifacts.length}</div>
                     </div>
-                    <div className="rounded-xl border border-white/10 bg-white/5 p-4">
-                      <div className="mb-2 text-sm text-purple-300/70">Transforms</div>
-                      <div className="text-3xl font-bold">{selected.transforms.length}</div>
+                    <div className="rounded-2xl border border-white/10 bg-gradient-to-br from-blue-500/10 to-transparent backdrop-blur-xl p-6 hover:scale-105 transition-all duration-500 hover:shadow-lg hover:shadow-blue-500/20">
+                      <div className="mb-3 text-sm text-blue-300/70">Transforms</div>
+                      <div className="text-5xl font-bold bg-gradient-to-r from-blue-400 to-blue-200 bg-clip-text text-transparent">{selected.transforms.length}</div>
                     </div>
-                    <div className="rounded-xl border border-white/10 bg-white/5 p-4">
-                      <div className="mb-2 text-sm text-purple-300/70">DQ Tests</div>
-                      <div className="text-3xl font-bold">{selected.dq.tests.length}</div>
+                    <div className="rounded-2xl border border-white/10 bg-gradient-to-br from-emerald-500/10 to-transparent backdrop-blur-xl p-6 hover:scale-105 transition-all duration-500 hover:shadow-lg hover:shadow-emerald-500/20">
+                      <div className="mb-3 text-sm text-emerald-300/70">DQ Tests</div>
+                      <div className="text-5xl font-bold bg-gradient-to-r from-emerald-400 to-emerald-200 bg-clip-text text-transparent">{selected.dq.tests.length}</div>
                     </div>
                   </div>
                 </div>
                 <div>
-                  <h3 className="mb-4 text-xl font-semibold">Receipt Viewer</h3>
-                  <div className="rounded-xl border border-white/10 bg-gradient-to-br from-purple-900/20 via-black/40 to-black/40 p-6 shadow-2xl">
+                  <h3 className="mb-6 text-2xl font-semibold text-white">Receipt Viewer</h3>
+                  <div className="rounded-3xl border border-white/10 bg-gradient-to-br from-purple-900/20 via-black/40 to-black/40 backdrop-blur-xl p-8 shadow-2xl">
                     {/* Receipt Header */}
                     <div className="mb-6 flex items-start justify-between border-b border-white/10 pb-4">
                       <div>
@@ -568,7 +583,7 @@ export default function EvidenceReceiptsPage() {
                     </div>
 
                     {/* Footer Metadata */}
-                    <div className="border-t border-white/10 pt-4">
+                    <div className="border-t border-white/10 pt-6">
                       <div className="grid gap-4 text-xs md:grid-cols-4">
                         <div>
                           <div className="mb-1 text-purple-300/50">Period</div>

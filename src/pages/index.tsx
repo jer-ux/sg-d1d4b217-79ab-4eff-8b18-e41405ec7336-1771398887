@@ -6,6 +6,7 @@ import Nav from "@/components/Nav";
 import Footer from "@/components/Footer";
 import { SEO } from "@/components/SEO";
 import { Hero3D } from "@/components/Hero3D";
+import { Hero3DDataNexus, Hero3DNeuralNetwork, Hero3DCubeMatrix, Hero3DParticleStorm, Hero3DHolographicRing } from "@/components/Hero3DOptions";
 import { WarRoomPreview } from "@/components/kincaid-iq/WarRoomPreview";
 import { useState } from "react";
 
@@ -165,6 +166,18 @@ function StatCard({ value, label, delay = 0 }: { value: string; label: string; d
 
 export default function Home() {
   const [selectedPreviewMetric, setSelectedPreviewMetric] = useState<string | null>(null);
+  const [heroVariant, setHeroVariant] = useState<"original" | "nexus" | "neural" | "cube" | "particle" | "holographic">("original");
+
+  const heroOptions = [
+    { id: "original" as const, label: "Original", component: Hero3D },
+    { id: "nexus" as const, label: "Data Nexus", component: Hero3DDataNexus },
+    { id: "neural" as const, label: "Neural Net", component: Hero3DNeuralNetwork },
+    { id: "cube" as const, label: "Cube Matrix", component: Hero3DCubeMatrix },
+    { id: "particle" as const, label: "Particle Storm", component: Hero3DParticleStorm },
+    { id: "holographic" as const, label: "Holographic", component: Hero3DHolographicRing },
+  ];
+
+  const CurrentHero = heroOptions.find(opt => opt.id === heroVariant)?.component || Hero3D;
 
   return (
     <>
@@ -240,9 +253,51 @@ export default function Home() {
         </section>
 
         {/* 3D Hero Showcase */}
-        <section className="px-4 pb-12">
-          <div className="max-w-4xl mx-auto scale-[0.6]">
-            <Hero3D />
+        <section className="px-4 pb-8">
+          <div className="max-w-4xl mx-auto">
+            {/* Hero Variant Selector */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.4 }}
+              className="mb-6"
+            >
+              <div className="flex flex-col items-center gap-4">
+                <div className="text-xs text-white/50 uppercase tracking-wider">Select 3D Hero Style</div>
+                <div className="flex flex-wrap justify-center gap-2">
+                  {heroOptions.map((option) => (
+                    <button
+                      key={option.id}
+                      onClick={() => setHeroVariant(option.id)}
+                      className={[
+                        "px-4 py-2 rounded-xl text-sm font-medium transition-all duration-300",
+                        "border backdrop-blur-xl",
+                        heroVariant === option.id
+                          ? "bg-gradient-to-r from-violet-600 to-fuchsia-600 border-violet-400/50 text-white shadow-[0_0_24px_rgba(139,92,246,0.4)]"
+                          : "bg-white/5 border-white/10 text-white/70 hover:bg-white/10 hover:border-white/20 hover:text-white"
+                      ].join(" ")}
+                    >
+                      {option.label}
+                    </button>
+                  ))}
+                </div>
+              </div>
+            </motion.div>
+
+            {/* Animated Hero Component */}
+            <div className="max-w-2xl mx-auto scale-[0.36]">
+              <AnimatePresence mode="wait">
+                <motion.div
+                  key={heroVariant}
+                  initial={{ opacity: 0, scale: 0.9 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  exit={{ opacity: 0, scale: 0.9 }}
+                  transition={{ duration: 0.4 }}
+                >
+                  <CurrentHero />
+                </motion.div>
+              </AnimatePresence>
+            </div>
           </div>
         </section>
 

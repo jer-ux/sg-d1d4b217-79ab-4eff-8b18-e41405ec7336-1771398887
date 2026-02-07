@@ -1061,11 +1061,11 @@ export function WarRoomPreview() {
                                 className="h-8 text-blue-400 opacity-0 group-hover:opacity-100 transition-opacity"
                                 onClick={(e) => {
                                   e.stopPropagation();
-                                  handleShowReceipts(`Receipts for ${relatedReg?.code || regCode}`);
+                                  handleShowReceipts(`Receipts for ${relatedKPI?.name || kpiId}`);
                                 }}
                               >
                                 <Receipt className="h-4 w-4 mr-1" />
-                                {relatedReg?.receiptsCount ? `${relatedReg.receiptsCount} Receipts` : "See Receipts"}
+                                {relatedKPI?.receiptsCount ? `${relatedKPI.receiptsCount} Receipts` : "See Receipts"}
                               </Button>
                               <Button variant="ghost" size="sm" className="h-8 text-blue-400">
                                 View Regulation <ChevronRight className="ml-1 h-3 w-3" />

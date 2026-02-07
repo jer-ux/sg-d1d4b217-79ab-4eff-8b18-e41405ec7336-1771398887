@@ -24,6 +24,10 @@ import {
   Receipt,
   Shield,
   FileCheck,
+  Download,
+  Eye,
+  Clock,
+  Building2,
 } from "lucide-react";
 
 interface RegulationDetail {
@@ -58,6 +62,18 @@ interface EvidenceItem {
   source: string;
   verified: boolean;
   receiptsCount: number;
+}
+
+interface ReceiptDocument {
+  id: string;
+  title: string;
+  amount: string;
+  date: string;
+  vendor: string;
+  category: string;
+  status: "verified" | "pending" | "flagged";
+  description: string;
+  attachments: number;
 }
 
 const metricData: Record<
@@ -362,6 +378,97 @@ const metricData: Record<
   },
 };
 
+const mockReceipts: ReceiptDocument[] = [
+  {
+    id: "rcpt-001",
+    title: "TPA Administrative Services - January 2026",
+    amount: "$48,234.00",
+    date: "2026-01-31",
+    vendor: "UMR/UnitedHealthcare",
+    category: "Administrative Fees",
+    status: "verified",
+    description: "Monthly third-party administration services including claims processing, member services, and reporting",
+    attachments: 3,
+  },
+  {
+    id: "rcpt-002",
+    title: "PBM Rebate Reconciliation Q4 2025",
+    amount: "$142,890.00",
+    date: "2026-01-15",
+    vendor: "CVS Caremark",
+    category: "Pharmacy Benefits",
+    status: "verified",
+    description: "Quarterly pharmacy benefit manager rebate reconciliation and passthrough verification",
+    attachments: 5,
+  },
+  {
+    id: "rcpt-003",
+    title: "Specialty Drug Claims - December 2025",
+    amount: "$218,450.00",
+    date: "2025-12-31",
+    vendor: "Accredo Specialty Pharmacy",
+    category: "Pharmacy Claims",
+    status: "verified",
+    description: "High-cost specialty medication claims for oncology and rheumatology treatments",
+    attachments: 12,
+  },
+  {
+    id: "rcpt-004",
+    title: "Stop-Loss Premium Payment",
+    amount: "$19,500.00",
+    date: "2026-01-15",
+    vendor: "Sun Life Financial",
+    category: "Insurance Premium",
+    status: "verified",
+    description: "Monthly stop-loss insurance premium for claims exceeding $150,000 individual threshold",
+    attachments: 2,
+  },
+  {
+    id: "rcpt-005",
+    title: "Benefits Consulting Services - Q4 2025",
+    amount: "$9,750.00",
+    date: "2026-01-10",
+    vendor: "Mercer Health & Benefits",
+    category: "Consulting",
+    status: "verified",
+    description: "Quarterly benefits strategy consulting, benchmarking analysis, and compliance review",
+    attachments: 4,
+  },
+  {
+    id: "rcpt-006",
+    title: "Claims Audit Services",
+    amount: "$12,500.00",
+    date: "2026-01-20",
+    vendor: "HMS - Healthcare Management Systems",
+    category: "Audit Services",
+    status: "verified",
+    description: "Comprehensive claims payment accuracy audit for Q4 2025 claims",
+    attachments: 8,
+  },
+  {
+    id: "rcpt-007",
+    title: "Duplicate Payment Recovery",
+    amount: "-$87,250.00",
+    date: "2026-01-25",
+    vendor: "Internal Recovery",
+    category: "Cost Recovery",
+    status: "verified",
+    description: "Recovery of duplicate and erroneous claim payments identified in audit",
+    attachments: 15,
+  },
+  {
+    id: "rcpt-008",
+    title: "Medical Claims - High Cost Claimant",
+    amount: "$142,880.00",
+    date: "2025-12-28",
+    vendor: "Mayo Clinic",
+    category: "Medical Claims",
+    status: "flagged",
+    description: "Inpatient hospital stay and surgical procedures - requires additional review for coding accuracy",
+    attachments: 6,
+  },
+];
+
 function MetricTile({
   label,
   value,
@@ -436,8 +543,15 @@ export function WarRoomPreview() {
   const [selectedReg, setSelectedReg] = useState<RegulationDetail | null>(null);
   const [selectedKPI, setSelectedKPI] = useState<KPIDetail | null>(null);
   const [selectedEvidence, setSelectedEvidence] = useState<EvidenceItem | null>(null);
+  const [showReceipts, setShowReceipts] = useState(false);
+  const [receiptsContext, setReceiptsContext] = useState<string>("");
 
   const currentData = selectedMetric ? metricData[selectedMetric] : null;
+
+  const handleShowReceipts = (context: string) => {
+    setReceiptsContext(context);
+    setShowReceipts(true);
+  };
 
   return (
     <>
@@ -515,7 +629,11 @@ export function WarRoomPreview() {
             <div className="flex items-center justify-between">
               <DialogTitle className="text-2xl text-white">Compliance & Performance Deep Dive</DialogTitle>
               {currentData && (
-                <Button variant="outline" className="gap-2">
+                <Button 
+                  variant="outline" 
+                  className="gap-2"
+                  onClick={() => handleShowReceipts(`Total receipts for ${selectedMetric}`)}
+                >
                   <Receipt className="h-4 w-4" />
                   View All {currentData.receiptsCount} Receipts
                 </Button>
@@ -798,6 +916,7 @@ export function WarRoomPreview() {
                                 className="h-8 text-blue-400 opacity-0 group-hover:opacity-100 transition-opacity"
                                 onClick={(e) => {
                                   e.stopPropagation();
+                                  handleShowReceipts(`${reg.code} - ${reg.title}`);
                                 }}
                               >
                                 <Receipt className="h-4 w-4 mr-1" />
@@ -952,7 +1071,12 @@ export function WarRoomPreview() {
                 <FileText className="h-6 w-6 text-blue-400" />
                 Evidence Document
               </DialogTitle>
-              <Button variant="outline" size="sm" className="gap-2">
+              <Button 
+                variant="outline" 
+                size="sm" 
+                className="gap-2"
+                onClick={() => handleShowReceipts(selectedEvidence?.description || "")}
+              >
                 <Receipt className="h-4 w-4" />
                 {selectedEvidence?.receiptsCount} Receipts
               </Button>
@@ -990,7 +1114,11 @@ export function WarRoomPreview() {
                   <FileText className="mr-2 h-4 w-4" />
                   View Full Document
                 </Button>
-                <Button variant="outline" className="justify-start">
+                <Button 
+                  variant="outline" 
+                  className="justify-start"
+                  onClick={() => handleShowReceipts(selectedEvidence?.description || "")}
+                >
                   <Receipt className="mr-2 h-4 w-4" />
                   View All {selectedEvidence?.receiptsCount} Receipts
                 </Button>
@@ -1021,6 +1149,105 @@ export function WarRoomPreview() {
               </Card>
             )}
           </div>
+        </DialogContent>
+      </Dialog>
+
+      {/* Receipts Modal */}
+      <Dialog open={showReceipts} onOpenChange={setShowReceipts}>
+        <DialogContent className="max-w-6xl max-h-[90vh] bg-slate-950 border-white/20">
+          <DialogHeader>
+            <DialogTitle className="text-2xl text-white flex items-center gap-3">
+              <Receipt className="h-6 w-6 text-blue-400" />
+              Receipt Documents - {receiptsContext}
+            </DialogTitle>
+          </DialogHeader>
+
+          <ScrollArea className="h-[700px]">
+            <div className="space-y-4">
+              {mockReceipts.map((receipt) => (
+                <Card
+                  key={receipt.id}
+                  className="border-white/10 bg-white/5 hover:bg-white/10 transition-all group cursor-pointer"
+                >
+                  <CardContent className="p-6">
+                    <div className="flex items-start justify-between mb-4">
+                      <div className="flex-1">
+                        <div className="flex items-center gap-3 mb-2">
+                          <h3 className="text-lg font-semibold text-white">{receipt.title}</h3>
+                          <Badge
+                            variant={
+                              receipt.status === "verified"
+                                ? "default"
+                                : receipt.status === "flagged"
+                                ? "destructive"
+                                : "secondary"
+                            }
+                            className={
+                              receipt.status === "verified"
+                                ? "bg-emerald-500/20 text-emerald-400 border-emerald-400"
+                                : ""
+                            }
+                          >
+                            {receipt.status === "verified" && <CheckCircle className="mr-1 h-3 w-3" />}
+                            {receipt.status === "flagged" && <AlertTriangle className="mr-1 h-3 w-3" />}
+                            {receipt.status === "pending" && <Clock className="mr-1 h-3 w-3" />}
+                            {receipt.status.charAt(0).toUpperCase() + receipt.status.slice(1)}
+                          </Badge>
+                        </div>
+                        <p className="text-sm text-white/70 mb-3">{receipt.description}</p>
+                        <div className="grid grid-cols-4 gap-4">
+                          <div>
+                            <div className="text-xs text-white/50 mb-1">Amount</div>
+                            <div className="text-sm font-semibold text-white">{receipt.amount}</div>
+                          </div>
+                          <div>
+                            <div className="text-xs text-white/50 mb-1">Date</div>
+                            <div className="text-sm text-white">{receipt.date}</div>
+                          </div>
+                          <div>
+                            <div className="text-xs text-white/50 mb-1">Vendor</div>
+                            <div className="text-sm text-white flex items-center gap-1">
+                              <Building2 className="h-3 w-3 text-blue-400" />
+                              {receipt.vendor}
+                            </div>
+                          </div>
+                          <div>
+                            <div className="text-xs text-white/50 mb-1">Category</div>
+                            <Badge variant="outline" className="text-blue-400 border-blue-400">
+                              {receipt.category}
+                            </Badge>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <Separator className="bg-white/10 mb-4" />
+
+                    <div className="flex items-center justify-between">
+                      <div className="flex items-center gap-2 text-xs text-white/50">
+                        <FileText className="h-3 w-3" />
+                        <span>{receipt.attachments} attachments</span>
+                      </div>
+                      <div className="flex gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
+                        <Button variant="outline" size="sm">
+                          <Eye className="h-4 w-4 mr-2" />
+                          View
+                        </Button>
+                        <Button variant="outline" size="sm">
+                          <Download className="h-4 w-4 mr-2" />
+                          Download
+                        </Button>
+                        <Button variant="outline" size="sm">
+                          <ExternalLink className="h-4 w-4 mr-2" />
+                          Open
+                        </Button>
+                      </div>
+                    </div>
+                  </CardContent>
+                </Card>
+              ))}
+            </div>
+          </ScrollArea>
         </DialogContent>
       </Dialog>
     </>

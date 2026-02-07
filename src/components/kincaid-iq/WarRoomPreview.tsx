@@ -628,14 +628,14 @@ export function WarRoomPreview() {
 
       {/* Main Detail Dialog */}
       <Dialog open={!!selectedMetric && !selectedReg && !selectedKPI && !selectedEvidence} onOpenChange={() => setSelectedMetric(null)}>
-        <DialogContent className="max-w-5xl max-h-[90vh] overflow-hidden bg-slate-950 border-white/20">
+        <DialogContent className="max-w-5xl max-h-[90vh] overflow-hidden bg-gradient-to-br from-slate-950 via-slate-900 to-slate-950 border border-white/10 backdrop-blur-2xl shadow-2xl">
           <DialogHeader>
             <div className="flex items-center justify-between">
-              <DialogTitle className="text-2xl text-white">Compliance & Performance Deep Dive</DialogTitle>
+              <DialogTitle className="text-2xl font-semibold tracking-tight text-white">Compliance & Performance Deep Dive</DialogTitle>
               {currentData && (
                 <Button 
                   variant="outline" 
-                  className="gap-2"
+                  className="gap-2 rounded-full border-white/20 bg-white/5 backdrop-blur-xl hover:bg-white/10 transition-all duration-300"
                   onClick={() => handleShowReceipts(`Total receipts for ${selectedMetric}`)}
                 >
                   <Receipt className="h-4 w-4" />
@@ -646,16 +646,16 @@ export function WarRoomPreview() {
           </DialogHeader>
 
           <Tabs defaultValue="regulations" className="w-full">
-            <TabsList className="grid w-full grid-cols-3 bg-white/5">
-              <TabsTrigger value="regulations">
+            <TabsList className="grid w-full grid-cols-3 bg-white/5 backdrop-blur-xl rounded-2xl p-1 border border-white/10">
+              <TabsTrigger value="regulations" className="rounded-xl data-[state=active]:bg-white/10 data-[state=active]:shadow-lg transition-all duration-300">
                 <Scale className="mr-2 h-4 w-4" />
                 Regulations
               </TabsTrigger>
-              <TabsTrigger value="kpis">
+              <TabsTrigger value="kpis" className="rounded-xl data-[state=active]:bg-white/10 data-[state=active]:shadow-lg transition-all duration-300">
                 <BarChart3 className="mr-2 h-4 w-4" />
                 KPIs
               </TabsTrigger>
-              <TabsTrigger value="evidence">
+              <TabsTrigger value="evidence" className="rounded-xl data-[state=active]:bg-white/10 data-[state=active]:shadow-lg transition-all duration-300">
                 <FileText className="mr-2 h-4 w-4" />
                 Evidence
               </TabsTrigger>
@@ -666,21 +666,21 @@ export function WarRoomPreview() {
                 {currentData?.regulations.map((reg) => (
                   <Card
                     key={reg.id}
-                    className="cursor-pointer border-white/10 bg-white/5 hover:bg-white/10 hover:border-white/20 transition-all"
+                    className="cursor-pointer border border-white/10 bg-black/40 backdrop-blur-xl rounded-3xl hover:bg-white/5 hover:border-white/20 hover:scale-[1.01] transition-all duration-500 ease-out group overflow-hidden"
                     onClick={() => setSelectedReg(reg)}
                   >
-                    <CardContent className="p-6">
+                    <CardContent className="p-6 relative">
                       <div className="flex items-start justify-between mb-3">
                         <div>
-                          <Badge variant="outline" className="text-blue-400 border-blue-400 mb-2">
+                          <Badge variant="outline" className="text-blue-400 border-blue-400/50 bg-blue-500/10 mb-2 rounded-full px-3 py-1">
                             {reg.code}
                           </Badge>
-                          <h3 className="text-lg font-semibold text-white">{reg.title}</h3>
+                          <h3 className="text-lg font-semibold tracking-tight text-white group-hover:text-blue-100 transition-colors">{reg.title}</h3>
                         </div>
                         <div className="flex gap-2">
                           <Badge
                             variant={reg.impact === "high" ? "destructive" : "secondary"}
-                            className="capitalize"
+                            className="capitalize rounded-full px-3 py-1"
                           >
                             {reg.impact} Impact
                           </Badge>
@@ -692,13 +692,13 @@ export function WarRoomPreview() {
                                 ? "secondary"
                                 : "destructive"
                             }
-                            className="capitalize"
+                            className="capitalize rounded-full px-3 py-1"
                           >
                             {reg.compliance}
                           </Badge>
                         </div>
                       </div>
-                      <p className="text-sm text-white/70 mb-4">{reg.description}</p>
+                      <p className="text-sm text-white/70 mb-4 leading-relaxed">{reg.description}</p>
                       <div className="flex items-center justify-between">
                         <div className="flex items-center gap-3 text-xs text-white/50">
                           <span>{reg.requirements.length} requirements</span>
@@ -710,10 +710,11 @@ export function WarRoomPreview() {
                             <span>{reg.receiptsCount} receipts</span>
                           </div>
                         </div>
-                        <Button variant="ghost" size="sm" className="text-blue-400 hover:text-blue-300">
+                        <Button variant="ghost" size="sm" className="text-blue-400 hover:text-blue-300 hover:bg-blue-500/10 rounded-full transition-all duration-300">
                           View Details <ChevronRight className="ml-1 h-4 w-4" />
                         </Button>
                       </div>
+                      <div className="absolute -right-10 -top-10 h-32 w-32 rounded-full bg-blue-500/5 blur-3xl transition-all duration-700 group-hover:bg-blue-500/10" />
                     </CardContent>
                   </Card>
                 ))}
@@ -723,25 +724,25 @@ export function WarRoomPreview() {
                 {currentData?.kpis.map((kpi) => (
                   <Card
                     key={kpi.id}
-                    className="cursor-pointer border-white/10 bg-white/5 hover:bg-white/10 hover:border-white/20 transition-all"
+                    className="cursor-pointer border border-white/10 bg-black/40 backdrop-blur-xl rounded-3xl hover:bg-white/5 hover:border-white/20 hover:scale-[1.01] transition-all duration-500 ease-out group overflow-hidden"
                     onClick={() => setSelectedKPI(kpi)}
                   >
-                    <CardContent className="p-6">
+                    <CardContent className="p-6 relative">
                       <div className="flex items-start justify-between mb-4">
                         <div>
-                          <h3 className="text-lg font-semibold text-white mb-1">{kpi.name}</h3>
-                          <div className="flex items-center gap-3 text-sm text-white/60">
+                          <h3 className="text-lg font-semibold tracking-tight text-white mb-1 group-hover:text-blue-100 transition-colors">{kpi.name}</h3>
+                          <div className="flex items-center gap-2 mt-2 text-sm text-white/60">
                             <span>Current: {kpi.value}</span>
                             <span>•</span>
                             <span>Target: {kpi.target}</span>
                           </div>
                         </div>
                         <div className="text-right">
-                          <div className="text-2xl font-bold text-white">{kpi.value}</div>
-                          <div className="text-sm text-red-400">{kpi.trend}</div>
+                          <div className="text-2xl font-bold tracking-tight text-white">{kpi.value}</div>
+                          <div className="text-sm text-red-400 font-medium">{kpi.trend}</div>
                         </div>
                       </div>
-                      <Badge variant="secondary" className="mb-3">{kpi.variance}</Badge>
+                      <Badge variant="secondary" className="mb-3 rounded-full px-3 py-1">{kpi.variance}</Badge>
                       <div className="flex items-center justify-between">
                         <div className="flex items-center gap-3 text-xs text-white/50">
                           <span>{kpi.breakdown.length} components</span>
@@ -753,10 +754,11 @@ export function WarRoomPreview() {
                             <span>{kpi.receiptsCount} receipts</span>
                           </div>
                         </div>
-                        <Button variant="ghost" size="sm" className="text-blue-400 hover:text-blue-300">
+                        <Button variant="ghost" size="sm" className="text-blue-400 hover:text-blue-300 hover:bg-blue-500/10 rounded-full transition-all duration-300">
                           View Breakdown <ChevronRight className="ml-1 h-4 w-4" />
                         </Button>
                       </div>
+                      <div className="absolute -right-10 -top-10 h-32 w-32 rounded-full bg-purple-500/5 blur-3xl transition-all duration-700 group-hover:bg-purple-500/10" />
                     </CardContent>
                   </Card>
                 ))}
@@ -766,18 +768,18 @@ export function WarRoomPreview() {
                 {currentData?.evidence.map((ev) => (
                   <Card
                     key={ev.id}
-                    className="cursor-pointer border-white/10 bg-white/5 hover:bg-white/10 hover:border-white/20 transition-all"
+                    className="cursor-pointer border border-white/10 bg-black/40 backdrop-blur-xl rounded-3xl hover:bg-white/5 hover:border-white/20 hover:scale-[1.01] transition-all duration-500 ease-out group overflow-hidden"
                     onClick={() => setSelectedEvidence(ev)}
                   >
-                    <CardContent className="p-6">
+                    <CardContent className="p-6 relative">
                       <div className="flex items-start justify-between mb-3">
                         <div className="flex items-start gap-3">
                           <FileText className="h-5 w-5 text-blue-400 mt-0.5" />
                           <div>
-                            <Badge variant="outline" className="text-blue-400 border-blue-400 mb-2">
+                            <Badge variant="outline" className="text-blue-400 border-blue-400/50 bg-blue-500/10 mb-2 rounded-full px-3 py-1">
                               {ev.type}
                             </Badge>
-                            <h3 className="text-base font-semibold text-white">{ev.description}</h3>
+                            <h3 className="text-base font-semibold tracking-tight text-white group-hover:text-blue-100 transition-colors">{ev.description}</h3>
                             <div className="flex items-center gap-2 mt-2 text-sm text-white/60">
                               <span>{ev.date}</span>
                               <span>•</span>
@@ -791,15 +793,16 @@ export function WarRoomPreview() {
                           </div>
                         </div>
                         {ev.verified && (
-                          <Badge variant="default" className="bg-emerald-500/20 text-emerald-400 border-emerald-400">
+                          <Badge variant="default" className="bg-emerald-500/20 text-emerald-400 border-emerald-400/50 rounded-full px-3 py-1">
                             <CheckCircle className="mr-1 h-3 w-3" />
                             Verified
                           </Badge>
                         )}
                       </div>
-                      <Button variant="ghost" size="sm" className="text-blue-400 hover:text-blue-300">
+                      <Button variant="ghost" size="sm" className="text-blue-400 hover:text-blue-300 hover:bg-blue-500/10 rounded-full transition-all duration-300">
                         View Document <ExternalLink className="ml-1 h-4 w-4" />
                       </Button>
+                      <div className="absolute -right-10 -top-10 h-32 w-32 rounded-full bg-emerald-500/5 blur-3xl transition-all duration-700 group-hover:bg-emerald-500/10" />
                     </CardContent>
                   </Card>
                 ))}
@@ -811,14 +814,14 @@ export function WarRoomPreview() {
 
       {/* Regulation Detail Dialog */}
       <Dialog open={!!selectedReg} onOpenChange={() => setSelectedReg(null)}>
-        <DialogContent className="max-w-4xl max-h-[90vh] bg-slate-950 border-white/20">
+        <DialogContent className="max-w-4xl max-h-[90vh] bg-gradient-to-br from-slate-950 via-slate-900 to-slate-950 border border-white/10 backdrop-blur-2xl shadow-2xl">
           <DialogHeader>
             <div className="flex items-center justify-between">
-              <DialogTitle className="text-2xl text-white flex items-center gap-3">
+              <DialogTitle className="text-2xl font-semibold tracking-tight text-white flex items-center gap-3">
                 <Scale className="h-6 w-6 text-blue-400" />
                 {selectedReg?.code}: {selectedReg?.title}
               </DialogTitle>
-              <Button variant="outline" size="sm" className="gap-2">
+              <Button variant="outline" size="sm" className="gap-2 rounded-full border-white/20 bg-white/5 backdrop-blur-xl hover:bg-white/10 transition-all duration-300">
                 <Receipt className="h-4 w-4" />
                 {selectedReg?.receiptsCount} Receipts
               </Button>
@@ -831,7 +834,7 @@ export function WarRoomPreview() {
                 <div className="flex gap-2 mb-4">
                   <Badge
                     variant={selectedReg?.impact === "high" ? "destructive" : "secondary"}
-                    className="capitalize"
+                    className="capitalize rounded-full px-3 py-1"
                   >
                     {selectedReg?.impact} Impact
                   </Badge>
@@ -843,40 +846,41 @@ export function WarRoomPreview() {
                         ? "secondary"
                         : "destructive"
                     }
-                    className="capitalize"
+                    className="capitalize rounded-full px-3 py-1"
                   >
                     {selectedReg?.compliance}
                   </Badge>
                 </div>
-                <p className="text-white/80">{selectedReg?.description}</p>
+                <p className="text-white/80 leading-relaxed">{selectedReg?.description}</p>
               </div>
 
               <Separator className="bg-white/10" />
 
               <div>
                 <div className="flex items-center justify-between mb-4">
-                  <h3 className="text-lg font-semibold text-white flex items-center gap-2">
+                  <h3 className="text-lg font-semibold tracking-tight text-white flex items-center gap-2">
                     <ClipboardList className="h-5 w-5 text-blue-400" />
                     Compliance Requirements
                   </h3>
-                  <Button variant="outline" size="sm" className="gap-2">
+                  <Button variant="outline" size="sm" className="gap-2 rounded-full border-white/20 bg-white/5 hover:bg-white/10 transition-all duration-300">
                     <FileCheck className="h-4 w-4" />
                     View All Evidence
                   </Button>
                 </div>
                 <div className="space-y-3">
                   {selectedReg?.requirements.map((req, idx) => (
-                    <Card key={idx} className="border-white/10 bg-white/5 hover:bg-white/10 transition-all group cursor-pointer">
-                      <CardContent className="p-4">
+                    <Card key={idx} className="border border-white/10 bg-black/40 backdrop-blur-xl rounded-2xl hover:bg-white/5 hover:border-white/20 transition-all duration-300 group cursor-pointer overflow-hidden">
+                      <CardContent className="p-4 relative">
                         <div className="flex items-start justify-between">
                           <div className="flex items-start gap-3 flex-1">
                             <CheckCircle2 className="h-5 w-5 text-emerald-400 mt-0.5 flex-shrink-0" />
-                            <p className="text-sm text-white/80">{req}</p>
+                            <p className="text-sm text-white/80 leading-relaxed">{req}</p>
                           </div>
-                          <Button variant="ghost" size="sm" className="opacity-0 group-hover:opacity-100 transition-opacity">
+                          <Button variant="ghost" size="sm" className="opacity-0 group-hover:opacity-100 transition-opacity rounded-full">
                             <Receipt className="h-4 w-4 text-blue-400" />
                           </Button>
                         </div>
+                        <div className="absolute -right-5 -top-5 h-20 w-20 rounded-full bg-emerald-500/5 blur-2xl transition-all duration-500 group-hover:bg-emerald-500/10" />
                       </CardContent>
                     </Card>
                   ))}
@@ -886,20 +890,19 @@ export function WarRoomPreview() {
               <Separator className="bg-white/10" />
 
               <div>
-                <h3 className="text-lg font-semibold text-white mb-4 flex items-center gap-2">
+                <h3 className="text-lg font-semibold tracking-tight text-white mb-4 flex items-center gap-2">
                   <BarChart3 className="h-5 w-5 text-blue-400" />
                   Related KPIs
                 </h3>
                 <div className="grid gap-3">
                   {selectedReg?.relatedKPIs.map((kpiId, idx) => {
-                    // Find the actual KPI from the current metric data
                     const relatedKPI = currentData?.kpis.find(k => 
                       k.id === kpiId || k.name.toLowerCase().includes(kpiId.toLowerCase())
                     );
                     return (
                       <Card
                         key={idx}
-                        className="cursor-pointer border-white/10 bg-white/5 hover:bg-white/10 transition-all group"
+                        className="cursor-pointer border border-white/10 bg-black/40 backdrop-blur-xl rounded-2xl hover:bg-white/5 hover:border-white/20 transition-all duration-300 group overflow-hidden"
                         onClick={() => {
                           if (relatedKPI) {
                             setSelectedReg(null);
@@ -907,30 +910,31 @@ export function WarRoomPreview() {
                           }
                         }}
                       >
-                        <CardContent className="p-4">
+                        <CardContent className="p-4 relative">
                           <div className="flex items-center justify-between">
                             <div className="flex items-center gap-2">
                               <Activity className="h-4 w-4 text-blue-400" />
-                              <span className="text-sm text-white font-medium">{kpiId}</span>
+                              <span className="text-sm text-white font-medium tracking-tight">{kpiId}</span>
                             </div>
                             <div className="flex items-center gap-2">
                               <Button 
                                 variant="outline" 
                                 size="sm" 
-                                className="h-8 text-blue-400 opacity-0 group-hover:opacity-100 transition-opacity"
+                                className="h-8 text-blue-400 border-blue-400/30 bg-blue-500/10 opacity-0 group-hover:opacity-100 transition-all duration-300 rounded-full"
                                 onClick={(e) => {
                                   e.stopPropagation();
-                                  handleShowReceipts(`Receipts for ${selectedReg?.code} - ${selectedReg?.title}`);
+                                  handleShowReceipts(`Receipts for ${kpiId}`);
                                 }}
                               >
                                 <Receipt className="h-4 w-4 mr-1" />
                                 {relatedKPI?.receiptsCount ? `${relatedKPI.receiptsCount} Receipts` : "See Receipts"}
                               </Button>
-                              <Button variant="ghost" size="sm" className="h-8 text-blue-400">
+                              <Button variant="ghost" size="sm" className="h-8 text-blue-400 hover:bg-blue-500/10 rounded-full transition-all duration-300">
                                 View Details <ChevronRight className="ml-1 h-3 w-3" />
                               </Button>
                             </div>
                           </div>
+                          <div className="absolute -right-5 -top-5 h-20 w-20 rounded-full bg-blue-500/5 blur-2xl transition-all duration-500 group-hover:bg-blue-500/10" />
                         </CardContent>
                       </Card>
                     );
@@ -944,14 +948,14 @@ export function WarRoomPreview() {
 
       {/* KPI Detail Dialog */}
       <Dialog open={!!selectedKPI} onOpenChange={() => setSelectedKPI(null)}>
-        <DialogContent className="max-w-4xl max-h-[90vh] bg-slate-950 border-white/20">
+        <DialogContent className="max-w-4xl max-h-[90vh] bg-gradient-to-br from-slate-950 via-slate-900 to-slate-950 border border-white/10 backdrop-blur-2xl shadow-2xl">
           <DialogHeader>
             <div className="flex items-center justify-between">
-              <DialogTitle className="text-2xl text-white flex items-center gap-3">
+              <DialogTitle className="text-2xl font-semibold tracking-tight text-white flex items-center gap-3">
                 <BarChart3 className="h-6 w-6 text-blue-400" />
                 {selectedKPI?.name}
               </DialogTitle>
-              <Button variant="outline" size="sm" className="gap-2">
+              <Button variant="outline" size="sm" className="gap-2 rounded-full border-white/20 bg-white/5 backdrop-blur-xl hover:bg-white/10 transition-all duration-300">
                 <Receipt className="h-4 w-4" />
                 {selectedKPI?.receiptsCount} Receipts
               </Button>
@@ -961,23 +965,26 @@ export function WarRoomPreview() {
           <ScrollArea className="h-[600px]">
             <div className="space-y-6">
               <div className="grid grid-cols-3 gap-4">
-                <Card className="border-white/10 bg-white/5">
-                  <CardContent className="p-4">
-                    <div className="text-xs text-white/60 mb-2">Current Value</div>
-                    <div className="text-2xl font-bold text-white">{selectedKPI?.value}</div>
-                    <div className="text-sm text-red-400 mt-1">{selectedKPI?.trend}</div>
+                <Card className="border border-white/10 bg-black/40 backdrop-blur-xl rounded-2xl overflow-hidden">
+                  <CardContent className="p-4 relative">
+                    <div className="text-xs text-white/60 mb-2 font-medium tracking-wide">Current Value</div>
+                    <div className="text-2xl font-bold tracking-tight text-white">{selectedKPI?.value}</div>
+                    <div className="text-sm text-red-400 mt-1 font-medium">{selectedKPI?.trend}</div>
+                    <div className="absolute -right-5 -top-5 h-20 w-20 rounded-full bg-blue-500/10 blur-2xl" />
                   </CardContent>
                 </Card>
-                <Card className="border-white/10 bg-white/5">
-                  <CardContent className="p-4">
-                    <div className="text-xs text-white/60 mb-2">Target</div>
-                    <div className="text-2xl font-bold text-white">{selectedKPI?.target}</div>
+                <Card className="border border-white/10 bg-black/40 backdrop-blur-xl rounded-2xl overflow-hidden">
+                  <CardContent className="p-4 relative">
+                    <div className="text-xs text-white/60 mb-2 font-medium tracking-wide">Target</div>
+                    <div className="text-2xl font-bold tracking-tight text-white">{selectedKPI?.target}</div>
+                    <div className="absolute -right-5 -top-5 h-20 w-20 rounded-full bg-emerald-500/10 blur-2xl" />
                   </CardContent>
                 </Card>
-                <Card className="border-white/10 bg-white/5">
-                  <CardContent className="p-4">
-                    <div className="text-xs text-white/60 mb-2">Variance</div>
+                <Card className="border border-white/10 bg-black/40 backdrop-blur-xl rounded-2xl overflow-hidden">
+                  <CardContent className="p-4 relative">
+                    <div className="text-xs text-white/60 mb-2 font-medium tracking-wide">Variance</div>
                     <div className="text-base font-semibold text-red-400">{selectedKPI?.variance}</div>
+                    <div className="absolute -right-5 -top-5 h-20 w-20 rounded-full bg-red-500/10 blur-2xl" />
                   </CardContent>
                 </Card>
               </div>
@@ -986,11 +993,11 @@ export function WarRoomPreview() {
 
               <div>
                 <div className="flex items-center justify-between mb-4">
-                  <h3 className="text-lg font-semibold text-white flex items-center gap-2">
+                  <h3 className="text-lg font-semibold tracking-tight text-white flex items-center gap-2">
                     <DollarSign className="h-5 w-5 text-blue-400" />
                     Cost Breakdown
                   </h3>
-                  <Button variant="outline" size="sm" className="gap-2">
+                  <Button variant="outline" size="sm" className="gap-2 rounded-full border-white/20 bg-white/5 hover:bg-white/10 transition-all duration-300">
                     <Shield className="h-4 w-4" />
                     View All Proof
                   </Button>
@@ -999,13 +1006,13 @@ export function WarRoomPreview() {
                   {selectedKPI?.breakdown.map((item, idx) => (
                     <Card
                       key={idx}
-                      className="cursor-pointer border-white/10 bg-white/5 hover:bg-white/10 transition-all group"
+                      className="cursor-pointer border border-white/10 bg-black/40 backdrop-blur-xl rounded-2xl hover:bg-white/5 hover:border-white/20 transition-all duration-300 group overflow-hidden"
                     >
-                      <CardContent className="p-4">
+                      <CardContent className="p-4 relative">
                         <div className="flex items-center justify-between">
                           <div className="flex items-center gap-3">
                             <div className="text-sm font-medium text-white">{item.label}</div>
-                            <Badge variant="secondary">{item.percent}</Badge>
+                            <Badge variant="secondary" className="rounded-full px-2 py-0.5 text-xs">{item.percent}</Badge>
                             <div className="flex items-center gap-1 text-xs text-blue-400 opacity-0 group-hover:opacity-100 transition-opacity">
                               <Receipt className="h-3 w-3" />
                               <span>{item.receiptsCount}</span>
@@ -1013,15 +1020,21 @@ export function WarRoomPreview() {
                           </div>
                           <div className="flex items-center gap-3">
                             <div className="text-lg font-semibold text-white">{item.value}</div>
-                            <Button variant="ghost" size="sm" className="opacity-0 group-hover:opacity-100 transition-opacity text-blue-400">
+                            <Button 
+                              variant="ghost" 
+                              size="sm" 
+                              className="opacity-0 group-hover:opacity-100 transition-opacity text-blue-400 hover:bg-blue-500/10 rounded-full"
+                              onClick={() => handleShowReceipts(`Receipts for ${item.label}`)}
+                            >
                               <Receipt className="h-4 w-4 mr-1" />
                               Receipts
                             </Button>
-                            <Button variant="ghost" size="sm" className="text-blue-400">
+                            <Button variant="ghost" size="sm" className="text-blue-400 hover:bg-blue-500/10 rounded-full transition-all duration-300">
                               Drill Down <ChevronRight className="ml-1 h-3 w-3" />
                             </Button>
                           </div>
                         </div>
+                        <div className="absolute -right-5 -top-5 h-20 w-20 rounded-full bg-purple-500/5 blur-2xl transition-all duration-500 group-hover:bg-purple-500/10" />
                       </CardContent>
                     </Card>
                   ))}
@@ -1031,20 +1044,19 @@ export function WarRoomPreview() {
               <Separator className="bg-white/10" />
 
               <div>
-                <h3 className="text-lg font-semibold text-white mb-4 flex items-center gap-2">
+                <h3 className="text-lg font-semibold tracking-tight text-white mb-4 flex items-center gap-2">
                   <Scale className="h-5 w-5 text-blue-400" />
                   Related Regulations
                 </h3>
                 <div className="space-y-3">
                   {selectedKPI?.relatedRegs.map((regCode, idx) => {
-                    // Find the actual Regulation from the current metric data
                     const relatedReg = currentData?.regulations.find(r => 
                       r.code === regCode || r.title === regCode
                     );
                     return (
                       <Card
                         key={idx}
-                        className="cursor-pointer border-white/10 bg-white/5 hover:bg-white/10 transition-all group"
+                        className="cursor-pointer border border-white/10 bg-black/40 backdrop-blur-xl rounded-2xl hover:bg-white/5 hover:border-white/20 transition-all duration-300 group overflow-hidden"
                         onClick={() => {
                           if (relatedReg) {
                             setSelectedKPI(null);
@@ -1052,30 +1064,31 @@ export function WarRoomPreview() {
                           }
                         }}
                       >
-                        <CardContent className="p-4">
+                        <CardContent className="p-4 relative">
                           <div className="flex items-center justify-between">
                             <div className="flex items-center gap-2">
                               <Scale className="h-4 w-4 text-blue-400" />
-                              <span className="text-sm text-white font-medium">{regCode}</span>
+                              <span className="text-sm text-white font-medium tracking-tight">{regCode}</span>
                             </div>
                             <div className="flex items-center gap-2">
                               <Button 
                                 variant="outline" 
                                 size="sm" 
-                                className="h-8 text-blue-400 opacity-0 group-hover:opacity-100 transition-opacity"
+                                className="h-8 text-blue-400 border-blue-400/30 bg-blue-500/10 opacity-0 group-hover:opacity-100 transition-all duration-300 rounded-full"
                                 onClick={(e) => {
                                   e.stopPropagation();
-                                  handleShowReceipts(selectedEvidence?.description || "");
+                                  handleShowReceipts(`Receipts for ${regCode}`);
                                 }}
                               >
                                 <Receipt className="h-4 w-4 mr-1" />
-                                {selectedEvidence?.receiptsCount ? `${selectedEvidence.receiptsCount} Receipts` : "See Receipts"}
+                                {relatedReg?.receiptsCount ? `${relatedReg.receiptsCount} Receipts` : "See Receipts"}
                               </Button>
-                              <Button variant="ghost" size="sm" className="h-8 text-blue-400">
+                              <Button variant="ghost" size="sm" className="h-8 text-blue-400 hover:bg-blue-500/10 rounded-full transition-all duration-300">
                                 View Regulation <ChevronRight className="ml-1 h-3 w-3" />
                               </Button>
                             </div>
                           </div>
+                          <div className="absolute -right-5 -top-5 h-20 w-20 rounded-full bg-blue-500/5 blur-2xl transition-all duration-500 group-hover:bg-blue-500/10" />
                         </CardContent>
                       </Card>
                     );
@@ -1089,17 +1102,17 @@ export function WarRoomPreview() {
 
       {/* Evidence Detail Dialog */}
       <Dialog open={!!selectedEvidence} onOpenChange={() => setSelectedEvidence(null)}>
-        <DialogContent className="max-w-3xl bg-slate-950 border-white/20">
+        <DialogContent className="max-w-3xl bg-gradient-to-br from-slate-950 via-slate-900 to-slate-950 border border-white/10 backdrop-blur-2xl shadow-2xl">
           <DialogHeader>
             <div className="flex items-center justify-between">
-              <DialogTitle className="text-2xl text-white flex items-center gap-3">
+              <DialogTitle className="text-2xl font-semibold tracking-tight text-white flex items-center gap-3">
                 <FileText className="h-6 w-6 text-blue-400" />
                 Evidence Document
               </DialogTitle>
               <Button 
                 variant="outline" 
                 size="sm" 
-                className="gap-2"
+                className="gap-2 rounded-full border-white/20 bg-white/5 backdrop-blur-xl hover:bg-white/10 transition-all duration-300"
                 onClick={() => handleShowReceipts(selectedEvidence?.description || "")}
               >
                 <Receipt className="h-4 w-4" />
@@ -1110,21 +1123,23 @@ export function WarRoomPreview() {
 
           <div className="space-y-6">
             <div>
-              <Badge variant="outline" className="text-blue-400 border-blue-400 mb-3">
+              <Badge variant="outline" className="text-blue-400 border-blue-400/50 bg-blue-500/10 mb-3 rounded-full px-3 py-1">
                 {selectedEvidence?.type}
               </Badge>
-              <h3 className="text-xl font-semibold text-white mb-4">{selectedEvidence?.description}</h3>
+              <h3 className="text-xl font-semibold tracking-tight text-white mb-4">{selectedEvidence?.description}</h3>
               <div className="grid grid-cols-2 gap-4">
-                <Card className="border-white/10 bg-white/5">
-                  <CardContent className="p-4">
-                    <div className="text-xs text-white/60 mb-1">Date</div>
+                <Card className="border border-white/10 bg-black/40 backdrop-blur-xl rounded-2xl overflow-hidden">
+                  <CardContent className="p-4 relative">
+                    <div className="text-xs text-white/60 mb-1 font-medium tracking-wide">Date</div>
                     <div className="text-sm text-white">{selectedEvidence?.date}</div>
+                    <div className="absolute -right-5 -top-5 h-16 w-16 rounded-full bg-blue-500/10 blur-xl" />
                   </CardContent>
                 </Card>
-                <Card className="border-white/10 bg-white/5">
-                  <CardContent className="p-4">
-                    <div className="text-xs text-white/60 mb-1">Source</div>
+                <Card className="border border-white/10 bg-black/40 backdrop-blur-xl rounded-2xl overflow-hidden">
+                  <CardContent className="p-4 relative">
+                    <div className="text-xs text-white/60 mb-1 font-medium tracking-wide">Source</div>
                     <div className="text-sm text-white">{selectedEvidence?.source}</div>
+                    <div className="absolute -right-5 -top-5 h-16 w-16 rounded-full bg-purple-500/10 blur-xl" />
                   </CardContent>
                 </Card>
               </div>
@@ -1133,25 +1148,25 @@ export function WarRoomPreview() {
             <Separator className="bg-white/10" />
 
             <div>
-              <h3 className="text-lg font-semibold text-white mb-4">Document Actions</h3>
+              <h3 className="text-lg font-semibold tracking-tight text-white mb-4">Document Actions</h3>
               <div className="grid gap-3">
-                <Button variant="outline" className="justify-start">
+                <Button variant="outline" className="justify-start rounded-xl border-white/10 bg-white/5 hover:bg-white/10 transition-all duration-300">
                   <FileText className="mr-2 h-4 w-4" />
                   View Full Document
                 </Button>
                 <Button 
                   variant="outline" 
-                  className="justify-start"
+                  className="justify-start rounded-xl border-white/10 bg-white/5 hover:bg-white/10 transition-all duration-300"
                   onClick={() => handleShowReceipts(selectedEvidence?.description || "")}
                 >
                   <Receipt className="mr-2 h-4 w-4" />
                   View All {selectedEvidence?.receiptsCount} Receipts
                 </Button>
-                <Button variant="outline" className="justify-start">
+                <Button variant="outline" className="justify-start rounded-xl border-white/10 bg-white/5 hover:bg-white/10 transition-all duration-300">
                   <ExternalLink className="mr-2 h-4 w-4" />
                   Open in External System
                 </Button>
-                <Button variant="outline" className="justify-start">
+                <Button variant="outline" className="justify-start rounded-xl border-white/10 bg-white/5 hover:bg-white/10 transition-all duration-300">
                   <Users className="mr-2 h-4 w-4" />
                   Share with Team
                 </Button>
@@ -1159,17 +1174,18 @@ export function WarRoomPreview() {
             </div>
 
             {selectedEvidence?.verified && (
-              <Card className="border-emerald-500/20 bg-emerald-500/10">
-                <CardContent className="p-4">
+              <Card className="border border-emerald-500/30 bg-emerald-500/10 backdrop-blur-xl rounded-2xl overflow-hidden">
+                <CardContent className="p-4 relative">
                   <div className="flex items-center gap-2">
                     <CheckCircle className="h-5 w-5 text-emerald-400" />
                     <div>
                       <div className="text-sm font-semibold text-emerald-400">Verified Evidence</div>
-                      <div className="text-xs text-white/70 mt-1">
+                      <div className="text-xs text-white/70 mt-1 leading-relaxed">
                         This document has been verified and authenticated by our compliance team with {selectedEvidence.receiptsCount} supporting receipts
                       </div>
                     </div>
                   </div>
+                  <div className="absolute -right-5 -top-5 h-24 w-24 rounded-full bg-emerald-500/20 blur-2xl" />
                 </CardContent>
               </Card>
             )}
@@ -1179,9 +1195,9 @@ export function WarRoomPreview() {
 
       {/* Receipts Modal */}
       <Dialog open={showReceipts} onOpenChange={setShowReceipts}>
-        <DialogContent className="max-w-6xl max-h-[90vh] bg-slate-950 border-white/20">
+        <DialogContent className="max-w-6xl max-h-[90vh] bg-gradient-to-br from-slate-950 via-slate-900 to-slate-950 border border-white/10 backdrop-blur-2xl shadow-2xl">
           <DialogHeader>
-            <DialogTitle className="text-2xl text-white flex items-center gap-3">
+            <DialogTitle className="text-2xl font-semibold tracking-tight text-white flex items-center gap-3">
               <Receipt className="h-6 w-6 text-blue-400" />
               Receipt Documents - {receiptsContext}
             </DialogTitle>
@@ -1192,13 +1208,13 @@ export function WarRoomPreview() {
               {mockReceipts.map((receipt) => (
                 <Card
                   key={receipt.id}
-                  className="border-white/10 bg-white/5 hover:bg-white/10 transition-all group cursor-pointer"
+                  className="border border-white/10 bg-black/40 backdrop-blur-xl rounded-3xl hover:bg-white/5 hover:border-white/20 transition-all duration-500 group cursor-pointer overflow-hidden"
                 >
-                  <CardContent className="p-6">
+                  <CardContent className="p-6 relative">
                     <div className="flex items-start justify-between mb-4">
                       <div className="flex-1">
                         <div className="flex items-center gap-3 mb-2">
-                          <h3 className="text-lg font-semibold text-white">{receipt.title}</h3>
+                          <h3 className="text-lg font-semibold tracking-tight text-white group-hover:text-blue-100 transition-colors">{receipt.title}</h3>
                           <Badge
                             variant={
                               receipt.status === "verified"
@@ -1207,11 +1223,11 @@ export function WarRoomPreview() {
                                 ? "destructive"
                                 : "secondary"
                             }
-                            className={
+                            className={`rounded-full px-3 py-1 ${
                               receipt.status === "verified"
-                                ? "bg-emerald-500/20 text-emerald-400 border-emerald-400"
+                                ? "bg-emerald-500/20 text-emerald-400 border-emerald-400/50"
                                 : ""
-                            }
+                            }`}
                           >
                             {receipt.status === "verified" && <CheckCircle className="mr-1 h-3 w-3" />}
                             {receipt.status === "flagged" && <AlertTriangle className="mr-1 h-3 w-3" />}
@@ -1219,26 +1235,26 @@ export function WarRoomPreview() {
                             {receipt.status.charAt(0).toUpperCase() + receipt.status.slice(1)}
                           </Badge>
                         </div>
-                        <p className="text-sm text-white/70 mb-3">{receipt.description}</p>
+                        <p className="text-sm text-white/70 mb-3 leading-relaxed">{receipt.description}</p>
                         <div className="grid grid-cols-4 gap-4">
                           <div>
-                            <div className="text-xs text-white/50 mb-1">Amount</div>
+                            <div className="text-xs text-white/50 mb-1 font-medium tracking-wide">Amount</div>
                             <div className="text-sm font-semibold text-white">{receipt.amount}</div>
                           </div>
                           <div>
-                            <div className="text-xs text-white/50 mb-1">Date</div>
+                            <div className="text-xs text-white/50 mb-1 font-medium tracking-wide">Date</div>
                             <div className="text-sm text-white">{receipt.date}</div>
                           </div>
                           <div>
-                            <div className="text-xs text-white/50 mb-1">Vendor</div>
+                            <div className="text-xs text-white/50 mb-1 font-medium tracking-wide">Vendor</div>
                             <div className="text-sm text-white flex items-center gap-1">
                               <Building2 className="h-3 w-3 text-blue-400" />
                               {receipt.vendor}
                             </div>
                           </div>
                           <div>
-                            <div className="text-xs text-white/50 mb-1">Category</div>
-                            <Badge variant="outline" className="text-blue-400 border-blue-400">
+                            <div className="text-xs text-white/50 mb-1 font-medium tracking-wide">Category</div>
+                            <Badge variant="outline" className="text-blue-400 border-blue-400/50 bg-blue-500/10 rounded-full px-2 py-0.5 text-xs">
                               {receipt.category}
                             </Badge>
                           </div>
@@ -1254,20 +1270,22 @@ export function WarRoomPreview() {
                         <span>{receipt.attachments} attachments</span>
                       </div>
                       <div className="flex gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
-                        <Button variant="outline" size="sm">
+                        <Button variant="outline" size="sm" className="rounded-full border-white/20 bg-white/5 hover:bg-white/10 transition-all duration-300">
                           <Eye className="h-4 w-4 mr-2" />
                           View
                         </Button>
-                        <Button variant="outline" size="sm">
+                        <Button variant="outline" size="sm" className="rounded-full border-white/20 bg-white/5 hover:bg-white/10 transition-all duration-300">
                           <Download className="h-4 w-4 mr-2" />
                           Download
                         </Button>
-                        <Button variant="outline" size="sm">
+                        <Button variant="outline" size="sm" className="rounded-full border-white/20 bg-white/5 hover:bg-white/10 transition-all duration-300">
                           <ExternalLink className="h-4 w-4 mr-2" />
                           Open
                         </Button>
                       </div>
                     </div>
+                    <div className="absolute -right-10 -top-10 h-32 w-32 rounded-full bg-blue-500/5 blur-3xl transition-all duration-700 group-hover:bg-blue-500/10" />
+                    <div className="absolute -bottom-10 -left-10 h-32 w-32 rounded-full bg-purple-500/5 blur-3xl transition-all duration-700 group-hover:bg-purple-500/10" />
                   </CardContent>
                 </Card>
               ))}

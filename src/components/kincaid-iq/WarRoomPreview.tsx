@@ -28,6 +28,7 @@ import {
   Eye,
   Clock,
   Building2,
+  Sparkles,
 } from "lucide-react";
 
 interface RegulationDetail {
@@ -485,9 +486,9 @@ function MetricTile({
   onClick: () => void;
 }) {
   const statusConfig = {
-    good: { color: "text-emerald-400", bg: "bg-emerald-500/10", border: "border-emerald-500/20", icon: CheckCircle2 },
-    warning: { color: "text-amber-400", bg: "bg-amber-500/10", border: "border-amber-500/20", icon: AlertTriangle },
-    alert: { color: "text-rose-400", bg: "bg-rose-500/10", border: "border-rose-500/20", icon: AlertTriangle },
+    good: { color: "text-emerald-400", bg: "bg-emerald-500/10", border: "border-emerald-500/20", icon: CheckCircle2, glow: "emerald" },
+    warning: { color: "text-amber-400", bg: "bg-amber-500/10", border: "border-amber-500/20", icon: AlertTriangle, glow: "amber" },
+    alert: { color: "text-rose-400", bg: "bg-rose-500/10", border: "border-rose-500/20", icon: AlertTriangle, glow: "rose" },
   }[status || "good"];
 
   const StatusIcon = statusConfig.icon;
@@ -495,49 +496,68 @@ function MetricTile({
   return (
     <div
       onClick={onClick}
-      className="group relative cursor-pointer overflow-hidden rounded-3xl border border-white/10 bg-black/40 backdrop-blur-xl transition-all duration-500 ease-out hover:scale-[1.02] hover:border-white/20 hover:bg-white/5 hover:shadow-2xl hover:shadow-blue-500/10"
+      className="group relative cursor-pointer overflow-hidden rounded-[28px] border border-white/[0.08] bg-gradient-to-br from-white/[0.07] to-white/[0.02] backdrop-blur-3xl transition-all duration-700 ease-out hover:scale-[1.02] hover:border-white/[0.15] hover:from-white/[0.10] hover:to-white/[0.04] hover:shadow-[0_20px_70px_-15px_rgba(255,255,255,0.1),0_0_0_1px_rgba(255,255,255,0.05)_inset]"
+      style={{
+        boxShadow: "0 20px 60px -15px rgba(0, 0, 0, 0.6), 0 0 0 1px rgba(255, 255, 255, 0.03) inset",
+      }}
     >
-      <div className="relative z-10 p-6">
-        <div className="flex items-start justify-between mb-4">
-          <div className="text-sm font-medium tracking-wide text-white/50 transition-colors group-hover:text-white/70">
+      {/* Premium Glass Overlay */}
+      <div className="absolute inset-0 opacity-0 transition-opacity duration-700 group-hover:opacity-100">
+        <div className="absolute inset-0 bg-gradient-to-br from-white/[0.08] via-transparent to-transparent" />
+        <div className="absolute inset-0 bg-gradient-to-t from-black/20 via-transparent to-transparent" />
+      </div>
+
+      <div className="relative z-10 p-7">
+        <div className="flex items-start justify-between mb-5">
+          <div className="text-[13px] font-medium tracking-wide text-white/40 transition-colors duration-500 group-hover:text-white/60">
             {label}
           </div>
-          <div className={`flex h-8 w-8 items-center justify-center rounded-full ${statusConfig.bg} ${statusConfig.border} border transition-transform duration-500 group-hover:scale-110`}>
-            <StatusIcon className={`h-4 w-4 ${statusConfig.color}`} />
+          <div 
+            className={`flex h-9 w-9 items-center justify-center rounded-[14px] ${statusConfig.bg} ${statusConfig.border} border backdrop-blur-xl transition-all duration-700 group-hover:scale-110 group-hover:shadow-lg`}
+            style={{
+              boxShadow: `0 0 20px -5px rgba(${statusConfig.glow === 'emerald' ? '16, 185, 129' : statusConfig.glow === 'amber' ? '245, 158, 11' : '244, 63, 94'}, 0.3)`,
+            }}
+          >
+            <StatusIcon className={`h-[18px] w-[18px] ${statusConfig.color} transition-all duration-500 group-hover:scale-110`} />
           </div>
         </div>
         
-        <div className="mb-2 text-3xl font-bold tracking-tight text-white transition-all group-hover:text-blue-100">
+        <div className="mb-2 text-[32px] font-semibold leading-none tracking-[-0.03em] text-white transition-all duration-500 group-hover:text-white/95">
           {value}
         </div>
         
         {trend && (
-          <div className="flex items-center gap-2 text-xs font-medium tracking-wide">
+          <div className="flex items-center gap-2 text-[13px] font-medium tracking-wide">
             {trend.startsWith("+") ? (
-              <TrendingUp className="h-3 w-3 text-rose-400" />
+              <TrendingUp className="h-3.5 w-3.5 text-rose-400" />
             ) : (
-              <TrendingDown className="h-3 w-3 text-emerald-400" />
+              <TrendingDown className="h-3.5 w-3.5 text-emerald-400" />
             )}
-            <span className="text-white/60 group-hover:text-white/80">{trend}</span>
+            <span className="text-white/50 transition-colors duration-500 group-hover:text-white/70">{trend}</span>
           </div>
         )}
 
-        <div className="mt-6 flex items-center justify-between border-t border-white/5 pt-4 opacity-80 transition-opacity group-hover:opacity-100">
+        <div className="mt-7 flex items-center justify-between border-t border-white/[0.06] pt-5 opacity-70 transition-all duration-500 group-hover:border-white/[0.12] group-hover:opacity-100">
           {receiptsCount !== undefined && (
-            <div className="flex items-center gap-1.5 text-xs font-medium text-blue-400/80 transition-colors group-hover:text-blue-400">
-              <Receipt className="h-3.5 w-3.5" />
+            <div className="flex items-center gap-2 text-[13px] font-medium text-blue-400/70 transition-all duration-500 group-hover:text-blue-400">
+              <Receipt className="h-4 w-4" />
               <span>{receiptsCount} receipts</span>
             </div>
           )}
-          <div className="flex items-center gap-1.5 text-xs text-white/40 transition-colors group-hover:text-white">
-            Explore <ChevronRight className="h-3 w-3" />
+          <div className="flex items-center gap-1.5 text-[13px] font-medium text-white/30 transition-all duration-500 group-hover:text-white/70">
+            Explore <ChevronRight className="h-3.5 w-3.5 transition-transform duration-500 group-hover:translate-x-0.5" />
           </div>
         </div>
       </div>
       
-      {/* Premium Glow Effect */}
-      <div className="absolute -right-10 -top-10 h-32 w-32 rounded-full bg-blue-500/10 blur-[50px] transition-all duration-700 group-hover:bg-blue-500/20" />
-      <div className="absolute -bottom-10 -left-10 h-32 w-32 rounded-full bg-purple-500/10 blur-[50px] transition-all duration-700 group-hover:bg-purple-500/20" />
+      {/* Premium Multi-Layer Glow */}
+      <div className="pointer-events-none absolute -right-12 -top-12 h-40 w-40 rounded-full bg-blue-500/[0.08] blur-[60px] transition-all duration-1000 group-hover:bg-blue-500/[0.15]" />
+      <div className="pointer-events-none absolute -bottom-12 -left-12 h-40 w-40 rounded-full bg-purple-500/[0.06] blur-[60px] transition-all duration-1000 group-hover:bg-purple-500/[0.12]" />
+      
+      {/* Shimmer Effect */}
+      <div className="pointer-events-none absolute inset-0 opacity-0 transition-opacity duration-700 group-hover:opacity-100">
+        <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/[0.03] to-transparent animate-shimmer" />
+      </div>
     </div>
   );
 }
@@ -559,7 +579,7 @@ export function WarRoomPreview() {
 
   return (
     <>
-      <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4 p-4">
+      <div className="grid gap-5 md:grid-cols-2 lg:grid-cols-4 p-1">
         <MetricTile
           label="Total Plan Spend (YTD)"
           value="$12.4M"
@@ -626,16 +646,29 @@ export function WarRoomPreview() {
         />
       </div>
 
-      {/* Main Detail Dialog */}
+      {/* Main Detail Dialog - Premium 3D */}
       <Dialog open={!!selectedMetric && !selectedReg && !selectedKPI && !selectedEvidence} onOpenChange={() => setSelectedMetric(null)}>
-        <DialogContent className="max-w-5xl max-h-[90vh] overflow-hidden bg-gradient-to-br from-slate-950 via-slate-900 to-slate-950 border border-white/10 backdrop-blur-2xl shadow-2xl">
-          <DialogHeader>
+        <DialogContent 
+          className="max-w-5xl max-h-[90vh] overflow-hidden border-white/[0.08] backdrop-blur-3xl shadow-[0_40px_100px_-15px_rgba(0,0,0,0.8),0_0_0_1px_rgba(255,255,255,0.05)_inset]"
+          style={{
+            background: "linear-gradient(135deg, rgba(255,255,255,0.07) 0%, rgba(255,255,255,0.02) 100%)",
+          }}
+        >
+          {/* Glass Overlay */}
+          <div className="absolute inset-0 bg-gradient-to-br from-white/[0.05] via-transparent to-black/20 pointer-events-none" />
+          
+          <DialogHeader className="relative z-10">
             <div className="flex items-center justify-between">
-              <DialogTitle className="text-2xl font-semibold tracking-tight text-white">Compliance & Performance Deep Dive</DialogTitle>
+              <DialogTitle className="flex items-center gap-3 text-2xl font-semibold tracking-tight text-white">
+                <div className="flex h-11 w-11 items-center justify-center rounded-[16px] bg-gradient-to-br from-blue-500/20 to-purple-500/20 backdrop-blur-xl border border-white/10 shadow-lg">
+                  <Sparkles className="h-5 w-5 text-blue-300" />
+                </div>
+                Compliance & Performance Deep Dive
+              </DialogTitle>
               {currentData && (
                 <Button 
                   variant="outline" 
-                  className="gap-2 rounded-full border-white/20 bg-white/5 backdrop-blur-xl hover:bg-white/10 transition-all duration-300"
+                  className="gap-2 rounded-[16px] border-white/[0.12] bg-white/[0.06] backdrop-blur-2xl hover:bg-white/[0.12] hover:border-white/20 transition-all duration-500 shadow-lg"
                   onClick={() => handleShowReceipts(`Total receipts for ${selectedMetric}`)}
                 >
                   <Receipt className="h-4 w-4" />
@@ -645,42 +678,57 @@ export function WarRoomPreview() {
             </div>
           </DialogHeader>
 
-          <Tabs defaultValue="regulations" className="w-full">
-            <TabsList className="grid w-full grid-cols-3 bg-white/5 backdrop-blur-xl rounded-2xl p-1 border border-white/10">
-              <TabsTrigger value="regulations" className="rounded-xl data-[state=active]:bg-white/10 data-[state=active]:shadow-lg transition-all duration-300">
+          <Tabs defaultValue="regulations" className="w-full relative z-10">
+            <TabsList className="grid w-full grid-cols-3 rounded-[20px] p-1.5 border border-white/[0.08] shadow-lg backdrop-blur-2xl" style={{ background: "rgba(255,255,255,0.04)" }}>
+              <TabsTrigger 
+                value="regulations" 
+                className="rounded-[14px] data-[state=active]:bg-white/[0.12] data-[state=active]:shadow-[0_8px_30px_-8px_rgba(255,255,255,0.2)] transition-all duration-500"
+              >
                 <Scale className="mr-2 h-4 w-4" />
                 Regulations
               </TabsTrigger>
-              <TabsTrigger value="kpis" className="rounded-xl data-[state=active]:bg-white/10 data-[state=active]:shadow-lg transition-all duration-300">
+              <TabsTrigger 
+                value="kpis" 
+                className="rounded-[14px] data-[state=active]:bg-white/[0.12] data-[state=active]:shadow-[0_8px_30px_-8px_rgba(255,255,255,0.2)] transition-all duration-500"
+              >
                 <BarChart3 className="mr-2 h-4 w-4" />
                 KPIs
               </TabsTrigger>
-              <TabsTrigger value="evidence" className="rounded-xl data-[state=active]:bg-white/10 data-[state=active]:shadow-lg transition-all duration-300">
+              <TabsTrigger 
+                value="evidence" 
+                className="rounded-[14px] data-[state=active]:bg-white/[0.12] data-[state=active]:shadow-[0_8px_30px_-8px_rgba(255,255,255,0.2)] transition-all duration-500"
+              >
                 <FileText className="mr-2 h-4 w-4" />
                 Evidence
               </TabsTrigger>
             </TabsList>
 
-            <ScrollArea className="h-[600px] mt-4">
+            <ScrollArea className="h-[600px] mt-6">
               <TabsContent value="regulations" className="space-y-4">
                 {currentData?.regulations.map((reg) => (
                   <Card
                     key={reg.id}
-                    className="cursor-pointer border border-white/10 bg-black/40 backdrop-blur-xl rounded-3xl hover:bg-white/5 hover:border-white/20 hover:scale-[1.01] transition-all duration-500 ease-out group overflow-hidden"
+                    className="cursor-pointer border-white/[0.08] backdrop-blur-2xl rounded-[24px] hover:border-white/[0.15] hover:scale-[1.01] transition-all duration-700 ease-out group overflow-hidden shadow-lg hover:shadow-[0_20px_60px_-15px_rgba(255,255,255,0.1)]"
+                    style={{
+                      background: "linear-gradient(135deg, rgba(255,255,255,0.06) 0%, rgba(255,255,255,0.02) 100%)",
+                    }}
                     onClick={() => setSelectedReg(reg)}
                   >
-                    <CardContent className="p-6 relative">
-                      <div className="flex items-start justify-between mb-3">
+                    <CardContent className="p-7 relative">
+                      {/* Glass Overlay */}
+                      <div className="absolute inset-0 bg-gradient-to-br from-white/[0.04] via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none rounded-[24px]" />
+                      
+                      <div className="flex items-start justify-between mb-4 relative z-10">
                         <div>
-                          <Badge variant="outline" className="text-blue-400 border-blue-400/50 bg-blue-500/10 mb-2 rounded-full px-3 py-1">
+                          <Badge variant="outline" className="text-blue-400 border-blue-400/40 bg-blue-500/10 mb-3 rounded-full px-4 py-1.5 backdrop-blur-xl shadow-lg">
                             {reg.code}
                           </Badge>
-                          <h3 className="text-lg font-semibold tracking-tight text-white group-hover:text-blue-100 transition-colors">{reg.title}</h3>
+                          <h3 className="text-lg font-semibold tracking-tight text-white group-hover:text-blue-100 transition-colors duration-500">{reg.title}</h3>
                         </div>
                         <div className="flex gap-2">
                           <Badge
                             variant={reg.impact === "high" ? "destructive" : "secondary"}
-                            className="capitalize rounded-full px-3 py-1"
+                            className="capitalize rounded-full px-3 py-1 shadow-lg backdrop-blur-xl"
                           >
                             {reg.impact} Impact
                           </Badge>
@@ -692,29 +740,32 @@ export function WarRoomPreview() {
                                 ? "secondary"
                                 : "destructive"
                             }
-                            className="capitalize rounded-full px-3 py-1"
+                            className="capitalize rounded-full px-3 py-1 shadow-lg backdrop-blur-xl"
                           >
                             {reg.compliance}
                           </Badge>
                         </div>
                       </div>
-                      <p className="text-sm text-white/70 mb-4 leading-relaxed">{reg.description}</p>
-                      <div className="flex items-center justify-between">
-                        <div className="flex items-center gap-3 text-xs text-white/50">
+                      <p className="text-sm text-white/70 mb-5 leading-relaxed relative z-10">{reg.description}</p>
+                      <div className="flex items-center justify-between relative z-10">
+                        <div className="flex items-center gap-4 text-xs text-white/50">
                           <span>{reg.requirements.length} requirements</span>
                           <span>•</span>
                           <span>{reg.relatedKPIs.length} related KPIs</span>
                           <span>•</span>
-                          <div className="flex items-center gap-1 text-blue-400">
-                            <Receipt className="h-3 w-3" />
+                          <div className="flex items-center gap-1.5 text-blue-400/80">
+                            <Receipt className="h-3.5 w-3.5" />
                             <span>{reg.receiptsCount} receipts</span>
                           </div>
                         </div>
-                        <Button variant="ghost" size="sm" className="text-blue-400 hover:text-blue-300 hover:bg-blue-500/10 rounded-full transition-all duration-300">
-                          View Details <ChevronRight className="ml-1 h-4 w-4" />
+                        <Button variant="ghost" size="sm" className="text-blue-400 hover:text-blue-300 hover:bg-blue-500/10 rounded-full transition-all duration-500">
+                          View Details <ChevronRight className="ml-1 h-4 w-4 transition-transform duration-500 group-hover:translate-x-1" />
                         </Button>
                       </div>
-                      <div className="absolute -right-10 -top-10 h-32 w-32 rounded-full bg-blue-500/5 blur-3xl transition-all duration-700 group-hover:bg-blue-500/10" />
+                      
+                      {/* Multi-layer glow */}
+                      <div className="absolute -right-16 -top-16 h-48 w-48 rounded-full bg-blue-500/[0.06] blur-[70px] transition-all duration-1000 group-hover:bg-blue-500/[0.12] pointer-events-none" />
+                      <div className="absolute -left-16 -bottom-16 h-48 w-48 rounded-full bg-purple-500/[0.04] blur-[70px] transition-all duration-1000 group-hover:bg-purple-500/[0.10] pointer-events-none" />
                     </CardContent>
                   </Card>
                 ))}
@@ -724,14 +775,20 @@ export function WarRoomPreview() {
                 {currentData?.kpis.map((kpi) => (
                   <Card
                     key={kpi.id}
-                    className="cursor-pointer border border-white/10 bg-black/40 backdrop-blur-xl rounded-3xl hover:bg-white/5 hover:border-white/20 hover:scale-[1.01] transition-all duration-500 ease-out group overflow-hidden"
+                    className="cursor-pointer border-white/[0.08] backdrop-blur-2xl rounded-[24px] hover:border-white/[0.15] hover:scale-[1.01] transition-all duration-700 ease-out group overflow-hidden shadow-lg hover:shadow-[0_20px_60px_-15px_rgba(255,255,255,0.1)]"
+                    style={{
+                      background: "linear-gradient(135deg, rgba(255,255,255,0.06) 0%, rgba(255,255,255,0.02) 100%)",
+                    }}
                     onClick={() => setSelectedKPI(kpi)}
                   >
-                    <CardContent className="p-6 relative">
-                      <div className="flex items-start justify-between mb-4">
+                    <CardContent className="p-7 relative">
+                      {/* Glass Overlay */}
+                      <div className="absolute inset-0 bg-gradient-to-br from-white/[0.04] via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none rounded-[24px]" />
+                      
+                      <div className="flex items-start justify-between mb-5 relative z-10">
                         <div>
-                          <h3 className="text-lg font-semibold tracking-tight text-white mb-1 group-hover:text-blue-100 transition-colors">{kpi.name}</h3>
-                          <div className="flex items-center gap-2 mt-2 text-sm text-white/60">
+                          <h3 className="text-lg font-semibold tracking-tight text-white mb-2 group-hover:text-blue-100 transition-colors duration-500">{kpi.name}</h3>
+                          <div className="flex items-center gap-3 mt-2 text-sm text-white/60">
                             <span>Current: {kpi.value}</span>
                             <span>•</span>
                             <span>Target: {kpi.target}</span>
@@ -739,26 +796,29 @@ export function WarRoomPreview() {
                         </div>
                         <div className="text-right">
                           <div className="text-2xl font-bold tracking-tight text-white">{kpi.value}</div>
-                          <div className="text-sm text-red-400 font-medium">{kpi.trend}</div>
+                          <div className="text-sm text-red-400 font-medium mt-1">{kpi.trend}</div>
                         </div>
                       </div>
-                      <Badge variant="secondary" className="mb-3 rounded-full px-3 py-1">{kpi.variance}</Badge>
-                      <div className="flex items-center justify-between">
-                        <div className="flex items-center gap-3 text-xs text-white/50">
+                      <Badge variant="secondary" className="mb-4 rounded-full px-4 py-1.5 backdrop-blur-xl shadow-lg relative z-10">{kpi.variance}</Badge>
+                      <div className="flex items-center justify-between relative z-10">
+                        <div className="flex items-center gap-4 text-xs text-white/50">
                           <span>{kpi.breakdown.length} components</span>
                           <span>•</span>
                           <span>{kpi.relatedRegs.length} related regulations</span>
                           <span>•</span>
-                          <div className="flex items-center gap-1 text-blue-400">
-                            <Receipt className="h-3 w-3" />
+                          <div className="flex items-center gap-1.5 text-blue-400/80">
+                            <Receipt className="h-3.5 w-3.5" />
                             <span>{kpi.receiptsCount} receipts</span>
                           </div>
                         </div>
-                        <Button variant="ghost" size="sm" className="text-blue-400 hover:text-blue-300 hover:bg-blue-500/10 rounded-full transition-all duration-300">
-                          View Breakdown <ChevronRight className="ml-1 h-4 w-4" />
+                        <Button variant="ghost" size="sm" className="text-blue-400 hover:text-blue-300 hover:bg-blue-500/10 rounded-full transition-all duration-500">
+                          View Breakdown <ChevronRight className="ml-1 h-4 w-4 transition-transform duration-500 group-hover:translate-x-1" />
                         </Button>
                       </div>
-                      <div className="absolute -right-10 -top-10 h-32 w-32 rounded-full bg-purple-500/5 blur-3xl transition-all duration-700 group-hover:bg-purple-500/10" />
+                      
+                      {/* Multi-layer glow */}
+                      <div className="absolute -right-16 -top-16 h-48 w-48 rounded-full bg-purple-500/[0.06] blur-[70px] transition-all duration-1000 group-hover:bg-purple-500/[0.12] pointer-events-none" />
+                      <div className="absolute -left-16 -bottom-16 h-48 w-48 rounded-full bg-blue-500/[0.04] blur-[70px] transition-all duration-1000 group-hover:bg-blue-500/[0.10] pointer-events-none" />
                     </CardContent>
                   </Card>
                 ))}
@@ -768,41 +828,52 @@ export function WarRoomPreview() {
                 {currentData?.evidence.map((ev) => (
                   <Card
                     key={ev.id}
-                    className="cursor-pointer border border-white/10 bg-black/40 backdrop-blur-xl rounded-3xl hover:bg-white/5 hover:border-white/20 hover:scale-[1.01] transition-all duration-500 ease-out group overflow-hidden"
+                    className="cursor-pointer border-white/[0.08] backdrop-blur-2xl rounded-[24px] hover:border-white/[0.15] hover:scale-[1.01] transition-all duration-700 ease-out group overflow-hidden shadow-lg hover:shadow-[0_20px_60px_-15px_rgba(255,255,255,0.1)]"
+                    style={{
+                      background: "linear-gradient(135deg, rgba(255,255,255,0.06) 0%, rgba(255,255,255,0.02) 100%)",
+                    }}
                     onClick={() => setSelectedEvidence(ev)}
                   >
-                    <CardContent className="p-6 relative">
-                      <div className="flex items-start justify-between mb-3">
-                        <div className="flex items-start gap-3">
-                          <FileText className="h-5 w-5 text-blue-400 mt-0.5" />
+                    <CardContent className="p-7 relative">
+                      {/* Glass Overlay */}
+                      <div className="absolute inset-0 bg-gradient-to-br from-white/[0.04] via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none rounded-[24px]" />
+                      
+                      <div className="flex items-start justify-between mb-4 relative z-10">
+                        <div className="flex items-start gap-4">
+                          <div className="flex h-10 w-10 items-center justify-center rounded-[14px] bg-blue-500/10 backdrop-blur-xl border border-blue-500/20 shadow-lg">
+                            <FileText className="h-5 w-5 text-blue-400" />
+                          </div>
                           <div>
-                            <Badge variant="outline" className="text-blue-400 border-blue-400/50 bg-blue-500/10 mb-2 rounded-full px-3 py-1">
+                            <Badge variant="outline" className="text-blue-400 border-blue-400/40 bg-blue-500/10 mb-3 rounded-full px-4 py-1.5 backdrop-blur-xl shadow-lg">
                               {ev.type}
                             </Badge>
-                            <h3 className="text-base font-semibold tracking-tight text-white group-hover:text-blue-100 transition-colors">{ev.description}</h3>
-                            <div className="flex items-center gap-2 mt-2 text-sm text-white/60">
+                            <h3 className="text-base font-semibold tracking-tight text-white group-hover:text-blue-100 transition-colors duration-500">{ev.description}</h3>
+                            <div className="flex items-center gap-3 mt-2 text-sm text-white/60">
                               <span>{ev.date}</span>
                               <span>•</span>
                               <span>{ev.source}</span>
                               <span>•</span>
-                              <div className="flex items-center gap-1 text-blue-400">
-                                <Receipt className="h-3 w-3" />
+                              <div className="flex items-center gap-1.5 text-blue-400/80">
+                                <Receipt className="h-3.5 w-3.5" />
                                 <span>{ev.receiptsCount} receipts</span>
                               </div>
                             </div>
                           </div>
                         </div>
                         {ev.verified && (
-                          <Badge variant="default" className="bg-emerald-500/20 text-emerald-400 border-emerald-400/50 rounded-full px-3 py-1">
-                            <CheckCircle className="mr-1 h-3 w-3" />
+                          <Badge variant="default" className="bg-emerald-500/20 text-emerald-400 border-emerald-400/40 rounded-full px-4 py-1.5 backdrop-blur-xl shadow-lg">
+                            <CheckCircle className="mr-1.5 h-3.5 w-3.5" />
                             Verified
                           </Badge>
                         )}
                       </div>
-                      <Button variant="ghost" size="sm" className="text-blue-400 hover:text-blue-300 hover:bg-blue-500/10 rounded-full transition-all duration-300">
-                        View Document <ExternalLink className="ml-1 h-4 w-4" />
+                      <Button variant="ghost" size="sm" className="text-blue-400 hover:text-blue-300 hover:bg-blue-500/10 rounded-full transition-all duration-500 relative z-10">
+                        View Document <ExternalLink className="ml-1.5 h-4 w-4" />
                       </Button>
-                      <div className="absolute -right-10 -top-10 h-32 w-32 rounded-full bg-emerald-500/5 blur-3xl transition-all duration-700 group-hover:bg-emerald-500/10" />
+                      
+                      {/* Multi-layer glow */}
+                      <div className="absolute -right-16 -top-16 h-48 w-48 rounded-full bg-emerald-500/[0.06] blur-[70px] transition-all duration-1000 group-hover:bg-emerald-500/[0.12] pointer-events-none" />
+                      <div className="absolute -left-16 -bottom-16 h-48 w-48 rounded-full bg-blue-500/[0.04] blur-[70px] transition-all duration-1000 group-hover:bg-blue-500/[0.10] pointer-events-none" />
                     </CardContent>
                   </Card>
                 ))}
@@ -812,29 +883,47 @@ export function WarRoomPreview() {
         </DialogContent>
       </Dialog>
 
-      {/* Regulation Detail Dialog */}
+      {/* Regulation Detail Dialog - Premium 3D */}
       <Dialog open={!!selectedReg} onOpenChange={() => setSelectedReg(null)}>
-        <DialogContent className="max-w-4xl max-h-[90vh] bg-gradient-to-br from-slate-950 via-slate-900 to-slate-950 border border-white/10 backdrop-blur-2xl shadow-2xl">
-          <DialogHeader>
+        <DialogContent 
+          className="max-w-4xl max-h-[90vh] border-white/[0.08] backdrop-blur-3xl shadow-[0_40px_100px_-15px_rgba(0,0,0,0.8),0_0_0_1px_rgba(255,255,255,0.05)_inset]"
+          style={{
+            background: "linear-gradient(135deg, rgba(255,255,255,0.07) 0%, rgba(255,255,255,0.02) 100%)",
+          }}
+        >
+          {/* Glass Overlay */}
+          <div className="absolute inset-0 bg-gradient-to-br from-white/[0.05] via-transparent to-black/20 pointer-events-none" />
+          
+          <DialogHeader className="relative z-10">
             <div className="flex items-center justify-between">
-              <DialogTitle className="text-2xl font-semibold tracking-tight text-white flex items-center gap-3">
-                <Scale className="h-6 w-6 text-blue-400" />
-                {selectedReg?.code}: {selectedReg?.title}
+              <DialogTitle className="text-2xl font-semibold tracking-tight text-white flex items-center gap-4">
+                <div className="flex h-12 w-12 items-center justify-center rounded-[16px] bg-gradient-to-br from-blue-500/20 to-purple-500/20 backdrop-blur-xl border border-white/10 shadow-xl">
+                  <Scale className="h-6 w-6 text-blue-300" />
+                </div>
+                <div>
+                  <div className="text-sm text-blue-400 font-medium">{selectedReg?.code}</div>
+                  <div className="text-white">{selectedReg?.title}</div>
+                </div>
               </DialogTitle>
-              <Button variant="outline" size="sm" className="gap-2 rounded-full border-white/20 bg-white/5 backdrop-blur-xl hover:bg-white/10 transition-all duration-300">
+              <Button 
+                variant="outline" 
+                size="sm" 
+                className="gap-2 rounded-[16px] border-white/[0.12] bg-white/[0.06] backdrop-blur-2xl hover:bg-white/[0.12] hover:border-white/20 transition-all duration-500 shadow-lg"
+                onClick={() => handleShowReceipts(`Receipts for ${selectedReg?.code}`)}
+              >
                 <Receipt className="h-4 w-4" />
                 {selectedReg?.receiptsCount} Receipts
               </Button>
             </div>
           </DialogHeader>
 
-          <ScrollArea className="h-[600px]">
-            <div className="space-y-6">
+          <ScrollArea className="h-[600px] relative z-10">
+            <div className="space-y-7">
               <div>
-                <div className="flex gap-2 mb-4">
+                <div className="flex gap-2 mb-5">
                   <Badge
                     variant={selectedReg?.impact === "high" ? "destructive" : "secondary"}
-                    className="capitalize rounded-full px-3 py-1"
+                    className="capitalize rounded-full px-4 py-1.5 backdrop-blur-xl shadow-lg"
                   >
                     {selectedReg?.impact} Impact
                   </Badge>
@@ -846,52 +935,68 @@ export function WarRoomPreview() {
                         ? "secondary"
                         : "destructive"
                     }
-                    className="capitalize rounded-full px-3 py-1"
+                    className="capitalize rounded-full px-4 py-1.5 backdrop-blur-xl shadow-lg"
                   >
                     {selectedReg?.compliance}
                   </Badge>
                 </div>
-                <p className="text-white/80 leading-relaxed">{selectedReg?.description}</p>
+                <p className="text-white/80 leading-relaxed text-[15px]">{selectedReg?.description}</p>
               </div>
 
-              <Separator className="bg-white/10" />
+              <Separator className="bg-white/[0.08]" />
 
               <div>
-                <div className="flex items-center justify-between mb-4">
-                  <h3 className="text-lg font-semibold tracking-tight text-white flex items-center gap-2">
-                    <ClipboardList className="h-5 w-5 text-blue-400" />
+                <div className="flex items-center justify-between mb-5">
+                  <h3 className="text-lg font-semibold tracking-tight text-white flex items-center gap-3">
+                    <div className="flex h-9 w-9 items-center justify-center rounded-[12px] bg-blue-500/10 backdrop-blur-xl border border-blue-500/20">
+                      <ClipboardList className="h-5 w-5 text-blue-400" />
+                    </div>
                     Compliance Requirements
                   </h3>
-                  <Button variant="outline" size="sm" className="gap-2 rounded-full border-white/20 bg-white/5 hover:bg-white/10 transition-all duration-300">
+                  <Button 
+                    variant="outline" 
+                    size="sm" 
+                    className="gap-2 rounded-full border-white/[0.12] bg-white/[0.06] hover:bg-white/[0.12] hover:border-white/20 transition-all duration-500 backdrop-blur-xl"
+                  >
                     <FileCheck className="h-4 w-4" />
                     View All Evidence
                   </Button>
                 </div>
                 <div className="space-y-3">
                   {selectedReg?.requirements.map((req, idx) => (
-                    <Card key={idx} className="border border-white/10 bg-black/40 backdrop-blur-xl rounded-2xl hover:bg-white/5 hover:border-white/20 transition-all duration-300 group cursor-pointer overflow-hidden">
-                      <CardContent className="p-4 relative">
+                    <Card 
+                      key={idx} 
+                      className="border-white/[0.08] backdrop-blur-2xl rounded-[20px] hover:border-white/[0.12] transition-all duration-500 group cursor-pointer overflow-hidden shadow-lg"
+                      style={{
+                        background: "linear-gradient(135deg, rgba(255,255,255,0.05) 0%, rgba(255,255,255,0.02) 100%)",
+                      }}
+                    >
+                      <CardContent className="p-5 relative">
                         <div className="flex items-start justify-between">
                           <div className="flex items-start gap-3 flex-1">
-                            <CheckCircle2 className="h-5 w-5 text-emerald-400 mt-0.5 flex-shrink-0" />
-                            <p className="text-sm text-white/80 leading-relaxed">{req}</p>
+                            <div className="flex h-8 w-8 items-center justify-center rounded-[10px] bg-emerald-500/10 backdrop-blur-xl border border-emerald-500/20 flex-shrink-0">
+                              <CheckCircle2 className="h-4 w-4 text-emerald-400" />
+                            </div>
+                            <p className="text-[14px] text-white/80 leading-relaxed">{req}</p>
                           </div>
-                          <Button variant="ghost" size="sm" className="opacity-0 group-hover:opacity-100 transition-opacity rounded-full">
+                          <Button variant="ghost" size="sm" className="opacity-0 group-hover:opacity-100 transition-all duration-500 rounded-full">
                             <Receipt className="h-4 w-4 text-blue-400" />
                           </Button>
                         </div>
-                        <div className="absolute -right-5 -top-5 h-20 w-20 rounded-full bg-emerald-500/5 blur-2xl transition-all duration-500 group-hover:bg-emerald-500/10" />
+                        <div className="absolute -right-8 -top-8 h-32 w-32 rounded-full bg-emerald-500/[0.04] blur-[50px] transition-all duration-700 group-hover:bg-emerald-500/[0.08] pointer-events-none" />
                       </CardContent>
                     </Card>
                   ))}
                 </div>
               </div>
 
-              <Separator className="bg-white/10" />
+              <Separator className="bg-white/[0.08]" />
 
               <div>
-                <h3 className="text-lg font-semibold tracking-tight text-white mb-4 flex items-center gap-2">
-                  <BarChart3 className="h-5 w-5 text-blue-400" />
+                <h3 className="text-lg font-semibold tracking-tight text-white mb-5 flex items-center gap-3">
+                  <div className="flex h-9 w-9 items-center justify-center rounded-[12px] bg-purple-500/10 backdrop-blur-xl border border-purple-500/20">
+                    <BarChart3 className="h-5 w-5 text-purple-400" />
+                  </div>
                   Related KPIs
                 </h3>
                 <div className="grid gap-3">
@@ -902,7 +1007,10 @@ export function WarRoomPreview() {
                     return (
                       <Card
                         key={idx}
-                        className="cursor-pointer border border-white/10 bg-black/40 backdrop-blur-xl rounded-2xl hover:bg-white/5 hover:border-white/20 transition-all duration-300 group overflow-hidden"
+                        className="cursor-pointer border-white/[0.08] backdrop-blur-2xl rounded-[20px] hover:border-white/[0.12] transition-all duration-500 group overflow-hidden shadow-lg"
+                        style={{
+                          background: "linear-gradient(135deg, rgba(255,255,255,0.05) 0%, rgba(255,255,255,0.02) 100%)",
+                        }}
                         onClick={() => {
                           if (relatedKPI) {
                             setSelectedReg(null);
@@ -910,31 +1018,33 @@ export function WarRoomPreview() {
                           }
                         }}
                       >
-                        <CardContent className="p-4 relative">
+                        <CardContent className="p-5 relative">
                           <div className="flex items-center justify-between">
-                            <div className="flex items-center gap-2">
-                              <Activity className="h-4 w-4 text-blue-400" />
+                            <div className="flex items-center gap-3">
+                              <div className="flex h-8 w-8 items-center justify-center rounded-[10px] bg-blue-500/10 backdrop-blur-xl border border-blue-500/20">
+                                <Activity className="h-4 w-4 text-blue-400" />
+                              </div>
                               <span className="text-sm text-white font-medium tracking-tight">{kpiId}</span>
                             </div>
                             <div className="flex items-center gap-2">
                               <Button 
                                 variant="outline" 
                                 size="sm" 
-                                className="h-8 text-blue-400 border-blue-400/30 bg-blue-500/10 opacity-0 group-hover:opacity-100 transition-all duration-300 rounded-full"
+                                className="h-8 text-blue-400 border-blue-400/30 bg-blue-500/10 opacity-0 group-hover:opacity-100 transition-all duration-500 rounded-full backdrop-blur-xl"
                                 onClick={(e) => {
                                   e.stopPropagation();
                                   handleShowReceipts(`Receipts for ${kpiId}`);
                                 }}
                               >
-                                <Receipt className="h-4 w-4 mr-1" />
-                                {relatedKPI?.receiptsCount ? `${relatedKPI.receiptsCount} Receipts` : "See Receipts"}
+                                <Receipt className="h-3.5 w-3.5 mr-1" />
+                                {relatedKPI?.receiptsCount ? `${relatedKPI.receiptsCount}` : "See"}
                               </Button>
-                              <Button variant="ghost" size="sm" className="h-8 text-blue-400 hover:bg-blue-500/10 rounded-full transition-all duration-300">
-                                View Details <ChevronRight className="ml-1 h-3 w-3" />
+                              <Button variant="ghost" size="sm" className="h-8 text-blue-400 hover:bg-blue-500/10 rounded-full transition-all duration-500">
+                                Details <ChevronRight className="ml-1 h-3 w-3" />
                               </Button>
                             </div>
                           </div>
-                          <div className="absolute -right-5 -top-5 h-20 w-20 rounded-full bg-blue-500/5 blur-2xl transition-all duration-500 group-hover:bg-blue-500/10" />
+                          <div className="absolute -right-8 -top-8 h-32 w-32 rounded-full bg-blue-500/[0.04] blur-[50px] transition-all duration-700 group-hover:bg-blue-500/[0.08] pointer-events-none" />
                         </CardContent>
                       </Card>
                     );
@@ -946,58 +1056,94 @@ export function WarRoomPreview() {
         </DialogContent>
       </Dialog>
 
-      {/* KPI Detail Dialog */}
+      {/* KPI Detail Dialog - Premium 3D */}
       <Dialog open={!!selectedKPI} onOpenChange={() => setSelectedKPI(null)}>
-        <DialogContent className="max-w-4xl max-h-[90vh] bg-gradient-to-br from-slate-950 via-slate-900 to-slate-950 border border-white/10 backdrop-blur-2xl shadow-2xl">
-          <DialogHeader>
+        <DialogContent 
+          className="max-w-4xl max-h-[90vh] border-white/[0.08] backdrop-blur-3xl shadow-[0_40px_100px_-15px_rgba(0,0,0,0.8),0_0_0_1px_rgba(255,255,255,0.05)_inset]"
+          style={{
+            background: "linear-gradient(135deg, rgba(255,255,255,0.07) 0%, rgba(255,255,255,0.02) 100%)",
+          }}
+        >
+          {/* Glass Overlay */}
+          <div className="absolute inset-0 bg-gradient-to-br from-white/[0.05] via-transparent to-black/20 pointer-events-none" />
+          
+          <DialogHeader className="relative z-10">
             <div className="flex items-center justify-between">
-              <DialogTitle className="text-2xl font-semibold tracking-tight text-white flex items-center gap-3">
-                <BarChart3 className="h-6 w-6 text-blue-400" />
+              <DialogTitle className="text-2xl font-semibold tracking-tight text-white flex items-center gap-4">
+                <div className="flex h-12 w-12 items-center justify-center rounded-[16px] bg-gradient-to-br from-purple-500/20 to-blue-500/20 backdrop-blur-xl border border-white/10 shadow-xl">
+                  <BarChart3 className="h-6 w-6 text-purple-300" />
+                </div>
                 {selectedKPI?.name}
               </DialogTitle>
-              <Button variant="outline" size="sm" className="gap-2 rounded-full border-white/20 bg-white/5 backdrop-blur-xl hover:bg-white/10 transition-all duration-300">
+              <Button 
+                variant="outline" 
+                size="sm" 
+                className="gap-2 rounded-[16px] border-white/[0.12] bg-white/[0.06] backdrop-blur-2xl hover:bg-white/[0.12] hover:border-white/20 transition-all duration-500 shadow-lg"
+                onClick={() => handleShowReceipts(`Receipts for ${selectedKPI?.name}`)}
+              >
                 <Receipt className="h-4 w-4" />
                 {selectedKPI?.receiptsCount} Receipts
               </Button>
             </div>
           </DialogHeader>
 
-          <ScrollArea className="h-[600px]">
-            <div className="space-y-6">
+          <ScrollArea className="h-[600px] relative z-10">
+            <div className="space-y-7">
               <div className="grid grid-cols-3 gap-4">
-                <Card className="border border-white/10 bg-black/40 backdrop-blur-xl rounded-2xl overflow-hidden">
-                  <CardContent className="p-4 relative">
-                    <div className="text-xs text-white/60 mb-2 font-medium tracking-wide">Current Value</div>
+                <Card 
+                  className="border-white/[0.08] backdrop-blur-2xl rounded-[20px] overflow-hidden shadow-lg"
+                  style={{
+                    background: "linear-gradient(135deg, rgba(255,255,255,0.06) 0%, rgba(255,255,255,0.02) 100%)",
+                  }}
+                >
+                  <CardContent className="p-5 relative">
+                    <div className="text-xs text-white/50 mb-2 font-medium tracking-wide">Current Value</div>
                     <div className="text-2xl font-bold tracking-tight text-white">{selectedKPI?.value}</div>
-                    <div className="text-sm text-red-400 mt-1 font-medium">{selectedKPI?.trend}</div>
-                    <div className="absolute -right-5 -top-5 h-20 w-20 rounded-full bg-blue-500/10 blur-2xl" />
+                    <div className="text-sm text-red-400 mt-1.5 font-medium">{selectedKPI?.trend}</div>
+                    <div className="absolute -right-8 -top-8 h-32 w-32 rounded-full bg-blue-500/[0.08] blur-[50px] pointer-events-none" />
                   </CardContent>
                 </Card>
-                <Card className="border border-white/10 bg-black/40 backdrop-blur-xl rounded-2xl overflow-hidden">
-                  <CardContent className="p-4 relative">
-                    <div className="text-xs text-white/60 mb-2 font-medium tracking-wide">Target</div>
+                <Card 
+                  className="border-white/[0.08] backdrop-blur-2xl rounded-[20px] overflow-hidden shadow-lg"
+                  style={{
+                    background: "linear-gradient(135deg, rgba(255,255,255,0.06) 0%, rgba(255,255,255,0.02) 100%)",
+                  }}
+                >
+                  <CardContent className="p-5 relative">
+                    <div className="text-xs text-white/50 mb-2 font-medium tracking-wide">Target</div>
                     <div className="text-2xl font-bold tracking-tight text-white">{selectedKPI?.target}</div>
-                    <div className="absolute -right-5 -top-5 h-20 w-20 rounded-full bg-emerald-500/10 blur-2xl" />
+                    <div className="absolute -right-8 -top-8 h-32 w-32 rounded-full bg-emerald-500/[0.08] blur-[50px] pointer-events-none" />
                   </CardContent>
                 </Card>
-                <Card className="border border-white/10 bg-black/40 backdrop-blur-xl rounded-2xl overflow-hidden">
-                  <CardContent className="p-4 relative">
-                    <div className="text-xs text-white/60 mb-2 font-medium tracking-wide">Variance</div>
+                <Card 
+                  className="border-white/[0.08] backdrop-blur-2xl rounded-[20px] overflow-hidden shadow-lg"
+                  style={{
+                    background: "linear-gradient(135deg, rgba(255,255,255,0.06) 0%, rgba(255,255,255,0.02) 100%)",
+                  }}
+                >
+                  <CardContent className="p-5 relative">
+                    <div className="text-xs text-white/50 mb-2 font-medium tracking-wide">Variance</div>
                     <div className="text-base font-semibold text-red-400">{selectedKPI?.variance}</div>
-                    <div className="absolute -right-5 -top-5 h-20 w-20 rounded-full bg-red-500/10 blur-2xl" />
+                    <div className="absolute -right-8 -top-8 h-32 w-32 rounded-full bg-red-500/[0.08] blur-[50px] pointer-events-none" />
                   </CardContent>
                 </Card>
               </div>
 
-              <Separator className="bg-white/10" />
+              <Separator className="bg-white/[0.08]" />
 
               <div>
-                <div className="flex items-center justify-between mb-4">
-                  <h3 className="text-lg font-semibold tracking-tight text-white flex items-center gap-2">
-                    <DollarSign className="h-5 w-5 text-blue-400" />
+                <div className="flex items-center justify-between mb-5">
+                  <h3 className="text-lg font-semibold tracking-tight text-white flex items-center gap-3">
+                    <div className="flex h-9 w-9 items-center justify-center rounded-[12px] bg-blue-500/10 backdrop-blur-xl border border-blue-500/20">
+                      <DollarSign className="h-5 w-5 text-blue-400" />
+                    </div>
                     Cost Breakdown
                   </h3>
-                  <Button variant="outline" size="sm" className="gap-2 rounded-full border-white/20 bg-white/5 hover:bg-white/10 transition-all duration-300">
+                  <Button 
+                    variant="outline" 
+                    size="sm" 
+                    className="gap-2 rounded-full border-white/[0.12] bg-white/[0.06] hover:bg-white/[0.12] hover:border-white/20 transition-all duration-500 backdrop-blur-xl"
+                  >
                     <Shield className="h-4 w-4" />
                     View All Proof
                   </Button>
@@ -1006,14 +1152,17 @@ export function WarRoomPreview() {
                   {selectedKPI?.breakdown.map((item, idx) => (
                     <Card
                       key={idx}
-                      className="cursor-pointer border border-white/10 bg-black/40 backdrop-blur-xl rounded-2xl hover:bg-white/5 hover:border-white/20 transition-all duration-300 group overflow-hidden"
+                      className="cursor-pointer border-white/[0.08] backdrop-blur-2xl rounded-[20px] hover:border-white/[0.12] transition-all duration-500 group overflow-hidden shadow-lg"
+                      style={{
+                        background: "linear-gradient(135deg, rgba(255,255,255,0.05) 0%, rgba(255,255,255,0.02) 100%)",
+                      }}
                     >
-                      <CardContent className="p-4 relative">
+                      <CardContent className="p-5 relative">
                         <div className="flex items-center justify-between">
                           <div className="flex items-center gap-3">
                             <div className="text-sm font-medium text-white">{item.label}</div>
-                            <Badge variant="secondary" className="rounded-full px-2 py-0.5 text-xs">{item.percent}</Badge>
-                            <div className="flex items-center gap-1 text-xs text-blue-400 opacity-0 group-hover:opacity-100 transition-opacity">
+                            <Badge variant="secondary" className="rounded-full px-3 py-1 text-xs backdrop-blur-xl">{item.percent}</Badge>
+                            <div className="flex items-center gap-1.5 text-xs text-blue-400 opacity-0 group-hover:opacity-100 transition-opacity duration-500">
                               <Receipt className="h-3 w-3" />
                               <span>{item.receiptsCount}</span>
                             </div>
@@ -1023,29 +1172,31 @@ export function WarRoomPreview() {
                             <Button 
                               variant="ghost" 
                               size="sm" 
-                              className="opacity-0 group-hover:opacity-100 transition-opacity text-blue-400 hover:bg-blue-500/10 rounded-full"
+                              className="opacity-0 group-hover:opacity-100 transition-all duration-500 text-blue-400 hover:bg-blue-500/10 rounded-full"
                               onClick={() => handleShowReceipts(`Receipts for ${item.label}`)}
                             >
                               <Receipt className="h-4 w-4 mr-1" />
                               Receipts
                             </Button>
-                            <Button variant="ghost" size="sm" className="text-blue-400 hover:bg-blue-500/10 rounded-full transition-all duration-300">
+                            <Button variant="ghost" size="sm" className="text-blue-400 hover:bg-blue-500/10 rounded-full transition-all duration-500">
                               Drill Down <ChevronRight className="ml-1 h-3 w-3" />
                             </Button>
                           </div>
                         </div>
-                        <div className="absolute -right-5 -top-5 h-20 w-20 rounded-full bg-purple-500/5 blur-2xl transition-all duration-500 group-hover:bg-purple-500/10" />
+                        <div className="absolute -right-8 -top-8 h-32 w-32 rounded-full bg-purple-500/[0.04] blur-[50px] transition-all duration-700 group-hover:bg-purple-500/[0.08] pointer-events-none" />
                       </CardContent>
                     </Card>
                   ))}
                 </div>
               </div>
 
-              <Separator className="bg-white/10" />
+              <Separator className="bg-white/[0.08]" />
 
               <div>
-                <h3 className="text-lg font-semibold tracking-tight text-white mb-4 flex items-center gap-2">
-                  <Scale className="h-5 w-5 text-blue-400" />
+                <h3 className="text-lg font-semibold tracking-tight text-white mb-5 flex items-center gap-3">
+                  <div className="flex h-9 w-9 items-center justify-center rounded-[12px] bg-purple-500/10 backdrop-blur-xl border border-purple-500/20">
+                    <Scale className="h-5 w-5 text-purple-400" />
+                  </div>
                   Related Regulations
                 </h3>
                 <div className="space-y-3">
@@ -1056,7 +1207,10 @@ export function WarRoomPreview() {
                     return (
                       <Card
                         key={idx}
-                        className="cursor-pointer border border-white/10 bg-black/40 backdrop-blur-xl rounded-2xl hover:bg-white/5 hover:border-white/20 transition-all duration-300 group overflow-hidden"
+                        className="cursor-pointer border-white/[0.08] backdrop-blur-2xl rounded-[20px] hover:border-white/[0.12] transition-all duration-500 group overflow-hidden shadow-lg"
+                        style={{
+                          background: "linear-gradient(135deg, rgba(255,255,255,0.05) 0%, rgba(255,255,255,0.02) 100%)",
+                        }}
                         onClick={() => {
                           if (relatedReg) {
                             setSelectedKPI(null);
@@ -1064,31 +1218,33 @@ export function WarRoomPreview() {
                           }
                         }}
                       >
-                        <CardContent className="p-4 relative">
+                        <CardContent className="p-5 relative">
                           <div className="flex items-center justify-between">
-                            <div className="flex items-center gap-2">
-                              <Scale className="h-4 w-4 text-blue-400" />
+                            <div className="flex items-center gap-3">
+                              <div className="flex h-8 w-8 items-center justify-center rounded-[10px] bg-blue-500/10 backdrop-blur-xl border border-blue-500/20">
+                                <Scale className="h-4 w-4 text-blue-400" />
+                              </div>
                               <span className="text-sm text-white font-medium tracking-tight">{regCode}</span>
                             </div>
                             <div className="flex items-center gap-2">
                               <Button 
                                 variant="outline" 
                                 size="sm" 
-                                className="h-8 text-blue-400 border-blue-400/30 bg-blue-500/10 opacity-0 group-hover:opacity-100 transition-all duration-300 rounded-full"
+                                className="h-8 text-blue-400 border-blue-400/30 bg-blue-500/10 opacity-0 group-hover:opacity-100 transition-all duration-500 rounded-full backdrop-blur-xl"
                                 onClick={(e) => {
                                   e.stopPropagation();
                                   handleShowReceipts(`Receipts for ${regCode}`);
                                 }}
                               >
-                                <Receipt className="h-4 w-4 mr-1" />
-                                {relatedReg?.receiptsCount ? `${relatedReg.receiptsCount} Receipts` : "See Receipts"}
+                                <Receipt className="h-3.5 w-3.5 mr-1" />
+                                {relatedReg?.receiptsCount || "See"}
                               </Button>
-                              <Button variant="ghost" size="sm" className="h-8 text-blue-400 hover:bg-blue-500/10 rounded-full transition-all duration-300">
-                                View Regulation <ChevronRight className="ml-1 h-3 w-3" />
+                              <Button variant="ghost" size="sm" className="h-8 text-blue-400 hover:bg-blue-500/10 rounded-full transition-all duration-500">
+                                View <ChevronRight className="ml-1 h-3 w-3" />
                               </Button>
                             </div>
                           </div>
-                          <div className="absolute -right-5 -top-5 h-20 w-20 rounded-full bg-blue-500/5 blur-2xl transition-all duration-500 group-hover:bg-blue-500/10" />
+                          <div className="absolute -right-8 -top-8 h-32 w-32 rounded-full bg-blue-500/[0.04] blur-[50px] transition-all duration-700 group-hover:bg-blue-500/[0.08] pointer-events-none" />
                         </CardContent>
                       </Card>
                     );
@@ -1100,19 +1256,29 @@ export function WarRoomPreview() {
         </DialogContent>
       </Dialog>
 
-      {/* Evidence Detail Dialog */}
+      {/* Evidence Detail Dialog - Premium 3D */}
       <Dialog open={!!selectedEvidence} onOpenChange={() => setSelectedEvidence(null)}>
-        <DialogContent className="max-w-3xl bg-gradient-to-br from-slate-950 via-slate-900 to-slate-950 border border-white/10 backdrop-blur-2xl shadow-2xl">
-          <DialogHeader>
+        <DialogContent 
+          className="max-w-3xl border-white/[0.08] backdrop-blur-3xl shadow-[0_40px_100px_-15px_rgba(0,0,0,0.8),0_0_0_1px_rgba(255,255,255,0.05)_inset]"
+          style={{
+            background: "linear-gradient(135deg, rgba(255,255,255,0.07) 0%, rgba(255,255,255,0.02) 100%)",
+          }}
+        >
+          {/* Glass Overlay */}
+          <div className="absolute inset-0 bg-gradient-to-br from-white/[0.05] via-transparent to-black/20 pointer-events-none" />
+          
+          <DialogHeader className="relative z-10">
             <div className="flex items-center justify-between">
-              <DialogTitle className="text-2xl font-semibold tracking-tight text-white flex items-center gap-3">
-                <FileText className="h-6 w-6 text-blue-400" />
+              <DialogTitle className="text-2xl font-semibold tracking-tight text-white flex items-center gap-4">
+                <div className="flex h-12 w-12 items-center justify-center rounded-[16px] bg-gradient-to-br from-blue-500/20 to-emerald-500/20 backdrop-blur-xl border border-white/10 shadow-xl">
+                  <FileText className="h-6 w-6 text-blue-300" />
+                </div>
                 Evidence Document
               </DialogTitle>
               <Button 
                 variant="outline" 
                 size="sm" 
-                className="gap-2 rounded-full border-white/20 bg-white/5 backdrop-blur-xl hover:bg-white/10 transition-all duration-300"
+                className="gap-2 rounded-[16px] border-white/[0.12] bg-white/[0.06] backdrop-blur-2xl hover:bg-white/[0.12] hover:border-white/20 transition-all duration-500 shadow-lg"
                 onClick={() => handleShowReceipts(selectedEvidence?.description || "")}
               >
                 <Receipt className="h-4 w-4" />
@@ -1121,63 +1287,89 @@ export function WarRoomPreview() {
             </div>
           </DialogHeader>
 
-          <div className="space-y-6">
+          <div className="space-y-7 relative z-10">
             <div>
-              <Badge variant="outline" className="text-blue-400 border-blue-400/50 bg-blue-500/10 mb-3 rounded-full px-3 py-1">
+              <Badge variant="outline" className="text-blue-400 border-blue-400/40 bg-blue-500/10 mb-4 rounded-full px-4 py-1.5 backdrop-blur-xl shadow-lg">
                 {selectedEvidence?.type}
               </Badge>
-              <h3 className="text-xl font-semibold tracking-tight text-white mb-4">{selectedEvidence?.description}</h3>
+              <h3 className="text-xl font-semibold tracking-tight text-white mb-5">{selectedEvidence?.description}</h3>
               <div className="grid grid-cols-2 gap-4">
-                <Card className="border border-white/10 bg-black/40 backdrop-blur-xl rounded-2xl overflow-hidden">
-                  <CardContent className="p-4 relative">
-                    <div className="text-xs text-white/60 mb-1 font-medium tracking-wide">Date</div>
+                <Card 
+                  className="border-white/[0.08] backdrop-blur-2xl rounded-[20px] overflow-hidden shadow-lg"
+                  style={{
+                    background: "linear-gradient(135deg, rgba(255,255,255,0.06) 0%, rgba(255,255,255,0.02) 100%)",
+                  }}
+                >
+                  <CardContent className="p-5 relative">
+                    <div className="text-xs text-white/50 mb-1.5 font-medium tracking-wide">Date</div>
                     <div className="text-sm text-white">{selectedEvidence?.date}</div>
-                    <div className="absolute -right-5 -top-5 h-16 w-16 rounded-full bg-blue-500/10 blur-xl" />
+                    <div className="absolute -right-8 -top-8 h-24 w-24 rounded-full bg-blue-500/[0.08] blur-[40px] pointer-events-none" />
                   </CardContent>
                 </Card>
-                <Card className="border border-white/10 bg-black/40 backdrop-blur-xl rounded-2xl overflow-hidden">
-                  <CardContent className="p-4 relative">
-                    <div className="text-xs text-white/60 mb-1 font-medium tracking-wide">Source</div>
+                <Card 
+                  className="border-white/[0.08] backdrop-blur-2xl rounded-[20px] overflow-hidden shadow-lg"
+                  style={{
+                    background: "linear-gradient(135deg, rgba(255,255,255,0.06) 0%, rgba(255,255,255,0.02) 100%)",
+                  }}
+                >
+                  <CardContent className="p-5 relative">
+                    <div className="text-xs text-white/50 mb-1.5 font-medium tracking-wide">Source</div>
                     <div className="text-sm text-white">{selectedEvidence?.source}</div>
-                    <div className="absolute -right-5 -top-5 h-16 w-16 rounded-full bg-purple-500/10 blur-xl" />
+                    <div className="absolute -right-8 -top-8 h-24 w-24 rounded-full bg-purple-500/[0.08] blur-[40px] pointer-events-none" />
                   </CardContent>
                 </Card>
               </div>
             </div>
 
-            <Separator className="bg-white/10" />
+            <Separator className="bg-white/[0.08]" />
 
             <div>
               <h3 className="text-lg font-semibold tracking-tight text-white mb-4">Document Actions</h3>
               <div className="grid gap-3">
-                <Button variant="outline" className="justify-start rounded-xl border-white/10 bg-white/5 hover:bg-white/10 transition-all duration-300">
-                  <FileText className="mr-2 h-4 w-4" />
+                <Button 
+                  variant="outline" 
+                  className="justify-start rounded-[16px] border-white/[0.10] bg-white/[0.04] hover:bg-white/[0.08] hover:border-white/[0.15] transition-all duration-500 backdrop-blur-xl"
+                >
+                  <FileText className="mr-3 h-4 w-4" />
                   View Full Document
                 </Button>
                 <Button 
                   variant="outline" 
-                  className="justify-start rounded-xl border-white/10 bg-white/5 hover:bg-white/10 transition-all duration-300"
+                  className="justify-start rounded-[16px] border-white/[0.10] bg-white/[0.04] hover:bg-white/[0.08] hover:border-white/[0.15] transition-all duration-500 backdrop-blur-xl"
                   onClick={() => handleShowReceipts(selectedEvidence?.description || "")}
                 >
-                  <Receipt className="mr-2 h-4 w-4" />
+                  <Receipt className="mr-3 h-4 w-4" />
                   View All {selectedEvidence?.receiptsCount} Receipts
                 </Button>
-                <Button variant="outline" className="justify-start rounded-xl border-white/10 bg-white/5 hover:bg-white/10 transition-all duration-300">
-                  <ExternalLink className="mr-2 h-4 w-4" />
+                <Button 
+                  variant="outline" 
+                  className="justify-start rounded-[16px] border-white/[0.10] bg-white/[0.04] hover:bg-white/[0.08] hover:border-white/[0.15] transition-all duration-500 backdrop-blur-xl"
+                >
+                  <ExternalLink className="mr-3 h-4 w-4" />
                   Open in External System
                 </Button>
-                <Button variant="outline" className="justify-start rounded-xl border-white/10 bg-white/5 hover:bg-white/10 transition-all duration-300">
-                  <Users className="mr-2 h-4 w-4" />
+                <Button 
+                  variant="outline" 
+                  className="justify-start rounded-[16px] border-white/[0.10] bg-white/[0.04] hover:bg-white/[0.08] hover:border-white/[0.15] transition-all duration-500 backdrop-blur-xl"
+                >
+                  <Users className="mr-3 h-4 w-4" />
                   Share with Team
                 </Button>
               </div>
             </div>
 
             {selectedEvidence?.verified && (
-              <Card className="border border-emerald-500/30 bg-emerald-500/10 backdrop-blur-xl rounded-2xl overflow-hidden">
-                <CardContent className="p-4 relative">
-                  <div className="flex items-center gap-2">
-                    <CheckCircle className="h-5 w-5 text-emerald-400" />
+              <Card 
+                className="border-emerald-500/30 backdrop-blur-2xl rounded-[20px] overflow-hidden shadow-lg"
+                style={{
+                  background: "linear-gradient(135deg, rgba(16, 185, 129, 0.10) 0%, rgba(16, 185, 129, 0.05) 100%)",
+                }}
+              >
+                <CardContent className="p-5 relative">
+                  <div className="flex items-center gap-3">
+                    <div className="flex h-10 w-10 items-center justify-center rounded-[12px] bg-emerald-500/20 backdrop-blur-xl border border-emerald-500/30">
+                      <CheckCircle className="h-5 w-5 text-emerald-400" />
+                    </div>
                     <div>
                       <div className="text-sm font-semibold text-emerald-400">Verified Evidence</div>
                       <div className="text-xs text-white/70 mt-1 leading-relaxed">
@@ -1185,7 +1377,7 @@ export function WarRoomPreview() {
                       </div>
                     </div>
                   </div>
-                  <div className="absolute -right-5 -top-5 h-24 w-24 rounded-full bg-emerald-500/20 blur-2xl" />
+                  <div className="absolute -right-10 -top-10 h-40 w-40 rounded-full bg-emerald-500/[0.15] blur-[60px] pointer-events-none" />
                 </CardContent>
               </Card>
             )}
@@ -1193,28 +1385,44 @@ export function WarRoomPreview() {
         </DialogContent>
       </Dialog>
 
-      {/* Receipts Modal */}
+      {/* Receipts Modal - Premium 3D */}
       <Dialog open={showReceipts} onOpenChange={setShowReceipts}>
-        <DialogContent className="max-w-6xl max-h-[90vh] bg-gradient-to-br from-slate-950 via-slate-900 to-slate-950 border border-white/10 backdrop-blur-2xl shadow-2xl">
-          <DialogHeader>
-            <DialogTitle className="text-2xl font-semibold tracking-tight text-white flex items-center gap-3">
-              <Receipt className="h-6 w-6 text-blue-400" />
+        <DialogContent 
+          className="max-w-6xl max-h-[90vh] border-white/[0.08] backdrop-blur-3xl shadow-[0_40px_100px_-15px_rgba(0,0,0,0.8),0_0_0_1px_rgba(255,255,255,0.05)_inset]"
+          style={{
+            background: "linear-gradient(135deg, rgba(255,255,255,0.07) 0%, rgba(255,255,255,0.02) 100%)",
+          }}
+        >
+          {/* Glass Overlay */}
+          <div className="absolute inset-0 bg-gradient-to-br from-white/[0.05] via-transparent to-black/20 pointer-events-none" />
+          
+          <DialogHeader className="relative z-10">
+            <DialogTitle className="text-2xl font-semibold tracking-tight text-white flex items-center gap-4">
+              <div className="flex h-12 w-12 items-center justify-center rounded-[16px] bg-gradient-to-br from-blue-500/20 to-purple-500/20 backdrop-blur-xl border border-white/10 shadow-xl">
+                <Receipt className="h-6 w-6 text-blue-300" />
+              </div>
               Receipt Documents - {receiptsContext}
             </DialogTitle>
           </DialogHeader>
 
-          <ScrollArea className="h-[700px]">
+          <ScrollArea className="h-[700px] relative z-10">
             <div className="space-y-4">
               {mockReceipts.map((receipt) => (
                 <Card
                   key={receipt.id}
-                  className="border border-white/10 bg-black/40 backdrop-blur-xl rounded-3xl hover:bg-white/5 hover:border-white/20 transition-all duration-500 group cursor-pointer overflow-hidden"
+                  className="border-white/[0.08] backdrop-blur-2xl rounded-[24px] hover:border-white/[0.12] transition-all duration-700 group cursor-pointer overflow-hidden shadow-lg hover:shadow-[0_20px_60px_-15px_rgba(255,255,255,0.1)]"
+                  style={{
+                    background: "linear-gradient(135deg, rgba(255,255,255,0.06) 0%, rgba(255,255,255,0.02) 100%)",
+                  }}
                 >
-                  <CardContent className="p-6 relative">
-                    <div className="flex items-start justify-between mb-4">
+                  <CardContent className="p-7 relative">
+                    {/* Glass Overlay */}
+                    <div className="absolute inset-0 bg-gradient-to-br from-white/[0.04] via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none rounded-[24px]" />
+                    
+                    <div className="flex items-start justify-between mb-5 relative z-10">
                       <div className="flex-1">
-                        <div className="flex items-center gap-3 mb-2">
-                          <h3 className="text-lg font-semibold tracking-tight text-white group-hover:text-blue-100 transition-colors">{receipt.title}</h3>
+                        <div className="flex items-center gap-3 mb-3">
+                          <h3 className="text-lg font-semibold tracking-tight text-white group-hover:text-blue-100 transition-colors duration-500">{receipt.title}</h3>
                           <Badge
                             variant={
                               receipt.status === "verified"
@@ -1223,38 +1431,38 @@ export function WarRoomPreview() {
                                 ? "destructive"
                                 : "secondary"
                             }
-                            className={`rounded-full px-3 py-1 ${
+                            className={`rounded-full px-3 py-1.5 backdrop-blur-xl shadow-lg ${
                               receipt.status === "verified"
-                                ? "bg-emerald-500/20 text-emerald-400 border-emerald-400/50"
+                                ? "bg-emerald-500/20 text-emerald-400 border-emerald-400/40"
                                 : ""
                             }`}
                           >
-                            {receipt.status === "verified" && <CheckCircle className="mr-1 h-3 w-3" />}
-                            {receipt.status === "flagged" && <AlertTriangle className="mr-1 h-3 w-3" />}
-                            {receipt.status === "pending" && <Clock className="mr-1 h-3 w-3" />}
+                            {receipt.status === "verified" && <CheckCircle className="mr-1.5 h-3.5 w-3.5" />}
+                            {receipt.status === "flagged" && <AlertTriangle className="mr-1.5 h-3.5 w-3.5" />}
+                            {receipt.status === "pending" && <Clock className="mr-1.5 h-3.5 w-3.5" />}
                             {receipt.status.charAt(0).toUpperCase() + receipt.status.slice(1)}
                           </Badge>
                         </div>
-                        <p className="text-sm text-white/70 mb-3 leading-relaxed">{receipt.description}</p>
-                        <div className="grid grid-cols-4 gap-4">
+                        <p className="text-sm text-white/70 mb-4 leading-relaxed">{receipt.description}</p>
+                        <div className="grid grid-cols-4 gap-5">
                           <div>
-                            <div className="text-xs text-white/50 mb-1 font-medium tracking-wide">Amount</div>
+                            <div className="text-xs text-white/50 mb-1.5 font-medium tracking-wide">Amount</div>
                             <div className="text-sm font-semibold text-white">{receipt.amount}</div>
                           </div>
                           <div>
-                            <div className="text-xs text-white/50 mb-1 font-medium tracking-wide">Date</div>
+                            <div className="text-xs text-white/50 mb-1.5 font-medium tracking-wide">Date</div>
                             <div className="text-sm text-white">{receipt.date}</div>
                           </div>
                           <div>
-                            <div className="text-xs text-white/50 mb-1 font-medium tracking-wide">Vendor</div>
-                            <div className="text-sm text-white flex items-center gap-1">
-                              <Building2 className="h-3 w-3 text-blue-400" />
+                            <div className="text-xs text-white/50 mb-1.5 font-medium tracking-wide">Vendor</div>
+                            <div className="text-sm text-white flex items-center gap-1.5">
+                              <Building2 className="h-3.5 w-3.5 text-blue-400" />
                               {receipt.vendor}
                             </div>
                           </div>
                           <div>
-                            <div className="text-xs text-white/50 mb-1 font-medium tracking-wide">Category</div>
-                            <Badge variant="outline" className="text-blue-400 border-blue-400/50 bg-blue-500/10 rounded-full px-2 py-0.5 text-xs">
+                            <div className="text-xs text-white/50 mb-1.5 font-medium tracking-wide">Category</div>
+                            <Badge variant="outline" className="text-blue-400 border-blue-400/40 bg-blue-500/10 rounded-full px-3 py-1 text-xs backdrop-blur-xl">
                               {receipt.category}
                             </Badge>
                           </div>
@@ -1262,30 +1470,44 @@ export function WarRoomPreview() {
                       </div>
                     </div>
 
-                    <Separator className="bg-white/10 mb-4" />
+                    <Separator className="bg-white/[0.08] mb-5" />
 
-                    <div className="flex items-center justify-between">
+                    <div className="flex items-center justify-between relative z-10">
                       <div className="flex items-center gap-2 text-xs text-white/50">
-                        <FileText className="h-3 w-3" />
+                        <FileText className="h-3.5 w-3.5" />
                         <span>{receipt.attachments} attachments</span>
                       </div>
-                      <div className="flex gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
-                        <Button variant="outline" size="sm" className="rounded-full border-white/20 bg-white/5 hover:bg-white/10 transition-all duration-300">
-                          <Eye className="h-4 w-4 mr-2" />
+                      <div className="flex gap-2 opacity-0 group-hover:opacity-100 transition-opacity duration-500">
+                        <Button 
+                          variant="outline" 
+                          size="sm" 
+                          className="rounded-full border-white/[0.12] bg-white/[0.05] hover:bg-white/[0.10] hover:border-white/20 transition-all duration-500 backdrop-blur-xl"
+                        >
+                          <Eye className="h-3.5 w-3.5 mr-1.5" />
                           View
                         </Button>
-                        <Button variant="outline" size="sm" className="rounded-full border-white/20 bg-white/5 hover:bg-white/10 transition-all duration-300">
-                          <Download className="h-4 w-4 mr-2" />
+                        <Button 
+                          variant="outline" 
+                          size="sm" 
+                          className="rounded-full border-white/[0.12] bg-white/[0.05] hover:bg-white/[0.10] hover:border-white/20 transition-all duration-500 backdrop-blur-xl"
+                        >
+                          <Download className="h-3.5 w-3.5 mr-1.5" />
                           Download
                         </Button>
-                        <Button variant="outline" size="sm" className="rounded-full border-white/20 bg-white/5 hover:bg-white/10 transition-all duration-300">
-                          <ExternalLink className="h-4 w-4 mr-2" />
+                        <Button 
+                          variant="outline" 
+                          size="sm" 
+                          className="rounded-full border-white/[0.12] bg-white/[0.05] hover:bg-white/[0.10] hover:border-white/20 transition-all duration-500 backdrop-blur-xl"
+                        >
+                          <ExternalLink className="h-3.5 w-3.5 mr-1.5" />
                           Open
                         </Button>
                       </div>
                     </div>
-                    <div className="absolute -right-10 -top-10 h-32 w-32 rounded-full bg-blue-500/5 blur-3xl transition-all duration-700 group-hover:bg-blue-500/10" />
-                    <div className="absolute -bottom-10 -left-10 h-32 w-32 rounded-full bg-purple-500/5 blur-3xl transition-all duration-700 group-hover:bg-purple-500/10" />
+                    
+                    {/* Multi-layer glow */}
+                    <div className="absolute -right-16 -top-16 h-48 w-48 rounded-full bg-blue-500/[0.04] blur-[70px] transition-all duration-1000 group-hover:bg-blue-500/[0.08] pointer-events-none" />
+                    <div className="absolute -bottom-16 -left-16 h-48 w-48 rounded-full bg-purple-500/[0.04] blur-[70px] transition-all duration-1000 group-hover:bg-purple-500/[0.08] pointer-events-none" />
                   </CardContent>
                 </Card>
               ))}

@@ -1,6 +1,6 @@
 import Head from "next/head";
 import Link from "next/link";
-import { Building2, LineChart, Shield, Users, Receipt, TrendingDown } from "lucide-react";
+import { Building2, LineChart, Shield, Users, Receipt, TrendingDown, ArrowRight } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
@@ -11,7 +11,7 @@ export default function KincaidIQHome() {
   return (
     <>
       <Head>
-        <title>Kincaid IQ — Fiduciary Grade Transparency Engine</title>
+        <title>Kincaid IQ AI — Fiduciary Grade Transparency Engine</title>
         <meta
           name="description"
           content="Shows EBITDA drag with receipts. Transform employer health plans with audit-grade analytics, defensible metrics, and cryptographic evidence trails."
@@ -25,13 +25,17 @@ export default function KincaidIQHome() {
             <div className="pointer-events-none absolute -top-40 left-1/2 h-[520px] w-[520px] -translate-x-1/2 rounded-full bg-white/10 blur-[90px]" />
             <div className="mx-auto max-w-7xl px-6 py-16 md:py-24">
               <div className="max-w-3xl">
-                <div className="inline-flex items-center gap-2 rounded-full border border-violet-400/30 bg-violet-500/10 px-3 py-1 backdrop-blur-xl">
+                <Link 
+                  href="/war-room"
+                  className="inline-flex items-center gap-2 rounded-full border border-violet-400/30 bg-violet-500/10 px-3 py-1 backdrop-blur-xl transition-all duration-300 hover:scale-105 hover:border-violet-400/50 hover:bg-violet-500/20"
+                >
                   <Receipt className="h-3.5 w-3.5 text-violet-300" />
                   <span className="text-xs text-violet-200">Fiduciary Grade Transparency Engine</span>
-                </div>
+                  <ArrowRight className="h-3 w-3 text-violet-300" />
+                </Link>
 
                 <h1 className="mt-4 text-4xl font-semibold tracking-tight md:text-6xl">
-                  Kincaid IQ
+                  Kincaid IQ AI
                 </h1>
                 <div className="mt-2 text-lg font-medium text-white/70">Shows EBITDA Drag With Receipts</div>
 
@@ -41,13 +45,13 @@ export default function KincaidIQHome() {
                 </p>
 
                 <div className="mt-8 flex flex-col gap-3 sm:flex-row">
-                  <Button asChild className="h-11 rounded-2xl px-6">
+                  <Button asChild className="h-11 rounded-2xl px-6 apple-hover-lift">
                     <Link href="/contact">Request Demo</Link>
                   </Button>
                   <Button
                     asChild
                     variant="outline"
-                    className="h-11 rounded-2xl border-white/15 bg-transparent px-6"
+                    className="h-11 rounded-2xl border-white/15 bg-transparent px-6 apple-hover-lift"
                   >
                     <Link href="#war-room">Live Platform Preview</Link>
                   </Button>
@@ -58,16 +62,19 @@ export default function KincaidIQHome() {
                     icon={Receipt}
                     title="Evidence-Backed"
                     body="Every metric backed by verifiable claims data, contract terms, and cryptographic signatures. No black boxes."
+                    href="/war-room"
                   />
                   <ValueCard
                     icon={TrendingDown}
                     title="EBITDA Attribution"
                     body="Direct financial impact measurement with traceable inputs showing cost drag, leakage, and verified savings."
+                    href="/verified-savings-ledger"
                   />
                   <ValueCard
                     icon={Shield}
                     title="Fiduciary Grade"
                     body="Board-ready reporting with audit trails, regulatory compliance, and defensible methodologies."
+                    href="/security-governance"
                   />
                 </div>
               </div>
@@ -79,7 +86,12 @@ export default function KincaidIQHome() {
             <div className="mx-auto max-w-7xl px-6 py-16 md:py-20">
               <div className="flex items-end justify-between gap-6">
                 <div>
-                  <div className="text-xs text-white/60">Live Platform Preview</div>
+                  <Link 
+                    href="/war-room"
+                    className="inline-block text-xs text-white/60 transition-colors hover:text-white/90"
+                  >
+                    Live Platform Preview
+                  </Link>
                   <h2 className="mt-3 text-2xl font-semibold md:text-3xl">The Benefits War Room</h2>
                   <p className="mt-3 max-w-3xl text-white/70">
                     A transparency engine that exposes financial leakage, incentive misalignment, and structural blind
@@ -88,8 +100,11 @@ export default function KincaidIQHome() {
                 </div>
 
                 <div className="hidden md:block">
-                  <Button asChild className="rounded-2xl">
-                    <Link href="/war-room">Enter the Kincaid IQ War Room →</Link>
+                  <Button asChild className="rounded-2xl apple-hover-lift group">
+                    <Link href="/war-room" className="flex items-center gap-2">
+                      Enter the Kincaid IQ War Room
+                      <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
+                    </Link>
                   </Button>
                 </div>
               </div>
@@ -99,12 +114,19 @@ export default function KincaidIQHome() {
               </div>
 
               <p className="mt-4 text-sm text-white/60">
-                Headline tiles only. Full app adds drill-downs, evidence trails, and exportable proof packs with receipts.
+                Headline tiles only.{" "}
+                <Link href="/war-room" className="text-white/90 underline decoration-white/30 underline-offset-2 transition-colors hover:text-white hover:decoration-white/60">
+                  Full app
+                </Link>
+                {" "}adds drill-downs, evidence trails, and exportable proof packs with receipts.
               </p>
 
               <div className="mt-6 md:hidden">
-                <Button asChild className="w-full rounded-2xl">
-                  <Link href="/war-room">Enter the Kincaid IQ War Room →</Link>
+                <Button asChild className="w-full rounded-2xl apple-hover-lift group">
+                  <Link href="/war-room" className="flex items-center justify-center gap-2">
+                    Enter the Kincaid IQ War Room
+                    <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
+                  </Link>
                 </Button>
               </div>
             </div>
@@ -116,11 +138,26 @@ export default function KincaidIQHome() {
               <h2 className="text-2xl font-semibold md:text-3xl">What Kincaid IQ Does</h2>
 
               <div className="mt-8 grid gap-4 md:grid-cols-2">
-                <BulletCard text="Converts PBM + GLP-1 spend into measurable EBITDA impact with receipts" />
-                <BulletCard text="Flags leakage and outliers at drug/category level with cryptographic evidence" />
-                <BulletCard text="Benchmarks vendor economics against defensible references with audit trails" />
-                <BulletCard text="Quantifies decision levers with verifiable cost attribution and traceable inputs" />
-                <BulletCard text="Produces fiduciary-grade reporting with blockchain-backed proof of outcomes" />
+                <BulletCard 
+                  text="Converts PBM + GLP-1 spend into measurable EBITDA impact with receipts" 
+                  href="/war-room/demo/ebitda-impact"
+                />
+                <BulletCard 
+                  text="Flags leakage and outliers at drug/category level with cryptographic evidence" 
+                  href="/war-room/demo/contract-leakage"
+                />
+                <BulletCard 
+                  text="Benchmarks vendor economics against defensible references with audit trails" 
+                  href="/war-room/demo/vendor-performance"
+                />
+                <BulletCard 
+                  text="Quantifies decision levers with verifiable cost attribution and traceable inputs" 
+                  href="/verified-savings-ledger"
+                />
+                <BulletCard 
+                  text="Produces fiduciary-grade reporting with blockchain-backed proof of outcomes" 
+                  href="/evidence-receipts"
+                />
               </div>
             </div>
           </section>
@@ -135,21 +172,44 @@ export default function KincaidIQHome() {
                   n="01"
                   title="Ingest"
                   body="Pharmacy + eligibility (minimum), then medical/contract/renewal inputs as available"
+                  href="/marketplace"
                 />
-                <StepCard n="02" title="Normalize" body="Clean, map, reconcile categories with evidence trails" />
-                <StepCard n="03" title="Score" body="Compute hero KPIs with cryptographic receipts and audit trails" />
-                <StepCard n="04" title="Act" body="Deliver prioritized action path with EBITDA attribution + reporting" />
+                <StepCard 
+                  n="02" 
+                  title="Normalize" 
+                  body="Clean, map, reconcile categories with evidence trails"
+                  href="/platform"
+                />
+                <StepCard 
+                  n="03" 
+                  title="Score" 
+                  body="Compute hero KPIs with cryptographic receipts and audit trails"
+                  href="/war-room"
+                />
+                <StepCard 
+                  n="04" 
+                  title="Act" 
+                  body="Deliver prioritized action path with EBITDA attribution + reporting"
+                  href="/verified-savings-ledger"
+                />
               </div>
 
-              <div className="mt-10 rounded-3xl border border-white/10 bg-white/5 p-6 md:p-8">
-                <div className="text-lg font-semibold">Dashboards show numbers.</div>
-                <div className="mt-1 text-lg font-semibold">Kincaid IQ shows receipts.</div>
-                <p className="mt-4 max-w-4xl text-white/70">
-                  Every KPI is tied back to the underlying inputs—claims, contracts, and defined methodologies—with
-                  cryptographic signatures and immutable audit trails so leadership can defend decisions and challenge
-                  vendor narratives with confidence.
-                </p>
-              </div>
+              <Link href="/platform-why">
+                <div className="mt-10 rounded-3xl border border-white/10 bg-white/5 p-6 md:p-8 transition-all duration-300 hover:scale-[1.02] hover:border-white/20 hover:bg-white/10 hover:shadow-2xl hover:shadow-white/5 cursor-pointer group">
+                  <div className="flex items-start justify-between gap-4">
+                    <div>
+                      <div className="text-lg font-semibold">Dashboards show numbers.</div>
+                      <div className="mt-1 text-lg font-semibold">Kincaid IQ shows receipts.</div>
+                      <p className="mt-4 max-w-4xl text-white/70">
+                        Every KPI is tied back to the underlying inputs—claims, contracts, and defined methodologies—with
+                        cryptographic signatures and immutable audit trails so leadership can defend decisions and challenge
+                        vendor narratives with confidence.
+                      </p>
+                    </div>
+                    <ArrowRight className="h-5 w-5 flex-shrink-0 text-white/40 transition-all group-hover:translate-x-1 group-hover:text-white/80" />
+                  </div>
+                </div>
+              </Link>
             </div>
           </section>
 
@@ -159,33 +219,47 @@ export default function KincaidIQHome() {
               <h2 className="text-2xl font-semibold md:text-3xl">Who It's For</h2>
 
               <div className="mt-8 grid gap-6 md:grid-cols-2">
-                <Card className="rounded-3xl border-white/10 bg-white/5">
-                  <CardContent className="p-8">
-                    <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-white/10">
-                      <LineChart className="h-5 w-5" />
-                    </div>
-                    <h3 className="mt-4 text-xl font-semibold">CFOs & Finance Leaders</h3>
-                    <p className="mt-3 text-white/70">
-                      Replace opacity with fiduciary-grade precision. Show EBITDA drag with receipts, defend budgets with
-                      cryptographic evidence, and quantify the impact of every benefits decision with traceable inputs that
-                      survive audit and board scrutiny.
-                    </p>
-                  </CardContent>
-                </Card>
+                <Link href="/capital-markets">
+                  <Card className="rounded-3xl border-white/10 bg-white/5 transition-all duration-300 hover:scale-[1.02] hover:border-white/20 hover:bg-white/10 hover:shadow-2xl hover:shadow-white/5 cursor-pointer group">
+                    <CardContent className="p-8">
+                      <div className="flex items-start justify-between gap-4">
+                        <div>
+                          <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-white/10 transition-all group-hover:bg-white/20">
+                            <LineChart className="h-5 w-5" />
+                          </div>
+                          <h3 className="mt-4 text-xl font-semibold">CFOs & Finance Leaders</h3>
+                          <p className="mt-3 text-white/70">
+                            Replace opacity with fiduciary-grade precision. Show EBITDA drag with receipts, defend budgets with
+                            cryptographic evidence, and quantify the impact of every benefits decision with traceable inputs that
+                            survive audit and board scrutiny.
+                          </p>
+                        </div>
+                        <ArrowRight className="h-5 w-5 flex-shrink-0 text-white/40 transition-all group-hover:translate-x-1 group-hover:text-white/80" />
+                      </div>
+                    </CardContent>
+                  </Card>
+                </Link>
 
-                <Card className="rounded-3xl border-white/10 bg-white/5">
-                  <CardContent className="p-8">
-                    <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-white/10">
-                      <Users className="h-5 w-5" />
-                    </div>
-                    <h3 className="mt-4 text-xl font-semibold">HR & Benefits Leaders</h3>
-                    <p className="mt-3 text-white/70">
-                      Move from reactive reporting to strategic control with evidence receipts. Get real-time visibility into
-                      plan performance, outlier members, and vendor accountability with insights backed by cryptographic
-                      proof—not just dashboards.
-                    </p>
-                  </CardContent>
-                </Card>
+                <Link href="/actuarial-benefits">
+                  <Card className="rounded-3xl border-white/10 bg-white/5 transition-all duration-300 hover:scale-[1.02] hover:border-white/20 hover:bg-white/10 hover:shadow-2xl hover:shadow-white/5 cursor-pointer group">
+                    <CardContent className="p-8">
+                      <div className="flex items-start justify-between gap-4">
+                        <div>
+                          <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-white/10 transition-all group-hover:bg-white/20">
+                            <Users className="h-5 w-5" />
+                          </div>
+                          <h3 className="mt-4 text-xl font-semibold">HR & Benefits Leaders</h3>
+                          <p className="mt-3 text-white/70">
+                            Move from reactive reporting to strategic control with evidence receipts. Get real-time visibility into
+                            plan performance, outlier members, and vendor accountability with insights backed by cryptographic
+                            proof—not just dashboards.
+                          </p>
+                        </div>
+                        <ArrowRight className="h-5 w-5 flex-shrink-0 text-white/40 transition-all group-hover:translate-x-1 group-hover:text-white/80" />
+                      </div>
+                    </CardContent>
+                  </Card>
+                </Link>
               </div>
             </div>
           </section>
@@ -207,25 +281,25 @@ export default function KincaidIQHome() {
                 <CardContent className="p-8 md:p-10">
                   <h3 className="text-2xl font-semibold md:text-3xl">Ready to Show EBITDA Impact With Receipts?</h3>
                   <p className="mt-3 max-w-3xl text-white/70">
-                    Get in touch to see how Kincaid IQ's fiduciary-grade transparency engine can transform your benefits
+                    Get in touch to see how Kincaid IQ AI's fiduciary-grade transparency engine can transform your benefits
                     intelligence.
                   </p>
 
                   <div className="mt-6 flex flex-col gap-3 sm:flex-row">
-                    <Button asChild className="h-11 rounded-2xl px-6">
+                    <Button asChild className="h-11 rounded-2xl px-6 apple-hover-lift">
                       <Link href="/contact">Request Demo</Link>
                     </Button>
                     <Button
                       asChild
                       variant="outline"
-                      className="h-11 rounded-2xl border-white/15 bg-transparent px-6"
+                      className="h-11 rounded-2xl border-white/15 bg-transparent px-6 apple-hover-lift"
                     >
                       <a href="mailto:jer@kincaidrmc.com">jer@kincaidrmc.com</a>
                     </Button>
                     <Button
                       asChild
                       variant="outline"
-                      className="h-11 rounded-2xl border-white/15 bg-transparent px-6"
+                      className="h-11 rounded-2xl border-white/15 bg-transparent px-6 apple-hover-lift"
                     >
                       <a href="tel:12192563331">219.256.3331</a>
                     </Button>
@@ -233,11 +307,11 @@ export default function KincaidIQHome() {
 
                   <p className="mt-6 text-sm text-white/60">
                     Learn more about healthcare governance in our{" "}
-                    <Link href="/blog" className="text-white hover:underline">
+                    <Link href="/company" className="text-white underline decoration-white/30 underline-offset-2 transition-colors hover:text-white hover:decoration-white/60">
                       Healthcare Intelligence
                     </Link>{" "}
                     series, or explore{" "}
-                    <Link href="/capital-library" className="text-white hover:underline">
+                    <Link href="/capital-library" className="text-white underline decoration-white/30 underline-offset-2 transition-colors hover:text-white hover:decoration-white/60">
                       EBITDA defense systems
                     </Link>{" "}
                     across the enterprise.
@@ -252,36 +326,55 @@ export default function KincaidIQHome() {
   );
 }
 
-function ValueCard({ icon: Icon, title, body }: { icon: React.ComponentType<{ className?: string }>; title: string; body: string }) {
+function ValueCard({ 
+  icon: Icon, 
+  title, 
+  body,
+  href 
+}: { 
+  icon: React.ComponentType<{ className?: string }>; 
+  title: string; 
+  body: string;
+  href: string;
+}) {
   return (
-    <Card className="rounded-3xl border-white/10 bg-white/5">
-      <CardContent className="p-6">
-        <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-white/10 mb-3">
-          <Icon className="h-4 w-4" />
-        </div>
-        <h3 className="text-base font-semibold">{title}</h3>
-        <p className="mt-2 text-sm text-white/70">{body}</p>
-      </CardContent>
-    </Card>
+    <Link href={href}>
+      <Card className="h-full rounded-3xl border-white/10 bg-white/5 transition-all duration-300 hover:scale-[1.02] hover:border-white/20 hover:bg-white/10 hover:shadow-2xl hover:shadow-white/5 cursor-pointer group">
+        <CardContent className="p-6 h-full flex flex-col">
+          <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-white/10 mb-3 transition-all group-hover:bg-white/20">
+            <Icon className="h-4 w-4" />
+          </div>
+          <h3 className="text-base font-semibold">{title}</h3>
+          <p className="mt-2 text-sm text-white/70 flex-grow">{body}</p>
+          <ArrowRight className="h-4 w-4 mt-3 text-white/40 transition-all group-hover:translate-x-1 group-hover:text-white/80" />
+        </CardContent>
+      </Card>
+    </Link>
   );
 }
 
-function BulletCard({ text }: { text: string }) {
+function BulletCard({ text, href }: { text: string; href: string }) {
   return (
-    <div className="rounded-3xl border border-white/10 bg-white/5 p-6 text-sm text-white/80">
-      {text}
-    </div>
+    <Link href={href}>
+      <div className="group rounded-3xl border border-white/10 bg-white/5 p-6 text-sm text-white/80 transition-all duration-300 hover:scale-[1.02] hover:border-white/20 hover:bg-white/10 hover:shadow-2xl hover:shadow-white/5 cursor-pointer flex items-center justify-between gap-3">
+        <span>{text}</span>
+        <ArrowRight className="h-4 w-4 flex-shrink-0 text-white/40 transition-all group-hover:translate-x-1 group-hover:text-white/80" />
+      </div>
+    </Link>
   );
 }
 
-function StepCard({ n, title, body }: { n: string; title: string; body: string }) {
+function StepCard({ n, title, body, href }: { n: string; title: string; body: string; href: string }) {
   return (
-    <Card className="rounded-3xl border-white/10 bg-white/5">
-      <CardContent className="p-6">
-        <div className="text-xs text-white/50">{n}</div>
-        <div className="mt-2 text-base font-semibold">{title}</div>
-        <p className="mt-2 text-sm text-white/70">{body}</p>
-      </CardContent>
-    </Card>
+    <Link href={href}>
+      <Card className="h-full rounded-3xl border-white/10 bg-white/5 transition-all duration-300 hover:scale-[1.02] hover:border-white/20 hover:bg-white/10 hover:shadow-2xl hover:shadow-white/5 cursor-pointer group">
+        <CardContent className="p-6 h-full flex flex-col">
+          <div className="text-xs text-white/50">{n}</div>
+          <div className="mt-2 text-base font-semibold">{title}</div>
+          <p className="mt-2 text-sm text-white/70 flex-grow">{body}</p>
+          <ArrowRight className="h-4 w-4 mt-3 text-white/40 transition-all group-hover:translate-x-1 group-hover:text-white/80" />
+        </CardContent>
+      </Card>
+    </Link>
   );
 }

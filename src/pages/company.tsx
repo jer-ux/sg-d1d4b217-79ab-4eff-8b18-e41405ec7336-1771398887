@@ -1,301 +1,563 @@
 import Link from "next/link";
-import { motion } from "framer-motion";
-import { Shield, Sparkles, Database, GitBranch } from "lucide-react";
+import { motion, useMotionValue, useTransform } from "framer-motion";
+import { Linkedin, Sparkles, Target, Zap, TrendingUp, Shield, LucideIcon } from "lucide-react";
+import { SEO } from "@/components/SEO";
+import Nav from "@/components/Nav";
+import Footer from "@/components/Footer";
+import { useState, useEffect, MouseEvent } from "react";
 
-function Block({
-  title,
-  desc,
-  bullets = [],
-  icon,
-  delay = 0,
-}: {
+// Types
+interface BlockData {
+  icon: LucideIcon;
   title: string;
-  desc: string;
-  bullets?: string[];
-  icon?: React.ReactNode;
-  delay?: number;
-}) {
+  content: string;
+  bullets: string[];
+}
+
+// Separate component for 3D Blocks to handle hooks correctly
+function CompanyBlock({ block, index }: { block: BlockData; index: number }) {
+  const blockX = useMotionValue(0);
+  const blockY = useMotionValue(0);
+  const blockRotateX = useTransform(blockY, [-0.5, 0.5], [10, -10]);
+  const blockRotateY = useTransform(blockX, [-0.5, 0.5], [-10, 10]);
+
+  const handleBlockMouseMove = (e: MouseEvent<HTMLDivElement>) => {
+    const rect = e.currentTarget.getBoundingClientRect();
+    const centerX = rect.left + rect.width / 2;
+    const centerY = rect.top + rect.height / 2;
+    blockX.set((e.clientX - centerX) / rect.width);
+    blockY.set((e.clientY - centerY) / rect.height);
+  };
+
+  const handleBlockMouseLeave = () => {
+    blockX.set(0);
+    blockY.set(0);
+  };
+
+  const Icon = block.icon;
+
   return (
     <motion.div
-      initial={{ opacity: 0, y: 60, rotateX: 15 }}
-      animate={{ opacity: 1, y: 0, rotateX: 0 }}
-      transition={{ 
-        duration: 0.8, 
-        delay,
-        ease: [0.16, 1, 0.3, 1]
-      }}
-      whileHover={{ 
-        y: -8,
-        scale: 1.02,
-        transition: { duration: 0.3 }
-      }}
-      className="group relative overflow-hidden rounded-3xl border border-white/10 bg-gradient-to-br from-white/5 via-white/[0.02] to-white/5 p-8 backdrop-blur-xl"
-      style={{
-        transformStyle: "preserve-3d",
-        perspective: "1000px",
-      }}
+      initial={{ opacity: 0, y: 30 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ delay: 0.9 + index * 0.1 }}
+      className="perspective-[1500px]"
     >
-      {/* Animated gradient overlay */}
       <motion.div
-        className="pointer-events-none absolute inset-0 opacity-0 transition-opacity duration-500 group-hover:opacity-100"
         style={{
-          background: "radial-gradient(circle at var(--mouse-x, 50%) var(--mouse-y, 50%), rgba(255,255,255,0.1) 0%, transparent 50%)",
+          rotateX: blockRotateX,
+          rotateY: blockRotateY,
+          transformStyle: "preserve-3d",
         }}
-      />
+        onMouseMove={handleBlockMouseMove}
+        onMouseLeave={handleBlockMouseLeave}
+        whileHover={{ scale: 1.02 }}
+        transition={{ type: "spring", stiffness: 300, damping: 20 }}
+        className="relative h-full group"
+      >
+        {/* Vegas Multi-Layer Glow */}
+        <motion.div
+          className="absolute -inset-1 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-500"
+          style={{
+            background: `linear-gradient(45deg, ${
+              index % 3 === 0 ? '#ec4899, #3b82f6' : index % 3 === 1 ? '#3b82f6, #a855f7' : '#a855f7, #ec4899'
+            })`,
+            filter: "blur(15px)",
+          }}
+        />
 
-      {/* Glowing border effect */}
-      <div className="pointer-events-none absolute inset-0 rounded-3xl opacity-0 transition-opacity duration-500 group-hover:opacity-100">
-        <div className="absolute inset-0 rounded-3xl bg-gradient-to-br from-blue-500/20 via-purple-500/20 to-transparent" />
-      </div>
-
-      <div className="relative" style={{ transform: "translateZ(20px)" }}>
-        {icon && (
+        <div
+          className="relative h-full bg-gradient-to-br from-gray-900/95 via-gray-800/95 to-black/95 backdrop-blur-xl rounded-2xl p-8 border border-pink-500/30 overflow-hidden"
+          style={{ transformStyle: "preserve-3d" }}
+        >
+          {/* Vegas Animated Background */}
           <motion.div
-            className="mb-4 inline-flex h-12 w-12 items-center justify-center rounded-2xl bg-gradient-to-br from-blue-500/20 to-purple-500/20 backdrop-blur-sm"
-            whileHover={{ scale: 1.1, rotate: 5 }}
-            transition={{ duration: 0.3 }}
-          >
-            {icon}
-          </motion.div>
-        )}
-        
-        <div className="text-lg font-semibold text-white/95">{title}</div>
-        <div className="mt-3 text-base leading-relaxed text-white/70">{desc}</div>
-        
-        {bullets.length > 0 && (
-          <ul className="mt-6 space-y-3 text-sm text-white/70">
-            {bullets.map((b, idx) => (
-              <motion.li
-                key={b}
-                initial={{ opacity: 0, x: -20 }}
-                animate={{ opacity: 1, x: 0 }}
-                transition={{ delay: delay + 0.2 + idx * 0.1 }}
-                className="flex gap-3"
-              >
-                <span className="mt-[7px] h-1.5 w-1.5 flex-shrink-0 rounded-full bg-gradient-to-br from-blue-400 to-purple-400" />
-                <span>{b}</span>
-              </motion.li>
-            ))}
-          </ul>
-        )}
-      </div>
+            className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500"
+            style={{
+              background: `radial-gradient(circle at var(--mouse-x, 50%) var(--mouse-y, 50%), ${
+                index % 3 === 0 ? 'rgba(236,72,153,0.1)' : index % 3 === 1 ? 'rgba(59,130,246,0.1)' : 'rgba(168,85,247,0.1)'
+              } 0%, transparent 50%)`,
+            }}
+          />
+
+          <div className="relative space-y-4" style={{ transform: "translateZ(20px)" }}>
+            {/* Icon with Vegas Glow */}
+            <motion.div
+              className="inline-flex"
+              whileHover={{ scale: 1.2, rotate: 360 }}
+              transition={{ type: "spring", stiffness: 200, damping: 15 }}
+            >
+              <div className="relative">
+                <div className={`absolute inset-0 rounded-full blur-xl opacity-75 ${
+                  index % 3 === 0 ? 'bg-pink-500' : index % 3 === 1 ? 'bg-blue-500' : 'bg-purple-500'
+                }`} />
+                <Icon className={`relative w-12 h-12 ${
+                  index % 3 === 0 ? 'text-pink-400' : index % 3 === 1 ? 'text-blue-400' : 'text-purple-400'
+                }`} />
+              </div>
+            </motion.div>
+
+            <h3 className={`text-2xl font-bold bg-gradient-to-r ${
+              index % 3 === 0 ? 'from-pink-400 to-blue-400' : index % 3 === 1 ? 'from-blue-400 to-purple-400' : 'from-purple-400 to-pink-400'
+            } bg-clip-text text-transparent`}>
+              {block.title}
+            </h3>
+
+            <p className="text-gray-300 leading-relaxed">
+              {block.content}
+            </p>
+
+            {/* Vegas-Style Bullet List */}
+            <ul className="space-y-2 pt-4">
+              {block.bullets.map((bullet, bulletIndex) => (
+                <motion.li
+                  key={bulletIndex}
+                  initial={{ opacity: 0, x: -20 }}
+                  whileInView={{ opacity: 1, x: 0 }}
+                  transition={{ delay: bulletIndex * 0.05 }}
+                  viewport={{ once: true }}
+                  className="flex items-start gap-3 group/bullet"
+                >
+                  <motion.div
+                    whileHover={{ scale: 1.3, rotate: 180 }}
+                    className={`mt-1 w-1.5 h-1.5 rounded-full ${
+                      index % 3 === 0 ? 'bg-pink-400' : index % 3 === 1 ? 'bg-blue-400' : 'bg-purple-400'
+                    } shadow-lg ${
+                      index % 3 === 0 ? 'shadow-pink-400/50' : index % 3 === 1 ? 'shadow-blue-400/50' : 'shadow-purple-400/50'
+                    } group-hover/bullet:shadow-xl transition-all duration-300`}
+                  />
+                  <span className="text-gray-300 group-hover/bullet:text-white transition-colors duration-300">
+                    {bullet}
+                  </span>
+                </motion.li>
+              ))}
+            </ul>
+          </div>
+        </div>
+      </motion.div>
     </motion.div>
   );
 }
 
-export default function Company() {
+export default function CompanyPage() {
+  const [mounted, setMounted] = useState(false);
+  const [particles, setParticles] = useState<Array<{ id: number; x: number; y: number; duration: number; delay: number }>>([]);
+
+  useEffect(() => {
+    setMounted(true);
+    const particleArray = Array.from({ length: 50 }, (_, i) => ({
+      id: i,
+      x: Math.random() * 100,
+      y: Math.random() * 100,
+      duration: 15 + Math.random() * 15,
+      delay: Math.random() * 5,
+    }));
+    setParticles(particleArray);
+  }, []);
+
+  const leadershipX = useMotionValue(0);
+  const leadershipY = useMotionValue(0);
+  const leadershipRotateX = useTransform(leadershipY, [-0.5, 0.5], [15, -15]);
+  const leadershipRotateY = useTransform(leadershipX, [-0.5, 0.5], [-15, 15]);
+
+  const handleLeadershipMouseMove = (e: MouseEvent<HTMLDivElement>) => {
+    const rect = e.currentTarget.getBoundingClientRect();
+    const centerX = rect.left + rect.width / 2;
+    const centerY = rect.top + rect.height / 2;
+    leadershipX.set((e.clientX - centerX) / rect.width);
+    leadershipY.set((e.clientY - centerY) / rect.height);
+  };
+
+  const handleLeadershipMouseLeave = () => {
+    leadershipX.set(0);
+    leadershipY.set(0);
+  };
+
+  const blocks: BlockData[] = [
+    {
+      icon: Target,
+      title: "Mission",
+      content: "To empower enterprises with autonomous AI agents that turn messy data into verified business intelligence, enabling confident decision-making at scale.",
+      bullets: [
+        "Transform data chaos into actionable insights",
+        "Eliminate manual verification bottlenecks",
+        "Scale intelligence across the enterprise",
+        "Enable real-time decision confidence"
+      ]
+    },
+    {
+      icon: Sparkles,
+      title: "Vision",
+      content: "A world where every business decision is backed by verified, real-time intelligence—where AI agents autonomously validate data, detect opportunities, and prevent value leakage.",
+      bullets: [
+        "Universal data intelligence platform",
+        "Self-healing data ecosystems",
+        "Predictive opportunity detection",
+        "Zero-latency decision support"
+      ]
+    },
+    {
+      icon: Zap,
+      title: "Innovation",
+      content: "We're pioneering the next generation of enterprise AI: autonomous agents that don't just analyze data—they validate it, cross-reference it, and prove their findings with cryptographic evidence.",
+      bullets: [
+        "Cryptographically signed evidence trails",
+        "Multi-source data validation",
+        "Autonomous arbitrage detection",
+        "Real-time discrepancy resolution"
+      ]
+    },
+    {
+      icon: TrendingUp,
+      title: "Impact",
+      content: "Our platform has helped organizations recover millions in hidden value, prevent compliance violations, and accelerate decision-making from weeks to minutes.",
+      bullets: [
+        "Millions recovered in value leakage",
+        "90% reduction in manual validation",
+        "Real-time compliance monitoring",
+        "10x faster executive decision-making"
+      ]
+    }
+  ];
+
   return (
-    <main className="relative min-h-screen overflow-hidden bg-black text-white">
-      {/* Enhanced ambient background */}
-      <div className="pointer-events-none fixed inset-0 z-0">
-        <motion.div
-          className="absolute -left-1/4 top-0 h-[800px] w-[800px] rounded-full bg-blue-500/10 blur-[120px]"
-          animate={{
-            x: [0, 100, 0],
-            y: [0, 50, 0],
-            scale: [1, 1.2, 1],
-          }}
-          transition={{ duration: 20, repeat: Infinity, ease: "easeInOut" }}
-        />
-        <motion.div
-          className="absolute -right-1/4 top-1/4 h-[800px] w-[800px] rounded-full bg-purple-500/10 blur-[120px]"
-          animate={{
-            x: [0, -100, 0],
-            y: [0, 100, 0],
-            scale: [1, 1.3, 1],
-          }}
-          transition={{ duration: 25, repeat: Infinity, ease: "easeInOut" }}
-        />
-      </div>
-
-      <section className="relative z-10 mx-auto max-w-7xl px-6 py-20">
-        {/* Hero section with 3D effect */}
-        <motion.div
-          initial={{ opacity: 0, y: 40 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
-          className="max-w-3xl"
-        >
-          <motion.div 
-            className="text-xs tracking-[0.3em] text-white/50"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 0.2 }}
-          >
-            COMPANY
-          </motion.div>
+    <>
+      <SEO
+        title="Company - SiriusB iQ | AI Data Sciences Lab"
+        description="Meet the team behind SiriusB iQ's revolutionary AI-powered data validation platform. Learn about our mission, vision, and the future of autonomous enterprise intelligence."
+      />
+      <div className="min-h-screen bg-gradient-to-br from-gray-950 via-gray-900 to-black text-white relative overflow-hidden">
+        {/* Vegas-Style Animated Background */}
+        <div className="fixed inset-0 pointer-events-none">
+          {/* Neon Grid */}
+          <div className="absolute inset-0 bg-[linear-gradient(rgba(236,72,153,0.03)_1px,transparent_1px),linear-gradient(90deg,rgba(236,72,153,0.03)_1px,transparent_1px)] bg-[size:100px_100px] [mask-image:radial-gradient(ellipse_80%_50%_at_50%_0%,#000,transparent)]" />
           
-          <motion.h1 
-            className="mt-6 text-5xl font-semibold leading-tight text-white/95 sm:text-6xl"
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.3, duration: 0.8 }}
-          >
-            Built for fiduciary-grade decisioning.
-          </motion.h1>
-          
-          <motion.p 
-            className="mt-6 text-lg leading-relaxed text-white/70"
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.4, duration: 0.8 }}
-          >
-            Kincaid IQ is an evidence-first operating system. The point isn't dashboards. The point
-            is provability: every KPI is backed by receipts, attachments, and integrity verification.
-          </motion.p>
-
-          <motion.div 
-            className="mt-8 flex flex-wrap gap-4"
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.5, duration: 0.8 }}
-          >
-            <Link
-              href="/platform"
-              className="group relative overflow-hidden rounded-full border border-white/10 bg-black/40 px-8 py-4 text-base text-white/80 backdrop-blur-xl transition-all hover:border-white/20 hover:bg-white/5"
-            >
-              <span className="relative z-10">Explore platform →</span>
-              <motion.div
-                className="absolute inset-0 bg-gradient-to-r from-blue-500/10 to-purple-500/10 opacity-0 transition-opacity group-hover:opacity-100"
-              />
-            </Link>
-            <Link
-              href="/request-demo"
-              className="group relative overflow-hidden rounded-full border border-white/10 bg-white/10 px-8 py-4 text-base text-white backdrop-blur-xl transition-all hover:border-white/20 hover:bg-white/15"
-            >
-              <span className="relative z-10">Request demo →</span>
-              <motion.div
-                className="absolute inset-0 bg-gradient-to-r from-blue-500/20 to-purple-500/20 opacity-0 transition-opacity group-hover:opacity-100"
-              />
-            </Link>
-          </motion.div>
-        </motion.div>
-
-        {/* Leadership section with premium 3D card */}
-        <motion.div
-          initial={{ opacity: 0, y: 60, rotateX: 15 }}
-          animate={{ opacity: 1, y: 0, rotateX: 0 }}
-          transition={{ delay: 0.6, duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-          whileHover={{ y: -8, scale: 1.01 }}
-          className="group relative mt-16 overflow-hidden rounded-3xl border border-white/10 bg-gradient-to-br from-white/5 via-white/[0.02] to-white/5 p-10 backdrop-blur-xl"
-          style={{
-            transformStyle: "preserve-3d",
-            perspective: "1000px",
-          }}
-        >
-          {/* Animated shine effect */}
+          {/* Vegas Spotlights */}
           <motion.div
-            className="pointer-events-none absolute inset-0 opacity-0 transition-opacity duration-500 group-hover:opacity-100"
+            className="absolute top-0 left-1/4 w-96 h-96 bg-pink-500/20 rounded-full blur-3xl"
             animate={{
-              background: [
-                "radial-gradient(circle at 0% 0%, rgba(59, 130, 246, 0.15) 0%, transparent 50%)",
-                "radial-gradient(circle at 100% 100%, rgba(168, 85, 247, 0.15) 0%, transparent 50%)",
-                "radial-gradient(circle at 0% 0%, rgba(59, 130, 246, 0.15) 0%, transparent 50%)",
-              ],
+              scale: [1, 1.2, 1],
+              opacity: [0.3, 0.5, 0.3],
+              x: [-50, 50, -50],
             }}
-            transition={{ duration: 8, repeat: Infinity }}
+            transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
+          />
+          <motion.div
+            className="absolute top-1/4 right-1/4 w-96 h-96 bg-blue-500/20 rounded-full blur-3xl"
+            animate={{
+              scale: [1.2, 1, 1.2],
+              opacity: [0.5, 0.3, 0.5],
+              x: [50, -50, 50],
+            }}
+            transition={{ duration: 10, repeat: Infinity, ease: "easeInOut" }}
+          />
+          <motion.div
+            className="absolute bottom-1/4 left-1/3 w-96 h-96 bg-purple-500/20 rounded-full blur-3xl"
+            animate={{
+              scale: [1, 1.3, 1],
+              opacity: [0.4, 0.6, 0.4],
+              y: [-30, 30, -30],
+            }}
+            transition={{ duration: 12, repeat: Infinity, ease: "easeInOut" }}
           />
 
-          <div className="relative" style={{ transform: "translateZ(30px)" }}>
-            <div className="text-lg font-semibold text-white/95">Leadership</div>
-            <div className="mt-8 flex items-start gap-6">
-              <div className="flex-1">
-                <div className="text-2xl font-medium text-white/95">Founder & CEO</div>
-                <motion.a
-                  href="https://linkedin.com/in/shrack"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="group/link mt-4 inline-flex items-center gap-3 text-base text-white/70 transition-colors hover:text-white/95"
-                  whileHover={{ x: 4 }}
-                  transition={{ duration: 0.2 }}
-                >
-                  <motion.svg 
-                    className="h-6 w-6" 
-                    fill="currentColor" 
-                    viewBox="0 0 24 24"
-                    whileHover={{ scale: 1.1 }}
-                  >
-                    <path d="M20.5 2h-17A1.5 1.5 0 002 3.5v17A1.5 1.5 0 003.5 22h17a1.5 1.5 0 001.5-1.5v-17A1.5 1.5 0 0020.5 2zM8 19H5v-9h3zM6.5 8.25A1.75 1.75 0 118.3 6.5a1.78 1.78 0 01-1.8 1.75zM19 19h-3v-4.74c0-1.42-.6-1.93-1.38-1.93A1.74 1.74 0 0013 14.19a.66.66 0 000 .14V19h-3v-9h2.9v1.3a3.11 3.11 0 012.7-1.4c1.55 0 3.36.86 3.36 3.66z" />
-                  </motion.svg>
-                  <span className="relative">
-                    View LinkedIn Profile →
-                    <span className="absolute -bottom-1 left-0 h-px w-0 bg-white/90 transition-all duration-300 group-hover/link:w-full" />
-                  </span>
-                </motion.a>
-              </div>
-            </div>
-          </div>
-        </motion.div>
-
-        {/* Feature blocks with staggered 3D animations */}
-        <div className="mt-16 grid grid-cols-1 gap-6 md:grid-cols-2">
-          <Block
-            title="What we believe"
-            desc="If it can't be verified, it doesn't belong in the board room."
-            bullets={[
-              "Evidence is the unit of truth (not opinions, not slides)",
-              "Receipts + manifests + hashes create defensible posture",
-              "Confidence gating prevents authority inversion",
-              "Exports must be portable and auditable",
-            ]}
-            icon={<Shield className="h-6 w-6 text-blue-400" />}
-            delay={0.7}
-          />
-          <Block
-            title="How we operate"
-            desc='Systems thinking + governance engineering, not "consulting theater."'
-            bullets={[
-              "Versioned KPIs with lineage + data quality gates",
-              "Immutable artifacts and reproducible transforms",
-              "Audit events for overrides and approvals",
-              "Security-by-default data access patterns",
-            ]}
-            icon={<Database className="h-6 w-6 text-purple-400" />}
-            delay={0.8}
-          />
-          <Block
-            title="Who it's for"
-            desc="Executives and fiduciaries who need clarity at speed."
-            bullets={[
-              "CFO: quantify EBITDA drag, recoverable value, and risk",
-              "CHRO: governance-grade workforce and plan decisions",
-              "Board/Owners: integrity-verified exports with receipts",
-              "Investors/Lenders: fewer surprises, tighter control",
-            ]}
-            icon={<Sparkles className="h-6 w-6 text-emerald-400" />}
-            delay={0.9}
-          />
-          <Block
-            title="Investor Verification Portal"
-            desc="Cryptographically signed proof delivery. Read receipts. Chain-of-custody for sensitive disclosures."
-            icon={<GitBranch className="h-6 w-6 text-amber-400" />}
-            delay={1.0}
-          />
-        </div>
-
-        {/* Floating particles effect */}
-        <div className="pointer-events-none absolute inset-0 overflow-hidden">
-          {[...Array(20)].map((_, i) => (
+          {/* Floating Particles with Vegas Flair */}
+          {mounted && particles.map((particle) => (
             <motion.div
-              key={i}
-              className="absolute h-1 w-1 rounded-full bg-white/20"
-              initial={{
-                x: Math.random() * window.innerWidth,
-                y: Math.random() * window.innerHeight,
+              key={particle.id}
+              className="absolute w-2 h-2 rounded-full"
+              style={{
+                left: `${particle.x}%`,
+                top: `${particle.y}%`,
+                background: `radial-gradient(circle, ${
+                  particle.id % 3 === 0 ? '#ec4899' : particle.id % 3 === 1 ? '#3b82f6' : '#a855f7'
+                }, transparent)`,
+                boxShadow: `0 0 20px ${
+                  particle.id % 3 === 0 ? '#ec4899' : particle.id % 3 === 1 ? '#3b82f6' : '#a855f7'
+                }`,
               }}
               animate={{
-                y: [null, Math.random() * -100 - 50],
-                opacity: [0, 1, 0],
+                y: [0, -30, 0],
+                x: [0, Math.random() * 20 - 10, 0],
+                scale: [1, 1.5, 1],
+                opacity: [0.3, 0.8, 0.3],
               }}
               transition={{
-                duration: Math.random() * 3 + 2,
+                duration: particle.duration,
                 repeat: Infinity,
-                delay: Math.random() * 5,
+                delay: particle.delay,
+                ease: "easeInOut",
               }}
             />
           ))}
         </div>
-      </section>
-    </main>
+
+        <Nav />
+
+        <main className="relative z-10 pt-32 pb-20 px-4 sm:px-6 lg:px-8">
+          <div className="max-w-7xl mx-auto">
+            {/* Hero Section with Vegas Neon */}
+            <motion.div
+              initial={{ opacity: 0, y: 30 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8 }}
+              className="text-center mb-20"
+            >
+              <motion.div
+                className="inline-block mb-6"
+                animate={{
+                  textShadow: [
+                    "0 0 20px #ec4899, 0 0 40px #ec4899",
+                    "0 0 30px #3b82f6, 0 0 60px #3b82f6",
+                    "0 0 20px #a855f7, 0 0 40px #a855f7",
+                    "0 0 20px #ec4899, 0 0 40px #ec4899",
+                  ],
+                }}
+                transition={{ duration: 4, repeat: Infinity }}
+              >
+                <h1 className="text-6xl sm:text-7xl lg:text-8xl font-bold bg-gradient-to-r from-pink-500 via-blue-500 to-purple-500 bg-clip-text text-transparent">
+                  About SiriusB iQ
+                </h1>
+              </motion.div>
+              <motion.p
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ delay: 0.3, duration: 0.8 }}
+                className="text-xl sm:text-2xl text-gray-300 max-w-3xl mx-auto leading-relaxed"
+              >
+                Pioneering the future of autonomous enterprise intelligence with AI-powered data validation and verification
+              </motion.p>
+            </motion.div>
+
+            {/* Leadership Section - Vegas Edition */}
+            <motion.div
+              initial={{ opacity: 0, scale: 0.95 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ duration: 0.8, delay: 0.4 }}
+              className="mb-24 perspective-[2000px]"
+            >
+              <motion.div
+                className="relative max-w-5xl mx-auto"
+                style={{
+                  rotateX: leadershipRotateX,
+                  rotateY: leadershipRotateY,
+                  transformStyle: "preserve-3d",
+                }}
+                onMouseMove={handleLeadershipMouseMove}
+                onMouseLeave={handleLeadershipMouseLeave}
+                whileHover={{ scale: 1.02 }}
+                transition={{ type: "spring", stiffness: 300, damping: 20 }}
+              >
+                {/* Vegas Neon Border */}
+                <motion.div
+                  className="absolute -inset-1 rounded-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-500"
+                  style={{
+                    background: "linear-gradient(45deg, #ec4899, #3b82f6, #a855f7, #ec4899)",
+                    backgroundSize: "300% 300%",
+                    filter: "blur(20px)",
+                  }}
+                  animate={{
+                    backgroundPosition: ["0% 50%", "100% 50%", "0% 50%"],
+                  }}
+                  transition={{ duration: 5, repeat: Infinity }}
+                />
+
+                <div className="relative bg-gradient-to-br from-gray-900/90 via-gray-800/90 to-black/90 backdrop-blur-xl rounded-3xl p-8 sm:p-12 border border-pink-500/20 group overflow-hidden">
+                  {/* Vegas Holographic Shine */}
+                  <motion.div
+                    className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500"
+                    style={{
+                      background: "linear-gradient(45deg, transparent 30%, rgba(236,72,153,0.1) 50%, transparent 70%)",
+                      backgroundSize: "200% 200%",
+                    }}
+                    animate={{
+                      backgroundPosition: ["0% 0%", "200% 200%"],
+                    }}
+                    transition={{ duration: 3, repeat: Infinity }}
+                  />
+
+                  {/* Content Grid */}
+                  <div className="relative grid md:grid-cols-[300px_1fr] gap-8 items-start" style={{ transformStyle: "preserve-3d" }}>
+                    {/* Photo with Vegas Glow */}
+                    <motion.div
+                      className="relative"
+                      style={{ transform: "translateZ(50px)" }}
+                      whileHover={{ scale: 1.05, rotateY: 5 }}
+                      transition={{ type: "spring", stiffness: 300, damping: 20 }}
+                    >
+                      <div className="relative overflow-hidden rounded-2xl group/photo">
+                        {/* Multi-Layer Vegas Glow */}
+                        <div className="absolute -inset-2 bg-gradient-to-r from-pink-500 via-blue-500 to-purple-500 rounded-2xl blur-2xl opacity-50 group-hover/photo:opacity-100 transition-opacity duration-500 animate-pulse" />
+                        <div className="absolute -inset-1 bg-gradient-to-r from-pink-500 via-blue-500 to-purple-500 rounded-2xl blur-xl opacity-75 group-hover/photo:opacity-100 transition-opacity duration-500" />
+                        
+                        <img
+                          src="/jeremiah-shrack.png"
+                          alt="Jeremiah Shrack, Founder & CEO"
+                          className="relative w-full h-auto rounded-2xl border-2 border-pink-500/50 shadow-2xl"
+                        />
+                        
+                        {/* Vegas Overlay Effect */}
+                        <motion.div
+                          className="absolute inset-0 bg-gradient-to-tr from-pink-500/20 via-transparent to-purple-500/20 opacity-0 group-hover/photo:opacity-100 transition-opacity duration-300"
+                        />
+                      </div>
+
+                      {/* Floating Name Badge */}
+                      <motion.div
+                        className="mt-6 text-center"
+                        initial={{ opacity: 0, y: 10 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ delay: 0.6 }}
+                      >
+                        <h2 className="text-3xl font-bold mb-2 bg-gradient-to-r from-pink-400 via-blue-400 to-purple-400 bg-clip-text text-transparent">
+                          Jeremiah Shrack
+                        </h2>
+                        <p className="text-xl text-pink-400 font-semibold mb-3">Founder & CEO</p>
+                        <Link
+                          href="https://linkedin.com/in/shrack"
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="inline-flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-pink-600 to-purple-600 hover:from-pink-500 hover:to-purple-500 rounded-full text-white font-medium transition-all duration-300 shadow-lg shadow-pink-500/50 hover:shadow-pink-500/70 hover:scale-105"
+                        >
+                          <Linkedin className="w-5 h-5" />
+                          <span>Connect on LinkedIn</span>
+                        </Link>
+                      </motion.div>
+                    </motion.div>
+
+                    {/* Bio with Vegas Typography */}
+                    <motion.div
+                      className="space-y-6"
+                      style={{ transform: "translateZ(30px)" }}
+                    >
+                      <motion.div
+                        className="relative"
+                        initial={{ opacity: 0, x: 20 }}
+                        animate={{ opacity: 1, x: 0 }}
+                        transition={{ delay: 0.7 }}
+                      >
+                        <h3 className="text-3xl font-bold mb-4 bg-gradient-to-r from-pink-400 to-purple-400 bg-clip-text text-transparent">
+                          Visionary Leader in AI-Driven Intelligence
+                        </h3>
+                        
+                        <div className="space-y-4 text-gray-300 leading-relaxed">
+                          <p className="text-lg border-l-4 border-pink-500 pl-4 bg-pink-500/5 py-3 rounded-r-lg">
+                            <strong className="text-pink-400">"The first time I saw GenAI do something that mattered, it wasn't writing a poem or making a logo."</strong> It was validating a $2M invoice discrepancy in seconds—something that would've taken auditors weeks.
+                          </p>
+
+                          <p>
+                            That moment crystallized everything. <strong className="text-blue-400">Jeremiah founded SiriusB iQ</strong> on a singular insight: GenAI's true value isn't in content creation—it's in <strong className="text-purple-400">autonomous data validation at enterprise scale</strong>.
+                          </p>
+
+                          <p>
+                            With a career built on <strong className="text-pink-400">scaling technology ventures</strong> and <strong className="text-blue-400">transforming data operations</strong>, Jeremiah recognized that enterprises were drowning in data but starving for verified intelligence. Traditional BI tools required armies of analysts. Modern AI promised automation but lacked accountability.
+                          </p>
+
+                          <p className="bg-gradient-to-r from-pink-500/10 to-purple-500/10 border border-pink-500/20 rounded-lg p-4">
+                            SiriusB iQ bridges that gap: <strong className="text-purple-400">autonomous AI agents</strong> that don't just analyze data—they <strong className="text-pink-400">validate it</strong>, <strong className="text-blue-400">cross-reference it</strong>, and <strong className="text-purple-400">prove their findings with cryptographic evidence</strong>.
+                          </p>
+
+                          <p>
+                            Under Jeremiah's leadership, the platform has evolved from a novel concept to a <strong className="text-pink-400">mission-critical enterprise tool</strong> used by organizations to:
+                          </p>
+
+                          <ul className="space-y-2 ml-6">
+                            <li className="flex items-start gap-3">
+                              <Shield className="w-5 h-5 text-pink-400 mt-1 flex-shrink-0" />
+                              <span>Recover millions in hidden value leakage</span>
+                            </li>
+                            <li className="flex items-start gap-3">
+                              <Zap className="w-5 h-5 text-blue-400 mt-1 flex-shrink-0" />
+                              <span>Prevent compliance violations before they occur</span>
+                            </li>
+                            <li className="flex items-start gap-3">
+                              <TrendingUp className="w-5 h-5 text-purple-400 mt-1 flex-shrink-0" />
+                              <span>Accelerate executive decision-making from weeks to minutes</span>
+                            </li>
+                          </ul>
+
+                          <p className="text-lg italic border-l-4 border-purple-500 pl-4 bg-purple-500/5 py-3 rounded-r-lg">
+                            Jeremiah's vision extends beyond current capabilities. He's building toward a future where <strong className="text-purple-400">every business decision is backed by verified, real-time intelligence</strong>—where AI agents autonomously detect opportunities, validate findings, and present evidence-backed recommendations.
+                          </p>
+
+                          <p>
+                            As a <strong className="text-pink-400">thought leader in enterprise AI</strong>, Jeremiah advocates for a shift from "AI-assisted" to "AI-autonomous" operations, emphasizing that the next competitive advantage belongs to organizations that can trust their AI to act independently—with full auditability.
+                          </p>
+
+                          <p className="text-lg font-semibold text-transparent bg-clip-text bg-gradient-to-r from-pink-400 via-blue-400 to-purple-400">
+                            His leadership philosophy: <strong>Build systems that don't just work—build systems you can prove work</strong>. Transparency, innovation, and relentless customer success drive every decision at SiriusB iQ.
+                          </p>
+                        </div>
+                      </motion.div>
+                    </motion.div>
+                  </div>
+                </div>
+              </motion.div>
+            </motion.div>
+
+            {/* Vegas-Style Blocks Grid */}
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: 0.8 }}
+              className="grid md:grid-cols-2 gap-8"
+            >
+              {blocks.map((block, index) => (
+                <CompanyBlock key={index} block={block} index={index} />
+              ))}
+            </motion.div>
+
+            {/* Vegas CTA Section */}
+            <motion.div
+              initial={{ opacity: 0, scale: 0.9 }}
+              whileInView={{ opacity: 1, scale: 1 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.8 }}
+              className="mt-24 text-center"
+            >
+              <div className="relative inline-block">
+                <motion.div
+                  className="absolute -inset-4 rounded-3xl opacity-75 blur-2xl"
+                  style={{
+                    background: "linear-gradient(45deg, #ec4899, #3b82f6, #a855f7, #ec4899)",
+                    backgroundSize: "300% 300%",
+                  }}
+                  animate={{
+                    backgroundPosition: ["0% 50%", "100% 50%", "0% 50%"],
+                  }}
+                  transition={{ duration: 5, repeat: Infinity }}
+                />
+                
+                <motion.div
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
+                >
+                  <Link
+                    href="/platform"
+                    className="relative inline-flex items-center gap-3 px-12 py-6 bg-gradient-to-r from-pink-600 via-blue-600 to-purple-600 rounded-2xl text-white text-xl font-bold shadow-2xl hover:shadow-pink-500/50 transition-all duration-300 border-2 border-pink-400/50"
+                  >
+                    <Sparkles className="w-6 h-6" />
+                    <span>See It In Action</span>
+                    <Sparkles className="w-6 h-6" />
+                  </Link>
+                </motion.div>
+              </div>
+
+              <motion.p
+                initial={{ opacity: 0 }}
+                whileInView={{ opacity: 1 }}
+                viewport={{ once: true }}
+                transition={{ delay: 0.3 }}
+                className="mt-6 text-gray-400 text-lg"
+              >
+                Experience the future of autonomous enterprise intelligence
+              </motion.p>
+            </motion.div>
+          </div>
+        </main>
+
+        <Footer />
+      </div>
+    </>
   );
 }

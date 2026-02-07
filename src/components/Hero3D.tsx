@@ -266,6 +266,7 @@ export function Hero3D() {
           autoRotateSpeed={0.5}
           minPolarAngle={Math.PI / 3}
           maxPolarAngle={Math.PI / 1.5}
+          target={[0, 0, 0]}
         />
       </Canvas>
       <div className="absolute inset-x-0 bottom-0 p-6 text-sm text-orange-400 backdrop-blur-sm bg-gradient-to-t from-gray-900/95 to-transparent font-semibold">

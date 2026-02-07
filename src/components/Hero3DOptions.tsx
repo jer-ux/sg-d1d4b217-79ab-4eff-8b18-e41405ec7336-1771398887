@@ -104,6 +104,7 @@ export function Hero3DDataNexus() {
           enablePan={false}
           autoRotate
           autoRotateSpeed={0.5}
+          target={[0, 0, 0]}
         />
       </Canvas>
       <div className="absolute inset-x-0 bottom-0 p-6 text-sm text-orange-400 backdrop-blur-sm bg-gradient-to-t from-gray-900/95 to-transparent font-semibold">
@@ -179,6 +180,7 @@ export function Hero3DNeuralNetwork() {
           enablePan={false}
           autoRotate
           autoRotateSpeed={0.3}
+          target={[0, 0, 0]}
         />
       </Canvas>
       <div className="absolute inset-x-0 bottom-0 p-6 text-sm text-orange-400 backdrop-blur-sm bg-gradient-to-t from-gray-900/95 to-transparent font-semibold">
@@ -264,6 +266,7 @@ export function Hero3DCubeMatrix() {
           enablePan={false}
           autoRotate
           autoRotateSpeed={0.4}
+          target={[0, 0, 0]}
         />
       </Canvas>
       <div className="absolute inset-x-0 bottom-0 p-6 text-sm text-orange-400 backdrop-blur-sm bg-gradient-to-t from-gray-900/95 to-transparent font-semibold">
@@ -366,6 +369,7 @@ export function Hero3DParticleStorm() {
           enablePan={false}
           autoRotate
           autoRotateSpeed={0.2}
+          target={[0, 0, 0]}
         />
       </Canvas>
       <div className="absolute inset-x-0 bottom-0 p-6 text-sm text-orange-400 backdrop-blur-sm bg-gradient-to-t from-gray-900/95 to-transparent font-semibold">
@@ -483,6 +487,7 @@ export function Hero3DHolographicRing() {
           enablePan={false}
           autoRotate
           autoRotateSpeed={0.5}
+          target={[0, 0, 0]}
         />
       </Canvas>
       <div className="absolute inset-x-0 bottom-0 p-6 text-sm text-orange-400 backdrop-blur-sm bg-gradient-to-t from-gray-900/95 to-transparent font-semibold">

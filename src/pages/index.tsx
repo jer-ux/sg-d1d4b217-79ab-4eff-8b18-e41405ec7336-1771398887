@@ -285,7 +285,7 @@ export default function Home() {
             </motion.div>
 
             {/* Animated Hero Component */}
-            <div className="max-w-2xl mx-auto scale-[0.36]">
+            <div className="max-w-2xl mx-auto scale-[0.47]">
               <AnimatePresence mode="wait">
                 <motion.div
                   key={heroVariant}

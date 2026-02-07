@@ -243,7 +243,7 @@ function Particles() {
 
 export function Hero3D() {
   return (
-    <div className="relative h-[460px] w-full rounded-2xl overflow-hidden border border-white/30 bg-gradient-to-br from-gray-900 via-blue-950 to-gray-900 shadow-2xl">
+    <div className="relative h-[600px] w-full rounded-2xl overflow-hidden border border-white/30 bg-gradient-to-br from-gray-900 via-blue-950 to-gray-900 shadow-2xl">
       <div className="absolute inset-0 bg-gradient-to-br from-blue-500/10 via-purple-500/10 to-cyan-500/10" />
       <Canvas camera={{ position: [0, 0, 5], fov: 45 }}>
         {/* Much brighter, more dramatic lighting */}

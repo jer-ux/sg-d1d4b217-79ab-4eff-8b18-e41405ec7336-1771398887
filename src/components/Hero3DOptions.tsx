@@ -89,7 +89,7 @@ function DataNexusNodes() {
 
 export function Hero3DDataNexus() {
   return (
-    <div className="relative h-[460px] w-full rounded-2xl overflow-hidden border border-white/30 bg-gradient-to-br from-gray-900 via-blue-950 to-gray-900 shadow-2xl">
+    <div className="relative h-[600px] w-full rounded-2xl overflow-hidden border border-white/30 bg-gradient-to-br from-gray-900 via-blue-950 to-gray-900 shadow-2xl">
       <div className="absolute inset-0 bg-gradient-to-br from-blue-500/10 via-purple-500/10 to-cyan-500/10" />
       <Canvas camera={{ position: [0, 0, 5], fov: 45 }}>
         <ambientLight intensity={1.5} />
@@ -164,7 +164,7 @@ function NeuralNetwork() {
 
 export function Hero3DNeuralNetwork() {
   return (
-    <div className="relative h-[460px] w-full rounded-2xl overflow-hidden border border-white/30 bg-gradient-to-br from-gray-900 via-purple-950 to-gray-900 shadow-2xl">
+    <div className="relative h-[600px] w-full rounded-2xl overflow-hidden border border-white/30 bg-gradient-to-br from-gray-900 via-purple-950 to-gray-900 shadow-2xl">
       <div className="absolute inset-0 bg-gradient-to-br from-purple-500/10 via-blue-500/10 to-cyan-500/10" />
       <Canvas camera={{ position: [0, 0, 5], fov: 45 }}>
         <ambientLight intensity={1.5} />
@@ -250,7 +250,7 @@ function CubeMatrix() {
 
 export function Hero3DCubeMatrix() {
   return (
-    <div className="relative h-[460px] w-full rounded-2xl overflow-hidden border border-white/30 bg-gradient-to-br from-gray-900 via-cyan-950 to-gray-900 shadow-2xl">
+    <div className="relative h-[600px] w-full rounded-2xl overflow-hidden border border-white/30 bg-gradient-to-br from-gray-900 via-cyan-950 to-gray-900 shadow-2xl">
       <div className="absolute inset-0 bg-gradient-to-br from-cyan-500/10 via-blue-500/10 to-purple-500/10" />
       <Canvas camera={{ position: [0, 0, 6], fov: 45 }}>
         <ambientLight intensity={1.5} />
@@ -352,7 +352,7 @@ function ParticleStorm() {
 
 export function Hero3DParticleStorm() {
   return (
-    <div className="relative h-[460px] w-full rounded-2xl overflow-hidden border border-white/30 bg-gradient-to-br from-gray-900 via-indigo-950 to-gray-900 shadow-2xl">
+    <div className="relative h-[600px] w-full rounded-2xl overflow-hidden border border-white/30 bg-gradient-to-br from-gray-900 via-indigo-950 to-gray-900 shadow-2xl">
       <div className="absolute inset-0 bg-gradient-to-br from-indigo-500/10 via-purple-500/10 to-blue-500/10" />
       <Canvas camera={{ position: [0, 0, 5], fov: 50 }}>
         <ambientLight intensity={2.0} />
@@ -468,7 +468,7 @@ function HolographicRings() {
 
 export function Hero3DHolographicRing() {
   return (
-    <div className="relative h-[460px] w-full rounded-2xl overflow-hidden border border-white/30 bg-gradient-to-br from-gray-900 via-blue-950 to-gray-900 shadow-2xl">
+    <div className="relative h-[600px] w-full rounded-2xl overflow-hidden border border-white/30 bg-gradient-to-br from-gray-900 via-blue-950 to-gray-900 shadow-2xl">
       <div className="absolute inset-0 bg-gradient-to-br from-blue-500/10 via-cyan-500/10 to-purple-500/10" />
       <Canvas camera={{ position: [0, 2, 5], fov: 45 }}>
         <ambientLight intensity={1.5} />

@@ -354,3 +354,264 @@ html {
   background-clip: text;
   -webkit-text-fill-color: transparent;
 }
+
+/* Kincaid IQ War Room - Premium Apple 3D Styles */
+
+/* Premium Glass Card with 3D depth */
+.kincaid-glass-card {
+  position: relative;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  background: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(20px) saturate(180%);
+  box-shadow:
+    0 20px 60px rgba(0, 0, 0, 0.6),
+    0 8px 16px rgba(0, 0, 0, 0.4),
+    inset 0 1px 0 rgba(255, 255, 255, 0.1),
+    inset 0 -1px 0 rgba(0, 0, 0, 0.2);
+  transition: all 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.kincaid-glass-card::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  pointer-events: none;
+  background:
+    radial-gradient(800px 200px at 20% 15%, rgba(255, 255, 255, 0.18), transparent 65%),
+    radial-gradient(600px 160px at 85% 5%, rgba(100, 200, 255, 0.12), transparent 70%);
+  opacity: 0.95;
+}
+
+.kincaid-glass-card::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  pointer-events: none;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.06), transparent 45%, rgba(0, 0, 0, 0.20));
+  opacity: 0.95;
+}
+
+.kincaid-glass-card:hover {
+  transform: translateY(-4px);
+  border-color: rgba(255, 255, 255, 0.18);
+  box-shadow:
+    0 28px 80px rgba(0, 0, 0, 0.7),
+    0 12px 24px rgba(0, 0, 0, 0.5),
+    inset 0 1px 0 rgba(255, 255, 255, 0.15),
+    0 0 0 1px rgba(255, 255, 255, 0.08);
+}
+
+/* Premium Metric Tile */
+.kincaid-metric-tile {
+  position: relative;
+  border: 1px solid rgba(255, 255, 255, 0.10);
+  background: rgba(255, 255, 255, 0.04);
+  backdrop-filter: blur(16px) saturate(180%);
+  box-shadow:
+    0 16px 40px rgba(0, 0, 0, 0.55),
+    0 4px 12px rgba(0, 0, 0, 0.35),
+    inset 0 1px 0 rgba(255, 255, 255, 0.08);
+  transition: all 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+  cursor: pointer;
+}
+
+.kincaid-metric-tile::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  pointer-events: none;
+  background: radial-gradient(600px 150px at 50% 0%, rgba(255, 255, 255, 0.12), transparent 60%);
+  opacity: 0.9;
+}
+
+.kincaid-metric-tile:hover {
+  transform: translateY(-3px) scale(1.01);
+  border-color: rgba(255, 255, 255, 0.15);
+  box-shadow:
+    0 24px 60px rgba(0, 0, 0, 0.65),
+    0 8px 20px rgba(0, 0, 0, 0.45),
+    inset 0 1px 0 rgba(255, 255, 255, 0.12),
+    0 0 0 1px rgba(255, 255, 255, 0.06);
+}
+
+/* Premium Dialog/Modal */
+.kincaid-dialog {
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  background: rgba(10, 10, 12, 0.95);
+  backdrop-filter: blur(24px) saturate(180%);
+  box-shadow:
+    0 32px 100px rgba(0, 0, 0, 0.8),
+    0 16px 40px rgba(0, 0, 0, 0.6),
+    inset 0 1px 0 rgba(255, 255, 255, 0.12);
+}
+
+.kincaid-dialog::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  pointer-events: none;
+  background:
+    radial-gradient(900px 250px at 50% 0%, rgba(255, 255, 255, 0.20), transparent 70%),
+    radial-gradient(700px 180px at 15% 5%, rgba(100, 150, 255, 0.14), transparent 75%);
+  opacity: 0.92;
+}
+
+/* Premium Button */
+.kincaid-btn {
+  position: relative;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  background: rgba(255, 255, 255, 0.06);
+  backdrop-filter: blur(12px);
+  box-shadow:
+    0 8px 20px rgba(0, 0, 0, 0.45),
+    inset 0 1px 0 rgba(255, 255, 255, 0.10);
+  transition: all 0.3s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.kincaid-btn::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  pointer-events: none;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.08), transparent 50%);
+  opacity: 0.9;
+}
+
+.kincaid-btn:hover {
+  transform: translateY(-2px);
+  border-color: rgba(255, 255, 255, 0.22);
+  background: rgba(255, 255, 255, 0.10);
+  box-shadow:
+    0 12px 32px rgba(0, 0, 0, 0.55),
+    inset 0 1px 0 rgba(255, 255, 255, 0.15);
+}
+
+.kincaid-btn:active {
+  transform: translateY(0);
+  box-shadow:
+    0 4px 12px rgba(0, 0, 0, 0.35),
+    inset 0 1px 0 rgba(255, 255, 255, 0.08);
+}
+
+/* Premium Badge */
+.kincaid-badge {
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  background: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(10px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.35);
+  transition: all 0.25s ease;
+}
+
+.kincaid-badge:hover {
+  border-color: rgba(255, 255, 255, 0.18);
+  background: rgba(255, 255, 255, 0.08);
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.45);
+}
+
+/* Premium Divider */
+.kincaid-divider {
+  height: 1px;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(255, 255, 255, 0.12) 15%,
+    rgba(255, 255, 255, 0.22) 50%,
+    rgba(255, 255, 255, 0.12) 85%,
+    transparent 100%
+  );
+  box-shadow: 0 0 10px rgba(255, 255, 255, 0.10);
+}
+
+/* Smooth transitions for all interactive elements */
+.kincaid-transition {
+  transition: all 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+/* Enhanced scroll area */
+.kincaid-scroll::-webkit-scrollbar {
+  width: 12px;
+}
+
+.kincaid-scroll::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.02);
+  border-radius: 6px;
+}
+
+.kincaid-scroll::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.15);
+  border-radius: 6px;
+  border: 2px solid rgba(0, 0, 0, 0.3);
+  transition: background 0.3s ease;
+}
+
+.kincaid-scroll::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.25);
+}
+
+/* Animations */
+@keyframes kincaid-fade-in {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes kincaid-scale-in {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes kincaid-slide-up {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-kincaid-fade-in {
+  animation: kincaid-fade-in 0.4s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+.animate-kincaid-scale-in {
+  animation: kincaid-scale-in 0.35s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+.animate-kincaid-slide-up {
+  animation: kincaid-slide-up 0.45s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+/* Staggered animation delays */
+.delay-75 {
+  animation-delay: 75ms;
+}
+
+.delay-150 {
+  animation-delay: 150ms;
+}
+
+.delay-225 {
+  animation-delay: 225ms;
+}
+
+.delay-300 {
+  animation-delay: 300ms;
+}

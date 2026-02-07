@@ -254,7 +254,7 @@ const metricData: Record<
         variance: "+1.9% over target",
         receiptsCount: 134,
         breakdown: [
-          { label: "PBM Pricing Variance", value: "$142K", percent: "29.2%", receiptsCount: 47 },
+          { label: "PBM Pricing Variance", value: "$142K", percent: "47.9%", receiptsCount: 47 },
           { label: "Out-of-Network Claims", value: "$118K", percent: "24.2%", receiptsCount: 38 },
           { label: "Duplicate Payments", value: "$87K", percent: "17.9%", receiptsCount: 22 },
           { label: "Coding Errors", value: "$76K", percent: "15.6%", receiptsCount: 18 },
@@ -769,29 +769,49 @@ export function WarRoomPreview() {
                   Related KPIs
                 </h3>
                 <div className="grid gap-3">
-                  {selectedReg?.relatedKPIs.map((kpiId, idx) => (
-                    <Card
-                      key={idx}
-                      className="cursor-pointer border-white/10 bg-white/5 hover:bg-white/10 transition-all group"
-                    >
-                      <CardContent className="p-4">
-                        <div className="flex items-center justify-between">
-                          <div className="flex items-center gap-2">
-                            <Activity className="h-4 w-4 text-blue-400" />
-                            <span className="text-sm text-white font-medium">{kpiId}</span>
+                  {selectedReg?.relatedKPIs.map((kpiId, idx) => {
+                    // Find the actual KPI from the current metric data
+                    const relatedKPI = currentData?.kpis.find(k => 
+                      k.id === kpiId || k.name.toLowerCase().includes(kpiId.toLowerCase())
+                    );
+                    return (
+                      <Card
+                        key={idx}
+                        className="cursor-pointer border-white/10 bg-white/5 hover:bg-white/10 transition-all group"
+                        onClick={() => {
+                          if (relatedKPI) {
+                            setSelectedReg(null);
+                            setSelectedKPI(relatedKPI);
+                          }
+                        }}
+                      >
+                        <CardContent className="p-4">
+                          <div className="flex items-center justify-between">
+                            <div className="flex items-center gap-2">
+                              <Activity className="h-4 w-4 text-blue-400" />
+                              <span className="text-sm text-white font-medium">{kpiId}</span>
+                            </div>
+                            <div className="flex items-center gap-2">
+                              <Button 
+                                variant="ghost" 
+                                size="sm" 
+                                className="h-8 text-blue-400 opacity-0 group-hover:opacity-100 transition-opacity"
+                                onClick={(e) => {
+                                  e.stopPropagation();
+                                }}
+                              >
+                                <Receipt className="h-4 w-4 mr-1" />
+                                See Receipts
+                              </Button>
+                              <Button variant="ghost" size="sm" className="h-8 text-blue-400">
+                                View Details <ChevronRight className="ml-1 h-3 w-3" />
+                              </Button>
+                            </div>
                           </div>
-                          <div className="flex items-center gap-2">
-                            <Button variant="ghost" size="sm" className="h-8 text-blue-400 opacity-0 group-hover:opacity-100 transition-opacity">
-                              <Receipt className="h-4 w-4" />
-                            </Button>
-                            <Button variant="ghost" size="sm" className="h-8 text-blue-400">
-                              View Details <ChevronRight className="ml-1 h-3 w-3" />
-                            </Button>
-                          </div>
-                        </div>
-                      </CardContent>
-                    </Card>
-                  ))}
+                        </CardContent>
+                      </Card>
+                    );
+                  })}
                 </div>
               </div>
             </div>

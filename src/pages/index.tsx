@@ -327,7 +327,7 @@ export default function Home() {
                 icon={TrendingUp}
                 title="Verified Savings Ledger"
                 description="Blockchain-backed cost optimization tracking with immutable audit trails"
-                href="/ledger"
+                href="/verified-savings-ledger"
                 themeKey="emerald"
                 delay={0.1}
               />

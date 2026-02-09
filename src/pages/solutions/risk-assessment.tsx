@@ -1,258 +1,317 @@
 import { motion } from "framer-motion";
 import Link from "next/link";
-import { Shield, ArrowLeft, TrendingUp, AlertTriangle, CheckCircle2, FileText, BarChart3, Sparkles } from "lucide-react";
+import { Shield, AlertTriangle, TrendingUp, BarChart3, Brain, Database, Lock, Zap, CheckCircle2, ArrowRight, Sparkles, Target, Award, DollarSign } from "lucide-react";
 import { SEO } from "@/components/SEO";
 import Nav from "@/components/Nav";
 import Footer from "@/components/Footer";
-import { Button } from "@/components/ui/button";
 
-export default function RiskAssessmentSolution() {
-  const kpis = [
-    { label: "Risk Score Accuracy", value: "98.7%", trend: "+2.3%" },
-    { label: "Assessment Time", value: "4.2min", trend: "-35%" },
-    { label: "Cost Reduction", value: "$2.4M", trend: "+18%" },
-    { label: "Compliance Rate", value: "99.9%", trend: "+0.5%" }
+export default function RiskAssessment() {
+  const features = [
+    {
+      icon: Brain,
+      title: "Predictive Risk Modeling",
+      description: "Advanced ML algorithms analyze 500+ risk factors in real-time, predicting potential losses with 99.2% accuracy across all benefit plans.",
+      metrics: ["500+ Risk Factors", "99.2% Prediction Accuracy", "Real-time Analysis"],
+    },
+    {
+      icon: AlertTriangle,
+      title: "Early Warning System",
+      description: "Proactive alerts identify emerging risks 45-90 days before they materialize, enabling preventive action and loss mitigation.",
+      metrics: ["45-90 Day Lead Time", "95% Alert Accuracy", "Automated Escalation"],
+    },
+    {
+      icon: Database,
+      title: "Historical Claims Analysis",
+      description: "Deep analysis of 10+ years of claims data reveals patterns, trends, and anomalies that traditional methods miss.",
+      metrics: ["10+ Years Data", "98.7% Pattern Detection", "Trend Forecasting"],
+    },
+    {
+      icon: Target,
+      title: "Risk Stratification",
+      description: "Sophisticated segmentation categorizes members into 12 risk tiers, enabling targeted interventions and personalized care management.",
+      metrics: ["12 Risk Tiers", "Personalized Interventions", "Care Coordination"],
+    },
+    {
+      icon: TrendingUp,
+      title: "Loss Prevention Programs",
+      description: "Data-driven prevention strategies reduce high-risk events by 34%, leveraging predictive analytics and member engagement.",
+      metrics: ["34% Risk Reduction", "$8.4M Loss Prevention", "Member Engagement"],
+    },
+    {
+      icon: Lock,
+      title: "Compliance Risk Monitoring",
+      description: "Continuous monitoring ensures adherence to ERISA, ACA, HIPAA, and state regulations with automated compliance reporting.",
+      metrics: ["100% Compliance Rate", "Automated Reporting", "Regulatory Updates"],
+    },
   ];
 
-  const complianceFrameworks = [
-    { name: "ERISA §404(a)", description: "Fiduciary duty standards for plan administration" },
-    { name: "SOX Section 302", description: "Corporate responsibility for financial reports" },
-    { name: "HIPAA Privacy Rule", description: "Protected health information safeguards" },
-    { name: "DOL Regulation 2550.404a-5", description: "Participant fee disclosure requirements" }
+  const problems = [
+    "Reactive risk management that only identifies issues after they occur",
+    "Limited visibility into emerging risk factors and trends",
+    "Manual data analysis that misses complex patterns and correlations",
+    "Inability to predict high-cost claims before they materialize",
+    "Fragmented data across multiple systems preventing holistic analysis",
+    "Compliance risks from incomplete or delayed regulatory reporting",
   ];
 
-  const techStack = [
-    { component: "Risk Engine", tech: "TensorFlow + PyTorch", purpose: "ML-based risk modeling" },
-    { component: "Data Pipeline", tech: "Apache Kafka + Spark", purpose: "Real-time data processing" },
-    { component: "Analytics Layer", tech: "Snowflake + dbt", purpose: "Data warehousing & transformation" },
-    { component: "API Gateway", tech: "Next.js + GraphQL", purpose: "Secure API management" }
+  const benefits = [
+    {
+      icon: DollarSign,
+      title: "$8.4M Annual Loss Prevention",
+      description: "Proactive risk identification prevents high-cost claims before they occur",
+    },
+    {
+      icon: Target,
+      title: "99.2% Prediction Accuracy",
+      description: "ML models deliver industry-leading accuracy in risk forecasting",
+    },
+    {
+      icon: Zap,
+      title: "45-90 Day Early Warning",
+      description: "Identify and address risks months before they impact your bottom line",
+    },
+    {
+      icon: Award,
+      title: "100% Compliance",
+      description: "Automated monitoring ensures continuous regulatory adherence",
+    },
   ];
 
   return (
     <>
-      <SEO 
-        title="Risk Assessment Solution | SiriusB iQ"
-        description="AI-powered actuarial risk assessment for employee benefits with 98.7% accuracy"
+      <SEO
+        title="Advanced Risk Assessment Solutions | Kincaid IQ"
+        description="Predictive risk modeling and loss prevention for employee benefits with 99.2% accuracy and $8.4M annual savings."
+        image="/og-image.png"
       />
-      
-      <div className="min-h-screen bg-black text-white relative overflow-hidden">
-        {/* Vegas Background */}
-        <div className="fixed inset-0 pointer-events-none">
-          <div className="absolute inset-0 bg-gradient-to-br from-purple-900/20 via-black to-pink-900/20" />
-          <motion.div
-            className="absolute inset-0"
-            style={{
-              backgroundImage: `radial-gradient(circle at 2px 2px, rgba(236, 72, 153, 0.15) 1px, transparent 0)`,
-              backgroundSize: "40px 40px"
-            }}
-            animate={{ backgroundPosition: ["0px 0px", "40px 40px"] }}
-            transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
-          />
-        </div>
-
+      <div className="min-h-screen bg-black text-white">
         <Nav />
 
-        <main className="relative z-10 pt-32 pb-20 px-6">
-          <div className="max-w-7xl mx-auto">
-            {/* Back Button */}
-            <Link href="/">
-              <Button variant="ghost" className="mb-8 text-purple-400 hover:text-purple-300">
-                <ArrowLeft className="w-4 h-4 mr-2" />
-                Back to Solutions
-              </Button>
-            </Link>
-
-            {/* Hero Section */}
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              className="text-center mb-20"
-            >
+        <main className="pt-32 pb-20">
+          {/* Hero Section */}
+          <section className="px-4 mb-20">
+            <div className="max-w-7xl mx-auto">
               <motion.div
-                className="inline-block p-4 rounded-2xl mb-6"
-                style={{
-                  background: "linear-gradient(135deg, rgba(168, 85, 247, 0.2), rgba(236, 72, 153, 0.2))",
-                  boxShadow: "0 0 60px rgba(168, 85, 247, 0.4), inset 0 0 60px rgba(236, 72, 153, 0.2)"
-                }}
-                whileHover={{ scale: 1.05, rotate: 5 }}
+                initial={{ opacity: 0, y: 30 }}
+                animate={{ opacity: 1, y: 0 }}
+                className="text-center mb-12"
               >
-                <Shield className="w-16 h-16 text-purple-400" />
+                <div className="inline-flex items-center gap-3 px-6 py-3 rounded-full bg-pink-500/20 border border-pink-500/30 mb-6">
+                  <Shield className="w-5 h-5 text-pink-400" />
+                  <span className="text-pink-400 font-semibold">Advanced Risk Assessment</span>
+                </div>
+
+                <h1 className="text-5xl md:text-7xl font-bold mb-6 bg-gradient-to-r from-pink-500 via-purple-500 to-blue-500 bg-clip-text text-transparent">
+                  Predict & Prevent Risk
+                  <br />
+                  Before It Costs You Millions
+                </h1>
+
+                <p className="text-xl md:text-2xl text-gray-300 max-w-4xl mx-auto mb-8">
+                  Advanced predictive modeling powered by AI analyzes 500+ risk factors in real-time,
+                  preventing losses before they occur with 99.2% accuracy
+                </p>
+
+                <div className="flex flex-wrap gap-6 justify-center">
+                  <Link href="/request-demo">
+                    <motion.button
+                      whileHover={{ scale: 1.05 }}
+                      whileTap={{ scale: 0.95 }}
+                      className="px-8 py-4 bg-gradient-to-r from-pink-600 to-purple-600 rounded-full text-white font-semibold text-lg flex items-center gap-2"
+                    >
+                      <Sparkles className="w-5 h-5" />
+                      Request Demo
+                    </motion.button>
+                  </Link>
+                </div>
               </motion.div>
-              
-              <h1 className="text-6xl md:text-7xl font-bold mb-6 bg-gradient-to-r from-purple-400 via-pink-400 to-purple-400 bg-clip-text text-transparent">
-                Risk Assessment
-              </h1>
-              
-              <p className="text-xl text-gray-300 max-w-3xl mx-auto">
-                AI-powered actuarial risk assessment delivering 98.7% accuracy with real-time compliance monitoring
-              </p>
-            </motion.div>
+            </div>
+          </section>
 
-            {/* KPI Dashboard */}
-            <motion.section
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.2 }}
-              className="mb-20"
-            >
-              <h2 className="text-4xl font-bold mb-8 flex items-center gap-3">
-                <BarChart3 className="w-8 h-8 text-purple-400" />
-                Key Performance Indicators
-              </h2>
-              
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-                {kpis.map((kpi, idx) => (
+          {/* Problem Section */}
+          <section className="px-4 mb-20">
+            <div className="max-w-7xl mx-auto">
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                className="text-center mb-12"
+              >
+                <h2 className="text-4xl md:text-5xl font-bold mb-6">The Risk Management Challenge</h2>
+                <p className="text-xl text-gray-400 max-w-3xl mx-auto">
+                  Traditional risk assessment is reactive, fragmented, and fails to predict emerging threats
+                </p>
+              </motion.div>
+
+              <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+                {problems.map((problem, index) => (
                   <motion.div
-                    key={idx}
-                    initial={{ opacity: 0, scale: 0.9 }}
-                    animate={{ opacity: 1, scale: 1 }}
-                    transition={{ delay: 0.3 + idx * 0.1 }}
-                    whileHover={{ scale: 1.05, y: -5 }}
-                    className="relative p-6 rounded-2xl overflow-hidden group cursor-pointer"
-                    style={{
-                      background: "linear-gradient(135deg, rgba(168, 85, 247, 0.1), rgba(236, 72, 153, 0.1))",
-                      boxShadow: "0 0 40px rgba(168, 85, 247, 0.3)"
-                    }}
+                    key={index}
+                    initial={{ opacity: 0, y: 20 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    transition={{ delay: index * 0.1 }}
+                    viewport={{ once: true }}
+                    className="p-6 rounded-xl bg-red-500/10 border border-red-500/30"
                   >
-                    <div className="relative z-10">
-                      <p className="text-sm text-gray-400 mb-2">{kpi.label}</p>
-                      <p className="text-3xl font-bold text-white mb-2">{kpi.value}</p>
-                      <p className="text-sm text-green-400 flex items-center gap-1">
-                        <TrendingUp className="w-4 h-4" />
-                        {kpi.trend}
-                      </p>
-                    </div>
-                    
+                    <AlertTriangle className="w-6 h-6 text-red-400 mb-3" />
+                    <p className="text-gray-300">{problem}</p>
+                  </motion.div>
+                ))}
+              </div>
+            </div>
+          </section>
+
+          {/* Features Grid */}
+          <section className="px-4 mb-20">
+            <div className="max-w-7xl mx-auto">
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                className="text-center mb-12"
+              >
+                <h2 className="text-4xl md:text-5xl font-bold mb-6">Kincaid IQ Solution</h2>
+                <p className="text-xl text-gray-400 max-w-3xl mx-auto">
+                  Comprehensive risk assessment platform that predicts, prevents, and mitigates losses
+                </p>
+              </motion.div>
+
+              <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                {features.map((feature, index) => {
+                  const Icon = feature.icon;
+                  return (
                     <motion.div
-                      className="absolute inset-0 bg-gradient-to-r from-purple-500/0 via-purple-500/20 to-purple-500/0"
-                      initial={{ x: "-100%" }}
-                      whileHover={{ x: "100%" }}
-                      transition={{ duration: 0.6 }}
-                    />
-                  </motion.div>
-                ))}
-              </div>
-            </motion.section>
+                      key={index}
+                      initial={{ opacity: 0, y: 30 }}
+                      whileInView={{ opacity: 1, y: 0 }}
+                      transition={{ delay: index * 0.1 }}
+                      viewport={{ once: true }}
+                      className="p-8 rounded-2xl bg-gray-900/50 backdrop-blur-xl border border-gray-800 hover:border-purple-500/50 transition-all group"
+                    >
+                      <div className="p-4 rounded-xl bg-gradient-to-br from-pink-500/20 to-purple-500/20 border border-purple-500/30 inline-block mb-6">
+                        <Icon className="w-8 h-8 text-purple-400" />
+                      </div>
 
-            {/* Legal & Compliance */}
-            <motion.section
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.4 }}
-              className="mb-20"
-            >
-              <h2 className="text-4xl font-bold mb-8 flex items-center gap-3">
-                <FileText className="w-8 h-8 text-pink-400" />
-                Legal & Compliance Frameworks
-              </h2>
-              
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                {complianceFrameworks.map((framework, idx) => (
-                  <motion.div
-                    key={idx}
-                    initial={{ opacity: 0, x: -20 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    transition={{ delay: 0.5 + idx * 0.1 }}
-                    whileHover={{ scale: 1.02, x: 10 }}
-                    className="p-6 rounded-2xl"
-                    style={{
-                      background: "linear-gradient(135deg, rgba(236, 72, 153, 0.1), rgba(168, 85, 247, 0.1))",
-                      boxShadow: "0 0 40px rgba(236, 72, 153, 0.3)"
-                    }}
-                  >
-                    <div className="flex items-start gap-4">
-                      <CheckCircle2 className="w-6 h-6 text-green-400 flex-shrink-0 mt-1" />
-                      <div>
-                        <h3 className="text-xl font-bold text-white mb-2">{framework.name}</h3>
-                        <p className="text-gray-400">{framework.description}</p>
-                      </div>
-                    </div>
-                  </motion.div>
-                ))}
-              </div>
-            </motion.section>
+                      <h3 className="text-2xl font-bold mb-3 group-hover:text-purple-400 transition-colors">
+                        {feature.title}
+                      </h3>
 
-            {/* Technical Architecture */}
-            <motion.section
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.6 }}
-              className="mb-20"
-            >
-              <h2 className="text-4xl font-bold mb-8 flex items-center gap-3">
-                <Sparkles className="w-8 h-8 text-cyan-400" />
-                Technical Architecture
-              </h2>
-              
-              <div className="space-y-4">
-                {techStack.map((item, idx) => (
-                  <motion.div
-                    key={idx}
-                    initial={{ opacity: 0, x: 20 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    transition={{ delay: 0.7 + idx * 0.1 }}
-                    whileHover={{ scale: 1.02, x: -10 }}
-                    className="p-6 rounded-2xl"
-                    style={{
-                      background: "linear-gradient(135deg, rgba(34, 211, 238, 0.1), rgba(168, 85, 247, 0.1))",
-                      boxShadow: "0 0 40px rgba(34, 211, 238, 0.3)"
-                    }}
-                  >
-                    <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                      <div>
-                        <p className="text-sm text-gray-400 mb-1">Component</p>
-                        <p className="text-lg font-bold text-white">{item.component}</p>
-                      </div>
-                      <div>
-                        <p className="text-sm text-gray-400 mb-1">Technology</p>
-                        <p className="text-lg font-bold text-cyan-400">{item.tech}</p>
-                      </div>
-                      <div>
-                        <p className="text-sm text-gray-400 mb-1">Purpose</p>
-                        <p className="text-lg text-gray-300">{item.purpose}</p>
-                      </div>
-                    </div>
-                  </motion.div>
-                ))}
-              </div>
-            </motion.section>
+                      <p className="text-gray-400 mb-6">{feature.description}</p>
 
-            {/* Interactive Demo CTA */}
-            <motion.div
-              initial={{ opacity: 0, scale: 0.9 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ delay: 0.8 }}
-              className="text-center"
-            >
-              <Link href="/request-demo">
-                <motion.div
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.95 }}
-                  className="inline-block"
-                >
-                  <Button 
-                    size="lg"
-                    className="text-2xl px-12 py-8 rounded-2xl relative overflow-hidden group"
-                    style={{
-                      background: "linear-gradient(135deg, rgba(168, 85, 247, 0.3), rgba(236, 72, 153, 0.3))",
-                      boxShadow: "0 0 60px rgba(168, 85, 247, 0.6)"
-                    }}
-                  >
-                    <Sparkles className="w-6 h-6 mr-3" />
-                    Request Interactive Demo
-                    <Sparkles className="w-6 h-6 ml-3" />
-                    
+                      <div className="space-y-2">
+                        {feature.metrics.map((metric, idx) => (
+                          <div key={idx} className="flex items-center gap-2 text-sm">
+                            <CheckCircle2 className="w-4 h-4 text-emerald-400" />
+                            <span className="text-gray-300">{metric}</span>
+                          </div>
+                        ))}
+                      </div>
+                    </motion.div>
+                  );
+                })}
+              </div>
+            </div>
+          </section>
+
+          {/* Business Impact */}
+          <section className="px-4 mb-20">
+            <div className="max-w-7xl mx-auto">
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                className="text-center mb-12"
+              >
+                <h2 className="text-4xl md:text-5xl font-bold mb-6">Measurable Business Impact</h2>
+                <p className="text-xl text-gray-400 max-w-3xl mx-auto">
+                  Proven results that drive bottom-line value and operational excellence
+                </p>
+              </motion.div>
+
+              <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
+                {benefits.map((benefit, index) => {
+                  const Icon = benefit.icon;
+                  return (
                     <motion.div
-                      className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent"
-                      initial={{ x: "-100%" }}
-                      animate={{ x: "200%" }}
-                      transition={{ duration: 2, repeat: Infinity, ease: "linear" }}
-                    />
-                  </Button>
-                </motion.div>
-              </Link>
-            </motion.div>
-          </div>
+                      key={index}
+                      initial={{ opacity: 0, scale: 0.9 }}
+                      whileInView={{ opacity: 1, scale: 1 }}
+                      transition={{ delay: index * 0.1 }}
+                      viewport={{ once: true }}
+                      className="text-center p-8 rounded-2xl bg-gradient-to-br from-purple-500/10 to-pink-500/10 border border-purple-500/30"
+                    >
+                      <Icon className="w-12 h-12 text-purple-400 mx-auto mb-4" />
+                      <h3 className="text-3xl font-bold mb-3 text-purple-400">{benefit.title}</h3>
+                      <p className="text-gray-400">{benefit.description}</p>
+                    </motion.div>
+                  );
+                })}
+              </div>
+            </div>
+          </section>
+
+          {/* ROI Section */}
+          <section className="px-4 mb-20">
+            <div className="max-w-5xl mx-auto">
+              <motion.div
+                initial={{ opacity: 0, scale: 0.9 }}
+                whileInView={{ opacity: 1, scale: 1 }}
+                viewport={{ once: true }}
+                className="p-12 rounded-3xl bg-gradient-to-br from-pink-500/20 via-purple-500/20 to-blue-500/20 border border-purple-500/30"
+              >
+                <h2 className="text-4xl font-bold mb-8 text-center">Return on Investment</h2>
+                
+                <div className="grid md:grid-cols-3 gap-8 mb-8">
+                  <div className="text-center">
+                    <div className="text-5xl font-bold text-pink-400 mb-2">487%</div>
+                    <div className="text-gray-400">Average ROI</div>
+                  </div>
+                  <div className="text-center">
+                    <div className="text-5xl font-bold text-purple-400 mb-2">$8.4M</div>
+                    <div className="text-gray-400">Annual Savings</div>
+                  </div>
+                  <div className="text-center">
+                    <div className="text-5xl font-bold text-blue-400 mb-2">6 Months</div>
+                    <div className="text-gray-400">Payback Period</div>
+                  </div>
+                </div>
+
+                <p className="text-center text-gray-300 text-lg">
+                  Organizations using Kincaid IQ Risk Assessment achieve measurable results within months,
+                  with continued value accumulation year over year
+                </p>
+              </motion.div>
+            </div>
+          </section>
+
+          {/* CTA */}
+          <section className="px-4">
+            <div className="max-w-4xl mx-auto text-center">
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+              >
+                <h2 className="text-4xl md:text-5xl font-bold mb-6">
+                  Ready to Transform Your Risk Management?
+                </h2>
+                <p className="text-xl text-gray-400 mb-8">
+                  Join 500+ organizations leveraging Kincaid IQ for predictive risk assessment
+                </p>
+                <Link href="/request-demo">
+                  <motion.button
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.95 }}
+                    className="px-12 py-5 bg-gradient-to-r from-pink-600 via-purple-600 to-blue-600 rounded-full text-white font-bold text-xl flex items-center gap-3 mx-auto"
+                  >
+                    <Sparkles className="w-6 h-6" />
+                    Schedule Consultation
+                    <ArrowRight className="w-6 h-6" />
+                  </motion.button>
+                </Link>
+              </motion.div>
+            </div>
+          </section>
         </main>
 
         <Footer />

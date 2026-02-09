@@ -1,310 +1,244 @@
 import { motion } from "framer-motion";
 import Link from "next/link";
-import { Sparkles, ArrowLeft, TrendingUp, CheckCircle2, FileText, BarChart3, Zap, Brain } from "lucide-react";
+import { Zap, Bot, Brain, Sparkles, TrendingUp, Target, CheckCircle2, ArrowRight, Award, DollarSign, Users, Shield } from "lucide-react";
 import { SEO } from "@/components/SEO";
 import Nav from "@/components/Nav";
 import Footer from "@/components/Footer";
-import { Button } from "@/components/ui/button";
 
-export default function AIAutomationSolution() {
-  const kpis = [
-    { label: "Automation Rate", value: "87.3%", trend: "+24%" },
-    { label: "Processing Speed", value: "3.2s", trend: "-89%" },
-    { label: "Accuracy", value: "99.6%", trend: "+8.1%" },
-    { label: "Cost Savings", value: "$18.7M", trend: "+156%" }
+export default function AIAutomation() {
+  const features = [
+    {
+      icon: Bot,
+      title: "Intelligent Process Automation",
+      description: "AI-powered automation of claims processing, eligibility determinations, benefit explanations, and customer inquiries reducing manual effort by 78%.",
+      metrics: ["78% Automation Rate", "24/7 Processing", "Zero Queue Time"],
+    },
+    {
+      icon: Brain,
+      title: "Machine Learning Models",
+      description: "Advanced ML algorithms for fraud detection, risk assessment, cost prediction, and personalized member engagement with continuous learning.",
+      metrics: ["Fraud Detection", "Risk Scoring", "Cost Prediction"],
+    },
+    {
+      icon: Target,
+      title: "Smart Decision Support",
+      description: "AI-assisted decision-making for complex cases, coverage determinations, and exception handling with explainable recommendations.",
+      metrics: ["Decision Support", "Explainable AI", "Audit Trail"],
+    },
+    {
+      icon: Zap,
+      title: "Workflow Optimization",
+      description: "Process mining and optimization algorithms identifying bottlenecks, inefficiencies, and automation opportunities across operations.",
+      metrics: ["Process Mining", "Bottleneck Detection", "Auto-Optimization"],
+    },
+    {
+      icon: TrendingUp,
+      title: "Predictive Analytics",
+      description: "Forward-looking analytics predicting member behaviors, cost trends, and operational needs enabling proactive management.",
+      metrics: ["Behavior Prediction", "Trend Forecasting", "Proactive Alerts"],
+    },
+    {
+      icon: Users,
+      title: "Conversational AI",
+      description: "Natural language processing for member self-service, benefit education, and issue resolution through chat and voice interfaces.",
+      metrics: ["NLP", "Multi-Channel", "Self-Service"],
+    },
   ];
 
-  const complianceFrameworks = [
-    { name: "EU AI Act", description: "Risk-based regulatory framework for artificial intelligence" },
-    { name: "NIST AI Risk Management Framework", description: "Managing risks from artificial intelligence" },
-    { name: "ISO/IEC 42001", description: "AI management system requirements" },
-    { name: "IEEE 7010", description: "Well-being metrics for autonomous and intelligent systems" }
-  ];
-
-  const techStack = [
-    { component: "ML Platform", tech: "TensorFlow + PyTorch", purpose: "Deep learning model training" },
-    { component: "NLP Engine", tech: "GPT-4 + BERT + Claude", purpose: "Document understanding & generation" },
-    { component: "Automation Framework", tech: "Apache Airflow + Prefect", purpose: "Workflow orchestration" },
-    { component: "MLOps Pipeline", tech: "MLflow + Kubeflow", purpose: "Model deployment & monitoring" }
-  ];
-
-  const automationCapabilities = [
-    { capability: "Claims Processing", automation: "94%", time_saved: "23 hrs/day", impact: "Extreme" },
-    { capability: "Policy Review", automation: "91%", time_saved: "18 hrs/day", impact: "Very High" },
-    { capability: "Risk Analysis", automation: "88%", time_saved: "15 hrs/day", impact: "Very High" },
-    { capability: "Document Classification", automation: "97%", time_saved: "28 hrs/day", impact: "Extreme" },
-    { capability: "Fraud Detection", automation: "93%", time_saved: "20 hrs/day", impact: "Very High" },
-    { capability: "Customer Support", automation: "85%", time_saved: "32 hrs/day", impact: "Extreme" }
+  const benefits = [
+    {
+      icon: DollarSign,
+      title: "$24.7M Savings",
+      description: "Average annual operational cost reduction",
+    },
+    {
+      icon: Zap,
+      title: "78% Automation",
+      description: "Manual processes automated through AI",
+    },
+    {
+      icon: Users,
+      title: "93% Accuracy",
+      description: "AI decision accuracy validated by experts",
+    },
+    {
+      icon: Award,
+      title: "987% Average ROI",
+      description: "Return on AI automation investment",
+    },
   ];
 
   return (
     <>
-      <SEO 
-        title="AI Automation Solution | SiriusB iQ"
-        description="Advanced AI automation with 87.3% automation rate and $18.7M+ cost savings"
+      <SEO
+        title="AI Automation Solutions | Kincaid IQ"
+        description="Intelligent process automation achieving 78% automation rate and $24.7M average savings through AI-powered operations."
+        image="/og-image.png"
       />
-      
-      <div className="min-h-screen bg-black text-white relative overflow-hidden">
-        <div className="fixed inset-0 pointer-events-none">
-          <div className="absolute inset-0 bg-gradient-to-br from-pink-900/20 via-black to-purple-900/20" />
-          <motion.div
-            className="absolute inset-0"
-            style={{
-              backgroundImage: `radial-gradient(circle at 2px 2px, rgba(236, 72, 153, 0.15) 1px, transparent 0)`,
-              backgroundSize: "40px 40px"
-            }}
-            animate={{ backgroundPosition: ["0px 0px", "40px 40px"] }}
-            transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
-          />
-        </div>
-
+      <div className="min-h-screen bg-black text-white">
         <Nav />
 
-        <main className="relative z-10 pt-32 pb-20 px-6">
-          <div className="max-w-7xl mx-auto">
-            <Link href="/">
-              <Button variant="ghost" className="mb-8 text-pink-400 hover:text-pink-300">
-                <ArrowLeft className="w-4 h-4 mr-2" />
-                Back to Solutions
-              </Button>
-            </Link>
-
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              className="text-center mb-20"
-            >
+        <main className="pt-32 pb-20">
+          <section className="px-4 mb-20">
+            <div className="max-w-7xl mx-auto">
               <motion.div
-                className="inline-block p-4 rounded-2xl mb-6"
-                style={{
-                  background: "linear-gradient(135deg, rgba(236, 72, 153, 0.2), rgba(168, 85, 247, 0.2))",
-                  boxShadow: "0 0 60px rgba(236, 72, 153, 0.4)"
-                }}
-                whileHover={{ scale: 1.05, rotate: -5 }}
+                initial={{ opacity: 0, y: 30 }}
+                animate={{ opacity: 1, y: 0 }}
+                className="text-center mb-12"
               >
-                <Brain className="w-16 h-16 text-pink-400" />
+                <div className="inline-flex items-center gap-3 px-6 py-3 rounded-full bg-violet-500/20 border border-violet-500/30 mb-6">
+                  <Zap className="w-5 h-5 text-violet-400" />
+                  <span className="text-violet-400 font-semibold">AI Automation</span>
+                </div>
+
+                <h1 className="text-5xl md:text-7xl font-bold mb-6 bg-gradient-to-r from-violet-500 via-purple-500 to-fuchsia-500 bg-clip-text text-transparent">
+                  Transform Operations
+                  <br />
+                  With Intelligent Automation
+                </h1>
+
+                <p className="text-xl md:text-2xl text-gray-300 max-w-4xl mx-auto mb-8">
+                  AI-powered process automation achieving 78% automation rate
+                  with $24.7M average savings and 93% decision accuracy through intelligent systems
+                </p>
+
+                <Link href="/request-demo">
+                  <motion.button
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.95 }}
+                    className="px-8 py-4 bg-gradient-to-r from-violet-600 to-purple-600 rounded-full text-white font-semibold text-lg flex items-center gap-2 mx-auto"
+                  >
+                    <Sparkles className="w-5 h-5" />
+                    Request Demo
+                  </motion.button>
+                </Link>
               </motion.div>
-              
-              <h1 className="text-6xl md:text-7xl font-bold mb-6 bg-gradient-to-r from-pink-400 via-purple-400 to-pink-400 bg-clip-text text-transparent">
-                AI Automation
-              </h1>
-              
-              <p className="text-xl text-gray-300 max-w-3xl mx-auto">
-                Advanced AI automation with 87.3% automation rate delivering $18.7M+ in cost savings
-              </p>
-            </motion.div>
+            </div>
+          </section>
 
-            <motion.section
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.2 }}
-              className="mb-20"
-            >
-              <h2 className="text-4xl font-bold mb-8 flex items-center gap-3">
-                <BarChart3 className="w-8 h-8 text-pink-400" />
-                Performance Metrics
-              </h2>
-              
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-                {kpis.map((kpi, idx) => (
-                  <motion.div
-                    key={idx}
-                    initial={{ opacity: 0, scale: 0.9 }}
-                    animate={{ opacity: 1, scale: 1 }}
-                    transition={{ delay: 0.3 + idx * 0.1 }}
-                    whileHover={{ scale: 1.05, y: -5 }}
-                    className="relative p-6 rounded-2xl overflow-hidden group cursor-pointer"
-                    style={{
-                      background: "linear-gradient(135deg, rgba(236, 72, 153, 0.1), rgba(168, 85, 247, 0.1))",
-                      boxShadow: "0 0 40px rgba(236, 72, 153, 0.3)"
-                    }}
-                  >
-                    <div className="relative z-10">
-                      <p className="text-sm text-gray-400 mb-2">{kpi.label}</p>
-                      <p className="text-3xl font-bold text-white mb-2">{kpi.value}</p>
-                      <p className="text-sm text-green-400 flex items-center gap-1">
-                        <TrendingUp className="w-4 h-4" />
-                        {kpi.trend}
-                      </p>
-                    </div>
-                    
+          <section className="px-4 mb-20">
+            <div className="max-w-7xl mx-auto">
+              <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                {features.map((feature, index) => {
+                  const Icon = feature.icon;
+                  return (
                     <motion.div
-                      className="absolute inset-0 bg-gradient-to-r from-pink-500/0 via-pink-500/20 to-pink-500/0"
-                      initial={{ x: "-100%" }}
-                      whileHover={{ x: "100%" }}
-                      transition={{ duration: 0.6 }}
-                    />
-                  </motion.div>
-                ))}
-              </div>
-            </motion.section>
+                      key={index}
+                      initial={{ opacity: 0, y: 30 }}
+                      whileInView={{ opacity: 1, y: 0 }}
+                      transition={{ delay: index * 0.1 }}
+                      viewport={{ once: true }}
+                      className="p-8 rounded-2xl bg-gray-900/50 backdrop-blur-xl border border-gray-800 hover:border-violet-500/50 transition-all group"
+                    >
+                      <div className="p-4 rounded-xl bg-gradient-to-br from-violet-500/20 to-purple-500/20 border border-purple-500/30 inline-block mb-6">
+                        <Icon className="w-8 h-8 text-purple-400" />
+                      </div>
 
-            <motion.section
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.4 }}
-              className="mb-20"
-            >
-              <h2 className="text-4xl font-bold mb-8 flex items-center gap-3">
-                <Zap className="w-8 h-8 text-purple-400" />
-                Automation Capabilities
-              </h2>
-              
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                {automationCapabilities.map((item, idx) => (
-                  <motion.div
-                    key={idx}
-                    initial={{ opacity: 0, scale: 0.9 }}
-                    animate={{ opacity: 1, scale: 1 }}
-                    transition={{ delay: 0.5 + idx * 0.1 }}
-                    whileHover={{ scale: 1.05, rotate: 2 }}
-                    className="p-6 rounded-2xl"
-                    style={{
-                      background: "linear-gradient(135deg, rgba(168, 85, 247, 0.1), rgba(236, 72, 153, 0.1))",
-                      boxShadow: "0 0 40px rgba(168, 85, 247, 0.3)"
-                    }}
-                  >
-                    <h3 className="text-xl font-bold text-white mb-4">{item.capability}</h3>
-                    <div className="space-y-2">
-                      <div className="flex justify-between">
-                        <span className="text-gray-400">Automation:</span>
-                        <span className="text-purple-400 font-bold">{item.automation}</span>
-                      </div>
-                      <div className="flex justify-between">
-                        <span className="text-gray-400">Time Saved:</span>
-                        <span className="text-pink-400 font-bold">{item.time_saved}</span>
-                      </div>
-                      <div className="flex justify-between">
-                        <span className="text-gray-400">Impact:</span>
-                        <span className={`font-bold ${
-                          item.impact === "Extreme" ? "text-green-400" :
-                          item.impact === "Very High" ? "text-teal-400" : "text-blue-400"
-                        }`}>
-                          {item.impact}
-                        </span>
-                      </div>
-                    </div>
-                  </motion.div>
-                ))}
-              </div>
-            </motion.section>
+                      <h3 className="text-2xl font-bold mb-3 group-hover:text-purple-400 transition-colors">
+                        {feature.title}
+                      </h3>
 
-            <motion.section
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.6 }}
-              className="mb-20"
-            >
-              <h2 className="text-4xl font-bold mb-8 flex items-center gap-3">
-                <FileText className="w-8 h-8 text-pink-400" />
-                AI Governance & Compliance
-              </h2>
-              
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                {complianceFrameworks.map((framework, idx) => (
-                  <motion.div
-                    key={idx}
-                    initial={{ opacity: 0, x: -20 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    transition={{ delay: 0.7 + idx * 0.1 }}
-                    whileHover={{ scale: 1.02, x: 10 }}
-                    className="p-6 rounded-2xl"
-                    style={{
-                      background: "linear-gradient(135deg, rgba(236, 72, 153, 0.1), rgba(168, 85, 247, 0.1))",
-                      boxShadow: "0 0 40px rgba(236, 72, 153, 0.3)"
-                    }}
-                  >
-                    <div className="flex items-start gap-4">
-                      <CheckCircle2 className="w-6 h-6 text-green-400 flex-shrink-0 mt-1" />
-                      <div>
-                        <h3 className="text-xl font-bold text-white mb-2">{framework.name}</h3>
-                        <p className="text-gray-400">{framework.description}</p>
-                      </div>
-                    </div>
-                  </motion.div>
-                ))}
-              </div>
-            </motion.section>
+                      <p className="text-gray-400 mb-6">{feature.description}</p>
 
-            <motion.section
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.8 }}
-              className="mb-20"
-            >
-              <h2 className="text-4xl font-bold mb-8 flex items-center gap-3">
-                <Sparkles className="w-8 h-8 text-purple-400" />
-                AI Technology Stack
-              </h2>
-              
-              <div className="space-y-4">
-                {techStack.map((item, idx) => (
-                  <motion.div
-                    key={idx}
-                    initial={{ opacity: 0, x: 20 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    transition={{ delay: 0.9 + idx * 0.1 }}
-                    whileHover={{ scale: 1.02, x: -10 }}
-                    className="p-6 rounded-2xl"
-                    style={{
-                      background: "linear-gradient(135deg, rgba(168, 85, 247, 0.1), rgba(236, 72, 153, 0.1))",
-                      boxShadow: "0 0 40px rgba(168, 85, 247, 0.3)"
-                    }}
-                  >
-                    <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                      <div>
-                        <p className="text-sm text-gray-400 mb-1">Component</p>
-                        <p className="text-lg font-bold text-white">{item.component}</p>
+                      <div className="space-y-2">
+                        {feature.metrics.map((metric, idx) => (
+                          <div key={idx} className="flex items-center gap-2 text-sm">
+                            <CheckCircle2 className="w-4 h-4 text-emerald-400" />
+                            <span className="text-gray-300">{metric}</span>
+                          </div>
+                        ))}
                       </div>
-                      <div>
-                        <p className="text-sm text-gray-400 mb-1">Technology</p>
-                        <p className="text-lg font-bold text-purple-400">{item.tech}</p>
-                      </div>
-                      <div>
-                        <p className="text-sm text-gray-400 mb-1">Purpose</p>
-                        <p className="text-lg text-gray-300">{item.purpose}</p>
-                      </div>
-                    </div>
-                  </motion.div>
-                ))}
+                    </motion.div>
+                  );
+                })}
               </div>
-            </motion.section>
+            </div>
+          </section>
 
-            <motion.div
-              initial={{ opacity: 0, scale: 0.9 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ delay: 1.0 }}
-              className="text-center"
-            >
-              <Link href="/request-demo">
-                <motion.div
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.95 }}
-                  className="inline-block"
-                >
-                  <Button 
-                    size="lg"
-                    className="text-2xl px-12 py-8 rounded-2xl relative overflow-hidden"
-                    style={{
-                      background: "linear-gradient(135deg, rgba(236, 72, 153, 0.3), rgba(168, 85, 247, 0.3))",
-                      boxShadow: "0 0 60px rgba(236, 72, 153, 0.6)"
-                    }}
-                  >
-                    <Sparkles className="w-6 h-6 mr-3" />
-                    Request AI Demo
-                    <Sparkles className="w-6 h-6 ml-3" />
-                    
+          <section className="px-4 mb-20">
+            <div className="max-w-7xl mx-auto">
+              <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
+                {benefits.map((benefit, index) => {
+                  const Icon = benefit.icon;
+                  return (
                     <motion.div
-                      className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent"
-                      initial={{ x: "-100%" }}
-                      animate={{ x: "200%" }}
-                      transition={{ duration: 2, repeat: Infinity, ease: "linear" }}
-                    />
-                  </Button>
-                </motion.div>
-              </Link>
-            </motion.div>
-          </div>
+                      key={index}
+                      initial={{ opacity: 0, scale: 0.9 }}
+                      whileInView={{ opacity: 1, scale: 1 }}
+                      transition={{ delay: index * 0.1 }}
+                      viewport={{ once: true }}
+                      className="text-center p-8 rounded-2xl bg-gradient-to-br from-violet-500/10 to-purple-500/10 border border-violet-500/30"
+                    >
+                      <Icon className="w-12 h-12 text-violet-400 mx-auto mb-4" />
+                      <h3 className="text-3xl font-bold mb-3 text-violet-400">{benefit.title}</h3>
+                      <p className="text-gray-400">{benefit.description}</p>
+                    </motion.div>
+                  );
+                })}
+              </div>
+            </div>
+          </section>
+
+          <section className="px-4 mb-20">
+            <div className="max-w-5xl mx-auto">
+              <motion.div
+                initial={{ opacity: 0, scale: 0.9 }}
+                whileInView={{ opacity: 1, scale: 1 }}
+                viewport={{ once: true }}
+                className="p-12 rounded-3xl bg-gradient-to-br from-violet-500/20 via-purple-500/20 to-fuchsia-500/20 border border-purple-500/30"
+              >
+                <h2 className="text-4xl font-bold mb-8 text-center">AI Automation Performance</h2>
+                
+                <div className="grid md:grid-cols-3 gap-8 mb-8">
+                  <div className="text-center">
+                    <div className="text-5xl font-bold text-violet-400 mb-2">$24.7M</div>
+                    <div className="text-gray-400">Annual Savings</div>
+                  </div>
+                  <div className="text-center">
+                    <div className="text-5xl font-bold text-purple-400 mb-2">78%</div>
+                    <div className="text-gray-400">Automation Rate</div>
+                  </div>
+                  <div className="text-center">
+                    <div className="text-5xl font-bold text-fuchsia-400 mb-2">93%</div>
+                    <div className="text-gray-400">AI Accuracy</div>
+                  </div>
+                </div>
+
+                <p className="text-center text-gray-300 text-lg">
+                  Organizations using Kincaid IQ AI Automation achieve dramatic operational efficiency
+                  while maintaining high accuracy and improving member experience
+                </p>
+              </motion.div>
+            </div>
+          </section>
+
+          <section className="px-4">
+            <div className="max-w-4xl mx-auto text-center">
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+              >
+                <h2 className="text-4xl md:text-5xl font-bold mb-6">
+                  Ready to Transform with AI Automation?
+                </h2>
+                <p className="text-xl text-gray-400 mb-8">
+                  Join leading organizations leveraging Kincaid IQ for intelligent process automation
+                </p>
+                <Link href="/request-demo">
+                  <motion.button
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.95 }}
+                    className="px-12 py-5 bg-gradient-to-r from-violet-600 via-purple-600 to-fuchsia-600 rounded-full text-white font-bold text-xl flex items-center gap-3 mx-auto"
+                  >
+                    <Sparkles className="w-6 h-6" />
+                    Schedule Consultation
+                    <ArrowRight className="w-6 h-6" />
+                  </motion.button>
+                </Link>
+              </motion.div>
+            </div>
+          </section>
         </main>
 
         <Footer />

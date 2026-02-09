@@ -1,305 +1,244 @@
 import { motion } from "framer-motion";
 import Link from "next/link";
-import { CheckCircle2, ArrowLeft, TrendingUp, FileText, BarChart3, Sparkles, Target } from "lucide-react";
+import { Award, CheckCircle2, Shield, Target, BarChart3, FileCheck, AlertTriangle, ArrowRight, Sparkles, DollarSign, Users, TrendingUp } from "lucide-react";
 import { SEO } from "@/components/SEO";
 import Nav from "@/components/Nav";
 import Footer from "@/components/Footer";
-import { Button } from "@/components/ui/button";
 
-export default function QualityAssuranceSolution() {
-  const kpis = [
-    { label: "Data Quality Score", value: "99.4%", trend: "+3.8%" },
-    { label: "Error Detection Rate", value: "99.7%", trend: "+5.2%" },
-    { label: "Audit Pass Rate", value: "98.9%", trend: "+6.4%" },
-    { label: "Compliance Score", value: "100%", trend: "0%" }
+export default function QualityAssurance() {
+  const features = [
+    {
+      icon: FileCheck,
+      title: "Automated Quality Audits",
+      description: "Continuous automated auditing of claims processing, eligibility determinations, and customer service interactions with real-time quality scoring.",
+      metrics: ["100% Claims Reviewed", "Real-time Scoring", "Zero Sampling Error"],
+    },
+    {
+      icon: Shield,
+      title: "Compliance Validation",
+      description: "Systematic validation of regulatory compliance across ERISA, ACA, HIPAA, and state requirements with automated corrective action workflows.",
+      metrics: ["Multi-Regulation", "Auto-Correction", "Audit Ready"],
+    },
+    {
+      icon: Target,
+      title: "Error Prevention System",
+      description: "Proactive error detection and prevention through pre-processing validation, rule enforcement, and intelligent workflow guardrails.",
+      metrics: ["Pre-Processing Checks", "Rule Enforcement", "Error Reduction"],
+    },
+    {
+      icon: BarChart3,
+      title: "Quality Metrics Dashboard",
+      description: "Comprehensive quality metrics tracking accuracy rates, turnaround times, member satisfaction, and compliance scores with trend analysis.",
+      metrics: ["Real-time Metrics", "Trend Analysis", "Benchmarking"],
+    },
+    {
+      icon: AlertTriangle,
+      title: "Risk-Based Monitoring",
+      description: "Intelligent risk scoring prioritizing high-risk transactions for enhanced review while streamlining low-risk processing for efficiency.",
+      metrics: ["Risk Scoring", "Priority Queuing", "Efficiency Gains"],
+    },
+    {
+      icon: Award,
+      title: "Continuous Improvement",
+      description: "Root cause analysis and corrective action tracking driving systematic quality improvements with measurable impact on performance.",
+      metrics: ["Root Cause Analysis", "Action Tracking", "Impact Measurement"],
+    },
   ];
 
-  const complianceFrameworks = [
-    { name: "SOC 2 Type II", description: "Service organization controls for security and availability" },
-    { name: "HIPAA Security Rule", description: "Administrative, physical, and technical safeguards" },
-    { name: "ISO 9001:2015", description: "Quality management systems requirements" },
-    { name: "21 CFR Part 11", description: "Electronic records and electronic signatures" }
-  ];
-
-  const techStack = [
-    { component: "QA Platform", tech: "Selenium + Cypress", purpose: "Automated testing & validation" },
-    { component: "Data Validation", tech: "Great Expectations + Pandera", purpose: "Schema & data quality checks" },
-    { component: "Audit Trail", tech: "Elasticsearch + Kibana", purpose: "Comprehensive audit logging" },
-    { component: "Monitoring Suite", tech: "DataDog + Sentry", purpose: "Real-time error detection" }
-  ];
-
-  const qualityMetrics = [
-    { metric: "Test Coverage", actual: "94.7%", target: ">90%", status: "Exceeds" },
-    { metric: "Defect Density", actual: "0.08/KLOC", target: "<0.1/KLOC", status: "Meets" },
-    { metric: "Mean Time to Resolution", actual: "2.3 hrs", target: "<4 hrs", status: "Exceeds" },
-    { metric: "Data Accuracy", actual: "99.8%", target: ">99%", status: "Exceeds" },
-    { metric: "Regression Test Pass Rate", actual: "98.2%", target: ">95%", status: "Exceeds" },
-    { metric: "Security Scan Score", actual: "A+", target: "A", status: "Exceeds" }
+  const benefits = [
+    {
+      icon: Award,
+      title: "99.8% Accuracy",
+      description: "Industry-leading quality across all processes",
+    },
+    {
+      icon: Shield,
+      title: "Zero Audit Findings",
+      description: "Perfect compliance record in regulatory audits",
+    },
+    {
+      icon: DollarSign,
+      title: "$8.4M Savings",
+      description: "Average annual error cost prevention",
+    },
+    {
+      icon: Users,
+      title: "96% Satisfaction",
+      description: "Member satisfaction with service quality",
+    },
   ];
 
   return (
     <>
-      <SEO 
-        title="Quality Assurance Solution | SiriusB iQ"
-        description="Enterprise quality assurance with 99.4% data quality score and automated validation"
+      <SEO
+        title="Quality Assurance Solutions | Kincaid IQ"
+        description="Automated quality audits achieving 99.8% accuracy, zero audit findings, and $8.4M average error prevention through comprehensive QA."
+        image="/og-image.png"
       />
-      
-      <div className="min-h-screen bg-black text-white relative overflow-hidden">
-        <div className="fixed inset-0 pointer-events-none">
-          <div className="absolute inset-0 bg-gradient-to-br from-purple-900/20 via-black to-pink-900/20" />
-          <motion.div
-            className="absolute inset-0"
-            style={{
-              backgroundImage: `radial-gradient(circle at 2px 2px, rgba(168, 85, 247, 0.15) 1px, transparent 0)`,
-              backgroundSize: "40px 40px"
-            }}
-            animate={{ backgroundPosition: ["0px 0px", "40px 40px"] }}
-            transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
-          />
-        </div>
-
+      <div className="min-h-screen bg-black text-white">
         <Nav />
 
-        <main className="relative z-10 pt-32 pb-20 px-6">
-          <div className="max-w-7xl mx-auto">
-            <Link href="/">
-              <Button variant="ghost" className="mb-8 text-purple-400 hover:text-purple-300">
-                <ArrowLeft className="w-4 h-4 mr-2" />
-                Back to Solutions
-              </Button>
-            </Link>
-
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              className="text-center mb-20"
-            >
+        <main className="pt-32 pb-20">
+          <section className="px-4 mb-20">
+            <div className="max-w-7xl mx-auto">
               <motion.div
-                className="inline-block p-4 rounded-2xl mb-6"
-                style={{
-                  background: "linear-gradient(135deg, rgba(168, 85, 247, 0.2), rgba(236, 72, 153, 0.2))",
-                  boxShadow: "0 0 60px rgba(168, 85, 247, 0.4)"
-                }}
-                whileHover={{ scale: 1.05, rotate: 5 }}
+                initial={{ opacity: 0, y: 30 }}
+                animate={{ opacity: 1, y: 0 }}
+                className="text-center mb-12"
               >
-                <CheckCircle2 className="w-16 h-16 text-purple-400" />
+                <div className="inline-flex items-center gap-3 px-6 py-3 rounded-full bg-green-500/20 border border-green-500/30 mb-6">
+                  <Award className="w-5 h-5 text-green-400" />
+                  <span className="text-green-400 font-semibold">Quality Assurance</span>
+                </div>
+
+                <h1 className="text-5xl md:text-7xl font-bold mb-6 bg-gradient-to-r from-green-500 via-emerald-500 to-teal-500 bg-clip-text text-transparent">
+                  Achieve Excellence
+                  <br />
+                  Through Automated Quality
+                </h1>
+
+                <p className="text-xl md:text-2xl text-gray-300 max-w-4xl mx-auto mb-8">
+                  Automated quality audits achieving 99.8% accuracy with zero audit findings
+                  preventing $8.4M in average annual error costs through comprehensive QA
+                </p>
+
+                <Link href="/request-demo">
+                  <motion.button
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.95 }}
+                    className="px-8 py-4 bg-gradient-to-r from-green-600 to-emerald-600 rounded-full text-white font-semibold text-lg flex items-center gap-2 mx-auto"
+                  >
+                    <Sparkles className="w-5 h-5" />
+                    Request Demo
+                  </motion.button>
+                </Link>
               </motion.div>
-              
-              <h1 className="text-6xl md:text-7xl font-bold mb-6 bg-gradient-to-r from-purple-400 via-pink-400 to-purple-400 bg-clip-text text-transparent">
-                Quality Assurance
-              </h1>
-              
-              <p className="text-xl text-gray-300 max-w-3xl mx-auto">
-                Enterprise quality assurance with 99.4% data quality score and automated validation
-              </p>
-            </motion.div>
+            </div>
+          </section>
 
-            <motion.section
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.2 }}
-              className="mb-20"
-            >
-              <h2 className="text-4xl font-bold mb-8 flex items-center gap-3">
-                <BarChart3 className="w-8 h-8 text-purple-400" />
-                Quality Metrics
-              </h2>
-              
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-                {kpis.map((kpi, idx) => (
-                  <motion.div
-                    key={idx}
-                    initial={{ opacity: 0, scale: 0.9 }}
-                    animate={{ opacity: 1, scale: 1 }}
-                    transition={{ delay: 0.3 + idx * 0.1 }}
-                    whileHover={{ scale: 1.05, y: -5 }}
-                    className="relative p-6 rounded-2xl overflow-hidden group cursor-pointer"
-                    style={{
-                      background: "linear-gradient(135deg, rgba(168, 85, 247, 0.1), rgba(236, 72, 153, 0.1))",
-                      boxShadow: "0 0 40px rgba(168, 85, 247, 0.3)"
-                    }}
-                  >
-                    <div className="relative z-10">
-                      <p className="text-sm text-gray-400 mb-2">{kpi.label}</p>
-                      <p className="text-3xl font-bold text-white mb-2">{kpi.value}</p>
-                      <p className="text-sm text-green-400 flex items-center gap-1">
-                        <TrendingUp className="w-4 h-4" />
-                        {kpi.trend}
-                      </p>
-                    </div>
-                    
+          <section className="px-4 mb-20">
+            <div className="max-w-7xl mx-auto">
+              <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                {features.map((feature, index) => {
+                  const Icon = feature.icon;
+                  return (
                     <motion.div
-                      className="absolute inset-0 bg-gradient-to-r from-purple-500/0 via-purple-500/20 to-purple-500/0"
-                      initial={{ x: "-100%" }}
-                      whileHover={{ x: "100%" }}
-                      transition={{ duration: 0.6 }}
-                    />
-                  </motion.div>
-                ))}
-              </div>
-            </motion.section>
+                      key={index}
+                      initial={{ opacity: 0, y: 30 }}
+                      whileInView={{ opacity: 1, y: 0 }}
+                      transition={{ delay: index * 0.1 }}
+                      viewport={{ once: true }}
+                      className="p-8 rounded-2xl bg-gray-900/50 backdrop-blur-xl border border-gray-800 hover:border-green-500/50 transition-all group"
+                    >
+                      <div className="p-4 rounded-xl bg-gradient-to-br from-green-500/20 to-emerald-500/20 border border-emerald-500/30 inline-block mb-6">
+                        <Icon className="w-8 h-8 text-emerald-400" />
+                      </div>
 
-            <motion.section
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.4 }}
-              className="mb-20"
-            >
-              <h2 className="text-4xl font-bold mb-8 flex items-center gap-3">
-                <Target className="w-8 h-8 text-pink-400" />
-                Quality Standards
-              </h2>
-              
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                {qualityMetrics.map((item, idx) => (
-                  <motion.div
-                    key={idx}
-                    initial={{ opacity: 0, scale: 0.9 }}
-                    animate={{ opacity: 1, scale: 1 }}
-                    transition={{ delay: 0.5 + idx * 0.1 }}
-                    whileHover={{ scale: 1.05, rotate: 2 }}
-                    className="p-6 rounded-2xl"
-                    style={{
-                      background: "linear-gradient(135deg, rgba(236, 72, 153, 0.1), rgba(168, 85, 247, 0.1))",
-                      boxShadow: "0 0 40px rgba(236, 72, 153, 0.3)"
-                    }}
-                  >
-                    <h3 className="text-xl font-bold text-white mb-4">{item.metric}</h3>
-                    <div className="space-y-2">
-                      <div className="flex justify-between">
-                        <span className="text-gray-400">Actual:</span>
-                        <span className="text-pink-400 font-bold">{item.actual}</span>
-                      </div>
-                      <div className="flex justify-between">
-                        <span className="text-gray-400">Target:</span>
-                        <span className="text-purple-400 font-bold">{item.target}</span>
-                      </div>
-                      <div className="flex justify-between">
-                        <span className="text-gray-400">Status:</span>
-                        <span className="text-green-400 font-bold">{item.status}</span>
-                      </div>
-                    </div>
-                  </motion.div>
-                ))}
-              </div>
-            </motion.section>
+                      <h3 className="text-2xl font-bold mb-3 group-hover:text-emerald-400 transition-colors">
+                        {feature.title}
+                      </h3>
 
-            <motion.section
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.6 }}
-              className="mb-20"
-            >
-              <h2 className="text-4xl font-bold mb-8 flex items-center gap-3">
-                <FileText className="w-8 h-8 text-purple-400" />
-                Compliance Standards
-              </h2>
-              
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                {complianceFrameworks.map((framework, idx) => (
-                  <motion.div
-                    key={idx}
-                    initial={{ opacity: 0, x: -20 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    transition={{ delay: 0.7 + idx * 0.1 }}
-                    whileHover={{ scale: 1.02, x: 10 }}
-                    className="p-6 rounded-2xl"
-                    style={{
-                      background: "linear-gradient(135deg, rgba(168, 85, 247, 0.1), rgba(236, 72, 153, 0.1))",
-                      boxShadow: "0 0 40px rgba(168, 85, 247, 0.3)"
-                    }}
-                  >
-                    <div className="flex items-start gap-4">
-                      <CheckCircle2 className="w-6 h-6 text-green-400 flex-shrink-0 mt-1" />
-                      <div>
-                        <h3 className="text-xl font-bold text-white mb-2">{framework.name}</h3>
-                        <p className="text-gray-400">{framework.description}</p>
-                      </div>
-                    </div>
-                  </motion.div>
-                ))}
-              </div>
-            </motion.section>
+                      <p className="text-gray-400 mb-6">{feature.description}</p>
 
-            <motion.section
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.8 }}
-              className="mb-20"
-            >
-              <h2 className="text-4xl font-bold mb-8 flex items-center gap-3">
-                <Sparkles className="w-8 h-8 text-pink-400" />
-                Technology Stack
-              </h2>
-              
-              <div className="space-y-4">
-                {techStack.map((item, idx) => (
-                  <motion.div
-                    key={idx}
-                    initial={{ opacity: 0, x: 20 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    transition={{ delay: 0.9 + idx * 0.1 }}
-                    whileHover={{ scale: 1.02, x: -10 }}
-                    className="p-6 rounded-2xl"
-                    style={{
-                      background: "linear-gradient(135deg, rgba(236, 72, 153, 0.1), rgba(168, 85, 247, 0.1))",
-                      boxShadow: "0 0 40px rgba(236, 72, 153, 0.3)"
-                    }}
-                  >
-                    <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                      <div>
-                        <p className="text-sm text-gray-400 mb-1">Component</p>
-                        <p className="text-lg font-bold text-white">{item.component}</p>
+                      <div className="space-y-2">
+                        {feature.metrics.map((metric, idx) => (
+                          <div key={idx} className="flex items-center gap-2 text-sm">
+                            <CheckCircle2 className="w-4 h-4 text-emerald-400" />
+                            <span className="text-gray-300">{metric}</span>
+                          </div>
+                        ))}
                       </div>
-                      <div>
-                        <p className="text-sm text-gray-400 mb-1">Technology</p>
-                        <p className="text-lg font-bold text-pink-400">{item.tech}</p>
-                      </div>
-                      <div>
-                        <p className="text-sm text-gray-400 mb-1">Purpose</p>
-                        <p className="text-lg text-gray-300">{item.purpose}</p>
-                      </div>
-                    </div>
-                  </motion.div>
-                ))}
+                    </motion.div>
+                  );
+                })}
               </div>
-            </motion.section>
+            </div>
+          </section>
 
-            <motion.div
-              initial={{ opacity: 0, scale: 0.9 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ delay: 1.0 }}
-              className="text-center"
-            >
-              <Link href="/request-demo">
-                <motion.div
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.95 }}
-                  className="inline-block"
-                >
-                  <Button 
-                    size="lg"
-                    className="text-2xl px-12 py-8 rounded-2xl relative overflow-hidden"
-                    style={{
-                      background: "linear-gradient(135deg, rgba(168, 85, 247, 0.3), rgba(236, 72, 153, 0.3))",
-                      boxShadow: "0 0 60px rgba(168, 85, 247, 0.6)"
-                    }}
-                  >
-                    <Sparkles className="w-6 h-6 mr-3" />
-                    Request QA Demo
-                    <Sparkles className="w-6 h-6 ml-3" />
-                    
+          <section className="px-4 mb-20">
+            <div className="max-w-7xl mx-auto">
+              <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
+                {benefits.map((benefit, index) => {
+                  const Icon = benefit.icon;
+                  return (
                     <motion.div
-                      className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent"
-                      initial={{ x: "-100%" }}
-                      animate={{ x: "200%" }}
-                      transition={{ duration: 2, repeat: Infinity, ease: "linear" }}
-                    />
-                  </Button>
-                </motion.div>
-              </Link>
-            </motion.div>
-          </div>
+                      key={index}
+                      initial={{ opacity: 0, scale: 0.9 }}
+                      whileInView={{ opacity: 1, scale: 1 }}
+                      transition={{ delay: index * 0.1 }}
+                      viewport={{ once: true }}
+                      className="text-center p-8 rounded-2xl bg-gradient-to-br from-green-500/10 to-emerald-500/10 border border-green-500/30"
+                    >
+                      <Icon className="w-12 h-12 text-green-400 mx-auto mb-4" />
+                      <h3 className="text-3xl font-bold mb-3 text-green-400">{benefit.title}</h3>
+                      <p className="text-gray-400">{benefit.description}</p>
+                    </motion.div>
+                  );
+                })}
+              </div>
+            </div>
+          </section>
+
+          <section className="px-4 mb-20">
+            <div className="max-w-5xl mx-auto">
+              <motion.div
+                initial={{ opacity: 0, scale: 0.9 }}
+                whileInView={{ opacity: 1, scale: 1 }}
+                viewport={{ once: true }}
+                className="p-12 rounded-3xl bg-gradient-to-br from-green-500/20 via-emerald-500/20 to-teal-500/20 border border-emerald-500/30"
+              >
+                <h2 className="text-4xl font-bold mb-8 text-center">Quality Performance</h2>
+                
+                <div className="grid md:grid-cols-3 gap-8 mb-8">
+                  <div className="text-center">
+                    <div className="text-5xl font-bold text-green-400 mb-2">99.8%</div>
+                    <div className="text-gray-400">Accuracy Rate</div>
+                  </div>
+                  <div className="text-center">
+                    <div className="text-5xl font-bold text-emerald-400 mb-2">Zero</div>
+                    <div className="text-gray-400">Audit Findings</div>
+                  </div>
+                  <div className="text-center">
+                    <div className="text-5xl font-bold text-teal-400 mb-2">$8.4M</div>
+                    <div className="text-gray-400">Error Prevention</div>
+                  </div>
+                </div>
+
+                <p className="text-center text-gray-300 text-lg">
+                  Organizations using Kincaid IQ Quality Assurance achieve exceptional accuracy
+                  and compliance while significantly reducing error-related costs
+                </p>
+              </motion.div>
+            </div>
+          </section>
+
+          <section className="px-4">
+            <div className="max-w-4xl mx-auto text-center">
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+              >
+                <h2 className="text-4xl md:text-5xl font-bold mb-6">
+                  Ready to Achieve Quality Excellence?
+                </h2>
+                <p className="text-xl text-gray-400 mb-8">
+                  Join leading organizations leveraging Kincaid IQ for automated quality assurance
+                </p>
+                <Link href="/request-demo">
+                  <motion.button
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.95 }}
+                    className="px-12 py-5 bg-gradient-to-r from-green-600 via-emerald-600 to-teal-600 rounded-full text-white font-bold text-xl flex items-center gap-3 mx-auto"
+                  >
+                    <Sparkles className="w-6 h-6" />
+                    Schedule Consultation
+                    <ArrowRight className="w-6 h-6" />
+                  </motion.button>
+                </Link>
+              </motion.div>
+            </div>
+          </section>
         </main>
 
         <Footer />

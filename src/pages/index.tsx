@@ -225,14 +225,153 @@ export default function Home() {
               className="flex flex-wrap gap-4 justify-center pt-4"
             >
               <Link href="/war-room">
-                <Button size="lg" className="bg-gradient-to-r from-blue-600 to-violet-600 hover:from-blue-700 hover:to-violet-700 shadow-[0_0_24px_rgba(99,102,241,0.35)] hover:shadow-[0_0_32px_rgba(139,92,246,0.45)]">
-                  Launch War Room <ArrowRight className="ml-2 h-5 w-5" />
-                </Button>
+                <motion.div
+                  className="relative group cursor-pointer"
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
+                >
+                  {/* 3D Base Layer */}
+                  <div className="absolute inset-0 bg-gradient-to-br from-blue-600 to-violet-600 rounded-xl blur-xl opacity-50 group-hover:opacity-75 transition-opacity duration-300" />
+                  
+                  {/* 3D Middle Layer - Depth Effect */}
+                  <div className="absolute inset-0 translate-y-1 bg-gradient-to-br from-blue-700 to-violet-700 rounded-xl" />
+                  
+                  {/* Top Button Surface */}
+                  <motion.div
+                    className="relative px-8 py-4 bg-gradient-to-br from-blue-600 to-violet-600 rounded-xl overflow-hidden"
+                    whileHover={{ y: -2 }}
+                    transition={{ duration: 0.2 }}
+                  >
+                    {/* Animated Shine Effect */}
+                    <motion.div
+                      className="absolute inset-0 bg-gradient-to-r from-transparent via-white/30 to-transparent"
+                      animate={{
+                        x: ["-100%", "200%"],
+                      }}
+                      transition={{
+                        duration: 2,
+                        repeat: Infinity,
+                        repeatDelay: 1,
+                      }}
+                    />
+                    
+                    {/* Inner Glow */}
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent" />
+                    
+                    {/* Button Content */}
+                    <div className="relative flex items-center gap-2 text-white font-semibold text-lg">
+                      <span>Launch War Room</span>
+                      <motion.div
+                        animate={{ x: [0, 4, 0] }}
+                        transition={{ duration: 1.5, repeat: Infinity }}
+                      >
+                        <ArrowRight className="h-5 w-5" />
+                      </motion.div>
+                    </div>
+                    
+                    {/* Particle Effect on Hover */}
+                    <motion.div
+                      className="absolute inset-0 opacity-0 group-hover:opacity-100"
+                      transition={{ duration: 0.3 }}
+                    >
+                      {[...Array(6)].map((_, i) => (
+                        <motion.div
+                          key={i}
+                          className="absolute w-1 h-1 bg-white rounded-full"
+                          style={{
+                            left: `${20 + i * 15}%`,
+                            top: "50%",
+                          }}
+                          animate={{
+                            y: [-20, -40],
+                            opacity: [0, 1, 0],
+                          }}
+                          transition={{
+                            duration: 1,
+                            repeat: Infinity,
+                            delay: i * 0.1,
+                          }}
+                        />
+                      ))}
+                    </motion.div>
+                  </motion.div>
+                  
+                  {/* Pulsing Glow Ring */}
+                  <motion.div
+                    className="absolute inset-0 rounded-xl border-2 border-violet-400/50"
+                    animate={{
+                      scale: [1, 1.05, 1],
+                      opacity: [0.5, 0.8, 0.5],
+                    }}
+                    transition={{
+                      duration: 2,
+                      repeat: Infinity,
+                    }}
+                  />
+                </motion.div>
               </Link>
+
               <Link href="/request-demo">
-                <Button size="lg" variant="outline" className="border-white/20 hover:bg-white/10">
-                  Request Demo
-                </Button>
+                <motion.div
+                  className="relative group cursor-pointer"
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
+                >
+                  {/* 3D Base Glow */}
+                  <div className="absolute inset-0 bg-white/10 rounded-xl blur-xl opacity-30 group-hover:opacity-50 transition-opacity duration-300" />
+                  
+                  {/* 3D Depth Layer */}
+                  <div className="absolute inset-0 translate-y-1 bg-white/5 rounded-xl border border-white/10" />
+                  
+                  {/* Top Button Surface */}
+                  <motion.div
+                    className="relative px-8 py-4 bg-slate-900/80 backdrop-blur-xl rounded-xl border border-white/20 overflow-hidden"
+                    whileHover={{ y: -2, borderColor: "rgba(255,255,255,0.4)" }}
+                    transition={{ duration: 0.2 }}
+                  >
+                    {/* Gradient Sweep on Hover */}
+                    <motion.div
+                      className="absolute inset-0 bg-gradient-to-r from-transparent via-violet-500/20 to-transparent opacity-0 group-hover:opacity-100"
+                      animate={{
+                        x: ["-100%", "200%"],
+                      }}
+                      transition={{
+                        duration: 1.5,
+                        repeat: Infinity,
+                        repeatDelay: 0.5,
+                      }}
+                    />
+                    
+                    {/* Holographic Edge Effect */}
+                    <div className="absolute inset-0 bg-gradient-to-br from-cyan-500/10 via-transparent to-violet-500/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                    
+                    {/* Button Content */}
+                    <div className="relative flex items-center gap-2 text-white font-semibold text-lg">
+                      <span>Request Demo</span>
+                    </div>
+                    
+                    {/* Ripple Effect on Hover */}
+                    <motion.div
+                      className="absolute inset-0 opacity-0 group-hover:opacity-100"
+                    >
+                      <motion.div
+                        className="absolute inset-0 border-2 border-white/30 rounded-xl"
+                        animate={{
+                          scale: [1, 1.5],
+                          opacity: [0.5, 0],
+                        }}
+                        transition={{
+                          duration: 1.5,
+                          repeat: Infinity,
+                        }}
+                      />
+                    </motion.div>
+                  </motion.div>
+                  
+                  {/* Corner Accents */}
+                  <div className="absolute top-0 left-0 w-3 h-3 border-t-2 border-l-2 border-white/40 rounded-tl-xl opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                  <div className="absolute bottom-0 right-0 w-3 h-3 border-b-2 border-r-2 border-white/40 rounded-br-xl opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                </motion.div>
               </Link>
             </motion.div>
           </div>

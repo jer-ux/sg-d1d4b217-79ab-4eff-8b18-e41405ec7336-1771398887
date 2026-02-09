@@ -530,6 +530,11 @@ export default function ActuarialBenefits() {
               >
                 <motion.h2
                   className="text-5xl md:text-6xl font-bold mb-6"
+                  style={{
+                    backgroundClip: "text",
+                    WebkitBackgroundClip: "text",
+                    WebkitTextFillColor: "transparent",
+                  }}
                   animate={{
                     backgroundImage: [
                       "linear-gradient(135deg, #ec4899 0%, #8b5cf6 50%, #3b82f6 100%)",
@@ -537,9 +542,6 @@ export default function ActuarialBenefits() {
                       "linear-gradient(135deg, #8b5cf6 0%, #3b82f6 50%, #ec4899 100%)",
                       "linear-gradient(135deg, #ec4899 0%, #8b5cf6 50%, #3b82f6 100%)",
                     ],
-                    backgroundClip: "text",
-                    WebkitBackgroundClip: "text",
-                    WebkitTextFillColor: "transparent",
                   }}
                   transition={{ duration: 8, repeat: Infinity }}
                 >

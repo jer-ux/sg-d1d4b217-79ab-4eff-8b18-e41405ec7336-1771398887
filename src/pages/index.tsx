@@ -215,7 +215,7 @@ export default function Home() {
               transition={{ duration: 0.6, delay: 0.25 }}
               className="text-base md:text-lg text-white/60 max-w-3xl mx-auto"
             >
-              Enterprise AI platform for autonomous operations, governance, and cryptographically verified cost optimization
+              Enterprise AI platform for autonomous agent operations, corporate AI governance & actuarial employee benefit services
             </motion.p>
 
             <motion.div

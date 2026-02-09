@@ -387,12 +387,16 @@ export default function Home() {
               className="text-center mb-12"
             >
               <h2 className="text-[2.64rem] md:text-[3.3rem] font-bold text-white mb-4">Fiduciary Grade Intelligence</h2>
-              <p className="text-lg text-white/70 max-w-3xl mx-auto">
+              <p className="text-lg text-white/70 max-w-3xl mx-auto mb-6">
                 Every metric backed by cryptographic evidence trails. No black boxes, no trust-me numbers.
+              </p>
+              <p className="text-base text-white/60 max-w-4xl mx-auto">
+                Built for boards, auditors, and regulators who demand defensible methodologies, traceable inputs, and immutable proof of business outcomes.
               </p>
             </motion.div>
 
-            <div className="grid md:grid-cols-3 gap-6">
+            {/* Core Pillars */}
+            <div className="grid md:grid-cols-3 gap-6 mb-16">
               <FeatureCard
                 icon={Receipt}
                 title="Evidence Receipts"
@@ -418,6 +422,228 @@ export default function Home() {
                 delay={0.2}
               />
             </div>
+
+            {/* Technical Foundation */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              className="mb-16"
+            >
+              <h3 className="text-2xl font-bold text-white mb-8 text-center">Technical Foundation</h3>
+              <div className="grid md:grid-cols-2 gap-6">
+                <div className="relative overflow-hidden rounded-2xl border border-white/10 bg-slate-950/60 backdrop-blur-xl p-6">
+                  <AnimatedGradientOverlay theme={THEME.blue} />
+                  <div className="relative">
+                    <Database className="h-8 w-8 text-blue-400 mb-4" />
+                    <h4 className="text-lg font-semibold text-white mb-2">Cryptographic Signatures</h4>
+                    <p className="text-sm text-white/70 mb-4">
+                      Every evidence receipt includes SHA-256 hash, timestamp, and digital signature creating an immutable chain of custody
+                    </p>
+                    <ul className="space-y-2 text-sm text-white/60">
+                      <li className="flex items-start gap-2">
+                        <CheckCircle className="h-4 w-4 text-blue-400 mt-0.5 flex-shrink-0" />
+                        <span>HMAC-based verification with rotating keys</span>
+                      </li>
+                      <li className="flex items-start gap-2">
+                        <CheckCircle className="h-4 w-4 text-blue-400 mt-0.5 flex-shrink-0" />
+                        <span>Merkle tree aggregation for batch validation</span>
+                      </li>
+                      <li className="flex items-start gap-2">
+                        <CheckCircle className="h-4 w-4 text-blue-400 mt-0.5 flex-shrink-0" />
+                        <span>Time-locked hashes prevent backdating</span>
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+
+                <div className="relative overflow-hidden rounded-2xl border border-white/10 bg-slate-950/60 backdrop-blur-xl p-6">
+                  <AnimatedGradientOverlay theme={THEME.emerald} />
+                  <div className="relative">
+                    <Lock className="h-8 w-8 text-emerald-400 mb-4" />
+                    <h4 className="text-lg font-semibold text-white mb-2">Audit Trail Architecture</h4>
+                    <p className="text-sm text-white/70 mb-4">
+                      Event-sourced ledger captures every state transition with complete lineage from raw data to reported metrics
+                    </p>
+                    <ul className="space-y-2 text-sm text-white/60">
+                      <li className="flex items-start gap-2">
+                        <CheckCircle className="h-4 w-4 text-emerald-400 mt-0.5 flex-shrink-0" />
+                        <span>Append-only log with zero data deletion</span>
+                      </li>
+                      <li className="flex items-start gap-2">
+                        <CheckCircle className="h-4 w-4 text-emerald-400 mt-0.5 flex-shrink-0" />
+                        <span>Point-in-time reconstruction for any date</span>
+                      </li>
+                      <li className="flex items-start gap-2">
+                        <CheckCircle className="h-4 w-4 text-emerald-400 mt-0.5 flex-shrink-0" />
+                        <span>Actor attribution for every modification</span>
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+
+                <div className="relative overflow-hidden rounded-2xl border border-white/10 bg-slate-950/60 backdrop-blur-xl p-6">
+                  <AnimatedGradientOverlay theme={THEME.violet} />
+                  <div className="relative">
+                    <FileText className="h-8 w-8 text-violet-400 mb-4" />
+                    <h4 className="text-lg font-semibold text-white mb-2">Methodology Documentation</h4>
+                    <p className="text-sm text-white/70 mb-4">
+                      Every calculation includes versioned methodology, assumptions, and confidence intervals with statistical validation
+                    </p>
+                    <ul className="space-y-2 text-sm text-white/60">
+                      <li className="flex items-start gap-2">
+                        <CheckCircle className="h-4 w-4 text-violet-400 mt-0.5 flex-shrink-0" />
+                        <span>Peer-reviewed algorithms with academic citations</span>
+                      </li>
+                      <li className="flex items-start gap-2">
+                        <CheckCircle className="h-4 w-4 text-violet-400 mt-0.5 flex-shrink-0" />
+                        <span>Monte Carlo simulation for uncertainty bounds</span>
+                      </li>
+                      <li className="flex items-start gap-2">
+                        <CheckCircle className="h-4 w-4 text-violet-400 mt-0.5 flex-shrink-0" />
+                        <span>Version control for methodology evolution</span>
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+
+                <div className="relative overflow-hidden rounded-2xl border border-white/10 bg-slate-950/60 backdrop-blur-xl p-6">
+                  <AnimatedGradientOverlay theme={THEME.cyan} />
+                  <div className="relative">
+                    <Shield className="h-8 w-8 text-cyan-400 mb-4" />
+                    <h4 className="text-lg font-semibold text-white mb-2">Compliance Framework</h4>
+                    <p className="text-sm text-white/70 mb-4">
+                      SOC 2 Type II certified infrastructure with role-based access control and regulatory reporting automation
+                    </p>
+                    <ul className="space-y-2 text-sm text-white/60">
+                      <li className="flex items-start gap-2">
+                        <CheckCircle className="h-4 w-4 text-cyan-400 mt-0.5 flex-shrink-0" />
+                        <span>GDPR, SOX, and HIPAA compliance modules</span>
+                      </li>
+                      <li className="flex items-start gap-2">
+                        <CheckCircle className="h-4 w-4 text-cyan-400 mt-0.5 flex-shrink-0" />
+                        <span>Automated evidence collection for audits</span>
+                      </li>
+                      <li className="flex items-start gap-2">
+                        <CheckCircle className="h-4 w-4 text-cyan-400 mt-0.5 flex-shrink-0" />
+                        <span>Continuous monitoring with alert escalation</span>
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+            </motion.div>
+
+            {/* Verification Process */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              className="mb-16"
+            >
+              <h3 className="text-2xl font-bold text-white mb-8 text-center">Five-Layer Verification</h3>
+              <div className="grid md:grid-cols-5 gap-4">
+                {[
+                  { num: "1", label: "Data Ingestion", desc: "Source validation & schema enforcement" },
+                  { num: "2", label: "Calculation", desc: "Versioned algorithms with test coverage" },
+                  { num: "3", label: "Attribution", desc: "Causal analysis with confidence scoring" },
+                  { num: "4", label: "Signature", desc: "Cryptographic hash & timestamp lock" },
+                  { num: "5", label: "Audit Export", desc: "Proof pack generation for third parties" },
+                ].map((step, i) => (
+                  <motion.div
+                    key={i}
+                    initial={{ opacity: 0, y: 20 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ delay: i * 0.1 }}
+                    className="relative overflow-hidden rounded-2xl border border-white/10 bg-slate-950/60 backdrop-blur-xl p-6 text-center"
+                  >
+                    <AnimatedGradientOverlay theme={THEME.blue} />
+                    <div className="relative">
+                      <div className="text-3xl font-bold text-blue-400 mb-2">{step.num}</div>
+                      <div className="text-sm font-semibold text-white mb-2">{step.label}</div>
+                      <div className="text-xs text-white/60">{step.desc}</div>
+                    </div>
+                  </motion.div>
+                ))}
+              </div>
+            </motion.div>
+
+            {/* Stakeholder Benefits */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+            >
+              <h3 className="text-2xl font-bold text-white mb-8 text-center">Built for Stakeholder Confidence</h3>
+              <div className="grid md:grid-cols-3 gap-6">
+                <div className="relative overflow-hidden rounded-2xl border border-white/10 bg-slate-950/60 backdrop-blur-xl p-6">
+                  <AnimatedGradientOverlay theme={THEME.violet} />
+                  <div className="relative">
+                    <Users className="h-8 w-8 text-violet-400 mb-4" />
+                    <h4 className="text-lg font-semibold text-white mb-3">Board & Executives</h4>
+                    <ul className="space-y-2 text-sm text-white/60">
+                      <li className="flex items-start gap-2">
+                        <CheckCircle className="h-4 w-4 text-violet-400 mt-0.5 flex-shrink-0" />
+                        <span>Defensible numbers for earnings calls</span>
+                      </li>
+                      <li className="flex items-start gap-2">
+                        <CheckCircle className="h-4 w-4 text-violet-400 mt-0.5 flex-shrink-0" />
+                        <span>Risk-adjusted EBITDA impact reporting</span>
+                      </li>
+                      <li className="flex items-start gap-2">
+                        <CheckCircle className="h-4 w-4 text-violet-400 mt-0.5 flex-shrink-0" />
+                        <span>One-click proof packs for due diligence</span>
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+
+                <div className="relative overflow-hidden rounded-2xl border border-white/10 bg-slate-950/60 backdrop-blur-xl p-6">
+                  <AnimatedGradientOverlay theme={THEME.emerald} />
+                  <div className="relative">
+                    <Award className="h-8 w-8 text-emerald-400 mb-4" />
+                    <h4 className="text-lg font-semibold text-white mb-3">Auditors & Regulators</h4>
+                    <ul className="space-y-2 text-sm text-white/60">
+                      <li className="flex items-start gap-2">
+                        <CheckCircle className="h-4 w-4 text-emerald-400 mt-0.5 flex-shrink-0" />
+                        <span>Complete audit trail with zero data gaps</span>
+                      </li>
+                      <li className="flex items-start gap-2">
+                        <CheckCircle className="h-4 w-4 text-emerald-400 mt-0.5 flex-shrink-0" />
+                        <span>Automated compliance reporting exports</span>
+                      </li>
+                      <li className="flex items-start gap-2">
+                        <CheckCircle className="h-4 w-4 text-emerald-400 mt-0.5 flex-shrink-0" />
+                        <span>Independent verification of calculations</span>
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+
+                <div className="relative overflow-hidden rounded-2xl border border-white/10 bg-slate-950/60 backdrop-blur-xl p-6">
+                  <AnimatedGradientOverlay theme={THEME.cyan} />
+                  <div className="relative">
+                    <Briefcase className="h-8 w-8 text-cyan-400 mb-4" />
+                    <h4 className="text-lg font-semibold text-white mb-3">Investors & Capital</h4>
+                    <ul className="space-y-2 text-sm text-white/60">
+                      <li className="flex items-start gap-2">
+                        <CheckCircle className="h-4 w-4 text-cyan-400 mt-0.5 flex-shrink-0" />
+                        <span>Pre-close validation of synergy claims</span>
+                      </li>
+                      <li className="flex items-start gap-2">
+                        <CheckCircle className="h-4 w-4 text-cyan-400 mt-0.5 flex-shrink-0" />
+                        <span>Post-close value tracking with receipts</span>
+                      </li>
+                      <li className="flex items-start gap-2">
+                        <CheckCircle className="h-4 w-4 text-cyan-400 mt-0.5 flex-shrink-0" />
+                        <span>Portfolio-wide benchmarking standards</span>
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+            </motion.div>
           </div>
         </section>
 

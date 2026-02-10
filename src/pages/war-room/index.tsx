@@ -1,6 +1,7 @@
 import { SEO } from "@/components/SEO";
 import { SplitPane } from "@/components/SplitPane";
 import { useState, useEffect, useMemo } from "react";
+import Link from "next/link";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import { ChevronDown, ExternalLink, FileText, Shield, TrendingUp, AlertTriangle } from "lucide-react";

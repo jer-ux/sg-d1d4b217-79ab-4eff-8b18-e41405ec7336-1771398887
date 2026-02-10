@@ -894,6 +894,11 @@ function FourLaneLedgerContent() {
   const { connected, lastUpdated, events, summaries, ticker } = useWarRoomStream();
   const [filters, setFilters] = useState(defaultFilters());
   const [evidenceOpen, setEvidenceOpen] = useState<WarEvent | null>(null);
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   const filtered = useMemo(() => applyFilters(events, filters), [events, filters]);
 
@@ -909,44 +914,149 @@ function FourLaneLedgerContent() {
     return m;
   }, [summaries]);
 
+  const totals = useMemo(() => {
+    const t = { identified: 0, approved: 0, realized: 0, atRisk: 0 };
+    for (const s of summaries) {
+      t.identified += s.identified;
+      t.approved += s.approved;
+      t.realized += s.realized;
+      t.atRisk += s.atRisk;
+    }
+    return t;
+  }, [summaries]);
+
   return (
     <div className="min-h-[calc(100vh-72px)] py-10">
       <div className="mx-auto max-w-6xl px-6">
-        <div className="flex flex-col lg:flex-row gap-4 lg:items-center lg:justify-between mb-6">
-          <div>
-            <div className="text-3xl font-semibold tracking-tight">Four-Lane Ledger</div>
-            <div className="text-white/65 mt-2">Real-time streaming with evidence-first decisions</div>
-            <div className="text-xs text-white/55 mt-2">
-              Status: <span className="text-white/80">{connected ? "Connected" : "Disconnected"}</span>
-              {lastUpdated && <span className="text-white/50"> • Last update {new Date(lastUpdated).toLocaleTimeString()}</span>}
-              <span className="text-white/50"> • Showing {filtered.length} event(s)</span>
+        {/* Enhanced Status Bar with Live Indicators */}
+        <div className="mb-6 rounded-2xl border border-white/10 bg-slate-950/60 backdrop-blur-xl p-6">
+          <div className="flex flex-col lg:flex-row gap-4 lg:items-center lg:justify-between">
+            <div>
+              <div className="text-3xl font-semibold tracking-tight flex items-center gap-3">
+                Four-Lane Ledger
+                <motion.div
+                  className={`h-3 w-3 rounded-full ${connected ? "bg-emerald-400" : "bg-red-400"}`}
+                  animate={{ scale: connected ? [1, 1.2, 1] : 1 }}
+                  transition={{ duration: 2, repeat: Infinity }}
+                />
+              </div>
+              <div className="text-white/65 mt-2">Real-time streaming with evidence-first decisions</div>
+              <div className="text-xs text-white/55 mt-2 flex flex-wrap items-center gap-3">
+                <span className={`flex items-center gap-1.5 ${connected ? "text-emerald-400" : "text-red-400"}`}>
+                  <Activity className="h-3 w-3" />
+                  {connected ? "Live Stream Active" : "Disconnected"}
+                </span>
+                {lastUpdated && mounted && (
+                  <span className="text-white/50">
+                    Last update: {new Date(lastUpdated).toLocaleTimeString()}
+                  </span>
+                )}
+                <span className="text-white/70 font-medium">{filtered.length} events</span>
+                <span className="text-white/50">•</span>
+                <span className="text-white/50">{ticker.length} recent activities</span>
+              </div>
+            </div>
+
+            {/* Live Totals Display */}
+            <div className="grid grid-cols-2 lg:grid-cols-4 gap-3">
+              <motion.div 
+                key={totals.identified}
+                initial={{ scale: 1.1, opacity: 0.8 }}
+                animate={{ scale: 1, opacity: 1 }}
+                className="rounded-xl border border-amber-400/30 bg-amber-500/10 px-3 py-2"
+              >
+                <div className="text-[10px] uppercase tracking-wider text-amber-300/80">Identified</div>
+                <div className="text-lg text-amber-200 font-bold tabular-nums">{formatMoney(totals.identified)}</div>
+              </motion.div>
+              <motion.div 
+                key={totals.approved}
+                initial={{ scale: 1.1, opacity: 0.8 }}
+                animate={{ scale: 1, opacity: 1 }}
+                className="rounded-xl border border-purple-400/30 bg-purple-500/10 px-3 py-2"
+              >
+                <div className="text-[10px] uppercase tracking-wider text-purple-300/80">Approved</div>
+                <div className="text-lg text-purple-200 font-bold tabular-nums">{formatMoney(totals.approved)}</div>
+              </motion.div>
+              <motion.div 
+                key={totals.realized}
+                initial={{ scale: 1.1, opacity: 0.8 }}
+                animate={{ scale: 1, opacity: 1 }}
+                className="rounded-xl border border-emerald-400/30 bg-emerald-500/10 px-3 py-2"
+              >
+                <div className="text-[10px] uppercase tracking-wider text-emerald-300/80">Realized</div>
+                <div className="text-lg text-emerald-200 font-bold tabular-nums">{formatMoney(totals.realized)}</div>
+              </motion.div>
+              <motion.div 
+                key={totals.atRisk}
+                initial={{ scale: 1.1, opacity: 0.8 }}
+                animate={{ scale: 1, opacity: 1 }}
+                className="rounded-xl border border-red-400/30 bg-red-500/10 px-3 py-2"
+              >
+                <div className="text-[10px] uppercase tracking-wider text-red-300/80">At Risk</div>
+                <div className="text-lg text-red-200 font-bold tabular-nums">{formatMoney(totals.atRisk)}</div>
+              </motion.div>
             </div>
           </div>
+        </div>
 
-          <div className="flex-1 lg:ml-6">
-            <TickerMarquee items={ticker} />
+        {/* Live Activity Ticker */}
+        <div className="mb-6">
+          <TickerMarquee items={ticker} />
+        </div>
+
+        {/* Command Palette & Audit Ticker */}
+        <div className="mb-6 flex gap-3">
+          <div className="flex-1">
             <CommandPalette events={ticker as any} onOpenEvidence={setEvidenceOpen} />
-            <AuditTicker />
           </div>
+        </div>
+        
+        <div className="mb-6">
+          <AuditTicker />
         </div>
 
         <FiltersBar f={filters} setF={setFilters} />
 
+        {/* Enhanced Lane Grid with Activity Indicators */}
         <div className="mt-6 grid lg:grid-cols-2 gap-4">
           {(["value", "controls", "agentic", "marketplace"] as LaneKey[]).map((lane) => {
             const s = summaryMap.get(lane) ?? { identified: 0, approved: 0, realized: 0, atRisk: 0 };
             const laneEvents = byLane[lane].slice(0, 4);
+            const laneTotal = laneEvents.reduce((sum, e) => sum + e.amount, 0);
+            const hasActivity = laneEvents.length > 0;
 
             return (
-              <div key={lane} className="rounded-2xl border border-white/10 bg-slate-950/60 backdrop-blur-xl p-6">
+              <motion.div 
+                key={lane}
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: ["value", "controls", "agentic", "marketplace"].indexOf(lane) * 0.1 }}
+                className={`rounded-2xl border bg-slate-950/60 backdrop-blur-xl p-6 transition-all ${
+                  hasActivity ? "border-white/20 shadow-lg" : "border-white/10"
+                }`}
+              >
                 <div className="flex items-start justify-between gap-4">
-                  <div>
-                    <div className="text-lg font-semibold">{laneMeta[lane].label}</div>
+                  <div className="flex-1">
+                    <div className="flex items-center gap-2">
+                      <div className="text-lg font-semibold">{laneMeta[lane].label}</div>
+                      {hasActivity && (
+                        <motion.div
+                          className="h-2 w-2 rounded-full bg-emerald-400"
+                          animate={{ scale: [1, 1.4, 1], opacity: [1, 0.6, 1] }}
+                          transition={{ duration: 1.5, repeat: Infinity }}
+                        />
+                      )}
+                    </div>
                     <div className="text-sm text-white/65 mt-1">{laneMeta[lane].headline}</div>
+                    {laneTotal > 0 && (
+                      <div className="text-xs text-white/50 mt-2">
+                        Total pipeline: <span className="text-white/80 font-semibold">{formatMoney(laneTotal)}</span>
+                      </div>
+                    )}
                   </div>
                   <Link
                     href={`/war-room/${lane}`}
-                    className="px-4 py-2 rounded-xl bg-orange-500 text-white font-medium hover:bg-orange-600 transition text-sm"
+                    className="px-4 py-2 rounded-xl bg-orange-500 text-white font-medium hover:bg-orange-600 transition text-sm whitespace-nowrap"
                   >
                     Open lane
                   </Link>
@@ -961,14 +1071,24 @@ function FourLaneLedgerContent() {
 
                 <div className="mt-4 space-y-3">
                   {laneEvents.length === 0 ? (
-                    <div className="rounded-xl border border-white/10 bg-white/5 p-4 text-sm text-white/65">
-                      No events match current filters for this lane.
+                    <div className="rounded-xl border border-white/10 bg-white/5 p-4 text-sm text-white/65 text-center">
+                      <Activity className="h-8 w-8 mx-auto mb-2 opacity-30" />
+                      No events match current filters for this lane
                     </div>
                   ) : (
-                    laneEvents.map((e) => <EventCard key={e.id} e={e} onEvidence={setEvidenceOpen} />)
+                    laneEvents.map((e, idx) => (
+                      <motion.div
+                        key={e.id}
+                        initial={{ opacity: 0, x: -20 }}
+                        animate={{ opacity: 1, x: 0 }}
+                        transition={{ delay: idx * 0.05 }}
+                      >
+                        <EventCard e={e} onEvidence={setEvidenceOpen} />
+                      </motion.div>
+                    ))
                   )}
                 </div>
-              </div>
+              </motion.div>
             );
           })}
         </div>

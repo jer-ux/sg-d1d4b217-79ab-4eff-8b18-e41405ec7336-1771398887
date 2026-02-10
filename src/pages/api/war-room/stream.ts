@@ -1,5 +1,5 @@
 import { getRedis } from "@/lib/warroom/redis";
-import { AUDIT_STREAM_KEY } from "@/lib/warroom/audit";
+import { streamKey, snapshot, ensureSeeded } from "@/lib/warroom/redisStore";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -16,6 +16,15 @@ export default async function handler(req: any, res: any) {
   res.setHeader("Connection", "keep-alive");
 
   res.write(encodeSse({ type: "hello", serverTime: new Date().toISOString() }));
+
+  // Send initial snapshot
+  try {
+    await ensureSeeded();
+    const snap = await snapshot();
+    res.write(encodeSse({ type: "snapshot", events: snap.events, summaries: snap.summaries }));
+  } catch (err) {
+    console.error("[stream] snapshot error:", err);
+  }
 
   let lastId = "$";
   let running = true;
@@ -42,7 +51,7 @@ export default async function handler(req: any, res: any) {
         "BLOCK",
         20000,
         "STREAMS",
-        AUDIT_STREAM_KEY,
+        streamKey,
         lastId
       )) as any;
 
@@ -52,20 +61,18 @@ export default async function handler(req: any, res: any) {
         for (const [id, kv] of entries) {
           lastId = id;
 
-          const entryIdx = kv.indexOf("entry");
-          const sigIdx = kv.indexOf("sig");
+          const msgIdx = kv.indexOf("msg");
+          const msg = msgIdx !== -1 ? kv[msgIdx + 1] : null;
 
-          const entry = entryIdx !== -1 ? kv[entryIdx + 1] : null;
-          const sig = sigIdx !== -1 ? kv[sigIdx + 1] : null;
-
-          if (entry) {
-            res.write(encodeSse({ type: "audit", id, entry: JSON.parse(entry), sig }));
+          if (msg) {
+            const parsed = JSON.parse(msg);
+            res.write(encodeSse(parsed));
           }
         }
       }
     }
   } catch (err) {
-    console.error("Stream error:", err);
+    console.error("[stream] error:", err);
   } finally {
     clearInterval(keep);
     res.end();

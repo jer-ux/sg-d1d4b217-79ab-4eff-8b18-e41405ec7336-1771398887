@@ -249,6 +249,7 @@ export async function assign(eventId: string, owner: string, actor?: string) {
   const next: WarEvent = { ...e, owner, updatedAt: isoNow() };
 
   await upsertEvent(next);
+  await publish({ type: "event_upsert", event: next });
 
   await auditFromEvent({
     action: "LEDGER_ASSIGN",
@@ -300,6 +301,7 @@ export async function approve(eventId: string, actor?: string) {
 
   const next: WarEvent = { ...e, state: "APPROVED", updatedAt: isoNow() };
   await upsertEvent(next);
+  await publish({ type: "event_upsert", event: next });
 
   // Audit success
   await auditFromEvent({
@@ -309,6 +311,16 @@ export async function approve(eventId: string, actor?: string) {
     priorState: prior,
     nextState: "APPROVED",
     policyOk: true,
+  });
+
+  // Publish ticker message
+  await publish({
+    type: "ticker",
+    text: `${next.title} approved`,
+    amount: next.amount,
+    state: next.state,
+    lane: next.lane,
+    at: next.updatedAt
   });
 
   return next;
@@ -351,6 +363,7 @@ export async function close(eventId: string, actor?: string) {
 
   const next: WarEvent = { ...e, state: "REALIZED", updatedAt: isoNow() };
   await upsertEvent(next);
+  await publish({ type: "event_upsert", event: next });
 
   // Audit success
   await auditFromEvent({
@@ -360,6 +373,16 @@ export async function close(eventId: string, actor?: string) {
     priorState: prior,
     nextState: "REALIZED",
     policyOk: true,
+  });
+
+  // Publish ticker message
+  await publish({
+    type: "ticker",
+    text: `${next.title} realized`,
+    amount: next.amount,
+    state: next.state,
+    lane: next.lane,
+    at: next.updatedAt
   });
 
   return next;
@@ -377,6 +400,7 @@ export async function attachReceipt(eventId: string, receipt: { id: string; titl
 
   const next: WarEvent = { ...e, receipts, updatedAt: isoNow() };
   await upsertEvent(next);
+  await publish({ type: "event_upsert", event: next });
 
   await auditFromEvent({
     action: "RECEIPT_ATTACH",
@@ -407,6 +431,7 @@ export async function updateNotes(eventId: string, notes: any, actor: string) {
   const next: WarEvent = { ...e, notes: nextNotes, updatedAt: isoNow() };
 
   await upsertEvent(next);
+  await publish({ type: "event_upsert", event: next });
 
   await auditFromEvent({
     action: "NOTES_UPDATE",
@@ -453,6 +478,7 @@ export async function attachFile(eventId: string, attachment: any, actor: string
   const next: WarEvent = { ...e, notes: nextNotes, updatedAt: isoNow() };
 
   await upsertEvent(next);
+  await publish({ type: "event_upsert", event: next });
 
   await auditFromEvent({
     action: "ATTACHMENT_ADD",

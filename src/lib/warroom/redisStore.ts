@@ -440,7 +440,7 @@ export async function attachFile(eventId: string, attachment: any, actor: string
   };
 
   const nextNotes: EventNotes = { 
-    ...(currentNotes as any), 
+    notes: currentNotes.notes,
     attachments: [newAtt, ...currentAtts] 
   };
   

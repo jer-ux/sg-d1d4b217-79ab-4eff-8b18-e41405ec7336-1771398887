@@ -20,11 +20,11 @@ export default function Nav() {
   }, []);
 
   const navLinks = [
-    { href: "/platform", label: "Platform" },
+    { href: "/actuarial-benefits", label: "Actuarial Benefits" },
     { href: "/agentic-workflow", label: "Agentic Workflow" },
     { href: "/war-room", label: "War Room" },
     { href: "/evidence-receipts", label: "Evidence" },
-    { href: "/actuarial-benefits", label: "Actuarial Benefits" },
+    { href: "/platform", label: "Platform" },
     { href: "/company", label: "Company" },
   ];
 

@@ -1,4 +1,5 @@
 import { useState } from "react";
+import Link from "next/link";
 import { motion } from "framer-motion";
 import Nav from "@/components/Nav";
 import Footer from "@/components/Footer";
@@ -561,19 +562,19 @@ export default function AgenticWorkflowPage() {
                 with your own data.
               </p>
               <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                <a
+                <Link
                   href="/request-demo"
                   className="px-8 py-4 bg-white text-black font-semibold rounded-full hover:bg-gray-100 transition-all duration-300 hover:scale-105 flex items-center justify-center gap-2"
                 >
                   Request Enterprise Demo
                   <ArrowRight className="w-5 h-5" />
-                </a>
-                <a
+                </Link>
+                <Link
                   href="/company"
                   className="px-8 py-4 bg-transparent border-2 border-white text-white font-semibold rounded-full hover:bg-white hover:text-black transition-all duration-300"
                 >
                   Contact Sales
-                </a>
+                </Link>
               </div>
             </motion.div>
           </div>

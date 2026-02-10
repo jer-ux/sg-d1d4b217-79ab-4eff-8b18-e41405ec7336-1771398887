@@ -19,8 +19,9 @@ import { approveEvent, assignOwner, closeEvent, generateReceipt } from "@/compon
 import { toast } from "sonner";
 import clsx from "clsx";
 import CommandPalette from "@/components/CommandPalette";
+import { RankedEventsPanel } from "@/components/RankedEventsPanel";
 
-type WarRoomView = "CFO_DASHBOARD" | "FOUR_LANE_LEDGER" | "EXECUTIVE_KPIS";
+type WarRoomView = "CFO_DASHBOARD" | "FOUR_LANE_LEDGER";
 
 type TileAccent = "neutral" | "good" | "warn" | "bad" | "purple" | "blue" | "amber";
 type TileView = "VARIANCE" | "VALIDATED" | "IN_FLIGHT" | "TRUST";
@@ -214,6 +215,27 @@ function pct(n: number) {
   return `${Math.round(n * 100)}%`;
 }
 
+function AnimatedGradientOverlay({ theme }: { theme: typeof THEME[ThemeKey] }) {
+  return (
+    <motion.div
+      aria-hidden
+      className="absolute inset-0 opacity-20 transition-opacity duration-500 group-hover:opacity-50 pointer-events-none"
+      style={{
+        backgroundImage: `linear-gradient(135deg, ${theme.g1}, ${theme.g2}, ${theme.g3})`,
+        backgroundSize: "200% 200%",
+      }}
+      animate={{
+        backgroundPosition: ["0% 50%", "100% 50%", "0% 50%"],
+      }}
+      transition={{
+        duration: 10,
+        repeat: Infinity,
+        ease: "easeInOut",
+      }}
+    />
+  );
+}
+
 function Tile({
   label,
   value,
@@ -245,22 +267,7 @@ function Tile({
         themeConfig.glow,
       ].join(" ")}
     >
-      <motion.div
-        aria-hidden
-        className="absolute inset-0 opacity-20 transition-opacity duration-500 group-hover:opacity-50 pointer-events-none"
-        style={{
-          backgroundImage: `linear-gradient(135deg, ${themeConfig.g1}, ${themeConfig.g2}, ${themeConfig.g3})`,
-          backgroundSize: "200% 200%",
-        }}
-        animate={{
-          backgroundPosition: ["0% 50%", "100% 50%", "0% 50%"],
-        }}
-        transition={{
-          duration: 10,
-          repeat: Infinity,
-          ease: "easeInOut",
-        }}
-      />
+      <AnimatedGradientOverlay theme={themeConfig} />
 
       <motion.div
         className={`absolute -top-16 -right-16 h-40 w-40 rounded-full ${themeConfig.orb1} blur-[100px]`}
@@ -388,6 +395,57 @@ function DetailModal({
   );
 }
 
+type StatCardProps = {
+  icon: React.ComponentType<{ className?: string }>;
+  label: string;
+  value: string;
+  themeKey: ThemeKey;
+  delay?: number;
+};
+
+function StatCard({ icon: Icon, label, value, themeKey, delay = 0 }: StatCardProps) {
+  const t = THEME[themeKey];
+
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ delay, duration: 0.5 }}
+      className={[
+        "group relative overflow-hidden rounded-2xl border border-white/10 bg-slate-950/60 p-6",
+        "backdrop-blur-xl transition-transform duration-200 hover:-translate-y-0.5",
+        t.hoverRing,
+      ].join(" ")}
+    >
+      <div className={`absolute left-0 top-0 h-full w-2 ${t.bar}`} />
+      <AnimatedGradientOverlay theme={t} />
+      <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(70%_55%_at_50%_15%,rgba(255,255,255,0.10),transparent_60%)] opacity-60" />
+
+      <div className="relative flex items-start gap-4">
+        <div
+          className={[
+            "grid h-12 w-12 place-items-center rounded-2xl ring-1",
+            t.iconBg,
+            t.iconRing,
+            t.iconGlow,
+          ].join(" ")}
+        >
+          <Icon className={`h-6 w-6 ${t.title}`} />
+        </div>
+
+        <div className="flex-1">
+          <div className="text-sm text-white/70">{label}</div>
+          <div className={`text-2xl font-bold ${t.title}`}>{value}</div>
+        </div>
+      </div>
+
+      <div className="pointer-events-none absolute inset-0 opacity-0 transition-opacity duration-300 group-hover:opacity-100">
+        <div className="absolute -inset-24 bg-[conic-gradient(from_180deg,rgba(255,255,255,0.0),rgba(255,255,255,0.14),rgba(255,255,255,0.0))] blur-2xl" />
+      </div>
+    </motion.div>
+  );
+}
+
 function CFODashboardContent() {
   const [data, setData] = useState(() => mockWarRoom);
   const [view, setView] = useState<TileView>("VARIANCE");
@@ -445,6 +503,39 @@ function CFODashboardContent() {
   return (
     <>
       <div className="mx-auto max-w-[1400px] px-4 py-6">
+        <div className="mb-8">
+          <div className="grid md:grid-cols-4 gap-6">
+            <StatCard
+              icon={Activity}
+              label="Events Processed"
+              value="10M+"
+              themeKey="blue"
+              delay={0}
+            />
+            <StatCard
+              icon={TrendingUp}
+              label="Avg Response Time"
+              value="<100ms"
+              themeKey="emerald"
+              delay={0.1}
+            />
+            <StatCard
+              icon={AlertTriangle}
+              label="Active Incidents"
+              value="24"
+              themeKey="rose"
+              delay={0.2}
+            />
+            <StatCard
+              icon={CheckCircle}
+              label="Resolution Rate"
+              value="99.2%"
+              themeKey="violet"
+              delay={0.3}
+            />
+          </div>
+        </div>
+
         <div className="mb-5">
           <div className="text-[11px] text-gray-500">Kincaid IQ • CFO War Room</div>
           <div className="text-lg font-semibold tracking-tight text-gray-100">/war-room</div>
@@ -459,6 +550,10 @@ function CFODashboardContent() {
           <Tile label="Contract Compliance" value="92.4%" subLeft="Compliant adjudications" subRight="+3.1pp QoQ" theme="blue" onClick={() => setLevel1Modal({ open: true, data: getTileExplanation() })} />
           <Tile label="Benefits NPS" value="+38" subLeft="Employee experience" subRight="+7 pts QoQ" theme="rose" onClick={() => setLevel1Modal({ open: true, data: getTileExplanation() })} />
           <Tile label="Employee NPS (eNPS)" value="+42" subLeft="Benefits team + vendors" subRight="+5 pts QoQ" theme="cyan" onClick={() => setLevel1Modal({ open: true, data: getTileExplanation() })} />
+        </div>
+
+        <div className="mb-6">
+          <RankedEventsPanel />
         </div>
 
         <SplitPane
@@ -890,11 +985,11 @@ const FourLaneLedger = dynamic(() => Promise.resolve(FourLaneLedgerContent), { s
 const viewMeta = {
   CFO_DASHBOARD: {
     label: "CFO Dashboard",
-    description: "8 Healthcare KPIs with Premium 3D Graphics",
+    description: "8 Healthcare KPIs with Premium 3D Graphics + Real-Time Intelligence",
   },
   FOUR_LANE_LEDGER: {
     label: "4-Lane Ledger",
-    description: "Advanced Filtering with Redis Streaming",
+    description: "Advanced Filtering with Redis Streaming + Event Management",
   },
 };
 
@@ -904,7 +999,7 @@ export default function WarRoomPage() {
   return (
     <>
       <SEO
-        title="War Room - Kincaid IQ AI Data Sciences Lab"
+        title="Unified War Room - Kincaid IQ AI Data Sciences Lab"
         description="Real-time incident management, evidence tracking, and governance automation for enterprise CFO and data teams"
       />
       <div className="warroom-console min-h-screen bg-gradient-to-b from-slate-950 via-slate-900 to-black text-gray-100">
@@ -959,7 +1054,7 @@ export default function WarRoomPage() {
                     >
                       <div className="flex flex-col gap-1.5">
                         <div className="font-semibold text-white text-base">CFO Dashboard</div>
-                        <div className="text-xs text-gray-400 leading-relaxed">8 Healthcare KPIs with Premium 3D Graphics</div>
+                        <div className="text-xs text-gray-400 leading-relaxed">8 Healthcare KPIs with Premium 3D Graphics + Real-Time Intelligence</div>
                       </div>
                     </DropdownMenuItem>
                     <DropdownMenuItem
@@ -968,7 +1063,7 @@ export default function WarRoomPage() {
                     >
                       <div className="flex flex-col gap-1.5">
                         <div className="font-semibold text-white text-base">4-Lane Ledger</div>
-                        <div className="text-xs text-gray-400 leading-relaxed">Advanced Filtering with Redis Streaming</div>
+                        <div className="text-xs text-gray-400 leading-relaxed">Advanced Filtering with Redis Streaming + Event Management</div>
                       </div>
                     </DropdownMenuItem>
                   </DropdownMenuContent>

@@ -1,6 +1,6 @@
 import { motion } from "framer-motion";
 import Link from "next/link";
-import { Shield, FileCheck, AlertTriangle, CheckCircle2, ArrowRight, Target, Clock, BarChart3, FileText, Users, Bell, Lock, Scale, BookOpen } from "lucide-react";
+import { Shield, FileCheck, AlertTriangle, CheckCircle2, ArrowRight, Target, Clock, BarChart3, FileText, Users, Bell, Lock, Scale, BookOpen, Settings } from "lucide-react";
 import { SEO } from "@/components/SEO";
 import Nav from "@/components/Nav";
 import Footer from "@/components/Footer";

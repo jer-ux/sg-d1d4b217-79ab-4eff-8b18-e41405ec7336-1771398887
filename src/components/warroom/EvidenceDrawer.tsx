@@ -676,17 +676,19 @@ export default function EvidenceDrawer({
                     </div>
 
                     {/* Decision Notes */}
-                    {openEvent.notes && (openEvent.notes.notes || openEvent.notes.attachments?.length) ? (
+                    {(openEvent.notes && (typeof openEvent.notes === 'string' || openEvent.notes.notes || openEvent.notes.attachments?.length)) ? (
                       <div className="rounded-xl border border-white/10 bg-white/5 p-6">
                         <h3 className="text-lg font-bold mb-4">Decision Notes</h3>
                         
-                        {openEvent.notes.notes && (
+                        {(typeof openEvent.notes === 'string' ? openEvent.notes : openEvent.notes?.notes) && (
                           <div className="mb-4 p-4 rounded-lg bg-black/30 border border-white/5">
-                            <p className="text-sm text-white/80 whitespace-pre-wrap">{openEvent.notes.notes}</p>
+                            <p className="text-sm text-white/80 whitespace-pre-wrap">
+                              {typeof openEvent.notes === 'string' ? openEvent.notes : openEvent.notes?.notes}
+                            </p>
                           </div>
                         )}
 
-                        {openEvent.notes.attachments?.length ? (
+                        {typeof openEvent.notes !== 'string' && openEvent.notes?.attachments?.length ? (
                           <>
                             <h4 className="text-sm font-semibold text-white/70 mb-3">
                               Attachments ({openEvent.notes.attachments.length})

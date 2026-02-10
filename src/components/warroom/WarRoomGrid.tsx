@@ -243,7 +243,7 @@ function EventRow({
                 {e.category}
               </span>
             )}
-            {trend !== 0 && (
+            {typeof trend === 'number' && trend !== 0 && (
               <span className={`text-[9px] px-2 py-0.5 rounded-full font-bold ${
                 trend > 0 
                   ? "bg-emerald-500/20 text-emerald-300" 

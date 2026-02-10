@@ -18,47 +18,47 @@ export type PacketSignature = {
 };
 
 export type EvidenceReceipt = {
-  id: string;
-  title: string;
+  receipt_id?: string;
+  source_artifact_hash?: string;
+  transform_hash?: string;
+  freshness_minutes?: number;
+  dq_tests_passed?: number;
+  dq_tests_total?: number;
+  owner?: string;
+  confidence?: number;
+  verified?: boolean;
+  notes?: string;
+  // Legacy/Optional properties for compatibility
+  id?: string;
+  title?: string;
+  url?: string;
   hash?: string;
   freshness?: string;
-  url?: string;
 };
 
 export type WarEvent = {
   id: string;
-  lane: LaneKey;
-  state: LedgerState;
   title: string;
-  subtitle?: string;
+  subtitle: string;
+  lane: LaneKey;
   amount: number;
-  confidence: number;
   timeSensitivity: number;
+  confidence: number;
   owner?: string;
-  receipts?: EvidenceReceipt[];
-  notes?: EventNotes;
-  packetStatus?: PacketStatus;
-  packetSignatures?: PacketSignature[];
-  createdAt?: string;
-  updatedAt: string;
-  
-  // External system integration fields
-  sourceSystem?: string;  // e.g., "snowflake", "servicenow", "databricks"
-  sourceRef?: string;      // e.g., query_id, ticket_id, job_id
-  tags?: string[];         // Custom tags for filtering/search
-
-  // Visual/Dashboard fields
-  category?: string;
-  priority?: "LOW" | "MEDIUM" | "HIGH" | "CRITICAL";
-  trend?: number;
-  daysInState?: number;
-
-  // Arbitrage / New Fields
-  type?: "standard" | "arbitrage";
+  state: "IDENTIFIED" | "APPROVED" | "REALIZED" | "AT_RISK";
+  receipts: EvidenceReceipt[];
+  // Extended properties for comprehensive detail view
+  notes?: string | EventNotes;
+  trend?: number | "up" | "down" | "flat";
   severity?: "critical" | "high" | "medium" | "low";
   carrier?: string;
-  estImpact?: string;
-  priority_score?: number;
+  priority?: string;
+  category?: string;
+  daysInState?: number;
+  updatedAt?: string;
+  packetStatus?: PacketStatus;
+  packetSignatures?: PacketSignature[];
+  type?: string;
 };
 
 export type EventNotes = {

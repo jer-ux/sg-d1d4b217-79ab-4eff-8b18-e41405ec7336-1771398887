@@ -21,6 +21,7 @@ export default function Nav() {
 
   const navLinks = [
     { href: "/platform", label: "Platform" },
+    { href: "/agentic-workflow", label: "Agentic Workflow" },
     { href: "/war-room", label: "War Room" },
     { href: "/evidence-receipts", label: "Evidence" },
     { href: "/actuarial-benefits", label: "Actuarial Benefits" },

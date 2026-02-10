@@ -398,8 +398,12 @@ export async function updateNotes(eventId: string, notes: any, actor: string) {
 
   const e = JSON.parse(raw) as WarEvent;
   
-  // Merge notes
-  const nextNotes = { ...(e.notes || {}), ...notes };
+  // Merge notes - explicit construction
+  const currentNotes = (typeof e.notes === 'object' && e.notes !== null) ? e.notes as EventNotes : { notes: typeof e.notes === 'string' ? e.notes : '' };
+  const nextNotes: EventNotes = { 
+    notes: notes.notes !== undefined ? notes.notes : currentNotes.notes,
+    attachments: notes.attachments !== undefined ? notes.attachments : currentNotes.attachments
+  };
   const next: WarEvent = { ...e, notes: nextNotes, updatedAt: isoNow() };
 
   await upsertEvent(next);
@@ -422,12 +426,14 @@ export async function attachFile(eventId: string, attachment: any, actor: string
 
   const e = JSON.parse(raw) as WarEvent;
   
-  // Ensure currentNotes is strictly an object for spreading
-  let currentNotes: EventNotes = {};
+  // Ensure currentNotes is properly typed
+  let currentNotes: EventNotes;
   if (typeof e.notes === 'object' && e.notes !== null) {
     currentNotes = e.notes as EventNotes;
   } else if (typeof e.notes === 'string') {
-    currentNotes = { notes: e.notes };
+    currentNotes = { notes: e.notes, attachments: [] };
+  } else {
+    currentNotes = { notes: '', attachments: [] };
   }
     
   const currentAtts = currentNotes.attachments || [];

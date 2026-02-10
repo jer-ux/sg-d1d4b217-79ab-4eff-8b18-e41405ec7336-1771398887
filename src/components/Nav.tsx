@@ -23,6 +23,7 @@ export default function Nav() {
     { href: "/platform", label: "Platform" },
     { href: "/war-room", label: "War Room" },
     { href: "/evidence-receipts", label: "Evidence" },
+    { href: "/actuarial-benefits", label: "Actuarial Benefits" },
     { href: "/company", label: "Company" },
   ];
 

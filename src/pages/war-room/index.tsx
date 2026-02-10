@@ -395,7 +395,8 @@ function CFODashboardContent() {
   const [drawerOpen, setDrawerOpen] = useState(false);
   const [view, setView] = useState<TileView>("VARIANCE");
   const [mounted, setMounted] = useState(false);
-  const [activeEvent, setActiveEvent] = useState<WarEvent | null>(null);
+  // Use a more permissive type for the active event state to handle both MockEvent and WarEvent
+  const [activeEvent, setActiveEvent] = useState<any>(null);
   const [searchQuery, setSearchQuery] = useState("");
   const [statusFilter, setStatusFilter] = useState("All");
   
@@ -1051,7 +1052,7 @@ export default function WarRoomPage() {
           {/* Animated Gradient Orbs */}
           <div className="absolute top-0 left-1/4 h-[600px] w-[600px] rounded-full bg-gradient-to-br from-emerald-500/20 via-cyan-500/15 to-transparent blur-[120px] animate-pulse" />
           <div className="absolute top-1/3 right-1/4 h-[500px] w-[500px] rounded-full bg-gradient-to-br from-blue-500/20 via-purple-500/15 to-transparent blur-[100px] animate-pulse" style={{ animationDelay: '1s' }} />
-          <div className="absolute bottom-1/4 left-1/3 h-[400px] w-[400px] rounded-full bg-gradient-to-br from-violet-500/20 via-pink-500/15 to-transparent blur-[90px] animate-pulse" style={{ animationDelay: '2s' }} />
+          <div className="absolute bottom-1/4 left-1/3 h-[400px] w-[400px] rounded-full bg-gradient-to-br from-violet-500/20 via-pink-500/10 to-transparent blur-[90px] animate-pulse" style={{ animationDelay: '2s' }} />
           
           {/* Premium Grid Pattern */}
           <div
@@ -1076,43 +1077,53 @@ export default function WarRoomPage() {
                 <h1 className="text-2xl font-bold tracking-tight bg-gradient-to-r from-white via-emerald-200 to-cyan-300 bg-clip-text text-transparent">War Room</h1>
               </div>
               
-              <DropdownMenu>
-                <DropdownMenuTrigger asChild>
-                  <button className="group flex items-center gap-2 px-6 py-3 rounded-2xl border border-white/20 bg-white/5 hover:bg-white/10 hover:border-white/30 transition-all duration-500 text-white font-semibold shadow-lg hover:shadow-2xl hover:shadow-emerald-500/20 hover:scale-[1.02]">
-                    <span className="text-sm">{viewMeta[currentView].label}</span>
-                    <ChevronDown className="h-4 w-4 transition-transform duration-300 group-hover:rotate-180" />
-                  </button>
-                </DropdownMenuTrigger>
-                <DropdownMenuContent align="end" className="w-80 bg-slate-900/95 backdrop-blur-xl border-white/20 rounded-2xl shadow-2xl p-2">
-                  <DropdownMenuItem
-                    onClick={() => setCurrentView("CFO_DASHBOARD")}
-                    className="cursor-pointer focus:bg-white/10 rounded-xl p-4 transition-all duration-300 hover:scale-[1.01]"
-                  >
-                    <div className="flex flex-col gap-1.5">
-                      <div className="font-semibold text-white text-base">CFO Dashboard</div>
-                      <div className="text-xs text-gray-400 leading-relaxed">8 Healthcare KPIs with Premium 3D Graphics</div>
-                    </div>
-                  </DropdownMenuItem>
-                  <DropdownMenuItem
-                    onClick={() => setCurrentView("FOUR_LANE_LEDGER")}
-                    className="cursor-pointer focus:bg-white/10 rounded-xl p-4 transition-all duration-300 hover:scale-[1.01]"
-                  >
-                    <div className="flex flex-col gap-1.5">
-                      <div className="font-semibold text-white text-base">4-Lane Ledger</div>
-                      <div className="text-xs text-gray-400 leading-relaxed">Advanced Filtering with Redis Streaming</div>
-                    </div>
-                  </DropdownMenuItem>
-                  <DropdownMenuItem
-                    onClick={() => setCurrentView("EXECUTIVE_KPIS")}
-                    className="cursor-pointer focus:bg-white/10 rounded-xl p-4 transition-all duration-300 hover:scale-[1.01]"
-                  >
-                    <div className="flex flex-col gap-1.5">
-                      <div className="font-semibold text-white text-base">Executive KPIs</div>
-                      <div className="text-xs text-gray-400 leading-relaxed">Live SSE Stream with Org Filters</div>
-                    </div>
-                  </DropdownMenuItem>
-                </DropdownMenuContent>
-              </DropdownMenu>
+              <div className="flex items-center gap-3">
+                <Link 
+                  href="/request-demo"
+                  className="group flex items-center gap-2 px-6 py-3 rounded-2xl border border-emerald-500/30 bg-gradient-to-r from-emerald-500/20 to-cyan-500/20 hover:from-emerald-500/30 hover:to-cyan-500/30 hover:border-emerald-400/50 transition-all duration-500 text-white font-semibold shadow-lg hover:shadow-2xl hover:shadow-emerald-500/30 hover:scale-[1.02]"
+                >
+                  <FileText className="h-4 w-4" />
+                  <span className="text-sm">Free ERISA 5500 Review</span>
+                </Link>
+                
+                <DropdownMenu>
+                  <DropdownMenuTrigger asChild>
+                    <button className="group flex items-center gap-2 px-6 py-3 rounded-2xl border border-white/20 bg-white/5 hover:bg-white/10 hover:border-white/30 transition-all duration-500 text-white font-semibold shadow-lg hover:shadow-2xl hover:shadow-emerald-500/20 hover:scale-[1.02]">
+                      <span className="text-sm">{viewMeta[currentView].label}</span>
+                      <ChevronDown className="h-4 w-4 transition-transform duration-300 group-hover:rotate-180" />
+                    </button>
+                  </DropdownMenuTrigger>
+                  <DropdownMenuContent align="end" className="w-80 bg-slate-900/95 backdrop-blur-xl border-white/20 rounded-2xl shadow-2xl p-2">
+                    <DropdownMenuItem
+                      onClick={() => setCurrentView("CFO_DASHBOARD")}
+                      className="cursor-pointer focus:bg-white/10 rounded-xl p-4 transition-all duration-300 hover:scale-[1.01]"
+                    >
+                      <div className="flex flex-col gap-1.5">
+                        <div className="font-semibold text-white text-base">CFO Dashboard</div>
+                        <div className="text-xs text-gray-400 leading-relaxed">8 Healthcare KPIs with Premium 3D Graphics</div>
+                      </div>
+                    </DropdownMenuItem>
+                    <DropdownMenuItem
+                      onClick={() => setCurrentView("FOUR_LANE_LEDGER")}
+                      className="cursor-pointer focus:bg-white/10 rounded-xl p-4 transition-all duration-300 hover:scale-[1.01]"
+                    >
+                      <div className="flex flex-col gap-1.5">
+                        <div className="font-semibold text-white text-base">4-Lane Ledger</div>
+                        <div className="text-xs text-gray-400 leading-relaxed">Advanced Filtering with Redis Streaming</div>
+                      </div>
+                    </DropdownMenuItem>
+                    <DropdownMenuItem
+                      onClick={() => setCurrentView("EXECUTIVE_KPIS")}
+                      className="cursor-pointer focus:bg-white/10 rounded-xl p-4 transition-all duration-300 hover:scale-[1.01]"
+                    >
+                      <div className="flex flex-col gap-1.5">
+                        <div className="font-semibold text-white text-base">Executive KPIs</div>
+                        <div className="text-xs text-gray-400 leading-relaxed">Live SSE Stream with Org Filters</div>
+                      </div>
+                    </DropdownMenuItem>
+                  </DropdownMenuContent>
+                </DropdownMenu>
+              </div>
             </div>
           </div>
         </div>

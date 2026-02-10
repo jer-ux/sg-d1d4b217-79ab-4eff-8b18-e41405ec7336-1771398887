@@ -1,4 +1,4 @@
-import type { LaneKey, LaneSummary, LedgerState, StreamMessage, WarEvent, PacketStatus, PacketSignature } from "@/lib/warroom/types";
+import type { LaneKey, LaneSummary, LedgerState, StreamMessage, WarEvent, PacketStatus, PacketSignature, EventNotes } from "@/lib/warroom/types";
 import { getRedis } from "@/lib/warroom/redis";
 import { seedEvents, seedSummaries } from "@/lib/warroom/seed";
 import { canTransition } from "@/lib/warroom/policy";
@@ -422,7 +422,14 @@ export async function attachFile(eventId: string, attachment: any, actor: string
 
   const e = JSON.parse(raw) as WarEvent;
   
-  const currentNotes = typeof e.notes === 'object' && e.notes !== null ? e.notes : { notes: typeof e.notes === 'string' ? e.notes : '' };
+  // Ensure currentNotes is strictly an object for spreading
+  let currentNotes: EventNotes = {};
+  if (typeof e.notes === 'object' && e.notes !== null) {
+    currentNotes = e.notes as EventNotes;
+  } else if (typeof e.notes === 'string') {
+    currentNotes = { notes: e.notes };
+  }
+    
   const currentAtts = currentNotes.attachments || [];
   
   const newAtt = {
@@ -432,7 +439,7 @@ export async function attachFile(eventId: string, attachment: any, actor: string
     addedBy: actor
   };
 
-  const nextNotes = { 
+  const nextNotes: EventNotes = { 
     ...currentNotes, 
     attachments: [newAtt, ...currentAtts] 
   };

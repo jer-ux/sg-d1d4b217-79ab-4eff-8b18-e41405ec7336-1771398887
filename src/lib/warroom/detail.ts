@@ -731,3 +731,64 @@ function executionDetail(ctx: Ctx, asOf: string, notes: string[]): DetailRespons
     notes,
   };
 }
+
+export function generateDemoData() {
+  // Generate a robust set of demo events for the detail drawer lookup
+  const events = [
+    {
+      id: "EVT-2024-001",
+      title: "Pharmacy Benefit Contract Leakage",
+      subtitle: "Specialty Drug Pricing Discrepancy",
+      lane: "value" as const,
+      amount: 1250000,
+      timeSensitivity: 0.95,
+      confidence: 0.92,
+      owner: "Sarah Chen",
+      state: "IDENTIFIED" as const,
+      receipts: [
+        { receipt_id: "RCPT-001", owner: "Claims Audit", confidence: 0.95, verified: true },
+        { receipt_id: "RCPT-002", owner: "PBM Liaison", confidence: 0.88, verified: true }
+      ],
+      notes: "Identified during Q3 audit cycle. Validated against contract terms.",
+      severity: "critical" as const,
+      priority: "High",
+      category: "Financial"
+    },
+    {
+      id: "EVT-2024-002",
+      title: "Duplicate Vendor Payments",
+      subtitle: "IT Services - Cloud Infrastructure",
+      lane: "controls" as const,
+      amount: 450000,
+      timeSensitivity: 0.6,
+      confidence: 0.98,
+      owner: "Mike Ross",
+      state: "APPROVED" as const,
+      receipts: [
+        { receipt_id: "RCPT-003", owner: "AP Audit", confidence: 0.99, verified: true }
+      ],
+      notes: "Duplicate invoices processed for May/June service periods.",
+      severity: "high" as const,
+      priority: "Medium",
+      category: "Operational"
+    },
+    {
+      id: "EVT-2024-003",
+      title: "Clinical Waste Reduction",
+      subtitle: "Low-Value Imaging Protocols",
+      lane: "value" as const,
+      amount: 850000,
+      timeSensitivity: 0.4,
+      confidence: 0.75,
+      owner: "Dr. Emily Wei",
+      state: "IDENTIFIED" as const,
+      receipts: [],
+      notes: "Analysis of MRI utilization shows 15% non-compliance with new guidelines.",
+      severity: "medium" as const,
+      priority: "Low",
+      category: "Clinical"
+    }
+  ];
+
+  return { events };
+}

@@ -62,6 +62,10 @@ export type WarEvent = {
   // Legacy/Compatibility fields
   createdAt?: string;
   estImpact?: number | string;
+  priority_score?: number;
+  tags?: string[];
+  sourceSystem?: string;
+  sourceRef?: string;
 };
 
 export type EventNotes = {

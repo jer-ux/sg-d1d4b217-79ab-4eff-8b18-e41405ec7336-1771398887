@@ -85,12 +85,29 @@ export type StreamMessage =
 export type KPIBadge = {
   kpi_id: string;
   name: string;
-  domain: "FINANCE" | "BENEFITS" | "RISK" | "OPERATIONS";
+  domain: 
+    | "FINANCE" 
+    | "BENEFITS" 
+    | "RISK" 
+    | "OPERATIONS" 
+    | "ACTUARIAL" 
+    | "CLINICAL" 
+    | "AUDIT" 
+    | "PROCUREMENT" 
+    | "DATA_GOVERNANCE" 
+    | "DATA_QUALITY" 
+    | "INCIDENT_MANAGEMENT" 
+    | "RISK_MANAGEMENT" 
+    | "PMO" 
+    | "EXECUTION" 
+    | "VALUE_DELIVERY" 
+    | "STRATEGY" 
+    | "DELIVERY";
   definition: string;
   formula: string;
   owner: string;
-  frequency: "REALTIME" | "DAILY" | "WEEKLY" | "MONTHLY";
-  unit: "USD" | "PCT" | "COUNT" | "INDEX";
+  frequency: "REALTIME" | "DAILY" | "WEEKLY" | "MONTHLY" | "QUARTERLY";
+  unit: "USD" | "PCT" | "COUNT" | "INDEX" | "DAYS";
   value: string;
   verified: boolean;
   confidence: number;

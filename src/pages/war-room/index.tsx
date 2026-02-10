@@ -7,6 +7,8 @@ import { ChevronDown, ExternalLink, FileText, Shield, TrendingUp, AlertTriangle 
 import { motion } from "framer-motion";
 import dynamic from "next/dynamic";
 import { mockWarRoomData as mockWarRoom } from "@/lib/mocks/mockWarRoom";
+import { EventDetailDrawer } from "@/components/warroom/EventDetailDrawer";
+import type { WarEvent } from "@/lib/warroom/types";
 
 type WarRoomView = "CFO_DASHBOARD" | "FOUR_LANE_LEDGER" | "EXECUTIVE_KPIS";
 
@@ -393,7 +395,7 @@ function CFODashboardContent() {
   const [drawerOpen, setDrawerOpen] = useState(false);
   const [view, setView] = useState<TileView>("VARIANCE");
   const [mounted, setMounted] = useState(false);
-  const [activeEvent, setActiveEvent] = useState<MockEvent | null>(null);
+  const [activeEvent, setActiveEvent] = useState<WarEvent | null>(null);
   const [searchQuery, setSearchQuery] = useState("");
   const [statusFilter, setStatusFilter] = useState("All");
   
@@ -934,59 +936,22 @@ function CFODashboardContent() {
             </div>
           }
           right={
-            <div className="h-[600px] overflow-y-auto p-4 space-y-3">
-              <div>
-                <div className="text-[11px] text-white/50">Proof Rail</div>
-                <div className="text-sm font-semibold">Evidence • Action Packet • Activity</div>
-              </div>
-
-              {activeEvent ? (
-                <>
-                  <div className="rounded-xl border border-white/10 bg-black/20 p-4">
-                    <div className="text-xs text-white/50 mb-2">Selected Event</div>
-                    <div className="text-lg font-semibold">{activeEvent.id}</div>
-                    <div className="text-sm text-white/70 mt-1">{activeEvent.title}</div>
-                    
-                    <div className="mt-4 grid grid-cols-2 gap-3 text-sm">
-                      <div className="cursor-pointer hover:bg-white/5 p-2 rounded-lg transition-colors">
-                        <div className="text-[11px] text-white/50">Identified Value</div>
-                        <div className="font-semibold tabular-nums">{money(activeEvent.identified_value)}</div>
-                      </div>
-                      <div className="cursor-pointer hover:bg-white/5 p-2 rounded-lg transition-colors">
-                        <div className="text-[11px] text-white/50">Confidence</div>
-                        <div className="font-semibold tabular-nums">{pct(activeEvent.confidence)}</div>
-                      </div>
-                    </div>
-
-                    <div className="mt-4">
-                      <div className="text-[11px] text-white/50">Evidence Receipt</div>
-                      <div className="text-sm font-mono cursor-pointer hover:text-white/90 transition-colors">
-                        {activeEvent.evidence_receipt_id}
-                      </div>
-                    </div>
-
-                    <div className="mt-3 flex flex-wrap gap-2">
-                      <Badge status={activeEvent.receipt_status} />
-                    </div>
-                  </div>
-
-                  <div className="rounded-xl border border-white/10 bg-white/5 p-4">
-                    <div className="text-[11px] text-white/50 mb-3">Quick Actions</div>
-                    <div className="space-y-2">
-                      <button className="w-full text-sm px-3 py-2 rounded-xl border border-white/10 hover:bg-white/5 text-left">
-                        📄 Open Evidence Receipt
-                      </button>
-                      <button className="w-full text-sm px-3 py-2 rounded-xl bg-gradient-to-r from-orange-500 to-orange-600 text-white font-medium hover:from-orange-600 hover:to-orange-700 shadow-lg">
-                        📦 Action Packet
-                      </button>
-                    </div>
-                  </div>
-                </>
-              ) : (
-                <div className="rounded-xl border border-white/10 bg-black/20 p-4 text-sm text-white/60">
-                  Select an event to view details
-                </div>
-              )}
+            <div className="h-full">
+               <EventDetailDrawer 
+                eventId={activeEvent?.id || null} 
+                onClose={() => setActiveEvent(null)}
+                open={!!activeEvent}
+               />
+               
+               {/* Fallback placeholder when no event is selected but drawer is 'closed' in the split view context */}
+               {!activeEvent && (
+                 <div className="h-full flex items-center justify-center p-8 text-white/40">
+                   <div className="text-center">
+                     <FileText className="h-12 w-12 mx-auto mb-4 opacity-20" />
+                     <p>Select an event from the list to view comprehensive details</p>
+                   </div>
+                 </div>
+               )}
             </div>
           }
         />

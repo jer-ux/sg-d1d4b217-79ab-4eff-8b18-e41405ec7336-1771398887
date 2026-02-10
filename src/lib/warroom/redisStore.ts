@@ -422,7 +422,9 @@ export async function attachFile(eventId: string, attachment: any, actor: string
 
   const e = JSON.parse(raw) as WarEvent;
   
-  const currentAtts = e.notes?.attachments || [];
+  const currentNotes = typeof e.notes === 'object' && e.notes !== null ? e.notes : { notes: typeof e.notes === 'string' ? e.notes : '' };
+  const currentAtts = currentNotes.attachments || [];
+  
   const newAtt = {
     ...attachment,
     id: `att-${Date.now()}`,
@@ -431,7 +433,7 @@ export async function attachFile(eventId: string, attachment: any, actor: string
   };
 
   const nextNotes = { 
-    ...(e.notes || {}), 
+    ...currentNotes, 
     attachments: [newAtt, ...currentAtts] 
   };
   

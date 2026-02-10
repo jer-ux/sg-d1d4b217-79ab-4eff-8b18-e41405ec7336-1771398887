@@ -59,6 +59,9 @@ export type WarEvent = {
   packetStatus?: PacketStatus;
   packetSignatures?: PacketSignature[];
   type?: string;
+  // Legacy/Compatibility fields
+  createdAt?: string;
+  estImpact?: number | string;
 };
 
 export type EventNotes = {

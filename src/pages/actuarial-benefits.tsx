@@ -5,6 +5,16 @@ import { SEO } from "@/components/SEO";
 import Nav from "@/components/Nav";
 import Footer from "@/components/Footer";
 import { useState } from "react";
+import dynamic from "next/dynamic";
+
+// Dynamic imports for 3D components
+const Hero3DBackground = dynamic(() => import("@/components/premium/Hero3DBackground"), { ssr: false });
+const Interactive3DCard = dynamic(() => import("@/components/premium/Interactive3DCard"), { ssr: false });
+const VegasParticles = dynamic(() => import("@/components/premium/VegasParticles"), { ssr: false });
+const NeonGlow = dynamic(() => import("@/components/premium/NeonGlow"), { ssr: false });
+const DataFlowVisualization = dynamic(() => import("@/components/platform/PremiumGraphics").then(mod => mod.DataFlowVisualization), { ssr: false });
+const KPIDashboardPreview = dynamic(() => import("@/components/platform/PremiumGraphics").then(mod => mod.KPIDashboardPreview), { ssr: false });
+const NetworkGraphAnimation = dynamic(() => import("@/components/platform/PremiumGraphics").then(mod => mod.NetworkGraphAnimation), { ssr: false });
 
 // Floating particle component
 function FloatingParticle({ delay, color }: { delay: number; color: string }) {
@@ -314,6 +324,9 @@ export default function ActuarialBenefits() {
       <div className="min-h-screen bg-black text-white relative overflow-hidden">
         {/* Animated Vegas Background */}
         <div className="fixed inset-0 pointer-events-none">
+          <Hero3DBackground />
+          <VegasParticles />
+          
           {/* Neon grid */}
           <div className="absolute inset-0 opacity-20"
             style={{
@@ -447,6 +460,75 @@ export default function ActuarialBenefits() {
             </div>
           </section>
 
+          {/* 3D Data Visualization Section */}
+          <section className="py-20 px-4">
+            <div className="max-w-7xl mx-auto">
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                className="text-center mb-16"
+              >
+                <h2 className="text-4xl md:text-5xl font-bold mb-6 bg-gradient-to-r from-pink-500 via-purple-500 to-blue-500 bg-clip-text text-transparent">
+                  Real-Time Intelligence at Your Fingertips
+                </h2>
+                <p className="text-xl text-gray-400 max-w-3xl mx-auto">
+                  Experience the power of live data flows and predictive analytics
+                </p>
+              </motion.div>
+
+              <div className="grid md:grid-cols-2 gap-8 mb-12">
+                <motion.div
+                  initial={{ opacity: 0, x: -50 }}
+                  whileInView={{ opacity: 1, x: 0 }}
+                  viewport={{ once: true }}
+                  className="relative"
+                >
+                  <div className="absolute inset-0 bg-gradient-to-br from-pink-500/20 to-purple-500/20 rounded-2xl blur-3xl" />
+                  <div className="relative bg-gray-900/50 backdrop-blur-xl rounded-2xl border border-gray-800 p-8">
+                    <h3 className="text-2xl font-bold mb-4 text-purple-400">Live Data Pipeline</h3>
+                    <p className="text-gray-400 mb-6">
+                      Watch as claims, member data, and actuarial calculations flow through our AI-powered processing engine in real-time
+                    </p>
+                    <DataFlowVisualization />
+                  </div>
+                </motion.div>
+
+                <motion.div
+                  initial={{ opacity: 0, x: 50 }}
+                  whileInView={{ opacity: 1, x: 0 }}
+                  viewport={{ once: true }}
+                  className="relative"
+                >
+                  <div className="absolute inset-0 bg-gradient-to-br from-blue-500/20 to-cyan-500/20 rounded-2xl blur-3xl" />
+                  <div className="relative bg-gray-900/50 backdrop-blur-xl rounded-2xl border border-gray-800 p-8">
+                    <h3 className="text-2xl font-bold mb-4 text-blue-400">Executive KPI Dashboard</h3>
+                    <p className="text-gray-400 mb-6">
+                      Monitor critical metrics with instant updates and predictive trend analysis
+                    </p>
+                    <KPIDashboardPreview />
+                  </div>
+                </motion.div>
+              </div>
+
+              <motion.div
+                initial={{ opacity: 0, y: 50 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                className="relative"
+              >
+                <div className="absolute inset-0 bg-gradient-to-br from-purple-500/20 to-pink-500/20 rounded-2xl blur-3xl" />
+                <div className="relative bg-gray-900/50 backdrop-blur-xl rounded-2xl border border-gray-800 p-8">
+                  <h3 className="text-2xl font-bold mb-4 text-center text-purple-400">Integrated System Architecture</h3>
+                  <p className="text-gray-400 mb-6 text-center max-w-2xl mx-auto">
+                    See how all components of your benefits ecosystem connect and communicate seamlessly
+                  </p>
+                  <NetworkGraphAnimation />
+                </div>
+              </motion.div>
+            </div>
+          </section>
+
           {/* Features Section */}
           <section className="py-20 px-4">
             <div className="max-w-7xl mx-auto">
@@ -552,6 +634,31 @@ export default function ActuarialBenefits() {
                 </p>
               </motion.div>
 
+              {/* Featured 3D Solution Cards */}
+              <div className="grid md:grid-cols-3 gap-8 mb-16">
+                <Interactive3DCard
+                  title="Risk Assessment Engine"
+                  description="AI-powered predictive modeling with 99.2% accuracy for comprehensive risk evaluation"
+                  icon={Shield}
+                  gradient="from-pink-500 to-purple-500"
+                  href="/solutions/risk-assessment"
+                />
+                <Interactive3DCard
+                  title="Claims Analytics Platform"
+                  description="Real-time processing with automated fraud detection and 24hr turnaround time"
+                  icon={BarChart3}
+                  gradient="from-blue-500 to-cyan-500"
+                  href="/solutions/claims-analytics"
+                />
+                <Interactive3DCard
+                  title="Premium Calculation AI"
+                  description="Intelligent pricing algorithms achieving 98.7% accuracy and $6.2M revenue optimization"
+                  icon={TrendingUp}
+                  gradient="from-purple-500 to-blue-500"
+                  href="/solutions/premium-calculation"
+                />
+              </div>
+
               <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
                 {solutions.map((solution, index) => (
                   <SolutionCard3D key={index} solution={solution} index={index} />
@@ -600,11 +707,12 @@ export default function ActuarialBenefits() {
                     <motion.button
                       whileHover={{ scale: 1.05 }}
                       whileTap={{ scale: 0.95 }}
-                      className="px-12 py-5 bg-gradient-to-r from-pink-600 via-purple-600 to-blue-600 rounded-full text-white font-bold text-2xl flex items-center gap-3 mx-auto shadow-2xl"
+                      className="px-12 py-5 bg-gradient-to-r from-pink-600 via-purple-600 to-blue-600 rounded-full text-white font-bold text-2xl flex items-center gap-3 mx-auto shadow-2xl relative"
                       style={{
                         boxShadow: "0 0 40px rgba(236, 72, 153, 0.5)",
                       }}
                     >
+                      <NeonGlow color="#ec4899" size={200} opacity={0.6} />
                       <Sparkles className="w-6 h-6" />
                       Schedule Premium Consultation
                       <Sparkles className="w-6 h-6" />

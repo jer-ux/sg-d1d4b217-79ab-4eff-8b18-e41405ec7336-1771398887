@@ -572,9 +572,14 @@ function FourLaneLedger({ onKPIClick, onEventClick }: { onKPIClick: (kpi: KPIMet
   ];
 
   const ledgerStats = mockWarRoomData.ledger;
-  const kpis = mockWarRoomData.kpis.slice(4, 8).map(kpi => ({
-    ...kpi,
-    status: (kpi.status as "HEALTHY" | "WARNING" | "CRITICAL" | undefined) || "HEALTHY"
+  const kpis: KPIMetric[] = mockWarRoomData.kpis.slice(4, 8).map(kpi => ({
+    label: kpi.label,
+    value: kpi.value,
+    delta: kpi.delta,
+    delta_pct: kpi.delta_pct,
+    status: (kpi.status as "HEALTHY" | "WARNING" | "CRITICAL" | undefined) || "HEALTHY",
+    trend: (kpi.trend as "up" | "down" | "stable" | undefined),
+    details: kpi.details
   }));
 
   return (

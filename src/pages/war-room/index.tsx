@@ -4,7 +4,7 @@ import { useState, useEffect, useMemo } from "react";
 import Link from "next/link";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
-import { ChevronDown, ExternalLink, FileText, Shield, TrendingUp, AlertTriangle, Activity, CheckCircle, Zap } from "lucide-react";
+import { ChevronDown, ExternalLink, FileText, Shield, TrendingUp, AlertTriangle, Activity, CheckCircle, Zap, ArrowRight, BarChart3, Database, Eye } from "lucide-react";
 import { motion } from "framer-motion";
 import dynamic from "next/dynamic";
 import { mockWarRoomData as mockWarRoom } from "@/lib/mocks/mockWarRoom";
@@ -193,16 +193,38 @@ interface MockEvent {
 type KPIMetric = {
   label: string;
   value: string;
-  trend?: string;
-  trendDirection?: "up" | "down" | "neutral";
-  receipt: {
-    id: string;
-    verified: boolean;
-    freshness: string;
-    dqPassRate: number;
-    confidence: number;
-  };
+  change?: string;
+  trend?: "up" | "down" | "neutral";
+  context?: string;
   drilldownKey?: string;
+  evidence?: {
+    receiptId: string;
+    verified: boolean;
+    confidence: number;
+    dataQuality: number;
+    lastUpdated: string;
+  };
+};
+
+type KPIDetail = {
+  title: string;
+  description: string;
+  currentValue: string;
+  baseline: string;
+  trend: "up" | "down" | "neutral";
+  trendValue: string;
+  methodology: string;
+  dataSources: string[];
+  metrics: KPIMetric[];
+  relatedEvents: MockEvent[];
+  evidence: {
+    receiptId: string;
+    verified: boolean;
+    confidence: number;
+    dataQuality: number;
+    lastUpdated: string;
+    auditTrail: Array<{ timestamp: string; action: string; user: string }>;
+  };
 };
 
 function money(n: number) {
@@ -342,52 +364,323 @@ function Badge({ status, onClick }: { status: string; onClick?: (e: React.MouseE
   );
 }
 
-interface DetailModalData {
-  title: string;
-  description: string;
-  kpis: KPIMetric[];
-  receipt: any;
-  details: string[];
-  legalContext?: {
-    statute: string;
-    regulation: string;
-    compliance: string[];
-    riskFactors: string[];
-  };
-  capitalMarketsContext?: {
-    valuationMethod: string;
-    discountRate: number;
-    marketComparables: string[];
-    liquidityAnalysis: string;
-  };
-}
-
-function DetailModal({ 
+function KPIDetailModal({ 
   open, 
-  title, 
-  onClose, 
-  children,
-  level = 1 
+  detail, 
+  onClose,
+  onMetricClick,
+  onEventClick,
 }: { 
   open: boolean; 
-  title: string; 
-  onClose: () => void; 
-  children: React.ReactNode;
-  level?: number;
+  detail: KPIDetail | null;
+  onClose: () => void;
+  onMetricClick: (metric: KPIMetric) => void;
+  onEventClick: (event: MockEvent) => void;
 }) {
-  const maxWidth = level === 1 ? "max-w-2xl" : level === 2 ? "max-w-3xl" : "max-w-4xl";
-  
+  if (!detail) return null;
+
+  const trendIcon = detail.trend === "up" ? "↑" : detail.trend === "down" ? "↓" : "→";
+  const trendColor = detail.trend === "up" ? "text-red-400" : detail.trend === "down" ? "text-emerald-400" : "text-blue-400";
+
   return (
     <Dialog open={open} onOpenChange={(val) => !val && onClose()}>
-      <DialogContent className={`${maxWidth} bg-gray-900 border-white/10 text-white sm:max-w-[90vw] max-h-[85vh] overflow-y-auto`}>
+      <DialogContent className="max-w-4xl bg-gray-900 border-white/10 text-white sm:max-w-[90vw] max-h-[85vh] overflow-y-auto">
         <DialogHeader>
-          <DialogTitle className="text-xl font-semibold flex items-center gap-2">
-            {level > 1 && <span className="text-sm text-white/50">Level {level} →</span>}
-            {title}
+          <DialogTitle className="text-2xl font-semibold flex items-center gap-3">
+            <BarChart3 className="h-6 w-6 text-blue-400" />
+            {detail.title}
           </DialogTitle>
         </DialogHeader>
-        <div className="mt-4">
-          {children}
+        
+        <div className="space-y-6 mt-4">
+          <div className="rounded-xl border border-white/10 bg-white/5 p-6">
+            <p className="text-white/80 mb-4">{detail.description}</p>
+            
+            <div className="grid grid-cols-3 gap-4">
+              <div>
+                <div className="text-xs text-white/50 uppercase tracking-wider mb-1">Current Value</div>
+                <div className="text-2xl font-bold text-white">{detail.currentValue}</div>
+              </div>
+              <div>
+                <div className="text-xs text-white/50 uppercase tracking-wider mb-1">Baseline</div>
+                <div className="text-2xl font-bold text-white/70">{detail.baseline}</div>
+              </div>
+              <div>
+                <div className="text-xs text-white/50 uppercase tracking-wider mb-1">Trend</div>
+                <div className={`text-2xl font-bold ${trendColor} flex items-center gap-2`}>
+                  <span>{trendIcon}</span>
+                  <span>{detail.trendValue}</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div className="rounded-xl border border-white/10 bg-white/5 p-6">
+            <div className="flex items-center gap-2 mb-4">
+              <Database className="h-5 w-5 text-emerald-400" />
+              <h3 className="text-lg font-semibold">Evidence & Data Quality</h3>
+            </div>
+            
+            <div className="grid grid-cols-2 gap-4 mb-4">
+              <div className="rounded-lg border border-emerald-400/30 bg-emerald-500/10 p-4">
+                <div className="text-xs text-emerald-300/80 uppercase tracking-wider mb-1">Verification Status</div>
+                <div className="text-lg font-bold text-emerald-200">
+                  {detail.evidence.verified ? "✓ Verified" : "⚠ Unverified"}
+                </div>
+              </div>
+              <div className="rounded-lg border border-blue-400/30 bg-blue-500/10 p-4">
+                <div className="text-xs text-blue-300/80 uppercase tracking-wider mb-1">Confidence Score</div>
+                <div className="text-lg font-bold text-blue-200">{Math.round(detail.evidence.confidence * 100)}%</div>
+              </div>
+              <div className="rounded-lg border border-violet-400/30 bg-violet-500/10 p-4">
+                <div className="text-xs text-violet-300/80 uppercase tracking-wider mb-1">Data Quality</div>
+                <div className="text-lg font-bold text-violet-200">{Math.round(detail.evidence.dataQuality * 100)}%</div>
+              </div>
+              <div className="rounded-lg border border-amber-400/30 bg-amber-500/10 p-4">
+                <div className="text-xs text-amber-300/80 uppercase tracking-wider mb-1">Last Updated</div>
+                <div className="text-sm font-medium text-amber-200">{detail.evidence.lastUpdated}</div>
+              </div>
+            </div>
+
+            <div className="text-xs text-white/60">
+              <span className="font-semibold">Receipt ID:</span> {detail.evidence.receiptId}
+            </div>
+          </div>
+
+          <div className="rounded-xl border border-white/10 bg-white/5 p-6">
+            <h3 className="text-lg font-semibold mb-3">Methodology</h3>
+            <p className="text-sm text-white/70 leading-relaxed mb-4">{detail.methodology}</p>
+            
+            <div className="mb-4">
+              <div className="text-sm font-semibold text-white/80 mb-2">Data Sources:</div>
+              <div className="flex flex-wrap gap-2">
+                {detail.dataSources.map((source, i) => (
+                  <span key={i} className="text-xs px-3 py-1 rounded-full bg-blue-500/20 text-blue-200 border border-blue-400/30">
+                    {source}
+                  </span>
+                ))}
+              </div>
+            </div>
+          </div>
+
+          <div className="rounded-xl border border-white/10 bg-white/5 p-6">
+            <div className="flex items-center justify-between mb-4">
+              <h3 className="text-lg font-semibold">Contributing Metrics</h3>
+              <span className="text-xs text-white/50">{detail.metrics.length} metrics</span>
+            </div>
+            
+            <div className="space-y-3">
+              {detail.metrics.map((metric, i) => (
+                <div 
+                  key={i}
+                  onClick={() => onMetricClick(metric)}
+                  className="rounded-lg border border-white/10 bg-black/20 p-4 hover:bg-black/30 cursor-pointer transition-all hover:border-white/20 group"
+                >
+                  <div className="flex items-center justify-between">
+                    <div className="flex-1">
+                      <div className="flex items-center gap-2">
+                        <span className="text-sm font-medium text-white">{metric.label}</span>
+                        <ArrowRight className="h-4 w-4 text-white/40 opacity-0 group-hover:opacity-100 transition-opacity" />
+                      </div>
+                      {metric.context && (
+                        <div className="text-xs text-white/50 mt-1">{metric.context}</div>
+                      )}
+                    </div>
+                    <div className="text-right">
+                      <div className="text-lg font-bold text-white">{metric.value}</div>
+                      {metric.change && (
+                        <div className={`text-xs font-medium ${
+                          metric.trend === "up" ? "text-red-400" : 
+                          metric.trend === "down" ? "text-emerald-400" : 
+                          "text-blue-400"
+                        }`}>
+                          {metric.change}
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                  {metric.evidence && (
+                    <div className="mt-3 pt-3 border-t border-white/10">
+                      <div className="flex items-center gap-4 text-xs text-white/60">
+                        <span>Confidence: {Math.round(metric.evidence.confidence * 100)}%</span>
+                        <span>DQ: {Math.round(metric.evidence.dataQuality * 100)}%</span>
+                        <span className={metric.evidence.verified ? "text-emerald-400" : "text-amber-400"}>
+                          {metric.evidence.verified ? "✓ Verified" : "⚠ Unverified"}
+                        </span>
+                      </div>
+                    </div>
+                  )}
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {detail.relatedEvents.length > 0 && (
+            <div className="rounded-xl border border-white/10 bg-white/5 p-6">
+              <div className="flex items-center justify-between mb-4">
+                <h3 className="text-lg font-semibold">Related Events</h3>
+                <span className="text-xs text-white/50">{detail.relatedEvents.length} events</span>
+              </div>
+              
+              <div className="space-y-2">
+                {detail.relatedEvents.map((event) => (
+                  <div
+                    key={event.id}
+                    onClick={() => onEventClick(event)}
+                    className="rounded-lg border border-white/10 bg-black/20 p-3 hover:bg-black/30 cursor-pointer transition-all hover:border-white/20 group"
+                  >
+                    <div className="flex items-center justify-between">
+                      <div className="flex-1">
+                        <div className="flex items-center gap-2">
+                          <span className="text-sm font-medium text-white">{event.title}</span>
+                          <ArrowRight className="h-4 w-4 text-white/40 opacity-0 group-hover:opacity-100 transition-opacity" />
+                        </div>
+                        <div className="text-xs text-white/50 mt-1">
+                          {event.id} • {event.owner_role} • Score: {event.score.toLocaleString()}
+                        </div>
+                      </div>
+                      <div className="text-right">
+                        <div className="text-sm font-semibold text-white">{money(event.identified_value)}</div>
+                        <Badge status={event.receipt_status} />
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+
+          <div className="rounded-xl border border-white/10 bg-white/5 p-6">
+            <div className="flex items-center gap-2 mb-3">
+              <Shield className="h-5 w-5 text-violet-400" />
+              <h3 className="text-lg font-semibold">Audit Trail</h3>
+            </div>
+            
+            <div className="space-y-2">
+              {detail.evidence.auditTrail.map((entry, i) => (
+                <div key={i} className="flex items-center justify-between text-sm py-2 border-b border-white/5 last:border-0">
+                  <div className="flex items-center gap-3">
+                    <span className="text-white/50">{entry.timestamp}</span>
+                    <span className="text-white/70">{entry.action}</span>
+                  </div>
+                  <span className="text-white/60">{entry.user}</span>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      </DialogContent>
+    </Dialog>
+  );
+}
+
+function MetricDetailModal({
+  open,
+  metric,
+  onClose,
+}: {
+  open: boolean;
+  metric: KPIMetric | null;
+  onClose: () => void;
+}) {
+  if (!metric) return null;
+
+  return (
+    <Dialog open={open} onOpenChange={(val) => !val && onClose()}>
+      <DialogContent className="max-w-3xl bg-gray-900 border-white/10 text-white sm:max-w-[85vw] max-h-[80vh] overflow-y-auto">
+        <DialogHeader>
+          <DialogTitle className="text-xl font-semibold flex items-center gap-3">
+            <Eye className="h-5 w-5 text-violet-400" />
+            Level 2 → {metric.label}
+          </DialogTitle>
+        </DialogHeader>
+
+        <div className="space-y-6 mt-4">
+          <div className="rounded-xl border border-white/10 bg-white/5 p-6">
+            <div className="grid grid-cols-2 gap-4 mb-4">
+              <div>
+                <div className="text-xs text-white/50 uppercase tracking-wider mb-1">Metric Value</div>
+                <div className="text-3xl font-bold text-white">{metric.value}</div>
+              </div>
+              {metric.change && (
+                <div>
+                  <div className="text-xs text-white/50 uppercase tracking-wider mb-1">Change</div>
+                  <div className={`text-2xl font-bold ${
+                    metric.trend === "up" ? "text-red-400" : 
+                    metric.trend === "down" ? "text-emerald-400" : 
+                    "text-blue-400"
+                  }`}>
+                    {metric.change}
+                  </div>
+                </div>
+              )}
+            </div>
+            
+            {metric.context && (
+              <p className="text-sm text-white/70 leading-relaxed">{metric.context}</p>
+            )}
+          </div>
+
+          {metric.evidence && (
+            <div className="rounded-xl border border-white/10 bg-white/5 p-6">
+              <div className="flex items-center gap-2 mb-4">
+                <Database className="h-5 w-5 text-emerald-400" />
+                <h3 className="text-lg font-semibold">Evidence Details</h3>
+              </div>
+              
+              <div className="grid grid-cols-2 gap-4">
+                <div className="rounded-lg border border-emerald-400/30 bg-emerald-500/10 p-4">
+                  <div className="text-xs text-emerald-300/80 uppercase tracking-wider mb-1">Verification</div>
+                  <div className="text-lg font-bold text-emerald-200">
+                    {metric.evidence.verified ? "✓ Verified" : "⚠ Unverified"}
+                  </div>
+                </div>
+                <div className="rounded-lg border border-blue-400/30 bg-blue-500/10 p-4">
+                  <div className="text-xs text-blue-300/80 uppercase tracking-wider mb-1">Confidence</div>
+                  <div className="text-lg font-bold text-blue-200">
+                    {Math.round(metric.evidence.confidence * 100)}%
+                  </div>
+                </div>
+                <div className="rounded-lg border border-violet-400/30 bg-violet-500/10 p-4">
+                  <div className="text-xs text-violet-300/80 uppercase tracking-wider mb-1">Data Quality</div>
+                  <div className="text-lg font-bold text-violet-200">
+                    {Math.round(metric.evidence.dataQuality * 100)}%
+                  </div>
+                </div>
+                <div className="rounded-lg border border-amber-400/30 bg-amber-500/10 p-4">
+                  <div className="text-xs text-amber-300/80 uppercase tracking-wider mb-1">Last Updated</div>
+                  <div className="text-sm font-medium text-amber-200">{metric.evidence.lastUpdated}</div>
+                </div>
+              </div>
+
+              <div className="mt-4 text-xs text-white/60">
+                <span className="font-semibold">Receipt ID:</span> {metric.evidence.receiptId}
+              </div>
+            </div>
+          )}
+
+          <div className="rounded-xl border border-white/10 bg-white/5 p-6">
+            <h3 className="text-lg font-semibold mb-3">Calculation Methodology</h3>
+            <p className="text-sm text-white/70 leading-relaxed mb-4">
+              This metric is calculated using proprietary algorithms that analyze claims data, contract terms, 
+              and historical patterns to identify cost optimization opportunities.
+            </p>
+            
+            <div className="grid grid-cols-3 gap-3">
+              <div className="rounded-lg border border-white/10 bg-black/20 p-3 text-center">
+                <div className="text-xs text-white/50 mb-1">Sample Size</div>
+                <div className="text-lg font-bold text-white">45,231</div>
+              </div>
+              <div className="rounded-lg border border-white/10 bg-black/20 p-3 text-center">
+                <div className="text-xs text-white/50 mb-1">Data Points</div>
+                <div className="text-lg font-bold text-white">1.2M</div>
+              </div>
+              <div className="rounded-lg border border-white/10 bg-black/20 p-3 text-center">
+                <div className="text-xs text-white/50 mb-1">Accuracy</div>
+                <div className="text-lg font-bold text-emerald-400">98.2%</div>
+              </div>
+            </div>
+          </div>
         </div>
       </DialogContent>
     </Dialog>
@@ -445,6 +738,159 @@ function StatCard({ icon: Icon, label, value, themeKey, delay = 0 }: StatCardPro
   );
 }
 
+function getKPIDetails(): Record<string, KPIDetail> {
+  return {
+    costTrend: {
+      title: "Cost Trend Stress Index",
+      description: "Measures the rate of healthcare cost increase relative to baseline expectations, incorporating medical inflation, utilization changes, and plan design impact.",
+      currentValue: "11.2%",
+      baseline: "9.0%",
+      trend: "up",
+      trendValue: "+2.2pp YoY",
+      methodology: "Calculated using year-over-year total healthcare spend growth, adjusted for membership changes and normalized against industry benchmarks. Factors include medical trend (7.5%), pharmacy trend (9.8%), utilization patterns, and member demographics.",
+      dataSources: ["Claims Database", "Enrollment Data", "Carrier Reports", "Industry Benchmarks"],
+      metrics: [
+        {
+          label: "Medical Trend",
+          value: "7.5%",
+          change: "+1.2pp QoQ",
+          trend: "up",
+          context: "Driven by increased inpatient utilization and specialty care costs",
+          evidence: {
+            receiptId: "RCT-MEDICAL-2024-001",
+            verified: true,
+            confidence: 0.94,
+            dataQuality: 0.97,
+            lastUpdated: "2 hours ago",
+          },
+        },
+        {
+          label: "Pharmacy Trend",
+          value: "9.8%",
+          change: "+3.1pp QoQ",
+          trend: "up",
+          context: "GLP-1 medications and specialty drugs driving increase",
+          evidence: {
+            receiptId: "RCT-PHARMA-2024-001",
+            verified: true,
+            confidence: 0.96,
+            dataQuality: 0.95,
+            lastUpdated: "3 hours ago",
+          },
+        },
+        {
+          label: "Utilization Rate",
+          value: "102.3%",
+          change: "+2.3pp",
+          trend: "up",
+          context: "Above baseline utilization across most service categories",
+          evidence: {
+            receiptId: "RCT-UTIL-2024-001",
+            verified: true,
+            confidence: 0.92,
+            dataQuality: 0.93,
+            lastUpdated: "1 hour ago",
+          },
+        },
+      ],
+      relatedEvents: mockWarRoom.events.slice(0, 3).map(e => ({
+        id: e.id,
+        title: e.title,
+        type: e.type || "cost_variance",
+        status: e.state,
+        identified_value: e.amount,
+        confidence: e.confidence,
+        time_sensitivity: 0.7,
+        execution_friction: 0.3,
+        score: score(e),
+        owner_role: e.owner || "CFO",
+        evidence_receipt_id: "RCT-001",
+        receipt_status: "VERIFIED",
+        theme: "crimson" as ThemeKey,
+      })),
+      evidence: {
+        receiptId: "RCT-COST-TREND-2024-Q1",
+        verified: true,
+        confidence: 0.95,
+        dataQuality: 0.96,
+        lastUpdated: "30 minutes ago",
+        auditTrail: [
+          { timestamp: "2024-02-11 12:30 UTC", action: "Data Validation Complete", user: "System" },
+          { timestamp: "2024-02-11 11:45 UTC", action: "Claims Data Ingested", user: "ETL Pipeline" },
+          { timestamp: "2024-02-11 10:00 UTC", action: "Calculation Initiated", user: "Scheduled Job" },
+        ],
+      },
+    },
+    planDesign: {
+      title: "Plan Design Adoption",
+      description: "Tracks employee enrollment in cost-efficient plan designs including High Deductible Health Plans (HDHP) with HSA and Centers of Excellence (COE) programs.",
+      currentValue: "47%",
+      baseline: "35%",
+      trend: "up",
+      trendValue: "+12pp QoQ",
+      methodology: "Percentage of eligible employees enrolled in HDHP/HSA plans or utilizing COE networks, weighted by total covered lives. Includes analysis of plan selection patterns and cost impact.",
+      dataSources: ["Enrollment Systems", "Plan Documents", "Employee Elections", "Cost Analysis"],
+      metrics: [
+        {
+          label: "HDHP/HSA Enrollment",
+          value: "38%",
+          change: "+8pp",
+          trend: "up",
+          context: "Strong adoption driven by enhanced employer contributions",
+          evidence: {
+            receiptId: "RCT-HDHP-2024-001",
+            verified: true,
+            confidence: 0.98,
+            dataQuality: 0.99,
+            lastUpdated: "1 hour ago",
+          },
+        },
+        {
+          label: "COE Network Usage",
+          value: "9%",
+          change: "+4pp",
+          trend: "up",
+          context: "Increasing utilization for elective procedures",
+          evidence: {
+            receiptId: "RCT-COE-2024-001",
+            verified: true,
+            confidence: 0.91,
+            dataQuality: 0.94,
+            lastUpdated: "2 hours ago",
+          },
+        },
+      ],
+      relatedEvents: mockWarRoom.events.slice(3, 5).map(e => ({
+        id: e.id,
+        title: e.title,
+        type: e.type || "plan_design",
+        status: e.state,
+        identified_value: e.amount,
+        confidence: e.confidence,
+        time_sensitivity: 0.6,
+        execution_friction: 0.4,
+        score: score(e),
+        owner_role: e.owner || "Benefits Team",
+        evidence_receipt_id: "RCT-002",
+        receipt_status: "VERIFIED",
+        theme: "emerald" as ThemeKey,
+      })),
+      evidence: {
+        receiptId: "RCT-PLAN-DESIGN-2024-Q1",
+        verified: true,
+        confidence: 0.97,
+        dataQuality: 0.98,
+        lastUpdated: "45 minutes ago",
+        auditTrail: [
+          { timestamp: "2024-02-11 12:15 UTC", action: "Enrollment Data Verified", user: "System" },
+          { timestamp: "2024-02-11 11:30 UTC", action: "Plan Design Analysis Complete", user: "Benefits Analytics" },
+          { timestamp: "2024-02-11 10:45 UTC", action: "Data Collection Started", user: "Scheduled Job" },
+        ],
+      },
+    },
+  };
+}
+
 function CFODashboardContent() {
   const [data, setData] = useState(() => mockWarRoom);
   const [view, setView] = useState<TileView>("VARIANCE");
@@ -453,9 +899,10 @@ function CFODashboardContent() {
   const [searchQuery, setSearchQuery] = useState("");
   const [statusFilter, setStatusFilter] = useState("All");
   
-  const [level1Modal, setLevel1Modal] = useState<{ open: boolean; data: DetailModalData | null }>({ open: false, data: null });
-  const [level2Modal, setLevel2Modal] = useState<{ open: boolean; data: DetailModalData | null }>({ open: false, data: null });
-  const [level3Modal, setLevel3Modal] = useState<{ open: boolean; data: DetailModalData | null }>({ open: false, data: null });
+  const [level1Modal, setLevel1Modal] = useState<{ open: boolean; detail: KPIDetail | null }>({ open: false, detail: null });
+  const [level2Modal, setLevel2Modal] = useState<{ open: boolean; metric: KPIMetric | null }>({ open: false, metric: null });
+
+  const kpiDetails = useMemo(() => getKPIDetails(), []);
 
   useEffect(() => {
     setMounted(true);
@@ -476,28 +923,26 @@ function CFODashboardContent() {
     }
     
     if (statusFilter !== "All") {
-      filtered = filtered.filter(e => e.status === statusFilter);
+      filtered = filtered.filter(e => e.state === statusFilter);
     }
     
-    return filtered.sort((a, b) => b.score - a.score);
+    return filtered.sort((a, b) => score(b) - score(a));
   }, [data.events, searchQuery, statusFilter]);
 
-  const getTileExplanation = (): DetailModalData => ({
-    title: "KPI Methodology & Evidence",
-    description: "Detailed analysis with audit-grade evidence receipts",
-    kpis: [],
-    receipt: null,
-    details: ["Full methodology available in documentation"],
-  });
+  const handleTileClick = (kpiKey: string) => {
+    const detail = kpiDetails[kpiKey];
+    if (detail) {
+      setLevel1Modal({ open: true, detail });
+    }
+  };
 
-  const renderModalContent = (modalData: DetailModalData) => (
-    <div className="space-y-4">
-      <p className="text-white/80">{modalData.description}</p>
-      {modalData.details.map((d, i) => (
-        <div key={i} className="text-sm text-white/70">{d}</div>
-      ))}
-    </div>
-  );
+  const handleMetricClick = (metric: KPIMetric) => {
+    setLevel2Modal({ open: true, metric });
+  };
+
+  const handleEventClick = (event: MockEvent) => {
+    setActiveEvent(event);
+  };
 
   return (
     <>
@@ -541,14 +986,14 @@ function CFODashboardContent() {
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-4 mb-6">
-          <Tile label="Cost Trend Stress Index" value="11.2%" subLeft="vs 9% baseline" subRight="+2.2pp YoY" theme="crimson" onClick={() => setLevel1Modal({ open: true, data: getTileExplanation() })} />
-          <Tile label="Plan Design Adoption" value="47%" subLeft="HDHP/HSA + COE" subRight="+12pp QoQ" theme="emerald" onClick={() => setLevel1Modal({ open: true, data: getTileExplanation() })} />
-          <Tile label="Pharmacy Exposure" value="34%" subLeft="Opaque terms" subRight="-8pp target" theme="violet" onClick={() => setLevel1Modal({ open: true, data: getTileExplanation() })} />
-          <Tile label="Contract Leakage" value="6.8%" subLeft="$8.3M recoverable" subRight="-1.2pp QoQ" theme="amber" onClick={() => setLevel1Modal({ open: true, data: getTileExplanation() })} />
-          <Tile label="Contract Ambiguity" value="3.2/10" subLeft="Risk score" subRight="-0.8 improved" theme="orange" onClick={() => setLevel1Modal({ open: true, data: getTileExplanation() })} />
-          <Tile label="Contract Compliance" value="92.4%" subLeft="Compliant adjudications" subRight="+3.1pp QoQ" theme="blue" onClick={() => setLevel1Modal({ open: true, data: getTileExplanation() })} />
-          <Tile label="Benefits NPS" value="+38" subLeft="Employee experience" subRight="+7 pts QoQ" theme="rose" onClick={() => setLevel1Modal({ open: true, data: getTileExplanation() })} />
-          <Tile label="Employee NPS (eNPS)" value="+42" subLeft="Benefits team + vendors" subRight="+5 pts QoQ" theme="cyan" onClick={() => setLevel1Modal({ open: true, data: getTileExplanation() })} />
+          <Tile label="Cost Trend Stress Index" value="11.2%" subLeft="vs 9% baseline" subRight="+2.2pp YoY" theme="crimson" onClick={() => handleTileClick("costTrend")} />
+          <Tile label="Plan Design Adoption" value="47%" subLeft="HDHP/HSA + COE" subRight="+12pp QoQ" theme="emerald" onClick={() => handleTileClick("planDesign")} />
+          <Tile label="Pharmacy Exposure" value="34%" subLeft="Opaque terms" subRight="-8pp target" theme="violet" onClick={() => handleTileClick("pharmacyExposure")} />
+          <Tile label="Contract Leakage" value="6.8%" subLeft="$8.3M recoverable" subRight="-1.2pp QoQ" theme="amber" onClick={() => handleTileClick("contractLeakage")} />
+          <Tile label="Contract Ambiguity" value="3.2/10" subLeft="Risk score" subRight="-0.8 improved" theme="orange" onClick={() => handleTileClick("contractAmbiguity")} />
+          <Tile label="Contract Compliance" value="92.4%" subLeft="Compliant adjudications" subRight="+3.1pp QoQ" theme="blue" onClick={() => handleTileClick("contractCompliance")} />
+          <Tile label="Benefits NPS" value="+38" subLeft="Employee experience" subRight="+7 pts QoQ" theme="rose" onClick={() => handleTileClick("benefitsNPS")} />
+          <Tile label="Employee NPS (eNPS)" value="+42" subLeft="Benefits team + vendors" subRight="+5 pts QoQ" theme="cyan" onClick={() => handleTileClick("employeeNPS")} />
         </div>
 
         <div className="mb-6">
@@ -582,51 +1027,61 @@ function CFODashboardContent() {
                   onChange={(e) => setStatusFilter(e.target.value)}
                 >
                   <option>All</option>
-                  <option>RECOMMENDED</option>
-                  <option>ACCEPTED</option>
-                  <option>IMPLEMENTED</option>
-                  <option>VALIDATED</option>
+                  <option>IDENTIFIED</option>
+                  <option>APPROVED</option>
+                  <option>REALIZED</option>
                 </select>
               </div>
 
               <div className="space-y-2">
                 {eventsFiltered.map((e) => {
-                  const theme = e.theme ? THEME[e.theme as ThemeKey] : THEME.blue;
+                  const eventScore = score(e);
+                  const theme = THEME.blue;
                   
                   return (
                     <div
                       key={e.id}
-                      onClick={() => setActiveEvent(e as unknown as MockEvent)}
+                      onClick={() => handleEventClick({
+                        id: e.id,
+                        title: e.title,
+                        type: e.type || "variance",
+                        status: e.state,
+                        identified_value: e.amount,
+                        confidence: e.confidence,
+                        time_sensitivity: 0.7,
+                        execution_friction: 0.3,
+                        score: eventScore,
+                        owner_role: e.owner || "Unassigned",
+                        evidence_receipt_id: "RCT-001",
+                        receipt_status: "VERIFIED",
+                      })}
                       className={`group relative overflow-hidden rounded-xl border p-3 hover:bg-white/5 cursor-pointer transition-all ${
                         activeEvent?.id === e.id 
                           ? `${theme.border} ${theme.bg} ${theme.glow}` 
                           : "border-white/10 bg-black/20"
                       }`}
                     >
-                      {e.theme && (
-                        <div className={`absolute left-0 top-0 h-full w-1 ${theme.bar}`} />
-                      )}
+                      <div className={`absolute left-0 top-0 h-full w-1 ${theme.bar}`} />
                       
                       <div className="relative">
                         <div className="flex items-center justify-between">
-                          <div className={`text-sm font-medium ${e.theme ? theme.title : "text-white"}`}>
+                          <div className={`text-sm font-medium ${theme.title}`}>
                             {e.id} • {e.title}
                           </div>
                           <div className="text-[11px] text-white/50 tabular-nums">
-                            Score {e.score.toLocaleString()}
+                            Score {eventScore.toLocaleString()}
                           </div>
                         </div>
                         <div className="mt-1 text-[11px] text-white/50">
-                          Owner: {e.owner_role} • Receipt: {e.receipt_status} • Value: {money(e.identified_value)}
+                          Owner: {e.owner || "Unassigned"} • Value: {money(e.amount)}
                         </div>
                         <div className="mt-2 flex gap-2 flex-wrap">
-                          <Badge status={e.receipt_status} />
+                          <Badge status="VERIFIED" />
                           <span className={`text-[10px] px-2 py-0.5 rounded-full border font-semibold ${
-                            e.status === "VALIDATED" ? "border-emerald-400/30 bg-emerald-400/10 text-emerald-300" :
-                            e.status === "IMPLEMENTED" ? "border-blue-400/30 bg-blue-400/10 text-blue-300" :
-                            e.status === "ACCEPTED" ? "border-purple-400/30 bg-purple-400/10 text-purple-300" :
+                            e.state === "REALIZED" ? "border-emerald-400/30 bg-emerald-400/10 text-emerald-300" :
+                            e.state === "APPROVED" ? "border-blue-400/30 bg-blue-400/10 text-blue-300" :
                             "border-amber-400/30 bg-amber-400/10 text-amber-300"
-                          }`}>{e.status}</span>
+                          }`}>{e.state}</span>
                         </div>
                       </div>
                     </div>
@@ -660,9 +1115,19 @@ function CFODashboardContent() {
         </div>
       </div>
 
-      <DetailModal open={level1Modal.open} title={level1Modal.data?.title || ""} onClose={() => setLevel1Modal({ open: false, data: null })} level={1}>
-        {level1Modal.data && renderModalContent(level1Modal.data)}
-      </DetailModal>
+      <KPIDetailModal 
+        open={level1Modal.open} 
+        detail={level1Modal.detail}
+        onClose={() => setLevel1Modal({ open: false, detail: null })}
+        onMetricClick={handleMetricClick}
+        onEventClick={handleEventClick}
+      />
+
+      <MetricDetailModal
+        open={level2Modal.open}
+        metric={level2Modal.metric}
+        onClose={() => setLevel2Modal({ open: false, metric: null })}
+      />
     </>
   );
 }
@@ -927,7 +1392,6 @@ function FourLaneLedgerContent() {
   return (
     <div className="min-h-[calc(100vh-72px)] py-10">
       <div className="mx-auto max-w-6xl px-6">
-        {/* Enhanced Status Bar with Live Indicators */}
         <div className="mb-6 rounded-2xl border border-white/10 bg-slate-950/60 backdrop-blur-xl p-6">
           <div className="flex flex-col lg:flex-row gap-4 lg:items-center lg:justify-between">
             <div>
@@ -956,7 +1420,6 @@ function FourLaneLedgerContent() {
               </div>
             </div>
 
-            {/* Live Totals Display */}
             <div className="grid grid-cols-2 lg:grid-cols-4 gap-3">
               <motion.div 
                 key={totals.identified}
@@ -998,12 +1461,10 @@ function FourLaneLedgerContent() {
           </div>
         </div>
 
-        {/* Live Activity Ticker */}
         <div className="mb-6">
           <TickerMarquee items={ticker} />
         </div>
 
-        {/* Command Palette & Audit Ticker */}
         <div className="mb-6 flex gap-3">
           <div className="flex-1">
             <CommandPalette events={ticker as any} onOpenEvidence={setEvidenceOpen} />
@@ -1016,7 +1477,6 @@ function FourLaneLedgerContent() {
 
         <FiltersBar f={filters} setF={setFilters} />
 
-        {/* Enhanced Lane Grid with Activity Indicators */}
         <div className="mt-6 grid lg:grid-cols-2 gap-4">
           {(["value", "controls", "agentic", "marketplace"] as LaneKey[]).map((lane) => {
             const s = summaryMap.get(lane) ?? { identified: 0, approved: 0, realized: 0, atRisk: 0 };

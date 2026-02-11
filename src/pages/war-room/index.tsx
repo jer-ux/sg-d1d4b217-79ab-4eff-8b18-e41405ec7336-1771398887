@@ -258,23 +258,22 @@ function Tile({
       onClick={onClick}
       role={onClick ? "button" : undefined}
       className={[
-        "group relative overflow-hidden rounded-3xl border p-8 backdrop-blur-2xl",
-        "shadow-[0_20px_60px_rgba(0,0,0,0.6)]",
-        "transition-all duration-500 transform-gpu",
-        "hover:-translate-y-3 hover:scale-[1.03] cursor-pointer",
+        "group relative overflow-hidden rounded-xl border p-5 backdrop-blur-xl",
+        "shadow-lg",
+        "transition-all duration-300 transform-gpu",
+        "hover:-translate-y-1 hover:scale-[1.01] cursor-pointer",
         themeConfig.border,
         themeConfig.bg,
-        themeConfig.glow,
       ].join(" ")}
     >
       <AnimatedGradientOverlay theme={themeConfig} />
 
       <motion.div
-        className={`absolute -top-16 -right-16 h-40 w-40 rounded-full ${themeConfig.orb1} blur-[100px]`}
+        className={`absolute -top-12 -right-12 h-28 w-28 rounded-full ${themeConfig.orb1} blur-[80px]`}
         animate={{
-          y: [0, -25, 0],
-          x: [0, 15, 0],
-          scale: [1, 1.2, 1],
+          y: [0, -15, 0],
+          x: [0, 10, 0],
+          scale: [1, 1.1, 1],
         }}
         transition={{
           duration: 8,
@@ -283,11 +282,11 @@ function Tile({
         }}
       />
       <motion.div
-        className={`absolute -bottom-12 -left-12 h-32 w-32 rounded-full ${themeConfig.orb2} blur-[80px]`}
+        className={`absolute -bottom-8 -left-8 h-24 w-24 rounded-full ${themeConfig.orb2} blur-[60px]`}
         animate={{
-          y: [0, 20, 0],
-          x: [0, -15, 0],
-          scale: [1, 1.25, 1],
+          y: [0, 15, 0],
+          x: [0, -10, 0],
+          scale: [1, 1.15, 1],
         }}
         transition={{
           duration: 6,
@@ -298,19 +297,19 @@ function Tile({
       />
 
       <div className="relative z-10">
-        <div className={`text-[11px] font-bold uppercase tracking-widest ${themeConfig.title} opacity-90 mb-1`}>
+        <div className={`text-[10px] font-bold uppercase tracking-widest ${themeConfig.title} opacity-80 mb-1`}>
           {label}
         </div>
-        <div className="mt-5 text-6xl font-bold tracking-tight tabular-nums text-white drop-shadow-2xl">
+        <div className="mt-3 text-4xl font-bold tracking-tight tabular-nums text-white drop-shadow-lg">
           {value}
         </div>
-        <div className="mt-6 flex items-center justify-between text-sm text-white/90 font-medium">
+        <div className="mt-4 flex items-center justify-between text-xs text-white/80 font-medium">
           <span className="tabular-nums">{subLeft ?? ""}</span>
           <span className="tabular-nums">{subRight ?? ""}</span>
         </div>
       </div>
 
-      <div className={`absolute bottom-0 left-0 right-0 h-2 ${themeConfig.bar} transition-all duration-500 group-hover:h-3`} />
+      <div className={`absolute bottom-0 left-0 right-0 h-1.5 ${themeConfig.bar} transition-all duration-300 group-hover:h-2`} />
     </div>
   );
 }

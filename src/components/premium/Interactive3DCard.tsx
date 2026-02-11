@@ -82,7 +82,7 @@ export function Interactive3DCard({
         >
           {/* Neon glow overlay */}
           <motion.div
-            className="absolute inset-0"
+            className="absolute inset-0 opacity-0 group-hover:opacity-30"
             animate={{
               background: [
                 `radial-gradient(circle at 0% 0%, ${gradient.split(',')[0].replace('linear-gradient(135deg,', '')}, transparent 60%)`,
@@ -92,7 +92,6 @@ export function Interactive3DCard({
               ],
             }}
             transition={{ duration: 8, repeat: Infinity }}
-            className="opacity-0 group-hover:opacity-30"
           />
 
           {/* Shine effect */}

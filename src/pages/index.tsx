@@ -8,6 +8,7 @@ import Footer from "@/components/Footer";
 import { SEO } from "@/components/SEO";
 import { WarRoomPreview } from "@/components/kincaid-iq/WarRoomPreview";
 import { useState, Suspense } from "react";
+import { NeonGlow } from "@/components/premium/NeonGlow";
 
 // Dynamic imports for 3D components (client-side only)
 const Hero3DBackground = dynamic(() => import("@/components/premium/Hero3DBackground").then(mod => ({ default: mod.Hero3DBackground })), {
@@ -22,11 +23,6 @@ const Interactive3DCard = dynamic(() => import("@/components/premium/Interactive
 
 const VegasParticles = dynamic(() => import("@/components/premium/VegasParticles").then(mod => ({ default: mod.VegasParticles })), {
   ssr: false
-});
-
-const NeonGlow = dynamic(() => import("@/components/premium/NeonGlow").then(mod => ({ default: mod.NeonGlow })), {
-  ssr: false,
-  loading: () => <div>{(props: any) => props.children}</div>
 });
 
 const THEME = {

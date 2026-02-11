@@ -134,6 +134,7 @@ export default function KincaidIQHome() {
             </div>
           </section>
 
+          {/* THE PROBLEM - STRUCTURAL ANALYSIS */}
           <section className="border-t border-white/10 bg-slate-900/50">
             <div className="mx-auto max-w-7xl px-6 py-20">
               <div className="grid lg:grid-cols-2 gap-12 items-start">

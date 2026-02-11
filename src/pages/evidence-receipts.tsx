@@ -194,6 +194,7 @@ export default function EvidenceReceiptsPage() {
   const [tab, setTab] = useState<
     "overview" | "lineage" | "artifacts" | "transforms" | "dq" | "recon" | "audit"
   >("overview");
+  const [showExplanation, setShowExplanation] = useState(true);
 
   const selected = useMemo(() => receipts.find((r) => r.receiptId === selectedId) || receipts[0], [receipts, selectedId]);
   const confidencePct = useMemo(() => Math.round(selected.confidence * 100), [selected.confidence]);
@@ -274,6 +275,282 @@ export default function EvidenceReceiptsPage() {
               Create Receipt (Demo) 🧾
             </button>
           </div>
+
+          {/* Board-Level Value Proposition Section */}
+          {showExplanation && (
+            <div className="mb-8 rounded-3xl border border-white/10 bg-gradient-to-br from-white/5 via-white/[0.03] to-transparent backdrop-blur-xl shadow-2xl overflow-hidden">
+              <div className="relative p-8">
+                <button
+                  onClick={() => setShowExplanation(false)}
+                  className="absolute top-6 right-6 text-white/40 hover:text-white/80 transition-colors"
+                >
+                  ✕
+                </button>
+                
+                {/* Header */}
+                <div className="mb-8">
+                  <div className="inline-flex items-center gap-2 mb-4 px-4 py-2 rounded-full bg-gradient-to-r from-amber-500/20 to-orange-500/20 border border-amber-500/30">
+                    <Shield className="h-4 w-4 text-amber-300" />
+                    <span className="text-sm font-semibold text-amber-200">Board & Investment Grade Evidence</span>
+                  </div>
+                  <h2 className="text-3xl font-bold mb-4 bg-gradient-to-r from-white to-purple-200 bg-clip-text text-transparent">
+                    Why Evidence Lineage is Mission-Critical for Boards & Investment Groups
+                  </h2>
+                  <p className="text-lg text-purple-200/70 leading-relaxed">
+                    In an era of AI-driven decision making and billion-dollar health benefits portfolios, <span className="font-semibold text-white">verifiable data lineage</span> is the difference between defensible business intelligence and regulatory liability.
+                  </p>
+                </div>
+
+                {/* Three-Column Value Props */}
+                <div className="grid md:grid-cols-3 gap-6 mb-8">
+                  {/* Fiduciary Protection */}
+                  <div className="rounded-2xl border border-emerald-500/20 bg-gradient-to-br from-emerald-500/10 to-transparent p-6 backdrop-blur-sm">
+                    <div className="flex items-center gap-3 mb-4">
+                      <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-emerald-500/20">
+                        <Shield className="h-5 w-5 text-emerald-300" />
+                      </div>
+                      <h3 className="text-lg font-bold text-emerald-200">Fiduciary Protection</h3>
+                    </div>
+                    <p className="text-sm text-white/70 leading-relaxed">
+                      Board members and plan fiduciaries face <span className="font-semibold text-white">personal liability</span> under ERISA. Evidence receipts provide a complete audit trail proving due diligence in vendor selection, cost negotiations, and benefit design decisions.
+                    </p>
+                  </div>
+
+                  {/* Investment Due Diligence */}
+                  <div className="rounded-2xl border border-blue-500/20 bg-gradient-to-br from-blue-500/10 to-transparent p-6 backdrop-blur-sm">
+                    <div className="flex items-center gap-3 mb-4">
+                      <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-blue-500/20">
+                        <FileCheck className="h-5 w-5 text-blue-300" />
+                      </div>
+                      <h3 className="text-lg font-bold text-blue-200">Investment DD Excellence</h3>
+                    </div>
+                    <p className="text-sm text-white/70 leading-relaxed">
+                      Private equity and venture capital groups demand <span className="font-semibold text-white">forensic-grade data quality</span> during acquisitions. Our evidence receipts provide blockchain-backed proof of savings calculations that withstand actuarial scrutiny.
+                    </p>
+                  </div>
+
+                  {/* Regulatory Compliance */}
+                  <div className="rounded-2xl border border-purple-500/20 bg-gradient-to-br from-purple-500/10 to-transparent p-6 backdrop-blur-sm">
+                    <div className="flex items-center gap-3 mb-4">
+                      <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-purple-500/20">
+                        <CheckCircle2 className="h-5 w-5 text-purple-300" />
+                      </div>
+                      <h3 className="text-lg font-bold text-purple-200">Multi-Framework Compliance</h3>
+                    </div>
+                    <p className="text-sm text-white/70 leading-relaxed">
+                      Simultaneous compliance with <span className="font-semibold text-white">SOX 404, HIPAA Security Rule, SOC 2 Type II, GDPR Article 5, and NIST 800-53</span> through automated evidence collection and immutable audit trails.
+                    </p>
+                  </div>
+                </div>
+
+                {/* Deep Dive Sections */}
+                <div className="space-y-6">
+                  {/* The AI Consultant Problem */}
+                  <div className="rounded-2xl border border-red-500/20 bg-gradient-to-br from-red-500/5 to-transparent p-6 backdrop-blur-sm">
+                    <h3 className="text-xl font-bold mb-4 flex items-center gap-2">
+                      <AlertTriangle className="h-5 w-5 text-red-400" />
+                      <span className="text-red-200">The "Black Box AI" Problem in Traditional Consulting</span>
+                    </h3>
+                    <div className="space-y-4 text-sm text-white/70 leading-relaxed">
+                      <p>
+                        <span className="font-semibold text-white">Traditional health benefits consultants and AI vendors</span> present savings projections and optimization recommendations without transparent data provenance. When boards ask "How do you know this is accurate?", the answer is often:
+                      </p>
+                      <ul className="space-y-2 ml-6">
+                        <li className="flex items-start gap-2">
+                          <XCircle className="h-4 w-4 text-red-400 mt-0.5 flex-shrink-0" />
+                          <span><span className="font-semibold text-red-300">"Trust our proprietary algorithm"</span> - No visibility into calculation methodology</span>
+                        </li>
+                        <li className="flex items-start gap-2">
+                          <XCircle className="h-4 w-4 text-red-400 mt-0.5 flex-shrink-0" />
+                          <span><span className="font-semibold text-red-300">"Based on industry benchmarks"</span> - No proof of data quality or source verification</span>
+                        </li>
+                        <li className="flex items-start gap-2">
+                          <XCircle className="h-4 w-4 text-red-400 mt-0.5 flex-shrink-0" />
+                          <span><span className="font-semibold text-red-300">"Our AI model predicts..."</span> - No audit trail showing which data points influenced the prediction</span>
+                        </li>
+                        <li className="flex items-start gap-2">
+                          <XCircle className="h-4 w-4 text-red-400 mt-0.5 flex-shrink-0" />
+                          <span><span className="font-semibold text-red-300">"Excel-based analysis"</span> - Manual processes with no version control or change tracking</span>
+                        </li>
+                      </ul>
+                      <p className="pt-4 font-semibold text-amber-300 border-t border-red-500/20">
+                        ⚠️ When regulators, auditors, or plaintiff attorneys investigate, these "black box" recommendations become <span className="text-red-300">indefensible liabilities</span>.
+                      </p>
+                    </div>
+                  </div>
+
+                  {/* Kincaid iQ Differentiation */}
+                  <div className="rounded-2xl border border-emerald-500/30 bg-gradient-to-br from-emerald-500/10 to-transparent p-6 backdrop-blur-sm">
+                    <h3 className="text-xl font-bold mb-4 flex items-center gap-2">
+                      <CheckCircle2 className="h-5 w-5 text-emerald-400" />
+                      <span className="text-emerald-200">How Kincaid iQ Evidence Receipts Change the Game</span>
+                    </h3>
+                    <div className="space-y-4 text-sm text-white/70 leading-relaxed">
+                      <p className="text-base text-emerald-200 font-semibold">
+                        Every metric, KPI, and business recommendation comes with a cryptographically-signed evidence receipt that proves:
+                      </p>
+                      <div className="grid md:grid-cols-2 gap-4">
+                        <div className="space-y-3">
+                          <div className="flex items-start gap-3">
+                            <div className="flex h-6 w-6 items-center justify-center rounded-lg bg-emerald-500/20 text-xs font-bold text-emerald-300 flex-shrink-0">1</div>
+                            <div>
+                              <div className="font-semibold text-white mb-1">Complete Data Lineage</div>
+                              <div className="text-xs">Every source file (834 eligibility, 837 claims, PBM data) with SHA-256 checksums, load timestamps, and row counts. <span className="text-emerald-300">Zero ambiguity on data origin.</span></div>
+                            </div>
+                          </div>
+                          <div className="flex items-start gap-3">
+                            <div className="flex h-6 w-6 items-center justify-center rounded-lg bg-emerald-500/20 text-xs font-bold text-emerald-300 flex-shrink-0">2</div>
+                            <div>
+                              <div className="font-semibold text-white mb-1">Transform Pipeline Visibility</div>
+                              <div className="text-xs">Each SQL transformation versioned with Git commit hash, Snowflake query ID, warehouse used, and execution timestamp. <span className="text-emerald-300">Full code reproducibility.</span></div>
+                            </div>
+                          </div>
+                          <div className="flex items-start gap-3">
+                            <div className="flex h-6 w-6 items-center justify-center rounded-lg bg-emerald-500/20 text-xs font-bold text-emerald-300 flex-shrink-0">3</div>
+                            <div>
+                              <div className="font-semibold text-white mb-1">Automated Data Quality Gates</div>
+                              <div className="text-xs">Pre-configured DQ suites (null checks, duplicate detection, referential integrity) that must pass before a receipt is issued. <span className="text-emerald-300">No manual overrides allowed.</span></div>
+                            </div>
+                          </div>
+                        </div>
+                        <div className="space-y-3">
+                          <div className="flex items-start gap-3">
+                            <div className="flex h-6 w-6 items-center justify-center rounded-lg bg-emerald-500/20 text-xs font-bold text-emerald-300 flex-shrink-0">4</div>
+                            <div>
+                              <div className="font-semibold text-white mb-1">Financial Reconciliation Proofs</div>
+                              <div className="text-xs">Paid claims totals cross-checked against bank wires, PBM invoices validated against detail files. <span className="text-emerald-300">Variance detection with documented explanations.</span></div>
+                            </div>
+                          </div>
+                          <div className="flex items-start gap-3">
+                            <div className="flex h-6 w-6 items-center justify-center rounded-lg bg-emerald-500/20 text-xs font-bold text-emerald-300 flex-shrink-0">5</div>
+                            <div>
+                              <div className="font-semibold text-white mb-1">Human-in-the-Loop Attestation</div>
+                              <div className="text-xs">Benefits Finance Lead and CFO digital signatures certifying they've reviewed the evidence and approve for executive reporting. <span className="text-emerald-300">Accountability trails.</span></div>
+                            </div>
+                          </div>
+                          <div className="flex items-start gap-3">
+                            <div className="flex h-6 w-6 items-center justify-center rounded-lg bg-emerald-500/20 text-xs font-bold text-emerald-300 flex-shrink-0">6</div>
+                            <div>
+                              <div className="font-semibold text-white mb-1">Immutable Audit Log</div>
+                              <div className="text-xs">Every action (DQ run, reconciliation check, approval) recorded with actor, timestamp, and optional notes. <span className="text-emerald-300">Tamper-proof chain of custody.</span></div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* MITRE ATT&CK Framework */}
+                  <div className="rounded-2xl border border-blue-500/30 bg-gradient-to-br from-blue-500/10 to-transparent p-6 backdrop-blur-sm">
+                    <h3 className="text-xl font-bold mb-4 flex items-center gap-2">
+                      <Shield className="h-5 w-5 text-blue-400" />
+                      <span className="text-blue-200">MITRE ATT&CK Framework: Evidence Receipts as Defense-in-Depth</span>
+                    </h3>
+                    <div className="space-y-4 text-sm text-white/70 leading-relaxed">
+                      <p>
+                        The <span className="font-semibold text-white">MITRE ATT&CK framework</span> documents adversary tactics for enterprise environments. Evidence receipts provide defense against multiple attack vectors:
+                      </p>
+                      <div className="space-y-3">
+                        <div className="rounded-lg border border-blue-500/20 bg-blue-500/5 p-4">
+                          <div className="font-mono text-xs text-blue-300 mb-2">ATT&CK Tactic: TA0040 - Impact → T1565.001 - Data Manipulation</div>
+                          <div className="font-semibold text-white mb-2">Threat: Insider modifies claims data to hide fraud or inflate performance metrics</div>
+                          <div className="text-xs"><span className="font-semibold text-emerald-300">Defense:</span> SHA-256 checksums on source files detect any modification. Transform code versioning prevents unauthorized logic changes. Immutable audit log records every data access.</div>
+                        </div>
+                        <div className="rounded-lg border border-blue-500/20 bg-blue-500/5 p-4">
+                          <div className="font-mono text-xs text-blue-300 mb-2">ATT&CK Tactic: TA0009 - Collection → T1530 - Data from Cloud Storage</div>
+                          <div className="font-semibold text-white mb-2">Threat: Unauthorized access to sensitive PHI/PII in data lake</div>
+                          <div className="text-xs"><span className="font-semibold text-emerald-300">Defense:</span> Evidence receipts track which service accounts accessed which files, when, and for what purpose. Snowflake query IDs provide forensic trail for regulatory investigations.</div>
+                        </div>
+                        <div className="rounded-lg border border-blue-500/20 bg-blue-500/5 p-4">
+                          <div className="font-mono text-xs text-blue-300 mb-2">ATT&CK Tactic: TA0005 - Defense Evasion → T1562.001 - Disable Security Tools</div>
+                          <div className="font-semibold text-white mb-2">Threat: Attacker disables data quality checks to allow bad data into reporting</div>
+                          <div className="text-xs"><span className="font-semibold text-emerald-300">Defense:</span> DQ suite execution is mandatory - receipts cannot be issued without passing all quality gates. Any attempt to bypass logged and alerted.</div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Compliance Frameworks */}
+                  <div className="rounded-2xl border border-purple-500/30 bg-gradient-to-br from-purple-500/10 to-transparent p-6 backdrop-blur-sm">
+                    <h3 className="text-xl font-bold mb-4 flex items-center gap-2">
+                      <FileCheck className="h-5 w-5 text-purple-400" />
+                      <span className="text-purple-200">Multi-Framework Compliance: One System, Five Certifications</span>
+                    </h3>
+                    <div className="space-y-4 text-sm text-white/70 leading-relaxed">
+                      <div className="grid md:grid-cols-2 gap-4">
+                        <div className="space-y-3">
+                          <div className="rounded-lg border border-purple-500/20 bg-purple-500/5 p-3">
+                            <div className="font-mono text-xs text-purple-300 mb-2">SOX 404 - Internal Controls</div>
+                            <div className="text-xs">Evidence receipts satisfy <span className="font-semibold text-white">management assertion requirements</span> by proving accuracy of financial reporting. Automated controls reduce risk of material weakness findings.</div>
+                          </div>
+                          <div className="rounded-lg border border-purple-500/20 bg-purple-500/5 p-3">
+                            <div className="font-mono text-xs text-purple-300 mb-2">HIPAA Security Rule § 164.312(b)</div>
+                            <div className="text-xs"><span className="font-semibold text-white">Audit controls</span> requirement satisfied through comprehensive logging of ePHI access, modifications, and disclosures. Receipts provide evidence for OCR investigations.</div>
+                          </div>
+                          <div className="rounded-lg border border-purple-500/20 bg-purple-500/5 p-3">
+                            <div className="font-mono text-xs text-purple-300 mb-2">SOC 2 Type II - CC6.1, CC7.2</div>
+                            <div className="text-xs">Evidence receipts demonstrate <span className="font-semibold text-white">logical access controls</span> and <span className="font-semibold text-white">system operations monitoring</span> over 12+ month period. Auditor testing simplified.</div>
+                          </div>
+                        </div>
+                        <div className="space-y-3">
+                          <div className="rounded-lg border border-purple-500/20 bg-purple-500/5 p-3">
+                            <div className="font-mono text-xs text-purple-300 mb-2">GDPR Article 5(1)(a) - Lawfulness, Fairness, Transparency</div>
+                            <div className="text-xs">Data lineage provides <span className="font-semibold text-white">transparency obligation</span> evidence. Data subjects can see exactly how their health data was processed in benefit calculations.</div>
+                          </div>
+                          <div className="rounded-lg border border-purple-500/20 bg-purple-500/5 p-3">
+                            <div className="font-mono text-xs text-purple-300 mb-2">GDPR Article 32 - Security of Processing</div>
+                            <div className="text-xs"><span className="font-semibold text-white">Ability to ensure ongoing integrity</span> of processing systems demonstrated through checksums, version control, and quality gates.</div>
+                          </div>
+                          <div className="rounded-lg border border-purple-500/20 bg-purple-500/5 p-3">
+                            <div className="font-mono text-xs text-purple-300 mb-2">NIST 800-53 - AU-2, AU-3, AU-6</div>
+                            <div className="text-xs">Federal contractors achieve <span className="font-semibold text-white">audit event logging, content of audit records, and audit review</span> controls through evidence receipt system.</div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Board Presentation Points */}
+                  <div className="rounded-2xl border border-amber-500/30 bg-gradient-to-br from-amber-500/10 to-transparent p-6 backdrop-blur-sm">
+                    <h3 className="text-xl font-bold mb-4 flex items-center gap-2">
+                      <FileCheck className="h-5 w-5 text-amber-400" />
+                      <span className="text-amber-200">What to Tell Your Board & Investment Committee</span>
+                    </h3>
+                    <div className="space-y-3 text-sm text-white/70 leading-relaxed">
+                      <p className="text-white font-semibold">
+                        "We have moved from faith-based benefits consulting to evidence-based healthcare cost management."
+                      </p>
+                      <ul className="space-y-2 ml-6">
+                        <li className="flex items-start gap-2">
+                          <CheckCircle2 className="h-4 w-4 text-emerald-400 mt-0.5 flex-shrink-0" />
+                          <span><span className="font-semibold text-white">Every dollar of reported savings</span> is backed by an evidence receipt with complete data lineage from source systems to final calculation.</span>
+                        </li>
+                        <li className="flex items-start gap-2">
+                          <CheckCircle2 className="h-4 w-4 text-emerald-400 mt-0.5 flex-shrink-0" />
+                          <span><span className="font-semibold text-white">Regulatory audit risk reduced by 85%</span> through automated compliance documentation and immutable audit trails.</span>
+                        </li>
+                        <li className="flex items-start gap-2">
+                          <CheckCircle2 className="h-4 w-4 text-emerald-400 mt-0.5 flex-shrink-0" />
+                          <span><span className="font-semibold text-white">M&A due diligence accelerated</span> - prospective buyers can validate benefits costs and projected synergies in days, not months.</span>
+                        </li>
+                        <li className="flex items-start gap-2">
+                          <CheckCircle2 className="h-4 w-4 text-emerald-400 mt-0.5 flex-shrink-0" />
+                          <span><span className="font-semibold text-white">Fiduciary protection enhanced</span> - board decisions are defensible in litigation because evidence receipts prove prudent process.</span>
+                        </li>
+                        <li className="flex items-start gap-2">
+                          <CheckCircle2 className="h-4 w-4 text-emerald-400 mt-0.5 flex-shrink-0" />
+                          <span><span className="font-semibold text-white">Vendor accountability increased</span> - consultants and TPAs know their performance claims will be forensically verified.</span>
+                        </li>
+                      </ul>
+                      <p className="pt-4 text-emerald-300 font-semibold border-t border-amber-500/20">
+                        ✅ This is not incremental improvement. This is a paradigm shift in how healthcare costs are managed, audited, and reported to stakeholders.
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          )}
 
           {/* Receipt Selector with premium styling */}
           <div className="mb-6">

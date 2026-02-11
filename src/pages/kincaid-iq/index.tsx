@@ -64,6 +64,7 @@ export default function KincaidIQHome() {
       </Head>
 
       <div className="min-h-screen bg-gradient-to-b from-slate-950 via-slate-900 to-slate-950 text-white">
+        {/* INSTITUTIONAL HEADER */}
         <header className="border-b border-white/10 bg-black/40 backdrop-blur-sm sticky top-0 z-50">
           <div className="mx-auto max-w-7xl px-6 py-4">
             <div className="flex items-center justify-between">

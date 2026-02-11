@@ -13,6 +13,7 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Card } from "@/components/ui/card";
 import { EventDetailDrawer } from "@/components/warroom/EventDetailDrawer";
+import { WarRoomHero3D } from "@/components/kincaid-iq/WarRoomHero3D";
 import { mockWarRoomData } from "@/lib/mocks/mockWarRoom";
 import type { WarEvent } from "@/lib/warroom/types";
 
@@ -223,105 +224,9 @@ export default function WarRoomPage() {
       <Nav />
 
       <div className="min-h-screen bg-black text-white">
-        {/* Hero Section */}
-        <section className="relative overflow-hidden pt-32 pb-20">
-          {/* Ambient Background */}
-          <div className="absolute inset-0">
-            <div className="absolute inset-0 bg-gradient-to-b from-violet-500/5 via-transparent to-transparent" />
-            <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-violet-500/10 rounded-full blur-[120px]" />
-            <div className="absolute top-1/3 right-1/4 w-96 h-96 bg-blue-500/10 rounded-full blur-[120px]" />
-          </div>
-
-          <div className="relative z-10 max-w-7xl mx-auto px-6">
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8 }}
-              className="text-center max-w-4xl mx-auto"
-            >
-              {/* Premium Badge */}
-              <motion.div
-                initial={{ opacity: 0, scale: 0.9 }}
-                animate={{ opacity: 1, scale: 1 }}
-                transition={{ delay: 0.2, duration: 0.5 }}
-                className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-gradient-to-r from-violet-500/10 to-fuchsia-500/10 border border-violet-500/20 backdrop-blur-xl mb-6"
-              >
-                <Sparkles className="h-4 w-4 text-violet-400" />
-                <span className="text-sm font-medium text-violet-300">Operational Command Center</span>
-              </motion.div>
-
-              {/* Main Headline */}
-              <h1 className="text-6xl md:text-7xl lg:text-8xl font-bold mb-6 leading-[1.1]">
-                <span className="bg-gradient-to-r from-white via-violet-200 to-fuchsia-200 bg-clip-text text-transparent">
-                  War Room
-                </span>
-              </h1>
-
-              {/* Subheadline */}
-              <p className="text-xl md:text-2xl text-white/60 mb-4 font-light">
-                Real-time intelligence platform with AI-powered governance
-              </p>
-
-              <p className="text-base md:text-lg text-white/40 max-w-2xl mx-auto mb-12">
-                Live operational dashboard exposing arbitrage opportunities, compliance gaps, 
-                and financial leakage—backed by cryptographically verified evidence trails
-              </p>
-
-              {/* CTA Buttons */}
-              <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-                <Button 
-                  size="lg" 
-                  className="h-14 px-8 rounded-full bg-gradient-to-r from-violet-600 to-fuchsia-600 hover:from-violet-500 hover:to-fuchsia-500 text-white shadow-lg shadow-violet-500/25 transition-all hover:shadow-xl hover:shadow-violet-500/40 hover:scale-105"
-                  onClick={() => document.getElementById('tiles')?.scrollIntoView({ behavior: 'smooth' })}
-                >
-                  Explore War Room
-                  <ChevronRight className="ml-2 h-5 w-5" />
-                </Button>
-                <Button 
-                  size="lg" 
-                  variant="outline"
-                  className="h-14 px-8 rounded-full border-white/10 bg-white/5 hover:bg-white/10 backdrop-blur-xl transition-all hover:scale-105"
-                  asChild
-                >
-                  <Link href="/contact">
-                    Request Demo
-                  </Link>
-                </Button>
-              </div>
-
-              {/* Stats Bar */}
-              <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.4, duration: 0.8 }}
-                className="grid grid-cols-2 md:grid-cols-4 gap-6 mt-16 max-w-4xl mx-auto"
-              >
-                {[
-                  { label: "Events Processed", value: "10M+", icon: Activity },
-                  { label: "Response Time", value: "<100ms", icon: Zap },
-                  { label: "Accuracy Rate", value: "99.2%", icon: Target },
-                  { label: "Active Lanes", value: "4", icon: Layers }
-                ].map((stat, idx) => (
-                  <motion.div
-                    key={idx}
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ delay: 0.5 + idx * 0.1, duration: 0.5 }}
-                    className="relative group"
-                  >
-                    <div className="absolute inset-0 bg-gradient-to-r from-violet-500/10 to-fuchsia-500/10 rounded-2xl blur opacity-0 group-hover:opacity-100 transition-opacity" />
-                    <div className="relative bg-white/5 backdrop-blur-xl border border-white/10 rounded-2xl p-4 hover:bg-white/10 transition-all">
-                      <div className="flex items-center gap-2 mb-2">
-                        <stat.icon className="h-4 w-4 text-violet-400" />
-                        <p className="text-xs text-white/60">{stat.label}</p>
-                      </div>
-                      <p className="text-2xl font-bold text-white">{stat.value}</p>
-                    </div>
-                  </motion.div>
-                ))}
-              </motion.div>
-            </motion.div>
-          </div>
+        {/* Hero Section - Replace with 3D War Room */}
+        <section className="relative overflow-hidden">
+          <WarRoomHero3D />
         </section>
 
         {/* 8 Premium Tiles Section */}

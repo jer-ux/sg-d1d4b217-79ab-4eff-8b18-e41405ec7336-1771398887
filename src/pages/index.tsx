@@ -7,6 +7,8 @@ import Nav from "@/components/Nav";
 import Footer from "@/components/Footer";
 import { SEO } from "@/components/SEO";
 import { WarRoomPreview } from "@/components/kincaid-iq/WarRoomPreview";
+import { WarRoomHero3D } from "@/components/kincaid-iq/WarRoomHero3D";
+import { DataFlowVisualization, KPIDashboardPreview, EvidenceReceipt3D, ArbitrageDetectionViz, NetworkGraphAnimation, GradientMeshBackground } from "@/components/platform/PremiumGraphics";
 import { useState, Suspense } from "react";
 import { NeonGlow } from "@/components/premium/NeonGlow";
 
@@ -468,6 +470,9 @@ export default function Home() {
 
       <main className="min-h-screen bg-gradient-to-br from-slate-950 via-slate-900 to-slate-950">
         
+        {/* Enhanced Gradient Mesh Background */}
+        <GradientMeshBackground />
+
         {/* Enhanced 3D Hero Section */}
         <section className="relative pt-32 pb-20 px-4 overflow-hidden">
           {/* 3D Animated Background */}
@@ -791,7 +796,31 @@ export default function Home() {
           </div>
         </section>
 
-        {/* Value Proposition */}
+        {/* NEW: War Room 3D Hero Showcase */}
+        <section className="py-16 px-4 border-t border-white/10">
+          <div className="max-w-7xl mx-auto">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              className="text-center mb-8"
+            >
+              <h2 className="text-4xl md:text-5xl font-bold text-white mb-4">Command Center Experience</h2>
+              <p className="text-lg text-white/70">Real-time intelligence with Vegas-style visualization</p>
+            </motion.div>
+            
+            <motion.div
+              initial={{ opacity: 0, scale: 0.95 }}
+              whileInView={{ opacity: 1, scale: 1 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6 }}
+            >
+              <WarRoomHero3D />
+            </motion.div>
+          </div>
+        </section>
+
+        {/* Value Proposition with Data Flow */}
         <section className="py-16 px-4 border-t border-white/10">
           <div className="max-w-7xl mx-auto">
             <motion.div
@@ -807,6 +836,17 @@ export default function Home() {
               <p className="text-base text-white/60 max-w-4xl mx-auto">
                 Built for boards, auditors, and regulators who demand defensible methodologies, traceable inputs, and immutable proof of business outcomes.
               </p>
+            </motion.div>
+
+            {/* NEW: Premium Data Flow Visualization */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: 0.2 }}
+              className="mb-12"
+            >
+              <DataFlowVisualization />
             </motion.div>
 
             {/* Core Pillars */}
@@ -837,6 +877,17 @@ export default function Home() {
               />
             </div>
 
+            {/* NEW: KPI Dashboard Preview */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: 0.3 }}
+              className="mb-16"
+            >
+              <KPIDashboardPreview />
+            </motion.div>
+
             {/* Technical Foundation */}
             <motion.div
               initial={{ opacity: 0, y: 20 }}
@@ -846,6 +897,12 @@ export default function Home() {
             >
               <h3 className="text-2xl font-bold text-white mb-8 text-center">Technical Foundation</h3>
               <div className="grid md:grid-cols-2 gap-6">
+                {/* NEW: Evidence Receipt 3D Card */}
+                <EvidenceReceipt3D />
+
+                {/* NEW: Arbitrage Detection */}
+                <ArbitrageDetectionViz />
+
                 <div className="relative overflow-hidden rounded-2xl border border-white/10 bg-slate-950/60 backdrop-blur-xl p-6">
                   <AnimatedGradientOverlay theme={THEME.blue} />
                   <div className="relative">
@@ -946,6 +1003,17 @@ export default function Home() {
                   </div>
                 </div>
               </div>
+            </motion.div>
+
+            {/* NEW: Network Graph Animation */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: 0.4 }}
+              className="mb-16"
+            >
+              <NetworkGraphAnimation />
             </motion.div>
 
             {/* Verification Process */}

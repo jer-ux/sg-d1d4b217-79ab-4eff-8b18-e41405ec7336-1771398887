@@ -21,6 +21,7 @@ import {
 import { FAQ } from "@/components/kincaid-iq/FAQ";
 import { WarRoomHero3D } from "@/components/kincaid-iq/WarRoomHero3D";
 import { PremiumTileView } from "@/components/kincaid-iq/PremiumTileView";
+import { TransparencyCard } from "@/components/kincaid-iq/TransparencyCard";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 
@@ -57,10 +58,10 @@ export default function KincaidIQHome() {
   return (
     <>
       <Head>
-        <title>Kincaid IQ | The War Room for Pharmacy Benefit Economics</title>
+        <title>Kincaid IQ | Enterprise Transparency Engine</title>
         <meta
           name="description"
-          content="Fiduciary-grade intelligence system for PBM arbitrage analysis. Multi-year actuarial modeling transforms pharmacy benefit structures into measurable capital governance."
+          content="Fiduciary-grade accountability system that transforms cost optimization claims into cryptographically verified, audit-ready evidence with real-time board-grade clarity."
         />
       </Head>
 
@@ -71,7 +72,7 @@ export default function KincaidIQHome() {
             <div className="flex items-center justify-between">
               <div>
                 <div className="text-sm font-semibold tracking-wider text-cyan-400">KINCAID IQ</div>
-                <div className="mt-0.5 text-xs text-white/40">Decision Infrastructure Layer</div>
+                <div className="mt-0.5 text-xs text-white/40">Enterprise Transparency Engine</div>
               </div>
               <div className="flex items-center gap-6">
                 <div className="hidden md:flex gap-8 text-xs text-white/60">
@@ -103,23 +104,30 @@ export default function KincaidIQHome() {
                 <div className="max-w-4xl mx-auto text-center">
                   <div className="inline-flex items-center gap-2 rounded-full border border-cyan-500/20 bg-cyan-500/10 px-4 py-1.5 text-sm font-medium text-cyan-400 mb-6">
                     <Shield className="h-4 w-4" />
-                    Fiduciary-Grade Intelligence System
+                    Fiduciary-Grade Accountability System
                   </div>
 
                   <div className="space-y-6 text-lg leading-relaxed text-white/70">
                     <p className="text-2xl font-semibold text-white">
-                      Healthcare Expense Is Not a Line Item.<br />
-                      It Is a Capital Governance Failure.
+                      Every Cost Optimization Claim.<br />
+                      Every Efficiency Gain. Every Business Decision.<br />
+                      Cryptographically Verified. Audit-Ready.
                     </p>
 
                     <p className="text-xl text-white/80">
-                      Kincaid IQ transforms opaque PBM economics into measurable EBITDA impact through multi-year actuarial modeling and continuous arbitrage analysis.
+                      Kincaid iQ is an enterprise transparency engine that transforms how organizations understand and prove their financial performance. It's not just another analytics platform—it's a fiduciary-grade accountability system that turns every dollar into documented, traceable evidence.
                     </p>
 
+                    <div className="p-6 rounded-xl bg-gradient-to-br from-cyan-500/10 to-blue-500/10 border border-cyan-500/20 text-left">
+                      <p className="text-base leading-relaxed text-white/90">
+                        <strong className="text-white">Real-time, board-grade clarity on cash liquidity</strong>—even as health and pharmacy claims are still posting—backed by auditable evidence lineage. You don't walk into the boardroom with "what we think happened." You walk in with <strong className="text-cyan-400">"what happened,"</strong> traceable from source data to financial outcome.
+                      </p>
+                    </div>
+
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-4 pt-6">
-                      <MetricHighlight label="Avg. EBITDA Exposure" value="3–8%" sublabel="Hidden in pharmacy benefit structures" />
-                      <MetricHighlight label="Analysis Turnaround" value="48 Hours" sublabel="GLP-1 exposure modeling" />
-                      <MetricHighlight label="Projection Horizon" value="5 Years" sublabel="Multi-scenario economic modeling" />
+                      <MetricHighlight label="Evidence Verification" value="Cryptographic" sublabel="Immutable audit trail" />
+                      <MetricHighlight label="Financial Reconciliation" value="Real-Time" sublabel="Claims to EBITDA tie-out" />
+                      <MetricHighlight label="Reporting Standard" value="Board-Grade" sublabel="Audit-ready documentation" />
                     </div>
                   </div>
 
@@ -128,7 +136,7 @@ export default function KincaidIQHome() {
                       <a href="#war-room">Enter the War Room</a>
                     </Button>
                     <Button asChild size="lg" variant="outline" className="border-white/20 hover:bg-white/5 text-base px-8">
-                      <a href="#modeling">View Actuarial Framework</a>
+                      <a href="#transparency">View Evidence Framework</a>
                     </Button>
                   </div>
                 </div>
@@ -139,44 +147,48 @@ export default function KincaidIQHome() {
           {/* PREMIUM 3D TILE VIEW */}
           <PremiumTileView />
 
-          {/* THE PROBLEM - STRUCTURAL ANALYSIS */}
+          {/* THE TRANSPARENCY CHALLENGE */}
           <section className="border-t border-white/10 bg-slate-900/50">
             <div className="mx-auto max-w-7xl px-6 py-20">
               <div className="grid lg:grid-cols-2 gap-12 items-start">
                 <div>
-                  <div className="text-sm font-medium tracking-wide text-cyan-400 mb-3">ECONOMIC ANALYSIS</div>
-                  <h2 className="text-4xl font-bold mb-6">Structural Margin Leakage</h2>
+                  <div className="text-sm font-medium tracking-wide text-cyan-400 mb-3">THE ACCOUNTABILITY GAP</div>
+                  <h2 className="text-4xl font-bold mb-6">From Claims to Control</h2>
 
                   <div className="space-y-4 text-base leading-relaxed text-white/70">
-                    <p>
-                      Pharmacy Benefit Managers operate within a complex intermediary ecosystem characterized by:
+                    <p className="text-lg text-white/80">
+                      This isn't another dashboard sitting on top of your stack.
                     </p>
 
-                    <ul className="space-y-3 pl-5">
-                      {[
-                        "Spread pricing differentials",
-                        "Rebate retention opacity",
-                        "Formulary steering incentives",
-                        "Contractual misalignment",
-                        "Limited price discovery",
-                        "GLP-1 utilization acceleration"
-                      ].map((item, i) => (
-                        <li key={i} className="flex items-start gap-3">
-                          <ChevronRight className="h-5 w-5 text-cyan-400 flex-shrink-0 mt-0.5" />
-                          <span>{item}</span>
-                        </li>
-                      ))}
-                    </ul>
+                    <p>
+                      Kincaid iQ ties <strong className="text-white">claims, contracts, vendor invoices, and cost initiatives directly to financial results</strong>—and documents the math behind every dollar.
+                    </p>
+
+                    <div className="p-6 rounded-xl bg-slate-800/50 border border-white/10">
+                      <p className="text-base text-white/90">
+                        If a program claims <strong className="text-cyan-400">$4M in savings</strong>, you can inspect the chain:
+                      </p>
+                      <ul className="mt-4 space-y-2 pl-5">
+                        {[
+                          "Source records & data lineage",
+                          "Assumptions & calculation logic",
+                          "EBITDA tie-out & reconciliation",
+                          "Persistence validation (does it last?)"
+                        ].map((item, i) => (
+                          <li key={i} className="flex items-start gap-3">
+                            <CheckCircle className="h-5 w-5 text-cyan-400 flex-shrink-0 mt-0.5" />
+                            <span className="text-white/80">{item}</span>
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
 
                     <div className="pt-6 space-y-4">
                       <p className="text-xl font-semibold text-white">
-                        The result is not simply rising healthcare cost.
-                      </p>
-                      <p className="text-xl font-semibold text-white">
-                        It is embedded economic arbitrage within the employer-sponsored system.
+                        Not just visibility—control. ⚡️
                       </p>
                       <p className="text-lg text-cyan-400 font-medium">
-                        Kincaid IQ quantifies that compression with actuarial precision.
+                        Audit-ready reporting, stronger renewal leverage, and defensible decisions.
                       </p>
                     </div>
                   </div>
@@ -184,28 +196,28 @@ export default function KincaidIQHome() {
 
                 <div className="space-y-4">
                   <ImpactMetricCard 
-                    label="Annual Leakage Range" 
-                    value="$1.2M – $4.8M" 
-                    sublabel="Per 1,000 covered lives"
-                    trend="-5.2% EBITDA margin"
+                    label="Evidence Completeness" 
+                    value="100%" 
+                    sublabel="Source-to-outcome traceability"
+                    trend="Cryptographically verified"
                   />
                   <ImpactMetricCard 
-                    label="Rebate Opacity Zone" 
-                    value="15–40%" 
-                    sublabel="Of total pharmacy spend"
-                    trend="Unverified pass-through"
+                    label="Financial Reconciliation" 
+                    value="Real-Time" 
+                    sublabel="Claims to cash liquidity"
+                    trend="Even as claims post"
                   />
                   <ImpactMetricCard 
-                    label="GLP-1 Acceleration" 
-                    value="340% YoY" 
-                    sublabel="Utilization growth rate"
-                    trend="$18K avg. annual cost"
+                    label="Audit Readiness" 
+                    value="Board-Grade" 
+                    sublabel="Executive-ready documentation"
+                    trend="No manual preparation"
                   />
                   <ImpactMetricCard 
-                    label="Contract Complexity" 
-                    value="200+ pages" 
-                    sublabel="Typical PBM agreement"
-                    trend="47 pricing schedules"
+                    label="Savings Verification" 
+                    value="Multi-Year" 
+                    sublabel="Persistence tracking"
+                    trend="Does it last next year?"
                   />
                 </div>
               </div>
@@ -319,51 +331,51 @@ export default function KincaidIQHome() {
 
           <section id="war-room" className="border-t border-white/10 bg-slate-900/50">
             <div className="mx-auto max-w-7xl px-6 py-20">
-              <div className="text-sm font-medium tracking-wide text-cyan-400 mb-3">EXECUTIVE INTERFACE</div>
+              <div className="text-sm font-medium tracking-wide text-cyan-400 mb-3">EVIDENCE-BASED ACCOUNTABILITY</div>
               <h2 className="text-4xl font-bold mb-6">The War Room: Four-Tile Executive Dashboard</h2>
 
               <p className="text-lg text-white/70 max-w-3xl mb-10">
-                All intelligence delivered through a simplified, board-ready interface designed for capital allocators — not analysts.
+                Every claim backed by cryptographic verification. Every number traceable to source. Every decision audit-ready.
               </p>
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <WarRoomTile
                   number="01"
-                  title="Verified Margin Leakage"
-                  body="Quantified and validated financial impact attributable to PBM spread, rebate retention, and pricing variance."
+                  title="Verified Savings Ledger"
+                  body="Every cost optimization claim validated with source-to-outcome evidence lineage. Complete traceability from vendor invoice to EBITDA impact."
                   metric="$3.2M"
-                  metricLabel="Identified EBITDA drag"
+                  metricLabel="Cryptographically verified savings"
                   href="/war-room"
                 />
                 <WarRoomTile
                   number="02"
-                  title="Arbitrage Exposure"
-                  body="Identification of embedded economic differentials across drugs, formularies, and therapeutic classes — including GLP-1 acceleration risk."
+                  title="Evidence Receipts"
+                  body="Immutable proof packs for every financial transaction. Complete documentation of assumptions, calculations, and reconciliation—board-ready."
                   metric="127"
-                  metricLabel="Active exposure events"
+                  metricLabel="Active evidence chains"
                   href="/war-room"
                 />
                 <WarRoomTile
                   number="03"
-                  title="Incentive Misalignment Map"
-                  body="Clear visualization of contractual structures where intermediary incentives diverge from employer cost minimization."
-                  metric="18"
-                  metricLabel="Structural conflicts identified"
+                  title="Real-Time Reconciliation"
+                  body="Live cash liquidity visibility even as claims post. Automated tie-out from source data through financial outcomes with zero manual prep."
+                  metric="100%"
+                  metricLabel="Source-to-EBITDA traceability"
                   href="/war-room"
                 />
                 <WarRoomTile
                   number="04"
-                  title="EBITDA Recovery Pathways"
-                  body="Actionable governance strategies tied to measurable margin restoration."
+                  title="Persistence Tracking"
+                  body="Multi-year validation that savings actually persist. Automated monitoring ensures claimed benefits deliver in subsequent periods."
                   metric="$2.1M"
-                  metricLabel="Projected annual recovery"
+                  metricLabel="Sustained annual impact"
                   href="/verified-savings-ledger"
                 />
               </div>
 
               <div className="mt-10 p-8 rounded-2xl bg-gradient-to-br from-cyan-500/10 to-blue-500/10 border border-cyan-500/20 text-center">
                 <p className="text-xl font-semibold text-white">
-                  This is healthcare cost translated into capital discipline.
+                  This is financial performance translated into defensible truth.
                 </p>
               </div>
 
@@ -371,6 +383,54 @@ export default function KincaidIQHome() {
                 <Button asChild size="lg" className="bg-cyan-500 hover:bg-cyan-600 text-black font-semibold px-8">
                   <Link href="/war-room">Enter Full War Room Interface</Link>
                 </Button>
+              </div>
+            </div>
+          </section>
+
+          <section id="transparency" className="border-t border-white/10">
+            <div className="mx-auto max-w-7xl px-6 py-20">
+              <div className="text-sm font-medium tracking-wide text-cyan-400 mb-3">EVIDENCE FRAMEWORK</div>
+              <h2 className="text-4xl font-bold mb-6">How Transparency Actually Works</h2>
+
+              <p className="text-lg text-white/70 max-w-3xl mb-10">
+                Every financial claim in Kincaid iQ includes a complete evidence chain—from source transaction to EBITDA reconciliation—backed by cryptographic verification.
+              </p>
+
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                <TransparencyCard
+                  icon={Database}
+                  title="Source Integration"
+                  description="Direct connection to claims data, vendor contracts, invoices, and benefit systems with immutable timestamps."
+                />
+                <TransparencyCard
+                  icon={FileCheck}
+                  title="Evidence Receipts"
+                  description="Every calculation documented: assumptions stated, logic exposed, variance explained, alternative approaches documented."
+                />
+                <TransparencyCard
+                  icon={LineChart}
+                  title="Financial Tie-Out"
+                  description="Automated reconciliation from transaction-level detail through P&L impact with real-time EBITDA validation."
+                />
+                <TransparencyCard
+                  icon={Lock}
+                  title="Cryptographic Proof"
+                  description="Tamper-evident audit trail ensuring evidence integrity from capture through board presentation."
+                />
+              </div>
+
+              <div className="mt-10 p-8 rounded-2xl bg-gradient-to-br from-slate-800/50 to-slate-900/50 border border-white/10">
+                <div className="max-w-3xl mx-auto text-center space-y-4">
+                  <p className="text-xl font-semibold text-white">
+                    The Result: Audit-Ready Financial Reporting
+                  </p>
+                  <p className="text-base text-white/70">
+                    Walk into any audit, board meeting, or renewal negotiation with complete documentation—already prepared, already verified, already defensible.
+                  </p>
+                  <p className="text-lg text-cyan-400 font-medium">
+                    No scrambling. No manual reconciliation. No gaps.
+                  </p>
+                </div>
               </div>
             </div>
           </section>
@@ -435,20 +495,23 @@ export default function KincaidIQHome() {
           <section className="border-t border-white/10 bg-slate-900/50">
             <div className="mx-auto max-w-7xl px-6 py-20">
               <div className="text-sm font-medium tracking-wide text-cyan-400 mb-3">INSTITUTIONAL POSITIONING</div>
-              <h2 className="text-4xl font-bold mb-6">Our Position</h2>
+              <h2 className="text-4xl font-bold mb-6">What We Deliver</h2>
 
               <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10">
-                <PositionCard text="We do not replace PBMs." />
-                <PositionCard text="We do not litigate narratives." />
-                <PositionCard text="We do not operate from ideology." />
+                <PositionCard text="We don't give you dashboards." />
+                <PositionCard text="We don't promise insights." />
+                <PositionCard text="We don't sell visibility." />
               </div>
 
-              <div className="p-12 rounded-3xl bg-gradient-to-br from-cyan-500/10 to-blue-500/10 border border-cyan-500/20 text-center">
-                <p className="text-3xl font-bold text-white mb-6">
-                  We restore price signals.
+              <div className="p-12 rounded-3xl bg-gradient-to-br from-cyan-500/10 to-blue-500/10 border border-cyan-500/20 text-center space-y-6">
+                <p className="text-3xl font-bold text-white">
+                  We give you control.
                 </p>
                 <p className="text-lg text-white/70 max-w-2xl mx-auto">
-                  Kincaid IQ converts one of the most opaque cost centers in the American enterprise into a measurable, governable capital domain.
+                  Kincaid iQ converts every cost optimization claim into cryptographically verified, audit-ready evidence—with real-time financial reconciliation and board-grade documentation.
+                </p>
+                <p className="text-xl font-semibold text-cyan-400">
+                  Not just transparency. Accountability. ⚡️
                 </p>
               </div>
             </div>

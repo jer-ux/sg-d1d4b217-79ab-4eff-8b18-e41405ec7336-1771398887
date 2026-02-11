@@ -1,7 +1,7 @@
 import { SEO } from "@/components/SEO";
 import { SiteHeader } from "@/components/site/SiteHeader";
 import { SiteFooter } from "@/components/site/SiteFooter";
-import { Shield, Lock, FileCheck, Activity, CheckCircle2, Sparkles, Database, Globe, Briefcase, Award } from "lucide-react";
+import { Shield, Lock, FileCheck, Activity, CheckCircle2, Sparkles, Database, Globe, Briefcase, Award, ArrowRight } from "lucide-react";
 import Link from "next/link";
 
 export default function SecurityGovernance() {

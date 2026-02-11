@@ -909,7 +909,7 @@ export default function Home() {
                     <Database className="h-8 w-8 text-blue-400 mb-4" />
                     <h4 className="text-lg font-semibold text-white mb-2">Cryptographic Signatures</h4>
                     <p className="text-sm text-white/70 mb-4">
-                      Every evidence receipt includes SHA-256 hash, timestamp, and digital signature creating an immutable chain of custody
+                      Every evidence receipt includes SHA-256 hash, timestamp, and digital signature creating an immutable chain of custody with MITRE-aligned security validation
                     </p>
                     <ul className="space-y-2 text-sm text-white/60">
                       <li className="flex items-start gap-2">
@@ -934,7 +934,7 @@ export default function Home() {
                     <Lock className="h-8 w-8 text-emerald-400 mb-4" />
                     <h4 className="text-lg font-semibold text-white mb-2">Audit Trail Architecture</h4>
                     <p className="text-sm text-white/70 mb-4">
-                      Event-sourced ledger captures every state transition with complete lineage from raw data to reported metrics
+                      Event-sourced ledger captures every state transition with complete lineage from raw data to reported metrics, aligned with MITRE ATT&CK framework
                     </p>
                     <ul className="space-y-2 text-sm text-white/60">
                       <li className="flex items-start gap-2">
@@ -959,7 +959,7 @@ export default function Home() {
                     <FileText className="h-8 w-8 text-violet-400 mb-4" />
                     <h4 className="text-lg font-semibold text-white mb-2">Methodology Documentation</h4>
                     <p className="text-sm text-white/70 mb-4">
-                      Every calculation includes versioned methodology, assumptions, and confidence intervals with statistical validation
+                      Every calculation includes versioned methodology, assumptions, and confidence intervals with statistical validation and security compliance
                     </p>
                     <ul className="space-y-2 text-sm text-white/60">
                       <li className="flex items-start gap-2">
@@ -984,12 +984,12 @@ export default function Home() {
                     <Shield className="h-8 w-8 text-cyan-400 mb-4" />
                     <h4 className="text-lg font-semibold text-white mb-2">Compliance Framework</h4>
                     <p className="text-sm text-white/70 mb-4">
-                      SOC 2 Type II certified infrastructure with role-based access control and regulatory reporting automation
+                      SOC 2 Type II certified infrastructure with MITRE ATT&CK alignment, role-based access control, and regulatory reporting automation
                     </p>
                     <ul className="space-y-2 text-sm text-white/60">
                       <li className="flex items-start gap-2">
                         <CheckCircle className="h-4 w-4 text-cyan-400 mt-0.5 flex-shrink-0" />
-                        <span>GDPR, SOX, and HIPAA compliance modules</span>
+                        <span>GDPR, SOX, HIPAA, and MITRE ATT&CK compliance</span>
                       </li>
                       <li className="flex items-start gap-2">
                         <CheckCircle className="h-4 w-4 text-cyan-400 mt-0.5 flex-shrink-0" />
@@ -1236,7 +1236,7 @@ export default function Home() {
               className="text-center mb-12"
             >
               <h2 className="text-4xl md:text-5xl font-bold text-white mb-4">Why Kincaid iQ</h2>
-              <p className="text-lg text-white/70">Transparency engine built for fiduciary accountability</p>
+              <p className="text-lg text-white/70">Transparency engine built for fiduciary accountability with MITRE ATT&CK compliance</p>
             </motion.div>
 
             <div className="grid md:grid-cols-2 gap-6">
@@ -1259,7 +1259,7 @@ export default function Home() {
               <FeatureCard
                 icon={Lock}
                 title="Fiduciary Security"
-                description="SOC 2 Type II compliant with end-to-end encryption, audit trails, and role-based access control"
+                description="SOC 2 Type II compliant with MITRE ATT&CK framework alignment, end-to-end encryption, audit trails, and role-based access control"
                 href="/security-governance"
                 themeKey="blue"
                 delay={0.2}
@@ -1351,7 +1351,7 @@ export default function Home() {
                     <Sparkles className="w-6 h-6" />
                   </span>
 
-                  <div className="absolute inset-0 rounded-2xl bg-gradient-to-r from-purple-500/20 via-pink-500/20 to-blue-500/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300 blur-xl" />
+                  <div className="absolute inset-0 rounded-2xl bg-gradient-to-r from-transparent via-white/30 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 blur-xl" />
                 </motion.button>
               </Link>
             </motion.div>

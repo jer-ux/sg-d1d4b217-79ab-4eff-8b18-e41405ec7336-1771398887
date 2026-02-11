@@ -1,1660 +1,780 @@
 import { SEO } from "@/components/SEO";
 import { SplitPane } from "@/components/SplitPane";
-import { useState, useEffect, useMemo } from "react";
-import Link from "next/link";
+import Nav from "@/components/Nav";
+import Footer from "@/components/Footer";
+import { useState, useMemo } from "react";
+import { TrendingUp, TrendingDown, Minus, AlertCircle, CheckCircle, Clock, DollarSign, Activity, Shield, Zap, Users, BarChart3, FileText, ArrowRight, X, ChevronRight } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
+import { Card } from "@/components/ui/card";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
-import { ChevronDown, ExternalLink, FileText, Shield, TrendingUp, AlertTriangle, Activity, CheckCircle, Zap, ArrowRight, BarChart3, Database, Eye } from "lucide-react";
-import { motion } from "framer-motion";
-import dynamic from "next/dynamic";
-import { mockWarRoomData as mockWarRoom } from "@/lib/mocks/mockWarRoom";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { mockWarRoomData } from "@/lib/mocks/mockWarRoom";
 import { EventDetailDrawer } from "@/components/warroom/EventDetailDrawer";
-import type { WarEvent, LaneKey, LedgerState } from "@/lib/warroom/types";
-import { useWarRoomStream } from "@/components/warroom/useWarRoomStream";
-import { TickerMarquee } from "@/components/warroom/TickerMarquee";
-import EvidenceDrawer from "@/components/warroom/EvidenceDrawer";
-import { AuditTicker } from "@/components/warroom/AuditTicker";
-import { applyFilters, defaultFilters, formatMoney, score, type SortKey, type WarRoomFilters } from "@/components/warroom/filters";
-import { approveEvent, assignOwner, closeEvent, generateReceipt } from "@/components/warroom/apiClient";
-import { toast } from "sonner";
-import clsx from "clsx";
-import CommandPalette from "@/components/CommandPalette";
-import { RankedEventsPanel } from "@/components/RankedEventsPanel";
+import type { WarEvent, LaneKey, EvidenceReceipt } from "@/lib/warroom/types";
 
-type WarRoomView = "CFO_DASHBOARD" | "FOUR_LANE_LEDGER";
-
-type TileAccent = "neutral" | "good" | "warn" | "bad" | "purple" | "blue" | "amber";
-type TileView = "VARIANCE" | "VALIDATED" | "IN_FLIGHT" | "TRUST";
-
-type DetailModalView = "STATUS" | "CONFIDENCE" | "TIME_SENSITIVITY" | "FRICTION" | "RECEIPT" | "TYPE" | "CATEGORY" | "PRIORITY";
-
-type ThemeKey = "rose" | "blue" | "amber" | "emerald" | "cyan" | "violet" | "orange" | "crimson";
-
-const THEME: Record<
-  ThemeKey,
-  {
-    bar: string;
-    g1: string;
-    g2: string;
-    g3: string;
-    title: string;
-    bg: string;
-    border: string;
-    glow: string;
-    orb1: string;
-    orb2: string;
-    iconBg?: string;
-    iconRing?: string;
-    iconGlow?: string;
-    hoverRing?: string;
-  }
-> = {
-  crimson: {
-    bar: "bg-gradient-to-b from-red-500 via-rose-600 to-pink-600",
-    g1: "rgba(239,68,68,0.4)",
-    g2: "rgba(244,63,94,0.3)",
-    g3: "rgba(236,72,153,0.2)",
-    title: "text-red-200",
-    bg: "bg-gradient-to-br from-red-500/15 to-rose-600/10",
-    border: "border-red-400/40",
-    glow: "shadow-[0_0_25px_rgba(239,68,68,0.2)]",
-    orb1: "bg-red-500/30",
-    orb2: "bg-rose-500/25",
-  },
-  emerald: {
-    bar: "bg-gradient-to-b from-emerald-400 via-emerald-500 to-teal-500",
-    g1: "rgba(16,185,129,0.4)",
-    g2: "rgba(20,184,166,0.3)",
-    g3: "rgba(34,197,94,0.2)",
-    title: "text-emerald-200",
-    bg: "bg-gradient-to-br from-emerald-400/15 to-teal-600/10",
-    border: "border-emerald-400/40",
-    glow: "shadow-[0_0_25px_rgba(16,185,129,0.2)]",
-    orb1: "bg-emerald-500/30",
-    orb2: "bg-teal-500/25",
-    iconBg: "bg-emerald-500/15",
-    iconRing: "ring-emerald-400/40",
-    iconGlow: "shadow-[0_0_0_1px_rgba(52,211,153,0.25),0_0_24px_rgba(16,185,129,0.22)]",
-    hoverRing: "group-hover:shadow-[0_0_0_1px_rgba(52,211,153,0.35),0_0_48px_rgba(20,184,166,0.18)]",
-  },
-  violet: {
-    bar: "bg-gradient-to-b from-violet-400 via-purple-500 to-fuchsia-500",
-    g1: "rgba(139,92,246,0.4)",
-    g2: "rgba(168,85,247,0.3)",
-    g3: "rgba(217,70,239,0.2)",
-    title: "text-violet-200",
-    bg: "bg-gradient-to-br from-violet-400/15 to-fuchsia-600/10",
-    border: "border-violet-400/40",
-    glow: "shadow-[0_0_25px_rgba(139,92,246,0.2)]",
-    orb1: "bg-violet-500/30",
-    orb2: "bg-purple-500/25",
-    iconBg: "bg-violet-500/15",
-    iconRing: "ring-violet-400/40",
-    iconGlow: "shadow-[0_0_0_1px_rgba(167,139,250,0.25),0_0_24px_rgba(168,85,247,0.22)]",
-    hoverRing: "group-hover:shadow-[0_0_0_1px_rgba(167,139,250,0.35),0_0_48px_rgba(217,70,239,0.18)]",
-  },
-  amber: {
-    bar: "bg-gradient-to-b from-amber-400 via-yellow-500 to-orange-500",
-    g1: "rgba(245,158,11,0.4)",
-    g2: "rgba(251,191,36,0.3)",
-    g3: "rgba(249,115,22,0.2)",
-    title: "text-amber-200",
-    bg: "bg-gradient-to-br from-amber-400/15 to-orange-600/10",
-    border: "border-amber-400/40",
-    glow: "shadow-[0_0_25px_rgba(245,158,11,0.2)]",
-    orb1: "bg-amber-500/30",
-    orb2: "bg-yellow-500/25",
-    iconBg: "bg-amber-500/15",
-    iconRing: "ring-amber-400/40",
-    iconGlow: "shadow-[0_0_0_1px_rgba(252,211,77,0.25),0_0_24px_rgba(249,115,22,0.22)]",
-    hoverRing: "group-hover:shadow-[0_0_0_1px_rgba(252,211,77,0.35),0_0_48px_rgba(249,115,22,0.18)]",
-  },
-  orange: {
-    bar: "bg-gradient-to-b from-orange-400 via-orange-500 to-red-500",
-    g1: "rgba(249,115,22,0.4)",
-    g2: "rgba(251,146,60,0.3)",
-    g3: "rgba(239,68,68,0.2)",
-    title: "text-orange-200",
-    bg: "bg-gradient-to-br from-orange-400/15 to-red-600/10",
-    border: "border-orange-400/40",
-    glow: "shadow-[0_0_25px_rgba(249,115,22,0.2)]",
-    orb1: "bg-orange-500/30",
-    orb2: "bg-red-500/25",
-  },
-  blue: {
-    bar: "bg-gradient-to-b from-blue-400 via-blue-500 to-indigo-500",
-    g1: "rgba(59,130,246,0.4)",
-    g2: "rgba(96,165,250,0.3)",
-    g3: "rgba(99,102,241,0.2)",
-    title: "text-blue-200",
-    bg: "bg-gradient-to-br from-blue-400/15 to-indigo-600/10",
-    border: "border-blue-400/40",
-    glow: "shadow-[0_0_25px_rgba(59,130,246,0.2)]",
-    orb1: "bg-blue-500/30",
-    orb2: "bg-indigo-500/25",
-    iconBg: "bg-sky-500/15",
-    iconRing: "ring-sky-400/40",
-    iconGlow: "shadow-[0_0_0_1px_rgba(56,189,248,0.25),0_0_24px_rgba(59,130,246,0.22)]",
-    hoverRing: "group-hover:shadow-[0_0_0_1px_rgba(56,189,248,0.35),0_0_48px_rgba(99,102,241,0.18)]",
-  },
-  rose: {
-    bar: "bg-gradient-to-b from-rose-400 via-pink-500 to-purple-500",
-    g1: "rgba(244,63,94,0.4)",
-    g2: "rgba(236,72,153,0.3)",
-    g3: "rgba(168,85,247,0.2)",
-    title: "text-rose-200",
-    bg: "bg-gradient-to-br from-rose-400/15 to-purple-600/10",
-    border: "border-rose-400/40",
-    glow: "shadow-[0_0_25px_rgba(244,63,94,0.2)]",
-    orb1: "bg-rose-500/30",
-    orb2: "bg-pink-500/25",
-    iconBg: "bg-rose-500/15",
-    iconRing: "ring-rose-400/40",
-    iconGlow: "shadow-[0_0_0_1px_rgba(251,113,133,0.25),0_0_24px_rgba(244,63,94,0.25)]",
-    hoverRing: "group-hover:shadow-[0_0_0_1px_rgba(251,113,133,0.35),0_0_48px_rgba(236,72,153,0.20)]",
-  },
-  cyan: {
-    bar: "bg-gradient-to-b from-cyan-400 via-cyan-500 to-blue-500",
-    g1: "rgba(6,182,212,0.4)",
-    g2: "rgba(34,211,238,0.3)",
-    g3: "rgba(59,130,246,0.2)",
-    title: "text-cyan-200",
-    bg: "bg-gradient-to-br from-cyan-400/15 to-blue-600/10",
-    border: "border-cyan-400/40",
-    glow: "shadow-[0_0_25px_rgba(6,182,212,0.2)]",
-    orb1: "bg-cyan-500/30",
-    orb2: "bg-blue-500/25",
-  },
-};
-
-interface MockEvent {
-  id: string;
-  title: string;
-  type: string;
-  status: string;
-  identified_value: number;
-  confidence: number;
-  time_sensitivity: number;
-  execution_friction: number;
-  score: number;
-  owner_role: string;
-  evidence_receipt_id: string;
-  receipt_status: string;
-  stage?: string;
-  amount?: number;
-  owner?: string;
-  receipt?: string;
-  method?: string;
-  theme?: ThemeKey;
-  carrier?: string;
-  estImpact?: string;
-}
+type ViewMode = "FOUR_LANE_LEDGER" | "RANKED_EVENTS";
 
 type KPIMetric = {
   label: string;
-  value: string;
-  change?: string;
-  trend?: "up" | "down" | "neutral";
-  context?: string;
-  drilldownKey?: string;
-  evidence?: {
-    receiptId: string;
-    verified: boolean;
-    confidence: number;
-    dataQuality: number;
-    lastUpdated: string;
-  };
+  value: string | number;
+  delta?: string | number;
+  delta_pct?: number;
+  status?: "HEALTHY" | "WARNING" | "CRITICAL";
+  trend?: "up" | "down" | "stable";
+  details?: string;
 };
 
-type KPIDetail = {
-  title: string;
-  description: string;
-  currentValue: string;
-  baseline: string;
-  trend: "up" | "down" | "neutral";
-  trendValue: string;
+type KPILevel1Data = {
+  metric: KPIMetric;
   methodology: string;
-  dataSources: string[];
-  metrics: KPIMetric[];
-  relatedEvents: MockEvent[];
-  evidence: {
-    receiptId: string;
-    verified: boolean;
-    confidence: number;
-    dataQuality: number;
-    lastUpdated: string;
-    auditTrail: Array<{ timestamp: string; action: string; user: string }>;
-  };
+  dataSource: string;
+  freshnessMinutes: number;
+  confidenceScore: number;
+  relatedEvents: WarEvent[];
+  breakdownMetrics: KPIMetric[];
+  evidenceReceipts: EvidenceReceipt[];
 };
 
-function money(n: number) {
-  const sign = n < 0 ? "-" : "";
-  const v = Math.abs(n);
-  return `${sign}$${v.toLocaleString(undefined, { maximumFractionDigits: 0 })}`;
-}
-
-function pct(n: number) {
-  return `${Math.round(n * 100)}%`;
-}
-
-function AnimatedGradientOverlay({ theme }: { theme: typeof THEME[ThemeKey] }) {
-  return (
-    <motion.div
-      aria-hidden
-      className="absolute inset-0 opacity-20 transition-opacity duration-500 group-hover:opacity-50 pointer-events-none"
-      style={{
-        backgroundImage: `linear-gradient(135deg, ${theme.g1}, ${theme.g2}, ${theme.g3})`,
-        backgroundSize: "200% 200%",
-      }}
-      animate={{
-        backgroundPosition: ["0% 50%", "100% 50%", "0% 50%"],
-      }}
-      transition={{
-        duration: 10,
-        repeat: Infinity,
-        ease: "easeInOut",
-      }}
-    />
-  );
-}
-
-function Tile({
-  label,
-  value,
-  subLeft,
-  subRight,
-  theme = "blue",
-  onClick,
-}: {
-  label: string;
-  value: string;
-  subLeft?: string;
-  subRight?: string;
-  theme?: ThemeKey;
-  onClick?: () => void;
-}) {
-  const themeConfig = THEME[theme];
-  
-  return (
-    <div
-      onClick={onClick}
-      role={onClick ? "button" : undefined}
-      className={[
-        "group relative overflow-hidden rounded-xl border p-5 backdrop-blur-xl",
-        "shadow-lg",
-        "transition-all duration-300 transform-gpu",
-        "hover:-translate-y-1 hover:scale-[1.01] cursor-pointer",
-        themeConfig.border,
-        themeConfig.bg,
-      ].join(" ")}
-    >
-      <AnimatedGradientOverlay theme={themeConfig} />
-
-      <motion.div
-        className={`absolute -top-12 -right-12 h-28 w-28 rounded-full ${themeConfig.orb1} blur-[80px]`}
-        animate={{
-          y: [0, -15, 0],
-          x: [0, 10, 0],
-          scale: [1, 1.1, 1],
-        }}
-        transition={{
-          duration: 8,
-          repeat: Infinity,
-          ease: "easeInOut",
-        }}
-      />
-      <motion.div
-        className={`absolute -bottom-8 -left-8 h-24 w-24 rounded-full ${themeConfig.orb2} blur-[60px]`}
-        animate={{
-          y: [0, 15, 0],
-          x: [0, -10, 0],
-          scale: [1, 1.15, 1],
-        }}
-        transition={{
-          duration: 6,
-          repeat: Infinity,
-          ease: "easeInOut",
-          delay: 0.5,
-        }}
-      />
-
-      <div className="relative z-10">
-        <div className={`text-[10px] font-bold uppercase tracking-widest ${themeConfig.title} opacity-80 mb-1`}>
-          {label}
-        </div>
-        <div className="mt-3 text-4xl font-bold tracking-tight tabular-nums text-white drop-shadow-lg">
-          {value}
-        </div>
-        <div className="mt-4 flex items-center justify-between text-xs text-white/80 font-medium">
-          <span className="tabular-nums">{subLeft ?? ""}</span>
-          <span className="tabular-nums">{subRight ?? ""}</span>
-        </div>
-      </div>
-
-      <div className={`absolute bottom-0 left-0 right-0 h-1.5 ${themeConfig.bar} transition-all duration-300 group-hover:h-2`} />
-    </div>
-  );
-}
-
-function Badge({ status, onClick }: { status: string; onClick?: (e: React.MouseEvent) => void }) {
-  const cls =
-    status === "VERIFIED"
-      ? "bg-emerald-400/25 text-emerald-200 border-emerald-400/40 shadow-[0_0_15px_rgba(16,185,129,0.2)]"
-      : status === "DEGRADED"
-      ? "bg-amber-400/25 text-amber-200 border-amber-400/40 shadow-[0_0_15px_rgba(251,191,36,0.2)]"
-      : status === "UNVERIFIED"
-      ? "bg-purple-400/25 text-purple-200 border-purple-400/40 shadow-[0_0_15px_rgba(168,85,247,0.2)]"
-      : status === "VALIDATED"
-      ? "bg-emerald-400/25 text-emerald-200 border-emerald-400/40 shadow-[0_0_15px_rgba(16,185,129,0.2)]"
-      : status === "IMPLEMENTED"
-      ? "bg-blue-400/25 text-blue-200 border-blue-400/40 shadow-[0_0_15px_rgba(59,130,246,0.2)]"
-      : status === "ACCEPTED"
-      ? "bg-purple-400/25 text-purple-200 border-purple-400/40 shadow-[0_0_15px_rgba(168,85,247,0.2)]"
-      : status === "RECOMMENDED"
-      ? "bg-amber-400/25 text-amber-200 border-amber-400/40 shadow-[0_0_15px_rgba(251,191,36,0.2)]"
-      : "bg-blue-400/25 text-blue-200 border-blue-400/40 shadow-[0_0_15px_rgba(59,130,246,0.2)]";
-
-  return (
-    <span 
-      onClick={onClick}
-      className={`text-[10px] font-semibold px-2.5 py-1 rounded-full border ${cls} ${onClick ? "cursor-pointer hover:opacity-80 transition-opacity" : ""}`}
-    >
-      {status}
-    </span>
-  );
-}
-
-function KPIDetailModal({ 
-  open, 
-  detail, 
-  onClose,
-  onMetricClick,
-  onEventClick,
-}: { 
-  open: boolean; 
-  detail: KPIDetail | null;
-  onClose: () => void;
-  onMetricClick: (metric: KPIMetric) => void;
-  onEventClick: (event: MockEvent) => void;
-}) {
-  if (!detail) return null;
-
-  const trendIcon = detail.trend === "up" ? "↑" : detail.trend === "down" ? "↓" : "→";
-  const trendColor = detail.trend === "up" ? "text-red-400" : detail.trend === "down" ? "text-emerald-400" : "text-blue-400";
-
-  return (
-    <Dialog open={open} onOpenChange={(val) => !val && onClose()}>
-      <DialogContent className="max-w-4xl bg-gray-900 border-white/10 text-white sm:max-w-[90vw] max-h-[85vh] overflow-y-auto">
-        <DialogHeader>
-          <DialogTitle className="text-2xl font-semibold flex items-center gap-3">
-            <BarChart3 className="h-6 w-6 text-blue-400" />
-            {detail.title}
-          </DialogTitle>
-        </DialogHeader>
-        
-        <div className="space-y-6 mt-4">
-          <div className="rounded-xl border border-white/10 bg-white/5 p-6">
-            <p className="text-white/80 mb-4">{detail.description}</p>
-            
-            <div className="grid grid-cols-3 gap-4">
-              <div>
-                <div className="text-xs text-white/50 uppercase tracking-wider mb-1">Current Value</div>
-                <div className="text-2xl font-bold text-white">{detail.currentValue}</div>
-              </div>
-              <div>
-                <div className="text-xs text-white/50 uppercase tracking-wider mb-1">Baseline</div>
-                <div className="text-2xl font-bold text-white/70">{detail.baseline}</div>
-              </div>
-              <div>
-                <div className="text-xs text-white/50 uppercase tracking-wider mb-1">Trend</div>
-                <div className={`text-2xl font-bold ${trendColor} flex items-center gap-2`}>
-                  <span>{trendIcon}</span>
-                  <span>{detail.trendValue}</span>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <div className="rounded-xl border border-white/10 bg-white/5 p-6">
-            <div className="flex items-center gap-2 mb-4">
-              <Database className="h-5 w-5 text-emerald-400" />
-              <h3 className="text-lg font-semibold">Evidence & Data Quality</h3>
-            </div>
-            
-            <div className="grid grid-cols-2 gap-4 mb-4">
-              <div className="rounded-lg border border-emerald-400/30 bg-emerald-500/10 p-4">
-                <div className="text-xs text-emerald-300/80 uppercase tracking-wider mb-1">Verification Status</div>
-                <div className="text-lg font-bold text-emerald-200">
-                  {detail.evidence.verified ? "✓ Verified" : "⚠ Unverified"}
-                </div>
-              </div>
-              <div className="rounded-lg border border-blue-400/30 bg-blue-500/10 p-4">
-                <div className="text-xs text-blue-300/80 uppercase tracking-wider mb-1">Confidence Score</div>
-                <div className="text-lg font-bold text-blue-200">{Math.round(detail.evidence.confidence * 100)}%</div>
-              </div>
-              <div className="rounded-lg border border-violet-400/30 bg-violet-500/10 p-4">
-                <div className="text-xs text-violet-300/80 uppercase tracking-wider mb-1">Data Quality</div>
-                <div className="text-lg font-bold text-violet-200">{Math.round(detail.evidence.dataQuality * 100)}%</div>
-              </div>
-              <div className="rounded-lg border border-amber-400/30 bg-amber-500/10 p-4">
-                <div className="text-xs text-amber-300/80 uppercase tracking-wider mb-1">Last Updated</div>
-                <div className="text-sm font-medium text-amber-200">{detail.evidence.lastUpdated}</div>
-              </div>
-            </div>
-
-            <div className="text-xs text-white/60">
-              <span className="font-semibold">Receipt ID:</span> {detail.evidence.receiptId}
-            </div>
-          </div>
-
-          <div className="rounded-xl border border-white/10 bg-white/5 p-6">
-            <h3 className="text-lg font-semibold mb-3">Methodology</h3>
-            <p className="text-sm text-white/70 leading-relaxed mb-4">{detail.methodology}</p>
-            
-            <div className="mb-4">
-              <div className="text-sm font-semibold text-white/80 mb-2">Data Sources:</div>
-              <div className="flex flex-wrap gap-2">
-                {detail.dataSources.map((source, i) => (
-                  <span key={i} className="text-xs px-3 py-1 rounded-full bg-blue-500/20 text-blue-200 border border-blue-400/30">
-                    {source}
-                  </span>
-                ))}
-              </div>
-            </div>
-          </div>
-
-          <div className="rounded-xl border border-white/10 bg-white/5 p-6">
-            <div className="flex items-center justify-between mb-4">
-              <h3 className="text-lg font-semibold">Contributing Metrics</h3>
-              <span className="text-xs text-white/50">{detail.metrics.length} metrics</span>
-            </div>
-            
-            <div className="space-y-3">
-              {detail.metrics.map((metric, i) => (
-                <div 
-                  key={i}
-                  onClick={() => onMetricClick(metric)}
-                  className="rounded-lg border border-white/10 bg-black/20 p-4 hover:bg-black/30 cursor-pointer transition-all hover:border-white/20 group"
-                >
-                  <div className="flex items-center justify-between">
-                    <div className="flex-1">
-                      <div className="flex items-center gap-2">
-                        <span className="text-sm font-medium text-white">{metric.label}</span>
-                        <ArrowRight className="h-4 w-4 text-white/40 opacity-0 group-hover:opacity-100 transition-opacity" />
-                      </div>
-                      {metric.context && (
-                        <div className="text-xs text-white/50 mt-1">{metric.context}</div>
-                      )}
-                    </div>
-                    <div className="text-right">
-                      <div className="text-lg font-bold text-white">{metric.value}</div>
-                      {metric.change && (
-                        <div className={`text-xs font-medium ${
-                          metric.trend === "up" ? "text-red-400" : 
-                          metric.trend === "down" ? "text-emerald-400" : 
-                          "text-blue-400"
-                        }`}>
-                          {metric.change}
-                        </div>
-                      )}
-                    </div>
-                  </div>
-                  {metric.evidence && (
-                    <div className="mt-3 pt-3 border-t border-white/10">
-                      <div className="flex items-center gap-4 text-xs text-white/60">
-                        <span>Confidence: {Math.round(metric.evidence.confidence * 100)}%</span>
-                        <span>DQ: {Math.round(metric.evidence.dataQuality * 100)}%</span>
-                        <span className={metric.evidence.verified ? "text-emerald-400" : "text-amber-400"}>
-                          {metric.evidence.verified ? "✓ Verified" : "⚠ Unverified"}
-                        </span>
-                      </div>
-                    </div>
-                  )}
-                </div>
-              ))}
-            </div>
-          </div>
-
-          {detail.relatedEvents.length > 0 && (
-            <div className="rounded-xl border border-white/10 bg-white/5 p-6">
-              <div className="flex items-center justify-between mb-4">
-                <h3 className="text-lg font-semibold">Related Events</h3>
-                <span className="text-xs text-white/50">{detail.relatedEvents.length} events</span>
-              </div>
-              
-              <div className="space-y-2">
-                {detail.relatedEvents.map((event) => (
-                  <div
-                    key={event.id}
-                    onClick={() => onEventClick(event)}
-                    className="rounded-lg border border-white/10 bg-black/20 p-3 hover:bg-black/30 cursor-pointer transition-all hover:border-white/20 group"
-                  >
-                    <div className="flex items-center justify-between">
-                      <div className="flex-1">
-                        <div className="flex items-center gap-2">
-                          <span className="text-sm font-medium text-white">{event.title}</span>
-                          <ArrowRight className="h-4 w-4 text-white/40 opacity-0 group-hover:opacity-100 transition-opacity" />
-                        </div>
-                        <div className="text-xs text-white/50 mt-1">
-                          {event.id} • {event.owner_role} • Score: {event.score.toLocaleString()}
-                        </div>
-                      </div>
-                      <div className="text-right">
-                        <div className="text-sm font-semibold text-white">{money(event.identified_value)}</div>
-                        <Badge status={event.receipt_status} />
-                      </div>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
-          )}
-
-          <div className="rounded-xl border border-white/10 bg-white/5 p-6">
-            <div className="flex items-center gap-2 mb-3">
-              <Shield className="h-5 w-5 text-violet-400" />
-              <h3 className="text-lg font-semibold">Audit Trail</h3>
-            </div>
-            
-            <div className="space-y-2">
-              {detail.evidence.auditTrail.map((entry, i) => (
-                <div key={i} className="flex items-center justify-between text-sm py-2 border-b border-white/5 last:border-0">
-                  <div className="flex items-center gap-3">
-                    <span className="text-white/50">{entry.timestamp}</span>
-                    <span className="text-white/70">{entry.action}</span>
-                  </div>
-                  <span className="text-white/60">{entry.user}</span>
-                </div>
-              ))}
-            </div>
-          </div>
-        </div>
-      </DialogContent>
-    </Dialog>
-  );
-}
-
-function MetricDetailModal({
-  open,
-  metric,
-  onClose,
-}: {
-  open: boolean;
-  metric: KPIMetric | null;
-  onClose: () => void;
-}) {
-  if (!metric) return null;
-
-  return (
-    <Dialog open={open} onOpenChange={(val) => !val && onClose()}>
-      <DialogContent className="max-w-3xl bg-gray-900 border-white/10 text-white sm:max-w-[85vw] max-h-[80vh] overflow-y-auto">
-        <DialogHeader>
-          <DialogTitle className="text-xl font-semibold flex items-center gap-3">
-            <Eye className="h-5 w-5 text-violet-400" />
-            Level 2 → {metric.label}
-          </DialogTitle>
-        </DialogHeader>
-
-        <div className="space-y-6 mt-4">
-          <div className="rounded-xl border border-white/10 bg-white/5 p-6">
-            <div className="grid grid-cols-2 gap-4 mb-4">
-              <div>
-                <div className="text-xs text-white/50 uppercase tracking-wider mb-1">Metric Value</div>
-                <div className="text-3xl font-bold text-white">{metric.value}</div>
-              </div>
-              {metric.change && (
-                <div>
-                  <div className="text-xs text-white/50 uppercase tracking-wider mb-1">Change</div>
-                  <div className={`text-2xl font-bold ${
-                    metric.trend === "up" ? "text-red-400" : 
-                    metric.trend === "down" ? "text-emerald-400" : 
-                    "text-blue-400"
-                  }`}>
-                    {metric.change}
-                  </div>
-                </div>
-              )}
-            </div>
-            
-            {metric.context && (
-              <p className="text-sm text-white/70 leading-relaxed">{metric.context}</p>
-            )}
-          </div>
-
-          {metric.evidence && (
-            <div className="rounded-xl border border-white/10 bg-white/5 p-6">
-              <div className="flex items-center gap-2 mb-4">
-                <Database className="h-5 w-5 text-emerald-400" />
-                <h3 className="text-lg font-semibold">Evidence Details</h3>
-              </div>
-              
-              <div className="grid grid-cols-2 gap-4">
-                <div className="rounded-lg border border-emerald-400/30 bg-emerald-500/10 p-4">
-                  <div className="text-xs text-emerald-300/80 uppercase tracking-wider mb-1">Verification</div>
-                  <div className="text-lg font-bold text-emerald-200">
-                    {metric.evidence.verified ? "✓ Verified" : "⚠ Unverified"}
-                  </div>
-                </div>
-                <div className="rounded-lg border border-blue-400/30 bg-blue-500/10 p-4">
-                  <div className="text-xs text-blue-300/80 uppercase tracking-wider mb-1">Confidence</div>
-                  <div className="text-lg font-bold text-blue-200">
-                    {Math.round(metric.evidence.confidence * 100)}%
-                  </div>
-                </div>
-                <div className="rounded-lg border border-violet-400/30 bg-violet-500/10 p-4">
-                  <div className="text-xs text-violet-300/80 uppercase tracking-wider mb-1">Data Quality</div>
-                  <div className="text-lg font-bold text-violet-200">
-                    {Math.round(metric.evidence.dataQuality * 100)}%
-                  </div>
-                </div>
-                <div className="rounded-lg border border-amber-400/30 bg-amber-500/10 p-4">
-                  <div className="text-xs text-amber-300/80 uppercase tracking-wider mb-1">Last Updated</div>
-                  <div className="text-sm font-medium text-amber-200">{metric.evidence.lastUpdated}</div>
-                </div>
-              </div>
-
-              <div className="mt-4 text-xs text-white/60">
-                <span className="font-semibold">Receipt ID:</span> {metric.evidence.receiptId}
-              </div>
-            </div>
-          )}
-
-          <div className="rounded-xl border border-white/10 bg-white/5 p-6">
-            <h3 className="text-lg font-semibold mb-3">Calculation Methodology</h3>
-            <p className="text-sm text-white/70 leading-relaxed mb-4">
-              This metric is calculated using proprietary algorithms that analyze claims data, contract terms, 
-              and historical patterns to identify cost optimization opportunities.
-            </p>
-            
-            <div className="grid grid-cols-3 gap-3">
-              <div className="rounded-lg border border-white/10 bg-black/20 p-3 text-center">
-                <div className="text-xs text-white/50 mb-1">Sample Size</div>
-                <div className="text-lg font-bold text-white">45,231</div>
-              </div>
-              <div className="rounded-lg border border-white/10 bg-black/20 p-3 text-center">
-                <div className="text-xs text-white/50 mb-1">Data Points</div>
-                <div className="text-lg font-bold text-white">1.2M</div>
-              </div>
-              <div className="rounded-lg border border-white/10 bg-black/20 p-3 text-center">
-                <div className="text-xs text-white/50 mb-1">Accuracy</div>
-                <div className="text-lg font-bold text-emerald-400">98.2%</div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </DialogContent>
-    </Dialog>
-  );
-}
-
-type StatCardProps = {
-  icon: React.ComponentType<{ className?: string }>;
-  label: string;
-  value: string;
-  themeKey: ThemeKey;
-  delay?: number;
+type KPILevel2Data = {
+  parentMetric: string;
+  subMetric: KPIMetric;
+  calculation: string;
+  detailedBreakdown: {
+    component: string;
+    value: string;
+    contribution: string;
+  }[];
+  relatedEvents: WarEvent[];
+  evidenceReceipts: EvidenceReceipt[];
 };
 
-function StatCard({ icon: Icon, label, value, themeKey, delay = 0 }: StatCardProps) {
-  const t = THEME[themeKey];
+export default function WarRoomV1() {
+  const [currentView, setCurrentView] = useState<ViewMode>("FOUR_LANE_LEDGER");
+  const [selectedEventId, setSelectedEventId] = useState<string | null>(null);
+  const [level1Modal, setLevel1Modal] = useState<{ open: boolean; data: KPILevel1Data | null }>({ open: false, data: null });
+  const [level2Modal, setLevel2Modal] = useState<{ open: boolean; data: KPILevel2Data | null }>({ open: false, data: null });
 
-  return (
-    <motion.div
-      initial={{ opacity: 0, y: 20 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ delay, duration: 0.5 }}
-      className={[
-        "group relative overflow-hidden rounded-2xl border border-white/10 bg-slate-950/60 p-6",
-        "backdrop-blur-xl transition-transform duration-200 hover:-translate-y-0.5",
-        t.hoverRing,
-      ].join(" ")}
-    >
-      <div className={`absolute left-0 top-0 h-full w-2 ${t.bar}`} />
-      <AnimatedGradientOverlay theme={t} />
-      <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(70%_55%_at_50%_15%,rgba(255,255,255,0.10),transparent_60%)] opacity-60" />
-
-      <div className="relative flex items-start gap-4">
-        <div
-          className={[
-            "grid h-12 w-12 place-items-center rounded-2xl ring-1",
-            t.iconBg,
-            t.iconRing,
-            t.iconGlow,
-          ].join(" ")}
-        >
-          <Icon className={`h-6 w-6 ${t.title}`} />
-        </div>
-
-        <div className="flex-1">
-          <div className="text-sm text-white/70">{label}</div>
-          <div className={`text-2xl font-bold ${t.title}`}>{value}</div>
-        </div>
-      </div>
-
-      <div className="pointer-events-none absolute inset-0 opacity-0 transition-opacity duration-300 group-hover:opacity-100">
-        <div className="absolute -inset-24 bg-[conic-gradient(from_180deg,rgba(255,255,255,0.0),rgba(255,255,255,0.14),rgba(255,255,255,0.0))] blur-2xl" />
-      </div>
-    </motion.div>
-  );
-}
-
-function getKPIDetails(): Record<string, KPIDetail> {
-  return {
-    costTrend: {
-      title: "Cost Trend Stress Index",
-      description: "Measures the rate of healthcare cost increase relative to baseline expectations, incorporating medical inflation, utilization changes, and plan design impact.",
-      currentValue: "11.2%",
-      baseline: "9.0%",
-      trend: "up",
-      trendValue: "+2.2pp YoY",
-      methodology: "Calculated using year-over-year total healthcare spend growth, adjusted for membership changes and normalized against industry benchmarks. Factors include medical trend (7.5%), pharmacy trend (9.8%), utilization patterns, and member demographics.",
-      dataSources: ["Claims Database", "Enrollment Data", "Carrier Reports", "Industry Benchmarks"],
-      metrics: [
-        {
-          label: "Medical Trend",
-          value: "7.5%",
-          change: "+1.2pp QoQ",
-          trend: "up",
-          context: "Driven by increased inpatient utilization and specialty care costs",
-          evidence: {
-            receiptId: "RCT-MEDICAL-2024-001",
-            verified: true,
-            confidence: 0.94,
-            dataQuality: 0.97,
-            lastUpdated: "2 hours ago",
-          },
-        },
-        {
-          label: "Pharmacy Trend",
-          value: "9.8%",
-          change: "+3.1pp QoQ",
-          trend: "up",
-          context: "GLP-1 medications and specialty drugs driving increase",
-          evidence: {
-            receiptId: "RCT-PHARMA-2024-001",
-            verified: true,
-            confidence: 0.96,
-            dataQuality: 0.95,
-            lastUpdated: "3 hours ago",
-          },
-        },
-        {
-          label: "Utilization Rate",
-          value: "102.3%",
-          change: "+2.3pp",
-          trend: "up",
-          context: "Above baseline utilization across most service categories",
-          evidence: {
-            receiptId: "RCT-UTIL-2024-001",
-            verified: true,
-            confidence: 0.92,
-            dataQuality: 0.93,
-            lastUpdated: "1 hour ago",
-          },
-        },
-      ],
-      relatedEvents: mockWarRoom.events.slice(0, 3).map(e => ({
-        id: e.id,
-        title: e.title,
-        type: e.type || "cost_variance",
-        status: e.state,
-        identified_value: e.amount,
-        confidence: e.confidence,
-        time_sensitivity: 0.7,
-        execution_friction: 0.3,
-        score: score(e),
-        owner_role: e.owner || "CFO",
-        evidence_receipt_id: "RCT-001",
-        receipt_status: "VERIFIED",
-        theme: "crimson" as ThemeKey,
-      })),
-      evidence: {
-        receiptId: "RCT-COST-TREND-2024-Q1",
-        verified: true,
-        confidence: 0.95,
-        dataQuality: 0.96,
-        lastUpdated: "30 minutes ago",
-        auditTrail: [
-          { timestamp: "2024-02-11 12:30 UTC", action: "Data Validation Complete", user: "System" },
-          { timestamp: "2024-02-11 11:45 UTC", action: "Claims Data Ingested", user: "ETL Pipeline" },
-          { timestamp: "2024-02-11 10:00 UTC", action: "Calculation Initiated", user: "Scheduled Job" },
-        ],
-      },
-    },
-    planDesign: {
-      title: "Plan Design Adoption",
-      description: "Tracks employee enrollment in cost-efficient plan designs including High Deductible Health Plans (HDHP) with HSA and Centers of Excellence (COE) programs.",
-      currentValue: "47%",
-      baseline: "35%",
-      trend: "up",
-      trendValue: "+12pp QoQ",
-      methodology: "Percentage of eligible employees enrolled in HDHP/HSA plans or utilizing COE networks, weighted by total covered lives. Includes analysis of plan selection patterns and cost impact.",
-      dataSources: ["Enrollment Systems", "Plan Documents", "Employee Elections", "Cost Analysis"],
-      metrics: [
-        {
-          label: "HDHP/HSA Enrollment",
-          value: "38%",
-          change: "+8pp",
-          trend: "up",
-          context: "Strong adoption driven by enhanced employer contributions",
-          evidence: {
-            receiptId: "RCT-HDHP-2024-001",
-            verified: true,
-            confidence: 0.98,
-            dataQuality: 0.99,
-            lastUpdated: "1 hour ago",
-          },
-        },
-        {
-          label: "COE Network Usage",
-          value: "9%",
-          change: "+4pp",
-          trend: "up",
-          context: "Increasing utilization for elective procedures",
-          evidence: {
-            receiptId: "RCT-COE-2024-001",
-            verified: true,
-            confidence: 0.91,
-            dataQuality: 0.94,
-            lastUpdated: "2 hours ago",
-          },
-        },
-      ],
-      relatedEvents: mockWarRoom.events.slice(3, 5).map(e => ({
-        id: e.id,
-        title: e.title,
-        type: e.type || "plan_design",
-        status: e.state,
-        identified_value: e.amount,
-        confidence: e.confidence,
-        time_sensitivity: 0.6,
-        execution_friction: 0.4,
-        score: score(e),
-        owner_role: e.owner || "Benefits Team",
-        evidence_receipt_id: "RCT-002",
-        receipt_status: "VERIFIED",
-        theme: "emerald" as ThemeKey,
-      })),
-      evidence: {
-        receiptId: "RCT-PLAN-DESIGN-2024-Q1",
-        verified: true,
-        confidence: 0.97,
-        dataQuality: 0.98,
-        lastUpdated: "45 minutes ago",
-        auditTrail: [
-          { timestamp: "2024-02-11 12:15 UTC", action: "Enrollment Data Verified", user: "System" },
-          { timestamp: "2024-02-11 11:30 UTC", action: "Plan Design Analysis Complete", user: "Benefits Analytics" },
-          { timestamp: "2024-02-11 10:45 UTC", action: "Data Collection Started", user: "Scheduled Job" },
-        ],
-      },
-    },
+  const handleKPIClick = (kpi: KPIMetric) => {
+    const level1Data = generateLevel1Data(kpi);
+    setLevel1Modal({ open: true, data: level1Data });
   };
-}
 
-function CFODashboardContent() {
-  const [data, setData] = useState(() => mockWarRoom);
-  const [view, setView] = useState<TileView>("VARIANCE");
-  const [mounted, setMounted] = useState(false);
-  const [activeEvent, setActiveEvent] = useState<any>(null);
-  const [searchQuery, setSearchQuery] = useState("");
-  const [statusFilter, setStatusFilter] = useState("All");
-  
-  const [level1Modal, setLevel1Modal] = useState<{ open: boolean; detail: KPIDetail | null }>({ open: false, detail: null });
-  const [level2Modal, setLevel2Modal] = useState<{ open: boolean; metric: KPIMetric | null }>({ open: false, metric: null });
+  const handleLevel2Click = (parentMetric: string, subMetric: KPIMetric, level1Data: KPILevel1Data) => {
+    const level2Data = generateLevel2Data(parentMetric, subMetric, level1Data);
+    setLevel2Modal({ open: true, data: level2Data });
+  };
 
-  const kpiDetails = useMemo(() => getKPIDetails(), []);
+  const handleEventClick = (event: WarEvent) => {
+    setSelectedEventId(event.id);
+  };
 
-  useEffect(() => {
-    setMounted(true);
-  }, []);
+  const generateLevel1Data = (kpi: KPIMetric): KPILevel1Data => {
+    // Generate related events based on KPI context
+    const relatedEvents = mockWarRoomData.events.filter(e => {
+      if (kpi.label.includes("Arbitrage")) return e.type === "ARBITRAGE";
+      if (kpi.label.includes("DQ")) return e.type === "DQ";
+      if (kpi.label.includes("Policy")) return e.type === "POLICY";
+      if (kpi.label.includes("Rebate")) return e.lane === "marketplace";
+      return e.confidence > 0.85;
+    }).slice(0, 5);
 
-  useEffect(() => {
-    setData(mockWarRoom);
-  }, []);
-
-  const eventsFiltered = useMemo(() => {
-    let filtered = data.events;
-    
-    if (searchQuery) {
-      filtered = filtered.filter(e => 
-        e.id.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        e.title.toLowerCase().includes(searchQuery.toLowerCase())
+    // Generate breakdown metrics
+    const breakdownMetrics: KPIMetric[] = [];
+    if (kpi.label.includes("Arbitrage")) {
+      breakdownMetrics.push(
+        { label: "Anthem Opportunities", value: "$780K", delta_pct: 12, trend: "up", status: "HEALTHY" },
+        { label: "UHC Network Issues", value: "$540K", delta_pct: 8, trend: "up", status: "HEALTHY" },
+        { label: "Cigna Rebate Gaps", value: "$610K", delta_pct: -5, trend: "down", status: "WARNING" },
+        { label: "Express Scripts MAC", value: "$1.1M", delta_pct: 15, trend: "up", status: "HEALTHY" }
+      );
+    } else if (kpi.label.includes("DQ")) {
+      breakdownMetrics.push(
+        { label: "Member Records", value: "94.2%", delta_pct: 2.1, trend: "up", status: "HEALTHY" },
+        { label: "Claims Data", value: "96.8%", delta_pct: 1.5, trend: "up", status: "HEALTHY" },
+        { label: "Provider Network", value: "89.3%", delta_pct: -1.2, trend: "down", status: "WARNING" },
+        { label: "Pharmacy Files", value: "97.1%", delta_pct: 3.4, trend: "up", status: "HEALTHY" }
+      );
+    } else if (kpi.label.includes("Forecast")) {
+      breakdownMetrics.push(
+        { label: "Medical Claims", value: "8.2", delta: "+1.1", trend: "up", status: "HEALTHY" },
+        { label: "Pharmacy Costs", value: "9.1", delta: "+0.8", trend: "up", status: "HEALTHY" },
+        { label: "Admin Expenses", value: "7.9", delta: "+0.3", trend: "up", status: "HEALTHY" },
+        { label: "Stop-Loss", value: "8.5", delta: "-0.2", trend: "down", status: "WARNING" }
+      );
+    } else {
+      breakdownMetrics.push(
+        { label: "Primary Component", value: "92%", delta_pct: 3, trend: "up", status: "HEALTHY" },
+        { label: "Secondary Component", value: "88%", delta_pct: -2, trend: "down", status: "WARNING" },
+        { label: "Tertiary Component", value: "95%", delta_pct: 5, trend: "up", status: "HEALTHY" }
       );
     }
-    
-    if (statusFilter !== "All") {
-      filtered = filtered.filter(e => e.state === statusFilter);
-    }
-    
-    return filtered.sort((a, b) => score(b) - score(a));
-  }, [data.events, searchQuery, statusFilter]);
 
-  const handleTileClick = (kpiKey: string) => {
-    const detail = kpiDetails[kpiKey];
-    if (detail) {
-      setLevel1Modal({ open: true, detail });
-    }
+    return {
+      metric: kpi,
+      methodology: getMethodology(kpi.label),
+      dataSource: getDataSource(kpi.label),
+      freshnessMinutes: Math.floor(Math.random() * 180) + 30,
+      confidenceScore: 0.85 + Math.random() * 0.14,
+      relatedEvents,
+      breakdownMetrics,
+      evidenceReceipts: relatedEvents.flatMap(e => e.receipts || []).slice(0, 3)
+    };
   };
 
-  const handleMetricClick = (metric: KPIMetric) => {
-    setLevel2Modal({ open: true, metric });
+  const generateLevel2Data = (parentMetric: string, subMetric: KPIMetric, level1Data: KPILevel1Data): KPILevel2Data => {
+    const detailedBreakdown = [];
+    if (subMetric.label.includes("Anthem")) {
+      detailedBreakdown.push(
+        { component: "Admin Fee Variance", value: "$480K", contribution: "61.5%" },
+        { component: "Network Steering Spread", value: "$220K", contribution: "28.2%" },
+        { component: "Undisclosed Rebate Gap", value: "$80K", contribution: "10.3%" }
+      );
+    } else if (subMetric.label.includes("Member")) {
+      detailedBreakdown.push(
+        { component: "Duplicate IDs", value: "347 records", contribution: "42%" },
+        { component: "Missing Demographics", value: "218 records", contribution: "26%" },
+        { component: "Invalid Addresses", value: "165 records", contribution: "20%" },
+        { component: "Date Inconsistencies", value: "98 records", contribution: "12%" }
+      );
+    } else {
+      detailedBreakdown.push(
+        { component: "Component A", value: "65%", contribution: "45%" },
+        { component: "Component B", value: "25%", contribution: "30%" },
+        { component: "Component C", value: "10%", contribution: "25%" }
+      );
+    }
+
+    return {
+      parentMetric,
+      subMetric,
+      calculation: getCalculation(subMetric.label),
+      detailedBreakdown,
+      relatedEvents: level1Data.relatedEvents.filter(e => 
+        e.title.toLowerCase().includes(subMetric.label.toLowerCase().split(" ")[0])
+      ).slice(0, 3),
+      evidenceReceipts: level1Data.evidenceReceipts
+    };
   };
 
-  const handleEventClick = (event: MockEvent) => {
-    setActiveEvent(event);
+  const getMethodology = (label: string): string => {
+    if (label.includes("Arbitrage")) {
+      return "Automated contract variance analysis comparing actual charges vs. contracted rates across 8 major carriers. Uses machine learning to identify systematic deviations and quantify financial impact.";
+    }
+    if (label.includes("DQ")) {
+      return "Comprehensive data quality assessment across 100+ validation rules. Checks completeness, accuracy, consistency, and timeliness of member, claims, and provider data.";
+    }
+    if (label.includes("Forecast")) {
+      return "Predictive model combining historical claims patterns, seasonal trends, and policy changes. Updates hourly with 89% accuracy rate validated against actual outcomes.";
+    }
+    return "Statistical analysis of key performance indicators with automated anomaly detection and trend forecasting.";
+  };
+
+  const getDataSource = (label: string): string => {
+    if (label.includes("Arbitrage")) return "Carrier EDI files, Contract schedules, Payment reconciliation";
+    if (label.includes("DQ")) return "Member enrollment systems, Claims adjudication platform";
+    if (label.includes("Forecast")) return "Financial planning system, Actuarial models";
+    return "Enterprise data warehouse, Real-time monitoring systems";
+  };
+
+  const getCalculation = (label: string): string => {
+    if (label.includes("Anthem")) {
+      return "(Actual Admin Fees Charged - Contracted Schedule C Rates) × Annual Volume = $780K variance";
+    }
+    if (label.includes("Member")) {
+      return "COUNT(DISTINCT member_id GROUP BY ssn, dob HAVING COUNT > 1) / TOTAL_MEMBERS × 100";
+    }
+    return "(Current Value - Baseline) / Baseline × 100";
   };
 
   return (
     <>
-      <div className="mx-auto max-w-[1400px] px-4 py-6">
-        <div className="mb-8">
-          <div className="grid md:grid-cols-4 gap-6">
-            <StatCard
-              icon={Activity}
-              label="Events Processed"
-              value="10M+"
-              themeKey="blue"
-              delay={0}
-            />
-            <StatCard
-              icon={TrendingUp}
-              label="Avg Response Time"
-              value="<100ms"
-              themeKey="emerald"
-              delay={0.1}
-            />
-            <StatCard
-              icon={AlertTriangle}
-              label="Active Incidents"
-              value="24"
-              themeKey="rose"
-              delay={0.2}
-            />
-            <StatCard
-              icon={CheckCircle}
-              label="Resolution Rate"
-              value="99.2%"
-              themeKey="violet"
-              delay={0.3}
-            />
+      <SEO 
+        title="War Room | SiriusB iQ"
+        description="Real-time operational intelligence for health benefits"
+      />
+      <Nav />
+      <div className="min-h-screen bg-gradient-to-b from-slate-950 via-slate-900 to-slate-950 text-white pt-20">
+        <div className="container mx-auto px-4 py-8">
+          {/* Header */}
+          <div className="flex items-center justify-between mb-8">
+            <div>
+              <h1 className="text-4xl font-bold mb-2">War Room</h1>
+              <p className="text-slate-400">Real-time operational intelligence for health benefits</p>
+            </div>
+            <div className="flex gap-2">
+              <Button
+                variant={currentView === "FOUR_LANE_LEDGER" ? "default" : "outline"}
+                onClick={() => setCurrentView("FOUR_LANE_LEDGER")}
+              >
+                Four Lane Ledger
+              </Button>
+              <Button
+                variant={currentView === "RANKED_EVENTS" ? "default" : "outline"}
+                onClick={() => setCurrentView("RANKED_EVENTS")}
+              >
+                Ranked Events
+              </Button>
+            </div>
           </div>
+
+          {currentView === "FOUR_LANE_LEDGER" && <FourLaneLedger onKPIClick={handleKPIClick} onEventClick={handleEventClick} />}
+          {currentView === "RANKED_EVENTS" && <RankedEventsView onEventClick={handleEventClick} />}
         </div>
+      </div>
 
-        <div className="mb-5">
-          <div className="text-[11px] text-gray-500">Kincaid IQ • CFO War Room</div>
-          <div className="text-lg font-semibold tracking-tight text-gray-100">/war-room</div>
-        </div>
+      {/* Level 1 KPI Modal */}
+      <Dialog open={level1Modal.open} onOpenChange={(open) => setLevel1Modal({ open, data: null })}>
+        <DialogContent className="max-w-5xl max-h-[90vh] overflow-y-auto bg-slate-900 text-white border-slate-700">
+          {level1Modal.data && (
+            <>
+              <DialogHeader>
+                <DialogTitle className="text-2xl flex items-center justify-between">
+                  <span>{level1Modal.data.metric.label}</span>
+                  <div className="flex items-center gap-4">
+                    <Badge variant={level1Modal.data.metric.status === "HEALTHY" ? "default" : "destructive"}>
+                      {level1Modal.data.metric.status || "HEALTHY"}
+                    </Badge>
+                    <Button variant="ghost" size="sm" onClick={() => setLevel1Modal({ open: false, data: null })}>
+                      <X className="h-4 w-4" />
+                    </Button>
+                  </div>
+                </DialogTitle>
+              </DialogHeader>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-4 mb-6">
-          <Tile label="Cost Trend Stress Index" value="11.2%" subLeft="vs 9% baseline" subRight="+2.2pp YoY" theme="crimson" onClick={() => handleTileClick("costTrend")} />
-          <Tile label="Plan Design Adoption" value="47%" subLeft="HDHP/HSA + COE" subRight="+12pp QoQ" theme="emerald" onClick={() => handleTileClick("planDesign")} />
-          <Tile label="Pharmacy Exposure" value="34%" subLeft="Opaque terms" subRight="-8pp target" theme="violet" onClick={() => handleTileClick("pharmacyExposure")} />
-          <Tile label="Contract Leakage" value="6.8%" subLeft="$8.3M recoverable" subRight="-1.2pp QoQ" theme="amber" onClick={() => handleTileClick("contractLeakage")} />
-          <Tile label="Contract Ambiguity" value="3.2/10" subLeft="Risk score" subRight="-0.8 improved" theme="orange" onClick={() => handleTileClick("contractAmbiguity")} />
-          <Tile label="Contract Compliance" value="92.4%" subLeft="Compliant adjudications" subRight="+3.1pp QoQ" theme="blue" onClick={() => handleTileClick("contractCompliance")} />
-          <Tile label="Benefits NPS" value="+38" subLeft="Employee experience" subRight="+7 pts QoQ" theme="rose" onClick={() => handleTileClick("benefitsNPS")} />
-          <Tile label="Employee NPS (eNPS)" value="+42" subLeft="Benefits team + vendors" subRight="+5 pts QoQ" theme="cyan" onClick={() => handleTileClick("employeeNPS")} />
-        </div>
+              <Tabs defaultValue="overview" className="mt-4">
+                <TabsList className="bg-slate-800">
+                  <TabsTrigger value="overview">Overview</TabsTrigger>
+                  <TabsTrigger value="breakdown">Breakdown</TabsTrigger>
+                  <TabsTrigger value="events">Related Events</TabsTrigger>
+                  <TabsTrigger value="evidence">Evidence</TabsTrigger>
+                </TabsList>
 
-        <div className="mb-6">
-          <RankedEventsPanel />
-        </div>
-
-        <SplitPane
-          storageKey="kincaid.warroom.split.v1"
-          defaultLeftPct={60}
-          minLeftPct={45}
-          maxLeftPct={70}
-          left={
-            <div className="h-[600px] overflow-y-auto p-4 space-y-3">
-              <div className="flex items-center justify-between">
-                <div>
-                  <div className="text-[11px] text-white/50">Exceptions Queue</div>
-                  <div className="text-sm font-semibold">Ranked Arbitrage Events</div>
-                </div>
-              </div>
-
-              <div className="flex gap-2">
-                <input
-                  className="w-full rounded-xl border border-white/10 bg-black/20 px-3 py-2 text-sm outline-none focus:border-white/20"
-                  placeholder="Search events…"
-                  value={searchQuery}
-                  onChange={(e) => setSearchQuery(e.target.value)}
-                />
-                <select 
-                  className="rounded-xl border border-white/10 bg-black/20 px-3 py-2 text-sm"
-                  value={statusFilter}
-                  onChange={(e) => setStatusFilter(e.target.value)}
-                >
-                  <option>All</option>
-                  <option>IDENTIFIED</option>
-                  <option>APPROVED</option>
-                  <option>REALIZED</option>
-                </select>
-              </div>
-
-              <div className="space-y-2">
-                {eventsFiltered.map((e) => {
-                  const eventScore = score(e);
-                  const theme = THEME.blue;
-                  
-                  return (
-                    <div
-                      key={e.id}
-                      onClick={() => handleEventClick({
-                        id: e.id,
-                        title: e.title,
-                        type: e.type || "variance",
-                        status: e.state,
-                        identified_value: e.amount,
-                        confidence: e.confidence,
-                        time_sensitivity: 0.7,
-                        execution_friction: 0.3,
-                        score: eventScore,
-                        owner_role: e.owner || "Unassigned",
-                        evidence_receipt_id: "RCT-001",
-                        receipt_status: "VERIFIED",
-                      })}
-                      className={`group relative overflow-hidden rounded-xl border p-3 hover:bg-white/5 cursor-pointer transition-all ${
-                        activeEvent?.id === e.id 
-                          ? `${theme.border} ${theme.bg} ${theme.glow}` 
-                          : "border-white/10 bg-black/20"
-                      }`}
-                    >
-                      <div className={`absolute left-0 top-0 h-full w-1 ${theme.bar}`} />
-                      
-                      <div className="relative">
-                        <div className="flex items-center justify-between">
-                          <div className={`text-sm font-medium ${theme.title}`}>
-                            {e.id} • {e.title}
+                <TabsContent value="overview" className="space-y-6 mt-6">
+                  {/* Main Metric */}
+                  <Card className="p-6 bg-slate-800 border-slate-700">
+                    <div className="flex items-start justify-between">
+                      <div>
+                        <p className="text-4xl font-bold mb-2">{level1Modal.data.metric.value}</p>
+                        {level1Modal.data.metric.delta && (
+                          <div className="flex items-center gap-2">
+                            {level1Modal.data.metric.trend === "up" && <TrendingUp className="h-4 w-4 text-green-500" />}
+                            {level1Modal.data.metric.trend === "down" && <TrendingDown className="h-4 w-4 text-red-500" />}
+                            {level1Modal.data.metric.trend === "stable" && <Minus className="h-4 w-4 text-slate-400" />}
+                            <span className="text-lg text-slate-300">{level1Modal.data.metric.delta}</span>
                           </div>
-                          <div className="text-[11px] text-white/50 tabular-nums">
-                            Score {eventScore.toLocaleString()}
-                          </div>
-                        </div>
-                        <div className="mt-1 text-[11px] text-white/50">
-                          Owner: {e.owner || "Unassigned"} • Value: {money(e.amount)}
-                        </div>
-                        <div className="mt-2 flex gap-2 flex-wrap">
-                          <Badge status="VERIFIED" />
-                          <span className={`text-[10px] px-2 py-0.5 rounded-full border font-semibold ${
-                            e.state === "REALIZED" ? "border-emerald-400/30 bg-emerald-400/10 text-emerald-300" :
-                            e.state === "APPROVED" ? "border-blue-400/30 bg-blue-400/10 text-blue-300" :
-                            "border-amber-400/30 bg-amber-400/10 text-amber-300"
-                          }`}>{e.state}</span>
-                        </div>
+                        )}
+                      </div>
+                      <div className="text-right text-sm text-slate-400">
+                        <p>Confidence: {(level1Modal.data.confidenceScore * 100).toFixed(1)}%</p>
+                        <p>Updated: {level1Modal.data.freshnessMinutes}m ago</p>
                       </div>
                     </div>
-                  );
-                })}
-              </div>
-            </div>
-          }
-          right={
-            <div className="h-full">
-               <EventDetailDrawer 
-                eventId={activeEvent?.id || null} 
-                onClose={() => setActiveEvent(null)}
-                open={!!activeEvent}
-               />
-               
-               {!activeEvent && (
-                 <div className="h-full flex items-center justify-center p-8 text-white/40">
-                   <div className="text-center">
-                     <FileText className="h-12 w-12 mx-auto mb-4 opacity-20" />
-                     <p>Select an event from the list to view comprehensive details</p>
-                   </div>
-                 </div>
-               )}
-            </div>
-          }
-        />
+                    {level1Modal.data.metric.details && (
+                      <p className="mt-4 text-slate-300">{level1Modal.data.metric.details}</p>
+                    )}
+                  </Card>
 
-        <div className="mt-4 text-[12px] text-gray-500">
-          {mounted && `As of ${new Date(data.asOf).toLocaleString()}`}
-        </div>
-      </div>
+                  {/* Methodology */}
+                  <Card className="p-6 bg-slate-800 border-slate-700">
+                    <h3 className="text-lg font-semibold mb-3 flex items-center gap-2">
+                      <FileText className="h-5 w-5 text-blue-400" />
+                      Methodology
+                    </h3>
+                    <p className="text-slate-300 mb-4">{level1Modal.data.methodology}</p>
+                    <div className="pt-4 border-t border-slate-700">
+                      <p className="text-sm text-slate-400">
+                        <span className="font-semibold">Data Sources:</span> {level1Modal.data.dataSource}
+                      </p>
+                    </div>
+                  </Card>
+                </TabsContent>
 
-      <KPIDetailModal 
-        open={level1Modal.open} 
-        detail={level1Modal.detail}
-        onClose={() => setLevel1Modal({ open: false, detail: null })}
-        onMetricClick={handleMetricClick}
-        onEventClick={handleEventClick}
-      />
+                <TabsContent value="breakdown" className="space-y-4 mt-6">
+                  <h3 className="text-lg font-semibold mb-4">Component Breakdown</h3>
+                  <div className="grid gap-4">
+                    {level1Modal.data.breakdownMetrics.map((subMetric, idx) => (
+                      <Card 
+                        key={idx}
+                        className="p-4 bg-slate-800 border-slate-700 hover:bg-slate-750 cursor-pointer transition-colors"
+                        onClick={() => handleLevel2Click(level1Modal.data!.metric.label, subMetric, level1Modal.data!)}
+                      >
+                        <div className="flex items-center justify-between">
+                          <div className="flex-1">
+                            <div className="flex items-center gap-3">
+                              <h4 className="font-semibold">{subMetric.label}</h4>
+                              {subMetric.status && (
+                                <Badge variant={subMetric.status === "HEALTHY" ? "default" : "destructive"} className="text-xs">
+                                  {subMetric.status}
+                                </Badge>
+                              )}
+                            </div>
+                            <div className="flex items-center gap-4 mt-2">
+                              <span className="text-2xl font-bold">{subMetric.value}</span>
+                              {subMetric.delta_pct !== undefined && (
+                                <div className="flex items-center gap-1">
+                                  {subMetric.trend === "up" && <TrendingUp className="h-4 w-4 text-green-500" />}
+                                  {subMetric.trend === "down" && <TrendingDown className="h-4 w-4 text-red-500" />}
+                                  <span className={`text-sm ${subMetric.trend === "up" ? "text-green-500" : subMetric.trend === "down" ? "text-red-500" : "text-slate-400"}`}>
+                                    {subMetric.delta_pct > 0 ? "+" : ""}{subMetric.delta_pct}%
+                                  </span>
+                                </div>
+                              )}
+                            </div>
+                          </div>
+                          <ChevronRight className="h-5 w-5 text-slate-400" />
+                        </div>
+                      </Card>
+                    ))}
+                  </div>
+                </TabsContent>
 
-      <MetricDetailModal
-        open={level2Modal.open}
-        metric={level2Modal.metric}
-        onClose={() => setLevel2Modal({ open: false, metric: null })}
-      />
-    </>
-  );
-}
+                <TabsContent value="events" className="space-y-4 mt-6">
+                  <h3 className="text-lg font-semibold mb-4">Related Events ({level1Modal.data.relatedEvents.length})</h3>
+                  <div className="space-y-3">
+                    {level1Modal.data.relatedEvents.map((event) => (
+                      <Card 
+                        key={event.id}
+                        className="p-4 bg-slate-800 border-slate-700 hover:bg-slate-750 cursor-pointer transition-colors"
+                        onClick={() => {
+                          setLevel1Modal({ open: false, data: null });
+                          handleEventClick(event);
+                        }}
+                      >
+                        <div className="flex items-start justify-between">
+                          <div className="flex-1">
+                            <div className="flex items-center gap-2 mb-2">
+                              <Badge variant="outline">{event.type}</Badge>
+                              <Badge variant={event.state === "REALIZED" ? "default" : "secondary"}>{event.state}</Badge>
+                            </div>
+                            <h4 className="font-semibold mb-1">{event.title}</h4>
+                            <p className="text-sm text-slate-400">{event.subtitle}</p>
+                            <div className="flex items-center gap-4 mt-3 text-sm">
+                              <span className="flex items-center gap-1">
+                                <DollarSign className="h-4 w-4 text-green-400" />
+                                ${(event.amount / 1000).toFixed(0)}K
+                              </span>
+                              <span className="flex items-center gap-1">
+                                <Activity className="h-4 w-4 text-blue-400" />
+                                {(event.confidence * 100).toFixed(0)}% confidence
+                              </span>
+                            </div>
+                          </div>
+                          <ArrowRight className="h-5 w-5 text-slate-400" />
+                        </div>
+                      </Card>
+                    ))}
+                  </div>
+                </TabsContent>
 
-const laneMeta: Record<LaneKey, { label: string; headline: string }> = {
-  value: { label: "Verified Savings Ledger", headline: "Identified → Approved → Realized with receipts and owners." },
-  controls: { label: "Controls & Compliance", headline: "Continuous controls monitoring; evidence-first posture." },
-  agentic: { label: "Agentic Ops & Sales", headline: "Governed automation with telemetry and gates." },
-  marketplace: { label: "Marketplace Execution", headline: "Ship once. Distribute with low delivery drag." },
-};
+                <TabsContent value="evidence" className="space-y-4 mt-6">
+                  <h3 className="text-lg font-semibold mb-4">Evidence Receipts ({level1Modal.data.evidenceReceipts.length})</h3>
+                  <div className="space-y-3">
+                    {level1Modal.data.evidenceReceipts.map((receipt, idx) => (
+                      <Card key={idx} className="p-4 bg-slate-800 border-slate-700">
+                        <div className="flex items-start justify-between mb-3">
+                          <div className="flex items-center gap-2">
+                            {receipt.verified ? (
+                              <CheckCircle className="h-5 w-5 text-green-500" />
+                            ) : (
+                              <AlertCircle className="h-5 w-5 text-yellow-500" />
+                            )}
+                            <span className="font-mono text-sm">{receipt.receipt_id}</span>
+                          </div>
+                          <Badge variant={receipt.verified ? "default" : "secondary"}>
+                            {receipt.verified ? "Verified" : "Unverified"}
+                          </Badge>
+                        </div>
+                        <div className="grid grid-cols-2 gap-4 text-sm">
+                          <div>
+                            <p className="text-slate-400">Confidence</p>
+                            <p className="font-semibold">{receipt.confidence ? (receipt.confidence * 100).toFixed(1) : "N/A"}%</p>
+                          </div>
+                          <div>
+                            <p className="text-slate-400">Freshness</p>
+                            <p className="font-semibold">{receipt.freshness_minutes || "N/A"}m</p>
+                          </div>
+                          {receipt.dq_tests_passed !== undefined && (
+                            <>
+                              <div>
+                                <p className="text-slate-400">DQ Tests</p>
+                                <p className="font-semibold">{receipt.dq_tests_passed}/{receipt.dq_tests_total}</p>
+                              </div>
+                              <div>
+                                <p className="text-slate-400">Owner</p>
+                                <p className="font-semibold">{receipt.owner || "System"}</p>
+                              </div>
+                            </>
+                          )}
+                        </div>
+                      </Card>
+                    ))}
+                  </div>
+                </TabsContent>
+              </Tabs>
+            </>
+          )}
+        </DialogContent>
+      </Dialog>
 
-function Pill({ on, label, onClick }: { on: boolean; label: string; onClick: () => void }) {
-  return (
-    <button
-      type="button"
-      onClick={onClick}
-      className={clsx(
-        "px-3 py-2 rounded-xl border transition text-sm",
-        on ? "border-white/25 bg-white/10 text-white" : "border-white/15 bg-white/5 text-white/80 hover:bg-white/10"
-      )}
-    >
-      {label}
-    </button>
-  );
-}
+      {/* Level 2 Drill-down Modal */}
+      <Dialog open={level2Modal.open} onOpenChange={(open) => setLevel2Modal({ open, data: null })}>
+        <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto bg-slate-900 text-white border-slate-700">
+          {level2Modal.data && (
+            <>
+              <DialogHeader>
+                <div className="flex items-center gap-2 text-sm text-slate-400 mb-2">
+                  <span>{level2Modal.data.parentMetric}</span>
+                  <ChevronRight className="h-4 w-4" />
+                  <span className="text-white font-semibold">{level2Modal.data.subMetric.label}</span>
+                </div>
+                <DialogTitle className="text-2xl flex items-center justify-between">
+                  <span>{level2Modal.data.subMetric.label}</span>
+                  <Button variant="ghost" size="sm" onClick={() => setLevel2Modal({ open: false, data: null })}>
+                    <X className="h-4 w-4" />
+                  </Button>
+                </DialogTitle>
+              </DialogHeader>
 
-function SmallStat({ label, value }: { label: string; value: number }) {
-  return (
-    <div className="rounded-xl border border-white/10 bg-white/5 px-3 py-2">
-      <div className="text-[10px] uppercase tracking-wider text-white/55">{label}</div>
-      <div className="text-sm text-white/85 font-medium">{formatMoney(value)}</div>
-    </div>
-  );
-}
-
-function ActionButton({
-  label,
-  intent = "ghost",
-  disabled,
-  onClick,
-}: {
-  label: string;
-  intent?: "ghost" | "solid";
-  disabled?: boolean;
-  onClick: () => void;
-}) {
-  const base = "px-3 py-2 rounded-xl transition text-sm";
-  const solid = "bg-orange-500 text-white font-medium hover:bg-orange-600";
-  const ghost = "border border-white/15 bg-white/5 hover:bg-white/10";
-  const off = "opacity-50 pointer-events-none";
-
-  return (
-    <button type="button" onClick={onClick} className={clsx(base, intent === "solid" ? solid : ghost, disabled && off)}>
-      {label}
-    </button>
-  );
-}
-
-function FiltersBar({ f, setF }: { f: WarRoomFilters; setF: (next: WarRoomFilters) => void }) {
-  const toggleLane = (lane: LaneKey) => {
-    const next = new Set(f.lanes);
-    if (next.has(lane)) {
-      next.delete(lane);
-    } else {
-      next.add(lane);
-    }
-    setF({ ...f, lanes: next });
-  };
-
-  const toggleState = (st: LedgerState) => {
-    const next = new Set(f.states);
-    if (next.has(st)) {
-      next.delete(st);
-    } else {
-      next.add(st);
-    }
-    setF({ ...f, states: next });
-  };
-
-  const setSort = (sortBy: SortKey) => setF({ ...f, sortBy });
-  const flipDir = () => setF({ ...f, descending: !f.descending });
-
-  return (
-    <div className="rounded-2xl border border-white/10 bg-slate-950/60 backdrop-blur-xl p-5">
-      <div className="flex flex-col lg:flex-row lg:items-center gap-4 justify-between">
-        <div className="flex flex-wrap gap-2">
-          <Pill on={f.lanes.has("value")} label="Value" onClick={() => toggleLane("value")} />
-          <Pill on={f.lanes.has("controls")} label="Controls" onClick={() => toggleLane("controls")} />
-          <Pill on={f.lanes.has("agentic")} label="Agentic" onClick={() => toggleLane("agentic")} />
-          <Pill on={f.lanes.has("marketplace")} label="Marketplace" onClick={() => toggleLane("marketplace")} />
-        </div>
-
-        <div className="flex flex-wrap gap-2">
-          <Pill on={f.states.has("IDENTIFIED")} label="Identified" onClick={() => toggleState("IDENTIFIED")} />
-          <Pill on={f.states.has("APPROVED")} label="Approved" onClick={() => toggleState("APPROVED")} />
-          <Pill on={f.states.has("REALIZED")} label="Realized" onClick={() => toggleState("REALIZED")} />
-          <Pill on={f.states.has("AT_RISK")} label="At-risk" onClick={() => toggleState("AT_RISK")} />
-        </div>
-      </div>
-
-      <div className="mt-4 grid lg:grid-cols-12 gap-3 items-center">
-        <div className="lg:col-span-5">
-          <input
-            value={f.q}
-            onChange={(e) => setF({ ...f, q: e.target.value })}
-            placeholder="Search events, owners, keywords…"
-            className="w-full rounded-xl bg-black/30 border border-white/10 px-4 py-3 text-white/90 placeholder:text-white/40 outline-none focus:border-white/25"
-          />
-        </div>
-
-        <div className="lg:col-span-4 flex items-center gap-3">
-          <div className="text-xs text-white/55 w-28">Min confidence</div>
-          <input
-            type="range"
-            min={0}
-            max={100}
-            value={Math.round(f.minConfidence * 100)}
-            onChange={(e) => setF({ ...f, minConfidence: Number(e.target.value) / 100 })}
-            className="w-full"
-          />
-          <div className="text-xs text-white/65 w-12">{Math.round(f.minConfidence * 100)}%</div>
-        </div>
-
-        <div className="lg:col-span-3 flex items-center gap-2 justify-end">
-          <select
-            value={f.sortBy}
-            onChange={(e) => setSort(e.target.value as SortKey)}
-            className="rounded-xl bg-black/30 border border-white/10 px-3 py-2 text-sm text-white/90 outline-none focus:border-white/25"
-          >
-            <option value="score">Sort: Score</option>
-            <option value="amount">Sort: Amount</option>
-            <option value="confidence">Sort: Confidence</option>
-            <option value="updated">Sort: Updated</option>
-          </select>
-          <button
-            type="button"
-            onClick={flipDir}
-            className="px-3 py-2 rounded-xl border border-white/15 bg-white/5 hover:bg-white/10 transition text-sm"
-          >
-            {f.descending ? "Desc" : "Asc"}
-          </button>
-          <button
-            type="button"
-            onClick={() => setF(defaultFilters())}
-            className="px-3 py-2 rounded-xl border border-white/15 bg-white/5 hover:bg-white/10 transition text-sm"
-          >
-            Reset
-          </button>
-        </div>
-      </div>
-    </div>
-  );
-}
-
-function EventCard({ e, onEvidence }: { e: WarEvent; onEvidence: (e: WarEvent) => void }) {
-  const s = score(e);
-
-  const handleAction = async (
-    action: () => Promise<{ ok: boolean; error?: string; policyReasons?: string[] }>,
-    successMsg: string
-  ) => {
-    const r = await action();
-    if (!r.ok) {
-      const reasons = r.policyReasons ?? [];
-      const msg = reasons.length
-        ? `Policy check failed:\n${reasons.map((reason) => `• ${reason}`).join("\n")}`
-        : r.error ?? "Action failed";
-      toast.error(msg);
-    } else {
-      toast.success(successMsg);
-    }
-  };
-
-  return (
-    <div className="rounded-xl border border-white/10 bg-black/20 p-4 transition hover:bg-black/15">
-      <div className="flex items-start justify-between gap-4">
-        <div className="min-w-0 flex-1">
-          <div className="text-sm text-white/90 font-medium truncate">{e.title}</div>
-          {e.subtitle ? <div className="text-xs text-white/60 mt-1 line-clamp-2">{e.subtitle}</div> : null}
-          <div className="text-xs text-white/55 mt-2">
-            {e.state.replace("_", " ")} • Owner {e.owner ?? "Unassigned"} • Conf {(e.confidence * 100).toFixed(0)}% • Score{" "}
-            {s.toFixed(0)}
-          </div>
-        </div>
-        <div className="text-sm text-white/90 font-semibold whitespace-nowrap">{formatMoney(e.amount)}</div>
-      </div>
-
-      <div className="mt-3 flex flex-wrap gap-2">
-        <ActionButton
-          label="Assign"
-          onClick={() => {
-            const owner = prompt("Assign to (name/role):", e.owner ?? "");
-            if (owner) handleAction(() => assignOwner(e.id, owner), `Assigned to ${owner}`);
-          }}
-        />
-        {e.state === "IDENTIFIED" && (
-          <ActionButton
-            label="Approve"
-            intent="solid"
-            onClick={() => handleAction(() => approveEvent(e.id), "Event approved")}
-          />
-        )}
-        {e.state === "APPROVED" && (
-          <ActionButton
-            label="Close"
-            onClick={() => handleAction(() => closeEvent(e.id), "Event closed and realized")}
-          />
-        )}
-        <ActionButton
-          label="Generate receipt"
-          onClick={() => handleAction(() => generateReceipt(e.id, "Auto-generated receipt"), "Receipt generated")}
-        />
-        {(e.receipts?.length ?? 0) > 0 && (
-          <ActionButton label={`Evidence (${e.receipts?.length})`} intent="solid" onClick={() => onEvidence(e)} />
-        )}
-        <Link
-          href={`/war-room/${e.lane}`}
-          className="px-3 py-2 rounded-xl border border-white/15 bg-white/5 hover:bg-white/10 transition text-sm"
-        >
-          Open lane
-        </Link>
-      </div>
-    </div>
-  );
-}
-
-function FourLaneLedgerContent() {
-  const { connected, lastUpdated, events, summaries, ticker } = useWarRoomStream();
-  const [filters, setFilters] = useState(defaultFilters());
-  const [evidenceOpen, setEvidenceOpen] = useState<WarEvent | null>(null);
-  const [mounted, setMounted] = useState(false);
-
-  useEffect(() => {
-    setMounted(true);
-  }, []);
-
-  const filtered = useMemo(() => applyFilters(events, filters), [events, filters]);
-
-  const byLane = useMemo(() => {
-    const map: Record<LaneKey, WarEvent[]> = { value: [], controls: [], agentic: [], marketplace: [] };
-    for (const e of filtered) map[e.lane].push(e);
-    return map;
-  }, [filtered]);
-
-  const summaryMap = useMemo(() => {
-    const m = new Map<LaneKey, any>();
-    for (const s of summaries as any[]) m.set(s.lane, s);
-    return m;
-  }, [summaries]);
-
-  const totals = useMemo(() => {
-    const t = { identified: 0, approved: 0, realized: 0, atRisk: 0 };
-    for (const s of summaries) {
-      t.identified += s.identified;
-      t.approved += s.approved;
-      t.realized += s.realized;
-      t.atRisk += s.atRisk;
-    }
-    return t;
-  }, [summaries]);
-
-  return (
-    <div className="min-h-[calc(100vh-72px)] py-10">
-      <div className="mx-auto max-w-6xl px-6">
-        <div className="mb-6 rounded-2xl border border-white/10 bg-slate-950/60 backdrop-blur-xl p-6">
-          <div className="flex flex-col lg:flex-row gap-4 lg:items-center lg:justify-between">
-            <div>
-              <div className="text-3xl font-semibold tracking-tight flex items-center gap-3">
-                Four-Lane Ledger
-                <motion.div
-                  className={`h-3 w-3 rounded-full ${connected ? "bg-emerald-400" : "bg-red-400"}`}
-                  animate={{ scale: connected ? [1, 1.2, 1] : 1 }}
-                  transition={{ duration: 2, repeat: Infinity }}
-                />
-              </div>
-              <div className="text-white/65 mt-2">Real-time streaming with evidence-first decisions</div>
-              <div className="text-xs text-white/55 mt-2 flex flex-wrap items-center gap-3">
-                <span className={`flex items-center gap-1.5 ${connected ? "text-emerald-400" : "text-red-400"}`}>
-                  <Activity className="h-3 w-3" />
-                  {connected ? "Live Stream Active" : "Disconnected"}
-                </span>
-                {lastUpdated && mounted && (
-                  <span className="text-white/50">
-                    Last update: {new Date(lastUpdated).toLocaleTimeString()}
-                  </span>
-                )}
-                <span className="text-white/70 font-medium">{filtered.length} events</span>
-                <span className="text-white/50">•</span>
-                <span className="text-white/50">{ticker.length} recent activities</span>
-              </div>
-            </div>
-
-            <div className="grid grid-cols-2 lg:grid-cols-4 gap-3">
-              <motion.div 
-                key={totals.identified}
-                initial={{ scale: 1.1, opacity: 0.8 }}
-                animate={{ scale: 1, opacity: 1 }}
-                className="rounded-xl border border-amber-400/30 bg-amber-500/10 px-3 py-2"
-              >
-                <div className="text-[10px] uppercase tracking-wider text-amber-300/80">Identified</div>
-                <div className="text-lg text-amber-200 font-bold tabular-nums">{formatMoney(totals.identified)}</div>
-              </motion.div>
-              <motion.div 
-                key={totals.approved}
-                initial={{ scale: 1.1, opacity: 0.8 }}
-                animate={{ scale: 1, opacity: 1 }}
-                className="rounded-xl border border-purple-400/30 bg-purple-500/10 px-3 py-2"
-              >
-                <div className="text-[10px] uppercase tracking-wider text-purple-300/80">Approved</div>
-                <div className="text-lg text-purple-200 font-bold tabular-nums">{formatMoney(totals.approved)}</div>
-              </motion.div>
-              <motion.div 
-                key={totals.realized}
-                initial={{ scale: 1.1, opacity: 0.8 }}
-                animate={{ scale: 1, opacity: 1 }}
-                className="rounded-xl border border-emerald-400/30 bg-emerald-500/10 px-3 py-2"
-              >
-                <div className="text-[10px] uppercase tracking-wider text-emerald-300/80">Realized</div>
-                <div className="text-lg text-emerald-200 font-bold tabular-nums">{formatMoney(totals.realized)}</div>
-              </motion.div>
-              <motion.div 
-                key={totals.atRisk}
-                initial={{ scale: 1.1, opacity: 0.8 }}
-                animate={{ scale: 1, opacity: 1 }}
-                className="rounded-xl border border-red-400/30 bg-red-500/10 px-3 py-2"
-              >
-                <div className="text-[10px] uppercase tracking-wider text-red-300/80">At Risk</div>
-                <div className="text-lg text-red-200 font-bold tabular-nums">{formatMoney(totals.atRisk)}</div>
-              </motion.div>
-            </div>
-          </div>
-        </div>
-
-        <div className="mb-6">
-          <TickerMarquee items={ticker} />
-        </div>
-
-        <div className="mb-6 flex gap-3">
-          <div className="flex-1">
-            <CommandPalette events={ticker as any} onOpenEvidence={setEvidenceOpen} />
-          </div>
-        </div>
-        
-        <div className="mb-6">
-          <AuditTicker />
-        </div>
-
-        <FiltersBar f={filters} setF={setFilters} />
-
-        <div className="mt-6 grid lg:grid-cols-2 gap-4">
-          {(["value", "controls", "agentic", "marketplace"] as LaneKey[]).map((lane) => {
-            const s = summaryMap.get(lane) ?? { identified: 0, approved: 0, realized: 0, atRisk: 0 };
-            const laneEvents = byLane[lane].slice(0, 4);
-            const laneTotal = laneEvents.reduce((sum, e) => sum + e.amount, 0);
-            const hasActivity = laneEvents.length > 0;
-
-            return (
-              <motion.div 
-                key={lane}
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: ["value", "controls", "agentic", "marketplace"].indexOf(lane) * 0.1 }}
-                className={`rounded-2xl border bg-slate-950/60 backdrop-blur-xl p-6 transition-all ${
-                  hasActivity ? "border-white/20 shadow-lg" : "border-white/10"
-                }`}
-              >
-                <div className="flex items-start justify-between gap-4">
-                  <div className="flex-1">
-                    <div className="flex items-center gap-2">
-                      <div className="text-lg font-semibold">{laneMeta[lane].label}</div>
-                      {hasActivity && (
-                        <motion.div
-                          className="h-2 w-2 rounded-full bg-emerald-400"
-                          animate={{ scale: [1, 1.4, 1], opacity: [1, 0.6, 1] }}
-                          transition={{ duration: 1.5, repeat: Infinity }}
-                        />
+              <div className="space-y-6 mt-6">
+                {/* Main Metric */}
+                <Card className="p-6 bg-slate-800 border-slate-700">
+                  <div className="flex items-start justify-between mb-4">
+                    <div>
+                      <p className="text-4xl font-bold mb-2">{level2Modal.data.subMetric.value}</p>
+                      {level2Modal.data.subMetric.delta_pct !== undefined && (
+                        <div className="flex items-center gap-2">
+                          {level2Modal.data.subMetric.trend === "up" && <TrendingUp className="h-4 w-4 text-green-500" />}
+                          {level2Modal.data.subMetric.trend === "down" && <TrendingDown className="h-4 w-4 text-red-500" />}
+                          <span className="text-lg">{level2Modal.data.subMetric.delta_pct > 0 ? "+" : ""}{level2Modal.data.subMetric.delta_pct}%</span>
+                        </div>
                       )}
                     </div>
-                    <div className="text-sm text-white/65 mt-1">{laneMeta[lane].headline}</div>
-                    {laneTotal > 0 && (
-                      <div className="text-xs text-white/50 mt-2">
-                        Total pipeline: <span className="text-white/80 font-semibold">{formatMoney(laneTotal)}</span>
-                      </div>
+                    {level2Modal.data.subMetric.status && (
+                      <Badge variant={level2Modal.data.subMetric.status === "HEALTHY" ? "default" : "destructive"}>
+                        {level2Modal.data.subMetric.status}
+                      </Badge>
                     )}
                   </div>
-                  <Link
-                    href={`/war-room/${lane}`}
-                    className="px-4 py-2 rounded-xl bg-orange-500 text-white font-medium hover:bg-orange-600 transition text-sm whitespace-nowrap"
-                  >
-                    Open lane
-                  </Link>
+                  <div className="p-4 bg-slate-900 rounded border border-slate-700">
+                    <p className="text-sm text-slate-400 mb-2">Calculation Method</p>
+                    <p className="font-mono text-sm text-slate-200">{level2Modal.data.calculation}</p>
+                  </div>
+                </Card>
+
+                {/* Detailed Breakdown */}
+                <div>
+                  <h3 className="text-lg font-semibold mb-4">Detailed Component Breakdown</h3>
+                  <div className="space-y-3">
+                    {level2Modal.data.detailedBreakdown.map((component, idx) => (
+                      <Card key={idx} className="p-4 bg-slate-800 border-slate-700">
+                        <div className="flex items-center justify-between">
+                          <div>
+                            <p className="font-semibold mb-1">{component.component}</p>
+                            <p className="text-2xl font-bold text-blue-400">{component.value}</p>
+                          </div>
+                          <div className="text-right">
+                            <p className="text-sm text-slate-400">Contribution</p>
+                            <p className="text-xl font-semibold">{component.contribution}</p>
+                          </div>
+                        </div>
+                      </Card>
+                    ))}
+                  </div>
                 </div>
 
-                <div className="mt-4 grid grid-cols-2 md:grid-cols-4 gap-2">
-                  <SmallStat label="Identified" value={s.identified} />
-                  <SmallStat label="Approved" value={s.approved} />
-                  <SmallStat label="Realized" value={s.realized} />
-                  <SmallStat label="At-risk" value={s.atRisk} />
-                </div>
-
-                <div className="mt-4 space-y-3">
-                  {laneEvents.length === 0 ? (
-                    <div className="rounded-xl border border-white/10 bg-white/5 p-4 text-sm text-white/65 text-center">
-                      <Activity className="h-8 w-8 mx-auto mb-2 opacity-30" />
-                      No events match current filters for this lane
+                {/* Related Events */}
+                {level2Modal.data.relatedEvents.length > 0 && (
+                  <div>
+                    <h3 className="text-lg font-semibold mb-4">Related Events ({level2Modal.data.relatedEvents.length})</h3>
+                    <div className="space-y-3">
+                      {level2Modal.data.relatedEvents.map((event) => (
+                        <Card 
+                          key={event.id}
+                          className="p-4 bg-slate-800 border-slate-700 hover:bg-slate-750 cursor-pointer transition-colors"
+                          onClick={() => {
+                            setLevel2Modal({ open: false, data: null });
+                            handleEventClick(event);
+                          }}
+                        >
+                          <div className="flex items-start justify-between">
+                            <div className="flex-1">
+                              <h4 className="font-semibold mb-1">{event.title}</h4>
+                              <p className="text-sm text-slate-400 mb-2">{event.subtitle}</p>
+                              <div className="flex items-center gap-4 text-sm">
+                                <Badge variant="outline">{event.type}</Badge>
+                                <span className="flex items-center gap-1">
+                                  <DollarSign className="h-4 w-4 text-green-400" />
+                                  ${(event.amount / 1000).toFixed(0)}K
+                                </span>
+                              </div>
+                            </div>
+                            <ArrowRight className="h-5 w-5 text-slate-400" />
+                          </div>
+                        </Card>
+                      ))}
                     </div>
-                  ) : (
-                    laneEvents.map((e, idx) => (
-                      <motion.div
-                        key={e.id}
-                        initial={{ opacity: 0, x: -20 }}
-                        animate={{ opacity: 1, x: 0 }}
-                        transition={{ delay: idx * 0.05 }}
-                      >
-                        <EventCard e={e} onEvidence={setEvidenceOpen} />
-                      </motion.div>
-                    ))
-                  )}
-                </div>
-              </motion.div>
-            );
-          })}
-        </div>
+                  </div>
+                )}
 
-        <EvidenceDrawer openEvent={evidenceOpen} onClose={() => setEvidenceOpen(null)} />
+                {/* Evidence */}
+                {level2Modal.data.evidenceReceipts.length > 0 && (
+                  <div>
+                    <h3 className="text-lg font-semibold mb-4">Supporting Evidence</h3>
+                    <div className="space-y-3">
+                      {level2Modal.data.evidenceReceipts.map((receipt, idx) => (
+                        <Card key={idx} className="p-4 bg-slate-800 border-slate-700">
+                          <div className="flex items-center justify-between">
+                            <div className="flex items-center gap-3">
+                              {receipt.verified ? (
+                                <CheckCircle className="h-5 w-5 text-green-500" />
+                              ) : (
+                                <AlertCircle className="h-5 w-5 text-yellow-500" />
+                              )}
+                              <span className="font-mono text-sm">{receipt.receipt_id}</span>
+                            </div>
+                            <div className="flex items-center gap-4 text-sm">
+                              <span>Confidence: {receipt.confidence ? (receipt.confidence * 100).toFixed(0) : "N/A"}%</span>
+                              <Badge variant={receipt.verified ? "default" : "secondary"}>
+                                {receipt.verified ? "Verified" : "Unverified"}
+                              </Badge>
+                            </div>
+                          </div>
+                        </Card>
+                      ))}
+                    </div>
+                  </div>
+                )}
+              </div>
+            </>
+          )}
+        </DialogContent>
+      </Dialog>
+
+      {/* Event Detail Drawer */}
+      <EventDetailDrawer
+        eventId={selectedEventId}
+        open={!!selectedEventId}
+        onClose={() => setSelectedEventId(null)}
+      />
+
+      <Footer />
+    </>
+  );
+}
+
+function FourLaneLedger({ onKPIClick, onEventClick }: { onKPIClick: (kpi: KPIMetric) => void; onEventClick: (event: WarEvent) => void }) {
+  const lanes: { key: LaneKey; label: string; icon: React.ElementType; color: string }[] = [
+    { key: "value", label: "Value Creation", icon: TrendingUp, color: "blue" },
+    { key: "controls", label: "Controls & Compliance", icon: Shield, color: "purple" },
+    { key: "agentic", label: "Agentic Automation", icon: Zap, color: "green" },
+    { key: "marketplace", label: "Marketplace Intel", icon: BarChart3, color: "orange" }
+  ];
+
+  const ledgerStats = mockWarRoomData.ledger;
+  const kpis = mockWarRoomData.kpis.slice(4, 8).map(kpi => ({
+    ...kpi,
+    status: (kpi.status as "HEALTHY" | "WARNING" | "CRITICAL" | undefined) || "HEALTHY"
+  }));
+
+  return (
+    <div className="space-y-8">
+      {/* Top KPI Tiles - Now Clickable */}
+      <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
+        {kpis.map((kpi, idx) => (
+          <Card 
+            key={idx}
+            className="p-4 bg-slate-800/50 border-slate-700 hover:bg-slate-800 cursor-pointer transition-all hover:scale-105"
+            onClick={() => onKPIClick(kpi)}
+          >
+            <div className="flex items-start justify-between mb-2">
+              <p className="text-sm text-slate-400">{kpi.label}</p>
+              {kpi.trend === "up" && <TrendingUp className="h-4 w-4 text-green-500" />}
+              {kpi.trend === "down" && <TrendingDown className="h-4 w-4 text-red-500" />}
+              {kpi.trend === "stable" && <Minus className="h-4 w-4 text-slate-400" />}
+            </div>
+            <p className="text-2xl font-bold mb-1">{kpi.value}</p>
+            {kpi.delta && (
+              <p className={`text-sm flex items-center gap-1 ${
+                kpi.trend === "up" ? "text-green-500" : 
+                kpi.trend === "down" ? "text-red-500" : 
+                "text-slate-400"
+              }`}>
+                {kpi.delta}
+              </p>
+            )}
+            {kpi.details && (
+              <p className="text-xs text-slate-500 mt-2">{kpi.details}</p>
+            )}
+          </Card>
+        ))}
+      </div>
+
+      {/* Ledger Summary */}
+      <Card className="p-6 bg-slate-800/50 border-slate-700">
+        <h3 className="text-xl font-semibold mb-4">Value Ledger Overview</h3>
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-6">
+          <div>
+            <p className="text-sm text-slate-400 mb-1">Identified</p>
+            <p className="text-2xl font-bold text-blue-400">${(ledgerStats.identified / 1000000).toFixed(1)}M</p>
+          </div>
+          <div>
+            <p className="text-sm text-slate-400 mb-1">Approved</p>
+            <p className="text-2xl font-bold text-green-400">${(ledgerStats.approved / 1000000).toFixed(1)}M</p>
+          </div>
+          <div>
+            <p className="text-sm text-slate-400 mb-1">Realized</p>
+            <p className="text-2xl font-bold text-emerald-400">${(ledgerStats.realized / 1000000).toFixed(1)}M</p>
+          </div>
+          <div>
+            <p className="text-sm text-slate-400 mb-1">At Risk</p>
+            <p className="text-2xl font-bold text-red-400">${(ledgerStats.at_risk / 1000).toFixed(0)}K</p>
+          </div>
+        </div>
+      </Card>
+
+      {/* Four Lanes */}
+      <div className="grid lg:grid-cols-2 gap-6">
+        {lanes.map((lane) => {
+          const laneEvents = mockWarRoomData.events.filter(e => e.lane === lane.key);
+          const Icon = lane.icon;
+          
+          return (
+            <Card key={lane.key} className="p-6 bg-slate-800/50 border-slate-700">
+              <div className="flex items-center gap-3 mb-4">
+                <div className={`p-2 rounded-lg bg-${lane.color}-500/20`}>
+                  <Icon className={`h-6 w-6 text-${lane.color}-400`} />
+                </div>
+                <div>
+                  <h3 className="text-lg font-semibold">{lane.label}</h3>
+                  <p className="text-sm text-slate-400">{laneEvents.length} active events</p>
+                </div>
+              </div>
+
+              <div className="space-y-3">
+                {laneEvents.slice(0, 3).map((event) => (
+                  <Card 
+                    key={event.id}
+                    className="p-4 bg-slate-900/50 border-slate-700 hover:bg-slate-900 cursor-pointer transition-colors"
+                    onClick={() => onEventClick(event)}
+                  >
+                    <div className="flex items-start justify-between mb-2">
+                      <div className="flex-1">
+                        <h4 className="font-semibold text-sm mb-1">{event.title}</h4>
+                        <p className="text-xs text-slate-400">{event.subtitle}</p>
+                      </div>
+                      <Badge variant={
+                        event.state === "REALIZED" ? "default" :
+                        event.state === "APPROVED" ? "secondary" :
+                        "outline"
+                      }>
+                        {event.state}
+                      </Badge>
+                    </div>
+                    <div className="flex items-center gap-4 text-xs">
+                      <span className="flex items-center gap-1">
+                        <DollarSign className="h-3 w-3 text-green-400" />
+                        ${(event.amount / 1000).toFixed(0)}K
+                      </span>
+                      <span className="flex items-center gap-1">
+                        <Activity className="h-3 w-3 text-blue-400" />
+                        {(event.confidence * 100).toFixed(0)}%
+                      </span>
+                      {event.owner && (
+                        <span className="flex items-center gap-1">
+                          <Users className="h-3 w-3 text-purple-400" />
+                          {event.owner}
+                        </span>
+                      )}
+                    </div>
+                  </Card>
+                ))}
+              </div>
+
+              {laneEvents.length > 3 && (
+                <Button variant="ghost" size="sm" className="w-full mt-3">
+                  View all {laneEvents.length} events
+                </Button>
+              )}
+            </Card>
+          );
+        })}
       </div>
     </div>
   );
 }
 
-const CFODashboard = dynamic(() => Promise.resolve(CFODashboardContent), { ssr: false });
-const FourLaneLedger = dynamic(() => Promise.resolve(FourLaneLedgerContent), { ssr: false });
-
-const viewMeta = {
-  CFO_DASHBOARD: {
-    label: "CFO Dashboard",
-    description: "8 Healthcare KPIs with Premium 3D Graphics + Real-Time Intelligence",
-  },
-  FOUR_LANE_LEDGER: {
-    label: "4-Lane Ledger",
-    description: "Advanced Filtering with Redis Streaming + Event Management",
-  },
-};
-
-export default function WarRoomPage() {
-  const [currentView, setCurrentView] = useState<WarRoomView>("CFO_DASHBOARD");
+function RankedEventsView({ onEventClick }: { onEventClick: (event: WarEvent) => void }) {
+  const sortedEvents = useMemo(() => {
+    return [...mockWarRoomData.events].sort((a, b) => {
+      const scoreA = (a.amount / 1000000) * a.confidence * (a.timeSensitivity || 1);
+      const scoreB = (b.amount / 1000000) * b.confidence * (b.timeSensitivity || 1);
+      return scoreB - scoreA;
+    });
+  }, []);
 
   return (
-    <>
-      <SEO
-        title="Unified War Room - Kincaid IQ AI Data Sciences Lab"
-        description="Real-time incident management, evidence tracking, and governance automation for enterprise CFO and data teams"
-      />
-      <div className="warroom-console min-h-screen bg-gradient-to-b from-slate-950 via-slate-900 to-black text-gray-100">
-        <div className="pointer-events-none fixed inset-0 -z-10 overflow-hidden">
-          <div className="absolute inset-0 bg-gradient-to-b from-slate-900/80 via-slate-950/60 to-black" />
-          
-          <div className="absolute top-0 left-1/4 h-[600px] w-[600px] rounded-full bg-gradient-to-br from-emerald-500/20 via-cyan-500/15 to-transparent blur-[120px] animate-pulse" />
-          <div className="absolute top-1/3 right-1/4 h-[500px] w-[500px] rounded-full bg-gradient-to-br from-blue-500/20 via-purple-500/15 to-transparent blur-[100px] animate-pulse" style={{ animationDelay: "1s" }} />
-          <div className="absolute bottom-1/4 left-1/3 h-[400px] w-[400px] rounded-full bg-gradient-to-br from-violet-500/20 via-pink-500/10 to-transparent blur-[90px] animate-pulse" style={{ animationDelay: "2s" }} />
-          
-          <div
-            className="absolute inset-0 opacity-[0.08]"
-            style={{
-              backgroundImage:
-                "linear-gradient(rgba(255,255,255,.08) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,.08) 1px, transparent 1px)",
-              backgroundSize: "64px 64px",
-              maskImage: "radial-gradient(ellipse 80% 60% at 50% 30%, black 30%, transparent 80%)",
-            }}
-          />
-          
-          <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-emerald-900/10 via-transparent to-transparent" />
-        </div>
+    <div className="space-y-4">
+      <Card className="p-6 bg-slate-800/50 border-slate-700">
+        <h3 className="text-xl font-semibold mb-2">Ranked Events by Impact</h3>
+        <p className="text-sm text-slate-400">Events ranked by financial impact × confidence × time sensitivity</p>
+      </Card>
 
-        <div className="sticky top-0 z-50 border-b border-white/10 bg-slate-900/80 backdrop-blur-2xl shadow-2xl">
-          <div className="mx-auto max-w-[1400px] px-4 py-4">
-            <div className="flex items-center justify-between">
-              <div>
-                <div className="text-xs text-emerald-400/80 font-medium uppercase tracking-wider">Kincaid IQ War Room</div>
-                <h1 className="text-2xl font-bold tracking-tight bg-gradient-to-r from-white via-emerald-200 to-cyan-300 bg-clip-text text-transparent">Unified War Room</h1>
-              </div>
-              
-              <div className="flex items-center gap-3">
-                <Link 
-                  href="/request-demo"
-                  className="group flex items-center gap-2 px-6 py-3 rounded-2xl border border-emerald-500/30 bg-gradient-to-r from-emerald-500/20 to-cyan-500/20 hover:from-emerald-500/30 hover:to-cyan-500/30 hover:border-emerald-400/50 transition-all duration-500 text-white font-semibold shadow-lg hover:shadow-2xl hover:shadow-emerald-500/30 hover:scale-[1.02]"
-                >
-                  <FileText className="h-4 w-4" />
-                  <span className="text-sm">Free ERISA 5500 Review</span>
-                </Link>
+      <div className="space-y-3">
+        {sortedEvents.map((event, idx) => {
+          const score = ((event.amount / 1000000) * event.confidence * (event.timeSensitivity || 1) * 100).toFixed(1);
+          
+          return (
+            <Card 
+              key={event.id}
+              className="p-5 bg-slate-800/50 border-slate-700 hover:bg-slate-800 cursor-pointer transition-colors"
+              onClick={() => onEventClick(event)}
+            >
+              <div className="flex items-start gap-4">
+                <div className="flex-shrink-0 w-12 h-12 rounded-full bg-slate-900 flex items-center justify-center">
+                  <span className="text-lg font-bold text-blue-400">#{idx + 1}</span>
+                </div>
                 
-                <DropdownMenu>
-                  <DropdownMenuTrigger asChild>
-                    <button className="group flex items-center gap-2 px-6 py-3 rounded-2xl border border-white/20 bg-white/5 hover:bg-white/10 hover:border-white/30 transition-all duration-500 text-white font-semibold shadow-lg hover:shadow-2xl hover:shadow-emerald-500/20 hover:scale-[1.02]">
-                      <span className="text-sm">{viewMeta[currentView].label}</span>
-                      <ChevronDown className="h-4 w-4 transition-transform duration-300 group-hover:rotate-180" />
-                    </button>
-                  </DropdownMenuTrigger>
-                  <DropdownMenuContent align="end" className="w-80 bg-slate-900/95 backdrop-blur-xl border-white/20 rounded-2xl shadow-2xl p-2">
-                    <DropdownMenuItem
-                      onClick={() => setCurrentView("CFO_DASHBOARD")}
-                      className="cursor-pointer focus:bg-white/10 rounded-xl p-4 transition-all duration-300 hover:scale-[1.01]"
-                    >
-                      <div className="flex flex-col gap-1.5">
-                        <div className="font-semibold text-white text-base">CFO Dashboard</div>
-                        <div className="text-xs text-gray-400 leading-relaxed">8 Healthcare KPIs with Premium 3D Graphics + Real-Time Intelligence</div>
-                      </div>
-                    </DropdownMenuItem>
-                    <DropdownMenuItem
-                      onClick={() => setCurrentView("FOUR_LANE_LEDGER")}
-                      className="cursor-pointer focus:bg-white/10 rounded-xl p-4 transition-all duration-300 hover:scale-[1.01]"
-                    >
-                      <div className="flex flex-col gap-1.5">
-                        <div className="font-semibold text-white text-base">4-Lane Ledger</div>
-                        <div className="text-xs text-gray-400 leading-relaxed">Advanced Filtering with Redis Streaming + Event Management</div>
-                      </div>
-                    </DropdownMenuItem>
-                  </DropdownMenuContent>
-                </DropdownMenu>
-              </div>
-            </div>
-          </div>
-        </div>
+                <div className="flex-1">
+                  <div className="flex items-start justify-between mb-2">
+                    <div>
+                      <h4 className="font-semibold mb-1">{event.title}</h4>
+                      <p className="text-sm text-slate-400">{event.subtitle}</p>
+                    </div>
+                    <div className="text-right">
+                      <p className="text-sm text-slate-400">Impact Score</p>
+                      <p className="text-2xl font-bold text-blue-400">{score}</p>
+                    </div>
+                  </div>
 
-        {currentView === "CFO_DASHBOARD" && <CFODashboard />}
-        {currentView === "FOUR_LANE_LEDGER" && <FourLaneLedger />}
+                  <div className="flex items-center gap-6 mt-3">
+                    <div className="flex items-center gap-2">
+                      <DollarSign className="h-4 w-4 text-green-400" />
+                      <span className="text-sm font-semibold">${(event.amount / 1000).toFixed(0)}K</span>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <Activity className="h-4 w-4 text-blue-400" />
+                      <span className="text-sm">{(event.confidence * 100).toFixed(0)}% confidence</span>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <Clock className="h-4 w-4 text-orange-400" />
+                      <span className="text-sm">{((event.timeSensitivity || 0) * 100).toFixed(0)}% urgency</span>
+                    </div>
+                    <Badge variant="outline">{event.type}</Badge>
+                    <Badge variant={
+                      event.state === "REALIZED" ? "default" :
+                      event.state === "APPROVED" ? "secondary" :
+                      "outline"
+                    }>
+                      {event.state}
+                    </Badge>
+                  </div>
+                </div>
+              </div>
+            </Card>
+          );
+        })}
       </div>
-    </>
+    </div>
   );
 }

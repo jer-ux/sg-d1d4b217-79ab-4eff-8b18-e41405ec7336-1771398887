@@ -509,7 +509,7 @@ export default function Home() {
                       <Brain className="w-6 h-6 text-blue-400" />
                     </div>
                     <div>
-                      <h3 className="text-xl font-semibold text-white mb-2">How It Feels</h3>
+                      <h3 className="text-xl font-semibold text-white mb-2">Kincaid iQ Does This For You</h3>
                       <p className="text-white/80 leading-relaxed">
                         Using Kincaid iQ feels like having X-ray vision into your business operations. The moment you log in, you see real-time 
                         incidents, ranked by financial impact, with full evidence chains showing exactly where money is leaking. It's the difference 
@@ -530,21 +530,6 @@ export default function Home() {
                         invoices, policies. The War Room shows you what's happening <span className="text-emerald-400 font-semibold">right now</span>: 
                         duplicate payments being flagged, policy violations being caught, vendor overcharges being stopped. It's control 
                         tower visibility with blockchain-level proof, giving CFOs the confidence to defend every dollar in earnings calls.
-                      </p>
-                    </div>
-                  </div>
-
-                  <div className="flex items-start gap-4">
-                    <div className="flex-shrink-0 w-12 h-12 rounded-xl bg-cyan-500/20 flex items-center justify-center">
-                      <Clock className="w-6 h-6 text-cyan-400" />
-                    </div>
-                    <div>
-                      <h3 className="text-xl font-semibold text-white mb-2">Real-Time Intelligence</h3>
-                      <p className="text-white/80 leading-relaxed">
-                        Imagine a system where every transaction is analyzed within 47 milliseconds, every anomaly is ranked by EBITDA 
-                        impact, and every finding comes with an automated evidence receipt that auditors can verify independently. 
-                        That's not aspirational—that's standard operation. When a $180K duplicate payment is detected at 2:47 PM, 
-                        by 2:48 PM you have the evidence pack, policy violation citation, and recommended corrective action.
                       </p>
                     </div>
                   </div>
@@ -993,7 +978,7 @@ export default function Home() {
           </div>
         </section>
 
-        {/* See It In Action */}
+        {/* See it In Action */}
         <section className="py-16 px-4 border-t border-white/10">
           <div className="max-w-7xl mx-auto">
             <motion.div
@@ -1005,7 +990,7 @@ export default function Home() {
               <div className="flex items-end justify-between gap-6">
                 <div>
                   <div className="text-xs text-white/60 mb-3">Live Platform</div>
-                  <h2 className="text-3xl md:text-4xl font-bold text-white mb-3">See It In Action</h2>
+                  <h2 className="text-3xl md:text-4xl font-bold text-white mb-3">See it In Action</h2>
                   <p className="text-white/70 max-w-3xl">
                     Real-time KPIs that expose financial leakage, incentive misalignment, and structural blind spots.
                     Every metric traceable to underlying evidence—claims, contracts, and verifiable inputs.

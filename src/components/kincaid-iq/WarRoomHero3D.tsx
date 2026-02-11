@@ -46,6 +46,7 @@ const ALERT_TYPES = [
 
 export function WarRoomHero3D() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
+  const animationFrameRef = useRef<number>();
   const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
   const [particles, setParticles] = useState<Particle[]>([]);
   const [vegasBeams, setVegasBeams] = useState<VegasBeam[]>([]);
@@ -67,33 +68,33 @@ export function WarRoomHero3D() {
   // Initialize Vegas beams
   useEffect(() => {
     const beams: VegasBeam[] = [];
-    for (let i = 0; i < 8; i++) {
+    for (let i = 0; i < 6; i++) {
       beams.push({
         id: i,
         x: Math.random() * 100,
         y: Math.random() * 100,
         angle: Math.random() * 360,
-        length: 150 + Math.random() * 200,
+        length: 150 + Math.random() * 150,
         color: i % 3 === 0 ? "#06b6d4" : i % 3 === 1 ? "#ef4444" : "#f59e0b",
-        intensity: 0.3 + Math.random() * 0.4,
+        intensity: 0.3 + Math.random() * 0.3,
       });
     }
     setVegasBeams(beams);
   }, []);
 
-  // Animate Vegas beams
+  // Animate Vegas beams - optimized with less frequent updates
   useEffect(() => {
     const interval = setInterval(() => {
       setVegasBeams(prev => prev.map(beam => ({
         ...beam,
-        angle: (beam.angle + 0.5) % 360,
-        intensity: 0.3 + Math.sin(Date.now() / 1000 + beam.id) * 0.2,
+        angle: (beam.angle + 0.3) % 360,
+        intensity: 0.3 + Math.sin(Date.now() / 1500 + beam.id) * 0.15,
       })));
-    }, 50);
+    }, 100);
     return () => clearInterval(interval);
   }, []);
 
-  // Update live metrics
+  // Update live metrics - less frequent updates
   useEffect(() => {
     const interval = setInterval(() => {
       setEbitdaImpact(prev => -3.27 + Math.random() * -0.04);
@@ -102,12 +103,12 @@ export function WarRoomHero3D() {
       
       const statuses: ("ACTIVE MONITORING" | "DEEP SCAN MODE" | "ALERT CONDITION")[] = ["ACTIVE MONITORING", "DEEP SCAN MODE", "ALERT CONDITION"];
       setSystemStatus(statuses[Math.floor(Math.random() * statuses.length)]);
-    }, 3000);
+    }, 4000);
     
     return () => clearInterval(interval);
   }, []);
 
-  // Generate new alerts
+  // Generate new alerts - less frequent
   useEffect(() => {
     const interval = setInterval(() => {
       const newAlert = ALERT_TYPES[Math.floor(Math.random() * ALERT_TYPES.length)];
@@ -122,136 +123,137 @@ export function WarRoomHero3D() {
         ];
         return updated;
       });
-    }, 8000);
+    }, 10000);
     
     return () => clearInterval(interval);
   }, []);
 
-  // Particle system with mouse attraction
+  // Optimized particle system
   useEffect(() => {
     const canvas = canvasRef.current;
     if (!canvas) return;
 
-    const ctx = canvas.getContext("2d");
+    const ctx = canvas.getContext("2d", { alpha: true, desynchronized: true });
     if (!ctx) return;
 
     canvas.width = canvas.offsetWidth;
     canvas.height = canvas.offsetHeight;
 
-    // Initialize particles
+    // Reduced particle count from 80 to 50
     const initParticles: Particle[] = [];
-    for (let i = 0; i < 80; i++) {
+    for (let i = 0; i < 50; i++) {
       initParticles.push({
         id: i,
         x: Math.random() * canvas.width,
         y: Math.random() * canvas.height,
-        vx: (Math.random() - 0.5) * 0.5,
-        vy: (Math.random() - 0.5) * 0.5,
+        vx: (Math.random() - 0.5) * 0.3,
+        vy: (Math.random() - 0.5) * 0.3,
         color: i % 3 === 0 ? "#06b6d4" : i % 3 === 1 ? "#ef4444" : "#f59e0b",
-        size: 1 + Math.random() * 2,
+        size: 1 + Math.random() * 1.5,
         life: 1,
       });
     }
     setParticles(initParticles);
 
-    let animationId: number;
+    let lastTime = Date.now();
+    const targetFPS = 30; // Target 30 FPS instead of 60
+    const frameInterval = 1000 / targetFPS;
+
     const animate = () => {
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      const now = Date.now();
+      const elapsed = now - lastTime;
 
-      // Draw perspective grid with neon glow
-      ctx.save();
-      ctx.translate(canvas.width / 2, canvas.height / 2);
-      ctx.rotate(Math.PI / 6);
+      if (elapsed > frameInterval) {
+        lastTime = now - (elapsed % frameInterval);
 
-      // Neon grid lines
-      const gridSize = 60;
-      const gridCount = 20;
-      
-      for (let i = -gridCount; i <= gridCount; i++) {
-        // Horizontal lines with neon glow
-        ctx.shadowBlur = 15;
-        ctx.shadowColor = "#06b6d4";
-        ctx.strokeStyle = `rgba(6, 182, 212, ${0.15 - Math.abs(i) / gridCount * 0.1})`;
-        ctx.lineWidth = 1;
-        ctx.beginPath();
-        ctx.moveTo(-gridSize * gridCount, i * gridSize);
-        ctx.lineTo(gridSize * gridCount, i * gridSize);
-        ctx.stroke();
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-        // Vertical lines with neon glow
-        ctx.shadowColor = "#ef4444";
-        ctx.strokeStyle = `rgba(239, 68, 68, ${0.15 - Math.abs(i) / gridCount * 0.1})`;
-        ctx.beginPath();
-        ctx.moveTo(i * gridSize, -gridSize * gridCount);
-        ctx.lineTo(i * gridSize, gridSize * gridCount);
-        ctx.stroke();
-      }
-
-      ctx.shadowBlur = 0;
-      ctx.restore();
-
-      // Draw Vegas beams
-      vegasBeams.forEach(beam => {
+        // Simplified grid with fewer lines
         ctx.save();
-        ctx.translate(canvas.width * beam.x / 100, canvas.height * beam.y / 100);
-        ctx.rotate((beam.angle * Math.PI) / 180);
+        ctx.translate(canvas.width / 2, canvas.height / 2);
+        ctx.rotate(Math.PI / 6);
 
-        const gradient = ctx.createLinearGradient(0, 0, beam.length, 0);
-        gradient.addColorStop(0, beam.color + "00");
-        gradient.addColorStop(0.5, beam.color + Math.floor(beam.intensity * 255).toString(16).padStart(2, "0"));
-        gradient.addColorStop(1, beam.color + "00");
+        const gridSize = 80; // Increased grid size for fewer lines
+        const gridCount = 12; // Reduced from 20 to 12
+        
+        for (let i = -gridCount; i <= gridCount; i += 2) { // Skip every other line
+          ctx.shadowBlur = 10; // Reduced blur
+          ctx.shadowColor = "#06b6d4";
+          ctx.strokeStyle = `rgba(6, 182, 212, ${0.12 - Math.abs(i) / gridCount * 0.08})`;
+          ctx.lineWidth = 1;
+          ctx.beginPath();
+          ctx.moveTo(-gridSize * gridCount, i * gridSize);
+          ctx.lineTo(gridSize * gridCount, i * gridSize);
+          ctx.stroke();
 
-        ctx.strokeStyle = gradient;
-        ctx.lineWidth = 3;
-        ctx.shadowBlur = 20;
-        ctx.shadowColor = beam.color;
-        ctx.beginPath();
-        ctx.moveTo(0, 0);
-        ctx.lineTo(beam.length, 0);
-        ctx.stroke();
+          ctx.shadowColor = "#ef4444";
+          ctx.strokeStyle = `rgba(239, 68, 68, ${0.12 - Math.abs(i) / gridCount * 0.08})`;
+          ctx.beginPath();
+          ctx.moveTo(i * gridSize, -gridSize * gridCount);
+          ctx.lineTo(i * gridSize, gridSize * gridCount);
+          ctx.stroke();
+        }
 
+        ctx.shadowBlur = 0;
         ctx.restore();
-      });
 
-      // Update and draw particles with energy trails
-      setParticles(prev => {
-        return prev.map(p => {
+        // Optimized Vegas beams
+        vegasBeams.forEach(beam => {
+          ctx.save();
+          ctx.translate(canvas.width * beam.x / 100, canvas.height * beam.y / 100);
+          ctx.rotate((beam.angle * Math.PI) / 180);
+
+          const gradient = ctx.createLinearGradient(0, 0, beam.length, 0);
+          gradient.addColorStop(0, beam.color + "00");
+          gradient.addColorStop(0.5, beam.color + Math.floor(beam.intensity * 200).toString(16).padStart(2, "0"));
+          gradient.addColorStop(1, beam.color + "00");
+
+          ctx.strokeStyle = gradient;
+          ctx.lineWidth = 2;
+          ctx.shadowBlur = 15; // Reduced blur
+          ctx.shadowColor = beam.color;
+          ctx.beginPath();
+          ctx.moveTo(0, 0);
+          ctx.lineTo(beam.length, 0);
+          ctx.stroke();
+
+          ctx.restore();
+        });
+
+        // Optimized particle rendering
+        const newParticles = particles.map(p => {
           let newVx = p.vx;
           let newVy = p.vy;
 
-          // Mouse attraction
           const dx = mousePos.x - p.x;
           const dy = mousePos.y - p.y;
           const distance = Math.sqrt(dx * dx + dy * dy);
           
-          if (distance < 200 && distance > 0) {
-            const force = (200 - distance) / 200 * 0.02;
+          if (distance < 150 && distance > 0) { // Reduced influence range
+            const force = (150 - distance) / 150 * 0.015; // Reduced force
             newVx += (dx / distance) * force;
             newVy += (dy / distance) * force;
           }
 
-          // Update position
           let newX = p.x + newVx;
           let newY = p.y + newVy;
 
-          // Wrap around edges
           if (newX < 0) newX = canvas.width;
           if (newX > canvas.width) newX = 0;
           if (newY < 0) newY = canvas.height;
           if (newY > canvas.height) newY = 0;
 
-          // Draw particle with glow
-          ctx.shadowBlur = 15;
+          ctx.shadowBlur = 10; // Reduced blur
           ctx.shadowColor = p.color;
           ctx.fillStyle = p.color;
           ctx.beginPath();
           ctx.arc(newX, newY, p.size, 0, Math.PI * 2);
           ctx.fill();
 
-          // Draw energy trail
-          ctx.shadowBlur = 8;
-          ctx.strokeStyle = p.color + "80";
-          ctx.lineWidth = p.size * 0.5;
+          // Simplified trail
+          ctx.shadowBlur = 5;
+          ctx.strokeStyle = p.color + "60";
+          ctx.lineWidth = p.size * 0.4;
           ctx.beginPath();
           ctx.moveTo(p.x, p.y);
           ctx.lineTo(newX, newY);
@@ -259,37 +261,43 @@ export function WarRoomHero3D() {
 
           return { ...p, x: newX, y: newY, vx: newVx * 0.98, vy: newVy * 0.98 };
         });
-      });
 
-      // Draw connections between nearby particles (electrified lines)
-      particles.forEach((p1, i) => {
-        particles.slice(i + 1).forEach(p2 => {
-          const dx = p2.x - p1.x;
-          const dy = p2.y - p1.y;
-          const distance = Math.sqrt(dx * dx + dy * dy);
+        setParticles(newParticles);
 
-          if (distance < 120) {
-            const opacity = (1 - distance / 120) * 0.4;
-            ctx.strokeStyle = `rgba(6, 182, 212, ${opacity})`;
-            ctx.lineWidth = 1;
-            ctx.shadowBlur = 5;
-            ctx.shadowColor = "#06b6d4";
-            ctx.beginPath();
-            ctx.moveTo(p1.x, p1.y);
-            ctx.lineTo(p2.x, p2.y);
-            ctx.stroke();
-          }
+        // Optimized connections - only draw between closer particles
+        newParticles.forEach((p1, i) => {
+          newParticles.slice(i + 1, i + 6).forEach(p2 => {
+            const dx = p2.x - p1.x;
+            const dy = p2.y - p1.y;
+            const distance = Math.sqrt(dx * dx + dy * dy);
+
+            if (distance < 100) {
+              const opacity = (1 - distance / 100) * 0.3;
+              ctx.strokeStyle = `rgba(6, 182, 212, ${opacity})`;
+              ctx.lineWidth = 1;
+              ctx.shadowBlur = 3;
+              ctx.shadowColor = "#06b6d4";
+              ctx.beginPath();
+              ctx.moveTo(p1.x, p1.y);
+              ctx.lineTo(p2.x, p2.y);
+              ctx.stroke();
+            }
+          });
         });
-      });
 
-      ctx.shadowBlur = 0;
+        ctx.shadowBlur = 0;
+      }
 
-      animationId = requestAnimationFrame(animate);
+      animationFrameRef.current = requestAnimationFrame(animate);
     };
 
     animate();
 
-    return () => cancelAnimationFrame(animationId);
+    return () => {
+      if (animationFrameRef.current) {
+        cancelAnimationFrame(animationFrameRef.current);
+      }
+    };
   }, [mousePos, vegasBeams]);
 
   const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
@@ -314,58 +322,58 @@ export function WarRoomHero3D() {
       {/* Canvas for particles, grid, and Vegas beams */}
       <canvas ref={canvasRef} className="absolute inset-0 w-full h-full" />
 
-      {/* Animated scanning lines with neon glow */}
+      {/* Animated scanning lines - optimized */}
       <motion.div
         className="absolute inset-0"
         animate={{ 
           backgroundPosition: ["0% 0%", "100% 100%"],
         }}
         transition={{ 
-          duration: 8, 
+          duration: 10,
           repeat: Infinity, 
           ease: "linear" 
         }}
         style={{
-          background: "repeating-linear-gradient(0deg, transparent, transparent 50px, rgba(6, 182, 212, 0.03) 50px, rgba(6, 182, 212, 0.03) 51px)",
-          filter: "drop-shadow(0 0 10px rgba(6, 182, 212, 0.5))",
+          background: "repeating-linear-gradient(0deg, transparent, transparent 50px, rgba(6, 182, 212, 0.02) 50px, rgba(6, 182, 212, 0.02) 51px)",
+          filter: "drop-shadow(0 0 8px rgba(6, 182, 212, 0.3))",
         }}
       />
 
-      {/* Radial spotlight effect (Vegas style) */}
+      {/* Radial spotlight - optimized */}
       <motion.div
         className="absolute inset-0"
         animate={{
           background: [
-            "radial-gradient(circle at 20% 30%, rgba(6, 182, 212, 0.15) 0%, transparent 50%)",
-            "radial-gradient(circle at 80% 70%, rgba(239, 68, 68, 0.15) 0%, transparent 50%)",
-            "radial-gradient(circle at 50% 50%, rgba(245, 158, 11, 0.15) 0%, transparent 50%)",
-            "radial-gradient(circle at 20% 30%, rgba(6, 182, 212, 0.15) 0%, transparent 50%)",
+            "radial-gradient(circle at 20% 30%, rgba(6, 182, 212, 0.12) 0%, transparent 50%)",
+            "radial-gradient(circle at 80% 70%, rgba(239, 68, 68, 0.12) 0%, transparent 50%)",
+            "radial-gradient(circle at 50% 50%, rgba(245, 158, 11, 0.12) 0%, transparent 50%)",
+            "radial-gradient(circle at 20% 30%, rgba(6, 182, 212, 0.12) 0%, transparent 50%)",
           ],
         }}
-        transition={{ duration: 12, repeat: Infinity, ease: "easeInOut" }}
+        transition={{ duration: 15, repeat: Infinity, ease: "easeInOut" }}
       />
 
-      {/* Pulsing glow halos */}
+      {/* Optimized pulsing halos */}
       <motion.div
         className="absolute top-1/4 left-1/4 w-64 h-64 rounded-full blur-3xl"
         animate={{
-          opacity: [0.1, 0.3, 0.1],
-          scale: [1, 1.2, 1],
+          opacity: [0.08, 0.2, 0.08],
+          scale: [1, 1.15, 1],
         }}
-        transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
-        style={{ background: "radial-gradient(circle, rgba(6, 182, 212, 0.4) 0%, transparent 70%)" }}
+        transition={{ duration: 5, repeat: Infinity, ease: "easeInOut" }}
+        style={{ background: "radial-gradient(circle, rgba(6, 182, 212, 0.3) 0%, transparent 70%)" }}
       />
       <motion.div
         className="absolute bottom-1/4 right-1/4 w-64 h-64 rounded-full blur-3xl"
         animate={{
-          opacity: [0.1, 0.3, 0.1],
-          scale: [1, 1.2, 1],
+          opacity: [0.08, 0.2, 0.08],
+          scale: [1, 1.15, 1],
         }}
-        transition={{ duration: 5, repeat: Infinity, ease: "easeInOut", delay: 1 }}
-        style={{ background: "radial-gradient(circle, rgba(239, 68, 68, 0.4) 0%, transparent 70%)" }}
+        transition={{ duration: 6, repeat: Infinity, ease: "easeInOut", delay: 1 }}
+        style={{ background: "radial-gradient(circle, rgba(239, 68, 68, 0.3) 0%, transparent 70%)" }}
       />
 
-      {/* Center title with neon glow effect */}
+      {/* Center title with optimized glow */}
       <div className="absolute inset-0 flex items-center justify-center">
         <motion.div
           initial={{ opacity: 0, scale: 0.9 }}
@@ -376,22 +384,22 @@ export function WarRoomHero3D() {
           <motion.div
             animate={{
               textShadow: [
-                "0 0 20px rgba(6, 182, 212, 0.5), 0 0 40px rgba(6, 182, 212, 0.3)",
-                "0 0 30px rgba(239, 68, 68, 0.5), 0 0 60px rgba(239, 68, 68, 0.3)",
-                "0 0 20px rgba(6, 182, 212, 0.5), 0 0 40px rgba(6, 182, 212, 0.3)",
+                "0 0 20px rgba(6, 182, 212, 0.4), 0 0 40px rgba(6, 182, 212, 0.2)",
+                "0 0 30px rgba(239, 68, 68, 0.4), 0 0 60px rgba(239, 68, 68, 0.2)",
+                "0 0 20px rgba(6, 182, 212, 0.4), 0 0 40px rgba(6, 182, 212, 0.2)",
               ],
             }}
-            transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
+            transition={{ duration: 5, repeat: Infinity, ease: "easeInOut" }}
             className="text-6xl md:text-7xl font-bold bg-gradient-to-r from-cyan-400 via-white to-cyan-400 bg-clip-text text-transparent mb-4"
           >
             The War Room
           </motion.div>
           <motion.div
             animate={{ opacity: [0.5, 1, 0.5] }}
-            transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
+            transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
             className="text-xl md:text-2xl text-white/80 font-light tracking-wide"
             style={{
-              textShadow: "0 0 20px rgba(255, 255, 255, 0.3)",
+              textShadow: "0 0 20px rgba(255, 255, 255, 0.2)",
             }}
           >
             Pharmacy Benefit Economics
@@ -399,7 +407,7 @@ export function WarRoomHero3D() {
         </motion.div>
       </div>
 
-      {/* Corner brackets with neon tubes */}
+      {/* Corner brackets - optimized animations */}
       {[
         { top: "20px", left: "20px", rotate: "0deg" },
         { top: "20px", right: "20px", rotate: "90deg" },
@@ -411,20 +419,20 @@ export function WarRoomHero3D() {
           className="absolute w-16 h-16"
           style={{ ...pos }}
           animate={{
-            opacity: [0.3, 0.8, 0.3],
+            opacity: [0.25, 0.7, 0.25],
             filter: [
-              "drop-shadow(0 0 5px rgba(6, 182, 212, 0.5))",
-              "drop-shadow(0 0 15px rgba(6, 182, 212, 1))",
-              "drop-shadow(0 0 5px rgba(6, 182, 212, 0.5))",
+              "drop-shadow(0 0 4px rgba(6, 182, 212, 0.4))",
+              "drop-shadow(0 0 12px rgba(6, 182, 212, 0.8))",
+              "drop-shadow(0 0 4px rgba(6, 182, 212, 0.4))",
             ],
           }}
-          transition={{ duration: 2, repeat: Infinity, delay: i * 0.5 }}
+          transition={{ duration: 3, repeat: Infinity, delay: i * 0.5 }}
         >
           <div className="w-full h-full border-t-2 border-l-2 border-cyan-400" style={{ transform: `rotate(${pos.rotate})` }} />
         </motion.div>
       ))}
 
-      {/* HUD Overlays - Enhanced with Vegas effects */}
+      {/* HUD Overlays - keep as is but with optimized animations */}
       
       {/* Top Left - System Status */}
       <motion.div
@@ -434,12 +442,12 @@ export function WarRoomHero3D() {
         whileHover={{ scale: 1.05 }}
         animate={{
           boxShadow: [
-            "0 0 20px rgba(6, 182, 212, 0.3)",
-            "0 0 40px rgba(6, 182, 212, 0.6)",
-            "0 0 20px rgba(6, 182, 212, 0.3)",
+            "0 0 15px rgba(6, 182, 212, 0.2)",
+            "0 0 30px rgba(6, 182, 212, 0.4)",
+            "0 0 15px rgba(6, 182, 212, 0.2)",
           ],
         }}
-        transition={{ duration: 2, repeat: Infinity }}
+        transition={{ duration: 3, repeat: Infinity }}
       >
         <motion.div 
           className="rounded-xl border border-cyan-500/30 bg-slate-950/80 backdrop-blur-md p-4 min-w-[220px]"
@@ -452,12 +460,12 @@ export function WarRoomHero3D() {
               animate={{ 
                 scale: [1, 1.2, 1],
                 boxShadow: [
-                  "0 0 10px rgba(6, 182, 212, 0.5)",
-                  "0 0 20px rgba(6, 182, 212, 1)",
-                  "0 0 10px rgba(6, 182, 212, 0.5)",
+                  "0 0 8px rgba(6, 182, 212, 0.4)",
+                  "0 0 15px rgba(6, 182, 212, 0.8)",
+                  "0 0 8px rgba(6, 182, 212, 0.4)",
                 ],
               }}
-              transition={{ duration: 2, repeat: Infinity }}
+              transition={{ duration: 3, repeat: Infinity }}
               className="w-2 h-2 rounded-full bg-cyan-400"
             />
             <span className="text-xs font-medium text-cyan-400 tracking-wider">SYSTEM STATUS</span>
@@ -465,7 +473,7 @@ export function WarRoomHero3D() {
           <motion.div 
             className="text-lg font-semibold text-white"
             animate={{ opacity: [0.7, 1, 0.7] }}
-            transition={{ duration: 1.5, repeat: Infinity }}
+            transition={{ duration: 2, repeat: Infinity }}
           >
             {systemStatus}
           </motion.div>
@@ -500,12 +508,12 @@ export function WarRoomHero3D() {
         whileHover={{ scale: 1.05 }}
         animate={{
           boxShadow: [
-            "0 0 20px rgba(239, 68, 68, 0.3)",
-            "0 0 40px rgba(239, 68, 68, 0.6)",
-            "0 0 20px rgba(239, 68, 68, 0.3)",
+            "0 0 15px rgba(239, 68, 68, 0.2)",
+            "0 0 30px rgba(239, 68, 68, 0.4)",
+            "0 0 15px rgba(239, 68, 68, 0.2)",
           ],
         }}
-        transition={{ duration: 2, repeat: Infinity, delay: 0.5 }}
+        transition={{ duration: 3, repeat: Infinity, delay: 0.5 }}
       >
         <motion.div 
           className="rounded-xl border border-red-500/30 bg-slate-950/80 backdrop-blur-md p-4 min-w-[220px]"
@@ -519,7 +527,7 @@ export function WarRoomHero3D() {
                 rotate: [0, 360],
                 scale: [1, 1.2, 1],
               }}
-              transition={{ duration: 3, repeat: Infinity, ease: "linear" }}
+              transition={{ duration: 4, repeat: Infinity, ease: "linear" }}
             >
               <AlertTriangle className="w-4 h-4 text-red-400" style={{ filter: "drop-shadow(0 0 5px rgba(239, 68, 68, 0.8))" }} />
             </motion.div>
@@ -568,12 +576,12 @@ export function WarRoomHero3D() {
         whileHover={{ scale: 1.05 }}
         animate={{
           boxShadow: [
-            "0 0 20px rgba(239, 68, 68, 0.3)",
-            "0 0 40px rgba(239, 68, 68, 0.6)",
-            "0 0 20px rgba(239, 68, 68, 0.3)",
+            "0 0 15px rgba(239, 68, 68, 0.2)",
+            "0 0 30px rgba(239, 68, 68, 0.4)",
+            "0 0 15px rgba(239, 68, 68, 0.2)",
           ],
         }}
-        transition={{ duration: 2, repeat: Infinity, delay: 1 }}
+        transition={{ duration: 3, repeat: Infinity, delay: 1 }}
       >
         <motion.div 
           className="rounded-xl border border-red-500/30 bg-slate-950/80 backdrop-blur-md p-4 min-w-[220px]"
@@ -589,12 +597,12 @@ export function WarRoomHero3D() {
             className="text-2xl font-bold text-red-400"
             animate={{ 
               textShadow: [
-                "0 0 10px rgba(239, 68, 68, 0.5)",
-                "0 0 20px rgba(239, 68, 68, 1)",
-                "0 0 10px rgba(239, 68, 68, 0.5)",
+                "0 0 8px rgba(239, 68, 68, 0.4)",
+                "0 0 15px rgba(239, 68, 68, 0.8)",
+                "0 0 8px rgba(239, 68, 68, 0.4)",
               ],
             }}
-            transition={{ duration: 2, repeat: Infinity }}
+            transition={{ duration: 3, repeat: Infinity }}
           >
             ${ebitdaImpact.toFixed(2)}M
           </motion.div>
@@ -634,12 +642,12 @@ export function WarRoomHero3D() {
         whileHover={{ scale: 1.05 }}
         animate={{
           boxShadow: [
-            "0 0 20px rgba(245, 158, 11, 0.3)",
-            "0 0 40px rgba(245, 158, 11, 0.6)",
-            "0 0 20px rgba(245, 158, 11, 0.3)",
+            "0 0 15px rgba(245, 158, 11, 0.2)",
+            "0 0 30px rgba(245, 158, 11, 0.4)",
+            "0 0 15px rgba(245, 158, 11, 0.2)",
           ],
         }}
-        transition={{ duration: 2, repeat: Infinity, delay: 1.5 }}
+        transition={{ duration: 3, repeat: Infinity, delay: 1.5 }}
       >
         <motion.div 
           className="rounded-xl border border-amber-500/30 bg-slate-950/80 backdrop-blur-md p-4 min-w-[220px]"
@@ -650,7 +658,7 @@ export function WarRoomHero3D() {
           <div className="flex items-center gap-2 mb-2">
             <motion.div
               animate={{ scale: [1, 1.3, 1] }}
-              transition={{ duration: 1.5, repeat: Infinity }}
+              transition={{ duration: 2, repeat: Infinity }}
             >
               <Activity className="w-4 h-4 text-amber-400" style={{ filter: "drop-shadow(0 0 5px rgba(245, 158, 11, 0.8))" }} />
             </motion.div>
@@ -660,12 +668,12 @@ export function WarRoomHero3D() {
             className="text-2xl font-bold text-amber-400"
             animate={{ 
               textShadow: [
-                "0 0 10px rgba(245, 158, 11, 0.5)",
-                "0 0 20px rgba(245, 158, 11, 1)",
-                "0 0 10px rgba(245, 158, 11, 0.5)",
+                "0 0 8px rgba(245, 158, 11, 0.4)",
+                "0 0 15px rgba(245, 158, 11, 0.8)",
+                "0 0 8px rgba(245, 158, 11, 0.4)",
               ],
             }}
-            transition={{ duration: 2, repeat: Infinity }}
+            transition={{ duration: 3, repeat: Infinity }}
           >
             {glp1Percent.toFixed(1)}%
           </motion.div>

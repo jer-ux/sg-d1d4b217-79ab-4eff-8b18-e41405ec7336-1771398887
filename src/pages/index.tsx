@@ -1,6 +1,6 @@
-import { motion, AnimatePresence } from "framer-motion";
+import { motion, AnimatePresence, useMotionValue, useTransform } from "framer-motion";
 import Link from "next/link";
-import { ArrowRight, Shield, Zap, Users, TrendingUp, Award, CheckCircle, Sparkles, Database, Lock, Cpu, FileCheck, Receipt, FileText, BarChart3, Calculator, Heart, Briefcase, Target, CheckCircle2 } from "lucide-react";
+import { ArrowRight, Shield, Zap, Users, TrendingUp, Award, CheckCircle, Sparkles, Database, Lock, Cpu, FileCheck, Receipt, FileText, BarChart3, Calculator, Heart, Briefcase, Target, CheckCircle2, Activity, DollarSign, Layers, PieChart, Eye, Brain, Lightbulb, Clock, Globe, LineChart } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import Nav from "@/components/Nav";
 import Footer from "@/components/Footer";
@@ -109,13 +109,8 @@ function FeatureCard({ icon: Icon, title, description, href, themeKey, delay = 0
             t.hoverRing,
           ].join(" ")}
         >
-          {/* Left accent bar */}
           <div className={`absolute left-0 top-0 h-full w-2 ${t.bar}`} />
-
-          {/* Animated gradient overlay */}
           <AnimatedGradientOverlay theme={t} />
-
-          {/* Subtle inner vignette */}
           <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(70%_55%_at_50%_15%,rgba(255,255,255,0.10),transparent_60%)] opacity-60" />
 
           <div className="relative">
@@ -134,7 +129,6 @@ function FeatureCard({ icon: Icon, title, description, href, themeKey, delay = 0
             <p className="text-sm text-white/75 leading-relaxed">{description}</p>
           </div>
 
-          {/* Hover sheen */}
           <div className="pointer-events-none absolute inset-0 opacity-0 transition-opacity duration-300 group-hover:opacity-100">
             <div className="absolute -inset-24 bg-[conic-gradient(from_180deg,rgba(255,255,255,0.0),rgba(255,255,255,0.14),rgba(255,255,255,0.0))] blur-2xl" />
           </div>
@@ -162,8 +156,265 @@ function StatCard({ value, label, delay = 0 }: { value: string; label: string; d
   );
 }
 
+function FloatingParticle({ delay, color }: { delay: number; color: string }) {
+  return (
+    <motion.div
+      className="absolute w-2 h-2 rounded-full"
+      style={{
+        background: color,
+        boxShadow: `0 0 20px ${color}, 0 0 40px ${color}`,
+      }}
+      animate={{
+        x: [0, Math.random() * 200 - 100, 0],
+        y: [0, Math.random() * 200 - 100, 0],
+        scale: [1, 1.5, 1],
+        opacity: [0.3, 0.8, 0.3],
+      }}
+      transition={{
+        duration: 8 + Math.random() * 4,
+        repeat: Infinity,
+        delay,
+      }}
+    />
+  );
+}
+
+function SolutionCard3D({ solution, index }: { solution: any; index: number }) {
+  const mouseX = useMotionValue(0);
+  const mouseY = useMotionValue(0);
+  const rotateX = useTransform(mouseY, [-100, 100], [10, -10]);
+  const rotateY = useTransform(mouseX, [-100, 100], [-10, 10]);
+
+  function handleMouseMove(e: React.MouseEvent<HTMLDivElement>) {
+    const rect = e.currentTarget.getBoundingClientRect();
+    const x = e.clientX - rect.left - rect.width / 2;
+    const y = e.clientY - rect.top - rect.height / 2;
+    mouseX.set(x);
+    mouseY.set(y);
+  }
+
+  function handleMouseLeave() {
+    mouseX.set(0);
+    mouseY.set(0);
+  }
+
+  const Icon = solution.icon;
+
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 50 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      transition={{ delay: index * 0.1, duration: 0.6 }}
+      viewport={{ once: true }}
+      style={{ perspective: 1000 }}
+      className="h-full"
+    >
+      <Link href={solution.href}>
+        <motion.div
+          onMouseMove={handleMouseMove}
+          onMouseLeave={handleMouseLeave}
+          style={{ rotateX, rotateY, transformStyle: "preserve-3d" }}
+          whileHover={{ scale: 1.05 }}
+          className="relative h-full p-8 rounded-2xl cursor-pointer group"
+        >
+          <div className="absolute inset-0 rounded-2xl bg-gradient-to-br opacity-0 group-hover:opacity-100 transition-opacity duration-500" style={{
+            background: `linear-gradient(135deg, ${solution.color1}, ${solution.color2})`,
+            filter: "blur(20px)",
+          }} />
+          
+          <div className="relative h-full bg-gray-900/90 backdrop-blur-xl rounded-2xl border border-gray-800 group-hover:border-transparent transition-all duration-500 overflow-hidden">
+            <motion.div
+              className="absolute inset-0 opacity-0 group-hover:opacity-20"
+              animate={{
+                background: [
+                  `radial-gradient(circle at 0% 0%, ${solution.color1} 0%, transparent 50%)`,
+                  `radial-gradient(circle at 100% 100%, ${solution.color2} 0%, transparent 50%)`,
+                  `radial-gradient(circle at 0% 100%, ${solution.color1} 0%, transparent 50%)`,
+                  `radial-gradient(circle at 100% 0%, ${solution.color2} 0%, transparent 50%)`,
+                  `radial-gradient(circle at 0% 0%, ${solution.color1} 0%, transparent 50%)`,
+                ],
+              }}
+              transition={{ duration: 8, repeat: Infinity }}
+            />
+
+            <div className="relative h-full p-8 flex flex-col" style={{ transform: "translateZ(50px)" }}>
+              <motion.div
+                className="mb-6"
+                whileHover={{ rotate: 360, scale: 1.2 }}
+                transition={{ duration: 0.6 }}
+              >
+                <div className="relative inline-block">
+                  <div className="absolute inset-0 rounded-2xl blur-xl opacity-50 group-hover:opacity-100 transition-opacity" style={{
+                    background: `linear-gradient(135deg, ${solution.color1}, ${solution.color2})`,
+                  }} />
+                  <div className="relative p-4 rounded-2xl bg-gray-800/50 backdrop-blur-sm">
+                    <Icon className="w-8 h-8" style={{
+                      color: solution.color1,
+                      filter: `drop-shadow(0 0 8px ${solution.color1})`,
+                    }} />
+                  </div>
+                </div>
+              </motion.div>
+
+              <h3 className="text-2xl font-bold mb-3 group-hover:bg-gradient-to-r group-hover:from-white group-hover:to-gray-300 group-hover:bg-clip-text group-hover:text-transparent transition-all duration-300">
+                {solution.title}
+              </h3>
+
+              <p className="text-gray-400 mb-6 flex-grow group-hover:text-gray-300 transition-colors">
+                {solution.description}
+              </p>
+
+              <div className="space-y-3 mb-6">
+                {solution.metrics.map((metric: any, idx: number) => (
+                  <motion.div
+                    key={idx}
+                    initial={{ opacity: 0, x: -20 }}
+                    whileInView={{ opacity: 1, x: 0 }}
+                    transition={{ delay: 0.3 + idx * 0.1 }}
+                    className="flex items-center gap-3 text-sm"
+                  >
+                    <div className="w-2 h-2 rounded-full" style={{
+                      background: idx === 0 ? solution.color1 : solution.color2,
+                      boxShadow: `0 0 10px ${idx === 0 ? solution.color1 : solution.color2}`,
+                    }} />
+                    <span className="text-gray-300">{metric}</span>
+                  </motion.div>
+                ))}
+              </div>
+
+              <motion.div
+                className="flex items-center gap-2 text-sm font-semibold group-hover:gap-4 transition-all"
+                style={{
+                  background: `linear-gradient(135deg, ${solution.color1}, ${solution.color2})`,
+                  backgroundClip: "text",
+                  WebkitBackgroundClip: "text",
+                  WebkitTextFillColor: "transparent",
+                }}
+              >
+                Explore Solution
+                <ArrowRight className="w-4 h-4" style={{ color: solution.color1 }} />
+              </motion.div>
+            </div>
+          </div>
+        </motion.div>
+      </Link>
+    </motion.div>
+  );
+}
+
 export default function Home() {
   const [selectedPreviewMetric, setSelectedPreviewMetric] = useState<string | null>(null);
+
+  const actuarialSolutions = [
+    {
+      icon: Shield,
+      title: "Risk Assessment",
+      description: "Advanced predictive modeling for comprehensive risk evaluation and loss prevention across all benefit plans.",
+      metrics: ["99.2% Accuracy", "$8.4M Loss Prevention", "Real-time Monitoring"],
+      color1: "#ec4899",
+      color2: "#8b5cf6",
+      href: "/solutions/risk-assessment",
+    },
+    {
+      icon: TrendingUp,
+      title: "Premium Calculation",
+      description: "Intelligent pricing algorithms that optimize revenue while maintaining competitive rates and regulatory compliance.",
+      metrics: ["98.7% Pricing Accuracy", "$6.2M Revenue Optimization", "Dynamic Rate Adjustments"],
+      color1: "#8b5cf6",
+      color2: "#3b82f6",
+      href: "/solutions/premium-calculation",
+    },
+    {
+      icon: Heart,
+      title: "Health Benefits",
+      description: "Comprehensive benefits administration platform with integrated wellness programs and member engagement tools.",
+      metrics: ["96.8% Member Satisfaction", "$15.3M Cost Savings", "50+ Plan Options"],
+      color1: "#3b82f6",
+      color2: "#06b6d4",
+      href: "/solutions/health-benefits",
+    },
+    {
+      icon: BarChart3,
+      title: "Claims Analytics",
+      description: "Real-time claims processing with AI-powered fraud detection and automated adjudication workflows.",
+      metrics: ["97.4% Accuracy", "24hr Processing Time", "$4.2M Fraud Prevention"],
+      color1: "#06b6d4",
+      color2: "#10b981",
+      href: "/solutions/claims-analytics",
+    },
+    {
+      icon: Users,
+      title: "Member Management",
+      description: "Unified member portal with self-service capabilities, digital ID cards, and personalized benefit recommendations.",
+      metrics: ["98.3% Data Accuracy", "94.7% Portal Adoption", "500K+ Active Members"],
+      color1: "#10b981",
+      color2: "#84cc16",
+      href: "/solutions/member-management",
+    },
+    {
+      icon: FileText,
+      title: "Policy Compliance",
+      description: "Automated compliance monitoring across ERISA, ACA, HIPAA, and state regulations with audit trail management.",
+      metrics: ["100% Compliance Rate", "99.8% Audit Score", "Zero Penalties"],
+      color1: "#84cc16",
+      color2: "#eab308",
+      href: "/solutions/policy-compliance",
+    },
+    {
+      icon: DollarSign,
+      title: "Cost Optimization",
+      description: "Strategic cost reduction through utilization management, network optimization, and care coordination programs.",
+      metrics: ["$12.4M Cost Reduction", "487% ROI", "23% Utilization Improvement"],
+      color1: "#eab308",
+      color2: "#f97316",
+      href: "/solutions/cost-optimization",
+    },
+    {
+      icon: Layers,
+      title: "Plan Design",
+      description: "Data-driven plan design tools with benefit modeling, competitive analysis, and financial projections.",
+      metrics: ["94.6% Efficiency", "91.4% Member Adoption", "35+ Custom Plans"],
+      color1: "#f97316",
+      color2: "#ef4444",
+      href: "/solutions/plan-design",
+    },
+    {
+      icon: PieChart,
+      title: "Loss Ratio Analysis",
+      description: "Comprehensive loss ratio tracking with predictive analytics for trend identification and corrective action planning.",
+      metrics: ["73.2% Loss Ratio", "98.9% Accuracy", "$7.8M Reserve Optimization"],
+      color1: "#ef4444",
+      color2: "#ec4899",
+      href: "/solutions/loss-ratio-analysis",
+    },
+    {
+      icon: Activity,
+      title: "Performance Metrics",
+      description: "Real-time KPI dashboards with customizable reporting, benchmarking, and performance scorecards.",
+      metrics: ["99.97% Uptime", "47ms Data Latency", "150+ Metrics Tracked"],
+      color1: "#ec4899",
+      color2: "#8b5cf6",
+      href: "/solutions/performance-metrics",
+    },
+    {
+      icon: CheckCircle2,
+      title: "Quality Assurance",
+      description: "Comprehensive QA framework with automated testing, error detection, and continuous improvement protocols.",
+      metrics: ["99.4% Data Quality", "99.7% Error Detection", "Zero Critical Defects"],
+      color1: "#8b5cf6",
+      color2: "#3b82f6",
+      href: "/solutions/quality-assurance",
+    },
+    {
+      icon: Sparkles,
+      title: "AI Automation",
+      description: "End-to-end process automation using machine learning, natural language processing, and intelligent workflows.",
+      metrics: ["87.3% Automation Rate", "$18.7M Cost Savings", "15min Avg Response"],
+      color1: "#3b82f6",
+      color2: "#ec4899",
+      href: "/solutions/ai-automation",
+    },
+  ];
 
   return (
     <>
@@ -176,53 +427,151 @@ export default function Home() {
 
       <main className="min-h-screen bg-gradient-to-br from-slate-950 via-slate-900 to-slate-950">
         
-        {/* Hero Section */}
-        <section className="relative pt-32 pb-12 px-4">
-          <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,rgba(99,102,241,0.15),transparent_50%)]" />
+        {/* Enhanced Hero Section */}
+        <section className="relative pt-32 pb-20 px-4 overflow-hidden">
+          {/* Animated Background Elements */}
+          <div className="absolute inset-0">
+            <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,rgba(99,102,241,0.15),transparent_50%)]" />
+            <motion.div
+              className="absolute top-1/4 left-1/4 w-96 h-96 bg-blue-500/10 rounded-full blur-3xl"
+              animate={{
+                scale: [1, 1.2, 1],
+                opacity: [0.3, 0.5, 0.3],
+              }}
+              transition={{ duration: 8, repeat: Infinity }}
+            />
+            <motion.div
+              className="absolute top-1/3 right-1/4 w-96 h-96 bg-violet-500/10 rounded-full blur-3xl"
+              animate={{
+                scale: [1.2, 1, 1.2],
+                opacity: [0.5, 0.3, 0.5],
+              }}
+              transition={{ duration: 10, repeat: Infinity, delay: 2 }}
+            />
+          </div>
           
-          <div className="relative z-10 max-w-6xl mx-auto text-center space-y-6">
+          <div className="relative z-10 max-w-7xl mx-auto">
+            {/* Top Badge */}
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6 }}
-              className="inline-flex items-center gap-2 rounded-full border border-violet-400/30 bg-violet-500/10 px-4 py-2 backdrop-blur-xl"
+              className="flex justify-center mb-8"
             >
-              <Receipt className="h-4 w-4 text-violet-300" />
-              <span className="text-sm text-violet-200">Fiduciary Grade Transparency Engine</span>
+              <div className="inline-flex items-center gap-2 rounded-full border border-violet-400/30 bg-violet-500/10 px-4 py-2 backdrop-blur-xl">
+                <Receipt className="h-4 w-4 text-violet-300" />
+                <span className="text-sm text-violet-200">Fiduciary Grade Transparency Engine</span>
+              </div>
             </motion.div>
 
-            <motion.h1
+            {/* Main Title */}
+            <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.1 }}
-              className="text-5xl md:text-7xl font-bold bg-gradient-to-r from-blue-400 via-violet-400 to-fuchsia-400 bg-clip-text text-transparent"
+              className="text-center mb-6"
             >
-              Kincaid IQ AI
-            </motion.h1>
-            
-            <motion.p
+              <h1 className="text-6xl md:text-8xl font-bold bg-gradient-to-r from-blue-400 via-violet-400 to-fuchsia-400 bg-clip-text text-transparent mb-4">
+                Kincaid iQ AI
+              </h1>
+              <div className="text-2xl md:text-4xl font-semibold text-white/90 mb-6">
+                Shows EBITDA Drag With Receipts
+              </div>
+            </motion.div>
+
+            {/* What It Is - Detailed Description */}
+            <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.2 }}
-              className="text-xl md:text-2xl text-white/80 max-w-3xl mx-auto"
+              className="max-w-5xl mx-auto mb-12"
             >
-              Shows EBITDA Drag With Receipts
-            </motion.p>
+              <div className="relative overflow-hidden rounded-3xl border border-white/10 bg-slate-950/60 backdrop-blur-xl p-8 md:p-12">
+                <AnimatedGradientOverlay theme={THEME.violet} />
+                
+                <div className="relative space-y-6">
+                  <div className="flex items-start gap-4">
+                    <div className="flex-shrink-0 w-12 h-12 rounded-xl bg-violet-500/20 flex items-center justify-center">
+                      <Eye className="w-6 h-6 text-violet-400" />
+                    </div>
+                    <div>
+                      <h3 className="text-xl font-semibold text-white mb-2">What Kincaid iQ Is</h3>
+                      <p className="text-white/80 leading-relaxed">
+                        Kincaid iQ is an enterprise transparency engine that transforms how organizations understand and prove their financial performance. 
+                        It's not just another analytics platform—it's a fiduciary-grade accountability system that turns every cost optimization claim, 
+                        every efficiency gain, and every business decision into cryptographically verified, audit-ready evidence.
+                      </p>
+                    </div>
+                  </div>
 
-            <motion.p
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.25 }}
-              className="text-base md:text-lg text-white/60 max-w-3xl mx-auto"
-            >
-              Enterprise AI platform for autonomous agent operations, corporate AI governance & actuarial employee benefit services
-            </motion.p>
+                  <div className="flex items-start gap-4">
+                    <div className="flex-shrink-0 w-12 h-12 rounded-xl bg-blue-500/20 flex items-center justify-center">
+                      <Brain className="w-6 h-6 text-blue-400" />
+                    </div>
+                    <div>
+                      <h3 className="text-xl font-semibold text-white mb-2">How It Feels</h3>
+                      <p className="text-white/80 leading-relaxed">
+                        Using Kincaid iQ feels like having X-ray vision into your business operations. The moment you log in, you see real-time 
+                        incidents, ranked by financial impact, with full evidence chains showing exactly where money is leaking. It's the difference 
+                        between "we think we're saving money" and "here's the cryptographic proof of $2.4M in verified savings with complete 
+                        attribution to source transactions."
+                      </p>
+                    </div>
+                  </div>
 
+                  <div className="flex items-start gap-4">
+                    <div className="flex-shrink-0 w-12 h-12 rounded-xl bg-emerald-500/20 flex items-center justify-center">
+                      <Lightbulb className="w-6 h-6 text-emerald-400" />
+                    </div>
+                    <div>
+                      <h3 className="text-xl font-semibold text-white mb-2">The Experience</h3>
+                      <p className="text-white/80 leading-relaxed">
+                        Every number tells a story. Click any metric and watch it decompose into constituent evidence—contracts, claims, 
+                        invoices, policies. The War Room shows you what's happening <span className="text-emerald-400 font-semibold">right now</span>: 
+                        duplicate payments being flagged, policy violations being caught, vendor overcharges being stopped. It's control 
+                        tower visibility with blockchain-level proof, giving CFOs the confidence to defend every dollar in earnings calls.
+                      </p>
+                    </div>
+                  </div>
+
+                  <div className="flex items-start gap-4">
+                    <div className="flex-shrink-0 w-12 h-12 rounded-xl bg-cyan-500/20 flex items-center justify-center">
+                      <Clock className="w-6 h-6 text-cyan-400" />
+                    </div>
+                    <div>
+                      <h3 className="text-xl font-semibold text-white mb-2">Real-Time Intelligence</h3>
+                      <p className="text-white/80 leading-relaxed">
+                        Imagine a system where every transaction is analyzed within 47 milliseconds, every anomaly is ranked by EBITDA 
+                        impact, and every finding comes with an automated evidence receipt that auditors can verify independently. 
+                        That's not aspirational—that's standard operation. When a $180K duplicate payment is detected at 2:47 PM, 
+                        by 2:48 PM you have the evidence pack, policy violation citation, and recommended corrective action.
+                      </p>
+                    </div>
+                  </div>
+
+                  <div className="flex items-start gap-4">
+                    <div className="flex-shrink-0 w-12 h-12 rounded-xl bg-fuchsia-500/20 flex items-center justify-center">
+                      <Globe className="w-6 h-6 text-fuchsia-400" />
+                    </div>
+                    <div>
+                      <h3 className="text-xl font-semibold text-white mb-2">Built for Accountability</h3>
+                      <p className="text-white/80 leading-relaxed">
+                        This is infrastructure for fiduciary accountability in the AI age. When autonomous agents are making million-dollar 
+                        decisions, when algorithms are optimizing supply chains, when AI is negotiating contracts—Kincaid iQ ensures every 
+                        action is traceable, every claim is provable, and every outcome is defensible to boards, auditors, and regulators.
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </motion.div>
+
+            {/* Primary CTAs */}
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.3 }}
-              className="flex flex-wrap gap-4 justify-center pt-4"
+              className="flex flex-wrap gap-4 justify-center mb-8"
             >
               <Link href="/war-room">
                 <motion.div
@@ -230,19 +579,13 @@ export default function Home() {
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
                 >
-                  {/* 3D Base Layer */}
                   <div className="absolute inset-0 bg-gradient-to-br from-blue-600 to-violet-600 rounded-xl blur-xl opacity-50 group-hover:opacity-75 transition-opacity duration-300" />
-                  
-                  {/* 3D Middle Layer - Depth Effect */}
                   <div className="absolute inset-0 translate-y-1 bg-gradient-to-br from-blue-700 to-violet-700 rounded-xl" />
-                  
-                  {/* Top Button Surface */}
                   <motion.div
                     className="relative px-8 py-4 bg-gradient-to-br from-blue-600 to-violet-600 rounded-xl overflow-hidden"
                     whileHover={{ y: -2 }}
                     transition={{ duration: 0.2 }}
                   >
-                    {/* Animated Shine Effect */}
                     <motion.div
                       className="absolute inset-0 bg-gradient-to-r from-transparent via-white/30 to-transparent"
                       animate={{
@@ -254,11 +597,7 @@ export default function Home() {
                         repeatDelay: 1,
                       }}
                     />
-                    
-                    {/* Inner Glow */}
                     <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent" />
-                    
-                    {/* Button Content */}
                     <div className="relative flex items-center gap-2 text-white font-semibold text-lg">
                       <span>Launch War Room</span>
                       <motion.div
@@ -268,8 +607,6 @@ export default function Home() {
                         <ArrowRight className="h-5 w-5" />
                       </motion.div>
                     </div>
-                    
-                    {/* Particle Effect on Hover */}
                     <motion.div
                       className="absolute inset-0 opacity-0 group-hover:opacity-100"
                       transition={{ duration: 0.3 }}
@@ -295,8 +632,6 @@ export default function Home() {
                       ))}
                     </motion.div>
                   </motion.div>
-                  
-                  {/* Pulsing Glow Ring */}
                   <motion.div
                     className="absolute inset-0 rounded-xl border-2 border-violet-400/50"
                     animate={{
@@ -317,19 +652,13 @@ export default function Home() {
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
                 >
-                  {/* 3D Base Glow */}
                   <div className="absolute inset-0 bg-white/10 rounded-xl blur-xl opacity-30 group-hover:opacity-50 transition-opacity duration-300" />
-                  
-                  {/* 3D Depth Layer */}
                   <div className="absolute inset-0 translate-y-1 bg-white/5 rounded-xl border border-white/10" />
-                  
-                  {/* Top Button Surface */}
                   <motion.div
                     className="relative px-8 py-4 bg-slate-900/80 backdrop-blur-xl rounded-xl border border-white/20 overflow-hidden"
                     whileHover={{ y: -2, borderColor: "rgba(255,255,255,0.4)" }}
                     transition={{ duration: 0.2 }}
                   >
-                    {/* Gradient Sweep on Hover */}
                     <motion.div
                       className="absolute inset-0 bg-gradient-to-r from-transparent via-violet-500/20 to-transparent opacity-0 group-hover:opacity-100"
                       animate={{
@@ -341,16 +670,10 @@ export default function Home() {
                         repeatDelay: 0.5,
                       }}
                     />
-                    
-                    {/* Holographic Edge Effect */}
                     <div className="absolute inset-0 bg-gradient-to-br from-cyan-500/10 via-transparent to-violet-500/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-                    
-                    {/* Button Content */}
                     <div className="relative flex items-center gap-2 text-white font-semibold text-lg">
                       <span>Request Demo</span>
                     </div>
-                    
-                    {/* Ripple Effect on Hover */}
                     <motion.div
                       className="absolute inset-0 opacity-0 group-hover:opacity-100"
                     >
@@ -367,12 +690,35 @@ export default function Home() {
                       />
                     </motion.div>
                   </motion.div>
-                  
-                  {/* Corner Accents */}
                   <div className="absolute top-0 left-0 w-3 h-3 border-t-2 border-l-2 border-white/40 rounded-tl-xl opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
                   <div className="absolute bottom-0 right-0 w-3 h-3 border-b-2 border-r-2 border-white/40 rounded-br-xl opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
                 </motion.div>
               </Link>
+            </motion.div>
+
+            {/* Trust Indicators */}
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: 0.4 }}
+              className="flex flex-wrap justify-center gap-8 text-sm text-white/60"
+            >
+              <div className="flex items-center gap-2">
+                <CheckCircle className="w-4 h-4 text-emerald-400" />
+                <span>SOC 2 Type II Certified</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <CheckCircle className="w-4 h-4 text-emerald-400" />
+                <span>150M+ Transactions/Month</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <CheckCircle className="w-4 h-4 text-emerald-400" />
+                <span>47ms Average Latency</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <CheckCircle className="w-4 h-4 text-emerald-400" />
+                <span>100% Audit Traceability</span>
+              </div>
             </motion.div>
           </div>
         </section>
@@ -764,7 +1110,7 @@ export default function Home() {
               viewport={{ once: true }}
               className="text-center mb-12"
             >
-              <h2 className="text-4xl md:text-5xl font-bold text-white mb-4">Why Kincaid IQ</h2>
+              <h2 className="text-4xl md:text-5xl font-bold text-white mb-4">Why Kincaid iQ</h2>
               <p className="text-lg text-white/70">Transparency engine built for fiduciary accountability</p>
             </motion.div>
 
@@ -807,7 +1153,6 @@ export default function Home() {
 
         {/* Actuarial Employee Benefits Solutions Section */}
         <section className="relative py-32 overflow-hidden">
-          {/* Animated Background */}
           <div className="absolute inset-0 bg-gradient-to-b from-slate-950 via-purple-950/20 to-slate-950" />
           <motion.div
             className="absolute inset-0 opacity-30"
@@ -851,87 +1196,11 @@ export default function Home() {
               </p>
             </motion.div>
 
-            {/* 12 Interactive Badges Grid */}
-            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 max-w-7xl mx-auto">
-              {[
-                { icon: Shield, label: "Risk Assessment", color: "from-purple-500 to-pink-500" },
-                { icon: Calculator, label: "Premium Calculation", color: "from-pink-500 to-red-500" },
-                { icon: Heart, label: "Health Benefits", color: "from-red-500 to-orange-500" },
-                { icon: TrendingUp, label: "Claims Analytics", color: "from-orange-500 to-yellow-500" },
-                { icon: Users, label: "Member Management", color: "from-yellow-500 to-green-500" },
-                { icon: FileText, label: "Policy Compliance", color: "from-green-500 to-teal-500" },
-                { icon: BarChart3, label: "Cost Optimization", color: "from-teal-500 to-cyan-500" },
-                { icon: Briefcase, label: "Plan Design", color: "from-cyan-500 to-blue-500" },
-                { icon: Target, label: "Loss Ratio Analysis", color: "from-blue-500 to-indigo-500" },
-                { icon: Award, label: "Performance Metrics", color: "from-indigo-500 to-purple-500" },
-                { icon: CheckCircle2, label: "Quality Assurance", color: "from-purple-500 to-pink-500" },
-                { icon: Sparkles, label: "AI Automation", color: "from-pink-500 to-purple-500" },
-              ].map((badge, index) => {
-                const Icon = badge.icon;
-                return (
-                  <motion.div
-                    key={index}
-                    initial={{ opacity: 0, scale: 0.8 }}
-                    whileInView={{ opacity: 1, scale: 1 }}
-                    viewport={{ once: true }}
-                    transition={{ delay: index * 0.1 }}
-                    whileHover={{ scale: 1.1, rotate: 5 }}
-                    className="group relative"
-                  >
-                    <motion.div
-                      className="relative p-6 rounded-2xl bg-slate-900/50 backdrop-blur-sm border border-slate-700/50 cursor-pointer overflow-hidden"
-                      whileHover={{ borderColor: "rgba(168, 85, 247, 0.8)" }}
-                    >
-                      {/* Vegas Glow Border */}
-                      <div className="absolute inset-0 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                        <div className="absolute inset-0 rounded-2xl bg-gradient-to-r from-purple-500/20 via-pink-500/20 to-blue-500/20 blur-xl" />
-                        <div className="absolute inset-0 rounded-2xl bg-gradient-to-r from-purple-500/10 via-pink-500/10 to-blue-500/10 blur-2xl" />
-                      </div>
-
-                      {/* Animated Background */}
-                      <motion.div
-                        className={`absolute inset-0 bg-gradient-to-br ${badge.color} opacity-0 group-hover:opacity-10 transition-opacity duration-300`}
-                        animate={{
-                          scale: [1, 1.2, 1],
-                        }}
-                        transition={{ duration: 3, repeat: Infinity }}
-                      />
-
-                      {/* Icon */}
-                      <motion.div
-                        className="relative mb-4 flex justify-center"
-                        whileHover={{ rotate: 360, scale: 1.2 }}
-                        transition={{ duration: 0.6 }}
-                      >
-                        <div className={`p-4 rounded-xl bg-gradient-to-br ${badge.color}`}>
-                          <Icon className="w-8 h-8 text-white" />
-                        </div>
-                      </motion.div>
-
-                      {/* Label */}
-                      <h3 className="relative text-center font-semibold text-white group-hover:text-transparent group-hover:bg-gradient-to-r group-hover:from-purple-400 group-hover:to-pink-400 group-hover:bg-clip-text transition-all duration-300">
-                        {badge.label}
-                      </h3>
-
-                      {/* Hover Shine Effect */}
-                      <motion.div
-                        className="absolute inset-0 rounded-2xl opacity-0 group-hover:opacity-100"
-                        style={{
-                          background: "linear-gradient(45deg, transparent 30%, rgba(255,255,255,0.1) 50%, transparent 70%)",
-                        }}
-                        animate={{
-                          x: ["-100%", "100%"],
-                        }}
-                        transition={{
-                          duration: 1.5,
-                          repeat: Infinity,
-                          repeatDelay: 2,
-                        }}
-                      />
-                    </motion.div>
-                  </motion.div>
-                );
-              })}
+            {/* 12 Interactive Solution Cards Grid */}
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-7xl mx-auto mb-16">
+              {actuarialSolutions.map((solution, index) => (
+                <SolutionCard3D key={index} solution={solution} index={index} />
+              ))}
             </div>
 
             {/* CTA Button */}
@@ -939,7 +1208,7 @@ export default function Home() {
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
-              className="text-center mt-16"
+              className="text-center"
             >
               <Link href="/actuarial-benefits">
                 <motion.button
@@ -947,19 +1216,16 @@ export default function Home() {
                   whileTap={{ scale: 0.95 }}
                   className="relative px-12 py-6 text-xl font-bold text-white rounded-2xl overflow-hidden group"
                 >
-                  {/* Animated Border */}
                   <div className="absolute inset-0 rounded-2xl p-[2px] bg-gradient-to-r from-purple-500 via-pink-500 to-blue-500 animate-pulse">
                     <div className="h-full w-full rounded-2xl bg-slate-900" />
                   </div>
                   
-                  {/* Button Content */}
                   <span className="relative z-10 flex items-center gap-3">
                     <Sparkles className="w-6 h-6" />
                     Explore All Solutions
                     <Sparkles className="w-6 h-6" />
                   </span>
 
-                  {/* Hover Glow */}
                   <div className="absolute inset-0 rounded-2xl bg-gradient-to-r from-purple-500/20 via-pink-500/20 to-blue-500/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300 blur-xl" />
                 </motion.button>
               </Link>
@@ -995,7 +1261,7 @@ export default function Home() {
                   Ready to Show EBITDA Impact With Receipts?
                 </h2>
                 <p className="text-lg text-white/70 max-w-2xl mx-auto mb-8">
-                  Join enterprises using Kincaid IQ for fiduciary-grade transparency and verified outcomes
+                  Join enterprises using Kincaid iQ for fiduciary-grade transparency and verified outcomes
                 </p>
                 <div className="flex flex-wrap gap-4 justify-center">
                   <Link href="/request-demo">

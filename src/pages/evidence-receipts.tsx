@@ -579,7 +579,7 @@ export default function EvidenceReceiptsPage() {
                       <div className="relative z-10 w-full">
                         <div className="flex items-center gap-2 mb-2">
                           <span className="text-xs font-mono text-purple-300">{r.receiptId}</span>
-                          <span className={classNames("flex items-center gap-1 rounded-full px-2 py-0.5 text-xs font-semibold", rCfg.bg, rCfg.text)}>
+                          <span className={classNames("flex items-center gap-1 rounded-full px-2 py-0.5 text-xs font-semibold backdrop-blur-xl", rCfg.bg, rCfg.text)}>
                             {rCfg.icon}
                             {rCfg.label}
                           </span>

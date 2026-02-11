@@ -1,6 +1,6 @@
 import Head from "next/head";
 import Link from "next/link";
-import { Building2, LineChart, Shield, Users, Receipt, TrendingDown, ArrowRight } from "lucide-react";
+import { Building2, LineChart, Shield, Users, Receipt, TrendingDown, ArrowRight, TrendingUp, AlertTriangle, DollarSign, CheckCircle } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
@@ -11,251 +11,303 @@ export default function KincaidIQHome() {
   return (
     <>
       <Head>
-        <title>Kincaid IQ AI — Fiduciary Grade Transparency Engine</title>
+        <title>Kincaid IQ | War Room - Recover Hidden EBITDA from Pharmacy Benefit Structures</title>
         <meta
           name="description"
-          content="Shows EBITDA drag with receipts. Transform employer health plans with audit-grade analytics, defensible metrics, and cryptographic evidence trails."
+          content="Kincaid IQ instruments PBM economics and healthcare cost exposure — transforming opaque claims flows into measurable capital governance."
         />
       </Head>
 
-      <div className="min-h-screen bg-black text-white">
+      <div className="min-h-screen bg-gradient-to-b from-slate-950 via-slate-900 to-slate-950 text-white">
         <main>
-          {/* HERO */}
-          <section className="relative overflow-hidden border-b border-white/10">
-            <div className="pointer-events-none absolute -top-40 left-1/2 h-[520px] w-[520px] -translate-x-1/2 rounded-full bg-white/10 blur-[90px]" />
-            <div className="mx-auto max-w-7xl px-6 py-16 md:py-24">
-              <div className="max-w-3xl">
-                <Link 
-                  href="/war-room"
-                  className="inline-flex items-center gap-2 rounded-full border border-violet-400/30 bg-violet-500/10 px-3 py-1 backdrop-blur-xl transition-all duration-300 hover:scale-105 hover:border-violet-400/50 hover:bg-violet-500/20"
-                >
-                  <Receipt className="h-3.5 w-3.5 text-violet-300" />
-                  <span className="text-xs text-violet-200">Fiduciary Grade Transparency Engine</span>
-                  <ArrowRight className="h-3 w-3 text-violet-300" />
-                </Link>
+          {/* INSTITUTIONAL HERO */}
+          <section className="relative overflow-hidden border-b border-slate-800/50">
+            <div className="pointer-events-none absolute -top-40 left-1/2 h-[520px] w-[520px] -translate-x-1/2 rounded-full bg-violet-500/10 blur-[120px]" />
+            <div className="mx-auto max-w-7xl px-6 py-24 md:py-32">
+              <div className="max-w-4xl mx-auto text-center">
+                <div className="inline-flex items-center gap-2 rounded-full border border-violet-400/30 bg-violet-500/10 px-4 py-2 backdrop-blur-xl mb-6">
+                  <Shield className="h-4 w-4 text-violet-300" />
+                  <span className="text-sm text-violet-200">Executive War Room Interface</span>
+                </div>
 
-                <h1 className="mt-4 text-4xl font-semibold tracking-tight md:text-6xl">
-                  Kincaid IQ AI
+                <h1 className="text-5xl font-bold tracking-tight md:text-7xl">
+                  Recover Hidden EBITDA from Pharmacy Benefit Structures
                 </h1>
-                <div className="mt-2 text-lg font-medium text-white/70">Shows EBITDA Drag With Receipts</div>
 
-                <p className="mt-6 text-lg text-white/70 md:text-xl">
-                  Transform employer health plans with audit-grade analytics, defensible metrics, and cryptographic evidence
-                  trails that expose leakage and quantify decision levers.
+                <p className="mt-8 text-xl text-slate-300 md:text-2xl">
+                  Kincaid IQ instruments PBM economics and healthcare cost exposure — transforming opaque claims flows into measurable capital governance.
                 </p>
 
-                <div className="mt-8 flex flex-col gap-3 sm:flex-row">
-                  <Button asChild className="h-11 rounded-2xl px-6 apple-hover-lift">
-                    <Link href="/contact">Request Demo</Link>
+                <div className="mt-10 flex flex-col gap-4 sm:flex-row justify-center">
+                  <Button asChild size="lg" className="h-14 rounded-2xl px-8 text-base apple-hover-lift">
+                    <Link href="#war-room">Enter the War Room</Link>
                   </Button>
                   <Button
                     asChild
+                    size="lg"
                     variant="outline"
-                    className="h-11 rounded-2xl border-white/15 bg-transparent px-6 apple-hover-lift"
+                    className="h-14 rounded-2xl border-slate-700 bg-slate-800/50 px-8 text-base hover:bg-slate-700/50 apple-hover-lift"
                   >
-                    <Link href="#war-room">Live Platform Preview</Link>
+                    <Link href="#how">How It Works</Link>
                   </Button>
-                </div>
-
-                <div className="mt-10 grid gap-4 md:grid-cols-3">
-                  <ValueCard
-                    icon={Receipt}
-                    title="Evidence-Backed"
-                    body="Every metric backed by verifiable claims data, contract terms, and cryptographic signatures. No black boxes."
-                    href="/war-room"
-                  />
-                  <ValueCard
-                    icon={TrendingDown}
-                    title="EBITDA Attribution"
-                    body="Direct financial impact measurement with traceable inputs showing cost drag, leakage, and verified savings."
-                    href="/verified-savings-ledger"
-                  />
-                  <ValueCard
-                    icon={Shield}
-                    title="Fiduciary Grade"
-                    body="Board-ready reporting with audit trails, regulatory compliance, and defensible methodologies."
-                    href="/security-governance"
-                  />
                 </div>
               </div>
             </div>
           </section>
 
-          {/* WAR ROOM */}
-          <section id="war-room" className="border-b border-white/10">
-            <div className="mx-auto max-w-7xl px-6 py-16 md:py-20">
-              <div className="flex items-end justify-between gap-6">
-                <div>
-                  <Link 
-                    href="/war-room"
-                    className="inline-block text-xs text-white/60 transition-colors hover:text-white/90"
-                  >
-                    Live Platform Preview
-                  </Link>
-                  <h2 className="mt-3 text-2xl font-semibold md:text-3xl">The Benefits War Room</h2>
-                  <p className="mt-3 max-w-3xl text-white/70">
-                    A transparency engine that exposes financial leakage, incentive misalignment, and structural blind
-                    spots—backed by cryptographic evidence receipts.
-                  </p>
-                </div>
+          {/* INSTITUTIONAL PROOF POINTS */}
+          <section className="border-b border-slate-800/50 bg-slate-900/30">
+            <div className="mx-auto max-w-7xl px-6 py-16">
+              <div className="grid gap-8 md:grid-cols-3">
+                <Card className="rounded-3xl border-slate-800/50 bg-slate-900/50 backdrop-blur">
+                  <CardContent className="p-8 text-center">
+                    <div className="text-5xl font-bold text-violet-400">3–8%</div>
+                    <p className="mt-4 text-slate-300">
+                      Average EBITDA exposure identified in pharmacy benefit structures
+                    </p>
+                  </CardContent>
+                </Card>
 
-                <div className="hidden md:block">
-                  <Button asChild className="rounded-2xl apple-hover-lift group">
-                    <Link href="/war-room" className="flex items-center gap-2">
-                      Enter the Kincaid IQ War Room
-                      <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
-                    </Link>
-                  </Button>
-                </div>
+                <Card className="rounded-3xl border-slate-800/50 bg-slate-900/50 backdrop-blur">
+                  <CardContent className="p-8 text-center">
+                    <div className="text-5xl font-bold text-violet-400">48 Hours</div>
+                    <p className="mt-4 text-slate-300">
+                      GLP-1 exposure modeling turnaround
+                    </p>
+                  </CardContent>
+                </Card>
+
+                <Card className="rounded-3xl border-slate-800/50 bg-slate-900/50 backdrop-blur">
+                  <CardContent className="p-8 text-center">
+                    <div className="text-5xl font-bold text-violet-400">Board-Level</div>
+                    <p className="mt-4 text-slate-300">
+                      Decision interface built for CFOs and institutional investors
+                    </p>
+                  </CardContent>
+                </Card>
+              </div>
+            </div>
+          </section>
+
+          {/* WAR ROOM INTERFACE */}
+          <section id="war-room" className="border-b border-slate-800/50">
+            <div className="mx-auto max-w-7xl px-6 py-24">
+              <div className="mb-12 text-center">
+                <h2 className="text-4xl font-bold md:text-5xl">The Executive War Room Interface</h2>
+                <p className="mt-4 text-lg text-slate-300 max-w-3xl mx-auto">
+                  Real-time visibility into pharmacy benefit economics with institutional-grade analytics
+                </p>
               </div>
 
-              <div className="mt-8">
+              <div className="grid gap-6 md:grid-cols-2">
+                <Card className="group rounded-3xl border-slate-800/50 bg-gradient-to-br from-slate-900/80 to-slate-900/40 backdrop-blur transition-all hover:border-violet-500/50 hover:shadow-2xl hover:shadow-violet-500/10">
+                  <CardContent className="p-8">
+                    <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-red-500/10 border border-red-500/20 mb-6">
+                      <TrendingDown className="h-7 w-7 text-red-400" />
+                    </div>
+                    <h3 className="text-2xl font-bold mb-3">Verified Margin Leakage</h3>
+                    <p className="text-slate-300 leading-relaxed">
+                      Quantified financial impact from spread pricing and rebate retention with cryptographic evidence trails.
+                    </p>
+                  </CardContent>
+                </Card>
+
+                <Card className="group rounded-3xl border-slate-800/50 bg-gradient-to-br from-slate-900/80 to-slate-900/40 backdrop-blur transition-all hover:border-violet-500/50 hover:shadow-2xl hover:shadow-violet-500/10">
+                  <CardContent className="p-8">
+                    <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-orange-500/10 border border-orange-500/20 mb-6">
+                      <AlertTriangle className="h-7 w-7 text-orange-400" />
+                    </div>
+                    <h3 className="text-2xl font-bold mb-3">Arbitrage Exposure</h3>
+                    <p className="text-slate-300 leading-relaxed">
+                      Identification of economic differentials across drugs and formularies with audit-grade documentation.
+                    </p>
+                  </CardContent>
+                </Card>
+
+                <Card className="group rounded-3xl border-slate-800/50 bg-gradient-to-br from-slate-900/80 to-slate-900/40 backdrop-blur transition-all hover:border-violet-500/50 hover:shadow-2xl hover:shadow-violet-500/10">
+                  <CardContent className="p-8">
+                    <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-yellow-500/10 border border-yellow-500/20 mb-6">
+                      <Shield className="h-7 w-7 text-yellow-400" />
+                    </div>
+                    <h3 className="text-2xl font-bold mb-3">Incentive Misalignment</h3>
+                    <p className="text-slate-300 leading-relaxed">
+                      Visualization of contractual divergence from employer cost minimization with evidence receipts.
+                    </p>
+                  </CardContent>
+                </Card>
+
+                <Card className="group rounded-3xl border-slate-800/50 bg-gradient-to-br from-slate-900/80 to-slate-900/40 backdrop-blur transition-all hover:border-violet-500/50 hover:shadow-2xl hover:shadow-violet-500/10">
+                  <CardContent className="p-8">
+                    <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-green-500/10 border border-green-500/20 mb-6">
+                      <TrendingUp className="h-7 w-7 text-green-400" />
+                    </div>
+                    <h3 className="text-2xl font-bold mb-3">EBITDA Recovery Pathways</h3>
+                    <p className="text-slate-300 leading-relaxed">
+                      Strategic governance actions tied directly to renewal leverage with measurable financial impact.
+                    </p>
+                  </CardContent>
+                </Card>
+              </div>
+
+              <div className="mt-12">
                 <WarRoomPreview />
               </div>
 
-              <p className="mt-4 text-sm text-white/60">
-                Headline tiles only.{" "}
-                <Link href="/war-room" className="text-white/90 underline decoration-white/30 underline-offset-2 transition-colors hover:text-white hover:decoration-white/60">
-                  Full app
+              <p className="mt-6 text-center text-sm text-slate-400">
+                Executive dashboard preview.{" "}
+                <Link href="/war-room" className="text-violet-400 underline decoration-violet-400/30 underline-offset-2 transition-colors hover:text-violet-300 hover:decoration-violet-400/60">
+                  Full War Room platform
                 </Link>
-                {" "}adds drill-downs, evidence trails, and exportable proof packs with receipts.
+                {" "}includes drill-down analytics, evidence trails, and exportable proof packs.
               </p>
-
-              <div className="mt-6 md:hidden">
-                <Button asChild className="w-full rounded-2xl apple-hover-lift group">
-                  <Link href="/war-room" className="flex items-center justify-center gap-2">
-                    Enter the Kincaid IQ War Room
-                    <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
-                  </Link>
-                </Button>
-              </div>
-            </div>
-          </section>
-
-          {/* WHAT IT DOES */}
-          <section className="border-b border-white/10">
-            <div className="mx-auto max-w-7xl px-6 py-16 md:py-20">
-              <h2 className="text-2xl font-semibold md:text-3xl">What Kincaid IQ Does</h2>
-
-              <div className="mt-8 grid gap-4 md:grid-cols-2">
-                <BulletCard 
-                  text="Converts PBM + GLP-1 spend into measurable EBITDA impact with receipts" 
-                  href="/war-room/demo/ebitda-impact"
-                />
-                <BulletCard 
-                  text="Flags leakage and outliers at drug/category level with cryptographic evidence" 
-                  href="/war-room/demo/contract-leakage"
-                />
-                <BulletCard 
-                  text="Benchmarks vendor economics against defensible references with audit trails" 
-                  href="/war-room/demo/vendor-performance"
-                />
-                <BulletCard 
-                  text="Quantifies decision levers with verifiable cost attribution and traceable inputs" 
-                  href="/verified-savings-ledger"
-                />
-                <BulletCard 
-                  text="Produces fiduciary-grade reporting with blockchain-backed proof of outcomes" 
-                  href="/evidence-receipts"
-                />
-              </div>
             </div>
           </section>
 
           {/* HOW IT WORKS */}
-          <section className="border-b border-white/10">
-            <div className="mx-auto max-w-7xl px-6 py-16 md:py-20">
-              <h2 className="text-2xl font-semibold md:text-3xl">How It Works</h2>
+          <section id="how" className="border-b border-slate-800/50">
+            <div className="mx-auto max-w-5xl px-6 py-24">
+              <h2 className="text-center text-4xl font-bold md:text-5xl mb-16">How It Works</h2>
 
-              <div className="mt-10 grid gap-4 md:grid-cols-4">
-                <StepCard
-                  n="01"
-                  title="Ingest"
-                  body="Pharmacy + eligibility (minimum), then medical/contract/renewal inputs as available"
-                  href="/marketplace"
-                />
-                <StepCard 
-                  n="02" 
-                  title="Normalize" 
-                  body="Clean, map, reconcile categories with evidence trails"
-                  href="/platform"
-                />
-                <StepCard 
-                  n="03" 
-                  title="Score" 
-                  body="Compute hero KPIs with cryptographic receipts and audit trails"
-                  href="/war-room"
-                />
-                <StepCard 
-                  n="04" 
-                  title="Act" 
-                  body="Deliver prioritized action path with EBITDA attribution + reporting"
-                  href="/verified-savings-ledger"
-                />
-              </div>
-
-              <Link href="/platform-why">
-                <div className="mt-10 rounded-3xl border border-white/10 bg-white/5 p-6 md:p-8 transition-all duration-300 hover:scale-[1.02] hover:border-white/20 hover:bg-white/10 hover:shadow-2xl hover:shadow-white/5 cursor-pointer group">
-                  <div className="flex items-start justify-between gap-4">
-                    <div>
-                      <div className="text-lg font-semibold">Dashboards show numbers.</div>
-                      <div className="mt-1 text-lg font-semibold">Kincaid IQ shows receipts.</div>
-                      <p className="mt-4 max-w-4xl text-white/70">
-                        Every KPI is tied back to the underlying inputs—claims, contracts, and defined methodologies—with
-                        cryptographic signatures and immutable audit trails so leadership can defend decisions and challenge
-                        vendor narratives with confidence.
-                      </p>
-                    </div>
-                    <ArrowRight className="h-5 w-5 flex-shrink-0 text-white/40 transition-all group-hover:translate-x-1 group-hover:text-white/80" />
+              <div className="space-y-6">
+                <div className="flex items-start gap-6 p-8 rounded-3xl border border-slate-800/50 bg-slate-900/30 backdrop-blur transition-all hover:border-violet-500/30 hover:bg-slate-900/50">
+                  <div className="flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-xl bg-violet-500/10 border border-violet-500/20 text-xl font-bold text-violet-400">
+                    01
+                  </div>
+                  <div>
+                    <h3 className="text-xl font-bold mb-2">Secure Claims & Contract Ingestion</h3>
+                    <p className="text-slate-300">
+                      Encrypted data ingestion with cryptographic receipts and immutable audit trails for complete transparency.
+                    </p>
                   </div>
                 </div>
-              </Link>
+
+                <div className="flex items-start gap-6 p-8 rounded-3xl border border-slate-800/50 bg-slate-900/30 backdrop-blur transition-all hover:border-violet-500/30 hover:bg-slate-900/50">
+                  <div className="flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-xl bg-violet-500/10 border border-violet-500/20 text-xl font-bold text-violet-400">
+                    02
+                  </div>
+                  <div>
+                    <h3 className="text-xl font-bold mb-2">Arbitrage Reconstruction & Economic Modeling</h3>
+                    <p className="text-slate-300">
+                      Advanced algorithms identify pricing differentials and structural inefficiencies with evidence-backed analysis.
+                    </p>
+                  </div>
+                </div>
+
+                <div className="flex items-start gap-6 p-8 rounded-3xl border border-slate-800/50 bg-slate-900/30 backdrop-blur transition-all hover:border-violet-500/30 hover:bg-slate-900/50">
+                  <div className="flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-xl bg-violet-500/10 border border-violet-500/20 text-xl font-bold text-violet-400">
+                    03
+                  </div>
+                  <div>
+                    <h3 className="text-xl font-bold mb-2">Margin Quantification & Risk Mapping</h3>
+                    <p className="text-slate-300">
+                      Precise EBITDA impact calculation with risk-adjusted scenarios and defensible methodologies.
+                    </p>
+                  </div>
+                </div>
+
+                <div className="flex items-start gap-6 p-8 rounded-3xl border border-slate-800/50 bg-slate-900/30 backdrop-blur transition-all hover:border-violet-500/30 hover:bg-slate-900/50">
+                  <div className="flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-xl bg-violet-500/10 border border-violet-500/20 text-xl font-bold text-violet-400">
+                    04
+                  </div>
+                  <div>
+                    <h3 className="text-xl font-bold mb-2">Executive Briefing & Renewal Strategy</h3>
+                    <p className="text-slate-300">
+                      Board-ready presentations with actionable recommendations and quantified leverage points for negotiations.
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          {/* DIFFERENTIATION */}
+          <section className="border-b border-slate-800/50 bg-slate-900/30">
+            <div className="mx-auto max-w-4xl px-6 py-24 text-center">
+              <h2 className="text-4xl font-bold md:text-5xl mb-8">Beyond Traditional Advisory</h2>
+              
+              <div className="space-y-6 text-lg text-slate-300">
+                <p className="leading-relaxed">
+                  Traditional firms review contracts annually.<br />
+                  <span className="text-white font-semibold">Kincaid IQ instruments PBM economics continuously.</span>
+                </p>
+                
+                <p className="leading-relaxed">
+                  We do not negotiate in the dark.<br />
+                  <span className="text-white font-semibold">We restore price signals before renewal cycles begin.</span>
+                </p>
+              </div>
+
+              <div className="mt-12 grid gap-4 md:grid-cols-3 text-left">
+                <div className="flex items-start gap-3 p-6 rounded-2xl bg-slate-900/50 border border-slate-800/50">
+                  <CheckCircle className="h-6 w-6 text-green-400 flex-shrink-0 mt-0.5" />
+                  <div>
+                    <div className="font-semibold mb-1">Continuous Monitoring</div>
+                    <div className="text-sm text-slate-400">Real-time analytics, not annual reviews</div>
+                  </div>
+                </div>
+
+                <div className="flex items-start gap-3 p-6 rounded-2xl bg-slate-900/50 border border-slate-800/50">
+                  <CheckCircle className="h-6 w-6 text-green-400 flex-shrink-0 mt-0.5" />
+                  <div>
+                    <div className="font-semibold mb-1">Evidence-Based</div>
+                    <div className="text-sm text-slate-400">Cryptographic receipts for every metric</div>
+                  </div>
+                </div>
+
+                <div className="flex items-start gap-3 p-6 rounded-2xl bg-slate-900/50 border border-slate-800/50">
+                  <CheckCircle className="h-6 w-6 text-green-400 flex-shrink-0 mt-0.5" />
+                  <div>
+                    <div className="font-semibold mb-1">Board-Ready</div>
+                    <div className="text-sm text-slate-400">Institutional-grade reporting</div>
+                  </div>
+                </div>
+              </div>
             </div>
           </section>
 
           {/* WHO IT'S FOR */}
-          <section className="border-b border-white/10">
-            <div className="mx-auto max-w-7xl px-6 py-16 md:py-20">
-              <h2 className="text-2xl font-semibold md:text-3xl">Who It's For</h2>
+          <section className="border-b border-slate-800/50">
+            <div className="mx-auto max-w-7xl px-6 py-24">
+              <h2 className="text-center text-4xl font-bold md:text-5xl mb-16">Who It's For</h2>
 
-              <div className="mt-8 grid gap-6 md:grid-cols-2">
+              <div className="grid gap-8 md:grid-cols-2">
                 <Link href="/capital-markets">
-                  <Card className="rounded-3xl border-white/10 bg-white/5 transition-all duration-300 hover:scale-[1.02] hover:border-white/20 hover:bg-white/10 hover:shadow-2xl hover:shadow-white/5 cursor-pointer group">
-                    <CardContent className="p-8">
+                  <Card className="h-full rounded-3xl border-slate-800/50 bg-gradient-to-br from-slate-900/80 to-slate-900/40 backdrop-blur transition-all duration-300 hover:scale-[1.02] hover:border-violet-500/50 hover:shadow-2xl hover:shadow-violet-500/10 cursor-pointer group">
+                    <CardContent className="p-10">
                       <div className="flex items-start justify-between gap-4">
                         <div>
-                          <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-white/10 transition-all group-hover:bg-white/20">
-                            <LineChart className="h-5 w-5" />
+                          <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-violet-500/10 border border-violet-500/20 mb-6 transition-all group-hover:bg-violet-500/20">
+                            <LineChart className="h-6 w-6 text-violet-400" />
                           </div>
-                          <h3 className="mt-4 text-xl font-semibold">CFOs & Finance Leaders</h3>
-                          <p className="mt-3 text-white/70">
+                          <h3 className="text-2xl font-bold mb-4">CFOs & Finance Leaders</h3>
+                          <p className="text-slate-300 leading-relaxed">
                             Replace opacity with fiduciary-grade precision. Show EBITDA drag with receipts, defend budgets with
                             cryptographic evidence, and quantify the impact of every benefits decision with traceable inputs that
                             survive audit and board scrutiny.
                           </p>
                         </div>
-                        <ArrowRight className="h-5 w-5 flex-shrink-0 text-white/40 transition-all group-hover:translate-x-1 group-hover:text-white/80" />
+                        <ArrowRight className="h-6 w-6 flex-shrink-0 text-slate-400 transition-all group-hover:translate-x-1 group-hover:text-violet-400" />
                       </div>
                     </CardContent>
                   </Card>
                 </Link>
 
                 <Link href="/actuarial-benefits">
-                  <Card className="rounded-3xl border-white/10 bg-white/5 transition-all duration-300 hover:scale-[1.02] hover:border-white/20 hover:bg-white/10 hover:shadow-2xl hover:shadow-white/5 cursor-pointer group">
-                    <CardContent className="p-8">
+                  <Card className="h-full rounded-3xl border-slate-800/50 bg-gradient-to-br from-slate-900/80 to-slate-900/40 backdrop-blur transition-all duration-300 hover:scale-[1.02] hover:border-violet-500/50 hover:shadow-2xl hover:shadow-violet-500/10 cursor-pointer group">
+                    <CardContent className="p-10">
                       <div className="flex items-start justify-between gap-4">
                         <div>
-                          <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-white/10 transition-all group-hover:bg-white/20">
-                            <Users className="h-5 w-5" />
+                          <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-violet-500/10 border border-violet-500/20 mb-6 transition-all group-hover:bg-violet-500/20">
+                            <Users className="h-6 w-6 text-violet-400" />
                           </div>
-                          <h3 className="mt-4 text-xl font-semibold">HR & Benefits Leaders</h3>
-                          <p className="mt-3 text-white/70">
+                          <h3 className="text-2xl font-bold mb-4">HR & Benefits Leaders</h3>
+                          <p className="text-slate-300 leading-relaxed">
                             Move from reactive reporting to strategic control with evidence receipts. Get real-time visibility into
                             plan performance, outlier members, and vendor accountability with insights backed by cryptographic
                             proof—not just dashboards.
                           </p>
                         </div>
-                        <ArrowRight className="h-5 w-5 flex-shrink-0 text-white/40 transition-all group-hover:translate-x-1 group-hover:text-white/80" />
+                        <ArrowRight className="h-6 w-6 flex-shrink-0 text-slate-400 transition-all group-hover:translate-x-1 group-hover:text-violet-400" />
                       </div>
                     </CardContent>
                   </Card>
@@ -265,53 +317,54 @@ export default function KincaidIQHome() {
           </section>
 
           {/* FAQ */}
-          <section className="border-b border-white/10">
-            <div className="mx-auto max-w-7xl px-6 py-16 md:py-20">
-              <h2 className="text-2xl font-semibold md:text-3xl">Frequently Asked Questions</h2>
-              <div className="mt-8 max-w-3xl">
-                <FAQ />
-              </div>
+          <section className="border-b border-slate-800/50">
+            <div className="mx-auto max-w-4xl px-6 py-24">
+              <h2 className="text-center text-4xl font-bold md:text-5xl mb-12">Frequently Asked Questions</h2>
+              <FAQ />
             </div>
           </section>
 
-          {/* FINAL CTA */}
-          <section>
-            <div className="mx-auto max-w-7xl px-6 py-16 md:py-20">
-              <Card className="rounded-3xl border-white/10 bg-white/5">
-                <CardContent className="p-8 md:p-10">
-                  <h3 className="text-2xl font-semibold md:text-3xl">Ready to Show EBITDA Impact With Receipts?</h3>
-                  <p className="mt-3 max-w-3xl text-white/70">
-                    Get in touch to see how Kincaid IQ AI's fiduciary-grade transparency engine can transform your benefits
-                    intelligence.
+          {/* EXECUTIVE CTA */}
+          <section className="py-24 px-6">
+            <div className="mx-auto max-w-5xl">
+              <Card className="rounded-3xl border-slate-800/50 bg-gradient-to-br from-violet-900/20 to-slate-900/40 backdrop-blur">
+                <CardContent className="p-12 md:p-16 text-center">
+                  <h2 className="text-4xl font-bold md:text-5xl mb-6">
+                    Healthcare Expense Above Seven Figures?
+                  </h2>
+                  <p className="text-xl text-slate-300 mb-10 max-w-3xl mx-auto">
+                    Request a confidential War Room briefing before your next renewal cycle. See how Kincaid IQ's fiduciary-grade transparency engine transforms PBM economics into measurable capital governance.
                   </p>
 
-                  <div className="mt-6 flex flex-col gap-3 sm:flex-row">
-                    <Button asChild className="h-11 rounded-2xl px-6 apple-hover-lift">
-                      <Link href="/contact">Request Demo</Link>
+                  <div className="flex flex-col gap-4 sm:flex-row justify-center">
+                    <Button asChild size="lg" className="h-14 rounded-2xl px-8 text-base apple-hover-lift">
+                      <Link href="/contact">Schedule Executive Session</Link>
                     </Button>
                     <Button
                       asChild
+                      size="lg"
                       variant="outline"
-                      className="h-11 rounded-2xl border-white/15 bg-transparent px-6 apple-hover-lift"
+                      className="h-14 rounded-2xl border-slate-700 bg-slate-800/50 px-8 text-base hover:bg-slate-700/50 apple-hover-lift"
                     >
                       <a href="mailto:jer@kincaidrmc.com">jer@kincaidrmc.com</a>
                     </Button>
                     <Button
                       asChild
+                      size="lg"
                       variant="outline"
-                      className="h-11 rounded-2xl border-white/15 bg-transparent px-6 apple-hover-lift"
+                      className="h-14 rounded-2xl border-slate-700 bg-slate-800/50 px-8 text-base hover:bg-slate-700/50 apple-hover-lift"
                     >
                       <a href="tel:12192563331">219.256.3331</a>
                     </Button>
                   </div>
 
-                  <p className="mt-6 text-sm text-white/60">
+                  <p className="mt-10 text-sm text-slate-400">
                     Learn more about healthcare governance in our{" "}
-                    <Link href="/company" className="text-white underline decoration-white/30 underline-offset-2 transition-colors hover:text-white hover:decoration-white/60">
+                    <Link href="/company" className="text-violet-400 underline decoration-violet-400/30 underline-offset-2 transition-colors hover:text-violet-300 hover:decoration-violet-400/60">
                       Healthcare Intelligence
                     </Link>{" "}
                     series, or explore{" "}
-                    <Link href="/capital-library" className="text-white underline decoration-white/30 underline-offset-2 transition-colors hover:text-white hover:decoration-white/60">
+                    <Link href="/capital-library" className="text-violet-400 underline decoration-violet-400/30 underline-offset-2 transition-colors hover:text-violet-300 hover:decoration-violet-400/60">
                       EBITDA defense systems
                     </Link>{" "}
                     across the enterprise.
@@ -323,58 +376,5 @@ export default function KincaidIQHome() {
         </main>
       </div>
     </>
-  );
-}
-
-function ValueCard({ 
-  icon: Icon, 
-  title, 
-  body,
-  href 
-}: { 
-  icon: React.ComponentType<{ className?: string }>; 
-  title: string; 
-  body: string;
-  href: string;
-}) {
-  return (
-    <Link href={href}>
-      <Card className="h-full rounded-3xl border-white/10 bg-white/5 transition-all duration-300 hover:scale-[1.02] hover:border-white/20 hover:bg-white/10 hover:shadow-2xl hover:shadow-white/5 cursor-pointer group">
-        <CardContent className="p-6 h-full flex flex-col">
-          <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-white/10 mb-3 transition-all group-hover:bg-white/20">
-            <Icon className="h-4 w-4" />
-          </div>
-          <h3 className="text-base font-semibold">{title}</h3>
-          <p className="mt-2 text-sm text-white/70 flex-grow">{body}</p>
-          <ArrowRight className="h-4 w-4 mt-3 text-white/40 transition-all group-hover:translate-x-1 group-hover:text-white/80" />
-        </CardContent>
-      </Card>
-    </Link>
-  );
-}
-
-function BulletCard({ text, href }: { text: string; href: string }) {
-  return (
-    <Link href={href}>
-      <div className="group rounded-3xl border border-white/10 bg-white/5 p-6 text-sm text-white/80 transition-all duration-300 hover:scale-[1.02] hover:border-white/20 hover:bg-white/10 hover:shadow-2xl hover:shadow-white/5 cursor-pointer flex items-center justify-between gap-3">
-        <span>{text}</span>
-        <ArrowRight className="h-4 w-4 flex-shrink-0 text-white/40 transition-all group-hover:translate-x-1 group-hover:text-white/80" />
-      </div>
-    </Link>
-  );
-}
-
-function StepCard({ n, title, body, href }: { n: string; title: string; body: string; href: string }) {
-  return (
-    <Link href={href}>
-      <Card className="h-full rounded-3xl border-white/10 bg-white/5 transition-all duration-300 hover:scale-[1.02] hover:border-white/20 hover:bg-white/10 hover:shadow-2xl hover:shadow-white/5 cursor-pointer group">
-        <CardContent className="p-6 h-full flex flex-col">
-          <div className="text-xs text-white/50">{n}</div>
-          <div className="mt-2 text-base font-semibold">{title}</div>
-          <p className="mt-2 text-sm text-white/70 flex-grow">{body}</p>
-          <ArrowRight className="h-4 w-4 mt-3 text-white/40 transition-all group-hover:translate-x-1 group-hover:text-white/80" />
-        </CardContent>
-      </Card>
-    </Link>
   );
 }

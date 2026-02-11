@@ -19,6 +19,7 @@ import {
   ChevronRight
 } from "lucide-react";
 import { FAQ } from "@/components/kincaid-iq/FAQ";
+import { WarRoomHero3D } from "@/components/kincaid-iq/WarRoomHero3D";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 
@@ -90,46 +91,44 @@ export default function KincaidIQHome() {
         </header>
 
         <main>
-          <section className="relative overflow-hidden">
-            <div className="absolute inset-0 bg-gradient-to-br from-cyan-500/5 via-transparent to-blue-500/5" />
-            <div className="mx-auto max-w-7xl px-6 py-24 relative">
-              <div className="max-w-4xl">
-                <div className="inline-flex items-center gap-2 rounded-full border border-cyan-500/20 bg-cyan-500/10 px-4 py-1.5 text-sm font-medium text-cyan-400 mb-6">
-                  <Shield className="h-4 w-4" />
-                  Fiduciary-Grade Intelligence System
-                </div>
-
-                <h1 className="text-6xl font-bold leading-tight tracking-tight lg:text-7xl">
-                  The War Room for<br />
-                  <span className="bg-gradient-to-r from-cyan-400 to-blue-500 bg-clip-text text-transparent">
-                    Pharmacy Benefit Economics
-                  </span>
-                </h1>
-
-                <div className="mt-8 space-y-6 text-lg leading-relaxed text-white/70">
-                  <p className="text-2xl font-semibold text-white">
-                    Healthcare Expense Is Not a Line Item.<br />
-                    It Is a Capital Governance Failure.
-                  </p>
-
-                  <p className="text-xl text-white/80">
-                    Kincaid IQ transforms opaque PBM economics into measurable EBITDA impact through multi-year actuarial modeling and continuous arbitrage analysis.
-                  </p>
-
-                  <div className="grid grid-cols-1 md:grid-cols-3 gap-4 pt-6">
-                    <MetricHighlight label="Avg. EBITDA Exposure" value="3–8%" sublabel="Hidden in pharmacy benefit structures" />
-                    <MetricHighlight label="Analysis Turnaround" value="48 Hours" sublabel="GLP-1 exposure modeling" />
-                    <MetricHighlight label="Projection Horizon" value="5 Years" sublabel="Multi-scenario economic modeling" />
+          {/* HERO - WAR ROOM 3D VISUALIZATION */}
+          <section className="relative">
+            <WarRoomHero3D />
+            
+            {/* Hero Content Below Visualization */}
+            <div className="bg-gradient-to-b from-slate-950/50 to-slate-950">
+              <div className="mx-auto max-w-7xl px-6 py-16">
+                <div className="max-w-4xl mx-auto text-center">
+                  <div className="inline-flex items-center gap-2 rounded-full border border-cyan-500/20 bg-cyan-500/10 px-4 py-1.5 text-sm font-medium text-cyan-400 mb-6">
+                    <Shield className="h-4 w-4" />
+                    Fiduciary-Grade Intelligence System
                   </div>
-                </div>
 
-                <div className="mt-10 flex flex-col sm:flex-row gap-4">
-                  <Button asChild size="lg" className="bg-cyan-500 hover:bg-cyan-600 text-black font-semibold text-base px-8">
-                    <a href="#war-room">Enter the War Room</a>
-                  </Button>
-                  <Button asChild size="lg" variant="outline" className="border-white/20 hover:bg-white/5 text-base px-8">
-                    <a href="#modeling">View Actuarial Framework</a>
-                  </Button>
+                  <div className="space-y-6 text-lg leading-relaxed text-white/70">
+                    <p className="text-2xl font-semibold text-white">
+                      Healthcare Expense Is Not a Line Item.<br />
+                      It Is a Capital Governance Failure.
+                    </p>
+
+                    <p className="text-xl text-white/80">
+                      Kincaid IQ transforms opaque PBM economics into measurable EBITDA impact through multi-year actuarial modeling and continuous arbitrage analysis.
+                    </p>
+
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-4 pt-6">
+                      <MetricHighlight label="Avg. EBITDA Exposure" value="3–8%" sublabel="Hidden in pharmacy benefit structures" />
+                      <MetricHighlight label="Analysis Turnaround" value="48 Hours" sublabel="GLP-1 exposure modeling" />
+                      <MetricHighlight label="Projection Horizon" value="5 Years" sublabel="Multi-scenario economic modeling" />
+                    </div>
+                  </div>
+
+                  <div className="mt-10 flex flex-col sm:flex-row justify-center gap-4">
+                    <Button asChild size="lg" className="bg-cyan-500 hover:bg-cyan-600 text-black font-semibold text-base px-8">
+                      <a href="#war-room">Enter the War Room</a>
+                    </Button>
+                    <Button asChild size="lg" variant="outline" className="border-white/20 hover:bg-white/5 text-base px-8">
+                      <a href="#modeling">View Actuarial Framework</a>
+                    </Button>
+                  </div>
                 </div>
               </div>
             </div>

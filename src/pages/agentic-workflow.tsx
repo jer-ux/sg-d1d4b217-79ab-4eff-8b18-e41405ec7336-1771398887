@@ -261,7 +261,7 @@ export default function AgenticWorkflowPage() {
         <Nav />
 
         {/* Hero Section with 3D Background */}
-        <section className="relative min-h-screen flex items-center justify-center pt-20 pb-32 px-6 overflow-hidden">
+        <section className="relative min-h-screen flex items-center justify-center pt-20 pb-16 px-6 overflow-hidden">
           {/* 3D Animated Background */}
           {mounted && (
             <motion.div style={{ opacity, scale }} className="absolute inset-0">
@@ -278,14 +278,14 @@ export default function AgenticWorkflowPage() {
               initial={{ opacity: 0, y: 40 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 1, delay: 0.2 }}
-              className="text-center mb-16"
+              className="text-center mb-12"
             >
               {/* Premium Badge */}
               <motion.div
                 initial={{ opacity: 0, scale: 0.8 }}
                 animate={{ opacity: 1, scale: 1 }}
                 transition={{ duration: 0.8, delay: 0.4 }}
-                className="inline-flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-blue-500/20 via-purple-500/20 to-pink-500/20 border border-blue-500/30 rounded-full mb-8 backdrop-blur-xl"
+                className="inline-flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-blue-500/20 via-purple-500/20 to-pink-500/20 border border-blue-500/30 rounded-full mb-6 backdrop-blur-xl"
               >
                 <Sparkles className="w-5 h-5 text-blue-400" />
                 <span className="text-sm text-blue-300 font-semibold tracking-wide">
@@ -299,7 +299,7 @@ export default function AgenticWorkflowPage() {
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 1, delay: 0.6 }}
-                className="text-6xl md:text-8xl font-black mb-8 leading-tight"
+                className="text-5xl md:text-7xl font-black mb-6 leading-tight"
               >
                 <span className="bg-gradient-to-r from-white via-blue-200 to-purple-300 bg-clip-text text-transparent animate-gradient">
                   Kincaid iQ
@@ -314,7 +314,7 @@ export default function AgenticWorkflowPage() {
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 1, delay: 0.8 }}
-                className="text-xl md:text-2xl text-gray-300 max-w-4xl mx-auto leading-relaxed mb-12"
+                className="text-lg md:text-xl text-gray-300 max-w-4xl mx-auto leading-relaxed mb-8"
               >
                 Autonomous financial operations with{" "}
                 <span className="text-blue-400 font-semibold">AI-powered controls</span>,{" "}
@@ -329,60 +329,60 @@ export default function AgenticWorkflowPage() {
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 1, delay: 1 }}
-                className="flex flex-col sm:flex-row gap-6 justify-center"
+                className="flex flex-col sm:flex-row gap-4 justify-center mb-10"
               >
                 <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
                   <Link
                     href="/request-demo"
-                    className="group px-10 py-5 bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 text-white font-bold rounded-full hover:shadow-2xl hover:shadow-blue-500/50 transition-all duration-300 flex items-center justify-center gap-3 relative overflow-hidden"
+                    className="group px-8 py-4 bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 text-white font-bold rounded-full hover:shadow-2xl hover:shadow-blue-500/50 transition-all duration-300 flex items-center justify-center gap-3 relative overflow-hidden"
                   >
                     <span className="relative z-10">Request Enterprise Demo</span>
-                    <ArrowRight className="w-6 h-6 relative z-10 group-hover:translate-x-1 transition-transform" />
+                    <ArrowRight className="w-5 h-5 relative z-10 group-hover:translate-x-1 transition-transform" />
                     <div className="absolute inset-0 bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
                   </Link>
                 </motion.div>
                 <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
                   <Link
                     href="/company"
-                    className="px-10 py-5 bg-white/10 backdrop-blur-xl border-2 border-white/30 text-white font-bold rounded-full hover:bg-white/20 transition-all duration-300 flex items-center justify-center gap-3"
+                    className="px-8 py-4 bg-white/10 backdrop-blur-xl border-2 border-white/30 text-white font-bold rounded-full hover:bg-white/20 transition-all duration-300 flex items-center justify-center gap-3"
                   >
                     Contact Sales
                   </Link>
                 </motion.div>
               </motion.div>
-            </motion.div>
 
-            {/* Key Metrics Bar with Glassmorphism */}
-            <motion.div
-              initial={{ opacity: 0, y: 40 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 1, delay: 1.2 }}
-              className="grid grid-cols-2 md:grid-cols-4 gap-6"
-            >
-              {[
-                { label: "Transactions/Month", value: "150M+", icon: Database },
-                { label: "Compliance Rate", value: "100%", icon: Shield },
-                { label: "Avg. Time Savings", value: "85%", icon: TrendingUp },
-                { label: "ROI (12 months)", value: "420%", icon: Target },
-              ].map((metric, index) => (
-                <motion.div
-                  key={index}
-                  initial={{ opacity: 0, scale: 0.8 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  transition={{ duration: 0.5, delay: 1.4 + index * 0.1 }}
-                  whileHover={{ scale: 1.05, y: -5 }}
-                  className="relative group"
-                >
-                  <div className="absolute inset-0 bg-gradient-to-br from-blue-500/20 to-purple-500/20 rounded-2xl blur-xl opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-                  <div className="relative bg-white/5 backdrop-blur-xl border border-white/10 rounded-2xl p-6 text-center">
-                    <metric.icon className="w-8 h-8 mx-auto mb-3 text-blue-400" />
-                    <div className="text-4xl font-black bg-gradient-to-br from-blue-400 to-purple-400 bg-clip-text text-transparent mb-2">
-                      {metric.value}
+              {/* Key Metrics Bar with Glassmorphism */}
+              <motion.div
+                initial={{ opacity: 0, y: 40 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 1, delay: 1.2 }}
+                className="grid grid-cols-2 md:grid-cols-4 gap-4"
+              >
+                {[
+                  { label: "Transactions/Month", value: "150M+", icon: Database },
+                  { label: "Compliance Rate", value: "100%", icon: Shield },
+                  { label: "Avg. Time Savings", value: "85%", icon: TrendingUp },
+                  { label: "ROI (12 months)", value: "420%", icon: Target },
+                ].map((metric, index) => (
+                  <motion.div
+                    key={index}
+                    initial={{ opacity: 0, scale: 0.8 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    transition={{ duration: 0.5, delay: 1.4 + index * 0.1 }}
+                    whileHover={{ scale: 1.05, y: -5 }}
+                    className="relative group"
+                  >
+                    <div className="absolute inset-0 bg-gradient-to-br from-blue-500/20 to-purple-500/20 rounded-2xl blur-xl opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+                    <div className="relative bg-white/5 backdrop-blur-xl border border-white/10 rounded-2xl p-5 text-center">
+                      <metric.icon className="w-6 h-6 mx-auto mb-2 text-blue-400" />
+                      <div className="text-3xl font-black bg-gradient-to-br from-blue-400 to-purple-400 bg-clip-text text-transparent mb-1">
+                        {metric.value}
+                      </div>
+                      <div className="text-xs text-gray-400 font-medium">{metric.label}</div>
                     </div>
-                    <div className="text-sm text-gray-400 font-medium">{metric.label}</div>
-                  </div>
-                </motion.div>
-              ))}
+                  </motion.div>
+                ))}
+              </motion.div>
             </motion.div>
           </div>
 
@@ -391,7 +391,7 @@ export default function AgenticWorkflowPage() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 1, delay: 2 }}
-            className="absolute bottom-10 left-1/2 transform -translate-x-1/2"
+            className="absolute bottom-8 left-1/2 transform -translate-x-1/2"
           >
             <motion.div
               animate={{ y: [0, 10, 0] }}
@@ -408,7 +408,7 @@ export default function AgenticWorkflowPage() {
         </section>
 
         {/* 3D Workflow Pipeline Visualization */}
-        <section className="py-32 px-6 relative">
+        <section className="py-16 px-6 relative -mt-20">
           <div className="absolute inset-0 bg-gradient-to-b from-black via-blue-950/20 to-black" />
           <div className="relative z-10 max-w-7xl mx-auto">
             <motion.div
@@ -416,12 +416,12 @@ export default function AgenticWorkflowPage() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.8 }}
-              className="text-center mb-20"
+              className="text-center mb-12"
             >
-              <h2 className="text-5xl md:text-6xl font-black mb-6 bg-gradient-to-r from-white via-blue-200 to-purple-300 bg-clip-text text-transparent">
+              <h2 className="text-4xl md:text-5xl font-black mb-4 bg-gradient-to-r from-white via-blue-200 to-purple-300 bg-clip-text text-transparent">
                 Six-Stage Autonomous Workflow
               </h2>
-              <p className="text-xl text-gray-400 max-w-3xl mx-auto">
+              <p className="text-lg text-gray-400 max-w-3xl mx-auto">
                 End-to-end financial process automation with built-in controls, real-time validation, and
                 comprehensive audit trails at every step.
               </p>
@@ -434,7 +434,7 @@ export default function AgenticWorkflowPage() {
                 whileInView={{ opacity: 1, scale: 1 }}
                 viewport={{ once: true }}
                 transition={{ duration: 1 }}
-                className="mb-20"
+                className="mb-12"
               >
                 <WorkflowPipeline3D />
               </motion.div>
@@ -443,10 +443,10 @@ export default function AgenticWorkflowPage() {
         </section>
 
         {/* Interactive Workflow Stages */}
-        <section className="py-20 px-6 relative">
+        <section className="py-12 px-6 relative">
           <div className="absolute inset-0 bg-gradient-to-b from-black via-purple-950/10 to-black" />
           <div className="relative z-10 max-w-7xl mx-auto">
-            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
               {workflowStages.map((stage, index) => (
                 <InteractiveStageCard key={index} stage={stage} index={index} />
               ))}
@@ -455,7 +455,7 @@ export default function AgenticWorkflowPage() {
         </section>
 
         {/* Compliance Frameworks with Enhanced Animations */}
-        <section className="py-32 px-6 relative">
+        <section className="py-16 px-6 relative">
           <div className="absolute inset-0 bg-gradient-to-b from-black via-green-950/10 to-black" />
           <div className="relative z-10 max-w-7xl mx-auto">
             <motion.div
@@ -463,18 +463,18 @@ export default function AgenticWorkflowPage() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.8 }}
-              className="text-center mb-20"
+              className="text-center mb-12"
             >
-              <h2 className="text-5xl md:text-6xl font-black mb-6 bg-gradient-to-r from-white via-green-200 to-blue-300 bg-clip-text text-transparent">
+              <h2 className="text-4xl md:text-5xl font-black mb-4 bg-gradient-to-r from-white via-green-200 to-blue-300 bg-clip-text text-transparent">
                 Regulatory Compliance Coverage
               </h2>
-              <p className="text-xl text-gray-400 max-w-3xl mx-auto">
+              <p className="text-lg text-gray-400 max-w-3xl mx-auto">
                 Built-in controls and automated testing for major financial reporting frameworks. Audit-ready
                 documentation generated automatically.
               </p>
             </motion.div>
 
-            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
               {complianceFrameworks.map((framework, index) => (
                 <motion.div
                   key={index}
@@ -486,27 +486,27 @@ export default function AgenticWorkflowPage() {
                   className="relative group"
                 >
                   <div className="absolute inset-0 bg-gradient-to-br from-green-500/20 to-blue-500/20 rounded-2xl blur-xl opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-                  <div className="relative bg-white/5 backdrop-blur-xl border border-white/10 rounded-2xl p-8">
-                    <div className="flex items-center justify-between mb-6">
-                      <h3 className="text-2xl font-bold text-white">{framework.name}</h3>
+                  <div className="relative bg-white/5 backdrop-blur-xl border border-white/10 rounded-2xl p-6">
+                    <div className="flex items-center justify-between mb-4">
+                      <h3 className="text-xl font-bold text-white">{framework.name}</h3>
                       <motion.div
                         whileHover={{ rotate: 360 }}
                         transition={{ duration: 0.6 }}
                       >
-                        <Shield className="w-8 h-8 text-green-400" />
+                        <Shield className="w-7 h-7 text-green-400" />
                       </motion.div>
                     </div>
-                    <div className="space-y-4">
+                    <div className="space-y-3">
                       <div className="flex justify-between items-center">
-                        <span className="text-gray-400">Coverage</span>
-                        <span className="text-2xl font-bold text-green-400">{framework.coverage}</span>
+                        <span className="text-gray-400 text-sm">Coverage</span>
+                        <span className="text-xl font-bold text-green-400">{framework.coverage}</span>
                       </div>
                       <div className="flex justify-between items-center">
-                        <span className="text-gray-400">Automated Controls</span>
-                        <span className="text-2xl font-bold text-blue-400">{framework.controls}</span>
+                        <span className="text-gray-400 text-sm">Automated Controls</span>
+                        <span className="text-xl font-bold text-blue-400">{framework.controls}</span>
                       </div>
                       <motion.div
-                        className="h-3 bg-gray-800 rounded-full overflow-hidden"
+                        className="h-2 bg-gray-800 rounded-full overflow-hidden"
                         initial={{ scaleX: 0 }}
                         whileInView={{ scaleX: 1 }}
                         viewport={{ once: true }}
@@ -523,7 +523,7 @@ export default function AgenticWorkflowPage() {
         </section>
 
         {/* Integration Partners with Enhanced Cards */}
-        <section className="py-32 px-6 relative">
+        <section className="py-16 px-6 relative">
           <div className="absolute inset-0 bg-gradient-to-b from-black via-blue-950/10 to-black" />
           <div className="relative z-10 max-w-7xl mx-auto">
             <motion.div
@@ -531,18 +531,18 @@ export default function AgenticWorkflowPage() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.8 }}
-              className="text-center mb-20"
+              className="text-center mb-12"
             >
-              <h2 className="text-5xl md:text-6xl font-black mb-6 bg-gradient-to-r from-white via-blue-200 to-purple-300 bg-clip-text text-transparent">
+              <h2 className="text-4xl md:text-5xl font-black mb-4 bg-gradient-to-r from-white via-blue-200 to-purple-300 bg-clip-text text-transparent">
                 Enterprise Integration Ecosystem
               </h2>
-              <p className="text-xl text-gray-400 max-w-3xl mx-auto">
+              <p className="text-lg text-gray-400 max-w-3xl mx-auto">
                 Pre-built connectors for leading enterprise systems. API-first architecture enables custom
                 integrations in days, not months.
               </p>
             </motion.div>
 
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-5">
               {integrationPartners.map((partner, index) => (
                 <motion.div
                   key={index}
@@ -554,17 +554,17 @@ export default function AgenticWorkflowPage() {
                   className="relative group"
                 >
                   <div className="absolute inset-0 bg-gradient-to-br from-blue-500/20 to-purple-500/20 rounded-2xl blur-xl opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-                  <div className="relative bg-white/5 backdrop-blur-xl border border-white/10 rounded-2xl p-6 text-center">
+                  <div className="relative bg-white/5 backdrop-blur-xl border border-white/10 rounded-2xl p-5 text-center">
                     <motion.div
                       whileHover={{ rotate: [0, -10, 10, -10, 0] }}
                       transition={{ duration: 0.5 }}
                     >
-                      <Network className="w-12 h-12 mx-auto mb-4 text-blue-400" />
+                      <Network className="w-10 h-10 mx-auto mb-3 text-blue-400" />
                     </motion.div>
-                    <h3 className="text-lg font-bold mb-2 text-white">{partner.name}</h3>
-                    <div className="text-sm text-gray-400 mb-3">{partner.category}</div>
-                    <div className="inline-flex items-center gap-2 px-4 py-2 bg-green-500/20 border border-green-500/30 rounded-full text-sm text-green-400 font-semibold">
-                      <CheckCircle2 className="w-4 h-4" />
+                    <h3 className="text-base font-bold mb-1 text-white">{partner.name}</h3>
+                    <div className="text-xs text-gray-400 mb-2">{partner.category}</div>
+                    <div className="inline-flex items-center gap-2 px-3 py-1.5 bg-green-500/20 border border-green-500/30 rounded-full text-xs text-green-400 font-semibold">
+                      <CheckCircle2 className="w-3 h-3" />
                       {partner.status}
                     </div>
                   </div>
@@ -575,7 +575,7 @@ export default function AgenticWorkflowPage() {
         </section>
 
         {/* Security Features with Premium Cards */}
-        <section className="py-32 px-6 relative">
+        <section className="py-16 px-6 relative">
           <div className="absolute inset-0 bg-gradient-to-b from-black via-purple-950/10 to-black" />
           <div className="relative z-10 max-w-7xl mx-auto">
             <motion.div
@@ -583,18 +583,18 @@ export default function AgenticWorkflowPage() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.8 }}
-              className="text-center mb-20"
+              className="text-center mb-12"
             >
-              <h2 className="text-5xl md:text-6xl font-black mb-6 bg-gradient-to-r from-white via-purple-200 to-pink-300 bg-clip-text text-transparent">
+              <h2 className="text-4xl md:text-5xl font-black mb-4 bg-gradient-to-r from-white via-purple-200 to-pink-300 bg-clip-text text-transparent">
                 Enterprise Security & Governance
               </h2>
-              <p className="text-xl text-gray-400 max-w-3xl mx-auto">
+              <p className="text-lg text-gray-400 max-w-3xl mx-auto">
                 Bank-grade security with comprehensive audit trails. SOC 2 Type II certified with ongoing
                 third-party penetration testing.
               </p>
             </motion.div>
 
-            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
               {securityFeatures.map((feature, index) => (
                 <motion.div
                   key={index}
@@ -606,15 +606,15 @@ export default function AgenticWorkflowPage() {
                   className="relative group"
                 >
                   <div className="absolute inset-0 bg-gradient-to-br from-purple-500/20 to-pink-500/20 rounded-2xl blur-xl opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-                  <div className="relative bg-white/5 backdrop-blur-xl border border-white/10 rounded-2xl p-8">
+                  <div className="relative bg-white/5 backdrop-blur-xl border border-white/10 rounded-2xl p-6">
                     <motion.div
                       whileHover={{ scale: 1.2, rotate: 360 }}
                       transition={{ duration: 0.6 }}
                     >
-                      <feature.icon className="w-12 h-12 text-purple-400 mb-6" />
+                      <feature.icon className="w-10 h-10 text-purple-400 mb-4" />
                     </motion.div>
-                    <h3 className="text-2xl font-bold mb-4 text-white">{feature.title}</h3>
-                    <p className="text-gray-400">{feature.description}</p>
+                    <h3 className="text-xl font-bold mb-3 text-white">{feature.title}</h3>
+                    <p className="text-gray-400 text-sm">{feature.description}</p>
                   </div>
                 </motion.div>
               ))}
@@ -623,7 +623,7 @@ export default function AgenticWorkflowPage() {
         </section>
 
         {/* Case Studies with Premium Layout */}
-        <section className="py-32 px-6 relative">
+        <section className="py-16 px-6 relative">
           <div className="absolute inset-0 bg-gradient-to-b from-black via-blue-950/10 to-black" />
           <div className="relative z-10 max-w-7xl mx-auto">
             <motion.div
@@ -631,18 +631,18 @@ export default function AgenticWorkflowPage() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.8 }}
-              className="text-center mb-20"
+              className="text-center mb-12"
             >
-              <h2 className="text-5xl md:text-6xl font-black mb-6 bg-gradient-to-r from-white via-blue-200 to-purple-300 bg-clip-text text-transparent">
+              <h2 className="text-4xl md:text-5xl font-black mb-4 bg-gradient-to-r from-white via-blue-200 to-purple-300 bg-clip-text text-transparent">
                 Enterprise Deployments
               </h2>
-              <p className="text-xl text-gray-400 max-w-3xl mx-auto">
+              <p className="text-lg text-gray-400 max-w-3xl mx-auto">
                 Real results from Fortune 500 companies and private equity firms who trust Kincaid iQ for
                 mission-critical financial operations.
               </p>
             </motion.div>
 
-            <div className="space-y-12">
+            <div className="space-y-8">
               {caseStudies.map((study, index) => (
                 <motion.div
                   key={index}
@@ -654,39 +654,39 @@ export default function AgenticWorkflowPage() {
                   className="relative group"
                 >
                   <div className="absolute inset-0 bg-gradient-to-br from-blue-500/20 to-purple-500/20 rounded-3xl blur-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-                  <div className="relative bg-white/5 backdrop-blur-xl border border-white/10 rounded-3xl p-10">
-                    <div className="flex items-start justify-between mb-8">
+                  <div className="relative bg-white/5 backdrop-blur-xl border border-white/10 rounded-3xl p-8">
+                    <div className="flex items-start justify-between mb-6">
                       <div>
-                        <div className="inline-block px-4 py-2 bg-blue-500/20 border border-blue-500/30 rounded-full text-sm text-blue-400 font-semibold mb-4">
+                        <div className="inline-block px-4 py-2 bg-blue-500/20 border border-blue-500/30 rounded-full text-sm text-blue-400 font-semibold mb-3">
                           {study.industry}
                         </div>
-                        <h3 className="text-3xl font-black text-white mb-2">{study.company}</h3>
+                        <h3 className="text-2xl font-black text-white mb-2">{study.company}</h3>
                       </div>
                       <motion.div
                         whileHover={{ scale: 1.2, rotate: 360 }}
                         transition={{ duration: 0.6 }}
                       >
-                        <Target className="w-10 h-10 text-blue-400" />
+                        <Target className="w-8 h-8 text-blue-400" />
                       </motion.div>
                     </div>
 
-                    <div className="grid md:grid-cols-2 gap-10">
+                    <div className="grid md:grid-cols-2 gap-8">
                       <div>
-                        <h4 className="text-sm font-bold text-gray-400 uppercase tracking-wide mb-4">
+                        <h4 className="text-xs font-bold text-gray-400 uppercase tracking-wide mb-3">
                           Challenge
                         </h4>
-                        <p className="text-gray-300 mb-8 text-lg">{study.challenge}</p>
-                        <h4 className="text-sm font-bold text-gray-400 uppercase tracking-wide mb-4">
+                        <p className="text-gray-300 mb-6">{study.challenge}</p>
+                        <h4 className="text-xs font-bold text-gray-400 uppercase tracking-wide mb-3">
                           Solution
                         </h4>
-                        <p className="text-gray-300 text-lg">{study.solution}</p>
+                        <p className="text-gray-300">{study.solution}</p>
                       </div>
 
                       <div>
-                        <h4 className="text-sm font-bold text-gray-400 uppercase tracking-wide mb-4">
+                        <h4 className="text-xs font-bold text-gray-400 uppercase tracking-wide mb-3">
                           Results
                         </h4>
-                        <ul className="space-y-4">
+                        <ul className="space-y-3">
                           {study.results.map((result, idx) => (
                             <motion.li
                               key={idx}
@@ -694,10 +694,10 @@ export default function AgenticWorkflowPage() {
                               whileInView={{ opacity: 1, x: 0 }}
                               viewport={{ once: true }}
                               transition={{ duration: 0.5, delay: idx * 0.1 }}
-                              className="flex items-start gap-4"
+                              className="flex items-start gap-3"
                             >
-                              <CheckCircle2 className="w-6 h-6 text-green-400 mt-1 flex-shrink-0" />
-                              <span className="text-gray-300 text-lg">{result}</span>
+                              <CheckCircle2 className="w-5 h-5 text-green-400 mt-0.5 flex-shrink-0" />
+                              <span className="text-gray-300">{result}</span>
                             </motion.li>
                           ))}
                         </ul>
@@ -711,7 +711,7 @@ export default function AgenticWorkflowPage() {
         </section>
 
         {/* Premium CTA Section */}
-        <section className="py-32 px-6 relative">
+        <section className="py-20 px-6 relative">
           <div className="absolute inset-0 bg-gradient-to-b from-black via-purple-950/20 to-black" />
           <div className="relative z-10 max-w-5xl mx-auto text-center">
             <motion.div
@@ -722,19 +722,19 @@ export default function AgenticWorkflowPage() {
               className="relative"
             >
               <div className="absolute inset-0 bg-gradient-to-r from-blue-600/30 via-purple-600/30 to-pink-600/30 rounded-3xl blur-3xl" />
-              <div className="relative bg-gradient-to-br from-white/10 to-white/5 backdrop-blur-xl border border-white/20 rounded-3xl p-16">
-                <h2 className="text-5xl md:text-6xl font-black mb-8 bg-gradient-to-r from-white via-blue-200 to-purple-300 bg-clip-text text-transparent">
+              <div className="relative bg-gradient-to-br from-white/10 to-white/5 backdrop-blur-xl border border-white/20 rounded-3xl p-12">
+                <h2 className="text-4xl md:text-5xl font-black mb-6 bg-gradient-to-r from-white via-blue-200 to-purple-300 bg-clip-text text-transparent">
                   Ready to Transform Your Financial Operations?
                 </h2>
-                <p className="text-2xl text-gray-300 mb-12 leading-relaxed">
+                <p className="text-xl text-gray-300 mb-8 leading-relaxed">
                   Schedule a technical deep-dive with our solutions architects. <br />
                   See the platform in action with your own data.
                 </p>
-                <div className="flex flex-col sm:flex-row gap-6 justify-center">
+                <div className="flex flex-col sm:flex-row gap-5 justify-center">
                   <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
                     <Link
                       href="/request-demo"
-                      className="group px-12 py-6 bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 text-white text-lg font-bold rounded-full hover:shadow-2xl hover:shadow-purple-500/50 transition-all duration-300 flex items-center justify-center gap-3 relative overflow-hidden"
+                      className="group px-10 py-5 bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 text-white text-lg font-bold rounded-full hover:shadow-2xl hover:shadow-purple-500/50 transition-all duration-300 flex items-center justify-center gap-3 relative overflow-hidden"
                     >
                       <span className="relative z-10">Request Enterprise Demo</span>
                       <ArrowRight className="w-6 h-6 relative z-10 group-hover:translate-x-2 transition-transform" />
@@ -744,7 +744,7 @@ export default function AgenticWorkflowPage() {
                   <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
                     <Link
                       href="/company"
-                      className="px-12 py-6 bg-white/10 backdrop-blur-xl border-2 border-white/30 text-white text-lg font-bold rounded-full hover:bg-white/20 transition-all duration-300 flex items-center justify-center gap-3"
+                      className="px-10 py-5 bg-white/10 backdrop-blur-xl border-2 border-white/30 text-white text-lg font-bold rounded-full hover:bg-white/20 transition-all duration-300 flex items-center justify-center gap-3"
                     >
                       Contact Sales
                     </Link>

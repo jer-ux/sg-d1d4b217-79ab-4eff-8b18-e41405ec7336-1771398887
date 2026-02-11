@@ -115,12 +115,12 @@ export default function KincaidIQHome() {
                     </p>
 
                     <p className="text-xl text-white/80">
-                      Kincaid iQ is an enterprise transparency engine that transforms how organizations understand and prove their financial performance. It's not just another analytics platform—it's a fiduciary-grade accountability system that turns every dollar into documented, traceable evidence.
+                      Kincaid iQ is an enterprise transparency engine that transforms how organizations understand and prove their financial performance. It's not just another analytics platform—it's a fiduciary-grade accountability system that turns every cost optimization claim, every efficiency gain, and every business decision into cryptographically verified, audit-ready evidence. iQ gives you real-time, board-grade clarity on cash liquidity—even as health and pharmacy claims are still posting—and backs every number with auditable evidence lineage. You don't walk into the boardroom with "what we think happened." You walk in with "what happened," traceable from source data to financial outcome.
                     </p>
 
                     <div className="p-6 rounded-xl bg-gradient-to-br from-cyan-500/10 to-blue-500/10 border border-cyan-500/20 text-left">
                       <p className="text-base leading-relaxed text-white/90">
-                        <strong className="text-white">Real-time, board-grade clarity on cash liquidity</strong>—even as health and pharmacy claims are still posting—backed by auditable evidence lineage. You don't walk into the boardroom with "what we think happened." You walk in with <strong className="text-cyan-400">"what happened,"</strong> traceable from source data to financial outcome.
+                        This isn't another dashboard sitting on top of your stack. Kincaid iQ ties claims, contracts, vendor invoices, and cost initiatives directly to financial results—and documents the math behind every dollar. If a program claims <strong className="text-cyan-400">$4M in savings</strong>, you can inspect the chain: source records, assumptions, calculation logic, EBITDA tie-out, and whether the savings persists next year. Net: audit-ready reporting, stronger renewal leverage, and defensible decisions. Not just visibility—control. ⚡️
                       </p>
                     </div>
 

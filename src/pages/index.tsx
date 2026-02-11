@@ -1,12 +1,33 @@
 import { motion, AnimatePresence, useMotionValue, useTransform } from "framer-motion";
 import Link from "next/link";
+import dynamic from "next/dynamic";
 import { ArrowRight, Shield, Zap, Users, TrendingUp, Award, CheckCircle, Sparkles, Database, Lock, Cpu, FileCheck, Receipt, FileText, BarChart3, Calculator, Heart, Briefcase, Target, CheckCircle2, Activity, DollarSign, Layers, PieChart, Eye, Brain, Lightbulb, Clock, Globe, LineChart } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import Nav from "@/components/Nav";
 import Footer from "@/components/Footer";
 import { SEO } from "@/components/SEO";
 import { WarRoomPreview } from "@/components/kincaid-iq/WarRoomPreview";
-import { useState } from "react";
+import { useState, Suspense } from "react";
+
+// Dynamic imports for 3D components (client-side only)
+const Hero3DBackground = dynamic(() => import("@/components/premium/Hero3DBackground").then(mod => ({ default: mod.Hero3DBackground })), {
+  ssr: false,
+  loading: () => <div className="absolute inset-0 bg-gradient-to-br from-violet-950/20 to-slate-950" />
+});
+
+const Interactive3DCard = dynamic(() => import("@/components/premium/Interactive3DCard").then(mod => ({ default: mod.Interactive3DCard })), {
+  ssr: false,
+  loading: () => <div className="animate-pulse bg-slate-800 rounded-3xl h-full" />
+});
+
+const VegasParticles = dynamic(() => import("@/components/premium/VegasParticles").then(mod => ({ default: mod.VegasParticles })), {
+  ssr: false
+});
+
+const NeonGlow = dynamic(() => import("@/components/premium/NeonGlow").then(mod => ({ default: mod.NeonGlow })), {
+  ssr: false,
+  loading: () => <div>{(props: any) => props.children}</div>
+});
 
 const THEME = {
   blue: {
@@ -416,6 +437,30 @@ export default function Home() {
     },
   ];
 
+  const platformFeatures = [
+    {
+      icon: Shield,
+      title: "War Room",
+      description: "Real-time incident management with AI-powered event ranking and governance automation",
+      gradient: "linear-gradient(135deg, #3b82f6, #8b5cf6)",
+      href: "/war-room",
+    },
+    {
+      icon: TrendingUp,
+      title: "Verified Savings Ledger",
+      description: "Blockchain-backed cost optimization tracking with immutable audit trails and EBITDA attribution",
+      gradient: "linear-gradient(135deg, #10b981, #06b6d4)",
+      href: "/verified-savings-ledger",
+    },
+    {
+      icon: Database,
+      title: "Evidence Receipts",
+      description: "Cryptographically signed proof of business outcomes with defensible methodologies",
+      gradient: "linear-gradient(135deg, #8b5cf6, #ec4899)",
+      href: "/evidence-receipts",
+    },
+  ];
+
   return (
     <>
       <SEO
@@ -427,8 +472,18 @@ export default function Home() {
 
       <main className="min-h-screen bg-gradient-to-br from-slate-950 via-slate-900 to-slate-950">
         
-        {/* Enhanced Hero Section */}
+        {/* Enhanced 3D Hero Section */}
         <section className="relative pt-32 pb-20 px-4 overflow-hidden">
+          {/* 3D Animated Background */}
+          <Suspense fallback={null}>
+            <Hero3DBackground />
+          </Suspense>
+
+          {/* Vegas Particles */}
+          <Suspense fallback={null}>
+            <VegasParticles />
+          </Suspense>
+
           {/* Animated Background Elements */}
           <div className="absolute inset-0">
             <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,rgba(99,102,241,0.15),transparent_50%)]" />
@@ -451,32 +506,64 @@ export default function Home() {
           </div>
           
           <div className="relative z-10 max-w-7xl mx-auto">
-            {/* Top Badge */}
+            {/* Top Badge with Neon Glow */}
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6 }}
               className="flex justify-center mb-8"
             >
-              <div className="inline-flex items-center gap-2 rounded-full border border-violet-400/30 bg-violet-500/10 px-4 py-2 backdrop-blur-xl">
-                <Receipt className="h-4 w-4 text-violet-300" />
-                <span className="text-sm text-violet-200">Fiduciary Grade Transparency Engine</span>
-              </div>
+              <Suspense fallback={
+                <div className="inline-flex items-center gap-2 rounded-full border border-violet-400/30 bg-violet-500/10 px-4 py-2 backdrop-blur-xl">
+                  <Receipt className="h-4 w-4 text-violet-300" />
+                  <span className="text-sm text-violet-200">Fiduciary Grade Transparency Engine</span>
+                </div>
+              }>
+                <NeonGlow color1="#8b5cf6" color2="#ec4899">
+                  <div className="inline-flex items-center gap-2 rounded-full border border-violet-400/30 bg-violet-500/10 px-4 py-2 backdrop-blur-xl">
+                    <Receipt className="h-4 w-4 text-violet-300" />
+                    <span className="text-sm text-violet-200">Fiduciary Grade Transparency Engine</span>
+                  </div>
+                </NeonGlow>
+              </Suspense>
             </motion.div>
 
-            {/* Main Title */}
+            {/* Main Title with Enhanced Effects */}
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.1 }}
               className="text-center mb-6"
             >
-              <h1 className="text-6xl md:text-8xl font-bold bg-gradient-to-r from-blue-400 via-violet-400 to-fuchsia-400 bg-clip-text text-transparent mb-4">
+              <motion.h1 
+                className="text-6xl md:text-8xl font-bold bg-gradient-to-r from-blue-400 via-violet-400 to-fuchsia-400 bg-clip-text text-transparent mb-4"
+                style={{
+                  textShadow: "0 0 40px rgba(139, 92, 246, 0.5), 0 0 80px rgba(236, 72, 153, 0.3)",
+                }}
+                animate={{
+                  textShadow: [
+                    "0 0 40px rgba(139, 92, 246, 0.5), 0 0 80px rgba(236, 72, 153, 0.3)",
+                    "0 0 60px rgba(236, 72, 153, 0.6), 0 0 100px rgba(139, 92, 246, 0.4)",
+                    "0 0 40px rgba(139, 92, 246, 0.5), 0 0 80px rgba(236, 72, 153, 0.3)",
+                  ],
+                }}
+                transition={{ duration: 3, repeat: Infinity }}
+              >
                 Kincaid iQ AI
-              </h1>
-              <div className="text-2xl md:text-4xl font-semibold text-white/90 mb-6">
+              </motion.h1>
+              <motion.div 
+                className="text-2xl md:text-4xl font-semibold text-white/90 mb-6"
+                animate={{
+                  textShadow: [
+                    "0 0 20px rgba(255, 255, 255, 0.3)",
+                    "0 0 30px rgba(255, 255, 255, 0.5)",
+                    "0 0 20px rgba(255, 255, 255, 0.3)",
+                  ],
+                }}
+                transition={{ duration: 2, repeat: Infinity }}
+              >
                 Shows EBITDA Drag With Receipts
-              </div>
+              </motion.div>
             </motion.div>
 
             {/* What It Is - Detailed Description */}
@@ -551,7 +638,7 @@ export default function Home() {
               </div>
             </motion.div>
 
-            {/* Primary CTAs */}
+            {/* Primary CTAs with Vegas Effects */}
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
@@ -1044,7 +1131,7 @@ export default function Home() {
           </div>
         </section>
 
-        {/* Platform Features */}
+        {/* Platform Features with 3D Cards */}
         <section className="py-16 px-4 border-t border-white/10">
           <div className="max-w-7xl mx-auto">
             <motion.div
@@ -1058,30 +1145,19 @@ export default function Home() {
             </motion.div>
 
             <div className="grid md:grid-cols-3 gap-6">
-              <FeatureCard
-                icon={Shield}
-                title="War Room"
-                description="Real-time incident management with AI-powered event ranking and governance automation"
-                href="/war-room"
-                themeKey="blue"
-                delay={0}
-              />
-              <FeatureCard
-                icon={TrendingUp}
-                title="Verified Savings Ledger"
-                description="Blockchain-backed cost optimization tracking with immutable audit trails and EBITDA attribution"
-                href="/verified-savings-ledger"
-                themeKey="emerald"
-                delay={0.1}
-              />
-              <FeatureCard
-                icon={Database}
-                title="Evidence Receipts"
-                description="Cryptographically signed proof of business outcomes with defensible methodologies"
-                href="/evidence-receipts"
-                themeKey="violet"
-                delay={0.2}
-              />
+              <Suspense fallback={<div className="animate-pulse bg-slate-800 rounded-3xl h-64" />}>
+                {platformFeatures.map((feature, i) => (
+                  <Interactive3DCard
+                    key={i}
+                    icon={feature.icon}
+                    title={feature.title}
+                    description={feature.description}
+                    href={feature.href}
+                    gradient={feature.gradient}
+                    delay={i * 0.1}
+                  />
+                ))}
+              </Suspense>
             </div>
           </div>
         </section>

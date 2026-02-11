@@ -8,10 +8,10 @@ import { useState } from "react";
 import dynamic from "next/dynamic";
 
 // Dynamic imports for 3D components
-const Hero3DBackground = dynamic(() => import("@/components/premium/Hero3DBackground"), { ssr: false });
-const Interactive3DCard = dynamic(() => import("@/components/premium/Interactive3DCard"), { ssr: false });
-const VegasParticles = dynamic(() => import("@/components/premium/VegasParticles"), { ssr: false });
-const NeonGlow = dynamic(() => import("@/components/premium/NeonGlow"), { ssr: false });
+const Hero3DBackground = dynamic(() => import("@/components/premium/Hero3DBackground").then(mod => mod.Hero3DBackground), { ssr: false });
+const Interactive3DCard = dynamic(() => import("@/components/premium/Interactive3DCard").then(mod => mod.Interactive3DCard), { ssr: false });
+const VegasParticles = dynamic(() => import("@/components/premium/VegasParticles").then(mod => mod.VegasParticles), { ssr: false });
+const NeonGlow = dynamic(() => import("@/components/premium/NeonGlow").then(mod => mod.NeonGlow), { ssr: false });
 const DataFlowVisualization = dynamic(() => import("@/components/platform/PremiumGraphics").then(mod => mod.DataFlowVisualization), { ssr: false });
 const KPIDashboardPreview = dynamic(() => import("@/components/platform/PremiumGraphics").then(mod => mod.KPIDashboardPreview), { ssr: false });
 const NetworkGraphAnimation = dynamic(() => import("@/components/platform/PremiumGraphics").then(mod => mod.NetworkGraphAnimation), { ssr: false });
@@ -712,10 +712,10 @@ export default function ActuarialBenefits() {
                         boxShadow: "0 0 40px rgba(236, 72, 153, 0.5)",
                       }}
                     >
-                      <NeonGlow color="#ec4899" size={200} opacity={0.6} />
-                      <Sparkles className="w-6 h-6" />
-                      Schedule Premium Consultation
-                      <Sparkles className="w-6 h-6" />
+                      <div className="absolute inset-0 bg-pink-500/30 blur-xl rounded-full" />
+                      <Sparkles className="w-6 h-6 relative z-10" />
+                      <span className="relative z-10">Schedule Premium Consultation</span>
+                      <Sparkles className="w-6 h-6 relative z-10" />
                     </motion.button>
                   </Link>
                 </div>

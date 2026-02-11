@@ -20,6 +20,7 @@ import {
 } from "lucide-react";
 import { FAQ } from "@/components/kincaid-iq/FAQ";
 import { WarRoomHero3D } from "@/components/kincaid-iq/WarRoomHero3D";
+import { PremiumTileView } from "@/components/kincaid-iq/PremiumTileView";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 
@@ -134,6 +135,9 @@ export default function KincaidIQHome() {
               </div>
             </div>
           </section>
+
+          {/* PREMIUM 3D TILE VIEW */}
+          <PremiumTileView />
 
           {/* THE PROBLEM - STRUCTURAL ANALYSIS */}
           <section className="border-t border-white/10 bg-slate-900/50">

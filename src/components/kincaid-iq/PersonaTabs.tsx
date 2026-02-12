@@ -1,9 +1,10 @@
 import React, { useMemo, useState } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 
 type PersonaKey = "CEO" | "CFO" | "COO" | "CIO" | "CHRO";
 
-const primaryCta = { label: "Request Executive Review", href: "/request-demo" };
-const secondaryCta = { label: "See Proof Trail", href: "/evidence-receipts" };
+const primaryCta = { label: "Request Executive Review", href: "/contact" };
+const secondaryCta = { label: "See Proof Trail", href: "/proof-trail" };
 
 function SectionLabel({ children }: { children: React.ReactNode }) {
   return (
@@ -88,10 +89,10 @@ export function PersonaTabs() {
               key={k}
               onClick={() => setActive(k)}
               className={[
-                "rounded-2xl px-4 py-2 text-sm font-semibold transition",
+                "rounded-2xl px-4 py-2 text-sm font-semibold transition-all duration-300",
                 is
-                  ? "bg-white text-neutral-950 shadow-sm"
-                  : "bg-white/5 text-white/80 hover:bg-white/10",
+                  ? "bg-white text-neutral-950 shadow-md scale-105"
+                  : "bg-white/5 text-white/80 hover:bg-white/10 hover:scale-102",
               ].join(" ")}
             >
               {k}
@@ -101,59 +102,64 @@ export function PersonaTabs() {
       </div>
 
       <div className="mt-6 grid gap-6 md:grid-cols-2">
-        <div>
-          <div className="text-xl font-semibold tracking-tight text-white md:text-2xl">
-            {current.headline}
-          </div>
-          <ul className="mt-4 space-y-3 text-sm leading-relaxed text-white/80">
-            {current.bullets.map((b) => (
-              <li key={b} className="flex gap-3">
-                <span className="mt-2 inline-block h-1.5 w-1.5 shrink-0 rounded-full bg-white" />
-                <span>{b}</span>
-              </li>
-            ))}
-          </ul>
-        </div>
+        <AnimatePresence mode="wait">
+          <motion.div
+            key={`${active}-content`}
+            initial={{ opacity: 0, x: -20 }}
+            animate={{ opacity: 1, x: 0 }}
+            exit={{ opacity: 0, x: 20 }}
+            transition={{ duration: 0.3, ease: "easeInOut" }}
+          >
+            <div className="text-xl font-semibold tracking-tight text-white md:text-2xl">
+              {current.headline}
+            </div>
+            <ul className="mt-4 space-y-3 text-sm leading-relaxed text-white/80">
+              {current.bullets.map((b, idx) => (
+                <motion.li
+                  key={b}
+                  initial={{ opacity: 0, x: -10 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ duration: 0.3, delay: idx * 0.1 }}
+                  className="flex gap-3"
+                >
+                  <span className="mt-2 inline-block h-1.5 w-1.5 shrink-0 rounded-full bg-white" />
+                  <span>{b}</span>
+                </motion.li>
+              ))}
+            </ul>
+          </motion.div>
+        </AnimatePresence>
 
-        <div className="rounded-3xl border border-white/10 bg-neutral-950 p-5 md:p-6">
-          <SectionLabel>OUTCOME</SectionLabel>
-          <div className="mt-3 text-base font-semibold text-white">{current.outcome}</div>
-          <p className="mt-3 text-sm leading-relaxed text-white/70">{current.note}</p>
+        <AnimatePresence mode="wait">
+          <motion.div
+            key={`${active}-outcome`}
+            initial={{ opacity: 0, scale: 0.95 }}
+            animate={{ opacity: 1, scale: 1 }}
+            exit={{ opacity: 0, scale: 0.95 }}
+            transition={{ duration: 0.3, ease: "easeInOut" }}
+            className="rounded-3xl border border-white/10 bg-neutral-950 p-5 md:p-6"
+          >
+            <SectionLabel>OUTCOME</SectionLabel>
+            <div className="mt-3 text-base font-semibold text-white">{current.outcome}</div>
+            <p className="mt-3 text-sm leading-relaxed text-white/70">{current.note}</p>
 
-          <div className="mt-6 flex flex-col gap-3">
-            <a
-              href={primaryCta.href}
-              className="inline-flex items-center justify-center rounded-2xl bg-white px-5 py-3 text-sm font-semibold text-neutral-950 shadow-sm transition hover:shadow-md"
-            >
-              {primaryCta.label}
-            </a>
-            <a
-              href={secondaryCta.href}
-              className="inline-flex items-center justify-center rounded-2xl border border-white/15 bg-white/5 px-5 py-3 text-sm font-semibold text-white/90 shadow-sm transition hover:bg-white/10"
-            >
-              {secondaryCta.label}
-            </a>
-          </div>
-        </div>
+            <div className="mt-6 flex flex-col gap-3">
+              <a
+                href={primaryCta.href}
+                className="inline-flex items-center justify-center rounded-2xl bg-white px-5 py-3 text-sm font-semibold text-neutral-950 shadow-sm transition hover:shadow-md"
+              >
+                {primaryCta.label}
+              </a>
+              <a
+                href={secondaryCta.href}
+                className="inline-flex items-center justify-center rounded-2xl border border-white/15 bg-white/5 px-5 py-3 text-sm font-semibold text-white/90 shadow-sm transition hover:bg-white/10"
+              >
+                {secondaryCta.label}
+              </a>
+            </div>
+          </motion.div>
+        </AnimatePresence>
       </div>
-    </div>
-  );
-}
-
-export function PremiumCard({
-  label,
-  title,
-  body,
-}: {
-  label: string;
-  title: string;
-  body: string;
-}) {
-  return (
-    <div className="rounded-3xl border border-white/10 bg-white/5 p-6 shadow-sm">
-      <SectionLabel>{label}</SectionLabel>
-      <div className="mt-3 text-lg font-semibold text-white">{title}</div>
-      <p className="mt-3 text-sm leading-relaxed text-white/75">{body}</p>
     </div>
   );
 }

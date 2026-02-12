@@ -1,5 +1,6 @@
 import React, { useMemo, useState } from "react";
 import { SEO } from "@/components/SEO";
+import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
 
 type TileKey = "ACTUARIAL_TRUTH" | "RENEWAL_LEVERAGE" | "PROOF_TRAIL" | "GOVERNANCE";
@@ -238,18 +239,18 @@ function Drawer({
                   transition={{ delay: 1.2, duration: 0.4 }}
                   className="mt-6 flex flex-col gap-3 sm:flex-row"
                 >
-                  <a
+                  <Link
                     href="/proof-library"
                     className="inline-flex items-center justify-center rounded-2xl bg-white px-5 py-3 text-sm font-semibold text-neutral-950 shadow-sm transition-all hover:scale-105 hover:shadow-md"
                   >
                     View Full Proof Trail
-                  </a>
-                  <a
+                  </Link>
+                  <Link
                     href="/contact"
                     className="inline-flex items-center justify-center rounded-2xl border border-white/15 bg-white/5 px-5 py-3 text-sm font-semibold text-white/90 transition-all hover:bg-white/10"
                   >
                     Request Executive Review
-                  </a>
+                  </Link>
                 </motion.div>
               </motion.div>
 

@@ -371,6 +371,10 @@ function AnimatedGradientOverlay({ theme }: { theme: typeof THEME[ThemeKey] }) {
   );
 }
 
+function formatRunId(short: string) {
+  return `RUN_${short}`;
+}
+
 type FeatureCardProps = {
   icon: React.ComponentType<{ className?: string }>;
   title: string;
@@ -610,7 +614,7 @@ export default function Home() {
   const mockKPIs: KPI[] = useMemo(
     () => [
       {
-        id: "kpi_001",
+        id: "kpi-001",
         org: "Indiana Health Centers",
         runId: "RUN_A9F2",
         category: "ACTUARIAL_TRUTH",
@@ -629,7 +633,24 @@ export default function Home() {
         ],
       },
       {
-        id: "kpi_002",
+        id: "kpi-002",
+        org: "Indiana Health Centers",
+        runId: "RUN_A9F2",
+        category: "ACTUARIAL_TRUTH",
+        claimType: "YoY Trend",
+        period: "2024 → 2025",
+        value: "+4.1%",
+        status: "CITED",
+        confidence: "High",
+        citations: 2,
+        notes: "Year-over-year trend computed from normalized PEPM to avoid false inflation.",
+        evidence: [
+          { doc: "Renewal Packet (2024)", pages: "pp. 10–14", method: "Table Parse", confidence: "High" },
+          { doc: "Renewal Packet (2025)", pages: "pp. 12–18", method: "Table Parse", confidence: "High" },
+        ],
+      },
+      {
+        id: "kpi-003",
         org: "Indiana Health Centers",
         runId: "RUN_A9F2",
         category: "RENEWAL_LEVERAGE",
@@ -643,10 +664,12 @@ export default function Home() {
         evidence: [
           { doc: "Carrier Claims Summary (2025)", pages: "pp. 6–9", method: "Regex + Parse", confidence: "Med" },
           { doc: "Stop-Loss Proposal (2025)", pages: "pp. 2–4", method: "Table Parse", confidence: "High" },
+          { doc: "Vendor Fee Schedule", pages: "pp. 1–2", method: "Key-Value Extract", confidence: "High" },
+          { doc: "Benefits Consulting Report", pages: "pp. 15–22", method: "Manual Review", confidence: "Med" },
         ],
       },
       {
-        id: "kpi_003",
+        id: "kpi-004",
         org: "Midwest Manufacturing Co",
         runId: "RUN_B3C7",
         category: "PROOF_TRAIL",
@@ -662,7 +685,7 @@ export default function Home() {
         ],
       },
       {
-        id: "kpi_004",
+        id: "kpi-005",
         org: "Regional Logistics Group",
         runId: "RUN_D8E1",
         category: "GOVERNANCE",
@@ -677,19 +700,72 @@ export default function Home() {
           { doc: "Approval Log", pages: "Run #D8E1", method: "Immutable Audit Log", confidence: "High" },
         ],
       },
+      {
+        id: "kpi-006",
+        org: "Indiana Health Centers",
+        runId: "RUN_A8D0",
+        category: "GOVERNANCE",
+        claimType: "Overrides Logged",
+        period: "Last 30 days",
+        value: "100%",
+        status: "APPROVED",
+        confidence: "High",
+        citations: 2,
+        notes: "No silent edits. Overrides require rationale and approval.",
+        evidence: [
+          { doc: "Override Log", pages: "Entries #21–#34", method: "Signed Change Record", confidence: "High" },
+          { doc: "Approval Log", pages: "Run A8D0", method: "Immutable Audit Log", confidence: "High" },
+        ],
+      },
+      // Add a couple for other orgs so the org switcher feels real
+      {
+        id: "kpi-5",
+        org: "Indiana Health Centers",
+        runId: formatRunId("A8D0"),
+        category: "GOVERNANCE",
+        claimType: "Overrides Logged",
+        period: "Last 30 days",
+        value: "100%",
+        status: "APPROVED",
+        confidence: "High",
+        citations: 2,
+        notes: "No silent edits. Overrides require rationale and approval to protect auditability and trust.",
+        evidence: [
+          { doc: "Override Log", pages: "Entries #21–#34", method: "Signed Change Record", confidence: "High" },
+          { doc: "Approval Log", pages: "Run A8D0", method: "Immutable Audit Log", confidence: "High" },
+        ],
+      },
+      {
+        id: "kpi-6",
+        org: "Midwest Manufacturing Co",
+        runId: formatRunId("B104"),
+        category: "RENEWAL_LEVERAGE",
+        claimType: "Negotiation Leverage",
+        period: "2026 Renewal (in progress)",
+        value: "High",
+        status: "DRAFT",
+        confidence: "Med",
+        citations: 1,
+        notes: "In-progress run: early signals indicate carrier narrative conflicts with underlying drivers.",
+        evidence: [{ doc: "Carrier Claims Summary (2025)", pages: "pp. 6–9", method: "Regex + Parse", confidence: "Med" }],
+      },
+      {
+        id: "kpi-7",
+        org: "Regional Logistics Group",
+        runId: formatRunId("C22D"),
+        category: "GOVERNANCE",
+        claimType: "Ingest Failures",
+        period: "Doc Batch #17",
+        value: "2 docs",
+        status: "DRAFT",
+        confidence: "Low",
+        citations: 0,
+        notes: "Mock failure scenario to demonstrate operational telemetry and replay workflow.",
+        evidence: [{ doc: "Doc Ingest Log", pages: "Batch #17", method: "Parser Error Trace", confidence: "Low" }],
+      },
     ],
     []
   );
-
-  const filteredRuns = mockRuns.filter((r) => r.org === selectedOrg);
-  const currentRun = filteredRuns.find((r) => r.runId === selectedRun) || filteredRuns[0];
-
-  const filteredKPIs = mockKPIs.filter((k) => {
-    const matchOrg = k.org === selectedOrg;
-    const matchRun = k.runId === selectedRun;
-    const matchCat = categoryFilter ? k.category === categoryFilter : true;
-    return matchOrg && matchRun && matchCat;
-  });
 
   const tileConfig: { key: TileKey; title: string; desc: string; tags: string[] }[] = [
     {
@@ -717,6 +793,17 @@ export default function Home() {
       tags: ["Approvals", "Audit log", "RBAC"],
     },
   ];
+
+  const filteredRuns = useMemo(() => mockRuns.filter((r) => r.org === selectedOrg), [mockRuns, selectedOrg]);
+  
+  const currentRun = useMemo(() => mockRuns.find((r) => r.runId === selectedRun), [mockRuns, selectedRun]);
+
+  const filteredKPIs = useMemo(() => {
+    return mockKPIs
+      .filter((k) => k.org === selectedOrg)
+      .filter((k) => k.runId === selectedRun)
+      .filter((k) => !categoryFilter || k.category === categoryFilter);
+  }, [mockKPIs, selectedOrg, selectedRun, categoryFilter]);
 
   const actuarialSolutions = [
     {
@@ -1506,47 +1593,22 @@ export default function Home() {
                 <div className="relative overflow-hidden rounded-2xl border border-white/10 bg-slate-950/60 backdrop-blur-xl p-6">
                   <AnimatedGradientOverlay theme={THEME.violet} />
                   <div className="relative">
-                    <FileText className="h-8 w-8 text-violet-400 mb-4" />
-                    <h4 className="text-lg font-semibold text-white mb-2">Methodology Documentation</h4>
-                    <p className="text-sm text-white/70 mb-4">
-                      Every calculation includes versioned methodology, assumptions, and confidence intervals with statistical validation and security compliance
-                    </p>
-                    <ul className="space-y-2 text-sm text-white/60">
-                      <li className="flex items-start gap-2">
-                        <CheckCircle className="h-4 w-4 text-violet-400 mt-0.5 flex-shrink-0" />
-                        <span>Peer-reviewed algorithms with academic citations</span>
-                      </li>
-                      <li className="flex items-start gap-2">
-                        <CheckCircle className="h-4 w-4 text-violet-400 mt-0.5 flex-shrink-0" />
-                        <span>Monte Carlo simulation for uncertainty bounds</span>
-                      </li>
-                      <li className="flex items-start gap-2">
-                        <CheckCircle className="h-4 w-4 text-violet-400 mt-0.5 flex-shrink-0" />
-                        <span>Version control for methodology evolution</span>
-                      </li>
-                    </ul>
-                  </div>
-                </div>
-
-                <div className="relative overflow-hidden rounded-2xl border border-white/10 bg-slate-950/60 backdrop-blur-xl p-6">
-                  <AnimatedGradientOverlay theme={THEME.cyan} />
-                  <div className="relative">
-                    <Shield className="h-8 w-8 text-cyan-400 mb-4" />
+                    <Shield className="h-8 w-8 text-violet-400 mb-4" />
                     <h4 className="text-lg font-semibold text-white mb-2">Compliance Framework</h4>
                     <p className="text-sm text-white/70 mb-4">
                       SOC 2 Type II certified infrastructure with MITRE ATT&CK alignment, role-based access control, and regulatory reporting automation
                     </p>
                     <ul className="space-y-2 text-sm text-white/60">
                       <li className="flex items-start gap-2">
-                        <CheckCircle className="h-4 w-4 text-cyan-400 mt-0.5 flex-shrink-0" />
+                        <CheckCircle className="h-4 w-4 text-violet-400 mt-0.5 flex-shrink-0" />
                         <span>GDPR, SOX, HIPAA, and MITRE ATT&CK compliance</span>
                       </li>
                       <li className="flex items-start gap-2">
-                        <CheckCircle className="h-4 w-4 text-cyan-400 mt-0.5 flex-shrink-0" />
+                        <CheckCircle className="h-4 w-4 text-violet-400 mt-0.5 flex-shrink-0" />
                         <span>Automated evidence collection for audits</span>
                       </li>
                       <li className="flex items-start gap-2">
-                        <CheckCircle className="h-4 w-4 text-cyan-400 mt-0.5 flex-shrink-0" />
+                        <CheckCircle className="h-4 w-4 text-violet-400 mt-0.5 flex-shrink-0" />
                         <span>Continuous monitoring with alert escalation</span>
                       </li>
                     </ul>
@@ -1588,7 +1650,7 @@ export default function Home() {
                     whileInView={{ opacity: 1, y: 0 }}
                     viewport={{ once: true }}
                     transition={{ delay: i * 0.1 }}
-                    className="relative overflow-hidden rounded-2xl border border-white/10 bg-slate-950/60 backdrop-blur-xl p-6 text-center"
+                    className="relative overflow-hidden rounded-2xl border border-white/10 bg-slate-950/60 backdrop-blur-xl p-6"
                   >
                     <AnimatedGradientOverlay theme={THEME.blue} />
                     <div className="relative">
@@ -1901,7 +1963,7 @@ export default function Home() {
                     <Sparkles className="w-6 h-6" />
                   </span>
 
-                  <div className="absolute inset-0 rounded-2xl bg-gradient-to-r from-transparent via-white/30 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 blur-xl" />
+                  <div className="absolute inset-0 rounded-2xl border-2 border-white/30" />
                 </motion.button>
               </Link>
             </motion.div>

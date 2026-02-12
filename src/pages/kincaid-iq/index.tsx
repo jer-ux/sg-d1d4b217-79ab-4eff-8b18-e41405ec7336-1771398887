@@ -152,40 +152,16 @@ export default function KincaidIQHome() {
           {/* PERSONA-FOCUSED SECTION */}
           <section className="border-t border-white/10 bg-slate-900/50">
             <div className="mx-auto max-w-7xl px-6 py-20">
-              <div className="text-sm font-medium tracking-wide text-cyan-400 mb-3">TARGET AUDIENCE</div>
-              <h2 className="text-4xl font-bold mb-6">Who This Is For</h2>
-
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                <AudienceCard
-                  icon={Shield}
-                  title="Board Directors"
-                  body="Requiring fiduciary clarity on one of the largest opaque expense categories in enterprise P&L."
-                />
-                <AudienceCard
-                  icon={Target}
-                  title="Founders & CEOs"
-                  body="Protecting margin durability against structural cost acceleration in high-growth environments."
-                />
-                <AudienceCard
-                  icon={BarChart3}
-                  title="Private Equity Firms"
-                  body="Optimizing portfolio EBITDA through systematic healthcare cost governance across platform companies."
-                />
-                <AudienceCard
-                  icon={DollarSign}
-                  title="CFOs"
-                  body="Demanding contract transparency and verifiable cost attribution for board-level financial reporting."
-                />
-                <AudienceCard
-                  icon={Lock}
-                  title="Institutional Investors"
-                  body="Analyzing enterprise cost risk exposure as material factor in investment thesis and valuation models."
-                />
-                <AudienceCard
-                  icon={Users}
-                  title="HR & Benefits Leaders"
-                  body="Moving from reactive reporting to strategic control with evidence-backed plan performance visibility."
-                />
+              <div className="mb-10 text-center">
+                <div className="text-sm font-medium tracking-wide text-cyan-400 mb-3">EXECUTIVE ALIGNMENT</div>
+                <h2 className="text-4xl font-bold mb-6">Built for the Boardroom</h2>
+                <p className="mx-auto max-w-2xl text-lg text-white/70">
+                  Different stakeholders need different evidence. Kincaid iQ translates raw claims data into the specific decision-grade intelligence each executive role requires.
+                </p>
+              </div>
+              
+              <div className="mx-auto max-w-5xl">
+                <PersonaTabs />
               </div>
             </div>
           </section>

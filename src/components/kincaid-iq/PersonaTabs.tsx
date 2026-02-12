@@ -46,7 +46,7 @@ export function PersonaTabs() {
         headline: "Stop running benefits on chaos and inboxes.",
         bullets: [
           "Governed workflows: approvals, exceptions, and audit trails.",
-          "Faster renewals with fewer fire drills and fewer "special cases."",
+          "Faster renewals with fewer fire drills and fewer \"special cases.\"",
           "Clear ownership and repeatable execution across the year.",
         ],
         outcome: "Operating cadence + controls + workflow map + escalation paths.",

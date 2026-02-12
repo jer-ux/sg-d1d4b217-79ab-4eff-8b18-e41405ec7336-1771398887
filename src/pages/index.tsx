@@ -572,6 +572,152 @@ function SolutionCard3D({ solution, index }: { solution: any; index: number }) {
   );
 }
 
+type NavItem = { label: string; href: string };
+
+function TopNav({
+  active,
+  items,
+}: {
+  active: string;
+  items: NavItem[];
+}) {
+  return (
+    <div className="sticky top-0 z-40 border-b border-white/10 bg-neutral-950/70 backdrop-blur">
+      <Container>
+        <div className="flex items-center justify-between gap-4 py-4">
+          <div className="flex items-center gap-3">
+            <div className="h-9 w-9 rounded-2xl border border-white/10 bg-white/5" />
+            <div>
+              <div className="text-sm font-semibold text-white">Kincaid IQ</div>
+              <div className="text-[11px] tracking-[0.18em] text-white/45">
+                EXECUTIVE CONSOLE
+              </div>
+            </div>
+          </div>
+
+          <nav className="hidden items-center gap-2 md:flex">
+            {items.map((it) => {
+              const is = it.label === active;
+              return (
+                <a
+                  key={it.href}
+                  href={it.href}
+                  className={[
+                    "rounded-2xl px-4 py-2 text-sm font-semibold transition",
+                    is
+                      ? "bg-white text-neutral-950 shadow-sm"
+                      : "bg-white/5 text-white/80 hover:bg-white/10",
+                  ].join(" ")}
+                >
+                  {it.label}
+                </a>
+              );
+            })}
+          </nav>
+
+          <div className="hidden md:block" />
+        </div>
+      </Container>
+    </div>
+  );
+}
+
+function ExportGateButton({
+  fiduciaryMode,
+  exportableCount,
+  totalCount,
+}: {
+  fiduciaryMode: boolean;
+  exportableCount: number;
+  totalCount: number;
+}) {
+  const enabled = fiduciaryMode ? exportableCount > 0 : totalCount > 0;
+
+  const hint = fiduciaryMode
+    ? exportableCount > 0
+      ? "Export is available: all visible KPIs are eligible."
+      : "Blocked: Fiduciary Mode only exports CITED/APPROVED KPIs."
+    : totalCount > 0
+      ? "Export is available."
+      : "No KPIs available to export.";
+
+  return (
+    <div className="relative">
+      <button
+        disabled={!enabled}
+        className={[
+          "inline-flex items-center justify-center rounded-2xl px-5 py-3 text-sm font-semibold shadow-sm transition",
+          enabled
+            ? "bg-white text-neutral-950 hover:shadow-md"
+            : "cursor-not-allowed bg-white/10 text-white/40",
+        ].join(" ")}
+        title={hint}
+        aria-label="Export Board Packet"
+      >
+        Export Board Packet
+      </button>
+
+      <div className="mt-2 text-xs text-white/55">
+        {fiduciaryMode ? (
+          <>
+            Eligible: <span className="font-semibold text-emerald-200">{exportableCount}</span>{" "}
+            / {totalCount} KPIs
+          </>
+        ) : (
+          <>
+            Available: <span className="font-semibold text-white">{totalCount}</span> KPIs
+          </>
+        )}
+      </div>
+    </div>
+  );
+}
+
+function AppShell({
+  children,
+  exportNode,
+}: {
+  children: React.ReactNode;
+  exportNode?: React.ReactNode;
+}) {
+  const items: NavItem[] = [
+    { label: "KPIs", href: "#kpis" },
+    { label: "Runs", href: "#runs" },
+    { label: "Artifacts", href: "#artifacts" },
+    { label: "Approvals", href: "#approvals" },
+    { label: "Settings", href: "#settings" },
+  ];
+
+  return (
+    <div className="relative">
+      <TopNav active="KPIs" items={items} />
+
+      <Container>
+        <div className="relative mt-8 flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
+          <div>
+            <SectionLabel>KINCAID IQ • EXECUTIVE CONSOLE (MOCK)</SectionLabel>
+            <h1 className="mt-4 max-w-5xl text-3xl font-semibold tracking-tight md:text-5xl">
+              Decision-grade benefits intelligence — with receipts.
+            </h1>
+            <p className="mt-5 max-w-3xl text-sm leading-relaxed text-white/75 md:text-base">
+              Actuarial truth, negotiation leverage, proof trails, and governance—presented like a real operating system.
+            </p>
+          </div>
+
+          {exportNode ? (
+            <div className="rounded-3xl border border-white/10 bg-white/5 p-4">
+              <SectionLabel>EXPORT</SectionLabel>
+              <div className="mt-3">{exportNode}</div>
+            </div>
+          ) : null}
+        </div>
+      </Container>
+
+      <div className="mt-10">{children}</div>
+    </div>
+  );
+}
+
 export default function Home() {
   const [selectedPreviewMetric, setSelectedPreviewMetric] = useState<string | null>(null);
   
@@ -580,6 +726,7 @@ export default function Home() {
   const [selectedRun, setSelectedRun] = useState<string>("RUN_A9F2");
   const [categoryFilter, setCategoryFilter] = useState<TileKey | null>(null);
   const [drawerKPI, setDrawerKPI] = useState<KPI | null>(null);
+  const [fiduciaryMode, setFiduciaryMode] = useState<boolean>(true);
 
   const mockRuns: Run[] = useMemo(
     () => [
@@ -686,22 +833,6 @@ export default function Home() {
       },
       {
         id: "kpi-005",
-        org: "Regional Logistics Group",
-        runId: "RUN_D8E1",
-        category: "GOVERNANCE",
-        claimType: "Approval SLA",
-        period: "2025",
-        value: "< 48 hrs",
-        status: "DRAFT",
-        confidence: "High",
-        citations: 2,
-        notes: "Approval workflows active; override logging enabled.",
-        evidence: [
-          { doc: "Approval Log", pages: "Run #D8E1", method: "Immutable Audit Log", confidence: "High" },
-        ],
-      },
-      {
-        id: "kpi-006",
         org: "Indiana Health Centers",
         runId: "RUN_A8D0",
         category: "GOVERNANCE",
@@ -717,28 +848,10 @@ export default function Home() {
           { doc: "Approval Log", pages: "Run A8D0", method: "Immutable Audit Log", confidence: "High" },
         ],
       },
-      // Add a couple for other orgs so the org switcher feels real
       {
-        id: "kpi-5",
-        org: "Indiana Health Centers",
-        runId: formatRunId("A8D0"),
-        category: "GOVERNANCE",
-        claimType: "Overrides Logged",
-        period: "Last 30 days",
-        value: "100%",
-        status: "APPROVED",
-        confidence: "High",
-        citations: 2,
-        notes: "No silent edits. Overrides require rationale and approval to protect auditability and trust.",
-        evidence: [
-          { doc: "Override Log", pages: "Entries #21–#34", method: "Signed Change Record", confidence: "High" },
-          { doc: "Approval Log", pages: "Run A8D0", method: "Immutable Audit Log", confidence: "High" },
-        ],
-      },
-      {
-        id: "kpi-6",
+        id: "kpi-006",
         org: "Midwest Manufacturing Co",
-        runId: formatRunId("B104"),
+        runId: "RUN_B3C7",
         category: "RENEWAL_LEVERAGE",
         claimType: "Negotiation Leverage",
         period: "2026 Renewal (in progress)",
@@ -750,18 +863,20 @@ export default function Home() {
         evidence: [{ doc: "Carrier Claims Summary (2025)", pages: "pp. 6–9", method: "Regex + Parse", confidence: "Med" }],
       },
       {
-        id: "kpi-7",
+        id: "kpi-007",
         org: "Regional Logistics Group",
-        runId: formatRunId("C22D"),
+        runId: "RUN_D8E1",
         category: "GOVERNANCE",
-        claimType: "Ingest Failures",
-        period: "Doc Batch #17",
-        value: "2 docs",
+        claimType: "Approval SLA",
+        period: "2025",
+        value: "< 48 hrs",
         status: "DRAFT",
-        confidence: "Low",
-        citations: 0,
-        notes: "Mock failure scenario to demonstrate operational telemetry and replay workflow.",
-        evidence: [{ doc: "Doc Ingest Log", pages: "Batch #17", method: "Parser Error Trace", confidence: "Low" }],
+        confidence: "High",
+        citations: 2,
+        notes: "Approval workflows active; override logging enabled.",
+        evidence: [
+          { doc: "Approval Log", pages: "Run #D8E1", method: "Immutable Audit Log", confidence: "High" },
+        ],
       },
     ],
     []
@@ -802,8 +917,12 @@ export default function Home() {
     return mockKPIs
       .filter((k) => k.org === selectedOrg)
       .filter((k) => k.runId === selectedRun)
-      .filter((k) => !categoryFilter || k.category === categoryFilter);
-  }, [mockKPIs, selectedOrg, selectedRun, categoryFilter]);
+      .filter((k) => !categoryFilter || k.category === categoryFilter)
+      .filter((k) => {
+        if (!fiduciaryMode) return true;
+        return k.status === "CITED" || k.status === "APPROVED";
+      });
+  }, [mockKPIs, selectedOrg, selectedRun, categoryFilter, fiduciaryMode]);
 
   const actuarialSolutions = [
     {
@@ -940,177 +1059,238 @@ export default function Home() {
     },
   ];
 
+  const exportableKPIs = useMemo(
+    () => mockKPIs.filter((k) => k.org === selectedOrg && (k.status === "CITED" || k.status === "APPROVED")),
+    [mockKPIs, selectedOrg]
+  );
+
+  const totalKPIs = useMemo(() => mockKPIs.filter((k) => k.org === selectedOrg), [mockKPIs, selectedOrg]);
+
   return (
     <>
       <SEO
-        title="Kincaid IQ AI - Fiduciary Grade Transparency Engine"
-        description="Enterprise AI platform that shows EBITDA drag with receipts. Real-time incident management, verified cost optimization, and cryptographic evidence trails."
+        title="SiriusB iQ - AI Data Sciences Lab | Executive Intelligence Platform"
+        description="Transform benefits data into board-grade intelligence with actuarial truth, renewal leverage, and proof trails."
       />
       
       <Nav />
 
-      <main className="min-h-screen bg-gradient-to-br from-slate-950 via-slate-900 to-slate-950">
-        
-        {/* Enhanced Gradient Mesh Background */}
-        <GradientMeshBackground />
+      <main className="relative min-h-screen bg-neutral-950 text-white">
+        <PremiumBackdrop />
 
-        {/* NEW: Kincaid iQ Executive Console Section */}
-        <section className="relative border-b border-white/10 pt-32 pb-20 px-4">
-          <PremiumBackdrop />
-          
-          <Container>
-            <div className="relative py-14 md:py-20">
-              <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.6 }}
-              >
-                <SectionLabel>KINCAID IQ • EXECUTIVE CONSOLE</SectionLabel>
-                <h1 className="mt-4 max-w-4xl text-3xl font-semibold tracking-tight md:text-5xl">
-                  Decision-grade benefits intelligence with proof trails
-                </h1>
-                <p className="mt-5 max-w-3xl text-sm leading-relaxed text-white/75 md:text-base">
-                  Four workflow tiles filter KPIs by category. Select org, run, and drill into evidence-backed metrics with citations and confidence scoring.
-                </p>
+        {/* Executive Console Section with AppShell */}
+        <section className="relative">
+          <AppShell
+            exportNode={
+              <ExportGateButton
+                fiduciaryMode={fiduciaryMode}
+                exportableCount={exportableKPIs.length}
+                totalCount={totalKPIs.length}
+              />
+            }
+          >
+            <Container>
+              {/* Command Bar */}
+              <div className="mt-8 rounded-3xl border border-white/10 bg-white/5 p-4 md:p-5">
+                <div className="flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
+                  <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
+                    <div className="rounded-2xl border border-white/10 bg-neutral-950 px-4 py-3">
+                      <div className="text-[11px] font-semibold tracking-[0.14em] text-white/55">
+                        ORGANIZATION
+                      </div>
+                      <select
+                        value={selectedOrg}
+                        onChange={(e) => setSelectedOrg(e.target.value as PersonaOrg)}
+                        className="mt-1 w-full bg-transparent text-sm font-semibold text-white outline-none"
+                      >
+                        <option className="bg-neutral-950" value="Indiana Health Centers">
+                          Indiana Health Centers
+                        </option>
+                        <option className="bg-neutral-950" value="Midwest Manufacturing Co">
+                          Midwest Manufacturing Co
+                        </option>
+                        <option className="bg-neutral-950" value="Regional Logistics Group">
+                          Regional Logistics Group
+                        </option>
+                      </select>
+                    </div>
 
-                <div className="mt-6 flex flex-wrap gap-2">
-                  <Pill>Middle-market benefits</Pill>
+                    <div className="min-w-[260px] flex-1 rounded-2xl border border-white/10 bg-neutral-950 px-4 py-3">
+                      <div className="text-[11px] font-semibold tracking-[0.14em] text-white/55">
+                        SEARCH KPIs
+                      </div>
+                      <input
+                        placeholder="e.g., PEPM, trend, overrides, leverage..."
+                        className="mt-1 w-full bg-transparent text-sm font-semibold text-white placeholder:text-white/35 outline-none"
+                      />
+                    </div>
+                  </div>
+
+                  <div className="flex items-center justify-between gap-3 md:justify-end">
+                    <div className="flex items-center gap-2 rounded-2xl border border-white/10 bg-neutral-950 px-4 py-3">
+                      <div className="text-xs font-semibold text-white/70">Fiduciary Mode</div>
+                      <button
+                        onClick={() => setFiduciaryMode((v) => !v)}
+                        className={[
+                          "relative h-6 w-11 rounded-full border transition",
+                          fiduciaryMode
+                            ? "border-emerald-500/30 bg-emerald-500/20"
+                            : "border-white/15 bg-white/10",
+                        ].join(" ")}
+                        aria-label="Toggle Fiduciary Mode"
+                      >
+                        <span
+                          className={[
+                            "absolute top-1 h-4 w-4 rounded-full bg-white transition",
+                            fiduciaryMode ? "left-6" : "left-1",
+                          ].join(" ")}
+                        />
+                      </button>
+                    </div>
+
+                    <Link
+                      href="/contact"
+                      className="inline-flex items-center justify-center rounded-2xl bg-white px-5 py-3 text-sm font-semibold text-neutral-950 shadow-sm hover:shadow-md"
+                    >
+                      Request Executive Review
+                    </Link>
+                  </div>
+                </div>
+
+                <div className="mt-4 flex flex-wrap gap-2">
                   <Pill>Evidence-backed KPIs</Pill>
-                  <Pill>Fiduciary Mode exports</Pill>
+                  <Pill>Replayable runs</Pill>
+                  <Pill>Export gate: cited/approved</Pill>
                   <Pill>Audit-ready</Pill>
                 </div>
-              </motion.div>
+              </div>
 
-              {/* Org + Run Selector */}
-              <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.1, duration: 0.6 }}
-                className="mt-10 rounded-3xl border border-white/10 bg-white/5 p-6"
-              >
-                <SectionLabel>SELECT ORG & RUN</SectionLabel>
-                <div className="mt-4 grid gap-4 md:grid-cols-2">
+              {/* Recent Runs */}
+              <div className="mt-6 rounded-3xl border border-white/10 bg-white/5 p-4 md:p-5">
+                <div className="flex flex-col gap-3 md:flex-row md:items-end md:justify-between">
                   <div>
-                    <label className="mb-2 block text-sm font-semibold text-white/80">Organization</label>
-                    <select
-                      value={selectedOrg}
-                      onChange={(e) => {
-                        const org = e.target.value as PersonaOrg;
-                        setSelectedOrg(org);
-                        const firstRun = mockRuns.find((r) => r.org === org);
-                        if (firstRun) setSelectedRun(firstRun.runId);
-                        setCategoryFilter(null);
-                      }}
-                      className="w-full rounded-2xl border border-white/15 bg-white/5 px-4 py-3 text-sm font-semibold text-white outline-none transition hover:bg-white/7 focus:border-white/25"
-                    >
-                      <option value="Indiana Health Centers">Indiana Health Centers</option>
-                      <option value="Midwest Manufacturing Co">Midwest Manufacturing Co</option>
-                      <option value="Regional Logistics Group">Regional Logistics Group</option>
-                    </select>
+                    <SectionLabel>RECENT RUNS</SectionLabel>
+                    <div className="mt-2 text-sm text-white/70">
+                      Workflow history for <span className="font-semibold text-white">{selectedOrg}</span>
+                    </div>
                   </div>
-
-                  <div>
-                    <label className="mb-2 block text-sm font-semibold text-white/80">Run</label>
-                    <select
-                      value={selectedRun}
-                      onChange={(e) => {
-                        setSelectedRun(e.target.value);
-                        setCategoryFilter(null);
-                      }}
-                      className="w-full rounded-2xl border border-white/15 bg-white/5 px-4 py-3 text-sm font-semibold text-white outline-none transition hover:bg-white/7 focus:border-white/25"
-                    >
-                      {filteredRuns.map((r) => (
-                        <option key={r.runId} value={r.runId}>
-                          {r.runId} — {r.createdAt}
-                        </option>
-                      ))}
-                    </select>
-                  </div>
+                  <Link
+                    href="/proof-library"
+                    className="inline-flex items-center justify-center rounded-2xl border border-white/15 bg-white/5 px-4 py-2 text-sm font-semibold text-white/90 hover:bg-white/10"
+                  >
+                    Open Proof Trail
+                  </Link>
                 </div>
 
-                {currentRun ? (
-                  <div className="mt-5 flex flex-wrap items-center gap-2">
-                    <StatusPill status={currentRun.status} />
-                    <Pill>Workflow: {currentRun.workflow}</Pill>
-                    <Pill>Version: {currentRun.version}</Pill>
-                  </div>
-                ) : null}
-              </motion.div>
+                <div className="mt-4 grid gap-3 md:grid-cols-2">
+                  {filteredRuns.map((r) => (
+                    <button
+                      key={r.runId}
+                      onClick={() => {
+                        setSelectedRun(r.runId);
+                        if (r.workflow.toLowerCase().includes("proof")) setCategoryFilter("PROOF_TRAIL");
+                        else if (r.workflow.toLowerCase().includes("renewal")) setCategoryFilter("RENEWAL_LEVERAGE");
+                        else if (r.workflow.toLowerCase().includes("ingest")) setCategoryFilter("GOVERNANCE");
+                        else setCategoryFilter("ACTUARIAL_TRUTH");
+                      }}
+                      className="rounded-2xl border border-white/10 bg-neutral-950 p-4 text-left hover:bg-white/5"
+                    >
+                      <div className="flex items-center justify-between gap-3">
+                        <div className="text-sm font-semibold text-white">{r.runId}</div>
+                        <StatusPill status={r.status} />
+                      </div>
+                      <div className="mt-2 text-xs text-white/60">
+                        {r.workflow} • {r.version} • {r.createdAt}
+                      </div>
+                    </button>
+                  ))}
+                </div>
+              </div>
 
-              {/* Tiles */}
-              <motion.div
-                initial={{ opacity: 0, y: 30 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.2, duration: 0.6 }}
-                className="mt-10 grid gap-4 md:grid-cols-2"
-              >
+              {/* Tiles (filters) */}
+              <div className="mt-8 grid gap-4 md:grid-cols-2">
                 {tileConfig.map((t) => (
                   <Tile
                     key={t.key}
                     title={t.title}
                     desc={t.desc}
                     tags={t.tags}
-                    onClick={() => setCategoryFilter(categoryFilter === t.key ? null : t.key)}
+                    onClick={() => setCategoryFilter(t.key)}
                     active={categoryFilter === t.key}
                   />
                 ))}
-              </motion.div>
+              </div>
 
-              {/* KPI Table */}
-              <motion.div
-                initial={{ opacity: 0, y: 30 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.3, duration: 0.6 }}
-                className="mt-10 rounded-3xl border border-white/10 bg-white/5 p-6"
-              >
-                <SectionLabel>KPIs ({filteredKPIs.length})</SectionLabel>
-                {filteredKPIs.length === 0 ? (
-                  <p className="mt-4 text-sm text-white/60">No KPIs match current filters.</p>
-                ) : (
-                  <div className="mt-5 space-y-3">
-                    {filteredKPIs.map((kpi) => (
-                      <button
-                        key={kpi.id}
-                        onClick={() => setDrawerKPI(kpi)}
-                        className="w-full rounded-2xl border border-white/10 bg-neutral-950 p-4 text-left transition hover:bg-white/5"
-                      >
-                        <div className="flex flex-wrap items-start justify-between gap-3">
-                          <div>
-                            <div className="text-base font-semibold text-white">{kpi.claimType}</div>
-                            <div className="mt-1 text-sm text-white/70">{kpi.period}</div>
-                          </div>
-                          <div className="text-right">
-                            <div className="text-lg font-semibold text-white">{kpi.value}</div>
-                            {kpi.unit ? <div className="text-xs text-white/60">{kpi.unit}</div> : null}
-                          </div>
-                        </div>
-                        <div className="mt-3 flex flex-wrap items-center gap-2">
-                          <StatusPill status={kpi.status} />
-                          <Pill>Confidence: {kpi.confidence}</Pill>
-                          <Pill>Citations: {kpi.citations}</Pill>
-                        </div>
-                      </button>
-                    ))}
+              {/* KPI Results */}
+              <div className="mt-6 rounded-3xl border border-white/10 bg-white/5 p-4 md:p-5">
+                <div className="flex flex-col gap-3 md:flex-row md:items-end md:justify-between">
+                  <div>
+                    <SectionLabel>KPIs</SectionLabel>
+                    <div className="mt-2 text-sm text-white/70">
+                      Showing{" "}
+                      <span className="font-semibold text-white">{filteredKPIs.length}</span>{" "}
+                      result(s) for{" "}
+                      <span className="font-semibold text-white">{categoryFilter || "All"}</span>
+                      {fiduciaryMode ? (
+                        <>
+                          {" "}
+                          • <span className="font-semibold text-emerald-200">Fiduciary Mode ON</span>
+                        </>
+                      ) : null}
+                    </div>
                   </div>
-                )}
-              </motion.div>
+                  <div className="text-xs text-white/50">
+                    Click a row to open the proof trail.
+                  </div>
+                </div>
 
-              <motion.div
-                initial={{ opacity: 0, y: 30 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.4, duration: 0.6 }}
-                className="mt-10 rounded-3xl border border-white/10 bg-white/5 p-6"
-              >
-                <SectionLabel>HOW TO USE</SectionLabel>
-                <p className="mt-3 text-sm leading-relaxed text-white/75">
-                  Select org + run → filter by tile → click KPI → review evidence trail → approve or export. 
-                  Mock UI for positioning. Replace with live KPI + evidence tables when wired.
+                <div className="mt-4 overflow-hidden rounded-2xl border border-white/10 bg-neutral-950">
+                  <div className="grid grid-cols-12 gap-2 border-b border-white/10 px-4 py-3 text-[11px] font-semibold tracking-[0.14em] text-white/50">
+                    <div className="col-span-3">CLAIM</div>
+                    <div className="col-span-2">PERIOD</div>
+                    <div className="col-span-2">VALUE</div>
+                    <div className="col-span-2">STATUS</div>
+                    <div className="col-span-1">CITES</div>
+                    <div className="col-span-2">RUN</div>
+                  </div>
+
+                  {filteredKPIs.length === 0 ? (
+                    <div className="px-4 py-6 text-sm text-white/65">
+                      No KPIs match this filter. Try a different tile or search term.
+                    </div>
+                  ) : (
+                    filteredKPIs.map((k) => (
+                      <button
+                        key={k.id}
+                        onClick={() => setDrawerKPI(k)}
+                        className="grid w-full grid-cols-12 gap-2 border-b border-white/10 px-4 py-4 text-left transition hover:bg-white/5"
+                      >
+                        <div className="col-span-3">
+                          <div className="text-sm font-semibold text-white">{k.claimType}</div>
+                          <div className="mt-1 text-xs text-white/55">
+                            Confidence: {k.confidence} • {k.category}
+                          </div>
+                        </div>
+                        <div className="col-span-2 text-sm text-white/80">{k.period}</div>
+                        <div className="col-span-2 text-sm font-semibold text-white">
+                          {k.value} {k.unit ? <span className="text-white/50">{k.unit}</span> : null}
+                        </div>
+                        <div className="col-span-2">
+                          <StatusPill status={k.status} />
+                        </div>
+                        <div className="col-span-1 text-sm font-semibold text-white/80">{k.citations}</div>
+                        <div className="col-span-2 text-sm text-white/70">{k.runId}</div>
+                      </button>
+                    ))
+                  )}
+                </div>
+
+                <p className="mt-4 text-xs text-white/40">
+                  Mock behaviors: Fiduciary Mode hides DRAFT. Real behavior will be enforced server-side at export time.
                 </p>
-              </motion.div>
-            </div>
-          </Container>
-
-          <Drawer open={!!drawerKPI} onClose={() => setDrawerKPI(null)} kpi={drawerKPI} />
+              </div>
+            </Container>
+          </AppShell>
         </section>
 
         {/* Enhanced 3D Hero Section */}
@@ -1134,7 +1314,10 @@ export default function Home() {
                 scale: [1, 1.2, 1],
                 opacity: [0.3, 0.5, 0.3],
               }}
-              transition={{ duration: 8, repeat: Infinity }}
+              transition={{
+                duration: 8,
+                repeat: Infinity,
+              }}
             />
             <motion.div
               className="absolute top-1/3 right-1/4 w-96 h-96 bg-violet-500/10 rounded-full blur-3xl"
@@ -1142,7 +1325,11 @@ export default function Home() {
                 scale: [1.2, 1, 1.2],
                 opacity: [0.5, 0.3, 0.5],
               }}
-              transition={{ duration: 10, repeat: Infinity, delay: 2 }}
+              transition={{
+                duration: 10,
+                repeat: Infinity,
+                delay: 2,
+              }}
             />
           </div>
           

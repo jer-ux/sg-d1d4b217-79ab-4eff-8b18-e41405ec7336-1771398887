@@ -9,7 +9,7 @@ import { SEO } from "@/components/SEO";
 import { WarRoomPreview } from "@/components/kincaid-iq/WarRoomPreview";
 import { WarRoomHero3D } from "@/components/kincaid-iq/WarRoomHero3D";
 import { DataFlowVisualization, KPIDashboardPreview, EvidenceReceipt3D, ArbitrageDetectionViz, NetworkGraphAnimation, GradientMeshBackground } from "@/components/platform/PremiumGraphics";
-import { useState, Suspense } from "react";
+import { useState, Suspense, useMemo } from "react";
 import { NeonGlow } from "@/components/premium/NeonGlow";
 
 // Dynamic imports for 3D components (client-side only)
@@ -26,6 +26,43 @@ const Interactive3DCard = dynamic(() => import("@/components/premium/Interactive
 const VegasParticles = dynamic(() => import("@/components/premium/VegasParticles").then(mod => ({ default: mod.VegasParticles })), {
   ssr: false
 });
+
+// Kincaid iQ Types
+type TileKey = "ACTUARIAL_TRUTH" | "RENEWAL_LEVERAGE" | "PROOF_TRAIL" | "GOVERNANCE";
+type PersonaOrg = "Indiana Health Centers" | "Midwest Manufacturing Co" | "Regional Logistics Group";
+type RunStatus = "SUCCEEDED" | "RUNNING" | "FAILED";
+
+type Run = {
+  runId: string;
+  org: PersonaOrg;
+  status: RunStatus;
+  createdAt: string;
+  workflow: string;
+  version: string;
+};
+
+type EvidenceRow = { 
+  doc: string; 
+  pages: string; 
+  method: string; 
+  confidence: "High" | "Med" | "Low" 
+};
+
+type KPI = {
+  id: string;
+  org: PersonaOrg;
+  runId: string;
+  category: TileKey;
+  claimType: string;
+  period: string;
+  value: string;
+  unit?: string;
+  status: "DRAFT" | "CITED" | "APPROVED";
+  confidence: "High" | "Med" | "Low";
+  citations: number;
+  notes: string;
+  evidence: EvidenceRow[];
+};
 
 const THEME = {
   blue: {
@@ -79,6 +116,239 @@ const THEME = {
 };
 
 type ThemeKey = keyof typeof THEME;
+
+function Container({ children }: { children: React.ReactNode }) {
+  return <div className="mx-auto w-full max-w-6xl px-6 md:px-10">{children}</div>;
+}
+
+function SectionLabel({ children }: { children: React.ReactNode }) {
+  return (
+    <div className="text-[11px] font-semibold tracking-[0.18em] text-neutral-400">
+      {children}
+    </div>
+  );
+}
+
+function PremiumBackdrop() {
+  return (
+    <div className="pointer-events-none absolute inset-0">
+      <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgba(255,255,255,0.06),rgba(0,0,0,0.88)_65%)]" />
+      <div className="absolute inset-0 opacity-[0.12] [background-image:linear-gradient(rgba(255,255,255,0.10)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.10)_1px,transparent_1px)] [background-size:64px_64px]" />
+      <div className="absolute -top-40 left-1/2 h-[520px] w-[520px] -translate-x-1/2 rounded-full bg-white/10 blur-3xl" />
+      <div className="absolute bottom-[-220px] right-[-180px] h-[520px] w-[520px] rounded-full bg-white/5 blur-3xl" />
+    </div>
+  );
+}
+
+function Pill({ children }: { children: React.ReactNode }) {
+  return (
+    <span className="rounded-full border border-white/10 bg-white/5 px-3 py-1 text-xs font-medium text-white/80">
+      {children}
+    </span>
+  );
+}
+
+function StatusPill({ status }: { status: RunStatus | KPI["status"] }) {
+  const map: Record<string, string> = {
+    SUCCEEDED: "bg-emerald-500/15 text-emerald-200 border-emerald-500/25",
+    RUNNING: "bg-sky-500/15 text-sky-200 border-sky-500/25",
+    FAILED: "bg-rose-500/15 text-rose-200 border-rose-500/25",
+    DRAFT: "bg-white/10 text-white/70 border-white/15",
+    CITED: "bg-amber-500/15 text-amber-200 border-amber-500/25",
+    APPROVED: "bg-emerald-500/15 text-emerald-200 border-emerald-500/25",
+  };
+
+  return (
+    <span className={`inline-flex items-center rounded-full border px-2.5 py-1 text-xs font-semibold ${map[status] || "bg-white/10 text-white/80 border-white/15"}`}>
+      {status}
+    </span>
+  );
+}
+
+function Tile({
+  title,
+  desc,
+  tags,
+  onClick,
+  active,
+}: {
+  title: string;
+  desc: string;
+  tags: string[];
+  onClick: () => void;
+  active?: boolean;
+}) {
+  return (
+    <button
+      onClick={onClick}
+      className={[
+        "group w-full rounded-3xl border p-6 text-left shadow-sm transition",
+        active
+          ? "border-white/25 bg-white/10"
+          : "border-white/10 bg-white/5 hover:border-white/20 hover:bg-white/7",
+      ].join(" ")}
+    >
+      <div className="flex items-start justify-between gap-4">
+        <div className="text-lg font-semibold text-white">{title}</div>
+        <div className={["rounded-full px-3 py-1 text-xs font-semibold", active ? "bg-white text-neutral-950" : "bg-white/10 text-white/80"].join(" ")}>
+          {active ? "Selected" : "Select"}
+        </div>
+      </div>
+      <p className="mt-3 text-sm leading-relaxed text-white/75">{desc}</p>
+      <div className="mt-5 flex flex-wrap gap-2">
+        {tags.map((t) => (
+          <Pill key={t}>{t}</Pill>
+        ))}
+      </div>
+      <div className="mt-6 h-px w-full bg-white/10" />
+      <div className="mt-4 text-xs font-semibold tracking-[0.14em] text-white/55">FILTER KPIs</div>
+    </button>
+  );
+}
+
+function Drawer({
+  open,
+  onClose,
+  kpi,
+}: {
+  open: boolean;
+  onClose: () => void;
+  kpi: KPI | null;
+}) {
+  return (
+    <div
+      className={[
+        "fixed inset-0 z-50 transition",
+        open ? "pointer-events-auto opacity-100" : "pointer-events-none opacity-0",
+      ].join(" ")}
+      aria-hidden={!open}
+    >
+      <div
+        className={[
+          "absolute inset-0 bg-black/70 backdrop-blur-sm transition",
+          open ? "opacity-100" : "opacity-0",
+        ].join(" ")}
+        onClick={onClose}
+      />
+
+      <div
+        className={[
+          "absolute right-0 top-0 h-full w-full max-w-2xl transform overflow-y-auto border-l border-white/10 bg-neutral-950 shadow-2xl transition",
+          open ? "translate-x-0" : "translate-x-full",
+        ].join(" ")}
+      >
+        <div className="flex items-start justify-between gap-6 p-6 md:p-8">
+          <div>
+            <SectionLabel>KINCAID IQ • KPI DRILLDOWN</SectionLabel>
+            <div className="mt-3 text-2xl font-semibold tracking-tight text-white">
+              {kpi ? `${kpi.claimType} — ${kpi.period}` : "KPI"}
+            </div>
+            <p className="mt-3 text-sm leading-relaxed text-white/75">
+              {kpi ? kpi.notes : "Select a KPI to view evidence and lineage."}
+            </p>
+
+            {kpi ? (
+              <div className="mt-4 flex flex-wrap items-center gap-2">
+                <StatusPill status={kpi.status} />
+                <Pill>Confidence: {kpi.confidence}</Pill>
+                <Pill>Citations: {kpi.citations}</Pill>
+                <Pill>Run: {kpi.runId}</Pill>
+              </div>
+            ) : null}
+          </div>
+
+          <button
+            onClick={onClose}
+            className="rounded-2xl border border-white/15 bg-white/5 px-4 py-2 text-sm font-semibold text-white/90 hover:bg-white/10"
+          >
+            Close
+          </button>
+        </div>
+
+        <div className="px-6 pb-8 md:px-8">
+          {kpi ? (
+            <>
+              <div className="rounded-3xl border border-white/10 bg-white/5 p-6">
+                <SectionLabel>VALUE</SectionLabel>
+                <div className="mt-3 text-3xl font-semibold tracking-tight text-white">
+                  {kpi.value}
+                  {kpi.unit ? <span className="ml-2 text-base font-semibold text-white/60">{kpi.unit}</span> : null}
+                </div>
+
+                <div className="mt-5 grid gap-3 sm:grid-cols-2">
+                  <div className="rounded-2xl border border-white/10 bg-neutral-950 p-4">
+                    <SectionLabel>LINEAGE</SectionLabel>
+                    <div className="mt-3 text-sm text-white/80">
+                      Org: <span className="font-semibold text-white">{kpi.org}</span>
+                    </div>
+                    <div className="mt-2 text-sm text-white/80">
+                      Category: <span className="font-semibold text-white">{kpi.category}</span>
+                    </div>
+                    <div className="mt-2 text-sm text-white/80">
+                      Status: <span className="font-semibold text-white">{kpi.status}</span>
+                    </div>
+                  </div>
+
+                  <div className="rounded-2xl border border-white/10 bg-neutral-950 p-4">
+                    <SectionLabel>DEFINITION</SectionLabel>
+                    <p className="mt-3 text-sm leading-relaxed text-white/70">
+                      Computed with consistent definitions and multi-year normalization. Export gated in Fiduciary Mode.
+                    </p>
+                  </div>
+                </div>
+              </div>
+
+              <div className="mt-6 rounded-3xl border border-white/10 bg-neutral-950 p-6">
+                <SectionLabel>PROOF TRAIL</SectionLabel>
+                <p className="mt-3 text-sm leading-relaxed text-white/70">
+                  Each KPI links to source docs, page ranges, extraction method, and confidence.
+                </p>
+
+                <div className="mt-5 space-y-3">
+                  {kpi.evidence.map((e, i) => (
+                    <div
+                      key={i}
+                      className="rounded-2xl border border-white/10 bg-white/5 p-4 transition hover:bg-white/7"
+                    >
+                      <div className="flex flex-wrap items-center justify-between gap-3">
+                        <div className="text-sm font-semibold text-white">{e.doc}</div>
+                        <div className="text-xs font-semibold text-white/60">
+                          Confidence: {e.confidence}
+                        </div>
+                      </div>
+                      <div className="mt-2 text-xs text-white/70">
+                        Pages: {e.pages} • Method: {e.method}
+                      </div>
+                    </div>
+                  ))}
+                </div>
+
+                <div className="mt-6 flex flex-col gap-3 sm:flex-row">
+                  <Link
+                    href="/proof-library"
+                    className="inline-flex items-center justify-center rounded-2xl bg-white px-5 py-3 text-sm font-semibold text-neutral-950 shadow-sm transition hover:scale-105"
+                  >
+                    View Full Proof Trail
+                  </Link>
+                  <Link
+                    href="/contact"
+                    className="inline-flex items-center justify-center rounded-2xl border border-white/15 bg-white/5 px-5 py-3 text-sm font-semibold text-white/90 transition hover:bg-white/10"
+                  >
+                    Request Executive Review
+                  </Link>
+                </div>
+              </div>
+
+              <p className="mt-6 text-xs text-white/40">
+                Mock UI for positioning. Replace with live data when KPI + evidence tables are wired.
+              </p>
+            </>
+          ) : null}
+        </div>
+      </div>
+    </div>
+  );
+}
 
 function AnimatedGradientOverlay({ theme }: { theme: typeof THEME[ThemeKey] }) {
   return (
@@ -172,29 +442,6 @@ function StatCard({ value, label, delay = 0 }: { value: string; label: string; d
         <div className="text-sm text-white/70">{label}</div>
       </div>
     </motion.div>
-  );
-}
-
-function FloatingParticle({ delay, color }: { delay: number; color: string }) {
-  return (
-    <motion.div
-      className="absolute w-2 h-2 rounded-full"
-      style={{
-        background: color,
-        boxShadow: `0 0 20px ${color}, 0 0 40px ${color}`,
-      }}
-      animate={{
-        x: [0, Math.random() * 200 - 100, 0],
-        y: [0, Math.random() * 200 - 100, 0],
-        scale: [1, 1.5, 1],
-        opacity: [0.3, 0.8, 0.3],
-      }}
-      transition={{
-        duration: 8 + Math.random() * 4,
-        repeat: Infinity,
-        delay,
-      }}
-    />
   );
 }
 
@@ -323,6 +570,153 @@ function SolutionCard3D({ solution, index }: { solution: any; index: number }) {
 
 export default function Home() {
   const [selectedPreviewMetric, setSelectedPreviewMetric] = useState<string | null>(null);
+  
+  // Kincaid iQ State
+  const [selectedOrg, setSelectedOrg] = useState<PersonaOrg>("Indiana Health Centers");
+  const [selectedRun, setSelectedRun] = useState<string>("RUN_A9F2");
+  const [categoryFilter, setCategoryFilter] = useState<TileKey | null>(null);
+  const [drawerKPI, setDrawerKPI] = useState<KPI | null>(null);
+
+  const mockRuns: Run[] = useMemo(
+    () => [
+      {
+        runId: "RUN_A9F2",
+        org: "Indiana Health Centers",
+        status: "SUCCEEDED",
+        createdAt: "2025-01-08 14:32 UTC",
+        workflow: "kincaid-iq-v2",
+        version: "2.1.4",
+      },
+      {
+        runId: "RUN_B3C7",
+        org: "Midwest Manufacturing Co",
+        status: "SUCCEEDED",
+        createdAt: "2025-01-07 09:18 UTC",
+        workflow: "kincaid-iq-v2",
+        version: "2.1.3",
+      },
+      {
+        runId: "RUN_D8E1",
+        org: "Regional Logistics Group",
+        status: "RUNNING",
+        createdAt: "2025-01-08 16:45 UTC",
+        workflow: "kincaid-iq-v2",
+        version: "2.1.4",
+      },
+    ],
+    []
+  );
+
+  const mockKPIs: KPI[] = useMemo(
+    () => [
+      {
+        id: "kpi_001",
+        org: "Indiana Health Centers",
+        runId: "RUN_A9F2",
+        category: "ACTUARIAL_TRUTH",
+        claimType: "Normalized PEPM",
+        period: "2025",
+        value: "$612",
+        unit: "per member/month",
+        status: "APPROVED",
+        confidence: "High",
+        citations: 3,
+        notes: "Multi-year normalized calculation with consistent participant definitions.",
+        evidence: [
+          { doc: "Carrier Renewal Packet (2025)", pages: "pp. 12–18", method: "Table Parse", confidence: "High" },
+          { doc: "Plan Enrollment Export (2024)", pages: "n/a", method: "CSV Ingest", confidence: "High" },
+          { doc: "Form 5500 (2023)", pages: "pp. 1–3", method: "Structured Extract", confidence: "Med" },
+        ],
+      },
+      {
+        id: "kpi_002",
+        org: "Indiana Health Centers",
+        runId: "RUN_A9F2",
+        category: "RENEWAL_LEVERAGE",
+        claimType: "Avoidable Cost",
+        period: "2025",
+        value: "3–7%",
+        status: "CITED",
+        confidence: "Med",
+        citations: 4,
+        notes: "Driver misattribution exposed; negotiation brief ready.",
+        evidence: [
+          { doc: "Carrier Claims Summary (2025)", pages: "pp. 6–9", method: "Regex + Parse", confidence: "Med" },
+          { doc: "Stop-Loss Proposal (2025)", pages: "pp. 2–4", method: "Table Parse", confidence: "High" },
+        ],
+      },
+      {
+        id: "kpi_003",
+        org: "Midwest Manufacturing Co",
+        runId: "RUN_B3C7",
+        category: "PROOF_TRAIL",
+        claimType: "Cited KPIs",
+        period: "Q4 2024",
+        value: "100%",
+        status: "APPROVED",
+        confidence: "High",
+        citations: 12,
+        notes: "All outputs traceable to source docs with confidence scoring.",
+        evidence: [
+          { doc: "KPI: PEPM (2025)", pages: "Links: 3", method: "Claim ↔ Citation Graph", confidence: "High" },
+        ],
+      },
+      {
+        id: "kpi_004",
+        org: "Regional Logistics Group",
+        runId: "RUN_D8E1",
+        category: "GOVERNANCE",
+        claimType: "Approval SLA",
+        period: "2025",
+        value: "< 48 hrs",
+        status: "DRAFT",
+        confidence: "High",
+        citations: 2,
+        notes: "Approval workflows active; override logging enabled.",
+        evidence: [
+          { doc: "Approval Log", pages: "Run #D8E1", method: "Immutable Audit Log", confidence: "High" },
+        ],
+      },
+    ],
+    []
+  );
+
+  const filteredRuns = mockRuns.filter((r) => r.org === selectedOrg);
+  const currentRun = filteredRuns.find((r) => r.runId === selectedRun) || filteredRuns[0];
+
+  const filteredKPIs = mockKPIs.filter((k) => {
+    const matchOrg = k.org === selectedOrg;
+    const matchRun = k.runId === selectedRun;
+    const matchCat = categoryFilter ? k.category === categoryFilter : true;
+    return matchOrg && matchRun && matchCat;
+  });
+
+  const tileConfig: { key: TileKey; title: string; desc: string; tags: string[] }[] = [
+    {
+      key: "ACTUARIAL_TRUTH",
+      title: "Actuarial Truth",
+      desc: "Normalized PEPM, variance decomposition, multi-year trend. If it can't be proven, it doesn't count.",
+      tags: ["Normalized", "Board-grade", "Multi-year"],
+    },
+    {
+      key: "RENEWAL_LEVERAGE",
+      title: "Renewal Leverage",
+      desc: "Force negotiations onto provable drivers. Stop paying for narratives, carve-outs, and pricing games.",
+      tags: ["Pricing leverage", "Drivers", "Decision brief"],
+    },
+    {
+      key: "PROOF_TRAIL",
+      title: "Proof Trail",
+      desc: "Receipts by default. Every KPI links to evidence, extraction method, and confidence.",
+      tags: ["Citations", "Replayable", "Audit-ready"],
+    },
+    {
+      key: "GOVERNANCE",
+      title: "Governance",
+      desc: "Approvals, audit logs, and override controls. Benefits as a system, not a season.",
+      tags: ["Approvals", "Audit log", "RBAC"],
+    },
+  ];
 
   const actuarialSolutions = [
     {
@@ -473,8 +867,167 @@ export default function Home() {
         {/* Enhanced Gradient Mesh Background */}
         <GradientMeshBackground />
 
+        {/* NEW: Kincaid iQ Executive Console Section */}
+        <section className="relative border-b border-white/10 pt-32 pb-20 px-4">
+          <PremiumBackdrop />
+          
+          <Container>
+            <div className="relative py-14 md:py-20">
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.6 }}
+              >
+                <SectionLabel>KINCAID IQ • EXECUTIVE CONSOLE</SectionLabel>
+                <h1 className="mt-4 max-w-4xl text-3xl font-semibold tracking-tight md:text-5xl">
+                  Decision-grade benefits intelligence with proof trails
+                </h1>
+                <p className="mt-5 max-w-3xl text-sm leading-relaxed text-white/75 md:text-base">
+                  Four workflow tiles filter KPIs by category. Select org, run, and drill into evidence-backed metrics with citations and confidence scoring.
+                </p>
+
+                <div className="mt-6 flex flex-wrap gap-2">
+                  <Pill>Middle-market benefits</Pill>
+                  <Pill>Evidence-backed KPIs</Pill>
+                  <Pill>Fiduciary Mode exports</Pill>
+                  <Pill>Audit-ready</Pill>
+                </div>
+              </motion.div>
+
+              {/* Org + Run Selector */}
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.1, duration: 0.6 }}
+                className="mt-10 rounded-3xl border border-white/10 bg-white/5 p-6"
+              >
+                <SectionLabel>SELECT ORG & RUN</SectionLabel>
+                <div className="mt-4 grid gap-4 md:grid-cols-2">
+                  <div>
+                    <label className="mb-2 block text-sm font-semibold text-white/80">Organization</label>
+                    <select
+                      value={selectedOrg}
+                      onChange={(e) => {
+                        const org = e.target.value as PersonaOrg;
+                        setSelectedOrg(org);
+                        const firstRun = mockRuns.find((r) => r.org === org);
+                        if (firstRun) setSelectedRun(firstRun.runId);
+                        setCategoryFilter(null);
+                      }}
+                      className="w-full rounded-2xl border border-white/15 bg-white/5 px-4 py-3 text-sm font-semibold text-white outline-none transition hover:bg-white/7 focus:border-white/25"
+                    >
+                      <option value="Indiana Health Centers">Indiana Health Centers</option>
+                      <option value="Midwest Manufacturing Co">Midwest Manufacturing Co</option>
+                      <option value="Regional Logistics Group">Regional Logistics Group</option>
+                    </select>
+                  </div>
+
+                  <div>
+                    <label className="mb-2 block text-sm font-semibold text-white/80">Run</label>
+                    <select
+                      value={selectedRun}
+                      onChange={(e) => {
+                        setSelectedRun(e.target.value);
+                        setCategoryFilter(null);
+                      }}
+                      className="w-full rounded-2xl border border-white/15 bg-white/5 px-4 py-3 text-sm font-semibold text-white outline-none transition hover:bg-white/7 focus:border-white/25"
+                    >
+                      {filteredRuns.map((r) => (
+                        <option key={r.runId} value={r.runId}>
+                          {r.runId} — {r.createdAt}
+                        </option>
+                      ))}
+                    </select>
+                  </div>
+                </div>
+
+                {currentRun ? (
+                  <div className="mt-5 flex flex-wrap items-center gap-2">
+                    <StatusPill status={currentRun.status} />
+                    <Pill>Workflow: {currentRun.workflow}</Pill>
+                    <Pill>Version: {currentRun.version}</Pill>
+                  </div>
+                ) : null}
+              </motion.div>
+
+              {/* Tiles */}
+              <motion.div
+                initial={{ opacity: 0, y: 30 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.2, duration: 0.6 }}
+                className="mt-10 grid gap-4 md:grid-cols-2"
+              >
+                {tileConfig.map((t) => (
+                  <Tile
+                    key={t.key}
+                    title={t.title}
+                    desc={t.desc}
+                    tags={t.tags}
+                    onClick={() => setCategoryFilter(categoryFilter === t.key ? null : t.key)}
+                    active={categoryFilter === t.key}
+                  />
+                ))}
+              </motion.div>
+
+              {/* KPI Table */}
+              <motion.div
+                initial={{ opacity: 0, y: 30 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.3, duration: 0.6 }}
+                className="mt-10 rounded-3xl border border-white/10 bg-white/5 p-6"
+              >
+                <SectionLabel>KPIs ({filteredKPIs.length})</SectionLabel>
+                {filteredKPIs.length === 0 ? (
+                  <p className="mt-4 text-sm text-white/60">No KPIs match current filters.</p>
+                ) : (
+                  <div className="mt-5 space-y-3">
+                    {filteredKPIs.map((kpi) => (
+                      <button
+                        key={kpi.id}
+                        onClick={() => setDrawerKPI(kpi)}
+                        className="w-full rounded-2xl border border-white/10 bg-neutral-950 p-4 text-left transition hover:bg-white/5"
+                      >
+                        <div className="flex flex-wrap items-start justify-between gap-3">
+                          <div>
+                            <div className="text-base font-semibold text-white">{kpi.claimType}</div>
+                            <div className="mt-1 text-sm text-white/70">{kpi.period}</div>
+                          </div>
+                          <div className="text-right">
+                            <div className="text-lg font-semibold text-white">{kpi.value}</div>
+                            {kpi.unit ? <div className="text-xs text-white/60">{kpi.unit}</div> : null}
+                          </div>
+                        </div>
+                        <div className="mt-3 flex flex-wrap items-center gap-2">
+                          <StatusPill status={kpi.status} />
+                          <Pill>Confidence: {kpi.confidence}</Pill>
+                          <Pill>Citations: {kpi.citations}</Pill>
+                        </div>
+                      </button>
+                    ))}
+                  </div>
+                )}
+              </motion.div>
+
+              <motion.div
+                initial={{ opacity: 0, y: 30 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.4, duration: 0.6 }}
+                className="mt-10 rounded-3xl border border-white/10 bg-white/5 p-6"
+              >
+                <SectionLabel>HOW TO USE</SectionLabel>
+                <p className="mt-3 text-sm leading-relaxed text-white/75">
+                  Select org + run → filter by tile → click KPI → review evidence trail → approve or export. 
+                  Mock UI for positioning. Replace with live KPI + evidence tables when wired.
+                </p>
+              </motion.div>
+            </div>
+          </Container>
+
+          <Drawer open={!!drawerKPI} onClose={() => setDrawerKPI(null)} kpi={drawerKPI} />
+        </section>
+
         {/* Enhanced 3D Hero Section */}
-        <section className="relative pt-32 pb-20 px-4 overflow-hidden">
+        <section className="relative pt-32 pb-20 px-4 overflow-hidden border-b border-white/10">
           {/* 3D Animated Background */}
           <Suspense fallback={null}>
             <Hero3DBackground />
@@ -796,7 +1349,7 @@ export default function Home() {
           </div>
         </section>
 
-        {/* NEW: War Room 3D Hero Showcase */}
+        {/* War Room 3D Hero Showcase */}
         <section className="py-16 px-4 border-t border-white/10">
           <div className="max-w-7xl mx-auto">
             <motion.div
@@ -838,7 +1391,7 @@ export default function Home() {
               </p>
             </motion.div>
 
-            {/* NEW: Premium Data Flow Visualization */}
+            {/* Premium Data Flow Visualization */}
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
@@ -877,7 +1430,7 @@ export default function Home() {
               />
             </div>
 
-            {/* NEW: KPI Dashboard Preview */}
+            {/* KPI Dashboard Preview */}
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
@@ -897,10 +1450,7 @@ export default function Home() {
             >
               <h3 className="text-2xl font-bold text-white mb-8 text-center">Technical Foundation</h3>
               <div className="grid md:grid-cols-2 gap-6">
-                {/* NEW: Evidence Receipt 3D Card */}
                 <EvidenceReceipt3D />
-
-                {/* NEW: Arbitrage Detection */}
                 <ArbitrageDetectionViz />
 
                 <div className="relative overflow-hidden rounded-2xl border border-white/10 bg-slate-950/60 backdrop-blur-xl p-6">
@@ -1005,7 +1555,7 @@ export default function Home() {
               </div>
             </motion.div>
 
-            {/* NEW: Network Graph Animation */}
+            {/* Network Graph Animation */}
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}

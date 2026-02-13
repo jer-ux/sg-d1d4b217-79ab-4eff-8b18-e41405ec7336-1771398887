@@ -129,7 +129,8 @@ export default function handler(req: NextApiRequest, res: NextApiResponse) {
 
   // Tile refresh cadence - every 10 seconds
   const tilesInterval = setInterval(() => {
-    send({ type: "tiles", tiles: buildStreamTiles({ org, period, currency, businessUnit }) });
+    const fullTiles = buildStreamTiles({ org, period, currency, businessUnit });
+    send({ type: "tiles", tiles: fullTiles });
   }, 10000);
 
   // Live event generation - every 4-8 seconds

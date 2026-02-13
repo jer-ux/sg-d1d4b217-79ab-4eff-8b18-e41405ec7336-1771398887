@@ -191,7 +191,17 @@ export function useExecutiveStream(query: string) {
         const msg = JSON.parse(evt.data) as StreamMessage;
         
         if (msg.type === "tiles") {
-          setTiles(msg.tiles);
+          // Merge incoming tiles with existing ones to preserve chartData
+          setTiles((prev) => {
+            const updated = msg.tiles.map((newTile) => {
+              const existing = prev.find((t) => t.key === newTile.key);
+              return {
+                ...newTile,
+                chartData: newTile.chartData || existing?.chartData || []
+              };
+            });
+            return updated;
+          });
         }
         
         if (msg.type === "ticker") {

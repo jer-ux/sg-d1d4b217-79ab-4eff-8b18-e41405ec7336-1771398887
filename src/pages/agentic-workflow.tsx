@@ -24,6 +24,7 @@ import {
   Network,
   Sparkles,
   Zap,
+  Crown,
 } from "lucide-react";
 
 // Dynamically import 3D components (client-side only)
@@ -257,7 +258,60 @@ export default function AgenticWorkflowPage() {
         description="Big 4-grade financial workflow automation with AI-powered controls, real-time compliance, and blockchain-verified audit trails."
       />
       <div className="min-h-screen bg-black text-white overflow-hidden">
-        {/* Hero Section with 3D Background - Reduced Height */}
+        {/* Animated Background Elements */}
+        <div className="fixed inset-0 pointer-events-none">
+          {/* Animated Spotlights */}
+          <motion.div
+            className="absolute top-0 left-1/4 w-96 h-96 bg-amber-500/20 rounded-full blur-3xl"
+            animate={{
+              scale: [1, 1.2, 1],
+              opacity: [0.3, 0.5, 0.3],
+            }}
+            transition={{ duration: 8, repeat: Infinity }}
+          />
+          <motion.div
+            className="absolute top-1/3 right-1/4 w-96 h-96 bg-yellow-500/20 rounded-full blur-3xl"
+            animate={{
+              scale: [1.2, 1, 1.2],
+              opacity: [0.2, 0.4, 0.2],
+            }}
+            transition={{ duration: 10, repeat: Infinity }}
+          />
+          <motion.div
+            className="absolute bottom-1/4 left-1/3 w-96 h-96 bg-orange-500/20 rounded-full blur-3xl"
+            animate={{
+              scale: [1, 1.3, 1],
+              opacity: [0.2, 0.3, 0.2],
+            }}
+            transition={{ duration: 12, repeat: Infinity }}
+          />
+
+          {/* Floating Particles */}
+          {mounted && Array.from({ length: 20 }).map((_, i) => (
+            <motion.div
+              key={i}
+              className="absolute w-1 h-1 bg-amber-400/40 rounded-full"
+              style={{
+                left: `${Math.random() * 100}%`,
+                top: `${Math.random() * 100}%`,
+              }}
+              animate={{
+                y: [0, -30, 0],
+                opacity: [0, 1, 0],
+              }}
+              transition={{
+                duration: 3 + Math.random() * 2,
+                repeat: Infinity,
+                delay: Math.random() * 2,
+              }}
+            />
+          ))}
+
+          {/* Neon Grid Overlay */}
+          <div className="absolute inset-0 bg-[linear-gradient(rgba(251,191,36,0.03)_1px,transparent_1px),linear-gradient(90deg,rgba(251,191,36,0.03)_1px,transparent_1px)] bg-[size:100px_100px] [mask-image:radial-gradient(ellipse_80%_50%_at_50%_50%,black,transparent)]" />
+        </div>
+
+        {/* Hero Section with 3D Background */}
         <section className="relative min-h-[85vh] flex items-center justify-center pt-20 pb-12 px-6 overflow-hidden">
           {/* 3D Animated Background */}
           {mounted && (
@@ -268,7 +322,7 @@ export default function AgenticWorkflowPage() {
 
           {/* Gradient Overlays */}
           <div className="absolute inset-0 bg-gradient-to-b from-black/50 via-transparent to-black pointer-events-none" />
-          <div className="absolute inset-0 bg-gradient-to-r from-blue-900/20 via-purple-900/20 to-pink-900/20 pointer-events-none" />
+          <div className="absolute inset-0 bg-gradient-to-r from-amber-900/20 via-yellow-900/20 to-orange-900/20 pointer-events-none" />
 
           <div className="relative z-10 max-w-7xl mx-auto">
             <motion.div
@@ -282,13 +336,13 @@ export default function AgenticWorkflowPage() {
                 initial={{ opacity: 0, scale: 0.8 }}
                 animate={{ opacity: 1, scale: 1 }}
                 transition={{ duration: 0.8, delay: 0.4 }}
-                className="inline-flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-blue-500/20 via-purple-500/20 to-pink-500/20 border border-blue-500/30 rounded-full mb-6 backdrop-blur-xl"
+                className="inline-flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-amber-500/20 via-yellow-500/20 to-orange-500/20 border border-amber-500/30 rounded-full mb-6 backdrop-blur-xl"
               >
-                <Sparkles className="w-5 h-5 text-blue-400" />
-                <span className="text-sm text-blue-300 font-semibold tracking-wide">
+                <Crown className="w-5 h-5 text-amber-400" />
+                <span className="text-sm text-amber-300 font-semibold tracking-wide">
                   ENTERPRISE-GRADE FINANCIAL AUTOMATION
                 </span>
-                <Zap className="w-5 h-5 text-purple-400" />
+                <Zap className="w-5 h-5 text-yellow-400" />
               </motion.div>
 
               {/* Main Title with Gradient Animation */}
@@ -298,11 +352,11 @@ export default function AgenticWorkflowPage() {
                 transition={{ duration: 1, delay: 0.6 }}
                 className="text-5xl md:text-7xl font-black mb-6 leading-tight"
               >
-                <span className="bg-gradient-to-r from-white via-blue-200 to-purple-300 bg-clip-text text-transparent animate-gradient">
+                <span className="bg-gradient-to-r from-white via-amber-200 to-yellow-300 bg-clip-text text-transparent animate-gradient">
                   Kincaid iQ
                 </span>
                 <br />
-                <span className="bg-gradient-to-r from-blue-400 via-purple-400 to-pink-400 bg-clip-text text-transparent">
+                <span className="bg-gradient-to-r from-amber-400 via-yellow-400 to-orange-400 bg-clip-text text-transparent">
                   Agentic Workflow
                 </span>
               </motion.h1>
@@ -314,9 +368,9 @@ export default function AgenticWorkflowPage() {
                 className="text-lg md:text-xl text-gray-300 max-w-4xl mx-auto leading-relaxed mb-8"
               >
                 Autonomous financial operations with{" "}
-                <span className="text-blue-400 font-semibold">AI-powered controls</span>,{" "}
-                <span className="text-purple-400 font-semibold">real-time compliance verification</span>, and{" "}
-                <span className="text-pink-400 font-semibold">blockchain-verified audit trails</span>.
+                <span className="text-amber-400 font-semibold">AI-powered controls</span>,{" "}
+                <span className="text-yellow-400 font-semibold">real-time compliance verification</span>, and{" "}
+                <span className="text-orange-400 font-semibold">blockchain-verified audit trails</span>.
                 <br />
                 Trusted by Fortune 500 CFOs and Big 4 auditors.
               </motion.p>
@@ -331,17 +385,17 @@ export default function AgenticWorkflowPage() {
                 <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
                   <Link
                     href="/request-demo"
-                    className="group px-8 py-4 bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 text-white font-bold rounded-full hover:shadow-2xl hover:shadow-blue-500/50 transition-all duration-300 flex items-center justify-center gap-3 relative overflow-hidden"
+                    className="group px-8 py-4 bg-gradient-to-r from-amber-600 via-yellow-600 to-orange-600 text-black font-bold rounded-full hover:shadow-2xl hover:shadow-amber-500/50 transition-all duration-300 flex items-center justify-center gap-3 relative overflow-hidden"
                   >
                     <span className="relative z-10">Request Enterprise Demo</span>
                     <ArrowRight className="w-5 h-5 relative z-10 group-hover:translate-x-1 transition-transform" />
-                    <div className="absolute inset-0 bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                    <div className="absolute inset-0 bg-gradient-to-r from-amber-500 via-yellow-500 to-orange-500 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
                   </Link>
                 </motion.div>
                 <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
                   <Link
                     href="/company"
-                    className="px-8 py-4 bg-white/10 backdrop-blur-xl border-2 border-white/30 text-white font-bold rounded-full hover:bg-white/20 transition-all duration-300 flex items-center justify-center gap-3"
+                    className="px-8 py-4 bg-white/10 backdrop-blur-xl border-2 border-amber-500/30 text-white font-bold rounded-full hover:bg-amber-500/10 hover:border-amber-400/50 transition-all duration-300 flex items-center justify-center gap-3"
                   >
                     Contact Sales
                   </Link>
@@ -369,10 +423,10 @@ export default function AgenticWorkflowPage() {
                     whileHover={{ scale: 1.05, y: -5 }}
                     className="relative group"
                   >
-                    <div className="absolute inset-0 bg-gradient-to-br from-blue-500/20 to-purple-500/20 rounded-2xl blur-xl opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-                    <div className="relative bg-white/5 backdrop-blur-xl border border-white/10 rounded-2xl p-5 text-center">
-                      <metric.icon className="w-6 h-6 mx-auto mb-2 text-blue-400" />
-                      <div className="text-3xl font-black bg-gradient-to-br from-blue-400 to-purple-400 bg-clip-text text-transparent mb-1">
+                    <div className="absolute inset-0 bg-gradient-to-br from-amber-500/20 to-orange-500/20 rounded-2xl blur-xl opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+                    <div className="relative bg-white/5 backdrop-blur-xl border border-amber-500/10 rounded-2xl p-5 text-center">
+                      <metric.icon className="w-6 h-6 mx-auto mb-2 text-amber-400 drop-shadow-[0_0_8px_rgba(251,191,36,0.5)]" />
+                      <div className="text-3xl font-black bg-gradient-to-br from-amber-400 to-orange-400 bg-clip-text text-transparent mb-1">
                         {metric.value}
                       </div>
                       <div className="text-xs text-gray-400 font-medium">{metric.label}</div>
@@ -384,9 +438,9 @@ export default function AgenticWorkflowPage() {
           </div>
         </section>
 
-        {/* 3D Workflow Pipeline Visualization - Reduced Padding */}
+        {/* 3D Workflow Pipeline Visualization */}
         <section className="py-12 px-6 relative">
-          <div className="absolute inset-0 bg-gradient-to-b from-black via-blue-950/20 to-black" />
+          <div className="absolute inset-0 bg-gradient-to-b from-black via-amber-950/20 to-black" />
           <div className="relative z-10 max-w-7xl mx-auto">
             <motion.div
               initial={{ opacity: 0, y: 40 }}
@@ -395,7 +449,7 @@ export default function AgenticWorkflowPage() {
               transition={{ duration: 0.8 }}
               className="text-center mb-8"
             >
-              <h2 className="text-4xl md:text-5xl font-black mb-4 bg-gradient-to-r from-white via-blue-200 to-purple-300 bg-clip-text text-transparent">
+              <h2 className="text-4xl md:text-5xl font-black mb-4 bg-gradient-to-r from-white via-amber-200 to-yellow-300 bg-clip-text text-transparent">
                 Six-Stage Autonomous Workflow
               </h2>
               <p className="text-lg text-gray-400 max-w-3xl mx-auto">
@@ -419,9 +473,9 @@ export default function AgenticWorkflowPage() {
           </div>
         </section>
 
-        {/* Interactive Workflow Stages - Reduced Padding */}
+        {/* Interactive Workflow Stages */}
         <section className="py-8 px-6 relative">
-          <div className="absolute inset-0 bg-gradient-to-b from-black via-purple-950/10 to-black" />
+          <div className="absolute inset-0 bg-gradient-to-b from-black via-yellow-950/10 to-black" />
           <div className="relative z-10 max-w-7xl mx-auto">
             <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
               {workflowStages.map((stage, index) => (
@@ -431,9 +485,9 @@ export default function AgenticWorkflowPage() {
           </div>
         </section>
 
-        {/* Compliance Frameworks - Reduced Padding */}
+        {/* Compliance Frameworks */}
         <section className="py-12 px-6 relative">
-          <div className="absolute inset-0 bg-gradient-to-b from-black via-green-950/10 to-black" />
+          <div className="absolute inset-0 bg-gradient-to-b from-black via-amber-950/10 to-black" />
           <div className="relative z-10 max-w-7xl mx-auto">
             <motion.div
               initial={{ opacity: 0, y: 40 }}
@@ -442,7 +496,7 @@ export default function AgenticWorkflowPage() {
               transition={{ duration: 0.8 }}
               className="text-center mb-8"
             >
-              <h2 className="text-4xl md:text-5xl font-black mb-4 bg-gradient-to-r from-white via-green-200 to-blue-300 bg-clip-text text-transparent">
+              <h2 className="text-4xl md:text-5xl font-black mb-4 bg-gradient-to-r from-white via-amber-200 to-yellow-300 bg-clip-text text-transparent">
                 Regulatory Compliance Coverage
               </h2>
               <p className="text-lg text-gray-400 max-w-3xl mx-auto">
@@ -462,25 +516,25 @@ export default function AgenticWorkflowPage() {
                   whileHover={{ y: -10, scale: 1.02 }}
                   className="relative group"
                 >
-                  <div className="absolute inset-0 bg-gradient-to-br from-green-500/20 to-blue-500/20 rounded-2xl blur-xl opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-                  <div className="relative bg-white/5 backdrop-blur-xl border border-white/10 rounded-2xl p-6">
+                  <div className="absolute inset-0 bg-gradient-to-br from-amber-500/20 to-orange-500/20 rounded-2xl blur-xl opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+                  <div className="relative bg-white/5 backdrop-blur-xl border border-amber-500/10 rounded-2xl p-6">
                     <div className="flex items-center justify-between mb-4">
                       <h3 className="text-xl font-bold text-white">{framework.name}</h3>
                       <motion.div
                         whileHover={{ rotate: 360 }}
                         transition={{ duration: 0.6 }}
                       >
-                        <Shield className="w-7 h-7 text-green-400" />
+                        <Shield className="w-7 h-7 text-amber-400 drop-shadow-[0_0_8px_rgba(251,191,36,0.5)]" />
                       </motion.div>
                     </div>
                     <div className="space-y-3">
                       <div className="flex justify-between items-center">
                         <span className="text-gray-400 text-sm">Coverage</span>
-                        <span className="text-xl font-bold text-green-400">{framework.coverage}</span>
+                        <span className="text-xl font-bold text-amber-400">{framework.coverage}</span>
                       </div>
                       <div className="flex justify-between items-center">
                         <span className="text-gray-400 text-sm">Automated Controls</span>
-                        <span className="text-xl font-bold text-blue-400">{framework.controls}</span>
+                        <span className="text-xl font-bold text-yellow-400">{framework.controls}</span>
                       </div>
                       <motion.div
                         className="h-2 bg-gray-800 rounded-full overflow-hidden"
@@ -489,7 +543,7 @@ export default function AgenticWorkflowPage() {
                         viewport={{ once: true }}
                         transition={{ duration: 1, delay: index * 0.1 }}
                       >
-                        <div className="h-full bg-gradient-to-r from-green-500 to-blue-500 w-full" />
+                        <div className="h-full bg-gradient-to-r from-amber-500 to-orange-500 w-full" />
                       </motion.div>
                     </div>
                   </div>
@@ -499,9 +553,9 @@ export default function AgenticWorkflowPage() {
           </div>
         </section>
 
-        {/* Integration Partners - Reduced Padding */}
+        {/* Integration Partners */}
         <section className="py-12 px-6 relative">
-          <div className="absolute inset-0 bg-gradient-to-b from-black via-blue-950/10 to-black" />
+          <div className="absolute inset-0 bg-gradient-to-b from-black via-yellow-950/10 to-black" />
           <div className="relative z-10 max-w-7xl mx-auto">
             <motion.div
               initial={{ opacity: 0, y: 40 }}
@@ -510,7 +564,7 @@ export default function AgenticWorkflowPage() {
               transition={{ duration: 0.8 }}
               className="text-center mb-8"
             >
-              <h2 className="text-4xl md:text-5xl font-black mb-4 bg-gradient-to-r from-white via-blue-200 to-purple-300 bg-clip-text text-transparent">
+              <h2 className="text-4xl md:text-5xl font-black mb-4 bg-gradient-to-r from-white via-amber-200 to-yellow-300 bg-clip-text text-transparent">
                 Enterprise Integration Ecosystem
               </h2>
               <p className="text-lg text-gray-400 max-w-3xl mx-auto">
@@ -530,17 +584,17 @@ export default function AgenticWorkflowPage() {
                   whileHover={{ y: -10, scale: 1.05 }}
                   className="relative group"
                 >
-                  <div className="absolute inset-0 bg-gradient-to-br from-blue-500/20 to-purple-500/20 rounded-2xl blur-xl opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-                  <div className="relative bg-white/5 backdrop-blur-xl border border-white/10 rounded-2xl p-5 text-center">
+                  <div className="absolute inset-0 bg-gradient-to-br from-amber-500/20 to-orange-500/20 rounded-2xl blur-xl opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+                  <div className="relative bg-white/5 backdrop-blur-xl border border-amber-500/10 rounded-2xl p-5 text-center">
                     <motion.div
                       whileHover={{ rotate: [0, -10, 10, -10, 0] }}
                       transition={{ duration: 0.5 }}
                     >
-                      <Network className="w-10 h-10 mx-auto mb-3 text-blue-400" />
+                      <Network className="w-10 h-10 mx-auto mb-3 text-amber-400 drop-shadow-[0_0_8px_rgba(251,191,36,0.5)]" />
                     </motion.div>
                     <h3 className="text-base font-bold mb-1 text-white">{partner.name}</h3>
                     <div className="text-xs text-gray-400 mb-2">{partner.category}</div>
-                    <div className="inline-flex items-center gap-2 px-3 py-1.5 bg-green-500/20 border border-green-500/30 rounded-full text-xs text-green-400 font-semibold">
+                    <div className="inline-flex items-center gap-2 px-3 py-1.5 bg-amber-500/20 border border-amber-500/30 rounded-full text-xs text-amber-400 font-semibold">
                       <CheckCircle2 className="w-3 h-3" />
                       {partner.status}
                     </div>
@@ -551,9 +605,9 @@ export default function AgenticWorkflowPage() {
           </div>
         </section>
 
-        {/* Security Features - Reduced Padding */}
+        {/* Security Features */}
         <section className="py-12 px-6 relative">
-          <div className="absolute inset-0 bg-gradient-to-b from-black via-purple-950/10 to-black" />
+          <div className="absolute inset-0 bg-gradient-to-b from-black via-amber-950/10 to-black" />
           <div className="relative z-10 max-w-7xl mx-auto">
             <motion.div
               initial={{ opacity: 0, y: 40 }}
@@ -562,7 +616,7 @@ export default function AgenticWorkflowPage() {
               transition={{ duration: 0.8 }}
               className="text-center mb-8"
             >
-              <h2 className="text-4xl md:text-5xl font-black mb-4 bg-gradient-to-r from-white via-purple-200 to-pink-300 bg-clip-text text-transparent">
+              <h2 className="text-4xl md:text-5xl font-black mb-4 bg-gradient-to-r from-white via-amber-200 to-yellow-300 bg-clip-text text-transparent">
                 Enterprise Security & Governance
               </h2>
               <p className="text-lg text-gray-400 max-w-3xl mx-auto">
@@ -582,13 +636,13 @@ export default function AgenticWorkflowPage() {
                   whileHover={{ y: -10, scale: 1.02 }}
                   className="relative group"
                 >
-                  <div className="absolute inset-0 bg-gradient-to-br from-purple-500/20 to-pink-500/20 rounded-2xl blur-xl opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-                  <div className="relative bg-white/5 backdrop-blur-xl border border-white/10 rounded-2xl p-6">
+                  <div className="absolute inset-0 bg-gradient-to-br from-amber-500/20 to-orange-500/20 rounded-2xl blur-xl opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+                  <div className="relative bg-white/5 backdrop-blur-xl border border-amber-500/10 rounded-2xl p-6">
                     <motion.div
                       whileHover={{ scale: 1.2, rotate: 360 }}
                       transition={{ duration: 0.6 }}
                     >
-                      <feature.icon className="w-10 h-10 text-purple-400 mb-4" />
+                      <feature.icon className="w-10 h-10 text-amber-400 mb-4 drop-shadow-[0_0_8px_rgba(251,191,36,0.5)]" />
                     </motion.div>
                     <h3 className="text-xl font-bold mb-3 text-white">{feature.title}</h3>
                     <p className="text-gray-400 text-sm">{feature.description}</p>
@@ -599,9 +653,9 @@ export default function AgenticWorkflowPage() {
           </div>
         </section>
 
-        {/* Case Studies - Reduced Padding */}
+        {/* Case Studies */}
         <section className="py-12 px-6 relative">
-          <div className="absolute inset-0 bg-gradient-to-b from-black via-blue-950/10 to-black" />
+          <div className="absolute inset-0 bg-gradient-to-b from-black via-yellow-950/10 to-black" />
           <div className="relative z-10 max-w-7xl mx-auto">
             <motion.div
               initial={{ opacity: 0, y: 40 }}
@@ -610,7 +664,7 @@ export default function AgenticWorkflowPage() {
               transition={{ duration: 0.8 }}
               className="text-center mb-8"
             >
-              <h2 className="text-4xl md:text-5xl font-black mb-4 bg-gradient-to-r from-white via-blue-200 to-purple-300 bg-clip-text text-transparent">
+              <h2 className="text-4xl md:text-5xl font-black mb-4 bg-gradient-to-r from-white via-amber-200 to-yellow-300 bg-clip-text text-transparent">
                 Enterprise Deployments
               </h2>
               <p className="text-lg text-gray-400 max-w-3xl mx-auto">
@@ -630,11 +684,11 @@ export default function AgenticWorkflowPage() {
                   whileHover={{ scale: 1.02 }}
                   className="relative group"
                 >
-                  <div className="absolute inset-0 bg-gradient-to-br from-blue-500/20 to-purple-500/20 rounded-3xl blur-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-                  <div className="relative bg-white/5 backdrop-blur-xl border border-white/10 rounded-3xl p-6">
+                  <div className="absolute inset-0 bg-gradient-to-br from-amber-500/20 to-orange-500/20 rounded-3xl blur-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+                  <div className="relative bg-white/5 backdrop-blur-xl border border-amber-500/10 rounded-3xl p-6">
                     <div className="flex items-start justify-between mb-4">
                       <div>
-                        <div className="inline-block px-4 py-2 bg-blue-500/20 border border-blue-500/30 rounded-full text-sm text-blue-400 font-semibold mb-2">
+                        <div className="inline-block px-4 py-2 bg-amber-500/20 border border-amber-500/30 rounded-full text-sm text-amber-400 font-semibold mb-2">
                           {study.industry}
                         </div>
                         <h3 className="text-xl font-black text-white mb-1">{study.company}</h3>
@@ -643,7 +697,7 @@ export default function AgenticWorkflowPage() {
                         whileHover={{ scale: 1.2, rotate: 360 }}
                         transition={{ duration: 0.6 }}
                       >
-                        <Target className="w-7 h-7 text-blue-400" />
+                        <Target className="w-7 h-7 text-amber-400 drop-shadow-[0_0_8px_rgba(251,191,36,0.5)]" />
                       </motion.div>
                     </div>
 
@@ -673,7 +727,7 @@ export default function AgenticWorkflowPage() {
                               transition={{ duration: 0.5, delay: idx * 0.1 }}
                               className="flex items-start gap-2"
                             >
-                              <CheckCircle2 className="w-4 h-4 text-green-400 mt-0.5 flex-shrink-0" />
+                              <CheckCircle2 className="w-4 h-4 text-amber-400 mt-0.5 flex-shrink-0" />
                               <span className="text-gray-300 text-sm">{result}</span>
                             </motion.li>
                           ))}
@@ -687,9 +741,9 @@ export default function AgenticWorkflowPage() {
           </div>
         </section>
 
-        {/* Premium CTA Section - Reduced Padding */}
+        {/* Premium CTA Section */}
         <section className="py-16 px-6 relative">
-          <div className="absolute inset-0 bg-gradient-to-b from-black via-purple-950/20 to-black" />
+          <div className="absolute inset-0 bg-gradient-to-b from-black via-amber-950/20 to-black" />
           <div className="relative z-10 max-w-5xl mx-auto text-center">
             <motion.div
               initial={{ opacity: 0, y: 40 }}
@@ -698,9 +752,9 @@ export default function AgenticWorkflowPage() {
               transition={{ duration: 0.8 }}
               className="relative"
             >
-              <div className="absolute inset-0 bg-gradient-to-r from-blue-600/30 via-purple-600/30 to-pink-600/30 rounded-3xl blur-3xl" />
-              <div className="relative bg-gradient-to-br from-white/10 to-white/5 backdrop-blur-xl border border-white/20 rounded-3xl p-10">
-                <h2 className="text-4xl md:text-5xl font-black mb-4 bg-gradient-to-r from-white via-blue-200 to-purple-300 bg-clip-text text-transparent">
+              <div className="absolute inset-0 bg-gradient-to-r from-amber-600/30 via-yellow-600/30 to-orange-600/30 rounded-3xl blur-3xl" />
+              <div className="relative bg-gradient-to-br from-white/10 to-white/5 backdrop-blur-xl border border-amber-500/20 rounded-3xl p-10">
+                <h2 className="text-4xl md:text-5xl font-black mb-4 bg-gradient-to-r from-white via-amber-200 to-yellow-300 bg-clip-text text-transparent">
                   Ready to Transform Your Financial Operations?
                 </h2>
                 <p className="text-lg text-gray-300 mb-6 leading-relaxed">
@@ -711,17 +765,17 @@ export default function AgenticWorkflowPage() {
                   <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
                     <Link
                       href="/request-demo"
-                      className="group px-10 py-4 bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 text-white text-lg font-bold rounded-full hover:shadow-2xl hover:shadow-purple-500/50 transition-all duration-300 flex items-center justify-center gap-3 relative overflow-hidden"
+                      className="group px-10 py-4 bg-gradient-to-r from-amber-600 via-yellow-600 to-orange-600 text-black text-lg font-bold rounded-full hover:shadow-2xl hover:shadow-amber-500/50 transition-all duration-300 flex items-center justify-center gap-3 relative overflow-hidden"
                     >
                       <span className="relative z-10">Request Enterprise Demo</span>
                       <ArrowRight className="w-6 h-6 relative z-10 group-hover:translate-x-2 transition-transform" />
-                      <div className="absolute inset-0 bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                      <div className="absolute inset-0 bg-gradient-to-r from-amber-500 via-yellow-500 to-orange-500 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
                     </Link>
                   </motion.div>
                   <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
                     <Link
                       href="/company"
-                      className="px-10 py-4 bg-white/10 backdrop-blur-xl border-2 border-white/30 text-white text-lg font-bold rounded-full hover:bg-white/20 transition-all duration-300 flex items-center justify-center gap-3"
+                      className="px-10 py-4 bg-white/10 backdrop-blur-xl border-2 border-amber-500/30 text-white text-lg font-bold rounded-full hover:bg-amber-500/10 hover:border-amber-400/50 transition-all duration-300 flex items-center justify-center gap-3"
                     >
                       Contact Sales
                     </Link>

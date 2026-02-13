@@ -4,7 +4,7 @@ import { useState, useEffect } from "react";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { motion } from "framer-motion";
-import { Menu, X } from "lucide-react";
+import { Menu, X, Crown } from "lucide-react";
 
 export default function Nav() {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -35,49 +35,67 @@ export default function Nav() {
       transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${
         isScrolled 
-          ? "bg-black/80 backdrop-blur-2xl border-b border-white/10" 
-          : "bg-transparent"
+          ? "bg-black/90 backdrop-blur-2xl border-b border-amber-500/20 shadow-lg shadow-amber-500/10" 
+          : "bg-gradient-to-b from-black/80 via-black/40 to-transparent backdrop-blur-sm"
       }`}
     >
       <div className="max-w-7xl mx-auto px-6">
         <div className="flex items-center justify-between h-16">
-          {/* Logo */}
+          {/* Logo with Vegas luxury styling */}
           <Link 
             href="/" 
-            className="text-xl font-semibold tracking-tight hover:opacity-80 transition-opacity"
+            className="group flex items-center gap-2 text-xl font-bold tracking-tight transition-all hover:scale-105"
           >
-            Kincaid IQ
+            <Crown className="h-5 w-5 text-amber-400 drop-shadow-[0_0_8px_rgba(251,191,36,0.5)]" />
+            <span className="bg-gradient-to-r from-amber-300 via-amber-100 to-white bg-clip-text text-transparent drop-shadow-[0_0_20px_rgba(251,191,36,0.3)]">
+              Kincaid IQ
+            </span>
           </Link>
 
           {/* Desktop Nav */}
-          <div className="hidden md:flex items-center gap-8">
+          <div className="hidden md:flex items-center gap-6">
             {navLinks.map((link) => (
               <Link
                 key={link.href}
                 href={link.href}
-                className={`text-sm font-medium transition-colors duration-300 ${
+                className={`relative text-sm font-medium transition-all duration-300 hover:scale-105 ${
                   router.pathname === link.href
-                    ? "text-white"
-                    : "text-gray-400 hover:text-white"
+                    ? "text-amber-300 drop-shadow-[0_0_8px_rgba(251,191,36,0.5)]"
+                    : "text-zinc-300 hover:text-amber-200 hover:drop-shadow-[0_0_6px_rgba(251,191,36,0.3)]"
                 }`}
               >
                 {link.label}
+                {router.pathname === link.href && (
+                  <motion.div
+                    layoutId="activeNav"
+                    className="absolute -bottom-1 left-0 right-0 h-0.5 bg-gradient-to-r from-transparent via-amber-400 to-transparent"
+                    initial={false}
+                    transition={{ type: "spring", stiffness: 380, damping: 30 }}
+                  />
+                )}
               </Link>
             ))}
-            <Link
-              href="/request-demo"
-              className="ml-4 px-5 py-2 bg-white text-black text-sm font-medium rounded-full hover:bg-gray-100 transition-all duration-300 hover:scale-105"
-            >
-              Request Demo
-            </Link>
+            <motion.div whileHover={{ scale: 1.05, y: -2 }} whileTap={{ scale: 0.95 }}>
+              <Link
+                href="/request-demo"
+                className="group relative ml-4 px-5 py-2 overflow-hidden rounded-full bg-gradient-to-r from-amber-600 via-amber-500 to-amber-600 text-sm font-bold text-white shadow-lg shadow-amber-500/30 transition-all hover:shadow-amber-500/50"
+              >
+                <motion.div
+                  className="absolute inset-0 bg-gradient-to-r from-amber-400 via-white to-amber-400 opacity-0 group-hover:opacity-30"
+                  animate={{ x: ["-100%", "100%"] }}
+                  transition={{ duration: 1.5, repeat: Infinity, ease: "linear" }}
+                />
+                <span className="relative">Request Demo</span>
+              </Link>
+            </motion.div>
           </div>
 
           {/* Mobile Menu Button */}
           <button
             onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-            className="md:hidden text-white p-2"
+            className="md:hidden text-amber-300 p-2 hover:text-amber-200 transition-colors"
           >
-            {isMobileMenuOpen ? <X /> : <Menu />}
+            {isMobileMenuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
           </button>
         </div>
       </div>
@@ -88,7 +106,7 @@ export default function Nav() {
           initial={{ opacity: 0, height: 0 }}
           animate={{ opacity: 1, height: "auto" }}
           exit={{ opacity: 0, height: 0 }}
-          className="md:hidden bg-black/95 backdrop-blur-2xl border-t border-white/10"
+          className="md:hidden bg-black/95 backdrop-blur-2xl border-t border-amber-500/20"
         >
           <div className="px-6 py-6 space-y-4">
             {navLinks.map((link) => (
@@ -96,7 +114,11 @@ export default function Nav() {
                 key={link.href}
                 href={link.href}
                 onClick={() => setIsMobileMenuOpen(false)}
-                className="block text-white hover:text-blue-400 transition-colors py-2"
+                className={`block py-2 text-base font-medium transition-colors ${
+                  router.pathname === link.href
+                    ? "text-amber-300"
+                    : "text-zinc-300 hover:text-amber-200"
+                }`}
               >
                 {link.label}
               </Link>
@@ -104,7 +126,7 @@ export default function Nav() {
             <Link
               href="/request-demo"
               onClick={() => setIsMobileMenuOpen(false)}
-              className="block w-full px-5 py-3 bg-white text-black text-center font-medium rounded-full hover:bg-gray-100 transition-all"
+              className="block w-full px-5 py-3 bg-gradient-to-r from-amber-600 via-amber-500 to-amber-600 text-white text-center font-bold rounded-full hover:shadow-lg hover:shadow-amber-500/40 transition-all"
             >
               Request Demo
             </Link>

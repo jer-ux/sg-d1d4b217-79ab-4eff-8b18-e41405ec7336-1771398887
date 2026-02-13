@@ -248,41 +248,90 @@ export default function EvidenceReceiptsPage() {
         title="Evidence Receipts | Kincaid IQ"
         description="Blockchain-backed evidence receipts for verifiable business outcomes"
       />
-      <div className="relative min-h-screen bg-gradient-to-b from-slate-950 via-slate-900 to-black text-white">
-        {/* Premium 3D Background */}
+      <div className="relative min-h-screen bg-gradient-to-b from-slate-950 via-slate-900 to-black text-white overflow-hidden">
+        {/* Vegas Luxury Background - Animated Spotlights */}
         <div className="absolute inset-0 overflow-hidden pointer-events-none">
-          <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-purple-900/30 via-transparent to-transparent" />
-          <div className="absolute top-0 left-1/4 w-96 h-96 bg-purple-500/20 rounded-full blur-[120px] animate-pulse" />
-          <div className="absolute top-1/3 right-1/4 w-80 h-80 bg-blue-500/20 rounded-full blur-[100px] animate-pulse" style={{ animationDelay: '1s' }} />
-          <div className="absolute bottom-1/4 left-1/3 w-72 h-72 bg-emerald-500/20 rounded-full blur-[90px] animate-pulse" style={{ animationDelay: '2s' }} />
+          <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-amber-900/20 via-transparent to-transparent" />
+          
+          {/* Animated Amber Spotlights */}
+          <div 
+            className="absolute top-0 left-1/4 w-[500px] h-[500px] bg-amber-500/30 rounded-full blur-[120px]"
+            style={{
+              animation: "float 8s ease-in-out infinite",
+            }}
+          />
+          <div 
+            className="absolute top-1/3 right-1/4 w-[400px] h-[400px] bg-yellow-500/25 rounded-full blur-[100px]"
+            style={{
+              animation: "float 10s ease-in-out infinite",
+              animationDelay: "2s",
+            }}
+          />
+          <div 
+            className="absolute bottom-1/4 left-1/3 w-[450px] h-[450px] bg-orange-500/20 rounded-full blur-[110px]"
+            style={{
+              animation: "float 12s ease-in-out infinite",
+              animationDelay: "4s",
+            }}
+          />
+
+          {/* Floating Particles */}
+          {[...Array(15)].map((_, i) => (
+            <div
+              key={i}
+              className="absolute w-1 h-1 bg-amber-400/40 rounded-full"
+              style={{
+                left: `${Math.random() * 100}%`,
+                top: `${Math.random() * 100}%`,
+                animation: `float ${8 + Math.random() * 4}s ease-in-out infinite`,
+                animationDelay: `${Math.random() * 4}s`,
+              }}
+            />
+          ))}
+
+          {/* Neon Grid Overlay */}
+          <div 
+            className="absolute inset-0 opacity-10"
+            style={{
+              backgroundImage: `
+                linear-gradient(to right, rgb(251 191 36 / 0.1) 1px, transparent 1px),
+                linear-gradient(to bottom, rgb(251 191 36 / 0.1) 1px, transparent 1px)
+              `,
+              backgroundSize: "60px 60px",
+              maskImage: "radial-gradient(ellipse at center, black 30%, transparent 70%)",
+            }}
+          />
         </div>
 
         <div className="relative mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8">
-          {/* Header with glassmorphism */}
-          <div className="mb-8 flex items-start justify-between backdrop-blur-xl bg-white/5 rounded-3xl border border-white/10 p-8 shadow-2xl">
-            <div>
-              <h1 className="text-5xl font-bold tracking-tight bg-gradient-to-r from-white via-purple-200 to-purple-400 bg-clip-text text-transparent">
+          {/* Header with Vegas Luxury Styling */}
+          <div className="mb-8 flex items-start justify-between backdrop-blur-xl bg-gradient-to-br from-amber-500/10 via-black/40 to-black/40 rounded-3xl border border-amber-500/20 p-8 shadow-2xl shadow-amber-500/10 hover:shadow-amber-500/20 transition-all duration-500 group">
+            <div className="absolute inset-0 bg-gradient-to-r from-amber-500/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 rounded-3xl" />
+            <div className="relative z-10">
+              <h1 className="text-5xl font-bold tracking-tight bg-gradient-to-r from-white via-amber-200 to-yellow-400 bg-clip-text text-transparent drop-shadow-[0_0_30px_rgba(251,191,36,0.3)]">
                 Evidence Receipts
               </h1>
-              <p className="mt-3 text-lg text-purple-200/70 max-w-2xl">
+              <p className="mt-3 text-lg text-amber-200/70 max-w-2xl">
                 Audit-grade evidence with full data lineage, DQ gates, and reconciliation proofs.
               </p>
             </div>
             <button
               onClick={() => setCreateOpen(true)}
-              className="inline-flex items-center gap-2 rounded-2xl border border-white/20 bg-gradient-to-r from-purple-500/20 to-blue-500/20 backdrop-blur-xl px-6 py-3 text-sm font-semibold hover:from-purple-500/30 hover:to-blue-500/30 transition-all duration-500 shadow-lg hover:shadow-purple-500/50 hover:scale-105"
+              className="relative inline-flex items-center gap-2 rounded-2xl border border-amber-500/30 bg-gradient-to-r from-amber-500/20 to-yellow-500/20 backdrop-blur-xl px-6 py-3 text-sm font-semibold hover:from-amber-500/30 hover:to-yellow-500/30 transition-all duration-500 shadow-lg hover:shadow-amber-500/50 hover:scale-105 group/btn overflow-hidden"
             >
-              Create Receipt (Demo) 🧾
+              <div className="absolute inset-0 bg-gradient-to-r from-amber-400/0 via-amber-400/20 to-amber-400/0 translate-x-[-100%] group-hover/btn:translate-x-[100%] transition-transform duration-1000" />
+              <span className="relative z-10">Create Receipt (Demo) 🧾</span>
             </button>
           </div>
 
           {/* Board-Level Value Proposition Section */}
           {showExplanation && (
-            <div className="mb-8 rounded-3xl border border-white/10 bg-gradient-to-br from-white/5 via-white/[0.03] to-transparent backdrop-blur-xl shadow-2xl overflow-hidden">
+            <div className="mb-8 rounded-3xl border border-amber-500/20 bg-gradient-to-br from-amber-500/10 via-black/40 to-black/40 backdrop-blur-xl shadow-2xl shadow-amber-500/10 overflow-hidden hover:shadow-amber-500/20 transition-all duration-500 group">
+              <div className="absolute inset-0 bg-gradient-to-r from-amber-500/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
               <div className="relative p-8">
                 <button
                   onClick={() => setShowExplanation(false)}
-                  className="absolute top-6 right-6 text-white/40 hover:text-white/80 transition-colors"
+                  className="absolute top-6 right-6 text-amber-300/40 hover:text-amber-300/80 transition-colors"
                 >
                   ✕
                 </button>
@@ -290,24 +339,25 @@ export default function EvidenceReceiptsPage() {
                 {/* Header */}
                 <div className="mb-8">
                   <div className="inline-flex items-center gap-2 mb-4 px-4 py-2 rounded-full bg-gradient-to-r from-amber-500/20 to-orange-500/20 border border-amber-500/30">
-                    <Shield className="h-4 w-4 text-amber-300" />
+                    <Shield className="h-4 w-4 text-amber-300 drop-shadow-[0_0_8px_rgba(251,191,36,0.6)]" />
                     <span className="text-sm font-semibold text-amber-200">Board & Investment Grade Evidence</span>
                   </div>
-                  <h2 className="text-3xl font-bold mb-4 bg-gradient-to-r from-white to-purple-200 bg-clip-text text-transparent">
+                  <h2 className="text-3xl font-bold mb-4 bg-gradient-to-r from-white via-amber-200 to-yellow-400 bg-clip-text text-transparent drop-shadow-[0_0_20px_rgba(251,191,36,0.3)]">
                     Why Evidence Lineage is Mission-Critical for Boards & Investment Groups
                   </h2>
-                  <p className="text-lg text-purple-200/70 leading-relaxed">
-                    In an era of AI-driven decision making and billion-dollar health benefits portfolios, <span className="font-semibold text-white">verifiable data lineage</span> is the difference between defensible business intelligence and regulatory liability.
+                  <p className="text-lg text-amber-200/70 leading-relaxed">
+                    In an era of AI-driven decision making and billion-dollar health benefits portfolios, <span className="font-semibold text-amber-100">verifiable data lineage</span> is the difference between defensible business intelligence and regulatory liability.
                   </p>
                 </div>
 
                 {/* Three-Column Value Props */}
                 <div className="grid md:grid-cols-3 gap-6 mb-8">
                   {/* Fiduciary Protection */}
-                  <div className="rounded-2xl border border-emerald-500/20 bg-gradient-to-br from-emerald-500/10 to-transparent p-6 backdrop-blur-sm">
+                  <div className="rounded-2xl border border-emerald-500/20 bg-gradient-to-br from-emerald-500/10 to-transparent p-6 backdrop-blur-sm hover:scale-105 transition-all duration-500 hover:shadow-lg hover:shadow-emerald-500/20 group/card">
+                    <div className="absolute inset-0 bg-gradient-to-r from-emerald-400/0 via-emerald-400/10 to-emerald-400/0 translate-x-[-100%] group-hover/card:translate-x-[100%] transition-transform duration-1000 rounded-2xl" />
                     <div className="flex items-center gap-3 mb-4">
                       <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-emerald-500/20">
-                        <Shield className="h-5 w-5 text-emerald-300" />
+                        <Shield className="h-5 w-5 text-emerald-300 drop-shadow-[0_0_8px_rgba(16,185,129,0.6)]" />
                       </div>
                       <h3 className="text-lg font-bold text-emerald-200">Fiduciary Protection</h3>
                     </div>
@@ -317,10 +367,11 @@ export default function EvidenceReceiptsPage() {
                   </div>
 
                   {/* Investment Due Diligence */}
-                  <div className="rounded-2xl border border-blue-500/20 bg-gradient-to-br from-blue-500/10 to-transparent p-6 backdrop-blur-sm">
+                  <div className="rounded-2xl border border-blue-500/20 bg-gradient-to-br from-blue-500/10 to-transparent p-6 backdrop-blur-sm hover:scale-105 transition-all duration-500 hover:shadow-lg hover:shadow-blue-500/20 group/card">
+                    <div className="absolute inset-0 bg-gradient-to-r from-blue-400/0 via-blue-400/10 to-blue-400/0 translate-x-[-100%] group-hover/card:translate-x-[100%] transition-transform duration-1000 rounded-2xl" />
                     <div className="flex items-center gap-3 mb-4">
                       <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-blue-500/20">
-                        <FileCheck className="h-5 w-5 text-blue-300" />
+                        <FileCheck className="h-5 w-5 text-blue-300 drop-shadow-[0_0_8px_rgba(59,130,246,0.6)]" />
                       </div>
                       <h3 className="text-lg font-bold text-blue-200">Investment DD Excellence</h3>
                     </div>
@@ -330,12 +381,13 @@ export default function EvidenceReceiptsPage() {
                   </div>
 
                   {/* Regulatory Compliance */}
-                  <div className="rounded-2xl border border-purple-500/20 bg-gradient-to-br from-purple-500/10 to-transparent p-6 backdrop-blur-sm">
+                  <div className="rounded-2xl border border-amber-500/20 bg-gradient-to-br from-amber-500/10 to-transparent p-6 backdrop-blur-sm hover:scale-105 transition-all duration-500 hover:shadow-lg hover:shadow-amber-500/20 group/card">
+                    <div className="absolute inset-0 bg-gradient-to-r from-amber-400/0 via-amber-400/10 to-amber-400/0 translate-x-[-100%] group-hover/card:translate-x-[100%] transition-transform duration-1000 rounded-2xl" />
                     <div className="flex items-center gap-3 mb-4">
-                      <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-purple-500/20">
-                        <CheckCircle2 className="h-5 w-5 text-purple-300" />
+                      <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-amber-500/20">
+                        <CheckCircle2 className="h-5 w-5 text-amber-300 drop-shadow-[0_0_8px_rgba(251,191,36,0.6)]" />
                       </div>
-                      <h3 className="text-lg font-bold text-purple-200">Multi-Framework Compliance</h3>
+                      <h3 className="text-lg font-bold text-amber-200">Multi-Framework Compliance</h3>
                     </div>
                     <p className="text-sm text-white/70 leading-relaxed">
                       Simultaneous compliance with <span className="font-semibold text-white">SOX 404, HIPAA Security Rule, SOC 2 Type II, GDPR Article 5, and NIST 800-53</span> through automated evidence collection and immutable audit trails.
@@ -346,9 +398,9 @@ export default function EvidenceReceiptsPage() {
                 {/* Deep Dive Sections */}
                 <div className="space-y-6">
                   {/* The AI Consultant Problem */}
-                  <div className="rounded-2xl border border-red-500/20 bg-gradient-to-br from-red-500/5 to-transparent p-6 backdrop-blur-sm">
+                  <div className="rounded-2xl border border-red-500/20 bg-gradient-to-br from-red-500/5 to-transparent p-6 backdrop-blur-sm hover:border-red-500/30 transition-all duration-500">
                     <h3 className="text-xl font-bold mb-4 flex items-center gap-2">
-                      <AlertTriangle className="h-5 w-5 text-red-400" />
+                      <AlertTriangle className="h-5 w-5 text-red-400 drop-shadow-[0_0_8px_rgba(239,68,68,0.6)]" />
                       <span className="text-red-200">The "Black Box AI" Problem in Traditional Consulting</span>
                     </h3>
                     <div className="space-y-4 text-sm text-white/70 leading-relaxed">
@@ -380,9 +432,9 @@ export default function EvidenceReceiptsPage() {
                   </div>
 
                   {/* Kincaid iQ Differentiation */}
-                  <div className="rounded-2xl border border-emerald-500/30 bg-gradient-to-br from-emerald-500/10 to-transparent p-6 backdrop-blur-sm">
+                  <div className="rounded-2xl border border-emerald-500/30 bg-gradient-to-br from-emerald-500/10 to-transparent p-6 backdrop-blur-sm hover:border-emerald-500/40 transition-all duration-500">
                     <h3 className="text-xl font-bold mb-4 flex items-center gap-2">
-                      <CheckCircle2 className="h-5 w-5 text-emerald-400" />
+                      <CheckCircle2 className="h-5 w-5 text-emerald-400 drop-shadow-[0_0_8px_rgba(16,185,129,0.6)]" />
                       <span className="text-emerald-200">How Kincaid iQ Evidence Receipts Change the Game</span>
                     </h3>
                     <div className="space-y-4 text-sm text-white/70 leading-relaxed">
@@ -441,9 +493,9 @@ export default function EvidenceReceiptsPage() {
                   </div>
 
                   {/* MITRE ATT&CK Framework */}
-                  <div className="rounded-2xl border border-blue-500/30 bg-gradient-to-br from-blue-500/10 to-transparent p-6 backdrop-blur-sm">
+                  <div className="rounded-2xl border border-blue-500/30 bg-gradient-to-br from-blue-500/10 to-transparent p-6 backdrop-blur-sm hover:border-blue-500/40 transition-all duration-500">
                     <h3 className="text-xl font-bold mb-4 flex items-center gap-2">
-                      <Shield className="h-5 w-5 text-blue-400" />
+                      <Shield className="h-5 w-5 text-blue-400 drop-shadow-[0_0_8px_rgba(59,130,246,0.6)]" />
                       <span className="text-blue-200">MITRE ATT&CK Framework: Evidence Receipts as Defense-in-Depth</span>
                     </h3>
                     <div className="space-y-4 text-sm text-white/70 leading-relaxed">
@@ -471,38 +523,38 @@ export default function EvidenceReceiptsPage() {
                   </div>
 
                   {/* Compliance Frameworks */}
-                  <div className="rounded-2xl border border-purple-500/30 bg-gradient-to-br from-purple-500/10 to-transparent p-6 backdrop-blur-sm">
+                  <div className="rounded-2xl border border-amber-500/30 bg-gradient-to-br from-amber-500/10 to-transparent p-6 backdrop-blur-sm hover:border-amber-500/40 transition-all duration-500">
                     <h3 className="text-xl font-bold mb-4 flex items-center gap-2">
-                      <FileCheck className="h-5 w-5 text-purple-400" />
-                      <span className="text-purple-200">Multi-Framework Compliance: One System, Five Certifications</span>
+                      <FileCheck className="h-5 w-5 text-amber-400 drop-shadow-[0_0_8px_rgba(251,191,36,0.6)]" />
+                      <span className="text-amber-200">Multi-Framework Compliance: One System, Five Certifications</span>
                     </h3>
                     <div className="space-y-4 text-sm text-white/70 leading-relaxed">
                       <div className="grid md:grid-cols-2 gap-4">
                         <div className="space-y-3">
-                          <div className="rounded-lg border border-purple-500/20 bg-purple-500/5 p-3">
-                            <div className="font-mono text-xs text-purple-300 mb-2">SOX 404 - Internal Controls</div>
+                          <div className="rounded-lg border border-amber-500/20 bg-amber-500/5 p-3">
+                            <div className="font-mono text-xs text-amber-300 mb-2">SOX 404 - Internal Controls</div>
                             <div className="text-xs">Evidence receipts satisfy <span className="font-semibold text-white">management assertion requirements</span> by proving accuracy of financial reporting. Automated controls reduce risk of material weakness findings.</div>
                           </div>
-                          <div className="rounded-lg border border-purple-500/20 bg-purple-500/5 p-3">
-                            <div className="font-mono text-xs text-purple-300 mb-2">HIPAA Security Rule § 164.312(b)</div>
+                          <div className="rounded-lg border border-amber-500/20 bg-amber-500/5 p-3">
+                            <div className="font-mono text-xs text-amber-300 mb-2">HIPAA Security Rule § 164.312(b)</div>
                             <div className="text-xs"><span className="font-semibold text-white">Audit controls</span> requirement satisfied through comprehensive logging of ePHI access, modifications, and disclosures. Receipts provide evidence for OCR investigations.</div>
                           </div>
-                          <div className="rounded-lg border border-purple-500/20 bg-purple-500/5 p-3">
-                            <div className="font-mono text-xs text-purple-300 mb-2">SOC 2 Type II - CC6.1, CC7.2</div>
+                          <div className="rounded-lg border border-amber-500/20 bg-amber-500/5 p-3">
+                            <div className="font-mono text-xs text-amber-300 mb-2">SOC 2 Type II - CC6.1, CC7.2</div>
                             <div className="text-xs">Evidence receipts demonstrate <span className="font-semibold text-white">logical access controls</span> and <span className="font-semibold text-white">system operations monitoring</span> over 12+ month period. Auditor testing simplified.</div>
                           </div>
                         </div>
                         <div className="space-y-3">
-                          <div className="rounded-lg border border-purple-500/20 bg-purple-500/5 p-3">
-                            <div className="font-mono text-xs text-purple-300 mb-2">GDPR Article 5(1)(a) - Lawfulness, Fairness, Transparency</div>
+                          <div className="rounded-lg border border-amber-500/20 bg-amber-500/5 p-3">
+                            <div className="font-mono text-xs text-amber-300 mb-2">GDPR Article 5(1)(a) - Lawfulness, Fairness, Transparency</div>
                             <div className="text-xs">Data lineage provides <span className="font-semibold text-white">transparency obligation</span> evidence. Data subjects can see exactly how their health data was processed in benefit calculations.</div>
                           </div>
-                          <div className="rounded-lg border border-purple-500/20 bg-purple-500/5 p-3">
-                            <div className="font-mono text-xs text-purple-300 mb-2">GDPR Article 32 - Security of Processing</div>
+                          <div className="rounded-lg border border-amber-500/20 bg-amber-500/5 p-3">
+                            <div className="font-mono text-xs text-amber-300 mb-2">GDPR Article 32 - Security of Processing</div>
                             <div className="text-xs"><span className="font-semibold text-white">Ability to ensure ongoing integrity</span> of processing systems demonstrated through checksums, version control, and quality gates.</div>
                           </div>
-                          <div className="rounded-lg border border-purple-500/20 bg-purple-500/5 p-3">
-                            <div className="font-mono text-xs text-purple-300 mb-2">NIST 800-53 - AU-2, AU-3, AU-6</div>
+                          <div className="rounded-lg border border-amber-500/20 bg-amber-500/5 p-3">
+                            <div className="font-mono text-xs text-amber-300 mb-2">NIST 800-53 - AU-2, AU-3, AU-6</div>
                             <div className="text-xs">Federal contractors achieve <span className="font-semibold text-white">audit event logging, content of audit records, and audit review</span> controls through evidence receipt system.</div>
                           </div>
                         </div>
@@ -511,9 +563,9 @@ export default function EvidenceReceiptsPage() {
                   </div>
 
                   {/* Board Presentation Points */}
-                  <div className="rounded-2xl border border-amber-500/30 bg-gradient-to-br from-amber-500/10 to-transparent p-6 backdrop-blur-sm">
+                  <div className="rounded-2xl border border-amber-500/30 bg-gradient-to-br from-amber-500/10 to-transparent p-6 backdrop-blur-sm hover:border-amber-500/40 transition-all duration-500">
                     <h3 className="text-xl font-bold mb-4 flex items-center gap-2">
-                      <FileCheck className="h-5 w-5 text-amber-400" />
+                      <FileCheck className="h-5 w-5 text-amber-400 drop-shadow-[0_0_8px_rgba(251,191,36,0.6)]" />
                       <span className="text-amber-200">What to Tell Your Board & Investment Committee</span>
                     </h3>
                     <div className="space-y-3 text-sm text-white/70 leading-relaxed">
@@ -552,627 +604,646 @@ export default function EvidenceReceiptsPage() {
             </div>
           )}
 
-          {/* Receipt Selector with premium styling */}
+          {/* Receipt Selector with Vegas Luxury Styling */}
           <div className="mb-6">
-            <div className="rounded-3xl border border-white/10 bg-gradient-to-br from-white/5 via-white/[0.03] to-transparent backdrop-blur-xl p-8 shadow-2xl">
-              <div className="mb-4 text-sm font-semibold uppercase tracking-wider text-purple-300/70">
-                Available Receipts ({receipts.length})
-              </div>
-              <div className="flex flex-wrap gap-4">
-                {receipts.map((r) => {
-                  const isSelected = r.receiptId === selectedId;
-                  const rCfg = statusConfig[r.verificationStatus];
-                  return (
-                    <button
-                      key={r.receiptId}
-                      onClick={() => setSelectedId(r.receiptId)}
-                      className={classNames(
-                        "group relative flex flex-col items-start gap-2 rounded-2xl border p-5 text-left transition-all duration-500 hover:scale-105",
-                        isSelected
-                          ? "border-purple-500/50 bg-gradient-to-br from-purple-500/20 to-blue-500/10 shadow-lg shadow-purple-500/30 backdrop-blur-xl"
-                          : "border-white/10 bg-white/5 backdrop-blur-xl hover:border-purple-500/30 hover:bg-white/10 hover:shadow-lg"
-                      )}
-                    >
-                      {isSelected && (
-                        <div className="absolute -inset-0.5 bg-gradient-to-r from-purple-500/50 to-blue-500/50 rounded-2xl blur opacity-30 group-hover:opacity-50 transition-opacity duration-500" />
-                      )}
-                      <div className="relative z-10 w-full">
-                        <div className="flex items-center gap-2 mb-2">
-                          <span className="text-xs font-mono text-purple-300">{r.receiptId}</span>
-                          <span className={classNames("flex items-center gap-1 rounded-full px-2 py-0.5 text-xs font-semibold backdrop-blur-xl", rCfg.bg, rCfg.text)}>
-                            {rCfg.icon}
-                            {rCfg.label}
-                          </span>
+            <div className="rounded-3xl border border-amber-500/20 bg-gradient-to-br from-amber-500/10 via-black/40 to-black/40 backdrop-blur-xl p-8 shadow-2xl shadow-amber-500/10 hover:shadow-amber-500/20 transition-all duration-500 group">
+              <div className="absolute inset-0 bg-gradient-to-r from-amber-500/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 rounded-3xl" />
+              <div className="relative z-10">
+                <div className="mb-4 text-sm font-semibold uppercase tracking-wider text-amber-300/70">
+                  Available Receipts ({receipts.length})
+                </div>
+                <div className="flex flex-wrap gap-4">
+                  {receipts.map((r) => {
+                    const isSelected = r.receiptId === selectedId;
+                    const rCfg = statusConfig[r.verificationStatus];
+                    return (
+                      <button
+                        key={r.receiptId}
+                        onClick={() => setSelectedId(r.receiptId)}
+                        className={classNames(
+                          "group/receipt relative flex flex-col items-start gap-2 rounded-2xl border p-5 text-left transition-all duration-500 hover:scale-105 overflow-hidden",
+                          isSelected
+                            ? "border-amber-500/50 bg-gradient-to-br from-amber-500/20 to-yellow-500/10 shadow-lg shadow-amber-500/30 backdrop-blur-xl"
+                            : "border-white/10 bg-white/5 backdrop-blur-xl hover:border-amber-500/30 hover:bg-white/10 hover:shadow-lg hover:shadow-amber-500/20"
+                        )}
+                      >
+                        {isSelected && (
+                          <div className="absolute -inset-0.5 bg-gradient-to-r from-amber-500/50 to-yellow-500/50 rounded-2xl blur opacity-30 group-hover/receipt:opacity-50 transition-opacity duration-500" />
+                        )}
+                        <div className="absolute inset-0 bg-gradient-to-r from-amber-400/0 via-amber-400/10 to-amber-400/0 translate-x-[-100%] group-hover/receipt:translate-x-[100%] transition-transform duration-1000" />
+                        <div className="relative z-10 w-full">
+                          <div className="flex items-center gap-2 mb-2">
+                            <span className="text-xs font-mono text-amber-300">{r.receiptId}</span>
+                            <span className={classNames("flex items-center gap-1 rounded-full px-2 py-0.5 text-xs font-semibold backdrop-blur-xl", rCfg.bg, rCfg.text)}>
+                              {rCfg.icon}
+                              {rCfg.label}
+                            </span>
+                          </div>
+                          <div className="text-sm font-semibold text-white">{r.subjectId}</div>
+                          <div className="text-xs text-white/50 mt-1">
+                            {r.periodStart} → {r.periodEnd}
+                          </div>
                         </div>
-                        <div className="text-sm font-semibold text-white">{r.subjectId}</div>
-                        <div className="text-xs text-white/50 mt-1">
-                          {r.periodStart} → {r.periodEnd}
-                        </div>
-                      </div>
-                    </button>
-                  );
-                })}
+                      </button>
+                    );
+                  })}
+                </div>
               </div>
             </div>
           </div>
 
-          {/* Receipt Header with premium design */}
-          <div className="mb-6 rounded-3xl border border-white/10 bg-gradient-to-br from-white/5 via-white/[0.03] to-transparent backdrop-blur-xl p-8 shadow-2xl">
-            <div className="mb-6 flex items-start justify-between">
-              <div>
-                <div className="mb-3 flex items-center gap-3">
-                  <h2 className="text-3xl font-bold tracking-tight text-white">{selected.receiptId}</h2>
-                  <span className={classNames("flex items-center gap-1.5 rounded-full px-4 py-1.5 text-xs font-semibold backdrop-blur-xl", cfg.bg, cfg.text)}>
-                    {cfg.icon}
-                    {cfg.label}
-                  </span>
+          {/* Receipt Header with Vegas Luxury Design */}
+          <div className="mb-6 rounded-3xl border border-amber-500/20 bg-gradient-to-br from-amber-500/10 via-black/40 to-black/40 backdrop-blur-xl p-8 shadow-2xl shadow-amber-500/10 hover:shadow-amber-500/20 transition-all duration-500 group">
+            <div className="absolute inset-0 bg-gradient-to-r from-amber-500/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 rounded-3xl" />
+            <div className="relative z-10">
+              <div className="mb-6 flex items-start justify-between">
+                <div>
+                  <div className="mb-3 flex items-center gap-3">
+                    <h2 className="text-3xl font-bold tracking-tight text-white">{selected.receiptId}</h2>
+                    <span className={classNames("flex items-center gap-1.5 rounded-full px-4 py-1.5 text-xs font-semibold backdrop-blur-xl", cfg.bg, cfg.text)}>
+                      {cfg.icon}
+                      {cfg.label}
+                    </span>
+                  </div>
+                  <div className="text-sm text-amber-200/60">
+                    {selected.subjectType} → {selected.subjectId}
+                  </div>
                 </div>
-                <div className="text-sm text-purple-200/60">
-                  {selected.subjectType} → {selected.subjectId}
+                <button
+                  onClick={downloadJSON}
+                  className="relative flex items-center gap-2 rounded-2xl border border-amber-500/30 bg-gradient-to-r from-amber-500/10 to-transparent backdrop-blur-xl px-5 py-2.5 text-sm font-semibold hover:from-amber-500/20 transition-all duration-500 hover:scale-105 hover:shadow-lg hover:shadow-amber-500/30 group/btn overflow-hidden"
+                >
+                  <div className="absolute inset-0 bg-gradient-to-r from-amber-400/0 via-amber-400/20 to-amber-400/0 translate-x-[-100%] group-hover/btn:translate-x-[100%] transition-transform duration-1000" />
+                  <Download className="h-4 w-4 relative z-10 drop-shadow-[0_0_8px_rgba(251,191,36,0.6)]" />
+                  <span className="relative z-10">Export JSON</span>
+                </button>
+              </div>
+              <div className="grid grid-cols-2 gap-6 text-sm md:grid-cols-4">
+                <div className="backdrop-blur-xl bg-gradient-to-br from-amber-500/10 to-transparent rounded-2xl p-4 border border-amber-500/20 hover:border-amber-500/30 hover:scale-105 transition-all duration-500 group/card">
+                  <div className="absolute inset-0 bg-gradient-to-r from-amber-400/0 via-amber-400/10 to-amber-400/0 translate-x-[-100%] group-hover/card:translate-x-[100%] transition-transform duration-1000 rounded-2xl" />
+                  <div className="mb-2 text-xs uppercase tracking-wide text-amber-300/50 relative z-10">Period</div>
+                  <div className="font-mono text-amber-100 font-semibold relative z-10">
+                    {selected.periodStart} → {selected.periodEnd}
+                  </div>
+                </div>
+                <div className="backdrop-blur-xl bg-gradient-to-br from-amber-500/10 to-transparent rounded-2xl p-4 border border-amber-500/20 hover:border-amber-500/30 hover:scale-105 transition-all duration-500 group/card">
+                  <div className="absolute inset-0 bg-gradient-to-r from-amber-400/0 via-amber-400/10 to-amber-400/0 translate-x-[-100%] group-hover/card:translate-x-[100%] transition-transform duration-1000 rounded-2xl" />
+                  <div className="mb-2 text-xs uppercase tracking-wide text-amber-300/50 relative z-10">Grain</div>
+                  <div className="font-mono text-amber-100 font-semibold relative z-10">{selected.grain}</div>
+                </div>
+                <div className="backdrop-blur-xl bg-gradient-to-br from-amber-500/10 to-transparent rounded-2xl p-4 border border-amber-500/20 hover:border-amber-500/30 hover:scale-105 transition-all duration-500 group/card">
+                  <div className="absolute inset-0 bg-gradient-to-r from-amber-400/0 via-amber-400/10 to-amber-400/0 translate-x-[-100%] group-hover/card:translate-x-[100%] transition-transform duration-1000 rounded-2xl" />
+                  <div className="mb-2 text-xs uppercase tracking-wide text-amber-300/50 relative z-10">Confidence</div>
+                  <div className="font-mono text-amber-100 font-semibold text-2xl relative z-10">{confidencePct}%</div>
+                </div>
+                <div className="backdrop-blur-xl bg-gradient-to-br from-amber-500/10 to-transparent rounded-2xl p-4 border border-amber-500/20 hover:border-amber-500/30 hover:scale-105 transition-all duration-500 group/card">
+                  <div className="absolute inset-0 bg-gradient-to-r from-amber-400/0 via-amber-400/10 to-amber-400/0 translate-x-[-100%] group-hover/card:translate-x-[100%] transition-transform duration-1000 rounded-2xl" />
+                  <div className="mb-2 text-xs uppercase tracking-wide text-amber-300/50 relative z-10">Freshness</div>
+                  <div className="font-mono text-amber-100 text-xs relative z-10">{new Date(selected.freshnessTs).toLocaleString()}</div>
                 </div>
               </div>
-              <button
-                onClick={downloadJSON}
-                className="flex items-center gap-2 rounded-2xl border border-white/20 bg-white/5 backdrop-blur-xl px-5 py-2.5 text-sm font-semibold hover:bg-white/10 transition-all duration-500 hover:scale-105 hover:shadow-lg"
-              >
-                <Download className="h-4 w-4" />
-                Export JSON
-              </button>
-            </div>
-            <div className="grid grid-cols-2 gap-6 text-sm md:grid-cols-4">
-              <div className="backdrop-blur-xl bg-white/5 rounded-2xl p-4 border border-white/10 hover:bg-white/10 transition-all duration-500">
-                <div className="mb-2 text-xs uppercase tracking-wide text-purple-300/50">Period</div>
-                <div className="font-mono text-purple-100 font-semibold">
-                  {selected.periodStart} → {selected.periodEnd}
+              <div className="mt-6 grid grid-cols-2 gap-6 border-t border-amber-500/20 pt-6 text-sm">
+                <div className="backdrop-blur-xl bg-gradient-to-br from-amber-500/10 to-transparent rounded-2xl p-4 border border-amber-500/20 hover:scale-105 transition-all duration-500">
+                  <div className="mb-2 text-xs uppercase tracking-wide text-amber-300/50">Owner</div>
+                  <div className="text-amber-100 font-semibold">{selected.owner}</div>
                 </div>
-              </div>
-              <div className="backdrop-blur-xl bg-white/5 rounded-2xl p-4 border border-white/10 hover:bg-white/10 transition-all duration-500">
-                <div className="mb-2 text-xs uppercase tracking-wide text-purple-300/50">Grain</div>
-                <div className="font-mono text-purple-100 font-semibold">{selected.grain}</div>
-              </div>
-              <div className="backdrop-blur-xl bg-white/5 rounded-2xl p-4 border border-white/10 hover:bg-white/10 transition-all duration-500">
-                <div className="mb-2 text-xs uppercase tracking-wide text-purple-300/50">Confidence</div>
-                <div className="font-mono text-purple-100 font-semibold text-2xl">{confidencePct}%</div>
-              </div>
-              <div className="backdrop-blur-xl bg-white/5 rounded-2xl p-4 border border-white/10 hover:bg-white/10 transition-all duration-500">
-                <div className="mb-2 text-xs uppercase tracking-wide text-purple-300/50">Freshness</div>
-                <div className="font-mono text-purple-100 text-xs">{new Date(selected.freshnessTs).toLocaleString()}</div>
-              </div>
-            </div>
-            <div className="mt-6 grid grid-cols-2 gap-6 border-t border-white/10 pt-6 text-sm">
-              <div className="backdrop-blur-xl bg-white/5 rounded-2xl p-4 border border-white/10">
-                <div className="mb-2 text-xs uppercase tracking-wide text-purple-300/50">Owner</div>
-                <div className="text-purple-100 font-semibold">{selected.owner}</div>
-              </div>
-              <div className="backdrop-blur-xl bg-white/5 rounded-2xl p-4 border border-white/10">
-                <div className="mb-2 text-xs uppercase tracking-wide text-purple-300/50">Approver</div>
-                <div className="text-purple-100 font-semibold">{selected.approver}</div>
+                <div className="backdrop-blur-xl bg-gradient-to-br from-amber-500/10 to-transparent rounded-2xl p-4 border border-amber-500/20 hover:scale-105 transition-all duration-500">
+                  <div className="mb-2 text-xs uppercase tracking-wide text-amber-300/50">Approver</div>
+                  <div className="text-amber-100 font-semibold">{selected.approver}</div>
+                </div>
               </div>
             </div>
           </div>
 
-          {/* Tabs with premium styling */}
+          {/* Tabs with Vegas Luxury Styling */}
           <div className="mb-6 flex gap-2 overflow-x-auto pb-2 backdrop-blur-xl">
             {tabs.map((t) => (
               <button
                 key={t.key}
                 onClick={() => setTab(t.key)}
                 className={classNames(
-                  "whitespace-nowrap rounded-2xl px-5 py-2.5 text-sm font-semibold transition-all duration-500",
+                  "relative whitespace-nowrap rounded-2xl px-5 py-2.5 text-sm font-semibold transition-all duration-500 overflow-hidden group/tab",
                   tab === t.key
-                    ? "bg-gradient-to-r from-purple-500/30 to-blue-500/30 text-white shadow-lg scale-105 border border-purple-500/50"
-                    : "text-purple-200/60 hover:bg-white/5 hover:text-purple-200 border border-transparent hover:border-white/10"
+                    ? "bg-gradient-to-r from-amber-500/30 to-yellow-500/30 text-white shadow-lg scale-105 border border-amber-500/50"
+                    : "text-amber-200/60 hover:bg-amber-500/10 hover:text-amber-200 border border-transparent hover:border-amber-500/20"
                 )}
               >
-                {t.label}
+                <div className="absolute inset-0 bg-gradient-to-r from-amber-400/0 via-amber-400/20 to-amber-400/0 translate-x-[-100%] group-hover/tab:translate-x-[100%] transition-transform duration-1000" />
+                <span className="relative z-10">{t.label}</span>
               </button>
             ))}
           </div>
 
-          {/* Tab Content with premium styling */}
-          <div className="rounded-3xl border border-white/10 bg-gradient-to-br from-white/5 via-white/[0.03] to-transparent backdrop-blur-xl p-8 shadow-2xl">
-            {tab === "overview" && (
-              <div className="space-y-8">
-                <div>
-                  <h3 className="mb-6 text-2xl font-semibold text-white">Evidence Summary</h3>
-                  <div className="grid gap-6 md:grid-cols-3">
-                    <div className="rounded-2xl border border-white/10 bg-gradient-to-br from-purple-500/10 to-transparent backdrop-blur-xl p-6 hover:scale-105 transition-all duration-500 hover:shadow-lg hover:shadow-purple-500/20">
-                      <div className="mb-3 text-sm text-purple-300/70">Artifacts</div>
-                      <div className="text-5xl font-bold bg-gradient-to-r from-purple-400 to-purple-200 bg-clip-text text-transparent">{selected.artifacts.length}</div>
-                    </div>
-                    <div className="rounded-2xl border border-white/10 bg-gradient-to-br from-blue-500/10 to-transparent backdrop-blur-xl p-6 hover:scale-105 transition-all duration-500 hover:shadow-lg hover:shadow-blue-500/20">
-                      <div className="mb-3 text-sm text-blue-300/70">Transforms</div>
-                      <div className="text-5xl font-bold bg-gradient-to-r from-blue-400 to-blue-200 bg-clip-text text-transparent">{selected.transforms.length}</div>
-                    </div>
-                    <div className="rounded-2xl border border-white/10 bg-gradient-to-br from-emerald-500/10 to-transparent backdrop-blur-xl p-6 hover:scale-105 transition-all duration-500 hover:shadow-lg hover:shadow-emerald-500/20">
-                      <div className="mb-3 text-sm text-emerald-300/70">DQ Tests</div>
-                      <div className="text-5xl font-bold bg-gradient-to-r from-emerald-400 to-emerald-200 bg-clip-text text-transparent">{selected.dq.tests.length}</div>
+          {/* Tab Content with Vegas Luxury Styling */}
+          <div className="rounded-3xl border border-amber-500/20 bg-gradient-to-br from-amber-500/10 via-black/40 to-black/40 backdrop-blur-xl p-8 shadow-2xl shadow-amber-500/10 hover:shadow-amber-500/20 transition-all duration-500 group">
+            <div className="absolute inset-0 bg-gradient-to-r from-amber-500/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 rounded-3xl" />
+            <div className="relative z-10">
+              {tab === "overview" && (
+                <div className="space-y-8">
+                  <div>
+                    <h3 className="mb-6 text-2xl font-semibold text-white">Evidence Summary</h3>
+                    <div className="grid gap-6 md:grid-cols-3">
+                      <div className="rounded-2xl border border-amber-500/20 bg-gradient-to-br from-amber-500/10 to-transparent backdrop-blur-xl p-6 hover:scale-105 transition-all duration-500 hover:shadow-lg hover:shadow-amber-500/20 group/card">
+                        <div className="absolute inset-0 bg-gradient-to-r from-amber-400/0 via-amber-400/10 to-amber-400/0 translate-x-[-100%] group-hover/card:translate-x-[100%] transition-transform duration-1000 rounded-2xl" />
+                        <div className="mb-3 text-sm text-amber-300/70 relative z-10">Artifacts</div>
+                        <div className="text-5xl font-bold bg-gradient-to-r from-amber-400 via-amber-200 to-yellow-400 bg-clip-text text-transparent relative z-10 drop-shadow-[0_0_20px_rgba(251,191,36,0.3)]">{selected.artifacts.length}</div>
+                      </div>
+                      <div className="rounded-2xl border border-blue-500/20 bg-gradient-to-br from-blue-500/10 to-transparent backdrop-blur-xl p-6 hover:scale-105 transition-all duration-500 hover:shadow-lg hover:shadow-blue-500/20 group/card">
+                        <div className="absolute inset-0 bg-gradient-to-r from-blue-400/0 via-blue-400/10 to-blue-400/0 translate-x-[-100%] group-hover/card:translate-x-[100%] transition-transform duration-1000 rounded-2xl" />
+                        <div className="mb-3 text-sm text-blue-300/70 relative z-10">Transforms</div>
+                        <div className="text-5xl font-bold bg-gradient-to-r from-blue-400 via-blue-200 to-cyan-400 bg-clip-text text-transparent relative z-10 drop-shadow-[0_0_20px_rgba(59,130,246,0.3)]">{selected.transforms.length}</div>
+                      </div>
+                      <div className="rounded-2xl border border-emerald-500/20 bg-gradient-to-br from-emerald-500/10 to-transparent backdrop-blur-xl p-6 hover:scale-105 transition-all duration-500 hover:shadow-lg hover:shadow-emerald-500/20 group/card">
+                        <div className="absolute inset-0 bg-gradient-to-r from-emerald-400/0 via-emerald-400/10 to-emerald-400/0 translate-x-[-100%] group-hover/card:translate-x-[100%] transition-transform duration-1000 rounded-2xl" />
+                        <div className="mb-3 text-sm text-emerald-300/70 relative z-10">DQ Tests</div>
+                        <div className="text-5xl font-bold bg-gradient-to-r from-emerald-400 via-emerald-200 to-green-400 bg-clip-text text-transparent relative z-10 drop-shadow-[0_0_20px_rgba(16,185,129,0.3)]">{selected.dq.tests.length}</div>
+                      </div>
                     </div>
                   </div>
-                </div>
-                <div>
-                  <h3 className="mb-6 text-2xl font-semibold text-white">Receipt Viewer</h3>
-                  <div className="rounded-3xl border border-white/10 bg-gradient-to-br from-purple-900/20 via-black/40 to-black/40 backdrop-blur-xl p-8 shadow-2xl">
-                    {/* Receipt Header */}
-                    <div className="mb-6 flex items-start justify-between border-b border-white/10 pb-4">
-                      <div>
-                        <div className="mb-2 flex items-center gap-3">
-                          <span className="text-2xl font-bold text-white">{selected.receiptId}</span>
-                          <span className={classNames("flex items-center gap-1.5 rounded-full px-3 py-1 text-xs font-semibold", cfg.bg, cfg.text)}>
-                            {cfg.icon}
-                            {cfg.label}
-                          </span>
+                  <div>
+                    <h3 className="mb-6 text-2xl font-semibold text-white">Receipt Viewer</h3>
+                    <div className="rounded-3xl border border-amber-500/20 bg-gradient-to-br from-amber-900/20 via-black/40 to-black/40 backdrop-blur-xl p-8 shadow-2xl shadow-amber-500/10">
+                      {/* Receipt Header */}
+                      <div className="mb-6 flex items-start justify-between border-b border-amber-500/20 pb-4">
+                        <div>
+                          <div className="mb-2 flex items-center gap-3">
+                            <span className="text-2xl font-bold text-white">{selected.receiptId}</span>
+                            <span className={classNames("flex items-center gap-1.5 rounded-full px-3 py-1 text-xs font-semibold", cfg.bg, cfg.text)}>
+                              {cfg.icon}
+                              {cfg.label}
+                            </span>
+                          </div>
+                          <div className="text-sm text-amber-300/70">
+                            {selected.subjectType} → {selected.subjectId}
+                          </div>
                         </div>
-                        <div className="text-sm text-purple-300/70">
-                          {selected.subjectType} → {selected.subjectId}
-                        </div>
-                      </div>
-                      <div className="text-right">
-                        <div className="text-xs text-purple-300/50">Confidence</div>
-                        <div className="text-3xl font-bold text-emerald-400">{confidencePct}%</div>
-                      </div>
-                    </div>
-
-                    {/* Mini Lineage Flow */}
-                    <div className="mb-6">
-                      <div className="mb-3 text-sm font-semibold text-purple-300">Data Lineage Flow</div>
-                      <div className="flex items-center gap-2 overflow-x-auto pb-2">
-                        {selected.artifacts.map((art, i) => (
-                          <React.Fragment key={art.id}>
-                            <div className="flex-shrink-0 rounded-lg border border-purple-500/30 bg-purple-500/10 px-3 py-2">
-                              <div className="text-xs font-semibold text-purple-200">{art.sourceType}</div>
-                              <div className="text-[10px] text-purple-300/60">{art.rowCount?.toLocaleString()} rows</div>
-                            </div>
-                            {i < selected.artifacts.length - 1 && (
-                              <div className="text-purple-400">→</div>
-                            )}
-                          </React.Fragment>
-                        ))}
-                        <div className="text-purple-400">→</div>
-                        {selected.transforms.map((trn, i) => (
-                          <React.Fragment key={trn.id}>
-                            <div className="flex-shrink-0 rounded-lg border border-blue-500/30 bg-blue-500/10 px-3 py-2">
-                              <div className="text-xs font-semibold text-blue-200">{trn.name.slice(0, 20)}</div>
-                              <div className="text-[10px] text-blue-300/60">{trn.version}</div>
-                            </div>
-                            {i < selected.transforms.length - 1 && (
-                              <div className="text-blue-400">→</div>
-                            )}
-                          </React.Fragment>
-                        ))}
-                        <div className="text-emerald-400">→</div>
-                        <div className="flex-shrink-0 rounded-lg border border-emerald-500/50 bg-emerald-500/20 px-4 py-2">
-                          <div className="text-xs font-bold text-emerald-200">RECEIPT</div>
-                          <div className="text-[10px] text-emerald-300/70">{selected.verificationStatus}</div>
-                        </div>
-                      </div>
-                    </div>
-
-                    {/* Key Metrics Grid */}
-                    <div className="mb-6 grid gap-4 md:grid-cols-3">
-                      <div className="rounded-lg border border-white/10 bg-white/5 p-4">
-                        <div className="mb-2 text-xs uppercase tracking-wide text-purple-300/60">Source Artifacts</div>
-                        <div className="text-2xl font-bold text-white">{selected.artifacts.length}</div>
-                        <div className="mt-2 space-y-1">
-                          {selected.artifacts.map((art) => (
-                            <div key={art.id} className="flex items-center gap-2 text-xs text-purple-200/70">
-                              <div className="h-1.5 w-1.5 rounded-full bg-purple-400" />
-                              {art.sourceType}
-                            </div>
-                          ))}
+                        <div className="text-right">
+                          <div className="text-xs text-amber-300/50">Confidence</div>
+                          <div className="text-3xl font-bold text-emerald-400 drop-shadow-[0_0_15px_rgba(16,185,129,0.6)]">{confidencePct}%</div>
                         </div>
                       </div>
 
-                      <div className="rounded-lg border border-white/10 bg-white/5 p-4">
-                        <div className="mb-2 text-xs uppercase tracking-wide text-blue-300/60">Transform Pipeline</div>
-                        <div className="text-2xl font-bold text-white">{selected.transforms.length}</div>
-                        <div className="mt-2 space-y-1">
-                          {selected.transforms.map((trn, i) => (
-                            <div key={trn.id} className="flex items-center gap-2 text-xs text-blue-200/70">
-                              <div className="flex h-4 w-4 items-center justify-center rounded-full bg-blue-500/20 text-[9px] font-bold text-blue-300">
-                                {i + 1}
+                      {/* Mini Lineage Flow */}
+                      <div className="mb-6">
+                        <div className="mb-3 text-sm font-semibold text-amber-300">Data Lineage Flow</div>
+                        <div className="flex items-center gap-2 overflow-x-auto pb-2">
+                          {selected.artifacts.map((art, i) => (
+                            <React.Fragment key={art.id}>
+                              <div className="flex-shrink-0 rounded-lg border border-amber-500/30 bg-amber-500/10 px-3 py-2 hover:scale-105 transition-all duration-300">
+                                <div className="text-xs font-semibold text-amber-200">{art.sourceType}</div>
+                                <div className="text-[10px] text-amber-300/60">{art.rowCount?.toLocaleString()} rows</div>
                               </div>
-                              {trn.name.slice(0, 18)}...
-                            </div>
-                          ))}
-                        </div>
-                      </div>
-
-                      <div className="rounded-lg border border-white/10 bg-white/5 p-4">
-                        <div className="mb-2 text-xs uppercase tracking-wide text-emerald-300/60">Quality Gates</div>
-                        <div className="text-2xl font-bold text-white">
-                          {selected.dq.tests.filter((t) => t.status === "PASS").length}/{selected.dq.tests.length}
-                        </div>
-                        <div className="mt-2 space-y-1">
-                          {selected.dq.tests.map((test, i) => (
-                            <div key={i} className="flex items-center gap-2 text-xs">
-                              {test.status === "PASS" ? (
-                                <CheckCircle2 className="h-3 w-3 text-emerald-400" />
-                              ) : test.status === "WARN" ? (
-                                <AlertTriangle className="h-3 w-3 text-amber-400" />
-                              ) : (
-                                <XCircle className="h-3 w-3 text-red-400" />
+                              {i < selected.artifacts.length - 1 && (
+                                <div className="text-amber-400">→</div>
                               )}
-                              <span className="text-white/70">{test.name.slice(0, 20)}</span>
-                            </div>
+                            </React.Fragment>
                           ))}
+                          <div className="text-amber-400">→</div>
+                          {selected.transforms.map((trn, i) => (
+                            <React.Fragment key={trn.id}>
+                              <div className="flex-shrink-0 rounded-lg border border-blue-500/30 bg-blue-500/10 px-3 py-2 hover:scale-105 transition-all duration-300">
+                                <div className="text-xs font-semibold text-blue-200">{trn.name.slice(0, 20)}</div>
+                                <div className="text-[10px] text-blue-300/60">{trn.version}</div>
+                              </div>
+                              {i < selected.transforms.length - 1 && (
+                                <div className="text-blue-400">→</div>
+                              )}
+                            </React.Fragment>
+                          ))}
+                          <div className="text-emerald-400">→</div>
+                          <div className="flex-shrink-0 rounded-lg border border-emerald-500/50 bg-emerald-500/20 px-4 py-2 hover:scale-105 transition-all duration-300">
+                            <div className="text-xs font-bold text-emerald-200">RECEIPT</div>
+                            <div className="text-[10px] text-emerald-300/70">{selected.verificationStatus}</div>
+                          </div>
                         </div>
                       </div>
-                    </div>
 
-                    {/* Reconciliation Summary */}
-                    <div className="mb-6">
-                      <div className="mb-3 text-sm font-semibold text-purple-300">Reconciliation Status</div>
-                      <div className="space-y-3">
-                        {selected.reconciliation.map((rec, i) => (
-                          <div key={i} className="rounded-lg border border-white/10 bg-white/5 p-4">
-                            <div className="mb-2 flex items-center justify-between">
-                              <div className="text-sm font-semibold text-white">{rec.name}</div>
-                              <span
-                                className={classNames(
-                                  "flex items-center gap-1 rounded-full px-2 py-1 text-xs font-semibold",
-                                  rec.status === "PASS"
-                                    ? "bg-emerald-500/20 text-emerald-300"
-                                    : rec.status === "WARN"
-                                    ? "bg-amber-500/20 text-amber-300"
-                                    : "bg-red-500/20 text-red-300"
-                                )}
-                              >
-                                {rec.status === "PASS" ? (
-                                  <CheckCircle2 className="h-3 w-3" />
-                                ) : rec.status === "WARN" ? (
-                                  <AlertTriangle className="h-3 w-3" />
+                      {/* Key Metrics Grid */}
+                      <div className="mb-6 grid gap-4 md:grid-cols-3">
+                        <div className="rounded-lg border border-amber-500/20 bg-amber-500/5 p-4 hover:border-amber-500/30 hover:scale-105 transition-all duration-300">
+                          <div className="mb-2 text-xs uppercase tracking-wide text-amber-300/60">Source Artifacts</div>
+                          <div className="text-2xl font-bold text-white">{selected.artifacts.length}</div>
+                          <div className="mt-2 space-y-1">
+                            {selected.artifacts.map((art) => (
+                              <div key={art.id} className="flex items-center gap-2 text-xs text-amber-200/70">
+                                <div className="h-1.5 w-1.5 rounded-full bg-amber-400 animate-pulse" />
+                                {art.sourceType}
+                              </div>
+                            ))}
+                          </div>
+                        </div>
+
+                        <div className="rounded-lg border border-blue-500/20 bg-blue-500/5 p-4 hover:border-blue-500/30 hover:scale-105 transition-all duration-300">
+                          <div className="mb-2 text-xs uppercase tracking-wide text-blue-300/60">Transform Pipeline</div>
+                          <div className="text-2xl font-bold text-white">{selected.transforms.length}</div>
+                          <div className="mt-2 space-y-1">
+                            {selected.transforms.map((trn, i) => (
+                              <div key={trn.id} className="flex items-center gap-2 text-xs text-blue-200/70">
+                                <div className="flex h-4 w-4 items-center justify-center rounded-full bg-blue-500/20 text-[9px] font-bold text-blue-300">
+                                  {i + 1}
+                                </div>
+                                {trn.name.slice(0, 18)}...
+                              </div>
+                            ))}
+                          </div>
+                        </div>
+
+                        <div className="rounded-lg border border-emerald-500/20 bg-emerald-500/5 p-4 hover:border-emerald-500/30 hover:scale-105 transition-all duration-300">
+                          <div className="mb-2 text-xs uppercase tracking-wide text-emerald-300/60">Quality Gates</div>
+                          <div className="text-2xl font-bold text-white">
+                            {selected.dq.tests.filter((t) => t.status === "PASS").length}/{selected.dq.tests.length}
+                          </div>
+                          <div className="mt-2 space-y-1">
+                            {selected.dq.tests.map((test, i) => (
+                              <div key={i} className="flex items-center gap-2 text-xs">
+                                {test.status === "PASS" ? (
+                                  <CheckCircle2 className="h-3 w-3 text-emerald-400 drop-shadow-[0_0_6px_rgba(16,185,129,0.6)]" />
+                                ) : test.status === "WARN" ? (
+                                  <AlertTriangle className="h-3 w-3 text-amber-400 drop-shadow-[0_0_6px_rgba(251,191,36,0.6)]" />
                                 ) : (
-                                  <XCircle className="h-3 w-3" />
+                                  <XCircle className="h-3 w-3 text-red-400 drop-shadow-[0_0_6px_rgba(239,68,68,0.6)]" />
                                 )}
-                                {rec.status}
-                              </span>
-                            </div>
-                            <div className="grid grid-cols-3 gap-4 text-sm">
-                              <div>
-                                <div className="text-xs text-purple-300/50">Expected</div>
-                                <div className="font-mono text-purple-100">
-                                  {rec.expected.toLocaleString()} {rec.unit}
-                                </div>
+                                <span className="text-white/70">{test.name.slice(0, 20)}</span>
                               </div>
-                              <div>
-                                <div className="text-xs text-purple-300/50">Actual</div>
-                                <div className="font-mono text-purple-100">
-                                  {rec.actual.toLocaleString()} {rec.unit}
-                                </div>
-                              </div>
-                              <div>
-                                <div className="text-xs text-purple-300/50">Delta</div>
-                                <div
+                            ))}
+                          </div>
+                        </div>
+                      </div>
+
+                      {/* Reconciliation Summary */}
+                      <div className="mb-6">
+                        <div className="mb-3 text-sm font-semibold text-amber-300">Reconciliation Status</div>
+                        <div className="space-y-3">
+                          {selected.reconciliation.map((rec, i) => (
+                            <div key={i} className="rounded-lg border border-amber-500/20 bg-amber-500/5 p-4 hover:border-amber-500/30 hover:scale-[1.02] transition-all duration-300">
+                              <div className="mb-2 flex items-center justify-between">
+                                <div className="text-sm font-semibold text-white">{rec.name}</div>
+                                <span
                                   className={classNames(
-                                    "font-mono font-semibold",
-                                    rec.delta > 0 ? "text-red-300" : rec.delta < 0 ? "text-emerald-300" : "text-purple-100"
+                                    "flex items-center gap-1 rounded-full px-2 py-1 text-xs font-semibold",
+                                    rec.status === "PASS"
+                                      ? "bg-emerald-500/20 text-emerald-300"
+                                      : rec.status === "WARN"
+                                      ? "bg-amber-500/20 text-amber-300"
+                                      : "bg-red-500/20 text-red-300"
                                   )}
                                 >
-                                  {rec.delta > 0 ? "+" : ""}
-                                  {rec.delta.toLocaleString()} {rec.unit}
+                                  {rec.status === "PASS" ? (
+                                    <CheckCircle2 className="h-3 w-3" />
+                                  ) : rec.status === "WARN" ? (
+                                    <AlertTriangle className="h-3 w-3" />
+                                  ) : (
+                                    <XCircle className="h-3 w-3" />
+                                  )}
+                                  {rec.status}
+                                </span>
+                              </div>
+                              <div className="grid grid-cols-3 gap-4 text-sm">
+                                <div>
+                                  <div className="text-xs text-amber-300/50">Expected</div>
+                                  <div className="font-mono text-amber-100">
+                                    {rec.expected.toLocaleString()} {rec.unit}
+                                  </div>
+                                </div>
+                                <div>
+                                  <div className="text-xs text-amber-300/50">Actual</div>
+                                  <div className="font-mono text-amber-100">
+                                    {rec.actual.toLocaleString()} {rec.unit}
+                                  </div>
+                                </div>
+                                <div>
+                                  <div className="text-xs text-amber-300/50">Delta</div>
+                                  <div
+                                    className={classNames(
+                                      "font-mono font-semibold",
+                                      rec.delta > 0 ? "text-red-300" : rec.delta < 0 ? "text-emerald-300" : "text-amber-100"
+                                    )}
+                                  >
+                                    {rec.delta > 0 ? "+" : ""}
+                                    {rec.delta.toLocaleString()} {rec.unit}
+                                  </div>
                                 </div>
                               </div>
                             </div>
-                          </div>
-                        ))}
+                          ))}
+                        </div>
                       </div>
-                    </div>
 
-                    {/* Footer Metadata */}
-                    <div className="border-t border-white/10 pt-6">
-                      <div className="grid gap-4 text-xs md:grid-cols-4">
-                        <div>
-                          <div className="mb-1 text-purple-300/50">Period</div>
-                          <div className="font-mono text-purple-100">
-                            {selected.periodStart} → {selected.periodEnd}
+                      {/* Footer Metadata */}
+                      <div className="border-t border-amber-500/20 pt-6">
+                        <div className="grid gap-4 text-xs md:grid-cols-4">
+                          <div>
+                            <div className="mb-1 text-amber-300/50">Period</div>
+                            <div className="font-mono text-amber-100">
+                              {selected.periodStart} → {selected.periodEnd}
+                            </div>
                           </div>
-                        </div>
-                        <div>
-                          <div className="mb-1 text-purple-300/50">Grain</div>
-                          <div className="font-mono text-purple-100">{selected.grain}</div>
-                        </div>
-                        <div>
-                          <div className="mb-1 text-purple-300/50">Owner</div>
-                          <div className="text-purple-100">{selected.owner}</div>
-                        </div>
-                        <div>
-                          <div className="mb-1 text-purple-300/50">Freshness</div>
-                          <div className="font-mono text-purple-100">{new Date(selected.freshnessTs).toLocaleString()}</div>
+                          <div>
+                            <div className="mb-1 text-amber-300/50">Grain</div>
+                            <div className="font-mono text-amber-100">{selected.grain}</div>
+                          </div>
+                          <div>
+                            <div className="mb-1 text-amber-300/50">Owner</div>
+                            <div className="text-amber-100">{selected.owner}</div>
+                          </div>
+                          <div>
+                            <div className="mb-1 text-amber-300/50">Freshness</div>
+                            <div className="font-mono text-amber-100">{new Date(selected.freshnessTs).toLocaleString()}</div>
+                          </div>
                         </div>
                       </div>
                     </div>
                   </div>
                 </div>
-              </div>
-            )}
+              )}
 
-            {tab === "lineage" && (
-              <div>
-                <h3 className="mb-4 text-xl font-semibold">Data Lineage Graph</h3>
-                <svg viewBox="0 0 800 500" className="w-full rounded-xl border border-white/10 bg-black/20 p-4">
-                  <defs>
-                    <marker id="arrowhead" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto">
-                      <polygon points="0 0, 10 3, 0 6" fill="#a78bfa" />
-                    </marker>
-                  </defs>
-                  {selected.artifacts.map((art, i) => {
-                    const y = 50 + i * 80;
-                    return (
-                      <g key={art.id}>
-                        <rect x="20" y={y} width="180" height="60" rx="8" fill="#7c3aed" fillOpacity="0.2" stroke="#a78bfa" strokeWidth="2" />
-                        <text x="110" y={y + 25} textAnchor="middle" fill="#e9d5ff" fontSize="12" fontWeight="600">
-                          {art.sourceType}
-                        </text>
-                        <text x="110" y={y + 42} textAnchor="middle" fill="#c4b5fd" fontSize="10">
-                          {art.fileName.slice(0, 20)}
-                        </text>
-                        <line x1="200" y1={y + 30} x2="250" y2="250" stroke="#a78bfa" strokeWidth="2" markerEnd="url(#arrowhead)" />
-                      </g>
-                    );
-                  })}
-                  {selected.transforms.map((trn, i) => {
-                    const y = 150 + i * 100;
-                    return (
-                      <g key={trn.id}>
-                        <rect x="270" y={y} width="200" height="70" rx="8" fill="#6366f1" fillOpacity="0.2" stroke="#818cf8" strokeWidth="2" />
-                        <text x="370" y={y + 30} textAnchor="middle" fill="#e0e7ff" fontSize="12" fontWeight="600">
-                          {trn.name.slice(0, 24)}
-                        </text>
-                        <text x="370" y={y + 48} textAnchor="middle" fill="#c7d2fe" fontSize="10">
-                          {trn.version}
-                        </text>
-                        <line x1="470" y1={y + 35} x2="520" y2="250" stroke="#818cf8" strokeWidth="2" markerEnd="url(#arrowhead)" />
-                      </g>
-                    );
-                  })}
-                  <rect x="540" y="220" width="220" height="80" rx="12" fill="#10b981" fillOpacity="0.2" stroke="#34d399" strokeWidth="3" />
-                  <text x="650" y="250" textAnchor="middle" fill="#d1fae5" fontSize="14" fontWeight="700">
-                    Receipt
-                  </text>
-                  <text x="650" y="270" textAnchor="middle" fill="#a7f3d0" fontSize="11">
-                    {selected.receiptId.slice(0, 30)}
-                  </text>
-                  <text x="650" y="288" textAnchor="middle" fill="#6ee7b7" fontSize="10">
-                    {selected.verificationStatus} • {confidencePct}%
-                  </text>
-                </svg>
-              </div>
-            )}
-
-            {tab === "artifacts" && (
-              <div>
-                <h3 className="mb-4 text-xl font-semibold">Source Artifacts</h3>
-                <div className="space-y-4">
-                  {selected.artifacts.map((art) => (
-                    <div key={art.id} className="rounded-xl border border-white/10 bg-white/5 p-4">
-                      <div className="mb-3 flex items-start justify-between">
-                        <div>
-                          <div className="mb-1 font-mono text-sm text-purple-300">{art.id}</div>
-                          <div className="font-semibold">{art.fileName}</div>
-                        </div>
-                        <span className="rounded-full bg-purple-500/20 px-3 py-1 text-xs font-semibold text-purple-200">
-                          {art.sourceType}
-                        </span>
-                      </div>
-                      <div className="grid gap-3 text-sm md:grid-cols-2">
-                        <div>
-                          <span className="text-purple-300/70">System: </span>
-                          <span className="font-mono text-purple-100">{art.sourceSystem}</span>
-                        </div>
-                        <div>
-                          <span className="text-purple-300/70">Rows: </span>
-                          <span className="font-mono text-purple-100">{art.rowCount?.toLocaleString() || "N/A"}</span>
-                        </div>
-                        <div>
-                          <span className="text-purple-300/70">Loaded: </span>
-                          <span className="font-mono text-purple-100">{new Date(art.loadedAt).toLocaleString()}</span>
-                        </div>
-                        <div>
-                          <span className="text-purple-300/70">Checksum: </span>
-                          <span className="font-mono text-xs text-purple-100">{art.checksum}</span>
-                        </div>
-                      </div>
-                      <div className="mt-3 border-t border-white/10 pt-3">
-                        <div className="text-xs text-purple-300/70">URI</div>
-                        <div className="font-mono text-xs text-purple-100">{art.uri}</div>
-                      </div>
-                    </div>
-                  ))}
+              {tab === "lineage" && (
+                <div>
+                  <h3 className="mb-4 text-xl font-semibold">Data Lineage Graph</h3>
+                  <svg viewBox="0 0 800 500" className="w-full rounded-xl border border-amber-500/20 bg-black/20 p-4">
+                    <defs>
+                      <marker id="arrowhead" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto">
+                        <polygon points="0 0, 10 3, 0 6" fill="#fbbf24" />
+                      </marker>
+                    </defs>
+                    {selected.artifacts.map((art, i) => {
+                      const y = 50 + i * 80;
+                      return (
+                        <g key={art.id}>
+                          <rect x="20" y={y} width="180" height="60" rx="8" fill="#f59e0b" fillOpacity="0.2" stroke="#fbbf24" strokeWidth="2" />
+                          <text x="110" y={y + 25} textAnchor="middle" fill="#fef3c7" fontSize="12" fontWeight="600">
+                            {art.sourceType}
+                          </text>
+                          <text x="110" y={y + 42} textAnchor="middle" fill="#fde68a" fontSize="10">
+                            {art.fileName.slice(0, 20)}
+                          </text>
+                          <line x1="200" y1={y + 30} x2="250" y2="250" stroke="#fbbf24" strokeWidth="2" markerEnd="url(#arrowhead)" />
+                        </g>
+                      );
+                    })}
+                    {selected.transforms.map((trn, i) => {
+                      const y = 150 + i * 100;
+                      return (
+                        <g key={trn.id}>
+                          <rect x="270" y={y} width="200" height="70" rx="8" fill="#d97706" fillOpacity="0.2" stroke="#f59e0b" strokeWidth="2" />
+                          <text x="370" y={y + 30} textAnchor="middle" fill="#fef3c7" fontSize="12" fontWeight="600">
+                            {trn.name.slice(0, 24)}
+                          </text>
+                          <text x="370" y={y + 48} textAnchor="middle" fill="#fde68a" fontSize="10">
+                            {trn.version}
+                          </text>
+                          <line x1="470" y1={y + 35} x2="520" y2="250" stroke="#f59e0b" strokeWidth="2" markerEnd="url(#arrowhead)" />
+                        </g>
+                      );
+                    })}
+                    <rect x="540" y="220" width="220" height="80" rx="12" fill="#10b981" fillOpacity="0.2" stroke="#34d399" strokeWidth="3" />
+                    <text x="650" y="250" textAnchor="middle" fill="#d1fae5" fontSize="14" fontWeight="700">
+                      Receipt
+                    </text>
+                    <text x="650" y="270" textAnchor="middle" fill="#a7f3d0" fontSize="11">
+                      {selected.receiptId.slice(0, 30)}
+                    </text>
+                    <text x="650" y="288" textAnchor="middle" fill="#6ee7b7" fontSize="10">
+                      {selected.verificationStatus} • {confidencePct}%
+                    </text>
+                  </svg>
                 </div>
-              </div>
-            )}
+              )}
 
-            {tab === "transforms" && (
-              <div>
-                <h3 className="mb-4 text-xl font-semibold">Transform Pipeline</h3>
-                <div className="space-y-4">
-                  {selected.transforms.map((trn, i) => (
-                    <div key={trn.id} className="rounded-xl border border-white/10 bg-white/5 p-4">
-                      <div className="mb-3 flex items-start justify-between">
-                        <div>
-                          <div className="mb-1 flex items-center gap-2">
-                            <span className="flex h-6 w-6 items-center justify-center rounded-full bg-purple-500/20 text-xs font-bold text-purple-200">
-                              {i + 1}
-                            </span>
-                            <span className="font-mono text-sm text-purple-300">{trn.id}</span>
+              {tab === "artifacts" && (
+                <div>
+                  <h3 className="mb-4 text-xl font-semibold">Source Artifacts</h3>
+                  <div className="space-y-4">
+                    {selected.artifacts.map((art) => (
+                      <div key={art.id} className="rounded-xl border border-amber-500/20 bg-amber-500/5 p-4 hover:border-amber-500/30 hover:scale-[1.02] transition-all duration-300">
+                        <div className="mb-3 flex items-start justify-between">
+                          <div>
+                            <div className="mb-1 font-mono text-sm text-amber-300">{art.id}</div>
+                            <div className="font-semibold">{art.fileName}</div>
                           </div>
-                          <div className="font-semibold">{trn.name}</div>
+                          <span className="rounded-full bg-amber-500/20 px-3 py-1 text-xs font-semibold text-amber-200">
+                            {art.sourceType}
+                          </span>
                         </div>
-                        <span className="rounded-full bg-blue-500/20 px-3 py-1 text-xs font-semibold text-blue-200">
-                          {trn.version}
-                        </span>
+                        <div className="grid gap-3 text-sm md:grid-cols-2">
+                          <div>
+                            <span className="text-amber-300/70">System: </span>
+                            <span className="font-mono text-amber-100">{art.sourceSystem}</span>
+                          </div>
+                          <div>
+                            <span className="text-amber-300/70">Rows: </span>
+                            <span className="font-mono text-amber-100">{art.rowCount?.toLocaleString() || "N/A"}</span>
+                          </div>
+                          <div>
+                            <span className="text-amber-300/70">Loaded: </span>
+                            <span className="font-mono text-amber-100">{new Date(art.loadedAt).toLocaleString()}</span>
+                          </div>
+                          <div>
+                            <span className="text-amber-300/70">Checksum: </span>
+                            <span className="font-mono text-xs text-amber-100">{art.checksum}</span>
+                          </div>
+                        </div>
+                        <div className="mt-3 border-t border-amber-500/20 pt-3">
+                          <div className="text-xs text-amber-300/70">URI</div>
+                          <div className="font-mono text-xs text-amber-100">{art.uri}</div>
+                        </div>
                       </div>
-                      <div className="grid gap-3 text-sm md:grid-cols-2">
-                        <div>
-                          <span className="text-purple-300/70">Warehouse: </span>
-                          <span className="font-mono text-purple-100">{trn.warehouse}</span>
-                        </div>
-                        <div>
-                          <span className="text-purple-300/70">Ran By: </span>
-                          <span className="font-mono text-purple-100">{trn.ranBy}</span>
-                        </div>
-                        <div>
-                          <span className="text-purple-300/70">Ran At: </span>
-                          <span className="font-mono text-purple-100">{new Date(trn.ranAt).toLocaleString()}</span>
-                        </div>
-                        <div>
-                          <span className="text-purple-300/70">Query ID: </span>
-                          <span className="font-mono text-xs text-purple-100">{trn.queryId}</span>
-                        </div>
-                      </div>
-                      <div className="mt-3 border-t border-white/10 pt-3">
-                        <div className="text-xs text-purple-300/70">Code Hash</div>
-                        <div className="font-mono text-xs text-purple-100">{trn.codeHash}</div>
-                      </div>
-                    </div>
-                  ))}
+                    ))}
+                  </div>
                 </div>
-              </div>
-            )}
+              )}
 
-            {tab === "dq" && (
-              <div>
-                <h3 className="mb-4 text-xl font-semibold">Data Quality Suite</h3>
-                <div className="mb-6 rounded-xl border border-white/10 bg-white/5 p-4">
-                  <div className="mb-4 flex items-center justify-between">
-                    <div>
-                      <div className="mb-1 font-semibold">{selected.dq.suite}</div>
-                      <div className="text-sm text-purple-200/60">Version {selected.dq.version}</div>
-                    </div>
-                    <span
-                      className={classNames(
-                        "rounded-full px-3 py-1 text-sm font-semibold",
-                        selected.dq.status === "PASS"
-                          ? "bg-emerald-500/20 text-emerald-300"
-                          : selected.dq.status === "WARN"
-                          ? "bg-amber-500/20 text-amber-300"
-                          : "bg-red-500/20 text-red-300"
-                      )}
-                    >
-                      {selected.dq.status}
-                    </span>
-                  </div>
-                  <div className="text-sm text-purple-200/60">
-                    Ran At: {new Date(selected.dq.ranAt).toLocaleString()}
+              {tab === "transforms" && (
+                <div>
+                  <h3 className="mb-4 text-xl font-semibold">Transform Pipeline</h3>
+                  <div className="space-y-4">
+                    {selected.transforms.map((trn, i) => (
+                      <div key={trn.id} className="rounded-xl border border-amber-500/20 bg-amber-500/5 p-4 hover:border-amber-500/30 hover:scale-[1.02] transition-all duration-300">
+                        <div className="mb-3 flex items-start justify-between">
+                          <div>
+                            <div className="mb-1 flex items-center gap-2">
+                              <span className="flex h-6 w-6 items-center justify-center rounded-full bg-amber-500/20 text-xs font-bold text-amber-200">
+                                {i + 1}
+                              </span>
+                              <span className="font-mono text-sm text-amber-300">{trn.id}</span>
+                            </div>
+                            <div className="font-semibold">{trn.name}</div>
+                          </div>
+                          <span className="rounded-full bg-blue-500/20 px-3 py-1 text-xs font-semibold text-blue-200">
+                            {trn.version}
+                          </span>
+                        </div>
+                        <div className="grid gap-3 text-sm md:grid-cols-2">
+                          <div>
+                            <span className="text-amber-300/70">Warehouse: </span>
+                            <span className="font-mono text-amber-100">{trn.warehouse}</span>
+                          </div>
+                          <div>
+                            <span className="text-amber-300/70">Ran By: </span>
+                            <span className="font-mono text-amber-100">{trn.ranBy}</span>
+                          </div>
+                          <div>
+                            <span className="text-amber-300/70">Ran At: </span>
+                            <span className="font-mono text-amber-100">{new Date(trn.ranAt).toLocaleString()}</span>
+                          </div>
+                          <div>
+                            <span className="text-amber-300/70">Query ID: </span>
+                            <span className="font-mono text-xs text-amber-100">{trn.queryId}</span>
+                          </div>
+                        </div>
+                        <div className="mt-3 border-t border-amber-500/20 pt-3">
+                          <div className="text-xs text-amber-300/70">Code Hash</div>
+                          <div className="font-mono text-xs text-amber-100">{trn.codeHash}</div>
+                        </div>
+                      </div>
+                    ))}
                   </div>
                 </div>
-                <div className="space-y-3">
-                  {selected.dq.tests.map((test, i) => (
-                    <div key={i} className="flex items-center justify-between rounded-xl border border-white/10 bg-white/5 p-4">
+              )}
+
+              {tab === "dq" && (
+                <div>
+                  <h3 className="mb-4 text-xl font-semibold">Data Quality Suite</h3>
+                  <div className="mb-6 rounded-xl border border-amber-500/20 bg-amber-500/5 p-4 hover:border-amber-500/30 transition-all duration-300">
+                    <div className="mb-4 flex items-center justify-between">
                       <div>
-                        <div className="font-semibold">{test.name}</div>
-                        {test.details && <div className="mt-1 text-sm text-purple-200/60">{test.details}</div>}
+                        <div className="mb-1 font-semibold">{selected.dq.suite}</div>
+                        <div className="text-sm text-amber-200/60">Version {selected.dq.version}</div>
                       </div>
                       <span
                         className={classNames(
-                          "flex items-center gap-1.5 rounded-full px-3 py-1 text-sm font-semibold",
-                          test.status === "PASS"
+                          "rounded-full px-3 py-1 text-sm font-semibold",
+                          selected.dq.status === "PASS"
                             ? "bg-emerald-500/20 text-emerald-300"
-                            : test.status === "WARN"
+                            : selected.dq.status === "WARN"
                             ? "bg-amber-500/20 text-amber-300"
                             : "bg-red-500/20 text-red-300"
                         )}
                       >
-                        {test.status === "PASS" ? (
-                          <CheckCircle2 className="h-4 w-4" />
-                        ) : test.status === "WARN" ? (
-                          <AlertTriangle className="h-4 w-4" />
-                        ) : (
-                          <XCircle className="h-4 w-4" />
-                        )}
-                        {test.status}
+                        {selected.dq.status}
                       </span>
                     </div>
-                  ))}
-                </div>
-              </div>
-            )}
-
-            {tab === "recon" && (
-              <div>
-                <h3 className="mb-4 text-xl font-semibold">Reconciliation Checks</h3>
-                <div className="space-y-4">
-                  {selected.reconciliation.map((rec, i) => (
-                    <div key={i} className="rounded-xl border border-white/10 bg-white/5 p-4">
-                      <div className="mb-3 flex items-start justify-between">
-                        <div className="font-semibold">{rec.name}</div>
+                    <div className="text-sm text-amber-200/60">
+                      Ran At: {new Date(selected.dq.ranAt).toLocaleString()}
+                    </div>
+                  </div>
+                  <div className="space-y-3">
+                    {selected.dq.tests.map((test, i) => (
+                      <div key={i} className="flex items-center justify-between rounded-xl border border-amber-500/20 bg-amber-500/5 p-4 hover:border-amber-500/30 hover:scale-[1.02] transition-all duration-300">
+                        <div>
+                          <div className="font-semibold">{test.name}</div>
+                          {test.details && <div className="mt-1 text-sm text-amber-200/60">{test.details}</div>}
+                        </div>
                         <span
                           className={classNames(
                             "flex items-center gap-1.5 rounded-full px-3 py-1 text-sm font-semibold",
-                            rec.status === "PASS"
+                            test.status === "PASS"
                               ? "bg-emerald-500/20 text-emerald-300"
-                              : rec.status === "WARN"
+                              : test.status === "WARN"
                               ? "bg-amber-500/20 text-amber-300"
                               : "bg-red-500/20 text-red-300"
                           )}
                         >
-                          {rec.status === "PASS" ? (
+                          {test.status === "PASS" ? (
                             <CheckCircle2 className="h-4 w-4" />
-                          ) : rec.status === "WARN" ? (
+                          ) : test.status === "WARN" ? (
                             <AlertTriangle className="h-4 w-4" />
                           ) : (
                             <XCircle className="h-4 w-4" />
                           )}
-                          {rec.status}
+                          {test.status}
                         </span>
                       </div>
-                      <div className="grid gap-4 text-sm md:grid-cols-3">
-                        <div>
-                          <div className="mb-1 text-xs uppercase tracking-wide text-purple-300/50">Expected</div>
-                          <div className="font-mono text-lg font-bold text-purple-100">
-                            {rec.expected.toLocaleString()} {rec.unit}
-                          </div>
-                        </div>
-                        <div>
-                          <div className="mb-1 text-xs uppercase tracking-wide text-purple-300/50">Actual</div>
-                          <div className="font-mono text-lg font-bold text-purple-100">
-                            {rec.actual.toLocaleString()} {rec.unit}
-                          </div>
-                        </div>
-                        <div>
-                          <div className="mb-1 text-xs uppercase tracking-wide text-purple-300/50">Delta</div>
-                          <div
+                    ))}
+                  </div>
+                </div>
+              )}
+
+              {tab === "recon" && (
+                <div>
+                  <h3 className="mb-4 text-xl font-semibold">Reconciliation Checks</h3>
+                  <div className="space-y-4">
+                    {selected.reconciliation.map((rec, i) => (
+                      <div key={i} className="rounded-xl border border-amber-500/20 bg-amber-500/5 p-4 hover:border-amber-500/30 hover:scale-[1.02] transition-all duration-300">
+                        <div className="mb-3 flex items-start justify-between">
+                          <div className="font-semibold">{rec.name}</div>
+                          <span
                             className={classNames(
-                              "font-mono text-lg font-bold",
-                              rec.delta > 0 ? "text-red-300" : rec.delta < 0 ? "text-emerald-300" : "text-purple-100"
+                              "flex items-center gap-1.5 rounded-full px-3 py-1 text-sm font-semibold",
+                              rec.status === "PASS"
+                                ? "bg-emerald-500/20 text-emerald-300"
+                                : rec.status === "WARN"
+                                ? "bg-amber-500/20 text-amber-300"
+                                : "bg-red-500/20 text-red-300"
                             )}
                           >
-                            {rec.delta > 0 ? "+" : ""}
-                            {rec.delta.toLocaleString()} {rec.unit}
+                            {rec.status === "PASS" ? (
+                              <CheckCircle2 className="h-4 w-4" />
+                            ) : rec.status === "WARN" ? (
+                              <AlertTriangle className="h-4 w-4" />
+                            ) : (
+                              <XCircle className="h-4 w-4" />
+                            )}
+                            {rec.status}
+                          </span>
+                        </div>
+                        <div className="grid gap-4 text-sm md:grid-cols-3">
+                          <div>
+                            <div className="mb-1 text-xs uppercase tracking-wide text-amber-300/50">Expected</div>
+                            <div className="font-mono text-lg font-bold text-amber-100">
+                              {rec.expected.toLocaleString()} {rec.unit}
+                            </div>
+                          </div>
+                          <div>
+                            <div className="mb-1 text-xs uppercase tracking-wide text-amber-300/50">Actual</div>
+                            <div className="font-mono text-lg font-bold text-amber-100">
+                              {rec.actual.toLocaleString()} {rec.unit}
+                            </div>
+                          </div>
+                          <div>
+                            <div className="mb-1 text-xs uppercase tracking-wide text-amber-300/50">Delta</div>
+                            <div
+                              className={classNames(
+                                "font-mono text-lg font-bold",
+                                rec.delta > 0 ? "text-red-300" : rec.delta < 0 ? "text-emerald-300" : "text-amber-100"
+                              )}
+                            >
+                              {rec.delta > 0 ? "+" : ""}
+                              {rec.delta.toLocaleString()} {rec.unit}
+                            </div>
                           </div>
                         </div>
                       </div>
-                    </div>
-                  ))}
+                    ))}
+                  </div>
                 </div>
-              </div>
-            )}
+              )}
 
-            {tab === "audit" && (
-              <div>
-                <h3 className="mb-4 text-xl font-semibold">Audit Log</h3>
-                <div className="space-y-3">
-                  {selected.auditLog.map((log, i) => (
-                    <div key={i} className="flex gap-4 rounded-xl border border-white/10 bg-white/5 p-4">
-                      <div className="flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-full bg-purple-500/20 text-xs font-bold text-purple-200">
-                        {i + 1}
-                      </div>
-                      <div className="flex-1">
-                        <div className="mb-1 flex items-center gap-3">
-                          <span className="font-semibold">{log.action}</span>
-                          <span className="text-sm text-purple-200/60">{log.actor}</span>
+              {tab === "audit" && (
+                <div>
+                  <h3 className="mb-4 text-xl font-semibold">Audit Log</h3>
+                  <div className="space-y-3">
+                    {selected.auditLog.map((log, i) => (
+                      <div key={i} className="flex gap-4 rounded-xl border border-amber-500/20 bg-amber-500/5 p-4 hover:border-amber-500/30 hover:scale-[1.02] transition-all duration-300">
+                        <div className="flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-full bg-amber-500/20 text-xs font-bold text-amber-200">
+                          {i + 1}
                         </div>
-                        {log.note && <div className="mb-2 text-sm text-purple-200/70">{log.note}</div>}
-                        <div className="text-xs font-mono text-purple-300/50">
-                          {new Date(log.at).toLocaleString()}
+                        <div className="flex-1">
+                          <div className="mb-1 flex items-center gap-3">
+                            <span className="font-semibold">{log.action}</span>
+                            <span className="text-sm text-amber-200/60">{log.actor}</span>
+                          </div>
+                          {log.note && <div className="mb-2 text-sm text-amber-200/70">{log.note}</div>}
+                          <div className="text-xs font-mono text-amber-300/50">
+                            {new Date(log.at).toLocaleString()}
+                          </div>
                         </div>
                       </div>
-                    </div>
-                  ))}
+                    ))}
+                  </div>
                 </div>
-              </div>
-            )}
+              )}
+            </div>
           </div>
         </div>
         <Footer />
@@ -1221,7 +1292,7 @@ export default function EvidenceReceiptsPage() {
               dq: {
                 suite: r.evidence.dq.suite,
                 version: r.evidence.dq.version,
-                ranAt: r.verification.freshness_ts, // Fallback as dq.ran_at might be missing
+                ranAt: r.verification.freshness_ts,
                 status: r.evidence.dq.status,
                 tests: r.evidence.dq.tests.map((test: any) => ({
                   name: test.name,
@@ -1252,6 +1323,23 @@ export default function EvidenceReceiptsPage() {
           }}
         />
       </div>
+
+      <style jsx>{`
+        @keyframes float {
+          0%, 100% {
+            transform: translateY(0) translateX(0);
+          }
+          25% {
+            transform: translateY(-20px) translateX(10px);
+          }
+          50% {
+            transform: translateY(-10px) translateX(-10px);
+          }
+          75% {
+            transform: translateY(-30px) translateX(5px);
+          }
+        }
+      `}</style>
     </>
   );
 }

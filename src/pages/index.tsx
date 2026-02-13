@@ -234,63 +234,8 @@ export default function HomePage() {
         <AnimatedBackground />
         <VegasParticles />
         
-        {/* Top bar with Vegas luxury feel */}
-        <motion.header
-          className="relative z-50 mx-auto flex w-full max-w-6xl items-center justify-between px-6 py-6"
-          initial={{ opacity: 0, y: -20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, type: "spring" }}
-        >
-          <div className="flex items-center gap-3">
-            <motion.div
-              className="h-10 w-10 rounded-xl border border-amber-500/50 bg-gradient-to-br from-amber-500 via-purple-600 to-blue-500 shadow-2xl shadow-amber-500/40"
-              animate={{
-                boxShadow: [
-                  "0 0 20px rgba(251, 191, 36, 0.4)",
-                  "0 0 40px rgba(251, 191, 36, 0.6)",
-                  "0 0 20px rgba(251, 191, 36, 0.4)",
-                ],
-              }}
-              transition={{ duration: 2, repeat: Infinity }}
-              whileHover={{ scale: 1.15, rotate: 360 }}
-            />
-            <div className="leading-tight">
-              <div className="text-sm font-bold bg-gradient-to-r from-amber-300 via-amber-100 to-amber-300 bg-clip-text text-transparent drop-shadow-[0_0_10px_rgba(251,191,36,0.3)]">
-                Kincaid IQ
-              </div>
-              <div className="text-xs text-amber-400/80">Receipts-first benefits governance</div>
-            </div>
-          </div>
-
-          <nav className="flex items-center gap-4">
-            <Link
-              href="#proof"
-              className="hidden text-sm text-zinc-300 transition-all hover:text-amber-300 hover:drop-shadow-[0_0_8px_rgba(251,191,36,0.5)] md:inline"
-            >
-              Proof
-            </Link>
-            <Link
-              href="#trust"
-              className="hidden text-sm text-zinc-300 transition-all hover:text-amber-300 hover:drop-shadow-[0_0_8px_rgba(251,191,36,0.5)] md:inline"
-            >
-              Trust
-            </Link>
-            <motion.div whileHover={{ scale: 1.05, y: -2 }} whileTap={{ scale: 0.95 }}>
-              <Link
-                href="/operator/artifacts"
-                className="rounded-xl border border-amber-500/50 bg-gradient-to-r from-amber-950/80 to-amber-900/60 px-4 py-2 text-sm font-medium text-white shadow-lg shadow-amber-500/20 backdrop-blur-sm transition-all hover:border-amber-400/70 hover:shadow-xl hover:shadow-amber-500/30"
-              >
-                <span className="flex items-center gap-2">
-                  <Crown className="h-3.5 w-3.5 text-amber-400" />
-                  Operator Console
-                </span>
-              </Link>
-            </motion.div>
-          </nav>
-        </motion.header>
-
         {/* Hero with premium 3D */}
-        <section className="relative mx-auto w-full max-w-6xl px-6 pb-16 pt-8">
+        <section className="relative mx-auto w-full max-w-6xl px-6 pb-16 pt-24">
           <div className="grid gap-12 md:grid-cols-2 md:items-center">
             <motion.div
               initial={{ opacity: 0, x: -30 }}

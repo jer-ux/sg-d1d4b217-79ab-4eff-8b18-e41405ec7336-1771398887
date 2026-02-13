@@ -2,7 +2,6 @@ import { useState, useEffect } from "react";
 import Link from "next/link";
 import { motion, useScroll, useTransform } from "framer-motion";
 import dynamic from "next/dynamic";
-import Nav from "@/components/Nav";
 import Footer from "@/components/Footer";
 import { SEO } from "@/components/SEO";
 import { InteractiveStageCard } from "@/components/agentic/InteractiveStageCard";
@@ -258,8 +257,6 @@ export default function AgenticWorkflowPage() {
         description="Big 4-grade financial workflow automation with AI-powered controls, real-time compliance, and blockchain-verified audit trails."
       />
       <div className="min-h-screen bg-black text-white overflow-hidden">
-        <Nav />
-
         {/* Hero Section with 3D Background - Reduced Height */}
         <section className="relative min-h-[85vh] flex items-center justify-center pt-20 pb-12 px-6 overflow-hidden">
           {/* 3D Animated Background */}

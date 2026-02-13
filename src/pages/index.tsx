@@ -509,6 +509,40 @@ export default function HomePage() {
           </div>
         </section>
 
+        {/* Executive War Room - Live CFO Dashboard */}
+        <section id="dashboard" className="relative mx-auto w-full max-w-7xl px-6 py-16">
+          <motion.div
+            className="mb-10"
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6 }}
+          >
+            <div className="flex items-center gap-3 mb-3">
+              <div className="h-10 w-10 rounded-xl bg-gradient-to-br from-amber-500/20 to-purple-500/20 flex items-center justify-center">
+                <TrendingUp className="h-6 w-6 text-amber-400 drop-shadow-[0_0_10px_rgba(251,191,36,0.5)]" />
+              </div>
+              <div>
+                <h2 className="text-3xl font-bold bg-gradient-to-br from-white via-amber-100 to-zinc-300 bg-clip-text text-transparent">
+                  Live CFO Dashboard
+                </h2>
+                <p className="text-sm text-zinc-400 mt-1">
+                  Real-time metrics, evidence-backed KPIs, and executive insights
+                </p>
+              </div>
+            </div>
+          </motion.div>
+
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6, delay: 0.2 }}
+          >
+            <ExecutiveWarRoom />
+          </motion.div>
+        </section>
+
         {/* Enterprise Trust with Vegas luxury */}
         <section id="trust" className="relative mx-auto w-full max-w-6xl px-6 py-16">
           <motion.div

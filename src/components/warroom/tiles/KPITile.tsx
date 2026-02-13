@@ -66,25 +66,14 @@ const TILE_THEMES = {
 export function KPITile({ data, onClick }: { data?: TileData; onClick?: (tile: TileData) => void }) {
   const [open, setOpen] = useState(false);
 
-  // Early return for loading state
-  if (!data) {
-    return (
-      <div className="rounded-2xl border border-zinc-800/60 bg-zinc-950/60 p-6">
-        <div className="h-40 animate-pulse rounded-lg bg-zinc-900/50" />
-      </div>
-    );
-  }
+  // Extract necessary props for hooks safeley
+  const tileKey = data?.key;
+  const receipt = data?.receipt;
+  const verified = Boolean(receipt?.verified);
+  const framework = data?.framework;
+  const trend = data?.trend;
 
-  const title = data.title;
-  const value = data.value;
-  const delta = data.delta;
-  const subtitle = data.subtitle;
-  const receipt = data.receipt;
-  const chartData = data.chartData || [];
-  const trend = data.trend;
-  const framework = data.framework;
-  const tileKey = data.key;
-
+  // Hooks must be called unconditionally
   const theme = useMemo(() => {
     if (tileKey && tileKey in TILE_THEMES) {
       return TILE_THEMES[tileKey as keyof typeof TILE_THEMES];
@@ -98,9 +87,6 @@ export function KPITile({ data, onClick }: { data?: TileData; onClick?: (tile: T
     };
   }, [tileKey]);
 
-  const verified = Boolean(receipt?.verified);
-  const confidencePct = receipt ? Math.round(receipt.confidence * 100) : null;
-
   const badge = useMemo(() => {
     if (!receipt) return { text: "NO RECEIPT", cls: "border-zinc-800 text-zinc-300" };
     if (verified) return { text: "VERIFIED", cls: "border-emerald-700/60 text-emerald-300" };
@@ -112,6 +98,19 @@ export function KPITile({ data, onClick }: { data?: TileData; onClick?: (tile: T
     if (framework === "Bain") return { text: "Bain NPS", cls: "border-violet-700/60 bg-violet-950/40 text-violet-300" };
     return null;
   }, [framework]);
+
+  // Loading state check AFTER hooks
+  if (!data) {
+    return (
+      <div className="rounded-2xl border border-zinc-800/60 bg-zinc-950/60 p-6">
+        <div className="h-40 animate-pulse rounded-lg bg-zinc-900/50" />
+      </div>
+    );
+  }
+
+  // Extract rest of data for rendering
+  const { title, value, delta, subtitle, chartData = [] } = data;
+  const confidencePct = receipt ? Math.round(receipt.confidence * 100) : null;
 
   const getTrendIcon = () => {
     if (trend === "up") return <TrendingUp className="h-4 w-4 text-emerald-400" />;
@@ -139,12 +138,12 @@ export function KPITile({ data, onClick }: { data?: TileData; onClick?: (tile: T
         // Only prevent click if clicking the receipt toggle button
         const target = e.target as HTMLElement;
         const isReceiptButton = target.closest('[data-receipt-toggle]');
-        if (!isReceiptButton && onClick && data) {
+        if (!isReceiptButton && onClick) {
           onClick(data);
         }
       }}
       onKeyDown={(e) => {
-        if ((e.key === 'Enter' || e.key === ' ') && onClick && data) {
+        if ((e.key === 'Enter' || e.key === ' ') && onClick) {
           e.preventDefault();
           onClick(data);
         }

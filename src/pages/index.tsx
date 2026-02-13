@@ -3,6 +3,7 @@ import Link from "next/link";
 import { motion, useMotionValue, useSpring, useTransform } from "framer-motion";
 import { SEO } from "@/components/SEO";
 import { FileText, Shield, TrendingUp, CheckCircle2, Sparkles, Zap, Crown, Star } from "lucide-react";
+import { ExecutiveWarRoom } from "@/components/warroom/ExecutiveWarRoom";
 
 // Vegas-style floating particles
 const VegasParticles = () => {

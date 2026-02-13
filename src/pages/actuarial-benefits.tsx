@@ -16,30 +16,6 @@ const DataFlowVisualization = dynamic(() => import("@/components/platform/Premiu
 const KPIDashboardPreview = dynamic(() => import("@/components/platform/PremiumGraphics").then(mod => mod.KPIDashboardPreview), { ssr: false });
 const NetworkGraphAnimation = dynamic(() => import("@/components/platform/PremiumGraphics").then(mod => mod.NetworkGraphAnimation), { ssr: false });
 
-// Floating particle component with amber/gold colors
-function FloatingParticle({ delay, color }: { delay: number; color: string }) {
-  return (
-    <motion.div
-      className="absolute w-2 h-2 rounded-full"
-      style={{
-        background: color,
-        boxShadow: `0 0 20px ${color}, 0 0 40px ${color}`,
-      }}
-      animate={{
-        x: [0, Math.random() * 200 - 100, 0],
-        y: [0, Math.random() * 200 - 100, 0],
-        scale: [1, 1.5, 1],
-        opacity: [0.3, 0.8, 0.3],
-      }}
-      transition={{
-        duration: 8 + Math.random() * 4,
-        repeat: Infinity,
-        delay,
-      }}
-    />
-  );
-}
-
 // 3D Solution Card Component with Vegas aesthetic
 function SolutionCard3D({ solution, index }: { solution: any; index: number }) {
   const mouseX = useMotionValue(0);
@@ -298,53 +274,6 @@ export default function ActuarialBenefits() {
               backgroundSize: "50px 50px",
             }}
           />
-          
-          {/* Moving amber spotlights */}
-          <motion.div
-            className="absolute w-[600px] h-[600px] rounded-full opacity-20"
-            style={{
-              background: "radial-gradient(circle, #f59e0b 0%, transparent 70%)",
-              filter: "blur(80px)",
-            }}
-            animate={{
-              x: [0, 300, 0],
-              y: [0, 200, 0],
-            }}
-            transition={{ duration: 20, repeat: Infinity }}
-          />
-          <motion.div
-            className="absolute right-0 w-[500px] h-[500px] rounded-full opacity-20"
-            style={{
-              background: "radial-gradient(circle, #d97706 0%, transparent 70%)",
-              filter: "blur(80px)",
-            }}
-            animate={{
-              x: [0, -200, 0],
-              y: [0, 300, 0],
-            }}
-            transition={{ duration: 15, repeat: Infinity, delay: 2 }}
-          />
-          <motion.div
-            className="absolute bottom-0 left-1/2 w-[700px] h-[700px] rounded-full opacity-20"
-            style={{
-              background: "radial-gradient(circle, #eab308 0%, transparent 70%)",
-              filter: "blur(80px)",
-            }}
-            animate={{
-              x: [-100, 100, -100],
-              y: [0, -200, 0],
-            }}
-            transition={{ duration: 18, repeat: Infinity, delay: 5 }}
-          />
-
-          {/* Floating particles - amber/gold colors */}
-          {[...Array(40)].map((_, i) => (
-            <FloatingParticle
-              key={i}
-              delay={i * 0.2}
-              color={["#f59e0b", "#d97706", "#eab308"][i % 3]}
-            />
-          ))}
         </div>
 
         <Nav />

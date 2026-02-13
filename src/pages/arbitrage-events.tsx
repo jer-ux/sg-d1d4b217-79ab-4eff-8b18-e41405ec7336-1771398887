@@ -17,7 +17,7 @@ type Severity = "Critical" | "High" | "Medium" | "Low";
 type Status = "Open" | "Investigating" | "Monitoring" | "Resolved";
 type ThemeKey = "rose" | "blue" | "amber" | "emerald" | "cyan" | "violet";
 
-type ArbitrageEvent = {
+export type ArbitrageEvent = {
   id: string;
   carrier: string;
   title: string;
@@ -28,6 +28,13 @@ type ArbitrageEvent = {
   updated: string;
   theme: ThemeKey;
   icon: React.ComponentType<{ className?: string }>;
+  detailedExplanation?: {
+    headline: string;
+    executiveSummary: string[];
+    whyItMatters: string;
+    whatToDoNext: string;
+    gatingNote: string;
+  };
 };
 
 const THEME: Record<
@@ -156,7 +163,7 @@ function StatusPill({ status }: { status: Status }) {
   );
 }
 
-const EVENTS: ArbitrageEvent[] = [
+export const EVENTS: ArbitrageEvent[] = [
   {
     id: "AE-10901",
     carrier: "Anthem",
@@ -169,6 +176,17 @@ const EVENTS: ArbitrageEvent[] = [
     updated: "Updated 2h ago",
     theme: "rose",
     icon: FileWarning,
+    detailedExplanation: {
+      headline: "Carrier Admin Fee Discrepancy Detected",
+      executiveSummary: [
+        "Anthem's reported admin fees don't match Schedule C compensation disclosures in Form 5500 filings",
+        "Potential undisclosed compensation or fee layering creating $420k-$780k annual impact",
+        "Requires immediate contract exhibit review and remittance reconciliation",
+      ],
+      whyItMatters: "This variance indicates potential hidden fees or undisclosed compensation arrangements that directly impact your plan costs. Left unaddressed, this could compound annually and violate ERISA disclosure requirements.",
+      whatToDoNext: "Request detailed fee schedule breakdown from Anthem, cross-reference with Schedule C filings, and engage benefits counsel to review contract language for hidden compensation clauses.",
+      gatingNote: "Action requires VERIFIED evidence receipts and documented audit trail per governance requirements.",
+    },
   },
   {
     id: "AE-10902",
@@ -182,6 +200,17 @@ const EVENTS: ArbitrageEvent[] = [
     updated: "Updated today",
     theme: "blue",
     icon: Activity,
+    detailedExplanation: {
+      headline: "Network Steering Driving Up Unit Costs",
+      executiveSummary: [
+        "Plan design language is forcing members into higher-cost network tiers",
+        "Gap between guaranteed pricing and actual allowed amounts averaging 18-24%",
+        "Estimated annual impact of $310k-$540k in unnecessary member and plan costs",
+      ],
+      whyItMatters: "Network steering clauses can artificially inflate costs while appearing to provide choice. This impacts both plan spend and member out-of-pocket costs, affecting satisfaction and retention.",
+      whatToDoNext: "Analyze claims data by network tier, validate pricing guarantees against actual allowed amounts, and renegotiate network access provisions in renewal.",
+      gatingNote: "Requires claims-level data analysis with proper data lineage and quality validation.",
+    },
   },
   {
     id: "AE-10903",
@@ -195,6 +224,17 @@ const EVENTS: ArbitrageEvent[] = [
     updated: "Updated yesterday",
     theme: "amber",
     icon: BadgeDollarSign,
+    detailedExplanation: {
+      headline: "Pharmacy Rebate Terms Creating Leakage",
+      executiveSummary: [
+        "Rebate definition language excludes specialty and certain distribution channels",
+        "Potential under-remittance of $260k-$610k annually based on claim patterns",
+        "Weak audit rights prevent verification of rebate completeness",
+      ],
+      whyItMatters: "Pharmacy rebates represent 15-25% of total drug spend. Weak definitions and audit rights mean you're likely leaving significant money on the table with no ability to verify.",
+      whatToDoNext: "Request detailed rebate methodology documentation, conduct claims-level rebate reconciliation, and strengthen audit rights language for next renewal.",
+      gatingNote: "Full analysis requires PBM transparency and claims-level data access.",
+    },
   },
   {
     id: "AE-10904",
@@ -208,6 +248,17 @@ const EVENTS: ArbitrageEvent[] = [
     updated: "Updated 3d ago",
     theme: "emerald",
     icon: ShieldAlert,
+    detailedExplanation: {
+      headline: "Stop-Loss Attachment Point Shift Increases Risk",
+      executiveSummary: [
+        "Attachment point increased without proportional premium adjustment",
+        "Current claims trend suggests $180k-$360k additional exposure",
+        "Renewal disclosure didn't clearly highlight impact of the change",
+      ],
+      whyItMatters: "Stop-loss protection is your safety net against catastrophic claims. A higher attachment point means more risk on your balance sheet before coverage kicks in.",
+      whatToDoNext: "Model claims volatility against new attachment point, evaluate if premium savings justify increased risk, and consider negotiating back to previous level.",
+      gatingNote: "Requires actuarial modeling and claims trend analysis.",
+    },
   },
   {
     id: "AE-10905",
@@ -221,6 +272,17 @@ const EVENTS: ArbitrageEvent[] = [
     updated: "Updated 5d ago",
     theme: "cyan",
     icon: Building2,
+    detailedExplanation: {
+      headline: "Duplicate PEPM Billing During Vendor Transition",
+      executiveSummary: [
+        "Vendor transition resulted in overlapping service periods with duplicate PEPM fees",
+        "Previous vendor not properly terminated, new vendor already billing",
+        "Estimated duplicate charges of $95k-$210k depending on overlap duration",
+      ],
+      whyItMatters: "Per-employee-per-month (PEPM) fees add up quickly across your population. Paying for duplicate services is pure waste with no benefit to members.",
+      whatToDoNext: "Verify termination date of previous vendor, confirm fee schedule overlap, demand refund for duplicate period, and tighten transition controls for future vendor changes.",
+      gatingNote: "Straightforward reconciliation requiring invoice and contract review.",
+    },
   },
   {
     id: "AE-10906",
@@ -234,6 +296,17 @@ const EVENTS: ArbitrageEvent[] = [
     updated: "Updated 1w ago",
     theme: "violet",
     icon: Pill,
+    detailedExplanation: {
+      headline: "PBM Spread Pricing Indicators in Generic Drug Pricing",
+      executiveSummary: [
+        "Maximum Allowable Cost (MAC) list pricing shows spread indicators vs. industry benchmarks",
+        "Generic drug pricing 25-40% above transparent benchmark sources",
+        "Estimated annual impact of $520k-$1.1M based on generic utilization patterns",
+      ],
+      whyItMatters: "Spread pricing is where PBMs profit on the difference between what they charge your plan and what they pay pharmacies. This is the #1 driver of hidden PBM costs.",
+      whatToDoNext: "Demand full MAC list transparency, benchmark against NADAC or FDB prices, enforce audit rights to verify pharmacy reimbursement, and explore pass-through pricing model.",
+      gatingNote: "Requires claims-level drug pricing data and benchmark comparison analysis.",
+    },
   },
 ];
 
@@ -263,10 +336,10 @@ function AnimatedGradientOverlay({
 }
 
 export default function ArbitrageEventsPage() {
-  const [selectedEventId, setSelectedEventId] = React.useState<string | null>(null);
+  const [selectedEvent, setSelectedEvent] = React.useState<ArbitrageEvent | null>(null);
 
   const handleCloseDrawer = React.useCallback(() => {
-    setSelectedEventId(null);
+    setSelectedEvent(null);
   }, []);
 
   return (
@@ -303,11 +376,11 @@ export default function ArbitrageEventsPage() {
                 key={e.id}
                 role="button"
                 tabIndex={0}
-                onClick={() => setSelectedEventId(e.id)}
+                onClick={() => setSelectedEvent(e)}
                 onKeyDown={(ev) => {
                   if (ev.key === "Enter" || ev.key === " ") {
                     ev.preventDefault();
-                    setSelectedEventId(e.id);
+                    setSelectedEvent(e);
                   }
                 }}
                 className={[
@@ -385,9 +458,9 @@ export default function ArbitrageEventsPage() {
 
       {/* Drawer */}
       <ArbitrageEventDrawer
-        open={selectedEventId !== null}
+        open={selectedEvent !== null}
         onClose={handleCloseDrawer}
-        eventId={selectedEventId || ""}
+        event={selectedEvent}
       />
     </>
   );

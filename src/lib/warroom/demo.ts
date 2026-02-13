@@ -32,8 +32,8 @@ function shortHash(prefix = "sha256:") {
 }
 
 function receipt(owner: string, verified: boolean, confidence: number, notes?: string): EvidenceReceipt {
-  const dqTotal = 10;
-  const dqPassed = verified ? 10 : Math.max(6, Math.floor(rand(6, 9)));
+  const dqTotal = 50;
+  const dqPassed = verified ? Math.floor(rand(45, 50)) : Math.floor(rand(35, 44));
   return {
     receipt_id: `rcpt_${Math.floor(rand(100000, 999999))}`,
     source_artifact_hash: shortHash(),
@@ -48,17 +48,15 @@ function receipt(owner: string, verified: boolean, confidence: number, notes?: s
   };
 }
 
-function generateChartData(baseValue: number, points: number = 7): ChartDataPoint[] {
+function generateChartData(baseValue: number, points: number = 4): ChartDataPoint[] {
   const data: ChartDataPoint[] = [];
-  const now = new Date();
+  const quarters = ["Q1", "Q2", "Q3", "Q4"];
   
-  for (let i = points - 1; i >= 0; i--) {
-    const date = new Date(now);
-    date.setDate(date.getDate() - i);
+  for (let i = 0; i < points; i++) {
     const variance = rand(0.85, 1.15);
     data.push({
-      period: date.toLocaleDateString("en-US", { month: "short", day: "numeric" }),
-      value: Math.round(baseValue * variance),
+      period: quarters[i],
+      value: Math.round(baseValue * variance * 10) / 10,
     });
   }
   
@@ -79,97 +77,171 @@ export function buildSnapshot(ctx: Ctx): SnapshotResponse {
   const tiles = buildStreamTiles(ctx);
 
   const tickerItems = [
-    `RECOVERABLE EBITDA: ${money(rand(250_000, 650_000), ctx.currency)} variance flagged • confidence 91% • ${ctx.period}`,
-    `PBM GUARANTEE: potential shortfall detected • action packet generated • BU=${ctx.businessUnit}`,
-    `CASHFLOW: claims paid +${rand(0.8, 2.8).toFixed(1)}% WoW • driver: Rx specialty`,
-    `EXECUTION: ${Math.floor(rand(2, 6))} vendor disputes opened • receipts attached`,
-    `RISK/HEALTH IQ: composite moved ${rand(-3, 2).toFixed(0)} pts • watchlist updated`,
+    `${ctx.org} ${ctx.period}: Cost Trend +${rand(10, 13).toFixed(1)}% | Contract Compliance ${rand(92, 96).toFixed(1)}% | Benefits NPS +${Math.floor(rand(35, 42))}`,
+    `McKinsey Alert: YoY PMPM exceeds baseline by ${Math.floor(rand(200, 300))}bps | ${money(rand(4_000_000, 6_000_000), ctx.currency)} EBITDA at risk`,
+    `Contract Leakage: ${money(rand(1_800_000, 2_500_000), ctx.currency)} recovery opportunity identified in Q4 vendor reconciliation`,
+    `Pharmacy Exposure: ${rand(32, 36).toFixed(0)}% Rx spend under opaque terms → shifting to cost-based models`,
+    `Plan Design Adoption: ${rand(45, 49).toFixed(0)}% enrollment in HDHP/HSA + COE → McKinsey innovation hedge`,
   ];
 
   return { tiles, tickerItems };
 }
 
 export function buildStreamTiles(ctx: Ctx): TileData[] {
-  // Demo economics (replace with Snowflake queries later)
-  const cash = rand(8_500_000, 17_500_000);
-  const recEbitda = rand(1_200_000, 4_800_000);
-  const health = Math.floor(rand(62, 86));
-  const inflight = Math.floor(rand(6, 14));
-
-  const cashChartData = generateChartData(cash);
-  const ebitdaChartData = generateChartData(recEbitda);
-  const healthChartData = generateChartData(health);
-  const executionChartData = generateChartData(inflight);
-
-  const cashflow: TileData = {
-    key: "cashflow",
-    title: "Realtime Cashflow",
-    value: money(cash, ctx.currency),
-    delta: `+${rand(0.6, 2.4).toFixed(1)}% WoW`,
-    subtitle: `Live feeds • CFO view • ${ctx.org}`,
+  const costTrendValue = rand(115, 120);
+  const costTrendChartData = generateChartData(100);
+  
+  const costTrendStress: TileData = {
+    key: "costTrendStress",
+    title: "Cost Trend Stress Index",
+    value: `${costTrendValue.toFixed(0)}`,
+    delta: `+${(costTrendValue - 100).toFixed(0)}pp`,
+    trend: "up",
+    subtitle: "YoY PMPM vs McKinsey Baseline",
+    framework: "McKinsey",
     updatedAt: nowIso(),
-    receipt: receipt("CFO Ops", true, rand(0.86, 0.96), "Tied to paid claims, payroll, vendor invoices."),
-    chartData: cashChartData,
-    trend: determineTrend(cashChartData),
+    chartData: costTrendChartData,
+    receipt: receipt("CFO Office", true, rand(0.92, 0.96), "YoY net PMPM trend exceeds McKinsey commercial baseline (9-10%). EBITDA at risk."),
   };
 
-  const recoverableEbitda: TileData = {
-    key: "recoverableEbitda",
-    title: "Recoverable EBITDA",
-    value: money(recEbitda, ctx.currency),
-    delta: "Ranked by $ × confidence × urgency",
-    subtitle: `Leakage opportunities queued • ${ctx.period}`,
+  const leakageValue = rand(2.8, 3.5);
+  const leakageChartData = generateChartData(1.5);
+  
+  const contractLeakage: TileData = {
+    key: "contractLeakage",
+    title: "Contract Value Leakage Rate",
+    value: `${leakageValue.toFixed(1)}%`,
+    delta: `+${(leakageValue - 1.5).toFixed(1)}pp`,
+    trend: "up",
+    subtitle: "Off-contract + Pricing Variance",
+    framework: "McKinsey",
     updatedAt: nowIso(),
-    receipt: receipt("Benefits Integrity", true, rand(0.82, 0.93), "Eligibility, PBM, admin billing, guarantees."),
-    chartData: ebitdaChartData,
-    trend: determineTrend(ebitdaChartData),
+    chartData: leakageChartData,
+    receipt: receipt("Procurement Ops", true, rand(0.94, 0.98), "Off-contract spend + pricing misses + missed rebates. Recoverable via enforcement."),
   };
 
-  // Intentionally sometimes UNVERIFIED to showcase the concept
-  const healthVerified = Math.random() > 0.35;
-  const healthIQ: TileData = {
-    key: "healthIQ",
-    title: "Pollution / Health IQ",
-    value: `${health}`,
-    delta: `${rand(-3.5, 2.5).toFixed(0)} pts ${ctx.period}`,
-    subtitle: "Risk composite • configurable",
+  const complianceValue = rand(93, 96);
+  const complianceChartData = generateChartData(98);
+  
+  const contractCompliance: TileData = {
+    key: "contractCompliance",
+    title: "Contract Compliance Rate",
+    value: `${complianceValue.toFixed(1)}%`,
+    delta: `-${(98 - complianceValue).toFixed(1)}pp`,
+    trend: "down",
+    subtitle: "Contract Terms Adherence",
+    framework: "McKinsey",
     updatedAt: nowIso(),
-    receipt: receipt(
-      "Risk & Health",
-      healthVerified,
-      healthVerified ? rand(0.74, 0.9) : rand(0.55, 0.72),
-      healthVerified ? "Composite includes trend + exposure proxies (as available)." : "Some upstream sources missing freshness SLA."
-    ),
-    chartData: healthChartData,
-    trend: determineTrend(healthChartData),
+    chartData: complianceChartData,
+    receipt: receipt("Compliance + Audit", true, rand(0.91, 0.95), "Compliant invoices/claims. Non-compliance spend reduced via enforcement automation."),
   };
 
-  const execution: TileData = {
-    key: "execution",
-    title: "Execution + Realization",
-    value: `${inflight} Actions In-Flight`,
-    delta: `${Math.floor(inflight * rand(0.4, 0.7))} verified • ${Math.floor(inflight * rand(0.3, 0.6))} pending`,
-    subtitle: "Projected vs realized tracking",
+  const ambiguityValue = rand(38, 45);
+  const ambiguityChartData = generateChartData(25);
+  
+  const contractAmbiguity: TileData = {
+    key: "contractAmbiguity",
+    title: "Contract Ambiguity Risk Score",
+    value: `${Math.floor(ambiguityValue)}`,
+    delta: `+${Math.floor(ambiguityValue - 25)}pts`,
+    trend: "up",
+    subtitle: "High-spend Contract Clarity",
+    framework: "McKinsey",
     updatedAt: nowIso(),
-    receipt: receipt("PMO", true, rand(0.78, 0.9), "Action packets with owners + due dates."),
-    chartData: executionChartData,
-    trend: determineTrend(executionChartData),
+    chartData: ambiguityChartData,
+    receipt: receipt("Legal + Procurement", true, rand(0.87, 0.92), "Clause-quality score (definitions, audit rights, pricing terms). High-spend contracts monitored."),
   };
 
-  return [cashflow, recoverableEbitda, healthIQ, execution];
+  const adoptionValue = rand(45, 49);
+  const adoptionChartData = generateChartData(35);
+  
+  const planDesignAdoption: TileData = {
+    key: "planDesignAdoption",
+    title: "Plan Design Innovation Adoption",
+    value: `${Math.floor(adoptionValue)}%`,
+    delta: `+${Math.floor(adoptionValue - 35)}pp QoQ`,
+    trend: "up",
+    subtitle: "HDHP/HSA + COE Enrollment",
+    framework: "McKinsey",
+    updatedAt: nowIso(),
+    chartData: adoptionChartData,
+    receipt: receipt("Benefits Strategy", true, rand(0.89, 0.93), "Eligible population enrolled in innovative designs (HDHP/HSA steering, navigation, COE). Target: 60% by EOY."),
+  };
+
+  const pharmacyValue = rand(7.5, 9.0);
+  const pharmacyChartData = generateChartData(5.0);
+  
+  const pharmacyExposure: TileData = {
+    key: "pharmacyExposure",
+    title: "Pharmacy Reimbursement Exposure",
+    value: `${pharmacyValue.toFixed(1)}%`,
+    delta: `+${(pharmacyValue - 5.0).toFixed(1)}pp`,
+    trend: "up",
+    subtitle: "Opaque PBM Terms Risk",
+    framework: "McKinsey",
+    updatedAt: nowIso(),
+    chartData: pharmacyChartData,
+    receipt: receipt("Pharmacy Operations", true, rand(0.86, 0.91), "Rx spend under opaque reimbursement terms. Shifting to cost-based models; target <25% by Q2 2026."),
+  };
+
+  const benefitsNPSValue = rand(36, 40);
+  const benefitsNPSChartData = generateChartData(31);
+  
+  const benefitsNPS: TileData = {
+    key: "benefitsNPS",
+    title: "Benefits NPS",
+    value: `+${Math.floor(benefitsNPSValue)}`,
+    delta: `+${Math.floor(benefitsNPSValue - 31)}pts QoQ`,
+    trend: "up",
+    subtitle: "Employee Benefits Experience",
+    framework: "Bain",
+    updatedAt: nowIso(),
+    chartData: benefitsNPSChartData,
+    receipt: receipt("Employee Experience", true, rand(0.85, 0.90), "Bain NPS for enrollment, claims, navigation, pharmacy experience. Correlation with plan adoption."),
+  };
+
+  const employeeNPSValue = rand(40, 44);
+  const employeeNPSChartData = generateChartData(37);
+  
+  const employeeNPS: TileData = {
+    key: "employeeNPS",
+    title: "Employee NPS (eNPS)",
+    value: `+${Math.floor(employeeNPSValue)}`,
+    delta: `+${Math.floor(employeeNPSValue - 37)}pts`,
+    trend: "up",
+    subtitle: "Internal + Vendor Service Teams",
+    framework: "Bain",
+    updatedAt: nowIso(),
+    chartData: employeeNPSChartData,
+    receipt: receipt("People Ops", true, rand(0.88, 0.93), "eNPS for internal benefits ops + vendor service teams. Leading indicator of execution quality and retention."),
+  };
+
+  return [
+    costTrendStress,
+    contractLeakage,
+    contractCompliance,
+    contractAmbiguity,
+    planDesignAdoption,
+    pharmacyExposure,
+    benefitsNPS,
+    employeeNPS,
+  ];
 }
 
 export function buildStreamTick(ctx: Ctx): string {
   const roll = Math.random();
 
-  if (roll < 0.25) {
-    return `LIVE: eligibility variance detected • est ${money(rand(80_000, 420_000), ctx.currency)} • confidence ${Math.floor(rand(88, 96))}%`;
+  if (roll < 0.2) {
+    return `${ctx.org} ${ctx.period}: Cost Trend +${rand(10, 13).toFixed(1)}% | Contract Compliance ${rand(92, 96).toFixed(1)}% | Benefits NPS +${Math.floor(rand(35, 42))}`;
   }
-  if (roll < 0.5) {
-    return `LIVE: Rx specialty trend spike • driver review opened • freshness ${Math.floor(rand(2, 18))}m`;
+  if (roll < 0.4) {
+    return `McKinsey Alert: YoY PMPM exceeds baseline by ${Math.floor(rand(200, 300))}bps | ${money(rand(4_000_000, 6_000_000), ctx.currency)} EBITDA at risk`;
   }
-  if (roll < 0.75) {
-    return `LIVE: vendor SLA breach flagged • dispute packet generated • owner: Vendor Mgmt`;
+  if (roll < 0.6) {
+    return `Contract Leakage: ${money(rand(1_800_000, 2_500_000), ctx.currency)} recovery opportunity identified in Q4 vendor reconciliation`;
   }
-  return `LIVE: cashflow delta ${rand(-1.1, 2.3).toFixed(1)}% • ${ctx.period} • BU=${ctx.businessUnit}`;
+  if (roll < 0.8) {
+    return `Pharmacy Exposure: ${rand(32, 36).toFixed(0)}% Rx spend under opaque terms → shifting to cost-based models`;
+  }
+  return `Plan Design Adoption: ${rand(45, 49).toFixed(0)}% enrollment in HDHP/HSA + COE → McKinsey innovation hedge`;
 }

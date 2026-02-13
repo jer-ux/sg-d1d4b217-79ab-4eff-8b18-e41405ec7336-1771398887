@@ -8,7 +8,6 @@ import { useState } from "react";
 import dynamic from "next/dynamic";
 
 // Dynamic imports for 3D components
-const Hero3DBackground = dynamic(() => import("@/components/premium/Hero3DBackground").then(mod => mod.Hero3DBackground), { ssr: false });
 const Interactive3DCard = dynamic(() => import("@/components/premium/Interactive3DCard").then(mod => mod.Interactive3DCard), { ssr: false });
 const VegasParticles = dynamic(() => import("@/components/premium/VegasParticles").then(mod => mod.VegasParticles), { ssr: false });
 const NeonGlow = dynamic(() => import("@/components/premium/NeonGlow").then(mod => mod.NeonGlow), { ssr: false });
@@ -262,8 +261,6 @@ export default function ActuarialBenefits() {
       <div className="min-h-screen bg-black text-white relative overflow-hidden">
         {/* Animated Vegas Background - amber/gold theme */}
         <div className="fixed inset-0 pointer-events-none">
-          <Hero3DBackground />
-          
           {/* Amber/gold neon grid */}
           <div className="absolute inset-0 opacity-10"
             style={{

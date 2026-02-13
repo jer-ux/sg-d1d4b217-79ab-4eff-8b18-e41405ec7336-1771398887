@@ -66,15 +66,24 @@ const TILE_THEMES = {
 export function KPITile({ data, onClick }: { data?: TileData; onClick?: (tile: TileData) => void }) {
   const [open, setOpen] = useState(false);
 
-  const title = data?.title ?? "Loading…";
-  const value = data?.value ?? "—";
-  const delta = data?.delta;
-  const subtitle = data?.subtitle;
-  const receipt = data?.receipt;
-  const chartData = data?.chartData;
-  const trend = data?.trend;
-  const framework = data?.framework;
-  const tileKey = data?.key;
+  // Early return for loading state
+  if (!data) {
+    return (
+      <div className="rounded-2xl border border-zinc-800/60 bg-zinc-950/60 p-6">
+        <div className="h-40 animate-pulse rounded-lg bg-zinc-900/50" />
+      </div>
+    );
+  }
+
+  const title = data.title;
+  const value = data.value;
+  const delta = data.delta;
+  const subtitle = data.subtitle;
+  const receipt = data.receipt;
+  const chartData = data.chartData || [];
+  const trend = data.trend;
+  const framework = data.framework;
+  const tileKey = data.key;
 
   const theme = useMemo(() => {
     if (tileKey && tileKey in TILE_THEMES) {
@@ -103,14 +112,6 @@ export function KPITile({ data, onClick }: { data?: TileData; onClick?: (tile: T
     if (framework === "Bain") return { text: "Bain NPS", cls: "border-violet-700/60 bg-violet-950/40 text-violet-300" };
     return null;
   }, [framework]);
-
-  if (!data) {
-    return (
-      <div className="rounded-2xl border border-zinc-800/60 bg-zinc-950/60 p-6">
-        <div className="h-40 animate-pulse rounded-lg bg-zinc-900/50" />
-      </div>
-    );
-  }
 
   const getTrendIcon = () => {
     if (trend === "up") return <TrendingUp className="h-4 w-4 text-emerald-400" />;

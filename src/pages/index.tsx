@@ -279,22 +279,20 @@ export default function HomePage() {
                 className="mt-8 flex flex-col gap-4 sm:flex-row"
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.8, delay: 0.8 }}
+                transition={{ delay: 0.6 }}
               >
-                <motion.div whileHover={{ scale: 1.05, y: -3 }} whileTap={{ scale: 0.95 }}>
-                  <Link
-                    href="/evidence-receipts"
-                    className="group relative inline-flex items-center justify-center gap-2 overflow-hidden rounded-xl bg-gradient-to-r from-amber-600 via-amber-500 to-amber-600 px-6 py-3.5 text-sm font-bold text-white shadow-2xl shadow-amber-500/40 transition-all hover:shadow-amber-500/60"
-                  >
-                    <motion.div
-                      className="absolute inset-0 bg-gradient-to-r from-amber-400 via-white to-amber-400 opacity-0 group-hover:opacity-30"
-                      animate={{ x: ["-100%", "100%"] }}
-                      transition={{ duration: 1.5, repeat: Infinity, ease: "linear" }}
-                    />
-                    <Zap className="h-4 w-4" />
-                    <span className="relative">Upload receipts →</span>
-                  </Link>
-                </motion.div>
+                <Link
+                  href="/upload-5500"
+                  className="group relative inline-flex items-center justify-center gap-2 overflow-hidden rounded-2xl border border-amber-500/30 bg-gradient-to-r from-amber-500/20 to-yellow-500/20 px-8 py-4 text-lg font-semibold shadow-lg shadow-amber-500/25 backdrop-blur-xl transition-all duration-500 hover:scale-105 hover:border-amber-500/50 hover:from-amber-500/30 hover:to-yellow-500/30 hover:shadow-amber-500/40"
+                >
+                  <motion.div
+                    className="absolute inset-0 bg-gradient-to-r from-amber-400 via-white to-amber-400 opacity-0 group-hover:opacity-30"
+                    animate={{ x: ["-100%", "100%"] }}
+                    transition={{ duration: 1.5, repeat: Infinity, ease: "linear" }}
+                  />
+                  <Zap className="h-4 w-4" />
+                  <span className="relative">Upload receipts →</span>
+                </Link>
                 <motion.div whileHover={{ scale: 1.05, y: -3 }} whileTap={{ scale: 0.95 }}>
                   <Link
                     href="#ebitda"
@@ -598,16 +596,11 @@ export default function HomePage() {
                 </div>
               </div>
               <div className="flex gap-3">
-                <motion.div whileHover={{ scale: 1.05, y: -2 }} whileTap={{ scale: 0.95 }}>
+                <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
                   <Link
-                    href="/evidence-receipts"
-                    className="group relative inline-flex items-center gap-2 overflow-hidden rounded-xl bg-gradient-to-r from-amber-600 via-amber-500 to-amber-600 px-5 py-3 text-sm font-bold text-white shadow-xl shadow-amber-500/40 transition-all hover:shadow-amber-500/60"
+                    href="/upload-5500"
+                    className="inline-flex items-center gap-2 rounded-2xl border border-amber-500/30 bg-gradient-to-r from-amber-500/20 to-yellow-500/20 px-6 py-3 text-sm font-semibold backdrop-blur-xl transition-all hover:border-amber-400/70 hover:bg-amber-950/30"
                   >
-                    <motion.div
-                      className="absolute inset-0 bg-gradient-to-r from-amber-400 via-white to-amber-400 opacity-0 group-hover:opacity-30"
-                      animate={{ x: ["-100%", "100%"] }}
-                      transition={{ duration: 1.5, repeat: Infinity, ease: "linear" }}
-                    />
                     <Zap className="h-4 w-4 relative" />
                     <span className="relative">Start with receipts →</span>
                   </Link>

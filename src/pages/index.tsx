@@ -283,7 +283,7 @@ export default function HomePage() {
               >
                 <motion.div whileHover={{ scale: 1.05, y: -3 }} whileTap={{ scale: 0.95 }}>
                   <Link
-                    href="/operator/artifacts"
+                    href="/evidence-receipts"
                     className="group relative inline-flex items-center justify-center gap-2 overflow-hidden rounded-xl bg-gradient-to-r from-amber-600 via-amber-500 to-amber-600 px-6 py-3.5 text-sm font-bold text-white shadow-2xl shadow-amber-500/40 transition-all hover:shadow-amber-500/60"
                   >
                     <motion.div
@@ -600,7 +600,7 @@ export default function HomePage() {
               <div className="flex gap-3">
                 <motion.div whileHover={{ scale: 1.05, y: -2 }} whileTap={{ scale: 0.95 }}>
                   <Link
-                    href="/operator/artifacts"
+                    href="/evidence-receipts"
                     className="group relative inline-flex items-center gap-2 overflow-hidden rounded-xl bg-gradient-to-r from-amber-600 via-amber-500 to-amber-600 px-5 py-3 text-sm font-bold text-white shadow-xl shadow-amber-500/40 transition-all hover:shadow-amber-500/60"
                   >
                     <motion.div
@@ -614,7 +614,7 @@ export default function HomePage() {
                 </motion.div>
                 <motion.div whileHover={{ scale: 1.05, y: -2 }} whileTap={{ scale: 0.95 }}>
                   <Link
-                    href="/operator/kpis"
+                    href="/evidence-receipts"
                     className="inline-flex items-center gap-2 rounded-xl border border-amber-500/50 bg-zinc-950/80 px-5 py-3 text-sm font-semibold text-white backdrop-blur-sm transition-all hover:border-amber-400/70 hover:bg-amber-950/30"
                   >
                     <TrendingUp className="h-4 w-4 text-amber-400" />
@@ -646,7 +646,7 @@ export default function HomePage() {
               <Link href="#trust" className="transition-all hover:text-amber-400 hover:drop-shadow-[0_0_8px_rgba(251,191,36,0.5)]">
                 Trust
               </Link>
-              <Link href="/operator/artifacts" className="transition-all hover:text-amber-400 hover:drop-shadow-[0_0_8px_rgba(251,191,36,0.5)]">
+              <Link href="/evidence-receipts" className="transition-all hover:text-amber-400 hover:drop-shadow-[0_0_8px_rgba(251,191,36,0.5)]">
                 Login
               </Link>
             </div>

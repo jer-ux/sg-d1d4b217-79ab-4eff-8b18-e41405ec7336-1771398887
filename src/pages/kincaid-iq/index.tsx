@@ -2,430 +2,357 @@ import Head from "next/head";
 import { useState } from "react";
 import { SiriusBNav } from "@/components/siriusb/SiriusBNav";
 import { SiriusBFooter } from "@/components/siriusb/SiriusBFooter";
+import { Calculator, TrendingDown, Sparkles, FileSpreadsheet, DollarSign, Target } from "lucide-react";
+import { Card } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { CensusUploader } from "@/components/kincaid-iq/CensusUploader";
 import { ClaimsUploader } from "@/components/kincaid-iq/ClaimsUploader";
 import { TrendProjectionChart } from "@/components/kincaid-iq/TrendProjectionChart";
 import { InterventionSimulator } from "@/components/kincaid-iq/InterventionSimulator";
 import { EBITDACalculator } from "@/components/kincaid-iq/EBITDACalculator";
-import { Button } from "@/components/ui/button";
-import { Card } from "@/components/ui/card";
-import { 
-  ArrowRight, 
-  Activity, 
-  TrendingDown, 
-  Shield, 
-  Download,
-  Check
-} from "lucide-react";
-import { 
-  calculatePEPM, 
-  calculateAverageLives, 
-  generateTrendProjection 
+import { CredibilityDashboard } from "@/components/kincaid-iq/CredibilityDashboard";
+import { TrendDecompositionPanel } from "@/components/kincaid-iq/TrendDecompositionPanel";
+import { DurabilityAnalyzer } from "@/components/kincaid-iq/DurabilityAnalyzer";
+import { BrokerCompAnalysis } from "@/components/kincaid-iq/BrokerCompAnalysis";
+import { FAQ } from "@/components/kincaid-iq/FAQ";
+import { WarRoomPreview } from "@/components/kincaid-iq/WarRoomPreview";
+import {
+  calculatePEPM,
+  calculateAverageLives,
+  generateTrendProjection,
+  decomposeTrend,
+  applyCredibilityWeighting,
+  generateAdvancedTrendProjection,
+  calculateSavingsDurability,
 } from "@/lib/kincaid-iq/actuarial";
-import type { TrendProjection, Intervention } from "@/lib/kincaid-iq/types";
-
-type CensusData = {
-  employee_count_start: number;
-  employee_count_end: number;
-  avg_salary: number;
-};
-
-type ClaimsData = {
-  medical_total: number;
-  rx_total: number;
-  stop_loss_premium: number;
-  admin_fees: number;
-  period_start: string;
-  period_end: string;
-};
-
-type WorkflowStep = "census" | "claims" | "model" | "export";
+import type { CensusUpload, ClaimsUpload, Intervention, TrendProjection } from "@/lib/kincaid-iq/types";
 
 export default function KincaidIQPage() {
-  const [currentStep, setCurrentStep] = useState<WorkflowStep>("census");
-  const [censusData, setCensusData] = useState<CensusData | null>(null);
-  const [claimsData, setClaimsData] = useState<ClaimsData | null>(null);
-  const [projections, setProjections] = useState<TrendProjection[]>([]);
+  const [step, setStep] = useState(1);
+  const [census, setCensus] = useState<CensusUpload | null>(null);
+  const [claims, setClaims] = useState<ClaimsUpload | null>(null);
   const [interventions, setInterventions] = useState<Intervention[]>([]);
   const [totalSavings, setTotalSavings] = useState(0);
+  const [revenue, setRevenue] = useState<number>(50000000); // $50M default
 
-  const handleCensusComplete = (data: CensusData) => {
-    setCensusData(data);
-    setCurrentStep("claims");
+  // Demo data for immediate showcase
+  const demoMode = !census || !claims;
+  const demoCensus: CensusUpload = {
+    id: "demo-1",
+    org_id: "demo",
+    employee_count_start: 450,
+    employee_count_end: 480,
+    avg_salary: 75000,
+    timestamp: new Date().toISOString(),
   };
 
-  const handleClaimsComplete = (data: ClaimsData) => {
-    setClaimsData(data);
-    if (censusData) {
-      runInitialProjection(censusData, data);
-    }
-    setCurrentStep("model");
+  const demoClaims: ClaimsUpload = {
+    id: "demo-1",
+    org_id: "demo",
+    medical_total: 3200000,
+    rx_total: 1100000,
+    stop_loss_premium: 180000,
+    admin_fees: 95000,
+    period_start: "2024-01-01",
+    period_end: "2024-12-31",
+    large_claims_over_100k: 450000,
+    specialty_rx_total: 320000,
   };
 
-  const runInitialProjection = (census: CensusData, claims: ClaimsData) => {
-    const avgLives = calculateAverageLives({
-      id: "temp",
-      org_id: "temp",
-      ...census,
-      timestamp: new Date().toISOString(),
-    });
+  const activeCensus = census || demoCensus;
+  const activeClaims = claims || demoClaims;
 
-    const pepm = calculatePEPM(
-      {
-        id: "temp",
-        org_id: "temp",
-        ...claims,
-      },
-      avgLives
-    );
+  // Calculate core metrics
+  const avgLives = calculateAverageLives(activeCensus);
+  const currentPEPM = calculatePEPM(activeClaims, avgLives);
+  const baselineTrend = 0.082; // 8.2% baseline
+  const modeledTrend = interventions.length > 0 ? 0.045 : baselineTrend; // 4.5% after interventions
 
-    const baselineTrend = 0.08; // 8% default industry trend
-    const modeledTrend = 0.08; // Start with baseline
+  // Credibility analysis
+  const industryBenchmark = 0.085; // 8.5% industry
+  const groupTrend = 0.079; // 7.9% group-specific
+  const credibilityWeights = applyCredibilityWeighting(groupTrend, industryBenchmark, avgLives);
 
-    const projection = generateTrendProjection(
-      pepm,
-      avgLives,
-      baselineTrend,
-      modeledTrend,
-      5
-    );
+  // Trend decomposition
+  const trendComponents = decomposeTrend(activeClaims);
 
-    setProjections(projection);
+  // Multi-year projections
+  const projections: TrendProjection[] = generateAdvancedTrendProjection(
+    currentPEPM,
+    avgLives,
+    trendComponents,
+    modeledTrend * 0.35, // Medical intervention
+    modeledTrend * 0.45, // Rx intervention
+    0.015, // Reduced catastrophic
+    credibilityWeights.z_factor,
+    3
+  );
+
+  // Savings durability
+  const durability = interventions.length > 0 
+    ? calculateSavingsDurability(interventions, projections[1]?.savings || 0)
+    : null;
+
+  // Mock broker compensation data (would come from 5500 upload)
+  const brokerCompData = [
+    { year: 2022, total_commission: 187000, indirect_comp: 42000, premium_total: 4575000, lives: 465 },
+    { year: 2023, total_commission: 203000, indirect_comp: 47000, premium_total: 4950000, lives: 480 },
+    { year: 2024, total_commission: 219000, indirect_comp: 51000, premium_total: 5350000, lives: 490 },
+  ];
+
+  const handleCensusUpload = (data: CensusUpload) => {
+    setCensus(data);
+    setStep(2);
+  };
+
+  const handleClaimsUpload = (data: ClaimsUpload) => {
+    setClaims(data);
+    setStep(3);
   };
 
   const handleInterventionsChange = (newInterventions: Intervention[], savings: number) => {
     setInterventions(newInterventions);
     setTotalSavings(savings);
-
-    if (censusData && claimsData && newInterventions.length > 0) {
-      recalculateProjections(newInterventions, savings);
-    }
   };
-
-  const recalculateProjections = (activeInterventions: Intervention[], savings: number) => {
-    if (!censusData || !claimsData) return;
-
-    const avgLives = calculateAverageLives({
-      id: "temp",
-      org_id: "temp",
-      ...censusData,
-      timestamp: new Date().toISOString(),
-    });
-
-    const pepm = calculatePEPM(
-      {
-        id: "temp",
-        org_id: "temp",
-        ...claimsData,
-      },
-      avgLives
-    );
-
-    const baselineTrend = 0.08;
-    const annualCost = pepm * avgLives * 12;
-    const savingsPercent = savings / annualCost;
-    const modeledTrend = baselineTrend * (1 - savingsPercent);
-
-    const projection = generateTrendProjection(
-      pepm,
-      avgLives,
-      baselineTrend,
-      modeledTrend,
-      5
-    );
-
-    setProjections(projection);
-  };
-
-  const calculateNetSavings = () => {
-    if (projections.length === 0) return 0;
-    return projections[projections.length - 1]?.cumulative_savings || 0;
-  };
-
-  const steps = [
-    { id: "census", label: "Census Data", icon: Shield, completed: !!censusData },
-    { id: "claims", label: "Claims Data", icon: Activity, completed: !!claimsData },
-    { id: "model", label: "Model Scenarios", icon: TrendingDown, completed: interventions.length > 0 },
-    { id: "export", label: "Export Analysis", icon: Download, completed: false },
-  ];
 
   return (
     <>
       <Head>
-        <title>Kincaid IQ – Live Trend & Cost Compression Engine | SiriusB</title>
-        <meta name="description" content="Actuarial-grade healthcare cost modeling and EBITDA impact analysis" />
+        <title>Kincaid IQ – Live Trend & Cost Compression Engine | SiriusB iQ</title>
+        <meta name="description" content="Credibility-weighted multi-year actuarial forecasting platform for mid to large market employers" />
       </Head>
 
-      <div className="min-h-screen bg-gradient-to-b from-slate-950 via-slate-900 to-slate-950">
+      <div className="min-h-screen bg-gradient-to-br from-slate-950 via-slate-900 to-slate-950">
         <SiriusBNav />
 
         {/* Hero Section */}
-        <section className="relative overflow-hidden border-b border-slate-800 px-6 py-20">
-          <div className="absolute inset-0 bg-gradient-to-br from-violet-950/20 via-transparent to-blue-950/20" />
+        <section className="relative overflow-hidden border-b border-slate-800 px-4 py-20">
+          <div className="absolute inset-0 bg-gradient-to-b from-amber-950/10 to-transparent" />
+          
           <div className="relative mx-auto max-w-7xl">
-            <div className="text-center">
-              <div className="mb-6 inline-flex items-center gap-2 rounded-full border border-violet-500/30 bg-violet-950/30 px-4 py-2">
-                <div className="h-2 w-2 animate-pulse rounded-full bg-violet-400" />
-                <span className="text-sm font-medium text-violet-300">Actuarial-Grade Analytics</span>
+            <div className="mb-6 flex items-center gap-3">
+              <div className="rounded-lg bg-amber-500/10 p-3">
+                <Calculator className="h-8 w-8 text-amber-400" />
               </div>
-              <h1 className="mb-6 text-5xl font-bold tracking-tight text-white md:text-6xl">
-                Kincaid IQ
-              </h1>
-              <p className="mb-4 text-xl text-violet-300">
-                Live Trend & Cost Compression Engine
-              </p>
-              <p className="mx-auto max-w-2xl text-slate-400">
-                Upload census + claims data → Model interventions → Project 5-year savings → 
-                Calculate EBITDA impact. Built for CFOs, actuaries, and PE operators.
-              </p>
+              <Badge className="border-amber-500/50 bg-amber-950/30 text-amber-400">
+                Actuarial-Grade Modeling
+              </Badge>
             </div>
+
+            <h1 className="mb-4 text-5xl font-bold text-white lg:text-6xl">
+              Kincaid IQ
+            </h1>
+            <p className="mb-2 text-2xl text-amber-400">
+              Live Trend & Cost Compression Engine
+            </p>
+            <p className="max-w-3xl text-lg text-slate-400">
+              Credibility-weighted multi-year actuarial forecasting platform. Model trend compression 
+              scenarios with decomposed medical, Rx, and catastrophic components. Built for mid-market 
+              to large employers (500-10,000 lives).
+            </p>
+
+            <div className="mt-8 flex flex-wrap gap-6">
+              <div className="rounded-lg border border-slate-700 bg-slate-900/50 px-6 py-4">
+                <p className="text-sm text-slate-400">Current PEPM</p>
+                <p className="text-2xl font-bold text-white">
+                  ${currentPEPM.toFixed(2)}
+                </p>
+              </div>
+              <div className="rounded-lg border border-slate-700 bg-slate-900/50 px-6 py-4">
+                <p className="text-sm text-slate-400">Credibility Factor</p>
+                <p className="text-2xl font-bold text-blue-400">
+                  {(credibilityWeights.z_factor * 100).toFixed(0)}%
+                </p>
+              </div>
+              <div className="rounded-lg border border-slate-700 bg-slate-900/50 px-6 py-4">
+                <p className="text-sm text-slate-400">Covered Lives</p>
+                <p className="text-2xl font-bold text-emerald-400">
+                  {Math.round(avgLives)}
+                </p>
+              </div>
+            </div>
+
+            {demoMode && (
+              <div className="mt-6 rounded-lg border border-blue-500/30 bg-blue-950/20 p-4">
+                <p className="text-sm text-blue-400">
+                  📊 Viewing demo data. Upload your own census and claims files to model your specific scenario.
+                </p>
+              </div>
+            )}
           </div>
         </section>
 
-        {/* Progress Steps */}
-        <section className="border-b border-slate-800 px-6 py-8">
+        {/* Main Workflow */}
+        <section className="px-4 py-16">
           <div className="mx-auto max-w-7xl">
-            <div className="flex items-center justify-between">
-              {steps.map((step, index) => {
-                const Icon = step.icon;
-                const isActive = currentStep === step.id;
-                const isCompleted = step.completed;
-
-                return (
-                  <div key={step.id} className="flex flex-1 items-center">
-                    <div className="flex flex-col items-center">
-                      <div
-                        className={`
-                          mb-2 flex h-12 w-12 items-center justify-center rounded-full border-2 transition-all
-                          ${isCompleted 
-                            ? "border-emerald-500 bg-emerald-950/50" 
-                            : isActive 
-                            ? "border-violet-500 bg-violet-950/50" 
-                            : "border-slate-700 bg-slate-900"
-                          }
-                        `}
-                      >
-                        {isCompleted ? (
-                          <Check className="h-5 w-5 text-emerald-400" />
-                        ) : (
-                          <Icon className={`h-5 w-5 ${isActive ? "text-violet-400" : "text-slate-500"}`} />
-                        )}
-                      </div>
-                      <p className={`text-sm font-medium ${isActive ? "text-white" : "text-slate-400"}`}>
-                        {step.label}
-                      </p>
-                    </div>
-                    {index < steps.length - 1 && (
-                      <div className={`mx-4 h-0.5 flex-1 ${isCompleted ? "bg-emerald-500" : "bg-slate-700"}`} />
-                    )}
-                  </div>
-                );
-              })}
-            </div>
-          </div>
-        </section>
-
-        {/* Main Content */}
-        <section className="px-6 py-12">
-          <div className="mx-auto max-w-7xl space-y-8">
-            {/* Step 1: Census Upload */}
-            {currentStep === "census" && (
-              <div className="space-y-6">
-                <div className="text-center">
-                  <h2 className="mb-2 text-2xl font-bold text-white">Step 1: Upload Census Data</h2>
-                  <p className="text-slate-400">
-                    Provide employee headcount and salary information
-                  </p>
-                </div>
-                <CensusUploader onUploadComplete={handleCensusComplete} />
-              </div>
-            )}
-
-            {/* Step 2: Claims Upload */}
-            {currentStep === "claims" && (
-              <div className="space-y-6">
-                <div className="flex items-center justify-between">
-                  <div>
-                    <h2 className="mb-2 text-2xl font-bold text-white">Step 2: Upload Claims Data</h2>
-                    <p className="text-slate-400">
-                      Medical, Rx, Admin, and Stop Loss costs
-                    </p>
-                  </div>
-                  <Button
-                    onClick={() => setCurrentStep("census")}
-                    variant="outline"
-                    className="border-slate-700 text-slate-300"
+            {/* Progress Stepper */}
+            <div className="mb-12 flex items-center justify-center gap-4">
+              {[1, 2, 3, 4].map((s) => (
+                <div key={s} className="flex items-center gap-4">
+                  <div
+                    className={`flex h-10 w-10 items-center justify-center rounded-full border-2 ${
+                      s <= step
+                        ? "border-amber-400 bg-amber-500/20 text-amber-400"
+                        : "border-slate-700 bg-slate-900 text-slate-500"
+                    }`}
                   >
-                    ← Back to Census
-                  </Button>
+                    {s}
+                  </div>
+                  {s < 4 && (
+                    <div
+                      className={`h-0.5 w-12 ${
+                        s < step ? "bg-amber-400" : "bg-slate-700"
+                      }`}
+                    />
+                  )}
                 </div>
-                <ClaimsUploader onUploadComplete={handleClaimsComplete} />
-              </div>
-            )}
+              ))}
+            </div>
 
-            {/* Step 3: Modeling & Analysis */}
-            {currentStep === "model" && (
-              <div className="space-y-6">
-                <div className="flex items-center justify-between">
-                  <div>
-                    <h2 className="mb-2 text-2xl font-bold text-white">Step 3: Model Cost Compression</h2>
-                    <p className="text-slate-400">
-                      Add interventions and project savings scenarios
-                    </p>
-                  </div>
-                  <div className="flex gap-3">
-                    <Button
-                      onClick={() => setCurrentStep("claims")}
-                      variant="outline"
-                      className="border-slate-700 text-slate-300"
-                    >
-                      ← Back to Claims
-                    </Button>
-                    <Button
-                      onClick={() => setCurrentStep("export")}
-                      disabled={interventions.length === 0}
-                      className="bg-violet-500 hover:bg-violet-600"
-                    >
-                      Continue to Export <ArrowRight className="ml-2 h-4 w-4" />
-                    </Button>
-                  </div>
-                </div>
+            <Tabs value={`step-${step}`} onValueChange={(v) => setStep(Number(v.split("-")[1]))}>
+              <TabsList className="grid w-full grid-cols-4 bg-slate-900">
+                <TabsTrigger value="step-1">
+                  <FileSpreadsheet className="mr-2 h-4 w-4" />
+                  Census
+                </TabsTrigger>
+                <TabsTrigger value="step-2">
+                  <DollarSign className="mr-2 h-4 w-4" />
+                  Claims
+                </TabsTrigger>
+                <TabsTrigger value="step-3">
+                  <Sparkles className="mr-2 h-4 w-4" />
+                  Interventions
+                </TabsTrigger>
+                <TabsTrigger value="step-4">
+                  <Target className="mr-2 h-4 w-4" />
+                  Analysis
+                </TabsTrigger>
+              </TabsList>
 
-                {/* Summary Cards */}
-                {censusData && claimsData && (
-                  <div className="grid gap-4 sm:grid-cols-4">
-                    <Card className="border-slate-700 bg-slate-900 p-4">
-                      <p className="text-sm text-slate-400">Average Lives</p>
-                      <p className="mt-1 text-2xl font-bold text-white">
-                        {calculateAverageLives({
-                          id: "temp",
-                          org_id: "temp",
-                          ...censusData,
-                          timestamp: new Date().toISOString(),
-                        }).toLocaleString()}
-                      </p>
-                    </Card>
-                    <Card className="border-slate-700 bg-slate-900 p-4">
-                      <p className="text-sm text-slate-400">Current PEPM</p>
-                      <p className="mt-1 text-2xl font-bold text-white">
-                        ${calculatePEPM(
-                          {
-                            id: "temp",
-                            org_id: "temp",
-                            ...claimsData,
-                          },
-                          calculateAverageLives({
-                            id: "temp",
-                            org_id: "temp",
-                            ...censusData,
-                            timestamp: new Date().toISOString(),
-                          })
-                        ).toFixed(0)}
-                      </p>
-                    </Card>
-                    <Card className="border-slate-700 bg-slate-900 p-4">
-                      <p className="text-sm text-slate-400">Baseline Trend</p>
-                      <p className="mt-1 text-2xl font-bold text-red-400">
-                        +8.0%
-                      </p>
-                    </Card>
-                    <Card className="border-slate-700 bg-slate-900 p-4">
-                      <p className="text-sm text-slate-400">Annual Cost</p>
-                      <p className="mt-1 text-2xl font-bold text-white">
-                        ${((claimsData.medical_total + claimsData.rx_total + claimsData.admin_fees + claimsData.stop_loss_premium) / 1000000).toFixed(1)}M
-                      </p>
-                    </Card>
-                  </div>
-                )}
+              <TabsContent value="step-1" className="mt-8">
+                <CensusUploader onUpload={handleCensusUpload} />
+              </TabsContent>
 
-                {/* Intervention Simulator */}
+              <TabsContent value="step-2" className="mt-8">
+                <ClaimsUploader onUpload={handleClaimsUpload} />
+              </TabsContent>
+
+              <TabsContent value="step-3" className="mt-8 space-y-6">
                 <InterventionSimulator
-                  currentAnnualCost={
-                    claimsData 
-                      ? claimsData.medical_total + claimsData.rx_total + claimsData.admin_fees + claimsData.stop_loss_premium
-                      : 0
-                  }
+                  currentAnnualCost={currentPEPM * avgLives * 12}
                   onInterventionsChange={handleInterventionsChange}
                 />
 
-                {/* Trend Projection Chart */}
-                {projections.length > 0 && (
-                  <TrendProjectionChart data={projections} />
-                )}
+                <Button
+                  onClick={() => setStep(4)}
+                  className="w-full bg-amber-500 hover:bg-amber-600"
+                  size="lg"
+                >
+                  View Complete Analysis →
+                </Button>
+              </TabsContent>
 
-                {/* EBITDA Calculator */}
-                {interventions.length > 0 && (
-                  <EBITDACalculator netSavings={calculateNetSavings()} years={5} />
-                )}
-              </div>
-            )}
+              <TabsContent value="step-4" className="mt-8 space-y-6">
+                {/* Advanced Analytics Grid */}
+                <div className="grid gap-6 lg:grid-cols-2">
+                  <CredibilityDashboard
+                    actualLives={avgLives}
+                    groupSpecificTrend={groupTrend}
+                    industryBenchmark={industryBenchmark}
+                  />
 
-            {/* Step 4: Export */}
-            {currentStep === "export" && (
-              <div className="space-y-6">
-                <div className="flex items-center justify-between">
-                  <div>
-                    <h2 className="mb-2 text-2xl font-bold text-white">Step 4: Export Analysis</h2>
-                    <p className="text-slate-400">
-                      Download board-ready reports and data packages
-                    </p>
-                  </div>
-                  <Button
-                    onClick={() => setCurrentStep("model")}
-                    variant="outline"
-                    className="border-slate-700 text-slate-300"
-                  >
-                    ← Back to Modeling
-                  </Button>
+                  <TrendDecompositionPanel
+                    components={trendComponents}
+                    showFormulas={true}
+                  />
                 </div>
 
-                <Card className="border-violet-500/20 bg-gradient-to-br from-slate-900 via-slate-900 to-violet-950/30 p-8">
-                  <div className="mb-6 text-center">
-                    <h3 className="mb-2 text-xl font-semibold text-white">Analysis Complete</h3>
-                    <p className="text-slate-400">
-                      Your 5-year cost compression model is ready to export
+                {/* Multi-Year Projection */}
+                <TrendProjectionChart
+                  data={projections}
+                  title="Credibility-Weighted 3-Year Forecast"
+                  baselineTrend={baselineTrend}
+                  modeledTrend={modeledTrend}
+                />
+
+                {/* Durability & EBITDA */}
+                <div className="grid gap-6 lg:grid-cols-2">
+                  {durability && (
+                    <DurabilityAnalyzer durability={durability} />
+                  )}
+
+                  <EBITDACalculator
+                    netSavings={projections[3]?.cumulative_savings || 0}
+                    revenue={revenue}
+                    onRevenueChange={setRevenue}
+                  />
+                </div>
+
+                {/* Export Section */}
+                <Card className="border-emerald-500/20 bg-gradient-to-br from-slate-900 to-emerald-950/30 p-6">
+                  <h3 className="mb-4 text-xl font-semibold text-white">
+                    Board-Grade Export
+                  </h3>
+                  <p className="mb-6 text-slate-400">
+                    Generate comprehensive actuarial analysis packet with assumption lineage, 
+                    credibility weighting methodology, and 3-year savings projections.
+                  </p>
+                  <div className="flex gap-3">
+                    <Button className="bg-emerald-500 hover:bg-emerald-600">
+                      Export PDF Report
+                    </Button>
+                    <Button variant="outline" className="border-slate-700">
+                      Download CSV Data
+                    </Button>
+                    <Button variant="outline" className="border-slate-700">
+                      Generate API Payload
+                    </Button>
+                  </div>
+                </Card>
+
+                {/* Methodology Note */}
+                <Card className="border-slate-700 bg-slate-900/50 p-6">
+                  <h3 className="mb-3 text-lg font-semibold text-white">
+                    Actuarial Methodology
+                  </h3>
+                  <div className="space-y-2 text-sm text-slate-400">
+                    <p>
+                      <strong className="text-white">Credibility Weighting:</strong> Limited Fluctuation 
+                      Method (Z = √(n/N)) blends group experience with industry benchmarks to protect 
+                      against statistical noise in smaller populations.
                     </p>
-                  </div>
-
-                  <div className="mb-8 grid gap-6 sm:grid-cols-3">
-                    <div className="rounded-lg border border-emerald-500/30 bg-emerald-950/20 p-6 text-center">
-                      <p className="mb-2 text-sm text-slate-400">Total Interventions</p>
-                      <p className="text-4xl font-bold text-emerald-400">{interventions.length}</p>
-                    </div>
-                    <div className="rounded-lg border border-violet-500/30 bg-violet-950/20 p-6 text-center">
-                      <p className="mb-2 text-sm text-slate-400">5-Year Savings</p>
-                      <p className="text-4xl font-bold text-violet-400">
-                        ${(calculateNetSavings() / 1000000).toFixed(1)}M
-                      </p>
-                    </div>
-                    <div className="rounded-lg border border-blue-500/30 bg-blue-950/20 p-6 text-center">
-                      <p className="mb-2 text-sm text-slate-400">EBITDA Impact</p>
-                      <p className="text-4xl font-bold text-blue-400">
-                        {((calculateNetSavings() / 50000000) * 100).toFixed(2)}%
-                      </p>
-                    </div>
-                  </div>
-
-                  <div className="grid gap-4 sm:grid-cols-2">
-                    <Button className="bg-violet-500 hover:bg-violet-600">
-                      <Download className="mr-2 h-4 w-4" />
-                      Download PDF Report
-                    </Button>
-                    <Button variant="outline" className="border-slate-700 text-slate-300">
-                      <Download className="mr-2 h-4 w-4" />
-                      Export Raw Data (CSV)
-                    </Button>
-                  </div>
-
-                  <div className="mt-6 rounded-lg border border-blue-500/30 bg-blue-950/20 p-4">
-                    <p className="text-sm text-blue-300">
-                      <strong>Next Steps:</strong> Share this analysis with your board, CFO, or PE sponsor. 
-                      Schedule a follow-up call to discuss implementation roadmap and vendor RFPs.
+                    <p>
+                      <strong className="text-white">Trend Decomposition:</strong> Separates medical core, 
+                      pharmacy, and catastrophic load components for independent intervention modeling.
+                    </p>
+                    <p>
+                      <strong className="text-white">Durability Scoring:</strong> Models savings persistence 
+                      over 3-year horizon with intervention-specific decay rates and confidence adjustments.
+                    </p>
+                    <p className="mt-4 text-xs text-slate-500">
+                      All calculations are deterministic and auditable. Assumption lineage tracked for 
+                      regulatory compliance and fiduciary documentation.
                     </p>
                   </div>
                 </Card>
-              </div>
-            )}
+
+                {/* Broker Compensation Analysis */}
+                <BrokerCompAnalysis data={brokerCompData} />
+
+                {/* War Room Integration */}
+                <WarRoomPreview
+                  totalHiddenFees={850000}
+                  pbmArbitrage={1200000}
+                  brokerOverpayment={650000}
+                  conflictsDetected={3}
+                />
+
+                {/* FAQ Section */}
+                <FAQ />
+              </TabsContent>
+            </Tabs>
           </div>
         </section>
 

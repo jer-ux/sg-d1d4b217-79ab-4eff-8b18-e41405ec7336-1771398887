@@ -33,15 +33,33 @@ const AVAILABLE_INTERVENTIONS: Record<InterventionType, Omit<Intervention, "type
     implementation_months: 18,
   },
   stop_loss_adjustment: {
-    name: "Stop Loss Optimization",
-    expected_savings_percent: 3,
+    name: "Stop-Loss Restructure",
+    expected_savings_percent: 12,
     confidence: "high",
-    implementation_months: 3,
+    implementation_months: 1,
   },
   network_steering: {
-    name: "Center of Excellence Network",
-    expected_savings_percent: 6,
+    name: "Network Steering",
+    expected_savings_percent: 8,
+    confidence: "medium",
+    implementation_months: 6,
+  },
+  pharmacy_carveout: {
+    name: "Pharmacy Carve-out",
+    expected_savings_percent: 18,
     confidence: "high",
+    implementation_months: 4,
+  },
+  reference_based_pricing: {
+    name: "Reference-Based Pricing",
+    expected_savings_percent: 25,
+    confidence: "medium",
+    implementation_months: 6,
+  },
+  direct_contracting: {
+    name: "Direct Contracting",
+    expected_savings_percent: 15,
+    confidence: "medium",
     implementation_months: 9,
   },
 };

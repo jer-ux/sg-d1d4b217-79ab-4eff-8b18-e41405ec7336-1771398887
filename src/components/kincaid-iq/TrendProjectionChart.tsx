@@ -4,10 +4,12 @@ import type { TrendProjection } from "@/lib/kincaid-iq/types";
 
 type Props = {
   data: TrendProjection[];
-  title?: string;
+  title: string;
+  baselineTrend: number;
+  modeledTrend: number;
 };
 
-export function TrendProjectionChart({ data, title = "5-Year Cost Projection" }: Props) {
+export function TrendProjectionChart({ data, title, baselineTrend, modeledTrend }: Props) {
   const formatCurrency = (value: number) => {
     return new Intl.NumberFormat("en-US", {
       style: "currency",

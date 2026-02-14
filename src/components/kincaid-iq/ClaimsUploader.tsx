@@ -1,9 +1,14 @@
 import { useState } from "react";
 import { Upload, DollarSign, CheckCircle2, AlertCircle } from "lucide-react";
-import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import type { ClaimsUpload } from "@/lib/kincaid-iq/types";
+
+type Props = {
+  onUpload: (data: ClaimsUpload) => void;
+};
 
 type ClaimsData = {
   medical_total: number;
@@ -14,13 +19,9 @@ type ClaimsData = {
   period_end: string;
 };
 
-type Props = {
-  onUploadComplete: (data: ClaimsData) => void;
-};
-
-export function ClaimsUploader({ onUploadComplete }: Props) {
-  const [dragActive, setDragActive] = useState(false);
-  const [fileName, setFileName] = useState<string | null>(null);
+export function ClaimsUploader({ onUpload }: Props) {
+  const [isDragging, setIsDragging] = useState(false);
+  const [file, setFile] = useState<File | null>(null);
   const [status, setStatus] = useState<"idle" | "processing" | "success" | "error">("idle");
   const [formData, setFormData] = useState<ClaimsData>({
     medical_total: 0,
@@ -35,16 +36,16 @@ export function ClaimsUploader({ onUploadComplete }: Props) {
     e.preventDefault();
     e.stopPropagation();
     if (e.type === "dragenter" || e.type === "dragover") {
-      setDragActive(true);
+      setIsDragging(true);
     } else if (e.type === "dragleave") {
-      setDragActive(false);
+      setIsDragging(false);
     }
   };
 
   const handleDrop = (e: React.DragEvent) => {
     e.preventDefault();
     e.stopPropagation();
-    setDragActive(false);
+    setIsDragging(false);
 
     const files = Array.from(e.dataTransfer.files);
     if (files.length > 0) {
@@ -59,7 +60,7 @@ export function ClaimsUploader({ onUploadComplete }: Props) {
   };
 
   const handleFile = async (file: File) => {
-    setFileName(file.name);
+    setFile(file);
     setStatus("processing");
 
     setTimeout(() => {
@@ -79,7 +80,15 @@ export function ClaimsUploader({ onUploadComplete }: Props) {
   const handleManualSubmit = () => {
     if (formData.medical_total > 0 && formData.period_start && formData.period_end) {
       setStatus("success");
-      onUploadComplete(formData);
+      
+      // Construct full ClaimsUpload object with generated IDs
+      const uploadData: ClaimsUpload = {
+        ...formData,
+        id: `manual-${Date.now()}`,
+        org_id: "demo-org",
+      };
+      
+      onUpload(uploadData);
     }
   };
 
@@ -103,7 +112,7 @@ export function ClaimsUploader({ onUploadComplete }: Props) {
           onDrop={handleDrop}
           className={`
             relative rounded-lg border-2 border-dashed p-8 text-center transition-all
-            ${dragActive 
+            ${isDragging 
               ? "border-emerald-400 bg-emerald-500/10" 
               : "border-slate-700 bg-slate-800/50 hover:border-emerald-500/50"
             }
@@ -122,18 +131,18 @@ export function ClaimsUploader({ onUploadComplete }: Props) {
           </p>
           <p className="text-xs text-slate-400">Medical, Rx, Admin, Stop Loss data</p>
 
-          {fileName && (
+          {file && (
             <div className="mt-4 flex items-center justify-center gap-2 text-sm">
               {status === "processing" && (
                 <>
                   <div className="h-4 w-4 animate-spin rounded-full border-2 border-emerald-500 border-t-transparent" />
-                  <span className="text-slate-300">Processing {fileName}...</span>
+                  <span className="text-slate-300">Processing {file.name}...</span>
                 </>
               )}
               {status === "success" && (
                 <>
                   <CheckCircle2 className="h-4 w-4 text-green-400" />
-                  <span className="text-green-400">{fileName} loaded</span>
+                  <span className="text-green-400">{file.name} loaded</span>
                 </>
               )}
             </div>

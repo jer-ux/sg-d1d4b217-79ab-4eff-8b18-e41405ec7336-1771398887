@@ -4,6 +4,11 @@ import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import type { CensusUpload } from "@/lib/kincaid-iq/types";
+
+type Props = {
+  onUpload: (data: CensusUpload) => void;
+};
 
 type CensusData = {
   employee_count_start: number;
@@ -11,13 +16,9 @@ type CensusData = {
   avg_salary: number;
 };
 
-type Props = {
-  onUploadComplete: (data: CensusData) => void;
-};
-
-export function CensusUploader({ onUploadComplete }: Props) {
-  const [dragActive, setDragActive] = useState(false);
-  const [fileName, setFileName] = useState<string | null>(null);
+export function CensusUploader({ onUpload }: Props) {
+  const [isDragging, setIsDragging] = useState(false);
+  const [file, setFile] = useState<File | null>(null);
   const [status, setStatus] = useState<"idle" | "processing" | "success" | "error">("idle");
   const [formData, setFormData] = useState<CensusData>({
     employee_count_start: 0,
@@ -29,16 +30,16 @@ export function CensusUploader({ onUploadComplete }: Props) {
     e.preventDefault();
     e.stopPropagation();
     if (e.type === "dragenter" || e.type === "dragover") {
-      setDragActive(true);
+      setIsDragging(true);
     } else if (e.type === "dragleave") {
-      setDragActive(false);
+      setIsDragging(false);
     }
   };
 
   const handleDrop = (e: React.DragEvent) => {
     e.preventDefault();
     e.stopPropagation();
-    setDragActive(false);
+    setIsDragging(false);
 
     const files = Array.from(e.dataTransfer.files);
     if (files.length > 0) {
@@ -53,7 +54,7 @@ export function CensusUploader({ onUploadComplete }: Props) {
   };
 
   const handleFile = async (file: File) => {
-    setFileName(file.name);
+    setFile(file);
     setStatus("processing");
 
     // Simulate CSV parsing
@@ -72,7 +73,16 @@ export function CensusUploader({ onUploadComplete }: Props) {
   const handleManualSubmit = () => {
     if (formData.employee_count_start > 0 && formData.employee_count_end > 0) {
       setStatus("success");
-      onUploadComplete(formData);
+      
+      // Construct full CensusUpload object with generated IDs
+      const uploadData: CensusUpload = {
+        ...formData,
+        id: `manual-${Date.now()}`,
+        org_id: "demo-org",
+        timestamp: new Date().toISOString(),
+      };
+      
+      onUpload(uploadData);
     }
   };
 
@@ -97,7 +107,7 @@ export function CensusUploader({ onUploadComplete }: Props) {
           onDrop={handleDrop}
           className={`
             relative rounded-lg border-2 border-dashed p-8 text-center transition-all
-            ${dragActive 
+            ${isDragging 
               ? "border-blue-400 bg-blue-500/10" 
               : "border-slate-700 bg-slate-800/50 hover:border-blue-500/50"
             }
@@ -116,24 +126,24 @@ export function CensusUploader({ onUploadComplete }: Props) {
           </p>
           <p className="text-xs text-slate-400">CSV or Excel format</p>
 
-          {fileName && (
+          {file && (
             <div className="mt-4 flex items-center justify-center gap-2 text-sm">
               {status === "processing" && (
                 <>
                   <div className="h-4 w-4 animate-spin rounded-full border-2 border-blue-500 border-t-transparent" />
-                  <span className="text-slate-300">Processing {fileName}...</span>
+                  <span className="text-slate-300">Processing {file.name}...</span>
                 </>
               )}
               {status === "success" && (
                 <>
                   <CheckCircle2 className="h-4 w-4 text-green-400" />
-                  <span className="text-green-400">{fileName} loaded successfully</span>
+                  <span className="text-green-400">{file.name} loaded successfully</span>
                 </>
               )}
               {status === "error" && (
                 <>
                   <AlertCircle className="h-4 w-4 text-red-400" />
-                  <span className="text-red-400">Error processing {fileName}</span>
+                  <span className="text-red-400">Error processing {file.name}</span>
                 </>
               )}
             </div>

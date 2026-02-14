@@ -7,12 +7,13 @@ import { calculateEBITDAImpact } from "@/lib/kincaid-iq/actuarial";
 
 type Props = {
   netSavings: number;
-  years?: number;
+  revenue: number;
+  onRevenueChange: (val: number) => void;
 };
 
-export function EBITDACalculator({ netSavings, years = 5 }: Props) {
-  const [revenue, setRevenue] = useState(50000000); // $50M default
+export function EBITDACalculator({ netSavings, revenue, onRevenueChange }: Props) {
   const [currentEBITDAMargin, setCurrentEBITDAMargin] = useState(12); // 12% default
+  const years = 3;
 
   const currentEBITDA = revenue * (currentEBITDAMargin / 100);
   const ebitdaImpact = calculateEBITDAImpact(netSavings, revenue);
@@ -21,7 +22,7 @@ export function EBITDACalculator({ netSavings, years = 5 }: Props) {
   const marginExpansion = newEBITDAMargin - currentEBITDAMargin;
 
   return (
-    <Card className="border-emerald-500/20 bg-gradient-to-br from-slate-900 via-slate-900 to-emerald-950/30 p-6">
+    <Card className="border-amber-500/20 bg-gradient-to-br from-slate-900 via-slate-900 to-amber-950/30 p-6">
       <div className="mb-6 flex items-center gap-3">
         <div className="rounded-lg bg-emerald-500/10 p-2">
           <TrendingUp className="h-5 w-5 text-emerald-400" />
@@ -41,7 +42,7 @@ export function EBITDACalculator({ netSavings, years = 5 }: Props) {
             <Input
               type="number"
               value={revenue}
-              onChange={(e) => setRevenue(Number(e.target.value))}
+              onChange={(e) => onRevenueChange(Number(e.target.value))}
               className="border-slate-700 bg-slate-900 pl-9 text-white"
               placeholder="50000000"
             />

@@ -87,8 +87,13 @@ export default function WarRoomProduct() {
                 </div>
               </div>
 
-              <div className="mt-8">
-                <WarRoomPreview />
+              <div className="mt-12">
+                <WarRoomPreview 
+                  totalHiddenFees={850000}
+                  pbmArbitrage={1200000}
+                  brokerOverpayment={650000}
+                  conflictsDetected={3}
+                />
               </div>
 
               <p className="mt-4 text-sm text-white/60">

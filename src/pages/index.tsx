@@ -2,7 +2,7 @@ import React, { useEffect, useRef } from "react";
 import Link from "next/link";
 import { motion, useMotionValue, useSpring, useTransform } from "framer-motion";
 import { SEO } from "@/components/SEO";
-import { FileText, Shield, TrendingUp, CheckCircle2, Sparkles, Zap, Crown, Star } from "lucide-react";
+import { FileText, Shield, TrendingUp, CheckCircle2, Sparkles, Zap, Crown, Star, Activity, TrendingDown, FileCheck } from "lucide-react";
 import { ExecutiveWarRoom } from "@/components/warroom/ExecutiveWarRoom";
 
 // Vegas-style floating particles
@@ -459,6 +459,22 @@ export default function HomePage() {
                 <Pill k="Evidence" v="Invoices + contracts + 5500s" />
                 <Pill k="Mechanism" v="Verification + approvals" />
                 <Pill k="Outcome" v="Defensible EBITDA improvement" />
+              </motion.div>
+
+              <motion.div
+                className="mt-6"
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.6, delay: 0.4 }}
+              >
+                <Link
+                  href="/kincaid-iq"
+                  className="group inline-flex items-center gap-2 rounded-xl border border-violet-500/30 bg-gradient-to-r from-violet-500/20 to-purple-500/20 px-6 py-3 text-sm font-semibold backdrop-blur-xl transition-all hover:scale-105 hover:border-violet-500/50 hover:from-violet-500/30 hover:to-purple-500/30"
+                >
+                  <Activity className="h-4 w-4 text-violet-400" />
+                  <span>Try Kincaid IQ Cost Compression Tool →</span>
+                </Link>
               </motion.div>
             </motion.div>
 

@@ -2,7 +2,7 @@ import Head from "next/head";
 import { useState } from "react";
 import { SiriusBNav } from "@/components/siriusb/SiriusBNav";
 import { SiriusBFooter } from "@/components/siriusb/SiriusBFooter";
-import { Calculator, TrendingDown, Sparkles, FileSpreadsheet, DollarSign, Target } from "lucide-react";
+import { Calculator, TrendingDown, Sparkles, FileSpreadsheet, DollarSign, Target, Activity, Shield } from "lucide-react";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -253,27 +253,79 @@ export default function KincaidIQPage() {
             </div>
 
             <Tabs value={`step-${step}`} onValueChange={(v) => setStep(Number(v.split("-")[1]))}>
-              <TabsList className="grid w-full grid-cols-4 bg-slate-900">
-                <TabsTrigger value="step-1">
-                  <FileSpreadsheet className="mr-2 h-4 w-4" />
-                  Census
-                </TabsTrigger>
-                <TabsTrigger value="step-2">
-                  <DollarSign className="mr-2 h-4 w-4" />
-                  Claims
-                </TabsTrigger>
-                <TabsTrigger value="step-3">
-                  <Sparkles className="mr-2 h-4 w-4" />
-                  Interventions
-                </TabsTrigger>
-                <TabsTrigger value="step-4">
+              <TabsList className="grid w-full grid-cols-5 bg-slate-900">
+                <TabsTrigger value="overview">
                   <Target className="mr-2 h-4 w-4" />
-                  Analysis
+                  Overview
+                </TabsTrigger>
+                <TabsTrigger value="decomposition">
+                  <Activity className="mr-2 h-4 w-4" />
+                  Trend Detail
+                </TabsTrigger>
+                <TabsTrigger value="volatility">
+                  <TrendingUp className="mr-2 h-4 w-4" />
+                  Volatility
+                </TabsTrigger>
+                <TabsTrigger value="durability">
+                  <Shield className="mr-2 h-4 w-4" />
+                  Durability
+                </TabsTrigger>
+                <TabsTrigger value="export">
+                  <FileSpreadsheet className="mr-2 h-4 w-4" />
+                  Export
                 </TabsTrigger>
               </TabsList>
 
-              <TabsContent value="step-1" className="mt-8">
-                <CensusUploader onUpload={handleCensusUpload} />
+              {/* Overview Tab */}
+              <TabsContent value="overview" className="space-y-6">
+                {/* Advanced Analytics Grid */}
+                <div className="grid gap-6 lg:grid-cols-2">
+                  <CredibilityDashboard
+                    actualLives={avgLives}
+                    groupSpecificTrend={groupTrend}
+                    industryBenchmark={industryBenchmark}
+                  />
+
+                  <TrendDecompositionPanel
+                    components={trendComponents}
+                    showFormulas={true}
+                  />
+                </div>
+
+                {/* Multi-Year Projection */}
+                <TrendProjectionChart
+                  data={projections}
+                  title="Credibility-Weighted 3-Year Forecast"
+                  baselineTrend={baselineTrend}
+                  modeledTrend={modeledTrend}
+                />
+
+                {/* Durability & EBITDA */}
+                <div className="grid gap-6 lg:grid-cols-2">
+                  {durability && (
+                    <DurabilityAnalyzer durability={durability} />
+                  )}
+
+                  <EBITDACalculator
+                    netSavings={projections[3]?.cumulative_savings || 0}
+                    revenue={revenue}
+                    onRevenueChange={setRevenue}
+                  />
+                </div>
+
+                {/* Broker Compensation Analysis */}
+                <BrokerCompAnalysis data={brokerCompData} />
+
+                {/* War Room Integration */}
+                <WarRoomPreview
+                  totalHiddenFees={850000}
+                  pbmArbitrage={1200000}
+                  brokerOverpayment={650000}
+                  conflictsDetected={3}
+                />
+
+                {/* FAQ Section */}
+                <FAQ />
               </TabsContent>
 
               <TabsContent value="step-2" className="mt-8">
@@ -331,27 +383,61 @@ export default function KincaidIQPage() {
                   />
                 </div>
 
-                {/* Export Section */}
-                <Card className="border-emerald-500/20 bg-gradient-to-br from-slate-900 to-emerald-950/30 p-6">
-                  <h3 className="mb-4 text-xl font-semibold text-white">
-                    Board-Grade Export
-                  </h3>
-                  <p className="mb-6 text-slate-400">
-                    Generate comprehensive actuarial analysis packet with assumption lineage, 
-                    credibility weighting methodology, and 3-year savings projections.
-                  </p>
-                  <div className="flex gap-3">
-                    <Button className="bg-emerald-500 hover:bg-emerald-600">
-                      Export PDF Report
-                    </Button>
-                    <Button variant="outline" className="border-slate-700">
-                      Download CSV Data
-                    </Button>
-                    <Button variant="outline" className="border-slate-700">
-                      Generate API Payload
-                    </Button>
-                  </div>
-                </Card>
+                {/* Export Tab */}
+                <TabsContent value="export" className="space-y-6">
+                  {/* Export Section */}
+                  <Card className="border-emerald-500/20 bg-gradient-to-br from-slate-900 to-emerald-950/30 p-6">
+                    <h3 className="mb-4 text-xl font-semibold text-white">
+                      Board-Grade Export
+                    </h3>
+                    <p className="mb-6 text-slate-400">
+                      Generate comprehensive actuarial analysis packet with assumption lineage, 
+                      credibility weighting methodology, and 3-year savings projections.
+                    </p>
+                    <div className="flex gap-3">
+                      <Button className="bg-emerald-500 hover:bg-emerald-600">
+                        Export PDF Report
+                      </Button>
+                      <Button variant="outline" className="border-slate-700">
+                        Download CSV Data
+                      </Button>
+                      <Button variant="outline" className="border-slate-700">
+                        Generate API Payload
+                      </Button>
+                    </div>
+                  </Card>
+
+                  {/* Methodology Note */}
+                  <Card className="border-slate-700 bg-slate-900/50 p-6">
+                    <h3 className="mb-3 text-lg font-semibold text-white">
+                      Actuarial Methodology
+                    </h3>
+                    <div className="space-y-2 text-sm text-slate-400">
+                      <p>
+                        <strong className="text-white">Credibility Weighting:</strong> Limited Fluctuation 
+                        Method (Z = √(n/N)) blends group experience with industry benchmarks to protect 
+                        against statistical noise in smaller populations.
+                      </p>
+                      <p>
+                        <strong className="text-white">Trend Decomposition:</strong> Separates medical core, 
+                        pharmacy, and catastrophic load components for independent intervention modeling.
+                      </p>
+                      <p>
+                        <strong className="text-white">Durability Scoring:</strong> Models savings persistence 
+                        over 3-year horizon with intervention-specific decay rates and confidence adjustments.
+                      </p>
+                      <p>
+                        <strong className="text-white">Monte Carlo Volatility:</strong> 5,000 iteration
+                        stochastic simulation using log-normal distribution to quantify downside risk
+                        exposure and provide confidence intervals.
+                      </p>
+                      <p className="mt-4 text-xs text-slate-500">
+                        All calculations are deterministic and auditable. Assumption lineage tracked for 
+                        regulatory compliance and fiduciary documentation.
+                      </p>
+                    </div>
+                  </Card>
+                </TabsContent>
 
                 {/* Methodology Note */}
                 <Card className="border-slate-700 bg-slate-900/50 p-6">
@@ -532,8 +618,76 @@ export default function KincaidIQPage() {
                 </Card>
               </TabsContent>
 
+              {/* Durability Tab */}
+              <TabsContent value="durability" className="space-y-6">
+                {durability ? (
+                  <>
+                    <DurabilityAnalyzer durability={durability} />
+                    
+                    <Card className="border-slate-700 bg-slate-900/50 p-6">
+                      <h3 className="mb-3 text-lg font-semibold text-white">
+                        Savings Persistence Analysis
+                      </h3>
+                      <div className="space-y-2 text-sm text-slate-400">
+                        <p>
+                          <strong className="text-white">Durability Scoring:</strong> Measures how well
+                          savings persist over a multi-year horizon. High durability (≥1.5) indicates
+                          structural cost improvements, while low durability (&lt;1.0) suggests temporary
+                          cost compression.
+                        </p>
+                        <p>
+                          <strong className="text-white">Intervention Mix:</strong> Different cost-containment
+                          strategies have varying persistence profiles. PBM switches and wellness programs
+                          typically show higher durability than one-time benefit redesigns.
+                        </p>
+                        <p>
+                          <strong className="text-white">CFO Application:</strong> Use durability scores
+                          to model sustainable EBITDA improvements vs one-time margin expansions. Board
+                          projections should discount low-durability savings.
+                        </p>
+                      </div>
+                    </Card>
+                  </>
+                ) : (
+                  <Card className="border-blue-500/20 bg-blue-950/10 p-6">
+                    <p className="text-slate-300">
+                      Add interventions in Step 3 to see savings durability analysis.
+                    </p>
+                  </Card>
+                )}
+              </TabsContent>
+
               {/* Trend Decomposition Tab */}
               <TabsContent value="decomposition" className="space-y-6">
+                <TrendDecompositionPanel
+                  components={trendComponents}
+                  showFormulas={true}
+                />
+
+                <Card className="border-slate-700 bg-slate-900/50 p-6">
+                  <h3 className="mb-3 text-lg font-semibold text-white">
+                    Actuarial Methodology
+                  </h3>
+                  <div className="space-y-2 text-sm text-slate-400">
+                    <p>
+                      <strong className="text-white">Credibility Weighting:</strong> Limited Fluctuation 
+                      Method (Z = √(n/N)) blends group experience with industry benchmarks to protect 
+                      against statistical noise in smaller populations.
+                    </p>
+                    <p>
+                      <strong className="text-white">Trend Decomposition:</strong> Separates medical core, 
+                      pharmacy, and catastrophic load components for independent intervention modeling.
+                    </p>
+                    <p>
+                      <strong className="text-white">Durability Scoring:</strong> Models savings persistence 
+                      over 3-year horizon with intervention-specific decay rates and confidence adjustments.
+                    </p>
+                    <p className="mt-4 text-xs text-slate-500">
+                      All calculations are deterministic and auditable. Assumption lineage tracked for 
+                      regulatory compliance and fiduciary documentation.
+                    </p>
+                  </div>
+                </Card>
               </TabsContent>
             </Tabs>
           </div>

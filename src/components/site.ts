@@ -33,3 +33,25 @@ export const menuItems = [
 ];
 
 export type NavItem_Old = { label: string; href: string };
+
+export const siteConfig = {
+  name: "SiriusB iQ Data Sciences Lab",
+  description: "High-Velocity Decision Engine for Health Economics & Benefits Intelligence",
+  navLinks: [
+    { href: "/", label: "Home" },
+    { href: "/platform", label: "Platform" },
+    { href: "/kincaid-iq", label: "Kincaid IQ" },
+    { href: "/contract-intelligence", label: "Contract Intel" },
+    { href: "/evidence-receipts", label: "Evidence" },
+    { href: "/verified-savings-ledger", label: "Ledger" },
+    { href: "/war-room", label: "War Room" },
+    { href: "/executive-war-room", label: "Executive" },
+    { href: "/agentic-workflow", label: "Agentic" },
+  ],
+  footerLinks: [
+    { href: "/company", label: "About" },
+    { href: "/contact", label: "Contact" },
+    { href: "/docs", label: "Docs" },
+    { href: "/investor", label: "Investor" },
+  ]
+};

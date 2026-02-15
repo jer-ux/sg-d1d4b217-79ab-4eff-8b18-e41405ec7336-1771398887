@@ -18,15 +18,24 @@ import { DurabilityAnalyzer } from "@/components/kincaid-iq/DurabilityAnalyzer";
 import { BrokerCompAnalysis } from "@/components/kincaid-iq/BrokerCompAnalysis";
 import { FAQ } from "@/components/kincaid-iq/FAQ";
 import { WarRoomPreview } from "@/components/kincaid-iq/WarRoomPreview";
+import { MonteCarloFanChart } from "@/components/kincaid-iq/MonteCarloFanChart";
+import { VolatilityDashboard } from "@/components/kincaid-iq/VolatilityDashboard";
 import {
   calculatePEPM,
   calculateAverageLives,
-  generateTrendProjection,
-  decomposeTrend,
-  applyCredibilityWeighting,
-  generateAdvancedTrendProjection,
+  projectTrend,
+  calculateEBITDAImpact,
   calculateSavingsDurability,
+  applyCredibilityWeighting,
+  decomposeTrend,
+  generateAdvancedTrendProjection,
 } from "@/lib/kincaid-iq/actuarial";
+import {
+  estimateVolatilityProfile,
+  runMonteCarloSimulation,
+  runMultiYearMonteCarlo,
+  compareScenarioUncertainty,
+} from "@/lib/kincaid-iq/monteCarlo";
 import type { CensusUpload, ClaimsUpload, Intervention, TrendProjection } from "@/lib/kincaid-iq/types";
 
 export default function KincaidIQPage() {
@@ -79,6 +88,8 @@ export default function KincaidIQPage() {
   const trendComponents = decomposeTrend(activeClaims);
 
   // Multi-year projections
+  const baseCost = currentPEPM * avgLives * 12;
+  
   const projections: TrendProjection[] = generateAdvancedTrendProjection(
     currentPEPM,
     avgLives,
@@ -97,10 +108,40 @@ export default function KincaidIQPage() {
 
   // Mock broker compensation data (would come from 5500 upload)
   const brokerCompData = [
-    { year: 2022, total_commission: 187000, indirect_comp: 42000, premium_total: 4575000, lives: 465 },
-    { year: 2023, total_commission: 203000, indirect_comp: 47000, premium_total: 4950000, lives: 480 },
-    { year: 2024, total_commission: 219000, indirect_comp: 51000, premium_total: 5350000, lives: 490 },
+    { year: 2022, commission: 425000, premium_total: 4950000, lives: 485, total_commission: 425000, indirect_comp: 0 },
+    { year: 2023, commission: 445000, premium_total: 5150000, lives: 488, total_commission: 445000, indirect_comp: 0 },
+    { year: 2024, commission: 475000, premium_total: 5350000, lives: 490, total_commission: 475000, indirect_comp: 0 },
   ];
+
+  // Monte Carlo Volatility Analysis
+  const volatilityProfile = estimateVolatilityProfile(
+    [census.employee_count_start, census.employee_count_end],
+    [census.employee_count_start, census.employee_count_end]
+  );
+
+  const baselineMC = runMonteCarloSimulation(
+    baseCost,
+    baselineTrend,
+    volatilityProfile.base_volatility,
+    5000
+  );
+
+  const modeledMC = runMonteCarloSimulation(
+    baseCost,
+    modeledTrend,
+    volatilityProfile.base_volatility * 0.7, // Interventions reduce volatility
+    5000
+  );
+
+  const fanChartData = runMultiYearMonteCarlo(
+    baseCost,
+    baselineTrend,
+    volatilityProfile,
+    5,
+    5000
+  );
+
+  const scenarioComparison = compareScenarioUncertainty(baselineMC, modeledMC);
 
   const handleCensusUpload = (data: CensusUpload) => {
     setCensus(data);
@@ -351,6 +392,148 @@ export default function KincaidIQPage() {
 
                 {/* FAQ Section */}
                 <FAQ />
+              </TabsContent>
+
+              {/* Volatility Analysis Tab */}
+              <TabsContent value="volatility" className="space-y-6">
+                <div className="rounded-lg border border-blue-500/20 bg-blue-950/10 p-4">
+                  <h3 className="mb-2 font-semibold text-blue-300">
+                    Stochastic Cost Modeling
+                  </h3>
+                  <p className="text-sm text-slate-300">
+                    Monte Carlo simulation (5,000 iterations) showing probability distributions
+                    instead of point estimates. CFOs see downside risk exposure and can budget
+                    reserves accordingly.
+                  </p>
+                </div>
+
+                {/* Fan Chart */}
+                <MonteCarloFanChart
+                  data={fanChartData}
+                  title="Multi-Year Probabilistic Projection"
+                />
+
+                {/* Volatility Metrics */}
+                <VolatilityDashboard
+                  result={baselineMC}
+                  volatilityProfile={volatilityProfile}
+                  baseCost={baseCost}
+                />
+
+                {/* Scenario Comparison */}
+                <Card className="border-purple-500/20 bg-gradient-to-br from-slate-900 via-slate-900 to-purple-950/30 p-6">
+                  <h3 className="mb-4 text-xl font-bold text-white">
+                    Intervention Impact on Volatility
+                  </h3>
+                  
+                  <div className="grid gap-4 sm:grid-cols-2">
+                    <div className="rounded-lg border border-slate-700 bg-slate-800/50 p-4">
+                      <div className="text-sm font-semibold text-slate-300">
+                        Savings Probability
+                      </div>
+                      <p className="mt-2 text-3xl font-bold text-green-400">
+                        {(scenarioComparison.probability_of_savings * 100).toFixed(1)}%
+                      </p>
+                      <p className="mt-1 text-xs text-slate-400">
+                        Likelihood modeled costs are lower than baseline
+                      </p>
+                    </div>
+
+                    <div className="rounded-lg border border-slate-700 bg-slate-800/50 p-4">
+                      <div className="text-sm font-semibold text-slate-300">
+                        Risk Reduction Score
+                      </div>
+                      <p className="mt-2 text-3xl font-bold text-blue-400">
+                        {scenarioComparison.risk_reduction_score.toFixed(1)}
+                      </p>
+                      <p className="mt-1 text-xs text-slate-400">
+                        Volatility decrease from interventions
+                      </p>
+                    </div>
+
+                    <div className="rounded-lg border border-amber-500/20 bg-amber-950/20 p-4">
+                      <div className="text-sm font-semibold text-amber-300">
+                        Median Savings (P50)
+                      </div>
+                      <p className="mt-2 text-3xl font-bold text-white">
+                        ${scenarioComparison.savings_p50.toLocaleString()}
+                      </p>
+                      <p className="mt-1 text-xs text-slate-400">
+                        50% confidence level
+                      </p>
+                    </div>
+
+                    <div className="rounded-lg border border-red-500/20 bg-red-950/20 p-4">
+                      <div className="text-sm font-semibold text-red-300">
+                        Conservative Savings (P90)
+                      </div>
+                      <p className="mt-2 text-3xl font-bold text-white">
+                        ${scenarioComparison.savings_p90.toLocaleString()}
+                      </p>
+                      <p className="mt-1 text-xs text-slate-400">
+                        90% confidence level (use for budgeting)
+                      </p>
+                    </div>
+                  </div>
+
+                  <div className="mt-6 rounded-lg border border-blue-500/20 bg-blue-950/10 p-4">
+                    <p className="text-sm text-slate-300">
+                      <strong className="text-blue-400">CFO Guidance:</strong> Budget savings at
+                      P90 level (${scenarioComparison.savings_p90.toLocaleString()}) for conservative
+                      planning. There's a {((1 - scenarioComparison.probability_of_savings) * 100).toFixed(1)}%
+                      chance baseline scenario performs better, but interventions reduce cost
+                      volatility by {scenarioComparison.risk_reduction_score.toFixed(1)} points.
+                    </p>
+                  </div>
+                </Card>
+
+                {/* Volatility Methodology */}
+                <Card className="border-slate-700 bg-slate-900/50 p-6">
+                  <h4 className="mb-3 font-semibold text-white">Monte Carlo Methodology</h4>
+                  <div className="space-y-3 text-sm text-slate-300">
+                    <div>
+                      <strong className="text-purple-400">Distribution Model:</strong> Log-normal
+                      (industry standard for healthcare claims)
+                    </div>
+                    <div>
+                      <strong className="text-purple-400">Iterations:</strong> 5,000 simulations
+                      per scenario
+                    </div>
+                    <div>
+                      <strong className="text-purple-400">Volatility Components:</strong>
+                      <ul className="ml-4 mt-1 list-disc space-y-1">
+                        <li>
+                          Trend Uncertainty: {(volatilityProfile.trend_uncertainty * 100).toFixed(1)}%
+                        </li>
+                        <li>
+                          Catastrophic Load Variance:{" "}
+                          {(volatilityProfile.catastrophic_load_variance * 100).toFixed(1)}%
+                        </li>
+                        <li>
+                          Lives Fluctuation: {(volatilityProfile.lives_fluctuation * 100).toFixed(1)}%
+                        </li>
+                      </ul>
+                    </div>
+                    <div>
+                      <strong className="text-purple-400">Percentile Interpretation:</strong>
+                      <ul className="ml-4 mt-1 list-disc space-y-1">
+                        <li>P50 (Median): 50% of outcomes fall below this value</li>
+                        <li>P75: 25% of outcomes exceed this (moderate risk)</li>
+                        <li>P90: 10% of outcomes exceed this (high risk scenario)</li>
+                        <li>P95: 5% of outcomes exceed this (extreme tail risk)</li>
+                      </ul>
+                    </div>
+                    <div>
+                      <strong className="text-purple-400">Application:</strong> Use P50 for board
+                      projections, P90 for stop-loss attachment point modeling, P95 for reserve
+                      adequacy stress testing.
+                    </div>
+                  </div>
+                </Card>
+              </TabsContent>
+
+              {/* Trend Decomposition Tab */}
+              <TabsContent value="decomposition" className="space-y-6">
               </TabsContent>
             </Tabs>
           </div>

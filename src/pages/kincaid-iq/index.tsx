@@ -2,7 +2,7 @@ import Head from "next/head";
 import { useState } from "react";
 import { SiriusBNav } from "@/components/siriusb/SiriusBNav";
 import { SiriusBFooter } from "@/components/siriusb/SiriusBFooter";
-import { Calculator, TrendingDown, Sparkles, FileSpreadsheet, DollarSign, Target, Activity, Shield } from "lucide-react";
+import { Calculator, TrendingDown, Sparkles, FileSpreadsheet, DollarSign, Target, Activity, Shield, TrendingUp } from "lucide-react";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -115,8 +115,8 @@ export default function KincaidIQPage() {
 
   // Monte Carlo Volatility Analysis
   const volatilityProfile = estimateVolatilityProfile(
-    [census.employee_count_start, census.employee_count_end],
-    [census.employee_count_start, census.employee_count_end]
+    [activeCensus.employee_count_start, activeCensus.employee_count_end],
+    [activeCensus.employee_count_start, activeCensus.employee_count_end]
   );
 
   const baselineMC = runMonteCarloSimulation(

@@ -6,6 +6,7 @@ export default function Document() {
   return (
     <Html lang="en">
       <Head>
+        <meta name="google-site-verification" content="MznQPqO7f4DcYpAWMNtqrQcY_x6g0F7JIxHnXYQy4lA" />
         <SEOElements />
         {/*
           CRITICAL: DO NOT REMOVE THIS SCRIPT

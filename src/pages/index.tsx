@@ -295,7 +295,7 @@ export default function HomePage() {
                 </Link>
                 <motion.div whileHover={{ scale: 1.05, y: -3 }} whileTap={{ scale: 0.95 }}>
                   <Link
-                    href="#ebitda"
+                    href="/ebitda-governance"
                     className="inline-flex items-center justify-center gap-2 rounded-xl border border-amber-500/50 bg-zinc-950/80 px-6 py-3.5 text-sm font-semibold text-white backdrop-blur-sm transition-all hover:border-amber-400/70 hover:bg-amber-950/30 hover:shadow-lg hover:shadow-amber-500/20"
                   >
                     <TrendingUp className="h-4 w-4 text-amber-400" />

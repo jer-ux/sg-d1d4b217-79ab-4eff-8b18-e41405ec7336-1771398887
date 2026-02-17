@@ -7,6 +7,7 @@ export default function Document() {
     <Html lang="en">
       <Head>
         <meta name="google-site-verification" content="MznQPqO7f4DcYpAWMNtqrQcY_x6g0F7JIxHnXYQy4lA" />
+        <meta name="vc-domain-verify" content="kincaidiq.ai,9e32988bdfc364e0bf29" />
         <SEOElements />
         {/*
           CRITICAL: DO NOT REMOVE THIS SCRIPT

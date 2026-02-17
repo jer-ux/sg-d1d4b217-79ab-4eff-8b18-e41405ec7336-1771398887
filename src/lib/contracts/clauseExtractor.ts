@@ -83,6 +83,9 @@ const CLAUSE_PATTERNS: Record<ClauseType, RegExp[]> = {
     /act\s+of\s+god/i,
     /unforeseeable\s+circumstances/i,
   ],
+  spread: [/spread pricing/i, /pricing spread/i, /difference between amount charged/i],
+  transparency: [/transparency/i, /disclosure of/i, /revenue source/i],
+  mail_order: [/mail order/i, /mail service/i, /home delivery/i],
 };
 
 /**

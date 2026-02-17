@@ -16,9 +16,12 @@ export type ClauseType =
   | "liability"
   | "indemnification"
   | "confidentiality"
-  | "force_majeure";
+  | "force_majeure"
+  | "spread"
+  | "transparency"
+  | "mail_order";
 
-export type RiskLevel = "critical" | "high" | "medium" | "low" | "none";
+export type RiskLevel = "low" | "medium" | "high" | "critical";
 
 export type EconomicImpact = {
   annual_cost_delta: number; // Positive = cost increase
@@ -44,10 +47,10 @@ export interface ContractClause {
   page_number?: number;
   economic_flag: boolean;
   risk_flag: RiskLevel;
-  risk_details?: RiskFlag[];
-  economic_impact?: EconomicImpact;
+  risk_score?: number; // Added for risk scoring
   extracted_at: string;
   confidence_score: number;
+  location?: { page: number; start_idx?: number; end_idx?: number }; // Standardized location
 }
 
 export interface Contract {
@@ -66,13 +69,20 @@ export interface Contract {
 
 export interface ClauseComparison {
   clause_type: ClauseType;
-  current_clause?: ContractClause;
-  template_clause?: ContractClause;
-  alignment_score: number; // 0-100
-  semantic_differences: SemanticDifference[];
-  economic_delta: EconomicImpact;
-  risk_escalation: RiskFlag[];
-  recommendation: string;
+  current_text: string;
+  model_text: string;
+  deviation_score: number;
+  similarity_score: number;
+  economic_alignment: number;
+  key_differences: string[];
+  estimated_annual_exposure: number;
+  confidence: number;
+  calculation_basis: string;
+  priority_rank: "CRITICAL" | "HIGH" | "MEDIUM" | "LOW";
+  priority_score: number;
+  negotiation_rationale: string;
+  page_number?: number;
+  severity: "critical" | "high" | "medium" | "low";
 }
 
 export interface SemanticDifference {
@@ -84,16 +94,13 @@ export interface SemanticDifference {
 }
 
 export interface RedlineAnalysis {
-  contract_id: string;
-  template_id: string;
-  generated_at: string;
   overall_alignment_score: number;
-  total_economic_delta: number;
-  critical_risks: number;
-  high_risks: number;
+  total_estimated_exposure: number;
+  critical_issues: number;
+  high_priority_issues: number;
   clause_comparisons: ClauseComparison[];
   executive_summary: string;
-  recommended_actions: string[];
+  generated_at: string;
 }
 
 export interface IndianaRebateBenchmark {

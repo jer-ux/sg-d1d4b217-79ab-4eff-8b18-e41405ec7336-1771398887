@@ -39,6 +39,10 @@ export interface ContractIntelligenceReport {
 }
 
 export class ContractIntelligenceService {
+  private static redlineEngine = new RedlineComparisonEngine();
+  private static extractor = ClauseExtractor; // Static methods
+  private static riskEngine = RiskScoringEngine; // Static methods
+
   /**
    * Full contract analysis pipeline
    */
@@ -96,9 +100,10 @@ export class ContractIntelligenceService {
     };
 
     // Step 3: Redline comparison
-    const redlineAnalysis = await RedlineComparisonEngine.compareContracts(
-      currentContract,
-      templateContract
+    // Use the instantiated engine property and correct arguments
+    const redlineAnalysis = this.redlineEngine.compareContracts(
+      currentClauses,
+      currentContractMetadata.annual_spend || 10000000
     );
 
     // Step 4: Fiduciary risk assessment
@@ -200,12 +205,12 @@ export class ContractIntelligenceService {
 
     // High-value redline issues
     const criticalComparisons = redline.clause_comparisons
-      .filter(c => c.alignment_score < 60)
-      .sort((a, b) => b.economic_delta.annual_cost_delta - a.economic_delta.annual_cost_delta);
+      .filter(c => c.economic_alignment < 0.6) // Changed from alignment_score < 60
+      .sort((a, b) => b.estimated_annual_exposure - a.estimated_annual_exposure); // Fixed property names
 
     criticalComparisons.slice(0, 3).forEach(comparison => {
       points.push(
-        `${comparison.clause_type.toUpperCase()}: $${comparison.economic_delta.annual_cost_delta.toLocaleString()} annual exposure - ${comparison.recommendation}`
+        `${comparison.clause_type.toUpperCase()}: $${comparison.estimated_annual_exposure.toLocaleString()} annual exposure - ${comparison.negotiation_rationale}`
       );
     });
 
@@ -249,9 +254,9 @@ RISK ASSESSMENT
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
 Contract Alignment Score: ${Math.round(redline.overall_alignment_score)}%
-Critical Issues: ${redline.critical_risks}
-High-Risk Clauses: ${redline.high_risks}
-Expected Annual Cost Exposure: $${redline.total_economic_delta.toLocaleString()}
+Critical Issues: ${redline.critical_issues}
+High-Risk Clauses: ${redline.high_priority_issues}
+Expected Annual Cost Exposure: $${redline.total_estimated_exposure.toLocaleString()}
 
 Litigation Risk Score: ${(risk.total_risk_score / 1000000).toFixed(1)}M
 Expected Defense + Settlement: $${risk.expected_litigation_cost.toLocaleString()}
@@ -275,7 +280,11 @@ ${benchmarks.category_scores
 RECOMMENDATIONS
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
-${redline.recommended_actions.slice(0, 5).map((action, i) => `${i + 1}. ${action}`).join("\n")}
+${redline.clause_comparisons
+  .filter(c => c.priority_rank === "CRITICAL" || c.priority_rank === "HIGH")
+  .slice(0, 5)
+  .map((c, i) => `${i + 1}. ${c.negotiation_rationale}`)
+  .join("\n")}
 
 ${
   benchmarks.recommendations.length > 0
@@ -286,7 +295,7 @@ ${
 
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
-TOTAL RECOVERABLE VALUE: $${(redline.total_economic_delta + Math.abs(benchmarks.total_annual_impact < 0 ? benchmarks.total_annual_impact : 0)).toLocaleString()}/year
+TOTAL RECOVERABLE VALUE: $${(redline.total_estimated_exposure + Math.abs(benchmarks.total_annual_impact < 0 ? benchmarks.total_annual_impact : 0)).toLocaleString()}/year
     `.trim();
   }
 

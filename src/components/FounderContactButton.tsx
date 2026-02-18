@@ -14,23 +14,23 @@ export function FounderContactButton() {
 
   const contactOptions = [
     {
-      name: "Email",
       icon: Mail,
-      href: "mailto:jeremiah@siriusb.ai",
+      label: "Email",
+      href: "mailto:jer@kincaidrmc.com",
       description: "Send me an email",
       color: "bg-blue-500 hover:bg-blue-600",
     },
     {
-      name: "iMessage",
       icon: MessageCircle,
-      href: "sms:+1234567890", // TODO: Replace with your actual phone number
-      description: "Text me via iMessage",
+      label: "iMessage",
+      href: "sms:+12192563331",
+      description: "Text me directly",
       color: "bg-green-500 hover:bg-green-600",
     },
     {
-      name: "Telegram",
       icon: Send,
-      href: "https://t.me/yourusername", // TODO: Replace with your actual Telegram username
+      label: "Telegram",
+      href: "https://t.me/yourusername",
       description: "Message me on Telegram",
       color: "bg-sky-500 hover:bg-sky-600",
     },
@@ -94,10 +94,10 @@ export function FounderContactButton() {
               const Icon = option.icon;
               return (
                 <a
-                  key={option.name}
+                  key={option.label}
                   href={option.href}
-                  target={option.name === "Telegram" ? "_blank" : undefined}
-                  rel={option.name === "Telegram" ? "noopener noreferrer" : undefined}
+                  target={option.label === "Telegram" ? "_blank" : undefined}
+                  rel={option.label === "Telegram" ? "noopener noreferrer" : undefined}
                   className={`flex items-center gap-4 p-4 rounded-lg ${option.color} text-white transition-all duration-200 hover:shadow-lg hover:scale-105`}
                   onClick={() => setIsOpen(false)}
                 >
@@ -105,7 +105,7 @@ export function FounderContactButton() {
                     <Icon className="w-6 h-6" />
                   </div>
                   <div className="flex-1">
-                    <div className="font-semibold">{option.name}</div>
+                    <div className="font-semibold">{option.label}</div>
                     <div className="text-sm opacity-90">{option.description}</div>
                   </div>
                 </a>

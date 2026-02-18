@@ -242,7 +242,7 @@ export default function CompanyPage() {
     {
       year: "2025-Present",
       company: "Kincaid Risk Management Consultants",
-      role: "President & Chief Operating Officer",
+      role: "Chief Executive Officer",
       highlights: [
         "Leads enterprise operating cadence across strategy, delivery, and performance",
         "Drives PBM/Rx consulting with contract analytics and measurable impact",
@@ -390,6 +390,40 @@ export default function CompanyPage() {
 
         <main className="relative z-10 pt-32 pb-20 px-4 sm:px-6 lg:px-8">
           <div className="max-w-7xl mx-auto">
+            {/* Hero Banner with Quote */}
+            <motion.div
+              initial={{ opacity: 0, scale: 0.95 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ duration: 0.8 }}
+              className="mb-16 relative overflow-hidden rounded-3xl"
+            >
+              <div className="relative h-[400px] sm:h-[500px]">
+                {/* Vegas Neon Border */}
+                <motion.div
+                  className="absolute -inset-1 rounded-3xl opacity-75 blur-xl"
+                  style={{
+                    background: "linear-gradient(45deg, #ec4899, #3b82f6, #a855f7, #ec4899)",
+                    backgroundSize: "300% 300%",
+                  }}
+                  animate={{
+                    backgroundPosition: ["0% 50%", "100% 50%", "0% 50%"],
+                  }}
+                  transition={{ duration: 5, repeat: Infinity }}
+                />
+                
+                <div className="relative h-full rounded-3xl overflow-hidden border-2 border-pink-500/30">
+                  <img
+                    src="/jeremiah-shrack-hero-banner.png"
+                    alt="Jeremiah Shrack - The first time I saw GenAI do something that mattered"
+                    className="w-full h-full object-cover"
+                  />
+                  
+                  {/* Vegas Gradient Overlay */}
+                  <div className="absolute inset-0 bg-gradient-to-r from-black/60 via-transparent to-black/60" />
+                </div>
+              </div>
+            </motion.div>
+
             {/* Hero Section with Vegas Neon */}
             <motion.div
               initial={{ opacity: 0, y: 30 }}
@@ -485,7 +519,7 @@ export default function CompanyPage() {
                         <div className="absolute -inset-1 bg-gradient-to-r from-pink-500 via-blue-500 to-purple-500 rounded-2xl blur-xl opacity-75 group-hover/photo:opacity-100 transition-opacity duration-500" />
                         
                         <img
-                          src="/jeremiah-shrack-corporate.png"
+                          src="/jeremiah-shrack-professional.png"
                           alt="Jeremiah Shrack, Founder & CEO"
                           className="relative w-full h-auto rounded-2xl border-2 border-pink-500/50 shadow-2xl"
                         />
@@ -573,7 +607,7 @@ export default function CompanyPage() {
                           </p>
 
                           <p className="bg-gradient-to-r from-pink-500/10 to-purple-500/10 border border-pink-500/20 rounded-lg p-4">
-                            <strong className="text-pink-400">The Genesis Moment:</strong> After 15+ years of watching organizations struggle with <strong className="text-blue-400">manual data validation</strong>, <strong className="text-purple-400">contract leakage</strong>, and <strong className="text-pink-400">verification bottlenecks</strong>, Jeremiah founded SiriusB iQ to build what the market desperately needed: <strong className="text-white">autonomous AI agents that prove their work</strong>.
+                            <strong className="text-pink-400">The Genesis Moment:</strong> After 15+ years of watching organizations struggle with <strong className="text-blue-400">manual data validation</strong>, <strong className="text-purple-400">contract arbitrage</strong>, and <strong className="text-pink-400">verification bottlenecks</strong>, Jeremiah founded SiriusB iQ to build what the market desperately needed: <strong className="text-white">autonomous AI agents that prove their work</strong>.
                           </p>
 
                           <div className="space-y-3">
@@ -627,7 +661,7 @@ export default function CompanyPage() {
                           <div className="bg-gradient-to-r from-pink-500/10 to-blue-500/10 border border-pink-500/20 rounded-lg p-6">
                             <h4 className="text-xl font-bold text-pink-400 mb-3">Dual Leadership Role</h4>
                             <p className="mb-3">
-                              As <strong className="text-blue-400">CEO of SiriusB iQ</strong> and <strong className="text-purple-400">President & COO of Kincaid Risk Management Consultants</strong>, Jeremiah uniquely bridges technology innovation with real-world consulting delivery:
+                              As <strong className="text-blue-400">CEO of SiriusB iQ</strong> and <strong className="text-purple-400">CEO of Kincaid Risk Management Consultants</strong>, Jeremiah uniquely bridges technology innovation with real-world consulting delivery:
                             </p>
                             <ul className="space-y-2 text-sm">
                               <li className="flex items-start gap-2">

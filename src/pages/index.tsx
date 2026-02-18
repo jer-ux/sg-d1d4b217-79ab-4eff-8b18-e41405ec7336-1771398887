@@ -313,6 +313,37 @@ export default function HomePage() {
                 <Sparkles className="h-3 w-3" />
                 <span>Upload → Verify → Govern → Reduce leakage → Prove outcomes.</span>
               </motion.div>
+
+              {/* Founder credibility badge */}
+              <motion.div
+                className="mt-8 flex items-center gap-4 rounded-2xl border border-amber-500/20 bg-gradient-to-br from-zinc-950/80 via-amber-950/10 to-zinc-900/60 p-4 backdrop-blur-sm"
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.8, delay: 1.2 }}
+                whileHover={{ scale: 1.02, borderColor: "rgba(251, 191, 36, 0.4)" }}
+              >
+                <div className="relative h-16 w-16 flex-shrink-0">
+                  <div className="absolute -inset-1 rounded-full bg-gradient-to-r from-amber-500/50 to-purple-500/50 blur-sm" />
+                  <img
+                    src="/jeremiah-shrack-professional.png"
+                    alt="Jeremiah Franklin Shrack"
+                    className="relative h-16 w-16 rounded-full object-cover ring-2 ring-amber-500/30"
+                  />
+                </div>
+                <div>
+                  <div className="text-sm font-semibold text-white">Built by practitioners, not theorists</div>
+                  <div className="mt-1 text-xs text-zinc-400">
+                    Jeremiah Shrack, CEO — 20 years solving healthcare benefits leakage
+                  </div>
+                  <Link
+                    href="/company"
+                    className="mt-2 inline-flex items-center gap-1 text-xs text-amber-400 transition-colors hover:text-amber-300"
+                  >
+                    <span>Learn about our approach</span>
+                    <ArrowRight className="h-3 w-3" />
+                  </Link>
+                </div>
+              </motion.div>
             </motion.div>
 
             {/* Right side: 3D receipts ledger with Vegas feel */}

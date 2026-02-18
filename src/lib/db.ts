@@ -26,7 +26,8 @@ export const db = {
       }
 
       // For other queries, you would need to create a database function
-      const { data, error } = await supabase.rpc("execute_sql", { 
+      // Using 'as any' to bypass strict type checking if the function doesn't exist in types yet
+      const { data, error } = await supabase.rpc("execute_sql" as any, { 
         query: sql,
         params: params 
       });
@@ -36,7 +37,7 @@ export const db = {
         throw new Error(`Database query failed: ${error.message}`);
       }
 
-      return data || [];
+      return (data as any) || [];
     } catch (err) {
       console.error("Database connection error:", err);
       return [];
@@ -61,7 +62,8 @@ export const db = {
    * const users = await db.table("users").select("*");
    */
   table(tableName: string) {
-    return supabase.from(tableName);
+    // Cast to any to allow dynamic table names
+    return supabase.from(tableName as any);
   },
 
   /**
@@ -70,14 +72,14 @@ export const db = {
    * @param params - Parameters to pass to the function
    */
   async rpc(functionName: string, params: Record<string, any> = {}): Promise<Row[]> {
-    const { data, error } = await supabase.rpc(functionName, params);
+    const { data, error } = await supabase.rpc(functionName as any, params);
     
     if (error) {
       console.error(`RPC error (${functionName}):`, error);
       throw new Error(`RPC failed: ${error.message}`);
     }
 
-    return data || [];
+    return (data as any) || [];
   },
 };
 
@@ -90,7 +92,7 @@ export const queries = {
    * Select all rows from a table with optional filtering
    */
   async selectAll<T = Row>(tableName: string, filter?: Record<string, any>): Promise<T[]> {
-    let query = supabase.from(tableName).select("*");
+    let query = supabase.from(tableName as any).select("*");
     
     if (filter) {
       Object.entries(filter).forEach(([key, value]) => {
@@ -113,12 +115,13 @@ export const queries = {
    */
   async selectById<T = Row>(tableName: string, id: string): Promise<T | null> {
     const { data, error } = await supabase
-      .from(tableName)
+      .from(tableName as any)
       .select("*")
       .eq("id", id)
       .single();
     
     if (error) {
+      // Check for PGRST116 (0 rows) error safely
       if (error.code === "PGRST116") {
         return null; // No rows found
       }
@@ -134,7 +137,7 @@ export const queries = {
    */
   async insert<T = Row>(tableName: string, data: Partial<T>): Promise<T> {
     const { data: inserted, error } = await supabase
-      .from(tableName)
+      .from(tableName as any)
       .insert(data)
       .select()
       .single();
@@ -152,7 +155,7 @@ export const queries = {
    */
   async update<T = Row>(tableName: string, id: string, data: Partial<T>): Promise<T> {
     const { data: updated, error } = await supabase
-      .from(tableName)
+      .from(tableName as any)
       .update(data)
       .eq("id", id)
       .select()
@@ -171,7 +174,7 @@ export const queries = {
    */
   async delete(tableName: string, id: string): Promise<void> {
     const { error } = await supabase
-      .from(tableName)
+      .from(tableName as any)
       .delete()
       .eq("id", id);
     

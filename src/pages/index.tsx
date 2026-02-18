@@ -325,7 +325,7 @@ export default function HomePage() {
                 <div className="relative h-16 w-16 flex-shrink-0">
                   <div className="absolute -inset-1 rounded-full bg-gradient-to-r from-amber-500/50 to-purple-500/50 blur-sm" />
                   <img
-                    src="/jeremiah-shrack-professional.png"
+                    src="/jeremiah-shrack-outdoor.png"
                     alt="Jeremiah Franklin Shrack"
                     className="relative h-16 w-16 rounded-full object-cover ring-2 ring-amber-500/30"
                   />

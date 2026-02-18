@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { motion, useMotionValue, useTransform } from "framer-motion";
-import { Linkedin, Sparkles, Target, Zap, TrendingUp, Shield, LucideIcon } from "lucide-react";
+import { Linkedin, Sparkles, Target, Zap, TrendingUp, Shield, LucideIcon, Award, Users, Rocket, Brain } from "lucide-react";
 import { SEO } from "@/components/SEO";
 import Nav from "@/components/Nav";
 import Footer from "@/components/Footer";
@@ -12,6 +12,13 @@ interface BlockData {
   title: string;
   content: string;
   bullets: string[];
+}
+
+interface TimelineItem {
+  year: string;
+  company: string;
+  role: string;
+  highlights: string[];
 }
 
 // Separate component for 3D Blocks to handle hooks correctly
@@ -220,11 +227,98 @@ export default function CompanyPage() {
     }
   ];
 
+  const timeline: TimelineItem[] = [
+    {
+      year: "2024-Present",
+      company: "SiriusB iQ AI Data Sciences Lab",
+      role: "CEO & Chairman",
+      highlights: [
+        "Architecting Kincaid IQ flagship AI-enabled consulting platform",
+        "Built AI-enabled pharmacy savings opportunity engine",
+        "Implemented evidence-backed delivery workflows with audit-ready reporting",
+        "Established ethical AI governance emphasizing human-centered decisioning"
+      ]
+    },
+    {
+      year: "2025-Present",
+      company: "Kincaid Risk Management Consultants",
+      role: "President & Chief Operating Officer",
+      highlights: [
+        "Leads enterprise operating cadence across strategy, delivery, and performance",
+        "Drives PBM/Rx consulting with contract analytics and measurable impact",
+        "Establishes governance mechanisms with closed-loop execution",
+        "Positions KRMC as analytics-forward consultancy"
+      ]
+    },
+    {
+      year: "2020-2024",
+      company: "Retro Redesign & Fine Arts",
+      role: "CEO & Co-Founder",
+      highlights: [
+        "Achieved profitability within 30 days of launch",
+        "Applied analytics-driven marketing with former Google expert",
+        "Delivered 55+ end-to-end projects with quality excellence"
+      ]
+    },
+    {
+      year: "2018-2020",
+      company: "Huntington National Bank",
+      role: "SVP, Client Strategy & Benefit Innovation",
+      highlights: [
+        "Closed seven-figure non-banking sale",
+        "Received Service Heart Award (presented by CEO)",
+        "Built and led high-performance teams including MBA and doctoral-level talent",
+        "Developed financial benchmarking interface for SVP-level decisioning"
+      ]
+    },
+    {
+      year: "2016-2018",
+      company: "Aon Risk Solutions",
+      role: "Senior Vice President, Business Development",
+      highlights: [
+        "Delivered $1.2M closed revenue within 12 months",
+        "Recognized for selling largest account in Aon USA (Q3 2016)",
+        "Built middle-market go-to-market motions with National Practice leadership"
+      ]
+    },
+    {
+      year: "2013-2015",
+      company: "Brown & Brown Insurance",
+      role: "Vice President, Health & Wellness",
+      highlights: [
+        "Sold $1.1M (2013) and $1.51M (2014) in new consulting services",
+        "Managed Health & Benefits portfolio exceeding $1M",
+        "Published industry article on on-site primary care clinics"
+      ]
+    },
+    {
+      year: "2009-2013",
+      company: "National Insurance Services",
+      role: "Market Development",
+      highlights: [
+        "Ranked #1 nationally in sales revenue (2011)",
+        "Ranked #2 nationally in sales revenue (2010)",
+        "Turned around declining territory with 100% profitability increase",
+        "Added 50 public-sector accounts across MI/OH"
+      ]
+    },
+    {
+      year: "2005-2009",
+      company: "Canon U.S.A.",
+      role: "Senior Sales Executive",
+      highlights: [
+        "Top North America rankings: #1 (2006 & 2007)",
+        "Sold enterprise imaging systems to Fortune 500 companies",
+        "Trained and mentored new reps on enterprise selling"
+      ]
+    }
+  ];
+
   return (
     <>
       <SEO
         title="Company - SiriusB iQ | AI Data Sciences Lab"
-        description="Meet the team behind SiriusB iQ's revolutionary AI-powered data validation platform. Learn about our mission, vision, and the future of autonomous enterprise intelligence."
+        description="Meet Jeremiah Shrack, founder of SiriusB iQ. From enterprise sales champion to AI visionary, learn how 20 years of experience shaped the future of autonomous intelligence."
       />
       <div className="min-h-screen bg-gradient-to-br from-gray-950 via-gray-900 to-black text-white relative overflow-hidden">
         {/* Vegas-Style Animated Background */}
@@ -437,7 +531,7 @@ export default function CompanyPage() {
                         transition={{ delay: 0.7 }}
                       >
                         <h3 className="text-3xl font-bold mb-4 bg-gradient-to-r from-pink-400 to-purple-400 bg-clip-text text-transparent">
-                          Visionary Leader in AI-Driven Intelligence
+                          From Enterprise Sales Champion to AI Visionary
                         </h3>
                         
                         <div className="space-y-4 text-gray-300 leading-relaxed">
@@ -446,16 +540,62 @@ export default function CompanyPage() {
                           </p>
 
                           <p>
-                            That moment crystallized everything. <strong className="text-blue-400">Jeremiah founded SiriusB iQ</strong> on a singular insight: GenAI's true value isn't in content creation—it's in <strong className="text-purple-400">autonomous data validation at enterprise scale</strong>.
+                            That moment crystallized two decades of experience into a singular insight: <strong className="text-purple-400">GenAI's true value isn't in content creation—it's in autonomous data validation at enterprise scale</strong>.
                           </p>
 
+                          <div className="bg-gradient-to-r from-blue-500/10 to-purple-500/10 border border-blue-500/20 rounded-lg p-6 space-y-3">
+                            <h4 className="text-xl font-bold text-blue-400 flex items-center gap-2">
+                              <Award className="w-5 h-5" />
+                              Track Record of Excellence
+                            </h4>
+                            <ul className="space-y-2 text-sm">
+                              <li className="flex items-start gap-2">
+                                <TrendingUp className="w-4 h-4 text-pink-400 mt-0.5 flex-shrink-0" />
+                                <span><strong>#1 National Sales Rankings</strong> at Canon USA (2006, 2007) and National Insurance Services (2011)</span>
+                              </li>
+                              <li className="flex items-start gap-2">
+                                <Award className="w-4 h-4 text-blue-400 mt-0.5 flex-shrink-0" />
+                                <span><strong>Huntington Service Heart Award</strong> - Presented by CEO for exceptional client service</span>
+                              </li>
+                              <li className="flex items-start gap-2">
+                                <Rocket className="w-4 h-4 text-purple-400 mt-0.5 flex-shrink-0" />
+                                <span><strong>$1.2M+ in closed revenue</strong> at Aon Risk Solutions within first 12 months</span>
+                              </li>
+                              <li className="flex items-start gap-2">
+                                <Users className="w-4 h-4 text-pink-400 mt-0.5 flex-shrink-0" />
+                                <span><strong>Built and led high-performance teams</strong> including MBA and doctoral-level professionals</span>
+                              </li>
+                            </ul>
+                          </div>
+
                           <p>
-                            With a career built on <strong className="text-pink-400">scaling technology ventures</strong> and <strong className="text-blue-400">transforming data operations</strong>, Jeremiah recognized that enterprises were drowning in data but starving for verified intelligence. Traditional BI tools required armies of analysts. Modern AI promised automation but lacked accountability.
+                            With a career spanning <strong className="text-pink-400">enterprise technology sales</strong>, <strong className="text-blue-400">healthcare benefits consulting</strong>, and <strong className="text-purple-400">management consulting</strong>, Jeremiah recognized that enterprises were drowning in data but starving for verified intelligence. Traditional BI tools required armies of analysts. Modern AI promised automation but lacked accountability.
                           </p>
 
                           <p className="bg-gradient-to-r from-pink-500/10 to-purple-500/10 border border-pink-500/20 rounded-lg p-4">
-                            SiriusB iQ bridges that gap: <strong className="text-purple-400">autonomous AI agents</strong> that don't just analyze data—they <strong className="text-pink-400">validate it</strong>, <strong className="text-blue-400">cross-reference it</strong>, and <strong className="text-purple-400">prove their findings with cryptographic evidence</strong>.
+                            <strong className="text-pink-400">The Genesis Moment:</strong> After 15+ years of watching organizations struggle with <strong className="text-blue-400">manual data validation</strong>, <strong className="text-purple-400">contract leakage</strong>, and <strong className="text-pink-400">verification bottlenecks</strong>, Jeremiah founded SiriusB iQ to build what the market desperately needed: <strong className="text-white">autonomous AI agents that prove their work</strong>.
                           </p>
+
+                          <div className="space-y-3">
+                            <h4 className="text-xl font-bold text-purple-400">The SiriusB iQ Philosophy</h4>
+                            <p>
+                              Unlike traditional AI tools that simply generate insights, SiriusB iQ's platform operates on three core principles:
+                            </p>
+                            <ul className="space-y-2 ml-6">
+                              <li className="flex items-start gap-3">
+                                <Shield className="w-5 h-5 text-pink-400 mt-1 flex-shrink-0" />
+                                <span><strong className="text-pink-400">Verification-First:</strong> Every recommendation includes cryptographically signed evidence trails</span>
+                              </li>
+                              <li className="flex items-start gap-3">
+                                <Brain className="w-5 h-5 text-blue-400 mt-1 flex-shrink-0" />
+                                <span><strong className="text-blue-400">Human-Centered Decisioning:</strong> AI strengthens leadership judgment, never replaces it</span>
+                              </li>
+                              <li className="flex items-start gap-3">
+                                <Zap className="w-5 h-5 text-purple-400 mt-1 flex-shrink-0" />
+                                <span><strong className="text-purple-400">Autonomous Execution:</strong> AI agents that act independently with full auditability</span>
+                              </li>
+                            </ul>
+                          </div>
 
                           <p>
                             Under Jeremiah's leadership, the platform has evolved from a novel concept to a <strong className="text-pink-400">mission-critical enterprise tool</strong> used by organizations to:
@@ -463,22 +603,43 @@ export default function CompanyPage() {
 
                           <ul className="space-y-2 ml-6">
                             <li className="flex items-start gap-3">
-                              <Shield className="w-5 h-5 text-pink-400 mt-1 flex-shrink-0" />
-                              <span>Recover millions in hidden value leakage</span>
+                              <TrendingUp className="w-5 h-5 text-pink-400 mt-1 flex-shrink-0" />
+                              <span>Recover millions in hidden value leakage and contract arbitrage</span>
                             </li>
                             <li className="flex items-start gap-3">
-                              <Zap className="w-5 h-5 text-blue-400 mt-1 flex-shrink-0" />
+                              <Shield className="w-5 h-5 text-blue-400 mt-1 flex-shrink-0" />
                               <span>Prevent compliance violations before they occur</span>
                             </li>
                             <li className="flex items-start gap-3">
-                              <TrendingUp className="w-5 h-5 text-purple-400 mt-1 flex-shrink-0" />
+                              <Rocket className="w-5 h-5 text-purple-400 mt-1 flex-shrink-0" />
                               <span>Accelerate executive decision-making from weeks to minutes</span>
+                            </li>
+                            <li className="flex items-start gap-3">
+                              <Zap className="w-5 h-5 text-pink-400 mt-1 flex-shrink-0" />
+                              <span>Eliminate manual verification bottlenecks across operations</span>
                             </li>
                           </ul>
 
                           <p className="text-lg italic border-l-4 border-purple-500 pl-4 bg-purple-500/5 py-3 rounded-r-lg">
-                            Jeremiah's vision extends beyond current capabilities. He's building toward a future where <strong className="text-purple-400">every business decision is backed by verified, real-time intelligence</strong>—where AI agents autonomously detect opportunities, validate findings, and present evidence-backed recommendations.
+                            Jeremiah's vision extends beyond current capabilities. He's building toward a future where <strong className="text-purple-400">every business decision is backed by verified, real-time intelligence</strong>—where AI agents autonomously detect opportunities, validate findings, and present evidence-backed recommendations without human intervention.
                           </p>
+
+                          <div className="bg-gradient-to-r from-pink-500/10 to-blue-500/10 border border-pink-500/20 rounded-lg p-6">
+                            <h4 className="text-xl font-bold text-pink-400 mb-3">Dual Leadership Role</h4>
+                            <p className="mb-3">
+                              As <strong className="text-blue-400">CEO of SiriusB iQ</strong> and <strong className="text-purple-400">President & COO of Kincaid Risk Management Consultants</strong>, Jeremiah uniquely bridges technology innovation with real-world consulting delivery:
+                            </p>
+                            <ul className="space-y-2 text-sm">
+                              <li className="flex items-start gap-2">
+                                <div className="w-1.5 h-1.5 rounded-full bg-pink-400 mt-2 flex-shrink-0" />
+                                <span><strong>At SiriusB iQ:</strong> Architecting Kincaid IQ, the flagship AI-enabled consulting platform</span>
+                              </li>
+                              <li className="flex items-start gap-2">
+                                <div className="w-1.5 h-1.5 rounded-full bg-blue-400 mt-2 flex-shrink-0" />
+                                <span><strong>At KRMC:</strong> Leading PBM/Rx consulting engagements with contract analytics and measurable impact</span>
+                              </li>
+                            </ul>
+                          </div>
 
                           <p>
                             As a <strong className="text-pink-400">thought leader in enterprise AI</strong>, Jeremiah advocates for a shift from "AI-assisted" to "AI-autonomous" operations, emphasizing that the next competitive advantage belongs to organizations that can trust their AI to act independently—with full auditability.
@@ -495,12 +656,64 @@ export default function CompanyPage() {
               </motion.div>
             </motion.div>
 
+            {/* Career Timeline Section */}
+            <motion.div
+              initial={{ opacity: 0 }}
+              whileInView={{ opacity: 1 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.8 }}
+              className="mb-24"
+            >
+              <h2 className="text-4xl sm:text-5xl font-bold text-center mb-12 bg-gradient-to-r from-pink-400 via-blue-400 to-purple-400 bg-clip-text text-transparent">
+                20 Years of Enterprise Excellence
+              </h2>
+
+              <div className="space-y-6">
+                {timeline.map((item, index) => (
+                  <motion.div
+                    key={index}
+                    initial={{ opacity: 0, x: -30 }}
+                    whileInView={{ opacity: 1, x: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ delay: index * 0.1 }}
+                    className="relative group"
+                  >
+                    {/* Vegas Glow Border */}
+                    <div className="absolute -inset-0.5 bg-gradient-to-r from-pink-500/50 to-purple-500/50 rounded-xl opacity-0 group-hover:opacity-100 transition-opacity duration-500 blur" />
+                    
+                    <div className="relative bg-gradient-to-br from-gray-900/90 to-gray-800/90 rounded-xl p-6 border border-pink-500/20 hover:border-pink-500/40 transition-all duration-300">
+                      <div className="grid md:grid-cols-[200px_1fr] gap-6">
+                        {/* Year & Company */}
+                        <div className="space-y-2">
+                          <div className="inline-flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-pink-500/20 to-purple-500/20 rounded-full border border-pink-500/30">
+                            <span className="text-pink-400 font-bold">{item.year}</span>
+                          </div>
+                          <h3 className="text-xl font-bold text-blue-400">{item.company}</h3>
+                          <p className="text-sm text-purple-400 font-semibold">{item.role}</p>
+                        </div>
+
+                        {/* Highlights */}
+                        <ul className="space-y-2">
+                          {item.highlights.map((highlight, hIndex) => (
+                            <li key={hIndex} className="flex items-start gap-3 text-gray-300">
+                              <div className="w-1.5 h-1.5 rounded-full bg-pink-400 mt-2 flex-shrink-0" />
+                              <span>{highlight}</span>
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
+                    </div>
+                  </motion.div>
+                ))}
+              </div>
+            </motion.div>
+
             {/* Vegas-Style Blocks Grid */}
             <motion.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ delay: 0.8 }}
-              className="grid md:grid-cols-2 gap-8"
+              className="grid md:grid-cols-2 gap-8 mb-24"
             >
               {blocks.map((block, index) => (
                 <CompanyBlock key={index} block={block} index={index} />
@@ -513,7 +726,7 @@ export default function CompanyPage() {
               whileInView={{ opacity: 1, scale: 1 }}
               viewport={{ once: true }}
               transition={{ duration: 0.8 }}
-              className="mt-24 text-center"
+              className="text-center"
             >
               <div className="relative inline-block">
                 <motion.div

@@ -485,7 +485,7 @@ export default function CompanyPage() {
                         <div className="absolute -inset-1 bg-gradient-to-r from-pink-500 via-blue-500 to-purple-500 rounded-2xl blur-xl opacity-75 group-hover/photo:opacity-100 transition-opacity duration-500" />
                         
                         <img
-                          src="/jeremiah-shrack.png"
+                          src="/jeremiah-shrack-corporate.png"
                           alt="Jeremiah Shrack, Founder & CEO"
                           className="relative w-full h-auto rounded-2xl border-2 border-pink-500/50 shadow-2xl"
                         />

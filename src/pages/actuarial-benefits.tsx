@@ -305,7 +305,7 @@ export default function ActuarialBenefits() {
                     />
                     <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 to-transparent p-6">
                       <h3 className="text-white text-xl font-bold">Jeremiah Shrack</h3>
-                      <p className="text-gray-300">Founder & Chief Actuary</p>
+                      <p className="text-gray-300">Founder</p>
                     </div>
                   </div>
                 </div>

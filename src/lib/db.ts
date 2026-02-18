@@ -26,8 +26,8 @@ export const db = {
       }
 
       // For other queries, you would need to create a database function
-      // Using 'as any' to bypass strict type checking if the function doesn't exist in types yet
-      const { data, error } = await supabase.rpc("execute_sql" as any, { 
+      // Cast supabase to any to avoid "Parameter of type never" error when functions aren't typed yet
+      const { data, error } = await (supabase as any).rpc("execute_sql", { 
         query: sql,
         params: params 
       });
@@ -72,7 +72,7 @@ export const db = {
    * @param params - Parameters to pass to the function
    */
   async rpc(functionName: string, params: Record<string, any> = {}): Promise<Row[]> {
-    const { data, error } = await supabase.rpc(functionName as any, params);
+    const { data, error } = await (supabase as any).rpc(functionName, params);
     
     if (error) {
       console.error(`RPC error (${functionName}):`, error);

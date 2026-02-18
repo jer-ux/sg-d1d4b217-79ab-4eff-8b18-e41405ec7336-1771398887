@@ -1,11 +1,12 @@
 import { motion, useMotionValue, useTransform } from "framer-motion";
 import Link from "next/link";
-import { Shield, TrendingUp, Heart, BarChart3, Users, FileText, DollarSign, Layers, PieChart, Activity, CheckCircle2, Sparkles, ArrowRight, Zap, Target, Briefcase, Award, Crown } from "lucide-react";
+import { Shield, TrendingUp, Heart, BarChart3, Users, FileText, DollarSign, Layers, PieChart, Activity, CheckCircle2, Sparkles, ArrowRight, Zap, Target, Briefcase, Award, Crown, AlertCircle, CheckCircle } from "lucide-react";
 import { SEO } from "@/components/SEO";
 import Nav from "@/components/Nav";
 import Footer from "@/components/Footer";
 import { useState } from "react";
 import dynamic from "next/dynamic";
+import Image from "next/image";
 
 // Dynamic imports for 3D components
 const Interactive3DCard = dynamic(() => import("@/components/premium/Interactive3DCard").then(mod => mod.Interactive3DCard), { ssr: false });
@@ -277,91 +278,38 @@ export default function ActuarialBenefits() {
 
         <main className="relative z-10">
           {/* Hero Section */}
-          <section className="pt-32 pb-20 px-4">
-            <div className="max-w-7xl mx-auto text-center">
-              <motion.div
-                initial={{ opacity: 0, y: 30 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.8 }}
-              >
-                {/* Crown Icon */}
-                <motion.div
-                  className="inline-block mb-6"
-                  animate={{
-                    y: [0, -10, 0],
-                  }}
-                  transition={{ duration: 2, repeat: Infinity }}
-                >
-                  <Crown className="w-16 h-16 text-amber-500 mx-auto" style={{
-                    filter: "drop-shadow(0 0 20px #f59e0b)",
-                  }} />
-                </motion.div>
-
-                <motion.h1
-                  className="text-6xl md:text-8xl font-bold mb-6"
-                  style={{
-                    background: "linear-gradient(135deg, #fbbf24 0%, #f59e0b 50%, #d97706 100%)",
-                    backgroundClip: "text",
-                    WebkitBackgroundClip: "text",
-                    WebkitTextFillColor: "transparent",
-                  }}
-                  animate={{
-                    textShadow: [
-                      "0 0 20px #f59e0b, 0 0 40px #f59e0b",
-                      "0 0 30px #d97706, 0 0 60px #d97706",
-                      "0 0 20px #f59e0b, 0 0 40px #f59e0b",
-                    ],
-                  }}
-                  transition={{ duration: 4, repeat: Infinity }}
-                >
-                  Actuarial Excellence
-                  <br />
-                  Meets AI Innovation
-                </motion.h1>
-
-                <motion.p
-                  className="text-xl md:text-2xl text-gray-300 mb-12 max-w-3xl mx-auto"
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  transition={{ delay: 0.3 }}
-                >
-                  Transform your employee benefits operations with cutting-edge actuarial science,
-                  powered by artificial intelligence and real-time analytics
-                </motion.p>
-
-                <motion.div
-                  initial={{ opacity: 0, scale: 0.9 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  transition={{ delay: 0.5 }}
-                  className="flex flex-wrap gap-6 justify-center"
-                >
-                  <Link href="/request-demo">
-                    <motion.div
-                      whileHover={{ scale: 1.05 }}
-                      whileTap={{ scale: 0.95 }}
-                      className="relative group"
-                    >
-                      <div className="absolute inset-0 bg-gradient-to-r from-amber-500 to-yellow-600 rounded-full blur-xl opacity-50 group-hover:opacity-100 transition-opacity" />
-                      <button className="relative px-8 py-4 bg-gradient-to-r from-amber-600 to-yellow-600 rounded-full text-white font-semibold text-lg flex items-center gap-2 shadow-xl">
-                        <Sparkles className="w-5 h-5" />
-                        Request Premium Demo
-                        <Sparkles className="w-5 h-5" />
-                      </button>
-                    </motion.div>
-                  </Link>
-
-                  <Link href="#solutions">
-                    <motion.button
-                      whileHover={{ scale: 1.05 }}
-                      whileTap={{ scale: 0.95 }}
-                      className="px-8 py-4 bg-black/50 backdrop-blur-sm border border-amber-900/50 rounded-full text-white font-semibold text-lg hover:border-amber-500 transition-colors flex items-center gap-2"
-                    >
-                      Explore Solutions
-                      <ArrowRight className="w-5 h-5" />
-                    </motion.button>
-                  </Link>
-                </motion.div>
-              </motion.div>
+          <section className="relative py-20 overflow-hidden">
+            <div className="absolute inset-0 bg-gradient-to-br from-purple-900/20 via-blue-900/20 to-indigo-900/20" />
+            <div className="container relative z-10 mx-auto px-6">
+              <div className="grid lg:grid-cols-2 gap-12 items-center">
+                <div>
+                  <div className="inline-block px-4 py-2 bg-purple-500/10 border border-purple-500/20 rounded-full mb-6">
+                    <span className="text-purple-300 font-semibold">Actuarial Intelligence Platform</span>
+                  </div>
+                  <h1 className="text-5xl lg:text-6xl font-bold mb-6 bg-gradient-to-r from-purple-400 via-blue-400 to-indigo-400 bg-clip-text text-transparent">
+                    Transform Actuarial Benefits Management
+                  </h1>
+                  <p className="text-xl text-gray-300 mb-8">
+                    Leverage AI-powered analytics to optimize plan design, manage risk, and ensure regulatory compliance across your entire benefits portfolio.
+                  </p>
+                </div>
+                <div className="relative">
+                  <div className="relative rounded-2xl overflow-hidden border border-purple-500/20 shadow-2xl">
+                    <Image
+                      src="/jeremiah-shrack-professional.png"
+                      alt="Jeremiah Shrack - Founder & Chief Actuary"
+                      width={600}
+                      height={600}
+                      className="w-full h-auto"
+                      priority
+                    />
+                    <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 to-transparent p-6">
+                      <h3 className="text-white text-xl font-bold">Jeremiah Shrack</h3>
+                      <p className="text-gray-300">Founder & Chief Actuary</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
             </div>
           </section>
 

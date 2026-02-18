@@ -91,15 +91,17 @@ export function DatabankViewer() {
     }
   };
 
-  const formatFileSize = (bytes: number) => {
-    if (bytes === 0) return "0 Bytes";
+  const formatFileSize = (bytes: number | bigint) => {
+    const numBytes = Number(bytes);
+    if (numBytes === 0) return "0 Bytes";
     const k = 1024;
     const sizes = ["Bytes", "KB", "MB", "GB"];
-    const i = Math.floor(Math.log(bytes) / Math.log(k));
-    return Math.round(bytes / Math.pow(k, i) * 100) / 100 + " " + sizes[i];
+    const i = Math.floor(Math.log(numBytes) / Math.log(k));
+    return Math.round(numBytes / Math.pow(k, i) * 100) / 100 + " " + sizes[i];
   };
 
-  const formatDate = (dateString: string) => {
+  const formatDate = (dateString: string | null) => {
+    if (!dateString) return "N/A";
     return new Date(dateString).toLocaleDateString("en-US", {
       year: "numeric",
       month: "short",
@@ -110,7 +112,7 @@ export function DatabankViewer() {
   };
 
   const filteredRecords = records.filter(record =>
-    record.original_filename?.toLowerCase().includes(searchQuery.toLowerCase())
+    record.file_name?.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
   return (
@@ -171,11 +173,11 @@ export function DatabankViewer() {
               </SelectTrigger>
               <SelectContent>
                 <SelectItem value="claims">Claims</SelectItem>
-                <SelectItem value="member">Member</SelectItem>
-                <SelectItem value="provider">Provider</SelectItem>
-                <SelectItem value="financial">Financial</SelectItem>
-                <SelectItem value="contract">Contract</SelectItem>
                 <SelectItem value="census">Census</SelectItem>
+                <SelectItem value="financial">Financial</SelectItem>
+                <SelectItem value="contracts">Contracts</SelectItem>
+                <SelectItem value="actuarial">Actuarial</SelectItem>
+                <SelectItem value="pharmacy">Pharmacy</SelectItem>
                 <SelectItem value="analytics">Analytics</SelectItem>
               </SelectContent>
             </Select>
@@ -191,8 +193,8 @@ export function DatabankViewer() {
                 <SelectItem value="all">All</SelectItem>
                 <SelectItem value="uploaded">Uploaded</SelectItem>
                 <SelectItem value="processing">Processing</SelectItem>
-                <SelectItem value="validated">Validated</SelectItem>
-                <SelectItem value="failed">Failed</SelectItem>
+                <SelectItem value="processed">Processed</SelectItem>
+                <SelectItem value="error">Error</SelectItem>
               </SelectContent>
             </Select>
           </div>
@@ -221,7 +223,6 @@ export function DatabankViewer() {
                 <TableHead>Filename</TableHead>
                 <TableHead>Size</TableHead>
                 <TableHead>Status</TableHead>
-                <TableHead>Tags</TableHead>
                 <TableHead>Uploaded</TableHead>
                 <TableHead>Actions</TableHead>
               </TableRow>
@@ -229,13 +230,13 @@ export function DatabankViewer() {
             <TableBody>
               {loading ? (
                 <TableRow>
-                  <TableCell colSpan={6} className="text-center py-8">
+                  <TableCell colSpan={5} className="text-center py-8">
                     Loading...
                   </TableCell>
                 </TableRow>
               ) : filteredRecords.length === 0 ? (
                 <TableRow>
-                  <TableCell colSpan={6} className="text-center py-8 text-gray-500">
+                  <TableCell colSpan={5} className="text-center py-8 text-gray-500">
                     No files found
                   </TableCell>
                 </TableRow>
@@ -245,35 +246,22 @@ export function DatabankViewer() {
                     <TableCell>
                       <div className="flex items-center gap-2">
                         <FileText className="w-4 h-4 text-gray-400" />
-                        <span className="font-medium">{record.original_filename}</span>
+                        <span className="font-medium">{record.file_name}</span>
                       </div>
                     </TableCell>
                     <TableCell>{formatFileSize(record.file_size)}</TableCell>
                     <TableCell>
                       <Badge
                         variant={
-                          record.status === "validated"
+                          record.status === "processed"
                             ? "default"
-                            : record.status === "failed"
+                            : record.status === "error"
                             ? "destructive"
                             : "secondary"
                         }
                       >
                         {record.status}
                       </Badge>
-                    </TableCell>
-                    <TableCell>
-                      <div className="flex gap-1 flex-wrap">
-                        {Array.isArray(record.tags) && record.tags.length > 0 ? (
-                          record.tags.map((tag: string, idx: number) => (
-                            <Badge key={idx} variant="outline" className="text-xs">
-                              {tag}
-                            </Badge>
-                          ))
-                        ) : (
-                          <span className="text-sm text-gray-400">No tags</span>
-                        )}
-                      </div>
                     </TableCell>
                     <TableCell className="text-sm text-gray-500">
                       {formatDate(record.created_at)}

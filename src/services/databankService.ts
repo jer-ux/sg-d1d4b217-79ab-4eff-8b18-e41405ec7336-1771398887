@@ -5,21 +5,30 @@ type Tables = Database["public"]["Tables"];
 
 // Type definitions for each databank
 export type ClaimsRecord = Tables["claims_databank"]["Row"];
-export type MemberRecord = Tables["member_databank"]["Row"];
-export type ProviderRecord = Tables["provider_databank"]["Row"];
-export type FinancialRecord = Tables["financial_databank"]["Row"];
-export type ContractRecord = Tables["contract_databank"]["Row"];
 export type CensusRecord = Tables["census_databank"]["Row"];
+export type FinancialRecord = Tables["financial_databank"]["Row"];
+export type ContractsRecord = Tables["contracts_databank"]["Row"];
+export type ActuarialRecord = Tables["actuarial_databank"]["Row"];
+export type PharmacyRecord = Tables["pharmacy_databank"]["Row"];
 export type AnalyticsRecord = Tables["analytics_databank"]["Row"];
 
 export type DatabankType = 
   | "claims"
-  | "member"
-  | "provider"
-  | "financial"
-  | "contract"
   | "census"
+  | "financial"
+  | "contracts"
+  | "actuarial"
+  | "pharmacy"
   | "analytics";
+
+type DatabankTableName = 
+  | "claims_databank"
+  | "census_databank"
+  | "financial_databank"
+  | "contracts_databank"
+  | "actuarial_databank"
+  | "pharmacy_databank"
+  | "analytics_databank";
 
 interface UploadMetadata {
   original_filename: string;
@@ -30,6 +39,13 @@ interface UploadMetadata {
   databank_type: DatabankType;
   tags?: string[];
   metadata?: Record<string, unknown>;
+}
+
+/**
+ * Map databank type to table name
+ */
+function getTableName(databankType: DatabankType): DatabankTableName {
+  return `${databankType}_databank` as DatabankTableName;
 }
 
 /**
@@ -67,31 +83,26 @@ export async function uploadToDatabank(
       .from("databank-uploads")
       .getPublicUrl(filePath);
 
-    // Prepare metadata
-    const metadata: Partial<UploadMetadata> = {
-      original_filename: file.name,
+    // Prepare base record data
+    const baseRecord = {
+      user_id: user.id,
+      file_name: file.name,
+      file_url: publicUrl,
       file_size: file.size,
-      mime_type: file.type,
-      databank_type: databankType,
-      ...additionalMetadata,
+      status: "uploaded" as const,
     };
 
     // Create record in appropriate databank table
-    const tableName = `${databankType}_databank` as const;
+    const tableName = getTableName(databankType);
+    
+    // Add tags if provided and table supports it (only analytics_databank has tags)
+    const recordData = databankType === "analytics" && additionalMetadata?.tags
+      ? { ...baseRecord, tags: additionalMetadata.tags }
+      : baseRecord;
+
     const { data: record, error: dbError } = await supabase
       .from(tableName)
-      .insert({
-        user_id: user.id,
-        file_path: filePath,
-        file_url: publicUrl,
-        original_filename: metadata.original_filename,
-        file_size: metadata.file_size,
-        mime_type: metadata.mime_type,
-        row_count: metadata.row_count,
-        column_count: metadata.column_count,
-        tags: metadata.tags,
-        metadata: metadata.metadata,
-      })
+      .insert(recordData as any)
       .select()
       .single();
 
@@ -126,7 +137,7 @@ export async function getDatabankRecords(
       return { data: [], error: "User not authenticated" };
     }
 
-    const tableName = `${databankType}_databank` as const;
+    const tableName = getTableName(databankType);
     let query = supabase
       .from(tableName)
       .select("*")
@@ -151,9 +162,10 @@ export async function getDatabankRecords(
     // Apply client-side filters
     let filteredData = data || [];
 
-    if (filters?.tags && filters.tags.length > 0) {
+    // Only filter by tags if table supports tags (analytics_databank)
+    if (databankType === "analytics" && filters?.tags && filters.tags.length > 0) {
       filteredData = filteredData.filter(record => {
-        const recordTags = Array.isArray(record.tags) ? record.tags : [];
+        const recordTags = Array.isArray((record as any).tags) ? (record as any).tags : [];
         return filters.tags!.some(tag => recordTags.includes(tag));
       });
     }
@@ -161,7 +173,7 @@ export async function getDatabankRecords(
     if (filters?.search) {
       const searchLower = filters.search.toLowerCase();
       filteredData = filteredData.filter(record =>
-        record.original_filename?.toLowerCase().includes(searchLower)
+        record.file_name?.toLowerCase().includes(searchLower)
       );
     }
 
@@ -185,12 +197,12 @@ export async function deleteDatabankRecord(
       return { success: false, error: "User not authenticated" };
     }
 
-    const tableName = `${databankType}_databank` as const;
+    const tableName = getTableName(databankType);
 
-    // Get the record to find file path
+    // Get the record to find file URL for storage deletion
     const { data: record, error: fetchError } = await supabase
       .from(tableName)
-      .select("file_path")
+      .select("file_url")
       .eq("id", recordId)
       .eq("user_id", user.id)
       .single();
@@ -199,13 +211,20 @@ export async function deleteDatabankRecord(
       return { success: false, error: "Record not found" };
     }
 
-    // Delete file from storage
-    const { error: storageError } = await supabase.storage
-      .from("databank-uploads")
-      .remove([record.file_path]);
+    // Extract file path from URL
+    const url = new URL(record.file_url);
+    const pathMatch = url.pathname.match(/\/storage\/v1\/object\/public\/databank-uploads\/(.+)/);
+    const filePath = pathMatch ? pathMatch[1] : null;
 
-    if (storageError) {
-      console.error("Storage deletion error:", storageError);
+    // Delete file from storage if path found
+    if (filePath) {
+      const { error: storageError } = await supabase.storage
+        .from("databank-uploads")
+        .remove([filePath]);
+
+      if (storageError) {
+        console.error("Storage deletion error:", storageError);
+      }
     }
 
     // Delete database record
@@ -236,9 +255,8 @@ export async function updateDatabankRecord(
   updates: {
     status?: string;
     tags?: string[];
-    metadata?: Record<string, unknown>;
-    row_count?: number;
-    column_count?: number;
+    processing_notes?: string;
+    error_message?: string;
   }
 ): Promise<{ success: boolean; error?: string }> {
   try {
@@ -247,11 +265,16 @@ export async function updateDatabankRecord(
       return { success: false, error: "User not authenticated" };
     }
 
-    const tableName = `${databankType}_databank` as const;
+    const tableName = getTableName(databankType);
+
+    // Only include tags if table supports it
+    const updateData = databankType === "analytics" 
+      ? updates 
+      : { ...updates, tags: undefined };
 
     const { error } = await supabase
       .from(tableName)
-      .update(updates)
+      .update(updateData as any)
       .eq("id", recordId)
       .eq("user_id", user.id);
 
@@ -277,7 +300,7 @@ export async function getDatabankStats(databankType: DatabankType) {
       return { data: null, error: "User not authenticated" };
     }
 
-    const tableName = `${databankType}_databank` as const;
+    const tableName = getTableName(databankType);
 
     const { data, error } = await supabase
       .from(tableName)
@@ -291,13 +314,14 @@ export async function getDatabankStats(databankType: DatabankType) {
 
     const stats = {
       total_files: data?.length || 0,
-      total_size: data?.reduce((sum, record) => sum + (record.file_size || 0), 0) || 0,
+      total_size: data?.reduce((sum, record) => sum + (Number(record.file_size) || 0), 0) || 0,
       by_status: data?.reduce((acc, record) => {
-        acc[record.status] = (acc[record.status] || 0) + 1;
+        const status = record.status || "unknown";
+        acc[status] = (acc[status] || 0) + 1;
         return acc;
       }, {} as Record<string, number>) || {},
       recent_uploads: data?.filter(record => {
-        const uploadDate = new Date(record.created_at);
+        const uploadDate = new Date(record.created_at!);
         const dayAgo = new Date(Date.now() - 24 * 60 * 60 * 1000);
         return uploadDate > dayAgo;
       }).length || 0,

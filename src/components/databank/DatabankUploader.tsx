@@ -140,11 +140,11 @@ export function DatabankUploader({
             </SelectTrigger>
             <SelectContent>
               <SelectItem value="claims">Claims Databank</SelectItem>
-              <SelectItem value="member">Member Databank</SelectItem>
-              <SelectItem value="provider">Provider Databank</SelectItem>
-              <SelectItem value="financial">Financial Databank</SelectItem>
-              <SelectItem value="contract">Contract Databank</SelectItem>
               <SelectItem value="census">Census Databank</SelectItem>
+              <SelectItem value="financial">Financial Databank</SelectItem>
+              <SelectItem value="contracts">Contracts Databank</SelectItem>
+              <SelectItem value="actuarial">Actuarial Databank</SelectItem>
+              <SelectItem value="pharmacy">Pharmacy Databank</SelectItem>
               <SelectItem value="analytics">Analytics Databank</SelectItem>
             </SelectContent>
           </Select>
@@ -200,16 +200,18 @@ export function DatabankUploader({
           )}
         </div>
 
-        {/* Tags Input */}
-        <div className="space-y-2">
-          <Label htmlFor="tags">Tags (comma-separated)</Label>
-          <Input
-            id="tags"
-            placeholder="e.g., Q4-2024, preliminary, reviewed"
-            value={tags}
-            onChange={(e) => setTags(e.target.value)}
-          />
-        </div>
+        {/* Tags Input - Only show for analytics databank */}
+        {databankType === "analytics" && (
+          <div className="space-y-2">
+            <Label htmlFor="tags">Tags (comma-separated)</Label>
+            <Input
+              id="tags"
+              placeholder="e.g., Q4-2024, preliminary, reviewed"
+              value={tags}
+              onChange={(e) => setTags(e.target.value)}
+            />
+          </div>
+        )}
 
         {/* Upload Status */}
         {uploadStatus.type && (

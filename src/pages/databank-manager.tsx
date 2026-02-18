@@ -41,11 +41,11 @@ export default function DatabankManager() {
             <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-7 gap-4 mb-8">
               {[
                 { name: "Claims", color: "blue", icon: "📊" },
-                { name: "Member", color: "green", icon: "👥" },
-                { name: "Provider", color: "purple", icon: "🏥" },
+                { name: "Census", color: "green", icon: "👥" },
                 { name: "Financial", color: "yellow", icon: "💰" },
-                { name: "Contract", color: "red", icon: "📄" },
-                { name: "Census", color: "indigo", icon: "📈" },
+                { name: "Contracts", color: "red", icon: "📄" },
+                { name: "Actuarial", color: "purple", icon: "📈" },
+                { name: "Pharmacy", color: "indigo", icon: "💊" },
                 { name: "Analytics", color: "pink", icon: "🔬" },
               ].map((bank) => (
                 <div
@@ -102,15 +102,8 @@ export default function DatabankManager() {
                     <li className="flex items-start gap-2">
                       <span className="text-blue-400 mt-1">•</span>
                       <span>
-                        <strong>Member Data:</strong> Demographics, eligibility,
-                        enrollment history, coverage details
-                      </span>
-                    </li>
-                    <li className="flex items-start gap-2">
-                      <span className="text-blue-400 mt-1">•</span>
-                      <span>
-                        <strong>Provider Data:</strong> Provider directories, network
-                        information, credentialing
+                        <strong>Census Data:</strong> Employee census, dependents,
+                        demographic distributions
                       </span>
                     </li>
                     <li className="flex items-start gap-2">
@@ -123,15 +116,22 @@ export default function DatabankManager() {
                     <li className="flex items-start gap-2">
                       <span className="text-blue-400 mt-1">•</span>
                       <span>
-                        <strong>Contract Data:</strong> ASA/ASO agreements, benefit
+                        <strong>Contracts Data:</strong> ASA/ASO agreements, benefit
                         plans, fee schedules
                       </span>
                     </li>
                     <li className="flex items-start gap-2">
                       <span className="text-blue-400 mt-1">•</span>
                       <span>
-                        <strong>Census Data:</strong> Employee census, dependents,
-                        demographic distributions
+                        <strong>Actuarial Data:</strong> Form 5500, actuarial reports,
+                        valuations, experience studies
+                      </span>
+                    </li>
+                    <li className="flex items-start gap-2">
+                      <span className="text-blue-400 mt-1">•</span>
+                      <span>
+                        <strong>Pharmacy Data:</strong> PBM claims, formulary data,
+                        utilization reports
                       </span>
                     </li>
                     <li className="flex items-start gap-2">

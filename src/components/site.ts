@@ -12,6 +12,10 @@ export const nav: NavLink[] = [
     href: "/company",
   },
   {
+    label: "Board of Directors",
+    href: "/board-of-directors",
+  },
+  {
     label: "Investor Access",
     href: "/capital-markets",
   },

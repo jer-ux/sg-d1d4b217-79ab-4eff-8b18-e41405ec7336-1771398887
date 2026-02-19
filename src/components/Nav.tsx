@@ -25,6 +25,7 @@ export default function Nav() {
     { href: "/war-room", label: "War Room" },
     { href: "/evidence-receipts", label: "Evidence" },
     { href: "/platform", label: "Platform" },
+    { href: "/board-of-directors", label: "Board" },
     { href: "/company", label: "Company" },
   ];
 

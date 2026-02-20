@@ -208,9 +208,9 @@ export default function KincaidIQPage() {
   };
 
   // Calculate scenario comparison metrics
-  const year3BaselineCost = baselineProjections[2]?.projected_cost || 0;
-  const year3ModeledCost = modeledProjections[2]?.projected_cost || 0;
-  const year3AggressiveCost = aggressiveProjections[2]?.projected_cost || 0;
+  const year3BaselineCost = baselineProjections[2]?.baseline_cost || 0;
+  const year3ModeledCost = modeledProjections[2]?.modeled_cost || 0;
+  const year3AggressiveCost = aggressiveProjections[2]?.modeled_cost || 0;
   const cumulativeModeledSavings = modeledProjections[2]?.cumulative_savings || 0;
   const cumulativeAggressiveSavings = aggressiveProjections[2]?.cumulative_savings || 0;
 
@@ -739,10 +739,10 @@ export default function KincaidIQPage() {
                     <div className="rounded-lg border border-purple-500/20 bg-purple-950/10 p-4">
                       <p className="text-sm text-slate-400">Pharmacy</p>
                       <p className="mt-2 text-3xl font-bold text-purple-400">
-                        {(trendComponents.rx * 100).toFixed(1)}%
+                        {(trendComponents.rx_core * 100).toFixed(1)}%
                       </p>
                       <p className="mt-1 text-xs text-slate-500">
-                        {((trendComponents.rx / baselineTrend) * 100).toFixed(0)}% of total
+                        {((trendComponents.rx_core / baselineTrend) * 100).toFixed(0)}% of total
                       </p>
                     </div>
                     <div className="rounded-lg border border-amber-500/20 bg-amber-950/10 p-4">

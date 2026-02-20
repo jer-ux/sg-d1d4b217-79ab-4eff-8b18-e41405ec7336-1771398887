@@ -4,7 +4,8 @@ import Link from "next/link";
 import { 
   Activity, TrendingUp, Shield, Zap, BarChart3, FileText, 
   Target, Layers, ChevronRight, ArrowRight, DollarSign,
-  Brain, Lock, Sparkles, Eye, Users, AlertCircle, CheckCircle
+  Brain, Lock, Sparkles, Eye, Users, AlertCircle, CheckCircle,
+  LineChart, TrendingDown, Gauge
 } from "lucide-react";
 import { SEO } from "@/components/SEO";
 import Nav from "@/components/Nav";
@@ -40,29 +41,9 @@ type TileConfig = {
 
 const tiles: TileConfig[] = [
   {
-    id: "executive",
-    title: "Executive Dashboard",
-    subtitle: "CFO-ready KPIs with McKinsey and Bain frameworks",
-    icon: Target,
-    color: {
-      from: "from-amber-500",
-      to: "to-yellow-500",
-      glow: "shadow-amber-500/30",
-      text: "text-amber-400"
-    },
-    metric: {
-      value: "$3.2M",
-      label: "Total Identified Value",
-      trend: "up",
-      change: "+12.3%"
-    },
-    link: "/executive-war-room",
-    badge: "C-Suite"
-  },
-  {
     id: "intelligence",
-    title: "Real-Time Intelligence",
-    subtitle: "Live event stream with AI-powered governance",
+    title: "War Room Dashboard",
+    subtitle: "Real-time monitoring and incident response",
     icon: Activity,
     color: {
       from: "from-amber-400",
@@ -76,7 +57,7 @@ const tiles: TileConfig[] = [
       trend: "up",
       change: "99.2%"
     },
-    link: "/war-room-v2",
+    link: "/war-room",
     badge: "Live"
   },
   {
@@ -302,8 +283,262 @@ export default function WarRoomPage() {
           <WarRoomHero3D />
         </section>
 
-        {/* 8 Premium Tiles Section */}
-        <section id="tiles" className="relative py-32">
+        {/* CFO Healthcare Dashboard - MEGA FEATURED HERO SECTION */}
+        <section className="relative py-32 border-t border-amber-500/20">
+          <div className="max-w-7xl mx-auto px-6">
+            {/* Section Header with Dramatic Animation */}
+            <motion.div
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.8 }}
+              className="mb-16 text-center"
+            >
+              <motion.div
+                initial={{ opacity: 0, scale: 0.8 }}
+                whileInView={{ opacity: 1, scale: 1 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.6, delay: 0.2 }}
+                className="inline-block mb-8"
+              >
+                <Badge className="px-8 py-4 text-xl bg-gradient-to-r from-amber-500/40 to-yellow-500/40 border-2 border-amber-500/60 text-amber-100 shadow-2xl shadow-amber-500/50">
+                  <Target className="w-7 h-7 mr-3" />
+                  Premium Executive Intelligence
+                </Badge>
+              </motion.div>
+              
+              <motion.h2 
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.8, delay: 0.3 }}
+                className="text-6xl md:text-7xl lg:text-8xl font-black mb-6 leading-tight"
+              >
+                <span className="bg-gradient-to-r from-white via-amber-200 to-yellow-300 bg-clip-text text-transparent drop-shadow-[0_0_30px_rgba(245,158,11,0.5)]">
+                  CFO Healthcare
+                </span>
+                <br />
+                <span className="bg-gradient-to-r from-yellow-300 via-amber-200 to-white bg-clip-text text-transparent drop-shadow-[0_0_30px_rgba(245,158,11,0.5)]">
+                  Dashboard
+                </span>
+              </motion.h2>
+              <motion.p 
+                initial={{ opacity: 0 }}
+                whileInView={{ opacity: 1 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.8, delay: 0.4 }}
+                className="text-2xl text-white/70 max-w-3xl mx-auto leading-relaxed"
+              >
+                McKinsey and Bain frameworks delivering <span className="text-amber-400 font-bold">C-suite ready insights</span>
+              </motion.p>
+            </motion.div>
+
+            {/* Mega Featured CFO Dashboard Card */}
+            <motion.div
+              initial={{ opacity: 0, y: 50 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 1, delay: 0.5 }}
+              whileHover={{ y: -12, scale: 1.01 }}
+              className="group relative cursor-pointer"
+            >
+              {/* Ultra Dramatic Glow Effect */}
+              <div className="absolute -inset-6 bg-gradient-to-r from-amber-500 via-yellow-500 to-orange-500 rounded-[3rem] opacity-40 group-hover:opacity-70 blur-3xl transition-all duration-700 animate-pulse" />
+              
+              {/* Secondary Glow Layer */}
+              <div className="absolute -inset-3 bg-gradient-to-br from-amber-400 to-yellow-600 rounded-[2.5rem] opacity-30 group-hover:opacity-50 blur-2xl transition-all duration-500" />
+              
+              <Card className="relative bg-gradient-to-br from-white/15 to-white/5 backdrop-blur-2xl border-2 border-amber-500/60 group-hover:border-amber-400/80 overflow-hidden transition-all duration-500 shadow-2xl shadow-amber-500/30">
+                {/* Animated Ambient Background */}
+                <div className="absolute inset-0 bg-gradient-to-br from-amber-500/20 via-yellow-500/15 to-orange-500/20 opacity-60 group-hover:opacity-100 transition-opacity duration-700" />
+                
+                {/* Premium Shimmer Effect */}
+                <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-700">
+                  <div className="absolute inset-0 bg-gradient-to-r from-transparent via-amber-300/30 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1500" />
+                </div>
+
+                {/* Radial Gradient Overlay */}
+                <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,rgba(245,158,11,0.15),transparent_70%)]" />
+
+                <div className="relative p-16">
+                  <div className="grid lg:grid-cols-5 gap-12">
+                    {/* Left: Icon and Title - Spans 3 columns */}
+                    <div className="lg:col-span-3">
+                      <div className="flex items-start gap-8 mb-10">
+                        {/* Premium Icon */}
+                        <div className="inline-flex items-center justify-center w-28 h-28 rounded-[2rem] bg-gradient-to-br from-amber-500/40 to-yellow-500/40 border-4 border-amber-400/60 group-hover:scale-110 group-hover:rotate-3 transition-all duration-500 shadow-2xl shadow-amber-500/50">
+                          <Target className="h-14 w-14 text-amber-300 drop-shadow-[0_0_20px_rgba(245,158,11,1)]" />
+                        </div>
+                        
+                        <div className="flex-1">
+                          <div className="flex items-center gap-4 mb-4">
+                            <h3 className="text-5xl font-black bg-gradient-to-r from-white via-amber-100 to-yellow-200 bg-clip-text text-transparent drop-shadow-[0_0_20px_rgba(245,158,11,0.6)]">
+                              Executive Dashboard
+                            </h3>
+                            <Badge className="bg-gradient-to-r from-amber-500/40 to-yellow-500/40 border-2 border-amber-400/60 text-amber-100 text-base px-6 py-2 shadow-lg shadow-amber-500/50">
+                              C-Suite
+                            </Badge>
+                          </div>
+                          <p className="text-2xl text-white/80 mb-8 leading-relaxed font-medium">
+                            CFO-ready KPIs with McKinsey and Bain frameworks for strategic decision-making
+                          </p>
+
+                          {/* Premium Key Features Grid */}
+                          <div className="grid sm:grid-cols-2 gap-5">
+                            {[
+                              { icon: LineChart, label: "Real-time KPI Tracking", desc: "Live performance metrics" },
+                              { icon: TrendingUp, label: "Value Creation Metrics", desc: "$3.2M identified" },
+                              { icon: Shield, label: "Risk & Compliance", desc: "Automated governance" },
+                              { icon: Gauge, label: "Performance Benchmarks", desc: "Industry standards" }
+                            ].map((feature, idx) => (
+                              <motion.div 
+                                key={idx}
+                                initial={{ opacity: 0, x: -20 }}
+                                whileInView={{ opacity: 1, x: 0 }}
+                                viewport={{ once: true }}
+                                transition={{ delay: 0.7 + idx * 0.1 }}
+                                className="flex items-start gap-3 p-4 rounded-2xl bg-white/5 border border-amber-500/20 group-hover:bg-amber-500/10 group-hover:border-amber-500/40 transition-all duration-300"
+                              >
+                                <div className="p-2 rounded-xl bg-amber-500/20 border border-amber-500/30">
+                                  <feature.icon className="h-5 w-5 text-amber-400 drop-shadow-[0_0_8px_rgba(245,158,11,0.7)]" />
+                                </div>
+                                <div>
+                                  <p className="font-bold text-white/90 mb-1">{feature.label}</p>
+                                  <p className="text-sm text-white/50">{feature.desc}</p>
+                                </div>
+                              </motion.div>
+                            ))}
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* Right: Mega Metrics - Spans 2 columns */}
+                    <div className="lg:col-span-2 lg:border-l-2 lg:border-amber-500/30 lg:pl-12">
+                      <div className="space-y-10">
+                        {/* Primary Metric - Total Value */}
+                        <motion.div
+                          initial={{ opacity: 0, scale: 0.9 }}
+                          whileInView={{ opacity: 1, scale: 1 }}
+                          viewport={{ once: true }}
+                          transition={{ delay: 0.8 }}
+                          className="text-center"
+                        >
+                          <p className="text-lg text-white/50 mb-3 uppercase tracking-wider">Total Identified Value</p>
+                          <p className="text-8xl font-black mb-4 bg-gradient-to-r from-amber-400 via-yellow-300 to-amber-400 bg-clip-text text-transparent drop-shadow-[0_0_30px_rgba(245,158,11,0.8)] leading-tight">
+                            $3.2M
+                          </p>
+                          <div className="flex items-center justify-center gap-3 mb-6">
+                            <div className="flex items-center gap-2 px-5 py-3 rounded-2xl bg-gradient-to-r from-amber-500/30 to-yellow-500/30 border-2 border-amber-400/50 text-amber-300 shadow-lg shadow-amber-500/50">
+                              <TrendingUp className="h-6 w-6" />
+                              <span className="text-xl font-bold">+12.3%</span>
+                            </div>
+                            <span className="text-base text-white/50">vs last quarter</span>
+                          </div>
+                        </motion.div>
+
+                        {/* Secondary Metrics Grid */}
+                        <div className="pt-8 border-t-2 border-amber-500/30">
+                          <div className="grid grid-cols-2 gap-6">
+                            <motion.div
+                              initial={{ opacity: 0, y: 20 }}
+                              whileInView={{ opacity: 1, y: 0 }}
+                              viewport={{ once: true }}
+                              transition={{ delay: 0.9 }}
+                              className="text-center p-6 rounded-2xl bg-white/5 border border-amber-500/20"
+                            >
+                              <p className="text-sm text-white/50 mb-2 uppercase tracking-wider">Confidence</p>
+                              <p className="text-5xl font-black text-white drop-shadow-[0_0_15px_rgba(255,255,255,0.5)]">94.2%</p>
+                            </motion.div>
+                            <motion.div
+                              initial={{ opacity: 0, y: 20 }}
+                              whileInView={{ opacity: 1, y: 0 }}
+                              viewport={{ once: true }}
+                              transition={{ delay: 1.0 }}
+                              className="text-center p-6 rounded-2xl bg-white/5 border border-amber-500/20"
+                            >
+                              <p className="text-sm text-white/50 mb-2 uppercase tracking-wider">Active KPIs</p>
+                              <p className="text-5xl font-black text-white drop-shadow-[0_0_15px_rgba(255,255,255,0.5)]">47</p>
+                            </motion.div>
+                          </div>
+                        </div>
+
+                        {/* Additional Stats */}
+                        <div className="grid grid-cols-2 gap-4">
+                          <div className="text-center p-4 rounded-xl bg-amber-500/10 border border-amber-500/30">
+                            <p className="text-xs text-white/50 mb-1">Events Tracked</p>
+                            <p className="text-2xl font-bold text-amber-300">10M+</p>
+                          </div>
+                          <div className="text-center p-4 rounded-xl bg-yellow-500/10 border border-yellow-500/30">
+                            <p className="text-xs text-white/50 mb-1">Uptime</p>
+                            <p className="text-2xl font-bold text-yellow-300">99.9%</p>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Bottom: Premium CTA Section */}
+                  <motion.div 
+                    initial={{ opacity: 0, y: 20 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ delay: 1.1 }}
+                    className="mt-12 pt-10 border-t-2 border-amber-500/30"
+                  >
+                    <div className="flex flex-col lg:flex-row items-center justify-between gap-8">
+                      <div className="text-center lg:text-left">
+                        <p className="text-lg text-white/60 mb-2">
+                          Built with <span className="text-amber-400 font-bold text-xl">McKinsey</span> and <span className="text-amber-400 font-bold text-xl">Bain</span> strategic frameworks
+                        </p>
+                        <p className="text-sm text-white/40">Enterprise-grade intelligence for executive decision-making</p>
+                      </div>
+                      <Button 
+                        size="lg"
+                        className="h-20 px-16 rounded-full bg-gradient-to-r from-amber-500 to-yellow-500 hover:from-amber-400 hover:to-yellow-400 text-black font-black text-2xl shadow-2xl shadow-amber-500/50 transition-all hover:shadow-[0_0_50px_rgba(245,158,11,0.8)] hover:scale-110 border-4 border-amber-300/50"
+                        asChild
+                      >
+                        <Link href="/executive-war-room">
+                          Open Dashboard
+                          <ArrowRight className="ml-4 h-8 w-8" />
+                        </Link>
+                      </Button>
+                    </div>
+                  </motion.div>
+                </div>
+              </Card>
+            </motion.div>
+
+            {/* Trust Indicators Below Dashboard */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: 1.2 }}
+              className="mt-12 flex flex-wrap items-center justify-center gap-8 text-sm text-white/40"
+            >
+              <div className="flex items-center gap-2">
+                <CheckCircle className="h-5 w-5 text-amber-400" />
+                <span>Real-time Data</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <CheckCircle className="h-5 w-5 text-amber-400" />
+                <span>Evidence-Backed</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <CheckCircle className="h-5 w-5 text-amber-400" />
+                <span>Board-Ready Reports</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <CheckCircle className="h-5 w-5 text-amber-400" />
+                <span>Automated Compliance</span>
+              </div>
+            </motion.div>
+          </div>
+        </section>
+
+        {/* 7 Additional Intelligence Modules Section */}
+        <section id="tiles" className="relative py-32 border-t border-amber-500/10">
           <div className="max-w-7xl mx-auto px-6">
             <motion.div
               initial={{ opacity: 0, y: 20 }}
@@ -321,7 +556,7 @@ export default function WarRoomPage() {
               >
                 <Badge className="px-6 py-2 text-sm bg-gradient-to-r from-amber-500/20 to-yellow-500/20 border-amber-500/30 text-amber-300">
                   <Sparkles className="w-4 h-4 mr-2" />
-                  8 Integrated Intelligence Modules
+                  7 Additional Intelligence Modules
                 </Badge>
               </motion.div>
               
@@ -336,7 +571,7 @@ export default function WarRoomPage() {
             </motion.div>
 
             {/* Tiles Grid */}
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
               {tiles.map((tile, idx) => (
                 <motion.div
                   key={tile.id}
@@ -680,7 +915,7 @@ function PremiumTile({ tile, onClick }: { tile: TileConfig; onClick: () => void 
                     {tile.metric.trend === "up" ? (
                       <TrendingUp className="h-3 w-3" />
                     ) : (
-                      <TrendingUp className="h-3 w-3 rotate-180" />
+                      <TrendingDown className="h-3 w-3" />
                     )}
                     <span className="text-xs font-medium">{tile.metric.change}</span>
                   </div>

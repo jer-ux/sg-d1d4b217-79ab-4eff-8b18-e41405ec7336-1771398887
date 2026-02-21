@@ -378,7 +378,7 @@ export default function WarRoomPage() {
                 {[
                   { label: "Data Quality Score", value: "99.2%", icon: Database },
                   { label: "Decision Velocity", value: "4.7x faster", icon: Zap },
-                  { label: "ROI Realized", value: "$12.4M", icon: DollarSignIcon }
+                  { label: "ROI Realized", value: "$12.4M", icon: DollarSign }
                 ].map((metric, idx) => (
                   <div key={idx} className="p-4 rounded-xl bg-black/30 border border-amber-500/20">
                     <div className="flex items-center gap-2 mb-2">

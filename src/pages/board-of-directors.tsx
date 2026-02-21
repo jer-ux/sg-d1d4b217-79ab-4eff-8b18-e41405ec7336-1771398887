@@ -69,6 +69,26 @@ export default function BoardOfDirectors() {
         vision: "Dr. Ochieng' has reached a point where he no longer 'uses' AI in the traditional sense; he governs it. His interaction model has crystallized into a dual-mode governance architecture that treats every session as one of two distinct operations: A Compliance Test (stress-testing the boundaries to identify where the system breaks) or A Calculated Suspension of Rules (allowing operation only within a predefined, sandboxed perimeter where risk has been pre-quantified). His mission is not to make AI sound smarter, but to make it safe to rely on. In Dr. Ochieng''s view, if a system cannot refuse to act, it is not ready for scale—and if it cannot say 'no,' it has no business touching an enterprise P&L."
       }
     },
+    {
+      name: "Dr. Jacqueline El-Sayed",
+      title: "Board Member - Strategic Leadership & Engineering Innovation",
+      image: "/1517661622997_1_.jpeg",
+      bio: "Dr. Jacqueline El-Sayed is the Chief Executive Officer for Intentional Design Group LLC and Intentional Design Institute 501c3. She is a builder and global speaker with leadership experience across industry, education, and government.",
+      fullBio: {
+        introduction: "Dr. Jacqueline El-Sayed is the Chief Executive Officer (CEO) for Intentional Design Group LLC and Intentional Design Institute 501c3. She is a builder and global speaker with leadership experience across industry, education, and government. She recently served as CEO for the group: SAE International (SAE), Performance Review Institute (PRI), Industry Technologies Consortia (ITC) & Fullsight Shared Services. Her previous role was CEO for the American Society for Engineering Education (ASEE). She joined ASEE as Chief Academic Officer driving growth and alignment across all professional services & leading new business innovation. Before this, she served as Chief Academic Officer & Vice President for Academic Affairs at Marygrove College.",
+        platform: "Dr. El-Sayed began her career as an engineer for General Motors Truck Group and has been nationally recognized as an ACE Fellow, NLA Fellow, and ASEE Fellow & Hall of Famer. She is a professor emerita of mechanical engineering and served on the faculty at Kettering University for 18 years, earning the role Associate Provost/Vice President. Dr. El-Sayed has served as PI or co-PI for multiple externally funded projects totaling $60+ MM, including founding PI on the NSF Defining and Building the Engineering Workforce of the Future (FREE), the Engineering Postdoctoral Fellowship Program (eFellows) & the CISE Research Expansion series and Co-PI on the NSF Innovative Postdoctoral Entrepreneurial Research Fellowship (IPERF), Engineering Mindset Blueprint & the Vertical/Horizontal Manufacturing Integration series.",
+        philosophy: "Dr. El-Sayed is a four-time gubernatorial appointee to the Michigan Truck Safety Commission and, as commissioner, served as chair for two terms. She also chaired the Driver's Education Advisory Committee and Motorcycle Safety Advisory Committee for the Michigan Department of State, work that resulted in new legislation for Michigan. Her extensive government service demonstrates a commitment to public safety and policy innovation that translates technical expertise into legislative action.",
+        expertise: [
+          "CEO Leadership Across Multiple Organizations (SAE, ASEE, PRI, ITC)",
+          "Engineering Education & Workforce Development",
+          "Research Leadership ($60+ MM in Funded Projects)",
+          "Government Policy & Public Safety Commission Leadership",
+          "Academic Administration & Faculty Development",
+          "Manufacturing & Automotive Engineering"
+        ],
+        vision: "Dr. El-Sayed currently serves on MIT TechAMP Adv Council, National Academy of Science, Engineering, and Medicine (NASEM) Roundtable for Systemic Change in Undergrad STEM Education, Engineering Research Visioning Alliance (ERVA), Women in Engineering Proactive Network (WEPAN) Board and as Chair, Engineering Societies Roundtable. She recently completed board positions for Society of Manufacturing Engineers (SME), American Council on Education (ACE) Council of Fellows, Society of College and University Planners (SCUP) and a tenure of 10 years as Trustee on the Bloomfield Hills Board of Education. She is married and has three adult children."
+      }
+    },
   ];
 
   const [isModalOpen, setModalOpen] = useState(false);

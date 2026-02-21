@@ -29,6 +29,26 @@ export default function BoardOfDirectors() {
         vision: "Grounded in business discipline, faith in God, and respect for humanity, Jeremiah is dedicated to helping employers outperform in the rapidly evolving health, benefits, and AI transformation landscape. Under his leadership, Kincaid RMC leverages a combined 20 years of consulting experience to deliver 20–35% savings on self-funded Anthem PBM and Rx contracts, empowering mid- and large-market organizations through transparent, data-driven actuarial insights."
       }
     },
+    {
+      name: "Mike Hamann",
+      title: "Board Member - Public Service & Fiscal Leadership",
+      image: "/1517039361817_1_.jpeg",
+      bio: "Mike Hamann's career in public service is defined by a deep commitment to the residents of St. Joseph County. He served two terms as County Auditor, acting as the county's chief financial officer and fiduciary steward until the end of 2022.",
+      fullBio: {
+        introduction: "Mike Hamann's career in public service is defined by a deep commitment to the residents of St. Joseph County. Most notably, Mike served two terms as the St. Joseph County Auditor, acting as the county's chief financial officer and fiduciary steward until the end of 2022. His leadership was marked by a 'boots-on-the-ground' philosophy, whether he was challenging property assessment loopholes to protect the local tax base or advocating for federal relief funds to support high-impact community initiatives like Motels4Now.",
+        platform: "His political insight is rooted in a rare 'triple-threat' of local governance experience, having served on the Board of Commissioners (1999–2002), the County Council (elected 2008), and finally in the Auditor's office. This comprehensive background gave him a masterclass view of the intersection between executive policy, legislative intent, and fiscal reality.",
+        philosophy: "What sets Mike apart is that his commitment to the classroom was never a 'second act'—it was a concurrent calling. For years, Mike balanced the heavy responsibilities of public office with the rigorous demands of teaching at Saint Joseph's High School and his alma mater, Marian High School. By serving as a public servant and a teacher simultaneously, Mike transformed the study of U.S. History and Government from a living, breathing case study. His students didn't just read about the separation of powers or local tax structures; they learned from the man who was actively managing them.",
+        expertise: [
+          "County-Level Fiscal Management & Fiduciary Stewardship",
+          "Legislative & Executive Policy Implementation",
+          "Property Assessment & Tax Base Protection",
+          "Federal Relief Fund Allocation & Community Impact",
+          "Government Education & Civic Leadership",
+          "U.S. History & Government Instruction"
+        ],
+        vision: "A proud Marian High School alum and a graduate of the University of Notre Dame, Mike's career has come full circle. Now retired from government and teaching full-time at Marian, he continues to bridge the gap between the town hall and the classroom, ensuring the next generation of leaders understands that 'Government' isn't just a textbook chapter—it's a tool for community transformation."
+      }
+    },
   ];
 
   const [isModalOpen, setModalOpen] = useState(false);

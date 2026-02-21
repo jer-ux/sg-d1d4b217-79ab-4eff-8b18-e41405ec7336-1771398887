@@ -423,7 +423,7 @@ export default function Platform() {
       cards: [
         {
           title: "War Room",
-          description: "Real-time monitoring and incident response",
+          description: "Real-time incident management with AI-powered event ranking, severity scoring, and automated governance workflows",
           href: "/war-room",
           icon: Zap,
           tag: "Live",

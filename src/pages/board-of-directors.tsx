@@ -9,35 +9,9 @@ export default function BoardOfDirectors() {
     {
       name: "Jeremiah Shrack",
       title: "Founder & CEO",
-      subtitle: "Healthcare Economics & Technology Innovation",
       image: "/jeremiah-shrack-professional.png",
-      bio: "Serial entrepreneur and healthcare economics expert with deep expertise in health benefits optimization, data analytics, and AI-driven governance systems. Former actuary and benefits consultant with track record of delivering measurable ROI for clients.",
-      linkedin: "https://www.linkedin.com/in/jeremiahshrack/"
+      bio: "Leading the strategic vision and technological innovation at SiriusB iQ.",
     },
-    {
-      name: "Dr. Jackeline El-Sayed",
-      title: "Distinguished Chief Scientist Officer",
-      subtitle: "Engineering Leadership & Research Innovation",
-      image: "/jackeline-el-sayed.png",
-      bio: "Distinguished engineering leader and researcher who recently served as CEO for SAE International, Performance Review Institute, Industry Technologies Consortia & Fullsight Shared Services. Former CEO of the American Society for Engineering Education (ASEE) and Professor Emerita of Mechanical Engineering at Kettering University. Nationally recognized ACE Fellow, NLA Fellow, and ASEE Fellow & Hall of Famer. Led $60+ million in externally funded research projects including NSF's Engineering Workforce of the Future (FREE) and Engineering Postdoctoral Fellowship Program (eFellows).",
-      linkedin: ""
-    },
-    {
-      name: "Mike Hamann",
-      title: "Board Member",
-      subtitle: "Former County Commissioner & Auditor",
-      image: "/mike-hamann.png",
-      bio: "Experienced public sector leader with deep expertise in fiscal governance, auditing, and operational oversight from his tenure as County Commissioner and Auditor.",
-      linkedin: ""
-    },
-    {
-      name: "Dr. Michael Ochieng'",
-      title: "Board Member",
-      subtitle: "4G & 5G Telecommunications Expert",
-      image: "/michael-ochieng.png",
-      bio: "Distinguished technology leader with a doctorate specializing in 4G and 5G telecommunications infrastructure. Dr. Ochieng' brings deep technical expertise in next-generation connectivity and digital infrastructure strategy.",
-      linkedin: ""
-    }
   ];
 
   return (

@@ -21,10 +21,7 @@ export type TileKey =
   | "cashflow"
   | "recoverableEbitda"
   | "healthIQ"
-  | "execution"
-  | "premiumLeakage" 
-  | "claimsVelocity" 
-  | "networkUtil";
+  | "execution";
 
 export type EvidenceReceipt = {
   receipt_id: string;
@@ -44,18 +41,16 @@ export type ChartDataPoint = {
   value: number;
 };
 
-export interface TileData {
+export type TileData = {
   key: TileKey;
-  label?: string; // Made optional
-  title?: string; // Backwards compatibility
-  subtitle: string;
+  title: string;
   value: string;
-  trend: "Up" | "Down" | "Flat" | "up" | "down" | "flat";
-  variance?: string; // Made optional
-  delta?: string; // Backwards compatibility
-  framework: string;
+  delta?: string;
+  subtitle?: string;
+  trend?: "up" | "down" | "flat";
   chartData?: Array<{ period: string; value: number }>;
   receipt?: EvidenceReceipt;
+  framework?: "McKinsey" | "Bain";
   updatedAt?: string;
 };
 

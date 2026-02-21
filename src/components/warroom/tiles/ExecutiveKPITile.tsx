@@ -1,7 +1,6 @@
 import { TrendingUp, TrendingDown, Minus, Shield, AlertTriangle } from "lucide-react";
 import type { TileData } from "../executiveTypes";
 import { LineChart, Line, ResponsiveContainer, Area, AreaChart } from "recharts";
-import { motion } from "framer-motion";
 
 const TILE_THEMES = {
   costTrendStress: {
@@ -70,13 +69,16 @@ const TILE_THEMES = {
   },
 };
 
-interface ExecutiveKPITileProps {
-  kpi: TileData;
-  onClick?: () => void;
-}
+export function ExecutiveKPITile({ data }: { data?: TileData }) {
+  if (!data) {
+    return (
+      <div className="rounded-2xl border border-zinc-800/60 bg-zinc-950/60 p-6">
+        <div className="h-40 animate-pulse rounded-lg bg-zinc-900/50" />
+      </div>
+    );
+  }
 
-export function ExecutiveKPITile({ kpi, onClick }: ExecutiveKPITileProps) {
-  const { title, value, delta, subtitle, updatedAt, receipt, chartData, trend, framework, key } = kpi;
+  const { title, value, delta, subtitle, updatedAt, receipt, chartData, trend, framework, key } = data;
   const theme = TILE_THEMES[key as keyof typeof TILE_THEMES] || TILE_THEMES.costTrendStress;
 
   const getTrendIcon = () => {
@@ -98,12 +100,7 @@ export function ExecutiveKPITile({ kpi, onClick }: ExecutiveKPITileProps) {
   })();
 
   return (
-    <motion.div
-      className="group relative cursor-pointer rounded-2xl border border-amber-500/20 bg-gradient-to-br from-zinc-950/90 via-amber-950/10 to-zinc-900/80 p-6 shadow-xl backdrop-blur-sm transition-all hover:border-amber-500/40"
-      whileHover={{ scale: 1.02, y: -4 }}
-      whileTap={{ scale: 0.98 }}
-      onClick={onClick}
-    >
+    <div className={`group relative overflow-hidden rounded-2xl border ${theme.border} bg-gradient-to-br ${theme.gradient} p-6 transition-all hover:shadow-2xl ${theme.glow} backdrop-blur-sm`}>
       {/* 3D Background Effect */}
       <div className="absolute inset-0 opacity-20">
         <div className={`absolute -right-8 -top-8 h-32 w-32 rounded-full ${theme.iconBg} blur-3xl`} />
@@ -201,6 +198,6 @@ export function ExecutiveKPITile({ kpi, onClick }: ExecutiveKPITileProps) {
           </div>
         )}
       </div>
-    </motion.div>
+    </div>
   );
 }

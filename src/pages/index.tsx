@@ -2,7 +2,6 @@ import React, { useEffect, useRef } from "react";
 import Link from "next/link";
 import { motion, useMotionValue, useSpring, useTransform } from "framer-motion";
 import { SEO } from "@/components/SEO";
-import Footer from "@/components/Footer";
 import { FileText, Shield, TrendingUp, CheckCircle2, Sparkles, Zap, Crown, Star, Activity, TrendingDown, FileCheck, Scale, ArrowRight } from "lucide-react";
 import { ExecutiveWarRoom } from "@/components/warroom/ExecutiveWarRoom";
 
@@ -694,51 +693,6 @@ export default function HomePage() {
           </div>
         </motion.footer>
       </main>
-
-      {/* Get Started CTA Section */}
-      <section className="relative border-t border-amber-500/20 bg-zinc-950 py-24">
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_0%,rgba(251,191,36,0.05),transparent_50%)]" />
-        <div className="relative mx-auto max-w-4xl px-6 text-center">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
-          >
-            <h2 className="mb-6 text-4xl font-bold bg-gradient-to-r from-white via-amber-100 to-zinc-300 bg-clip-text text-transparent">
-              Ready to govern your benefits spend?
-            </h2>
-            <p className="mb-10 text-xl text-zinc-400 leading-relaxed">
-              Stop relying on vendor promises. Start validating with evidence. 
-              Upload your first receipt bundle today and let the ledger tell the truth.
-            </p>
-            
-            <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-              <Link
-                href="/upload-5500"
-                className="group relative inline-flex items-center justify-center gap-2 overflow-hidden rounded-full bg-gradient-to-r from-amber-500 to-yellow-500 px-8 py-4 text-lg font-bold text-black shadow-lg shadow-amber-500/25 transition-all hover:scale-105 hover:shadow-amber-500/40"
-              >
-                <Zap className="h-5 w-5 fill-current" />
-                <span>Get Started Now</span>
-              </Link>
-              
-              <Link
-                href="/contact"
-                className="inline-flex items-center justify-center gap-2 rounded-full border border-zinc-700 bg-zinc-900/50 px-8 py-4 text-lg font-medium text-white backdrop-blur-sm transition-all hover:bg-zinc-800 hover:border-amber-500/30"
-              >
-                <span>Book a Demo</span>
-                <ArrowRight className="h-5 w-5" />
-              </Link>
-            </div>
-            
-            <p className="mt-8 text-sm text-zinc-500">
-              No credit card required for initial receipt analysis. Enterprise security included.
-            </p>
-          </motion.div>
-        </div>
-      </section>
-
-      <Footer />
     </>
   );
 }

@@ -71,7 +71,7 @@ export default function BoardOfDirectors() {
     },
     {
       name: "Dr. Jacqueline El-Sayed",
-      title: "Board Member - Strategic Leadership & Engineering Innovation",
+      title: "Distinguished Chief Scientist Officer",
       image: "/1517661622997_1_.jpeg",
       bio: "Dr. Jacqueline El-Sayed is the Chief Executive Officer for Intentional Design Group LLC and Intentional Design Institute 501c3. She is a builder and global speaker with leadership experience across industry, education, and government.",
       fullBio: {

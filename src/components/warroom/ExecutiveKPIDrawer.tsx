@@ -1,5 +1,5 @@
 import React, { useState, useMemo } from "react";
-import { X, TrendingUp, TrendingDown, AlertTriangle, Activity, DollarSign, Zap } from "lucide-react";
+import { X, TrendingUp, TrendingDown, AlertTriangle, Activity, DollarSign, Zap, Minus, ArrowRight } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Canvas, useFrame } from "@react-three/fiber";
 import { OrbitControls, Sphere, Box, Cone, Torus } from "@react-three/drei";
@@ -360,44 +360,40 @@ export function ExecutiveKPIDrawer({ isOpen, onClose, tile }: ExecutiveKPIDrawer
               <motion.div
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.3 }}
-                className="p-4 rounded-lg bg-gradient-to-br from-slate-800/50 to-slate-900/50 border border-amber-500/20"
+                transition={{ delay: 0.1 }}
+                className="bg-zinc-900/60 backdrop-blur-sm rounded-xl border border-zinc-800/60 p-6"
               >
-                <div className="flex items-center justify-between mb-3">
+                <div className="flex items-center justify-between mb-4">
                   <h3 className="text-lg font-semibold text-white">Variance Analysis</h3>
                   <div className={`px-3 py-1 rounded-full text-xs font-medium ${
-                    tile.variance.includes('-') 
+                    (tile.variance ?? tile.delta ?? '')?.includes('-')
                       ? 'bg-red-500/20 text-red-400 border border-red-500/30' 
                       : 'bg-green-500/20 text-green-400 border border-green-500/30'
                   }`}>
-                    {tile.variance}
+                    {tile.variance ?? tile.delta ?? 'N/A'}
                   </div>
                 </div>
-                <p className="text-sm text-slate-400">
-                  {tile.variance.includes('-') 
-                    ? 'Negative variance detected. Review contributing factors in 3D visualization above.'
-                    : 'Positive performance trend. Continue monitoring for sustained results.'}
-                </p>
-              </motion.div>
 
-              {/* Trend Indicator */}
-              <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.35 }}
-                className="p-4 rounded-lg bg-gradient-to-br from-slate-800/50 to-slate-900/50 border border-amber-500/20"
-              >
-                <div className="flex items-center gap-2 mb-2">
-                  {tile.trend === "Up" ? (
-                    <TrendingUp className="w-5 h-5 text-green-400" />
-                  ) : tile.trend === "Down" ? (
-                    <TrendingDown className="w-5 h-5 text-red-400" />
-                  ) : null}
-                  <h3 className="text-lg font-semibold text-white">Trend Direction</h3>
+                <div className="grid md:grid-cols-2 gap-4">
+                  <div className="space-y-2">
+                    <div className="text-sm text-zinc-400">Trend Direction</div>
+                    <div className="flex items-center gap-2">
+                      {(tile.trend ?? 'flat').toLowerCase() === 'up' ? (
+                        <TrendingUp className="h-5 w-5 text-green-400" />
+                      ) : (tile.trend ?? 'flat').toLowerCase() === 'down' ? (
+                        <TrendingDown className="h-5 w-5 text-red-400" />
+                      ) : (
+                        <ArrowRight className="h-5 w-5 text-zinc-400" />
+                      )}
+                      <span className="text-white font-medium capitalize">{tile.trend ?? 'Flat'}</span>
+                    </div>
+                  </div>
+
+                  <div className="space-y-2">
+                    <div className="text-sm text-zinc-400">Framework</div>
+                    <div className="text-white font-medium">{tile.framework ?? "Standard"}</div>
+                  </div>
                 </div>
-                <p className="text-sm text-slate-400">
-                  Current trend: <span className="font-semibold text-white">{tile.trend}</span>
-                </p>
               </motion.div>
             </div>
           </motion.div>

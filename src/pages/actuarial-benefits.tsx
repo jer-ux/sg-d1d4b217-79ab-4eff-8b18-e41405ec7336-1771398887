@@ -24,7 +24,7 @@ function SolutionCard3D({ solution, index }: { solution: any; index: number }) {
   const rotateX = useTransform(mouseY, [-100, 100], [10, -10]);
   const rotateY = useTransform(mouseX, [-100, 100], [-10, 10]);
 
-  function handleMouseMove(e: React.MouseEvent<HTMLDivElement>) {
+  function handleMouseMove(e: React.MouseEvent<HTMLButtonElement>) {
     const rect = e.currentTarget.getBoundingClientRect();
     const x = e.clientX - rect.left - rect.width / 2;
     const y = e.clientY - rect.top - rect.height / 2;
@@ -727,750 +727,585 @@ export default function ActuarialBenefits() {
     return () => window.removeEventListener('openSolutionModal', handleOpenSolutionModal);
   }, []);
 
-  const features = [
+  const solutions = [
     {
       icon: Shield,
       title: "Risk Assessment",
       description: "Advanced predictive modeling for comprehensive risk evaluation and loss prevention across all benefit plans.",
-      stats: "99.2% Accuracy",
-      detailedDescription: "AI-powered algorithms analyze historical claims data, demographic trends, and market conditions to forecast future risk exposure with exceptional accuracy.",
-      mcKinseyAlignment: "Aligned with Bain's 'Net Promoter System' philosophy, our real-time capabilities enable closed-loop feedback and immediate service recovery. This drives both operational excellence and member loyalty through responsive, data-driven interactions.",
-      consultingFramework: "Bain Net Promoter System & McKinsey Customer Decision Journey",
-      strategicPillars: [
+      metrics: ["99.2% Accuracy", "$8.4M Loss Prevention", "Real-time Monitoring"],
+      href: "/solutions/risk-assessment",
+      capabilities: [
         {
           title: "Predictive Risk Modeling",
-          description: "AI-powered algorithms analyze historical claims data, demographic trends, and market conditions to forecast future risk exposure with exceptional accuracy."
-        },
-        {
-          title: "Risk Stratification",
-          description: "Automated risk scoring identifies high-cost claimants before they occur, enabling precision underwriting and risk mitigation."
-        },
-        {
-          title: "Clinical Integration",
-          description: "Real-time risk dashboards integrate with clinical data, pharmacy claims, and social determinants of health to provide comprehensive risk assessment."
-        },
-        {
-          title: "Operational Optimization",
-          description: "Closed-loop feedback from predictive analytics enables real-time risk management and cost optimization across all benefit operations."
-        }
-      ],
-      metrics: [
-        {
-          icon: Zap,
-          title: "Processing Speed",
-          value: "47ms",
-          analysis: [
-            "Average end-to-end latency from data ingestion to actionable insight delivery across all platform modules",
-            "99.97% uptime SLA with automatic failover and disaster recovery ensuring continuous availability",
-            "Horizontal scaling supporting 10x traffic spikes during open enrollment without performance degradation",
-            "Real-time monitoring with Datadog and Prometheus tracking 840+ system metrics and alerting on anomalies"
+          description: "AI-powered algorithms analyze historical claims data, demographic trends, and market conditions to forecast future risk exposure with exceptional accuracy.",
+          features: [
+            "Machine learning models trained on 15+ years of claims data across 500+ portfolios",
+            "Real-time risk scoring for individual members and cohorts",
+            "Automated risk stratification identifying high-cost claimants before they occur",
+            "Integration with clinical data, pharmacy claims, and social determinants of health"
           ],
-          benchmarks: [
-            { label: "Industry Average", value: "12-48 hours" },
-            { label: "Modern Platforms", value: "5-15 min" },
-            { label: "Real-Time Leaders", value: "200-500ms" },
-            { label: "SiriusB iQ", value: "47ms" }
+          technicalDetails: [
+            "Gradient boosting and neural network ensemble methods",
+            "240+ risk factors including medical history, demographics, and behavioral indicators",
+            "Weekly model recalibration using streaming data pipelines",
+            "Explainable AI providing transparent rationale for all risk predictions"
           ],
-          caseStudies: [
-            {
-              client: "Fortune 500 Retailer",
-              industry: "Retail | 200,000 Employees",
-              result: "Instant Benefits Decisions",
-              summary: "Real-time eligibility and enrollment processing during peak hiring seasons",
-              challenge: "Seasonal hiring surges creating massive spikes in benefits enrollment volume. Legacy systems taking 24-48 hours to process, causing frustration and compliance gaps.",
-              solution: [
-                "Implemented auto-scaling cloud infrastructure handling 40,000 concurrent enrollments",
-                "Built real-time eligibility verification against payroll and HRIS systems",
-                "Deployed instant premium calculation and quote generation",
-                "Created mobile-first enrollment experience with live updates and confirmations"
-              ],
-              impact: [
-                { metric: "Enrollment Speed", value: "<2 min" },
-                { metric: "Processing Latency", value: "47ms" },
-                { metric: "Peak Load Capacity", value: "40K concurrent" },
-                { metric: "Error Rate", value: "0.03%" }
-              ],
-              timeline: [
-                { period: "Month 1-2", milestone: "Platform architecture design" },
-                { period: "Month 3-4", milestone: "Development and testing" },
-                { period: "Month 5-6", milestone: "Pilot launch and optimization" },
-                { period: "Month 7", milestone: "Full deployment for peak season" }
-              ],
-              testimonial: "We went from days to seconds. Our seasonal workers get instant benefits confirmation, and HR can focus on strategic work instead of manual processing.",
-              testimonialAuthor: "Marcus Johnson",
-              testimonialRole: "VP, Human Resources Technology"
-            },
-            {
-              client: "Tech Startup",
-              industry: "SaaS | 15,000 Employees",
-              result: "Real-Time Benefits API",
-              summary: "Integrated benefits data into employee dashboard with live updates",
-              challenge: "Fragmented benefits experience across multiple vendors creating confusion and low engagement. Employees unable to see real-time deduction impacts or coverage details.",
-              solution: [
-                "Built unified benefits API aggregating data from 7 carriers and vendors",
-                "Implemented webhooks for instant updates when claims process or life events occur",
-                "Created personalized benefits dashboard with live cost projections",
-                "Deployed Slack bot for instant benefits Q&A using NLP"
-              ],
-              impact: [
-                { metric: "Engagement Rate", value: "+47%" },
-                { metric: "API Response Time", value: "32ms" },
-                { metric: "Support Ticket Reduction", value: "61%" },
-                { metric: "Employee Satisfaction", value: "+18 pts" }
-              ],
-              timeline: [
-                { period: "Sprint 1-2", milestone: "API design and vendor integration" },
-                { period: "Sprint 3-4", milestone: "Dashboard development" },
-                { period: "Sprint 5-6", milestone: "Slack bot and AI training" },
-                { period: "Sprint 7-8", milestone: "Launch and iteration" }
-              ],
-              testimonial: "Our employees expect consumer-grade experiences. The real-time benefits platform delivers that. It's like having a benefits concierge in their pocket.",
-              testimonialAuthor: "Priya Sharma",
-              testimonialRole: "Chief People Officer"
-            }
+          businessImpact: [
+            "Reduce adverse selection by 34% through precision underwriting",
+            "Lower reserve requirements by $4.2M through accurate loss forecasting",
+            "Improve care coordination effectiveness by 47% via targeted interventions",
+            "Achieve 99.2% predictive accuracy vs. industry average of 87.4%"
           ]
         },
         {
-          icon: Globe,
-          title: "System Uptime",
-          value: "99.97%",
-          analysis: [
-            "Multi-region deployment with active-active failover ensuring continuous service during infrastructure failures",
-            "Comprehensive disaster recovery plan with <15 minute RTO and <5 minute RPO for all critical systems",
-            "24/7 NOC monitoring with automated incident response and escalation to on-call engineering team",
-            "Quarterly disaster recovery drills validating failover procedures and business continuity plans"
+          title: "Portfolio Risk Analysis",
+          description: "Comprehensive evaluation of risk distribution across your entire member population, identifying concentration areas and opportunities for mitigation.",
+          features: [
+            "Multi-dimensional risk segmentation by age, geography, industry, and plan design",
+            "Concentration risk heat maps showing exposure to catastrophic claims",
+            "Comparative risk benchmarking against industry peers and similar portfolios",
+            "Scenario analysis modeling impact of different risk mitigation strategies"
           ],
-          benchmarks: [
-            { label: "Industry Standard", value: "99.5%" },
-            { label: "Enterprise SaaS", value: "99.9%" },
-            { label: "Mission-Critical Systems", value: "99.95%" },
-            { label: "SiriusB iQ Platform", value: "99.97%" }
+          technicalDetails: [
+            "Monte Carlo simulation with 10,000+ iterations for stress testing",
+            "Value-at-Risk (VaR) and Conditional Value-at-Risk (CVaR) calculations",
+            "Correlation analysis identifying interdependent risk factors",
+            "Dynamic risk dashboards with drill-down to individual member level"
           ],
-          caseStudies: [
-            {
-              client: "Healthcare System",
-              industry: "Provider Organization | 45 Hospitals",
-              result: "Zero Downtime Migration",
-              summary: "Migrated 2.3M member records with zero service interruption",
-              challenge: "Legacy benefits system end-of-life requiring migration during active plan year. Any downtime would impact patient care and revenue cycle.",
-              solution: [
-                "Designed parallel-run architecture with real-time data synchronization",
-                "Implemented blue-green deployment strategy for zero-downtime cutover",
-                "Conducted 3 full dress rehearsals with rollback procedures",
-                "Executed migration during low-traffic window with 24/7 support coverage"
-              ],
-              impact: [
-                { metric: "Downtime", value: "0 minutes" },
-                { metric: "Data Accuracy", value: "100%" },
-                { metric: "Migration Duration", value: "4 hours" },
-                { metric: "Business Continuity", value: "Uninterrupted" }
-              ],
-              timeline: [
-                { period: "Month 1-2", milestone: "Migration planning and architecture design" },
-                { period: "Month 3-5", milestone: "Parallel environment setup and testing" },
-                { period: "Month 6", milestone: "Dress rehearsals and final validation" },
-                { period: "Month 7", milestone: "Production cutover and legacy decommission" }
-              ],
-              testimonial: "A flawless execution. We migrated millions of records without a single minute of downtime. That's the level of reliability our patients deserve.",
-              testimonialAuthor: "Dr. Robert Chen, MD, MBA",
-              testimonialRole: "Chief Information Officer"
-            },
-            {
-              client: "Financial Services Firm",
-              industry: "Banking | 67,000 Employees",
-              result: "Business Continuity Excellence",
-              summary: "Maintained 100% uptime through natural disaster and infrastructure failure",
-              challenge: "Hurricane causing regional data center outage during benefits open enrollment. Mission-critical window requiring uninterrupted service.",
-              solution: [
-                "Automatic failover to secondary region within 4 minutes of outage detection",
-                "Load balancing across 3 geographic regions maintaining consistent performance",
-                "Real-time data replication ensuring zero data loss during failover",
-                "Transparent failover with no user impact or service degradation"
-              ],
-              impact: [
-                { metric: "Failover Time", value: "4 minutes" },
-                { metric: "Data Loss", value: "0 records" },
-                { metric: "User Impact", value: "None detected" },
-                { metric: "Business Continuity", value: "100%" }
-              ],
-              timeline: [
-                { period: "Pre-Event", milestone: "Multi-region architecture in place" },
-                { period: "T+0:04", milestone: "Automatic failover triggered" },
-                { period: "T+0:15", milestone: "Primary region offline, secondary serving 100%" },
-                { period: "T+48:00", milestone: "Primary region restored, normal operations resumed" }
-              ],
-              testimonial: "We didn't even know there was an outage until the post-incident report. That's the level of reliability our employees deserve.",
-              testimonialAuthor: "Linda Torres, CISA, CRISC",
-              testimonialRole: "Chief Risk Officer"
-            }
+          businessImpact: [
+            "Identify $12.4M in avoidable concentration risk through portfolio rebalancing",
+            "Optimize reinsurance strategy saving $3.8M in premium costs",
+            "Improve risk-adjusted pricing accuracy by 23 percentage points",
+            "Enable proactive intervention for 2,400 high-risk members (1.9% of population)"
           ]
         },
         {
-          icon: Brain,
-          title: "AI-Powered Insights",
-          value: "87% Automation",
-          analysis: [
-            "Machine learning models automating 87% of routine claims adjudication, enrollment processing, and exception handling",
-            "Natural language processing extracting key terms from 240,000+ pages of plan documents and contracts annually",
-            "Predictive analytics identifying high-risk members 6-9 months before costly interventions with 94% accuracy",
-            "Intelligent routing of complex cases to appropriate human experts based on issue classification and expertise mapping"
+          title: "Dynamic Risk Scoring",
+          description: "Continuous risk assessment that updates in real-time as new claims data, life events, and health information become available.",
+          features: [
+            "Event-driven architecture processing 240,000 claims daily with <50ms latency",
+            "Automated risk score updates triggered by claims, lab results, and pharmacy fills",
+            "Predictive alerts for members trending toward high-risk status",
+            "Integration with care management platforms for immediate intervention"
           ],
-          benchmarks: [
-            { label: "Manual Processing", value: "0% automation" },
-            { label: "RPA Solutions", value: "30-45%" },
-            { label: "AI Leaders (McKinsey)", value: "65-75%" },
-            { label: "SiriusB iQ Platform", value: "87%" }
+          technicalDetails: [
+            "Streaming analytics using Apache Kafka and Flink for real-time processing",
+            "Time-series analysis tracking risk trajectory over 6-24 month windows",
+            "Natural language processing extracting risk indicators from clinical notes",
+            "API-first design enabling integration with EHR, HIE, and care coordination systems"
           ],
-          caseStudies: [
-            {
-              client: "Insurance Carrier",
-              industry: "Commercial Insurance | 3.2M Lives",
-              result: "87% Claims Automation",
-              summary: "Reduced manual claims processing workload by 87% while improving accuracy",
-              challenge: "Manual claims review process requiring 340 FTEs to process 2.4M claims annually. 14% error rate and 18-day average turnaround time creating member dissatisfaction.",
-              solution: [
-                "Deployed machine learning models trained on 15M historical claims with 99.2% accuracy",
-                "Implemented natural language processing for plan document interpretation and coverage determination",
-                "Created intelligent exception handling routing complex cases to specialized adjudicators",
-                "Built continuous learning loop improving model accuracy through human feedback on edge cases",
-                "Developed explainable AI providing transparent decision rationale for audit and compliance"
-              ],
-              impact: [
-                { metric: "Automation Rate", value: "87%" },
-                { metric: "FTE Reduction", value: "296 positions" },
-                { metric: "Error Rate", value: "0.8%" },
-                { metric: "Turnaround Time", value: "47 minutes" }
-              ],
-              timeline: [
-                { period: "Month 1-3", milestone: "Historical data analysis and model training" },
-                { period: "Month 4-6", milestone: "Pilot deployment with 10% of volume" },
-                { period: "Month 7-9", milestone: "Gradual rollout to 50% of volume" },
-                { period: "Month 10-12", milestone: "Full deployment and workforce transition" }
-              ],
-              testimonial: "The AI doesn't just automate—it makes better decisions than humans on 87% of claims. Our team now focuses on complex cases where human judgment adds real value.",
-              testimonialAuthor: "Thomas Wu, FSA, MAAA",
-              testimonialRole: "SVP, Claims Operations"
-            },
-            {
-              client: "Public Sector Entity",
-              industry: "State Government | 180,000 Employees",
-              result: "$47M Budget Efficiency",
-              summary: "Automated benefits administration reducing administrative costs by 64%",
-              challenge: "Government budget constraints requiring reduction in administrative overhead while maintaining service quality. 420-person benefits team processing manual paperwork for 180,000 active and retired employees.",
-              solution: [
-                "Implemented AI-powered enrollment system with intelligent form completion and error detection",
-                "Deployed chatbot handling 89% of benefits inquiries without human intervention",
-                "Created automated life event processing for marriage, birth, divorce, death with verification workflows",
-                "Built intelligent document classification and routing eliminating manual mail sorting",
-                "Developed predictive analytics identifying employees likely to miss important deadlines for proactive outreach"
-              ],
-              impact: [
-                { metric: "Admin Cost Reduction", value: "64%" },
-                { metric: "Budget Savings", value: "$47M over 5 years" },
-                { metric: "FTE Redeployment", value: "268 positions" },
-                { metric: "Employee Satisfaction", value: "+31 pts" }
-              ],
-              timeline: [
-                { period: "Year 1", milestone: "Requirements gathering and vendor selection" },
-                { period: "Year 2", milestone: "Platform development and pilot testing" },
-                { period: "Year 3", milestone: "Phased rollout across departments" },
-                { period: "Year 4-5", milestone: "Full adoption and continuous optimization" }
-              ],
-              testimonial: "We achieved a rare government success story—better service at lower cost. The AI platform delivers taxpayer value while giving our employees a modern, consumer-grade experience.",
-              testimonialAuthor: "Maria Gonzalez, MPA",
-              testimonialRole: "State HR Director"
-            }
+          businessImpact: [
+            "Reduce time-to-intervention from 90 days to <7 days for emerging high-risk cases",
+            "Prevent $8.4M in avoidable ER visits and inpatient admissions through early outreach",
+            "Improve care coordinator productivity by 63% through automated case identification",
+            "Achieve 94% accuracy in predicting high-cost claimants 6-9 months in advance"
+          ]
+        },
+        {
+          title: "Scenario Testing & Stress Analysis",
+          description: "Sophisticated modeling tools to evaluate how your portfolio would perform under various adverse scenarios and economic conditions.",
+          features: [
+            "What-if analysis for plan design changes, network modifications, and pricing strategies",
+            "Pandemic/catastrophic event modeling using historical data and epidemiological projections",
+            "Economic downturn scenarios assessing impact on utilization and premium revenue",
+            "Regulatory change simulations (e.g., ACA modifications, state mandate expansions)"
+          ],
+          technicalDetails: [
+            "Stochastic modeling with customizable probability distributions and correlation structures",
+            "Sensitivity analysis identifying key drivers of financial outcomes",
+            "Tail risk analysis focusing on 95th-99th percentile scenarios",
+            "Backtesting framework validating model accuracy against historical events"
+          ],
+          businessImpact: [
+            "Quantify financial impact of 40+ different adverse scenarios before they occur",
+            "Optimize reserve levels saving $7.8M while maintaining 99.7% confidence level",
+            "Improve board-level risk reporting with clear, quantified scenario outcomes",
+            "Enable data-driven decision making for plan design and pricing strategy"
           ]
         }
       ]
     },
     {
-      icon: Shield,
-      title: "Enterprise Security",
-      description: "Bank-grade encryption, SOC 2 Type II compliance, and multi-layered security protocols protect your most sensitive data and operations.",
-      stats: "Zero Breaches",
-      detailedDescription: "Our security architecture exceeds industry standards with defense-in-depth strategies, continuous vulnerability management, and proactive threat intelligence. We treat security not as a checkbox but as a core product feature embedded in every layer of our technology stack.",
-      mcKinseyAlignment: "Following Bain's 'Founder's Mentality' principles, we maintain startup-level paranoia about security while building enterprise-grade controls. This balance ensures we stay ahead of emerging threats while maintaining operational agility.",
-      consultingFramework: "Bain Founder's Mentality & NIST Cybersecurity Framework",
-      strategicPillars: [
+      icon: TrendingUp,
+      title: "Premium Calculation",
+      description: "Intelligent pricing algorithms that optimize revenue while maintaining competitive rates and regulatory compliance.",
+      metrics: ["98.7% Pricing Accuracy", "$6.2M Revenue Optimization", "Dynamic Rate Adjustments"],
+      href: "/solutions/premium-calculation",
+      capabilities: [
         {
-          title: "Defense in Depth",
-          description: "Multi-layered security controls at network, application, and data tiers with zero-trust architecture"
-        },
-        {
-          title: "Compliance First",
-          description: "SOC 2 Type II, HIPAA, HITRUST CSF certified with annual audits and continuous monitoring"
-        },
-        {
-          title: "Proactive Threat Intelligence",
-          description: "24/7 security operations center (SOC) with ML-based anomaly detection and incident response"
-        },
-        {
-          title: "Privacy by Design",
-          description: "Data minimization, encryption at rest and in transit, and granular access controls protecting member PHI"
-        }
-      ],
-      metrics: [
-        {
-          icon: Shield,
-          title: "Security Posture",
-          value: "Zero Breaches",
-          analysis: [
-            "Perfect security track record across 8 years of operations protecting 4.7M member records and $2.4B in annual claims data",
-            "Penetration testing by Big 4 security firms quarterly with no critical or high vulnerabilities in past 24 months",
-            "Bug bounty program with $500K total payouts attracting white-hat hackers to continuously test our defenses",
-            "Incident response team averaging <15 minute detection-to-containment for security events with automated playbooks"
+          title: "AI-Powered Pricing Engine",
+          description: "Machine learning algorithms that analyze market dynamics, risk profiles, and competitive positioning to determine optimal premium rates.",
+          features: [
+            "Automated rate calculations incorporating claims experience, trend factors, and risk adjustments",
+            "Competitive intelligence integration tracking competitor pricing in real-time",
+            "Price elasticity modeling to maximize revenue while maintaining competitive position",
+            "Multi-tiered rating structures for employer groups, individuals, and family coverage"
           ],
-          benchmarks: [
-            { label: "Industry Breach Rate", value: "1 in 4 orgs" },
-            { label: "Healthcare Average (Bain)", value: "12.4% annual" },
-            { label: "Financial Services", value: "8.7% annual" },
-            { label: "SiriusB iQ Record", value: "0% (8 years)" }
+          technicalDetails: [
+            "Regression analysis and gradient boosting for pricing optimization",
+            "Integration with actuarial valuation systems and claims data warehouses",
+            "Dynamic repricing capabilities with monthly or quarterly rate adjustments",
+            "Compliance validation ensuring adherence to ACA, state rating rules, and MLR requirements"
           ],
-          caseStudies: [
-            {
-              client: "Healthcare System",
-              industry: "Integrated Delivery Network | 18 Hospitals",
-              result: "PHI Protection Excellence",
-              summary: "Maintained zero breaches while processing 847,000 member records with sensitive health data",
-              challenge: "Managing highly sensitive PHI for oncology, behavioral health, and HIV patients with strict HIPAA compliance requirements. Previous vendor experienced breach exposing 120,000 records.",
-              solution: [
-                "Implemented field-level encryption for sensitive diagnoses with separate key management system",
-                "Deployed data loss prevention (DLP) tools monitoring 100% of PHI access and preventing unauthorized export",
-                "Created role-based access controls (RBAC) with just-in-time access provisioning and automatic de-provisioning",
-                "Built comprehensive audit logging with tamper-evident blockchain-based audit trails for forensic analysis",
-                "Conducted quarterly security awareness training for 2,400 employees with simulated phishing campaigns"
-              ],
-              impact: [
-                { metric: "Security Incidents", value: "0" },
-                { metric: "Audit Score", value: "100%" },
-                { metric: "Compliance Fines", value: "$0" },
-                { metric: "Employee Security IQ", value: "+67%" }
-              ],
-              timeline: [
-                { period: "Month 1-2", milestone: "Security assessment and gap analysis" },
-                { period: "Month 3-5", milestone: "Technical controls implementation" },
-                { period: "Month 6-8", milestone: "Process and training rollout" },
-                { period: "Ongoing", milestone: "Continuous monitoring and improvement" }
-              ],
-              testimonial: "After our previous breach, we couldn't afford another incident. SiriusB iQ's zero-breach track record gave us confidence, and their proactive security culture has kept us breach-free for 4 years.",
-              testimonialAuthor: "Dr. Susan Park, MD, CPHIMS",
-              testimonialRole: "Chief Medical Information Officer"
-            },
-            {
-              client: "Financial Institution",
-              industry: "Asset Management | $84B AUM",
-              result: "Bank-Grade Security",
-              summary: "Exceeded financial services security standards while maintaining operational efficiency",
-              challenge: "Regulatory requirements demanding financial-grade security controls for benefits platform processing retirement account data. Previous solutions couldn't meet audit requirements.",
-              solution: [
-                "Achieved SOC 2 Type II attestation with zero exceptions across all trust service criteria",
-                "Implemented multi-factor authentication (MFA) for all users with biometric options for high-risk transactions",
-                "Deployed web application firewall (WAF) and distributed denial-of-service (DDoS) protection handling 47M requests daily",
-                "Created security information and event management (SIEM) system correlating 840+ security event sources",
-                "Built immutable backup strategy with 3-2-1 rule (3 copies, 2 media types, 1 offsite) and 7-year retention"
-              ],
-              impact: [
-                { metric: "SOC 2 Audit", value: "Clean opinion" },
-                { metric: "Regulatory Findings", value: "0" },
-                { metric: "DDoS Attacks Blocked", value: "127" },
-                { metric: "MFA Adoption", value: "100%" }
-              ],
-              timeline: [
-                { period: "Month 1-3", milestone: "SOC 2 readiness assessment" },
-                { period: "Month 4-9", milestone: "Control implementation and evidence collection" },
-                { period: "Month 10-12", milestone: "Formal audit and attestation" },
-                { period: "Ongoing", milestone: "Continuous compliance and annual re-certification" }
-              ],
-              testimonial: "We hold the benefits platform to the same security standards as our trading systems. SiriusB iQ not only meets but exceeds those standards—they're our security benchmark.",
-              testimonialAuthor: "Robert Martinez, CISO, CISSP",
-              testimonialRole: "Chief Information Security Officer"
-            }
+          businessImpact: [
+            "Achieve 98.7% pricing accuracy reducing underwriting losses by 67%",
+            "Optimize revenue by $6.2M through precision pricing of 340+ employer groups",
+            "Improve quote turnaround time from 3 weeks to 48 hours",
+            "Reduce combined ratio from 107.3% to 93.8% through better pricing discipline"
           ]
         },
         {
-          icon: FileText,
-          title: "Compliance Certifications",
-          value: "SOC 2 + HIPAA + HITRUST",
-          analysis: [
-            "SOC 2 Type II attestation covering security, availability, confidentiality, and privacy with annual audits by Big 4 firms",
-            "HIPAA compliance verified through third-party assessments with comprehensive business associate agreements (BAAs)",
-            "HITRUST CSF certification representing gold standard in healthcare information security with 2-year validation cycle",
-            "State-specific privacy compliance including CCPA, GDPR, and state health data laws across all 50 states"
+          title: "Rate Development & Trend Analysis",
+          description: "Sophisticated trend forecasting combining historical experience with predictive analytics to project future costs accurately.",
+          features: [
+            "Medical trend analysis separating utilization, unit cost, and mix effects",
+            "Pharmacy trend modeling accounting for specialty drug pipeline and biosimilar adoption",
+            "Credibility-weighted experience rating for groups with limited claims history",
+            "Manual rate adjustments for large claims, demographic shifts, and plan design changes"
           ],
-          benchmarks: [
-            { label: "Basic Compliance", value: "1-2 certs" },
-            { label: "Industry Standard", value: "SOC 2 only" },
-            { label: "Healthcare Leaders", value: "SOC 2 + HIPAA" },
-            { label: "SiriusB iQ Stack", value: "SOC 2 + HIPAA + HITRUST + State" }
+          technicalDetails: [
+            "Time-series analysis using ARIMA, exponential smoothing, and machine learning",
+            "Cohort analysis tracking aging and selection effects over time",
+            "Seasonality adjustments accounting for month-to-month utilization patterns",
+            "Projection methodologies validated by credentialed actuaries (FSA, MAAA)"
           ],
-          caseStudies: [
-            {
-              client: "Multi-State TPA",
-              industry: "Third-Party Administrator | 47 States",
-              result: "Compliance Automation",
-              summary: "Automated compliance monitoring across 47 state regulations reducing audit prep from 8 weeks to 3 days",
-              challenge: "Managing compliance with varying state privacy laws, insurance regulations, and federal mandates across diverse client base. Risk of multi-million dollar fines for non-compliance with GDPR and emerging privacy regulations.",
-              solution: [
-                "Built regulatory intelligence system tracking 847 compliance requirements across federal and state jurisdictions",
-                "Implemented automated control testing with continuous monitoring and real-time dashboards",
-                "Created policy management system with version control and automated distribution",
-                "Deployed vendor risk management framework assessing 127 third-party vendors for security and compliance",
-                "Established compliance training platform with role-based curricula and automated certification tracking"
-              ],
-              impact: [
-                { metric: "Audit Prep Time", value: "3 days" },
-                { metric: "FTE Reduction", value: "8 positions" },
-                { metric: "Compliance Score", value: "100%" },
-                { metric: "Regulatory Findings", value: "0 in 4 years" }
-              ],
-              timeline: [
-                { period: "Year 1", milestone: "Global privacy assessment and roadmap" },
-                { period: "Year 2", milestone: "Core infrastructure and GDPR compliance" },
-                { period: "Year 3", milestone: "Regional expansion and localization" },
-                { period: "Ongoing", milestone: "Monitoring and adaptation to new regulations" }
-              ],
-              testimonial: "Privacy compliance is our license to operate globally. The SiriusB iQ platform gave us confidence to expand into new markets knowing we meet local privacy requirements from day one.",
-              testimonialAuthor: "Klaus Schmidt, LL.M., CIPP/E",
-              testimonialRole: "Global Privacy Officer"
-            }
+          businessImpact: [
+            "Improve trend forecasting accuracy by 23 percentage points vs. traditional methods",
+            "Reduce reserve volatility saving $3.4M in redundant capital requirements",
+            "Enable quarterly rate adjustments vs. annual, improving responsiveness by 4x",
+            "Support rate filings in 47 states with centralized actuarial team of 12 FSAs"
           ]
         },
         {
-          icon: Activity,
-          title: "Vulnerability Management",
-          value: "24/7 SOC",
-          analysis: [
-            "Security operations center staffed 24/7/365 with SANS-certified analysts and incident responders across 3 time zones",
-            "Continuous vulnerability scanning using automated tools (Qualys, Tenable) with 24-hour remediation SLA for critical findings",
-            "Quarterly penetration testing by certified ethical hackers (CEH, OSCP) simulating advanced persistent threat (APT) scenarios",
-            "Threat intelligence feeds integrated from FBI, DHS, ISAC, and commercial sources providing early warning of emerging threats"
+          title: "Competitive Market Analysis",
+          description: "Real-time monitoring of competitor pricing, benefit designs, and market positioning to inform strategic pricing decisions.",
+          features: [
+            "Automated web scraping and API integration collecting competitor rate filings",
+            "Benefit design comparison identifying value gaps and opportunities",
+            "Market share analysis by geography, industry vertical, and group size",
+            "Win/loss tracking correlating pricing competitiveness with sales outcomes"
           ],
-          benchmarks: [
-            { label: "Reactive Monitoring", value: "Business hours" },
-            { label: "Managed Services", value: "8x5 coverage" },
-            { label: "Enterprise Standard", value: "12x5 + on-call" },
-            { label: "SiriusB iQ SOC", value: "24x7x365 staffed" }
+          technicalDetails: [
+            "Data aggregation from state DOI rate filings, carrier websites, and broker feeds",
+            "Natural language processing extracting key terms from benefit summaries",
+            "Competitive positioning algorithms recommending optimal price points",
+            "Integration with CRM and quoting systems for real-time sales support"
           ],
-          caseStudies: [
-            {
-              client: "Critical Infrastructure Provider",
-              industry: "Energy Sector | 12M Customers",
-              result: "Advanced Threat Protection",
-              summary: "Detected and neutralized nation-state APT attack within 12 minutes of initial compromise",
-              challenge: "High-value target for nation-state actors seeking access to critical infrastructure and customer data. Required military-grade threat detection and response capabilities.",
-              solution: [
-                "Deployed endpoint detection and response (EDR) on 47,000 devices with behavioral analytics and ML-based threat hunting",
-                "Implemented network traffic analysis (NTA) monitoring 2.4TB daily traffic for command-and-control (C2) patterns",
-                "Created security orchestration, automation, and response (SOAR) platform automating 73% of tier-1 security tasks",
-                "Established threat intelligence program sharing indicators of compromise (IOCs) with sector ISAC",
-                "Conducted purple team exercises quarterly with offensive security team vs. defensive SOC to identify gaps"
-              ],
-              impact: [
-                { metric: "Threat Detection Time", value: "12 min" },
-                { metric: "Mean Time to Respond", value: "18 min" },
-                { metric: "False Positive Rate", value: "2.4%" },
-                { metric: "APT Attacks Blocked", value: "27 in 2 years" }
-              ],
-              timeline: [
-                { period: "Month 1-3", milestone: "Threat landscape assessment and SOC design" },
-                { period: "Month 4-6", milestone: "Tool selection and integration" },
-                { period: "Month 7-9", milestone: "SOC team recruitment and training" },
-                { period: "Month 10-12", milestone: "Go-live and 24/7 operations launch" }
-              ],
-              testimonial: "When nation-state actors came knocking, the SiriusB iQ SOC team shut them down in minutes. That's the level of vigilance you need when you're protecting critical infrastructure.",
-              testimonialAuthor: "Colonel (Ret.) James Patterson, CISSP",
-              testimonialRole: "Chief Security Officer"
-            },
-            {
-              client: "Pharmaceutical Company",
-              industry: "Life Sciences | R&D Operations",
-              result: "IP Protection Program",
-              summary: "Protected $4.7B in intellectual property through proactive threat hunting and insider risk management",
-              challenge: "Highly valuable intellectual property (IP) in drug development pipelines making company target for economic espionage. Needed visibility into potential insider threats and external targeting.",
-              solution: [
-                "Implemented user and entity behavior analytics (UEBA) establishing baselines for 8,700 employees with privileged access",
-                "Deployed data exfiltration prevention monitoring unusual file access patterns, large downloads, and unauthorized sharing",
-                "Created insider threat program with HR, legal, and security collaboration to identify behavioral indicators of concern",
-                "Built deception technology (honeypots) detecting unauthorized access attempts to decoy IP repositories",
-                "Established security awareness program with targeted training for R&D staff on social engineering and IP protection"
-              ],
-              impact: [
-                { metric: "IP Protected", value: "$4.7B value" },
-                { metric: "Insider Threats Detected", value: "12" },
-                { metric: "External Attacks Blocked", value: "340" },
-                { metric: "IP Loss Events", value: "0" }
-              ],
-              timeline: [
-                { period: "Quarter 1", milestone: "Insider threat risk assessment" },
-                { period: "Quarter 2-3", milestone: "Technology deployment and integration" },
-                { period: "Quarter 4", milestone: "Policy rollout and training" },
-                { period: "Year 2+", milestone: "Continuous monitoring and program maturation" }
-              ],
-              testimonial: "Our IP is our future. The SiriusB iQ security program gives our board confidence that we're protecting our most valuable assets from both external and insider threats.",
-              testimonialAuthor: "Dr. Rachel Kim, PhD",
-              testimonialRole: "Chief Scientific Officer"
-            }
+          businessImpact: [
+            "Increase quote win rate from 23% to 34% through competitive pricing intelligence",
+            "Identify $4.7M in revenue opportunities from underpriced competitor segments",
+            "Reduce quote rework by 58% through upfront competitive validation",
+            "Enable dynamic pricing strategies responding to competitor moves in <24 hours"
+          ]
+        },
+        {
+          title: "Regulatory Compliance & Filing",
+          description: "Automated compliance validation and rate filing preparation ensuring adherence to federal and state regulations.",
+          features: [
+            "ACA compliance validation including age curves, geographic rating, and tobacco factors",
+            "State-specific rule engines covering 50+ jurisdictions with unique requirements",
+            "Medical Loss Ratio (MLR) tracking and rebate calculations",
+            "Actuarial memorandum generation with supporting documentation for rate filings"
+          ],
+          technicalDetails: [
+            "Rules engine with 840+ regulatory requirements across federal and state laws",
+            "Automated filing preparation in SERFF format for state submissions",
+            "Version control and audit trails for all rate changes and assumptions",
+            "Integration with state DOI portals for electronic filing submission"
+          ],
+          businessImpact: [
+            "Achieve 100% compliance rate with zero regulatory findings in 4+ years",
+            "Reduce filing preparation time from 8 weeks to 3 days through automation",
+            "Avoid $2.8M in potential penalties through proactive compliance monitoring",
+            "Support rate filings in 47 states with centralized actuarial team of 12 FSAs"
           ]
         }
       ]
     },
     {
-      icon: Briefcase,
-      title: "Industry Leadership",
-      description: "Trusted by Fortune 500 companies and leading TPAs across healthcare, life insurance, and pension sectors for mission-critical operations.",
-      stats: "500+ Clients",
-      detailedDescription: "Our client portfolio spans Fortune 500 enterprises, innovative mid-market companies, and public sector organizations. We serve as strategic partners, not just vendors, combining deep industry expertise with world-class technology to drive measurable business outcomes.",
-      mcKinseyAlignment: "We apply McKinsey's 'Capability-driven Strategy' framework, building distinctive capabilities in actuarial science, data engineering, and benefits domain expertise that competitors cannot easily replicate. This creates sustainable competitive advantage for our clients.",
-      consultingFramework: "McKinsey Capability-driven Strategy & Bain Elements of Value Pyramid",
-      strategicPillars: [
+      icon: Heart,
+      title: "Health Benefits",
+      description: "Comprehensive benefits administration platform with integrated wellness programs and member engagement tools.",
+      metrics: ["96.8% Member Satisfaction", "$15.3M Cost Savings", "50+ Plan Options"],
+      href: "/solutions/health-benefits",
+      capabilities: [
         {
-          title: "Domain Expertise",
-          description: "Team of 47 FSAs, 23 PhDs in statistics/ML, and 100+ benefits professionals with avg. 12 years experience"
+          title: "Benefits Administration Platform",
+          description: "Unified platform managing enrollment, eligibility, premium billing, and member communications across medical, dental, vision, and ancillary benefits.",
+          features: [
+            "Self-service enrollment with decision support tools and plan comparison calculators",
+            "Life event processing for qualifying changes (marriage, birth, adoption, divorce)",
+            "COBRA administration including federal and state continuation coverage",
+            "Digital ID card generation and mobile wallet integration"
+          ],
+          technicalDetails: [
+            "API integrations with 340+ carriers and TPAs for real-time eligibility updates",
+            "EDI 834 enrollment files with validation and error handling",
+            "Premium reconciliation matching carrier invoices to enrollment records",
+            "Document management for SPDs, benefit summaries, and member communications"
+          ],
+          businessImpact: [
+            "Reduce enrollment errors by 94% through automated validation and reconciliation",
+            "Save $2.4M annually in administrative costs vs. manual enrollment processes",
+            "Improve open enrollment completion rate from 78% to 96%",
+            "Enable 24/7 self-service access reducing HR call volume by 73%"
+          ]
         },
         {
-          title: "Innovation Leadership",
-          description: "R&D investment of 22% of revenue, 37 patents filed, and partnerships with Stanford, MIT, CMU"
+          title: "Wellness & Population Health",
+          description: "Integrated wellness programs combining biometric screenings, health coaching, and incentive management to improve member health outcomes.",
+          features: [
+            "Biometric screening coordination with onsite, clinic, and home-based options",
+            "Health risk assessment (HRA) with personalized action plans and goal setting",
+            "Condition management programs for diabetes, hypertension, asthma, and obesity",
+            "Incentive management tracking wellness participation and rewarding healthy behaviors"
+          ],
+          technicalDetails: [
+            "Integration with wearables and health apps (Fitbit, Apple Health, MyFitnessPal)",
+            "HIPAA-compliant data collection and storage with member consent management",
+            "Predictive analytics identifying members most likely to benefit from interventions",
+            "Reporting dashboards tracking participation rates, biometric trends, and ROI"
+          ],
+          businessImpact: [
+            "Achieve 68% wellness program participation vs. industry average of 34%",
+            "Reduce diabetes-related medical costs by $4,200 per participant annually",
+            "Improve employee productivity by 12% through reduced absenteeism and presenteeism",
+            "Generate $3.80 in medical cost savings for every $1 invested in wellness programs"
+          ]
         },
         {
-          title: "Client Success",
-          description: "97% client retention, 847% average ROI, and NPS of 73 placing us in top 1% of B2B SaaS"
+          title: "Member Engagement & Communication",
+          description: "Multi-channel communication platform delivering personalized benefits information, reminders, and educational content.",
+          features: [
+            "Mobile app with benefits information, claim status, provider search, and virtual ID cards",
+            "Email and SMS campaigns for open enrollment, preventive care reminders, and wellness challenges",
+            "Chatbot with natural language understanding answering 89% of benefits questions",
+            "Personalized benefits recommendations based on life stage, health status, and utilization"
+          ],
+          technicalDetails: [
+            "Omnichannel communication orchestration with preference management",
+            "A/B testing framework optimizing message content, timing, and delivery channel",
+            "Integration with CRM and marketing automation platforms (Salesforce, Marketo)",
+            "Analytics tracking engagement metrics, conversion rates, and member satisfaction"
+          ],
+          businessImpact: [
+            "Increase member engagement scores by 47 percentage points",
+            "Reduce benefits-related inquiries to HR by 61% through self-service tools",
+            "Improve preventive care compliance (flu shots, mammograms, colonoscopies) by 34%",
+            "Achieve 94.7% mobile app adoption vs. industry average of 42%"
+          ]
         },
         {
-          title: "Thought Leadership",
-          description: "Authors of 127 peer-reviewed papers, speakers at 40+ industry conferences annually, advisory board members for SOA and LIMRA"
+          title: "Plan Design & Modeling",
+          description: "Data-driven tools to design, model, and optimize benefit plans balancing cost, coverage, and member satisfaction.",
+          features: [
+            "Plan comparison modeling showing cost impact of different deductibles, copays, and coinsurance",
+            "Consumer-directed health account (CDHA) integration for HSAs, FSAs, and HRAs",
+            "Value-based insurance design (VBID) identifying high-value services for $0 copay",
+            "Benefit benchmarking comparing plan richness to industry peers and competitors"
+          ],
+          technicalDetails: [
+            "Actuarial modeling using claims data to project costs under various plan designs",
+            "Sensitivity analysis identifying cost drivers and optimization opportunities",
+            "Tax advantage calculations showing savings from pre-tax premium and account contributions",
+            "Compliance validation ensuring plans meet ACA minimum value and affordability standards"
+          ],
+          businessImpact: [
+            "Reduce total health benefit costs by 14.2% through optimized plan design",
+            "Increase HDHP/HSA adoption from 23% to 58% saving $6.8M in employer contributions",
+            "Improve member satisfaction by 18 percentage points despite higher cost-sharing",
+            "Design 35+ custom plan options tailored to diverse workforce needs"
+          ]
         }
-      ],
-      metrics: [
+      ]
+    },
+    {
+      icon: BarChart3,
+      title: "Claims Analytics",
+      description: "Real-time claims processing with AI-powered fraud detection and automated adjudication workflows.",
+      metrics: ["97.4% Accuracy", "24hr Processing Time", "$4.2M Fraud Prevention"],
+      href: "/solutions/claims-analytics",
+      capabilities: [
         {
-          icon: Users2,
-          title: "Client Base",
-          value: "500+ Clients",
-          analysis: [
-            "Diverse client portfolio including 47 Fortune 500 companies, 230 mid-market employers, and 180 TPAs/carriers",
-            "Geographic footprint across all 50 US states, 12 Canadian provinces, and 18 international markets",
-            "Industry vertical expertise in healthcare (37%), financial services (24%), manufacturing (18%), and public sector (21%)",
-            "Average client tenure of 6.7 years with 97% annual retention rate indicating strong satisfaction and value delivery"
+          title: "Real-Time Claims Processing",
+          description: "Lightning-fast claims adjudication with automated decision-making for clean claims and intelligent routing of exceptions.",
+          features: [
+            "EDI 837 claim ingestion with real-time validation and auto-adjudication",
+            "Eligibility verification against current enrollment and coverage effective dates",
+            "Benefit determination applying plan rules, copays, deductibles, and out-of-pocket maximums",
+            "Provider network validation and fee schedule application for in-network vs. out-of-network"
           ],
-          benchmarks: [
-            { label: "Startup (<50 clients)", value: "Emerging" },
-            { label: "Growth Stage (50-200)", value: "Scaling" },
-            { label: "Established (200-500)", value: "Leader" },
-            { label: "SiriusB iQ", value: "500+ (Market Leader)" }
+          technicalDetails: [
+            "Event-driven architecture processing 240,000 claims daily with 47ms average latency",
+            "Machine learning auto-adjudication handling 73% of claims with zero human intervention",
+            "Exception routing to specialized adjudicators based on claim type and complexity",
+            "Real-time EOB generation and member/provider notifications"
           ],
-          caseStudies: [
-            {
-              client: "Fortune 50 Conglomerate",
-              industry: "Diversified Holdings | 340,000 Global Employees",
-              result: "$127M Enterprise-wide Savings",
-              summary: "Standardized benefits platform across 47 business units in 23 countries",
-              challenge: "Post-merger integration creating fragmented benefits landscape with 127 different carriers, platforms, and processes. No centralized data, duplicative administrative costs, and inconsistent employee experience.",
-              solution: [
-                "Conducted enterprise-wide benefits rationalization identifying $84M in addressable waste",
-                "Migrated 47 business units to unified SiriusB iQ platform over 18-month period",
-                "Negotiated master service agreements leveraging 340,000 lives for superior rates",
-                "Implemented global benefits analytics providing executive visibility for first time",
-                "Standardized processes while maintaining local flexibility for cultural differences"
-              ],
-              impact: [
-                { metric: "Total Savings", value: "$127M/yr" },
-                { metric: "Vendor Consolidation", value: "127 → 12" },
-                { metric: "Admin Cost Reduction", value: "62%" },
-                { metric: "Employee NPS", value: "+28 pts" }
-              ],
-              timeline: [
-                { period: "Months 1-6", milestone: "Discovery, planning, and vendor consolidation" },
-                { period: "Months 7-12", milestone: "Platform build and first wave migration (15 BUs)" },
-                { period: "Months 13-18", milestone: "Remaining migrations and optimization" },
-                { period: "Months 19-24", milestone: "Global expansion and continuous improvement" }
-              ],
-              testimonial: "This was the most complex benefits transformation in our company's history. SiriusB iQ delivered on time, under budget, and exceeded our savings targets by 40%.",
-              testimonialAuthor: "Catherine Wong, CPA, MBA",
-              testimonialRole: "Group CFO"
-            },
-            {
-              client: "Top-10 TPA Network",
-              industry: "Third-Party Administrator | 2.8M Lives Under Management",
-              result: "Platform Modernization",
-              summary: "Replaced 15-year-old legacy system with modern cloud platform",
-              challenge: "Antiquated technology stack unable to support modern benefit designs or meet client expectations for real-time data access. Losing clients to competitors with superior technology.",
-              solution: [
-                "Phased migration approach minimizing disruption to 2.8M active members",
-                "Built API integrations with 340+ carriers and vendor partners",
-                "Deployed self-service portals for employer clients and members",
-                "Implemented predictive analytics and benchmarking tools as premium services",
-                "Enabled white-label capabilities for TPA branding and customization"
-              ],
-              impact: [
-                { metric: "Client Retention", value: "99.2%" },
-                { metric: "New Sales Growth", value: "+47%" },
-                { metric: "Operating Margin", value: "+8.4 pts" },
-                { metric: "Client NPS", value: "+41 pts" }
-              ],
-              timeline: [
-                { period: "Year 1", milestone: "Platform selection and contract negotiation" },
-                { period: "Year 2", milestone: "Core development and pilot (200K lives)" },
-                { period: "Year 3", milestone: "Full migration and legacy decommission" },
-                { period: "Year 4+", milestone: "Innovation and competitive differentiation" }
-              ],
-              testimonial: "The platform transformation saved our business. We went from losing market share to winning competitive RFPs based on our technology advantage.",
-              testimonialAuthor: "John Morrison",
-              testimonialRole: "President & CEO"
-            }
+          businessImpact: [
+            "Reduce claims processing time from 18 days to <24 hours (97% faster)",
+            "Achieve 97.4% adjudication accuracy vs. industry average of 89.3%",
+            "Lower administrative costs by $4.80 per claim through automation",
+            "Improve member satisfaction by 23 percentage points through faster turnaround"
           ]
         },
         {
-          icon: TrendingUp,
-          title: "Client ROI",
-          value: "847% Avg",
-          analysis: [
-            "Independently verified ROI across 127 client engagements by Big 4 consulting firms",
-            "Payback period averaging 8.4 months with full benefits realized within 18 months",
-            "ROI drivers: 42% from cost reduction, 31% from efficiency gains, 27% from risk mitigation",
-            "Sustained value delivery with 89% of clients reporting increasing ROI in years 2-3 vs. year 1"
+          title: "Fraud, Waste & Abuse Detection",
+          description: "AI-powered anomaly detection identifying fraudulent, wasteful, and abusive claims patterns before payment.",
+          features: [
+            "Predictive models trained on 15M historical claims identifying suspicious patterns",
+            "Provider profiling comparing practice patterns to peer benchmarks",
+            "Member utilization analysis flagging unusual service frequency or provider shopping",
+            "Coordination of benefits (COB) validation preventing duplicate payments"
           ],
-          benchmarks: [
-            { label: "Typical SaaS ROI", value: "200-300%" },
-            { label: "Enterprise Software", value: "300-500%" },
-            { label: "McKinsey Transformations", value: "500-700%" },
-            { label: "SiriusB iQ Average", value: "847%" }
+          technicalDetails: [
+            "Unsupervised learning algorithms detecting novel fraud schemes without labeled data",
+            "Network analysis identifying collusion rings and billing schemes",
+            "Real-time scoring of all claims with automated holds for high-risk transactions",
+            "Integration with SIU (Special Investigations Unit) case management systems"
           ],
-          caseStudies: [
-            {
-              client: "Regional Health System",
-              industry: "Integrated Delivery Network | 28,000 Employees",
-              result: "1,240% ROI in 2 Years",
-              summary: "Most successful benefits technology investment in organization's 40-year history",
-              challenge: "Outdated benefits systems creating administrative burden, poor employee experience, and rising costs. Board mandate to reduce benefits spend by $8M annually.",
-              solution: [
-                "Consolidated 7 disparate systems onto unified SiriusB iQ platform",
-                "Automated manual processes eliminating 18 FTEs in benefits administration",
-                "Implemented self-service tools reducing HR call volume by 73%",
-                "Deployed predictive analytics identifying $12.4M in avoidable costs",
-                "Created mobile-first experience improving employee engagement"
-              ],
-              impact: [
-                { metric: "Annual Savings", value: "$18.6M" },
-                { metric: "Platform Investment", value: "$1.5M" },
-                { metric: "2-Year ROI", value: "1,240%" },
-                { metric: "Payback Period", value: "4.8 months" }
-              ],
-              timeline: [
-                { period: "Month 1-3", milestone: "Discovery and requirements gathering" },
-                { period: "Month 4-8", milestone: "Platform implementation and integration" },
-                { period: "Month 9-12", milestone: "Launch and change management" },
-                { period: "Year 2", milestone: "Optimization and value realization" }
-              ],
-              testimonial: "I've sponsored dozens of technology projects in my career. This delivered the highest ROI I've ever seen—and it's not even close.",
-              testimonialAuthor: "Mark Stevens, MBA",
-              testimonialRole: "Chief Operating Officer"
-            },
-            {
-              client: "Manufacturing Company",
-              industry: "Industrial | 15,000 Union & Non-Union Employees",
-              result: "Avoided Plant Closure",
-              summary: "Benefits cost reduction enabled profitable operations and saved 1,200 jobs",
-              challenge: "Unsustainable benefits costs threatening plant viability. Union contract required maintaining coverage while reducing costs by $14M to avoid closure.",
-              solution: [
-                "Conducted actuarial analysis identifying cost drivers and intervention opportunities",
-                "Negotiated with union leadership using transparent data and predictive modeling",
-                "Implemented high-performance network and care coordination reducing unit costs",
-                "Deployed wellness programs with financial incentives tied to measurable outcomes",
-                "Created ongoing labor-management committee for collaborative benefits governance"
-              ],
-              impact: [
-                { metric: "Cost Reduction", value: "$16.8M/yr" },
-                { metric: "Jobs Saved", value: "1,200" },
-                { metric: "Plant Status", value: "Profitable" },
-                { metric: "Union Partnership", value: "Strengthened" }
-              ],
-              timeline: [
-                { period: "Quarter 1", milestone: "Crisis assessment and stakeholder alignment" },
-                { period: "Quarter 2-3", milestone: "Solution design and union negotiations" },
-                { period: "Quarter 4", milestone: "Implementation and member education" },
-                { period: "Year 2+", milestone: "Sustained results and continuous improvement" }
-              ],
-              testimonial: "SiriusB iQ didn't just save money—they saved our plant and our community. The partnership approach with our union made the difference.",
-              testimonialAuthor: "Frank Kowalski",
-              testimonialRole: "Plant Manager & Union President"
-            }
+          businessImpact: [
+            "Prevent $4.2M in fraudulent, wasteful, and abusive claims annually",
+            "Achieve 89% fraud detection accuracy with only 2.4% false positive rate",
+            "Recover $1.8M in overpayments through post-payment audits and subrogation",
+            "Reduce claims leakage from 3.7% to 0.8% of total paid claims"
           ]
         },
         {
-          icon: Award,
-          title: "Industry Recognition",
-          value: "73 NPS",
-          analysis: [
-            "Net Promoter Score of 73 placing SiriusB iQ in top 1% of B2B SaaS companies globally",
-            "Recognition as Gartner Magic Quadrant Leader for Benefits Administration 4 consecutive years",
-            "Winner of 18 industry awards including 'Best Place to Work', 'Technology Innovation', and 'Client Success'",
-            "Featured case studies in Harvard Business Review, McKinsey Quarterly, and Bain & Company research"
+          title: "Utilization Management",
+          description: "Comprehensive prior authorization, concurrent review, and retrospective review ensuring appropriate and cost-effective care.",
+          features: [
+            "Prior authorization automation for high-cost services (surgery, imaging, specialty drugs)",
+            "Clinical guidelines engine applying evidence-based medical necessity criteria",
+            "Concurrent review for inpatient stays with discharge planning and care coordination",
+            "Retrospective review identifying overutilization and opportunities for provider education"
           ],
-          benchmarks: [
-            { label: "B2B SaaS Average", value: "31 NPS" },
-            { label: "Enterprise Software", value: "42 NPS" },
-            { label: "Top Quartile (Bain)", value: "55 NPS" },
-            { label: "SiriusB iQ Platform", value: "73 NPS" }
+          technicalDetails: [
+            "Integration with InterQual, MCG, and custom clinical guidelines",
+            "HL7 and FHIR integration with provider EHR systems for seamless data exchange",
+            "Nurse and physician review workflows with escalation and appeal processes",
+            "Analytics identifying high-variation providers and opportunities for intervention"
           ],
-          caseStudies: [
-            {
-              client: "Technology Unicorn",
-              industry: "SaaS | 8,500 Global Employees",
-              result: "Best-in-Class Benefits Experience",
-              summary: "Created benefits program recognized as #1 in tech industry by Glassdoor",
-              challenge: "Hyper-competitive talent market requiring differentiated benefits experience to attract and retain top engineering talent. Previous vendor unable to support rapid growth and international expansion.",
-              solution: [
-                "Deployed consumer-grade benefits platform matching company's product excellence standards",
-                "Implemented global benefits program across 23 countries with local compliance",
-                "Created personalized benefits dashboard with live cost projections",
-                "Built integration with HRIS, payroll, and rewards systems for seamless employee experience",
-                "Provided executive analytics linking benefits investments to talent acquisition and retention outcomes"
-              ],
-              impact: [
-                { metric: "Employee NPS", value: "84" },
-                { metric: "Glassdoor Rating", value: "4.8/5.0" },
-                { metric: "Offer Accept Rate", value: "+23%" },
-                { metric: "Voluntary Turnover", value: "-31%" }
-              ],
-              timeline: [
-                { period: "Month 1-2", milestone: "RFP process and vendor selection" },
-                { period: "Month 3-5", milestone: "Platform implementation" },
-                { period: "Month 6", milestone: "US launch" },
-                { period: "Month 7-12", milestone: "International expansion" }
-              ],
-              testimonial: "Our benefits platform is now a recruiting advantage. Candidates regularly cite our benefits experience as a reason they chose us over competitors.",
-              testimonialAuthor: "Alex Rivera",
-              testimonialRole: "Chief People Officer"
-            },
-            {
-              client: "Academic Medical Center",
-              industry: "Healthcare Provider & Research | 34,000 Faculty/Staff",
-              result: "Award-Winning Transformation",
-              summary: "Winner of Healthcare HR Executive of the Year for benefits innovation",
-              challenge: "Complex workforce including physicians, researchers, clinical staff, and administrators with diverse needs. Historical benefits satisfaction scores in bottom quartile nationally.",
-              solution: [
-                "Conducted 3,400+ employee listening sessions to understand pain points and preferences",
-                "Redesigned benefits portfolio using choice architecture principles from behavioral economics",
-                "Implemented decision support tools helping employees navigate 40+ benefit options",
-                "Created specialty programs for physician wellness, academic research support, and clinical flexibility",
-                "Measured and published outcomes demonstrating ROI on benefits innovations"
-              ],
-              impact: [
-                { metric: "Benefits Satisfaction", value: "+52 pts" },
-                { metric: "Industry Awards", value: "7" },
-                { metric: "Peer Recognition", value: "Top 1%" },
-                { metric: "Speaking Invitations", value: "40+/year" }
-              ],
-              timeline: [
-                { period: "Year 1", milestone: "Research and strategy development" },
-                { period: "Year 2", milestone: "Platform selection and implementation" },
-                { period: "Year 3", milestone: "Launch and change management" },
-                { period: "Year 4+", milestone: "Thought leadership and industry recognition" }
-              ],
-              testimonial: "This work fundamentally changed how academic medicine thinks about benefits. We're now sought after for speaking engagements because we set the standard.",
-              testimonialAuthor: "Dr. Sophia Martinez, MD, MPH",
-              testimonialRole: "SVP, Human Resources & Organizational Development"
-            }
+          businessImpact: [
+            "Reduce unnecessary utilization by 23% saving $8.7M annually",
+            "Improve prior authorization turnaround from 72 hours to <4 hours (95% faster)",
+            "Decrease inpatient length of stay by 1.4 days through concurrent review",
+            "Achieve 94% provider satisfaction with streamlined UM processes"
+          ]
+        },
+        {
+          title: "Claims Analytics & Reporting",
+          description: "Powerful analytics tools providing deep insights into claims patterns, cost drivers, and opportunities for intervention.",
+          features: [
+            "Interactive dashboards with drill-down from summary to individual claim detail",
+            "Trend analysis identifying emerging cost drivers and utilization changes",
+            "Provider profiling comparing quality, cost, and efficiency metrics",
+            "Cohort analysis tracking specific populations (diabetics, oncology, maternity)"
+          ],
+          technicalDetails: [
+            "OLAP cubes enabling sub-second query performance on 15M+ claim records",
+            "Predictive analytics forecasting future claims costs and utilization trends",
+            "Natural language query interface allowing non-technical users to explore data",
+            "Automated reporting distribution with customizable schedules and recipients"
+          ],
+          businessImpact: [
+            "Identify $12.4M in addressable cost opportunities through advanced analytics",
+            "Reduce time spent on ad-hoc reporting from 40 hours/week to 4 hours/week",
+            "Enable data-driven decision making for clinical programs and network strategy",
+            "Improve executive visibility into claims performance with real-time KPIs"
+          ]
+        }
+      ]
+    },
+    {
+      icon: Users,
+      title: "Member Management",
+      description: "Unified member portal with self-service capabilities, digital ID cards, and personalized benefit recommendations.",
+      metrics: ["98.3% Data Accuracy", "94.7% Portal Adoption", "500K+ Active Members"],
+      href: "/solutions/member-management",
+      capabilities: [
+        {
+          title: "Member Portal & Self-Service",
+          description: "Comprehensive online portal providing 24/7 access to benefits information, claims status, and account management.",
+          features: [
+            "Digital ID cards with Apple Wallet and Google Pay integration",
+            "Claims history with detailed EOBs and status tracking",
+            "Provider search with quality ratings, cost estimates, and directions",
+            "Account management for premium payments, address changes, and beneficiary updates"
+          ],
+          technicalDetails: [
+            "Responsive web design and native iOS/Android mobile apps",
+            "Single sign-on (SSO) integration with employer HRIS and identity providers",
+            "Biometric authentication (Face ID, Touch ID) for enhanced security",
+            "Offline mode allowing access to ID cards and key information without connectivity"
+          ],
+          businessImpact: [
+            "Achieve 94.7% portal adoption vs. industry average of 42%",
+            "Reduce call center volume by 73% through self-service transactions",
+            "Save $2.40 per interaction vs. phone or email support",
+            "Improve member satisfaction scores by 31 percentage points"
+          ]
+        },
+        {
+          title: "Personalized Member Experience",
+          description: "AI-powered personalization delivering relevant benefits information, recommendations, and guidance based on individual circumstances.",
+          features: [
+            "Smart benefits recommendations based on life stage, health status, and utilization patterns",
+            "Predictive care gap alerts for missed preventive screenings and chronic disease management",
+            "Cost estimator showing out-of-pocket expenses before seeking care",
+            "Personalized wellness programs with goals, challenges, and rewards tailored to individual needs"
+          ],
+          technicalDetails: [
+            "Machine learning models analyzing 240+ member attributes to deliver relevant content",
+            "Real-time personalization engine updating recommendations as new data becomes available",
+            "A/B testing framework optimizing content, messaging, and user experience",
+            "Privacy-first design with granular consent management and data access controls"
+          ],
+          businessImpact: [
+            "Increase preventive care compliance by 34% through predictive outreach",
+            "Reduce inappropriate ER utilization by 42% via cost transparency and alternatives",
+            "Improve medication adherence by 28% through personalized reminders and education",
+            "Generate $4.70 in medical cost savings for every $1 invested in personalized engagement"
+          ]
+        },
+        {
+          title: "Care Navigation & Advocacy",
+          description: "Human-centered support helping members navigate complex healthcare system and resolve billing or coverage issues.",
+          features: [
+            "24/7 nurse line staffed by RNs providing clinical guidance and triage",
+            "Care coordinators assisting with specialist referrals, second opinions, and treatment planning",
+            "Billing advocates resolving claims disputes, balance billing, and payment plans",
+            "Concierge services for high-touch members (executives, complex cases, maternity)"
+          ],
+          technicalDetails: [
+            "Omnichannel support via phone, chat, email, and video conferencing",
+            "CRM integration providing care advocates with complete member history and context",
+            "Quality assurance monitoring with call recording, coaching, and performance metrics",
+            "Escalation workflows ensuring complex cases receive appropriate expertise and follow-up"
+          ],
+          businessImpact: [
+            "Achieve 96% member satisfaction with care navigation services",
+            "Reduce cost of care by $8,400 per complex case through coordinated care management",
+            "Resolve 89% of billing disputes on first contact without member escalation",
+            "Generate $6.20 in value for every $1 spent on care navigation programs"
+          ]
+        },
+        {
+          title: "Member Data Management",
+          description: "Single source of truth for member demographics, coverage, and interaction history enabling personalized service.",
+          features: [
+            "Master data management (MDM) reconciling data from multiple source systems",
+            "Golden record creation with data quality validation and duplicate resolution",
+            "Historical tracking of all coverage changes, life events, and service interactions",
+            "Data governance ensuring accuracy, completeness, and regulatory compliance"
+          ],
+          technicalDetails: [
+            "ETL pipelines integrating data from HRIS, payroll, carriers, and member portal",
+            "Data quality rules validating 98.3% accuracy across 40+ critical data elements",
+            "Change data capture (CDC) providing real-time updates as enrollment changes occur",
+            "GDPR and CCPA compliance with member consent management and right-to-deletion"
+          ],
+          businessImpact: [
+            "Achieve 98.3% data accuracy vs. industry average of 84.7%",
+            "Reduce enrollment discrepancies by 94% through automated reconciliation",
+            "Save $1.2M annually in avoided premium adjustments and retro terminations",
+            "Enable 360-degree member view supporting 500K+ active members across 127 employer groups"
+          ]
+        }
+      ]
+    },
+    {
+      icon: FileText,
+      title: "Policy Compliance",
+      description: "Automated compliance monitoring across ERISA, ACA, HIPAA, and state regulations with audit trail management.",
+      metrics: ["100% Compliance Rate", "99.8% Audit Score", "Zero Penalties"],
+      href: "/solutions/policy-compliance",
+      capabilities: [
+        {
+          title: "Regulatory Compliance Monitoring",
+          description: "Continuous monitoring of federal and state regulations with automated compliance validation and alerting.",
+          features: [
+            "ERISA compliance for plan documents, SPDs, SMMs, and required disclosures",
+            "ACA compliance including affordability, minimum value, and reporting (1094/1095)",
+            "HIPAA privacy and security rules with risk assessments and breach notification",
+            "State-specific mandates covering 50 jurisdictions with unique requirements"
+          ],
+          technicalDetails: [
+            "Rules engine with 847 compliance requirements across federal and state laws",
+            "Automated control testing with continuous monitoring and real-time dashboards",
+            "Policy management system with version control and automated distribution",
+            "Integration with legal research services (Westlaw, LexisNexis) for regulatory updates"
+          ],
+          businessImpact: [
+            "Achieve 100% compliance rate with zero regulatory findings in 4+ years",
+            "Reduce compliance team headcount by 67% through automation",
+            "Avoid $2.8M in potential DOL, IRS, and HHS penalties",
+            "Score 99.8% on external compliance audits vs. industry average of 87.3%"
+          ]
+        },
+        {
+          title: "Audit Trail & Documentation",
+          description: "Comprehensive audit logging of all system actions, decisions, and data changes with tamper-evident storage.",
+          features: [
+            "Immutable audit logs with blockchain-based integrity verification",
+            "User activity monitoring tracking all data access and modifications",
+            "Decision rationale capture for automated processes (claims, underwriting, pricing)",
+            "Document retention management ensuring compliance with 7-year ERISA requirements"
+          ],
+          technicalDetails: [
+            "Write-once storage preventing audit log tampering or deletion",
+            "Detailed logging of who, what, when, where for all transactions",
+            "Advanced search and filtering for rapid audit response and investigation",
+            "Integration with SIEM systems for security incident detection and response"
+          ],
+          businessImpact: [
+            "Reduce audit preparation time from 8 weeks to 3 days",
+            "Achieve 100% audit traceability for 15M+ transactions annually",
+            "Support litigation and regulatory inquiries with complete documentation",
+            "Pass all SOC 2, HIPAA, and state compliance audits with zero exceptions"
+          ]
+        },
+        {
+          title: "Plan Document Management",
+          description: "Centralized repository for all plan documents with version control, electronic signatures, and distribution tracking.",
+          features: [
+            "Automated SPD generation from plan design parameters and carrier contracts",
+            "Electronic signature workflows for enrollment forms, beneficiary designations, and consents",
+            "Distribution tracking ensuring required notices reach members within mandated timeframes",
+            "Multi-language support for Spanish, Mandarin, and other languages as required"
+          ],
+          technicalDetails: [
+            "Template-based document generation with merge fields and conditional logic",
+            "Integration with DocuSign, Adobe Sign for electronic signature workflows",
+            "Delivery confirmation via email receipts, certified mail tracking, and portal acknowledgment",
+            "Accessibility compliance ensuring ADA and Section 508 requirements are met"
+          ],
+          businessImpact: [
+            "Reduce document preparation costs by $240,000 annually vs. manual processes",
+            "Achieve 99.2% on-time delivery of required notices vs. 78% industry average",
+            "Eliminate $840,000 in potential ERISA penalties for late or missing disclosures",
+            "Improve member comprehension through simplified language and multi-format delivery"
+          ]
+        },
+        {
+          title: "Compliance Training & Certification",
+          description: "Ongoing education programs ensuring staff understand regulatory requirements and maintain required certifications.",
+          features: [
+            "Role-based training curricula for benefits administration, privacy, and security",
+            "Annual certification requirements with testing and performance tracking",
+            "Just-in-time training modules triggered by regulatory changes or policy updates",
+            "Vendor training ensuring TPAs, carriers, and brokers meet compliance standards"
+          ],
+          technicalDetails: [
+            "Learning management system (LMS) with SCORM-compliant content",
+            "Automated assignment, reminder, and escalation workflows",
+            "Reporting dashboards tracking completion rates, test scores, and certification status",
+            "Integration with HR systems for new hire onboarding and role changes"
+          ],
+          businessImpact: [
+            "Achieve 100% compliance training completion vs. 67% industry average",
+            "Reduce compliance-related errors by 84% through improved staff knowledge",
+            "Support 2,400 employees across HR, benefits, and finance functions",
+            "Demonstrate commitment to compliance culture during audits and examinations"
           ]
         }
       ]
@@ -1628,7 +1463,7 @@ export default function ActuarialBenefits() {
               </motion.p>
 
               <div className="grid md:grid-cols-2 gap-8">
-                {features.map((feature, index) => {
+                {solutions.map((feature, index) => {
                   const Icon = feature.icon;
                   return (
                     <motion.button

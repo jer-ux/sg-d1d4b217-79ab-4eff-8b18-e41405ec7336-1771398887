@@ -2,17 +2,46 @@ import { motion } from "framer-motion";
 import Head from "next/head";
 import Nav from "@/components/Nav";
 import Footer from "@/components/Footer";
-import { Shield, Users, Award, TrendingUp } from "lucide-react";
+import { Shield, Users, Award, TrendingUp, ChevronRight, X } from "lucide-react";
+import { useState } from "react";
 
 export default function BoardOfDirectors() {
+  const [selectedMember, setSelectedMember] = useState<typeof boardMembers[0] | null>(null);
+
   const boardMembers = [
     {
       name: "Jeremiah Shrack",
       title: "Founder & CEO",
       image: "/jeremiah-shrack-professional.png",
-      bio: "Leading the strategic vision and technological innovation at SiriusB iQ.",
+      bio: "Jeremiah is a humanitarian and passionate business leader whose career began at Canon U.S.A., where he ranked #1 in the Region and #2 in North America for Net New Sales...all while attending IWU fulltime. He sold enterprise imaging systems to large public sector institutions and complex private enterprises.",
+      fullBio: {
+        introduction: "Over two decades, he has built a reputation for engineering intelligent operating systems, scaling organizations, and redefining how advanced analytics intersect with human judgment. As President and Chief Executive Officer of Kincaid Risk Management Consultants (KRMC), Jeremiah drives enterprise-wide revenue growth, operational excellence, and high-impact PBM/Rx consulting engagements.",
+        platform: "Kincaid IQ is a next-generation intelligent consulting operating system that integrates six purpose-built subsystems extending the reasoning frameworks of VortexAI, LogicAI, and JimShrackExpressAI. Each operating system is strategically designed to accelerate AI transformation in industries Jeremiah identifies as early adopters of intelligent automation. The platform combines ethical machine reasoning, actuarial precision, and human-centered design to drive measurable performance improvements for clients.",
+        philosophy: "Jeremiah approaches AI and analytics through an ethical lens — ensuring that Kincaid's systems enhance, not replace, human decision-making. His leadership philosophy emphasizes clarity, accountability, and innovation, translating strategic objectives into scalable processes and measurable outcomes across the enterprise. He believes that the most powerful technology serves humanity — not the other way around.",
+        expertise: [
+          "Enterprise Executive Sales and Leadership",
+          "Benefits Actuarial Consulting (Jumbo and Large-Market)",
+          "AI System Architecture (LogicAI + VertexAI)",
+          "PBM/Rx Contract Analytics",
+          "Ethical AI Deployment & Governance",
+          "Organizational Transformation at Scale"
+        ],
+        vision: "Grounded in business discipline, faith in God, and respect for humanity, Jeremiah is dedicated to helping employers outperform in the rapidly evolving health, benefits, and AI transformation landscape. Under his leadership, Kincaid RMC leverages a combined 20 years of consulting experience to deliver 20–35% savings on self-funded Anthem PBM and Rx contracts, empowering mid- and large-market organizations through transparent, data-driven actuarial insights."
+      }
     },
   ];
+
+  const [isModalOpen, setModalOpen] = useState(false);
+
+  const handleOpenModal = (member) => {
+    setSelectedMember(member);
+    setModalOpen(true);
+  };
+
+  const handleCloseModal = () => {
+    setSelectedMember(null);
+    setModalOpen(false);
+  };
 
   return (
     <>
@@ -62,7 +91,8 @@ export default function BoardOfDirectors() {
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.6, delay: index * 0.1 }}
-                  className="group relative"
+                  className="group relative cursor-pointer"
+                  onClick={() => setSelectedMember(member)}
                 >
                   <div className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-amber-950/40 via-zinc-900/40 to-black/40 border border-amber-500/20 p-8 hover:border-amber-500/40 transition-all duration-500 hover:shadow-xl hover:shadow-amber-500/10">
                     {/* Member Image */}
@@ -82,9 +112,13 @@ export default function BoardOfDirectors() {
                       <p className="text-amber-400 font-semibold mb-4">
                         {member.title}
                       </p>
-                      <p className="text-gray-400 text-sm leading-relaxed">
+                      <p className="text-gray-400 text-sm leading-relaxed mb-4">
                         {member.bio}
                       </p>
+                      <div className="flex items-center justify-center gap-2 text-amber-400 text-sm font-semibold group-hover:text-amber-300 transition-colors">
+                        <span>View Full Profile</span>
+                        <ChevronRight className="h-4 w-4 group-hover:translate-x-1 transition-transform" />
+                      </div>
                     </div>
 
                     {/* Decorative corner accent */}
@@ -93,6 +127,120 @@ export default function BoardOfDirectors() {
                 </motion.div>
               ))}
             </div>
+
+            {/* Detailed Profile Modal */}
+            {selectedMember && selectedMember.fullBio && (
+              <motion.div
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm"
+                onClick={() => setSelectedMember(null)}
+              >
+                <motion.div
+                  initial={{ scale: 0.9, opacity: 0 }}
+                  animate={{ scale: 1, opacity: 1 }}
+                  exit={{ scale: 0.9, opacity: 0 }}
+                  className="relative max-w-4xl w-full max-h-[90vh] overflow-y-auto bg-gradient-to-br from-zinc-900 via-black to-zinc-900 border border-amber-500/30 rounded-2xl p-8"
+                  onClick={(e) => e.stopPropagation()}
+                >
+                  {/* Close Button */}
+                  <button
+                    onClick={() => setSelectedMember(null)}
+                    className="absolute top-6 right-6 p-2 rounded-full bg-amber-500/10 hover:bg-amber-500/20 transition-colors"
+                  >
+                    <X className="h-6 w-6 text-amber-400" />
+                  </button>
+
+                  {/* Profile Header */}
+                  <div className="flex flex-col md:flex-row gap-8 mb-8 pb-8 border-b border-amber-500/20">
+                    <div className="relative w-40 h-40 rounded-full overflow-hidden border-4 border-amber-500/30 flex-shrink-0">
+                      <img
+                        src={selectedMember.image}
+                        alt={selectedMember.name}
+                        className="w-full h-full object-cover"
+                      />
+                    </div>
+                    <div className="flex-1">
+                      <h2 className="text-4xl font-bold text-amber-100 mb-2">
+                        {selectedMember.name}
+                      </h2>
+                      <p className="text-xl text-amber-400 font-semibold mb-4">
+                        {selectedMember.title}
+                      </p>
+                      <p className="text-gray-300 leading-relaxed">
+                        {selectedMember.bio}
+                      </p>
+                    </div>
+                  </div>
+
+                  {/* Full Biography Sections */}
+                  <div className="space-y-8">
+                    {/* Introduction */}
+                    <div>
+                      <h3 className="text-2xl font-bold text-amber-100 mb-4 flex items-center gap-3">
+                        <Shield className="h-6 w-6 text-amber-400" />
+                        Leadership & Experience
+                      </h3>
+                      <p className="text-gray-300 leading-relaxed">
+                        {selectedMember.fullBio.introduction}
+                      </p>
+                    </div>
+
+                    {/* Platform */}
+                    <div>
+                      <h3 className="text-2xl font-bold text-amber-100 mb-4 flex items-center gap-3">
+                        <TrendingUp className="h-6 w-6 text-amber-400" />
+                        Kincaid IQ Platform
+                      </h3>
+                      <p className="text-gray-300 leading-relaxed">
+                        {selectedMember.fullBio.platform}
+                      </p>
+                    </div>
+
+                    {/* Philosophy */}
+                    <div>
+                      <h3 className="text-2xl font-bold text-amber-100 mb-4 flex items-center gap-3">
+                        <Users className="h-6 w-6 text-amber-400" />
+                        Philosophy & Approach
+                      </h3>
+                      <p className="text-gray-300 leading-relaxed">
+                        {selectedMember.fullBio.philosophy}
+                      </p>
+                    </div>
+
+                    {/* Areas of Expertise */}
+                    <div>
+                      <h3 className="text-2xl font-bold text-amber-100 mb-4 flex items-center gap-3">
+                        <Award className="h-6 w-6 text-amber-400" />
+                        Areas of Expertise
+                      </h3>
+                      <div className="grid md:grid-cols-2 gap-3">
+                        {selectedMember.fullBio.expertise.map((area, idx) => (
+                          <div
+                            key={idx}
+                            className="flex items-start gap-3 p-3 rounded-lg bg-amber-500/5 border border-amber-500/10"
+                          >
+                            <ChevronRight className="h-5 w-5 text-amber-400 flex-shrink-0 mt-0.5" />
+                            <span className="text-gray-300">{area}</span>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+
+                    {/* Vision & Ethos */}
+                    <div className="p-6 rounded-xl bg-gradient-to-br from-amber-950/30 to-transparent border border-amber-500/20">
+                      <h3 className="text-2xl font-bold text-amber-100 mb-4">
+                        Vision & Ethos
+                      </h3>
+                      <p className="text-gray-300 leading-relaxed">
+                        {selectedMember.fullBio.vision}
+                      </p>
+                    </div>
+                  </div>
+                </motion.div>
+              </motion.div>
+            )}
           </div>
         </section>
 

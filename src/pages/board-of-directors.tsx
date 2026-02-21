@@ -51,7 +51,7 @@ export default function BoardOfDirectors() {
     },
     {
       name: "Dr. Michael Ochieng'",
-      title: "Board Member - AI Governance & Decision Architecture",
+      title: "Distinguished Chief Technology Officer",
       image: "/1766487748644.jpeg",
       bio: "Dr. Michael Ochieng' came to AI from the high-stakes world of wireless networks, where systems fail loudly when governance is absent. His career was forged in deploying large-scale LTE and 5G infrastructure for global operators like Verizon, T-Mobile, Sprint, Safaricom, and Huawei.",
       fullBio: {

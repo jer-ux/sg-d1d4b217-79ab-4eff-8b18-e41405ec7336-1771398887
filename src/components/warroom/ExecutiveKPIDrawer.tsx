@@ -31,9 +31,7 @@ function StressSpheres() {
     if (meshRef.current) {
       meshRef.current.rotation.y += 0.002;
       meshRef.current.children.forEach((child, i) => {
-        if (spheres[i]) {
-          child.position.y += Math.sin(state.clock.elapsedTime * spheres[i].speed) * 0.01;
-        }
+        child.position.y += Math.sin(state.clock.elapsedTime * spheres[i].speed) * 0.01;
       });
     }
   });
@@ -260,10 +258,9 @@ export function ExecutiveKPIDrawer({ isOpen, onClose, tile }: ExecutiveKPIDrawer
     }
   };
 
-  // Safe variance value - no more errors
+  // Safe variance value - handles undefined/null cases
   const varianceValue = tile.variance || tile.delta || "0%";
-  const varianceString = String(varianceValue || "");
-  const isNegativeVariance = varianceString.startsWith("-");
+  const isNegativeVariance = varianceValue.toString().includes("-");
 
   return (
     <AnimatePresence>

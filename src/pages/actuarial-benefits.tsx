@@ -5,6 +5,7 @@ import { SEO } from "@/components/SEO";
 import Nav from "@/components/Nav";
 import Footer from "@/components/Footer";
 import { useState } from "react";
+import React from "react";
 import dynamic from "next/dynamic";
 import Image from "next/image";
 
@@ -47,91 +48,93 @@ function SolutionCard3D({ solution, index }: { solution: any; index: number }) {
       style={{ perspective: 1000 }}
       className="h-full"
     >
-      <Link href={solution.href}>
-        <motion.div
-          onMouseMove={handleMouseMove}
-          onMouseLeave={handleMouseLeave}
-          style={{ rotateX, rotateY, transformStyle: "preserve-3d" }}
-          whileHover={{ scale: 1.05 }}
-          className="relative h-full p-8 rounded-2xl cursor-pointer group"
-        >
-          {/* Vegas glow border - amber/gold */}
-          <div className="absolute inset-0 rounded-2xl bg-gradient-to-br from-amber-500/30 to-yellow-600/30 opacity-0 group-hover:opacity-100 transition-opacity duration-500 blur-xl" />
-          
-          {/* Card background */}
-          <div className="relative h-full bg-black/90 backdrop-blur-xl rounded-2xl border border-amber-900/30 group-hover:border-amber-500/50 transition-all duration-500 overflow-hidden">
-            {/* Animated gradient background */}
+      <motion.button
+        onMouseMove={handleMouseMove}
+        onMouseLeave={handleMouseLeave}
+        style={{ rotateX, rotateY, transformStyle: "preserve-3d" }}
+        whileHover={{ scale: 1.05 }}
+        onClick={() => {
+          const event = new CustomEvent('openSolutionModal', { detail: solution });
+          window.dispatchEvent(event);
+        }}
+        className="relative h-full p-8 rounded-2xl cursor-pointer group w-full text-left"
+      >
+        {/* Vegas glow border - amber/gold */}
+        <div className="absolute inset-0 rounded-2xl bg-gradient-to-br from-amber-500/30 to-yellow-600/30 opacity-0 group-hover:opacity-100 transition-opacity duration-500 blur-xl" />
+        
+        {/* Card background */}
+        <div className="relative h-full bg-black/90 backdrop-blur-xl rounded-2xl border border-amber-900/30 group-hover:border-amber-500/50 transition-all duration-500 overflow-hidden">
+          {/* Animated gradient background */}
+          <motion.div
+            className="absolute inset-0 opacity-0 group-hover:opacity-20"
+            animate={{
+              background: [
+                "radial-gradient(circle at 0% 0%, #f59e0b 0%, transparent 50%)",
+                "radial-gradient(circle at 100% 100%, #d97706 0%, transparent 50%)",
+                "radial-gradient(circle at 0% 100%, #f59e0b 0%, transparent 50%)",
+                "radial-gradient(circle at 100% 0%, #d97706 0%, transparent 50%)",
+                "radial-gradient(circle at 0% 0%, #f59e0b 0%, transparent 50%)",
+              ],
+            }}
+            transition={{ duration: 8, repeat: Infinity }}
+          />
+
+          {/* Content */}
+          <div className="relative h-full p-8 flex flex-col" style={{ transform: "translateZ(50px)" }}>
+            {/* Icon */}
             <motion.div
-              className="absolute inset-0 opacity-0 group-hover:opacity-20"
-              animate={{
-                background: [
-                  "radial-gradient(circle at 0% 0%, #f59e0b 0%, transparent 50%)",
-                  "radial-gradient(circle at 100% 100%, #d97706 0%, transparent 50%)",
-                  "radial-gradient(circle at 0% 100%, #f59e0b 0%, transparent 50%)",
-                  "radial-gradient(circle at 100% 0%, #d97706 0%, transparent 50%)",
-                  "radial-gradient(circle at 0% 0%, #f59e0b 0%, transparent 50%)",
-                ],
-              }}
-              transition={{ duration: 8, repeat: Infinity }}
-            />
-
-            {/* Content */}
-            <div className="relative h-full p-8 flex flex-col" style={{ transform: "translateZ(50px)" }}>
-              {/* Icon */}
-              <motion.div
-                className="mb-6"
-                whileHover={{ rotate: 360, scale: 1.2 }}
-                transition={{ duration: 0.6 }}
-              >
-                <div className="relative inline-block">
-                  <div className="absolute inset-0 rounded-2xl blur-xl opacity-50 group-hover:opacity-100 transition-opacity bg-gradient-to-br from-amber-500/50 to-yellow-600/50" />
-                  <div className="relative p-4 rounded-2xl bg-amber-950/50 backdrop-blur-sm border border-amber-800/30">
-                    <Icon className="w-8 h-8 text-amber-500" style={{
-                      filter: "drop-shadow(0 0 8px #f59e0b)",
-                    }} />
-                  </div>
+              className="mb-6"
+              whileHover={{ rotate: 360, scale: 1.2 }}
+              transition={{ duration: 0.6 }}
+            >
+              <div className="relative inline-block">
+                <div className="absolute inset-0 rounded-2xl blur-xl opacity-50 group-hover:opacity-100 transition-opacity bg-gradient-to-br from-amber-500/50 to-yellow-600/50" />
+                <div className="relative p-4 rounded-2xl bg-amber-950/50 backdrop-blur-sm border border-amber-800/30">
+                  <Icon className="w-8 h-8 text-amber-500" style={{
+                    filter: "drop-shadow(0 0 8px #f59e0b)",
+                  }} />
                 </div>
-              </motion.div>
-
-              {/* Title */}
-              <h3 className="text-2xl font-bold mb-3 text-white group-hover:text-amber-100 transition-all duration-300">
-                {solution.title}
-              </h3>
-
-              {/* Description */}
-              <p className="text-gray-400 mb-6 flex-grow group-hover:text-gray-300 transition-colors">
-                {solution.description}
-              </p>
-
-              {/* Metrics */}
-              <div className="space-y-3 mb-6">
-                {solution.metrics.map((metric: any, idx: number) => (
-                  <motion.div
-                    key={idx}
-                    initial={{ opacity: 0, x: -20 }}
-                    whileInView={{ opacity: 1, x: 0 }}
-                    transition={{ delay: 0.3 + idx * 0.1 }}
-                    className="flex items-center gap-3 text-sm"
-                  >
-                    <div className="w-2 h-2 rounded-full bg-amber-500" style={{
-                      boxShadow: "0 0 10px #f59e0b",
-                    }} />
-                    <span className="text-gray-300">{metric}</span>
-                  </motion.div>
-                ))}
               </div>
+            </motion.div>
 
-              {/* CTA */}
-              <motion.div
-                className="flex items-center gap-2 text-sm font-semibold text-amber-500 group-hover:gap-4 transition-all"
-              >
-                Explore Solution
-                <ArrowRight className="w-4 h-4" />
-              </motion.div>
+            {/* Title */}
+            <h3 className="text-2xl font-bold mb-3 text-white group-hover:text-amber-100 transition-all duration-300">
+              {solution.title}
+            </h3>
+
+            {/* Description */}
+            <p className="text-gray-400 mb-6 flex-grow group-hover:text-gray-300 transition-colors">
+              {solution.description}
+            </p>
+
+            {/* Metrics */}
+            <div className="space-y-3 mb-6">
+              {solution.metrics.map((metric: any, idx: number) => (
+                <motion.div
+                  key={idx}
+                  initial={{ opacity: 0, x: -20 }}
+                  whileInView={{ opacity: 1, x: 0 }}
+                  transition={{ delay: 0.3 + idx * 0.1 }}
+                  className="flex items-center gap-3 text-sm"
+                >
+                  <div className="w-2 h-2 rounded-full bg-amber-500" style={{
+                    boxShadow: "0 0 10px #f59e0b",
+                  }} />
+                  <span className="text-gray-300">{metric}</span>
+                </motion.div>
+              ))}
             </div>
+
+            {/* CTA */}
+            <motion.div
+              className="flex items-center gap-2 text-sm font-semibold text-amber-500 group-hover:gap-4 transition-all"
+            >
+              Explore Solution
+              <ArrowRight className="w-4 h-4" />
+            </motion.div>
           </div>
-        </motion.div>
-      </Link>
+        </div>
+      </motion.button>
     </motion.div>
   );
 }
@@ -498,382 +501,257 @@ function FeatureDetailModal({ feature, onClose }: { feature: any; onClose: () =>
   );
 }
 
+// Solution Detail Modal Component
+function SolutionDetailModal({ solution, onClose }: { solution: any; onClose: () => void }) {
+  const [selectedCapability, setSelectedCapability] = useState<any>(null);
+  const Icon = solution.icon;
+
+  return (
+    <motion.div
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+      className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm"
+      onClick={onClose}
+    >
+      <motion.div
+        initial={{ scale: 0.9, opacity: 0 }}
+        animate={{ scale: 1, opacity: 1 }}
+        exit={{ scale: 0.9, opacity: 0 }}
+        onClick={(e) => e.stopPropagation()}
+        className="relative w-full max-w-6xl max-h-[90vh] overflow-y-auto bg-gradient-to-br from-zinc-950 via-amber-950/20 to-zinc-900 rounded-3xl border border-amber-500/30 shadow-2xl"
+      >
+        {/* Sticky Header */}
+        <div className="sticky top-0 z-10 bg-gradient-to-r from-zinc-950 to-amber-950/30 border-b border-amber-500/20 p-6 backdrop-blur-xl">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-4">
+              <div className="p-3 rounded-xl bg-amber-500/20 border border-amber-500/30">
+                <Icon className="w-8 h-8 text-amber-400" />
+              </div>
+              <div>
+                <h2 className="text-3xl font-bold text-white">{solution.title}</h2>
+                <p className="text-amber-400/70 text-sm mt-1">{solution.description}</p>
+              </div>
+            </div>
+            <button
+              onClick={onClose}
+              className="p-2 rounded-xl hover:bg-white/10 transition-colors"
+            >
+              <X className="w-6 h-6 text-white" />
+            </button>
+          </div>
+
+          {/* Breadcrumb */}
+          {selectedCapability && (
+            <div className="flex items-center gap-2 mt-4 text-sm text-amber-400/70">
+              <button
+                onClick={() => setSelectedCapability(null)}
+                className="hover:text-amber-400 transition-colors"
+              >
+                Core Capabilities
+              </button>
+              <ChevronRight className="w-4 h-4" />
+              <span className="text-amber-400 font-semibold">{selectedCapability.title}</span>
+            </div>
+          )}
+        </div>
+
+        {/* Content */}
+        <div className="p-8">
+          <AnimatePresence mode="wait">
+            {!selectedCapability ? (
+              <motion.div
+                key="capabilities-grid"
+                initial={{ opacity: 0, x: -20 }}
+                animate={{ opacity: 1, x: 0 }}
+                exit={{ opacity: 0, x: 20 }}
+              >
+                {/* Metrics Overview */}
+                <div className="grid md:grid-cols-3 gap-4 mb-8">
+                  {solution.metrics.map((metric: string, idx: number) => (
+                    <div
+                      key={idx}
+                      className="p-4 rounded-xl bg-gradient-to-br from-amber-950/40 to-zinc-900/60 border border-amber-500/30 text-center"
+                    >
+                      <div className="text-2xl font-bold text-amber-400">{metric}</div>
+                    </div>
+                  ))}
+                </div>
+
+                {/* Core Capabilities - Clickable */}
+                <div>
+                  <h3 className="text-2xl font-bold text-white mb-6">Core Capabilities</h3>
+                  <div className="grid md:grid-cols-2 gap-6">
+                    {solution.capabilities.map((capability: any, idx: number) => (
+                      <motion.button
+                        key={idx}
+                        onClick={() => setSelectedCapability(capability)}
+                        whileHover={{ scale: 1.03, y: -5 }}
+                        className="p-6 rounded-xl bg-gradient-to-br from-zinc-900/80 to-amber-950/40 border border-amber-500/30 hover:border-amber-400/60 transition-all text-left group"
+                      >
+                        <div className="flex items-start justify-between mb-4">
+                          <h4 className="text-xl font-bold text-white group-hover:text-amber-400 transition-colors">
+                            {capability.title}
+                          </h4>
+                          <ChevronRight className="w-6 h-6 text-amber-400/50 group-hover:text-amber-400 group-hover:translate-x-1 transition-all flex-shrink-0" />
+                        </div>
+                        <p className="text-gray-400 text-sm leading-relaxed">
+                          {capability.description}
+                        </p>
+                      </motion.button>
+                    ))}
+                  </div>
+                </div>
+              </motion.div>
+            ) : (
+              <motion.div
+                key="capability-detail"
+                initial={{ opacity: 0, x: -20 }}
+                animate={{ opacity: 1, x: 0 }}
+                exit={{ opacity: 0, x: 20 }}
+              >
+                {/* Capability Details */}
+                <div className="space-y-8">
+                  {/* Overview */}
+                  <div>
+                    <h3 className="text-2xl font-bold text-white mb-4">{selectedCapability.title}</h3>
+                    <p className="text-gray-300 text-lg leading-relaxed">{selectedCapability.description}</p>
+                  </div>
+
+                  {/* Key Features */}
+                  <div>
+                    <h4 className="text-xl font-bold text-white mb-4 flex items-center gap-2">
+                      <CheckCircle className="w-5 h-5 text-emerald-400" />
+                      Key Features
+                    </h4>
+                    <div className="space-y-3">
+                      {selectedCapability.features.map((feature: string, idx: number) => (
+                        <motion.div
+                          key={idx}
+                          initial={{ opacity: 0, x: -20 }}
+                          animate={{ opacity: 1, x: 0 }}
+                          transition={{ delay: idx * 0.1 }}
+                          className="flex items-start gap-3 p-4 rounded-xl bg-black/50 border border-amber-500/20"
+                        >
+                          <CheckCircle className="w-5 h-5 text-emerald-400 flex-shrink-0 mt-0.5" />
+                          <p className="text-gray-300">{feature}</p>
+                        </motion.div>
+                      ))}
+                    </div>
+                  </div>
+
+                  {/* Technical Details */}
+                  <div className="p-6 rounded-2xl bg-gradient-to-br from-blue-950/30 to-purple-950/30 border border-blue-500/30">
+                    <h4 className="text-xl font-bold text-blue-300 mb-4 flex items-center gap-2">
+                      <Database className="w-5 h-5" />
+                      Technical Implementation
+                    </h4>
+                    <ul className="space-y-2">
+                      {selectedCapability.technicalDetails.map((detail: string, idx: number) => (
+                        <li key={idx} className="flex items-start gap-3 text-gray-300">
+                          <span className="text-blue-400 mt-1">•</span>
+                          <span>{detail}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+
+                  {/* Business Impact */}
+                  <div>
+                    <h4 className="text-xl font-bold text-white mb-4 flex items-center gap-2">
+                      <Target className="w-5 h-5 text-amber-400" />
+                      Business Impact
+                    </h4>
+                    <div className="grid md:grid-cols-2 gap-4">
+                      {selectedCapability.businessImpact.map((impact: string, idx: number) => (
+                        <motion.div
+                          key={idx}
+                          initial={{ opacity: 0, y: 20 }}
+                          animate={{ opacity: 1, y: 0 }}
+                          transition={{ delay: idx * 0.1 }}
+                          className="p-4 rounded-xl bg-gradient-to-br from-emerald-950/20 to-green-950/20 border border-emerald-500/30"
+                        >
+                          <div className="flex items-start gap-3">
+                            <Target className="w-5 h-5 text-emerald-400 flex-shrink-0 mt-0.5" />
+                            <p className="text-gray-300 text-sm">{impact}</p>
+                          </div>
+                        </motion.div>
+                      ))}
+                    </div>
+                  </div>
+
+                  {/* Start Now CTA */}
+                  <motion.div
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: 0.5 }}
+                    className="mt-12 p-8 rounded-2xl bg-gradient-to-r from-amber-600/20 via-yellow-600/20 to-amber-600/20 border border-amber-500/40"
+                  >
+                    <div className="text-center">
+                      <h4 className="text-2xl font-bold text-white mb-3">Ready to Get Started?</h4>
+                      <p className="text-gray-300 mb-6">Schedule a personalized demo of {selectedCapability.title}</p>
+                      <Link href="/request-demo">
+                        <motion.button
+                          whileHover={{ scale: 1.05 }}
+                          whileTap={{ scale: 0.95 }}
+                          className="px-8 py-4 bg-gradient-to-r from-amber-600 to-yellow-600 rounded-xl text-white font-bold text-lg flex items-center gap-3 mx-auto shadow-xl"
+                        >
+                          <Sparkles className="w-5 h-5" />
+                          Start Now - Request Demo
+                          <ArrowRight className="w-5 h-5" />
+                        </motion.button>
+                      </Link>
+                    </div>
+                  </motion.div>
+                </div>
+              </motion.div>
+            )}
+          </AnimatePresence>
+        </div>
+      </motion.div>
+    </motion.div>
+  );
+}
+
 export default function ActuarialBenefits() {
   const [hoveredFeature, setHoveredFeature] = useState<number | null>(null);
   const [selectedFeature, setSelectedFeature] = useState<any>(null);
+  const [selectedSolution, setSelectedSolution] = useState<any>(null);
 
-  const solutions = [
+  // Add event listener for solution modal
+  React.useEffect(() => {
+    const handleOpenSolutionModal = (e: any) => {
+      setSelectedSolution(e.detail);
+    };
+    window.addEventListener('openSolutionModal', handleOpenSolutionModal);
+    return () => window.removeEventListener('openSolutionModal', handleOpenSolutionModal);
+  }, []);
+
+  const features = [
     {
       icon: Shield,
       title: "Risk Assessment",
       description: "Advanced predictive modeling for comprehensive risk evaluation and loss prevention across all benefit plans.",
-      metrics: ["99.2% Accuracy", "$8.4M Loss Prevention", "Real-time Monitoring"],
-      href: "/solutions/risk-assessment",
-    },
-    {
-      icon: TrendingUp,
-      title: "Premium Calculation",
-      description: "Intelligent pricing algorithms that optimize revenue while maintaining competitive rates and regulatory compliance.",
-      metrics: ["98.7% Pricing Accuracy", "$6.2M Revenue Optimization", "Dynamic Rate Adjustments"],
-      href: "/solutions/premium-calculation",
-    },
-    {
-      icon: Heart,
-      title: "Health Benefits",
-      description: "Comprehensive benefits administration platform with integrated wellness programs and member engagement tools.",
-      metrics: ["96.8% Member Satisfaction", "$15.3M Cost Savings", "50+ Plan Options"],
-      href: "/solutions/health-benefits",
-    },
-    {
-      icon: BarChart3,
-      title: "Claims Analytics",
-      description: "Real-time claims processing with AI-powered fraud detection and automated adjudication workflows.",
-      metrics: ["97.4% Accuracy", "24hr Processing Time", "$4.2M Fraud Prevention"],
-      href: "/solutions/claims-analytics",
-    },
-    {
-      icon: Users,
-      title: "Member Management",
-      description: "Unified member portal with self-service capabilities, digital ID cards, and personalized benefit recommendations.",
-      metrics: ["98.3% Data Accuracy", "94.7% Portal Adoption", "500K+ Active Members"],
-      href: "/solutions/member-management",
-    },
-    {
-      icon: FileText,
-      title: "Policy Compliance",
-      description: "Automated compliance monitoring across ERISA, ACA, HIPAA, and state regulations with audit trail management.",
-      metrics: ["100% Compliance Rate", "99.8% Audit Score", "Zero Penalties"],
-      href: "/solutions/policy-compliance",
-    },
-    {
-      icon: DollarSign,
-      title: "Cost Optimization",
-      description: "Strategic cost reduction through utilization management, network optimization, and care coordination programs.",
-      metrics: ["$12.4M Cost Reduction", "487% ROI", "23% Utilization Improvement"],
-      href: "/solutions/cost-optimization",
-    },
-    {
-      icon: Layers,
-      title: "Plan Design",
-      description: "Data-driven plan design tools with benefit modeling, competitive analysis, and financial projections.",
-      metrics: ["94.6% Efficiency", "91.4% Member Adoption", "35+ Custom Plans"],
-      href: "/solutions/plan-design",
-    },
-    {
-      icon: PieChart,
-      title: "Loss Ratio Analysis",
-      description: "Comprehensive loss ratio tracking with predictive analytics for trend identification and corrective action planning.",
-      metrics: ["73.2% Loss Ratio", "98.9% Accuracy", "$7.8M Reserve Optimization"],
-      href: "/solutions/loss-ratio-analysis",
-    },
-    {
-      icon: Activity,
-      title: "Performance Metrics",
-      description: "Real-time KPI dashboards with customizable reporting, benchmarking, and performance scorecards.",
-      metrics: ["99.97% Uptime", "47ms Data Latency", "150+ Metrics Tracked"],
-      href: "/solutions/performance-metrics",
-    },
-    {
-      icon: CheckCircle2,
-      title: "Quality Assurance",
-      description: "Comprehensive QA framework with automated testing, error detection, and continuous improvement protocols.",
-      metrics: ["99.4% Data Quality", "99.7% Error Detection", "Zero Critical Defects"],
-      href: "/solutions/quality-assurance",
-    },
-    {
-      icon: Sparkles,
-      title: "AI Automation",
-      description: "End-to-end process automation using machine learning, natural language processing, and intelligent workflows.",
-      metrics: ["87.3% Automation Rate", "$18.7M Cost Savings", "15min Avg Response"],
-      href: "/solutions/ai-automation",
-    },
-  ];
-
-  const features = [
-    {
-      icon: Target,
-      title: "Precision Actuarial Science",
-      description: "Our team of certified actuaries brings decades of experience in risk modeling, pricing strategy, and financial forecasting to deliver unparalleled accuracy.",
       stats: "99.2% Accuracy",
-      detailedDescription: "Our actuarial framework combines traditional actuarial principles with modern machine learning to deliver predictive accuracy that exceeds industry benchmarks. We leverage proprietary algorithms developed in partnership with leading academic institutions and validated against Fortune 500 portfolios.",
-      mcKinseyAlignment: "Our approach mirrors McKinsey's 'Three Horizons' framework, balancing immediate operational improvements (Horizon 1) with emerging capabilities development (Horizon 2) and transformational innovations (Horizon 3). This ensures sustainable competitive advantage across the actuarial value chain.",
-      consultingFramework: "McKinsey Three Horizons & Bain RAPID Decision Framework",
-      strategicPillars: [
-        {
-          title: "Data-Driven Modeling",
-          description: "Advanced statistical techniques including GLMs, GAMs, and ensemble methods calibrated against 15+ years of claims data across 500+ client portfolios"
-        },
-        {
-          title: "Regulatory Excellence",
-          description: "Proactive compliance monitoring aligned with SOA standards, ERISA requirements, and state-specific regulations, reducing audit risk by 94%"
-        },
-        {
-          title: "Predictive Analytics",
-          description: "Real-time risk scoring using gradient boosting and neural networks, achieving 99.2% accuracy in loss prediction and trend forecasting"
-        },
-        {
-          title: "Continuous Improvement",
-          description: "Quarterly model recalibration using A/B testing and champion-challenger methodology to maintain edge in dynamic market conditions"
-        }
-      ],
-      metrics: [
-        {
-          icon: Target,
-          title: "Predictive Accuracy",
-          value: "99.2%",
-          analysis: [
-            "Outperforms industry average of 87.4% by 11.8 percentage points through proprietary ensemble modeling",
-            "Validated across $2.4B in annual claims volume representing 847,000 member-years",
-            "Incorporates 240+ risk factors including medical history, demographic trends, and socioeconomic indicators",
-            "Real-time model updates using streaming data reduce lag from quarterly to weekly recalibration cycles"
-          ],
-          benchmarks: [
-            { label: "Industry Average (Bain)", value: "87.4%" },
-            { label: "Top Quartile (Bain)", value: "93.1%" },
-            { label: "Best-in-Class (McKinsey)", value: "96.8%" },
-            { label: "SiriusB iQ Performance", value: "99.2%" }
-          ],
-          caseStudies: [
-            {
-              client: "Fortune 100 Healthcare Provider",
-              industry: "Self-Insured Employer | 125,000 Lives",
-              result: "$14.2M Annual Savings",
-              summary: "Reduced medical loss ratio from 89.7% to 76.3% through precision risk segmentation",
-              challenge: "Facing 23% year-over-year premium increases with limited visibility into cost drivers and no predictive capability for high-cost claimants. Historical actuarial models were producing variance of ±18% from actual.",
-              solution: [
-                "Implemented machine learning risk stratification identifying 2,400 high-risk members (1.9% of population) representing 34% of total claims",
-                "Deployed predictive intervention engine routing high-risk members to care coordination, reducing ER visits by 47% and specialist referrals by 31%",
-                "Built real-time claims anomaly detection preventing $2.8M in improper payments and duplicate billing",
-                "Integrated pharmacy benefit manager (PBM) data revealing $4.7M in avoidable specialty drug costs through formulary optimization",
-                "Established quarterly business reviews with C-suite presenting forward-looking 12-month cost projections with 95% confidence intervals"
-              ],
-              impact: [
-                { metric: "MLR Reduction", value: "13.4 pts" },
-                { metric: "Premium Savings", value: "$14.2M/yr" },
-                { metric: "Forecast Accuracy", value: "98.7%" },
-                { metric: "ROI on Platform", value: "847%" }
-              ],
-              timeline: [
-                { period: "Month 1-2", milestone: "Data integration and baseline modeling" },
-                { period: "Month 3-4", milestone: "Predictive model deployment and validation" },
-                { period: "Month 5-6", milestone: "Care coordination program launch" },
-                { period: "Month 7-12", milestone: "Continuous optimization and quarterly reviews" }
-              ],
-              testimonial: "The precision of SiriusB iQ's actuarial models transformed our benefits strategy from reactive cost management to proactive risk mitigation. We now forecast costs with the same rigor as revenue.",
-              testimonialAuthor: "Sarah Chen, PhD",
-              testimonialRole: "SVP, Total Rewards & Benefits Strategy"
-            },
-            {
-              client: "Multi-State TPA Network",
-              industry: "Third-Party Administrator | 340 Employer Groups",
-              result: "$8.7M Portfolio Optimization",
-              summary: "Improved pricing accuracy across 340 employer groups, reducing underwriting losses by 67%",
-              challenge: "Managing disparate employer groups with wide variation in demographics, industry risk profiles, and benefit designs. Experiencing 31% of groups in underwriting loss position with aggregate combined ratio of 107.3%.",
-              solution: [
-                "Developed custom risk scoring algorithm for each of 340 employer groups incorporating industry-specific trends and local market dynamics",
-                "Implemented dynamic pricing engine with monthly rate adjustments based on rolling 18-month experience and predictive trends",
-                "Created segmentation framework identifying 47 employer groups requiring immediate intervention and 82 groups suitable for value-based arrangements",
-                "Built executive dashboard providing real-time visibility into portfolio health, loss ratios by segment, and emerging risk indicators",
-                "Established automated underwriting workflow reducing new group quoting from 3 weeks to 48 hours while improving accuracy"
-              ],
-              impact: [
-                { metric: "Combined Ratio", value: "93.8%" },
-                { metric: "Groups in Profit", value: "89%" },
-                { metric: "Portfolio Value", value: "+$8.7M" },
-                { metric: "Quote Turnaround", value: "48 hours" }
-              ],
-              timeline: [
-                { period: "Month 1-3", milestone: "Portfolio audit and risk segmentation" },
-                { period: "Month 4-6", milestone: "Pricing engine development and testing" },
-                { period: "Month 7-9", milestone: "Renewal cycle optimization and deployment" },
-                { period: "Month 10-12", milestone: "Performance monitoring and refinement" }
-              ],
-              testimonial: "We went from flying blind to having X-ray vision into our portfolio. The granular risk insights enable us to price competitively while protecting margins—a game-changer for our business.",
-              testimonialAuthor: "Michael Rodriguez, FSA, MAAA",
-              testimonialRole: "Chief Actuary"
-            }
-          ]
-        },
-        {
-          icon: DollarSignIcon,
-          title: "Cost Avoidance",
-          value: "$487M",
-          analysis: [
-            "Cumulative savings across 127 client organizations through proactive risk management and intervention strategies",
-            "Average cost reduction of 18.7% within first 12 months of platform deployment through claim prevention",
-            "Specialty pharmacy spend optimization delivering $124M in savings via therapeutic substitution and prior authorization automation",
-            "Prevented $83M in fraudulent, wasteful, and abusive (FWA) claims through AI-powered anomaly detection"
-          ],
-          benchmarks: [
-            { label: "Traditional TPA Savings", value: "3-7%" },
-            { label: "Consulting Firm Projects (Bain)", value: "8-12%" },
-            { label: "Best-in-Class Programs (McKinsey)", value: "12-18%" },
-            { label: "SiriusB iQ Average", value: "18.7%" }
-          ],
-          caseStudies: [
-            {
-              client: "National Restaurant Chain",
-              industry: "Self-Funded Employer | 78,000 Hourly Workers",
-              result: "$23.4M in Year 1 Savings",
-              summary: "Reduced total cost of care by 19.3% while improving member satisfaction scores",
-              challenge: "High-turnover hourly workforce with limited healthcare literacy resulting in overutilization of emergency services and poor chronic disease management. Annual healthcare trend running at 14.8% vs. national average of 6.2%.",
-              solution: [
-                "Deployed member education platform with SMS-based care navigation in English and Spanish, reducing inappropriate ER visits by 42%",
-                "Implemented telemedicine-first strategy with $0 copay, shifting 34% of acute care visits from in-person to virtual",
-                "Built chronic disease registry identifying 8,700 diabetic members and 4,200 hypertensive members for targeted outreach",
-                "Negotiated direct-to-employer specialty pharmacy arrangement saving $6.8M on biologics and oncology medications",
-                "Created financial incentive structure rewarding preventive care completion and generic medication adherence"
-              ],
-              impact: [
-                { metric: "Total Cost Reduction", value: "19.3%" },
-                { metric: "ER Visit Reduction", value: "42%" },
-                { metric: "Telemedicine Adoption", value: "34%" },
-                { metric: "Member Satisfaction", value: "+12 pts NPS" }
-              ],
-              timeline: [
-                { period: "Month 1-2", milestone: "Member segmentation and needs analysis" },
-                { period: "Month 3-5", milestone: "Care navigation platform rollout" },
-                { period: "Month 6-8", milestone: "Chronic disease program launch" },
-                { period: "Month 9-12", milestone: "Pharmacy contract renegotiation and optimization" }
-              ],
-              testimonial: "Our employees now have a trusted guide through the healthcare maze. Lower costs, better outcomes, happier workforce—that's the trifecta every CFO dreams about.",
-              testimonialAuthor: "David Park",
-              testimonialRole: "CFO & EVP Operations"
-            },
-            {
-              client: "Mid-Market Manufacturing Consortium",
-              industry: "Consortium of 23 Manufacturers | 41,000 Total Lives",
-              result: "$31.8M Three-Year Savings",
-              summary: "Pooled purchasing power and shared risk management delivering enterprise-scale economics",
-              challenge: "23 mid-sized manufacturers each with 500-3,000 employees unable to negotiate competitive rates individually. Collective spending of $147M annually with limited leverage and no shared best practices.",
-              solution: [
-                "Established consortium governance structure with shared data warehouse and unified analytics platform",
-                "Negotiated master service agreements with top-tier carriers and vendors leveraging combined 41,000 lives",
-                "Implemented cross-employer benchmarking revealing $18.3M in addressable cost variation through standardization",
-                "Created centers of excellence (CoE) program for joint replacements, bariatric surgery, and transplants saving $4.7M",
-                "Built inter-company employee wellness challenges and shared health coach network reducing aggregate trend by 4.2 points"
-              ],
-              impact: [
-                { metric: "3-Year Savings", value: "$31.8M" },
-                { metric: "Avg. Cost Per Member", value: "-14.2%" },
-                { metric: "Trend Reduction", value: "4.2 pts" },
-                { metric: "Network Discount Improvement", value: "+8.7%" }
-              ],
-              timeline: [
-                { period: "Quarter 1", milestone: "Consortium formation and data sharing agreements" },
-                { period: "Quarter 2-3", milestone: "Carrier/vendor RFP process and contracting" },
-                { period: "Quarter 4-6", milestone: "Program standardization and CoE implementation" },
-                { period: "Quarter 7-12", milestone: "Continuous improvement and expansion planning" }
-              ],
-              testimonial: "Individually we were price-takers. Together we became price-makers. The SiriusB iQ platform gave us enterprise capabilities at mid-market budgets.",
-              testimonialAuthor: "Jennifer Wu, CPA",
-              testimonialRole: "Consortium Chair & CFO, Precision Parts Inc."
-            }
-          ]
-        },
-        {
-          icon: Database,
-          title: "Data Processing Speed",
-          value: "47ms Latency",
-          analysis: [
-            "Real-time claim adjudication and risk scoring using distributed computing architecture processing 240,000 claims daily",
-            "Streaming analytics pipeline ingesting EDI 837/835 files with sub-second transformation to actionable insights",
-            "In-memory caching layer reducing database query times by 94% for frequently accessed member and provider data",
-            "Horizontal scaling architecture supporting concurrent analysis of 500+ employer groups without performance degradation"
-          ],
-          benchmarks: [
-            { label: "Legacy TPA Systems", value: "12-48 hours" },
-            { label: "Modern Cloud Solutions", value: "5-15 minutes" },
-            { label: "Real-Time Leaders (Bain)", value: "200-500ms" },
-            { label: "SiriusB iQ Platform", value: "47ms" }
-          ],
-          caseStudies: [
-            {
-              client: "Regional Health Plan",
-              industry: "Managed Care Organization | 280,000 Members",
-              result: "97% Faster Claims Processing",
-              summary: "Transformed member experience through real-time eligibility verification and instant claim status",
-              challenge: "Batch processing architecture creating 24-48 hour delays in claim adjudication, leading to member complaints and provider abrasion. Call center receiving 12,000 monthly inquiries about claim status.",
-              solution: [
-                "Migrated from nightly batch processing to event-driven streaming architecture with Apache Kafka and Flink",
-                "Implemented real-time eligibility API enabling provider point-of-service verification in <100ms",
-                "Deployed machine learning auto-adjudication for clean claims (73% of volume) with straight-through processing",
-                "Built member mobile app with push notifications for claim decisions within minutes of provider submission",
-                "Created provider portal with real-time claim scrubbing identifying 89% of rejection reasons before submission"
-              ],
-              impact: [
-                { metric: "Claims Processing Time", value: "47ms avg" },
-                { metric: "Auto-Adjudication Rate", value: "73%" },
-                { metric: "Call Center Volume", value: "-67%" },
-                { metric: "Provider Satisfaction", value: "+23 pts" }
-              ],
-              timeline: [
-                { period: "Month 1-3", milestone: "Architecture design and platform selection" },
-                { period: "Month 4-7", milestone: "Incremental migration and parallel testing" },
-                { period: "Month 8-10", milestone: "Member/provider portal launch" },
-                { period: "Month 11-12", milestone: "Legacy system decommission and optimization" }
-              ],
-              testimonial: "We went from a 48-hour turnaround to near-instant processing. Members and providers now expect real-time service, and we deliver it consistently.",
-              testimonialAuthor: "Dr. Amanda Foster, MD, MPH",
-              testimonialRole: "Chief Medical Officer"
-            },
-            {
-              client: "Global Consulting Firm",
-              industry: "Professional Services | 89,000 International Employees",
-              result: "Real-Time Global Benefits Analytics",
-              summary: "Unified benefits data across 47 countries enabling instant executive reporting and decision support",
-              challenge: "Fragmented benefits administration across regional teams with no consolidated view of global spend, utilization, or risk. Executive team unable to get timely answers on total rewards ROI or emerging cost trends.",
-              solution: [
-                "Built global data integration layer normalizing benefits data from 127 carriers, TPAs, and vendors across 47 countries",
-                "Deployed real-time ETL pipelines converting disparate file formats into unified analytical schema within 47ms",
-                "Created executive dashboard providing instant drill-down from global totals to individual country/business unit performance",
-                "Implemented predictive alerts for anomalous spend patterns, compliance gaps, and vendor performance issues",
-                "Enabled ad-hoc analysis capability for total rewards team to answer C-suite questions in real-time vs. weeks"
-              ],
-              impact: [
-                { metric: "Reporting Speed", value: "Real-time" },
-                { metric: "Data Sources Unified", value: "127" },
-                { metric: "Countries Covered", value: "47" },
-                { metric: "Executive Time Saved", value: "1,200 hrs/yr" }
-              ],
-              timeline: [
-                { period: "Month 1-4", milestone: "Global data discovery and mapping" },
-                { period: "Month 5-9", milestone: "Integration platform build and testing" },
-                { period: "Month 10-12", milestone: "Dashboard deployment and user training" },
-                { period: "Ongoing", milestone: "Continuous data source additions and enhancements" }
-              ],
-              testimonial: "For the first time in our firm's history, we have a real-time, global view of our total rewards investment. The insights drive better decisions and the speed gives us competitive advantage.",
-              testimonialAuthor: "Patricia Okonkwo, SHRM-SCP",
-              testimonialRole: "Global Head of Total Rewards"
-            }
-          ]
-        }
-      ]
-    },
-    {
-      icon: Zap,
-      title: "Real-Time Intelligence",
-      description: "Lightning-fast data processing and analytics deliver insights in milliseconds, enabling proactive decision-making and immediate risk response.",
-      stats: "47ms Latency",
-      detailedDescription: "Our real-time analytics platform processes millions of transactions daily with sub-50ms latency, enabling instant decision-making and proactive risk management. Built on modern streaming architectures and in-memory computing, we deliver insights at the speed of business.",
+      detailedDescription: "AI-powered algorithms analyze historical claims data, demographic trends, and market conditions to forecast future risk exposure with exceptional accuracy.",
       mcKinseyAlignment: "Aligned with Bain's 'Net Promoter System' philosophy, our real-time capabilities enable closed-loop feedback and immediate service recovery. This drives both operational excellence and member loyalty through responsive, data-driven interactions.",
       consultingFramework: "Bain Net Promoter System & McKinsey Customer Decision Journey",
       strategicPillars: [
         {
-          title: "Streaming Analytics",
-          description: "Event-driven architecture processing 2.4M transactions daily with Apache Kafka and Flink for zero-latency insights"
+          title: "Predictive Risk Modeling",
+          description: "AI-powered algorithms analyze historical claims data, demographic trends, and market conditions to forecast future risk exposure with exceptional accuracy."
         },
         {
-          title: "In-Memory Computing",
-          description: "Redis and Hazelcast caching layers reducing database query times by 94% for frequently accessed data"
+          title: "Risk Stratification",
+          description: "Automated risk scoring identifies high-cost claimants before they occur, enabling precision underwriting and risk mitigation."
         },
         {
-          title: "Predictive Alerting",
-          description: "Machine learning models triggering proactive interventions before issues escalate into costly claims"
+          title: "Clinical Integration",
+          description: "Real-time risk dashboards integrate with clinical data, pharmacy claims, and social determinants of health to provide comprehensive risk assessment."
         },
         {
-          title: "API-First Design",
-          description: "RESTful and GraphQL APIs enabling real-time integration with ERP, HRIS, and financial planning systems"
+          title: "Operational Optimization",
+          description: "Closed-loop feedback from predictive analytics enables real-time risk management and cost optimization across all benefit operations."
         }
       ],
       metrics: [
@@ -1021,7 +899,7 @@ export default function ActuarialBenefits() {
                 { period: "T+0:15", milestone: "Primary region offline, secondary serving 100%" },
                 { period: "T+48:00", milestone: "Primary region restored, normal operations resumed" }
               ],
-              testimonial: "We didn't even know there was an outage until the post-incident report. That's true business continuity—invisible, seamless, and exactly what enterprise clients expect.",
+              testimonial: "We didn't even know there was an outage until the post-incident report. That's the level of reliability our employees deserve.",
               testimonialAuthor: "Linda Torres, CISA, CRISC",
               testimonialRole: "Chief Risk Officer"
             }
@@ -1232,11 +1110,11 @@ export default function ActuarialBenefits() {
               industry: "Third-Party Administrator | 47 States",
               result: "Compliance Automation",
               summary: "Automated compliance monitoring across 47 state regulations reducing audit prep from 8 weeks to 3 days",
-              challenge: "Managing compliance with varying state privacy laws, insurance regulations, and federal mandates across diverse client base. Manual compliance tracking requiring 12 FTEs and 8 weeks of audit preparation annually.",
+              challenge: "Managing compliance with varying state privacy laws, insurance regulations, and federal mandates across diverse client base. Risk of multi-million dollar fines for non-compliance with GDPR and emerging privacy regulations.",
               solution: [
                 "Built regulatory intelligence system tracking 847 compliance requirements across federal and state jurisdictions",
-                "Implemented automated control testing with continuous compliance monitoring and real-time dashboards",
-                "Created policy management system with version control and automated distribution to affected stakeholders",
+                "Implemented automated control testing with continuous monitoring and real-time dashboards",
+                "Created policy management system with version control and automated distribution",
                 "Deployed vendor risk management framework assessing 127 third-party vendors for security and compliance",
                 "Established compliance training platform with role-based curricula and automated certification tracking"
               ],
@@ -1245,35 +1123,6 @@ export default function ActuarialBenefits() {
                 { metric: "FTE Reduction", value: "8 positions" },
                 { metric: "Compliance Score", value: "100%" },
                 { metric: "Regulatory Findings", value: "0 in 4 years" }
-              ],
-              timeline: [
-                { period: "Quarter 1", milestone: "Requirements analysis and system design" },
-                { period: "Quarter 2-3", milestone: "Platform development and integration" },
-                { period: "Quarter 4", milestone: "Testing and pilot deployment" },
-                { period: "Year 2+", milestone: "Full adoption and continuous enhancement" }
-              ],
-              testimonial: "Compliance went from a cost center to a competitive advantage. We can now demonstrate real-time compliance status to clients and regulators—something our competitors can't match.",
-              testimonialAuthor: "Elizabeth Thompson, JD, CHC",
-              testimonialRole: "Chief Compliance Officer"
-            },
-            {
-              client: "International Corporation",
-              industry: "Global Enterprise | 142 Countries",
-              result: "Global Privacy Compliance",
-              summary: "Unified privacy framework across 142 countries meeting GDPR, CCPA, and local regulations",
-              challenge: "Complex web of international privacy laws requiring different data handling procedures by jurisdiction. Risk of multi-million dollar fines for non-compliance with GDPR and emerging privacy regulations.",
-              solution: [
-                "Designed data residency architecture with regional data centers ensuring data sovereignty compliance",
-                "Implemented automated data subject rights workflows for access, portability, and deletion requests",
-                "Created privacy impact assessment (PIA) framework integrated into product development lifecycle",
-                "Built consent management platform supporting granular opt-in/opt-out preferences by jurisdiction",
-                "Established data protection officer (DPO) network with local expertise in 27 key markets"
-              ],
-              impact: [
-                { metric: "Countries Compliant", value: "142" },
-                { metric: "GDPR Fines", value: "$0" },
-                { metric: "Data Subject Requests", value: "97% on-time" },
-                { metric: "Privacy Incidents", value: "0" }
               ],
               timeline: [
                 { period: "Year 1", milestone: "Global privacy assessment and roadmap" },
@@ -1447,7 +1296,7 @@ export default function ActuarialBenefits() {
               challenge: "Antiquated technology stack unable to support modern benefit designs or meet client expectations for real-time data access. Losing clients to competitors with superior technology.",
               solution: [
                 "Phased migration approach minimizing disruption to 2.8M active members",
-                "Built API integrations with 340 carriers and vendor partners",
+                "Built API integrations with 340+ carriers and vendor partners",
                 "Deployed self-service portals for employer clients and members",
                 "Implemented predictive analytics and benchmarking tools as premium services",
                 "Enabled white-label capabilities for TPA branding and customization"
@@ -1561,7 +1410,7 @@ export default function ActuarialBenefits() {
             { label: "B2B SaaS Average", value: "31 NPS" },
             { label: "Enterprise Software", value: "42 NPS" },
             { label: "Top Quartile (Bain)", value: "55 NPS" },
-            { label: "SiriusB iQ", value: "73 NPS" }
+            { label: "SiriusB iQ Platform", value: "73 NPS" }
           ],
           caseStudies: [
             {
@@ -1573,7 +1422,7 @@ export default function ActuarialBenefits() {
               solution: [
                 "Deployed consumer-grade benefits platform matching company's product excellence standards",
                 "Implemented global benefits program across 23 countries with local compliance",
-                "Created personalized benefits recommendations using ML and life-stage modeling",
+                "Created personalized benefits dashboard with live cost projections",
                 "Built integration with HRIS, payroll, and rewards systems for seamless employee experience",
                 "Provided executive analytics linking benefits investments to talent acquisition and retention outcomes"
               ],
@@ -1654,7 +1503,7 @@ export default function ActuarialBenefits() {
         <main className="relative z-10">
           {/* Hero Section */}
           <section className="relative py-20 overflow-hidden">
-            <div className="absolute inset-0 bg-gradient-to-br from-purple-900/20 via-blue-900/20 to-indigo-900/20" />
+            <div className="absolute inset-0 bg-gradient-to-br from-purple-900/20 via-amber-900/20 to-indigo-900/20" />
             <div className="container relative z-10 mx-auto px-6">
               <div className="grid lg:grid-cols-2 gap-12 items-center">
                 <div>
@@ -1715,7 +1564,7 @@ export default function ActuarialBenefits() {
                   <div className="absolute inset-0 bg-gradient-to-br from-amber-500/20 to-yellow-600/20 rounded-2xl blur-3xl" />
                   <div className="relative bg-black/50 backdrop-blur-xl rounded-2xl border border-amber-900/30 p-8">
                     <h3 className="text-2xl font-bold mb-4 text-amber-500">Live Data Pipeline</h3>
-                    <p className="text-gray-400 mb-6">
+                    <p className="text-gray-300 mb-6">
                       Watch as claims, member data, and actuarial calculations flow through our AI-powered processing engine in real-time
                     </p>
                     <DataFlowVisualization />
@@ -1965,6 +1814,16 @@ export default function ActuarialBenefits() {
             <FeatureDetailModal
               feature={selectedFeature}
               onClose={() => setSelectedFeature(null)}
+            />
+          )}
+        </AnimatePresence>
+
+        {/* Solution Detail Modal */}
+        <AnimatePresence>
+          {selectedSolution && (
+            <SolutionDetailModal
+              solution={selectedSolution}
+              onClose={() => setSelectedSolution(null)}
             />
           )}
         </AnimatePresence>

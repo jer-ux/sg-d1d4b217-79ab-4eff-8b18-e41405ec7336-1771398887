@@ -2,7 +2,6 @@ import { TrendingUp, TrendingDown, Minus, Shield, AlertTriangle } from "lucide-r
 import type { TileData } from "../executiveTypes";
 import { LineChart, Line, ResponsiveContainer, Area, AreaChart } from "recharts";
 import { motion } from "framer-motion";
-import type { ExecutiveKPI } from "../executiveTypes";
 
 const TILE_THEMES = {
   costTrendStress: {
@@ -72,7 +71,7 @@ const TILE_THEMES = {
 };
 
 interface ExecutiveKPITileProps {
-  kpi: ExecutiveKPI;
+  kpi: TileData;
   onClick?: () => void;
 }
 

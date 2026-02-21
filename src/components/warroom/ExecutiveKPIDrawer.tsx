@@ -31,7 +31,9 @@ function StressSpheres() {
     if (meshRef.current) {
       meshRef.current.rotation.y += 0.002;
       meshRef.current.children.forEach((child, i) => {
-        child.position.y += Math.sin(state.clock.elapsedTime * spheres[i].speed) * 0.01;
+        if (spheres[i]) {
+          child.position.y += Math.sin(state.clock.elapsedTime * spheres[i].speed) * 0.01;
+        }
       });
     }
   });

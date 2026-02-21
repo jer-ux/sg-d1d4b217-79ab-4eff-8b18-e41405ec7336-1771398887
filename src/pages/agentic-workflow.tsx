@@ -25,6 +25,18 @@ import {
   Sparkles,
   Zap,
   Crown,
+  X,
+  ChevronRight,
+  DollarSign,
+  Clock,
+  Activity,
+  FileText,
+  Search,
+  GitBranch,
+  Bell,
+  TrendingDown,
+  PieChart,
+  LineChart,
 } from "lucide-react";
 
 // Dynamically import 3D components (client-side only)
@@ -56,6 +68,54 @@ const workflowStages = [
       { label: "Validation Rules", value: "2,500+" },
       { label: "Processing Speed", value: "<30s" },
     ],
+    detailedContent: {
+      overview: "Our Data Ingestion & Validation engine connects to 150+ enterprise data sources, processing millions of transactions daily with sub-30-second latency. Built on a distributed architecture with redundant validation layers, it ensures 99.99% data accuracy while maintaining complete audit trails for regulatory compliance.",
+      keyCapabilities: [
+        {
+          title: "Universal Data Connectivity",
+          description: "Pre-built connectors for major ERP systems (SAP, Oracle, NetSuite, Microsoft Dynamics), financial platforms (QuickBooks, Xero, Sage), and cloud databases (Snowflake, Databricks). Custom API adapters deployed in 48 hours.",
+          icon: Network,
+          highlights: ["150+ Native Integrations", "Real-time Streaming", "Zero Data Loss Guarantee"]
+        },
+        {
+          title: "Multi-Layer Validation Framework",
+          description: "2,500+ business rules engine validates data completeness, format consistency, logical relationships, and cross-system reconciliation. Machine learning detects anomalies and data quality issues before they propagate downstream.",
+          icon: Shield,
+          highlights: ["99.99% Accuracy Rate", "Real-time Alerts", "Self-Healing Data Pipeline"]
+        },
+        {
+          title: "Blockchain-Anchored Timestamps",
+          description: "Every transaction receives a cryptographic timestamp anchored to public blockchain (Ethereum/Polygon), creating immutable proof of data lineage. Meets SOX 404 evidence requirements with tamper-proof audit trails.",
+          icon: Lock,
+          highlights: ["Immutable Records", "Cryptographic Proof", "Regulatory Compliance"]
+        },
+        {
+          title: "Intelligent Data Mapping",
+          description: "AI-powered schema mapping automatically aligns disparate data structures from multiple sources. Learns from corrections to improve mapping accuracy over time, reducing manual intervention by 94%.",
+          icon: GitBranch,
+          highlights: ["Auto-Schema Detection", "ML-Based Mapping", "94% Automation Rate"]
+        }
+      ],
+      technicalSpecs: [
+        "Distributed Kafka architecture processing 50K events/second",
+        "Multi-region deployment with active-active failover (99.99% uptime SLA)",
+        "AES-256 encryption for data in transit and at rest",
+        "GDPR, SOX, HIPAA compliant data handling protocols",
+        "Real-time data quality dashboards with drill-down to transaction level",
+        "Automated reconciliation with discrepancy reporting and resolution workflows"
+      ],
+      businessImpact: [
+        "Eliminate 87% of manual data entry errors that lead to financial restatements",
+        "Reduce month-end close time from 15 days to 3 days with real-time data availability",
+        "Prevent $2M-$8M in penalties from SOX non-compliance and audit findings",
+        "Enable real-time financial reporting for executive decision-making"
+      ],
+      roi: {
+        timeToValue: "4-6 weeks",
+        avgSavings: "$3.2M annually",
+        productivityGain: "87% reduction in data prep time"
+      }
+    }
   },
   {
     phase: "02",
@@ -74,6 +134,54 @@ const workflowStages = [
       { label: "False Positives", value: "<0.1%" },
       { label: "Auto-Classification", value: "94%" },
     ],
+    detailedContent: {
+      overview: "Our Intelligent Classification system uses advanced machine learning and natural language processing to automatically categorize transactions, identify patterns, and assess risk with 99.7% accuracy. Processing over 5 million transactions monthly, it learns continuously from corrections to improve classification precision.",
+      keyCapabilities: [
+        {
+          title: "Deep Learning Classification",
+          description: "Neural networks trained on 500M+ historical transactions classify expenses, revenue, and journal entries across GL accounts, cost centers, and projects. Handles complex multi-dimensional categorization with confidence scoring.",
+          icon: Brain,
+          highlights: ["99.7% Accuracy", "Multi-Dimensional", "Confidence Scoring"]
+        },
+        {
+          title: "Natural Language Understanding",
+          description: "Advanced NLP extracts meaning from vendor names, invoice descriptions, and memo fields. Understands context, synonyms, and business terminology to route transactions accurately even with inconsistent naming.",
+          icon: FileText,
+          highlights: ["Context-Aware", "Handles Variations", "Business Terminology"]
+        },
+        {
+          title: "Anomaly Detection Engine",
+          description: "Unsupervised learning algorithms identify unusual patterns, duplicate payments, missing approvals, and policy violations. Flags 0.1% false positives while catching 99% of actual issues before they become problems.",
+          icon: AlertTriangle,
+          highlights: ["99% Detection Rate", "<0.1% False Alarms", "Real-time Alerts"]
+        },
+        {
+          title: "Predictive Risk Scoring",
+          description: "Every transaction receives a 0-100 risk score based on vendor history, transaction patterns, approval chains, and external risk factors. High-risk items automatically escalate to compliance team for review.",
+          icon: Target,
+          highlights: ["0-100 Risk Scale", "Auto-Escalation", "Fraud Prevention"]
+        }
+      ],
+      technicalSpecs: [
+        "BERT-based transformer models for semantic understanding",
+        "Gradient boosting machines (XGBoost) for multi-class classification",
+        "Isolation forests and autoencoders for anomaly detection",
+        "Active learning pipeline incorporating human feedback for continuous improvement",
+        "Model versioning and A/B testing framework for controlled deployments",
+        "Explainable AI (SHAP values) showing why each classification was made"
+      ],
+      businessImpact: [
+        "Eliminate 94% of manual transaction categorization (240 hours/month saved)",
+        "Catch fraudulent transactions 6-8 weeks earlier than manual review cycles",
+        "Reduce audit sampling requirements by 60% with proven high-accuracy controls",
+        "Enable granular spend analytics and cost optimization initiatives"
+      ],
+      roi: {
+        timeToValue: "2-4 weeks",
+        avgSavings: "$2.8M annually",
+        productivityGain: "94% automation rate"
+      }
+    }
   },
   {
     phase: "03",
@@ -92,6 +200,54 @@ const workflowStages = [
       { label: "Compliance Rate", value: "100%" },
       { label: "Response Time", value: "<5s" },
     ],
+    detailedContent: {
+      overview: "The Policy Engine orchestrates 500+ business rules and compliance controls across your entire financial workflow. Processing decisions in under 5 seconds, it enforces separation of duties, approval hierarchies, spending limits, and regulatory requirements with 100% consistency—eliminating the variability and errors inherent in manual processes.",
+      keyCapabilities: [
+        {
+          title: "Dynamic Approval Routing",
+          description: "Intelligent workflow engine routes transactions based on amount, department, vendor, account type, and business context. Automatically escalates to backup approvers when primary reviewers are unavailable, ensuring no bottlenecks.",
+          icon: GitBranch,
+          highlights: ["Smart Routing", "Backup Chains", "Zero Bottlenecks"]
+        },
+        {
+          title: "Regulatory Compliance Framework",
+          description: "Pre-configured rule sets for SOX 404, GAAP, IFRS, and industry-specific regulations. Automatically flags transactions requiring additional controls, documentation, or review based on materiality thresholds and audit requirements.",
+          icon: Shield,
+          highlights: ["SOX/GAAP/IFRS Ready", "Auto-Flagging", "Audit-Proof"]
+        },
+        {
+          title: "Custom Business Rules Engine",
+          description: "No-code rule builder allows finance teams to define complex policies without IT involvement. Supports conditional logic, date ranges, organizational hierarchies, and multi-factor decision trees. Changes deploy instantly across all transactions.",
+          icon: Settings,
+          highlights: ["No-Code Builder", "Complex Logic", "Instant Deployment"]
+        },
+        {
+          title: "Separation of Duties Enforcement",
+          description: "Automatically prevents the same user from initiating and approving transactions, creating and paying vendors, or posting and reconciling accounts. Maintains compliance with internal controls and audit requirements without manual oversight.",
+          icon: Users,
+          highlights: ["SOD Compliance", "Automatic Prevention", "Zero Override"]
+        }
+      ],
+      technicalSpecs: [
+        "Rules engine processing 10K+ decisions per second with <5ms latency",
+        "Version-controlled policy repository with rollback capability",
+        "A/B testing framework for evaluating policy changes before full deployment",
+        "Conflict detection preventing contradictory rules from being deployed",
+        "Real-time policy effectiveness dashboards showing approval rates, bottlenecks, and exceptions",
+        "Integration with HR systems for automatic org chart and delegation updates"
+      ],
+      businessImpact: [
+        "Achieve 100% SOX compliance with automated control testing and evidence collection",
+        "Eliminate $1.2M-$4.5M in audit findings from control deficiencies and policy violations",
+        "Reduce approval cycle time by 73% with intelligent routing and escalation",
+        "Enable real-time policy changes without code deployments or system downtime"
+      ],
+      roi: {
+        timeToValue: "3-5 weeks",
+        avgSavings: "$4.1M annually",
+        productivityGain: "73% faster approvals"
+      }
+    }
   },
   {
     phase: "04",
@@ -110,6 +266,54 @@ const workflowStages = [
       { label: "Verification Time", value: "<10s" },
       { label: "Tamper Detection", value: "100%" },
     ],
+    detailedContent: {
+      overview: "Our Evidence Collection & Verification system automatically gathers, validates, and stores supporting documentation for every financial transaction. Processing 1M+ documents monthly with OCR, digital signatures, and blockchain anchoring, it creates audit-ready evidence packages that meet Big 4 and regulatory standards.",
+      keyCapabilities: [
+        {
+          title: "Intelligent Document Capture",
+          description: "Advanced OCR with 99.8% accuracy extracts data from invoices, contracts, receipts, and supporting documents. AI recognizes document types, extracts key fields (vendor, amount, date, PO number), and validates against transaction data automatically.",
+          icon: FileCheck,
+          highlights: ["99.8% OCR Accuracy", "Auto-Extraction", "Type Recognition"]
+        },
+        {
+          title: "Multi-Party Digital Signatures",
+          description: "Cryptographic signatures from all approvers, reviewers, and stakeholders embedded in the document metadata. Meets electronic signature regulations (ESIGN Act, eIDAS) with non-repudiation guarantees and timestamp verification.",
+          icon: Lock,
+          highlights: ["Legally Binding", "Non-Repudiation", "Timestamp Proof"]
+        },
+        {
+          title: "Cross-Reference Validation",
+          description: "Automatically validates supporting documents against purchase orders, contracts, receiving reports, and payment records. Flags mismatches in amounts, dates, or terms before payment processing, preventing errors and fraud.",
+          icon: Search,
+          highlights: ["Auto-Validation", "Mismatch Detection", "Fraud Prevention"]
+        },
+        {
+          title: "Blockchain-Anchored Storage",
+          description: "Every evidence package receives a cryptographic hash anchored to public blockchain (Ethereum/Polygon). Provides immutable proof that documents haven't been altered since capture, meeting SOX and audit requirements for evidence integrity.",
+          icon: Shield,
+          highlights: ["Immutable Records", "Tamper-Proof", "Audit-Ready"]
+        }
+      ],
+      technicalSpecs: [
+        "Tesseract + custom-trained models for specialized financial document OCR",
+        "S3-compatible storage with immutable buckets and versioning",
+        "SHA-256 cryptographic hashing with Merkle tree aggregation",
+        "Ethereum/Polygon blockchain anchoring for timestamp verification",
+        "AES-256 encryption with key rotation and access logging",
+        "Automated retention policies complying with 7-year record-keeping requirements"
+      ],
+      businessImpact: [
+        "Reduce audit preparation time by 85% with pre-organized evidence packages",
+        "Eliminate $800K-$2.4M in audit fees from incomplete or missing documentation",
+        "Prevent fraudulent document alterations with cryptographic verification",
+        "Enable instant retrieval of any transaction's complete evidence trail (< 3 seconds)"
+      ],
+      roi: {
+        timeToValue: "3-4 weeks",
+        avgSavings: "$2.6M annually",
+        productivityGain: "85% faster audit prep"
+      }
+    }
   },
   {
     phase: "05",
@@ -128,6 +332,54 @@ const workflowStages = [
       { label: "Alert Accuracy", value: "98.5%" },
       { label: "Mean Time to Alert", value: "45s" },
     ],
+    detailedContent: {
+      overview: "Our Continuous Monitoring platform provides 24/7 surveillance across 5M+ daily transactions, tracking 200+ KPIs and sending intelligent alerts within 45 seconds of anomaly detection. With 98.5% alert accuracy and predictive forecasting, it catches issues before they become material problems.",
+      keyCapabilities: [
+        {
+          title: "Real-Time KPI Dashboard",
+          description: "Executive dashboard tracking 200+ financial metrics including DSO, DPO, cash position, burn rate, variance to budget, and operational KPIs. Customizable views by role (CFO, Controller, AP Manager) with drill-down to transaction detail.",
+          icon: BarChart3,
+          highlights: ["200+ Metrics", "Role-Based Views", "Real-Time Updates"]
+        },
+        {
+          title: "Behavioral Analytics Engine",
+          description: "Machine learning profiles normal behavior patterns for vendors, employees, and transaction types. Detects deviations indicating fraud, policy violations, or operational issues. Reduces false positives by 94% compared to rule-based systems.",
+          icon: Activity,
+          highlights: ["ML-Based Detection", "94% Fewer False Alarms", "Pattern Learning"]
+        },
+        {
+          title: "Intelligent Alert Routing",
+          description: "Context-aware notification system sends alerts to the right person at the right time via email, SMS, Slack, or Teams. Escalates automatically if not acknowledged within SLA timeframes. Suppresses duplicate alerts to prevent notification fatigue.",
+          icon: Bell,
+          highlights: ["Multi-Channel Alerts", "Auto-Escalation", "Smart Suppression"]
+        },
+        {
+          title: "Predictive Issue Forecasting",
+          description: "Time-series analysis and predictive models forecast potential issues 2-4 weeks in advance. Alerts to upcoming cash flow constraints, budget overruns, vendor concentration risks, and compliance deadline misses with actionable recommendations.",
+          icon: TrendingUp,
+          highlights: ["2-4 Week Forecast", "Proactive Alerts", "Actionable Insights"]
+        }
+      ],
+      technicalSpecs: [
+        "Time-series database (InfluxDB) storing 10B+ data points with <100ms query latency",
+        "Streaming analytics processing 50K events/second with 45-second alert latency",
+        "Anomaly detection using isolation forests, LSTM networks, and statistical process control",
+        "Multi-channel notification system with delivery tracking and escalation management",
+        "Customizable SLA definitions with automatic escalation workflows",
+        "Mobile app for iOS/Android with push notifications and quick-action capabilities"
+      ],
+      businessImpact: [
+        "Detect fraudulent transactions 6-8 weeks earlier, preventing average losses of $340K per incident",
+        "Reduce fire-drill responses by 78% with proactive issue identification",
+        "Improve cash flow management with predictive alerts on upcoming shortfalls",
+        "Enable data-driven decision making with real-time visibility into business performance"
+      ],
+      roi: {
+        timeToValue: "2-3 weeks",
+        avgSavings: "$3.7M annually",
+        productivityGain: "78% fewer urgent issues"
+      }
+    }
   },
   {
     phase: "06",
@@ -146,6 +398,54 @@ const workflowStages = [
       { label: "Refresh Frequency", value: "Real-time" },
       { label: "Export Formats", value: "12" },
     ],
+    detailedContent: {
+      overview: "Our Reporting & Analytics platform delivers executive-grade insights with 75+ pre-built reports, real-time data refresh, and unlimited drill-down capability. From board presentations to regulatory filings, it provides the analytical depth and visual clarity executives need to make confident decisions.",
+      keyCapabilities: [
+        {
+          title: "Executive Dashboard Suite",
+          description: "Pre-built dashboards for C-suite, board of directors, and department heads featuring KPIs, trends, variance analysis, and actionable insights. One-click drill-down from summary to transaction detail. Mobile-optimized for on-the-go access.",
+          icon: PieChart,
+          highlights: ["75+ Pre-Built Reports", "Unlimited Drill-Down", "Mobile Optimized"]
+        },
+        {
+          title: "Automated Variance Analysis",
+          description: "AI-powered variance commentary explains why actuals differ from budget/forecast. Identifies key drivers (volume, price, mix) and flags areas requiring management attention. Saves 40+ hours monthly in manual variance analysis and commentary writing.",
+          icon: TrendingDown,
+          highlights: ["AI Commentary", "Driver Analysis", "40+ Hours Saved"]
+        },
+        {
+          title: "Predictive Analytics & Forecasting",
+          description: "Time-series forecasting models predict cash flow, revenue, expenses, and key metrics 1-12 months ahead. Scenario analysis shows impact of different assumptions. Machine learning continuously improves forecast accuracy based on actual results.",
+          icon: LineChart,
+          highlights: ["1-12 Month Forecast", "Scenario Analysis", "Self-Improving"]
+        },
+        {
+          title: "Regulatory Filing Automation",
+          description: "One-click generation of 10-Q, 10-K, SOX 404 reports, and other regulatory filings. Pre-mapped to XBRL taxonomies. Maintains supporting evidence packages for audit trail. Reduces filing prep time from weeks to hours.",
+          icon: FileText,
+          highlights: ["One-Click Filing", "XBRL Ready", "Audit Trail Included"]
+        }
+      ],
+      technicalSpecs: [
+        "Columnar database (Clickhouse) enabling sub-second queries on billions of transactions",
+        "In-memory OLAP cubes for instant aggregation and slicing/dicing",
+        "Prophet + ARIMA time-series models for forecasting with confidence intervals",
+        "Natural language generation (GPT-based) for automated commentary",
+        "12 export formats: PDF, Excel, PowerPoint, Tableau, Power BI, CSV, JSON, XML, XBRL, etc.",
+        "Scheduled report distribution with personalized data filters per recipient"
+      ],
+      businessImpact: [
+        "Reduce board deck preparation from 3 days to 3 hours with automated reporting",
+        "Improve forecast accuracy by 35% with machine learning models vs. spreadsheets",
+        "Accelerate SEC filing preparation by 85%, reducing external audit dependency",
+        "Enable self-service analytics for business units, reducing finance team reporting burden by 60%"
+      ],
+      roi: {
+        timeToValue: "2-4 weeks",
+        avgSavings: "$2.9M annually",
+        productivityGain: "60% reduction in reporting work"
+      }
+    }
   },
 ];
 
@@ -243,6 +543,7 @@ const caseStudies = [
 
 export default function AgenticWorkflowPage() {
   const [mounted, setMounted] = useState(false);
+  const [selectedStage, setSelectedStage] = useState<number | null>(null);
   const { scrollYProgress } = useScroll();
   const opacity = useTransform(scrollYProgress, [0, 0.2], [1, 0]);
   const scale = useTransform(scrollYProgress, [0, 0.2], [1, 0.8]);
@@ -454,7 +755,7 @@ export default function AgenticWorkflowPage() {
               </h2>
               <p className="text-lg text-gray-400 max-w-3xl mx-auto">
                 End-to-end financial process automation with built-in controls, real-time validation, and
-                comprehensive audit trails at every step.
+                comprehensive audit trails at every step. Click any stage to explore in detail.
               </p>
             </motion.div>
 
@@ -473,17 +774,241 @@ export default function AgenticWorkflowPage() {
           </div>
         </section>
 
-        {/* Interactive Workflow Stages */}
+        {/* Interactive Workflow Stages - Now Clickable */}
         <section className="py-8 px-6 relative">
           <div className="absolute inset-0 bg-gradient-to-b from-black via-yellow-950/10 to-black" />
           <div className="relative z-10 max-w-7xl mx-auto">
             <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {workflowStages.map((stage, index) => (
-                <InteractiveStageCard key={index} stage={stage} index={index} />
-              ))}
+              {workflowStages.map((stage, index) => {
+                const Icon = stage.icon;
+                return (
+                  <motion.button
+                    key={index}
+                    initial={{ opacity: 0, y: 40 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ duration: 0.6, delay: index * 0.1 }}
+                    onClick={() => setSelectedStage(index)}
+                    className="relative group text-left cursor-pointer"
+                  >
+                    <div className="absolute inset-0 bg-gradient-to-br from-amber-500/20 to-orange-500/20 rounded-2xl blur-xl opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+                    <div className="relative bg-white/5 backdrop-blur-xl border border-amber-500/10 rounded-2xl p-6 h-full hover:border-amber-500/50 transition-all">
+                      <div className="flex items-start justify-between mb-4">
+                        <div className="flex items-center gap-3">
+                          <div className="text-3xl font-black text-amber-400/30">{stage.phase}</div>
+                          <Icon className="w-8 h-8 text-amber-400 group-hover:scale-110 transition-transform" />
+                        </div>
+                        <ChevronRight className="w-6 h-6 text-gray-600 group-hover:text-amber-400 transition-colors" />
+                      </div>
+                      <h3 className="text-xl font-bold mb-3 text-white">{stage.title}</h3>
+                      <p className="text-gray-400 text-sm mb-4">{stage.description}</p>
+                      <div className="grid grid-cols-3 gap-2">
+                        {stage.metrics.map((metric, idx) => (
+                          <div key={idx} className="text-center">
+                            <div className="text-lg font-bold text-amber-400">{metric.value}</div>
+                            <div className="text-xs text-gray-500">{metric.label}</div>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  </motion.button>
+                );
+              })}
             </div>
           </div>
         </section>
+
+        {/* Detailed Stage Modal */}
+        <AnimatePresence>
+          {selectedStage !== null && (
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              className="fixed inset-0 bg-black/90 backdrop-blur-sm z-50 flex items-center justify-center p-4 overflow-y-auto"
+              onClick={() => setSelectedStage(null)}
+            >
+              <motion.div
+                initial={{ scale: 0.9, opacity: 0 }}
+                animate={{ scale: 1, opacity: 1 }}
+                exit={{ scale: 0.9, opacity: 0 }}
+                onClick={(e) => e.stopPropagation()}
+                className="bg-gradient-to-br from-gray-900 to-black rounded-3xl max-w-6xl w-full max-h-[90vh] overflow-y-auto border border-amber-500/30 my-8"
+              >
+                {(() => {
+                  const stage = workflowStages[selectedStage];
+                  const Icon = stage.icon;
+                  return (
+                    <div>
+                      {/* Sticky Header */}
+                      <div className="sticky top-0 bg-gradient-to-br from-gray-900 to-black border-b border-amber-500/30 p-6 flex items-start justify-between backdrop-blur-xl z-10">
+                        <div className="flex items-center gap-4">
+                          <div className="p-4 rounded-2xl bg-gradient-to-br from-amber-500/20 to-orange-500/20 border border-amber-500/30">
+                            <Icon className="w-10 h-10 text-amber-400" />
+                          </div>
+                          <div>
+                            <div className="text-sm text-amber-400 font-bold mb-1">STAGE {stage.phase}</div>
+                            <h2 className="text-3xl font-black text-white">{stage.title}</h2>
+                            <div className="flex gap-3 mt-2">
+                              {stage.metrics.map((metric, idx) => (
+                                <span key={idx} className="px-3 py-1 rounded-full bg-amber-500/20 border border-amber-500/30 text-amber-400 text-xs font-semibold">
+                                  {metric.label}: {metric.value}
+                                </span>
+                              ))}
+                            </div>
+                          </div>
+                        </div>
+                        <button
+                          onClick={() => setSelectedStage(null)}
+                          className="p-2 rounded-lg hover:bg-gray-800 transition-colors"
+                        >
+                          <X className="w-6 h-6 text-gray-400 hover:text-white" />
+                        </button>
+                      </div>
+
+                      {/* Content */}
+                      <div className="p-8 space-y-8">
+                        {/* Overview */}
+                        <div>
+                          <h3 className="text-2xl font-bold mb-4 text-amber-400">Overview</h3>
+                          <p className="text-gray-300 leading-relaxed text-lg">{stage.detailedContent.overview}</p>
+                        </div>
+
+                        {/* Key Capabilities Grid */}
+                        <div>
+                          <h3 className="text-2xl font-bold mb-6 text-amber-400">Key Capabilities</h3>
+                          <div className="grid md:grid-cols-2 gap-6">
+                            {stage.detailedContent.keyCapabilities.map((capability, idx) => {
+                              const CapIcon = capability.icon;
+                              return (
+                                <motion.div
+                                  key={idx}
+                                  initial={{ opacity: 0, y: 20 }}
+                                  whileInView={{ opacity: 1, y: 0 }}
+                                  viewport={{ once: true }}
+                                  transition={{ delay: idx * 0.1 }}
+                                  className="p-6 rounded-2xl bg-gradient-to-br from-amber-500/5 to-orange-500/5 border border-amber-500/20"
+                                >
+                                  <CapIcon className="w-10 h-10 text-amber-400 mb-4" />
+                                  <h4 className="text-xl font-bold mb-3 text-white">{capability.title}</h4>
+                                  <p className="text-gray-400 mb-4">{capability.description}</p>
+                                  <div className="flex flex-wrap gap-2">
+                                    {capability.highlights.map((highlight, hidx) => (
+                                      <span key={hidx} className="px-3 py-1 rounded-full bg-amber-500/10 border border-amber-500/20 text-amber-400 text-xs">
+                                        {highlight}
+                                      </span>
+                                    ))}
+                                  </div>
+                                </motion.div>
+                              );
+                            })}
+                          </div>
+                        </div>
+
+                        {/* Technical Specifications */}
+                        <div>
+                          <h3 className="text-2xl font-bold mb-4 text-amber-400">Technical Specifications</h3>
+                          <div className="p-6 rounded-2xl bg-gray-800/30 border border-gray-700">
+                            <ul className="space-y-3">
+                              {stage.detailedContent.technicalSpecs.map((spec, idx) => (
+                                <li key={idx} className="flex items-start gap-3">
+                                  <div className="w-2 h-2 rounded-full bg-amber-400 mt-2 flex-shrink-0" />
+                                  <span className="text-gray-300">{spec}</span>
+                                </li>
+                              ))}
+                            </ul>
+                          </div>
+                        </div>
+
+                        {/* Business Impact */}
+                        <div>
+                          <h3 className="text-2xl font-bold mb-4 text-amber-400">Business Impact</h3>
+                          <div className="grid md:grid-cols-2 gap-4">
+                            {stage.detailedContent.businessImpact.map((impact, idx) => (
+                              <motion.div
+                                key={idx}
+                                initial={{ opacity: 0, x: -20 }}
+                                whileInView={{ opacity: 1, x: 0 }}
+                                viewport={{ once: true }}
+                                transition={{ delay: idx * 0.1 }}
+                                className="p-5 rounded-xl bg-gradient-to-br from-green-500/10 to-emerald-500/10 border border-green-500/30"
+                              >
+                                <div className="flex items-start gap-3">
+                                  <CheckCircle2 className="w-5 h-5 text-green-400 flex-shrink-0 mt-0.5" />
+                                  <p className="text-gray-300">{impact}</p>
+                                </div>
+                              </motion.div>
+                            ))}
+                          </div>
+                        </div>
+
+                        {/* ROI Metrics */}
+                        <div>
+                          <h3 className="text-2xl font-bold mb-4 text-amber-400">ROI & Time to Value</h3>
+                          <div className="grid md:grid-cols-3 gap-6">
+                            <div className="p-6 rounded-2xl bg-gradient-to-br from-blue-500/10 to-cyan-500/10 border border-blue-500/30 text-center">
+                              <Clock className="w-8 h-8 text-blue-400 mx-auto mb-3" />
+                              <div className="text-3xl font-black text-blue-400 mb-1">{stage.detailedContent.roi.timeToValue}</div>
+                              <div className="text-sm text-gray-400">Time to Value</div>
+                            </div>
+                            <div className="p-6 rounded-2xl bg-gradient-to-br from-green-500/10 to-emerald-500/10 border border-green-500/30 text-center">
+                              <DollarSign className="w-8 h-8 text-green-400 mx-auto mb-3" />
+                              <div className="text-3xl font-black text-green-400 mb-1">{stage.detailedContent.roi.avgSavings}</div>
+                              <div className="text-sm text-gray-400">Average Savings</div>
+                            </div>
+                            <div className="p-6 rounded-2xl bg-gradient-to-br from-amber-500/10 to-orange-500/10 border border-amber-500/30 text-center">
+                              <TrendingUp className="w-8 h-8 text-amber-400 mx-auto mb-3" />
+                              <div className="text-3xl font-black text-amber-400 mb-1">{stage.detailedContent.roi.productivityGain}</div>
+                              <div className="text-sm text-gray-400">Productivity Gain</div>
+                            </div>
+                          </div>
+                        </div>
+
+                        {/* CTA Section with Multiple Options */}
+                        <div className="pt-8 border-t border-amber-500/30">
+                          <div className="text-center">
+                            <h3 className="text-3xl font-black mb-3 bg-gradient-to-r from-amber-400 to-orange-400 bg-clip-text text-transparent">
+                              Ready to See {stage.title} in Action?
+                            </h3>
+                            <p className="text-gray-400 mb-8 text-lg">
+                              Schedule a personalized demo to see how this capability transforms your financial operations
+                            </p>
+                            <div className="flex flex-col sm:flex-row gap-4 justify-center">
+                              <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+                                <Link
+                                  href="/request-demo"
+                                  className="group px-10 py-4 bg-gradient-to-r from-amber-600 via-yellow-600 to-orange-600 text-black text-lg font-bold rounded-full hover:shadow-2xl hover:shadow-amber-500/50 transition-all duration-300 flex items-center justify-center gap-3 relative overflow-hidden"
+                                  onClick={() => setSelectedStage(null)}
+                                >
+                                  <span className="relative z-10">Get Free Analysis</span>
+                                  <ArrowRight className="w-6 h-6 relative z-10 group-hover:translate-x-2 transition-transform" />
+                                  <div className="absolute inset-0 bg-gradient-to-r from-amber-500 via-yellow-500 to-orange-500 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                                </Link>
+                              </motion.div>
+                              <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+                                <Link
+                                  href="/request-demo"
+                                  className="px-10 py-4 bg-white/10 backdrop-blur-xl border-2 border-amber-500/30 text-white text-lg font-bold rounded-full hover:bg-amber-500/10 hover:border-amber-400/50 transition-all duration-300 flex items-center justify-center gap-3"
+                                  onClick={() => setSelectedStage(null)}
+                                >
+                                  <DollarSign className="w-6 h-6" />
+                                  Calculate Savings
+                                </Link>
+                              </motion.div>
+                            </div>
+                            <p className="text-gray-500 text-sm mt-4">
+                              Typical ROI: {stage.detailedContent.roi.avgSavings} • Implementation: {stage.detailedContent.roi.timeToValue}
+                            </p>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  );
+                })()}
+              </motion.div>
+            </motion.div>
+          )}
+        </AnimatePresence>
 
         {/* Compliance Frameworks */}
         <section className="py-12 px-6 relative">

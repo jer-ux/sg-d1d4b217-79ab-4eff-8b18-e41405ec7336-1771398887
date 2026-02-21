@@ -258,6 +258,10 @@ export function ExecutiveKPIDrawer({ isOpen, onClose, tile }: ExecutiveKPIDrawer
     }
   };
 
+  // Safe variance value - handles undefined/null cases
+  const varianceValue = tile.variance || tile.delta || "0%";
+  const isNegativeVariance = varianceValue.toString().includes("-");
+
   return (
     <AnimatePresence>
       {isOpen && (
@@ -324,11 +328,11 @@ export function ExecutiveKPIDrawer({ isOpen, onClose, tile }: ExecutiveKPIDrawer
                   <div className="flex gap-4 mt-3">
                     <div className="flex items-center gap-2">
                       <div className="w-3 h-3 rounded-full bg-gradient-to-r from-amber-500 to-yellow-500"></div>
-                      <span className="text-xs text-slate-400">Variance: {tile.variance}</span>
+                      <span className="text-xs text-slate-400">Variance: {varianceValue}</span>
                     </div>
                     <div className="flex items-center gap-2">
                       <div className="w-3 h-3 rounded-full bg-gradient-to-r from-purple-500 to-pink-500"></div>
-                      <span className="text-xs text-slate-400">Trend: {tile.trend}</span>
+                      <span className="text-xs text-slate-400">Trend: {tile.trend || "Flat"}</span>
                     </div>
                   </div>
                 </div>
@@ -352,7 +356,7 @@ export function ExecutiveKPIDrawer({ isOpen, onClose, tile }: ExecutiveKPIDrawer
                   className="p-4 rounded-lg bg-gradient-to-br from-slate-800/50 to-slate-900/50 border border-amber-500/20"
                 >
                   <div className="text-sm text-slate-400 mb-1">Framework</div>
-                  <div className="text-lg font-semibold text-white">{tile.framework}</div>
+                  <div className="text-lg font-semibold text-white">{tile.framework || "Standard"}</div>
                 </motion.div>
               </div>
 
@@ -366,11 +370,11 @@ export function ExecutiveKPIDrawer({ isOpen, onClose, tile }: ExecutiveKPIDrawer
                 <div className="flex items-center justify-between mb-4">
                   <h3 className="text-lg font-semibold text-white">Variance Analysis</h3>
                   <div className={`px-3 py-1 rounded-full text-xs font-medium ${
-                    (tile.variance ?? tile.delta ?? '')?.includes('-')
+                    isNegativeVariance
                       ? 'bg-red-500/20 text-red-400 border border-red-500/30' 
                       : 'bg-green-500/20 text-green-400 border border-green-500/30'
                   }`}>
-                    {tile.variance ?? tile.delta ?? 'N/A'}
+                    {varianceValue}
                   </div>
                 </div>
 
@@ -378,20 +382,20 @@ export function ExecutiveKPIDrawer({ isOpen, onClose, tile }: ExecutiveKPIDrawer
                   <div className="space-y-2">
                     <div className="text-sm text-zinc-400">Trend Direction</div>
                     <div className="flex items-center gap-2">
-                      {(tile.trend ?? 'flat').toLowerCase() === 'up' ? (
+                      {(tile.trend || "flat").toLowerCase() === "up" ? (
                         <TrendingUp className="h-5 w-5 text-green-400" />
-                      ) : (tile.trend ?? 'flat').toLowerCase() === 'down' ? (
+                      ) : (tile.trend || "flat").toLowerCase() === "down" ? (
                         <TrendingDown className="h-5 w-5 text-red-400" />
                       ) : (
                         <ArrowRight className="h-5 w-5 text-zinc-400" />
                       )}
-                      <span className="text-white font-medium capitalize">{tile.trend ?? 'Flat'}</span>
+                      <span className="text-white font-medium capitalize">{tile.trend || "Flat"}</span>
                     </div>
                   </div>
 
                   <div className="space-y-2">
                     <div className="text-sm text-zinc-400">Framework</div>
-                    <div className="text-white font-medium">{tile.framework ?? "Standard"}</div>
+                    <div className="text-white font-medium">{tile.framework || "Standard"}</div>
                   </div>
                 </div>
               </motion.div>

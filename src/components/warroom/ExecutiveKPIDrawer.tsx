@@ -258,9 +258,10 @@ export function ExecutiveKPIDrawer({ isOpen, onClose, tile }: ExecutiveKPIDrawer
     }
   };
 
-  // Safe variance value - handles undefined/null cases
+  // Safe variance value - no more errors
   const varianceValue = tile.variance || tile.delta || "0%";
-  const isNegativeVariance = varianceValue.toString().includes("-");
+  const varianceString = String(varianceValue || "");
+  const isNegativeVariance = varianceString.startsWith("-");
 
   return (
     <AnimatePresence>

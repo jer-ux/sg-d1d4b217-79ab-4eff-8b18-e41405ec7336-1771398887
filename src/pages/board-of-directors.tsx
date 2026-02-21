@@ -49,6 +49,26 @@ export default function BoardOfDirectors() {
         vision: "A proud Marian High School alum and a graduate of the University of Notre Dame, Mike's career has come full circle. Now retired from government and teaching full-time at Marian, he continues to bridge the gap between the town hall and the classroom, ensuring the next generation of leaders understands that 'Government' isn't just a textbook chapter—it's a tool for community transformation."
       }
     },
+    {
+      name: "Dr. Michael Ochieng'",
+      title: "Board Member - AI Governance & Decision Architecture",
+      image: "/1766487748644.jpeg",
+      bio: "Dr. Michael Ochieng' came to AI from the high-stakes world of wireless networks, where systems fail loudly when governance is absent. His career was forged in deploying large-scale LTE and 5G infrastructure for global operators like Verizon, T-Mobile, Sprint, Safaricom, and Huawei.",
+      fullBio: {
+        introduction: "Dr. Michael Ochieng' did not come to AI from the software hype cycle. He came from the high-stakes world of wireless networks—an environment where systems fail loudly, and often dangerously, when governance is absent. His career was forged in the deployment of large-scale LTE and 5G infrastructure for global operators like Verizon, T-Mobile, Sprint, Safaricom, and Huawei. In the telecom sector, Dr. Ochieng' mastered a fundamental truth decades ago: intelligence must always be decoupled from control.",
+        platform: "In a carrier-grade network, confidence is never mistaken for permission. Every signal is gated, every handoff is authorized, and every action is bounded by architectural design. He views today's AI landscape as a repetition of structural mistakes that telecom solved thirty years ago—the deployment of 'intelligent' systems without a functioning control plane. At Kopiyo, Dr. Ochieng''s focus is not on model accuracy, but on decision authority. While accuracy is a statistical probability, authority is a binary permission. This philosophy is productized as DILLO (Decision Intelligence & Logic Layer Orchestrator).",
+        philosophy: "He argues that most enterprises are currently attempting to 'prompt engineer' their way into safety—an approach that is aspirational rather than architectural. Through Kopiyo, he builds the layer that determines whether intelligence is allowed to act, when it must be forced to refuse, and when 'I don't know' is the only legally defensible outcome. DILLO serves as the deterministic decision layer that governs AI before its probabilistic outputs touch the real world. Dr. Ochieng' treats AI as a liability engine that must be constrained before it can be deemed useful.",
+        expertise: [
+          "Carrier-Grade Network Architecture (LTE/5G)",
+          "AI Governance & Decision Authority Frameworks",
+          "DILLO (Decision Intelligence & Logic Layer Orchestrator)",
+          "Enterprise Risk Management for AI Systems",
+          "Telecom Infrastructure Deployment at Scale",
+          "Deterministic Control Planes for Probabilistic Systems"
+        ],
+        vision: "Dr. Ochieng' has reached a point where he no longer 'uses' AI in the traditional sense; he governs it. His interaction model has crystallized into a dual-mode governance architecture that treats every session as one of two distinct operations: A Compliance Test (stress-testing the boundaries to identify where the system breaks) or A Calculated Suspension of Rules (allowing operation only within a predefined, sandboxed perimeter where risk has been pre-quantified). His mission is not to make AI sound smarter, but to make it safe to rely on. In Dr. Ochieng''s view, if a system cannot refuse to act, it is not ready for scale—and if it cannot say 'no,' it has no business touching an enterprise P&L."
+      }
+    },
   ];
 
   const [isModalOpen, setModalOpen] = useState(false);

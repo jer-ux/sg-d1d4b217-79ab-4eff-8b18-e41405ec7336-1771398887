@@ -1,7 +1,11 @@
 import { X, ChevronLeft, Shield, AlertTriangle, TrendingUp, TrendingDown, ExternalLink } from "lucide-react";
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import type { TileData } from "./executiveTypes";
 import { LineChart, Line, ResponsiveContainer, AreaChart, Area } from "recharts";
+import { Canvas } from "@react-three/fiber";
+import { OrbitControls, PerspectiveCamera, Float, MeshDistortMaterial, Sphere } from "@react-three/drei";
+import * as THREE from "three";
+import { motion } from "framer-motion";
 
 interface DrillDownLevel {
   level: number;
@@ -14,6 +18,68 @@ interface ExecutiveKPIDrawerProps {
   isOpen: boolean;
   onClose: () => void;
 }
+
+// 3D Visualization Component for Cost Trend Stress Test
+const CostTrendStressTest3D = ({ variance }: { variance: number }) => {
+  const sphereCount = 15;
+  const positions = useMemo(() => {
+    return Array.from({ length: sphereCount }, () => ({
+      x: (Math.random() - 0.5) * 10,
+      y: (Math.random() - 0.5) * 10,
+      z: (Math.random() - 0.5) * 10,
+      scale: Math.random() * 0.5 + 0.3,
+      speed: Math.random() * 2 + 1,
+    }));
+  }, []);
+
+  const color = variance > 0 
+    ? new THREE.Color(0xff4444) // Red for negative variance
+    : new THREE.Color(0x22c55e); // Green for positive variance
+
+  return (
+    <Canvas className="h-full w-full">
+      <PerspectiveCamera makeDefault position={[0, 0, 10]} />
+      <OrbitControls enableZoom={false} autoRotate autoRotateSpeed={0.5} />
+      
+      {/* Ambient lighting */}
+      <ambientLight intensity={0.3} />
+      <pointLight position={[10, 10, 10]} intensity={1} color="#fbbf24" />
+      <pointLight position={[-10, -10, -10]} intensity={0.5} color="#a855f7" />
+      
+      {/* Central main sphere */}
+      <Float speed={1.5} rotationIntensity={0.5} floatIntensity={0.5}>
+        <Sphere args={[1.5, 64, 64]} position={[0, 0, 0]}>
+          <MeshDistortMaterial
+            color={color}
+            attach="material"
+            distort={0.4}
+            speed={2}
+            roughness={0.2}
+            metalness={0.8}
+          />
+        </Sphere>
+      </Float>
+
+      {/* Orbiting stress indicators */}
+      {positions.map((pos, i) => (
+        <Float key={i} speed={pos.speed} rotationIntensity={1} floatIntensity={2}>
+          <Sphere args={[pos.scale, 32, 32]} position={[pos.x, pos.y, pos.z]}>
+            <meshStandardMaterial
+              color={i % 2 === 0 ? "#fbbf24" : "#a855f7"}
+              emissive={i % 2 === 0 ? "#fbbf24" : "#a855f7"}
+              emissiveIntensity={0.3}
+              roughness={0.3}
+              metalness={0.7}
+            />
+          </Sphere>
+        </Float>
+      ))}
+      
+      {/* Grid backdrop */}
+      <gridHelper args={[20, 20, "#fbbf24", "#3f3f46"]} position={[0, -3, 0]} />
+    </Canvas>
+  );
+};
 
 export function ExecutiveKPIDrawer({ tile, isOpen, onClose }: ExecutiveKPIDrawerProps) {
   const [drillStack, setDrillStack] = useState<DrillDownLevel[]>([
@@ -108,6 +174,35 @@ export function ExecutiveKPIDrawer({ tile, isOpen, onClose }: ExecutiveKPIDrawer
               <X className="h-5 w-5" />
             </button>
           </div>
+
+          {/* 3D Visualization for Cost Trend Stress Test */}
+          {tile.key === "costTrendStress" && (
+            <motion.div
+              className="relative h-96 w-full overflow-hidden rounded-2xl border border-amber-500/30 bg-gradient-to-br from-zinc-950 via-zinc-900 to-black"
+              initial={{ opacity: 0, scale: 0.9 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ duration: 0.6, delay: 0.2 }}
+            >
+              <div className="absolute inset-0 bg-gradient-to-br from-amber-500/10 via-purple-500/10 to-blue-500/10" />
+              <CostTrendStressTest3D variance={parseFloat(tile.delta?.replace("%", "") || "0")} />
+              
+              {/* Overlay stats */}
+              <div className="absolute bottom-4 left-4 right-4 flex gap-4">
+                <div className="flex-1 rounded-xl border border-amber-500/30 bg-black/60 p-3 backdrop-blur-md">
+                  <div className="text-xs text-amber-400">Variance</div>
+                  <div className="text-lg font-bold text-white">{tile.delta || "N/A"}</div>
+                </div>
+                <div className="flex-1 rounded-xl border border-amber-500/30 bg-black/60 p-3 backdrop-blur-md">
+                  <div className="text-xs text-amber-400">Trend</div>
+                  <div className="text-lg font-bold text-white">{tile.trend || "flat"}</div>
+                </div>
+                <div className="flex-1 rounded-xl border border-amber-500/30 bg-black/60 p-3 backdrop-blur-md">
+                  <div className="text-xs text-amber-400">Framework</div>
+                  <div className="text-lg font-bold text-white">{tile.framework || "Standard"}</div>
+                </div>
+              </div>
+            </motion.div>
+          )}
 
           {/* Content */}
           <div className="flex-1 overflow-y-auto p-6">

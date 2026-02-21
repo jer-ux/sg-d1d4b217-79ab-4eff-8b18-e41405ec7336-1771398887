@@ -964,7 +964,7 @@ export default function ActuarialBenefits() {
             "Integration with wearables and health apps (Fitbit, Apple Health, MyFitnessPal)",
             "HIPAA-compliant data collection and storage with member consent management",
             "Predictive analytics identifying members most likely to benefit from interventions",
-            "Reporting dashboards tracking participation rates, biometric trends, and ROI"
+            "Reporting dashboards tracking engagement rates, biometric trends, and ROI"
           ],
           businessImpact: [
             "Achieve 68% wellness program participation vs. industry average of 34%",
@@ -1515,8 +1515,12 @@ export default function ActuarialBenefits() {
                             {feature.description}
                           </p>
 
-                          <div className="inline-block px-4 py-2 rounded-full bg-amber-500/20 border border-amber-500/30">
-                            <span className="text-amber-400 font-semibold">{feature.stats}</span>
+                          <div className="flex flex-wrap gap-2 mb-4">
+                            {feature.metrics.slice(0, 2).map((metric: string, i: number) => (
+                              <div key={i} className="inline-block px-3 py-1 rounded-full bg-amber-500/20 border border-amber-500/30">
+                                <span className="text-amber-400 font-semibold text-sm">{metric}</span>
+                              </div>
+                            ))}
                           </div>
 
                           <div className="mt-4 text-sm text-amber-400/70 flex items-center gap-2">

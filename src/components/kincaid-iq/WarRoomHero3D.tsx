@@ -133,6 +133,9 @@ export function WarRoomHero3D() {
     const canvas = canvasRef.current;
     if (!canvas) return;
 
+    canvas.width = canvas.offsetWidth;
+    canvas.height = canvas.offsetHeight;
+
     // Reduced particle count from 80 to 50
     const initParticles: Particle[] = [];
     for (let i = 0; i < 50; i++) {
@@ -149,9 +152,10 @@ export function WarRoomHero3D() {
     }
     setParticles(initParticles);
 
-    // Context setup
-    const ctx = canvas.getContext("2d");
-    if (!ctx) return;
+    // Context setup - explicit type assertion for React 19 compatibility
+    const context = canvas.getContext("2d");
+    if (!context) return;
+    const ctx: CanvasRenderingContext2D = context;
 
     let lastTime = Date.now();
     const targetFPS = 30; // Target 30 FPS instead of 60

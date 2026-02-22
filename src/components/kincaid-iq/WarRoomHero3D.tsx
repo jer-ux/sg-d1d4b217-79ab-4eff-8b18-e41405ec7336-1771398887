@@ -46,7 +46,7 @@ const ALERT_TYPES = [
 
 export function WarRoomHero3D() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
-  const animationFrameRef = useRef<number>();
+  const animationFrameRef = useRef<number | undefined>(undefined);
   const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
   const [particles, setParticles] = useState<Particle[]>([]);
   const [vegasBeams, setVegasBeams] = useState<VegasBeam[]>([]);

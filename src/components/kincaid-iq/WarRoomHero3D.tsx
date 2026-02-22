@@ -136,10 +136,9 @@ export function WarRoomHero3D() {
     canvas.width = canvas.offsetWidth;
     canvas.height = canvas.offsetHeight;
 
-    // Context setup - explicit type assertion for React 19 compatibility
-    const context = (canvas as HTMLCanvasElement).getContext("2d");
-    if (!context) return;
-    const ctx: CanvasRenderingContext2D = context;
+    // Get 2D context with explicit type
+    const ctx = canvas.getContext("2d");
+    if (!ctx) return;
 
     // Reduced particle count from 80 to 50
     const initParticles: Particle[] = [];
@@ -300,7 +299,7 @@ export function WarRoomHero3D() {
         cancelAnimationFrame(animationFrameRef.current);
       }
     };
-  }, [mousePos, vegasBeams]);
+  }, [mousePos, vegasBeams, particles]);
 
   const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
     const rect = e.currentTarget.getBoundingClientRect();
@@ -434,7 +433,7 @@ export function WarRoomHero3D() {
         </motion.div>
       ))}
 
-      {/* HUD Overlays - keep as is but with optimized animations */}
+      {/* HUD Overlays */}
       
       {/* Top Left - System Status */}
       <motion.div

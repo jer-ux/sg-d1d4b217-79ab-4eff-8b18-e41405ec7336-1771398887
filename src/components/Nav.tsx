@@ -6,7 +6,6 @@ import { useRouter } from "next/router";
 import { motion } from "framer-motion";
 import { Menu, X, Crown } from "lucide-react";
 import CommandPalette from "./CommandPalette";
-import { getTerm } from "@/lib/compliance/terminology";
 
 export default function Nav() {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -21,15 +20,12 @@ export default function Nav() {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  // Use compliance terminology for CFO/executive audience
-  const userRole = "cfo";
-
   const navItems = [
     { href: "/", label: "Home" },
-    { href: "/war-room", label: getTerm("warRoom", userRole) },
-    { href: "/verified-savings-ledger", label: getTerm("valueLedger", userRole) },
-    { href: "/evidence-receipts", label: getTerm("evidence", userRole) + " Library" },
-    { href: "/executive-war-room", label: "Executive Dashboard" },
+    { href: "/verified-savings-ledger", label: "Verified Savings Ledger" },
+    { href: "/evidence-receipts", label: "Evidence Receipts" },
+    { href: "/war-room", label: "War Room" },
+    { href: "/board-of-directors", label: "Board of Directors" },
     { href: "/company", label: "Company" },
     { href: "/contact", label: "Contact" }
   ];

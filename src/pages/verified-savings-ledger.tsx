@@ -1,673 +1,960 @@
+import { useState, useMemo } from "react";
+import { motion } from "framer-motion";
 import { SEO } from "@/components/SEO";
 import { SiteHeader } from "@/components/site/SiteHeader";
 import { SiteFooter } from "@/components/site/SiteFooter";
-import { CheckCircle2, FileText, TrendingUp, Shield, ArrowRight, Sparkles, Database, GitBranch, Lock, Zap, BarChart3, Users, Clock, AlertCircle, Server, Cloud, Code, CheckSquare, XCircle, Building2, DollarSign, Target, Award } from "lucide-react";
-import Link from "next/link";
-import { motion } from "framer-motion";
-import { getTerm, LEDGER_STATE_LABELS, COMPLIANCE_SECTIONS } from "@/lib/compliance/terminology";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogDescription,
+} from "@/components/ui/dialog";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { 
+  DollarSign, 
+  TrendingUp, 
+  CheckCircle2, 
+  AlertCircle,
+  Filter,
+  Download,
+  FileText,
+  Clock,
+  User,
+  Shield,
+  Calendar,
+  FileCheck,
+  Link as LinkIcon,
+  ChevronRight,
+  Sparkles
+} from "lucide-react";
+import { getTerm, getLedgerStateLabel, getTermDefinition, formatComplianceAmount, getRetentionPeriod } from "@/lib/compliance/terminology";
+
+type LedgerState = "IDENTIFIED" | "APPROVED" | "REALIZED" | "AT_RISK";
+type Priority = "HIGH" | "MEDIUM" | "LOW";
+type Confidence = "HIGH" | "MEDIUM" | "LOW";
+
+type LedgerEntry = {
+  id: string;
+  description: string;
+  amount: number;
+  state: LedgerState;
+  owner: string;
+  ownerRole: string;
+  department: string;
+  identifiedDate: string;
+  approvedDate?: string;
+  realizedDate?: string;
+  confidence: Confidence;
+  timeSensitivity: Priority;
+  category: string;
+  evidenceCount: number;
+  attestations: number;
+  auditTrail: AuditEntry[];
+  evidence: EvidenceItem[];
+  approvals: ApprovalItem[];
+  contractReference?: string;
+  vendorName?: string;
+  glAccount?: string;
+  fiscalImpact?: string;
+};
+
+type AuditEntry = {
+  timestamp: string;
+  action: string;
+  actor: string;
+  actorRole: string;
+  details: string;
+  ipAddress?: string;
+};
+
+type EvidenceItem = {
+  id: string;
+  type: string;
+  filename: string;
+  uploadedBy: string;
+  uploadedDate: string;
+  verified: boolean;
+  retentionPeriod: string;
+  cryptoHash: string;
+};
+
+type ApprovalItem = {
+  approver: string;
+  approverRole: string;
+  approvalDate: string;
+  comments: string;
+  attestation: boolean;
+};
+
+type DetailModalType = "state" | "owner" | "confidence" | "priority" | null;
+
+type DetailModalState = {
+  type: DetailModalType;
+  entry: LedgerEntry | null;
+};
 
 export default function VerifiedSavingsLedger() {
-  // Default to compliance view for this page (CFO/Board audience)
+  const [filterState, setFilterState] = useState<LedgerState | "ALL">("ALL");
+  const [detailModal, setDetailModal] = useState<DetailModalState>({ type: null, entry: null });
   const userRole = "cfo";
-  const useComplianceTerms = true;
+
+  // Mock data with comprehensive details
+  const mockLedgerData: LedgerEntry[] = [
+    {
+      id: "VSL-2026-001",
+      description: "PBM Spread Pricing Variance - Q1 2026",
+      amount: 847500,
+      state: "REALIZED",
+      owner: "Sarah Chen",
+      ownerRole: "VP Benefits",
+      department: "Human Resources",
+      identifiedDate: "2026-01-15",
+      approvedDate: "2026-01-22",
+      realizedDate: "2026-02-15",
+      confidence: "HIGH",
+      timeSensitivity: "MEDIUM",
+      category: "Pharmacy Benefits",
+      evidenceCount: 12,
+      attestations: 3,
+      contractReference: "PBM-2024-Master-Agreement",
+      vendorName: "OptumRx",
+      glAccount: "5200-1450",
+      fiscalImpact: "Q1 2026 Operating Expenses Reduction",
+      auditTrail: [
+        {
+          timestamp: "2026-02-15T14:30:00Z",
+          action: "Value Confirmed",
+          actor: "Michael Rodriguez",
+          actorRole: "CFO",
+          details: "Final reconciliation completed against GL account 5200-1450. Variance resolved and documented.",
+          ipAddress: "192.168.1.45"
+        },
+        {
+          timestamp: "2026-01-22T09:15:00Z",
+          action: "Action Authorized",
+          actor: "Sarah Chen",
+          actorRole: "VP Benefits",
+          details: "Approved recovery of spread pricing variance. Vendor credit memo negotiated.",
+          ipAddress: "192.168.1.23"
+        },
+        {
+          timestamp: "2026-01-15T16:45:00Z",
+          action: "Finding Identified",
+          actor: "SiriusB iQ Analytics Engine",
+          actorRole: "System",
+          details: "Automated analysis detected 12.3% variance between contracted AWP discount and actual pricing.",
+          ipAddress: "10.0.0.1"
+        }
+      ],
+      evidence: [
+        {
+          id: "EVD-001",
+          type: "Contract Document",
+          filename: "PBM_Master_Agreement_2024.pdf",
+          uploadedBy: "Sarah Chen",
+          uploadedDate: "2026-01-15",
+          verified: true,
+          retentionPeriod: "7 years post-termination",
+          cryptoHash: "sha256:a3b2c1d4e5f6..."
+        },
+        {
+          id: "EVD-002",
+          type: "Claims Data Extract",
+          filename: "Q1_2026_Pharmacy_Claims.csv",
+          uploadedBy: "System Import",
+          uploadedDate: "2026-01-15",
+          verified: true,
+          retentionPeriod: "6 years (HIPAA requirement)",
+          cryptoHash: "sha256:b4c3d2e1f0g7..."
+        },
+        {
+          id: "EVD-003",
+          type: "Invoice",
+          filename: "OptumRx_Jan2026_Invoice.pdf",
+          uploadedBy: "AP System",
+          uploadedDate: "2026-01-31",
+          verified: true,
+          retentionPeriod: "7 years (ERISA requirement)",
+          cryptoHash: "sha256:c5d4e3f2g1h8..."
+        },
+        {
+          id: "EVD-004",
+          type: "Credit Memo",
+          filename: "OptumRx_Credit_847500.pdf",
+          uploadedBy: "Sarah Chen",
+          uploadedDate: "2026-02-10",
+          verified: true,
+          retentionPeriod: "7 years (ERISA requirement)",
+          cryptoHash: "sha256:d6e5f4g3h2i9..."
+        }
+      ],
+      approvals: [
+        {
+          approver: "Sarah Chen",
+          approverRole: "VP Benefits (Control Owner)",
+          approvalDate: "2026-01-22T09:15:00Z",
+          comments: "Variance confirmed through contract review. Vendor acknowledges pricing error. Recovery plan approved.",
+          attestation: true
+        },
+        {
+          approver: "Jennifer Liu",
+          approverRole: "Chief Compliance Officer",
+          approvalDate: "2026-01-22T11:30:00Z",
+          comments: "Evidence package reviewed. Documentation meets ERISA fiduciary standards. Approved for execution.",
+          attestation: true
+        },
+        {
+          approver: "Michael Rodriguez",
+          approverRole: "CFO",
+          approvalDate: "2026-02-15T14:30:00Z",
+          comments: "Final reconciliation verified. Impact confirmed in GL. Value officially realized.",
+          attestation: true
+        }
+      ]
+    },
+    {
+      id: "VSL-2026-002",
+      description: "Duplicate Medical Claims - January 2026",
+      amount: 234800,
+      state: "APPROVED",
+      owner: "Marcus Thompson",
+      ownerRole: "Benefits Operations Manager",
+      department: "Human Resources",
+      identifiedDate: "2026-02-01",
+      approvedDate: "2026-02-10",
+      confidence: "HIGH",
+      timeSensitivity: "HIGH",
+      category: "Medical Claims",
+      evidenceCount: 8,
+      attestations: 2,
+      contractReference: "TPA-2025-Service-Agreement",
+      vendorName: "Aetna",
+      glAccount: "5200-1200",
+      fiscalImpact: "Q1 2026 Claims Expense Adjustment",
+      auditTrail: [
+        {
+          timestamp: "2026-02-10T13:20:00Z",
+          action: "Action Authorized",
+          actor: "Marcus Thompson",
+          actorRole: "Benefits Operations Manager",
+          details: "Approved claim recovery process. TPA to reprocess duplicate payments.",
+          ipAddress: "192.168.1.67"
+        },
+        {
+          timestamp: "2026-02-01T08:30:00Z",
+          action: "Finding Identified",
+          actor: "SiriusB iQ Claims Analytics",
+          actorRole: "System",
+          details: "Pattern matching detected 47 duplicate claim payments totaling $234,800.",
+          ipAddress: "10.0.0.1"
+        }
+      ],
+      evidence: [
+        {
+          id: "EVD-005",
+          type: "Claims Analysis Report",
+          filename: "Duplicate_Claims_Analysis_Jan2026.xlsx",
+          uploadedBy: "System Analytics",
+          uploadedDate: "2026-02-01",
+          verified: true,
+          retentionPeriod: "6 years (HIPAA requirement)",
+          cryptoHash: "sha256:e7f6g5h4i3j0..."
+        },
+        {
+          id: "EVD-006",
+          type: "TPA Response",
+          filename: "Aetna_Duplicate_Acknowledgement.pdf",
+          uploadedBy: "Marcus Thompson",
+          uploadedDate: "2026-02-05",
+          verified: true,
+          retentionPeriod: "7 years post-termination",
+          cryptoHash: "sha256:f8g7h6i5j4k1..."
+        }
+      ],
+      approvals: [
+        {
+          approver: "Marcus Thompson",
+          approverRole: "Benefits Operations Manager",
+          approvalDate: "2026-02-10T13:20:00Z",
+          comments: "Duplicate claims validated. TPA has confirmed recovery timeline of 45 days.",
+          attestation: true
+        },
+        {
+          approver: "Jennifer Liu",
+          approverRole: "Chief Compliance Officer",
+          approvalDate: "2026-02-10T15:45:00Z",
+          comments: "Recovery process approved. Documentation adequate for audit purposes.",
+          attestation: true
+        }
+      ]
+    },
+    {
+      id: "VSL-2026-003",
+      description: "Stop-Loss Premium Overcharge - 2025 Policy Year",
+      amount: 156200,
+      state: "IDENTIFIED",
+      owner: "Sarah Chen",
+      ownerRole: "VP Benefits",
+      department: "Human Resources",
+      identifiedDate: "2026-02-18",
+      confidence: "MEDIUM",
+      timeSensitivity: "HIGH",
+      category: "Insurance Premiums",
+      evidenceCount: 5,
+      attestations: 0,
+      contractReference: "StopLoss-2025-Policy",
+      vendorName: "Sun Life",
+      glAccount: "5200-1100",
+      fiscalImpact: "2025 Reconciliation Adjustment",
+      auditTrail: [
+        {
+          timestamp: "2026-02-18T10:15:00Z",
+          action: "Finding Identified",
+          actor: "SiriusB iQ Premium Audit",
+          actorRole: "System",
+          details: "Variance detected between policy aggregate attachment point and premium billed. Requires manual review.",
+          ipAddress: "10.0.0.1"
+        }
+      ],
+      evidence: [
+        {
+          id: "EVD-007",
+          type: "Policy Document",
+          filename: "SunLife_StopLoss_2025_Policy.pdf",
+          uploadedBy: "Sarah Chen",
+          uploadedDate: "2026-02-18",
+          verified: true,
+          retentionPeriod: "7 years post-termination",
+          cryptoHash: "sha256:g9h8i7j6k5l2..."
+        },
+        {
+          id: "EVD-008",
+          type: "Premium Invoice",
+          filename: "SunLife_2025_Annual_Premium.pdf",
+          uploadedBy: "AP System",
+          uploadedDate: "2026-02-18",
+          verified: true,
+          retentionPeriod: "7 years (ERISA requirement)",
+          cryptoHash: "sha256:h0i9j8k7l6m3..."
+        },
+        {
+          id: "EVD-009",
+          type: "Claims Summary",
+          filename: "2025_Claims_Aggregate.xlsx",
+          uploadedBy: "System Analytics",
+          uploadedDate: "2026-02-18",
+          verified: true,
+          retentionPeriod: "6 years (HIPAA requirement)",
+          cryptoHash: "sha256:i1j0k9l8m7n4..."
+        }
+      ],
+      approvals: []
+    },
+    {
+      id: "VSL-2026-004",
+      description: "Unused Wellness Program Credits",
+      amount: 89300,
+      state: "AT_RISK",
+      owner: "David Kim",
+      ownerRole: "Wellness Program Manager",
+      department: "Human Resources",
+      identifiedDate: "2026-01-10",
+      confidence: "HIGH",
+      timeSensitivity: "HIGH",
+      category: "Wellness Programs",
+      evidenceCount: 3,
+      attestations: 0,
+      contractReference: "Wellness-2024-Agreement",
+      vendorName: "Virgin Pulse",
+      glAccount: "5200-1800",
+      fiscalImpact: "Q4 2025 Accrual Adjustment",
+      auditTrail: [
+        {
+          timestamp: "2026-01-10T14:00:00Z",
+          action: "Exception Flagged",
+          actor: "SiriusB iQ Contract Monitor",
+          actorRole: "System",
+          details: "Contract end date approaching (2026-01-31). Unused credits require immediate action or will be forfeited.",
+          ipAddress: "10.0.0.1"
+        }
+      ],
+      evidence: [
+        {
+          id: "EVD-010",
+          type: "Contract",
+          filename: "VirginPulse_Contract_2024.pdf",
+          uploadedBy: "David Kim",
+          uploadedDate: "2026-01-10",
+          verified: true,
+          retentionPeriod: "7 years post-termination",
+          cryptoHash: "sha256:j2k1l0m9n8o5..."
+        },
+        {
+          id: "EVD-011",
+          type: "Usage Report",
+          filename: "VirginPulse_2024_Usage.csv",
+          uploadedBy: "System Import",
+          uploadedDate: "2026-01-10",
+          verified: true,
+          retentionPeriod: "7 years (best practice)",
+          cryptoHash: "sha256:k3l2m1n0o9p6..."
+        }
+      ],
+      approvals: []
+    }
+  ];
+
+  const filteredData = useMemo(() => {
+    if (filterState === "ALL") return mockLedgerData;
+    return mockLedgerData.filter(entry => entry.state === filterState);
+  }, [filterState]);
+
+  const stats = useMemo(() => {
+    const total = mockLedgerData.reduce((sum, entry) => sum + entry.amount, 0);
+    const realized = mockLedgerData
+      .filter(e => e.state === "REALIZED")
+      .reduce((sum, entry) => sum + entry.amount, 0);
+    const approved = mockLedgerData
+      .filter(e => e.state === "APPROVED")
+      .reduce((sum, entry) => sum + entry.amount, 0);
+    const atRisk = mockLedgerData
+      .filter(e => e.state === "AT_RISK")
+      .reduce((sum, entry) => sum + entry.amount, 0);
+
+    return { total, realized, approved, atRisk };
+  }, []);
+
+  const getStateColor = (state: LedgerState) => {
+    switch (state) {
+      case "REALIZED": return "bg-emerald-500/20 text-emerald-300 border-emerald-500/30 hover:bg-emerald-500/30";
+      case "APPROVED": return "bg-blue-500/20 text-blue-300 border-blue-500/30 hover:bg-blue-500/30";
+      case "IDENTIFIED": return "bg-amber-500/20 text-amber-300 border-amber-500/30 hover:bg-amber-500/30";
+      case "AT_RISK": return "bg-red-500/20 text-red-300 border-red-500/30 hover:bg-red-500/30";
+    }
+  };
+
+  const getConfidenceColor = (confidence: Confidence) => {
+    switch (confidence) {
+      case "HIGH": return "bg-emerald-500/20 text-emerald-300 border-emerald-500/30 hover:bg-emerald-500/30";
+      case "MEDIUM": return "bg-amber-500/20 text-amber-300 border-amber-500/30 hover:bg-amber-500/30";
+      case "LOW": return "bg-red-500/20 text-red-300 border-red-500/30 hover:bg-red-500/30";
+    }
+  };
+
+  const getPriorityColor = (priority: Priority) => {
+    switch (priority) {
+      case "HIGH": return "bg-red-500/20 text-red-300 border-red-500/30 hover:bg-red-500/30";
+      case "MEDIUM": return "bg-amber-500/20 text-amber-300 border-amber-500/30 hover:bg-amber-500/30";
+      case "LOW": return "bg-blue-500/20 text-blue-300 border-blue-500/30 hover:bg-blue-500/30";
+    }
+  };
+
+  const openDetailModal = (type: DetailModalType, entry: LedgerEntry) => {
+    setDetailModal({ type, entry });
+  };
+
+  const closeDetailModal = () => {
+    setDetailModal({ type: null, entry: null });
+  };
+
+  const renderDetailModal = () => {
+    if (!detailModal.entry) return null;
+
+    const entry = detailModal.entry;
+    const modalTitle = {
+      state: `${getLedgerStateLabel(entry.state, userRole)} - Detail View`,
+      owner: `Control Owner - ${entry.owner}`,
+      confidence: `Evidence Strength - ${entry.confidence}`,
+      priority: `Remediation Priority - ${entry.timeSensitivity}`
+    }[detailModal.type || "state"] || "Detail View";
+
+    return (
+      <Dialog open={!!detailModal.type} onOpenChange={closeDetailModal}>
+        <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto bg-gradient-to-br from-zinc-900 via-black to-zinc-900 border border-amber-500/20">
+          <DialogHeader>
+            <DialogTitle className="text-2xl font-bold text-amber-300 flex items-center gap-2">
+              <Sparkles className="h-6 w-6" />
+              {modalTitle}
+            </DialogTitle>
+            <DialogDescription className="text-zinc-400">
+              {entry.description} • {entry.id}
+            </DialogDescription>
+          </DialogHeader>
+
+          <Tabs defaultValue="overview" className="w-full">
+            <TabsList className="grid w-full grid-cols-4 bg-zinc-900/50">
+              <TabsTrigger value="overview">Overview</TabsTrigger>
+              <TabsTrigger value="audit">Audit Trail</TabsTrigger>
+              <TabsTrigger value="evidence">Evidence</TabsTrigger>
+              <TabsTrigger value="approvals">Approvals</TabsTrigger>
+            </TabsList>
+
+            <TabsContent value="overview" className="space-y-4 mt-4">
+              <Card className="bg-zinc-900/50 border-zinc-700">
+                <CardHeader>
+                  <CardTitle className="text-amber-300 flex items-center gap-2">
+                    <FileCheck className="h-5 w-5" />
+                    Control Finding Details
+                  </CardTitle>
+                </CardHeader>
+                <CardContent className="space-y-3 text-sm">
+                  <div className="grid grid-cols-2 gap-4">
+                    <div>
+                      <p className="text-zinc-500 mb-1">Finding ID</p>
+                      <p className="text-white font-mono">{entry.id}</p>
+                    </div>
+                    <div>
+                      <p className="text-zinc-500 mb-1">Category</p>
+                      <p className="text-white">{entry.category}</p>
+                    </div>
+                    <div>
+                      <p className="text-zinc-500 mb-1">Financial Impact</p>
+                      <p className="text-emerald-300 font-bold text-xl">
+                        {formatComplianceAmount(entry.amount)}
+                      </p>
+                    </div>
+                    <div>
+                      <p className="text-zinc-500 mb-1">GL Account</p>
+                      <p className="text-white font-mono">{entry.glAccount || "N/A"}</p>
+                    </div>
+                    <div>
+                      <p className="text-zinc-500 mb-1">Fiscal Impact Period</p>
+                      <p className="text-white">{entry.fiscalImpact || "N/A"}</p>
+                    </div>
+                    <div>
+                      <p className="text-zinc-500 mb-1">Control Status</p>
+                      <Badge className={getStateColor(entry.state)}>
+                        {getLedgerStateLabel(entry.state, userRole)}
+                      </Badge>
+                    </div>
+                  </div>
+
+                  <div className="pt-4 border-t border-zinc-700">
+                    <p className="text-zinc-500 mb-1">Description</p>
+                    <p className="text-white">{entry.description}</p>
+                  </div>
+
+                  {entry.contractReference && (
+                    <div className="pt-4 border-t border-zinc-700">
+                      <p className="text-zinc-500 mb-2">Contract Reference</p>
+                      <div className="flex items-center gap-2 text-blue-300">
+                        <LinkIcon className="h-4 w-4" />
+                        <span className="font-mono text-sm">{entry.contractReference}</span>
+                      </div>
+                      {entry.vendorName && (
+                        <p className="text-zinc-400 text-sm mt-1">Vendor: {entry.vendorName}</p>
+                      )}
+                    </div>
+                  )}
+                </CardContent>
+              </Card>
+
+              <Card className="bg-zinc-900/50 border-zinc-700">
+                <CardHeader>
+                  <CardTitle className="text-amber-300 flex items-center gap-2">
+                    <User className="h-5 w-5" />
+                    Control Owner & Assignment
+                  </CardTitle>
+                </CardHeader>
+                <CardContent className="space-y-3 text-sm">
+                  <div className="grid grid-cols-2 gap-4">
+                    <div>
+                      <p className="text-zinc-500 mb-1">Control Owner</p>
+                      <p className="text-white font-semibold">{entry.owner}</p>
+                      <p className="text-zinc-400 text-xs">{entry.ownerRole}</p>
+                    </div>
+                    <div>
+                      <p className="text-zinc-500 mb-1">Department</p>
+                      <p className="text-white">{entry.department}</p>
+                    </div>
+                    <div>
+                      <p className="text-zinc-500 mb-1">Evidence Strength</p>
+                      <Badge className={getConfidenceColor(entry.confidence)}>
+                        {entry.confidence} ({entry.evidenceCount} artifacts)
+                      </Badge>
+                    </div>
+                    <div>
+                      <p className="text-zinc-500 mb-1">Remediation Priority</p>
+                      <Badge className={getPriorityColor(entry.timeSensitivity)}>
+                        {entry.timeSensitivity}
+                      </Badge>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+
+              <Card className="bg-zinc-900/50 border-zinc-700">
+                <CardHeader>
+                  <CardTitle className="text-amber-300 flex items-center gap-2">
+                    <Calendar className="h-5 w-5" />
+                    Timeline & Milestones
+                  </CardTitle>
+                </CardHeader>
+                <CardContent className="space-y-3 text-sm">
+                  <div className="space-y-2">
+                    <div className="flex items-center justify-between">
+                      <span className="text-zinc-500">Identified</span>
+                      <span className="text-white">{new Date(entry.identifiedDate).toLocaleDateString()}</span>
+                    </div>
+                    {entry.approvedDate && (
+                      <div className="flex items-center justify-between">
+                        <span className="text-zinc-500">Action Authorized</span>
+                        <span className="text-white">{new Date(entry.approvedDate).toLocaleDateString()}</span>
+                      </div>
+                    )}
+                    {entry.realizedDate && (
+                      <div className="flex items-center justify-between">
+                        <span className="text-zinc-500">Value Confirmed</span>
+                        <span className="text-white">{new Date(entry.realizedDate).toLocaleDateString()}</span>
+                      </div>
+                    )}
+                    <div className="pt-2 border-t border-zinc-700 flex items-center justify-between">
+                      <span className="text-zinc-500">Attestations Received</span>
+                      <span className="text-emerald-300 font-semibold">{entry.attestations}</span>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+            </TabsContent>
+
+            <TabsContent value="audit" className="space-y-3 mt-4">
+              <Card className="bg-zinc-900/50 border-zinc-700">
+                <CardHeader>
+                  <CardTitle className="text-amber-300 flex items-center gap-2">
+                    <Shield className="h-5 w-5" />
+                    Complete Audit Trail
+                  </CardTitle>
+                </CardHeader>
+                <CardContent className="space-y-4">
+                  {entry.auditTrail.map((audit, idx) => (
+                    <div key={idx} className="border-l-2 border-amber-500/30 pl-4 pb-4 last:pb-0">
+                      <div className="flex items-start justify-between mb-2">
+                        <div>
+                          <p className="text-white font-semibold">{audit.action}</p>
+                          <p className="text-zinc-400 text-xs">
+                            {new Date(audit.timestamp).toLocaleString()} • {audit.actor} ({audit.actorRole})
+                          </p>
+                        </div>
+                        <Badge variant="outline" className="text-xs">
+                          {audit.ipAddress}
+                        </Badge>
+                      </div>
+                      <p className="text-zinc-300 text-sm">{audit.details}</p>
+                    </div>
+                  ))}
+                </CardContent>
+              </Card>
+            </TabsContent>
+
+            <TabsContent value="evidence" className="space-y-3 mt-4">
+              <Card className="bg-zinc-900/50 border-zinc-700">
+                <CardHeader>
+                  <CardTitle className="text-amber-300 flex items-center gap-2">
+                    <FileText className="h-5 w-5" />
+                    Supporting Documentation
+                  </CardTitle>
+                </CardHeader>
+                <CardContent className="space-y-3">
+                  {entry.evidence.map((evidence) => (
+                    <div 
+                      key={evidence.id}
+                      className="p-4 bg-zinc-800/50 rounded-lg border border-zinc-700 hover:border-amber-500/30 transition-all"
+                    >
+                      <div className="flex items-start justify-between mb-2">
+                        <div>
+                          <div className="flex items-center gap-2 mb-1">
+                            <FileText className="h-4 w-4 text-amber-400" />
+                            <p className="text-white font-semibold text-sm">{evidence.filename}</p>
+                            {evidence.verified && (
+                              <Badge className="text-xs bg-emerald-500/20 text-emerald-300 border-emerald-500/30">
+                                Verified
+                              </Badge>
+                            )}
+                          </div>
+                          <p className="text-zinc-400 text-xs">{evidence.type}</p>
+                        </div>
+                        <Button variant="outline" size="sm" className="text-xs">
+                          <Download className="h-3 w-3 mr-1" />
+                          Download
+                        </Button>
+                      </div>
+                      <div className="grid grid-cols-2 gap-2 mt-3 text-xs">
+                        <div>
+                          <p className="text-zinc-500">Uploaded By</p>
+                          <p className="text-white">{evidence.uploadedBy}</p>
+                        </div>
+                        <div>
+                          <p className="text-zinc-500">Upload Date</p>
+                          <p className="text-white">{new Date(evidence.uploadedDate).toLocaleDateString()}</p>
+                        </div>
+                        <div>
+                          <p className="text-zinc-500">Retention Period</p>
+                          <p className="text-white">{evidence.retentionPeriod}</p>
+                        </div>
+                        <div>
+                          <p className="text-zinc-500">Crypto Hash</p>
+                          <p className="text-white font-mono truncate">{evidence.cryptoHash}</p>
+                        </div>
+                      </div>
+                    </div>
+                  ))}
+                  <div className="pt-3 border-t border-zinc-700">
+                    <p className="text-zinc-500 text-xs">
+                      All evidence artifacts are cryptographically verified and retained per ERISA/HIPAA requirements.
+                    </p>
+                  </div>
+                </CardContent>
+              </Card>
+            </TabsContent>
+
+            <TabsContent value="approvals" className="space-y-3 mt-4">
+              <Card className="bg-zinc-900/50 border-zinc-700">
+                <CardHeader>
+                  <CardTitle className="text-amber-300 flex items-center gap-2">
+                    <CheckCircle2 className="h-5 w-5" />
+                    Management Attestations
+                  </CardTitle>
+                </CardHeader>
+                <CardContent className="space-y-4">
+                  {entry.approvals.length > 0 ? (
+                    entry.approvals.map((approval, idx) => (
+                      <div 
+                        key={idx}
+                        className="p-4 bg-zinc-800/50 rounded-lg border border-zinc-700"
+                      >
+                        <div className="flex items-start justify-between mb-3">
+                          <div>
+                            <p className="text-white font-semibold">{approval.approver}</p>
+                            <p className="text-zinc-400 text-xs">{approval.approverRole}</p>
+                          </div>
+                          <div className="text-right">
+                            <Badge className="bg-emerald-500/20 text-emerald-300 border-emerald-500/30 mb-1">
+                              {approval.attestation ? "Attested" : "Approved"}
+                            </Badge>
+                            <p className="text-zinc-500 text-xs">
+                              {new Date(approval.approvalDate).toLocaleString()}
+                            </p>
+                          </div>
+                        </div>
+                        <div className="pt-3 border-t border-zinc-700">
+                          <p className="text-zinc-500 text-xs mb-1">Comments</p>
+                          <p className="text-zinc-300 text-sm">{approval.comments}</p>
+                        </div>
+                      </div>
+                    ))
+                  ) : (
+                    <div className="text-center py-8 text-zinc-500">
+                      <AlertCircle className="h-12 w-12 mx-auto mb-2 opacity-50" />
+                      <p>No approvals recorded yet</p>
+                      <p className="text-xs mt-1">Pending control owner review</p>
+                    </div>
+                  )}
+                </CardContent>
+              </Card>
+            </TabsContent>
+          </Tabs>
+
+          <div className="flex justify-end gap-2 pt-4 border-t border-zinc-700">
+            <Button variant="outline" onClick={closeDetailModal}>
+              Close
+            </Button>
+            <Button className="bg-amber-600 hover:bg-amber-700 text-white">
+              <Download className="h-4 w-4 mr-2" />
+              Export Package
+            </Button>
+          </div>
+        </DialogContent>
+      </Dialog>
+    );
+  };
 
   return (
     <>
-      <SEO
-        title={`${getTerm("valueLedger", userRole)} — Kincaid IQ`}
-        description="Auditable value ledger with cryptographic receipts, control owners, and CFO-ready reporting for enterprise compliance."
+      <SEO 
+        title="Value Reconciliation Ledger - SiriusB iQ"
+        description="ERISA-compliant audit trail and reconciliation ledger for verified savings and financial controls"
       />
-      <div className="min-h-screen bg-gradient-to-b from-slate-950 via-slate-900 to-black text-white">
+      <div className="min-h-screen bg-black">
         <SiteHeader />
         
-        {/* Premium 3D Background */}
-        <div className="absolute inset-0 overflow-hidden pointer-events-none">
-          <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-purple-900/30 via-transparent to-transparent" />
-          <div className="absolute top-0 left-1/4 w-96 h-96 bg-purple-500/20 rounded-full blur-[120px] animate-pulse" />
-          <div className="absolute top-1/3 right-1/4 w-80 h-80 bg-blue-500/20 rounded-full blur-[100px] animate-pulse" style={{ animationDelay: '1s' }} />
-          <div className="absolute bottom-1/4 left-1/3 w-72 h-72 bg-emerald-500/20 rounded-full blur-[90px] animate-pulse" style={{ animationDelay: '2s' }} />
-        </div>
-
-        <main className="relative">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-24">
-            {/* Hero Section with Premium Design */}
-            <motion.div 
+        <main className="relative pt-24 pb-16">
+          {/* Hero Section */}
+          <div className="max-w-7xl mx-auto px-6 mb-12">
+            <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8 }}
-              className="text-center mb-20"
+              transition={{ duration: 0.6 }}
             >
-              <div className="inline-flex items-center gap-2 rounded-full border border-purple-500/30 bg-purple-500/10 backdrop-blur-xl px-4 py-2 mb-6">
-                <Sparkles className="h-4 w-4 text-purple-400" />
-                <span className="text-sm font-semibold text-purple-300">
-                  {useComplianceTerms ? "ERISA-Compliant Value Tracking" : "Audit-Grade Value Tracking"}
-                </span>
+              <div className="flex items-center gap-3 mb-4">
+                <DollarSign className="h-8 w-8 text-amber-400" />
+                <h1 className="text-4xl font-bold text-white">
+                  {getTerm("valueLedger", userRole)}
+                </h1>
               </div>
-              <h1 className="text-6xl md:text-7xl font-bold tracking-tight mb-6 bg-gradient-to-r from-white via-purple-200 to-purple-400 bg-clip-text text-transparent">
-                {getTerm("valueLedger", userRole)}
-              </h1>
-              <p className="text-xl text-purple-200/70 max-w-3xl mx-auto leading-relaxed">
-                {useComplianceTerms 
-                  ? "Auditable register of financial controls with cryptographic evidence, control owners, and real-time reconciliation for fiduciary compliance."
-                  : "Stop arguing about 'opportunities.' Start reconciling an auditable value ledger with receipts, owners, and board-ready reporting."}
+              <p className="text-xl text-zinc-400 max-w-3xl">
+                ERISA-compliant audit trail and reconciliation ledger with cryptographically verified evidence, 
+                management attestations, and 7-year retention. Full chain of custody for all financial impacts.
               </p>
             </motion.div>
+          </div>
 
-            {/* Premium Stats Grid */}
-            <motion.div 
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8, delay: 0.2 }}
-              className="grid md:grid-cols-3 gap-6 mb-20"
-            >
-              {[
-                { 
-                  label: "Ledger States", 
-                  value: "4", 
-                  desc: useComplianceTerms 
-                    ? "Under Review → Action Authorized → Value Confirmed → Exception Queue"
-                    : "Identified → Approved → Realized → At-risk"
-                },
-                { 
-                  label: getTerm("evidence", userRole), 
-                  value: "100%", 
-                  desc: "Full lineage, tests, and confidence scores with cryptographic signing"
-                },
-                { 
-                  label: "Audit Ready", 
-                  value: "Real-time", 
-                  desc: useComplianceTerms 
-                    ? "Continuous reconciliation for CFO attestation"
-                    : "Journal-entry thinking for finance teams"
-                }
-              ].map((stat, i) => (
-                <motion.div 
-                  key={i}
-                  initial={{ opacity: 0, scale: 0.9 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  transition={{ duration: 0.5, delay: 0.3 + i * 0.1 }}
-                  className="group relative rounded-3xl border border-white/10 bg-gradient-to-br from-white/5 via-white/[0.03] to-transparent backdrop-blur-xl p-8 hover:scale-[1.02] transition-all duration-500 hover:shadow-2xl hover:shadow-purple-500/20"
-                >
-                  <div className="absolute -inset-0.5 bg-gradient-to-r from-purple-500/0 to-blue-500/0 rounded-3xl blur opacity-0 group-hover:opacity-30 group-hover:from-purple-500/50 group-hover:to-blue-500/50 transition-all duration-500" />
-                  <div className="relative">
-                    <div className="text-5xl font-bold bg-gradient-to-r from-purple-400 to-purple-200 bg-clip-text text-transparent mb-3">
-                      {stat.value}
-                    </div>
-                    <div className="text-sm font-semibold text-white mb-2">{stat.label}</div>
-                    <div className="text-sm text-purple-200/60">{stat.desc}</div>
-                  </div>
-                </motion.div>
-              ))}
-            </motion.div>
+          {/* Stats Cards */}
+          <div className="max-w-7xl mx-auto px-6 mb-8">
+            <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+              <Card className="bg-gradient-to-br from-zinc-900 to-zinc-800 border-zinc-700">
+                <CardHeader className="pb-3">
+                  <CardTitle className="text-sm text-zinc-400">Total Identified Value</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <p className="text-3xl font-bold text-white">{formatComplianceAmount(stats.total)}</p>
+                  <p className="text-xs text-zinc-500 mt-1">Across all control domains</p>
+                </CardContent>
+              </Card>
 
-            {/* Ledger States Flow */}
-            <motion.div 
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8, delay: 0.4 }}
-              className="mb-20 rounded-3xl border border-white/10 bg-gradient-to-br from-white/5 via-white/[0.03] to-transparent backdrop-blur-xl p-8 shadow-2xl"
-            >
-              <h2 className="text-3xl font-bold mb-8 bg-gradient-to-r from-white to-purple-200 bg-clip-text text-transparent">
-                Ledger State Flow
-              </h2>
-              <div className="grid md:grid-cols-4 gap-4">
-                {[
-                  { 
-                    state: "IDENTIFIED" as const, 
-                    color: "blue", 
-                    icon: FileText, 
-                    desc: useComplianceTerms 
-                      ? "Discovery and documentation phase with initial evidence"
-                      : "Discovery phase with initial evidence"
-                  },
-                  { 
-                    state: "APPROVED" as const, 
-                    color: "purple", 
-                    icon: CheckCircle2, 
-                    desc: useComplianceTerms
-                      ? "Control owner authorization with attestation"
-                      : "Validated and ready for execution"
-                  },
-                  { 
-                    state: "REALIZED" as const, 
-                    color: "emerald", 
-                    icon: TrendingUp, 
-                    desc: useComplianceTerms
-                      ? "Financial impact verified and reconciled to GL"
-                      : "Value captured and verified"
-                  },
-                  { 
-                    state: "AT_RISK" as const, 
-                    color: "amber", 
-                    icon: Shield, 
-                    desc: useComplianceTerms
-                      ? "Control gap requiring immediate remediation"
-                      : "Flagged for intervention"
-                  }
-                ].map((item, i) => (
-                  <div key={i} className="relative">
-                    <motion.div 
-                      initial={{ opacity: 0, x: -20 }}
-                      animate={{ opacity: 1, x: 0 }}
-                      transition={{ duration: 0.5, delay: 0.5 + i * 0.1 }}
-                      className={`rounded-2xl border border-${item.color}-500/30 bg-${item.color}-500/10 backdrop-blur-xl p-6 hover:scale-105 transition-all duration-500 hover:shadow-lg hover:shadow-${item.color}-500/20`}
-                    >
-                      <item.icon className={`h-8 w-8 text-${item.color}-400 mb-3`} />
-                      <div className={`text-lg font-semibold text-${item.color}-300 mb-2`}>
-                        {useComplianceTerms 
-                          ? LEDGER_STATE_LABELS.compliance[item.state]
-                          : LEDGER_STATE_LABELS.operational[item.state]}
-                      </div>
-                      <div className="text-xs text-white/60">
-                        {item.desc}
-                      </div>
-                    </motion.div>
-                    {i < 3 && (
-                      <div className="hidden md:block absolute top-1/2 -right-2 transform -translate-y-1/2">
-                        <ArrowRight className="h-5 w-5 text-purple-400/50" />
-                      </div>
-                    )}
-                  </div>
-                ))}
-              </div>
-            </motion.div>
+              <Card className="bg-gradient-to-br from-emerald-900/20 to-zinc-900 border-emerald-500/30">
+                <CardHeader className="pb-3">
+                  <CardTitle className="text-sm text-emerald-300">Value Confirmed</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <p className="text-3xl font-bold text-emerald-300">{formatComplianceAmount(stats.realized)}</p>
+                  <p className="text-xs text-zinc-500 mt-1">Reconciled to general ledger</p>
+                </CardContent>
+              </Card>
 
-            {/* Technical Architecture Section */}
-            <motion.div 
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8, delay: 0.6 }}
-              className="mb-20"
-            >
-              <h2 className="text-4xl font-bold mb-12 text-center bg-gradient-to-r from-white to-purple-200 bg-clip-text text-transparent">
-                {useComplianceTerms ? "Compliance Architecture" : "Technical Architecture"}
-              </h2>
-              <div className="grid md:grid-cols-2 gap-8">
-                {[
-                  {
-                    icon: Database,
-                    title: "Event-Sourced Ledger",
-                    desc: useComplianceTerms
-                      ? "Append-only audit log ensures complete chain of custody with cryptographic verification for ERISA compliance"
-                      : "Append-only event log ensures complete audit trail with cryptographic verification",
-                    features: ["Immutable history", "Time-travel queries", "Cryptographic signatures"]
-                  },
-                  {
-                    icon: GitBranch,
-                    title: useComplianceTerms ? "Control State Machine" : "State Machine Logic",
-                    desc: useComplianceTerms
-                      ? "Deterministic state transitions with policy enforcement and separation of duties"
-                      : "Deterministic state transitions with validation rules and business logic enforcement",
-                    features: ["Guard conditions", "State validators", "Transition policies"]
-                  },
-                  {
-                    icon: Lock,
-                    title: "Access Control",
-                    desc: useComplianceTerms
-                      ? "Role-based permissions with segregation of duties and multi-party attestation workflows per SOX requirements"
-                      : "Role-based permissions with separation of duties and multi-party approval workflows",
-                    features: ["RBAC policies", "Approval chains", "Audit logging"]
-                  },
-                  {
-                    icon: Zap,
-                    title: "Real-time Sync",
-                    desc: useComplianceTerms
-                      ? "WebSocket streams for instant dashboard updates and automated exception alerts"
-                      : "WebSocket streams for instant updates across all connected stakeholders and systems",
-                    features: ["Live dashboards", "Push notifications", "Event broadcasting"]
-                  }
-                ].map((item, i) => (
-                  <motion.div 
-                    key={i}
-                    initial={{ opacity: 0, scale: 0.9 }}
-                    animate={{ opacity: 1, scale: 1 }}
-                    transition={{ duration: 0.5, delay: 0.7 + i * 0.1 }}
-                    className="group rounded-3xl border border-white/10 bg-gradient-to-br from-white/5 via-white/[0.03] to-transparent backdrop-blur-xl p-8 hover:scale-[1.01] transition-all duration-500 hover:shadow-2xl hover:shadow-purple-500/20"
+              <Card className="bg-gradient-to-br from-blue-900/20 to-zinc-900 border-blue-500/30">
+                <CardHeader className="pb-3">
+                  <CardTitle className="text-sm text-blue-300">Action Authorized</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <p className="text-3xl font-bold text-blue-300">{formatComplianceAmount(stats.approved)}</p>
+                  <p className="text-xs text-zinc-500 mt-1">Pending execution & confirmation</p>
+                </CardContent>
+              </Card>
+
+              <Card className="bg-gradient-to-br from-red-900/20 to-zinc-900 border-red-500/30">
+                <CardHeader className="pb-3">
+                  <CardTitle className="text-sm text-red-300">Exception Queue</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <p className="text-3xl font-bold text-red-300">{formatComplianceAmount(stats.atRisk)}</p>
+                  <p className="text-xs text-zinc-500 mt-1">Requires immediate attention</p>
+                </CardContent>
+              </Card>
+            </div>
+          </div>
+
+          {/* Filters */}
+          <div className="max-w-7xl mx-auto px-6 mb-6">
+            <div className="flex items-center gap-3">
+              <Filter className="h-5 w-5 text-zinc-400" />
+              <div className="flex gap-2">
+                {["ALL", "IDENTIFIED", "APPROVED", "REALIZED", "AT_RISK"].map((state) => (
+                  <Button
+                    key={state}
+                    variant={filterState === state ? "default" : "outline"}
+                    size="sm"
+                    onClick={() => setFilterState(state as LedgerState | "ALL")}
+                    className={filterState === state ? "bg-amber-600 hover:bg-amber-700" : ""}
                   >
-                    <item.icon className="h-10 w-10 text-purple-400 mb-4" />
-                    <h3 className="text-xl font-bold text-white mb-3">{item.title}</h3>
-                    <p className="text-purple-200/70 mb-4">{item.desc}</p>
-                    <ul className="space-y-2">
-                      {item.features.map((feature, idx) => (
-                        <li key={idx} className="flex items-center gap-2 text-sm text-purple-200/60">
-                          <CheckCircle2 className="h-4 w-4 text-emerald-400 flex-shrink-0" />
-                          {feature}
-                        </li>
+                    {state === "ALL" ? "All" : getLedgerStateLabel(state as LedgerState, userRole)}
+                  </Button>
+                ))}
+              </div>
+            </div>
+          </div>
+
+          {/* Ledger Table */}
+          <div className="max-w-7xl mx-auto px-6">
+            <Card className="bg-zinc-900/50 border-zinc-700">
+              <CardContent className="p-0">
+                <div className="overflow-x-auto">
+                  <table className="w-full">
+                    <thead className="bg-zinc-800/50 border-b border-zinc-700">
+                      <tr>
+                        <th className="text-left p-4 text-sm font-semibold text-zinc-300">ID</th>
+                        <th className="text-left p-4 text-sm font-semibold text-zinc-300">Description</th>
+                        <th className="text-right p-4 text-sm font-semibold text-zinc-300">Amount</th>
+                        <th className="text-left p-4 text-sm font-semibold text-zinc-300">Status</th>
+                        <th className="text-left p-4 text-sm font-semibold text-zinc-300">Control Owner</th>
+                        <th className="text-left p-4 text-sm font-semibold text-zinc-300">Evidence</th>
+                        <th className="text-left p-4 text-sm font-semibold text-zinc-300">Priority</th>
+                        <th className="text-left p-4 text-sm font-semibold text-zinc-300">Date</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {filteredData.map((entry) => (
+                        <tr key={entry.id} className="border-b border-zinc-800 hover:bg-zinc-800/30 transition-colors">
+                          <td className="p-4">
+                            <span className="text-amber-300 font-mono text-sm">{entry.id}</span>
+                          </td>
+                          <td className="p-4">
+                            <div>
+                              <p className="text-white font-medium">{entry.description}</p>
+                              <p className="text-zinc-500 text-xs mt-1">{entry.category}</p>
+                            </div>
+                          </td>
+                          <td className="p-4 text-right">
+                            <span className="text-emerald-300 font-bold text-lg">
+                              {formatComplianceAmount(entry.amount)}
+                            </span>
+                          </td>
+                          <td className="p-4">
+                            <Badge 
+                              className={`${getStateColor(entry.state)} cursor-pointer transition-all`}
+                              onClick={() => openDetailModal("state", entry)}
+                            >
+                              {getLedgerStateLabel(entry.state, userRole)}
+                            </Badge>
+                          </td>
+                          <td className="p-4">
+                            <Badge 
+                              variant="outline" 
+                              className="cursor-pointer hover:bg-zinc-700 transition-all"
+                              onClick={() => openDetailModal("owner", entry)}
+                            >
+                              <User className="h-3 w-3 mr-1" />
+                              {entry.owner}
+                            </Badge>
+                          </td>
+                          <td className="p-4">
+                            <Badge 
+                              className={`${getConfidenceColor(entry.confidence)} cursor-pointer transition-all`}
+                              onClick={() => openDetailModal("confidence", entry)}
+                            >
+                              <Shield className="h-3 w-3 mr-1" />
+                              {entry.confidence} ({entry.evidenceCount})
+                            </Badge>
+                          </td>
+                          <td className="p-4">
+                            <Badge 
+                              className={`${getPriorityColor(entry.timeSensitivity)} cursor-pointer transition-all`}
+                              onClick={() => openDetailModal("priority", entry)}
+                            >
+                              <Clock className="h-3 w-3 mr-1" />
+                              {entry.timeSensitivity}
+                            </Badge>
+                          </td>
+                          <td className="p-4 text-zinc-400 text-sm">
+                            {new Date(entry.identifiedDate).toLocaleDateString()}
+                          </td>
+                        </tr>
                       ))}
-                    </ul>
-                  </motion.div>
-                ))}
-              </div>
-            </motion.div>
-
-            {/* Receipt Evidence System */}
-            <motion.div 
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8, delay: 0.8 }}
-              className="mb-20 rounded-3xl border border-white/10 bg-gradient-to-br from-white/5 via-white/[0.03] to-transparent backdrop-blur-xl p-8 shadow-2xl"
-            >
-              <h2 className="text-3xl font-bold mb-8 bg-gradient-to-r from-white to-purple-200 bg-clip-text text-transparent">
-                {getTerm("evidence", userRole)} System
-              </h2>
-              <div className="grid md:grid-cols-3 gap-6">
-                {[
-                  {
-                    title: "Data Lineage",
-                    icon: Code,
-                    items: [
-                      "Source system tracking",
-                      "Transformation pipeline",
-                      "Query reproducibility",
-                      useComplianceTerms ? "Audit trail versioning" : "Version control"
-                    ]
-                  },
-                  {
-                    title: useComplianceTerms ? "Validation Coverage" : "Test Coverage",
-                    icon: CheckSquare,
-                    items: [
-                      "Data quality tests",
-                      "Business rule validation",
-                      "Statistical checks",
-                      "Anomaly detection"
-                    ]
-                  },
-                  {
-                    title: getTerm("confidence", userRole),
-                    icon: BarChart3,
-                    items: [
-                      useComplianceTerms ? "Evidence strength metrics" : "Evidence strength scoring",
-                      "Uncertainty quantification",
-                      "Risk assessment",
-                      "Reliability scoring"
-                    ]
-                  }
-                ].map((section, i) => (
-                  <div key={i} className="rounded-2xl border border-purple-500/20 bg-purple-500/5 backdrop-blur-xl p-6">
-                    <section.icon className="h-8 w-8 text-purple-400 mb-4" />
-                    <h3 className="text-lg font-semibold text-white mb-4">{section.title}</h3>
-                    <ul className="space-y-2">
-                      {section.items.map((item, idx) => (
-                        <li key={idx} className="flex items-center gap-2 text-sm text-purple-200/70">
-                          <div className="h-1.5 w-1.5 rounded-full bg-purple-400" />
-                          {item}
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
-                ))}
-              </div>
-            </motion.div>
-
-            {/* Integration Ecosystem */}
-            <motion.div 
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8, delay: 0.9 }}
-              className="mb-20"
-            >
-              <h2 className="text-4xl font-bold mb-12 text-center bg-gradient-to-r from-white to-purple-200 bg-clip-text text-transparent">
-                Enterprise Integration
-              </h2>
-              <div className="grid md:grid-cols-3 gap-6">
-                {[
-                  {
-                    category: "Data Sources",
-                    icon: Server,
-                    systems: ["ERP Systems", "Data Warehouses", "Cloud Storage", "Databases", "APIs", "File Systems"]
-                  },
-                  {
-                    category: "Analytics Platforms",
-                    icon: Cloud,
-                    systems: ["Snowflake", "Databricks", "AWS", "Azure", "GCP", "Tableau"]
-                  },
-                  {
-                    category: "Workflow Tools",
-                    icon: Users,
-                    systems: ["ServiceNow", "Jira", "Slack", "Teams", "Email", "Custom Apps"]
-                  }
-                ].map((section, i) => (
-                  <motion.div 
-                    key={i}
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.5, delay: 1.0 + i * 0.1 }}
-                    className="rounded-3xl border border-white/10 bg-gradient-to-br from-blue-500/10 via-white/[0.03] to-transparent backdrop-blur-xl p-8"
-                  >
-                    <section.icon className="h-10 w-10 text-blue-400 mb-4" />
-                    <h3 className="text-xl font-bold text-white mb-4">{section.category}</h3>
-                    <div className="flex flex-wrap gap-2">
-                      {section.systems.map((system, idx) => (
-                        <span 
-                          key={idx}
-                          className="px-3 py-1 rounded-full bg-blue-500/10 border border-blue-500/20 text-xs text-blue-300"
-                        >
-                          {system}
-                        </span>
-                      ))}
-                    </div>
-                  </motion.div>
-                ))}
-              </div>
-            </motion.div>
-
-            {/* Use Cases by Industry */}
-            <motion.div 
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8, delay: 1.0 }}
-              className="mb-20"
-            >
-              <h2 className="text-4xl font-bold mb-12 text-center bg-gradient-to-r from-white to-purple-200 bg-clip-text text-transparent">
-                Use Cases by Industry
-              </h2>
-              <div className="grid md:grid-cols-2 gap-8">
-                {[
-                  {
-                    industry: "Private Equity / M&A",
-                    icon: Building2,
-                    useCases: [
-                      "Diligence value validation with proof packs",
-                      "Post-close value tracking and realization",
-                      "Portfolio company performance monitoring",
-                      "Exit readiness and value documentation"
-                    ]
-                  },
-                  {
-                    industry: "Healthcare / Insurance",
-                    icon: Shield,
-                    useCases: [
-                      "Claims savings verification and tracking",
-                      "Provider contract compliance monitoring",
-                      "Medical cost trend analysis",
-                      "Risk adjustment accuracy validation"
-                    ]
-                  },
-                  {
-                    industry: "Enterprise Procurement",
-                    icon: DollarSign,
-                    useCases: [
-                      "Vendor savings verification and attribution",
-                      "Contract compliance monitoring",
-                      "Spend optimization tracking",
-                      "Supplier performance measurement"
-                    ]
-                  },
-                  {
-                    industry: "Financial Services",
-                    icon: Target,
-                    useCases: [
-                      "Operational efficiency improvements",
-                      "Technology cost optimization",
-                      "Process automation ROI tracking",
-                      "Regulatory compliance cost management"
-                    ]
-                  }
-                ].map((item, i) => (
-                  <motion.div 
-                    key={i}
-                    initial={{ opacity: 0, x: i % 2 === 0 ? -20 : 20 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    transition={{ duration: 0.5, delay: 1.1 + i * 0.1 }}
-                    className="group rounded-3xl border border-white/10 bg-gradient-to-br from-emerald-500/10 via-white/[0.03] to-transparent backdrop-blur-xl p-8 hover:scale-[1.01] transition-all duration-500"
-                  >
-                    <item.icon className="h-10 w-10 text-emerald-400 mb-4" />
-                    <h3 className="text-2xl font-bold text-white mb-4">{item.industry}</h3>
-                    <ul className="space-y-3">
-                      {item.useCases.map((useCase, idx) => (
-                        <li key={idx} className="flex items-start gap-3">
-                          <CheckCircle2 className="h-5 w-5 text-emerald-400 flex-shrink-0 mt-0.5" />
-                          <span className="text-purple-200/70">{useCase}</span>
-                        </li>
-                      ))}
-                    </ul>
-                  </motion.div>
-                ))}
-              </div>
-            </motion.div>
-
-            {/* Value Realization Metrics */}
-            <motion.div 
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8, delay: 1.2 }}
-              className="mb-20 rounded-3xl border border-white/10 bg-gradient-to-br from-white/5 via-white/[0.03] to-transparent backdrop-blur-xl p-8 shadow-2xl"
-            >
-              <h2 className="text-3xl font-bold mb-8 bg-gradient-to-r from-white to-purple-200 bg-clip-text text-transparent">
-                Value Realization Metrics
-              </h2>
-              <div className="grid md:grid-cols-4 gap-6">
-                {[
-                  { label: "Cycle Time", metric: "Days to realize", icon: Clock },
-                  { label: "Capture Rate", metric: "% of identified value", icon: Target },
-                  { label: "Decay Rate", metric: "Value erosion over time", icon: TrendingUp },
-                  { label: "Attribution", metric: "Owner accountability", icon: Award }
-                ].map((item, i) => (
-                  <div key={i} className="rounded-2xl border border-purple-500/20 bg-purple-500/5 backdrop-blur-xl p-6 text-center">
-                    <item.icon className="h-8 w-8 text-purple-400 mx-auto mb-3" />
-                    <div className="text-sm font-semibold text-white mb-1">{item.label}</div>
-                    <div className="text-xs text-purple-200/60">{item.metric}</div>
-                  </div>
-                ))}
-              </div>
-              <div className="mt-8 grid md:grid-cols-2 gap-6">
-                <div className="rounded-2xl border border-emerald-500/20 bg-emerald-500/5 backdrop-blur-xl p-6">
-                  <h4 className="text-lg font-semibold text-white mb-3 flex items-center gap-2">
-                    <CheckCircle2 className="h-5 w-5 text-emerald-400" />
-                    Leading Indicators
-                  </h4>
-                  <ul className="space-y-2 text-sm text-purple-200/70">
-                    <li>• Pipeline velocity (idea to approval)</li>
-                    <li>• Evidence completeness scores</li>
-                    <li>• Stakeholder engagement rates</li>
-                    <li>• Exception resolution time</li>
-                  </ul>
+                    </tbody>
+                  </table>
                 </div>
-                <div className="rounded-2xl border border-blue-500/20 bg-blue-500/5 backdrop-blur-xl p-6">
-                  <h4 className="text-lg font-semibold text-white mb-3 flex items-center gap-2">
-                    <BarChart3 className="h-5 w-5 text-blue-400" />
-                    Lagging Indicators
-                  </h4>
-                  <ul className="space-y-2 text-sm text-purple-200/70">
-                    <li>• Total realized value (actualized savings)</li>
-                    <li>• Realization rate vs. target</li>
-                    <li>• Value decay and leakage</li>
-                    <li>• Audit findings and adjustments</li>
-                  </ul>
-                </div>
-              </div>
-            </motion.div>
-
-            {/* Comparison: Traditional vs Kincaid IQ */}
-            <motion.div 
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8, delay: 1.3 }}
-              className="mb-20"
-            >
-              <h2 className="text-4xl font-bold mb-12 text-center bg-gradient-to-r from-white to-purple-200 bg-clip-text text-transparent">
-                Traditional vs. Kincaid IQ Approach
-              </h2>
-              <div className="grid md:grid-cols-2 gap-8">
-                <div className="rounded-3xl border border-red-500/20 bg-red-500/5 backdrop-blur-xl p-8">
-                  <div className="flex items-center gap-3 mb-6">
-                    <XCircle className="h-8 w-8 text-red-400" />
-                    <h3 className="text-2xl font-bold text-white">Traditional Approach</h3>
-                  </div>
-                  <ul className="space-y-4">
-                    {[
-                      "Spreadsheet tracking with version conflicts",
-                      "No audit trail or evidence lineage",
-                      "Manual reconciliation and disputes",
-                      "Unclear ownership and accountability",
-                      "No real-time visibility or alerts",
-                      "Difficult to prove value in diligence"
-                    ].map((item, i) => (
-                      <li key={i} className="flex items-start gap-3">
-                        <XCircle className="h-5 w-5 text-red-400 flex-shrink-0 mt-0.5" />
-                        <span className="text-red-200/70">{item}</span>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-                <div className="rounded-3xl border border-emerald-500/20 bg-emerald-500/5 backdrop-blur-xl p-8">
-                  <div className="flex items-center gap-3 mb-6">
-                    <CheckCircle2 className="h-8 w-8 text-emerald-400" />
-                    <h3 className="text-2xl font-bold text-white">Kincaid IQ Platform</h3>
-                  </div>
-                  <ul className="space-y-4">
-                    {[
-                      "Event-sourced ledger with full history",
-                      "Cryptographic evidence receipts",
-                      "Automated reconciliation and alerts",
-                      "Clear ownership and state tracking",
-                      "Real-time dashboards and notifications",
-                      "Diligence-ready proof packs on demand"
-                    ].map((item, i) => (
-                      <li key={i} className="flex items-start gap-3">
-                        <CheckCircle2 className="h-5 w-5 text-emerald-400 flex-shrink-0 mt-0.5" />
-                        <span className="text-emerald-200/70">{item}</span>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-              </div>
-            </motion.div>
-
-            {/* Stakeholder Views */}
-            <motion.div 
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8, delay: 1.4 }}
-              className="grid md:grid-cols-2 gap-8 mb-20"
-            >
-              <div className="group rounded-3xl border border-white/10 bg-gradient-to-br from-purple-500/10 via-white/[0.03] to-transparent backdrop-blur-xl p-8 hover:scale-[1.01] transition-all duration-500 hover:shadow-2xl hover:shadow-purple-500/20">
-                <div className="absolute -inset-0.5 bg-gradient-to-r from-purple-500/0 to-blue-500/0 rounded-3xl blur opacity-0 group-hover:opacity-30 group-hover:from-purple-500/50 group-hover:to-blue-500/50 transition-all duration-500" />
-                <div className="relative">
-                  <div className="text-2xl font-bold mb-4 text-white">What a CFO sees</div>
-                  <div className="text-purple-200/70 mb-6 leading-relaxed">
-                    {useComplianceTerms
-                      ? "A fiduciary-compliant register of financial controls: designated control owners, resolution timelines, supporting documentation, aging analysis, and verified outcomes tied to management action."
-                      : "A controlled register of economic claims: owners, due dates, receipts, aging/decay, and realized outcomes tied to action."}
-                  </div>
-                  <ul className="space-y-3">
-                    {[
-                      useComplianceTerms ? "Reconciliation report by control domain and vendor" : "Reconciliation report by category and counterparty",
-                      useComplianceTerms ? "Exception queue (pending authorizations, missing documentation)" : "Exceptions queue (blocked approvals, missing receipts)",
-                      useComplianceTerms ? "Complete audit trail of every transaction (append-only events)" : "Audit trail of every change (append-only events)",
-                      "Real-time dashboards with drill-down capability",
-                      useComplianceTerms ? "Automated alerts for control gaps and aging items" : "Automated alerts for at-risk value items"
-                    ].map((item, i) => (
-                      <li key={i} className="flex items-start gap-3">
-                        <CheckCircle2 className="h-5 w-5 text-emerald-400 flex-shrink-0 mt-0.5" />
-                        <span className="text-purple-100/80">{item}</span>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-              </div>
-
-              <div className="group rounded-3xl border border-white/10 bg-gradient-to-br from-blue-500/10 via-white/[0.03] to-transparent backdrop-blur-xl p-8 hover:scale-[1.01] transition-all duration-500 hover:shadow-2xl hover:shadow-blue-500/20">
-                <div className="absolute -inset-0.5 bg-gradient-to-r from-blue-500/0 to-purple-500/0 rounded-3xl blur opacity-0 group-hover:opacity-30 group-hover:from-blue-500/50 group-hover:to-purple-500/50 transition-all duration-500" />
-                <div className="relative">
-                  <div className="text-2xl font-bold mb-4 text-white">What capital sees</div>
-                  <div className="text-blue-200/70 mb-6 leading-relaxed">
-                    {useComplianceTerms
-                      ? "Reduced due diligence risk: comprehensive evidence packages with full audit trails, underwriteable value projections, and repeatable governance processes that survive regulatory scrutiny."
-                      : "Reduced uncertainty: evidence packs for diligence, underwriteable value, and repeatable realization discipline post-close."}
-                  </div>
-                  <ul className="space-y-3">
-                    {[
-                      useComplianceTerms ? "Diligence-ready audit packages with complete documentation" : "Diligence-ready 'Proof Packs' with full evidence",
-                      useComplianceTerms ? "Proven post-acquisition value capture methodology" : "Repeatable post-close value realization process",
-                      useComplianceTerms ? "Controls framework that meets institutional standards" : "Governance posture that survives scrutiny",
-                      "Historical track record and success metrics",
-                      useComplianceTerms ? "Risk-adjusted value forecasts with confidence intervals" : "Risk-adjusted value projections with confidence intervals"
-                    ].map((item, i) => (
-                      <li key={i} className="flex items-start gap-3">
-                        <CheckCircle2 className="h-5 w-5 text-emerald-400 flex-shrink-0 mt-0.5" />
-                        <span className="text-blue-100/80">{item}</span>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-              </div>
-            </motion.div>
-
-            {/* FAQ Section */}
-            <motion.div 
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8, delay: 1.5 }}
-              className="mb-20 rounded-3xl border border-white/10 bg-gradient-to-br from-white/5 via-white/[0.03] to-transparent backdrop-blur-xl p-8 shadow-2xl"
-            >
-              <h2 className="text-3xl font-bold mb-8 bg-gradient-to-r from-white to-purple-200 bg-clip-text text-transparent">
-                Frequently Asked Questions
-              </h2>
-              <div className="space-y-6">
-                {[
-                  {
-                    q: "How does the ledger handle value that gets 'blocked' or never realizes?",
-                    a: "Items transition to 'At-risk' state automatically based on aging rules and missing milestones. This triggers alerts and creates an audit trail of why value didn't materialize, preserving accountability."
-                  },
-                  {
-                    q: "Can we integrate with our existing ERP and financial systems?",
-                    a: "Yes. The platform provides REST APIs, webhooks, and pre-built connectors for major ERP systems (SAP, Oracle, NetSuite). You can also sync via scheduled exports or real-time streaming."
-                  },
-                  {
-                    q: "What happens if someone disputes a ledger entry?",
-                    a: "All changes are logged in an append-only event stream. Disputes trigger a review workflow where stakeholders can add notes, attach evidence, and request adjustments. The full history remains visible for audit."
-                  },
-                  {
-                    q: "How granular should we track savings opportunities?",
-                    a: "We recommend tracking at the initiative or project level (not individual line items). Each entry should have clear ownership, measurable metrics, and a realistic timeline for realization."
-                  },
-                  {
-                    q: "What's the difference between a 'receipt' and a 'proof pack'?",
-                    a: "A receipt is a single piece of evidence (data lineage, test results, approval). A proof pack is a curated collection of receipts that tells the complete story for diligence or audit purposes."
-                  }
-                ].map((faq, i) => (
-                  <div key={i} className="rounded-2xl border border-purple-500/20 bg-purple-500/5 backdrop-blur-xl p-6">
-                    <div className="flex items-start gap-3 mb-3">
-                      <AlertCircle className="h-5 w-5 text-purple-400 flex-shrink-0 mt-1" />
-                      <h3 className="text-lg font-semibold text-white">{faq.q}</h3>
-                    </div>
-                    <p className="text-purple-200/70 pl-8">{faq.a}</p>
-                  </div>
-                ))}
-              </div>
-            </motion.div>
-
-            {/* CTA Section */}
-            <motion.div 
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8, delay: 1.6 }}
-              className="rounded-3xl border border-purple-500/30 bg-gradient-to-br from-purple-500/20 via-purple-500/10 to-transparent backdrop-blur-xl p-12 text-center shadow-2xl"
-            >
-              <h2 className="text-3xl font-bold mb-4 bg-gradient-to-r from-white to-purple-200 bg-clip-text text-transparent">
-                {useComplianceTerms 
-                  ? "Ready to implement your compliance ledger?"
-                  : "Ready to build your value ledger?"}
-              </h2>
-              <p className="text-purple-200/70 mb-8 max-w-2xl mx-auto">
-                {useComplianceTerms
-                  ? "See how leading enterprises track, verify, and reconcile business value with audit-grade precision and fiduciary compliance."
-                  : "See how leading enterprises track, verify, and realize business value with audit-grade precision."}
-              </p>
-              <Link
-                href="/request-demo"
-                className="inline-flex items-center gap-2 rounded-full bg-gradient-to-r from-purple-500 to-blue-500 px-8 py-4 text-lg font-semibold text-white hover:from-purple-600 hover:to-blue-600 transition-all duration-500 hover:scale-105 hover:shadow-2xl hover:shadow-purple-500/50"
-              >
-                Request Demo
-                <ArrowRight className="h-5 w-5" />
-              </Link>
-            </motion.div>
+              </CardContent>
+            </Card>
           </div>
         </main>
 
         <SiteFooter />
       </div>
+
+      {renderDetailModal()}
     </>
   );
 }

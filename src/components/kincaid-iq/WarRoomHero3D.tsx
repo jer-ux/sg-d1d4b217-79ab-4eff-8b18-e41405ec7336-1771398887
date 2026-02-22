@@ -136,7 +136,7 @@ export function WarRoomHero3D() {
     canvas.width = canvas.offsetWidth;
     canvas.height = canvas.offsetHeight;
 
-    // Get 2D context with explicit type
+    // Get 2D context with explicit '2d' argument
     const ctx = canvas.getContext("2d");
     if (!ctx) return;
 

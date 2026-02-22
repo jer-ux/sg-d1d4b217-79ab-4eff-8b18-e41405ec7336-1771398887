@@ -16,6 +16,7 @@ import { EventDetailDrawer } from "@/components/warroom/EventDetailDrawer";
 import { WarRoomHero3D } from "@/components/kincaid-iq/WarRoomHero3D";
 import { mockWarRoomData } from "@/lib/mocks/mockWarRoom";
 import type { WarEvent } from "@/lib/warroom/types";
+import { getTerm, COMPLIANCE_SECTIONS } from "@/lib/compliance/terminology";
 
 type TileConfig = {
   id: string;
@@ -38,172 +39,175 @@ type TileConfig = {
   badge?: string;
 };
 
-const tiles: TileConfig[] = [
-  {
-    id: "executive",
-    title: "Executive Dashboard",
-    subtitle: "CFO-ready KPIs with McKinsey and Bain frameworks",
-    icon: Target,
-    color: {
-      from: "from-amber-500",
-      to: "to-yellow-500",
-      glow: "shadow-amber-500/30",
-      text: "text-amber-400"
-    },
-    metric: {
-      value: "$3.2M",
-      label: "Total Identified Value",
-      trend: "up",
-      change: "+12.3%"
-    },
-    link: "/executive-war-room",
-    badge: "C-Suite"
-  },
-  {
-    id: "intelligence",
-    title: "Real-Time Intelligence",
-    subtitle: "Live event stream with AI-powered governance",
-    icon: Activity,
-    color: {
-      from: "from-amber-400",
-      to: "to-orange-500",
-      glow: "shadow-amber-500/30",
-      text: "text-amber-400"
-    },
-    metric: {
-      value: "10M+",
-      label: "Events Processed",
-      trend: "up",
-      change: "99.2%"
-    },
-    link: "/war-room-v2",
-    badge: "Live"
-  },
-  {
-    id: "value",
-    title: "Value Creation",
-    subtitle: "Arbitrage opportunities and contract optimization",
-    icon: TrendingUp,
-    color: {
-      from: "from-yellow-500",
-      to: "to-amber-500",
-      glow: "shadow-yellow-500/30",
-      text: "text-yellow-400"
-    },
-    metric: {
-      value: "$3.03M",
-      label: "Arbitrage Identified",
-      trend: "up",
-      change: "+8.7%"
-    },
-    link: "#four-lane",
-    badge: "High Impact"
-  },
-  {
-    id: "controls",
-    title: "Controls & Compliance",
-    subtitle: "Policy violations and governance automation",
-    icon: Shield,
-    color: {
-      from: "from-amber-500",
-      to: "to-orange-600",
-      glow: "shadow-amber-500/30",
-      text: "text-amber-400"
-    },
-    metric: {
-      value: "94.2%",
-      label: "Data Quality Score",
-      trend: "up",
-      change: "+2.1%"
-    },
-    link: "#four-lane",
-    badge: "Critical"
-  },
-  {
-    id: "agentic",
-    title: "Agentic Automation",
-    subtitle: "AI agents handling routine tasks autonomously",
-    icon: Zap,
-    color: {
-      from: "from-yellow-400",
-      to: "to-amber-500",
-      glow: "shadow-yellow-500/30",
-      text: "text-yellow-400"
-    },
-    metric: {
-      value: "847",
-      label: "Tasks Automated",
-      trend: "up",
-      change: "+156%"
-    },
-    link: "#four-lane",
-    badge: "AI Powered"
-  },
-  {
-    id: "marketplace",
-    title: "Marketplace Intel",
-    subtitle: "Vendor performance and rebate optimization",
-    icon: BarChart3,
-    color: {
-      from: "from-orange-500",
-      to: "to-amber-600",
-      glow: "shadow-orange-500/30",
-      text: "text-orange-400"
-    },
-    metric: {
-      value: "$410K",
-      label: "Rebate Recovery",
-      trend: "up",
-      change: "+5.2%"
-    },
-    link: "#four-lane",
-    badge: "Vendor"
-  },
-  {
-    id: "evidence",
-    title: "Evidence Library",
-    subtitle: "Cryptographically signed audit trails",
-    icon: FileText,
-    color: {
-      from: "from-amber-500",
-      to: "to-yellow-500",
-      glow: "shadow-amber-500/30",
-      text: "text-amber-400"
-    },
-    metric: {
-      value: "2,847",
-      label: "Verified Receipts",
-      trend: "up",
-      change: "100%"
-    },
-    link: "/evidence-receipts",
-    badge: "Verified"
-  },
-  {
-    id: "ranked",
-    title: "Ranked Events",
-    subtitle: "Prioritized by impact, confidence, and urgency",
-    icon: Layers,
-    color: {
-      from: "from-yellow-500",
-      to: "to-amber-600",
-      glow: "shadow-yellow-500/30",
-      text: "text-yellow-400"
-    },
-    metric: {
-      value: "127",
-      label: "Active Events",
-      trend: "up",
-      change: "+23"
-    },
-    link: "#ranked-events",
-    badge: "Prioritized"
-  }
-];
-
 export default function WarRoomPage() {
   const [selectedEventId, setSelectedEventId] = useState<string | null>(null);
   const [activeSection, setActiveSection] = useState<string | null>(null);
+  
+  // CFO-focused compliance terminology
+  const userRole = "cfo";
+
+  const tiles: TileConfig[] = [
+    {
+      id: "executive",
+      title: "Executive Dashboard",
+      subtitle: "CFO-ready KPIs with McKinsey and Bain frameworks",
+      icon: Target,
+      color: {
+        from: "from-amber-500",
+        to: "to-yellow-500",
+        glow: "shadow-amber-500/30",
+        text: "text-amber-400"
+      },
+      metric: {
+        value: "$3.2M",
+        label: "Total Identified Value",
+        trend: "up",
+        change: "+12.3%"
+      },
+      link: "/executive-war-room",
+      badge: "C-Suite"
+    },
+    {
+      id: "intelligence",
+      title: getTerm("warRoom", userRole),
+      subtitle: "Live event stream with AI-powered governance",
+      icon: Activity,
+      color: {
+        from: "from-amber-400",
+        to: "to-orange-500",
+        glow: "shadow-amber-500/30",
+        text: "text-amber-400"
+      },
+      metric: {
+        value: "10M+",
+        label: "Events Processed",
+        trend: "up",
+        change: "99.2%"
+      },
+      link: "/war-room-v2",
+      badge: "Live"
+    },
+    {
+      id: "value",
+      title: "Value Creation",
+      subtitle: `${getTerm("arbitrage", userRole)} opportunities and contract optimization`,
+      icon: TrendingUp,
+      color: {
+        from: "from-yellow-500",
+        to: "to-amber-500",
+        glow: "shadow-yellow-500/30",
+        text: "text-yellow-400"
+      },
+      metric: {
+        value: "$3.03M",
+        label: `${getTerm("arbitrage", userRole)} Identified`,
+        trend: "up",
+        change: "+8.7%"
+      },
+      link: "#four-lane",
+      badge: "High Impact"
+    },
+    {
+      id: "controls",
+      title: "Controls & Compliance",
+      subtitle: "Policy violations and governance automation",
+      icon: Shield,
+      color: {
+        from: "from-amber-500",
+        to: "to-orange-600",
+        glow: "shadow-amber-500/30",
+        text: "text-amber-400"
+      },
+      metric: {
+        value: "94.2%",
+        label: "Data Quality Score",
+        trend: "up",
+        change: "+2.1%"
+      },
+      link: "#four-lane",
+      badge: "Critical"
+    },
+    {
+      id: "agentic",
+      title: "Agentic Automation",
+      subtitle: "AI agents handling routine tasks autonomously",
+      icon: Zap,
+      color: {
+        from: "from-yellow-400",
+        to: "to-amber-500",
+        glow: "shadow-yellow-500/30",
+        text: "text-yellow-400"
+      },
+      metric: {
+        value: "847",
+        label: "Tasks Automated",
+        trend: "up",
+        change: "+156%"
+      },
+      link: "#four-lane",
+      badge: "AI Powered"
+    },
+    {
+      id: "marketplace",
+      title: "Marketplace Intel",
+      subtitle: "Vendor performance and rebate optimization",
+      icon: BarChart3,
+      color: {
+        from: "from-orange-500",
+        to: "to-amber-600",
+        glow: "shadow-orange-500/30",
+        text: "text-orange-400"
+      },
+      metric: {
+        value: "$410K",
+        label: "Rebate Recovery",
+        trend: "up",
+        change: "+5.2%"
+      },
+      link: "#four-lane",
+      badge: "Vendor"
+    },
+    {
+      id: "evidence",
+      title: getTerm("evidence", userRole) + " Library",
+      subtitle: "Cryptographically signed audit trails",
+      icon: FileText,
+      color: {
+        from: "from-amber-500",
+        to: "to-yellow-500",
+        glow: "shadow-amber-500/30",
+        text: "text-amber-400"
+      },
+      metric: {
+        value: "2,847",
+        label: `Verified ${getTerm("receipt", userRole)}s`,
+        trend: "up",
+        change: "100%"
+      },
+      link: "/evidence-receipts",
+      badge: "Verified"
+    },
+    {
+      id: "ranked",
+      title: `Ranked ${getTerm("event", userRole)}s`,
+      subtitle: "Prioritized by impact, confidence, and urgency",
+      icon: Layers,
+      color: {
+        from: "from-yellow-500",
+        to: "to-amber-600",
+        glow: "shadow-yellow-500/30",
+        text: "text-yellow-400"
+      },
+      metric: {
+        value: "127",
+        label: `Active ${getTerm("event", userRole)}s`,
+        trend: "up",
+        change: "+23"
+      },
+      link: "#ranked-events",
+      badge: "Prioritized"
+    }
+  ];
 
   const handleTileClick = (tile: TileConfig) => {
     if (tile.link.startsWith("#")) {
@@ -218,15 +222,14 @@ export default function WarRoomPage() {
   return (
     <>
       <SEO 
-        title="War Room - Real-Time Intelligence Platform | SiriusB iQ"
+        title={`${getTerm("warRoom", userRole)} - Real-Time Intelligence Platform | SiriusB iQ`}
         description="AI-powered operational command center with real-time KPIs, evidence-backed insights, and autonomous governance"
       />
       <Nav />
 
       <div className="min-h-screen bg-black text-white relative overflow-hidden">
-        {/* Animated Background Effects */}
+        {/* Animated Background Effects - keeping existing code */}
         <div className="fixed inset-0 pointer-events-none">
-          {/* Animated Spotlights */}
           <motion.div
             className="absolute top-0 left-1/4 w-96 h-96 bg-amber-500/20 rounded-full blur-3xl"
             animate={{
@@ -272,7 +275,6 @@ export default function WarRoomPage() {
             }}
           />
 
-          {/* Floating Particles */}
           {[...Array(20)].map((_, i) => (
             <motion.div
               key={i}
@@ -293,7 +295,6 @@ export default function WarRoomPage() {
             />
           ))}
 
-          {/* Neon Grid Overlay */}
           <div className="absolute inset-0 bg-[linear-gradient(rgba(245,158,11,0.03)_1px,transparent_1px),linear-gradient(90deg,rgba(245,158,11,0.03)_1px,transparent_1px)] bg-[size:50px_50px] [mask-image:radial-gradient(ellipse_80%_50%_at_50%_50%,black,transparent)]" />
         </div>
 
@@ -561,7 +562,7 @@ export default function WarRoomPage() {
           </div>
         </section>
 
-        {/* Final CTA Section */}
+        {/* Final CTA Section - Updated with compliance terminology */}
         <section className="relative py-32">
           <div className="max-w-5xl mx-auto px-6">
             <motion.div
@@ -646,7 +647,7 @@ export default function WarRoomPage() {
   );
 }
 
-// Premium Tile Component
+// Premium Tile Component - keeping existing implementation
 function PremiumTile({ tile, onClick }: { tile: TileConfig; onClick: () => void }) {
   const Icon = tile.icon;
   
@@ -657,20 +658,16 @@ function PremiumTile({ tile, onClick }: { tile: TileConfig; onClick: () => void 
       onClick={onClick}
       className="group relative cursor-pointer h-full"
     >
-      {/* Glow Effect on Hover */}
       <div className={`absolute -inset-1 bg-gradient-to-r ${tile.color.from} ${tile.color.to} rounded-3xl opacity-0 group-hover:opacity-30 blur-xl transition-all duration-500`} />
       
       <Card className="relative h-full bg-white/5 backdrop-blur-xl border-amber-500/20 group-hover:border-amber-500/40 overflow-hidden transition-all duration-300">
-        {/* Ambient Gradient Background */}
         <div className={`absolute inset-0 bg-gradient-to-br ${tile.color.from}/5 ${tile.color.to}/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500`} />
         
-        {/* Shimmer Effect */}
         <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500">
           <div className="absolute inset-0 bg-gradient-to-r from-transparent via-amber-400/10 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000" />
         </div>
 
         <div className="relative p-8 flex flex-col h-full">
-          {/* Header */}
           <div className="flex items-start justify-between mb-6">
             <div className={`inline-flex items-center justify-center w-14 h-14 rounded-2xl bg-gradient-to-br ${tile.color.from}/20 ${tile.color.to}/20 border border-amber-500/30 group-hover:scale-110 transition-transform duration-300`}>
               <Icon className={`h-7 w-7 ${tile.color.text} drop-shadow-[0_0_8px_rgba(245,158,11,0.5)]`} />
@@ -683,7 +680,6 @@ function PremiumTile({ tile, onClick }: { tile: TileConfig; onClick: () => void 
             )}
           </div>
 
-          {/* Content */}
           <div className="flex-1">
             <h3 className="text-xl font-bold mb-2 text-white group-hover:text-amber-200 transition-colors">
               {tile.title}
@@ -693,7 +689,6 @@ function PremiumTile({ tile, onClick }: { tile: TileConfig; onClick: () => void 
             </p>
           </div>
 
-          {/* Metric */}
           {tile.metric && (
             <div className="mt-6 pt-6 border-t border-amber-500/20">
               <div className="flex items-end justify-between">
@@ -721,7 +716,6 @@ function PremiumTile({ tile, onClick }: { tile: TileConfig; onClick: () => void 
             </div>
           )}
 
-          {/* Arrow Indicator */}
           <div className="mt-4 flex items-center justify-end">
             <div className={`flex items-center justify-center w-8 h-8 rounded-full bg-white/5 group-hover:bg-gradient-to-r ${tile.color.from}/20 ${tile.color.to}/20 border border-amber-500/20 transition-all duration-300 group-hover:translate-x-1`}>
               <ChevronRight className={`h-4 w-4 ${tile.color.text}`} />
@@ -733,7 +727,7 @@ function PremiumTile({ tile, onClick }: { tile: TileConfig; onClick: () => void 
   );
 }
 
-// Four Lane Ledger Component
+// Four Lane Ledger Component - keeping existing implementation
 function FourLaneLedger({ onEventClick }: { onEventClick: (event: WarEvent) => void }) {
   const lanes = [
     { key: "value" as const, label: "Value Creation", icon: TrendingUp, color: "amber" },
@@ -829,7 +823,7 @@ function FourLaneLedger({ onEventClick }: { onEventClick: (event: WarEvent) => v
   );
 }
 
-// Ranked Events View Component
+// Ranked Events View Component - keeping existing implementation
 function RankedEventsView({ onEventClick }: { onEventClick: (event: WarEvent) => void }) {
   const sortedEvents = [...mockWarRoomData.events]
     .sort((a, b) => {
@@ -857,13 +851,11 @@ function RankedEventsView({ onEventClick }: { onEventClick: (event: WarEvent) =>
               onClick={() => onEventClick(event)}
             >
               <div className="flex items-start gap-6">
-                {/* Rank Badge */}
                 <div className="flex-shrink-0 w-12 h-12 rounded-full bg-gradient-to-br from-amber-500/20 to-yellow-500/20 border border-amber-500/30 flex items-center justify-center group-hover:scale-110 transition-transform">
                   <span className="text-lg font-bold text-amber-400">#{idx + 1}</span>
                 </div>
                 
                 <div className="flex-1">
-                  {/* Event Header */}
                   <div className="flex items-start justify-between mb-3">
                     <div className="flex-1">
                       <h4 className="font-bold mb-1 group-hover:text-amber-200 transition-colors">
@@ -879,7 +871,6 @@ function RankedEventsView({ onEventClick }: { onEventClick: (event: WarEvent) =>
                     </div>
                   </div>
 
-                  {/* Event Metrics */}
                   <div className="flex flex-wrap items-center gap-4 text-sm">
                     <div className="flex items-center gap-2">
                       <DollarSign className="h-4 w-4 text-amber-400 drop-shadow-[0_0_4px_rgba(245,158,11,0.5)]" />
@@ -912,7 +903,6 @@ function RankedEventsView({ onEventClick }: { onEventClick: (event: WarEvent) =>
                   </div>
                 </div>
 
-                {/* Arrow Indicator */}
                 <div className="flex-shrink-0 mt-2">
                   <div className="w-8 h-8 rounded-full bg-white/5 group-hover:bg-amber-500/20 border border-amber-500/20 flex items-center justify-center transition-all group-hover:translate-x-1">
                     <ChevronRight className="h-4 w-4 text-white/40 group-hover:text-amber-400" />

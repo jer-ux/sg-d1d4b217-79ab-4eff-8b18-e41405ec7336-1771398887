@@ -8,7 +8,8 @@ import type { LaneKey, WarEvent, EvidenceReceipt } from "@/lib/warroom/types";
 import { motion } from "framer-motion";
 import { cn } from "@/lib/utils";
 import { Badge } from "@/components/ui/badge";
-import { BadgeDollarSign, TrendingUp } from "lucide-react";
+import { BadgeDollarSign, TrendingUp, Shield, FileCheck } from "lucide-react";
+import { getTerm, getLedgerStateLabel, formatComplianceAmount, type UserRole } from "@/lib/compliance/terminology";
 
 const severityColors = {
   critical: "border-red-500/50 shadow-[0_0_15px_rgba(239,68,68,0.2)]",
@@ -17,28 +18,32 @@ const severityColors = {
   low: "border-blue-500/50 shadow-[0_0_15px_rgba(59,130,246,0.2)]",
 };
 
-const laneMeta: Record<LaneKey, { label: string; headline: string; color: string; bgGradient: string }> = {
+const laneMeta: Record<LaneKey, { label: string; complianceLabel: string; headline: string; color: string; bgGradient: string }> = {
   value: { 
-    label: "Verified Savings Ledger", 
-    headline: "Reconcile value with receipts and owners.",
+    label: "Verified Savings Ledger",
+    complianceLabel: "Value Reconciliation Ledger",
+    headline: "Auditable value tracking with evidence-backed reconciliation",
     color: "emerald",
     bgGradient: "from-emerald-500/10 to-emerald-600/5"
   },
   controls: { 
-    label: "Controls & Compliance", 
-    headline: "Continuous controls. Evidence-first posture.",
+    label: "Controls & Compliance",
+    complianceLabel: "Governance & Risk Controls",
+    headline: "Continuous control monitoring with attestation framework",
     color: "blue",
     bgGradient: "from-blue-500/10 to-blue-600/5"
   },
   agentic: { 
-    label: "Agentic Ops & Sales", 
-    headline: "Governed automation with telemetry and gates.",
+    label: "Agentic Ops & Sales",
+    complianceLabel: "Automated Operations",
+    headline: "Governed automation with audit telemetry and approval gates",
     color: "purple",
     bgGradient: "from-purple-500/10 to-purple-600/5"
   },
   marketplace: { 
-    label: "Marketplace Execution", 
-    headline: "Ship once. Distribute with low delivery drag.",
+    label: "Marketplace Execution",
+    complianceLabel: "Vendor Management",
+    headline: "Contract compliance and vendor performance monitoring",
     color: "orange",
     bgGradient: "from-orange-500/10 to-orange-600/5"
   },
@@ -83,7 +88,7 @@ function TileButton({ label, onClick, variant = "default" }: { label: string; on
   );
 }
 
-function StatePill({ label, value, color }: { label: string; value: number; color?: string }) {
+function StatePill({ label, value, color, complianceMode }: { label: string; value: number; color?: string; complianceMode?: boolean }) {
   const colorClasses = color === "emerald" 
     ? "border-emerald-400/30 bg-emerald-400/10"
     : color === "red"
@@ -100,10 +105,19 @@ function StatePill({ label, value, color }: { label: string; value: number; colo
     ? "text-blue-400"
     : "text-white/85";
 
+  // Map operational labels to compliance labels
+  const complianceLabel = complianceMode ? (
+    label === "Identified" ? "Under Review" :
+    label === "Approved" ? "Action Authorized" :
+    label === "Realized" ? "Value Confirmed" :
+    label === "At Risk" ? "Exception Queue" :
+    label
+  ) : label;
+
   return (
     <div className={`rounded-xl border ${colorClasses} px-3 py-2 text-center min-w-[90px]`}>
-      <div className="text-[10px] uppercase tracking-wider text-white/55 font-medium">{label}</div>
-      <div className={`text-sm font-bold tabular-nums ${textColor}`}>{formatMoney(value)}</div>
+      <div className="text-[10px] uppercase tracking-wider text-white/55 font-medium">{complianceLabel}</div>
+      <div className={`text-sm font-bold tabular-nums ${textColor}`}>{formatComplianceAmount(value)}</div>
     </div>
   );
 }
@@ -160,13 +174,15 @@ function PriorityBadge({ priority }: { priority?: string }) {
   );
 }
 
-function ConfidenceBar({ confidence }: { confidence: number }) {
+function ConfidenceBar({ confidence, complianceMode }: { confidence: number; complianceMode?: boolean }) {
   const pct = Math.round(confidence * 100);
   const color = confidence >= 0.85 
     ? "bg-emerald-500" 
     : confidence >= 0.7 
     ? "bg-blue-500" 
     : "bg-amber-500";
+
+  const label = complianceMode ? "Evidence Strength" : "Confidence";
 
   return (
     <div className="flex items-center gap-2">
@@ -185,13 +201,22 @@ function EventRow({
   e,
   onEvidence,
   laneColor,
+  complianceMode = false,
 }: {
   e: WarEvent;
   onEvidence: (e: WarEvent) => void;
   laneColor: string;
+  complianceMode?: boolean;
 }) {
   const actionScore = e.amount * e.confidence * e.timeSensitivity;
   const trend = e.trend || 0;
+
+  // Map event type to compliance terminology
+  const eventTypeLabel = complianceMode && e.type === "arbitrage" 
+    ? "Pricing Variance" 
+    : e.type === "arbitrage" 
+    ? "Arbitrage" 
+    : undefined;
 
   return (
     <motion.div
@@ -210,12 +235,12 @@ function EventRow({
       )}
       onClick={() => onEvidence(e)}
     >
-      {/* Arbitrage Badge */}
-      {e.type === "arbitrage" && (
+      {/* Event Type Badge */}
+      {eventTypeLabel && (
         <div className="absolute top-2 right-2">
           <span className="inline-flex items-center gap-1 rounded-full bg-amber-500/20 px-2 py-0.5 text-xs font-semibold text-amber-200 ring-1 ring-amber-400/40">
             <BadgeDollarSign className="h-3 w-3" />
-            Arbitrage
+            {eventTypeLabel}
           </span>
         </div>
       )}
@@ -257,7 +282,7 @@ function EventRow({
         
         <div className="text-right">
           <div className={`text-lg font-bold whitespace-nowrap tabular-nums ${e.amount < 0 ? "text-red-400" : "text-white/90"}`}>
-            {formatMoney(e.amount)}
+            {formatComplianceAmount(e.amount)}
           </div>
           {e.daysInState && (
             <div className="text-[10px] text-white/40 mt-1">
@@ -269,10 +294,10 @@ function EventRow({
 
       <div className="space-y-2 mb-3">
         <div className="flex items-center justify-between text-[10px] text-white/50">
-          <span>Confidence</span>
-          <span>Time Sensitivity: {Math.round(e.timeSensitivity * 100)}%</span>
+          <span>{complianceMode ? "Evidence Strength" : "Confidence"}</span>
+          <span>{complianceMode ? "Remediation Priority" : "Time Sensitivity"}: {Math.round(e.timeSensitivity * 100)}%</span>
         </div>
-        <ConfidenceBar confidence={e.confidence} />
+        <ConfidenceBar confidence={e.confidence} complianceMode={complianceMode} />
       </div>
 
       <div className="flex items-center justify-between">
@@ -283,9 +308,9 @@ function EventRow({
             e.state === "APPROVED" ? "bg-blue-500/20 text-blue-300" :
             "bg-white/10 text-white/70"
           }`}>
-            {e.state?.replace("_", " ")}
+            {complianceMode ? getLedgerStateLabel(e.state) : e.state?.replace("_", " ")}
           </span>
-          <span>Owner: {e.owner ?? "Unassigned"}</span>
+          <span>{complianceMode ? "Control Owner" : "Owner"}: {e.owner ?? "Unassigned"}</span>
         </div>
       </div>
 
@@ -300,10 +325,10 @@ function EventRow({
         />
         {e.state === "IDENTIFIED" && (
           <TileButton
-            label="✓ Approve"
+            label={complianceMode ? "✓ Authorize" : "✓ Approve"}
             variant="primary"
             onClick={async () => {
-              if (confirm("Approve this event?")) {
+              if (confirm(complianceMode ? "Authorize this action?" : "Approve this event?")) {
                 await postJson("/api/ledger/approve", { eventId: e.id });
               }
             }}
@@ -311,20 +336,23 @@ function EventRow({
         )}
         {e.state === "APPROVED" && (
           <TileButton
-            label="Close & Realize"
+            label={complianceMode ? "Confirm Value" : "Close & Realize"}
             variant="primary"
             onClick={async () => {
-              if (confirm("Close and realize value?")) {
+              if (confirm(complianceMode ? "Confirm realized value?" : "Close and realize value?")) {
                 await postJson("/api/ledger/close", { eventId: e.id });
               }
             }}
           />
         )}
         {e.receipts && e.receipts.length > 0 && (
-          <TileButton label={`📋 Evidence (${e.receipts.length})`} onClick={() => onEvidence(e)} />
+          <TileButton 
+            label={complianceMode ? `📋 Documentation (${e.receipts.length})` : `📋 Evidence (${e.receipts.length})`} 
+            onClick={() => onEvidence(e)} 
+          />
         )}
         <TileButton
-          label="+ Receipt"
+          label={complianceMode ? "+ Documentation" : "+ Receipt"}
           onClick={async () => {
             await postJson("/api/ledger/attach-receipt", { 
               eventId: e.id, 
@@ -341,17 +369,23 @@ function EventRow({
   );
 }
 
-function EvidenceModal({ event, onClose }: { event: WarEvent; onClose: () => void }) {
+function EvidenceModal({ event, onClose, complianceMode = false }: { event: WarEvent; onClose: () => void; complianceMode?: boolean }) {
   if (!event.receipts?.length) return null;
   const receipt = event.receipts[0];
+
+  const modalTitle = complianceMode ? "Supporting Documentation" : "Evidence Receipt";
+  const hashLabel = complianceMode ? "Verification Hash" : "Cryptographic Hash";
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-sm" onClick={onClose}>
       <div className="k-panel p-8 max-w-2xl w-full mx-4" onClick={(e) => e.stopPropagation()}>
         <div className="flex items-start justify-between gap-4">
           <div>
-             <div className="text-2xl font-semibold">Evidence Receipt</div>
-             <div className="text-sm text-white/50 mt-1">For event: {event.title}</div>
+             <div className="text-2xl font-semibold flex items-center gap-2">
+               <FileCheck className="h-6 w-6 text-emerald-400" />
+               {modalTitle}
+             </div>
+             <div className="text-sm text-white/50 mt-1">For {complianceMode ? "control finding" : "event"}: {event.title}</div>
           </div>
           <button onClick={onClose} className="px-3 py-2 rounded-xl border border-white/15 bg-white/5 hover:bg-white/10 transition">
             Close
@@ -366,22 +400,43 @@ function EvidenceModal({ event, onClose }: { event: WarEvent; onClose: () => voi
 
           {receipt.hash && (
             <div>
-              <div className="text-xs text-white/60 uppercase tracking-wider">Cryptographic Hash</div>
+              <div className="text-xs text-white/60 uppercase tracking-wider">{hashLabel}</div>
               <div className="text-white/90 mt-1 font-mono text-sm break-all">{receipt.hash}</div>
             </div>
           )}
 
           {receipt.freshness && (
             <div>
-              <div className="text-xs text-white/60 uppercase tracking-wider">Freshness</div>
+              <div className="text-xs text-white/60 uppercase tracking-wider">Data Freshness</div>
               <div className="text-white/90 mt-1">{receipt.freshness}</div>
+            </div>
+          )}
+
+          {receipt.confidence && (
+            <div>
+              <div className="text-xs text-white/60 uppercase tracking-wider">Evidence Strength</div>
+              <div className="flex items-center gap-3 mt-1">
+                <div className="flex-1 h-2 bg-white/10 rounded-full overflow-hidden">
+                  <div 
+                    className="h-full bg-emerald-500"
+                    style={{ width: `${(receipt.confidence * 100)}%` }}
+                  />
+                </div>
+                <span className="text-sm font-semibold text-emerald-400">{Math.round(receipt.confidence * 100)}%</span>
+              </div>
             </div>
           )}
         </div>
 
         <div className="mt-6 p-4 rounded-xl bg-blue-500/10 border border-blue-500/20">
-          <div className="text-sm text-white/70">
-            This receipt is cryptographically verified and immutable. Chain-of-custody and freshness checks are enforced at the control layer.
+          <div className="flex items-start gap-3">
+            <Shield className="h-5 w-5 text-blue-400 flex-shrink-0 mt-0.5" />
+            <div className="text-sm text-white/70">
+              {complianceMode 
+                ? "This documentation is cryptographically verified and maintains full chain of custody for audit and regulatory compliance requirements."
+                : "This receipt is cryptographically verified and immutable. Chain-of-custody and freshness checks are enforced at the control layer."
+              }
+            </div>
           </div>
         </div>
       </div>
@@ -389,7 +444,7 @@ function EvidenceModal({ event, onClose }: { event: WarEvent; onClose: () => voi
   );
 }
 
-export function WarRoomGrid() {
+export function WarRoomGrid({ complianceMode = false }: { complianceMode?: boolean }) {
   const { connected, lastUpdated, events, summaries, totals, ticker } = useWarRoomStream();
   const [evidenceEvent, setEvidenceEvent] = useState<WarEvent | null>(null);
 
@@ -420,12 +475,17 @@ export function WarRoomGrid() {
 
   const lanes: LaneKey[] = ["value", "controls", "agentic", "marketplace"];
 
+  const pageTitle = complianceMode ? "Controls Dashboard" : "War Room";
+  const pageSubtitle = complianceMode 
+    ? "Real-time governance monitoring and control effectiveness tracking"
+    : "Real-time value ledger and control monitoring";
+
   return (
     <div className="py-10">
       <div className="flex items-center justify-between gap-4 mb-6">
         <div>
-          <div className="text-3xl font-semibold tracking-tight">War Room</div>
-          <div className="text-white/65 mt-2">Real-time value ledger and control monitoring</div>
+          <div className="text-3xl font-semibold tracking-tight">{pageTitle}</div>
+          <div className="text-white/65 mt-2">{pageSubtitle}</div>
         </div>
         <div className="text-right">
           <div className="flex items-center justify-end gap-2 text-xs text-white/50 mb-1">
@@ -444,20 +504,28 @@ export function WarRoomGrid() {
 
       <div className="mt-6 grid md:grid-cols-4 gap-4">
          <div className="k-panel p-5 flex flex-col justify-center items-center text-center bg-gradient-to-br from-blue-500/10 to-blue-600/5">
-             <div className="text-xs text-white/50 uppercase tracking-widest mb-2 font-semibold">Portfolio Identified</div>
-             <div className="text-3xl font-bold text-blue-400 tabular-nums">{formatMoney(totals.identified)}</div>
+             <div className="text-xs text-white/50 uppercase tracking-widest mb-2 font-semibold">
+               {complianceMode ? "Under Review" : "Portfolio Identified"}
+             </div>
+             <div className="text-3xl font-bold text-blue-400 tabular-nums">{formatComplianceAmount(totals.identified)}</div>
          </div>
          <div className="k-panel p-5 flex flex-col justify-center items-center text-center bg-gradient-to-br from-green-500/10 to-green-600/5">
-             <div className="text-xs text-white/50 uppercase tracking-widest mb-2 font-semibold">Approved Value</div>
-             <div className="text-3xl font-bold text-green-400 tabular-nums">{formatMoney(totals.approved)}</div>
+             <div className="text-xs text-white/50 uppercase tracking-widest mb-2 font-semibold">
+               {complianceMode ? "Action Authorized" : "Approved Value"}
+             </div>
+             <div className="text-3xl font-bold text-green-400 tabular-nums">{formatComplianceAmount(totals.approved)}</div>
          </div>
          <div className="k-panel p-5 flex flex-col justify-center items-center text-center bg-gradient-to-br from-emerald-500/10 to-emerald-600/5">
-             <div className="text-xs text-white/50 uppercase tracking-widest mb-2 font-semibold">Realized P&L</div>
-             <div className="text-3xl font-bold text-emerald-400 tabular-nums">{formatMoney(totals.realized)}</div>
+             <div className="text-xs text-white/50 uppercase tracking-widest mb-2 font-semibold">
+               {complianceMode ? "Value Confirmed" : "Realized P&L"}
+             </div>
+             <div className="text-3xl font-bold text-emerald-400 tabular-nums">{formatComplianceAmount(totals.realized)}</div>
          </div>
          <div className="k-panel p-5 flex flex-col justify-center items-center text-center bg-gradient-to-br from-red-500/10 to-red-600/5">
-             <div className="text-xs text-white/50 uppercase tracking-widest mb-2 font-semibold">Value At Risk</div>
-             <div className="text-3xl font-bold text-red-400 tabular-nums">{formatMoney(totals.atRisk)}</div>
+             <div className="text-xs text-white/50 uppercase tracking-widest mb-2 font-semibold">
+               {complianceMode ? "Exception Queue" : "Value At Risk"}
+             </div>
+             <div className="text-3xl font-bold text-red-400 tabular-nums">{formatComplianceAmount(totals.atRisk)}</div>
          </div>
       </div>
 
@@ -465,13 +533,14 @@ export function WarRoomGrid() {
         {lanes.map((lane) => {
           const s = summaryMap.get(lane) || { identified: 0, approved: 0, realized: 0, atRisk: 0, velocity: 0, avgConfidence: 0, criticalCount: 0, trendData: [] };
           const meta = laneMeta[lane];
+          const displayLabel = complianceMode ? meta.complianceLabel : meta.label;
           
           return (
             <div key={lane} className={`k-panel p-6 flex flex-col h-full bg-gradient-to-br ${meta.bgGradient}`}>
               <div className="flex items-start justify-between mb-4">
                 <div className="flex-1">
                   <div className="flex items-center gap-3 mb-1">
-                    <h3 className="text-xl font-semibold">{meta.label}</h3>
+                    <h3 className="text-xl font-semibold">{displayLabel}</h3>
                     {s.trendData && s.trendData.length > 0 && (
                       <MiniSparkline data={s.trendData} color={meta.color} />
                     )}
@@ -481,10 +550,10 @@ export function WarRoomGrid() {
                   <div className="flex items-center gap-4 mt-3 text-xs">
                     <div className="flex items-center gap-1.5">
                       <span className="text-white/50">Velocity:</span>
-                      <span className="font-semibold text-white/80">{formatMoney(s.velocity || 0)}/mo</span>
+                      <span className="font-semibold text-white/80">{formatComplianceAmount(s.velocity || 0)}/mo</span>
                     </div>
                     <div className="flex items-center gap-1.5">
-                      <span className="text-white/50">Avg Confidence:</span>
+                      <span className="text-white/50">{complianceMode ? "Evidence Strength" : "Avg Confidence"}:</span>
                       <span className="font-semibold text-white/80">{Math.round((s.avgConfidence || 0) * 100)}%</span>
                     </div>
                     {s.criticalCount > 0 && (
@@ -504,20 +573,20 @@ export function WarRoomGrid() {
               </div>
 
               <div className="flex gap-2 mb-6 overflow-x-auto pb-2">
-                <StatePill label="Identified" value={s.identified} color="blue" />
-                <StatePill label="Approved" value={s.approved} />
-                <StatePill label="Realized" value={s.realized} color="emerald" />
-                <StatePill label="At Risk" value={s.atRisk} color="red" />
+                <StatePill label="Identified" value={s.identified} color="blue" complianceMode={complianceMode} />
+                <StatePill label="Approved" value={s.approved} complianceMode={complianceMode} />
+                <StatePill label="Realized" value={s.realized} color="emerald" complianceMode={complianceMode} />
+                <StatePill label="At Risk" value={s.atRisk} color="red" complianceMode={complianceMode} />
               </div>
 
               <div className="space-y-3 flex-1 overflow-y-auto max-h-[800px] pr-2">
                  {laneEvents[lane].length === 0 ? (
                     <div className="text-center py-8 text-white/30 text-sm italic border border-dashed border-white/10 rounded-xl">
-                        No active events in this lane
+                        {complianceMode ? "No control findings in this domain" : "No active events in this lane"}
                     </div>
                  ) : (
                     laneEvents[lane].map(e => (
-                        <EventRow key={e.id} e={e} onEvidence={setEvidenceEvent} laneColor={meta.color} />
+                        <EventRow key={e.id} e={e} onEvidence={setEvidenceEvent} laneColor={meta.color} complianceMode={complianceMode} />
                     ))
                  )}
               </div>
@@ -526,7 +595,7 @@ export function WarRoomGrid() {
         })}
       </div>
 
-      {evidenceEvent && <EvidenceModal event={evidenceEvent} onClose={() => setEvidenceEvent(null)} />}
+      {evidenceEvent && <EvidenceModal event={evidenceEvent} onClose={() => setEvidenceEvent(null)} complianceMode={complianceMode} />}
     </div>
   );
 }

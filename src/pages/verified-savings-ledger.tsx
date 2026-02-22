@@ -4,13 +4,18 @@ import { SiteFooter } from "@/components/site/SiteFooter";
 import { CheckCircle2, FileText, TrendingUp, Shield, ArrowRight, Sparkles, Database, GitBranch, Lock, Zap, BarChart3, Users, Clock, AlertCircle, Server, Cloud, Code, CheckSquare, XCircle, Building2, DollarSign, Target, Award } from "lucide-react";
 import Link from "next/link";
 import { motion } from "framer-motion";
+import { getTerm, LEDGER_STATE_LABELS, COMPLIANCE_SECTIONS } from "@/lib/compliance/terminology";
 
 export default function VerifiedSavingsLedger() {
+  // Default to compliance view for this page (CFO/Board audience)
+  const userRole = "cfo";
+  const useComplianceTerms = true;
+
   return (
     <>
       <SEO
-        title="Verified Savings Ledger — Kincaid IQ"
-        description="Stop arguing about 'opportunities.' Start reconciling an auditable value ledger with receipts, owners, and board-ready reporting."
+        title={`${getTerm("valueLedger", userRole)} — Kincaid IQ`}
+        description="Auditable value ledger with cryptographic receipts, control owners, and CFO-ready reporting for enterprise compliance."
       />
       <div className="min-h-screen bg-gradient-to-b from-slate-950 via-slate-900 to-black text-white">
         <SiteHeader />
@@ -34,13 +39,17 @@ export default function VerifiedSavingsLedger() {
             >
               <div className="inline-flex items-center gap-2 rounded-full border border-purple-500/30 bg-purple-500/10 backdrop-blur-xl px-4 py-2 mb-6">
                 <Sparkles className="h-4 w-4 text-purple-400" />
-                <span className="text-sm font-semibold text-purple-300">Audit-Grade Value Tracking</span>
+                <span className="text-sm font-semibold text-purple-300">
+                  {useComplianceTerms ? "ERISA-Compliant Value Tracking" : "Audit-Grade Value Tracking"}
+                </span>
               </div>
               <h1 className="text-6xl md:text-7xl font-bold tracking-tight mb-6 bg-gradient-to-r from-white via-purple-200 to-purple-400 bg-clip-text text-transparent">
-                Verified Savings Ledger
+                {getTerm("valueLedger", userRole)}
               </h1>
               <p className="text-xl text-purple-200/70 max-w-3xl mx-auto leading-relaxed">
-                Stop arguing about "opportunities." Start reconciling an auditable value ledger with receipts, owners, and board-ready reporting.
+                {useComplianceTerms 
+                  ? "Auditable register of financial controls with cryptographic evidence, control owners, and real-time reconciliation for fiduciary compliance."
+                  : "Stop arguing about 'opportunities.' Start reconciling an auditable value ledger with receipts, owners, and board-ready reporting."}
               </p>
             </motion.div>
 
@@ -52,9 +61,25 @@ export default function VerifiedSavingsLedger() {
               className="grid md:grid-cols-3 gap-6 mb-20"
             >
               {[
-                { label: "Ledger States", value: "4", desc: "Identified → Approved → Realized → At-risk" },
-                { label: "Evidence Receipts", value: "100%", desc: "Full lineage, tests, and confidence scores" },
-                { label: "Audit Ready", value: "Real-time", desc: "Journal-entry thinking for finance teams" }
+                { 
+                  label: "Ledger States", 
+                  value: "4", 
+                  desc: useComplianceTerms 
+                    ? "Under Review → Action Authorized → Value Confirmed → Exception Queue"
+                    : "Identified → Approved → Realized → At-risk"
+                },
+                { 
+                  label: getTerm("evidence", userRole), 
+                  value: "100%", 
+                  desc: "Full lineage, tests, and confidence scores with cryptographic signing"
+                },
+                { 
+                  label: "Audit Ready", 
+                  value: "Real-time", 
+                  desc: useComplianceTerms 
+                    ? "Continuous reconciliation for CFO attestation"
+                    : "Journal-entry thinking for finance teams"
+                }
               ].map((stat, i) => (
                 <motion.div 
                   key={i}
@@ -87,10 +112,38 @@ export default function VerifiedSavingsLedger() {
               </h2>
               <div className="grid md:grid-cols-4 gap-4">
                 {[
-                  { state: "Identified", color: "blue", icon: FileText, desc: "Discovery phase with initial evidence" },
-                  { state: "Approved", color: "purple", icon: CheckCircle2, desc: "Validated and ready for execution" },
-                  { state: "Realized", color: "emerald", icon: TrendingUp, desc: "Value captured and verified" },
-                  { state: "At-risk", color: "amber", icon: Shield, desc: "Flagged for intervention" }
+                  { 
+                    state: "IDENTIFIED" as const, 
+                    color: "blue", 
+                    icon: FileText, 
+                    desc: useComplianceTerms 
+                      ? "Discovery and documentation phase with initial evidence"
+                      : "Discovery phase with initial evidence"
+                  },
+                  { 
+                    state: "APPROVED" as const, 
+                    color: "purple", 
+                    icon: CheckCircle2, 
+                    desc: useComplianceTerms
+                      ? "Control owner authorization with attestation"
+                      : "Validated and ready for execution"
+                  },
+                  { 
+                    state: "REALIZED" as const, 
+                    color: "emerald", 
+                    icon: TrendingUp, 
+                    desc: useComplianceTerms
+                      ? "Financial impact verified and reconciled to GL"
+                      : "Value captured and verified"
+                  },
+                  { 
+                    state: "AT_RISK" as const, 
+                    color: "amber", 
+                    icon: Shield, 
+                    desc: useComplianceTerms
+                      ? "Control gap requiring immediate remediation"
+                      : "Flagged for intervention"
+                  }
                 ].map((item, i) => (
                   <div key={i} className="relative">
                     <motion.div 
@@ -100,7 +153,11 @@ export default function VerifiedSavingsLedger() {
                       className={`rounded-2xl border border-${item.color}-500/30 bg-${item.color}-500/10 backdrop-blur-xl p-6 hover:scale-105 transition-all duration-500 hover:shadow-lg hover:shadow-${item.color}-500/20`}
                     >
                       <item.icon className={`h-8 w-8 text-${item.color}-400 mb-3`} />
-                      <div className={`text-lg font-semibold text-${item.color}-300 mb-2`}>{item.state}</div>
+                      <div className={`text-lg font-semibold text-${item.color}-300 mb-2`}>
+                        {useComplianceTerms 
+                          ? LEDGER_STATE_LABELS.compliance[item.state]
+                          : LEDGER_STATE_LABELS.operational[item.state]}
+                      </div>
                       <div className="text-xs text-white/60">
                         {item.desc}
                       </div>
@@ -123,32 +180,40 @@ export default function VerifiedSavingsLedger() {
               className="mb-20"
             >
               <h2 className="text-4xl font-bold mb-12 text-center bg-gradient-to-r from-white to-purple-200 bg-clip-text text-transparent">
-                Technical Architecture
+                {useComplianceTerms ? "Compliance Architecture" : "Technical Architecture"}
               </h2>
               <div className="grid md:grid-cols-2 gap-8">
                 {[
                   {
                     icon: Database,
                     title: "Event-Sourced Ledger",
-                    desc: "Append-only event log ensures complete audit trail with cryptographic verification",
+                    desc: useComplianceTerms
+                      ? "Append-only audit log ensures complete chain of custody with cryptographic verification for ERISA compliance"
+                      : "Append-only event log ensures complete audit trail with cryptographic verification",
                     features: ["Immutable history", "Time-travel queries", "Cryptographic signatures"]
                   },
                   {
                     icon: GitBranch,
-                    title: "State Machine Logic",
-                    desc: "Deterministic state transitions with validation rules and business logic enforcement",
+                    title: useComplianceTerms ? "Control State Machine" : "State Machine Logic",
+                    desc: useComplianceTerms
+                      ? "Deterministic state transitions with policy enforcement and separation of duties"
+                      : "Deterministic state transitions with validation rules and business logic enforcement",
                     features: ["Guard conditions", "State validators", "Transition policies"]
                   },
                   {
                     icon: Lock,
                     title: "Access Control",
-                    desc: "Role-based permissions with separation of duties and multi-party approval workflows",
+                    desc: useComplianceTerms
+                      ? "Role-based permissions with segregation of duties and multi-party attestation workflows per SOX requirements"
+                      : "Role-based permissions with separation of duties and multi-party approval workflows",
                     features: ["RBAC policies", "Approval chains", "Audit logging"]
                   },
                   {
                     icon: Zap,
                     title: "Real-time Sync",
-                    desc: "WebSocket streams for instant updates across all connected stakeholders and systems",
+                    desc: useComplianceTerms
+                      ? "WebSocket streams for instant dashboard updates and automated exception alerts"
+                      : "WebSocket streams for instant updates across all connected stakeholders and systems",
                     features: ["Live dashboards", "Push notifications", "Event broadcasting"]
                   }
                 ].map((item, i) => (
@@ -183,7 +248,7 @@ export default function VerifiedSavingsLedger() {
               className="mb-20 rounded-3xl border border-white/10 bg-gradient-to-br from-white/5 via-white/[0.03] to-transparent backdrop-blur-xl p-8 shadow-2xl"
             >
               <h2 className="text-3xl font-bold mb-8 bg-gradient-to-r from-white to-purple-200 bg-clip-text text-transparent">
-                Evidence Receipt System
+                {getTerm("evidence", userRole)} System
               </h2>
               <div className="grid md:grid-cols-3 gap-6">
                 {[
@@ -194,11 +259,11 @@ export default function VerifiedSavingsLedger() {
                       "Source system tracking",
                       "Transformation pipeline",
                       "Query reproducibility",
-                      "Version control"
+                      useComplianceTerms ? "Audit trail versioning" : "Version control"
                     ]
                   },
                   {
-                    title: "Test Coverage",
+                    title: useComplianceTerms ? "Validation Coverage" : "Test Coverage",
                     icon: CheckSquare,
                     items: [
                       "Data quality tests",
@@ -208,10 +273,10 @@ export default function VerifiedSavingsLedger() {
                     ]
                   },
                   {
-                    title: "Confidence Scoring",
+                    title: getTerm("confidence", userRole),
                     icon: BarChart3,
                     items: [
-                      "Evidence strength metrics",
+                      useComplianceTerms ? "Evidence strength metrics" : "Evidence strength scoring",
                       "Uncertainty quantification",
                       "Risk assessment",
                       "Reliability scoring"
@@ -481,15 +546,17 @@ export default function VerifiedSavingsLedger() {
                 <div className="relative">
                   <div className="text-2xl font-bold mb-4 text-white">What a CFO sees</div>
                   <div className="text-purple-200/70 mb-6 leading-relaxed">
-                    A controlled register of economic claims: owners, due dates, receipts, aging/decay, and realized outcomes tied to action.
+                    {useComplianceTerms
+                      ? "A fiduciary-compliant register of financial controls: designated control owners, resolution timelines, supporting documentation, aging analysis, and verified outcomes tied to management action."
+                      : "A controlled register of economic claims: owners, due dates, receipts, aging/decay, and realized outcomes tied to action."}
                   </div>
                   <ul className="space-y-3">
                     {[
-                      "Reconciliation report by category and counterparty",
-                      "Exceptions queue (blocked approvals, missing receipts)",
-                      "Audit trail of every change (append-only events)",
+                      useComplianceTerms ? "Reconciliation report by control domain and vendor" : "Reconciliation report by category and counterparty",
+                      useComplianceTerms ? "Exception queue (pending authorizations, missing documentation)" : "Exceptions queue (blocked approvals, missing receipts)",
+                      useComplianceTerms ? "Complete audit trail of every transaction (append-only events)" : "Audit trail of every change (append-only events)",
                       "Real-time dashboards with drill-down capability",
-                      "Automated alerts for at-risk value items"
+                      useComplianceTerms ? "Automated alerts for control gaps and aging items" : "Automated alerts for at-risk value items"
                     ].map((item, i) => (
                       <li key={i} className="flex items-start gap-3">
                         <CheckCircle2 className="h-5 w-5 text-emerald-400 flex-shrink-0 mt-0.5" />
@@ -505,15 +572,17 @@ export default function VerifiedSavingsLedger() {
                 <div className="relative">
                   <div className="text-2xl font-bold mb-4 text-white">What capital sees</div>
                   <div className="text-blue-200/70 mb-6 leading-relaxed">
-                    Reduced uncertainty: evidence packs for diligence, underwriteable value, and repeatable realization discipline post-close.
+                    {useComplianceTerms
+                      ? "Reduced due diligence risk: comprehensive evidence packages with full audit trails, underwriteable value projections, and repeatable governance processes that survive regulatory scrutiny."
+                      : "Reduced uncertainty: evidence packs for diligence, underwriteable value, and repeatable realization discipline post-close."}
                   </div>
                   <ul className="space-y-3">
                     {[
-                      "Diligence-ready 'Proof Packs' with full evidence",
-                      "Repeatable post-close value realization process",
-                      "Governance posture that survives scrutiny",
+                      useComplianceTerms ? "Diligence-ready audit packages with complete documentation" : "Diligence-ready 'Proof Packs' with full evidence",
+                      useComplianceTerms ? "Proven post-acquisition value capture methodology" : "Repeatable post-close value realization process",
+                      useComplianceTerms ? "Controls framework that meets institutional standards" : "Governance posture that survives scrutiny",
                       "Historical track record and success metrics",
-                      "Risk-adjusted value projections with confidence intervals"
+                      useComplianceTerms ? "Risk-adjusted value forecasts with confidence intervals" : "Risk-adjusted value projections with confidence intervals"
                     ].map((item, i) => (
                       <li key={i} className="flex items-start gap-3">
                         <CheckCircle2 className="h-5 w-5 text-emerald-400 flex-shrink-0 mt-0.5" />
@@ -577,10 +646,14 @@ export default function VerifiedSavingsLedger() {
               className="rounded-3xl border border-purple-500/30 bg-gradient-to-br from-purple-500/20 via-purple-500/10 to-transparent backdrop-blur-xl p-12 text-center shadow-2xl"
             >
               <h2 className="text-3xl font-bold mb-4 bg-gradient-to-r from-white to-purple-200 bg-clip-text text-transparent">
-                Ready to build your value ledger?
+                {useComplianceTerms 
+                  ? "Ready to implement your compliance ledger?"
+                  : "Ready to build your value ledger?"}
               </h2>
               <p className="text-purple-200/70 mb-8 max-w-2xl mx-auto">
-                See how leading enterprises track, verify, and realize business value with audit-grade precision.
+                {useComplianceTerms
+                  ? "See how leading enterprises track, verify, and reconcile business value with audit-grade precision and fiduciary compliance."
+                  : "See how leading enterprises track, verify, and realize business value with audit-grade precision."}
               </p>
               <Link
                 href="/request-demo"

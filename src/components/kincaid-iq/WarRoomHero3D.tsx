@@ -153,7 +153,7 @@ export function WarRoomHero3D() {
     setParticles(initParticles);
 
     // Context setup - explicit type assertion for React 19 compatibility
-    const context = canvas.getContext("2d");
+    const context = (canvas as HTMLCanvasElement).getContext("2d");
     if (!context) return;
     const ctx: CanvasRenderingContext2D = context;
 

@@ -34,6 +34,10 @@ import { SEO } from "@/components/SEO";
 import { motion, AnimatePresence } from "framer-motion";
 import { PremiumGraphics } from "@/components/platform/PremiumGraphics";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import dynamic from "next/dynamic";
+import Image from "next/image";
+
+const PremiumBackground = dynamic(() => import("@/components/premium/PremiumBackground").then(mod => ({ default: mod.PremiumBackground })), { ssr: false });
 
 type NavCard = {
   title: string;
@@ -85,8 +89,8 @@ const badgeExplanations: Record<string, BadgeInfo> = {
     name: "Executive",
     description: "C-suite optimized dashboards with fiduciary-grade insights and decision support",
     icon: Crown,
-    colorClass: "from-amber-500/20 to-amber-600/20 border-amber-400/40",
-    glowClass: "shadow-[0_0_30px_rgba(245,158,11,0.4)]",
+    colorClass: "from-purple-500/20 to-fuchsia-600/20 border-purple-400/40",
+    glowClass: "shadow-[0_0_30px_rgba(168,85,247,0.4)]",
     features: [
       "High-level KPI dashboards with drill-down capability",
       "Executive summaries with actionable insights",
@@ -145,8 +149,8 @@ const badgeExplanations: Record<string, BadgeInfo> = {
     name: "Ledger",
     description: "Financial ledger integration with reconciliation and accountability tracking",
     icon: Coins,
-    colorClass: "from-amber-500/20 to-amber-600/20 border-amber-400/40",
-    glowClass: "shadow-[0_0_30px_rgba(245,158,11,0.4)]",
+    colorClass: "from-purple-500/20 to-fuchsia-600/20 border-purple-400/40",
+    glowClass: "shadow-[0_0_30px_rgba(168,85,247,0.4)]",
     features: [
       "Double-entry accounting system integration",
       "Automated reconciliation workflows",
@@ -191,7 +195,7 @@ function BadgeExplanationModal({ badge, isOpen, onClose }: { badge: string | nul
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="max-w-3xl max-h-[85vh] overflow-y-auto bg-black/95 border border-amber-500/20 backdrop-blur-3xl">
+      <DialogContent className="max-w-3xl max-h-[85vh] overflow-y-auto bg-black/95 border border-purple-500/20 backdrop-blur-3xl">
         <motion.div
           initial={{ opacity: 0, scale: 0.95 }}
           animate={{ opacity: 1, scale: 1 }}
@@ -213,11 +217,11 @@ function BadgeExplanationModal({ badge, isOpen, onClose }: { badge: string | nul
                 }}
                 transition={{ duration: 2, repeat: Infinity }}
               >
-                <Icon className="h-8 w-8 text-amber-300" />
+                <Icon className="h-8 w-8 text-purple-300" />
               </motion.div>
               
               <div className="flex-1">
-                <DialogTitle className="text-3xl font-bold bg-gradient-to-r from-white via-amber-200 to-yellow-300 bg-clip-text text-transparent mb-2">
+                <DialogTitle className="text-3xl font-bold bg-gradient-to-r from-white via-purple-200 to-fuchsia-300 bg-clip-text text-transparent mb-2">
                   {info.name} Features
                 </DialogTitle>
                 <p className="text-white/70 text-base leading-relaxed">
@@ -230,7 +234,7 @@ function BadgeExplanationModal({ badge, isOpen, onClose }: { badge: string | nul
           <div className="space-y-8 mt-8">
             <div>
               <h3 className="text-xl font-semibold text-white mb-4 flex items-center gap-2">
-                <FileCheck className="h-5 w-5 text-amber-400" />
+                <FileCheck className="h-5 w-5 text-purple-400" />
                 Key Features
               </h3>
               <div className="space-y-3">
@@ -240,9 +244,9 @@ function BadgeExplanationModal({ badge, isOpen, onClose }: { badge: string | nul
                     initial={{ opacity: 0, x: -20 }}
                     animate={{ opacity: 1, x: 0 }}
                     transition={{ delay: idx * 0.1 }}
-                    className="flex items-start gap-3 p-3 rounded-xl bg-white/5 border border-amber-500/20 hover:bg-white/10 hover:border-amber-500/40 transition-all group"
+                    className="flex items-start gap-3 p-3 rounded-xl bg-white/5 border border-purple-500/20 hover:bg-white/10 hover:border-purple-500/40 transition-all group"
                   >
-                    <CheckCircle2 className="h-5 w-5 text-amber-400 flex-shrink-0 mt-0.5 group-hover:text-amber-300 transition-colors" />
+                    <CheckCircle2 className="h-5 w-5 text-purple-400 flex-shrink-0 mt-0.5 group-hover:text-purple-300 transition-colors" />
                     <p className="text-white/80 text-sm leading-relaxed group-hover:text-white transition-colors">{feature}</p>
                   </motion.div>
                 ))}
@@ -251,7 +255,7 @@ function BadgeExplanationModal({ badge, isOpen, onClose }: { badge: string | nul
 
             <div>
               <h3 className="text-xl font-semibold text-white mb-4 flex items-center gap-2">
-                <TrendingUp className="h-5 w-5 text-amber-400" />
+                <TrendingUp className="h-5 w-5 text-purple-400" />
                 Business Benefits
               </h3>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
@@ -261,7 +265,7 @@ function BadgeExplanationModal({ badge, isOpen, onClose }: { badge: string | nul
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ delay: 0.3 + idx * 0.1 }}
-                    className="p-4 rounded-xl bg-gradient-to-br from-amber-500/10 to-yellow-500/10 border border-amber-500/20 hover:border-amber-500/40 transition-all group"
+                    className="p-4 rounded-xl bg-gradient-to-br from-purple-500/10 to-fuchsia-500/10 border border-purple-500/20 hover:border-purple-500/40 transition-all group"
                   >
                     <p className="text-white/80 text-sm leading-relaxed group-hover:text-white transition-colors">
                       {benefit}
@@ -275,7 +279,7 @@ function BadgeExplanationModal({ badge, isOpen, onClose }: { badge: string | nul
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.6 }}
-              className="p-6 rounded-2xl bg-gradient-to-br from-amber-500/10 to-yellow-500/10 border border-amber-500/20"
+              className="p-6 rounded-2xl bg-gradient-to-br from-purple-500/10 to-fuchsia-500/10 border border-purple-500/20"
             >
               <h4 className="text-lg font-semibold text-white mb-2">
                 Ready to explore {info.name} features?
@@ -285,7 +289,7 @@ function BadgeExplanationModal({ badge, isOpen, onClose }: { badge: string | nul
               </p>
               <Link
                 href="/request-demo"
-                className="inline-flex items-center gap-2 rounded-xl bg-gradient-to-r from-amber-500 to-yellow-500 text-black px-6 py-3 text-sm font-medium hover:from-amber-400 hover:to-yellow-400 transition-all shadow-lg shadow-amber-500/50 hover:shadow-xl hover:shadow-amber-500/60 hover:scale-105"
+                className="inline-flex items-center gap-2 rounded-xl bg-gradient-to-r from-purple-500 to-fuchsia-500 text-white px-6 py-3 text-sm font-medium hover:from-purple-400 hover:to-fuchsia-400 transition-all shadow-lg shadow-purple-500/50 hover:shadow-xl hover:shadow-purple-500/60 hover:scale-105"
               >
                 Request Demo
                 <span className="group-hover:translate-x-1 transition-transform">→</span>
@@ -308,22 +312,22 @@ function NavigationCard({ card, onTagClick }: { card: NavCard; onTagClick?: (tag
       transition={{ duration: 0.2 }}
     >
       <Link href={card.href}>
-        <div className="group relative h-full rounded-2xl border border-amber-500/20 bg-black/40 p-6 transition-all duration-300 hover:bg-black/60 hover:border-amber-500/40 hover:shadow-xl hover:shadow-amber-500/20 cursor-pointer overflow-hidden hover:scale-[1.02]">
+        <div className="group relative h-full rounded-2xl border border-purple-500/20 bg-black/40 backdrop-blur-xl p-6 transition-all duration-300 hover:bg-black/60 hover:border-purple-500/40 hover:shadow-xl hover:shadow-purple-500/20 cursor-pointer overflow-hidden hover:scale-[1.02]">
           <motion.div
-            className="absolute -top-6 -right-6 h-32 w-32 rounded-full bg-gradient-to-br from-amber-500/30 via-yellow-500/20 to-transparent blur-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-500"
+            className="absolute -top-6 -right-6 h-32 w-32 rounded-full bg-gradient-to-br from-purple-500/30 via-fuchsia-500/20 to-transparent blur-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-500"
           />
           
           <motion.div
-            className="absolute inset-0 bg-gradient-to-br from-transparent via-amber-500/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"
+            className="absolute inset-0 bg-gradient-to-br from-transparent via-purple-500/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"
           />
 
           <div className="relative z-10 flex items-start justify-between gap-3 mb-3">
             <motion.div 
-              className="p-3 rounded-xl bg-gradient-to-br from-amber-500/20 to-yellow-500/20 border border-amber-400/30 shadow-lg shadow-amber-500/20"
+              className="p-3 rounded-xl bg-gradient-to-br from-purple-500/20 to-fuchsia-500/20 border border-purple-400/30 shadow-lg shadow-purple-500/20"
               whileHover={{ scale: 1.1, rotate: 5 }}
               transition={{ duration: 0.2 }}
             >
-              <card.icon className="h-5 w-5 text-amber-300" />
+              <card.icon className="h-5 w-5 text-purple-300" />
             </motion.div>
             
             {card.tag && (
@@ -337,10 +341,10 @@ function NavigationCard({ card, onTagClick }: { card: NavCard; onTagClick?: (tag
                 }}
                 className={`text-[10px] px-3 py-1.5 rounded-full uppercase tracking-wider font-semibold transition-all duration-300 hover:scale-110 cursor-pointer ${
                   card.tag === "Live" ? "bg-emerald-500/20 text-emerald-300 border border-emerald-400/40 shadow-lg shadow-emerald-500/30 hover:bg-emerald-500/30 hover:shadow-emerald-500/50" :
-                  card.tag === "Executive" ? "bg-amber-500/20 text-amber-300 border border-amber-400/40 shadow-lg shadow-amber-500/30 hover:bg-amber-500/30 hover:shadow-amber-500/50" :
+                  card.tag === "Executive" ? "bg-purple-500/20 text-purple-300 border border-purple-400/40 shadow-lg shadow-purple-500/30 hover:bg-purple-500/30 hover:shadow-purple-500/50" :
                   card.tag === "Beta" ? "bg-blue-500/20 text-blue-300 border border-blue-400/40 shadow-lg shadow-blue-500/30 hover:bg-blue-500/30 hover:shadow-blue-500/50" :
                   card.tag === "Verified" ? "bg-cyan-500/20 text-cyan-300 border border-cyan-400/40 shadow-lg shadow-cyan-500/30 hover:bg-cyan-500/30 hover:shadow-cyan-500/50" :
-                  card.tag === "Ledger" ? "bg-amber-500/20 text-amber-300 border border-amber-400/40 shadow-lg shadow-amber-500/30 hover:bg-amber-500/30 hover:shadow-amber-500/50" :
+                  card.tag === "Ledger" ? "bg-purple-500/20 text-purple-300 border border-purple-400/40 shadow-lg shadow-purple-500/30 hover:bg-purple-500/30 hover:shadow-purple-500/50" :
                   card.tag === "AI" ? "bg-violet-500/20 text-violet-300 border border-violet-400/40 shadow-lg shadow-violet-500/30 hover:bg-violet-500/30 hover:shadow-violet-500/50" :
                   "bg-white/10 text-white/70 hover:bg-white/20"
                 }`}
@@ -353,7 +357,7 @@ function NavigationCard({ card, onTagClick }: { card: NavCard; onTagClick?: (tag
           </div>
           
           <div className="relative z-10">
-            <h3 className="text-base font-semibold mb-2 text-white group-hover:text-amber-100 transition-colors">
+            <h3 className="text-base font-semibold mb-2 text-white group-hover:text-purple-100 transition-colors">
               {card.title}
             </h3>
             
@@ -361,14 +365,14 @@ function NavigationCard({ card, onTagClick }: { card: NavCard; onTagClick?: (tag
               {card.description}
             </p>
 
-            <div className="mt-4 flex items-center gap-2 text-sm text-amber-300 group-hover:text-amber-200 transition-colors">
+            <div className="mt-4 flex items-center gap-2 text-sm text-purple-300 group-hover:text-purple-200 transition-colors">
               <span>Explore</span>
               <span className="group-hover:translate-x-1 transition-transform">→</span>
             </div>
           </div>
 
           <motion.div
-            className="absolute inset-0 rounded-2xl border border-amber-400/0 group-hover:border-amber-400/40 transition-all duration-500"
+            className="absolute inset-0 rounded-2xl border border-purple-400/0 group-hover:border-purple-400/40 transition-all duration-500"
           />
         </div>
       </Link>
@@ -387,7 +391,7 @@ function NavigationSection({ section, filteredCards, onTagClick }: { section: Na
       className="mb-12"
     >
       <div className="mb-6">
-        <h2 className="text-2xl font-bold bg-gradient-to-r from-white via-amber-200 to-yellow-300 bg-clip-text text-transparent mb-2">
+        <h2 className="text-2xl font-bold bg-gradient-to-r from-white via-purple-200 to-fuchsia-300 bg-clip-text text-transparent mb-2">
           {section.title}
         </h2>
         <p className="text-sm text-white/60">{section.description}</p>
@@ -840,7 +844,7 @@ export default function Platform() {
               </Link>
               <Link
                 href="/war-room"
-                className="rounded-2xl border border-amber-500/20 bg-black/40 px-6 py-3 text-sm text-white/80 hover:bg-black/60 hover:border-amber-500/40 transition-all"
+                className="rounded-2xl border border-amber-500/20 bg-black/40 backdrop-blur-xl px-6 py-3 text-sm text-white/80 hover:bg-black/60 hover:border-amber-500/40 transition-all"
               >
                 Launch War Room →
               </Link>
@@ -852,16 +856,16 @@ export default function Platform() {
           </div>
         </section>
 
-        <section className="mx-auto max-w-7xl px-6 py-8 sticky top-16 z-40 bg-black/90 backdrop-blur-xl border-b border-amber-500/20">
+        <section className="mx-auto max-w-7xl px-6 py-8 sticky top-16 z-40 bg-black/90 backdrop-blur-xl border-b border-purple-500/20">
           <div className="space-y-4">
             <div className="relative">
-              <Search className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-amber-400/60" />
+              <Search className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-purple-400/60" />
               <input
                 type="text"
                 placeholder="Search platform features, solutions, and resources..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                className="w-full rounded-2xl border border-amber-500/20 bg-black/40 pl-12 pr-12 py-4 text-white placeholder:text-white/40 focus:border-amber-500/40 focus:bg-black/60 focus:outline-none transition-all"
+                className="w-full rounded-2xl border border-purple-500/20 bg-black/40 backdrop-blur-xl pl-12 pr-12 py-4 text-white placeholder:text-white/40 focus:border-purple-500/40 focus:bg-black/60 focus:outline-none transition-all"
               />
               {searchQuery && (
                 <button
@@ -880,8 +884,8 @@ export default function Platform() {
                   onClick={() => setSelectedCategory(category)}
                   className={`rounded-full px-4 py-2 text-sm transition-all ${
                     selectedCategory === category
-                      ? "bg-amber-500/20 text-amber-300 border border-amber-400/40 shadow-lg shadow-amber-500/30"
-                      : "bg-white/5 text-white/60 border border-white/10 hover:bg-white/10 hover:text-white/80 hover:border-amber-500/20"
+                      ? "bg-purple-500/20 text-purple-300 border border-purple-400/40 shadow-lg shadow-purple-500/30"
+                      : "bg-white/5 text-white/60 border border-white/10 hover:bg-white/10 hover:text-white/80 hover:border-purple-500/20"
                   }`}
                 >
                   {category}
@@ -891,15 +895,15 @@ export default function Platform() {
 
             {tags.length > 0 && (
               <div className="flex flex-wrap gap-2 items-center">
-                <span className="text-xs text-amber-400/70 uppercase tracking-wider">Tags:</span>
+                <span className="text-xs text-purple-400/70 uppercase tracking-wider">Tags:</span>
                 {tags.map((tag) => (
                   <button
                     key={tag}
                     onClick={() => setSelectedTag(selectedTag === tag ? null : tag)}
                     className={`rounded-full px-3 py-1 text-xs transition-all uppercase tracking-wider ${
                       selectedTag === tag
-                        ? "bg-amber-500/30 text-amber-200 border border-amber-400/40 shadow-lg shadow-amber-500/30"
-                        : "bg-white/5 text-white/50 border border-white/10 hover:bg-white/10 hover:text-white/70 hover:border-amber-500/20"
+                        ? "bg-purple-500/30 text-purple-200 border border-purple-400/40 shadow-lg shadow-purple-500/30"
+                        : "bg-white/5 text-white/50 border border-white/10 hover:bg-white/10 hover:text-white/70 hover:border-purple-500/20"
                     }`}
                   >
                     {tag}
@@ -909,13 +913,13 @@ export default function Platform() {
             )}
 
             {hasActiveFilters && (
-              <div className="flex items-center justify-between gap-4 pt-2 border-t border-amber-500/20">
+              <div className="flex items-center justify-between gap-4 pt-2 border-t border-purple-500/20">
                 <div className="flex items-center gap-2 text-sm text-white/70">
                   <span>Showing {filteredCards.length} of {allCards.length} results</span>
                 </div>
                 <button
                   onClick={clearFilters}
-                  className="text-sm text-amber-400/70 hover:text-amber-400 transition-colors flex items-center gap-1"
+                  className="text-sm text-purple-400/70 hover:text-purple-400 transition-colors flex items-center gap-1"
                 >
                   <X className="h-3 w-3" />
                   Clear filters
@@ -932,14 +936,14 @@ export default function Platform() {
               animate={{ opacity: 1, y: 0 }}
               className="text-center py-20"
             >
-              <Search className="h-12 w-12 text-amber-400/30 mx-auto mb-4" />
+              <Search className="h-12 w-12 text-purple-400/30 mx-auto mb-4" />
               <h3 className="text-xl font-semibold text-white/70 mb-2">No results found</h3>
               <p className="text-white/50 mb-6">
                 Try adjusting your search or filters to find what you're looking for
               </p>
               <button
                 onClick={clearFilters}
-                className="rounded-2xl border border-amber-500/20 bg-black/40 px-6 py-3 text-sm text-white hover:bg-black/60 hover:border-amber-500/40 transition-all"
+                className="rounded-2xl border border-purple-500/20 bg-black/40 backdrop-blur-xl px-6 py-3 text-sm text-white hover:bg-black/60 hover:border-purple-500/40 transition-all"
               >
                 Clear all filters
               </button>
@@ -957,13 +961,13 @@ export default function Platform() {
         </section>
 
         <section className="mx-auto max-w-7xl px-6 pb-20 relative z-10">
-          <div className="rounded-3xl border border-amber-500/20 bg-black/40 p-8 md:p-12 backdrop-blur-xl relative overflow-hidden group hover:border-amber-500/40 transition-all">
+          <div className="rounded-3xl border border-purple-500/20 bg-black/40 backdrop-blur-xl p-8 md:p-12 relative overflow-hidden group hover:border-purple-500/40 transition-all">
             <motion.div
-              className="absolute -top-10 -right-10 w-64 h-64 bg-gradient-to-br from-amber-500/20 to-yellow-500/20 rounded-full blur-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-500"
+              className="absolute -top-10 -right-10 w-64 h-64 bg-gradient-to-br from-purple-500/20 to-fuchsia-500/20 rounded-full blur-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-500"
             />
             
             <div className="max-w-2xl relative z-10">
-              <h2 className="text-3xl font-bold bg-gradient-to-r from-white via-amber-200 to-yellow-300 bg-clip-text text-transparent mb-4">
+              <h2 className="text-3xl font-bold bg-gradient-to-r from-white via-purple-200 to-fuchsia-300 bg-clip-text text-transparent mb-4">
                 Ready to see it in action?
               </h2>
               <p className="text-white/70 mb-6 leading-relaxed">
@@ -973,13 +977,13 @@ export default function Platform() {
               <div className="flex flex-wrap gap-3">
                 <Link
                   href="/request-demo"
-                  className="rounded-2xl bg-gradient-to-r from-amber-500 to-yellow-500 px-6 py-3 text-sm font-medium text-black hover:from-amber-400 hover:to-yellow-400 transition-all shadow-lg shadow-amber-500/50 hover:shadow-xl hover:shadow-amber-500/60 hover:scale-105"
+                  className="rounded-2xl bg-gradient-to-r from-purple-500 to-fuchsia-500 px-6 py-3 text-sm font-medium text-white hover:from-purple-400 hover:to-fuchsia-400 transition-all shadow-lg shadow-purple-500/50 hover:shadow-xl hover:shadow-purple-500/60 hover:scale-105"
                 >
                   Request demo →
                 </Link>
                 <Link
                   href="/company"
-                  className="rounded-2xl border border-amber-500/20 bg-black/40 px-6 py-3 text-sm text-white/80 hover:bg-black/60 hover:border-amber-500/40 transition-all"
+                  className="rounded-2xl border border-purple-500/20 bg-black/40 backdrop-blur-xl px-6 py-3 text-sm text-white/80 hover:bg-black/60 hover:border-purple-500/40 transition-all"
                 >
                   About us →
                 </Link>

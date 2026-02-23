@@ -1,5 +1,6 @@
 import Head from "next/head";
 import React, { useMemo, useState } from "react";
+import dynamic from "next/dynamic";
 import { SEO } from "@/components/SEO";
 import Footer from "@/components/Footer";
 import { 
@@ -248,105 +249,54 @@ export default function EvidenceReceiptsPage() {
         title="Evidence Receipts | Kincaid IQ"
         description="Blockchain-backed evidence receipts for verifiable business outcomes"
       />
-      <div className="relative min-h-screen bg-gradient-to-b from-slate-950 via-slate-900 to-black text-white overflow-hidden">
-        {/* Vegas Luxury Background - Animated Spotlights */}
-        <div className="absolute inset-0 overflow-hidden pointer-events-none">
-          <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-amber-900/20 via-transparent to-transparent" />
-          
-          {/* Animated Amber Spotlights */}
-          <div 
-            className="absolute top-0 left-1/4 w-[500px] h-[500px] bg-amber-500/30 rounded-full blur-[120px]"
-            style={{
-              animation: "float 8s ease-in-out infinite",
-            }}
-          />
-          <div 
-            className="absolute top-1/3 right-1/4 w-[400px] h-[400px] bg-yellow-500/25 rounded-full blur-[100px]"
-            style={{
-              animation: "float 10s ease-in-out infinite",
-              animationDelay: "2s",
-            }}
-          />
-          <div 
-            className="absolute bottom-1/4 left-1/3 w-[450px] h-[450px] bg-orange-500/20 rounded-full blur-[110px]"
-            style={{
-              animation: "float 12s ease-in-out infinite",
-              animationDelay: "4s",
-            }}
-          />
-
-          {/* Floating Particles */}
-          {[...Array(15)].map((_, i) => (
-            <div
-              key={i}
-              className="absolute w-1 h-1 bg-amber-400/40 rounded-full"
-              style={{
-                left: `${Math.random() * 100}%`,
-                top: `${Math.random() * 100}%`,
-                animation: `float ${8 + Math.random() * 4}s ease-in-out infinite`,
-                animationDelay: `${Math.random() * 4}s`,
-              }}
-            />
-          ))}
-
-          {/* Neon Grid Overlay */}
-          <div 
-            className="absolute inset-0 opacity-10"
-            style={{
-              backgroundImage: `
-                linear-gradient(to right, rgb(251 191 36 / 0.1) 1px, transparent 1px),
-                linear-gradient(to bottom, rgb(251 191 36 / 0.1) 1px, transparent 1px)
-              `,
-              backgroundSize: "60px 60px",
-              maskImage: "radial-gradient(ellipse at center, black 30%, transparent 70%)",
-            }}
-          />
-        </div>
+      <div className="relative min-h-screen bg-gradient-to-b from-purple-950 via-purple-900 to-black text-white overflow-hidden">
+        <PremiumBackground />
 
         <div className="relative mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8">
           {/* Header with Vegas Luxury Styling */}
-          <div className="mb-8 flex items-start justify-between backdrop-blur-xl bg-gradient-to-br from-amber-500/10 via-black/40 to-black/40 rounded-3xl border border-amber-500/20 p-8 shadow-2xl shadow-amber-500/10 hover:shadow-amber-500/20 transition-all duration-500 group">
-            <div className="absolute inset-0 bg-gradient-to-r from-amber-500/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 rounded-3xl" />
+          <div className="mb-8 flex items-start justify-between backdrop-blur-xl bg-gradient-to-br from-purple-500/10 via-black/40 to-black/40 rounded-3xl border border-purple-500/20 p-8 shadow-2xl shadow-purple-500/10 hover:shadow-purple-500/20 transition-all duration-500 group">
+            <div className="absolute inset-0 bg-gradient-to-r from-purple-500/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 rounded-3xl" />
             <div className="relative z-10">
-              <h1 className="text-5xl font-bold tracking-tight bg-gradient-to-r from-white via-amber-200 to-yellow-400 bg-clip-text text-transparent drop-shadow-[0_0_30px_rgba(251,191,36,0.3)]">
+              <h1 className="text-5xl font-bold tracking-tight bg-gradient-to-r from-white via-purple-200 to-purple-400 bg-clip-text text-transparent drop-shadow-[0_0_30px_rgba(168,85,247,0.3)]">
                 Evidence Receipts
               </h1>
-              <p className="mt-3 text-lg text-amber-200/70 max-w-2xl">
+              <p className="mt-3 text-lg text-purple-200/70 max-w-2xl">
                 Audit-grade evidence with full data lineage, DQ gates, and reconciliation proofs.
               </p>
             </div>
             <button
               onClick={() => setCreateOpen(true)}
-              className="relative inline-flex items-center gap-2 rounded-2xl border border-amber-500/30 bg-gradient-to-r from-amber-500/20 to-yellow-500/20 backdrop-blur-xl px-6 py-3 text-sm font-semibold hover:from-amber-500/30 hover:to-yellow-500/30 transition-all duration-500 shadow-lg hover:shadow-amber-500/50 hover:scale-105 group/btn overflow-hidden"
+              className="relative flex items-center gap-2 rounded-2xl border border-purple-500/30 bg-gradient-to-r from-purple-500/20 to-purple-600/20 backdrop-blur-xl px-6 py-3 text-sm font-semibold hover:from-purple-500/30 hover:to-purple-600/30 transition-all duration-500 hover:scale-105 hover:shadow-lg hover:shadow-purple-500/50 group/btn overflow-hidden"
             >
-              <div className="absolute inset-0 bg-gradient-to-r from-amber-400/0 via-amber-400/20 to-amber-400/0 translate-x-[-100%] group-hover/btn:translate-x-[100%] transition-transform duration-1000" />
+              <div className="absolute inset-0 bg-gradient-to-r from-purple-400/0 via-purple-400/20 to-purple-400/0 translate-x-[-100%] group-hover/btn:translate-x-[100%] transition-transform duration-1000" />
+              <Download className="h-4 w-4 relative z-10 drop-shadow-[0_0_8px_rgba(16,185,129,0.6)]" />
               <span className="relative z-10">Create Receipt (Demo) 🧾</span>
             </button>
           </div>
 
           {/* Board-Level Value Proposition Section */}
           {showExplanation && (
-            <div className="mb-8 rounded-3xl border border-amber-500/20 bg-gradient-to-br from-amber-500/10 via-black/40 to-black/40 backdrop-blur-xl shadow-2xl shadow-amber-500/10 overflow-hidden hover:shadow-amber-500/20 transition-all duration-500 group">
-              <div className="absolute inset-0 bg-gradient-to-r from-amber-500/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+            <div className="mb-8 rounded-3xl border border-purple-500/20 bg-gradient-to-br from-purple-500/10 via-black/40 to-black/40 backdrop-blur-xl shadow-2xl shadow-purple-500/10 overflow-hidden hover:shadow-purple-500/20 transition-all duration-500 group">
+              <div className="absolute inset-0 bg-gradient-to-r from-purple-500/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
               <div className="relative p-8">
                 <button
                   onClick={() => setShowExplanation(false)}
-                  className="absolute top-6 right-6 text-amber-300/40 hover:text-amber-300/80 transition-colors"
+                  className="absolute top-6 right-6 text-purple-300/40 hover:text-purple-300/80 transition-colors"
                 >
                   ✕
                 </button>
                 
                 {/* Header */}
                 <div className="mb-8">
-                  <div className="inline-flex items-center gap-2 mb-4 px-4 py-2 rounded-full bg-gradient-to-r from-amber-500/20 to-orange-500/20 border border-amber-500/30">
-                    <Shield className="h-4 w-4 text-amber-300 drop-shadow-[0_0_8px_rgba(251,191,36,0.6)]" />
-                    <span className="text-sm font-semibold text-amber-200">Board & Investment Grade Evidence</span>
+                  <div className="inline-flex items-center gap-2 mb-4 px-4 py-2 rounded-full bg-gradient-to-r from-purple-500/20 to-purple-600/20 border border-purple-500/30">
+                    <Shield className="h-4 w-4 text-purple-300 drop-shadow-[0_0_8px_rgba(168,85,247,0.6)]" />
+                    <span className="text-sm font-semibold text-purple-200">Board & Investment Grade Evidence</span>
                   </div>
-                  <h2 className="text-3xl font-bold mb-4 bg-gradient-to-r from-white via-amber-200 to-yellow-400 bg-clip-text text-transparent drop-shadow-[0_0_20px_rgba(251,191,36,0.3)]">
+                  <h2 className="text-3xl font-bold mb-4 bg-gradient-to-r from-white via-purple-200 to-purple-400 bg-clip-text text-transparent drop-shadow-[0_0_20px_rgba(168,85,247,0.3)]">
                     Why Evidence Lineage is Mission-Critical for Boards & Investment Groups
                   </h2>
-                  <p className="text-lg text-amber-200/70 leading-relaxed">
-                    In an era of AI-driven decision making and billion-dollar health benefits portfolios, <span className="font-semibold text-amber-100">verifiable data lineage</span> is the difference between defensible business intelligence and regulatory liability.
+                  <p className="text-lg text-purple-200/70 leading-relaxed">
+                    In an era of AI-driven decision making and billion-dollar health benefits portfolios, <span className="font-semibold text-purple-100">verifiable data lineage</span> is the difference between defensible business intelligence and regulatory liability.
                   </p>
                 </div>
 
@@ -477,7 +427,7 @@ export default function EvidenceReceiptsPage() {
                             <div className="flex h-6 w-6 items-center justify-center rounded-lg bg-emerald-500/20 text-xs font-bold text-emerald-300 flex-shrink-0">5</div>
                             <div>
                               <div className="font-semibold text-white mb-1">Human-in-the-Loop Attestation</div>
-                              <div className="text-xs">Benefits Finance Lead and CFO digital signatures certifying they've reviewed the evidence and approve for executive reporting. <span className="text-emerald-300">Accountability trails.</span></div>
+                              <div className="text-xs"><span className="font-semibold text-emerald-300">Benefits Finance Lead</span> and <span className="font-semibold text-emerald-300">CFO</span> digital signatures certifying they've reviewed the evidence and approve for executive reporting. <span className="text-emerald-300">Accountability trails.</span></div>
                             </div>
                           </div>
                           <div className="flex items-start gap-3">
@@ -606,10 +556,10 @@ export default function EvidenceReceiptsPage() {
 
           {/* Receipt Selector with Vegas Luxury Styling */}
           <div className="mb-6">
-            <div className="rounded-3xl border border-amber-500/20 bg-gradient-to-br from-amber-500/10 via-black/40 to-black/40 backdrop-blur-xl p-8 shadow-2xl shadow-amber-500/10 hover:shadow-amber-500/20 transition-all duration-500 group">
-              <div className="absolute inset-0 bg-gradient-to-r from-amber-500/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 rounded-3xl" />
+            <div className="rounded-3xl border border-purple-500/20 bg-gradient-to-br from-purple-500/10 via-black/40 to-black/40 backdrop-blur-xl p-8 shadow-2xl shadow-purple-500/10 hover:shadow-purple-500/20 transition-all duration-500 group">
+              <div className="absolute inset-0 bg-gradient-to-r from-purple-500/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 rounded-3xl" />
               <div className="relative z-10">
-                <div className="mb-4 text-sm font-semibold uppercase tracking-wider text-amber-300/70">
+                <div className="mb-4 text-sm font-semibold uppercase tracking-wider text-purple-300/70">
                   Available Receipts ({receipts.length})
                 </div>
                 <div className="flex flex-wrap gap-4">
@@ -623,18 +573,18 @@ export default function EvidenceReceiptsPage() {
                         className={classNames(
                           "group/receipt relative flex flex-col items-start gap-2 rounded-2xl border p-5 text-left transition-all duration-500 hover:scale-105 overflow-hidden",
                           isSelected
-                            ? "border-amber-500/50 bg-gradient-to-br from-amber-500/20 to-yellow-500/10 shadow-lg shadow-amber-500/30 backdrop-blur-xl"
-                            : "border-white/10 bg-white/5 backdrop-blur-xl hover:border-amber-500/30 hover:bg-white/10 hover:shadow-lg hover:shadow-amber-500/20"
+                            ? "border-purple-500/50 bg-gradient-to-br from-purple-500/20 to-purple-600/10 shadow-lg shadow-purple-500/30 backdrop-blur-xl"
+                            : "border-white/10 bg-white/5 backdrop-blur-xl hover:border-purple-500/30 hover:bg-white/10 hover:shadow-lg hover:shadow-purple-500/20"
                         )}
                       >
                         {isSelected && (
-                          <div className="absolute -inset-0.5 bg-gradient-to-r from-amber-500/50 to-yellow-500/50 rounded-2xl blur opacity-30 group-hover/receipt:opacity-50 transition-opacity duration-500" />
+                          <div className="absolute -inset-0.5 bg-gradient-to-r from-purple-500/50 to-purple-600/50 rounded-2xl blur opacity-30 group-hover/receipt:opacity-50 transition-opacity duration-500" />
                         )}
-                        <div className="absolute inset-0 bg-gradient-to-r from-amber-400/0 via-amber-400/10 to-amber-400/0 translate-x-[-100%] group-hover/receipt:translate-x-[100%] transition-transform duration-1000" />
+                        <div className="absolute inset-0 bg-gradient-to-r from-purple-400/0 via-purple-400/20 to-purple-400/0 translate-x-[-100%] group-hover/receipt:translate-x-[100%] transition-transform duration-1000" />
                         <div className="relative z-10 w-full">
                           <div className="flex items-center gap-2 mb-2">
-                            <span className="text-xs font-mono text-amber-300">{r.receiptId}</span>
-                            <span className={classNames("flex items-center gap-1 rounded-full px-2 py-0.5 text-xs font-semibold backdrop-blur-xl", rCfg.bg, rCfg.text)}>
+                            <span className="text-xs font-mono text-purple-300">{r.receiptId}</span>
+                            <span className={classNames("flex items-center gap-1 rounded-full px-2 py-1 text-xs font-semibold backdrop-blur-xl", rCfg.bg, rCfg.text)}>
                               {rCfg.icon}
                               {rCfg.label}
                             </span>
@@ -653,14 +603,14 @@ export default function EvidenceReceiptsPage() {
           </div>
 
           {/* Receipt Header with Vegas Luxury Design */}
-          <div className="mb-6 rounded-3xl border border-amber-500/20 bg-gradient-to-br from-amber-500/10 via-black/40 to-black/40 backdrop-blur-xl p-8 shadow-2xl shadow-amber-500/10 hover:shadow-amber-500/20 transition-all duration-500 group">
-            <div className="absolute inset-0 bg-gradient-to-r from-amber-500/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 rounded-3xl" />
+          <div className="mb-6 rounded-3xl border border-purple-500/20 bg-gradient-to-br from-purple-500/10 via-black/40 to-black/40 backdrop-blur-xl p-8 shadow-2xl shadow-purple-500/10 hover:shadow-purple-500/20 transition-all duration-500 group">
+            <div className="absolute inset-0 bg-gradient-to-r from-purple-500/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 rounded-3xl" />
             <div className="relative z-10">
               <div className="mb-6 flex items-start justify-between">
                 <div>
                   <div className="mb-3 flex items-center gap-3">
                     <h2 className="text-3xl font-bold tracking-tight text-white">{selected.receiptId}</h2>
-                    <span className={classNames("flex items-center gap-1.5 rounded-full px-4 py-1.5 text-xs font-semibold backdrop-blur-xl", cfg.bg, cfg.text)}>
+                    <span className={classNames("flex items-center gap-1 rounded-full px-4 py-1.5 text-xs font-semibold backdrop-blur-xl", cfg.bg, cfg.text)}>
                       {cfg.icon}
                       {cfg.label}
                     </span>
@@ -768,7 +718,7 @@ export default function EvidenceReceiptsPage() {
                         <div>
                           <div className="mb-2 flex items-center gap-3">
                             <span className="text-2xl font-bold text-white">{selected.receiptId}</span>
-                            <span className={classNames("flex items-center gap-1.5 rounded-full px-3 py-1 text-xs font-semibold", cfg.bg, cfg.text)}>
+                            <span className={classNames("flex items-center gap-1 rounded-full px-3 py-1 text-xs font-semibold", cfg.bg, cfg.text)}>
                               {cfg.icon}
                               {cfg.label}
                             </span>
@@ -857,11 +807,11 @@ export default function EvidenceReceiptsPage() {
                             {selected.dq.tests.map((test, i) => (
                               <div key={i} className="flex items-center gap-2 text-xs">
                                 {test.status === "PASS" ? (
-                                  <CheckCircle2 className="h-3 w-3 text-emerald-400 drop-shadow-[0_0_6px_rgba(16,185,129,0.6)]" />
+                                  <CheckCircle2 className="h-3 w-3" />
                                 ) : test.status === "WARN" ? (
-                                  <AlertTriangle className="h-3 w-3 text-amber-400 drop-shadow-[0_0_6px_rgba(251,191,36,0.6)]" />
+                                  <AlertTriangle className="h-3 w-3" />
                                 ) : (
-                                  <XCircle className="h-3 w-3 text-red-400 drop-shadow-[0_0_6px_rgba(239,68,68,0.6)]" />
+                                  <XCircle className="h-3 w-3" />
                                 )}
                                 <span className="text-white/70">{test.name.slice(0, 20)}</span>
                               </div>
@@ -977,7 +927,7 @@ export default function EvidenceReceiptsPage() {
                           <text x="110" y={y + 42} textAnchor="middle" fill="#fde68a" fontSize="10">
                             {art.fileName.slice(0, 20)}
                           </text>
-                          <line x1="200" y1={y + 30} x2="250" y2="250" stroke="#fbbf24" strokeWidth="2" markerEnd="url(#arrowhead)" />
+                          <line x1="200" y1={y + 30} x2="250" y2="250" stroke="#f59e0b" strokeWidth="2" markerEnd="url(#arrowhead)" />
                         </g>
                       );
                     })}
@@ -1015,7 +965,7 @@ export default function EvidenceReceiptsPage() {
                   <h3 className="mb-4 text-xl font-semibold">Source Artifacts</h3>
                   <div className="space-y-4">
                     {selected.artifacts.map((art) => (
-                      <div key={art.id} className="rounded-xl border border-amber-500/20 bg-amber-500/5 p-4 hover:border-amber-500/30 hover:scale-[1.02] transition-all duration-300">
+                      <div key={art.id} className="rounded-xl border border-amber-500/20 bg-amber-500/5 p-4 hover:border-amber-500/30 hover:scale-[1.02] transition-all duration-500">
                         <div className="mb-3 flex items-start justify-between">
                           <div>
                             <div className="mb-1 font-mono text-sm text-amber-300">{art.id}</div>
@@ -1058,7 +1008,7 @@ export default function EvidenceReceiptsPage() {
                   <h3 className="mb-4 text-xl font-semibold">Transform Pipeline</h3>
                   <div className="space-y-4">
                     {selected.transforms.map((trn, i) => (
-                      <div key={trn.id} className="rounded-xl border border-amber-500/20 bg-amber-500/5 p-4 hover:border-amber-500/30 hover:scale-[1.02] transition-all duration-300">
+                      <div key={trn.id} className="rounded-xl border border-amber-500/20 bg-amber-500/5 p-4 hover:border-amber-500/30 hover:scale-[1.02] transition-all duration-500">
                         <div className="mb-3 flex items-start justify-between">
                           <div>
                             <div className="mb-1 flex items-center gap-2">
@@ -1104,7 +1054,7 @@ export default function EvidenceReceiptsPage() {
               {tab === "dq" && (
                 <div>
                   <h3 className="mb-4 text-xl font-semibold">Data Quality Suite</h3>
-                  <div className="mb-6 rounded-xl border border-amber-500/20 bg-amber-500/5 p-4 hover:border-amber-500/30 transition-all duration-300">
+                  <div className="mb-6 rounded-xl border border-amber-500/20 bg-amber-500/5 p-4 hover:border-amber-500/30 transition-all duration-500">
                     <div className="mb-4 flex items-center justify-between">
                       <div>
                         <div className="mb-1 font-semibold">{selected.dq.suite}</div>
@@ -1123,13 +1073,13 @@ export default function EvidenceReceiptsPage() {
                         {selected.dq.status}
                       </span>
                     </div>
-                    <div className="text-sm text-amber-200/60">
+                    <div className="text-sm text-amber-200/70">
                       Ran At: {new Date(selected.dq.ranAt).toLocaleString()}
                     </div>
                   </div>
                   <div className="space-y-3">
                     {selected.dq.tests.map((test, i) => (
-                      <div key={i} className="flex items-center justify-between rounded-xl border border-amber-500/20 bg-amber-500/5 p-4 hover:border-amber-500/30 hover:scale-[1.02] transition-all duration-300">
+                      <div key={i} className="flex items-center justify-between rounded-xl border border-amber-500/20 bg-amber-500/5 p-4 hover:border-amber-500/30 hover:scale-[1.02] transition-all duration-500">
                         <div>
                           <div className="font-semibold">{test.name}</div>
                           {test.details && <div className="mt-1 text-sm text-amber-200/60">{test.details}</div>}
@@ -1164,7 +1114,7 @@ export default function EvidenceReceiptsPage() {
                   <h3 className="mb-4 text-xl font-semibold">Reconciliation Checks</h3>
                   <div className="space-y-4">
                     {selected.reconciliation.map((rec, i) => (
-                      <div key={i} className="rounded-xl border border-amber-500/20 bg-amber-500/5 p-4 hover:border-amber-500/30 hover:scale-[1.02] transition-all duration-300">
+                      <div key={i} className="rounded-xl border border-amber-500/20 bg-amber-500/5 p-4 hover:border-amber-500/30 hover:scale-[1.02] transition-all duration-500">
                         <div className="mb-3 flex items-start justify-between">
                           <div className="font-semibold">{rec.name}</div>
                           <span
@@ -1224,7 +1174,7 @@ export default function EvidenceReceiptsPage() {
                   <h3 className="mb-4 text-xl font-semibold">Audit Log</h3>
                   <div className="space-y-3">
                     {selected.auditLog.map((log, i) => (
-                      <div key={i} className="flex gap-4 rounded-xl border border-amber-500/20 bg-amber-500/5 p-4 hover:border-amber-500/30 hover:scale-[1.02] transition-all duration-300">
+                      <div key={i} className="flex gap-4 rounded-xl border border-amber-500/20 bg-amber-500/5 p-4 hover:border-amber-500/30 hover:scale-[1.02] transition-all duration-500">
                         <div className="flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-full bg-amber-500/20 text-xs font-bold text-amber-200">
                           {i + 1}
                         </div>

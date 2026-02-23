@@ -67,34 +67,35 @@ export function ExecutiveWarRoom() {
   };
 
   return (
-    <div className="min-h-screen bg-zinc-950 text-zinc-100">
-      <header className="border-b border-zinc-800/60 bg-zinc-950/80">
+    <div className="min-h-screen bg-transparent text-zinc-100">
+      <header className="border-b border-purple-500/30 bg-zinc-950/60 backdrop-blur-md sticky top-0 z-50">
         <div className="mx-auto max-w-[1600px] px-6 py-5">
           <div className="flex items-start justify-between gap-4">
             <div className="flex-1">
               <div className="flex items-center gap-3">
-                <div className="text-xs tracking-wide text-zinc-400">Kincaid IQ</div>
+                <div className="text-xs tracking-wide text-purple-400 font-semibold uppercase">Kincaid IQ</div>
                 <Select value={selectedDashboard} onValueChange={handleDashboardChange}>
-                  <SelectTrigger className="w-[280px] border-zinc-700 bg-zinc-900/60 text-zinc-100">
+                  <SelectTrigger className="w-[280px] border-purple-500/30 bg-zinc-900/60 text-zinc-100 focus:ring-purple-500/50">
                     <SelectValue />
                   </SelectTrigger>
-                  <SelectContent className="border-zinc-700 bg-zinc-900">
-                    <SelectItem value="kincaid-iq" className="text-zinc-100 focus:bg-zinc-800 focus:text-zinc-100">
+                  <SelectContent className="border-purple-500/30 bg-zinc-950/95 backdrop-blur-xl">
+                    <SelectItem value="kincaid-iq" className="text-zinc-100 focus:bg-purple-900/30 focus:text-purple-200">
                       Kincaid IQ War Room
                     </SelectItem>
-                    <SelectItem value="executive-war-room" className="text-zinc-100 focus:bg-zinc-800 focus:text-zinc-100">
+                    <SelectItem value="executive-war-room" className="text-zinc-100 focus:bg-purple-900/30 focus:text-purple-200">
                       Executive War Room (CFO Dashboard)
                     </SelectItem>
                   </SelectContent>
                 </Select>
               </div>
-              <h1 className="mt-3 text-2xl font-semibold tracking-tight">CFO Healthcare Dashboard</h1>
+              <h1 className="mt-3 text-2xl font-bold tracking-tight bg-gradient-to-r from-white via-purple-100 to-blue-100 bg-clip-text text-transparent">CFO Healthcare Dashboard</h1>
               <div className="mt-1 text-sm text-zinc-400">
-                McKinsey + Bain KPIs with Evidence Receipts. <span className="text-zinc-200">Verified</span> or it&apos;s not real.
+                McKinsey + Bain KPIs with Evidence Receipts. <span className="text-purple-300 font-medium">Verified</span> or it&apos;s not real.
               </div>
-              <div className="mt-2 text-xs text-zinc-500">
+              <div className="mt-2 text-xs text-zinc-500 flex items-center gap-2">
+                <span className="flex h-2 w-2 rounded-full bg-emerald-500 shadow-[0_0_8px_rgba(16,185,129,0.5)] animate-pulse" />
                 Status:{" "}
-                <span className={status === "live" ? "text-emerald-400" : status === "connecting" ? "text-amber-400" : "text-rose-400"}>
+                <span className={status === "live" ? "text-emerald-400 font-semibold" : status === "connecting" ? "text-amber-400" : "text-rose-400"}>
                   {status.toUpperCase()}
                 </span>
                 {" • "}
@@ -118,8 +119,11 @@ export function ExecutiveWarRoom() {
       <main className="mx-auto max-w-[1600px] px-6 py-6">
         <section className="mb-8">
           <div className="mb-4 flex items-baseline gap-3">
-            <h2 className="text-lg font-semibold text-zinc-100">Financial Risk & EBITDA Protection</h2>
-            <div className="text-xs text-zinc-500">McKinsey Framework</div>
+            <h2 className="text-lg font-bold text-zinc-100 flex items-center gap-2">
+              <span className="h-1.5 w-1.5 rounded-full bg-purple-500" />
+              Financial Risk & EBITDA Protection
+            </h2>
+            <div className="text-xs text-purple-400/80 font-medium px-2 py-0.5 rounded-full bg-purple-900/30 border border-purple-500/20">McKinsey Framework</div>
           </div>
           <div className="grid grid-cols-1 gap-4 lg:grid-cols-2 xl:grid-cols-4">
             <KPITile data={tileMap.get("costTrendStress")} onClick={handleTileClick} />
@@ -131,8 +135,11 @@ export function ExecutiveWarRoom() {
 
         <section className="mb-8">
           <div className="mb-4 flex items-baseline gap-3">
-            <h2 className="text-lg font-semibold text-zinc-100">Strategic Plan Design & Risk Mitigation</h2>
-            <div className="text-xs text-zinc-500">McKinsey Framework</div>
+            <h2 className="text-lg font-bold text-zinc-100 flex items-center gap-2">
+              <span className="h-1.5 w-1.5 rounded-full bg-blue-500" />
+              Strategic Plan Design & Risk Mitigation
+            </h2>
+            <div className="text-xs text-blue-400/80 font-medium px-2 py-0.5 rounded-full bg-blue-900/30 border border-blue-500/20">McKinsey Framework</div>
           </div>
           <div className="grid grid-cols-1 gap-4 lg:grid-cols-2">
             <KPITile data={tileMap.get("planDesignAdoption")} onClick={handleTileClick} />
@@ -142,8 +149,11 @@ export function ExecutiveWarRoom() {
 
         <section className="mb-8">
           <div className="mb-4 flex items-baseline gap-3">
-            <h2 className="text-lg font-semibold text-zinc-100">Experience & Loyalty Metrics</h2>
-            <div className="text-xs text-zinc-500">Bain Net Promoter System</div>
+            <h2 className="text-lg font-bold text-zinc-100 flex items-center gap-2">
+              <span className="h-1.5 w-1.5 rounded-full bg-emerald-500" />
+              Experience & Loyalty Metrics
+            </h2>
+            <div className="text-xs text-emerald-400/80 font-medium px-2 py-0.5 rounded-full bg-emerald-900/30 border border-emerald-500/20">Bain Net Promoter System</div>
           </div>
           <div className="grid grid-cols-1 gap-4 lg:grid-cols-2">
             <KPITile data={tileMap.get("benefitsNPS")} onClick={handleTileClick} />

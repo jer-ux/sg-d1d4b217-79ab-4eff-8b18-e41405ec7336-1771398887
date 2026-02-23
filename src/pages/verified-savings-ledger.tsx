@@ -1,4 +1,7 @@
+"use client";
+
 import { useState, useMemo } from "react";
+import dynamic from "next/dynamic";
 import { motion } from "framer-motion";
 import { SEO } from "@/components/SEO";
 import { SiteHeader } from "@/components/site/SiteHeader";
@@ -32,6 +35,11 @@ import {
   Sparkles
 } from "lucide-react";
 import { getTerm, getLedgerStateLabel, getTermDefinition, formatComplianceAmount, getRetentionPeriod } from "@/lib/compliance/terminology";
+
+const PremiumBackground = dynamic(
+  () => import("@/components/premium/PremiumBackground").then(mod => ({ default: mod.PremiumBackground })),
+  { ssr: false }
+);
 
 type LedgerState = "IDENTIFIED" | "APPROVED" | "REALIZED" | "AT_RISK";
 type Priority = "HIGH" | "MEDIUM" | "LOW";
@@ -474,29 +482,29 @@ export default function VerifiedSavingsLedger() {
 
     return (
       <Dialog open={!!detailModal.type} onOpenChange={closeDetailModal}>
-        <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto bg-gradient-to-br from-zinc-900 via-black to-zinc-900 border border-amber-500/20">
+        <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto bg-gradient-to-br from-purple-950/95 via-black/95 to-purple-950/95 border border-purple-500/20 backdrop-blur-xl">
           <DialogHeader>
-            <DialogTitle className="text-2xl font-bold text-amber-300 flex items-center gap-2">
-              <Sparkles className="h-6 w-6" />
+            <DialogTitle className="text-2xl font-bold bg-gradient-to-r from-purple-300 via-fuchsia-300 to-purple-300 bg-clip-text text-transparent flex items-center gap-2">
+              <Sparkles className="h-6 w-6 text-purple-400" />
               {modalTitle}
             </DialogTitle>
-            <DialogDescription className="text-zinc-400">
+            <DialogDescription className="text-purple-300/70">
               {entry.description} • {entry.id}
             </DialogDescription>
           </DialogHeader>
 
           <Tabs defaultValue="overview" className="w-full">
-            <TabsList className="grid w-full grid-cols-4 bg-zinc-900/50">
-              <TabsTrigger value="overview">Overview</TabsTrigger>
-              <TabsTrigger value="audit">Audit Trail</TabsTrigger>
-              <TabsTrigger value="evidence">Evidence</TabsTrigger>
-              <TabsTrigger value="approvals">Approvals</TabsTrigger>
+            <TabsList className="grid w-full grid-cols-4 bg-purple-950/50 border border-purple-500/20">
+              <TabsTrigger value="overview" className="data-[state=active]:bg-purple-600/30">Overview</TabsTrigger>
+              <TabsTrigger value="audit" className="data-[state=active]:bg-purple-600/30">Audit Trail</TabsTrigger>
+              <TabsTrigger value="evidence" className="data-[state=active]:bg-purple-600/30">Evidence</TabsTrigger>
+              <TabsTrigger value="approvals" className="data-[state=active]:bg-purple-600/30">Approvals</TabsTrigger>
             </TabsList>
 
             <TabsContent value="overview" className="space-y-4 mt-4">
-              <Card className="bg-zinc-900/50 border-zinc-700">
+              <Card className="bg-purple-950/30 border-purple-500/20 backdrop-blur-sm">
                 <CardHeader>
-                  <CardTitle className="text-amber-300 flex items-center gap-2">
+                  <CardTitle className="text-purple-300 flex items-center gap-2">
                     <FileCheck className="h-5 w-5" />
                     Control Finding Details
                   </CardTitle>
@@ -504,58 +512,58 @@ export default function VerifiedSavingsLedger() {
                 <CardContent className="space-y-3 text-sm">
                   <div className="grid grid-cols-2 gap-4">
                     <div>
-                      <p className="text-zinc-500 mb-1">Finding ID</p>
+                      <p className="text-purple-400/70 mb-1">Finding ID</p>
                       <p className="text-white font-mono">{entry.id}</p>
                     </div>
                     <div>
-                      <p className="text-zinc-500 mb-1">Category</p>
+                      <p className="text-purple-400/70 mb-1">Category</p>
                       <p className="text-white">{entry.category}</p>
                     </div>
                     <div>
-                      <p className="text-zinc-500 mb-1">Financial Impact</p>
+                      <p className="text-purple-400/70 mb-1">Financial Impact</p>
                       <p className="text-emerald-300 font-bold text-xl">
                         {formatComplianceAmount(entry.amount)}
                       </p>
                     </div>
                     <div>
-                      <p className="text-zinc-500 mb-1">GL Account</p>
+                      <p className="text-purple-400/70 mb-1">GL Account</p>
                       <p className="text-white font-mono">{entry.glAccount || "N/A"}</p>
                     </div>
                     <div>
-                      <p className="text-zinc-500 mb-1">Fiscal Impact Period</p>
+                      <p className="text-purple-400/70 mb-1">Fiscal Impact Period</p>
                       <p className="text-white">{entry.fiscalImpact || "N/A"}</p>
                     </div>
                     <div>
-                      <p className="text-zinc-500 mb-1">Control Status</p>
+                      <p className="text-purple-400/70 mb-1">Control Status</p>
                       <Badge className={getStateColor(entry.state)}>
                         {getLedgerStateLabel(entry.state, userRole)}
                       </Badge>
                     </div>
                   </div>
 
-                  <div className="pt-4 border-t border-zinc-700">
-                    <p className="text-zinc-500 mb-1">Description</p>
+                  <div className="pt-4 border-t border-purple-500/20">
+                    <p className="text-purple-400/70 mb-1">Description</p>
                     <p className="text-white">{entry.description}</p>
                   </div>
 
                   {entry.contractReference && (
-                    <div className="pt-4 border-t border-zinc-700">
-                      <p className="text-zinc-500 mb-2">Contract Reference</p>
+                    <div className="pt-4 border-t border-purple-500/20">
+                      <p className="text-purple-400/70 mb-2">Contract Reference</p>
                       <div className="flex items-center gap-2 text-blue-300">
                         <LinkIcon className="h-4 w-4" />
                         <span className="font-mono text-sm">{entry.contractReference}</span>
                       </div>
                       {entry.vendorName && (
-                        <p className="text-zinc-400 text-sm mt-1">Vendor: {entry.vendorName}</p>
+                        <p className="text-purple-300/70 text-sm mt-1">Vendor: {entry.vendorName}</p>
                       )}
                     </div>
                   )}
                 </CardContent>
               </Card>
 
-              <Card className="bg-zinc-900/50 border-zinc-700">
+              <Card className="bg-purple-950/30 border-purple-500/20 backdrop-blur-sm">
                 <CardHeader>
-                  <CardTitle className="text-amber-300 flex items-center gap-2">
+                  <CardTitle className="text-purple-300 flex items-center gap-2">
                     <User className="h-5 w-5" />
                     Control Owner & Assignment
                   </CardTitle>
@@ -563,22 +571,22 @@ export default function VerifiedSavingsLedger() {
                 <CardContent className="space-y-3 text-sm">
                   <div className="grid grid-cols-2 gap-4">
                     <div>
-                      <p className="text-zinc-500 mb-1">Control Owner</p>
+                      <p className="text-purple-400/70 mb-1">Control Owner</p>
                       <p className="text-white font-semibold">{entry.owner}</p>
-                      <p className="text-zinc-400 text-xs">{entry.ownerRole}</p>
+                      <p className="text-purple-300/70 text-xs">{entry.ownerRole}</p>
                     </div>
                     <div>
-                      <p className="text-zinc-500 mb-1">Department</p>
+                      <p className="text-purple-400/70 mb-1">Department</p>
                       <p className="text-white">{entry.department}</p>
                     </div>
                     <div>
-                      <p className="text-zinc-500 mb-1">Evidence Strength</p>
+                      <p className="text-purple-400/70 mb-1">Evidence Strength</p>
                       <Badge className={getConfidenceColor(entry.confidence)}>
                         {entry.confidence} ({entry.evidenceCount} artifacts)
                       </Badge>
                     </div>
                     <div>
-                      <p className="text-zinc-500 mb-1">Remediation Priority</p>
+                      <p className="text-purple-400/70 mb-1">Remediation Priority</p>
                       <Badge className={getPriorityColor(entry.timeSensitivity)}>
                         {entry.timeSensitivity}
                       </Badge>
@@ -587,9 +595,9 @@ export default function VerifiedSavingsLedger() {
                 </CardContent>
               </Card>
 
-              <Card className="bg-zinc-900/50 border-zinc-700">
+              <Card className="bg-purple-950/30 border-purple-500/20 backdrop-blur-sm">
                 <CardHeader>
-                  <CardTitle className="text-amber-300 flex items-center gap-2">
+                  <CardTitle className="text-purple-300 flex items-center gap-2">
                     <Calendar className="h-5 w-5" />
                     Timeline & Milestones
                   </CardTitle>
@@ -597,23 +605,23 @@ export default function VerifiedSavingsLedger() {
                 <CardContent className="space-y-3 text-sm">
                   <div className="space-y-2">
                     <div className="flex items-center justify-between">
-                      <span className="text-zinc-500">Identified</span>
+                      <span className="text-purple-400/70">Identified</span>
                       <span className="text-white">{new Date(entry.identifiedDate).toLocaleDateString()}</span>
                     </div>
                     {entry.approvedDate && (
                       <div className="flex items-center justify-between">
-                        <span className="text-zinc-500">Action Authorized</span>
+                        <span className="text-purple-400/70">Action Authorized</span>
                         <span className="text-white">{new Date(entry.approvedDate).toLocaleDateString()}</span>
                       </div>
                     )}
                     {entry.realizedDate && (
                       <div className="flex items-center justify-between">
-                        <span className="text-zinc-500">Value Confirmed</span>
+                        <span className="text-purple-400/70">Value Confirmed</span>
                         <span className="text-white">{new Date(entry.realizedDate).toLocaleDateString()}</span>
                       </div>
                     )}
-                    <div className="pt-2 border-t border-zinc-700 flex items-center justify-between">
-                      <span className="text-zinc-500">Attestations Received</span>
+                    <div className="pt-2 border-t border-purple-500/20 flex items-center justify-between">
+                      <span className="text-purple-400/70">Attestations Received</span>
                       <span className="text-emerald-300 font-semibold">{entry.attestations}</span>
                     </div>
                   </div>
@@ -622,28 +630,28 @@ export default function VerifiedSavingsLedger() {
             </TabsContent>
 
             <TabsContent value="audit" className="space-y-3 mt-4">
-              <Card className="bg-zinc-900/50 border-zinc-700">
+              <Card className="bg-purple-950/30 border-purple-500/20 backdrop-blur-sm">
                 <CardHeader>
-                  <CardTitle className="text-amber-300 flex items-center gap-2">
+                  <CardTitle className="text-purple-300 flex items-center gap-2">
                     <Shield className="h-5 w-5" />
                     Complete Audit Trail
                   </CardTitle>
                 </CardHeader>
                 <CardContent className="space-y-4">
                   {entry.auditTrail.map((audit, idx) => (
-                    <div key={idx} className="border-l-2 border-amber-500/30 pl-4 pb-4 last:pb-0">
+                    <div key={idx} className="border-l-2 border-purple-500/30 pl-4 pb-4 last:pb-0">
                       <div className="flex items-start justify-between mb-2">
                         <div>
                           <p className="text-white font-semibold">{audit.action}</p>
-                          <p className="text-zinc-400 text-xs">
+                          <p className="text-purple-300/70 text-xs">
                             {new Date(audit.timestamp).toLocaleString()} • {audit.actor} ({audit.actorRole})
                           </p>
                         </div>
-                        <Badge variant="outline" className="text-xs">
+                        <Badge variant="outline" className="text-xs border-purple-500/30">
                           {audit.ipAddress}
                         </Badge>
                       </div>
-                      <p className="text-zinc-300 text-sm">{audit.details}</p>
+                      <p className="text-purple-100 text-sm">{audit.details}</p>
                     </div>
                   ))}
                 </CardContent>
@@ -651,9 +659,9 @@ export default function VerifiedSavingsLedger() {
             </TabsContent>
 
             <TabsContent value="evidence" className="space-y-3 mt-4">
-              <Card className="bg-zinc-900/50 border-zinc-700">
+              <Card className="bg-purple-950/30 border-purple-500/20 backdrop-blur-sm">
                 <CardHeader>
-                  <CardTitle className="text-amber-300 flex items-center gap-2">
+                  <CardTitle className="text-purple-300 flex items-center gap-2">
                     <FileText className="h-5 w-5" />
                     Supporting Documentation
                   </CardTitle>
@@ -662,12 +670,12 @@ export default function VerifiedSavingsLedger() {
                   {entry.evidence.map((evidence) => (
                     <div 
                       key={evidence.id}
-                      className="p-4 bg-zinc-800/50 rounded-lg border border-zinc-700 hover:border-amber-500/30 transition-all"
+                      className="p-4 bg-purple-900/20 rounded-lg border border-purple-500/20 hover:border-purple-400/40 transition-all hover:shadow-lg hover:shadow-purple-500/10"
                     >
                       <div className="flex items-start justify-between mb-2">
                         <div>
                           <div className="flex items-center gap-2 mb-1">
-                            <FileText className="h-4 w-4 text-amber-400" />
+                            <FileText className="h-4 w-4 text-purple-400" />
                             <p className="text-white font-semibold text-sm">{evidence.filename}</p>
                             {evidence.verified && (
                               <Badge className="text-xs bg-emerald-500/20 text-emerald-300 border-emerald-500/30">
@@ -675,35 +683,35 @@ export default function VerifiedSavingsLedger() {
                               </Badge>
                             )}
                           </div>
-                          <p className="text-zinc-400 text-xs">{evidence.type}</p>
+                          <p className="text-purple-300/70 text-xs">{evidence.type}</p>
                         </div>
-                        <Button variant="outline" size="sm" className="text-xs">
+                        <Button variant="outline" size="sm" className="text-xs border-purple-500/30 hover:bg-purple-500/10">
                           <Download className="h-3 w-3 mr-1" />
                           Download
                         </Button>
                       </div>
                       <div className="grid grid-cols-2 gap-2 mt-3 text-xs">
                         <div>
-                          <p className="text-zinc-500">Uploaded By</p>
+                          <p className="text-purple-400/70">Uploaded By</p>
                           <p className="text-white">{evidence.uploadedBy}</p>
                         </div>
                         <div>
-                          <p className="text-zinc-500">Upload Date</p>
+                          <p className="text-purple-400/70">Upload Date</p>
                           <p className="text-white">{new Date(evidence.uploadedDate).toLocaleDateString()}</p>
                         </div>
                         <div>
-                          <p className="text-zinc-500">Retention Period</p>
+                          <p className="text-purple-400/70">Retention Period</p>
                           <p className="text-white">{evidence.retentionPeriod}</p>
                         </div>
                         <div>
-                          <p className="text-zinc-500">Crypto Hash</p>
+                          <p className="text-purple-400/70">Crypto Hash</p>
                           <p className="text-white font-mono truncate">{evidence.cryptoHash}</p>
                         </div>
                       </div>
                     </div>
                   ))}
-                  <div className="pt-3 border-t border-zinc-700">
-                    <p className="text-zinc-500 text-xs">
+                  <div className="pt-3 border-t border-purple-500/20">
+                    <p className="text-purple-300/70 text-xs">
                       All evidence artifacts are cryptographically verified and retained per ERISA/HIPAA requirements.
                     </p>
                   </div>
@@ -712,9 +720,9 @@ export default function VerifiedSavingsLedger() {
             </TabsContent>
 
             <TabsContent value="approvals" className="space-y-3 mt-4">
-              <Card className="bg-zinc-900/50 border-zinc-700">
+              <Card className="bg-purple-950/30 border-purple-500/20 backdrop-blur-sm">
                 <CardHeader>
-                  <CardTitle className="text-amber-300 flex items-center gap-2">
+                  <CardTitle className="text-purple-300 flex items-center gap-2">
                     <CheckCircle2 className="h-5 w-5" />
                     Management Attestations
                   </CardTitle>
@@ -724,30 +732,30 @@ export default function VerifiedSavingsLedger() {
                     entry.approvals.map((approval, idx) => (
                       <div 
                         key={idx}
-                        className="p-4 bg-zinc-800/50 rounded-lg border border-zinc-700"
+                        className="p-4 bg-purple-900/20 rounded-lg border border-purple-500/20"
                       >
                         <div className="flex items-start justify-between mb-3">
                           <div>
                             <p className="text-white font-semibold">{approval.approver}</p>
-                            <p className="text-zinc-400 text-xs">{approval.approverRole}</p>
+                            <p className="text-purple-300/70 text-xs">{approval.approverRole}</p>
                           </div>
                           <div className="text-right">
                             <Badge className="bg-emerald-500/20 text-emerald-300 border-emerald-500/30 mb-1">
                               {approval.attestation ? "Attested" : "Approved"}
                             </Badge>
-                            <p className="text-zinc-500 text-xs">
+                            <p className="text-purple-400/70 text-xs">
                               {new Date(approval.approvalDate).toLocaleString()}
                             </p>
                           </div>
                         </div>
-                        <div className="pt-3 border-t border-zinc-700">
-                          <p className="text-zinc-500 text-xs mb-1">Comments</p>
-                          <p className="text-zinc-300 text-sm">{approval.comments}</p>
+                        <div className="pt-3 border-t border-purple-500/20">
+                          <p className="text-purple-400/70 text-xs mb-1">Comments</p>
+                          <p className="text-purple-100 text-sm">{approval.comments}</p>
                         </div>
                       </div>
                     ))
                   ) : (
-                    <div className="text-center py-8 text-zinc-500">
+                    <div className="text-center py-8 text-purple-400/70">
                       <AlertCircle className="h-12 w-12 mx-auto mb-2 opacity-50" />
                       <p>No approvals recorded yet</p>
                       <p className="text-xs mt-1">Pending control owner review</p>
@@ -758,11 +766,11 @@ export default function VerifiedSavingsLedger() {
             </TabsContent>
           </Tabs>
 
-          <div className="flex justify-end gap-2 pt-4 border-t border-zinc-700">
-            <Button variant="outline" onClick={closeDetailModal}>
+          <div className="flex justify-end gap-2 pt-4 border-t border-purple-500/20">
+            <Button variant="outline" onClick={closeDetailModal} className="border-purple-500/30 hover:bg-purple-500/10">
               Close
             </Button>
-            <Button className="bg-amber-600 hover:bg-amber-700 text-white">
+            <Button className="bg-gradient-to-r from-purple-600 to-fuchsia-600 hover:from-purple-700 hover:to-fuchsia-700 text-white">
               <Download className="h-4 w-4 mr-2" />
               Export Package
             </Button>
@@ -778,7 +786,8 @@ export default function VerifiedSavingsLedger() {
         title="Value Reconciliation Ledger - SiriusB iQ"
         description="ERISA-compliant audit trail and reconciliation ledger for verified savings and financial controls"
       />
-      <div className="min-h-screen bg-black">
+      <div className="min-h-screen bg-gradient-to-br from-purple-950 via-black to-purple-950">
+        <PremiumBackground />
         <SiteHeader />
         
         <main className="relative pt-24 pb-16">
@@ -790,12 +799,24 @@ export default function VerifiedSavingsLedger() {
               transition={{ duration: 0.6 }}
             >
               <div className="flex items-center gap-3 mb-4">
-                <DollarSign className="h-8 w-8 text-amber-400" />
-                <h1 className="text-4xl font-bold text-white">
+                <motion.div
+                  animate={{ 
+                    rotate: [0, 360],
+                    scale: [1, 1.1, 1]
+                  }}
+                  transition={{ 
+                    duration: 3,
+                    repeat: Infinity,
+                    ease: "easeInOut"
+                  }}
+                >
+                  <DollarSign className="h-8 w-8 text-purple-400" />
+                </motion.div>
+                <h1 className="text-4xl font-bold bg-gradient-to-r from-purple-300 via-fuchsia-300 to-purple-300 bg-clip-text text-transparent">
                   {getTerm("valueLedger", userRole)}
                 </h1>
               </div>
-              <p className="text-xl text-zinc-400 max-w-3xl">
+              <p className="text-xl text-purple-200/70 max-w-3xl">
                 ERISA-compliant audit trail and reconciliation ledger with cryptographically verified evidence, 
                 management attestations, and 7-year retention. Full chain of custody for all financial impacts.
               </p>
@@ -805,52 +826,85 @@ export default function VerifiedSavingsLedger() {
           {/* Stats Cards */}
           <div className="max-w-7xl mx-auto px-6 mb-8">
             <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-              <Card className="bg-gradient-to-br from-zinc-900 to-zinc-800 border-zinc-700">
-                <CardHeader className="pb-3">
-                  <CardTitle className="text-sm text-zinc-400">Total Identified Value</CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <p className="text-3xl font-bold text-white">{formatComplianceAmount(stats.total)}</p>
-                  <p className="text-xs text-zinc-500 mt-1">Across all control domains</p>
-                </CardContent>
-              </Card>
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.1 }}
+                whileHover={{ scale: 1.05, y: -5 }}
+              >
+                <Card className="bg-gradient-to-br from-purple-950/80 to-purple-900/50 border-purple-500/30 backdrop-blur-xl hover:shadow-xl hover:shadow-purple-500/20 transition-all">
+                  <CardHeader className="pb-3">
+                    <CardTitle className="text-sm text-purple-300/70">Total Identified Value</CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    <p className="text-3xl font-bold text-white">{formatComplianceAmount(stats.total)}</p>
+                    <p className="text-xs text-purple-400/70 mt-1">Across all control domains</p>
+                  </CardContent>
+                </Card>
+              </motion.div>
 
-              <Card className="bg-gradient-to-br from-emerald-900/20 to-zinc-900 border-emerald-500/30">
-                <CardHeader className="pb-3">
-                  <CardTitle className="text-sm text-emerald-300">Value Confirmed</CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <p className="text-3xl font-bold text-emerald-300">{formatComplianceAmount(stats.realized)}</p>
-                  <p className="text-xs text-zinc-500 mt-1">Reconciled to general ledger</p>
-                </CardContent>
-              </Card>
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.2 }}
+                whileHover={{ scale: 1.05, y: -5 }}
+              >
+                <Card className="bg-gradient-to-br from-emerald-900/40 to-purple-950/80 border-emerald-500/30 backdrop-blur-xl hover:shadow-xl hover:shadow-emerald-500/20 transition-all">
+                  <CardHeader className="pb-3">
+                    <CardTitle className="text-sm text-emerald-300">Value Confirmed</CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    <p className="text-3xl font-bold text-emerald-300">{formatComplianceAmount(stats.realized)}</p>
+                    <p className="text-xs text-purple-400/70 mt-1">Reconciled to general ledger</p>
+                  </CardContent>
+                </Card>
+              </motion.div>
 
-              <Card className="bg-gradient-to-br from-blue-900/20 to-zinc-900 border-blue-500/30">
-                <CardHeader className="pb-3">
-                  <CardTitle className="text-sm text-blue-300">Action Authorized</CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <p className="text-3xl font-bold text-blue-300">{formatComplianceAmount(stats.approved)}</p>
-                  <p className="text-xs text-zinc-500 mt-1">Pending execution & confirmation</p>
-                </CardContent>
-              </Card>
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.3 }}
+                whileHover={{ scale: 1.05, y: -5 }}
+              >
+                <Card className="bg-gradient-to-br from-blue-900/40 to-purple-950/80 border-blue-500/30 backdrop-blur-xl hover:shadow-xl hover:shadow-blue-500/20 transition-all">
+                  <CardHeader className="pb-3">
+                    <CardTitle className="text-sm text-blue-300">Action Authorized</CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    <p className="text-3xl font-bold text-blue-300">{formatComplianceAmount(stats.approved)}</p>
+                    <p className="text-xs text-purple-400/70 mt-1">Pending execution & confirmation</p>
+                  </CardContent>
+                </Card>
+              </motion.div>
 
-              <Card className="bg-gradient-to-br from-red-900/20 to-zinc-900 border-red-500/30">
-                <CardHeader className="pb-3">
-                  <CardTitle className="text-sm text-red-300">Exception Queue</CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <p className="text-3xl font-bold text-red-300">{formatComplianceAmount(stats.atRisk)}</p>
-                  <p className="text-xs text-zinc-500 mt-1">Requires immediate attention</p>
-                </CardContent>
-              </Card>
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.4 }}
+                whileHover={{ scale: 1.05, y: -5 }}
+              >
+                <Card className="bg-gradient-to-br from-red-900/40 to-purple-950/80 border-red-500/30 backdrop-blur-xl hover:shadow-xl hover:shadow-red-500/20 transition-all">
+                  <CardHeader className="pb-3">
+                    <CardTitle className="text-sm text-red-300">Exception Queue</CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    <p className="text-3xl font-bold text-red-300">{formatComplianceAmount(stats.atRisk)}</p>
+                    <p className="text-xs text-purple-400/70 mt-1">Requires immediate attention</p>
+                  </CardContent>
+                </Card>
+              </motion.div>
             </div>
           </div>
 
           {/* Filters */}
           <div className="max-w-7xl mx-auto px-6 mb-6">
-            <div className="flex items-center gap-3">
-              <Filter className="h-5 w-5 text-zinc-400" />
+            <motion.div 
+              className="flex items-center gap-3"
+              initial={{ opacity: 0, x: -20 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ delay: 0.5 }}
+            >
+              <Filter className="h-5 w-5 text-purple-400" />
               <div className="flex gap-2">
                 {["ALL", "IDENTIFIED", "APPROVED", "REALIZED", "AT_RISK"].map((state) => (
                   <Button
@@ -858,43 +912,57 @@ export default function VerifiedSavingsLedger() {
                     variant={filterState === state ? "default" : "outline"}
                     size="sm"
                     onClick={() => setFilterState(state as LedgerState | "ALL")}
-                    className={filterState === state ? "bg-amber-600 hover:bg-amber-700" : ""}
+                    className={filterState === state 
+                      ? "bg-gradient-to-r from-purple-600 to-fuchsia-600 hover:from-purple-700 hover:to-fuchsia-700 border-0" 
+                      : "border-purple-500/30 hover:bg-purple-500/10"
+                    }
                   >
                     {state === "ALL" ? "All" : getLedgerStateLabel(state as LedgerState, userRole)}
                   </Button>
                 ))}
               </div>
-            </div>
+            </motion.div>
           </div>
 
           {/* Ledger Table */}
-          <div className="max-w-7xl mx-auto px-6">
-            <Card className="bg-zinc-900/50 border-zinc-700">
+          <motion.div 
+            className="max-w-7xl mx-auto px-6"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.6 }}
+          >
+            <Card className="bg-purple-950/30 border-purple-500/20 backdrop-blur-xl">
               <CardContent className="p-0">
                 <div className="overflow-x-auto">
                   <table className="w-full">
-                    <thead className="bg-zinc-800/50 border-b border-zinc-700">
+                    <thead className="bg-purple-900/30 border-b border-purple-500/20">
                       <tr>
-                        <th className="text-left p-4 text-sm font-semibold text-zinc-300">ID</th>
-                        <th className="text-left p-4 text-sm font-semibold text-zinc-300">Description</th>
-                        <th className="text-right p-4 text-sm font-semibold text-zinc-300">Amount</th>
-                        <th className="text-left p-4 text-sm font-semibold text-zinc-300">Status</th>
-                        <th className="text-left p-4 text-sm font-semibold text-zinc-300">Control Owner</th>
-                        <th className="text-left p-4 text-sm font-semibold text-zinc-300">Evidence</th>
-                        <th className="text-left p-4 text-sm font-semibold text-zinc-300">Priority</th>
-                        <th className="text-left p-4 text-sm font-semibold text-zinc-300">Date</th>
+                        <th className="text-left p-4 text-sm font-semibold text-purple-300">ID</th>
+                        <th className="text-left p-4 text-sm font-semibold text-purple-300">Description</th>
+                        <th className="text-right p-4 text-sm font-semibold text-purple-300">Amount</th>
+                        <th className="text-left p-4 text-sm font-semibold text-purple-300">Status</th>
+                        <th className="text-left p-4 text-sm font-semibold text-purple-300">Control Owner</th>
+                        <th className="text-left p-4 text-sm font-semibold text-purple-300">Evidence</th>
+                        <th className="text-left p-4 text-sm font-semibold text-purple-300">Priority</th>
+                        <th className="text-left p-4 text-sm font-semibold text-purple-300">Date</th>
                       </tr>
                     </thead>
                     <tbody>
-                      {filteredData.map((entry) => (
-                        <tr key={entry.id} className="border-b border-zinc-800 hover:bg-zinc-800/30 transition-colors">
+                      {filteredData.map((entry, idx) => (
+                        <motion.tr 
+                          key={entry.id}
+                          initial={{ opacity: 0, x: -20 }}
+                          animate={{ opacity: 1, x: 0 }}
+                          transition={{ delay: 0.7 + (idx * 0.1) }}
+                          className="border-b border-purple-500/10 hover:bg-purple-900/20 transition-colors"
+                        >
                           <td className="p-4">
-                            <span className="text-amber-300 font-mono text-sm">{entry.id}</span>
+                            <span className="text-purple-300 font-mono text-sm">{entry.id}</span>
                           </td>
                           <td className="p-4">
                             <div>
                               <p className="text-white font-medium">{entry.description}</p>
-                              <p className="text-zinc-500 text-xs mt-1">{entry.category}</p>
+                              <p className="text-purple-400/70 text-xs mt-1">{entry.category}</p>
                             </div>
                           </td>
                           <td className="p-4 text-right">
@@ -913,7 +981,7 @@ export default function VerifiedSavingsLedger() {
                           <td className="p-4">
                             <Badge 
                               variant="outline" 
-                              className="cursor-pointer hover:bg-zinc-700 transition-all"
+                              className="cursor-pointer hover:bg-purple-500/10 transition-all border-purple-500/30"
                               onClick={() => openDetailModal("owner", entry)}
                             >
                               <User className="h-3 w-3 mr-1" />
@@ -938,17 +1006,17 @@ export default function VerifiedSavingsLedger() {
                               {entry.timeSensitivity}
                             </Badge>
                           </td>
-                          <td className="p-4 text-zinc-400 text-sm">
+                          <td className="p-4 text-purple-300/70 text-sm">
                             {new Date(entry.identifiedDate).toLocaleDateString()}
                           </td>
-                        </tr>
+                        </motion.tr>
                       ))}
                     </tbody>
                   </table>
                 </div>
               </CardContent>
             </Card>
-          </div>
+          </motion.div>
         </main>
 
         <SiteFooter />

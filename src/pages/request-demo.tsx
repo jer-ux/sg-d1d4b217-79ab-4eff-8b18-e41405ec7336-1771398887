@@ -1,9 +1,30 @@
 import Link from "next/link";
-import { useMemo, useState } from "react";
+import { useMemo, useActionState } from "react";
+
+// Server action for demo request submission
+async function submitDemoRequest(prevState: any, formData: FormData) {
+  "use server";
+  
+  // Simulate API call delay
+  await new Promise((resolve) => setTimeout(resolve, 450));
+  
+  // Extract form data
+  const name = formData.get("name");
+  const email = formData.get("email");
+  const company = formData.get("company");
+  const message = formData.get("message");
+
+  // In production, this would send to your backend API
+  console.log("Demo request:", { name, email, company, message });
+
+  return { 
+    success: true, 
+    message: "Submitted ✅ We'll reply with scheduling options." 
+  };
+}
 
 export default function RequestDemo() {
-  const [sending, setSending] = useState(false);
-  const [sent, setSent] = useState(false);
+  const [state, formAction, isPending] = useActionState(submitDemoRequest, null);
 
   const defaultMsg = useMemo(
     () =>
@@ -27,55 +48,48 @@ export default function RequestDemo() {
 
         <div className="mt-10 grid grid-cols-1 gap-4 lg:grid-cols-5">
           <div className="lg:col-span-3 rounded-3xl border border-white/10 bg-white/5 p-6">
-            <form
-              onSubmit={async (e) => {
-                e.preventDefault();
-                setSending(true);
-                setSent(false);
-
-                // For demo: no backend email send. Just simulate + show success.
-                await new Promise((r) => setTimeout(r, 450));
-                setSent(true);
-                setSending(false);
-              }}
-              className="space-y-4"
-            >
+            <form action={formAction} className="space-y-4">
               <div className="grid grid-cols-1 gap-3 md:grid-cols-2">
                 <input
                   required
+                  name="name"
                   placeholder="Full name"
                   className="w-full rounded-2xl border border-white/10 bg-black/40 px-4 py-3 text-sm text-white/90 placeholder:text-white/40 outline-none focus:border-white/25"
                 />
                 <input
                   required
                   type="email"
+                  name="email"
                   placeholder="Work email"
                   className="w-full rounded-2xl border border-white/10 bg-black/40 px-4 py-3 text-sm text-white/90 placeholder:text-white/40 outline-none focus:border-white/25"
                 />
                 <input
+                  name="company"
                   placeholder="Company"
                   className="w-full rounded-2xl border border-white/10 bg-black/40 px-4 py-3 text-sm text-white/90 placeholder:text-white/40 outline-none focus:border-white/25 md:col-span-2"
                 />
               </div>
 
               <textarea
+                name="message"
                 defaultValue={defaultMsg}
                 rows={8}
                 className="w-full rounded-2xl border border-white/10 bg-black/40 px-4 py-3 text-sm text-white/90 placeholder:text-white/40 outline-none focus:border-white/25"
               />
 
               <button
-                disabled={sending}
+                type="submit"
+                disabled={isPending}
                 className="w-full rounded-2xl border border-white/10 bg-white/10 px-5 py-3 text-sm text-white hover:bg-white/15 disabled:opacity-60"
               >
-                {sending ? "Sending…" : "Request demo →"}
+                {isPending ? "Sending…" : "Request demo →"}
               </button>
 
-              {sent ? (
+              {state?.success && (
                 <div className="rounded-2xl border border-emerald-400/20 bg-emerald-400/10 px-4 py-3 text-sm text-emerald-100">
-                  Submitted ✅ We'll reply with scheduling options.
+                  {state.message}
                 </div>
-              ) : null}
+              )}
             </form>
           </div>
 

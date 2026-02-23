@@ -792,11 +792,24 @@ export default function VerifiedSavingsLedger() {
         
         <main className="relative pt-24 pb-16">
           {/* Hero Section */}
-          <div className="max-w-7xl mx-auto px-6 mb-12">
+          <div className="max-w-7xl mx-auto px-6 mb-12 relative">
+            {/* Ledger Slide Background */}
+            <div className="absolute inset-0 -top-32 -bottom-32 -left-32 -right-32 z-0 opacity-10">
+              <div 
+                className="w-full h-full bg-contain bg-center bg-no-repeat"
+                style={{
+                  backgroundImage: 'url(/slide07_ledger.png)',
+                  filter: 'blur(2px)',
+                }}
+              />
+              <div className="absolute inset-0 bg-gradient-to-b from-purple-950/80 via-transparent to-purple-950/80" />
+            </div>
+
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6 }}
+              className="relative z-10"
             >
               <div className="flex items-center gap-3 mb-4">
                 <motion.div

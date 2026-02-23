@@ -179,15 +179,14 @@ export default function HomePage() {
       <main className="relative min-h-screen bg-black text-zinc-100 overflow-hidden">
         <PremiumBackground />
         
-        {/* Gradient overlay for purple theme */}
-        <div className="fixed inset-0 -z-10 bg-gradient-to-br from-purple-950/30 via-black to-blue-950/20" />
-        <div className="fixed inset-0 -z-10 bg-[radial-gradient(circle_at_50%_50%,rgba(168,85,247,0.1)_0%,transparent_50%)]" />
+        {/* Simplified gradient overlay for purple theme */}
+        <div className="fixed inset-0 bg-gradient-to-br from-purple-950/20 via-black to-blue-950/10 pointer-events-none" style={{ zIndex: 0 }} />
         
         {/* Hero Section with 3D */}
         <motion.section
           ref={heroRef}
           style={{ opacity: heroOpacity, scale: heroScale }}
-          className="relative mx-auto w-full max-w-7xl px-6 pb-20 pt-32"
+          className="relative z-10 mx-auto w-full max-w-7xl px-6 pb-20 pt-32"
         >
           <div className="grid gap-16 lg:grid-cols-2 lg:items-center">
             <motion.div
@@ -360,7 +359,7 @@ export default function HomePage() {
         </motion.section>
 
         {/* Verification Section */}
-        <section id="proof" className="relative mx-auto w-full max-w-7xl px-6 py-20">
+        <section id="proof" className="relative z-10 mx-auto w-full max-w-7xl px-6 py-20">
           <motion.div
             className="mb-12"
             initial={{ opacity: 0, y: 20 }}
@@ -411,7 +410,7 @@ export default function HomePage() {
         </section>
 
         {/* EBITDA Governance Section */}
-        <section id="ebitda" className="relative mx-auto w-full max-w-7xl px-6 py-20">
+        <section id="ebitda" className="relative z-10 mx-auto w-full max-w-7xl px-6 py-20">
           <div className="grid gap-12 lg:grid-cols-2 lg:items-start">
             <motion.div
               initial={{ opacity: 0, x: -30 }}
@@ -507,7 +506,7 @@ export default function HomePage() {
         </section>
 
         {/* Executive War Room Dashboard */}
-        <section id="dashboard" className="relative mx-auto w-full max-w-7xl px-6 py-20">
+        <section id="dashboard" className="relative z-10 mx-auto w-full max-w-7xl px-6 py-20">
           <motion.div
             className="mb-12"
             initial={{ opacity: 0, y: 20 }}
@@ -593,7 +592,7 @@ export default function HomePage() {
         </section>
 
         {/* Enterprise Trust Section */}
-        <section id="trust" className="relative mx-auto w-full max-w-7xl px-6 py-20">
+        <section id="trust" className="relative z-10 mx-auto w-full max-w-7xl px-6 py-20">
           <motion.div
             className="mb-12"
             initial={{ opacity: 0, y: 20 }}
@@ -672,7 +671,7 @@ export default function HomePage() {
 
         {/* Footer */}
         <motion.footer
-          className="relative mx-auto w-full max-w-7xl px-6 py-12"
+          className="relative z-10 mx-auto w-full max-w-7xl px-6 py-12"
           initial={{ opacity: 0 }}
           whileInView={{ opacity: 1 }}
           viewport={{ once: true }}

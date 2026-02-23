@@ -10,9 +10,15 @@ import {
   Download, 
   ExternalLink,
   CheckCircle2,
-  AlertTriangle
+  AlertTriangle,
+  Sparkles,
+  Search,
+  Filter
 } from "lucide-react";
 import { CreateReceiptModal } from "@/components/ledger/CreateReceiptModal";
+import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
+
+const PremiumBackground = dynamic(() => import("@/components/premium/PremiumBackground").then(mod => ({ default: mod.PremiumBackground })), { ssr: false });
 
 type VerificationStatus = "VERIFIED" | "PARTIAL" | "BLOCKED";
 
@@ -254,9 +260,9 @@ export default function EvidenceReceiptsPage() {
 
         <div className="relative mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8">
           {/* Header with Vegas Luxury Styling */}
-          <div className="mb-8 flex items-start justify-between backdrop-blur-xl bg-gradient-to-br from-purple-500/10 via-black/40 to-black/40 rounded-3xl border border-purple-500/20 p-8 shadow-2xl shadow-purple-500/10 hover:shadow-purple-500/20 transition-all duration-500 group">
+          <div className="mb-8 flex flex-col md:flex-row items-start justify-between backdrop-blur-xl bg-gradient-to-br from-purple-900/40 via-black/40 to-black/40 rounded-3xl border border-purple-500/20 p-8 shadow-2xl shadow-purple-500/10 hover:shadow-purple-500/20 transition-all duration-500 group">
             <div className="absolute inset-0 bg-gradient-to-r from-purple-500/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 rounded-3xl" />
-            <div className="relative z-10">
+            <div className="relative z-10 mb-6 md:mb-0">
               <h1 className="text-5xl font-bold tracking-tight bg-gradient-to-r from-white via-purple-200 to-purple-400 bg-clip-text text-transparent drop-shadow-[0_0_30px_rgba(168,85,247,0.3)]">
                 Evidence Receipts
               </h1>
@@ -276,7 +282,7 @@ export default function EvidenceReceiptsPage() {
 
           {/* Board-Level Value Proposition Section */}
           {showExplanation && (
-            <div className="mb-8 rounded-3xl border border-purple-500/20 bg-gradient-to-br from-purple-500/10 via-black/40 to-black/40 backdrop-blur-xl shadow-2xl shadow-purple-500/10 overflow-hidden hover:shadow-purple-500/20 transition-all duration-500 group">
+            <div className="mb-8 rounded-3xl border border-purple-500/20 bg-gradient-to-br from-purple-900/30 via-black/40 to-black/40 backdrop-blur-xl shadow-2xl shadow-purple-500/10 overflow-hidden hover:shadow-purple-500/20 transition-all duration-500 group">
               <div className="absolute inset-0 bg-gradient-to-r from-purple-500/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
               <div className="relative p-8">
                 <button
@@ -293,9 +299,9 @@ export default function EvidenceReceiptsPage() {
                     <span className="text-sm font-semibold text-purple-200">Board & Investment Grade Evidence</span>
                   </div>
                   <h2 className="text-3xl font-bold mb-4 bg-gradient-to-r from-white via-purple-200 to-purple-400 bg-clip-text text-transparent drop-shadow-[0_0_20px_rgba(168,85,247,0.3)]">
-                    Why Evidence Lineage is Mission-Critical for Boards & Investment Groups
+                    Why Evidence Lineage is Mission-Critical
                   </h2>
-                  <p className="text-lg text-purple-200/70 leading-relaxed">
+                  <p className="text-lg text-purple-200/70 leading-relaxed max-w-4xl">
                     In an era of AI-driven decision making and billion-dollar health benefits portfolios, <span className="font-semibold text-purple-100">verifiable data lineage</span> is the difference between defensible business intelligence and regulatory liability.
                   </p>
                 </div>
@@ -312,7 +318,7 @@ export default function EvidenceReceiptsPage() {
                       <h3 className="text-lg font-bold text-emerald-200">Fiduciary Protection</h3>
                     </div>
                     <p className="text-sm text-white/70 leading-relaxed">
-                      Board members and plan fiduciaries face <span className="font-semibold text-white">personal liability</span> under ERISA. Evidence receipts provide a complete audit trail proving due diligence in vendor selection, cost negotiations, and benefit design decisions.
+                      Board members and plan fiduciaries face <span className="font-semibold text-white">personal liability</span> under ERISA. Evidence receipts provide a complete audit trail proving due diligence in vendor selection and benefit decisions.
                     </p>
                   </div>
 
@@ -326,228 +332,22 @@ export default function EvidenceReceiptsPage() {
                       <h3 className="text-lg font-bold text-blue-200">Investment DD Excellence</h3>
                     </div>
                     <p className="text-sm text-white/70 leading-relaxed">
-                      Private equity and venture capital groups demand <span className="font-semibold text-white">forensic-grade data quality</span> during acquisitions. Our evidence receipts provide blockchain-backed proof of savings calculations that withstand actuarial scrutiny.
+                      Private equity and venture capital groups demand <span className="font-semibold text-white">forensic-grade data quality</span> during acquisitions. Receipts provide blockchain-backed proof of savings calculations.
                     </p>
                   </div>
 
                   {/* Regulatory Compliance */}
-                  <div className="rounded-2xl border border-amber-500/20 bg-gradient-to-br from-amber-500/10 to-transparent p-6 backdrop-blur-sm hover:scale-105 transition-all duration-500 hover:shadow-lg hover:shadow-amber-500/20 group/card">
-                    <div className="absolute inset-0 bg-gradient-to-r from-amber-400/0 via-amber-400/10 to-amber-400/0 translate-x-[-100%] group-hover/card:translate-x-[100%] transition-transform duration-1000 rounded-2xl" />
+                  <div className="rounded-2xl border border-purple-500/20 bg-gradient-to-br from-purple-500/10 to-transparent p-6 backdrop-blur-sm hover:scale-105 transition-all duration-500 hover:shadow-lg hover:shadow-purple-500/20 group/card">
+                    <div className="absolute inset-0 bg-gradient-to-r from-purple-400/0 via-purple-400/10 to-purple-400/0 translate-x-[-100%] group-hover/card:translate-x-[100%] transition-transform duration-1000 rounded-2xl" />
                     <div className="flex items-center gap-3 mb-4">
-                      <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-amber-500/20">
-                        <CheckCircle2 className="h-5 w-5 text-amber-300 drop-shadow-[0_0_8px_rgba(251,191,36,0.6)]" />
+                      <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-purple-500/20">
+                        <CheckCircle2 className="h-5 w-5 text-purple-300 drop-shadow-[0_0_8px_rgba(168,85,247,0.6)]" />
                       </div>
-                      <h3 className="text-lg font-bold text-amber-200">Multi-Framework Compliance</h3>
+                      <h3 className="text-lg font-bold text-purple-200">Multi-Framework Compliance</h3>
                     </div>
                     <p className="text-sm text-white/70 leading-relaxed">
-                      Simultaneous compliance with <span className="font-semibold text-white">SOX 404, HIPAA Security Rule, SOC 2 Type II, GDPR Article 5, and NIST 800-53</span> through automated evidence collection and immutable audit trails.
+                      Simultaneous compliance with <span className="font-semibold text-white">SOX 404, HIPAA Security Rule, SOC 2 Type II, GDPR, and NIST 800-53</span> through automated evidence collection and immutable audit trails.
                     </p>
-                  </div>
-                </div>
-
-                {/* Deep Dive Sections */}
-                <div className="space-y-6">
-                  {/* The AI Consultant Problem */}
-                  <div className="rounded-2xl border border-red-500/20 bg-gradient-to-br from-red-500/5 to-transparent p-6 backdrop-blur-sm hover:border-red-500/30 transition-all duration-500">
-                    <h3 className="text-xl font-bold mb-4 flex items-center gap-2">
-                      <AlertTriangle className="h-5 w-5 text-red-400 drop-shadow-[0_0_8px_rgba(239,68,68,0.6)]" />
-                      <span className="text-red-200">The "Black Box AI" Problem in Traditional Consulting</span>
-                    </h3>
-                    <div className="space-y-4 text-sm text-white/70 leading-relaxed">
-                      <p>
-                        <span className="font-semibold text-white">Traditional health benefits consultants and AI vendors</span> present savings projections and optimization recommendations without transparent data provenance. When boards ask "How do you know this is accurate?", the answer is often:
-                      </p>
-                      <ul className="space-y-2 ml-6">
-                        <li className="flex items-start gap-2">
-                          <XCircle className="h-4 w-4 text-red-400 mt-0.5 flex-shrink-0" />
-                          <span><span className="font-semibold text-red-300">"Trust our proprietary algorithm"</span> - No visibility into calculation methodology</span>
-                        </li>
-                        <li className="flex items-start gap-2">
-                          <XCircle className="h-4 w-4 text-red-400 mt-0.5 flex-shrink-0" />
-                          <span><span className="font-semibold text-red-300">"Based on industry benchmarks"</span> - No proof of data quality or source verification</span>
-                        </li>
-                        <li className="flex items-start gap-2">
-                          <XCircle className="h-4 w-4 text-red-400 mt-0.5 flex-shrink-0" />
-                          <span><span className="font-semibold text-red-300">"Our AI model predicts..."</span> - No audit trail showing which data points influenced the prediction</span>
-                        </li>
-                        <li className="flex items-start gap-2">
-                          <XCircle className="h-4 w-4 text-red-400 mt-0.5 flex-shrink-0" />
-                          <span><span className="font-semibold text-red-300">"Excel-based analysis"</span> - Manual processes with no version control or change tracking</span>
-                        </li>
-                      </ul>
-                      <p className="pt-4 font-semibold text-amber-300 border-t border-red-500/20">
-                        ⚠️ When regulators, auditors, or plaintiff attorneys investigate, these "black box" recommendations become <span className="text-red-300">indefensible liabilities</span>.
-                      </p>
-                    </div>
-                  </div>
-
-                  {/* Kincaid iQ Differentiation */}
-                  <div className="rounded-2xl border border-emerald-500/30 bg-gradient-to-br from-emerald-500/10 to-transparent p-6 backdrop-blur-sm hover:border-emerald-500/40 transition-all duration-500">
-                    <h3 className="text-xl font-bold mb-4 flex items-center gap-2">
-                      <CheckCircle2 className="h-5 w-5 text-emerald-400 drop-shadow-[0_0_8px_rgba(16,185,129,0.6)]" />
-                      <span className="text-emerald-200">How Kincaid iQ Evidence Receipts Change the Game</span>
-                    </h3>
-                    <div className="space-y-4 text-sm text-white/70 leading-relaxed">
-                      <p className="text-base text-emerald-200 font-semibold">
-                        Every metric, KPI, and business recommendation comes with a cryptographically-signed evidence receipt that proves:
-                      </p>
-                      <div className="grid md:grid-cols-2 gap-4">
-                        <div className="space-y-3">
-                          <div className="flex items-start gap-3">
-                            <div className="flex h-6 w-6 items-center justify-center rounded-lg bg-emerald-500/20 text-xs font-bold text-emerald-300 flex-shrink-0">1</div>
-                            <div>
-                              <div className="font-semibold text-white mb-1">Complete Data Lineage</div>
-                              <div className="text-xs">Every source file (834 eligibility, 837 claims, PBM data) with SHA-256 checksums, load timestamps, and row counts. <span className="text-emerald-300">Zero ambiguity on data origin.</span></div>
-                            </div>
-                          </div>
-                          <div className="flex items-start gap-3">
-                            <div className="flex h-6 w-6 items-center justify-center rounded-lg bg-emerald-500/20 text-xs font-bold text-emerald-300 flex-shrink-0">2</div>
-                            <div>
-                              <div className="font-semibold text-white mb-1">Transform Pipeline Visibility</div>
-                              <div className="text-xs">Each SQL transformation versioned with Git commit hash, Snowflake query ID, warehouse used, and execution timestamp. <span className="text-emerald-300">Full code reproducibility.</span></div>
-                            </div>
-                          </div>
-                          <div className="flex items-start gap-3">
-                            <div className="flex h-6 w-6 items-center justify-center rounded-lg bg-emerald-500/20 text-xs font-bold text-emerald-300 flex-shrink-0">3</div>
-                            <div>
-                              <div className="font-semibold text-white mb-1">Automated Data Quality Gates</div>
-                              <div className="text-xs">Pre-configured DQ suites (null checks, duplicate detection, referential integrity) that must pass before a receipt is issued. <span className="text-emerald-300">No manual overrides allowed.</span></div>
-                            </div>
-                          </div>
-                        </div>
-                        <div className="space-y-3">
-                          <div className="flex items-start gap-3">
-                            <div className="flex h-6 w-6 items-center justify-center rounded-lg bg-emerald-500/20 text-xs font-bold text-emerald-300 flex-shrink-0">4</div>
-                            <div>
-                              <div className="font-semibold text-white mb-1">Financial Reconciliation Proofs</div>
-                              <div className="text-xs">Paid claims totals cross-checked against bank wires, PBM invoices validated against detail files. <span className="text-emerald-300">Variance detection with documented explanations.</span></div>
-                            </div>
-                          </div>
-                          <div className="flex items-start gap-3">
-                            <div className="flex h-6 w-6 items-center justify-center rounded-lg bg-emerald-500/20 text-xs font-bold text-emerald-300 flex-shrink-0">5</div>
-                            <div>
-                              <div className="font-semibold text-white mb-1">Human-in-the-Loop Attestation</div>
-                              <div className="text-xs"><span className="font-semibold text-emerald-300">Benefits Finance Lead</span> and <span className="font-semibold text-emerald-300">CFO</span> digital signatures certifying they've reviewed the evidence and approve for executive reporting. <span className="text-emerald-300">Accountability trails.</span></div>
-                            </div>
-                          </div>
-                          <div className="flex items-start gap-3">
-                            <div className="flex h-6 w-6 items-center justify-center rounded-lg bg-emerald-500/20 text-xs font-bold text-emerald-300 flex-shrink-0">6</div>
-                            <div>
-                              <div className="font-semibold text-white mb-1">Immutable Audit Log</div>
-                              <div className="text-xs">Every action (DQ run, reconciliation check, approval) recorded with actor, timestamp, and optional notes. <span className="text-emerald-300">Tamper-proof chain of custody.</span></div>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-
-                  {/* MITRE ATT&CK Framework */}
-                  <div className="rounded-2xl border border-blue-500/30 bg-gradient-to-br from-blue-500/10 to-transparent p-6 backdrop-blur-sm hover:border-blue-500/40 transition-all duration-500">
-                    <h3 className="text-xl font-bold mb-4 flex items-center gap-2">
-                      <Shield className="h-5 w-5 text-blue-400 drop-shadow-[0_0_8px_rgba(59,130,246,0.6)]" />
-                      <span className="text-blue-200">MITRE ATT&CK Framework: Evidence Receipts as Defense-in-Depth</span>
-                    </h3>
-                    <div className="space-y-4 text-sm text-white/70 leading-relaxed">
-                      <p>
-                        The <span className="font-semibold text-white">MITRE ATT&CK framework</span> documents adversary tactics for enterprise environments. Evidence receipts provide defense against multiple attack vectors:
-                      </p>
-                      <div className="space-y-3">
-                        <div className="rounded-lg border border-blue-500/20 bg-blue-500/5 p-4">
-                          <div className="font-mono text-xs text-blue-300 mb-2">ATT&CK Tactic: TA0040 - Impact → T1565.001 - Data Manipulation</div>
-                          <div className="font-semibold text-white mb-2">Threat: Insider modifies claims data to hide fraud or inflate performance metrics</div>
-                          <div className="text-xs"><span className="font-semibold text-emerald-300">Defense:</span> SHA-256 checksums on source files detect any modification. Transform code versioning prevents unauthorized logic changes. Immutable audit log records every data access.</div>
-                        </div>
-                        <div className="rounded-lg border border-blue-500/20 bg-blue-500/5 p-4">
-                          <div className="font-mono text-xs text-blue-300 mb-2">ATT&CK Tactic: TA0009 - Collection → T1530 - Data from Cloud Storage</div>
-                          <div className="font-semibold text-white mb-2">Threat: Unauthorized access to sensitive PHI/PII in data lake</div>
-                          <div className="text-xs"><span className="font-semibold text-emerald-300">Defense:</span> Evidence receipts track which service accounts accessed which files, when, and for what purpose. Snowflake query IDs provide forensic trail for regulatory investigations.</div>
-                        </div>
-                        <div className="rounded-lg border border-blue-500/20 bg-blue-500/5 p-4">
-                          <div className="font-mono text-xs text-blue-300 mb-2">ATT&CK Tactic: TA0005 - Defense Evasion → T1562.001 - Disable Security Tools</div>
-                          <div className="font-semibold text-white mb-2">Threat: Attacker disables data quality checks to allow bad data into reporting</div>
-                          <div className="text-xs"><span className="font-semibold text-emerald-300">Defense:</span> DQ suite execution is mandatory - receipts cannot be issued without passing all quality gates. Any attempt to bypass logged and alerted.</div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-
-                  {/* Compliance Frameworks */}
-                  <div className="rounded-2xl border border-amber-500/30 bg-gradient-to-br from-amber-500/10 to-transparent p-6 backdrop-blur-sm hover:border-amber-500/40 transition-all duration-500">
-                    <h3 className="text-xl font-bold mb-4 flex items-center gap-2">
-                      <FileCheck className="h-5 w-5 text-amber-400 drop-shadow-[0_0_8px_rgba(251,191,36,0.6)]" />
-                      <span className="text-amber-200">Multi-Framework Compliance: One System, Five Certifications</span>
-                    </h3>
-                    <div className="space-y-4 text-sm text-white/70 leading-relaxed">
-                      <div className="grid md:grid-cols-2 gap-4">
-                        <div className="space-y-3">
-                          <div className="rounded-lg border border-amber-500/20 bg-amber-500/5 p-3">
-                            <div className="font-mono text-xs text-amber-300 mb-2">SOX 404 - Internal Controls</div>
-                            <div className="text-xs">Evidence receipts satisfy <span className="font-semibold text-white">management assertion requirements</span> by proving accuracy of financial reporting. Automated controls reduce risk of material weakness findings.</div>
-                          </div>
-                          <div className="rounded-lg border border-amber-500/20 bg-amber-500/5 p-3">
-                            <div className="font-mono text-xs text-amber-300 mb-2">HIPAA Security Rule § 164.312(b)</div>
-                            <div className="text-xs"><span className="font-semibold text-white">Audit controls</span> requirement satisfied through comprehensive logging of ePHI access, modifications, and disclosures. Receipts provide evidence for OCR investigations.</div>
-                          </div>
-                          <div className="rounded-lg border border-amber-500/20 bg-amber-500/5 p-3">
-                            <div className="font-mono text-xs text-amber-300 mb-2">SOC 2 Type II - CC6.1, CC7.2</div>
-                            <div className="text-xs">Evidence receipts demonstrate <span className="font-semibold text-white">logical access controls</span> and <span className="font-semibold text-white">system operations monitoring</span> over 12+ month period. Auditor testing simplified.</div>
-                          </div>
-                        </div>
-                        <div className="space-y-3">
-                          <div className="rounded-lg border border-amber-500/20 bg-amber-500/5 p-3">
-                            <div className="font-mono text-xs text-amber-300 mb-2">GDPR Article 5(1)(a) - Lawfulness, Fairness, Transparency</div>
-                            <div className="text-xs">Data lineage provides <span className="font-semibold text-white">transparency obligation</span> evidence. Data subjects can see exactly how their health data was processed in benefit calculations.</div>
-                          </div>
-                          <div className="rounded-lg border border-amber-500/20 bg-amber-500/5 p-3">
-                            <div className="font-mono text-xs text-amber-300 mb-2">GDPR Article 32 - Security of Processing</div>
-                            <div className="text-xs"><span className="font-semibold text-white">Ability to ensure ongoing integrity</span> of processing systems demonstrated through checksums, version control, and quality gates.</div>
-                          </div>
-                          <div className="rounded-lg border border-amber-500/20 bg-amber-500/5 p-3">
-                            <div className="font-mono text-xs text-amber-300 mb-2">NIST 800-53 - AU-2, AU-3, AU-6</div>
-                            <div className="text-xs">Federal contractors achieve <span className="font-semibold text-white">audit event logging, content of audit records, and audit review</span> controls through evidence receipt system.</div>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-
-                  {/* Board Presentation Points */}
-                  <div className="rounded-2xl border border-amber-500/30 bg-gradient-to-br from-amber-500/10 to-transparent p-6 backdrop-blur-sm hover:border-amber-500/40 transition-all duration-500">
-                    <h3 className="text-xl font-bold mb-4 flex items-center gap-2">
-                      <FileCheck className="h-5 w-5 text-amber-400 drop-shadow-[0_0_8px_rgba(251,191,36,0.6)]" />
-                      <span className="text-amber-200">What to Tell Your Board & Investment Committee</span>
-                    </h3>
-                    <div className="space-y-3 text-sm text-white/70 leading-relaxed">
-                      <p className="text-white font-semibold">
-                        "We have moved from faith-based benefits consulting to evidence-based healthcare cost management."
-                      </p>
-                      <ul className="space-y-2 ml-6">
-                        <li className="flex items-start gap-2">
-                          <CheckCircle2 className="h-4 w-4 text-emerald-400 mt-0.5 flex-shrink-0" />
-                          <span><span className="font-semibold text-white">Every dollar of reported savings</span> is backed by an evidence receipt with complete data lineage from source systems to final calculation.</span>
-                        </li>
-                        <li className="flex items-start gap-2">
-                          <CheckCircle2 className="h-4 w-4 text-emerald-400 mt-0.5 flex-shrink-0" />
-                          <span><span className="font-semibold text-white">Regulatory audit risk reduced by 85%</span> through automated compliance documentation and immutable audit trails.</span>
-                        </li>
-                        <li className="flex items-start gap-2">
-                          <CheckCircle2 className="h-4 w-4 text-emerald-400 mt-0.5 flex-shrink-0" />
-                          <span><span className="font-semibold text-white">M&A due diligence accelerated</span> - prospective buyers can validate benefits costs and projected synergies in days, not months.</span>
-                        </li>
-                        <li className="flex items-start gap-2">
-                          <CheckCircle2 className="h-4 w-4 text-emerald-400 mt-0.5 flex-shrink-0" />
-                          <span><span className="font-semibold text-white">Fiduciary protection enhanced</span> - board decisions are defensible in litigation because evidence receipts prove prudent process.</span>
-                        </li>
-                        <li className="flex items-start gap-2">
-                          <CheckCircle2 className="h-4 w-4 text-emerald-400 mt-0.5 flex-shrink-0" />
-                          <span><span className="font-semibold text-white">Vendor accountability increased</span> - consultants and TPAs know their performance claims will be forensically verified.</span>
-                        </li>
-                      </ul>
-                      <p className="pt-4 text-emerald-300 font-semibold border-t border-amber-500/20">
-                        ✅ This is not incremental improvement. This is a paradigm shift in how healthcare costs are managed, audited, and reported to stakeholders.
-                      </p>
-                    </div>
                   </div>
                 </div>
               </div>
@@ -556,10 +356,11 @@ export default function EvidenceReceiptsPage() {
 
           {/* Receipt Selector with Vegas Luxury Styling */}
           <div className="mb-6">
-            <div className="rounded-3xl border border-purple-500/20 bg-gradient-to-br from-purple-500/10 via-black/40 to-black/40 backdrop-blur-xl p-8 shadow-2xl shadow-purple-500/10 hover:shadow-purple-500/20 transition-all duration-500 group">
+            <div className="rounded-3xl border border-purple-500/20 bg-gradient-to-br from-purple-900/30 via-black/40 to-black/40 backdrop-blur-xl p-8 shadow-2xl shadow-purple-500/10 hover:shadow-purple-500/20 transition-all duration-500 group">
               <div className="absolute inset-0 bg-gradient-to-r from-purple-500/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 rounded-3xl" />
               <div className="relative z-10">
-                <div className="mb-4 text-sm font-semibold uppercase tracking-wider text-purple-300/70">
+                <div className="mb-4 text-sm font-semibold uppercase tracking-wider text-purple-300/70 flex items-center gap-2">
+                  <Search className="h-4 w-4" />
                   Available Receipts ({receipts.length})
                 </div>
                 <div className="flex flex-wrap gap-4">
@@ -583,13 +384,13 @@ export default function EvidenceReceiptsPage() {
                         <div className="absolute inset-0 bg-gradient-to-r from-purple-400/0 via-purple-400/20 to-purple-400/0 translate-x-[-100%] group-hover/receipt:translate-x-[100%] transition-transform duration-1000" />
                         <div className="relative z-10 w-full">
                           <div className="flex items-center gap-2 mb-2">
-                            <span className="text-xs font-mono text-purple-300">{r.receiptId}</span>
-                            <span className={classNames("flex items-center gap-1 rounded-full px-2 py-1 text-xs font-semibold backdrop-blur-xl", rCfg.bg, rCfg.text)}>
+                            <span className="text-xs font-mono text-purple-300">{r.receiptId.split('-').pop()}</span>
+                            <span className={classNames("flex items-center gap-1 rounded-full px-2 py-0.5 text-xs font-semibold backdrop-blur-xl", rCfg.bg, rCfg.text)}>
                               {rCfg.icon}
                               {rCfg.label}
                             </span>
                           </div>
-                          <div className="text-sm font-semibold text-white">{r.subjectId}</div>
+                          <div className="text-sm font-semibold text-white truncate max-w-[200px]">{r.subjectId}</div>
                           <div className="text-xs text-white/50 mt-1">
                             {r.periodStart} → {r.periodEnd}
                           </div>
@@ -603,63 +404,63 @@ export default function EvidenceReceiptsPage() {
           </div>
 
           {/* Receipt Header with Vegas Luxury Design */}
-          <div className="mb-6 rounded-3xl border border-purple-500/20 bg-gradient-to-br from-purple-500/10 via-black/40 to-black/40 backdrop-blur-xl p-8 shadow-2xl shadow-purple-500/10 hover:shadow-purple-500/20 transition-all duration-500 group">
+          <div className="mb-6 rounded-3xl border border-purple-500/20 bg-gradient-to-br from-purple-900/30 via-black/40 to-black/40 backdrop-blur-xl p-8 shadow-2xl shadow-purple-500/10 hover:shadow-purple-500/20 transition-all duration-500 group">
             <div className="absolute inset-0 bg-gradient-to-r from-purple-500/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 rounded-3xl" />
             <div className="relative z-10">
-              <div className="mb-6 flex items-start justify-between">
+              <div className="mb-6 flex flex-col md:flex-row items-start justify-between gap-4">
                 <div>
-                  <div className="mb-3 flex items-center gap-3">
-                    <h2 className="text-3xl font-bold tracking-tight text-white">{selected.receiptId}</h2>
+                  <div className="mb-3 flex flex-wrap items-center gap-3">
+                    <h2 className="text-2xl md:text-3xl font-bold tracking-tight text-white">{selected.receiptId}</h2>
                     <span className={classNames("flex items-center gap-1 rounded-full px-4 py-1.5 text-xs font-semibold backdrop-blur-xl", cfg.bg, cfg.text)}>
                       {cfg.icon}
                       {cfg.label}
                     </span>
                   </div>
-                  <div className="text-sm text-amber-200/60">
+                  <div className="text-sm text-purple-200/60">
                     {selected.subjectType} → {selected.subjectId}
                   </div>
                 </div>
                 <button
                   onClick={downloadJSON}
-                  className="relative flex items-center gap-2 rounded-2xl border border-amber-500/30 bg-gradient-to-r from-amber-500/10 to-transparent backdrop-blur-xl px-5 py-2.5 text-sm font-semibold hover:from-amber-500/20 transition-all duration-500 hover:scale-105 hover:shadow-lg hover:shadow-amber-500/30 group/btn overflow-hidden"
+                  className="relative flex items-center gap-2 rounded-2xl border border-purple-500/30 bg-gradient-to-r from-purple-500/10 to-transparent backdrop-blur-xl px-5 py-2.5 text-sm font-semibold hover:from-purple-500/20 transition-all duration-500 hover:scale-105 hover:shadow-lg hover:shadow-purple-500/30 group/btn overflow-hidden"
                 >
-                  <div className="absolute inset-0 bg-gradient-to-r from-amber-400/0 via-amber-400/20 to-amber-400/0 translate-x-[-100%] group-hover/btn:translate-x-[100%] transition-transform duration-1000" />
-                  <Download className="h-4 w-4 relative z-10 drop-shadow-[0_0_8px_rgba(251,191,36,0.6)]" />
+                  <div className="absolute inset-0 bg-gradient-to-r from-purple-400/0 via-purple-400/20 to-purple-400/0 translate-x-[-100%] group-hover/btn:translate-x-[100%] transition-transform duration-1000" />
+                  <Download className="h-4 w-4 relative z-10 drop-shadow-[0_0_8px_rgba(168,85,247,0.6)]" />
                   <span className="relative z-10">Export JSON</span>
                 </button>
               </div>
               <div className="grid grid-cols-2 gap-6 text-sm md:grid-cols-4">
-                <div className="backdrop-blur-xl bg-gradient-to-br from-amber-500/10 to-transparent rounded-2xl p-4 border border-amber-500/20 hover:border-amber-500/30 hover:scale-105 transition-all duration-500 group/card">
-                  <div className="absolute inset-0 bg-gradient-to-r from-amber-400/0 via-amber-400/10 to-amber-400/0 translate-x-[-100%] group-hover/card:translate-x-[100%] transition-transform duration-1000 rounded-2xl" />
-                  <div className="mb-2 text-xs uppercase tracking-wide text-amber-300/50 relative z-10">Period</div>
-                  <div className="font-mono text-amber-100 font-semibold relative z-10">
-                    {selected.periodStart} → {selected.periodEnd}
+                <div className="backdrop-blur-xl bg-gradient-to-br from-purple-500/10 to-transparent rounded-2xl p-4 border border-purple-500/20 hover:border-purple-500/30 hover:scale-105 transition-all duration-500 group/card">
+                  <div className="absolute inset-0 bg-gradient-to-r from-purple-400/0 via-purple-400/10 to-purple-400/0 translate-x-[-100%] group-hover/card:translate-x-[100%] transition-transform duration-1000 rounded-2xl" />
+                  <div className="mb-2 text-xs uppercase tracking-wide text-purple-300/50 relative z-10">Period</div>
+                  <div className="font-mono text-purple-100 font-semibold relative z-10">
+                    {selected.periodStart} <br/> {selected.periodEnd}
                   </div>
                 </div>
-                <div className="backdrop-blur-xl bg-gradient-to-br from-amber-500/10 to-transparent rounded-2xl p-4 border border-amber-500/20 hover:border-amber-500/30 hover:scale-105 transition-all duration-500 group/card">
-                  <div className="absolute inset-0 bg-gradient-to-r from-amber-400/0 via-amber-400/10 to-amber-400/0 translate-x-[-100%] group-hover/card:translate-x-[100%] transition-transform duration-1000 rounded-2xl" />
-                  <div className="mb-2 text-xs uppercase tracking-wide text-amber-300/50 relative z-10">Grain</div>
-                  <div className="font-mono text-amber-100 font-semibold relative z-10">{selected.grain}</div>
+                <div className="backdrop-blur-xl bg-gradient-to-br from-purple-500/10 to-transparent rounded-2xl p-4 border border-purple-500/20 hover:border-purple-500/30 hover:scale-105 transition-all duration-500 group/card">
+                  <div className="absolute inset-0 bg-gradient-to-r from-purple-400/0 via-purple-400/10 to-purple-400/0 translate-x-[-100%] group-hover/card:translate-x-[100%] transition-transform duration-1000 rounded-2xl" />
+                  <div className="mb-2 text-xs uppercase tracking-wide text-purple-300/50 relative z-10">Grain</div>
+                  <div className="font-mono text-purple-100 font-semibold relative z-10">{selected.grain}</div>
                 </div>
-                <div className="backdrop-blur-xl bg-gradient-to-br from-amber-500/10 to-transparent rounded-2xl p-4 border border-amber-500/20 hover:border-amber-500/30 hover:scale-105 transition-all duration-500 group/card">
-                  <div className="absolute inset-0 bg-gradient-to-r from-amber-400/0 via-amber-400/10 to-amber-400/0 translate-x-[-100%] group-hover/card:translate-x-[100%] transition-transform duration-1000 rounded-2xl" />
-                  <div className="mb-2 text-xs uppercase tracking-wide text-amber-300/50 relative z-10">Confidence</div>
-                  <div className="font-mono text-amber-100 font-semibold text-2xl relative z-10">{confidencePct}%</div>
+                <div className="backdrop-blur-xl bg-gradient-to-br from-purple-500/10 to-transparent rounded-2xl p-4 border border-purple-500/20 hover:border-purple-500/30 hover:scale-105 transition-all duration-500 group/card">
+                  <div className="absolute inset-0 bg-gradient-to-r from-purple-400/0 via-purple-400/10 to-purple-400/0 translate-x-[-100%] group-hover/card:translate-x-[100%] transition-transform duration-1000 rounded-2xl" />
+                  <div className="mb-2 text-xs uppercase tracking-wide text-purple-300/50 relative z-10">Confidence</div>
+                  <div className="font-mono text-purple-100 font-semibold text-2xl relative z-10">{confidencePct}%</div>
                 </div>
-                <div className="backdrop-blur-xl bg-gradient-to-br from-amber-500/10 to-transparent rounded-2xl p-4 border border-amber-500/20 hover:border-amber-500/30 hover:scale-105 transition-all duration-500 group/card">
-                  <div className="absolute inset-0 bg-gradient-to-r from-amber-400/0 via-amber-400/10 to-amber-400/0 translate-x-[-100%] group-hover/card:translate-x-[100%] transition-transform duration-1000 rounded-2xl" />
-                  <div className="mb-2 text-xs uppercase tracking-wide text-amber-300/50 relative z-10">Freshness</div>
-                  <div className="font-mono text-amber-100 text-xs relative z-10">{new Date(selected.freshnessTs).toLocaleString()}</div>
+                <div className="backdrop-blur-xl bg-gradient-to-br from-purple-500/10 to-transparent rounded-2xl p-4 border border-purple-500/20 hover:border-purple-500/30 hover:scale-105 transition-all duration-500 group/card">
+                  <div className="absolute inset-0 bg-gradient-to-r from-purple-400/0 via-purple-400/10 to-purple-400/0 translate-x-[-100%] group-hover/card:translate-x-[100%] transition-transform duration-1000 rounded-2xl" />
+                  <div className="mb-2 text-xs uppercase tracking-wide text-purple-300/50 relative z-10">Freshness</div>
+                  <div className="font-mono text-purple-100 text-xs relative z-10">{new Date(selected.freshnessTs).toLocaleDateString()}</div>
                 </div>
               </div>
-              <div className="mt-6 grid grid-cols-2 gap-6 border-t border-amber-500/20 pt-6 text-sm">
-                <div className="backdrop-blur-xl bg-gradient-to-br from-amber-500/10 to-transparent rounded-2xl p-4 border border-amber-500/20 hover:scale-105 transition-all duration-500">
-                  <div className="mb-2 text-xs uppercase tracking-wide text-amber-300/50">Owner</div>
-                  <div className="text-amber-100 font-semibold">{selected.owner}</div>
+              <div className="mt-6 grid grid-cols-1 md:grid-cols-2 gap-6 border-t border-purple-500/20 pt-6 text-sm">
+                <div className="backdrop-blur-xl bg-gradient-to-br from-purple-500/10 to-transparent rounded-2xl p-4 border border-purple-500/20 hover:scale-105 transition-all duration-500">
+                  <div className="mb-2 text-xs uppercase tracking-wide text-purple-300/50">Owner</div>
+                  <div className="text-purple-100 font-semibold">{selected.owner}</div>
                 </div>
-                <div className="backdrop-blur-xl bg-gradient-to-br from-amber-500/10 to-transparent rounded-2xl p-4 border border-amber-500/20 hover:scale-105 transition-all duration-500">
-                  <div className="mb-2 text-xs uppercase tracking-wide text-amber-300/50">Approver</div>
-                  <div className="text-amber-100 font-semibold">{selected.approver}</div>
+                <div className="backdrop-blur-xl bg-gradient-to-br from-purple-500/10 to-transparent rounded-2xl p-4 border border-purple-500/20 hover:scale-105 transition-all duration-500">
+                  <div className="mb-2 text-xs uppercase tracking-wide text-purple-300/50">Approver</div>
+                  <div className="text-purple-100 font-semibold">{selected.approver}</div>
                 </div>
               </div>
             </div>
@@ -674,29 +475,29 @@ export default function EvidenceReceiptsPage() {
                 className={classNames(
                   "relative whitespace-nowrap rounded-2xl px-5 py-2.5 text-sm font-semibold transition-all duration-500 overflow-hidden group/tab",
                   tab === t.key
-                    ? "bg-gradient-to-r from-amber-500/30 to-yellow-500/30 text-white shadow-lg scale-105 border border-amber-500/50"
-                    : "text-amber-200/60 hover:bg-amber-500/10 hover:text-amber-200 border border-transparent hover:border-amber-500/20"
+                    ? "bg-gradient-to-r from-purple-600/50 to-fuchsia-600/50 text-white shadow-lg scale-105 border border-purple-500/50"
+                    : "text-purple-200/60 hover:bg-purple-500/10 hover:text-purple-200 border border-transparent hover:border-purple-500/20"
                 )}
               >
-                <div className="absolute inset-0 bg-gradient-to-r from-amber-400/0 via-amber-400/20 to-amber-400/0 translate-x-[-100%] group-hover/tab:translate-x-[100%] transition-transform duration-1000" />
+                <div className="absolute inset-0 bg-gradient-to-r from-purple-400/0 via-purple-400/20 to-purple-400/0 translate-x-[-100%] group-hover/tab:translate-x-[100%] transition-transform duration-1000" />
                 <span className="relative z-10">{t.label}</span>
               </button>
             ))}
           </div>
 
           {/* Tab Content with Vegas Luxury Styling */}
-          <div className="rounded-3xl border border-amber-500/20 bg-gradient-to-br from-amber-500/10 via-black/40 to-black/40 backdrop-blur-xl p-8 shadow-2xl shadow-amber-500/10 hover:shadow-amber-500/20 transition-all duration-500 group">
-            <div className="absolute inset-0 bg-gradient-to-r from-amber-500/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 rounded-3xl" />
+          <div className="rounded-3xl border border-purple-500/20 bg-gradient-to-br from-purple-900/30 via-black/40 to-black/40 backdrop-blur-xl p-8 shadow-2xl shadow-purple-500/10 hover:shadow-purple-500/20 transition-all duration-500 group">
+            <div className="absolute inset-0 bg-gradient-to-r from-purple-500/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 rounded-3xl" />
             <div className="relative z-10">
               {tab === "overview" && (
                 <div className="space-y-8">
                   <div>
                     <h3 className="mb-6 text-2xl font-semibold text-white">Evidence Summary</h3>
                     <div className="grid gap-6 md:grid-cols-3">
-                      <div className="rounded-2xl border border-amber-500/20 bg-gradient-to-br from-amber-500/10 to-transparent backdrop-blur-xl p-6 hover:scale-105 transition-all duration-500 hover:shadow-lg hover:shadow-amber-500/20 group/card">
-                        <div className="absolute inset-0 bg-gradient-to-r from-amber-400/0 via-amber-400/10 to-amber-400/0 translate-x-[-100%] group-hover/card:translate-x-[100%] transition-transform duration-1000 rounded-2xl" />
-                        <div className="mb-3 text-sm text-amber-300/70 relative z-10">Artifacts</div>
-                        <div className="text-5xl font-bold bg-gradient-to-r from-amber-400 via-amber-200 to-yellow-400 bg-clip-text text-transparent relative z-10 drop-shadow-[0_0_20px_rgba(251,191,36,0.3)]">{selected.artifacts.length}</div>
+                      <div className="rounded-2xl border border-purple-500/20 bg-gradient-to-br from-purple-500/10 to-transparent backdrop-blur-xl p-6 hover:scale-105 transition-all duration-500 hover:shadow-lg hover:shadow-purple-500/20 group/card">
+                        <div className="absolute inset-0 bg-gradient-to-r from-purple-400/0 via-purple-400/10 to-purple-400/0 translate-x-[-100%] group-hover/card:translate-x-[100%] transition-transform duration-1000 rounded-2xl" />
+                        <div className="mb-3 text-sm text-purple-300/70 relative z-10">Artifacts</div>
+                        <div className="text-5xl font-bold bg-gradient-to-r from-purple-400 via-purple-200 to-fuchsia-400 bg-clip-text text-transparent relative z-10 drop-shadow-[0_0_20px_rgba(168,85,247,0.3)]">{selected.artifacts.length}</div>
                       </div>
                       <div className="rounded-2xl border border-blue-500/20 bg-gradient-to-br from-blue-500/10 to-transparent backdrop-blur-xl p-6 hover:scale-105 transition-all duration-500 hover:shadow-lg hover:shadow-blue-500/20 group/card">
                         <div className="absolute inset-0 bg-gradient-to-r from-blue-400/0 via-blue-400/10 to-blue-400/0 translate-x-[-100%] group-hover/card:translate-x-[100%] transition-transform duration-1000 rounded-2xl" />
@@ -712,9 +513,9 @@ export default function EvidenceReceiptsPage() {
                   </div>
                   <div>
                     <h3 className="mb-6 text-2xl font-semibold text-white">Receipt Viewer</h3>
-                    <div className="rounded-3xl border border-amber-500/20 bg-gradient-to-br from-amber-900/20 via-black/40 to-black/40 backdrop-blur-xl p-8 shadow-2xl shadow-amber-500/10">
+                    <div className="rounded-3xl border border-purple-500/20 bg-gradient-to-br from-purple-900/20 via-black/40 to-black/40 backdrop-blur-xl p-8 shadow-2xl shadow-purple-500/10">
                       {/* Receipt Header */}
-                      <div className="mb-6 flex items-start justify-between border-b border-amber-500/20 pb-4">
+                      <div className="mb-6 flex items-start justify-between border-b border-purple-500/20 pb-4">
                         <div>
                           <div className="mb-2 flex items-center gap-3">
                             <span className="text-2xl font-bold text-white">{selected.receiptId}</span>
@@ -723,32 +524,32 @@ export default function EvidenceReceiptsPage() {
                               {cfg.label}
                             </span>
                           </div>
-                          <div className="text-sm text-amber-300/70">
+                          <div className="text-sm text-purple-300/70">
                             {selected.subjectType} → {selected.subjectId}
                           </div>
                         </div>
                         <div className="text-right">
-                          <div className="text-xs text-amber-300/50">Confidence</div>
+                          <div className="text-xs text-purple-300/50">Confidence</div>
                           <div className="text-3xl font-bold text-emerald-400 drop-shadow-[0_0_15px_rgba(16,185,129,0.6)]">{confidencePct}%</div>
                         </div>
                       </div>
 
                       {/* Mini Lineage Flow */}
                       <div className="mb-6">
-                        <div className="mb-3 text-sm font-semibold text-amber-300">Data Lineage Flow</div>
+                        <div className="mb-3 text-sm font-semibold text-purple-300">Data Lineage Flow</div>
                         <div className="flex items-center gap-2 overflow-x-auto pb-2">
                           {selected.artifacts.map((art, i) => (
                             <React.Fragment key={art.id}>
-                              <div className="flex-shrink-0 rounded-lg border border-amber-500/30 bg-amber-500/10 px-3 py-2 hover:scale-105 transition-all duration-300">
-                                <div className="text-xs font-semibold text-amber-200">{art.sourceType}</div>
-                                <div className="text-[10px] text-amber-300/60">{art.rowCount?.toLocaleString()} rows</div>
+                              <div className="flex-shrink-0 rounded-lg border border-purple-500/30 bg-purple-500/10 px-3 py-2 hover:scale-105 transition-all duration-300">
+                                <div className="text-xs font-semibold text-purple-200">{art.sourceType}</div>
+                                <div className="text-[10px] text-purple-300/60">{art.rowCount?.toLocaleString()} rows</div>
                               </div>
                               {i < selected.artifacts.length - 1 && (
-                                <div className="text-amber-400">→</div>
+                                <div className="text-purple-400">→</div>
                               )}
                             </React.Fragment>
                           ))}
-                          <div className="text-amber-400">→</div>
+                          <div className="text-purple-400">→</div>
                           {selected.transforms.map((trn, i) => (
                             <React.Fragment key={trn.id}>
                               <div className="flex-shrink-0 rounded-lg border border-blue-500/30 bg-blue-500/10 px-3 py-2 hover:scale-105 transition-all duration-300">
@@ -770,13 +571,13 @@ export default function EvidenceReceiptsPage() {
 
                       {/* Key Metrics Grid */}
                       <div className="mb-6 grid gap-4 md:grid-cols-3">
-                        <div className="rounded-lg border border-amber-500/20 bg-amber-500/5 p-4 hover:border-amber-500/30 hover:scale-105 transition-all duration-300">
-                          <div className="mb-2 text-xs uppercase tracking-wide text-amber-300/60">Source Artifacts</div>
+                        <div className="rounded-lg border border-purple-500/20 bg-purple-500/5 p-4 hover:border-purple-500/30 hover:scale-105 transition-all duration-300">
+                          <div className="mb-2 text-xs uppercase tracking-wide text-purple-300/60">Source Artifacts</div>
                           <div className="text-2xl font-bold text-white">{selected.artifacts.length}</div>
                           <div className="mt-2 space-y-1">
                             {selected.artifacts.map((art) => (
-                              <div key={art.id} className="flex items-center gap-2 text-xs text-amber-200/70">
-                                <div className="h-1.5 w-1.5 rounded-full bg-amber-400 animate-pulse" />
+                              <div key={art.id} className="flex items-center gap-2 text-xs text-purple-200/70">
+                                <div className="h-1.5 w-1.5 rounded-full bg-purple-400 animate-pulse" />
                                 {art.sourceType}
                               </div>
                             ))}
@@ -822,10 +623,10 @@ export default function EvidenceReceiptsPage() {
 
                       {/* Reconciliation Summary */}
                       <div className="mb-6">
-                        <div className="mb-3 text-sm font-semibold text-amber-300">Reconciliation Status</div>
+                        <div className="mb-3 text-sm font-semibold text-purple-300">Reconciliation Status</div>
                         <div className="space-y-3">
                           {selected.reconciliation.map((rec, i) => (
-                            <div key={i} className="rounded-lg border border-amber-500/20 bg-amber-500/5 p-4 hover:border-amber-500/30 hover:scale-[1.02] transition-all duration-300">
+                            <div key={i} className="rounded-lg border border-purple-500/20 bg-purple-500/5 p-4 hover:border-purple-500/30 hover:scale-[1.02] transition-all duration-300">
                               <div className="mb-2 flex items-center justify-between">
                                 <div className="text-sm font-semibold text-white">{rec.name}</div>
                                 <span
@@ -850,23 +651,23 @@ export default function EvidenceReceiptsPage() {
                               </div>
                               <div className="grid grid-cols-3 gap-4 text-sm">
                                 <div>
-                                  <div className="text-xs text-amber-300/50">Expected</div>
-                                  <div className="font-mono text-amber-100">
+                                  <div className="text-xs text-purple-300/50">Expected</div>
+                                  <div className="font-mono text-purple-100">
                                     {rec.expected.toLocaleString()} {rec.unit}
                                   </div>
                                 </div>
                                 <div>
-                                  <div className="text-xs text-amber-300/50">Actual</div>
-                                  <div className="font-mono text-amber-100">
+                                  <div className="text-xs text-purple-300/50">Actual</div>
+                                  <div className="font-mono text-purple-100">
                                     {rec.actual.toLocaleString()} {rec.unit}
                                   </div>
                                 </div>
                                 <div>
-                                  <div className="text-xs text-amber-300/50">Delta</div>
+                                  <div className="text-xs text-purple-300/50">Delta</div>
                                   <div
                                     className={classNames(
                                       "font-mono font-semibold",
-                                      rec.delta > 0 ? "text-red-300" : rec.delta < 0 ? "text-emerald-300" : "text-amber-100"
+                                      rec.delta > 0 ? "text-red-300" : rec.delta < 0 ? "text-emerald-300" : "text-purple-100"
                                     )}
                                   >
                                     {rec.delta > 0 ? "+" : ""}
@@ -880,25 +681,25 @@ export default function EvidenceReceiptsPage() {
                       </div>
 
                       {/* Footer Metadata */}
-                      <div className="border-t border-amber-500/20 pt-6">
+                      <div className="border-t border-purple-500/20 pt-6">
                         <div className="grid gap-4 text-xs md:grid-cols-4">
                           <div>
-                            <div className="mb-1 text-amber-300/50">Period</div>
-                            <div className="font-mono text-amber-100">
+                            <div className="mb-1 text-purple-300/50">Period</div>
+                            <div className="font-mono text-purple-100">
                               {selected.periodStart} → {selected.periodEnd}
                             </div>
                           </div>
                           <div>
-                            <div className="mb-1 text-amber-300/50">Grain</div>
-                            <div className="font-mono text-amber-100">{selected.grain}</div>
+                            <div className="mb-1 text-purple-300/50">Grain</div>
+                            <div className="font-mono text-purple-100">{selected.grain}</div>
                           </div>
                           <div>
-                            <div className="mb-1 text-amber-300/50">Owner</div>
-                            <div className="text-amber-100">{selected.owner}</div>
+                            <div className="mb-1 text-purple-300/50">Owner</div>
+                            <div className="text-purple-100">{selected.owner}</div>
                           </div>
                           <div>
-                            <div className="mb-1 text-amber-300/50">Freshness</div>
-                            <div className="font-mono text-amber-100">{new Date(selected.freshnessTs).toLocaleString()}</div>
+                            <div className="mb-1 text-purple-300/50">Freshness</div>
+                            <div className="font-mono text-purple-100">{new Date(selected.freshnessTs).toLocaleString()}</div>
                           </div>
                         </div>
                       </div>
@@ -910,24 +711,24 @@ export default function EvidenceReceiptsPage() {
               {tab === "lineage" && (
                 <div>
                   <h3 className="mb-4 text-xl font-semibold">Data Lineage Graph</h3>
-                  <svg viewBox="0 0 800 500" className="w-full rounded-xl border border-amber-500/20 bg-black/20 p-4">
+                  <svg viewBox="0 0 800 500" className="w-full rounded-xl border border-purple-500/20 bg-black/20 p-4">
                     <defs>
                       <marker id="arrowhead" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto">
-                        <polygon points="0 0, 10 3, 0 6" fill="#fbbf24" />
+                        <polygon points="0 0, 10 3, 0 6" fill="#a855f7" />
                       </marker>
                     </defs>
                     {selected.artifacts.map((art, i) => {
                       const y = 50 + i * 80;
                       return (
                         <g key={art.id}>
-                          <rect x="20" y={y} width="180" height="60" rx="8" fill="#f59e0b" fillOpacity="0.2" stroke="#fbbf24" strokeWidth="2" />
-                          <text x="110" y={y + 25} textAnchor="middle" fill="#fef3c7" fontSize="12" fontWeight="600">
+                          <rect x="20" y={y} width="180" height="60" rx="8" fill="#9333ea" fillOpacity="0.2" stroke="#a855f7" strokeWidth="2" />
+                          <text x="110" y={y + 25} textAnchor="middle" fill="#f3e8ff" fontSize="12" fontWeight="600">
                             {art.sourceType}
                           </text>
-                          <text x="110" y={y + 42} textAnchor="middle" fill="#fde68a" fontSize="10">
+                          <text x="110" y={y + 42} textAnchor="middle" fill="#e9d5ff" fontSize="10">
                             {art.fileName.slice(0, 20)}
                           </text>
-                          <line x1="200" y1={y + 30} x2="250" y2="250" stroke="#f59e0b" strokeWidth="2" markerEnd="url(#arrowhead)" />
+                          <line x1="200" y1={y + 30} x2="250" y2="250" stroke="#a855f7" strokeWidth="2" markerEnd="url(#arrowhead)" />
                         </g>
                       );
                     })}
@@ -935,14 +736,14 @@ export default function EvidenceReceiptsPage() {
                       const y = 150 + i * 100;
                       return (
                         <g key={trn.id}>
-                          <rect x="270" y={y} width="200" height="70" rx="8" fill="#d97706" fillOpacity="0.2" stroke="#f59e0b" strokeWidth="2" />
-                          <text x="370" y={y + 30} textAnchor="middle" fill="#fef3c7" fontSize="12" fontWeight="600">
+                          <rect x="270" y={y} width="200" height="70" rx="8" fill="#9333ea" fillOpacity="0.2" stroke="#a855f7" strokeWidth="2" />
+                          <text x="370" y={y + 30} textAnchor="middle" fill="#f3e8ff" fontSize="12" fontWeight="600">
                             {trn.name.slice(0, 24)}
                           </text>
-                          <text x="370" y={y + 48} textAnchor="middle" fill="#fde68a" fontSize="10">
+                          <text x="370" y={y + 48} textAnchor="middle" fill="#e9d5ff" fontSize="10">
                             {trn.version}
                           </text>
-                          <line x1="470" y1={y + 35} x2="520" y2="250" stroke="#f59e0b" strokeWidth="2" markerEnd="url(#arrowhead)" />
+                          <line x1="470" y1={y + 35} x2="520" y2="250" stroke="#a855f7" strokeWidth="2" markerEnd="url(#arrowhead)" />
                         </g>
                       );
                     })}
@@ -965,37 +766,37 @@ export default function EvidenceReceiptsPage() {
                   <h3 className="mb-4 text-xl font-semibold">Source Artifacts</h3>
                   <div className="space-y-4">
                     {selected.artifacts.map((art) => (
-                      <div key={art.id} className="rounded-xl border border-amber-500/20 bg-amber-500/5 p-4 hover:border-amber-500/30 hover:scale-[1.02] transition-all duration-500">
+                      <div key={art.id} className="rounded-xl border border-purple-500/20 bg-purple-500/5 p-4 hover:border-purple-500/30 hover:scale-[1.02] transition-all duration-500">
                         <div className="mb-3 flex items-start justify-between">
                           <div>
-                            <div className="mb-1 font-mono text-sm text-amber-300">{art.id}</div>
+                            <div className="mb-1 font-mono text-sm text-purple-300">{art.id}</div>
                             <div className="font-semibold">{art.fileName}</div>
                           </div>
-                          <span className="rounded-full bg-amber-500/20 px-3 py-1 text-xs font-semibold text-amber-200">
+                          <span className="rounded-full bg-purple-500/20 px-3 py-1 text-xs font-semibold text-purple-200">
                             {art.sourceType}
                           </span>
                         </div>
                         <div className="grid gap-3 text-sm md:grid-cols-2">
                           <div>
-                            <span className="text-amber-300/70">System: </span>
-                            <span className="font-mono text-amber-100">{art.sourceSystem}</span>
+                            <span className="text-purple-300/70">System: </span>
+                            <span className="font-mono text-purple-100">{art.sourceSystem}</span>
                           </div>
                           <div>
-                            <span className="text-amber-300/70">Rows: </span>
-                            <span className="font-mono text-amber-100">{art.rowCount?.toLocaleString() || "N/A"}</span>
+                            <span className="text-purple-300/70">Rows: </span>
+                            <span className="font-mono text-purple-100">{art.rowCount?.toLocaleString() || "N/A"}</span>
                           </div>
                           <div>
-                            <span className="text-amber-300/70">Loaded: </span>
-                            <span className="font-mono text-amber-100">{new Date(art.loadedAt).toLocaleString()}</span>
+                            <span className="text-purple-300/70">Loaded: </span>
+                            <span className="font-mono text-purple-100">{new Date(art.loadedAt).toLocaleString()}</span>
                           </div>
                           <div>
-                            <span className="text-amber-300/70">Checksum: </span>
-                            <span className="font-mono text-xs text-amber-100">{art.checksum}</span>
+                            <span className="text-purple-300/70">Checksum: </span>
+                            <span className="font-mono text-xs text-purple-100">{art.checksum}</span>
                           </div>
                         </div>
-                        <div className="mt-3 border-t border-amber-500/20 pt-3">
-                          <div className="text-xs text-amber-300/70">URI</div>
-                          <div className="font-mono text-xs text-amber-100">{art.uri}</div>
+                        <div className="mt-3 border-t border-purple-500/20 pt-3">
+                          <div className="text-xs text-purple-300/70">URI</div>
+                          <div className="font-mono text-xs text-purple-100">{art.uri}</div>
                         </div>
                       </div>
                     ))}
@@ -1008,14 +809,14 @@ export default function EvidenceReceiptsPage() {
                   <h3 className="mb-4 text-xl font-semibold">Transform Pipeline</h3>
                   <div className="space-y-4">
                     {selected.transforms.map((trn, i) => (
-                      <div key={trn.id} className="rounded-xl border border-amber-500/20 bg-amber-500/5 p-4 hover:border-amber-500/30 hover:scale-[1.02] transition-all duration-500">
+                      <div key={trn.id} className="rounded-xl border border-purple-500/20 bg-purple-500/5 p-4 hover:border-purple-500/30 hover:scale-[1.02] transition-all duration-500">
                         <div className="mb-3 flex items-start justify-between">
                           <div>
                             <div className="mb-1 flex items-center gap-2">
-                              <span className="flex h-6 w-6 items-center justify-center rounded-full bg-amber-500/20 text-xs font-bold text-amber-200">
+                              <span className="flex h-6 w-6 items-center justify-center rounded-full bg-purple-500/20 text-xs font-bold text-purple-200">
                                 {i + 1}
                               </span>
-                              <span className="font-mono text-sm text-amber-300">{trn.id}</span>
+                              <span className="font-mono text-sm text-purple-300">{trn.id}</span>
                             </div>
                             <div className="font-semibold">{trn.name}</div>
                           </div>
@@ -1025,25 +826,25 @@ export default function EvidenceReceiptsPage() {
                         </div>
                         <div className="grid gap-3 text-sm md:grid-cols-2">
                           <div>
-                            <span className="text-amber-300/70">Warehouse: </span>
-                            <span className="font-mono text-amber-100">{trn.warehouse}</span>
+                            <span className="text-purple-300/70">Warehouse: </span>
+                            <span className="font-mono text-purple-100">{trn.warehouse}</span>
                           </div>
                           <div>
-                            <span className="text-amber-300/70">Ran By: </span>
-                            <span className="font-mono text-amber-100">{trn.ranBy}</span>
+                            <span className="text-purple-300/70">Ran By: </span>
+                            <span className="font-mono text-purple-100">{trn.ranBy}</span>
                           </div>
                           <div>
-                            <span className="text-amber-300/70">Ran At: </span>
-                            <span className="font-mono text-amber-100">{new Date(trn.ranAt).toLocaleString()}</span>
+                            <span className="text-purple-300/70">Ran At: </span>
+                            <span className="font-mono text-purple-100">{new Date(trn.ranAt).toLocaleString()}</span>
                           </div>
                           <div>
-                            <span className="text-amber-300/70">Query ID: </span>
-                            <span className="font-mono text-xs text-amber-100">{trn.queryId}</span>
+                            <span className="text-purple-300/70">Query ID: </span>
+                            <span className="font-mono text-xs text-purple-100">{trn.queryId}</span>
                           </div>
                         </div>
-                        <div className="mt-3 border-t border-amber-500/20 pt-3">
-                          <div className="text-xs text-amber-300/70">Code Hash</div>
-                          <div className="font-mono text-xs text-amber-100">{trn.codeHash}</div>
+                        <div className="mt-3 border-t border-purple-500/20 pt-3">
+                          <div className="text-xs text-purple-300/70">Code Hash</div>
+                          <div className="font-mono text-xs text-purple-100">{trn.codeHash}</div>
                         </div>
                       </div>
                     ))}
@@ -1054,11 +855,11 @@ export default function EvidenceReceiptsPage() {
               {tab === "dq" && (
                 <div>
                   <h3 className="mb-4 text-xl font-semibold">Data Quality Suite</h3>
-                  <div className="mb-6 rounded-xl border border-amber-500/20 bg-amber-500/5 p-4 hover:border-amber-500/30 transition-all duration-500">
+                  <div className="mb-6 rounded-xl border border-purple-500/20 bg-purple-500/5 p-4 hover:border-purple-500/30 transition-all duration-500">
                     <div className="mb-4 flex items-center justify-between">
                       <div>
                         <div className="mb-1 font-semibold">{selected.dq.suite}</div>
-                        <div className="text-sm text-amber-200/60">Version {selected.dq.version}</div>
+                        <div className="text-sm text-purple-200/60">Version {selected.dq.version}</div>
                       </div>
                       <span
                         className={classNames(
@@ -1073,16 +874,16 @@ export default function EvidenceReceiptsPage() {
                         {selected.dq.status}
                       </span>
                     </div>
-                    <div className="text-sm text-amber-200/70">
+                    <div className="text-sm text-purple-200/70">
                       Ran At: {new Date(selected.dq.ranAt).toLocaleString()}
                     </div>
                   </div>
                   <div className="space-y-3">
                     {selected.dq.tests.map((test, i) => (
-                      <div key={i} className="flex items-center justify-between rounded-xl border border-amber-500/20 bg-amber-500/5 p-4 hover:border-amber-500/30 hover:scale-[1.02] transition-all duration-500">
+                      <div key={i} className="flex items-center justify-between rounded-xl border border-purple-500/20 bg-purple-500/5 p-4 hover:border-purple-500/30 hover:scale-[1.02] transition-all duration-500">
                         <div>
                           <div className="font-semibold">{test.name}</div>
-                          {test.details && <div className="mt-1 text-sm text-amber-200/60">{test.details}</div>}
+                          {test.details && <div className="mt-1 text-sm text-purple-200/60">{test.details}</div>}
                         </div>
                         <span
                           className={classNames(
@@ -1114,7 +915,7 @@ export default function EvidenceReceiptsPage() {
                   <h3 className="mb-4 text-xl font-semibold">Reconciliation Checks</h3>
                   <div className="space-y-4">
                     {selected.reconciliation.map((rec, i) => (
-                      <div key={i} className="rounded-xl border border-amber-500/20 bg-amber-500/5 p-4 hover:border-amber-500/30 hover:scale-[1.02] transition-all duration-500">
+                      <div key={i} className="rounded-xl border border-purple-500/20 bg-purple-500/5 p-4 hover:border-purple-500/30 hover:scale-[1.02] transition-all duration-500">
                         <div className="mb-3 flex items-start justify-between">
                           <div className="font-semibold">{rec.name}</div>
                           <span
@@ -1139,23 +940,23 @@ export default function EvidenceReceiptsPage() {
                         </div>
                         <div className="grid gap-4 text-sm md:grid-cols-3">
                           <div>
-                            <div className="mb-1 text-xs uppercase tracking-wide text-amber-300/50">Expected</div>
-                            <div className="font-mono text-lg font-bold text-amber-100">
+                            <div className="mb-1 text-xs uppercase tracking-wide text-purple-300/50">Expected</div>
+                            <div className="font-mono text-lg font-bold text-purple-100">
                               {rec.expected.toLocaleString()} {rec.unit}
                             </div>
                           </div>
                           <div>
-                            <div className="mb-1 text-xs uppercase tracking-wide text-amber-300/50">Actual</div>
-                            <div className="font-mono text-lg font-bold text-amber-100">
+                            <div className="mb-1 text-xs uppercase tracking-wide text-purple-300/50">Actual</div>
+                            <div className="font-mono text-lg font-bold text-purple-100">
                               {rec.actual.toLocaleString()} {rec.unit}
                             </div>
                           </div>
                           <div>
-                            <div className="mb-1 text-xs uppercase tracking-wide text-amber-300/50">Delta</div>
+                            <div className="mb-1 text-xs uppercase tracking-wide text-purple-300/50">Delta</div>
                             <div
                               className={classNames(
                                 "font-mono text-lg font-bold",
-                                rec.delta > 0 ? "text-red-300" : rec.delta < 0 ? "text-emerald-300" : "text-amber-100"
+                                rec.delta > 0 ? "text-red-300" : rec.delta < 0 ? "text-emerald-300" : "text-purple-100"
                               )}
                             >
                               {rec.delta > 0 ? "+" : ""}
@@ -1174,17 +975,17 @@ export default function EvidenceReceiptsPage() {
                   <h3 className="mb-4 text-xl font-semibold">Audit Log</h3>
                   <div className="space-y-3">
                     {selected.auditLog.map((log, i) => (
-                      <div key={i} className="flex gap-4 rounded-xl border border-amber-500/20 bg-amber-500/5 p-4 hover:border-amber-500/30 hover:scale-[1.02] transition-all duration-500">
-                        <div className="flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-full bg-amber-500/20 text-xs font-bold text-amber-200">
+                      <div key={i} className="flex gap-4 rounded-xl border border-purple-500/20 bg-purple-500/5 p-4 hover:border-purple-500/30 hover:scale-[1.02] transition-all duration-500">
+                        <div className="flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-full bg-purple-500/20 text-xs font-bold text-purple-200">
                           {i + 1}
                         </div>
                         <div className="flex-1">
                           <div className="mb-1 flex items-center gap-3">
                             <span className="font-semibold">{log.action}</span>
-                            <span className="text-sm text-amber-200/60">{log.actor}</span>
+                            <span className="text-sm text-purple-200/60">{log.actor}</span>
                           </div>
-                          {log.note && <div className="mb-2 text-sm text-amber-200/70">{log.note}</div>}
-                          <div className="text-xs font-mono text-amber-300/50">
+                          {log.note && <div className="mb-2 text-sm text-purple-200/70">{log.note}</div>}
+                          <div className="text-xs font-mono text-purple-300/50">
                             {new Date(log.at).toLocaleString()}
                           </div>
                         </div>

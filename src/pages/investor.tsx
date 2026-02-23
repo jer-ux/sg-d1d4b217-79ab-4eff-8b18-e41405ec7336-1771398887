@@ -200,7 +200,7 @@ function SlideItem({
             )}
           </motion.div>
 
-          {/* Slide Image */}
+          {/* Slide Image - OPTIMIZED FOR NO DISTORTION */}
           <motion.div
             initial={{ opacity: 0, x: 50 }}
             whileInView={{ opacity: 1, x: 0 }}
@@ -208,19 +208,27 @@ function SlideItem({
             viewport={{ once: true }}
             className="relative"
           >
-            <div className="group relative overflow-hidden rounded-3xl border border-white/10 bg-black/40 p-2 backdrop-blur-xl transition-all hover:border-purple-500/30 hover:shadow-2xl hover:shadow-purple-500/20">
-              <div className="relative aspect-[16/9] overflow-hidden rounded-2xl">
+            <div className="group relative overflow-hidden rounded-3xl border border-white/10 bg-black/40 p-3 backdrop-blur-xl transition-all hover:border-purple-500/30 hover:shadow-2xl hover:shadow-purple-500/20">
+              {/* Fixed aspect ratio container to prevent distortion */}
+              <div className="relative w-full" style={{ aspectRatio: "16/9" }}>
                 <Image
                   src={slide.image}
                   alt={slide.title}
                   fill
-                  className="object-contain transition-transform duration-700 group-hover:scale-105"
+                  sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 800px"
+                  quality={100}
+                  priority={index < 3}
+                  className="rounded-2xl object-contain transition-transform duration-700 group-hover:scale-[1.02]"
+                  style={{
+                    objectFit: "contain",
+                    objectPosition: "center"
+                  }}
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent opacity-0 transition-opacity group-hover:opacity-100" />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/30 via-transparent to-transparent opacity-0 transition-opacity group-hover:opacity-100 rounded-2xl" />
               </div>
             </div>
 
-            {/* Decorative elements */}
+            {/* Decorative glow effect */}
             <div className="absolute -inset-4 -z-10 bg-gradient-to-r from-purple-500/20 to-fuchsia-500/20 opacity-0 blur-3xl transition-opacity group-hover:opacity-100" />
           </motion.div>
         </div>
@@ -388,7 +396,7 @@ export default function InvestorAccess() {
         Lock Portal
       </motion.button>
 
-      {/* Slides */}
+      {/* All 15 Slides */}
       <div className="relative space-y-0">
         {slides.map((slide, index) => (
           <SlideItem

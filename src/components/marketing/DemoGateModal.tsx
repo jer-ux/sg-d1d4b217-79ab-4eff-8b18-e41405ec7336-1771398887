@@ -67,7 +67,6 @@ export function DemoGateModal({ open, onOpenChange, calendlyUrl = "https://calen
   const mode = state?.success ? "done" : "form";
   const receipt = state?.data?.receipt;
   const err = state?.message;
-  // @ts-expect-error - errors property might exist on ActionState depending on implementation
   const fieldErrors = state?.errors;
 
   return (

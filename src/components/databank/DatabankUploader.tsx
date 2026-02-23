@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from "react";
+import React, { useState, useCallback, useOptimistic, useTransition } from "react";
 import { Upload, X, FileText, CheckCircle, AlertCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
@@ -20,6 +20,11 @@ interface DatabankUploaderProps {
   maxSizeMB?: number;
 }
 
+type UploadState = {
+  file: File | null;
+  status: { type: "success" | "error" | null; message: string };
+};
+
 export function DatabankUploader({
   onUploadComplete,
   allowedTypes = [".csv", ".xlsx", ".xls", ".pdf", ".json"],
@@ -28,17 +33,22 @@ export function DatabankUploader({
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [databankType, setDatabankType] = useState<DatabankType>("claims");
   const [tags, setTags] = useState<string>("");
-  const [uploading, setUploading] = useState(false);
+  const [isPending, startTransition] = useTransition();
   const [uploadStatus, setUploadStatus] = useState<{
     type: "success" | "error" | null;
     message: string;
   }>({ type: null, message: "" });
 
+  // React 19: useOptimistic for immediate UI feedback
+  const [optimisticUpload, setOptimisticUpload] = useOptimistic(
+    { uploading: false, fileName: "" },
+    (state, newState: { uploading: boolean; fileName: string }) => newState
+  );
+
   const handleFileSelect = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file) return;
 
-    // Validate file size
     const maxSizeBytes = maxSizeMB * 1024 * 1024;
     if (file.size > maxSizeBytes) {
       setUploadStatus({
@@ -77,44 +87,48 @@ export function DatabankUploader({
     e.preventDefault();
   }, []);
 
+  // React 19: Native async action with useTransition
   const handleUpload = async () => {
     if (!selectedFile) return;
 
-    setUploading(true);
+    // Optimistic update for immediate feedback
+    setOptimisticUpload({ uploading: true, fileName: selectedFile.name });
     setUploadStatus({ type: null, message: "" });
 
-    try {
-      const tagArray = tags
-        .split(",")
-        .map(t => t.trim())
-        .filter(Boolean);
+    startTransition(async () => {
+      try {
+        const tagArray = tags
+          .split(",")
+          .map(t => t.trim())
+          .filter(Boolean);
 
-      const result = await uploadToDatabank(selectedFile, databankType, {
-        tags: tagArray.length > 0 ? tagArray : undefined,
-      });
-
-      if (result.success && result.record_id) {
-        setUploadStatus({
-          type: "success",
-          message: "File uploaded successfully!",
+        const result = await uploadToDatabank(selectedFile, databankType, {
+          tags: tagArray.length > 0 ? tagArray : undefined,
         });
-        setSelectedFile(null);
-        setTags("");
-        onUploadComplete?.(result.record_id);
-      } else {
+
+        if (result.success && result.record_id) {
+          setUploadStatus({
+            type: "success",
+            message: "File uploaded successfully!",
+          });
+          setSelectedFile(null);
+          setTags("");
+          onUploadComplete?.(result.record_id);
+        } else {
+          setUploadStatus({
+            type: "error",
+            message: result.error || "Upload failed",
+          });
+        }
+      } catch (error) {
         setUploadStatus({
           type: "error",
-          message: result.error || "Upload failed",
+          message: String(error),
         });
+      } finally {
+        setOptimisticUpload({ uploading: false, fileName: "" });
       }
-    } catch (error) {
-      setUploadStatus({
-        type: "error",
-        message: String(error),
-      });
-    } finally {
-      setUploading(false);
-    }
+    });
   };
 
   const formatFileSize = (bytes: number) => {
@@ -134,6 +148,7 @@ export function DatabankUploader({
           <Select
             value={databankType}
             onValueChange={(value) => setDatabankType(value as DatabankType)}
+            disabled={isPending || optimisticUpload.uploading}
           >
             <SelectTrigger id="databank-type">
               <SelectValue />
@@ -170,6 +185,7 @@ export function DatabankUploader({
                   variant="ghost"
                   size="icon"
                   onClick={() => setSelectedFile(null)}
+                  disabled={isPending || optimisticUpload.uploading}
                 >
                   <X className="w-4 h-4" />
                 </Button>
@@ -191,6 +207,7 @@ export function DatabankUploader({
                   className="hidden"
                   accept={allowedTypes.join(",")}
                   onChange={handleFileSelect}
+                  disabled={isPending || optimisticUpload.uploading}
                 />
               </div>
               <p className="text-sm text-gray-500">
@@ -209,12 +226,23 @@ export function DatabankUploader({
               placeholder="e.g., Q4-2024, preliminary, reviewed"
               value={tags}
               onChange={(e) => setTags(e.target.value)}
+              disabled={isPending || optimisticUpload.uploading}
             />
           </div>
         )}
 
+        {/* React 19: Optimistic upload feedback */}
+        {optimisticUpload.uploading && (
+          <div className="flex items-center gap-2 p-3 rounded-lg bg-blue-50 dark:bg-blue-900/20 text-blue-800 dark:text-blue-300">
+            <div className="w-5 h-5 border-2 border-blue-500 border-t-transparent rounded-full animate-spin" />
+            <span className="text-sm font-medium">
+              Uploading {optimisticUpload.fileName}...
+            </span>
+          </div>
+        )}
+
         {/* Upload Status */}
-        {uploadStatus.type && (
+        {uploadStatus.type && !optimisticUpload.uploading && (
           <div
             className={`flex items-center gap-2 p-3 rounded-lg ${
               uploadStatus.type === "success"
@@ -234,10 +262,10 @@ export function DatabankUploader({
         {/* Upload Button */}
         <Button
           onClick={handleUpload}
-          disabled={!selectedFile || uploading}
+          disabled={!selectedFile || isPending || optimisticUpload.uploading}
           className="w-full"
         >
-          {uploading ? "Uploading..." : "Upload to Databank"}
+          {isPending || optimisticUpload.uploading ? "Uploading..." : "Upload to Databank"}
         </Button>
       </div>
     </Card>

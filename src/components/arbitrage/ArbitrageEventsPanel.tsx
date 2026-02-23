@@ -9,11 +9,16 @@ import { ArbitrageEventCard } from "./ArbitrageEventCard";
 import { ArbitrageFilters } from "./ArbitrageFilters";
 import { ArbitrageStats } from "./ArbitrageStats";
 import { ArbitrageEventDrawer } from "./ArbitrageEventDrawer";
+import { ArbitrageDeepAnalysis } from "./ArbitrageDeepAnalysis";
+import { ArbitrageInvestigationWorkspace } from "./ArbitrageInvestigationWorkspace";
 import { useArbitrageFilters } from "@/hooks/useArbitrageFilters";
 import type { ArbitrageEvent } from "@/lib/arbitrage/mockArbitrageEvents";
 
 export function ArbitrageEventsPanel() {
   const [selectedEvent, setSelectedEvent] = useState<ArbitrageEvent | null>(null);
+  const [showLevel2, setShowLevel2] = useState(false);
+  const [showLevel3, setShowLevel3] = useState(false);
+  const [showLevel4, setShowLevel4] = useState(false);
   const { filters, updateFilter, resetFilters, activeFilterCount } = useArbitrageFilters();
 
   const filteredEvents = useMemo(() => {
@@ -123,6 +128,36 @@ export function ArbitrageEventsPanel() {
     }
   };
 
+  const handleEventClick = (event: ArbitrageEvent) => {
+    setSelectedEvent(event);
+    setShowLevel2(true);
+  };
+
+  const handleLevel2Close = () => {
+    setShowLevel2(false);
+    setSelectedEvent(null);
+  };
+
+  const handleDeepAnalysisClick = () => {
+    setShowLevel2(false);
+    setShowLevel3(true);
+  };
+
+  const handleLevel3Close = () => {
+    setShowLevel3(false);
+    setShowLevel2(true);
+  };
+
+  const handleInvestigationClick = () => {
+    setShowLevel3(false);
+    setShowLevel4(true);
+  };
+
+  const handleLevel4Close = () => {
+    setShowLevel4(false);
+    setShowLevel3(true);
+  };
+
   return (
     <div className="space-y-6">
       <div>
@@ -215,7 +250,7 @@ export function ArbitrageEventsPanel() {
                 <ArbitrageEventCard
                   key={event.event_id}
                   event={event}
-                  onClick={() => setSelectedEvent(event)}
+                  onClick={() => handleEventClick(event)}
                 />
               ))}
             </div>
@@ -223,10 +258,27 @@ export function ArbitrageEventsPanel() {
         </div>
       </div>
 
+      {/* Level 2: Event Overview Drawer */}
       <ArbitrageEventDrawer
         event={selectedEvent}
-        open={!!selectedEvent}
-        onOpenChange={(open) => !open && setSelectedEvent(null)}
+        open={showLevel2}
+        onOpenChange={handleLevel2Close}
+        onDeepAnalysisClick={handleDeepAnalysisClick}
+      />
+
+      {/* Level 3: Deep Analysis Modal */}
+      <ArbitrageDeepAnalysis
+        event={selectedEvent}
+        open={showLevel3}
+        onOpenChange={handleLevel3Close}
+        onInvestigationClick={handleInvestigationClick}
+      />
+
+      {/* Level 4: Investigation Workspace */}
+      <ArbitrageInvestigationWorkspace
+        event={selectedEvent}
+        open={showLevel4}
+        onOpenChange={handleLevel4Close}
       />
     </div>
   );

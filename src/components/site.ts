@@ -48,7 +48,7 @@ export const siteConfig = {
     { href: "/contract-intelligence", label: "Contract Intel" },
     { href: "/evidence-receipts", label: "Evidence" },
     { href: "/verified-savings-ledger", label: "Ledger" },
-    { href: "/war-room", label: "War Room" },
+    { href: "/arbitrage-events", label: "Arbitrage" },
     { href: "/executive-war-room", label: "Executive" },
     { href: "/agentic-workflow", label: "Agentic" },
   ],

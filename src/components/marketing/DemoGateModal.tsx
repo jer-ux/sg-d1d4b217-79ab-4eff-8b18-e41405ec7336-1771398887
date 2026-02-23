@@ -4,6 +4,7 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { motion } from "framer-motion";
 import { KeyRound, ShieldCheck, Receipt, Lock } from "lucide-react";
+import { useState } from "react";
 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -11,7 +12,6 @@ import { Badge } from "@/components/ui/badge";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
 
 import { submitGateForm } from "@/lib/actions/receipts";
-import type { ActionState } from "@/lib/actions/types";
 
 declare global {
   interface Window {
@@ -29,15 +29,8 @@ const Schema = z.object({
 
 type FormValues = z.infer<typeof Schema>;
 
-export function DemoGateModal({
-  open,
-  onOpenChange,
-  calendlyUrl,
-}: {
-  open: boolean;
-  onOpenChange: (v: boolean) => void;
-  calendlyUrl: string;
-}) {
+export function DemoGateModal() {
+  const [open, setOpen] = useState(false);
   const form = useForm<FormValues>({
     resolver: zodResolver(Schema),
     defaultValues: { name: "", email: "", company: "" },
@@ -45,8 +38,8 @@ export function DemoGateModal({
   });
 
   // React 19: useActionState for server action handling
-  // Initial state matches ActionState structure
-  const [state, submitAction, isPending] = useActionState<ActionState<{ receipt: any }>, FormData>(submitGateForm, {
+  // Initialize with correct state shape matching the action return type
+  const [state, formAction, isPending] = useActionState<{ success: boolean; message: string; data?: { success: boolean } }>(submitGateForm, {
     success: false,
     message: "",
   });

@@ -89,7 +89,7 @@ export function ArbitrageEventDrawer({ event, open, onOpenChange }: ArbitrageEve
           {event.financial_impact && (
             <div className="rounded-lg border border-white/10 bg-white/5 p-4">
               <h3 className="font-semibold mb-3 flex items-center gap-2">
-                {event.financial_impact.type === "negative" ? (
+                {event.financial_impact.direction === "negative" ? (
                   <TrendingDown className="h-5 w-5 text-red-400" />
                 ) : (
                   <TrendingUp className="h-5 w-5 text-green-400" />
@@ -100,7 +100,7 @@ export function ArbitrageEventDrawer({ event, open, onOpenChange }: ArbitrageEve
                 ${event.financial_impact.amount.toLocaleString()}
               </div>
               <div className="text-sm text-muted-foreground mt-1">
-                {event.financial_impact.type === "negative" ? "Potential Loss" : "Savings Opportunity"}
+                {event.financial_impact.direction === "negative" ? "Potential Loss" : "Savings Opportunity"}
               </div>
             </div>
           )}

@@ -6,165 +6,98 @@
  */
 
 import { revalidatePath } from "next/cache";
-import { createActionResult, type ActionState } from "./types";
-import { validateFormData, rules } from "./validation";
+import { type ActionState, successAction, errorAction } from "./types";
 
-/**
- * Assign ledger entry
- */
+// Types matching the ledger data structure
+interface LedgerEntry {
+  id: string;
+  status: string;
+  assignee?: string;
+  notes?: string;
+}
+
 export async function assignLedgerEntry(
-  prevState: ActionState,
+  prevState: ActionState<LedgerEntry> | null,
   formData: FormData
-): Promise<ActionState<{ entryId: string }>> {
+): Promise<ActionState<LedgerEntry>> {
   try {
     const entryId = formData.get("entryId") as string;
-    const assignedTo = formData.get("assignedTo") as string;
+    const assignee = formData.get("assignee") as string;
 
-    const validation = validateFormData(formData, {
-      entryId: [rules.required()],
-      assignedTo: [rules.required()],
-    });
-
-    if (!validation.valid) {
-      return createActionResult(false, {
-        message: "Validation failed",
-        errors: validation.errors,
-      });
+    if (!entryId || !assignee) {
+      return errorAction("Entry ID and assignee are required");
     }
 
-    // TODO: Implement actual ledger assignment logic
-    // This is a placeholder for your ledger system
-    console.log("Assigning ledger entry:", { entryId, assignedTo });
+    // TODO: Implement actual database update
+    await new Promise(resolve => setTimeout(resolve, 500));
 
-    revalidatePath("/ledger");
+    const result: LedgerEntry = {
+      id: entryId,
+      status: "assigned",
+      assignee,
+    };
 
-    return createActionResult(true, {
-      message: "Entry assigned successfully",
-      data: { entryId },
-    });
+    revalidatePath("/verified-savings-ledger");
+    return successAction("Entry assigned successfully", { data: result });
   } catch (error) {
-    console.error("Error assigning entry:", error);
-    return createActionResult(false, {
-      message: error instanceof Error ? error.message : "Failed to assign entry",
-    });
+    return errorAction(
+      error instanceof Error ? error.message : "Failed to assign entry"
+    );
   }
 }
 
-/**
- * Approve ledger entry
- */
 export async function approveLedgerEntry(
-  prevState: ActionState,
+  prevState: ActionState<LedgerEntry> | null,
   formData: FormData
-): Promise<ActionState<{ entryId: string }>> {
+): Promise<ActionState<LedgerEntry>> {
   try {
     const entryId = formData.get("entryId") as string;
-    const approvedBy = formData.get("approvedBy") as string;
 
-    const validation = validateFormData(formData, {
-      entryId: [rules.required()],
-      approvedBy: [rules.required()],
-    });
-
-    if (!validation.valid) {
-      return createActionResult(false, {
-        message: "Validation failed",
-        errors: validation.errors,
-      });
+    if (!entryId) {
+      return errorAction("Entry ID is required");
     }
 
-    console.log("Approving ledger entry:", { entryId, approvedBy });
+    await new Promise(resolve => setTimeout(resolve, 500));
 
-    revalidatePath("/ledger");
+    const result: LedgerEntry = {
+      id: entryId,
+      status: "approved",
+    };
 
-    return createActionResult(true, {
-      message: "Entry approved successfully",
-      data: { entryId },
-    });
+    revalidatePath("/verified-savings-ledger");
+    return successAction("Entry approved successfully", { data: result });
   } catch (error) {
-    console.error("Error approving entry:", error);
-    return createActionResult(false, {
-      message: error instanceof Error ? error.message : "Failed to approve entry",
-    });
+    return errorAction(
+      error instanceof Error ? error.message : "Failed to approve entry"
+    );
   }
 }
 
-/**
- * Close ledger entry
- */
 export async function closeLedgerEntry(
-  prevState: ActionState,
+  prevState: ActionState<LedgerEntry> | null,
   formData: FormData
-): Promise<ActionState<{ entryId: string }>> {
+): Promise<ActionState<LedgerEntry>> {
   try {
     const entryId = formData.get("entryId") as string;
-    const closedBy = formData.get("closedBy") as string;
+    const notes = formData.get("notes") as string;
 
-    const validation = validateFormData(formData, {
-      entryId: [rules.required()],
-      closedBy: [rules.required()],
-    });
-
-    if (!validation.valid) {
-      return createActionResult(false, {
-        message: "Validation failed",
-        errors: validation.errors,
-      });
+    if (!entryId) {
+      return errorAction("Entry ID is required");
     }
 
-    console.log("Closing ledger entry:", { entryId, closedBy });
+    await new Promise(resolve => setTimeout(resolve, 500));
 
-    revalidatePath("/ledger");
+    const result: LedgerEntry = {
+      id: entryId,
+      status: "closed",
+      notes,
+    };
 
-    return createActionResult(true, {
-      message: "Entry closed successfully",
-      data: { entryId },
-    });
+    revalidatePath("/verified-savings-ledger");
+    return successAction("Entry closed successfully", { data: result });
   } catch (error) {
-    console.error("Error closing entry:", error);
-    return createActionResult(false, {
-      message: error instanceof Error ? error.message : "Failed to close entry",
-    });
-  }
-}
-
-/**
- * Attach receipt to ledger entry
- */
-export async function attachReceiptToEntry(
-  prevState: ActionState,
-  formData: FormData
-): Promise<ActionState<{ receiptId: string }>> {
-  try {
-    const entryId = formData.get("entryId") as string;
-    const receiptUrl = formData.get("receiptUrl") as string;
-    const receiptType = formData.get("receiptType") as string;
-
-    const validation = validateFormData(formData, {
-      entryId: [rules.required()],
-      receiptUrl: [rules.required()],
-      receiptType: [rules.required()],
-    });
-
-    if (!validation.valid) {
-      return createActionResult(false, {
-        message: "Validation failed",
-        errors: validation.errors,
-      });
-    }
-
-    console.log("Attaching receipt:", { entryId, receiptUrl, receiptType });
-
-    revalidatePath("/ledger");
-
-    return createActionResult(true, {
-      message: "Receipt attached successfully",
-      data: { receiptId: `receipt-${Date.now()}` },
-    });
-  } catch (error) {
-    console.error("Error attaching receipt:", error);
-    return createActionResult(false, {
-      message: error instanceof Error ? error.message : "Failed to attach receipt",
-    });
+    return errorAction(
+      error instanceof Error ? error.message : "Failed to close entry"
+    );
   }
 }

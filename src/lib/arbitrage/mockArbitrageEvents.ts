@@ -2,25 +2,26 @@ export type ArbitrageEvent = {
   event_id: string;
   title: string;
   description: string;
-  detected_at: string;
-  status: "active" | "investigating" | "resolved";
   severity: "critical" | "high" | "medium" | "low";
+  status: "open" | "investigating" | "resolved" | "ignored" | "active";
   confidence_score: number;
-  financial_impact: {
+  detected_at: string;
+  financial_impact?: {
     amount: number;
     currency: string;
-    direction: "positive" | "negative"; // positive = savings opportunity, negative = cost leakage
+    direction: "positive" | "negative";
   };
-  category:
-    | "Billing Discrepancy"
-    | "Duplicate Claims"
-    | "Eligibility Issue"
-    | "Coding Error"
-    | "Prior Authorization"
-    | "Network Issue";
+  category: string;
   affected_claims: number;
-  root_causes?: string[];
-  recommendations?: string[];
+  root_cause_analysis?: {
+    primary_cause: string;
+    contributing_factors: string[];
+  };
+  recommended_actions?: {
+    action: string;
+    priority: "high" | "medium" | "low";
+    estimated_impact: string;
+  }[];
 };
 
 export const mockArbitrageEvents: ArbitrageEvent[] = [
@@ -40,13 +41,21 @@ export const mockArbitrageEvents: ArbitrageEvent[] = [
     },
     category: "Duplicate Claims",
     affected_claims: 12,
-    root_causes: [
-      "Cross-benefit coordination failure",
-      "J-code vs NDC mapping overlap",
-    ],
-    recommendations: [
-      "Implement real-time cross-benefit edit",
-      "Recover overpayments from Pharmacy Benefit Manager",
+    root_cause_analysis: {
+      primary_cause: "Cross-benefit coordination failure",
+      contributing_factors: ["J-code vs NDC mapping overlap"]
+    },
+    recommended_actions: [
+      {
+        action: "Implement real-time cross-benefit edit",
+        priority: "high",
+        estimated_impact: "$42,500"
+      },
+      {
+        action: "Recover overpayments from Pharmacy Benefit Manager",
+        priority: "high",
+        estimated_impact: "$42,500"
+      }
     ],
   },
   {
@@ -65,7 +74,10 @@ export const mockArbitrageEvents: ArbitrageEvent[] = [
     },
     category: "Billing Discrepancy",
     affected_claims: 5,
-    root_causes: ["Provider contract parsing error", "Facility type misclassification"],
+    root_cause_analysis: {
+      primary_cause: "Provider contract parsing error",
+      contributing_factors: ["Facility type misclassification"]
+    }
   },
   {
     event_id: "ARB-2024-003",

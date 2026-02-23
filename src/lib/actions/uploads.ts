@@ -5,89 +5,69 @@
  * Handles file upload operations with presigned URLs
  */
 
-import { createActionResult, type ActionState } from "./types";
-import { validateFormData, rules } from "./validation";
+import { type ActionState, successAction, errorAction } from "./types";
 
-/**
- * Generate presigned upload URL
- */
-export async function generatePresignedUrl(
-  prevState: ActionState,
+interface PresignedUpload {
+  url: string;
+  fields: Record<string, string>;
+  fileId: string;
+}
+
+export async function getPresignedUrl(
+  prevState: ActionState<PresignedUpload> | null,
   formData: FormData
-): Promise<ActionState<{ uploadUrl: string; fileKey: string }>> {
+): Promise<ActionState<PresignedUpload>> {
   try {
-    const fileName = formData.get("fileName") as string;
-    const fileType = formData.get("fileType") as string;
-    const fileSize = formData.get("fileSize") as string;
+    const filename = formData.get("filename") as string;
+    const contentType = formData.get("contentType") as string;
 
-    const validation = validateFormData(formData, {
-      fileName: [rules.required(), rules.maxLength(255)],
-      fileType: [rules.required()],
-      fileSize: [rules.required(), rules.number(), rules.max(50 * 1024 * 1024)], // 50MB max
-    });
-
-    if (!validation.valid) {
-      return createActionResult(false, {
-        message: "Validation failed",
-        errors: validation.errors,
-      });
+    if (!filename || !contentType) {
+      return errorAction("Filename and content type are required");
     }
 
-    // Generate unique file key
-    const fileKey = `uploads/${Date.now()}-${fileName}`;
+    // Simulate S3 presign generation
+    await new Promise(resolve => setTimeout(resolve, 500));
 
-    // Generate presigned URL (implement your cloud storage logic)
-    // This is a placeholder - integrate with R2, S3, etc.
-    const uploadUrl = `/api/uploads/presign?key=${encodeURIComponent(fileKey)}`;
+    const result: PresignedUpload = {
+      url: "https://fake-s3-bucket.com/upload",
+      fields: {
+        key: `uploads/${crypto.randomUUID()}-${filename}`,
+        "Content-Type": contentType,
+      },
+      fileId: crypto.randomUUID(),
+    };
 
-    console.log("Generated presigned URL:", { fileKey, fileName, fileType, fileSize });
-
-    return createActionResult(true, {
-      message: "Upload URL generated",
-      data: { uploadUrl, fileKey },
-    });
+    return successAction("Upload URL generated", { data: result });
   } catch (error) {
-    console.error("Error generating presigned URL:", error);
-    return createActionResult(false, {
-      message: error instanceof Error ? error.message : "Failed to generate upload URL",
-    });
+    return errorAction(
+      error instanceof Error ? error.message : "Failed to generate upload URL"
+    );
   }
 }
 
-/**
- * Confirm file upload completion
- */
 export async function confirmUpload(
-  prevState: ActionState,
+  prevState: ActionState<{ id: string; url: string }> | null,
   formData: FormData
-): Promise<ActionState<{ fileUrl: string }>> {
+): Promise<ActionState<{ id: string; url: string }>> {
   try {
-    const fileKey = formData.get("fileKey") as string;
-
-    const validation = validateFormData(formData, {
-      fileKey: [rules.required()],
-    });
-
-    if (!validation.valid) {
-      return createActionResult(false, {
-        message: "Validation failed",
-        errors: validation.errors,
-      });
+    const fileId = formData.get("fileId") as string;
+    
+    if (!fileId) {
+      return errorAction("File ID is required");
     }
 
-    // Verify upload and get permanent URL
-    const fileUrl = `/uploads/${fileKey}`;
+    // Simulate verification
+    await new Promise(resolve => setTimeout(resolve, 300));
 
-    console.log("Confirmed upload:", { fileKey, fileUrl });
-
-    return createActionResult(true, {
-      message: "Upload confirmed",
-      data: { fileUrl },
+    return successAction("Upload confirmed", {
+      data: { 
+        id: fileId,
+        url: `https://fake-cdn.com/files/${fileId}`
+      }
     });
   } catch (error) {
-    console.error("Error confirming upload:", error);
-    return createActionResult(false, {
-      message: error instanceof Error ? error.message : "Failed to confirm upload",
-    });
+    return errorAction(
+      error instanceof Error ? error.message : "Failed to confirm upload"
+    );
   }
 }

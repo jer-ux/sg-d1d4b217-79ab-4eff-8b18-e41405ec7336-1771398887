@@ -3,51 +3,27 @@
  * React 19 useActionState pattern
  */
 
-export type ActionState<T = unknown> = {
+export type ActionState<T> = {
   success: boolean;
-  message?: string;
+  message: string;
   data?: T;
   errors?: Record<string, string[]>;
-};
-
-export type FormState<T = unknown> = ActionState<T> & {
   timestamp?: number;
 };
 
-/**
- * Helper to create action result
- */
-export function createActionResult<T>(
-  success: boolean,
-  options?: {
-    message?: string;
-    data?: T;
-    errors?: Record<string, string[]>;
-  }
-): ActionState<T> {
+export function successAction<T>(message: string, options?: { data?: T }): ActionState<T> {
   return {
-    success,
-    message: options?.message,
+    success: true,
+    message,
     data: options?.data,
-    errors: options?.errors,
+    timestamp: Date.now(),
   };
 }
 
-/**
- * Helper to create form state
- */
-export function createFormState<T>(
-  success: boolean,
-  options?: {
-    message?: string;
-    data?: T;
-    errors?: Record<string, string[]>;
-  }
-): FormState<T> {
+export function errorAction<T>(message: string, options?: { errors?: Record<string, string[]> }): ActionState<T> {
   return {
-    success,
-    message: options?.message,
-    data: options?.data,
+    success: false,
+    message,
     errors: options?.errors,
     timestamp: Date.now(),
   };

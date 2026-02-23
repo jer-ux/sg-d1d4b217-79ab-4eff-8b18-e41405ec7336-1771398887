@@ -2,7 +2,7 @@
 
 import * as React from "react";
 import { useFormStatus } from "react-dom";
-import { Button } from "@/components/ui/button";
+import { Button, ButtonProps } from "@/components/ui/button";
 import { Loader2 } from "lucide-react";
 
 /**
@@ -23,7 +23,7 @@ export function ServerForm({ action, children, ...props }: ServerFormProps) {
   );
 }
 
-interface SubmitButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
+interface SubmitButtonProps extends ButtonProps {
   pendingText?: string;
   children: React.ReactNode;
 }

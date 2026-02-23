@@ -8,13 +8,11 @@ import { SEO } from "@/components/SEO";
 import { FileText, Shield, TrendingUp, CheckCircle2, Sparkles, Zap, Crown, Star, Activity, ArrowRight } from "lucide-react";
 import { ExecutiveWarRoom } from "@/components/warroom/ExecutiveWarRoom";
 
-// Dynamically import 3D background to prevent SSR issues
 const PremiumBackground = dynamic(
   () => import("@/components/premium/PremiumBackground").then((mod) => ({ default: mod.PremiumBackground })),
   { ssr: false }
 );
 
-// Premium Badge Component
 const Badge = ({ children, icon: Icon }: { children: React.ReactNode; icon?: React.ComponentType<{ className?: string }> }) => (
   <motion.span
     className="inline-flex items-center rounded-full border border-purple-500/40 bg-gradient-to-r from-purple-950/80 to-blue-900/60 px-4 py-1.5 text-xs font-medium text-purple-200 shadow-lg shadow-purple-500/20 backdrop-blur-sm"
@@ -26,7 +24,6 @@ const Badge = ({ children, icon: Icon }: { children: React.ReactNode; icon?: Rea
   </motion.span>
 );
 
-// Premium 3D Card Component
 const Card3D = ({
   title,
   subtitle,
@@ -68,11 +65,9 @@ const Card3D = ({
       onMouseLeave={handleMouseLeave}
       style={{ transformStyle: "preserve-3d" }}
     >
-      {/* Premium glow effects */}
       <div className="absolute -inset-px rounded-2xl bg-gradient-to-r from-purple-600/0 via-purple-500/40 to-blue-600/20 opacity-0 blur-xl transition-opacity duration-500 group-hover:opacity-100" />
       <div className="absolute -inset-px rounded-2xl bg-gradient-to-br from-purple-500/10 via-transparent to-blue-500/10 opacity-60" />
       
-      {/* Sparkle effect on hover */}
       <motion.div
         className="absolute inset-0 rounded-2xl opacity-0 group-hover:opacity-100"
         animate={{
@@ -107,7 +102,6 @@ const Card3D = ({
   );
 };
 
-// Premium Stat Pill
 const Pill = ({ k, v }: { k: string; v: string }) => (
   <motion.div
     className="rounded-xl border border-purple-500/40 bg-gradient-to-br from-black/80 via-purple-950/40 to-black/80 px-5 py-3 backdrop-blur-sm shadow-lg shadow-purple-500/20"
@@ -119,7 +113,6 @@ const Pill = ({ k, v }: { k: string; v: string }) => (
   </motion.div>
 );
 
-// Premium Receipt Card
 const ReceiptCard = ({
   title,
   status,
@@ -141,7 +134,6 @@ const ReceiptCard = ({
     whileHover={{ y: -8, scale: 1.02, rotateX: 2 }}
     style={{ transformStyle: "preserve-3d" }}
   >
-    {/* Glow effect */}
     <div className="absolute -inset-px rounded-2xl bg-gradient-to-r from-emerald-600/0 via-emerald-500/50 to-emerald-600/0 opacity-0 blur-lg transition-opacity duration-500 group-hover:opacity-100" />
     <div className="absolute inset-0 rounded-2xl bg-gradient-to-br from-purple-500/5 to-blue-500/5 opacity-70" />
     
@@ -179,10 +171,8 @@ export default function HomePage() {
       <main className="relative min-h-screen bg-black text-zinc-100 overflow-hidden">
         <PremiumBackground />
         
-        {/* Simplified gradient overlay for purple theme */}
         <div className="fixed inset-0 bg-gradient-to-br from-purple-950/20 via-black to-blue-950/10 pointer-events-none" style={{ zIndex: 0 }} />
         
-        {/* Hero Section with 3D */}
         <motion.section
           ref={heroRef}
           style={{ opacity: heroOpacity, scale: heroScale }}
@@ -225,7 +215,6 @@ export default function HomePage() {
                 You don't "believe" the numbers. You can defend them.
               </motion.p>
 
-              {/* Premium CTA buttons */}
               <motion.div
                 className="mt-10 flex flex-col gap-4 sm:flex-row"
                 initial={{ opacity: 0, y: 20 }}
@@ -265,7 +254,6 @@ export default function HomePage() {
                 <span>Upload → Verify → Govern → Reduce leakage → Prove outcomes.</span>
               </motion.div>
 
-              {/* Founder credibility badge */}
               <motion.div
                 className="mt-10 flex items-center gap-4 rounded-2xl border border-purple-500/30 bg-gradient-to-br from-zinc-950/90 via-purple-950/20 to-zinc-900/70 p-5 backdrop-blur-sm shadow-xl"
                 initial={{ opacity: 0, y: 20 }}
@@ -297,7 +285,6 @@ export default function HomePage() {
               </motion.div>
             </motion.div>
 
-            {/* Right side: 3D receipts ledger */}
             <motion.div
               className="relative rounded-3xl border border-purple-500/40 bg-gradient-to-br from-zinc-950/95 via-purple-950/20 to-zinc-900/90 p-8 shadow-2xl backdrop-blur-sm"
               initial={{ opacity: 0, x: 40, rotateY: -15 }}
@@ -306,7 +293,6 @@ export default function HomePage() {
               whileHover={{ scale: 1.02, rotateY: 2 }}
               style={{ transformStyle: "preserve-3d" }}
             >
-              {/* Multi-layer glow */}
               <div className="absolute -inset-1 rounded-3xl bg-gradient-to-r from-purple-600/30 via-purple-500/40 to-blue-600/30 opacity-70 blur-2xl" />
               <div className="absolute -inset-px rounded-3xl bg-gradient-to-br from-purple-500/20 via-transparent to-blue-500/20 opacity-80" />
               
@@ -358,7 +344,6 @@ export default function HomePage() {
           </div>
         </motion.section>
 
-        {/* Verification Section */}
         <section id="proof" className="relative z-10 mx-auto w-full max-w-7xl px-6 py-20">
           <motion.div
             className="mb-12"
@@ -409,7 +394,6 @@ export default function HomePage() {
           </div>
         </section>
 
-        {/* EBITDA Governance Section */}
         <section id="ebitda" className="relative z-10 mx-auto w-full max-w-7xl px-6 py-20">
           <div className="grid gap-12 lg:grid-cols-2 lg:items-start">
             <motion.div
@@ -505,7 +489,6 @@ export default function HomePage() {
           </div>
         </section>
 
-        {/* Executive War Room Dashboard */}
         <section id="dashboard" className="relative z-10 mx-auto w-full max-w-7xl px-6 py-20">
           <motion.div
             className="mb-12"
@@ -528,7 +511,6 @@ export default function HomePage() {
               </div>
             </div>
 
-            {/* Interactive Demo Callout */}
             <motion.div
               className="mt-8 rounded-2xl border border-emerald-500/40 bg-gradient-to-br from-emerald-950/40 via-zinc-900/50 to-emerald-900/30 p-6 backdrop-blur-sm shadow-xl"
               initial={{ opacity: 0, scale: 0.95 }}
@@ -591,7 +573,6 @@ export default function HomePage() {
           </motion.div>
         </section>
 
-        {/* Enterprise Trust Section */}
         <section id="trust" className="relative z-10 mx-auto w-full max-w-7xl px-6 py-20">
           <motion.div
             className="mb-12"
@@ -669,7 +650,6 @@ export default function HomePage() {
           </motion.div>
         </section>
 
-        {/* Footer */}
         <motion.footer
           className="relative z-10 mx-auto w-full max-w-7xl px-6 py-12"
           initial={{ opacity: 0 }}

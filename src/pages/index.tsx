@@ -9,8 +9,8 @@ import { FileText, Shield, TrendingUp, CheckCircle2, Sparkles, Zap, Crown, Star,
 import { ExecutiveWarRoom } from "@/components/warroom/ExecutiveWarRoom";
 
 // Dynamically import 3D background to prevent SSR issues
-const Premium3DBackground = dynamic(
-  () => import("@/components/premium/PremiumBackground").then((mod) => mod.PremiumBackground),
+const PremiumBackground = dynamic(
+  () => import("@/components/premium/PremiumBackground").then((mod) => ({ default: mod.PremiumBackground })),
   { ssr: false }
 );
 
@@ -177,7 +177,7 @@ export default function HomePage() {
       />
       
       <main className="relative min-h-screen bg-black text-zinc-100 overflow-hidden">
-        <Premium3DBackground />
+        <PremiumBackground />
         
         {/* Gradient overlay for purple theme */}
         <div className="fixed inset-0 -z-10 bg-gradient-to-br from-purple-950/30 via-black to-blue-950/20" />

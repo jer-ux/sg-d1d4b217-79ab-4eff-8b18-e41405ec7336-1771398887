@@ -9,27 +9,19 @@ import { ArbitrageEventCard } from "./ArbitrageEventCard";
 import { ArbitrageFilters } from "./ArbitrageFilters";
 import { ArbitrageStats } from "./ArbitrageStats";
 import { ArbitrageEventDrawer } from "./ArbitrageEventDrawer";
+import { useArbitrageFilters } from "@/hooks/useArbitrageFilters";
 import type { ArbitrageEvent } from "@/lib/arbitrage/mockArbitrageEvents";
-import type { DateRange } from "react-day-picker";
 
 export function ArbitrageEventsPanel() {
   const [selectedEvent, setSelectedEvent] = useState<ArbitrageEvent | null>(null);
-  const [searchQuery, setSearchQuery] = useState("");
-  const [selectedSeverity, setSelectedSeverity] = useState<string[]>([]);
-  const [selectedStatus, setSelectedStatus] = useState<string[]>([]);
-  const [selectedCategory, setSelectedCategory] = useState<string[]>([]);
-  const [minImpact, setMinImpact] = useState(0);
-  const [maxImpact, setMaxImpact] = useState(1000000);
-  const [minConfidence, setMinConfidence] = useState(0);
-  const [dateRange, setDateRange] = useState<DateRange | undefined>();
-  const [sortBy, setSortBy] = useState<"impact" | "date" | "severity" | "confidence">("impact");
+  const { filters, updateFilter, resetFilters, activeFilterCount } = useArbitrageFilters();
 
   const filteredEvents = useMemo(() => {
     let filtered = mockArbitrageEvents;
 
     // Search filter
-    if (searchQuery) {
-      const q = searchQuery.toLowerCase();
+    if (filters.searchQuery) {
+      const q = filters.searchQuery.toLowerCase();
       filtered = filtered.filter(
         (e) =>
           e.title.toLowerCase().includes(q) ||
@@ -40,44 +32,44 @@ export function ArbitrageEventsPanel() {
     }
 
     // Severity filter
-    if (selectedSeverity.length > 0) {
-      filtered = filtered.filter((e) => selectedSeverity.includes(e.severity));
+    if (filters.selectedSeverity.length > 0) {
+      filtered = filtered.filter((e) => filters.selectedSeverity.includes(e.severity));
     }
 
     // Status filter
-    if (selectedStatus.length > 0) {
-      filtered = filtered.filter((e) => selectedStatus.includes(e.status));
+    if (filters.selectedStatus.length > 0) {
+      filtered = filtered.filter((e) => filters.selectedStatus.includes(e.status));
     }
 
     // Category filter
-    if (selectedCategory.length > 0) {
-      filtered = filtered.filter((e) => selectedCategory.includes(e.category));
+    if (filters.selectedCategory.length > 0) {
+      filtered = filtered.filter((e) => filters.selectedCategory.includes(e.category));
     }
 
     // Financial impact filter
     filtered = filtered.filter((e) => {
       const amount = Math.abs(e.financial_impact.amount);
-      return amount >= minImpact && amount <= maxImpact;
+      return amount >= filters.minImpact && amount <= filters.maxImpact;
     });
 
     // Confidence score filter
-    if (minConfidence > 0) {
-      filtered = filtered.filter((e) => e.confidence_score >= minConfidence);
+    if (filters.minConfidence > 0) {
+      filtered = filtered.filter((e) => e.confidence_score >= filters.minConfidence);
     }
 
     // Date range filter
-    if (dateRange?.from || dateRange?.to) {
+    if (filters.dateRange?.from || filters.dateRange?.to) {
       filtered = filtered.filter((e) => {
         const eventDate = new Date(e.detected_at);
-        if (dateRange.from && eventDate < dateRange.from) return false;
-        if (dateRange.to && eventDate > dateRange.to) return false;
+        if (filters.dateRange?.from && eventDate < filters.dateRange.from) return false;
+        if (filters.dateRange?.to && eventDate > filters.dateRange.to) return false;
         return true;
       });
     }
 
     // Sort
     filtered.sort((a, b) => {
-      switch (sortBy) {
+      switch (filters.sortBy) {
         case "impact":
           return Math.abs(b.financial_impact.amount) - Math.abs(a.financial_impact.amount);
         case "date":
@@ -93,61 +85,40 @@ export function ArbitrageEventsPanel() {
     });
 
     return filtered;
-  }, [
-    searchQuery,
-    selectedSeverity,
-    selectedStatus,
-    selectedCategory,
-    minImpact,
-    maxImpact,
-    minConfidence,
-    dateRange,
-    sortBy,
-  ]);
-
-  const resetFilters = () => {
-    setSearchQuery("");
-    setSelectedSeverity([]);
-    setSelectedStatus([]);
-    setSelectedCategory([]);
-    setMinImpact(0);
-    setMaxImpact(1000000);
-    setMinConfidence(0);
-    setDateRange(undefined);
-  };
+  }, [filters]);
 
   const activeFilters = [
-    ...selectedSeverity.map((s) => ({ type: "severity", value: s })),
-    ...selectedStatus.map((s) => ({ type: "status", value: s })),
-    ...selectedCategory.map((s) => ({ type: "category", value: s })),
-    ...(minImpact > 0 ? [{ type: "minImpact", value: `Min: $${minImpact.toLocaleString()}` }] : []),
-    ...(maxImpact < 1000000 ? [{ type: "maxImpact", value: `Max: $${maxImpact.toLocaleString()}` }] : []),
-    ...(minConfidence > 0 ? [{ type: "confidence", value: `Confidence ≥ ${(minConfidence * 100).toFixed(0)}%` }] : []),
-    ...(dateRange?.from || dateRange?.to ? [{ type: "dateRange", value: "Date range" }] : []),
+    ...filters.selectedSeverity.map((s) => ({ type: "severity", value: s })),
+    ...filters.selectedStatus.map((s) => ({ type: "status", value: s })),
+    ...filters.selectedCategory.map((s) => ({ type: "category", value: s })),
+    ...(filters.minImpact > 0 ? [{ type: "minImpact", value: `Min: $${filters.minImpact.toLocaleString()}` }] : []),
+    ...(filters.maxImpact < 1000000 ? [{ type: "maxImpact", value: `Max: $${filters.maxImpact.toLocaleString()}` }] : []),
+    ...(filters.minConfidence > 0 ? [{ type: "confidence", value: `Confidence ≥ ${(filters.minConfidence * 100).toFixed(0)}%` }] : []),
+    ...(filters.dateRange?.from || filters.dateRange?.to ? [{ type: "dateRange", value: "Date range" }] : []),
   ];
 
   const removeFilter = (filter: { type: string; value: string }) => {
     switch (filter.type) {
       case "severity":
-        setSelectedSeverity(selectedSeverity.filter((s) => s !== filter.value));
+        updateFilter("selectedSeverity", filters.selectedSeverity.filter((s) => s !== filter.value));
         break;
       case "status":
-        setSelectedStatus(selectedStatus.filter((s) => s !== filter.value));
+        updateFilter("selectedStatus", filters.selectedStatus.filter((s) => s !== filter.value));
         break;
       case "category":
-        setSelectedCategory(selectedCategory.filter((s) => s !== filter.value));
+        updateFilter("selectedCategory", filters.selectedCategory.filter((s) => s !== filter.value));
         break;
       case "minImpact":
-        setMinImpact(0);
+        updateFilter("minImpact", 0);
         break;
       case "maxImpact":
-        setMaxImpact(1000000);
+        updateFilter("maxImpact", 1000000);
         break;
       case "confidence":
-        setMinConfidence(0);
+        updateFilter("minConfidence", 0);
         break;
       case "dateRange":
-        setDateRange(undefined);
+        updateFilter("dateRange", undefined);
         break;
     }
   };
@@ -166,20 +137,20 @@ export function ArbitrageEventsPanel() {
       <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
         <div className="lg:col-span-1">
           <ArbitrageFilters
-            selectedSeverity={selectedSeverity}
-            selectedStatus={selectedStatus}
-            selectedCategory={selectedCategory}
-            minImpact={minImpact}
-            maxImpact={maxImpact}
-            minConfidence={minConfidence}
-            dateRange={dateRange}
-            onSeverityChange={setSelectedSeverity}
-            onStatusChange={setSelectedStatus}
-            onCategoryChange={setSelectedCategory}
-            onMinImpactChange={setMinImpact}
-            onMaxImpactChange={setMaxImpact}
-            onMinConfidenceChange={setMinConfidence}
-            onDateRangeChange={setDateRange}
+            selectedSeverity={filters.selectedSeverity}
+            selectedStatus={filters.selectedStatus}
+            selectedCategory={filters.selectedCategory}
+            minImpact={filters.minImpact}
+            maxImpact={filters.maxImpact}
+            minConfidence={filters.minConfidence}
+            dateRange={filters.dateRange}
+            onSeverityChange={(val) => updateFilter("selectedSeverity", val)}
+            onStatusChange={(val) => updateFilter("selectedStatus", val)}
+            onCategoryChange={(val) => updateFilter("selectedCategory", val)}
+            onMinImpactChange={(val) => updateFilter("minImpact", val)}
+            onMaxImpactChange={(val) => updateFilter("maxImpact", val)}
+            onMinConfidenceChange={(val) => updateFilter("minConfidence", val)}
+            onDateRangeChange={(val) => updateFilter("dateRange", val)}
             onReset={resetFilters}
           />
         </div>
@@ -207,15 +178,15 @@ export function ArbitrageEventsPanel() {
             <div className="relative flex-1">
               <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-white/40" />
               <Input
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
+                value={filters.searchQuery}
+                onChange={(e) => updateFilter("searchQuery", e.target.value)}
                 placeholder="Search events by title, description, category, or ID..."
                 className="pl-10 rounded-xl border-white/10 bg-black/20 text-white placeholder:text-white/40"
               />
             </div>
             <select
-              value={sortBy}
-              onChange={(e) => setSortBy(e.target.value as "impact" | "date" | "severity" | "confidence")}
+              value={filters.sortBy}
+              onChange={(e) => updateFilter("sortBy", e.target.value as "impact" | "date" | "severity" | "confidence")}
               className="rounded-xl border border-white/10 bg-black/20 px-4 py-2 text-sm text-white outline-none"
             >
               <option value="impact">Sort by Impact</option>

@@ -2,26 +2,24 @@
 
 import * as React from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { X, ShieldCheck, AlertTriangle, FileText, Hash, CheckCircle2, Lock, Activity } from "lucide-react";
+import { X, ShieldCheck, AlertTriangle, FileText, Hash, CheckCircle2, Activity, TrendingDown, TrendingUp } from "lucide-react";
 import { EvidenceReceipt3D, DataFlowVisualization } from "@/components/platform/PremiumGraphics";
-import type { ArbitrageEvent } from "@/pages/arbitrage-events";
+import type { ArbitrageEvent } from "@/lib/arbitrage/mockArbitrageEvents";
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+
+interface ArbitrageEventDrawerProps {
+  event: ArbitrageEvent | null;
+  open: boolean;
+  onOpenChange: (open: boolean) => void;
+}
 
 function Chip({ label, className }: { label: string; className: string }) {
   return <span className={`inline-flex items-center rounded-full border px-3 py-1 text-xs ${className}`}>{label}</span>;
 }
 
-export function ArbitrageEventDrawer({
-  open,
-  onClose,
-  event,
-}: {
-  open: boolean;
-  onClose: () => void;
-  event: ArbitrageEvent | null;
-}) {
+export function ArbitrageEventDrawer({ event, open, onOpenChange }: ArbitrageEventDrawerProps) {
   if (!event) return null;
-
-  const detail = event.detailedExplanation;
 
   return (
     <AnimatePresence>
@@ -32,7 +30,7 @@ export function ArbitrageEventDrawer({
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            onClick={onClose}
+            onClick={() => onOpenChange(false)}
           />
 
           <motion.aside
@@ -50,13 +48,13 @@ export function ArbitrageEventDrawer({
                   <div className="mt-2 flex flex-wrap items-center gap-2">
                     <Chip label={event.severity} className="border-rose-400/25 bg-rose-400/10 text-rose-100" />
                     <Chip label={event.status} className="border-white/15 bg-white/[0.05] text-white/80" />
-                    <Chip label={event.carrier} className="border-white/15 bg-white/[0.05] text-white/80" />
-                    <Chip label={event.id} className="border-white/15 bg-white/[0.05] text-white/80" />
+                    <Chip label={event.category} className="border-white/15 bg-white/[0.05] text-white/80" />
+                    <Chip label={event.event_id} className="border-white/15 bg-white/[0.05] text-white/80" />
                   </div>
                 </div>
 
                 <button
-                  onClick={onClose}
+                  onClick={() => onOpenChange(false)}
                   className="rounded-xl border border-white/10 bg-white/[0.04] p-2 text-white/75 hover:bg-white/[0.08]"
                   aria-label="Close"
                 >
@@ -66,51 +64,53 @@ export function ArbitrageEventDrawer({
             </div>
 
             <div className="p-5">
-              {detail && (
-                <>
-                  {/* Narrative */}
-                  <div className="rounded-2xl border border-white/10 bg-white/[0.03] p-5">
-                    <div className="flex items-center gap-2 text-sm font-medium">
-                      <FileText className="h-4 w-4 text-white/70" />
-                      Executive Explanation
-                    </div>
-                    <div className="mt-3 text-base font-semibold">{detail.headline}</div>
-                    <ul className="mt-3 space-y-2 text-sm text-white/70">
-                      {detail.executiveSummary.map((x, i) => (
-                        <li key={i} className="flex gap-2">
-                          <span className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-white/40" />
-                          <span>{x}</span>
-                        </li>
-                      ))}
-                    </ul>
-                    <div className="mt-4 text-sm text-white/70">
-                      <span className="text-white/85">Why it matters:</span> {detail.whyItMatters}
-                    </div>
-                    <div className="mt-3 text-sm text-white/70">
-                      <span className="text-white/85">What to do next:</span> {detail.whatToDoNext}
-                    </div>
-                    <div className="mt-3 text-xs text-white/55">{detail.gatingNote}</div>
-                  </div>
+              {/* Narrative */}
+              <div className="rounded-2xl border border-white/10 bg-white/[0.03] p-5">
+                <div className="flex items-center gap-2 text-sm font-medium">
+                  <FileText className="h-4 w-4 text-white/70" />
+                  Executive Explanation
+                </div>
+                <div className="mt-3 text-base font-semibold">{event.description}</div>
+                {event.root_causes && (
+                  <ul className="mt-3 space-y-2 text-sm text-white/70">
+                    {event.root_causes.map((x, i) => (
+                      <li key={i} className="flex gap-2">
+                        <span className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-white/40" />
+                        <span>{x}</span>
+                      </li>
+                    ))}
+                  </ul>
+                )}
+                <div className="mt-4 text-sm text-white/70">
+                  <span className="text-white/85">Recommendations:</span>
+                  <ul className="mt-2 space-y-1">
+                    {event.recommendations?.map((rec, i) => (
+                      <li key={i} className="flex items-center gap-2">
+                         <CheckCircle2 className="h-3 w-3 text-emerald-400" />
+                         {rec}
+                      </li>
+                    )) || "None provided"}
+                  </ul>
+                </div>
+              </div>
 
-                  {/* Premium 3D Evidence Receipt Visualization */}
-                  <div className="mt-4">
-                    <div className="mb-3 flex items-center gap-2 text-sm font-medium text-white/90">
-                      <ShieldCheck className="h-4 w-4 text-emerald-400" />
-                      Evidence Receipt (Interactive)
-                    </div>
-                    <EvidenceReceipt3D />
-                  </div>
+              {/* Premium 3D Evidence Receipt Visualization */}
+              <div className="mt-4">
+                <div className="mb-3 flex items-center gap-2 text-sm font-medium text-white/90">
+                  <ShieldCheck className="h-4 w-4 text-emerald-400" />
+                  Evidence Receipt (Interactive)
+                </div>
+                <EvidenceReceipt3D />
+              </div>
 
-                  {/* Data Flow Visualization */}
-                  <div className="mt-4">
-                    <div className="mb-3 flex items-center gap-2 text-sm font-medium text-white/90">
-                      <Activity className="h-4 w-4 text-blue-400" />
-                      Data Lineage Pipeline
-                    </div>
-                    <DataFlowVisualization />
-                  </div>
-                </>
-              )}
+              {/* Data Flow Visualization */}
+              <div className="mt-4">
+                <div className="mb-3 flex items-center gap-2 text-sm font-medium text-white/90">
+                  <Activity className="h-4 w-4 text-blue-400" />
+                  Data Lineage Pipeline
+                </div>
+                <DataFlowVisualization />
+              </div>
 
               {/* Key Metrics */}
               <div className="mt-4 grid gap-3 sm:grid-cols-2">
@@ -122,7 +122,9 @@ export function ArbitrageEventDrawer({
                   <div className="mt-3 space-y-2 text-xs text-white/70">
                     <div className="flex justify-between">
                       <span>Estimated Impact</span>
-                      <span className="text-white/85">{event.estImpact}</span>
+                      <span className="text-white/85">
+                        {event.financial_impact.amount.toLocaleString('en-US', { style: 'currency', currency: event.financial_impact.currency })}
+                      </span>
                     </div>
                     <div className="flex justify-between">
                       <span>Severity</span>
@@ -133,8 +135,8 @@ export function ArbitrageEventDrawer({
                       <span className="text-white/85">{event.status}</span>
                     </div>
                     <div className="flex justify-between">
-                      <span>Last Updated</span>
-                      <span className="text-white/85">{event.updated}</span>
+                      <span>Detected At</span>
+                      <span className="text-white/85">{new Date(event.detected_at).toLocaleDateString()}</span>
                     </div>
                   </div>
                 </div>
@@ -147,15 +149,15 @@ export function ArbitrageEventDrawer({
                   <div className="mt-3 space-y-2 text-xs text-white/70">
                     <div className="flex justify-between">
                       <span>Event ID</span>
-                      <span className="text-white/85">{event.id}</span>
-                    </div>
-                    <div className="flex justify-between">
-                      <span>Carrier</span>
-                      <span className="text-white/85">{event.carrier}</span>
+                      <span className="text-white/85">{event.event_id}</span>
                     </div>
                     <div className="flex justify-between">
                       <span>Category</span>
-                      <span className="text-white/85">Financial Arbitrage</span>
+                      <span className="text-white/85">{event.category}</span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span>Affected Claims</span>
+                      <span className="text-white/85">{event.affected_claims}</span>
                     </div>
                     <div className="flex items-center justify-between">
                       <span>Verification</span>
@@ -168,27 +170,19 @@ export function ArbitrageEventDrawer({
                 </div>
               </div>
 
-              {/* Description */}
-              <div className="mt-4 rounded-2xl border border-white/10 bg-white/[0.03] p-4">
-                <div className="text-sm font-medium">Technical Description</div>
-                <div className="mt-2 text-sm text-white/70">
-                  {event.description}
-                </div>
-              </div>
-
               {/* Actions */}
               <div className="mt-4 rounded-2xl border border-white/10 bg-white/[0.03] p-4">
                 <div className="text-sm font-medium">Available Actions</div>
                 <div className="mt-3 flex flex-wrap gap-2">
-                  <button className="rounded-xl px-4 py-2 text-sm border border-white/15 bg-white/[0.07] hover:bg-white/[0.10]">
+                  <Button variant="outline" size="sm" className="bg-white/5 border-white/10 hover:bg-white/10">
                     Generate Action Packet
-                  </button>
-                  <button className="rounded-xl px-4 py-2 text-sm border border-white/15 bg-white/[0.07] hover:bg-white/[0.10]">
+                  </Button>
+                  <Button variant="outline" size="sm" className="bg-white/5 border-white/10 hover:bg-white/10">
                     Export Audit Report
-                  </button>
-                  <button className="rounded-xl px-4 py-2 text-sm border border-white/10 bg-white/[0.03] text-white/70 hover:bg-white/[0.06]">
+                  </Button>
+                  <Button variant="ghost" size="sm" className="text-white/60 hover:text-white hover:bg-white/5">
                     Assign Owner
-                  </button>
+                  </Button>
                 </div>
                 <div className="mt-3 text-xs text-white/55">
                   This is a demo environment. Full actions require backend integration.

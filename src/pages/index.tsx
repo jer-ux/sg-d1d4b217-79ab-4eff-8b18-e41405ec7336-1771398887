@@ -1,52 +1,80 @@
-import React, { useEffect, useRef } from "react";
+"use client";
+
+import { useRef } from "react";
 import Link from "next/link";
-import { motion, useMotionValue, useSpring, useTransform } from "framer-motion";
+import { motion, useScroll, useTransform, useInView } from "framer-motion";
+import { Canvas } from "@react-three/fiber";
+import { Float, MeshDistortMaterial, Sphere } from "@react-three/drei";
 import { SEO } from "@/components/SEO";
-import { FileText, Shield, TrendingUp, CheckCircle2, Sparkles, Zap, Crown, Star, Activity, TrendingDown, FileCheck, Scale, ArrowRight } from "lucide-react";
+import { FileText, Shield, TrendingUp, CheckCircle2, Sparkles, Zap, Crown, Star, Activity, ArrowRight, Eye, Target, Database } from "lucide-react";
 import { ExecutiveWarRoom } from "@/components/warroom/ExecutiveWarRoom";
+import * as THREE from "three";
 
-// Vegas-style floating particles
-const VegasParticles = () => {
-  const particlesRef = useRef<HTMLDivElement>(null);
+// Premium 3D Background Component
+const Premium3DBackground = () => {
+  return (
+    <div className="fixed inset-0 -z-10">
+      <Canvas camera={{ position: [0, 0, 5], fov: 75 }}>
+        <ambientLight intensity={0.3} />
+        <pointLight position={[10, 10, 10]} intensity={0.8} color="#a855f7" />
+        <pointLight position={[-10, -10, -10]} intensity={0.5} color="#3b82f6" />
+        <pointLight position={[0, 10, 0]} intensity={0.6} color="#fbbf24" />
+        
+        {/* Floating Distorted Spheres */}
+        <Float speed={1.5} rotationIntensity={0.5} floatIntensity={0.8}>
+          <Sphere args={[1, 64, 64]} position={[-3, 2, -5]}>
+            <MeshDistortMaterial color="#a855f7" distort={0.4} speed={2} roughness={0.2} metalness={0.8} />
+          </Sphere>
+        </Float>
+        
+        <Float speed={2} rotationIntensity={0.8} floatIntensity={1}>
+          <Sphere args={[0.8, 64, 64]} position={[4, -2, -6]}>
+            <MeshDistortMaterial color="#3b82f6" distort={0.5} speed={1.5} roughness={0.1} metalness={0.9} />
+          </Sphere>
+        </Float>
+        
+        <Float speed={1.8} rotationIntensity={0.6} floatIntensity={0.9}>
+          <Sphere args={[0.6, 64, 64]} position={[2, 3, -7]}>
+            <MeshDistortMaterial color="#fbbf24" distort={0.3} speed={2.5} roughness={0.3} metalness={0.7} />
+          </Sphere>
+        </Float>
 
-  useEffect(() => {
-    const container = particlesRef.current;
-    if (!container) return;
-
-    const particles = Array.from({ length: 30 }, (_, i) => {
-      const particle = document.createElement("div");
-      particle.className = "absolute rounded-full opacity-0 animate-float-particle";
-      particle.style.cssText = `
-        width: ${Math.random() * 4 + 2}px;
-        height: ${Math.random() * 4 + 2}px;
-        left: ${Math.random() * 100}%;
-        top: ${Math.random() * 100}%;
-        background: ${i % 3 === 0 ? "#fbbf24" : i % 3 === 1 ? "#3b82f6" : "#a855f7"};
-        box-shadow: 0 0 ${Math.random() * 10 + 5}px currentColor;
-        animation-delay: ${Math.random() * 5}s;
-        animation-duration: ${Math.random() * 10 + 15}s;
-      `;
-      return particle;
-    });
-
-    particles.forEach((p) => container.appendChild(p));
-    return () => particles.forEach((p) => p.remove());
-  }, []);
-
-  return <div ref={particlesRef} className="fixed inset-0 pointer-events-none z-0" />;
+        {/* Particle Field */}
+        <points>
+          <bufferGeometry>
+            <bufferAttribute
+              attach="attributes-position"
+              count={3000}
+              array={new Float32Array(
+                Array.from({ length: 3000 }, () => [
+                  (Math.random() - 0.5) * 20,
+                  (Math.random() - 0.5) * 20,
+                  (Math.random() - 0.5) * 20,
+                ]).flat()
+              )}
+              itemSize={3}
+            />
+          </bufferGeometry>
+          <pointsMaterial size={0.02} color="#a855f7" transparent opacity={0.6} />
+        </points>
+      </Canvas>
+    </div>
+  );
 };
 
+// Premium Badge Component
 const Badge = ({ children, icon: Icon }: { children: React.ReactNode; icon?: React.ComponentType<{ className?: string }> }) => (
   <motion.span
-    className="inline-flex items-center rounded-full border border-amber-500/30 bg-gradient-to-r from-amber-950/80 to-amber-900/60 px-3 py-1 text-xs text-amber-200 shadow-lg shadow-amber-500/20 backdrop-blur-sm"
-    whileHover={{ scale: 1.05, y: -2, boxShadow: "0 0 30px rgba(251, 191, 36, 0.4)" }}
+    className="inline-flex items-center rounded-full border border-purple-500/40 bg-gradient-to-r from-purple-950/80 to-blue-900/60 px-4 py-1.5 text-xs font-medium text-purple-200 shadow-lg shadow-purple-500/20 backdrop-blur-sm"
+    whileHover={{ scale: 1.05, y: -2, boxShadow: "0 0 30px rgba(168, 85, 247, 0.4)" }}
     transition={{ type: "spring", stiffness: 400, damping: 10 }}
   >
-    {Icon ? <Icon className="mr-1.5 h-3 w-3 text-amber-400" /> : <Sparkles className="mr-1.5 h-3 w-3 text-amber-400" />}
+    {Icon ? <Icon className="mr-1.5 h-3.5 w-3.5 text-purple-400" /> : <Sparkles className="mr-1.5 h-3.5 w-3.5 text-purple-400" />}
     {children}
   </motion.span>
 );
 
+// Premium 3D Card Component
 const Card3D = ({
   title,
   subtitle,
@@ -61,58 +89,65 @@ const Card3D = ({
   delay?: number;
 }) => {
   const cardRef = useRef<HTMLDivElement>(null);
-  const mouseX = useMotionValue(0);
-  const mouseY = useMotionValue(0);
-
-  const rotateX = useSpring(useTransform(mouseY, [-0.5, 0.5], [5, -5]), { stiffness: 150, damping: 15 });
-  const rotateY = useSpring(useTransform(mouseX, [-0.5, 0.5], [-5, 5]), { stiffness: 150, damping: 15 });
+  const isInView = useInView(cardRef, { once: true, amount: 0.3 });
 
   const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
     if (!cardRef.current) return;
     const rect = cardRef.current.getBoundingClientRect();
-    const x = (e.clientX - rect.left) / rect.width - 0.5;
-    const y = (e.clientY - rect.top) / rect.height - 0.5;
-    mouseX.set(x);
-    mouseY.set(y);
+    const x = ((e.clientX - rect.left) / rect.width - 0.5) * 20;
+    const y = ((e.clientY - rect.top) / rect.height - 0.5) * 20;
+    
+    cardRef.current.style.transform = `perspective(1000px) rotateX(${-y}deg) rotateY(${x}deg) scale3d(1.02, 1.02, 1.02)`;
   };
 
   const handleMouseLeave = () => {
-    mouseX.set(0);
-    mouseY.set(0);
+    if (!cardRef.current) return;
+    cardRef.current.style.transform = "perspective(1000px) rotateX(0deg) rotateY(0deg) scale3d(1, 1, 1)";
   };
 
   return (
     <motion.div
       ref={cardRef}
-      className="group relative rounded-2xl border border-amber-500/20 bg-gradient-to-br from-zinc-950/90 via-amber-950/10 to-zinc-900/80 p-6 shadow-2xl backdrop-blur-sm"
-      style={{ rotateX, rotateY, transformStyle: "preserve-3d" }}
-      initial={{ opacity: 0, y: 20 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true }}
-      transition={{ duration: 0.6, delay }}
+      className="group relative rounded-2xl border border-purple-500/30 bg-gradient-to-br from-zinc-950/95 via-purple-950/20 to-zinc-900/90 p-6 shadow-2xl backdrop-blur-sm transition-all duration-300"
+      initial={{ opacity: 0, y: 30 }}
+      animate={isInView ? { opacity: 1, y: 0 } : {}}
+      transition={{ duration: 0.6, delay, ease: [0.22, 1, 0.36, 1] }}
       onMouseMove={handleMouseMove}
       onMouseLeave={handleMouseLeave}
-      whileHover={{ scale: 1.02, z: 50 }}
+      style={{ transformStyle: "preserve-3d" }}
     >
-      {/* Luxe glow effect */}
-      <div className="absolute -inset-px rounded-2xl bg-gradient-to-r from-amber-600/0 via-amber-500/30 to-purple-600/20 opacity-0 blur-xl transition-opacity duration-500 group-hover:opacity-100" />
-      <div className="absolute -inset-px rounded-2xl bg-gradient-to-br from-blue-500/10 via-transparent to-amber-500/10 opacity-50" />
+      {/* Premium glow effects */}
+      <div className="absolute -inset-px rounded-2xl bg-gradient-to-r from-purple-600/0 via-purple-500/40 to-blue-600/20 opacity-0 blur-xl transition-opacity duration-500 group-hover:opacity-100" />
+      <div className="absolute -inset-px rounded-2xl bg-gradient-to-br from-purple-500/10 via-transparent to-blue-500/10 opacity-60" />
+      
+      {/* Sparkle effect on hover */}
+      <motion.div
+        className="absolute inset-0 rounded-2xl opacity-0 group-hover:opacity-100"
+        animate={{
+          background: [
+            "radial-gradient(circle at 0% 0%, rgba(168, 85, 247, 0.3) 0%, transparent 50%)",
+            "radial-gradient(circle at 100% 100%, rgba(168, 85, 247, 0.3) 0%, transparent 50%)",
+            "radial-gradient(circle at 0% 0%, rgba(168, 85, 247, 0.3) 0%, transparent 50%)",
+          ],
+        }}
+        transition={{ duration: 3, repeat: Infinity, ease: "linear" }}
+      />
       
       <div className="relative" style={{ transform: "translateZ(50px)" }}>
         {Icon && (
           <motion.div
-            className="mb-4 inline-flex h-12 w-12 items-center justify-center rounded-xl bg-gradient-to-br from-amber-500/20 to-purple-500/20 text-amber-400 shadow-lg shadow-amber-500/30"
-            whileHover={{ rotate: 360, scale: 1.1 }}
-            transition={{ duration: 0.8, type: "spring" }}
+            className="mb-4 inline-flex h-14 w-14 items-center justify-center rounded-xl bg-gradient-to-br from-purple-500/30 to-blue-500/30 text-purple-400 shadow-lg shadow-purple-500/40"
+            whileHover={{ rotate: 360, scale: 1.15 }}
+            transition={{ duration: 0.8, type: "spring", stiffness: 200 }}
           >
-            <Icon className="h-6 w-6" />
+            <Icon className="h-7 w-7" />
           </motion.div>
         )}
         <div className="mb-3">
-          <div className="text-lg font-semibold bg-gradient-to-r from-white via-amber-100 to-white bg-clip-text text-transparent">
+          <div className="text-xl font-bold bg-gradient-to-r from-white via-purple-100 to-white bg-clip-text text-transparent">
             {title}
           </div>
-          {subtitle && <div className="mt-1 text-sm text-amber-300/70">{subtitle}</div>}
+          {subtitle && <div className="mt-1 text-sm text-purple-300/70 font-medium">{subtitle}</div>}
         </div>
         <div className="text-sm leading-relaxed text-zinc-300">{children}</div>
       </div>
@@ -120,17 +155,19 @@ const Card3D = ({
   );
 };
 
+// Premium Stat Pill
 const Pill = ({ k, v }: { k: string; v: string }) => (
   <motion.div
-    className="rounded-xl border border-amber-500/30 bg-gradient-to-br from-black/80 via-amber-950/30 to-black/80 px-4 py-3 backdrop-blur-sm shadow-lg shadow-amber-500/10"
-    whileHover={{ scale: 1.05, y: -2, boxShadow: "0 0 25px rgba(251, 191, 36, 0.3)" }}
+    className="rounded-xl border border-purple-500/40 bg-gradient-to-br from-black/80 via-purple-950/40 to-black/80 px-5 py-3 backdrop-blur-sm shadow-lg shadow-purple-500/20"
+    whileHover={{ scale: 1.08, y: -3, boxShadow: "0 0 30px rgba(168, 85, 247, 0.4)" }}
     transition={{ type: "spring", stiffness: 400, damping: 10 }}
   >
-    <div className="text-xs text-amber-400/80 font-medium">{k}</div>
-    <div className="mt-1 text-sm font-semibold bg-gradient-to-r from-white to-amber-100 bg-clip-text text-transparent">{v}</div>
+    <div className="text-xs text-purple-400/90 font-semibold uppercase tracking-wide">{k}</div>
+    <div className="mt-1.5 text-base font-bold bg-gradient-to-r from-white to-purple-100 bg-clip-text text-transparent">{v}</div>
   </motion.div>
 );
 
+// Premium Receipt Card
 const ReceiptCard = ({
   title,
   status,
@@ -145,84 +182,40 @@ const ReceiptCard = ({
   delay?: number;
 }) => (
   <motion.div
-    className="group relative rounded-2xl border border-amber-500/20 bg-gradient-to-br from-black/80 via-amber-950/20 to-zinc-950/60 p-4 backdrop-blur-sm shadow-xl"
+    className="group relative rounded-2xl border border-purple-500/30 bg-gradient-to-br from-black/80 via-purple-950/30 to-zinc-950/70 p-5 backdrop-blur-sm shadow-xl"
     initial={{ opacity: 0, y: 20, rotateX: -10 }}
     animate={{ opacity: 1, y: 0, rotateX: 0 }}
-    transition={{ delay, duration: 0.6, type: "spring" }}
-    whileHover={{ y: -6, scale: 1.02, rotateX: 2 }}
+    transition={{ delay, duration: 0.6, type: "spring", stiffness: 100 }}
+    whileHover={{ y: -8, scale: 1.02, rotateX: 2 }}
     style={{ transformStyle: "preserve-3d" }}
   >
-    {/* Vegas-style shimmer */}
-    <div className="absolute -inset-px rounded-2xl bg-gradient-to-r from-emerald-600/0 via-emerald-500/40 to-emerald-600/0 opacity-0 blur transition-opacity duration-500 group-hover:opacity-100" />
-    <div className="absolute inset-0 rounded-2xl bg-gradient-to-br from-amber-500/5 to-purple-500/5 opacity-60" />
+    {/* Glow effect */}
+    <div className="absolute -inset-px rounded-2xl bg-gradient-to-r from-emerald-600/0 via-emerald-500/50 to-emerald-600/0 opacity-0 blur-lg transition-opacity duration-500 group-hover:opacity-100" />
+    <div className="absolute inset-0 rounded-2xl bg-gradient-to-br from-purple-500/5 to-blue-500/5 opacity-70" />
     
     <div className="relative" style={{ transform: "translateZ(30px)" }}>
       <div className="flex items-center justify-between">
-        <div className="flex items-center gap-2 text-sm font-medium text-white">
-          <FileText className="h-4 w-4 text-amber-400 drop-shadow-[0_0_8px_rgba(251,191,36,0.5)]" />
+        <div className="flex items-center gap-2 text-sm font-semibold text-white">
+          <FileText className="h-4 w-4 text-purple-400 drop-shadow-[0_0_8px_rgba(168,85,247,0.6)]" />
           {title}
         </div>
-        <span className={`text-xs font-semibold ${statusColor} drop-shadow-[0_0_6px_currentColor]`}>{status}</span>
+        <span className={`text-xs font-bold ${statusColor} drop-shadow-[0_0_6px_currentColor]`}>{status}</span>
       </div>
-      <div className="mt-2 text-xs text-zinc-400">{details}</div>
+      <div className="mt-2 text-xs text-zinc-400 leading-relaxed">{details}</div>
     </div>
   </motion.div>
 );
 
-const AnimatedBackground = () => (
-  <div className="fixed inset-0 -z-10 overflow-hidden">
-    {/* Premium gradient mesh */}
-    <div className="absolute inset-0 bg-gradient-to-br from-black via-zinc-950 to-black" />
-    
-    {/* Vegas-style animated orbs with metallic tones */}
-    <motion.div
-      className="absolute -top-40 -right-40 h-[600px] w-[600px] rounded-full bg-gradient-to-br from-amber-500/15 via-amber-600/10 to-transparent blur-3xl"
-      animate={{
-        scale: [1, 1.3, 1],
-        opacity: [0.4, 0.6, 0.4],
-        rotate: [0, 90, 0],
-      }}
-      transition={{
-        duration: 12,
-        repeat: Infinity,
-        ease: "easeInOut",
-      }}
-    />
-    <motion.div
-      className="absolute -bottom-40 -left-40 h-[600px] w-[600px] rounded-full bg-gradient-to-tr from-purple-500/15 via-blue-600/10 to-transparent blur-3xl"
-      animate={{
-        scale: [1.3, 1, 1.3],
-        opacity: [0.4, 0.6, 0.4],
-        rotate: [0, -90, 0],
-      }}
-      transition={{
-        duration: 15,
-        repeat: Infinity,
-        ease: "easeInOut",
-      }}
-    />
-    <motion.div
-      className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 h-[500px] w-[500px] rounded-full bg-gradient-to-r from-blue-500/10 via-purple-500/10 to-amber-500/10 blur-3xl"
-      animate={{
-        scale: [1, 1.2, 1],
-        opacity: [0.3, 0.5, 0.3],
-      }}
-      transition={{
-        duration: 10,
-        repeat: Infinity,
-        ease: "easeInOut",
-      }}
-    />
-    
-    {/* Luxury grid pattern */}
-    <div className="absolute inset-0 bg-[linear-gradient(to_right,#fbbf2412_1px,transparent_1px),linear-gradient(to_bottom,#fbbf2412_1px,transparent_1px)] bg-[size:64px_64px]" />
-    
-    {/* Radial gradient overlay for depth */}
-    <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,transparent_0%,rgba(0,0,0,0.4)_100%)]" />
-  </div>
-);
-
 export default function HomePage() {
+  const heroRef = useRef<HTMLDivElement>(null);
+  const { scrollYProgress } = useScroll({
+    target: heroRef,
+    offset: ["start start", "end start"],
+  });
+
+  const heroOpacity = useTransform(scrollYProgress, [0, 0.5], [1, 0]);
+  const heroScale = useTransform(scrollYProgress, [0, 0.5], [1, 0.95]);
+
   return (
     <>
       <SEO
@@ -232,18 +225,25 @@ export default function HomePage() {
       />
       
       <main className="relative min-h-screen bg-black text-zinc-100 overflow-hidden">
-        <AnimatedBackground />
-        <VegasParticles />
+        <Premium3DBackground />
         
-        {/* Hero with premium 3D */}
-        <section className="relative mx-auto w-full max-w-6xl px-6 pb-16 pt-24">
-          <div className="grid gap-12 md:grid-cols-2 md:items-center">
+        {/* Gradient overlay for purple theme */}
+        <div className="fixed inset-0 -z-10 bg-gradient-to-br from-purple-950/30 via-black to-blue-950/20" />
+        <div className="fixed inset-0 -z-10 bg-[radial-gradient(circle_at_50%_50%,rgba(168,85,247,0.1)_0%,transparent_50%)]" />
+        
+        {/* Hero Section with 3D */}
+        <motion.section
+          ref={heroRef}
+          style={{ opacity: heroOpacity, scale: heroScale }}
+          className="relative mx-auto w-full max-w-7xl px-6 pb-20 pt-32"
+        >
+          <div className="grid gap-16 lg:grid-cols-2 lg:items-center">
             <motion.div
-              initial={{ opacity: 0, x: -30 }}
+              initial={{ opacity: 0, x: -40 }}
               animate={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.8, delay: 0.2, type: "spring" }}
+              transition={{ duration: 0.8, delay: 0.2, ease: [0.22, 1, 0.36, 1] }}
             >
-              <div className="mb-6 flex flex-wrap gap-2">
+              <div className="mb-6 flex flex-wrap gap-3">
                 <Badge icon={Star}>Receipts as the product</Badge>
                 <Badge icon={TrendingUp}>EBITDA governance</Badge>
                 <Badge icon={Shield}>Verification</Badge>
@@ -251,20 +251,20 @@ export default function HomePage() {
               </div>
 
               <motion.h1
-                className="bg-gradient-to-br from-white via-amber-100 to-zinc-300 bg-clip-text text-5xl font-bold tracking-tight text-transparent drop-shadow-[0_0_30px_rgba(251,191,36,0.2)] md:text-6xl"
+                className="bg-gradient-to-br from-white via-purple-200 to-blue-200 bg-clip-text text-6xl font-black tracking-tight text-transparent drop-shadow-[0_0_40px_rgba(168,85,247,0.3)] lg:text-7xl"
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.8, delay: 0.4 }}
               >
                 Stop debating opinions.
                 <br />
-                <span className="bg-gradient-to-r from-amber-300 via-amber-100 to-purple-300 bg-clip-text text-transparent">
+                <span className="bg-gradient-to-r from-purple-400 via-purple-200 to-blue-400 bg-clip-text text-transparent">
                   Run benefits like an EBITDA system.
                 </span>
               </motion.h1>
 
               <motion.p
-                className="mt-6 text-base leading-relaxed text-zinc-300"
+                className="mt-6 text-lg leading-relaxed text-zinc-300"
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 transition={{ duration: 0.8, delay: 0.6 }}
@@ -276,68 +276,68 @@ export default function HomePage() {
 
               {/* Premium CTA buttons */}
               <motion.div
-                className="mt-8 flex flex-col gap-4 sm:flex-row"
+                className="mt-10 flex flex-col gap-4 sm:flex-row"
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.6 }}
+                transition={{ delay: 0.8 }}
               >
                 <Link
                   href="/upload-5500"
-                  className="group relative inline-flex items-center justify-center gap-2 overflow-hidden rounded-2xl border border-amber-500/30 bg-gradient-to-r from-amber-500/20 to-yellow-500/20 px-8 py-4 text-lg font-semibold shadow-lg shadow-amber-500/25 backdrop-blur-xl transition-all duration-500 hover:scale-105 hover:border-amber-500/50 hover:from-amber-500/30 hover:to-yellow-500/30 hover:shadow-amber-500/40"
+                  className="group relative inline-flex items-center justify-center gap-2 overflow-hidden rounded-2xl border border-purple-500/40 bg-gradient-to-r from-purple-600/30 to-blue-600/30 px-8 py-4 text-lg font-bold shadow-lg shadow-purple-500/30 backdrop-blur-xl transition-all duration-500 hover:scale-105 hover:border-purple-400/60 hover:shadow-purple-500/50"
                 >
                   <motion.div
-                    className="absolute inset-0 bg-gradient-to-r from-amber-400 via-white to-amber-400 opacity-0 group-hover:opacity-30"
+                    className="absolute inset-0 bg-gradient-to-r from-purple-400 via-white to-blue-400 opacity-0 group-hover:opacity-30"
                     animate={{ x: ["-100%", "100%"] }}
                     transition={{ duration: 1.5, repeat: Infinity, ease: "linear" }}
                   />
-                  <Zap className="h-4 w-4" />
+                  <Zap className="h-5 w-5 relative" />
                   <span className="relative">Upload receipts →</span>
                 </Link>
                 <motion.div whileHover={{ scale: 1.05, y: -3 }} whileTap={{ scale: 0.95 }}>
                   <Link
                     href="/ebitda-governance"
-                    className="inline-flex items-center justify-center gap-2 rounded-xl border border-amber-500/50 bg-zinc-950/80 px-6 py-3.5 text-sm font-semibold text-white backdrop-blur-sm transition-all hover:border-amber-400/70 hover:bg-amber-950/30 hover:shadow-lg hover:shadow-amber-500/20"
+                    className="inline-flex items-center justify-center gap-2 rounded-xl border border-purple-500/50 bg-zinc-950/80 px-6 py-4 text-base font-bold text-white backdrop-blur-sm transition-all hover:border-purple-400/70 hover:bg-purple-950/40 hover:shadow-lg hover:shadow-purple-500/30"
                   >
-                    <TrendingUp className="h-4 w-4 text-amber-400" />
+                    <TrendingUp className="h-5 w-5 text-purple-400" />
                     See EBITDA governance
                   </Link>
                 </motion.div>
               </motion.div>
 
               <motion.div
-                className="mt-5 flex items-center gap-2 text-xs text-amber-400/70"
+                className="mt-6 flex items-center gap-2 text-sm text-purple-400/80"
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 transition={{ duration: 0.8, delay: 1 }}
               >
-                <Sparkles className="h-3 w-3" />
+                <Sparkles className="h-4 w-4" />
                 <span>Upload → Verify → Govern → Reduce leakage → Prove outcomes.</span>
               </motion.div>
 
               {/* Founder credibility badge */}
               <motion.div
-                className="mt-8 flex items-center gap-4 rounded-2xl border border-amber-500/20 bg-gradient-to-br from-zinc-950/80 via-amber-950/10 to-zinc-900/60 p-4 backdrop-blur-sm"
+                className="mt-10 flex items-center gap-4 rounded-2xl border border-purple-500/30 bg-gradient-to-br from-zinc-950/90 via-purple-950/20 to-zinc-900/70 p-5 backdrop-blur-sm shadow-xl"
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.8, delay: 1.2 }}
-                whileHover={{ scale: 1.02, borderColor: "rgba(251, 191, 36, 0.4)" }}
+                whileHover={{ scale: 1.02, borderColor: "rgba(168, 85, 247, 0.5)" }}
               >
                 <div className="relative h-16 w-16 flex-shrink-0">
-                  <div className="absolute -inset-1 rounded-full bg-gradient-to-r from-amber-500/50 to-purple-500/50 blur-sm" />
+                  <div className="absolute -inset-1 rounded-full bg-gradient-to-r from-purple-500/60 to-blue-500/60 blur-md" />
                   <img
                     src="/jeremiah-shrack-outdoor.png"
                     alt="Jeremiah Franklin Shrack"
-                    className="relative h-16 w-16 rounded-full object-cover ring-2 ring-amber-500/30"
+                    className="relative h-16 w-16 rounded-full object-cover ring-2 ring-purple-500/40"
                   />
                 </div>
                 <div>
-                  <div className="text-sm font-semibold text-white">Built by practitioners, not theorists</div>
+                  <div className="text-sm font-bold text-white">Built by practitioners, not theorists</div>
                   <div className="mt-1 text-xs text-zinc-400">
                     Jeremiah Shrack, CEO — 20 years solving healthcare benefits leakage
                   </div>
                   <Link
                     href="/company"
-                    className="mt-2 inline-flex items-center gap-1 text-xs text-amber-400 transition-colors hover:text-amber-300"
+                    className="mt-2 inline-flex items-center gap-1 text-xs text-purple-400 transition-colors hover:text-purple-300"
                   >
                     <span>Learn about our approach</span>
                     <ArrowRight className="h-3 w-3" />
@@ -346,22 +346,22 @@ export default function HomePage() {
               </motion.div>
             </motion.div>
 
-            {/* Right side: 3D receipts ledger with Vegas feel */}
+            {/* Right side: 3D receipts ledger */}
             <motion.div
-              className="relative rounded-3xl border border-amber-500/30 bg-gradient-to-br from-zinc-950/90 via-amber-950/10 to-zinc-900/80 p-8 shadow-2xl backdrop-blur-sm"
-              initial={{ opacity: 0, x: 30, rotateY: -15 }}
+              className="relative rounded-3xl border border-purple-500/40 bg-gradient-to-br from-zinc-950/95 via-purple-950/20 to-zinc-900/90 p-8 shadow-2xl backdrop-blur-sm"
+              initial={{ opacity: 0, x: 40, rotateY: -15 }}
               animate={{ opacity: 1, x: 0, rotateY: 0 }}
-              transition={{ duration: 0.8, delay: 0.4, type: "spring" }}
-              whileHover={{ scale: 1.03, rotateY: 2 }}
+              transition={{ duration: 0.8, delay: 0.4, type: "spring", stiffness: 100 }}
+              whileHover={{ scale: 1.02, rotateY: 2 }}
               style={{ transformStyle: "preserve-3d" }}
             >
               {/* Multi-layer glow */}
-              <div className="absolute -inset-1 rounded-3xl bg-gradient-to-r from-blue-600/20 via-amber-500/30 to-purple-600/20 opacity-60 blur-2xl" />
-              <div className="absolute -inset-px rounded-3xl bg-gradient-to-br from-amber-500/20 via-purple-500/10 to-blue-500/20 opacity-80" />
+              <div className="absolute -inset-1 rounded-3xl bg-gradient-to-r from-purple-600/30 via-purple-500/40 to-blue-600/30 opacity-70 blur-2xl" />
+              <div className="absolute -inset-px rounded-3xl bg-gradient-to-br from-purple-500/20 via-transparent to-blue-500/20 opacity-80" />
               
               <div className="relative" style={{ transform: "translateZ(40px)" }}>
                 <div className="flex items-center justify-between mb-6">
-                  <div className="text-base font-bold bg-gradient-to-r from-amber-300 to-white bg-clip-text text-transparent">
+                  <div className="text-xl font-black bg-gradient-to-r from-purple-300 to-white bg-clip-text text-transparent">
                     Receipts Ledger
                   </div>
                   <Badge icon={Crown}>Immutable-ish</Badge>
@@ -405,27 +405,27 @@ export default function HomePage() {
               </div>
             </motion.div>
           </div>
-        </section>
+        </motion.section>
 
-        {/* Proof: Verification + Auditability with 3D cards */}
-        <section id="proof" className="relative mx-auto w-full max-w-6xl px-6 py-16">
+        {/* Verification Section */}
+        <section id="proof" className="relative mx-auto w-full max-w-7xl px-6 py-20">
           <motion.div
-            className="mb-8"
+            className="mb-12"
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.6 }}
           >
-            <div className="flex items-center gap-2 text-base font-bold bg-gradient-to-r from-amber-300 to-white bg-clip-text text-transparent">
-              <Shield className="h-5 w-5 text-amber-400 drop-shadow-[0_0_10px_rgba(251,191,36,0.5)]" />
+            <div className="flex items-center gap-3 text-lg font-black bg-gradient-to-r from-purple-300 to-white bg-clip-text text-transparent">
+              <Shield className="h-6 w-6 text-purple-400 drop-shadow-[0_0_12px_rgba(168,85,247,0.6)]" />
               Verification is the moat
             </div>
-            <div className="mt-2 text-zinc-400">
+            <div className="mt-3 text-base text-zinc-400">
               Every metric must cite a receipt. Every receipt must be traceable.
             </div>
           </motion.div>
 
-          <div className="grid gap-6 md:grid-cols-3">
+          <div className="grid gap-8 md:grid-cols-3">
             <Card3D
               title="Lineage-backed KPIs"
               subtitle="No black boxes. Show the inputs."
@@ -458,29 +458,29 @@ export default function HomePage() {
           </div>
         </section>
 
-        {/* EBITDA governance with premium styling */}
-        <section id="ebitda" className="relative mx-auto w-full max-w-6xl px-6 py-16">
-          <div className="grid gap-10 md:grid-cols-2 md:items-start">
+        {/* EBITDA Governance Section */}
+        <section id="ebitda" className="relative mx-auto w-full max-w-7xl px-6 py-20">
+          <div className="grid gap-12 lg:grid-cols-2 lg:items-start">
             <motion.div
               initial={{ opacity: 0, x: -30 }}
               whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.6 }}
             >
-              <div className="flex items-center gap-2 text-base font-bold bg-gradient-to-r from-amber-300 to-white bg-clip-text text-transparent">
-                <TrendingUp className="h-5 w-5 text-amber-400 drop-shadow-[0_0_10px_rgba(251,191,36,0.5)]" />
+              <div className="flex items-center gap-3 text-lg font-black bg-gradient-to-r from-purple-300 to-white bg-clip-text text-transparent">
+                <TrendingUp className="h-6 w-6 text-purple-400 drop-shadow-[0_0_12px_rgba(168,85,247,0.6)]" />
                 EBITDA governance language
               </div>
-              <h2 className="mt-4 bg-gradient-to-br from-white via-amber-100 to-zinc-300 bg-clip-text text-4xl font-bold text-transparent">
+              <h2 className="mt-4 bg-gradient-to-br from-white via-purple-200 to-blue-200 bg-clip-text text-5xl font-black text-transparent">
                 Benefits leakage is EBITDA leakage.
               </h2>
-              <p className="mt-4 text-zinc-300 leading-relaxed">
+              <p className="mt-5 text-base text-zinc-300 leading-relaxed">
                 We frame everything as financial control: unit economics (PEPM), variance drivers,
                 vendor take-rate, avoidable spend, and enforcement. This is governance, not vibes.
               </p>
 
               <motion.div
-                className="mt-6 grid grid-cols-1 gap-3 sm:grid-cols-2"
+                className="mt-8 grid grid-cols-1 gap-4 sm:grid-cols-2"
                 initial={{ opacity: 0 }}
                 whileInView={{ opacity: 1 }}
                 viewport={{ once: true }}
@@ -493,7 +493,7 @@ export default function HomePage() {
               </motion.div>
 
               <motion.div
-                className="mt-6"
+                className="mt-8"
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
@@ -501,27 +501,27 @@ export default function HomePage() {
               >
                 <Link
                   href="/kincaid-iq"
-                  className="group inline-flex items-center gap-2 rounded-xl border border-violet-500/30 bg-gradient-to-r from-violet-500/20 to-purple-500/20 px-6 py-3 text-sm font-semibold backdrop-blur-xl transition-all hover:scale-105 hover:border-violet-500/50 hover:from-violet-500/30 hover:to-purple-500/30"
+                  className="group inline-flex items-center gap-2 rounded-xl border border-violet-500/40 bg-gradient-to-r from-violet-600/30 to-purple-600/30 px-6 py-3.5 text-base font-bold backdrop-blur-xl transition-all hover:scale-105 hover:border-violet-400/60 hover:shadow-lg hover:shadow-violet-500/30"
                 >
-                  <Activity className="h-4 w-4 text-violet-400" />
+                  <Activity className="h-5 w-5 text-violet-400" />
                   <span>Try Kincaid IQ Cost Compression Tool →</span>
                 </Link>
               </motion.div>
             </motion.div>
 
             <motion.div
-              className="rounded-3xl border border-amber-500/30 bg-gradient-to-br from-zinc-950/90 via-amber-950/10 to-zinc-900/80 p-8 shadow-2xl backdrop-blur-sm"
+              className="rounded-3xl border border-purple-500/40 bg-gradient-to-br from-zinc-950/95 via-purple-950/20 to-zinc-900/90 p-8 shadow-2xl backdrop-blur-sm"
               initial={{ opacity: 0, x: 30, rotateY: 15 }}
               whileInView={{ opacity: 1, x: 0, rotateY: 0 }}
               viewport={{ once: true }}
-              transition={{ duration: 0.6, type: "spring" }}
+              transition={{ duration: 0.6, type: "spring", stiffness: 100 }}
               whileHover={{ scale: 1.02, rotateY: -2 }}
               style={{ transformStyle: "preserve-3d" }}
             >
-              <div className="absolute -inset-1 rounded-3xl bg-gradient-to-r from-amber-600/20 via-purple-600/20 to-blue-600/20 opacity-60 blur-xl" />
+              <div className="absolute -inset-1 rounded-3xl bg-gradient-to-r from-purple-600/30 via-purple-500/30 to-blue-600/30 opacity-70 blur-xl" />
               
               <div className="relative" style={{ transform: "translateZ(30px)" }}>
-                <div className="text-base font-bold bg-gradient-to-r from-amber-300 to-white bg-clip-text text-transparent mb-6">
+                <div className="text-xl font-black bg-gradient-to-r from-purple-300 to-white bg-clip-text text-transparent mb-6">
                   Governance loop
                 </div>
                 <div className="grid gap-4">
@@ -534,16 +534,16 @@ export default function HomePage() {
                   ].map(([t, d], i) => (
                     <motion.div
                       key={t}
-                      className="group relative rounded-xl border border-amber-500/20 bg-gradient-to-br from-black/80 via-amber-950/10 to-black/80 p-4 backdrop-blur-sm"
+                      className="group relative rounded-xl border border-purple-500/30 bg-gradient-to-br from-black/80 via-purple-950/20 to-black/80 p-4 backdrop-blur-sm"
                       initial={{ opacity: 0, x: -20 }}
                       whileInView={{ opacity: 1, x: 0 }}
                       viewport={{ once: true }}
                       transition={{ duration: 0.4, delay: i * 0.1 }}
-                      whileHover={{ x: 10, scale: 1.02, borderColor: "rgba(251, 191, 36, 0.4)" }}
+                      whileHover={{ x: 10, scale: 1.02, borderColor: "rgba(168, 85, 247, 0.5)" }}
                     >
-                      <div className="absolute -inset-px rounded-xl bg-gradient-to-r from-amber-600/0 via-amber-500/30 to-amber-600/0 opacity-0 transition-opacity duration-300 group-hover:opacity-100 blur" />
+                      <div className="absolute -inset-px rounded-xl bg-gradient-to-r from-purple-600/0 via-purple-500/40 to-purple-600/0 opacity-0 transition-opacity duration-300 group-hover:opacity-100 blur" />
                       <div className="relative">
-                        <div className="text-sm font-semibold text-white">{t}</div>
+                        <div className="text-sm font-bold text-white">{t}</div>
                         <div className="mt-1 text-xs text-zinc-400">{d}</div>
                       </div>
                     </motion.div>
@@ -554,21 +554,21 @@ export default function HomePage() {
           </div>
         </section>
 
-        {/* Executive War Room - Live CFO Dashboard */}
-        <section id="dashboard" className="relative mx-auto w-full max-w-7xl px-6 py-16">
+        {/* Executive War Room Dashboard */}
+        <section id="dashboard" className="relative mx-auto w-full max-w-7xl px-6 py-20">
           <motion.div
-            className="mb-10"
+            className="mb-12"
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.6 }}
           >
-            <div className="flex items-center gap-3 mb-3">
-              <div className="h-10 w-10 rounded-xl bg-gradient-to-br from-amber-500/20 to-purple-500/20 flex items-center justify-center">
-                <TrendingUp className="h-6 w-6 text-amber-400 drop-shadow-[0_0_10px_rgba(251,191,36,0.5)]" />
+            <div className="flex items-center gap-3 mb-4">
+              <div className="h-12 w-12 rounded-xl bg-gradient-to-br from-purple-500/30 to-blue-500/30 flex items-center justify-center shadow-lg shadow-purple-500/30">
+                <TrendingUp className="h-6 w-6 text-purple-400 drop-shadow-[0_0_12px_rgba(168,85,247,0.6)]" />
               </div>
               <div>
-                <h2 className="text-3xl font-bold bg-gradient-to-br from-white via-amber-100 to-zinc-300 bg-clip-text text-transparent">
+                <h2 className="text-4xl font-black bg-gradient-to-br from-white via-purple-200 to-blue-200 bg-clip-text text-transparent">
                   Live CFO Dashboard
                 </h2>
                 <p className="text-sm text-zinc-400 mt-1">
@@ -577,9 +577,9 @@ export default function HomePage() {
               </div>
             </div>
 
-            {/* NEW: Interactive Demo Callout */}
+            {/* Interactive Demo Callout */}
             <motion.div
-              className="mt-6 rounded-2xl border border-emerald-500/30 bg-gradient-to-br from-emerald-950/30 via-zinc-900/40 to-emerald-900/20 p-6 backdrop-blur-sm"
+              className="mt-8 rounded-2xl border border-emerald-500/40 bg-gradient-to-br from-emerald-950/40 via-zinc-900/50 to-emerald-900/30 p-6 backdrop-blur-sm shadow-xl"
               initial={{ opacity: 0, scale: 0.95 }}
               whileInView={{ opacity: 1, scale: 1 }}
               viewport={{ once: true }}
@@ -589,7 +589,7 @@ export default function HomePage() {
               <div className="flex items-start gap-4">
                 <div className="flex-shrink-0">
                   <motion.div
-                    className="rounded-xl bg-emerald-500/20 p-3"
+                    className="rounded-xl bg-emerald-500/30 p-3 shadow-lg shadow-emerald-500/30"
                     animate={{ rotate: [0, 5, -5, 0] }}
                     transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
                   >
@@ -603,20 +603,20 @@ export default function HomePage() {
                   <div className="text-sm text-zinc-300 leading-relaxed">
                     All <span className="font-bold text-emerald-400">8 tiles</span> are fully interactive with evidence-backed drill-downs:
                     <div className="mt-3 grid grid-cols-1 md:grid-cols-4 gap-2 text-xs">
-                      <div className="flex items-center gap-2 rounded-lg bg-zinc-900/60 px-3 py-2">
-                        <div className="flex h-5 w-5 items-center justify-center rounded-full bg-emerald-500/20 text-emerald-400 font-bold text-xs">1</div>
+                      <div className="flex items-center gap-2 rounded-lg bg-zinc-900/70 px-3 py-2 backdrop-blur-sm">
+                        <div className="flex h-5 w-5 items-center justify-center rounded-full bg-emerald-500/30 text-emerald-400 font-bold text-xs">1</div>
                         <span className="text-zinc-400">Executive Summary</span>
                       </div>
-                      <div className="flex items-center gap-2 rounded-lg bg-zinc-900/60 px-3 py-2">
-                        <div className="flex h-5 w-5 items-center justify-center rounded-full bg-emerald-500/20 text-emerald-400 font-bold text-xs">2</div>
+                      <div className="flex items-center gap-2 rounded-lg bg-zinc-900/70 px-3 py-2 backdrop-blur-sm">
+                        <div className="flex h-5 w-5 items-center justify-center rounded-full bg-emerald-500/30 text-emerald-400 font-bold text-xs">2</div>
                         <span className="text-zinc-400">Factor Breakdown</span>
                       </div>
-                      <div className="flex items-center gap-2 rounded-lg bg-zinc-900/60 px-3 py-2">
-                        <div className="flex h-5 w-5 items-center justify-center rounded-full bg-emerald-500/20 text-emerald-400 font-bold text-xs">3</div>
+                      <div className="flex items-center gap-2 rounded-lg bg-zinc-900/70 px-3 py-2 backdrop-blur-sm">
+                        <div className="flex h-5 w-5 items-center justify-center rounded-full bg-emerald-500/30 text-emerald-400 font-bold text-xs">3</div>
                         <span className="text-zinc-400">Transactions</span>
                       </div>
-                      <div className="flex items-center gap-2 rounded-lg bg-zinc-900/60 px-3 py-2">
-                        <div className="flex h-5 w-5 items-center justify-center rounded-full bg-emerald-500/20 text-emerald-400 font-bold text-xs">4</div>
+                      <div className="flex items-center gap-2 rounded-lg bg-zinc-900/70 px-3 py-2 backdrop-blur-sm">
+                        <div className="flex h-5 w-5 items-center justify-center rounded-full bg-emerald-500/30 text-emerald-400 font-bold text-xs">4</div>
                         <span className="text-zinc-400">Evidence Receipt</span>
                       </div>
                     </div>
@@ -640,25 +640,25 @@ export default function HomePage() {
           </motion.div>
         </section>
 
-        {/* Enterprise Trust with Vegas luxury */}
-        <section id="trust" className="relative mx-auto w-full max-w-6xl px-6 py-16">
+        {/* Enterprise Trust Section */}
+        <section id="trust" className="relative mx-auto w-full max-w-7xl px-6 py-20">
           <motion.div
-            className="mb-8"
+            className="mb-12"
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.6 }}
           >
-            <div className="flex items-center gap-2 text-base font-bold bg-gradient-to-r from-amber-300 to-white bg-clip-text text-transparent">
-              <Shield className="h-5 w-5 text-amber-400 drop-shadow-[0_0_10px_rgba(251,191,36,0.5)]" />
+            <div className="flex items-center gap-3 text-lg font-black bg-gradient-to-r from-purple-300 to-white bg-clip-text text-transparent">
+              <Shield className="h-6 w-6 text-purple-400 drop-shadow-[0_0_12px_rgba(168,85,247,0.6)]" />
               Enterprise trust (security/legal) is unmissable
             </div>
-            <div className="mt-2 text-zinc-400">
+            <div className="mt-3 text-base text-zinc-400">
               If Legal and Security can't sign off, nothing ships. So we build for them first.
             </div>
           </motion.div>
 
-          <div className="grid gap-6 md:grid-cols-3">
+          <div className="grid gap-8 md:grid-cols-3">
             <Card3D title="Security posture" subtitle="Least privilege + audit trails" icon={Shield} delay={0.1}>
               Role-based access, tamper-evident activity logs, and compartmentalized data handling.
               Your risk team gets visibility instead of surprises.
@@ -676,40 +676,40 @@ export default function HomePage() {
           </div>
 
           <motion.div
-            className="mt-10 rounded-3xl border border-amber-500/30 bg-gradient-to-br from-zinc-950/90 via-amber-950/10 to-zinc-900/80 p-8 shadow-2xl backdrop-blur-sm"
+            className="mt-12 rounded-3xl border border-purple-500/40 bg-gradient-to-br from-zinc-950/95 via-purple-950/20 to-zinc-900/90 p-8 shadow-2xl backdrop-blur-sm"
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.6 }}
             whileHover={{ scale: 1.01 }}
           >
-            <div className="absolute -inset-1 rounded-3xl bg-gradient-to-r from-amber-600/20 via-purple-600/20 to-blue-600/20 opacity-60 blur-xl" />
+            <div className="absolute -inset-1 rounded-3xl bg-gradient-to-r from-purple-600/30 via-purple-500/30 to-blue-600/30 opacity-70 blur-xl" />
             
-            <div className="relative flex flex-col gap-6 md:flex-row md:items-center md:justify-between">
+            <div className="relative flex flex-col gap-6 lg:flex-row lg:items-center lg:justify-between">
               <div>
-                <div className="text-lg font-bold bg-gradient-to-r from-amber-300 to-white bg-clip-text text-transparent">
+                <div className="text-xl font-black bg-gradient-to-r from-purple-300 to-white bg-clip-text text-transparent">
                   Make the next step obvious
                 </div>
-                <div className="mt-1 text-sm text-zinc-400">
+                <div className="mt-2 text-sm text-zinc-400">
                   Upload your first receipt bundle and we'll generate a verified baseline.
                 </div>
               </div>
-              <div className="flex gap-3">
+              <div className="flex gap-4">
                 <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
                   <Link
                     href="/upload-5500"
-                    className="inline-flex items-center gap-2 rounded-2xl border border-amber-500/30 bg-gradient-to-r from-amber-500/20 to-yellow-500/20 px-6 py-3 text-sm font-semibold backdrop-blur-xl transition-all hover:border-amber-400/70 hover:bg-amber-950/30"
+                    className="inline-flex items-center gap-2 rounded-2xl border border-purple-500/40 bg-gradient-to-r from-purple-600/30 to-blue-600/30 px-6 py-3 text-base font-bold backdrop-blur-xl transition-all hover:border-purple-400/60 hover:shadow-lg hover:shadow-purple-500/30"
                   >
-                    <Zap className="h-4 w-4 relative" />
+                    <Zap className="h-5 w-5 relative" />
                     <span className="relative">Start with receipts →</span>
                   </Link>
                 </motion.div>
                 <motion.div whileHover={{ scale: 1.05, y: -2 }} whileTap={{ scale: 0.95 }}>
                   <Link
                     href="/evidence-receipts"
-                    className="inline-flex items-center gap-2 rounded-xl border border-amber-500/50 bg-zinc-950/80 px-5 py-3 text-sm font-semibold text-white backdrop-blur-sm transition-all hover:border-amber-400/70 hover:bg-amber-950/30"
+                    className="inline-flex items-center gap-2 rounded-xl border border-purple-500/50 bg-zinc-950/80 px-5 py-3 text-base font-bold text-white backdrop-blur-sm transition-all hover:border-purple-400/70 hover:bg-purple-950/40"
                   >
-                    <TrendingUp className="h-4 w-4 text-amber-400" />
+                    <TrendingUp className="h-5 w-5 text-purple-400" />
                     View KPIs
                   </Link>
                 </motion.div>
@@ -718,27 +718,27 @@ export default function HomePage() {
           </motion.div>
         </section>
 
-        {/* Footer with Vegas touch */}
+        {/* Footer */}
         <motion.footer
-          className="relative mx-auto w-full max-w-6xl px-6 py-12"
+          className="relative mx-auto w-full max-w-7xl px-6 py-12"
           initial={{ opacity: 0 }}
           whileInView={{ opacity: 1 }}
           viewport={{ once: true }}
           transition={{ duration: 0.6 }}
         >
-          <div className="flex flex-col gap-3 border-t border-amber-500/20 pt-8 text-xs text-zinc-500 md:flex-row md:items-center md:justify-between">
+          <div className="flex flex-col gap-3 border-t border-purple-500/30 pt-8 text-xs text-zinc-500 md:flex-row md:items-center md:justify-between">
             <div className="flex items-center gap-2">
-              <Crown className="h-3 w-3 text-amber-500/70" />
+              <Crown className="h-3 w-3 text-purple-500/70" />
               <span>© {new Date().getFullYear()} Kincaid IQ</span>
             </div>
             <div className="flex gap-6">
-              <Link href="#proof" className="transition-all hover:text-amber-400 hover:drop-shadow-[0_0_8px_rgba(251,191,36,0.5)]">
+              <Link href="#proof" className="transition-all hover:text-purple-400 hover:drop-shadow-[0_0_8px_rgba(168,85,247,0.6)]">
                 Proof
               </Link>
-              <Link href="#trust" className="transition-all hover:text-amber-400 hover:drop-shadow-[0_0_8px_rgba(251,191,36,0.5)]">
+              <Link href="#trust" className="transition-all hover:text-purple-400 hover:drop-shadow-[0_0_8px_rgba(168,85,247,0.6)]">
                 Trust
               </Link>
-              <Link href="/evidence-receipts" className="transition-all hover:text-amber-400 hover:drop-shadow-[0_0_8px_rgba(251,191,36,0.5)]">
+              <Link href="/evidence-receipts" className="transition-all hover:text-purple-400 hover:drop-shadow-[0_0_8px_rgba(168,85,247,0.6)]">
                 Login
               </Link>
             </div>

@@ -2,16 +2,10 @@
 
 import { useRef } from "react";
 import Link from "next/link";
-import dynamic from "next/dynamic";
 import { motion, useScroll, useTransform, useInView } from "framer-motion";
 import { SEO } from "@/components/SEO";
 import { FileText, Shield, TrendingUp, CheckCircle2, Sparkles, Zap, Crown, Star, Activity, ArrowRight } from "lucide-react";
 import { ExecutiveWarRoom } from "@/components/warroom/ExecutiveWarRoom";
-
-const PremiumBackground = dynamic(
-  () => import("@/components/premium/PremiumBackground").then((mod) => ({ default: mod.PremiumBackground })),
-  { ssr: false }
-);
 
 const Badge = ({ children, icon: Icon }: { children: React.ReactNode; icon?: React.ComponentType<{ className?: string }> }) => (
   <motion.span
@@ -169,8 +163,6 @@ export default function HomePage() {
       />
       
       <main className="relative min-h-screen bg-black text-zinc-100 overflow-hidden">
-        <PremiumBackground />
-        
         <div className="fixed inset-0 bg-gradient-to-br from-purple-950/20 via-black to-blue-950/10 pointer-events-none" style={{ zIndex: 0 }} />
         
         <motion.section

@@ -31,7 +31,7 @@ export default function Nav() {
     { href: "/actuarial-benefits", label: "Actuarial Benefits" },
     { href: "/board-of-directors", label: "Board" },
     { href: "/arbitrage-events", label: "Arbitrage" },
-    { href: "/investor", label: "Investor" },
+    { href: "/investor", label: "Investor Groups" },
     { href: "/family-offices", label: "Family Offices" },
     { href: "/company", label: "Company" }
   ];

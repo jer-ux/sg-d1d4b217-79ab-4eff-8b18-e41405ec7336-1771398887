@@ -28,7 +28,7 @@ export default function Nav() {
 
   const navItems = [
     { href: "/", label: "Home" },
-    { href: "/verified-savings-ledger", label: "Verified Savings Ledger" },
+    { href: "/actuarial-benefits", label: "Actuarial Benefits" },
     { href: "/evidence-receipts", label: "Evidence Receipts" },
     { href: "/arbitrage-events", label: "Arbitrage" },
     { href: "/investor", label: "Investor" },

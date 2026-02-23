@@ -51,6 +51,13 @@ export async function generateReceipt(
       items: [], // Mock value
       metadata: {}, // Mock value
       rawText: "", // Mock value
+      freshnessMinutes: 1.2,
+      dqPassRate: 0.98,
+      sourceHash: "sha256:e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      transformHash: "sha256:d4735e3a265e16eee03f59718b9b5d03019c07d8b6c51f90da3a666eec13ab35",
+      owner: "System",
+      confidence: 0.99,
+      lineage: ["source:api", "transform:receipt_generator"],
     };
 
     // Save to demo store if available
@@ -68,9 +75,9 @@ export async function generateReceipt(
 }
 
 export async function submitGateForm(
-  prevState: ActionState<{ success: boolean }> | null,
+  prevState: ActionState<{ success: boolean; receipt?: any }> | null,
   formData: FormData
-): Promise<ActionState<{ success: boolean }>> {
+): Promise<ActionState<{ success: boolean; receipt?: any }>> {
   try {
     const email = formData.get("email") as string;
     
@@ -81,7 +88,18 @@ export async function submitGateForm(
     // Simulate API call
     await new Promise(resolve => setTimeout(resolve, 800));
 
-    return successAction("Access granted", { data: { success: true } });
+    // Generate a demo receipt for the gate
+    const receipt = {
+      receiptId: crypto.randomUUID(),
+      freshnessMinutes: 0.5,
+      dqPassRate: 1.0,
+      confidence: 1.0,
+      sourceHash: "sha256:gate_access_" + Date.now(),
+      transformHash: "sha256:auth_verification",
+      owner: email,
+    };
+
+    return successAction("Access granted", { data: { success: true, receipt } });
   } catch (error) {
     return errorAction(
       error instanceof Error ? error.message : "Failed to submit form"

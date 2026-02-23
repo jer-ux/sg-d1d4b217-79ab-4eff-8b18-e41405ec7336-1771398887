@@ -215,7 +215,7 @@ export function ArbitrageEventsPanel() {
                 <ArbitrageEventCard
                   key={event.event_id}
                   event={event}
-                  onViewDetails={setSelectedEvent}
+                  onClick={() => setSelectedEvent(event)}
                 />
               ))}
             </div>

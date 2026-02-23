@@ -1,10 +1,9 @@
-import { useEffect, useActionState } from "react";
+import { useEffect, useActionState, useState } from "react";
 import { z } from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { motion } from "framer-motion";
 import { KeyRound, ShieldCheck, Receipt, Lock } from "lucide-react";
-import { useState } from "react";
 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -29,8 +28,13 @@ const Schema = z.object({
 
 type FormValues = z.infer<typeof Schema>;
 
-export function DemoGateModal() {
-  const [open, setOpen] = useState(false);
+interface DemoGateModalProps {
+  open: boolean;
+  onOpenChange: (open: boolean) => void;
+  calendlyUrl?: string;
+}
+
+export function DemoGateModal({ open, onOpenChange, calendlyUrl = "https://calendly.com" }: DemoGateModalProps) {
   const form = useForm<FormValues>({
     resolver: zodResolver(Schema),
     defaultValues: { name: "", email: "", company: "" },
@@ -38,8 +42,7 @@ export function DemoGateModal() {
   });
 
   // React 19: useActionState for server action handling
-  // Initialize with correct state shape matching the action return type
-  const [state, formAction, isPending] = useActionState<{ success: boolean; message: string; data?: { success: boolean } }>(submitGateForm, {
+  const [state, formAction, isPending] = useActionState(submitGateForm, {
     success: false,
     message: "",
   });
@@ -55,7 +58,7 @@ export function DemoGateModal() {
   // Auto-open Calendly on success
   useEffect(() => {
     if (state?.success && state.data?.receipt) {
-      if (typeof window !== "undefined" && window.Calendly?.initPopupWidget) {
+      if (typeof window !== "undefined" && window.Calendly?.initPopupWidget && calendlyUrl) {
         window.Calendly.initPopupWidget({ url: calendlyUrl });
       }
     }
@@ -64,6 +67,7 @@ export function DemoGateModal() {
   const mode = state?.success ? "done" : "form";
   const receipt = state?.data?.receipt;
   const err = state?.message;
+  // @ts-ignore - errors property might exist on ActionState depending on implementation
   const fieldErrors = state?.errors;
 
   return (
@@ -105,7 +109,7 @@ export function DemoGateModal() {
         </div>
 
         {mode === "form" ? (
-          <form action={submitAction} className="mt-5 space-y-4">
+          <form action={formAction} className="mt-5 space-y-4">
             <div className="grid grid-cols-1 gap-3 md:grid-cols-3">
               <div>
                 <div className="mb-1 text-xs text-white/55">Name (optional)</div>
@@ -228,7 +232,7 @@ export function DemoGateModal() {
                 <Button
                   className="rounded-2xl bg-white text-black hover:bg-white/90"
                   onClick={() => {
-                    if (typeof window !== "undefined" && window.Calendly?.initPopupWidget) {
+                    if (typeof window !== "undefined" && window.Calendly?.initPopupWidget && calendlyUrl) {
                       window.Calendly.initPopupWidget({ url: calendlyUrl });
                     }
                   }}

@@ -46,7 +46,7 @@ export function DemoGateModal({
 
   // React 19: useActionState for server action handling
   // Initial state matches ActionState structure
-  const [state, submitAction, isPending] = useActionState(submitGateForm, {
+  const [state, submitAction, isPending] = useActionState<ActionState<{ receipt: any }>, FormData>(submitGateForm, {
     success: false,
     message: "",
   });

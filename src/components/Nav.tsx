@@ -29,7 +29,7 @@ export default function Nav() {
   const navItems = [
     { href: "/", label: "Home" },
     { href: "/actuarial-benefits", label: "Actuarial Benefits" },
-    { href: "/evidence-receipts", label: "Evidence Receipts" },
+    { href: "/board-of-directors", label: "Board" },
     { href: "/arbitrage-events", label: "Arbitrage" },
     { href: "/investor", label: "Investor" },
     { href: "/family-offices", label: "Family Offices" },

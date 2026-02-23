@@ -4,16 +4,17 @@ import { Button } from "@/components/ui/button";
 import { ServerForm, SubmitButton } from "@/components/ui/server-form";
 import { useServerAction } from "@/hooks/useServerAction";
 import { investigateArbitrageEventAction, assignArbitrageEventAction } from "@/lib/actions/arbitrage";
-import { X, AlertTriangle, TrendingUp, TrendingDown, Clock, User } from "lucide-react";
+import { X, AlertTriangle, TrendingUp, TrendingDown, Clock, User, ChevronRight } from "lucide-react";
 import type { ArbitrageEvent } from "@/lib/arbitrage/mockArbitrageEvents";
 
 interface ArbitrageEventDrawerProps {
   event: ArbitrageEvent | null;
   open: boolean;
   onOpenChange: (open: boolean) => void;
+  onDeepAnalysisClick: () => void;
 }
 
-export function ArbitrageEventDrawer({ event, open, onOpenChange }: ArbitrageEventDrawerProps) {
+export function ArbitrageEventDrawer({ event, open, onOpenChange, onDeepAnalysisClick }: ArbitrageEventDrawerProps) {
   const { formAction: investigate, isPending: isInvestigating } = useServerAction(
     investigateArbitrageEventAction,
     () => {
@@ -149,6 +150,18 @@ export function ArbitrageEventDrawer({ event, open, onOpenChange }: ArbitrageEve
               </div>
             </div>
           )}
+
+          {/* Deep Analysis Button */}
+          <div className="pt-4 border-t">
+            <Button 
+              onClick={onDeepAnalysisClick}
+              className="w-full"
+              variant="outline"
+            >
+              View Deep Analysis
+              <ChevronRight className="ml-2 h-4 w-4" />
+            </Button>
+          </div>
 
           {/* Action Buttons with Server Actions */}
           <div className="flex gap-3 pt-4 border-t">

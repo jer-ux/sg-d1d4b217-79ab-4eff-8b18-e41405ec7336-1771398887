@@ -4,6 +4,9 @@ import { SiteFooter } from "@/components/site/SiteFooter";
 import { Shield, Lock, FileCheck, Activity, CheckCircle2, Sparkles, Database, Globe, Briefcase, Award, ArrowRight } from "lucide-react";
 import Link from "next/link";
 
+// Import static data
+import { securityFeatures, governanceFramework } from "@/lib/server/static-data";
+
 export default function SecurityGovernance() {
   return (
     <>

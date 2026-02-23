@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useState } from "react";
 import { motion, useScroll, useTransform, MotionValue } from "framer-motion";
 import dynamic from "next/dynamic";
 import Image from "next/image";
@@ -255,17 +255,12 @@ export default function InvestorAccess() {
   const [code, setCode] = useState("");
   const [ok, setOk] = useState(false);
   const [err, setErr] = useState<string | null>(null);
-  const [mounted, setMounted] = useState(false);
-  const containerRef = useRef<HTMLDivElement>(null);
-
-  // Only initialize scroll after mount to avoid hydration issues
-  const { scrollYProgress } = mounted ? useScroll({
-    target: containerRef,
-    offset: ["start start", "end end"]
-  }) : { scrollYProgress: { get: () => 0, set: () => {} } as any };
+  
+  // Use window scroll instead of container ref to avoid hydration errors
+  // This is safe to call unconditionally
+  const { scrollYProgress } = useScroll();
 
   useEffect(() => {
-    setMounted(true);
     const saved = typeof window !== "undefined" ? localStorage.getItem("INV_ACCESS_OK") : null;
     if (saved === "1") setOk(true);
   }, []);
@@ -376,16 +371,14 @@ export default function InvestorAccess() {
   }
 
   return (
-    <main ref={containerRef} className="relative min-h-screen">
+    <main className="relative min-h-screen">
       <PremiumBackground />
       
       {/* Progress Indicator */}
-      {mounted && (
-        <motion.div
-          className="fixed top-0 left-0 right-0 z-50 h-1 bg-gradient-to-r from-purple-500 to-fuchsia-500 origin-left"
-          style={{ scaleX: scrollYProgress }}
-        />
-      )}
+      <motion.div
+        className="fixed top-0 left-0 right-0 z-50 h-1 bg-gradient-to-r from-purple-500 to-fuchsia-500 origin-left"
+        style={{ scaleX: scrollYProgress }}
+      />
 
       {/* Lock Button */}
       <motion.button

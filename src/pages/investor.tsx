@@ -258,10 +258,11 @@ export default function InvestorAccess() {
   const [mounted, setMounted] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
 
-  const { scrollYProgress } = useScroll({
+  // Only initialize scroll after mount to avoid hydration issues
+  const { scrollYProgress } = mounted ? useScroll({
     target: containerRef,
     offset: ["start start", "end end"]
-  });
+  }) : { scrollYProgress: { get: () => 0, set: () => {} } as any };
 
   useEffect(() => {
     setMounted(true);
@@ -401,19 +402,17 @@ export default function InvestorAccess() {
       </motion.button>
 
       {/* All 15 Slides */}
-      {mounted && (
-        <div className="relative space-y-0">
-          {slides.map((slide, index) => (
-            <SlideItem
-              key={slide.id}
-              slide={slide}
-              index={index}
-              total={slides.length}
-              scrollYProgress={scrollYProgress}
-            />
-          ))}
-        </div>
-      )}
+      <div className="relative space-y-0">
+        {slides.map((slide, index) => (
+          <SlideItem
+            key={slide.id}
+            slide={slide}
+            index={index}
+            total={slides.length}
+            scrollYProgress={scrollYProgress}
+          />
+        ))}
+      </div>
 
       {/* Footer */}
       <footer className="relative z-10 border-t border-white/10 bg-black/40 backdrop-blur-xl">

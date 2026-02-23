@@ -110,7 +110,6 @@ export default function Nav() {
                         layoutId="activeNav"
                         className="absolute -bottom-1 left-0 right-0 h-0.5 bg-gradient-to-r from-transparent via-amber-400 to-transparent"
                         initial={false}
-                        transition={{ type: "spring", stiffness: 380, damping: 30 }}
                         animate={{
                           opacity: [0.5, 1, 0.5],
                           boxShadow: [
@@ -120,9 +119,9 @@ export default function Nav() {
                           ]
                         }}
                         transition={{
-                          duration: 2,
-                          repeat: Infinity,
-                          ease: "easeInOut"
+                          layout: { type: "spring", stiffness: 380, damping: 30 },
+                          opacity: { duration: 2, repeat: Infinity, ease: "easeInOut" },
+                          boxShadow: { duration: 2, repeat: Infinity, ease: "easeInOut" }
                         }}
                       />
                     )}

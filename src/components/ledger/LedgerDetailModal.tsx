@@ -4,6 +4,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { ExternalSourceReceiptCard } from "@/components/ledger/ExternalSourceReceiptCard";
+import { useActionState, useOptimistic } from "react";
 import { 
   Receipt, 
   User, 
@@ -47,6 +48,55 @@ function formatCurrency(value: number): string {
   }).format(value);
 }
 
+// Server actions for ledger entry state transitions
+async function approveEntryAction(prevState: { success: boolean; error?: string } | null, formData: FormData) {
+  const entryId = formData.get("entryId") as string;
+  
+  try {
+    const response = await fetch("/api/ledger/approve", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ entryId }),
+    });
+
+    if (!response.ok) throw new Error("Failed to approve entry");
+
+    return { success: true };
+  } catch (error) {
+    return { success: false, error: error instanceof Error ? error.message : "Unknown error" };
+  }
+}
+
+async function realizeEntryAction(prevState: { success: boolean; error?: string } | null, formData: FormData) {
+  const entryId = formData.get("entryId") as string;
+  
+  try {
+    const response = await fetch("/api/ledger/approve", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ entryId, realize: true }),
+    });
+
+    if (!response.ok) throw new Error("Failed to realize entry");
+
+    return { success: true };
+  } catch (error) {
+    return { success: false, error: error instanceof Error ? error.message : "Unknown error" };
+  }
+}
+
+async function disputeEntryAction(prevState: { success: boolean; error?: string } | null, formData: FormData) {
+  const entryId = formData.get("entryId") as string;
+  
+  try {
+    // Dispute logic would go here
+    await new Promise(resolve => setTimeout(resolve, 1000));
+    return { success: true };
+  } catch (error) {
+    return { success: false, error: error instanceof Error ? error.message : "Unknown error" };
+  }
+}
+
 export function LedgerDetailModal({
   entry,
   isOpen,
@@ -55,7 +105,20 @@ export function LedgerDetailModal({
   onRealize,
   onDispute
 }: LedgerDetailModalProps) {
+  // React 19 useActionState hooks for server actions
+  const [approveState, approveAction, isApprovePending] = useActionState(approveEntryAction, null);
+  const [realizeState, realizeAction, isRealizePending] = useActionState(realizeEntryAction, null);
+  const [disputeState, disputeAction, isDisputePending] = useActionState(disputeEntryAction, null);
+
+  // React 19 useOptimistic for immediate UI feedback
+  const [optimisticState, setOptimisticState] = useOptimistic(
+    entry?.state,
+    (state, newState: string) => newState
+  );
+
   if (!entry) return null;
+
+  const displayState = optimisticState || entry.state;
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
@@ -66,7 +129,7 @@ export function LedgerDetailModal({
               <DialogTitle className="text-2xl text-white">{entry.title}</DialogTitle>
               <div className="flex items-center gap-2 mt-2">
                 <span className="font-mono text-sm text-white/60">{entry.id}</span>
-                <Badge className={stateColors[entry.state]}>{entry.state}</Badge>
+                <Badge className={stateColors[displayState]}>{displayState}</Badge>
               </div>
             </div>
             <div className="text-right">
@@ -176,29 +239,75 @@ export function LedgerDetailModal({
             )}
 
             <div className="flex gap-3">
-              {entry.state === "identified" && (
-                <Button onClick={() => onApprove?.(entry.id)} className="bg-green-600 hover:bg-green-700">
-                  <CheckCircle2 className="w-4 h-4 mr-2" />
-                  Approve
-                </Button>
+              {displayState === "identified" && (
+                <form action={approveAction}>
+                  <input type="hidden" name="entryId" value={entry.id} />
+                  <Button 
+                    type="submit"
+                    disabled={isApprovePending}
+                    onClick={() => {
+                      setOptimisticState("approved");
+                      onApprove?.(entry.id);
+                    }}
+                    className="bg-green-600 hover:bg-green-700"
+                  >
+                    <CheckCircle2 className="w-4 h-4 mr-2" />
+                    {isApprovePending ? "Approving..." : "Approve"}
+                  </Button>
+                </form>
               )}
-              {entry.state === "approved" && (
-                <Button onClick={() => onRealize?.(entry.id)} className="bg-emerald-600 hover:bg-emerald-700">
-                  <DollarSign className="w-4 h-4 mr-2" />
-                  Mark as Realized
-                </Button>
+              {displayState === "approved" && (
+                <form action={realizeAction}>
+                  <input type="hidden" name="entryId" value={entry.id} />
+                  <Button 
+                    type="submit"
+                    disabled={isRealizePending}
+                    onClick={() => {
+                      setOptimisticState("realized");
+                      onRealize?.(entry.id);
+                    }}
+                    className="bg-emerald-600 hover:bg-emerald-700"
+                  >
+                    <DollarSign className="w-4 h-4 mr-2" />
+                    {isRealizePending ? "Realizing..." : "Mark as Realized"}
+                  </Button>
+                </form>
               )}
-              {(entry.state === "identified" || entry.state === "approved") && (
-                <Button 
-                  onClick={() => onDispute?.(entry.id)} 
-                  variant="outline"
-                  className="border-orange-500/30 text-orange-400 hover:bg-orange-500/10"
-                >
-                  <AlertCircle className="w-4 h-4 mr-2" />
-                  Raise Dispute
-                </Button>
+              {(displayState === "identified" || displayState === "approved") && (
+                <form action={disputeAction}>
+                  <input type="hidden" name="entryId" value={entry.id} />
+                  <Button 
+                    type="submit"
+                    disabled={isDisputePending}
+                    onClick={() => {
+                      setOptimisticState("disputed");
+                      onDispute?.(entry.id);
+                    }}
+                    variant="outline"
+                    className="border-orange-500/30 text-orange-400 hover:bg-orange-500/10"
+                  >
+                    <AlertCircle className="w-4 h-4 mr-2" />
+                    {isDisputePending ? "Disputing..." : "Raise Dispute"}
+                  </Button>
+                </form>
               )}
             </div>
+
+            {approveState?.error && (
+              <div className="rounded-lg border border-red-500/30 bg-red-500/10 p-3 text-red-400 text-sm">
+                Error approving entry: {approveState.error}
+              </div>
+            )}
+            {realizeState?.error && (
+              <div className="rounded-lg border border-red-500/30 bg-red-500/10 p-3 text-red-400 text-sm">
+                Error realizing entry: {realizeState.error}
+              </div>
+            )}
+            {disputeState?.error && (
+              <div className="rounded-lg border border-red-500/30 bg-red-500/10 p-3 text-red-400 text-sm">
+                Error disputing entry: {disputeState.error}
+              </div>
+            )}
           </TabsContent>
 
           <TabsContent value="receipts" className="mt-4">

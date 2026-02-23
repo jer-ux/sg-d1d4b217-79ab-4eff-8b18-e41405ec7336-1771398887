@@ -1,12 +1,11 @@
-"use client";
-
-import * as React from "react";
-import { motion, AnimatePresence } from "framer-motion";
-import { X, ShieldCheck, AlertTriangle, FileText, Hash, CheckCircle2, Activity, TrendingDown, TrendingUp } from "lucide-react";
-import { EvidenceReceipt3D, DataFlowVisualization } from "@/components/platform/PremiumGraphics";
-import type { ArbitrageEvent } from "@/lib/arbitrage/mockArbitrageEvents";
+import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetDescription } from "@/components/ui/sheet";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
+import { ServerForm, SubmitButton } from "@/components/ui/server-form";
+import { useServerAction } from "@/hooks/useServerAction";
+import { investigateArbitrageEventAction, assignArbitrageEventAction } from "@/lib/actions/arbitrage";
+import { X, AlertTriangle, TrendingUp, TrendingDown, Clock, User } from "lucide-react";
+import type { ArbitrageEvent } from "@/lib/arbitrage/mockArbitrageEvents";
 
 interface ArbitrageEventDrawerProps {
   event: ArbitrageEvent | null;
@@ -14,184 +13,163 @@ interface ArbitrageEventDrawerProps {
   onOpenChange: (open: boolean) => void;
 }
 
-function Chip({ label, className }: { label: string; className: string }) {
-  return <span className={`inline-flex items-center rounded-full border px-3 py-1 text-xs ${className}`}>{label}</span>;
-}
-
 export function ArbitrageEventDrawer({ event, open, onOpenChange }: ArbitrageEventDrawerProps) {
+  const { formAction: investigate, isPending: isInvestigating } = useServerAction(
+    investigateArbitrageEventAction,
+    () => {
+      // Success callback
+      console.log("Investigation started");
+    }
+  );
+
+  const { formAction: assign, isPending: isAssigning } = useServerAction(
+    assignArbitrageEventAction,
+    () => {
+      // Success callback
+      console.log("Event assigned");
+    }
+  );
+
   if (!event) return null;
 
+  const severityStyles = {
+    critical: "border-red-500/50 bg-red-500/10 text-red-400",
+    high: "border-orange-500/50 bg-orange-500/10 text-orange-400",
+    medium: "border-yellow-500/50 bg-yellow-500/10 text-yellow-400",
+    low: "border-blue-500/50 bg-blue-500/10 text-blue-400",
+  };
+
   return (
-    <AnimatePresence>
-      {open && (
-        <>
-          <motion.div
-            className="fixed inset-0 z-40 bg-black/60"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            onClick={() => onOpenChange(false)}
-          />
+    <Sheet open={open} onOpenChange={onOpenChange}>
+      <SheetContent className="w-full sm:max-w-2xl overflow-y-auto">
+        <SheetHeader>
+          <div className="flex items-start justify-between">
+            <div className="flex-1">
+              <SheetTitle className="text-2xl mb-2">{event.title}</SheetTitle>
+              <SheetDescription>{event.description}</SheetDescription>
+            </div>
+            <Button
+              variant="ghost"
+              size="icon"
+              onClick={() => onOpenChange(false)}
+              className="h-8 w-8"
+            >
+              <X className="h-4 w-4" />
+            </Button>
+          </div>
+        </SheetHeader>
 
-          <motion.aside
-            className="fixed right-0 top-0 z-50 h-full w-full max-w-2xl overflow-y-auto border-l border-white/10 bg-[#060812] text-white shadow-[0_0_120px_rgba(0,0,0,0.6)]"
-            initial={{ x: 40, opacity: 0 }}
-            animate={{ x: 0, opacity: 1 }}
-            exit={{ x: 40, opacity: 0 }}
-            transition={{ duration: 0.22, ease: "easeOut" }}
-          >
-            <div className="sticky top-0 z-10 border-b border-white/10 bg-[#060812]/90 backdrop-blur-xl">
-              <div className="flex items-start justify-between gap-4 p-5">
-                <div>
-                  <div className="text-xs text-white/55">Arbitrage Event</div>
-                  <div className="mt-1 text-lg font-semibold">{event.title}</div>
-                  <div className="mt-2 flex flex-wrap items-center gap-2">
-                    <Chip label={event.severity} className="border-rose-400/25 bg-rose-400/10 text-rose-100" />
-                    <Chip label={event.status} className="border-white/15 bg-white/[0.05] text-white/80" />
-                    <Chip label={event.category} className="border-white/15 bg-white/[0.05] text-white/80" />
-                    <Chip label={event.event_id} className="border-white/15 bg-white/[0.05] text-white/80" />
-                  </div>
-                </div>
-
-                <button
-                  onClick={() => onOpenChange(false)}
-                  className="rounded-xl border border-white/10 bg-white/[0.04] p-2 text-white/75 hover:bg-white/[0.08]"
-                  aria-label="Close"
-                >
-                  <X className="h-5 w-5" />
-                </button>
+        <div className="mt-6 space-y-6">
+          {/* Event Metadata */}
+          <div className="grid grid-cols-2 gap-4">
+            <div className="space-y-2">
+              <div className="text-sm text-muted-foreground">Severity</div>
+              <Badge className={severityStyles[event.severity as keyof typeof severityStyles]}>
+                {event.severity.toUpperCase()}
+              </Badge>
+            </div>
+            <div className="space-y-2">
+              <div className="text-sm text-muted-foreground">Category</div>
+              <Badge variant="outline">{event.category}</Badge>
+            </div>
+            <div className="space-y-2">
+              <div className="text-sm text-muted-foreground">Affected Claims</div>
+              <div className="text-lg font-semibold">{event.affected_claims}</div>
+            </div>
+            <div className="space-y-2">
+              <div className="text-sm text-muted-foreground">Detected</div>
+              <div className="flex items-center gap-1 text-sm">
+                <Clock className="h-4 w-4" />
+                {new Date(event.detected_at).toLocaleDateString()}
               </div>
             </div>
+          </div>
 
-            <div className="p-5">
-              {/* Narrative */}
-              <div className="rounded-2xl border border-white/10 bg-white/[0.03] p-5">
-                <div className="flex items-center gap-2 text-sm font-medium">
-                  <FileText className="h-4 w-4 text-white/70" />
-                  Executive Explanation
-                </div>
-                <div className="mt-3 text-base font-semibold">{event.description}</div>
-                {event.root_causes && (
-                  <ul className="mt-3 space-y-2 text-sm text-white/70">
-                    {event.root_causes.map((x, i) => (
-                      <li key={i} className="flex gap-2">
-                        <span className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-white/40" />
-                        <span>{x}</span>
-                      </li>
-                    ))}
-                  </ul>
+          {/* Financial Impact */}
+          {event.financial_impact && (
+            <div className="rounded-lg border border-white/10 bg-white/5 p-4">
+              <h3 className="font-semibold mb-3 flex items-center gap-2">
+                {event.financial_impact.type === "negative" ? (
+                  <TrendingDown className="h-5 w-5 text-red-400" />
+                ) : (
+                  <TrendingUp className="h-5 w-5 text-green-400" />
                 )}
-                <div className="mt-4 text-sm text-white/70">
-                  <span className="text-white/85">Recommendations:</span>
-                  <ul className="mt-2 space-y-1">
-                    {event.recommendations?.map((rec, i) => (
-                      <li key={i} className="flex items-center gap-2">
-                         <CheckCircle2 className="h-3 w-3 text-emerald-400" />
-                         {rec}
-                      </li>
-                    )) || "None provided"}
-                  </ul>
-                </div>
+                Financial Impact
+              </h3>
+              <div className="text-2xl font-bold">
+                ${event.financial_impact.amount.toLocaleString()}
               </div>
-
-              {/* Premium 3D Evidence Receipt Visualization */}
-              <div className="mt-4">
-                <div className="mb-3 flex items-center gap-2 text-sm font-medium text-white/90">
-                  <ShieldCheck className="h-4 w-4 text-emerald-400" />
-                  Evidence Receipt (Interactive)
-                </div>
-                <EvidenceReceipt3D />
+              <div className="text-sm text-muted-foreground mt-1">
+                {event.financial_impact.type === "negative" ? "Potential Loss" : "Savings Opportunity"}
               </div>
+            </div>
+          )}
 
-              {/* Data Flow Visualization */}
-              <div className="mt-4">
-                <div className="mb-3 flex items-center gap-2 text-sm font-medium text-white/90">
-                  <Activity className="h-4 w-4 text-blue-400" />
-                  Data Lineage Pipeline
-                </div>
-                <DataFlowVisualization />
-              </div>
-
-              {/* Key Metrics */}
-              <div className="mt-4 grid gap-3 sm:grid-cols-2">
-                <div className="rounded-2xl border border-white/10 bg-white/[0.03] p-4">
-                  <div className="flex items-center gap-2 text-sm font-medium">
-                    <AlertTriangle className="h-4 w-4 text-white/70" />
-                    Impact Analysis
+          {/* Root Cause Analysis */}
+          {event.root_cause_analysis && (
+            <div className="space-y-3">
+              <h3 className="font-semibold">Root Cause Analysis</h3>
+              <div className="rounded-lg border border-white/10 bg-white/5 p-4">
+                <div className="space-y-2">
+                  <div>
+                    <span className="text-sm text-muted-foreground">Primary Cause:</span>
+                    <p className="mt-1">{event.root_cause_analysis.primary_cause}</p>
                   </div>
-                  <div className="mt-3 space-y-2 text-xs text-white/70">
-                    <div className="flex justify-between">
-                      <span>Estimated Impact</span>
-                      <span className="text-white/85">
-                        {event.financial_impact.amount.toLocaleString('en-US', { style: 'currency', currency: event.financial_impact.currency })}
-                      </span>
-                    </div>
-                    <div className="flex justify-between">
-                      <span>Severity</span>
-                      <span className="text-white/85">{event.severity}</span>
-                    </div>
-                    <div className="flex justify-between">
-                      <span>Status</span>
-                      <span className="text-white/85">{event.status}</span>
-                    </div>
-                    <div className="flex justify-between">
-                      <span>Detected At</span>
-                      <span className="text-white/85">{new Date(event.detected_at).toLocaleDateString()}</span>
-                    </div>
+                  <div>
+                    <span className="text-sm text-muted-foreground">Contributing Factors:</span>
+                    <ul className="mt-1 list-disc list-inside space-y-1">
+                      {event.root_cause_analysis.contributing_factors.map((factor, idx) => (
+                        <li key={idx} className="text-sm">{factor}</li>
+                      ))}
+                    </ul>
                   </div>
-                </div>
-
-                <div className="rounded-2xl border border-white/10 bg-white/[0.03] p-4">
-                  <div className="flex items-center gap-2 text-sm font-medium">
-                    <Hash className="h-4 w-4 text-white/70" />
-                    Event Details
-                  </div>
-                  <div className="mt-3 space-y-2 text-xs text-white/70">
-                    <div className="flex justify-between">
-                      <span>Event ID</span>
-                      <span className="text-white/85">{event.event_id}</span>
-                    </div>
-                    <div className="flex justify-between">
-                      <span>Category</span>
-                      <span className="text-white/85">{event.category}</span>
-                    </div>
-                    <div className="flex justify-between">
-                      <span>Affected Claims</span>
-                      <span className="text-white/85">{event.affected_claims}</span>
-                    </div>
-                    <div className="flex items-center justify-between">
-                      <span>Verification</span>
-                      <span className="inline-flex items-center gap-2 text-white/85">
-                        <CheckCircle2 className="h-4 w-4 text-emerald-200" />
-                        Demo Mode
-                      </span>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              {/* Actions */}
-              <div className="mt-4 rounded-2xl border border-white/10 bg-white/[0.03] p-4">
-                <div className="text-sm font-medium">Available Actions</div>
-                <div className="mt-3 flex flex-wrap gap-2">
-                  <Button variant="outline" size="sm" className="bg-white/5 border-white/10 hover:bg-white/10">
-                    Generate Action Packet
-                  </Button>
-                  <Button variant="outline" size="sm" className="bg-white/5 border-white/10 hover:bg-white/10">
-                    Export Audit Report
-                  </Button>
-                  <Button variant="ghost" size="sm" className="text-white/60 hover:text-white hover:bg-white/5">
-                    Assign Owner
-                  </Button>
-                </div>
-                <div className="mt-3 text-xs text-white/55">
-                  This is a demo environment. Full actions require backend integration.
                 </div>
               </div>
             </div>
-          </motion.aside>
-        </>
-      )}
-    </AnimatePresence>
+          )}
+
+          {/* Recommended Actions */}
+          {event.recommended_actions && event.recommended_actions.length > 0 && (
+            <div className="space-y-3">
+              <h3 className="font-semibold">Recommended Actions</h3>
+              <div className="space-y-2">
+                {event.recommended_actions.map((action, idx) => (
+                  <div key={idx} className="rounded-lg border border-white/10 bg-white/5 p-3">
+                    <div className="flex items-start gap-2">
+                      <AlertTriangle className="h-4 w-4 mt-0.5 text-yellow-400" />
+                      <div className="flex-1">
+                        <div className="font-medium">{action.action}</div>
+                        <div className="text-sm text-muted-foreground mt-1">
+                          Priority: {action.priority} | Est. Impact: {action.estimated_impact}
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+
+          {/* Action Buttons with Server Actions */}
+          <div className="flex gap-3 pt-4 border-t">
+            <ServerForm action={investigate} className="flex-1">
+              <input type="hidden" name="event_id" value={event.event_id} />
+              <SubmitButton className="w-full" pendingText="Starting Investigation...">
+                Start Investigation
+              </SubmitButton>
+            </ServerForm>
+
+            <ServerForm action={assign} className="flex-1">
+              <input type="hidden" name="event_id" value={event.event_id} />
+              <input type="hidden" name="assignee" value="current-user@example.com" />
+              <SubmitButton variant="outline" className="w-full" pendingText="Assigning...">
+                <User className="mr-2 h-4 w-4" />
+                Assign to Me
+              </SubmitButton>
+            </ServerForm>
+          </div>
+        </div>
+      </SheetContent>
+    </Sheet>
   );
 }

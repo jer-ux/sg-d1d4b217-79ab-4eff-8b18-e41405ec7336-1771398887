@@ -255,6 +255,7 @@ export default function InvestorAccess() {
   const [code, setCode] = useState("");
   const [ok, setOk] = useState(false);
   const [err, setErr] = useState<string | null>(null);
+  const [mounted, setMounted] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
 
   const { scrollYProgress } = useScroll({
@@ -263,6 +264,7 @@ export default function InvestorAccess() {
   });
 
   useEffect(() => {
+    setMounted(true);
     const saved = typeof window !== "undefined" ? localStorage.getItem("INV_ACCESS_OK") : null;
     if (saved === "1") setOk(true);
   }, []);
@@ -377,10 +379,12 @@ export default function InvestorAccess() {
       <PremiumBackground />
       
       {/* Progress Indicator */}
-      <motion.div
-        className="fixed top-0 left-0 right-0 z-50 h-1 bg-gradient-to-r from-purple-500 to-fuchsia-500 origin-left"
-        style={{ scaleX: scrollYProgress }}
-      />
+      {mounted && (
+        <motion.div
+          className="fixed top-0 left-0 right-0 z-50 h-1 bg-gradient-to-r from-purple-500 to-fuchsia-500 origin-left"
+          style={{ scaleX: scrollYProgress }}
+        />
+      )}
 
       {/* Lock Button */}
       <motion.button
@@ -397,17 +401,19 @@ export default function InvestorAccess() {
       </motion.button>
 
       {/* All 15 Slides */}
-      <div className="relative space-y-0">
-        {slides.map((slide, index) => (
-          <SlideItem
-            key={slide.id}
-            slide={slide}
-            index={index}
-            total={slides.length}
-            scrollYProgress={scrollYProgress}
-          />
-        ))}
-      </div>
+      {mounted && (
+        <div className="relative space-y-0">
+          {slides.map((slide, index) => (
+            <SlideItem
+              key={slide.id}
+              slide={slide}
+              index={index}
+              total={slides.length}
+              scrollYProgress={scrollYProgress}
+            />
+          ))}
+        </div>
+      )}
 
       {/* Footer */}
       <footer className="relative z-10 border-t border-white/10 bg-black/40 backdrop-blur-xl">

@@ -1,6 +1,4 @@
-"use client";
-
-import { useCallback, useRef, useState } from "react";
+import { useRef, useActionState } from "react";
 import { toast } from "sonner";
 import { attachToEvent, presignUpload, putFile, sha256Hex } from "@/components/warroom/uploadClient";
 
@@ -11,70 +9,106 @@ function fmtBytes(n: number) {
   return n + " B";
 }
 
-export function AttachmentUploader({ eventId, onUploaded }: { eventId: string; onUploaded?: () => void }) {
+type UploadState = {
+  success: boolean;
+  error?: string;
+  fileName?: string;
+};
+
+// Server action for file upload
+async function uploadFileAction(
+  prevState: UploadState | null,
+  formData: FormData
+): Promise<UploadState> {
+  const eventId = formData.get("eventId") as string;
+  const file = formData.get("file") as File;
+
+  if (!file || file.size === 0) {
+    return { success: false, error: "No file selected" };
+  }
+
+  if (file.size > 50 * 1024 * 1024) {
+    return { success: false, error: "File too large (50MB max)" };
+  }
+
+  try {
+    const [hash, signed] = await Promise.all([
+      sha256Hex(file),
+      presignUpload(eventId, file),
+    ]);
+
+    await putFile(signed.uploadUrl, file);
+    await attachToEvent(eventId, file.name, signed.publicUrl, `sha256:${hash}`);
+
+    return { success: true, fileName: file.name };
+  } catch (e: any) {
+    return { success: false, error: e?.message ?? "Upload failed" };
+  }
+}
+
+export function AttachmentUploader({
+  eventId,
+  onUploaded,
+}: {
+  eventId: string;
+  onUploaded?: () => void;
+}) {
   const inputRef = useRef<HTMLInputElement | null>(null);
-  const [drag, setDrag] = useState(false);
-  const [busy, setBusy] = useState(false);
+  const formRef = useRef<HTMLFormElement | null>(null);
 
-  const handleFiles = useCallback(
-    async (files: FileList | null) => {
-      if (!files || files.length === 0) return;
-      const file = files[0];
+  // React 19: useActionState for file upload handling
+  const [state, uploadAction, isPending] = useActionState(uploadFileAction, null);
 
-      if (file.size > 50 * 1024 * 1024) {
-        toast.error("File too large (50MB max)");
-        return;
-      }
+  const handleFileSelect = (file: File | null) => {
+    if (!file || isPending) return;
 
-      setBusy(true);
-      const t = toast.loading(`Uploading ${file.name} (${fmtBytes(file.size)})…`);
+    const formData = new FormData();
+    formData.set("eventId", eventId);
+    formData.set("file", file);
 
-      try {
-        const [hash, signed] = await Promise.all([sha256Hex(file), presignUpload(eventId, file)]);
-        await putFile(signed.uploadUrl, file);
-        await attachToEvent(eventId, file.name, signed.publicUrl, `sha256:${hash}`);
+    // Show loading toast
+    const loadingToast = toast.loading(`Uploading ${file.name} (${fmtBytes(file.size)})…`);
 
-        toast.success("Uploaded and attached", { id: t });
-        onUploaded?.();
-      } catch (e: any) {
-        toast.error(e?.message ?? "Upload failed", { id: t });
-      } finally {
-        setBusy(false);
-      }
-    },
-    [eventId, onUploaded]
-  );
+    // Submit via action
+    uploadAction(formData);
+
+    // Handle result via state effect
+    if (state?.success) {
+      toast.success("Uploaded and attached", { id: loadingToast });
+      onUploaded?.();
+      formRef.current?.reset();
+    } else if (state?.error) {
+      toast.error(state.error, { id: loadingToast });
+    }
+  };
 
   return (
-    <div className="mt-3">
+    <form ref={formRef} action={uploadAction} className="mt-3">
+      <input type="hidden" name="eventId" value={eventId} />
+      
       <div
         className={[
           "rounded-xl border p-4 transition cursor-pointer",
-          drag ? "border-white/25 bg-white/10" : "border-white/10 bg-white/5 hover:bg-white/7",
+          isPending
+            ? "border-white/25 bg-white/10 opacity-60 pointer-events-none"
+            : "border-white/10 bg-white/5 hover:bg-white/7",
         ].join(" ")}
         onDragEnter={(e) => {
           e.preventDefault();
           e.stopPropagation();
-          setDrag(true);
         }}
         onDragOver={(e) => {
           e.preventDefault();
           e.stopPropagation();
-          setDrag(true);
-        }}
-        onDragLeave={(e) => {
-          e.preventDefault();
-          e.stopPropagation();
-          setDrag(false);
         }}
         onDrop={(e) => {
           e.preventDefault();
           e.stopPropagation();
-          setDrag(false);
-          if (busy) return;
-          handleFiles(e.dataTransfer.files);
+          if (isPending) return;
+          const file = e.dataTransfer.files[0];
+          if (file) handleFileSelect(file);
         }}
-        onClick={() => !busy && inputRef.current?.click()}
+        onClick={() => !isPending && inputRef.current?.click()}
       >
         <div className="flex items-start justify-between gap-3">
           <div>
@@ -82,21 +116,44 @@ export function AttachmentUploader({ eventId, onUploaded }: { eventId: string; o
             <div className="text-xs text-white/60 mt-1">
               Drag & drop a file, or click to browse. SHA-256 hash calculated for verification.
             </div>
+            {state?.error && (
+              <div className="text-xs text-red-400 mt-2">{state.error}</div>
+            )}
+            {state?.success && state.fileName && (
+              <div className="text-xs text-green-400 mt-2">
+                ✓ {state.fileName} uploaded successfully
+              </div>
+            )}
           </div>
 
           <button
             type="button"
-            disabled={busy}
+            disabled={isPending}
             className={`px-3 py-2 rounded-xl text-sm transition ${
-              busy ? "opacity-50 pointer-events-none" : "border border-white/15 bg-white/5 hover:bg-white/10"
+              isPending
+                ? "opacity-50 pointer-events-none"
+                : "border border-white/15 bg-white/5 hover:bg-white/10"
             }`}
+            onClick={(e) => {
+              e.stopPropagation();
+              inputRef.current?.click();
+            }}
           >
-            {busy ? "Uploading..." : "Browse"}
+            {isPending ? "Uploading..." : "Browse"}
           </button>
         </div>
 
-        <input ref={inputRef} type="file" className="hidden" onChange={(e) => handleFiles(e.target.files)} />
+        <input
+          ref={inputRef}
+          type="file"
+          name="file"
+          className="hidden"
+          onChange={(e) => {
+            const file = e.target.files?.[0];
+            if (file) handleFileSelect(file);
+          }}
+        />
       </div>
-    </div>
+    </form>
   );
 }

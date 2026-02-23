@@ -58,6 +58,7 @@ export async function generateReceipt(
       owner: "System",
       confidence: 0.99,
       lineage: ["source:api", "transform:receipt_generator"],
+      reasons: ["Generated via demo gate"], // Added missing required property
     };
 
     // Save to demo store if available

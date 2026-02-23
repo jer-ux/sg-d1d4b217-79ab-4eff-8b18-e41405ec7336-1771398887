@@ -10,8 +10,8 @@ import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
 
-import type { DemoReceipt } from "@/pages/api/receipts/generate";
-import { saveDemoReceipt } from "@/lib/demoReceipts";
+import { submitGateForm } from "@/lib/actions/receipts";
+import type { ActionState } from "@/lib/actions/types";
 
 declare global {
   interface Window {
@@ -29,46 +29,6 @@ const Schema = z.object({
 
 type FormValues = z.infer<typeof Schema>;
 
-type SubmitState = {
-  success: boolean;
-  error?: string;
-  receipt?: DemoReceipt;
-};
-
-// Server action for form submission
-async function submitDemoForm(
-  prevState: SubmitState | null,
-  formData: FormData
-): Promise<SubmitState> {
-  try {
-    const name = formData.get("name") as string;
-    const email = formData.get("email") as string;
-    const company = formData.get("company") as string;
-
-    const res = await fetch("/api/receipts/generate", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        name: name?.trim() || undefined,
-        email: email?.trim() || undefined,
-        company: company?.trim() || undefined,
-      }),
-    });
-
-    if (!res.ok) throw new Error("Failed to create demo receipt");
-
-    const receipt = (await res.json()) as DemoReceipt;
-    saveDemoReceipt(receipt);
-
-    return { success: true, receipt };
-  } catch (e: any) {
-    return {
-      success: false,
-      error: e?.message ?? "Something broke. Try again.",
-    };
-  }
-}
-
 export function DemoGateModal({
   open,
   onOpenChange,
@@ -85,7 +45,11 @@ export function DemoGateModal({
   });
 
   // React 19: useActionState for server action handling
-  const [state, submitAction, isPending] = useActionState(submitDemoForm, null);
+  // Initial state matches ActionState structure
+  const [state, submitAction, isPending] = useActionState(submitGateForm, {
+    success: false,
+    message: "",
+  });
 
   useEffect(() => {
     if (!open) {
@@ -97,16 +61,17 @@ export function DemoGateModal({
 
   // Auto-open Calendly on success
   useEffect(() => {
-    if (state?.success && state.receipt) {
+    if (state?.success && state.data?.receipt) {
       if (typeof window !== "undefined" && window.Calendly?.initPopupWidget) {
         window.Calendly.initPopupWidget({ url: calendlyUrl });
       }
     }
-  }, [state?.success, calendlyUrl]);
+  }, [state?.success, state?.data, calendlyUrl]);
 
   const mode = state?.success ? "done" : "form";
-  const receipt = state?.receipt;
-  const err = state?.error;
+  const receipt = state?.data?.receipt;
+  const err = state?.message;
+  const fieldErrors = state?.errors;
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
@@ -155,8 +120,13 @@ export function DemoGateModal({
                   name="name"
                   className="rounded-2xl border-white/10 bg-black/25 text-white placeholder:text-white/35"
                   placeholder="Jer"
+                  // We can still use register for client-side valid/controlled inputs if needed
+                  // but form submission is handled by action
                   {...form.register("name")}
                 />
+                 {fieldErrors?.name ? (
+                  <div className="mt-1 text-xs text-rose-300">{fieldErrors.name[0]}</div>
+                ) : null}
               </div>
               <div>
                 <div className="mb-1 text-xs text-white/55">Email (optional)</div>
@@ -168,6 +138,8 @@ export function DemoGateModal({
                 />
                 {form.formState.errors.email?.message ? (
                   <div className="mt-1 text-xs text-amber-200/80">{form.formState.errors.email.message}</div>
+                ) : fieldErrors?.email ? (
+                  <div className="mt-1 text-xs text-rose-300">{fieldErrors.email[0]}</div>
                 ) : null}
               </div>
               <div>
@@ -178,6 +150,9 @@ export function DemoGateModal({
                   placeholder="Kincaid RMC"
                   {...form.register("company")}
                 />
+                 {fieldErrors?.company ? (
+                  <div className="mt-1 text-xs text-rose-300">{fieldErrors.company[0]}</div>
+                ) : null}
               </div>
             </div>
 

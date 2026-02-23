@@ -168,6 +168,65 @@ class WarRoomStore {
     this.upsertEvent(next);
     return next;
   }
+
+  updateEventNotes(eventId: string, notes: string) {
+    const e = this.events.get(eventId);
+    if (!e) throw new Error("Event not found");
+    // Assuming WarEvent has a notes field, or we add it loosely
+    const next = { ...e, notes, updatedAt: isoNow() };
+    this.upsertEvent(next as WarEvent);
+    return next;
+  }
+
+  attachFile(eventId: string, file: { url: string; name: string; uploadedAt: string }) {
+    const e = this.events.get(eventId);
+    if (!e) throw new Error("Event not found");
+    
+    // Extend type loosely if needed, or assume 'attachments' field exists
+    const attachments = [...((e as any).attachments ?? []), file];
+    const next = { ...e, attachments, updatedAt: isoNow() };
+    this.upsertEvent(next as WarEvent);
+    return file.url; // Return ID or URL
+  }
+
+  submitPacket(eventId: string, userId: string) {
+    const e = this.events.get(eventId);
+    if (!e) throw new Error("Event not found");
+    // Transition state if needed, or just mark submitted
+    const next = { ...e, status: "SUBMITTED", submittedBy: userId, updatedAt: isoNow() };
+    // Map to existing state if strict
+    if (e.state === "IDENTIFIED") {
+       // logic for submission?
+    }
+    this.upsertEvent(next as any);
+    return next;
+  }
+
+  approvePacket(eventId: string, userId: string) {
+    // Re-use existing approve logic but add userId
+    const e = this.events.get(eventId);
+    if (!e) throw new Error("Event not found");
+
+    if (e.state === "IDENTIFIED") {
+      this.moveLedgerAmount(e.lane, "IDENTIFIED", "APPROVED", e.amount);
+    }
+    const next = { ...e, state: "APPROVED" as LedgerState, approvedBy: userId, updatedAt: isoNow() };
+    this.upsertEvent(next as any);
+    return next;
+  }
+
+  closePacket(eventId: string, userId: string) {
+    // Re-use existing close logic but add userId
+    const e = this.events.get(eventId);
+    if (!e) throw new Error("Event not found");
+
+    if (e.state === "APPROVED") {
+      this.moveLedgerAmount(e.lane, "APPROVED", "REALIZED", e.amount);
+    }
+    const next = { ...e, state: "REALIZED" as LedgerState, closedBy: userId, updatedAt: isoNow() };
+    this.upsertEvent(next as any);
+    return next;
+  }
 }
 
 // IMPORTANT: global singleton for dev hot-reload
@@ -178,3 +237,7 @@ declare global {
 
 export const warRoomStore = globalThis.__WARROOM_STORE__ ?? new WarRoomStore();
 globalThis.__WARROOM_STORE__ = warRoomStore;
+
+export function getWarRoomStore() {
+  return warRoomStore;
+}

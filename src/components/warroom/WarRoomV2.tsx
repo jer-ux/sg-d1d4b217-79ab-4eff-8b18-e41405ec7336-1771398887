@@ -7,7 +7,8 @@ import clsx from "clsx";
 import type { LaneKey, LedgerState, WarEvent } from "@/lib/warroom/types";
 import { useWarRoomStream } from "@/components/warroom/useWarRoomStream";
 import { TickerMarquee } from "@/components/warroom/TickerMarquee";
-import EvidenceDrawer from "@/components/warroom/EvidenceDrawer";
+import { AnimatePresence, motion } from "framer-motion";
+import { EvidenceDrawer } from "@/components/warroom/EvidenceDrawer";
 import { AuditTicker } from "@/components/warroom/AuditTicker";
 import { applyFilters, defaultFilters, formatMoney, score, type SortKey, type WarRoomFilters } from "@/components/warroom/filters";
 import { approveEvent, assignOwner, closeEvent, generateReceipt } from "@/components/warroom/apiClient";
@@ -323,7 +324,12 @@ export function WarRoomV2() {
           })}
         </div>
 
-        <EvidenceDrawer openEvent={evidenceOpen} onClose={() => setEvidenceOpen(null)} />
+        <EvidenceDrawer 
+          open={!!evidenceOpen} 
+          onOpenChange={(open) => !open && setEvidenceOpen(null)}
+          evidenceId={evidenceOpen?.id}
+          data={evidenceOpen}
+        />
       </div>
     </div>
   );

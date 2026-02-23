@@ -1,4 +1,4 @@
-import * as React from "react";
+import { useEffect, useActionState } from "react";
 import { z } from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -29,6 +29,46 @@ const Schema = z.object({
 
 type FormValues = z.infer<typeof Schema>;
 
+type SubmitState = {
+  success: boolean;
+  error?: string;
+  receipt?: DemoReceipt;
+};
+
+// Server action for form submission
+async function submitDemoForm(
+  prevState: SubmitState | null,
+  formData: FormData
+): Promise<SubmitState> {
+  try {
+    const name = formData.get("name") as string;
+    const email = formData.get("email") as string;
+    const company = formData.get("company") as string;
+
+    const res = await fetch("/api/receipts/generate", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        name: name?.trim() || undefined,
+        email: email?.trim() || undefined,
+        company: company?.trim() || undefined,
+      }),
+    });
+
+    if (!res.ok) throw new Error("Failed to create demo receipt");
+
+    const receipt = (await res.json()) as DemoReceipt;
+    saveDemoReceipt(receipt);
+
+    return { success: true, receipt };
+  } catch (e: any) {
+    return {
+      success: false,
+      error: e?.message ?? "Something broke. Try again.",
+    };
+  }
+}
+
 export function DemoGateModal({
   open,
   onOpenChange,
@@ -38,61 +78,35 @@ export function DemoGateModal({
   onOpenChange: (v: boolean) => void;
   calendlyUrl: string;
 }) {
-  const [mode, setMode] = React.useState<"form" | "done">("form");
-  const [receipt, setReceipt] = React.useState<DemoReceipt | null>(null);
-  const [loading, setLoading] = React.useState(false);
-  const [err, setErr] = React.useState<string | null>(null);
-
   const form = useForm<FormValues>({
     resolver: zodResolver(Schema),
     defaultValues: { name: "", email: "", company: "" },
     mode: "onSubmit",
   });
 
-  React.useEffect(() => {
+  // React 19: useActionState for server action handling
+  const [state, submitAction, isPending] = useActionState(submitDemoForm, null);
+
+  useEffect(() => {
     if (!open) {
       setTimeout(() => {
-        setMode("form");
-        setReceipt(null);
-        setErr(null);
         form.reset({ name: "", email: "", company: "" });
-        setLoading(false);
       }, 150);
     }
   }, [open, form]);
 
-  async function onSubmit(values: FormValues) {
-    setLoading(true);
-    setErr(null);
-
-    try {
-      const res = await fetch("/api/receipts/generate", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          name: values.name?.trim() || undefined,
-          email: values.email?.trim() || undefined,
-          company: values.company?.trim() || undefined,
-        }),
-      });
-
-      if (!res.ok) throw new Error("Failed to create demo receipt");
-
-      const r = (await res.json()) as DemoReceipt;
-      setReceipt(r);
-      saveDemoReceipt(r);
-      setMode("done");
-
-      // Fire Calendly popup immediately after we "prove" something
+  // Auto-open Calendly on success
+  useEffect(() => {
+    if (state?.success && state.receipt) {
       if (typeof window !== "undefined" && window.Calendly?.initPopupWidget) {
         window.Calendly.initPopupWidget({ url: calendlyUrl });
       }
-    } catch (e: any) {
-      setErr(e?.message ?? "Something broke. Try again.");
-    } finally {
-      setLoading(false);
     }
-  }
+  }, [state?.success, calendlyUrl]);
+
+  const mode = state?.success ? "done" : "form";
+  const receipt = state?.receipt;
+  const err = state?.error;
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
@@ -133,11 +147,12 @@ export function DemoGateModal({
         </div>
 
         {mode === "form" ? (
-          <form onSubmit={form.handleSubmit(onSubmit)} className="mt-5 space-y-4">
+          <form action={submitAction} className="mt-5 space-y-4">
             <div className="grid grid-cols-1 gap-3 md:grid-cols-3">
               <div>
                 <div className="mb-1 text-xs text-white/55">Name (optional)</div>
                 <Input
+                  name="name"
                   className="rounded-2xl border-white/10 bg-black/25 text-white placeholder:text-white/35"
                   placeholder="Jer"
                   {...form.register("name")}
@@ -146,6 +161,7 @@ export function DemoGateModal({
               <div>
                 <div className="mb-1 text-xs text-white/55">Email (optional)</div>
                 <Input
+                  name="email"
                   className="rounded-2xl border-white/10 bg-black/25 text-white placeholder:text-white/35"
                   placeholder="jer@company.com"
                   {...form.register("email")}
@@ -157,6 +173,7 @@ export function DemoGateModal({
               <div>
                 <div className="mb-1 text-xs text-white/55">Company (optional)</div>
                 <Input
+                  name="company"
                   className="rounded-2xl border-white/10 bg-black/25 text-white placeholder:text-white/35"
                   placeholder="Kincaid RMC"
                   {...form.register("company")}
@@ -187,9 +204,9 @@ export function DemoGateModal({
                 <Button
                   type="submit"
                   className="rounded-2xl bg-white text-black hover:bg-white/90"
-                  disabled={loading}
+                  disabled={isPending}
                 >
-                  {loading ? "Generating receipt…" : "Generate receipt + book"}
+                  {isPending ? "Generating receipt…" : "Generate receipt + book"}
                 </Button>
               </div>
             </div>

@@ -1,11 +1,12 @@
 "use client";
 
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import Link from "next/link";
 import { motion, useScroll, useTransform, useInView } from "framer-motion";
 import { SEO } from "@/components/SEO";
-import { FileText, Shield, TrendingUp, CheckCircle2, Sparkles, Zap, Crown, Star, Activity, ArrowRight } from "lucide-react";
+import { FileText, Shield, TrendingUp, CheckCircle2, Sparkles, Zap, Crown, Star, Activity, ArrowRight, Lock } from "lucide-react";
 import { ExecutiveWarRoom } from "@/components/warroom/ExecutiveWarRoom";
+import { BadgeDetailSystem } from "@/components/home/BadgeDetailSystem";
 
 const Badge = ({ children, icon: Icon }: { children: React.ReactNode; icon?: React.ComponentType<{ className?: string }> }) => (
   <motion.span
@@ -154,6 +155,23 @@ export default function HomePage() {
   const heroOpacity = useTransform(scrollYProgress, [0, 0.5], [1, 0]);
   const heroScale = useTransform(scrollYProgress, [0, 0.5], [1, 0.95]);
 
+  const [selectedBadge, setSelectedBadge] = useState<"receipts" | "ebitda" | "verification" | "trust" | "immutable" | null>(null);
+  const [badgeLevel, setBadgeLevel] = useState(1);
+
+  const handleBadgeClick = (badgeType: "receipts" | "ebitda" | "verification" | "trust" | "immutable") => {
+    setSelectedBadge(badgeType);
+    setBadgeLevel(1);
+  };
+
+  const handleNextLevel = () => {
+    setBadgeLevel(prev => prev + 1);
+  };
+
+  const handleBadgeClose = () => {
+    setSelectedBadge(null);
+    setBadgeLevel(1);
+  };
+
   return (
     <>
       <SEO
@@ -176,11 +194,38 @@ export default function HomePage() {
               animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.8, delay: 0.2, ease: [0.22, 1, 0.36, 1] }}
             >
-              <div className="mb-6 flex flex-wrap gap-3">
-                <Badge icon={Star}>Receipts as the product</Badge>
-                <Badge icon={TrendingUp}>EBITDA governance</Badge>
-                <Badge icon={Shield}>Verification</Badge>
-                <Badge icon={Crown}>Enterprise trust</Badge>
+              <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-12">
+                <button
+                  onClick={() => handleBadgeClick("receipts")}
+                  className="group flex items-center gap-2 px-4 py-3 rounded-lg bg-purple-500/10 border border-purple-500/20 hover:bg-purple-500/20 hover:border-purple-500/40 transition-all cursor-pointer"
+                >
+                  <Star className="h-5 w-5 text-purple-400 group-hover:scale-110 transition-transform" />
+                  <span className="text-sm font-medium">Receipts as the product</span>
+                </button>
+
+                <button
+                  onClick={() => handleBadgeClick("ebitda")}
+                  className="group flex items-center gap-2 px-4 py-3 rounded-lg bg-green-500/10 border border-green-500/20 hover:bg-green-500/20 hover:border-green-500/40 transition-all cursor-pointer"
+                >
+                  <TrendingUp className="h-5 w-5 text-green-400 group-hover:scale-110 transition-transform" />
+                  <span className="text-sm font-medium">EBITDA governance</span>
+                </button>
+
+                <button
+                  onClick={() => handleBadgeClick("verification")}
+                  className="group flex items-center gap-2 px-4 py-3 rounded-lg bg-blue-500/10 border border-blue-500/20 hover:bg-blue-500/20 hover:border-blue-500/40 transition-all cursor-pointer"
+                >
+                  <Shield className="h-5 w-5 text-blue-400 group-hover:scale-110 transition-transform" />
+                  <span className="text-sm font-medium">Verification</span>
+                </button>
+
+                <button
+                  onClick={() => handleBadgeClick("trust")}
+                  className="group flex items-center gap-2 px-4 py-3 rounded-lg bg-amber-500/10 border border-amber-500/20 hover:bg-amber-500/20 hover:border-amber-500/40 transition-all cursor-pointer"
+                >
+                  <Crown className="h-5 w-5 text-amber-400 group-hover:scale-110 transition-transform" />
+                  <span className="text-sm font-medium">Enterprise trust</span>
+                </button>
               </div>
 
               <motion.h1
@@ -290,10 +335,14 @@ export default function HomePage() {
               
               <div className="relative" style={{ transform: "translateZ(40px)" }}>
                 <div className="flex items-center justify-between mb-6">
-                  <div className="text-xl font-black bg-gradient-to-r from-purple-300 to-white bg-clip-text text-transparent">
-                    Receipts Ledger
-                  </div>
-                  <Badge icon={Crown}>Immutable-ish</Badge>
+                  <h3 className="text-xl font-semibold">Receipts Ledger</h3>
+                  <button
+                    onClick={() => handleBadgeClick("immutable")}
+                    className="group flex items-center gap-2 px-3 py-1.5 rounded-lg bg-emerald-500/10 border border-emerald-500/20 hover:bg-emerald-500/20 hover:border-emerald-500/40 transition-all cursor-pointer"
+                  >
+                    <Lock className="h-4 w-4 text-emerald-400 group-hover:scale-110 transition-transform" />
+                    <span className="text-sm font-medium">Immutable-ish</span>
+                  </button>
                 </div>
 
                 <div className="grid gap-4">
@@ -668,6 +717,13 @@ export default function HomePage() {
           </div>
         </motion.footer>
       </main>
+
+      <BadgeDetailSystem
+        badgeType={selectedBadge}
+        level={badgeLevel}
+        onClose={handleBadgeClose}
+        onNextLevel={handleNextLevel}
+      />
     </>
   );
 }

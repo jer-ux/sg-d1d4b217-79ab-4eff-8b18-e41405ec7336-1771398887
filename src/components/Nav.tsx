@@ -31,9 +31,8 @@ export default function Nav() {
     { href: "/verified-savings-ledger", label: "Verified Savings Ledger" },
     { href: "/evidence-receipts", label: "Evidence Receipts" },
     { href: "/arbitrage-events", label: "Arbitrage" },
-    { href: "/board-of-directors", label: "Board of Directors" },
-    { href: "/company", label: "Company" },
-    { href: "/contact", label: "Contact" }
+    { href: "/family-offices", label: "Family Offices" },
+    { href: "/company", label: "Company" }
   ];
 
   return (

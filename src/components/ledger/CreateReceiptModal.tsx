@@ -1,4 +1,4 @@
-import { useState, useMemo } from "react";
+import { useState, useMemo, useActionState, useTransition } from "react";
 import { X, Download, CheckCircle2, AlertTriangle, XCircle, ExternalLink } from "lucide-react";
 
 type ExternalArtifact = {
@@ -66,6 +66,12 @@ type ReceiptJson = {
   };
 };
 
+type ApplyReceiptState = {
+  success: boolean;
+  error?: string;
+  receipt?: ReceiptJson;
+};
+
 function uuidLike(prefix = "RCP") {
   const s = Math.random().toString(16).slice(2);
   const t = Date.now().toString(16);
@@ -80,6 +86,22 @@ function downloadJson(filename: string, obj: any) {
   a.download = filename;
   a.click();
   URL.revokeObjectURL(url);
+}
+
+// Server action for applying receipt
+async function applyReceiptAction(
+  prevState: ApplyReceiptState | null,
+  formData: FormData
+): Promise<ApplyReceiptState> {
+  const receipt = JSON.parse(formData.get("receipt") as string) as ReceiptJson;
+  
+  // Simulate async processing
+  await new Promise(resolve => setTimeout(resolve, 500));
+  
+  return {
+    success: true,
+    receipt,
+  };
 }
 
 export function CreateReceiptModal({
@@ -105,6 +127,10 @@ export function CreateReceiptModal({
   const [confidence, setConfidence] = useState<number>(0.92);
   const [owner, setOwner] = useState<string>("Benefits Finance Lead");
   const [approver, setApprover] = useState<string>("CFO");
+  const [isPending, startTransition] = useTransition();
+
+  // React 19: useActionState for server action handling
+  const [applyState, applyAction, isApplyPending] = useActionState(applyReceiptAction, null);
 
   const receipt: ReceiptJson = useMemo(() => {
     const now = new Date().toISOString();
@@ -242,14 +268,20 @@ export function CreateReceiptModal({
   }, [status, confidence, owner, approver, subjectType, subjectId, periodStart, periodEnd, grain]);
 
   const handleDownload = () => {
-    downloadJson(`evidence-receipt-${receipt.receipt_id}.json`, receipt);
+    startTransition(() => {
+      downloadJson(`evidence-receipt-${receipt.receipt_id}.json`, receipt);
+    });
   };
 
-  const handleApply = () => {
-    if (onApplyReceipt) {
-      onApplyReceipt(receipt);
-    }
-    onClose();
+  const handleApply = (formData: FormData) => {
+    formData.set("receipt", JSON.stringify(receipt));
+    startTransition(() => {
+      applyAction(formData);
+      if (onApplyReceipt) {
+        onApplyReceipt(receipt);
+      }
+      onClose();
+    });
   };
 
   if (!open) return null;
@@ -471,24 +503,27 @@ export function CreateReceiptModal({
             <div className="text-sm text-white/75">{receipt.policy.notes}</div>
           </div>
 
-          <div className="flex items-center justify-end gap-3">
+          <form action={handleApply} className="flex items-center justify-end gap-3">
             <button
+              type="button"
               onClick={handleDownload}
-              className="rounded-xl border border-white/10 bg-white/5 px-4 py-2 text-sm font-semibold text-white hover:bg-white/10 flex items-center gap-2"
+              disabled={isPending}
+              className="rounded-xl border border-white/10 bg-white/5 px-4 py-2 text-sm font-semibold text-white hover:bg-white/10 flex items-center gap-2 disabled:opacity-50"
             >
               <Download className="w-4 h-4" />
-              Download JSON
+              {isPending ? "Processing..." : "Download JSON"}
             </button>
             {onApplyReceipt && (
               <button
-                onClick={handleApply}
-                className="rounded-xl border border-green-400/20 bg-green-400/10 px-4 py-2 text-sm font-semibold text-green-400 hover:bg-green-400/20 flex items-center gap-2"
+                type="submit"
+                disabled={isApplyPending || isPending}
+                className="rounded-xl border border-green-400/20 bg-green-400/10 px-4 py-2 text-sm font-semibold text-green-400 hover:bg-green-400/20 flex items-center gap-2 disabled:opacity-50"
               >
                 <CheckCircle2 className="w-4 h-4" />
-                Apply Receipt
+                {isApplyPending ? "Applying..." : "Apply Receipt"}
               </button>
             )}
-          </div>
+          </form>
         </div>
       </div>
     </div>

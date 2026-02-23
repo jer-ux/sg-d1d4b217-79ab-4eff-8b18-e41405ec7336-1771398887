@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useOptimistic, useTransition } from "react";
 import type { TileData, StreamMessage, ExecutiveEvent } from "./executiveTypes";
 
 // Mock initial data for instant load
@@ -180,36 +180,63 @@ export function useExecutiveStream(query: string) {
   const [tiles, setTiles] = useState<TileData[]>(getInitialTiles());
   const [tickerItems, setTickerItems] = useState<string[]>(getInitialTicker());
   const [events, setEvents] = useState<ExecutiveEvent[]>(getInitialEvents());
+  const [isPending, startTransition] = useTransition();
+  
+  // Optimistic tiles for immediate UI updates
+  const [optimisticTiles, setOptimisticTiles] = useOptimistic(
+    tiles,
+    (state, newTiles: TileData[]) => {
+      return newTiles.map((newTile) => {
+        const existing = state.find((t) => t.key === newTile.key);
+        return {
+          ...newTile,
+          chartData: newTile.chartData || existing?.chartData || []
+        };
+      });
+    }
+  );
 
   useEffect(() => {
     const es = new EventSource(`/api/war-room/executive-stream?${query}`);
     
-    es.onopen = () => setStatus("live");
+    es.onopen = () => {
+      startTransition(() => {
+        setStatus("live");
+      });
+    };
     
     es.onmessage = (evt) => {
       try {
         const msg = JSON.parse(evt.data) as StreamMessage;
         
         if (msg.type === "tiles") {
-          // Merge incoming tiles with existing ones to preserve chartData
-          setTiles((prev) => {
-            const updated = msg.tiles.map((newTile) => {
-              const existing = prev.find((t) => t.key === newTile.key);
-              return {
-                ...newTile,
-                chartData: newTile.chartData || existing?.chartData || []
-              };
+          // Optimistic update for immediate feedback
+          setOptimisticTiles(msg.tiles);
+          
+          startTransition(() => {
+            setTiles((prev) => {
+              const updated = msg.tiles.map((newTile) => {
+                const existing = prev.find((t) => t.key === newTile.key);
+                return {
+                  ...newTile,
+                  chartData: newTile.chartData || existing?.chartData || []
+                };
+              });
+              return updated;
             });
-            return updated;
           });
         }
         
         if (msg.type === "ticker") {
-          setTickerItems((prev) => [msg.item, ...prev].slice(0, 30));
+          startTransition(() => {
+            setTickerItems((prev) => [msg.item, ...prev].slice(0, 30));
+          });
         }
         
         if (msg.type === "event") {
-          setEvents((prev) => [msg.event, ...prev].slice(0, 50));
+          startTransition(() => {
+            setEvents((prev) => [msg.event, ...prev].slice(0, 50));
+          });
         }
         
         if (msg.type === "ping") {
@@ -221,14 +248,22 @@ export function useExecutiveStream(query: string) {
     };
     
     es.onerror = () => {
-      setStatus("offline");
+      startTransition(() => {
+        setStatus("offline");
+      });
       es.close();
     };
     
     return () => {
       es.close();
     };
-  }, [query]);
+  }, [query, setOptimisticTiles]);
 
-  return { status, tiles, tickerItems, events };
+  return { 
+    status, 
+    tiles: optimisticTiles, 
+    tickerItems, 
+    events,
+    isPending 
+  };
 }

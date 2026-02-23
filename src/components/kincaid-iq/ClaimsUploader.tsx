@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useOptimistic, useTransition } from "react";
 import { Upload, DollarSign, CheckCircle2, AlertCircle } from "lucide-react";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -32,6 +32,15 @@ export function ClaimsUploader({ onUpload }: Props) {
     period_end: "",
   });
 
+  // React 19: useOptimistic for immediate UI feedback
+  const [optimisticData, setOptimisticData] = useOptimistic(
+    formData,
+    (state, newData: Partial<ClaimsData>) => ({ ...state, ...newData })
+  );
+
+  // React 19: useTransition for non-blocking updates
+  const [isPending, startTransition] = useTransition();
+
   const handleDrag = (e: React.DragEvent) => {
     e.preventDefault();
     e.stopPropagation();
@@ -63,7 +72,10 @@ export function ClaimsUploader({ onUpload }: Props) {
     setFile(file);
     setStatus("processing");
 
-    setTimeout(() => {
+    // React 19: Use startTransition for non-blocking processing
+    startTransition(async () => {
+      await new Promise(resolve => setTimeout(resolve, 1500));
+      
       const mockData: ClaimsData = {
         medical_total: 9500000,
         rx_total: 3200000,
@@ -72,23 +84,27 @@ export function ClaimsUploader({ onUpload }: Props) {
         period_start: "2024-01-01",
         period_end: "2024-12-31",
       };
+      
+      setOptimisticData(mockData);
       setFormData(mockData);
       setStatus("success");
-    }, 1500);
+    });
   };
 
-  const handleManualSubmit = () => {
+  // React 19: Native async action
+  const handleManualSubmit = async () => {
     if (formData.medical_total > 0 && formData.period_start && formData.period_end) {
-      setStatus("success");
-      
-      // Construct full ClaimsUpload object with generated IDs
-      const uploadData: ClaimsUpload = {
-        ...formData,
-        id: `manual-${Date.now()}`,
-        org_id: "demo-org",
-      };
-      
-      onUpload(uploadData);
+      startTransition(async () => {
+        setStatus("success");
+        
+        const uploadData: ClaimsUpload = {
+          ...formData,
+          id: `manual-${Date.now()}`,
+          org_id: "demo-org",
+        };
+        
+        onUpload(uploadData);
+      });
     }
   };
 
@@ -123,6 +139,7 @@ export function ClaimsUploader({ onUpload }: Props) {
             accept=".csv,.xlsx"
             onChange={handleFileInput}
             className="absolute inset-0 cursor-pointer opacity-0"
+            disabled={isPending}
           />
           
           <Upload className="mx-auto mb-3 h-10 w-10 text-slate-500" />
@@ -157,10 +174,15 @@ export function ClaimsUploader({ onUpload }: Props) {
               <Label className="text-slate-300">Medical Total</Label>
               <Input
                 type="number"
-                value={formData.medical_total || ""}
-                onChange={(e) => setFormData({ ...formData, medical_total: Number(e.target.value) })}
+                value={optimisticData.medical_total || ""}
+                onChange={(e) => {
+                  const value = Number(e.target.value);
+                  setOptimisticData({ medical_total: value });
+                  setFormData({ ...formData, medical_total: value });
+                }}
                 className="border-slate-700 bg-slate-900 text-white"
                 placeholder="9500000"
+                disabled={isPending}
               />
             </div>
 
@@ -168,10 +190,15 @@ export function ClaimsUploader({ onUpload }: Props) {
               <Label className="text-slate-300">Rx Total</Label>
               <Input
                 type="number"
-                value={formData.rx_total || ""}
-                onChange={(e) => setFormData({ ...formData, rx_total: Number(e.target.value) })}
+                value={optimisticData.rx_total || ""}
+                onChange={(e) => {
+                  const value = Number(e.target.value);
+                  setOptimisticData({ rx_total: value });
+                  setFormData({ ...formData, rx_total: value });
+                }}
                 className="border-slate-700 bg-slate-900 text-white"
                 placeholder="3200000"
+                disabled={isPending}
               />
             </div>
 
@@ -179,10 +206,15 @@ export function ClaimsUploader({ onUpload }: Props) {
               <Label className="text-slate-300">Stop Loss Premium</Label>
               <Input
                 type="number"
-                value={formData.stop_loss_premium || ""}
-                onChange={(e) => setFormData({ ...formData, stop_loss_premium: Number(e.target.value) })}
+                value={optimisticData.stop_loss_premium || ""}
+                onChange={(e) => {
+                  const value = Number(e.target.value);
+                  setOptimisticData({ stop_loss_premium: value });
+                  setFormData({ ...formData, stop_loss_premium: value });
+                }}
                 className="border-slate-700 bg-slate-900 text-white"
                 placeholder="450000"
+                disabled={isPending}
               />
             </div>
 
@@ -190,10 +222,15 @@ export function ClaimsUploader({ onUpload }: Props) {
               <Label className="text-slate-300">Admin Fees</Label>
               <Input
                 type="number"
-                value={formData.admin_fees || ""}
-                onChange={(e) => setFormData({ ...formData, admin_fees: Number(e.target.value) })}
+                value={optimisticData.admin_fees || ""}
+                onChange={(e) => {
+                  const value = Number(e.target.value);
+                  setOptimisticData({ admin_fees: value });
+                  setFormData({ ...formData, admin_fees: value });
+                }}
                 className="border-slate-700 bg-slate-900 text-white"
                 placeholder="125000"
+                disabled={isPending}
               />
             </div>
 
@@ -201,9 +238,13 @@ export function ClaimsUploader({ onUpload }: Props) {
               <Label className="text-slate-300">Period Start</Label>
               <Input
                 type="date"
-                value={formData.period_start}
-                onChange={(e) => setFormData({ ...formData, period_start: e.target.value })}
+                value={optimisticData.period_start}
+                onChange={(e) => {
+                  setOptimisticData({ period_start: e.target.value });
+                  setFormData({ ...formData, period_start: e.target.value });
+                }}
                 className="border-slate-700 bg-slate-900 text-white"
+                disabled={isPending}
               />
             </div>
 
@@ -211,9 +252,13 @@ export function ClaimsUploader({ onUpload }: Props) {
               <Label className="text-slate-300">Period End</Label>
               <Input
                 type="date"
-                value={formData.period_end}
-                onChange={(e) => setFormData({ ...formData, period_end: e.target.value })}
+                value={optimisticData.period_end}
+                onChange={(e) => {
+                  setOptimisticData({ period_end: e.target.value });
+                  setFormData({ ...formData, period_end: e.target.value });
+                }}
                 className="border-slate-700 bg-slate-900 text-white"
+                disabled={isPending}
               />
             </div>
           </div>
@@ -221,9 +266,9 @@ export function ClaimsUploader({ onUpload }: Props) {
           <Button
             onClick={handleManualSubmit}
             className="w-full bg-emerald-500 hover:bg-emerald-600"
-            disabled={!formData.medical_total || !formData.period_start || !formData.period_end}
+            disabled={!formData.medical_total || !formData.period_start || !formData.period_end || isPending}
           >
-            Continue with Manual Entry
+            {isPending ? "Processing..." : "Continue with Manual Entry"}
           </Button>
         </div>
       </div>

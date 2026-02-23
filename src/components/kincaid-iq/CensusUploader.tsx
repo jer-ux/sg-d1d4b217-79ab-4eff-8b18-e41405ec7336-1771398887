@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useOptimistic, useTransition } from "react";
 import { Upload, FileSpreadsheet, CheckCircle2, AlertCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
@@ -25,6 +25,15 @@ export function CensusUploader({ onUpload }: Props) {
     employee_count_end: 0,
     avg_salary: 0,
   });
+
+  // React 19: useOptimistic for immediate UI feedback
+  const [optimisticData, setOptimisticData] = useOptimistic(
+    formData,
+    (state, newData: Partial<CensusData>) => ({ ...state, ...newData })
+  );
+
+  // React 19: useTransition for non-blocking state updates
+  const [isPending, startTransition] = useTransition();
 
   const handleDrag = (e: React.DragEvent) => {
     e.preventDefault();
@@ -57,32 +66,40 @@ export function CensusUploader({ onUpload }: Props) {
     setFile(file);
     setStatus("processing");
 
-    // Simulate CSV parsing
-    setTimeout(() => {
-      // Mock data extraction
+    // React 19: Use startTransition for non-blocking processing
+    startTransition(async () => {
+      // Simulate CSV parsing
+      await new Promise(resolve => setTimeout(resolve, 1500));
+      
+      // Mock data extraction with optimistic update
       const mockData: CensusData = {
         employee_count_start: 1200,
         employee_count_end: 1300,
         avg_salary: 75000,
       };
+      
+      setOptimisticData(mockData);
       setFormData(mockData);
       setStatus("success");
-    }, 1500);
+    });
   };
 
-  const handleManualSubmit = () => {
+  // React 19: Native async action
+  const handleManualSubmit = async () => {
     if (formData.employee_count_start > 0 && formData.employee_count_end > 0) {
-      setStatus("success");
-      
-      // Construct full CensusUpload object with generated IDs
-      const uploadData: CensusUpload = {
-        ...formData,
-        id: `manual-${Date.now()}`,
-        org_id: "demo-org",
-        timestamp: new Date().toISOString(),
-      };
-      
-      onUpload(uploadData);
+      startTransition(async () => {
+        setStatus("success");
+        
+        // Construct full CensusUpload object with generated IDs
+        const uploadData: CensusUpload = {
+          ...formData,
+          id: `manual-${Date.now()}`,
+          org_id: "demo-org",
+          timestamp: new Date().toISOString(),
+        };
+        
+        onUpload(uploadData);
+      });
     }
   };
 
@@ -118,6 +135,7 @@ export function CensusUploader({ onUpload }: Props) {
             accept=".csv,.xlsx"
             onChange={handleFileInput}
             className="absolute inset-0 cursor-pointer opacity-0"
+            disabled={isPending}
           />
           
           <Upload className="mx-auto mb-3 h-10 w-10 text-slate-500" />
@@ -159,10 +177,15 @@ export function CensusUploader({ onUpload }: Props) {
               <Label className="text-slate-300">Start Lives</Label>
               <Input
                 type="number"
-                value={formData.employee_count_start || ""}
-                onChange={(e) => setFormData({ ...formData, employee_count_start: Number(e.target.value) })}
+                value={optimisticData.employee_count_start || ""}
+                onChange={(e) => {
+                  const value = Number(e.target.value);
+                  setOptimisticData({ employee_count_start: value });
+                  setFormData({ ...formData, employee_count_start: value });
+                }}
                 className="border-slate-700 bg-slate-900 text-white"
                 placeholder="1200"
+                disabled={isPending}
               />
             </div>
 
@@ -170,10 +193,15 @@ export function CensusUploader({ onUpload }: Props) {
               <Label className="text-slate-300">End Lives</Label>
               <Input
                 type="number"
-                value={formData.employee_count_end || ""}
-                onChange={(e) => setFormData({ ...formData, employee_count_end: Number(e.target.value) })}
+                value={optimisticData.employee_count_end || ""}
+                onChange={(e) => {
+                  const value = Number(e.target.value);
+                  setOptimisticData({ employee_count_end: value });
+                  setFormData({ ...formData, employee_count_end: value });
+                }}
                 className="border-slate-700 bg-slate-900 text-white"
                 placeholder="1300"
+                disabled={isPending}
               />
             </div>
 
@@ -181,10 +209,15 @@ export function CensusUploader({ onUpload }: Props) {
               <Label className="text-slate-300">Avg Salary</Label>
               <Input
                 type="number"
-                value={formData.avg_salary || ""}
-                onChange={(e) => setFormData({ ...formData, avg_salary: Number(e.target.value) })}
+                value={optimisticData.avg_salary || ""}
+                onChange={(e) => {
+                  const value = Number(e.target.value);
+                  setOptimisticData({ avg_salary: value });
+                  setFormData({ ...formData, avg_salary: value });
+                }}
                 className="border-slate-700 bg-slate-900 text-white"
                 placeholder="75000"
+                disabled={isPending}
               />
             </div>
           </div>
@@ -192,9 +225,9 @@ export function CensusUploader({ onUpload }: Props) {
           <Button
             onClick={handleManualSubmit}
             className="w-full bg-blue-500 hover:bg-blue-600"
-            disabled={!formData.employee_count_start || !formData.employee_count_end}
+            disabled={!formData.employee_count_start || !formData.employee_count_end || isPending}
           >
-            Continue with Manual Entry
+            {isPending ? "Processing..." : "Continue with Manual Entry"}
           </Button>
         </div>
       </div>

@@ -24,11 +24,11 @@ export function Interactive3DCard({
   const mouseX = useMotionValue(0);
   const mouseY = useMotionValue(0);
   
-  const rotateX = useSpring(useTransform(mouseY, [-0.5, 0.5], [15, -15]), {
+  const rotateX = useSpring(useTransform(mouseY, [-0.5, 0.5], [10, -10]), {
     stiffness: 300,
     damping: 30
   });
-  const rotateY = useSpring(useTransform(mouseX, [-0.5, 0.5], [-15, 15]), {
+  const rotateY = useSpring(useTransform(mouseX, [-0.5, 0.5], [-10, 10]), {
     stiffness: 300,
     damping: 30
   });
@@ -66,9 +66,8 @@ export function Interactive3DCard({
         style={{
           rotateX,
           rotateY,
-          transformStyle: "preserve-3d"
         }}
-        whileHover={{ scale: 1.05, z: 50 }}
+        whileHover={{ scale: 1.05 }}
         className="block relative h-full p-8 rounded-3xl cursor-pointer group overflow-hidden"
       >
         {/* Animated gradient background */}
@@ -77,18 +76,16 @@ export function Interactive3DCard({
         />
         
         {/* Glass card */}
-        <div className="relative h-full bg-slate-900/80 backdrop-blur-xl rounded-3xl border border-white/10 group-hover:border-white/30 transition-all duration-500 overflow-hidden"
-             style={{ transform: "translateZ(50px)" }}
-        >
+        <div className="relative h-full bg-slate-900/80 backdrop-blur-xl rounded-3xl border border-white/10 group-hover:border-white/30 transition-all duration-500 overflow-hidden">
           {/* Neon glow overlay */}
           <motion.div
             className="absolute inset-0 opacity-0 group-hover:opacity-30"
             animate={{
               background: [
-                `radial-gradient(circle at 0% 0%, ${gradient.split(',')[0].replace('linear-gradient(135deg,', '')}, transparent 60%)`,
-                `radial-gradient(circle at 100% 100%, ${gradient.split(',')[1]}, transparent 60%)`,
-                `radial-gradient(circle at 0% 100%, ${gradient.split(',')[0].replace('linear-gradient(135deg,', '')}, transparent 60%)`,
-                `radial-gradient(circle at 100% 0%, ${gradient.split(',')[1]}, transparent 60%)`,
+                `radial-gradient(circle at 0% 0%, ${gradient.split(',')[0].replace('linear-gradient(135deg,', '').trim()}, transparent 60%)`,
+                `radial-gradient(circle at 100% 100%, ${gradient.split(',')[1].trim()}, transparent 60%)`,
+                `radial-gradient(circle at 0% 100%, ${gradient.split(',')[0].replace('linear-gradient(135deg,', '').trim()}, transparent 60%)`,
+                `radial-gradient(circle at 100% 0%, ${gradient.split(',')[1].trim()}, transparent 60%)`,
               ],
             }}
             transition={{ duration: 8, repeat: Infinity }}
@@ -107,8 +104,8 @@ export function Interactive3DCard({
             }}
           />
 
-          <div className="relative h-full p-8 flex flex-col" style={{ transform: "translateZ(75px)" }}>
-            {/* 3D Icon */}
+          <div className="relative h-full p-8 flex flex-col">
+            {/* Icon with glow effect */}
             <motion.div
               className="mb-6"
               whileHover={{ 
@@ -134,19 +131,17 @@ export function Interactive3DCard({
 
             <motion.h3 
               className="text-2xl font-bold mb-3 bg-gradient-to-r from-white to-gray-300 bg-clip-text text-transparent"
-              style={{ transform: "translateZ(100px)" }}
             >
               {title}
             </motion.h3>
 
             <motion.p 
               className="text-gray-400 flex-grow group-hover:text-gray-300 transition-colors"
-              style={{ transform: "translateZ(90px)" }}
             >
               {description}
             </motion.p>
 
-            {/* Vegas-style sparkles */}
+            {/* Sparkle effects */}
             <div className="absolute inset-0 opacity-0 group-hover:opacity-100 pointer-events-none">
               {[...Array(8)].map((_, i) => (
                 <motion.div

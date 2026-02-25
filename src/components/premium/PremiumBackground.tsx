@@ -1,56 +1,75 @@
 "use client";
 
-import { Canvas } from "@react-three/fiber";
-import { Float, MeshDistortMaterial, Sphere } from "@react-three/drei";
 import { motion } from "framer-motion";
 
 export const PremiumBackground = () => {
   return (
-    <div className="fixed inset-0 -z-10">
-      <Canvas camera={{ position: [0, 0, 5], fov: 75 }} gl={{ antialias: true, alpha: true }}>
-        <ambientLight intensity={0.3} />
-        <pointLight position={[10, 10, 10]} intensity={0.8} color="#a855f7" />
-        <pointLight position={[-10, -10, -10]} intensity={0.5} color="#3b82f6" />
-        <pointLight position={[0, 10, 0]} intensity={0.6} color="#fbbf24" />
-        
-        {/* Floating Distorted Spheres */}
-        <Float speed={1.5} rotationIntensity={0.5} floatIntensity={0.8}>
-          <Sphere args={[1, 64, 64]} position={[-3, 2, -5]}>
-            <MeshDistortMaterial color="#a855f7" distort={0.4} speed={2} roughness={0.2} metalness={0.8} />
-          </Sphere>
-        </Float>
-        
-        <Float speed={2} rotationIntensity={0.8} floatIntensity={1}>
-          <Sphere args={[0.8, 64, 64]} position={[4, -2, -6]}>
-            <MeshDistortMaterial color="#3b82f6" distort={0.5} speed={1.5} roughness={0.1} metalness={0.9} />
-          </Sphere>
-        </Float>
-        
-        <Float speed={1.8} rotationIntensity={0.6} floatIntensity={0.9}>
-          <Sphere args={[0.6, 64, 64]} position={[2, 3, -7]}>
-            <MeshDistortMaterial color="#fbbf24" distort={0.3} speed={2.5} roughness={0.3} metalness={0.7} />
-          </Sphere>
-        </Float>
+    <div className="fixed inset-0 -z-10 overflow-hidden">
+      {/* Animated gradient orbs */}
+      <motion.div
+        className="absolute top-0 left-0 w-[500px] h-[500px] rounded-full blur-3xl opacity-30"
+        animate={{
+          x: [0, 100, 0],
+          y: [0, 150, 0],
+          scale: [1, 1.2, 1],
+        }}
+        transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
+        style={{
+          background: "radial-gradient(circle, #a855f7 0%, transparent 70%)",
+        }}
+      />
+      
+      <motion.div
+        className="absolute top-1/4 right-0 w-[600px] h-[600px] rounded-full blur-3xl opacity-20"
+        animate={{
+          x: [0, -150, 0],
+          y: [0, 100, 0],
+          scale: [1, 1.3, 1],
+        }}
+        transition={{ duration: 10, repeat: Infinity, ease: "easeInOut" }}
+        style={{
+          background: "radial-gradient(circle, #3b82f6 0%, transparent 70%)",
+        }}
+      />
+      
+      <motion.div
+        className="absolute bottom-0 left-1/3 w-[400px] h-[400px] rounded-full blur-3xl opacity-25"
+        animate={{
+          x: [0, -100, 0],
+          y: [0, -100, 0],
+          scale: [1, 1.1, 1],
+        }}
+        transition={{ duration: 12, repeat: Infinity, ease: "easeInOut" }}
+        style={{
+          background: "radial-gradient(circle, #fbbf24 0%, transparent 70%)",
+        }}
+      />
 
-        {/* Particle Field */}
-        <points>
-          <bufferGeometry>
-            <bufferAttribute
-              attach="attributes-position"
-              count={3000}
-              array={new Float32Array(
-                Array.from({ length: 3000 }, () => [
-                  (Math.random() - 0.5) * 20,
-                  (Math.random() - 0.5) * 20,
-                  (Math.random() - 0.5) * 20,
-                ]).flat()
-              )}
-              itemSize={3}
-            />
-          </bufferGeometry>
-          <pointsMaterial size={0.02} color="#a855f7" transparent opacity={0.6} />
-        </points>
-      </Canvas>
+      {/* Particle field effect (CSS-based) */}
+      <div className="absolute inset-0">
+        {[...Array(50)].map((_, i) => (
+          <motion.div
+            key={i}
+            className="absolute w-1 h-1 bg-purple-400/30 rounded-full"
+            style={{
+              left: `${Math.random() * 100}%`,
+              top: `${Math.random() * 100}%`,
+            }}
+            animate={{
+              opacity: [0.3, 0.8, 0.3],
+              scale: [1, 1.5, 1],
+            }}
+            transition={{
+              duration: 3 + Math.random() * 2,
+              repeat: Infinity,
+              delay: Math.random() * 2,
+            }}
+          />
+        ))}
+      </div>
+
+      {/* Gradient overlay */}
+      <div className="absolute inset-0 bg-gradient-to-b from-transparent via-slate-950/50 to-slate-950" />
     </div>
   );
 };

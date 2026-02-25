@@ -10,7 +10,7 @@ import { Badge } from "@/components/ui/badge";
 import { Building2, TrendingUp, Shield, LineChart, Users, Target, Briefcase, PieChart, Activity, FileCheck, ArrowRight, CheckCircle2, Sparkles, Zap } from "lucide-react";
 import Link from "next/link";
 import { motion, useScroll, useTransform, useInView } from "framer-motion";
-import { Hero3DBackground } from "@/components/premium/Hero3DBackground";
+import { PremiumBackground } from "@/components/premium/PremiumBackground";
 import { Interactive3DCard } from "@/components/premium/Interactive3DCard";
 
 function AnimatedCounter({ value, suffix = "", prefix = "", duration = 2 }: { value: number | string; suffix?: string; prefix?: string; duration?: number }) {
@@ -126,11 +126,11 @@ export default function FamilyOfficesPage() {
         <SiteHeader />
         
         <main className="flex-1">
-          {/* Hero Section with 3D Background */}
+          {/* Hero Section with Premium Background */}
           <section ref={heroRef} className="relative border-b border-white/10 overflow-hidden">
-            {/* 3D Animated Background */}
+            {/* Premium Animated Background */}
             <div className="absolute inset-0">
-              <Hero3DBackground />
+              <PremiumBackground />
             </div>
 
             {/* Gradient Overlay */}

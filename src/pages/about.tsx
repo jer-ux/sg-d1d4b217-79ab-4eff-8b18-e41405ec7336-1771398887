@@ -366,7 +366,7 @@ export default function AboutPage() {
                 <div className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-amber-950/40 via-zinc-900/40 to-black/40 border border-amber-500/20 p-8 hover:border-amber-500/40 transition-all duration-500">
                   <button
                     onClick={() => openLightbox(
-                      "/1766487748644.jpeg",
+                      "/1766487748644_1_.jpeg",
                       "Dr. Michael Ochieng'",
                       "Dr. Michael Ochieng'",
                       "Distinguished Chief Technology Officer"
@@ -374,7 +374,7 @@ export default function AboutPage() {
                     className="relative w-32 h-32 mx-auto mb-6 rounded-full overflow-hidden border-4 border-amber-500/30 group-hover:border-amber-400/60 transition-all duration-500 cursor-pointer hover:scale-110"
                   >
                     <img
-                      src="/1766487748644.jpeg"
+                      src="/1766487748644_1_.jpeg"
                       alt="Dr. Michael Ochieng'"
                       className="w-full h-full object-cover"
                     />
@@ -392,7 +392,7 @@ export default function AboutPage() {
                       Distinguished Chief Technology Officer
                     </p>
                     <p className="text-gray-400 text-sm leading-relaxed mb-4">
-                      Career forged in deploying large-scale LTE and 5G infrastructure for global operators. Creator of DILLO (Decision Intelligence & Logic Layer Orchestrator) - the deterministic decision layer that governs AI systems before probabilistic outputs touch the real world.
+                      Career forged in deploying large-scale LTE and 5G infrastructure for global operators like Verizon, T-Mobile, Sprint, Safaricom, and Huawei. Creator of DILLO (Decision Intelligence & Logic Layer Orchestrator) - the deterministic decision layer that governs AI systems before probabilistic outputs touch the real world. Treats AI as a liability engine that must be constrained before it can be deemed useful.
                     </p>
                     <Link
                       href="/board-of-directors"

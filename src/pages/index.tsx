@@ -7,6 +7,7 @@ import { SEO } from "@/components/SEO";
 import { FileText, Shield, TrendingUp, CheckCircle2, Sparkles, Zap, Crown, Star, Activity, ArrowRight, Lock } from "lucide-react";
 import { ExecutiveWarRoom } from "@/components/warroom/ExecutiveWarRoom";
 import { BadgeDetailSystem } from "@/components/home/BadgeDetailSystem";
+import { Hero3D } from "@/components/Hero3D";
 
 const Badge = ({ children, icon: Icon }: { children: React.ReactNode; icon?: React.ComponentType<{ className?: string }> }) => (
   <motion.span
@@ -183,207 +184,73 @@ export default function HomePage() {
       <main className="relative min-h-screen bg-black text-zinc-100 overflow-hidden">
         <div className="fixed inset-0 bg-gradient-to-br from-purple-950/20 via-black to-blue-950/10 pointer-events-none" style={{ zIndex: 0 }} />
         
-        <motion.section
-          ref={heroRef}
-          style={{ opacity: heroOpacity, scale: heroScale }}
-          className="relative z-10 mx-auto w-full max-w-7xl px-6 pb-20 pt-32"
-        >
-          <div className="grid gap-16 lg:grid-cols-2 lg:items-center">
-            <motion.div
-              initial={{ opacity: 0, x: -40 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.8, delay: 0.2, ease: [0.22, 1, 0.36, 1] }}
-            >
-              <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-12">
-                <button
-                  onClick={() => handleBadgeClick("receipts")}
-                  className="group flex items-center gap-2 px-4 py-3 rounded-lg bg-purple-500/10 border border-purple-500/20 hover:bg-purple-500/20 hover:border-purple-500/40 transition-all cursor-pointer"
-                >
-                  <Star className="h-5 w-5 text-purple-400 group-hover:scale-110 transition-transform" />
-                  <span className="text-sm font-medium">Receipts as the product</span>
-                </button>
-
-                <button
-                  onClick={() => handleBadgeClick("ebitda")}
-                  className="group flex items-center gap-2 px-4 py-3 rounded-lg bg-green-500/10 border border-green-500/20 hover:bg-green-500/20 hover:border-green-500/40 transition-all cursor-pointer"
-                >
-                  <TrendingUp className="h-5 w-5 text-green-400 group-hover:scale-110 transition-transform" />
-                  <span className="text-sm font-medium">EBITDA governance</span>
-                </button>
-
-                <button
-                  onClick={() => handleBadgeClick("verification")}
-                  className="group flex items-center gap-2 px-4 py-3 rounded-lg bg-blue-500/10 border border-blue-500/20 hover:bg-blue-500/20 hover:border-blue-500/40 transition-all cursor-pointer"
-                >
-                  <Shield className="h-5 w-5 text-blue-400 group-hover:scale-110 transition-transform" />
-                  <span className="text-sm font-medium">Verification</span>
-                </button>
-
-                <button
-                  onClick={() => handleBadgeClick("trust")}
-                  className="group flex items-center gap-2 px-4 py-3 rounded-lg bg-amber-500/10 border border-amber-500/20 hover:bg-amber-500/20 hover:border-amber-500/40 transition-all cursor-pointer"
-                >
-                  <Crown className="h-5 w-5 text-amber-400 group-hover:scale-110 transition-transform" />
-                  <span className="text-sm font-medium">Enterprise trust</span>
-                </button>
-              </div>
-
-              <motion.h1
-                className="bg-gradient-to-br from-white via-purple-200 to-blue-200 bg-clip-text text-6xl font-black tracking-tight text-transparent drop-shadow-[0_0_40px_rgba(168,85,247,0.3)] lg:text-7xl"
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.8, delay: 0.4 }}
-              >
-                Stop debating opinions.
-                <br />
-                <span className="bg-gradient-to-r from-purple-400 via-purple-200 to-blue-400 bg-clip-text text-transparent">
-                  Run benefits like an EBITDA system.
-                </span>
-              </motion.h1>
-
-              <motion.p
-                className="mt-6 text-lg leading-relaxed text-zinc-300"
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ duration: 0.8, delay: 0.6 }}
-              >
-                Kincaid IQ turns every claim into evidence: vendor invoices, plan docs, contracts,
-                5500s, fees, rebates, utilization rules—linked, versioned, and provable.
-                You don't "believe" the numbers. You can defend them.
-              </motion.p>
-
+        {/* Hero Section */}
+        <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
+          <Hero3D />
+          
+          {/* Hero Content */}
+          <div className="relative z-10 max-w-7xl mx-auto px-6 pt-32 pb-20">
+            <div className="grid lg:grid-cols-2 gap-12 items-center">
+              {/* Left Column - Text Content */}
               <motion.div
-                className="mt-10 flex flex-col gap-4 sm:flex-row"
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.8 }}
+                initial={{ opacity: 0, x: -50 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ duration: 0.8 }}
+                className="space-y-8"
               >
-                <Link
-                  href="/upload-5500"
-                  className="group relative inline-flex items-center justify-center gap-2 overflow-hidden rounded-2xl border border-purple-500/40 bg-gradient-to-r from-purple-600/30 to-blue-600/30 px-8 py-4 text-lg font-bold shadow-lg shadow-purple-500/30 backdrop-blur-xl transition-all duration-500 hover:scale-105 hover:border-purple-400/60 hover:shadow-purple-500/50"
-                >
-                  <motion.div
-                    className="absolute inset-0 bg-gradient-to-r from-purple-400 via-white to-blue-400 opacity-0 group-hover:opacity-30"
-                    animate={{ x: ["-100%", "100%"] }}
-                    transition={{ duration: 1.5, repeat: Infinity, ease: "linear" }}
-                  />
-                  <Zap className="h-5 w-5 relative" />
-                  <span className="relative">Upload receipts →</span>
-                </Link>
-                <motion.div whileHover={{ scale: 1.05, y: -3 }} whileTap={{ scale: 0.95 }}>
+                
+                <h1 className="text-5xl md:text-7xl font-bold">
+                  <span className="bg-gradient-to-r from-amber-300 via-amber-100 to-white bg-clip-text text-transparent">
+                    Algorithmic Fiduciary
+                  </span>
+                  <br />
+                  <span className="text-white">Intelligence Platform</span>
+                </h1>
+
+                <p className="text-xl text-gray-300 leading-relaxed">
+                  Transform enterprise benefits into verifiable alpha through AI-powered analytics,
+                  real-time evidence capture, and executive-grade decision intelligence.
+                </p>
+
+                <div className="flex flex-wrap gap-4">
                   <Link
-                    href="/ebitda-governance"
-                    className="inline-flex items-center justify-center gap-2 rounded-xl border border-purple-500/50 bg-zinc-950/80 px-6 py-4 text-base font-bold text-white backdrop-blur-sm transition-all hover:border-purple-400/70 hover:bg-purple-950/40 hover:shadow-lg hover:shadow-purple-500/30"
+                    href="/request-demo"
+                    className="inline-flex items-center gap-2 px-8 py-4 bg-gradient-to-r from-amber-500 to-amber-600 text-black font-semibold rounded-lg hover:from-amber-400 hover:to-amber-500 transition-all duration-300 shadow-lg shadow-amber-500/20"
                   >
-                    <TrendingUp className="h-5 w-5 text-purple-400" />
-                    See EBITDA governance
+                    <Zap className="h-5 w-5" />
+                    <span>Request Demo</span>
                   </Link>
-                </motion.div>
+
+                  <Link
+                    href="/war-room"
+                    className="inline-flex items-center gap-2 px-8 py-4 bg-white/5 backdrop-blur-sm text-white font-semibold rounded-lg border border-white/10 hover:bg-white/10 transition-all duration-300"
+                  >
+                    <Activity className="h-5 w-5" />
+                    <span>Live War Room</span>
+                  </Link>
+                </div>
               </motion.div>
 
+              {/* Right Column - Image */}
               <motion.div
-                className="mt-6 flex items-center gap-2 text-sm text-purple-400/80"
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ duration: 0.8, delay: 1 }}
+                initial={{ opacity: 0, x: 50 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ duration: 0.8, delay: 0.2 }}
+                className="relative"
               >
-                <Sparkles className="h-4 w-4" />
-                <span>Upload → Verify → Govern → Reduce leakage → Prove outcomes.</span>
-              </motion.div>
-
-              <motion.div
-                className="mt-10 flex items-center gap-4 rounded-2xl border border-purple-500/30 bg-gradient-to-br from-zinc-950/90 via-purple-950/20 to-zinc-900/70 p-5 backdrop-blur-sm shadow-xl"
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.8, delay: 1.2 }}
-                whileHover={{ scale: 1.02, borderColor: "rgba(168, 85, 247, 0.5)" }}
-              >
-                <div className="relative h-16 w-16 flex-shrink-0">
-                  <div className="absolute -inset-1 rounded-full bg-gradient-to-r from-purple-500/60 to-blue-500/60 blur-md" />
+                <div className="relative rounded-2xl overflow-hidden border border-amber-500/20 shadow-2xl shadow-amber-500/10">
                   <img
-                    src="/jeremiah-shrack-outdoor.png"
-                    alt="Jeremiah Franklin Shrack"
-                    className="relative h-16 w-16 rounded-full object-cover ring-2 ring-purple-500/40"
+                    src="/e36f3ab62edc9c2fba9186685bb06e694fd8e78149112009407488c8477129df.png"
+                    alt="SiriusB iQ Platform Overview"
+                    className="w-full h-auto"
                   />
-                </div>
-                <div>
-                  <div className="text-sm font-bold text-white">Built by practitioners, not theorists</div>
-                  <div className="mt-1 text-xs text-zinc-400">
-                    Jeremiah Shrack, CEO — 20 years solving healthcare benefits leakage
-                  </div>
-                  <Link
-                    href="/company"
-                    className="mt-2 inline-flex items-center gap-1 text-xs text-purple-400 transition-colors hover:text-purple-300"
-                  >
-                    <span>Learn about our approach</span>
-                    <ArrowRight className="h-3 w-3" />
-                  </Link>
+                  {/* Glow effect */}
+                  <div className="absolute inset-0 bg-gradient-to-t from-amber-500/20 via-transparent to-transparent pointer-events-none" />
                 </div>
               </motion.div>
-            </motion.div>
-
-            <motion.div
-              className="relative rounded-3xl border border-purple-500/40 bg-gradient-to-br from-zinc-950/95 via-purple-950/20 to-zinc-900/90 p-8 shadow-2xl backdrop-blur-sm"
-              initial={{ opacity: 0, x: 40, rotateY: -15 }}
-              animate={{ opacity: 1, x: 0, rotateY: 0 }}
-              transition={{ duration: 0.8, delay: 0.4, type: "spring", stiffness: 100 }}
-              whileHover={{ scale: 1.02, rotateY: 2 }}
-              style={{ transformStyle: "preserve-3d" }}
-            >
-              <div className="absolute -inset-1 rounded-3xl bg-gradient-to-r from-purple-600/30 via-purple-500/40 to-blue-600/30 opacity-70 blur-2xl" />
-              <div className="absolute -inset-px rounded-3xl bg-gradient-to-br from-purple-500/20 via-transparent to-blue-500/20 opacity-80" />
-              
-              <div className="relative" style={{ transform: "translateZ(40px)" }}>
-                <div className="flex items-center justify-between mb-6">
-                  <h3 className="text-xl font-semibold">Receipts Ledger</h3>
-                  <button
-                    onClick={() => handleBadgeClick("immutable")}
-                    className="group flex items-center gap-2 px-3 py-1.5 rounded-lg bg-emerald-500/10 border border-emerald-500/20 hover:bg-emerald-500/20 hover:border-emerald-500/40 transition-all cursor-pointer"
-                  >
-                    <Lock className="h-4 w-4 text-emerald-400 group-hover:scale-110 transition-transform" />
-                    <span className="text-sm font-medium">Immutable-ish</span>
-                  </button>
-                </div>
-
-                <div className="grid gap-4">
-                  <ReceiptCard
-                    title="Carrier Invoice — Jan 2026"
-                    status="VERIFIED"
-                    statusColor="text-emerald-400"
-                    details="Hash: 9f3c…a21b · Source: Secure Upload · Linked: Plan 2026 / Vendor A"
-                    delay={0.6}
-                  />
-
-                  <ReceiptCard
-                    title="PBM Contract — Amendment #2"
-                    status="NEEDS REVIEW"
-                    statusColor="text-amber-400"
-                    details="Versioned · Redline detected · Missing signature page"
-                    delay={0.8}
-                  />
-
-                  <ReceiptCard
-                    title="Form 5500 — Plan Year 2025"
-                    status="VERIFIED"
-                    statusColor="text-emerald-400"
-                    details="Extracted: participants, plan year, funding, schedules · Diff vs 2024 computed"
-                    delay={1}
-                  />
-                </div>
-
-                <motion.div
-                  className="mt-6 grid grid-cols-2 gap-3"
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  transition={{ duration: 0.8, delay: 1.2 }}
-                >
-                  <Pill k="Receipts linked" v="Plan → Vendor → KPI" />
-                  <Pill k="Proof mode" v="Hash + lineage + diffs" />
-                </motion.div>
-              </div>
-            </motion.div>
+            </div>
           </div>
-        </motion.section>
+        </section>
 
         <section id="proof" className="relative z-10 mx-auto w-full max-w-7xl px-6 py-20">
           <motion.div

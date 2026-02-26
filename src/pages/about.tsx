@@ -2,13 +2,28 @@
 
 import { motion } from "framer-motion";
 import Link from "next/link";
+import { useState } from "react";
 import { Target, Users, Zap, Shield, TrendingUp, Award, Globe, Lightbulb, ChevronRight } from "lucide-react";
 import Nav from "@/components/Nav";
 import Footer from "@/components/Footer";
 import { SEO } from "@/components/SEO";
 import { Hero3D } from "@/components/Hero3D";
+import { ImageLightbox } from "@/components/ImageLightbox";
 
 export default function AboutPage() {
+  const [lightboxOpen, setLightboxOpen] = useState(false);
+  const [lightboxImage, setLightboxImage] = useState({
+    src: "",
+    alt: "",
+    title: "",
+    subtitle: ""
+  });
+
+  const openLightbox = (src: string, alt: string, title: string, subtitle: string) => {
+    setLightboxImage({ src, alt, title, subtitle });
+    setLightboxOpen(true);
+  };
+
   return (
     <>
       <SEO 
@@ -16,6 +31,15 @@ export default function AboutPage() {
         description="Learn about SiriusB iQ's mission to transform enterprise governance through algorithmic fiduciary intelligence, data orchestration, and agentic workflows."
       />
       <Nav />
+      
+      <ImageLightbox
+        isOpen={lightboxOpen}
+        onClose={() => setLightboxOpen(false)}
+        imageSrc={lightboxImage.src}
+        imageAlt={lightboxImage.alt}
+        title={lightboxImage.title}
+        subtitle={lightboxImage.subtitle}
+      />
       
       <main className="min-h-screen bg-black text-white">
         {/* Hero Section */}
@@ -290,13 +314,26 @@ export default function AboutPage() {
                 className="group relative"
               >
                 <div className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-amber-950/40 via-zinc-900/40 to-black/40 border border-amber-500/20 p-8 hover:border-amber-500/40 transition-all duration-500">
-                  <div className="relative w-32 h-32 mx-auto mb-6 rounded-full overflow-hidden border-4 border-amber-500/30 group-hover:border-amber-400/60 transition-all duration-500">
+                  <button
+                    onClick={() => openLightbox(
+                      "/jeremiah-shrack-professional.png",
+                      "Jeremiah Shrack",
+                      "Jeremiah Shrack",
+                      "Founder & CEO"
+                    )}
+                    className="relative w-32 h-32 mx-auto mb-6 rounded-full overflow-hidden border-4 border-amber-500/30 group-hover:border-amber-400/60 transition-all duration-500 cursor-pointer hover:scale-110"
+                  >
                     <img
                       src="/jeremiah-shrack-professional.png"
                       alt="Jeremiah Shrack"
                       className="w-full h-full object-cover"
                     />
-                  </div>
+                    <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors duration-300 flex items-center justify-center">
+                      <span className="text-white text-xs opacity-0 group-hover:opacity-100 transition-opacity">
+                        Click to enlarge
+                      </span>
+                    </div>
+                  </button>
                   <div className="text-center">
                     <h3 className="text-2xl font-bold text-amber-100 mb-2">
                       Jeremiah Shrack
@@ -327,13 +364,26 @@ export default function AboutPage() {
                 className="group relative"
               >
                 <div className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-amber-950/40 via-zinc-900/40 to-black/40 border border-amber-500/20 p-8 hover:border-amber-500/40 transition-all duration-500">
-                  <div className="relative w-32 h-32 mx-auto mb-6 rounded-full overflow-hidden border-4 border-amber-500/30 group-hover:border-amber-400/60 transition-all duration-500">
+                  <button
+                    onClick={() => openLightbox(
+                      "/1766487748644.jpeg",
+                      "Dr. Michael Ochieng'",
+                      "Dr. Michael Ochieng'",
+                      "Distinguished Chief Technology Officer"
+                    )}
+                    className="relative w-32 h-32 mx-auto mb-6 rounded-full overflow-hidden border-4 border-amber-500/30 group-hover:border-amber-400/60 transition-all duration-500 cursor-pointer hover:scale-110"
+                  >
                     <img
                       src="/1766487748644.jpeg"
                       alt="Dr. Michael Ochieng'"
                       className="w-full h-full object-cover"
                     />
-                  </div>
+                    <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors duration-300 flex items-center justify-center">
+                      <span className="text-white text-xs opacity-0 group-hover:opacity-100 transition-opacity">
+                        Click to enlarge
+                      </span>
+                    </div>
+                  </button>
                   <div className="text-center">
                     <h3 className="text-2xl font-bold text-amber-100 mb-2">
                       Dr. Michael Ochieng'

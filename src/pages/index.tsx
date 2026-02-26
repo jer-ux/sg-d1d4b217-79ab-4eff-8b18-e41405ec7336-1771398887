@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef, useState } from "react";
+import { useRef, useState, useEffect } from "react";
 import Link from "next/link";
 import { motion, useScroll, useTransform, useInView } from "framer-motion";
 import { SEO } from "@/components/SEO";
@@ -147,7 +147,13 @@ const ReceiptCard = ({
 );
 
 export default function HomePage() {
+  const [mounted, setMounted] = useState(false);
   const heroRef = useRef<HTMLDivElement>(null);
+  
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+  
   const { scrollYProgress } = useScroll({
     target: heroRef,
     offset: ["start start", "end start"],
@@ -185,70 +191,145 @@ export default function HomePage() {
         <div className="fixed inset-0 bg-gradient-to-br from-purple-950/20 via-black to-blue-950/10 pointer-events-none" style={{ zIndex: 0 }} />
         
         {/* Hero Section */}
-        <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
+        <section className="relative min-h-screen flex items-center justify-center overflow-hidden" ref={heroRef}>
           <Hero3D />
           
-          {/* Hero Content */}
-          <div className="relative z-10 max-w-7xl mx-auto px-6 pt-32 pb-20">
-            <div className="grid lg:grid-cols-2 gap-12 items-center">
-              {/* Left Column - Text Content */}
-              <motion.div
-                initial={{ opacity: 0, x: -50 }}
-                animate={{ opacity: 1, x: 0 }}
-                transition={{ duration: 0.8 }}
-                className="space-y-8"
+          <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
+            {mounted ? (
+              <motion.div 
+                style={{ opacity: heroOpacity, scale: heroScale }}
+                className="grid lg:grid-cols-2 gap-12 items-center"
               >
-                
-                <h1 className="text-5xl md:text-7xl font-bold">
-                  <span className="bg-gradient-to-r from-amber-300 via-amber-100 to-white bg-clip-text text-transparent">
-                    Algorithmic Fiduciary
-                  </span>
-                  <br />
-                  <span className="text-white">Intelligence Platform</span>
-                </h1>
+                {/* Left Column - Text Content */}
+                <motion.div
+                  initial={{ opacity: 0, x: -50 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ duration: 0.8 }}
+                  className="space-y-8"
+                >
+                  
+                  <h1 className="text-5xl md:text-7xl font-bold">
+                    <span className="bg-gradient-to-r from-amber-300 via-amber-100 to-white bg-clip-text text-transparent">
+                      Algorithmic Fiduciary
+                    </span>
+                    <br />
+                    <span className="text-white">Intelligence Platform</span>
+                  </h1>
 
-                <p className="text-xl text-gray-300 leading-relaxed">
-                  Transform enterprise benefits into verifiable alpha through AI-powered analytics,
-                  real-time evidence capture, and executive-grade decision intelligence.
-                </p>
+                  <p className="text-xl text-gray-300 mb-8 leading-relaxed">
+                    Transform enterprise operations with AI-powered governance, real-time oversight, and algorithmic compliance enforcement.
+                  </p>
 
-                <div className="flex flex-wrap gap-4">
-                  <Link
-                    href="/request-demo"
-                    className="inline-flex items-center gap-2 px-8 py-4 bg-gradient-to-r from-amber-500 to-amber-600 text-black font-semibold rounded-lg hover:from-amber-400 hover:to-amber-500 transition-all duration-300 shadow-lg shadow-amber-500/20"
-                  >
-                    <Zap className="h-5 w-5" />
-                    <span>Request Demo</span>
-                  </Link>
+                  {/* CTA Buttons */}
+                  <div className="flex flex-col sm:flex-row gap-4 mb-8">
+                    <Link
+                      href="/request-demo"
+                      className="inline-flex items-center justify-center px-8 py-4 text-lg font-semibold text-white bg-gradient-to-r from-blue-600 to-purple-600 rounded-lg hover:from-blue-700 hover:to-purple-700 transition-all duration-200 shadow-lg hover:shadow-xl transform hover:scale-105"
+                    >
+                      <span>Request Demo</span>
+                      <svg className="ml-2 h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5m0 0l-5 5m5-5H6" />
+                      </svg>
+                    </Link>
+                    
+                    <Link
+                      href="/platform"
+                      className="inline-flex items-center justify-center px-8 py-4 text-lg font-semibold text-white bg-white/10 backdrop-blur-sm border border-white/20 rounded-lg hover:bg-white/20 transition-all duration-200 shadow-lg hover:shadow-xl"
+                    >
+                      <span>Explore Platform</span>
+                      <svg className="ml-2 h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 5l7 7m0 0l-7 7m7-7H3" />
+                      </svg>
+                    </Link>
+                  </div>
+                </motion.div>
 
-                  <Link
-                    href="/war-room"
-                    className="inline-flex items-center gap-2 px-8 py-4 bg-white/5 backdrop-blur-sm text-white font-semibold rounded-lg border border-white/10 hover:bg-white/10 transition-all duration-300"
-                  >
-                    <Activity className="h-5 w-5" />
-                    <span>Live War Room</span>
-                  </Link>
-                </div>
+                {/* Right Column - Image */}
+                <motion.div
+                  initial={{ opacity: 0, x: 50 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ duration: 0.8, delay: 0.2 }}
+                  className="relative"
+                >
+                  <div className="relative rounded-2xl overflow-hidden border border-amber-500/20 shadow-2xl shadow-amber-500/10">
+                    <img
+                      src="/e36f3ab62edc9c2fba9186685bb06e694fd8e78149112009407488c8477129df.png"
+                      alt="SiriusB iQ Platform Overview"
+                      className="w-full h-auto"
+                    />
+                    {/* Glow effect */}
+                    <div className="absolute inset-0 bg-gradient-to-t from-amber-500/20 via-transparent to-transparent pointer-events-none" />
+                  </div>
+                </motion.div>
               </motion.div>
+            ) : (
+              <div className="grid lg:grid-cols-2 gap-12 items-center">
+                {/* Same content without motion for SSR */}
+                <div className="space-y-8">
+                  <motion.div
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.8 }}
+                  >
+                    <h1 className="text-5xl md:text-7xl font-bold leading-tight">
+                      <span className="bg-gradient-to-r from-blue-400 via-cyan-300 to-purple-400 bg-clip-text text-transparent">
+                        Algorithmic Fiduciary
+                      </span>
+                      <br />
+                      <span className="text-white">Intelligence Platform</span>
+                    </h1>
+                  </motion.div>
 
-              {/* Right Column - Image */}
-              <motion.div
-                initial={{ opacity: 0, x: 50 }}
-                animate={{ opacity: 1, x: 0 }}
-                transition={{ duration: 0.8, delay: 0.2 }}
-                className="relative"
-              >
-                <div className="relative rounded-2xl overflow-hidden border border-amber-500/20 shadow-2xl shadow-amber-500/10">
-                  <img
-                    src="/e36f3ab62edc9c2fba9186685bb06e694fd8e78149112009407488c8477129df.png"
-                    alt="SiriusB iQ Platform Overview"
-                    className="w-full h-auto"
-                  />
-                  {/* Glow effect */}
-                  <div className="absolute inset-0 bg-gradient-to-t from-amber-500/20 via-transparent to-transparent pointer-events-none" />
+                  <motion.p
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.8, delay: 0.2 }}
+                    className="text-xl md:text-2xl text-gray-300 leading-relaxed"
+                  >
+                    Transform enterprise benefits into <span className="text-cyan-400 font-semibold">verifiable alpha</span> with
+                    AI-powered governance and real-time oversight.
+                  </motion.p>
+
+                  <motion.div
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.8, delay: 0.4 }}
+                    className="flex flex-col sm:flex-row gap-4"
+                  >
+                    <Link
+                      href="/request-demo"
+                      className="inline-flex items-center justify-center gap-2 bg-gradient-to-r from-blue-500 to-cyan-500 text-white px-8 py-4 rounded-lg font-semibold hover:from-blue-600 hover:to-cyan-600 transition-all shadow-lg hover:shadow-xl hover:scale-105"
+                    >
+                      Request Demo
+                      <ArrowRight className="h-5 w-5" />
+                    </Link>
+                    <Link
+                      href="/platform"
+                      className="inline-flex items-center justify-center gap-2 bg-white/10 backdrop-blur-sm text-white px-8 py-4 rounded-lg font-semibold hover:bg-white/20 transition-all border border-white/20"
+                    >
+                      Explore Platform
+                      <Sparkles className="h-5 w-5" />
+                    </Link>
+                  </motion.div>
                 </div>
-              </motion.div>
-            </div>
+
+                <div className="relative">
+                  <motion.div
+                    initial={{ opacity: 0, scale: 0.9 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    transition={{ duration: 1, delay: 0.3 }}
+                    className="relative aspect-square max-w-lg mx-auto"
+                  >
+                    <div className="absolute inset-0 bg-gradient-to-br from-blue-500/20 to-purple-500/20 rounded-3xl blur-3xl" />
+                    <img
+                      src="/e36f3ab62edc9c2fba9186685bb06e694fd8e78149112009407488c8477129df.png"
+                      alt="SiriusB iQ Platform"
+                      className="relative z-10 w-full h-full object-contain rounded-2xl"
+                    />
+                  </motion.div>
+                </div>
+              </div>
+            )}
           </div>
         </section>
 

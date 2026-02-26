@@ -4,12 +4,16 @@ import { useState, useEffect } from "react";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { motion, useScroll, useTransform } from "framer-motion";
-import { Menu, X, Crown } from "lucide-react";
+import { Menu, X, Crown, ChevronDown } from "lucide-react";
 import CommandPalette from "./CommandPalette";
+import { ThemeSwitch } from "./ThemeSwitch";
+import { Button } from "./ui/button";
 
 export default function Nav() {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [platformDropdownOpen, setPlatformDropdownOpen] = useState(false);
+  const [complianceDropdownOpen, setComplianceDropdownOpen] = useState(false);
   const router = useRouter();
   const { scrollY } = useScroll();
 
@@ -129,6 +133,106 @@ export default function Nav() {
                 </motion.div>
               ))}
               
+              {/* Compliance Dropdown */}
+              <div
+                className="relative"
+                onMouseEnter={() => setComplianceDropdownOpen(true)}
+                onMouseLeave={() => setComplianceDropdownOpen(false)}
+              >
+                <button className="flex items-center gap-1 text-amber-100 hover:text-amber-400 transition-colors">
+                  Compliance & Governance
+                  <ChevronDown className={`w-4 h-4 transition-transform ${complianceDropdownOpen ? "rotate-180" : ""}`} />
+                </button>
+                {complianceDropdownOpen && (
+                  <div className="absolute top-full left-0 mt-2 w-72 bg-gray-900/95 backdrop-blur-md border border-amber-500/30 rounded-lg shadow-xl py-2 z-50">
+                    <div className="px-4 py-2 text-xs font-semibold text-amber-400 uppercase tracking-wider border-b border-amber-500/20">
+                      Healthcare & Benefits
+                    </div>
+                    <Link
+                      href="/solutions/erisa-compliance"
+                      className="block px-4 py-2 text-sm text-gray-200 hover:bg-amber-500/10 hover:text-amber-400 transition-colors"
+                      onClick={() => setComplianceDropdownOpen(false)}
+                    >
+                      ERISA Compliance
+                    </Link>
+                    <Link
+                      href="/solutions/hipaa-compliance"
+                      className="block px-4 py-2 text-sm text-gray-200 hover:bg-amber-500/10 hover:text-amber-400 transition-colors"
+                      onClick={() => setComplianceDropdownOpen(false)}
+                    >
+                      HIPAA Compliance
+                    </Link>
+                    <Link
+                      href="/solutions/aca-compliance"
+                      className="block px-4 py-2 text-sm text-gray-200 hover:bg-amber-500/10 hover:text-amber-400 transition-colors"
+                      onClick={() => setComplianceDropdownOpen(false)}
+                    >
+                      ACA Compliance
+                    </Link>
+                    <Link
+                      href="/solutions/form-5500"
+                      className="block px-4 py-2 text-sm text-gray-200 hover:bg-amber-500/10 hover:text-amber-400 transition-colors"
+                      onClick={() => setComplianceDropdownOpen(false)}
+                    >
+                      Form 5500 Management
+                    </Link>
+                    
+                    <div className="px-4 py-2 text-xs font-semibold text-amber-400 uppercase tracking-wider border-b border-t border-amber-500/20 mt-2">
+                      Financial & Fiduciary
+                    </div>
+                    <Link
+                      href="/solutions/soc2-certification"
+                      className="block px-4 py-2 text-sm text-gray-200 hover:bg-amber-500/10 hover:text-amber-400 transition-colors"
+                      onClick={() => setComplianceDropdownOpen(false)}
+                    >
+                      SOC 2 Type II
+                    </Link>
+                    <Link
+                      href="/solutions/fiduciary-governance"
+                      className="block px-4 py-2 text-sm text-gray-200 hover:bg-amber-500/10 hover:text-amber-400 transition-colors"
+                      onClick={() => setComplianceDropdownOpen(false)}
+                    >
+                      Fiduciary Duty Monitoring
+                    </Link>
+                    <Link
+                      href="/solutions/sox-controls"
+                      className="block px-4 py-2 text-sm text-gray-200 hover:bg-amber-500/10 hover:text-amber-400 transition-colors"
+                      onClick={() => setComplianceDropdownOpen(false)}
+                    >
+                      SOX Controls
+                    </Link>
+                    
+                    <div className="px-4 py-2 text-xs font-semibold text-amber-400 uppercase tracking-wider border-b border-t border-amber-500/20 mt-2">
+                      Data Privacy & Security
+                    </div>
+                    <Link
+                      href="/solutions/gdpr-compliance"
+                      className="block px-4 py-2 text-sm text-gray-200 hover:bg-amber-500/10 hover:text-amber-400 transition-colors"
+                      onClick={() => setComplianceDropdownOpen(false)}
+                    >
+                      GDPR Compliance
+                    </Link>
+                    <Link
+                      href="/solutions/ccpa-compliance"
+                      className="block px-4 py-2 text-sm text-gray-200 hover:bg-amber-500/10 hover:text-amber-400 transition-colors"
+                      onClick={() => setComplianceDropdownOpen(false)}
+                    >
+                      CCPA/CPRA Compliance
+                    </Link>
+                    
+                    <div className="border-t border-amber-500/20 mt-2 pt-2">
+                      <Link
+                        href="/compliance"
+                        className="block px-4 py-2 text-sm font-semibold text-amber-400 hover:text-amber-300 transition-colors"
+                        onClick={() => setComplianceDropdownOpen(false)}
+                      >
+                        View All Compliance Solutions →
+                      </Link>
+                    </div>
+                  </div>
+                )}
+              </div>
+
               {/* Animated CTA Button */}
               <motion.div 
                 initial={{ opacity: 0, scale: 0.8 }}
@@ -206,6 +310,104 @@ export default function Nav() {
                   </Link>
                 </motion.div>
               ))}
+
+              {/* Compliance Dropdown - Mobile */}
+              <div className="border-b border-amber-500/20">
+                <button
+                  onClick={() => setComplianceDropdownOpen(!complianceDropdownOpen)}
+                  className="w-full flex items-center justify-between px-4 py-3 text-amber-100 hover:text-amber-400 transition-colors"
+                >
+                  <span>Compliance & Governance</span>
+                  <ChevronDown className={`w-4 h-4 transition-transform ${complianceDropdownOpen ? "rotate-180" : ""}`} />
+                </button>
+                {complianceDropdownOpen && (
+                  <div className="bg-gray-800/50 px-4 py-2 space-y-1">
+                    <div className="text-xs font-semibold text-amber-400 uppercase tracking-wider py-2">
+                      Healthcare & Benefits
+                    </div>
+                    <Link
+                      href="/solutions/erisa-compliance"
+                      className="block py-2 text-sm text-gray-200 hover:text-amber-400 transition-colors"
+                      onClick={() => setIsMobileMenuOpen(false)}
+                    >
+                      ERISA Compliance
+                    </Link>
+                    <Link
+                      href="/solutions/hipaa-compliance"
+                      className="block py-2 text-sm text-gray-200 hover:text-amber-400 transition-colors"
+                      onClick={() => setIsMobileMenuOpen(false)}
+                    >
+                      HIPAA Compliance
+                    </Link>
+                    <Link
+                      href="/solutions/aca-compliance"
+                      className="block py-2 text-sm text-gray-200 hover:text-amber-400 transition-colors"
+                      onClick={() => setIsMobileMenuOpen(false)}
+                    >
+                      ACA Compliance
+                    </Link>
+                    <Link
+                      href="/solutions/form-5500"
+                      className="block py-2 text-sm text-gray-200 hover:text-amber-400 transition-colors"
+                      onClick={() => setIsMobileMenuOpen(false)}
+                    >
+                      Form 5500 Management
+                    </Link>
+                    
+                    <div className="text-xs font-semibold text-amber-400 uppercase tracking-wider py-2 mt-3">
+                      Financial & Fiduciary
+                    </div>
+                    <Link
+                      href="/solutions/soc2-certification"
+                      className="block py-2 text-sm text-gray-200 hover:text-amber-400 transition-colors"
+                      onClick={() => setIsMobileMenuOpen(false)}
+                    >
+                      SOC 2 Type II
+                    </Link>
+                    <Link
+                      href="/solutions/fiduciary-governance"
+                      className="block py-2 text-sm text-gray-200 hover:text-amber-400 transition-colors"
+                      onClick={() => setIsMobileMenuOpen(false)}
+                    >
+                      Fiduciary Duty Monitoring
+                    </Link>
+                    <Link
+                      href="/solutions/sox-controls"
+                      className="block py-2 text-sm text-gray-200 hover:text-amber-400 transition-colors"
+                      onClick={() => setIsMobileMenuOpen(false)}
+                    >
+                      SOX Controls
+                    </Link>
+                    
+                    <div className="text-xs font-semibold text-amber-400 uppercase tracking-wider py-2 mt-3">
+                      Data Privacy & Security
+                    </div>
+                    <Link
+                      href="/solutions/gdpr-compliance"
+                      className="block py-2 text-sm text-gray-200 hover:text-amber-400 transition-colors"
+                      onClick={() => setIsMobileMenuOpen(false)}
+                    >
+                      GDPR Compliance
+                    </Link>
+                    <Link
+                      href="/solutions/ccpa-compliance"
+                      className="block py-2 text-sm text-gray-200 hover:text-amber-400 transition-colors"
+                      onClick={() => setIsMobileMenuOpen(false)}
+                    >
+                      CCPA/CPRA Compliance
+                    </Link>
+                    
+                    <Link
+                      href="/compliance"
+                      className="block py-3 text-sm font-semibold text-amber-400 hover:text-amber-300 transition-colors mt-3 border-t border-amber-500/20"
+                      onClick={() => setIsMobileMenuOpen(false)}
+                    >
+                      View All Solutions →
+                    </Link>
+                  </div>
+                )}
+              </div>
+
               <motion.div
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}

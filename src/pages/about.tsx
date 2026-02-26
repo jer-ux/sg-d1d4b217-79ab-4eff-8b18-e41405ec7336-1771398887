@@ -497,6 +497,10 @@ export default function AboutPage() {
         </section>
       </main>
 
+      {/* Board of Directors Section */}
+      <section className="py-24 bg-black relative overflow-hidden">
+      </section>
+
       <Footer />
     </>
   );

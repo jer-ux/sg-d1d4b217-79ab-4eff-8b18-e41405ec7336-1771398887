@@ -323,7 +323,10 @@ export default function Nav() {
               </button>
               {companyDropdownOpen && (
                 <div className="ml-4 mt-2 space-y-1">
-                  <Link href="/company" className="block px-4 py-2 text-sm text-gray-400 hover:text-white hover:bg-white/5 rounded-lg transition-colors">
+                  <Link
+                    href="/about"
+                    className="block px-4 py-2 text-sm text-gray-300 hover:bg-gray-800 hover:text-white transition-colors"
+                  >
                     About Us
                   </Link>
                   <Link href="/board-of-directors" className="block px-4 py-2 text-sm text-gray-400 hover:text-white hover:bg-white/5 rounded-lg transition-colors">

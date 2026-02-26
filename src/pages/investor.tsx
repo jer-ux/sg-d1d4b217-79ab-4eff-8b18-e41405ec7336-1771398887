@@ -1,428 +1,272 @@
-"use client";
-
-import { useEffect, useState } from "react";
-import { motion, useScroll, useTransform, MotionValue } from "framer-motion";
-import dynamic from "next/dynamic";
-import Image from "next/image";
+import { useState } from "react";
+import Head from "next/head";
+import { motion, AnimatePresence } from "framer-motion";
+import { ChevronLeft, ChevronRight, Play } from "lucide-react";
+import Nav from "@/components/Nav";
+import Footer from "@/components/Footer";
 import Link from "next/link";
-import { ArrowRight, Lock, Unlock, ChevronDown } from "lucide-react";
-
-const PremiumBackground = dynamic(() => 
-  import("@/components/premium/PremiumBackground").then(mod => ({ default: mod.PremiumBackground })), 
-  { ssr: false }
-);
 
 interface Slide {
   id: string;
   image: string;
   title: string;
-  subtitle: string;
   description: string;
 }
 
-const slides: Slide[] = [
-  {
-    id: "title",
-    image: "/slide01_title.png",
-    title: "SiriusB iQ",
-    subtitle: "Algorithmic Fiduciary Intelligence Platform",
-    description: "Transforming enterprise benefits into verifiable alpha"
-  },
-  {
-    id: "problem",
-    image: "/slide02_problem.png",
-    title: "The $1.2T Opacity Problem",
-    subtitle: "Enterprise Benefits Lack Accountability",
-    description: "Benefits spend represents 30-40% of total compensation yet operates in a black box with zero real-time verification"
-  },
-  {
-    id: "thesis",
-    image: "/slide03_thesis.png",
-    title: "Investment Thesis",
-    subtitle: "Receipts + Ledger = Fiduciary AI",
-    description: "We turn unstructured benefits chaos into structured, verifiable intelligence that scales across the enterprise"
-  },
-  {
-    id: "architecture",
-    image: "/slide04_architecture.png",
-    title: "Platform Architecture",
-    subtitle: "Modular Chassis + Vertical Modules",
-    description: "Sovereign data platform with pluggable intelligence modules for every stakeholder"
-  },
-  {
-    id: "moat",
-    image: "/slide05_moat.png",
-    title: "Competitive Moat",
-    subtitle: "Data Network Effects at Scale",
-    description: "Every receipt strengthens the ledger. Every ledger entry improves the AI. Compounding defensibility."
-  },
-  {
-    id: "warroom",
-    image: "/slide06_warroom.png",
-    title: "War Room Intelligence",
-    subtitle: "Real-Time Fiduciary Command Center",
-    description: "CFOs see every dollar in flight, every variance, every intervention opportunity—in real time"
-  },
-  {
-    id: "ledger",
-    image: "/slide07_ledger.png",
-    title: "Verified Savings Ledger",
-    subtitle: "Immutable Proof of Performance",
-    description: "Blockchain-grade verification of every savings claim, every negotiation, every vendor commitment"
-  },
-  {
-    id: "trust",
-    image: "/slide08_trust.png",
-    title: "Enterprise Trust Layer",
-    subtitle: "SOC 2 + Blockchain + Audit Trails",
-    description: "Bank-grade security meets pharmaceutical-grade compliance for Fortune 500 peace of mind"
-  },
-  {
-    id: "platform",
-    image: "/slide09_platform.png",
-    title: "Full Stack Platform",
-    subtitle: "Data Lake → Intelligence → Action",
-    description: "Ingest anything, analyze everything, verify outcomes, compound value across the enterprise"
-  },
-  {
-    id: "whynow",
-    image: "/slide_whynow.png",
-    title: "Why Now",
-    subtitle: "Perfect Storm of Market Forces",
-    description: "AI commoditization + regulatory pressure + CFO accountability = inflection point for fiduciary intelligence"
-  },
-  {
-    id: "dataquality",
-    image: "/slide_dataquality.png",
-    title: "Data Quality Edge",
-    subtitle: "Clean Data = Better AI = Compounding Alpha",
-    description: "Our data cleaning pipeline turns enterprise chaos into pristine training sets for agentic workflows"
-  },
-  {
-    id: "roi",
-    image: "/slide_roi.png",
-    title: "ROI at Scale",
-    subtitle: "10-15% Savings on $100M+ Benefits Spend",
-    description: "Payback in 6-9 months. 3-5x ROI in year one. Compounding value as data network effects scale."
-  },
-  {
-    id: "timeline",
-    image: "/slide_timeline.png",
-    title: "Traction & Roadmap",
-    subtitle: "From MVP to Enterprise Scale",
-    description: "Pilot customers, proven savings, expanding modules—demonstrating product-market fit at velocity"
-  },
-  {
-    id: "partnership",
-    image: "/slide_partnership.png",
-    title: "Partnership Model",
-    subtitle: "Ecosystem Strategy for 10x Growth",
-    description: "Consultants, brokers, TPAs become force multipliers. We provide rails, they provide reach."
-  },
-  {
-    id: "cta",
-    image: "/slide10_cta.png",
-    title: "Investment Opportunity",
-    subtitle: "Join the Fiduciary Intelligence Revolution",
-    description: "Seed round open. Building the operating system for enterprise benefits transparency."
-  }
-];
+export default function InvestorPage() {
+  const [currentSlide, setCurrentSlide] = useState(0);
+  const [direction, setDirection] = useState(0);
 
-function SlideItem({ 
-  slide, 
-  index, 
-  total, 
-  scrollYProgress 
-}: { 
-  slide: Slide; 
-  index: number; 
-  total: number; 
-  scrollYProgress: MotionValue<number>; 
-}) {
-  const slideProgress = useTransform(
-    scrollYProgress,
-    [index / total, (index + 1) / total],
-    [0, 1]
-  );
-  
-  const opacity = useTransform(slideProgress, [0, 0.3, 0.7, 1], [0.3, 1, 1, 0.3]);
-  const scale = useTransform(slideProgress, [0, 0.5, 1], [0.95, 1, 0.95]);
+  const slides: Slide[] = [
+    {
+      id: "title",
+      image: "/e36f3ab62edc9c2fba9186685bb06e694fd8e78149112009407488c8477129df.png",
+      title: "SiriusB iQ - Algorithmic Fiduciary Intelligence Platform",
+      description: "Transforming enterprise benefits into verifiable alpha"
+    },
+    {
+      id: "problem",
+      image: "/slide02_problem.png",
+      title: "The Problem",
+      description: "Enterprise benefits opacity creates $850B in annual waste"
+    },
+    {
+      id: "thesis",
+      image: "/slide03_thesis.png",
+      title: "Investment Thesis",
+      description: "AI-native infrastructure for benefits intelligence"
+    },
+    {
+      id: "architecture",
+      image: "/slide04_architecture.png",
+      title: "Technical Architecture",
+      description: "Algorithmic fiduciary system with real-time evidence"
+    },
+    {
+      id: "moat",
+      image: "/slide05_moat.png",
+      title: "Competitive Moat",
+      description: "Proprietary evidence network with compounding data effects"
+    },
+    {
+      id: "warroom",
+      image: "/slide06_warroom.png",
+      title: "War Room Intelligence",
+      description: "Real-time anomaly detection and intervention orchestration"
+    },
+    {
+      id: "ledger",
+      image: "/slide07_ledger.png",
+      title: "Verified Savings Ledger",
+      description: "Blockchain-grade proof of economic impact"
+    },
+    {
+      id: "trust",
+      image: "/slide08_trust.png",
+      title: "Trust Architecture",
+      description: "Cryptographic evidence chain with regulatory compliance"
+    },
+    {
+      id: "platform",
+      image: "/slide09_platform.png",
+      title: "Platform Economics",
+      description: "Network effects driving 10x margin expansion"
+    },
+    {
+      id: "cta",
+      image: "/slide10_cta.png",
+      title: "Investment Opportunity",
+      description: "Join us in redefining enterprise benefits intelligence"
+    },
+    {
+      id: "whynow",
+      image: "/slide_whynow.png",
+      title: "Why Now",
+      description: "AI maturity meets regulatory demand for transparency"
+    },
+    {
+      id: "dataquality",
+      image: "/slide_dataquality.png",
+      title: "Data Quality Advantage",
+      description: "99.7% accuracy through multi-source validation"
+    },
+    {
+      id: "roi",
+      image: "/slide_roi.png",
+      title: "ROI Framework",
+      description: "Measurable value creation across enterprise stakeholders"
+    },
+    {
+      id: "timeline",
+      image: "/slide_timeline.png",
+      title: "Go-to-Market Timeline",
+      description: "18-month path to market leadership"
+    },
+    {
+      id: "partnership",
+      image: "/slide_partnership.png",
+      title: "Strategic Partnerships",
+      description: "Building the future with industry leaders"
+    }
+  ];
+
+  const nextSlide = () => {
+    setDirection(1);
+    setCurrentSlide((prev) => (prev + 1) % slides.length);
+  };
+
+  const prevSlide = () => {
+    setDirection(-1);
+    setCurrentSlide((prev) => (prev - 1 + slides.length) % slides.length);
+  };
+
+  const goToSlide = (index: number) => {
+    setDirection(index > currentSlide ? 1 : -1);
+    setCurrentSlide(index);
+  };
+
+  const variants = {
+    enter: (direction: number) => ({
+      x: direction > 0 ? 1000 : -1000,
+      opacity: 0
+    }),
+    center: {
+      zIndex: 1,
+      x: 0,
+      opacity: 1
+    },
+    exit: (direction: number) => ({
+      zIndex: 0,
+      x: direction < 0 ? 1000 : -1000,
+      opacity: 0
+    })
+  };
 
   return (
-    <motion.section
-      className="relative flex min-h-screen items-center justify-center px-6 py-20"
-      style={{ opacity, scale }}
-    >
-      <div className="relative z-10 w-full max-w-7xl">
-        <div className="grid gap-12 lg:grid-cols-2 lg:gap-20 items-center">
-          {/* Text Content */}
-          <motion.div
-            initial={{ opacity: 0, x: -50 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.8, delay: 0.2 }}
-            viewport={{ once: true }}
-            className="space-y-6"
-          >
-            <div className="inline-flex items-center gap-2 rounded-full border border-purple-500/20 bg-purple-500/10 px-4 py-1.5 text-xs font-medium text-purple-300 backdrop-blur-sm">
-              <div className="h-1.5 w-1.5 rounded-full bg-purple-400 animate-pulse" />
-              Slide {index + 1} of {total}
+    <>
+      <Head>
+        <title>Investor Deck | SiriusB iQ</title>
+        <meta name="description" content="SiriusB iQ investor presentation - Algorithmic Fiduciary Intelligence Platform" />
+      </Head>
+
+      <div className="min-h-screen bg-black text-white">
+        <Nav />
+
+        {/* Main Presentation Area */}
+        <div className="pt-20 pb-12">
+          <div className="max-w-7xl mx-auto px-6">
+            {/* Slide Container */}
+            <div className="relative aspect-[16/9] bg-gradient-to-br from-zinc-900 to-black rounded-2xl overflow-hidden border border-amber-500/20 shadow-2xl shadow-amber-500/10">
+              <AnimatePresence initial={false} custom={direction}>
+                <motion.div
+                  key={currentSlide}
+                  custom={direction}
+                  variants={variants}
+                  initial="enter"
+                  animate="center"
+                  exit="exit"
+                  transition={{
+                    x: { type: "spring", stiffness: 300, damping: 30 },
+                    opacity: { duration: 0.2 }
+                  }}
+                  className="absolute inset-0 flex items-center justify-center"
+                >
+                  <div className="relative w-full h-full">
+                    {/* Slide Image */}
+                    <div className="absolute inset-0">
+                      <img
+                        src={slides[currentSlide].image}
+                        alt={slides[currentSlide].title}
+                        className="w-full h-full object-contain"
+                      />
+                    </div>
+
+                    {/* Slide Info Overlay */}
+                    <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black via-black/80 to-transparent p-8">
+                      <h2 className="text-3xl font-bold text-amber-100 mb-2">
+                        {slides[currentSlide].title}
+                      </h2>
+                      <p className="text-gray-300">
+                        {slides[currentSlide].description}
+                      </p>
+                    </div>
+                  </div>
+                </motion.div>
+              </AnimatePresence>
+
+              {/* Navigation Arrows */}
+              <button
+                onClick={prevSlide}
+                className="absolute left-4 top-1/2 -translate-y-1/2 p-3 rounded-full bg-black/50 hover:bg-amber-500/20 border border-amber-500/20 hover:border-amber-500/40 transition-all duration-300 group"
+                aria-label="Previous slide"
+              >
+                <ChevronLeft className="h-6 w-6 text-amber-400 group-hover:text-amber-300" />
+              </button>
+
+              <button
+                onClick={nextSlide}
+                className="absolute right-4 top-1/2 -translate-y-1/2 p-3 rounded-full bg-black/50 hover:bg-amber-500/20 border border-amber-500/20 hover:border-amber-500/40 transition-all duration-300 group"
+                aria-label="Next slide"
+              >
+                <ChevronRight className="h-6 w-6 text-amber-400 group-hover:text-amber-300" />
+              </button>
             </div>
 
-            <div>
-              <h2 className="text-4xl font-bold tracking-tight text-white lg:text-5xl">
-                {slide.title}
-              </h2>
-              <p className="mt-3 text-xl font-medium text-purple-300">
-                {slide.subtitle}
-              </p>
+            {/* Slide Counter */}
+            <div className="mt-6 text-center">
+              <span className="text-gray-400">
+                Slide {currentSlide + 1} of {slides.length}
+              </span>
             </div>
 
-            <p className="text-lg leading-relaxed text-white/70">
-              {slide.description}
-            </p>
+            {/* Thumbnail Navigation */}
+            <div className="mt-8 grid grid-cols-5 md:grid-cols-10 lg:grid-cols-15 gap-3">
+              {slides.map((slide, index) => (
+                <button
+                  key={slide.id}
+                  onClick={() => goToSlide(index)}
+                  className={`relative aspect-[16/9] rounded-lg overflow-hidden border-2 transition-all duration-300 ${
+                    currentSlide === index
+                      ? "border-amber-400 shadow-lg shadow-amber-500/30"
+                      : "border-amber-500/20 hover:border-amber-500/40 opacity-60 hover:opacity-100"
+                  }`}
+                  aria-label={`Go to slide ${index + 1}`}
+                >
+                  <img
+                    src={slide.image}
+                    alt={`Slide ${index + 1}`}
+                    className="w-full h-full object-cover"
+                  />
+                  {currentSlide === index && (
+                    <div className="absolute inset-0 bg-amber-500/10" />
+                  )}
+                </button>
+              ))}
+            </div>
 
-            {index === total - 1 && (
-              <div className="flex flex-wrap gap-4 pt-4">
+            {/* CTA Section */}
+            <div className="mt-12 text-center">
+              <div className="inline-flex flex-col items-center gap-4 p-8 rounded-2xl bg-gradient-to-br from-amber-950/20 to-transparent border border-amber-500/20">
+                <h3 className="text-2xl font-bold text-amber-100">
+                  Ready to Learn More?
+                </h3>
+                <p className="text-gray-400 max-w-2xl">
+                  Join us in revolutionizing enterprise benefits intelligence. Schedule a deep-dive session with our team.
+                </p>
                 <Link
                   href="/request-demo"
-                  className="group inline-flex items-center gap-2 rounded-2xl bg-gradient-to-r from-purple-600 to-fuchsia-600 px-6 py-3 font-medium text-white transition-all hover:scale-105"
+                  className="inline-flex items-center gap-2 px-8 py-4 rounded-xl bg-gradient-to-r from-amber-600 to-amber-500 text-white font-semibold hover:from-amber-500 hover:to-amber-400 transition-all duration-300 shadow-lg shadow-amber-500/20 hover:shadow-amber-500/40 hover:scale-105"
                 >
-                  Schedule Discussion
-                  <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
+                  <Play className="h-5 w-5" />
+                  <span>Request Investor Meeting</span>
                 </Link>
-                <a
-                  href="mailto:investors@siriusb.ai"
-                  className="inline-flex items-center gap-2 rounded-2xl border border-white/10 bg-white/5 px-6 py-3 font-medium text-white backdrop-blur-xl transition-all hover:bg-white/10"
-                >
-                  Contact Investor Relations
-                </a>
               </div>
-            )}
-          </motion.div>
-
-          {/* Slide Image - OPTIMIZED FOR NO DISTORTION */}
-          <motion.div
-            initial={{ opacity: 0, x: 50 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.8, delay: 0.4 }}
-            viewport={{ once: true }}
-            className="relative"
-          >
-            <div className="group relative overflow-hidden rounded-3xl border border-white/10 bg-black/40 p-3 backdrop-blur-xl transition-all hover:border-purple-500/30 hover:shadow-2xl hover:shadow-purple-500/20">
-              {/* Fixed aspect ratio container to prevent distortion */}
-              <div className="relative w-full" style={{ aspectRatio: "16/9" }}>
-                <Image
-                  src={slide.image}
-                  alt={slide.title}
-                  fill
-                  sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 800px"
-                  quality={100}
-                  priority={index < 3}
-                  className="rounded-2xl object-contain transition-transform duration-700 group-hover:scale-[1.02]"
-                  style={{
-                    objectFit: "contain",
-                    objectPosition: "center"
-                  }}
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/30 via-transparent to-transparent opacity-0 transition-opacity group-hover:opacity-100 rounded-2xl" />
-              </div>
-            </div>
-
-            {/* Decorative glow effect */}
-            <div className="absolute -inset-4 -z-10 bg-gradient-to-r from-purple-500/20 to-fuchsia-500/20 opacity-0 blur-3xl transition-opacity group-hover:opacity-100" />
-          </motion.div>
-        </div>
-      </div>
-
-      {/* Scroll indicator (only on first slide) */}
-      {index === 0 && (
-        <motion.div
-          className="absolute bottom-12 left-1/2 -translate-x-1/2"
-          animate={{ y: [0, 10, 0] }}
-          transition={{ repeat: Infinity, duration: 2 }}
-        >
-          <div className="flex flex-col items-center gap-2 text-white/50">
-            <span className="text-xs font-medium uppercase tracking-wider">Scroll to explore</span>
-            <ChevronDown className="h-5 w-5" />
-          </div>
-        </motion.div>
-      )}
-    </motion.section>
-  );
-}
-
-export default function InvestorAccess() {
-  const [code, setCode] = useState("");
-  const [ok, setOk] = useState(false);
-  const [err, setErr] = useState<string | null>(null);
-  
-  // Use window scroll instead of container ref to avoid hydration errors
-  // This is safe to call unconditionally
-  const { scrollYProgress } = useScroll();
-
-  useEffect(() => {
-    const saved = typeof window !== "undefined" ? localStorage.getItem("INV_ACCESS_OK") : null;
-    if (saved === "1") setOk(true);
-  }, []);
-
-  async function verify() {
-    setErr(null);
-    const r = await fetch("/api/investor/verify", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ code }),
-    });
-    const d = await r.json();
-    if (d?.ok) {
-      localStorage.setItem("INV_ACCESS_OK", "1");
-      setOk(true);
-    } else {
-      setErr("Invalid code.");
-    }
-  }
-
-  if (!ok) {
-    return (
-      <main className="relative min-h-screen overflow-hidden">
-        <PremiumBackground />
-        
-        <div className="relative z-10 flex min-h-screen items-center justify-center px-6">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            className="w-full max-w-xl"
-          >
-            <div className="rounded-3xl border border-white/10 bg-black/40 p-8 backdrop-blur-xl">
-              <div className="mb-6 flex items-center gap-3">
-                <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-gradient-to-br from-purple-500/20 to-fuchsia-500/20 border border-purple-500/20">
-                  <Lock className="h-6 w-6 text-purple-400" />
-                </div>
-                <div>
-                  <div className="text-xs font-medium uppercase tracking-wider text-purple-400">Investor Access</div>
-                  <h1 className="text-xl font-semibold text-white">Private Materials Portal</h1>
-                </div>
-              </div>
-
-              <p className="mb-6 text-sm leading-relaxed text-white/70">
-                Access the full pitch deck with market analysis, platform architecture, traction metrics, and investment thesis.
-              </p>
-
-              <div className="space-y-4">
-                <div>
-                  <label className="mb-2 block text-sm font-medium text-white/90">Access Code</label>
-                  <input
-                    value={code}
-                    onChange={(e) => setCode(e.target.value)}
-                    onKeyDown={(e) => e.key === "Enter" && verify()}
-                    placeholder="Enter your access code"
-                    className="w-full rounded-2xl border border-white/10 bg-black/40 px-4 py-3 text-sm text-white placeholder:text-white/40 outline-none focus:border-purple-500/50 focus:ring-2 focus:ring-purple-500/20 transition-all"
-                  />
-                </div>
-
-                <button
-                  onClick={verify}
-                  className="group relative w-full overflow-hidden rounded-2xl bg-gradient-to-r from-purple-600 to-fuchsia-600 px-6 py-3 font-medium text-white transition-all hover:scale-[1.02] active:scale-[0.98]"
-                >
-                  <span className="relative z-10 flex items-center justify-center gap-2">
-                    <Unlock className="h-4 w-4" />
-                    Unlock Investor Materials
-                    <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
-                  </span>
-                  <div className="absolute inset-0 bg-gradient-to-r from-fuchsia-600 to-purple-600 opacity-0 transition-opacity group-hover:opacity-100" />
-                </button>
-              </div>
-
-              {err && (
-                <motion.div
-                  initial={{ opacity: 0, y: -10 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  className="mt-4 rounded-2xl border border-rose-500/20 bg-rose-500/10 px-4 py-3 text-sm text-rose-200"
-                >
-                  {err}
-                </motion.div>
-              )}
-
-              <div className="mt-6 rounded-2xl border border-white/5 bg-white/5 p-4">
-                <div className="mb-2 text-xs font-medium uppercase tracking-wider text-white/50">What's Inside</div>
-                <ul className="space-y-2 text-sm text-white/70">
-                  {[
-                    "15-slide strategic pitch deck",
-                    "Market sizing & competitive analysis",
-                    "Platform architecture deep-dive",
-                    "Traction metrics & ROI validation",
-                    "Investment thesis & use of funds"
-                  ].map((item) => (
-                    <li key={item} className="flex items-start gap-2">
-                      <div className="mt-1.5 h-1 w-1 rounded-full bg-purple-400" />
-                      <span>{item}</span>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            </div>
-
-            <p className="mt-6 text-center text-xs text-white/50">
-              For investor inquiries: <a href="mailto:investors@siriusb.ai" className="text-purple-400 hover:text-purple-300 transition-colors">investors@siriusb.ai</a>
-            </p>
-          </motion.div>
-        </div>
-      </main>
-    );
-  }
-
-  return (
-    <main className="relative min-h-screen">
-      <PremiumBackground />
-      
-      {/* Progress Indicator */}
-      <motion.div
-        className="fixed top-0 left-0 right-0 z-50 h-1 bg-gradient-to-r from-purple-500 to-fuchsia-500 origin-left"
-        style={{ scaleX: scrollYProgress }}
-      />
-
-      {/* Lock Button */}
-      <motion.button
-        onClick={() => {
-          localStorage.removeItem("INV_ACCESS_OK");
-          setOk(false);
-        }}
-        className="fixed top-6 right-6 z-50 flex items-center gap-2 rounded-2xl border border-white/10 bg-black/40 px-4 py-2 text-sm text-white/80 backdrop-blur-xl transition-all hover:bg-white/10 hover:scale-105"
-        whileHover={{ scale: 1.05 }}
-        whileTap={{ scale: 0.95 }}
-      >
-        <Lock className="h-4 w-4" />
-        Lock Portal
-      </motion.button>
-
-      {/* All 15 Slides */}
-      <div className="relative space-y-0">
-        {slides.map((slide, index) => (
-          <SlideItem
-            key={slide.id}
-            slide={slide}
-            index={index}
-            total={slides.length}
-            scrollYProgress={scrollYProgress}
-          />
-        ))}
-      </div>
-
-      {/* Footer */}
-      <footer className="relative z-10 border-t border-white/10 bg-black/40 backdrop-blur-xl">
-        <div className="mx-auto max-w-7xl px-6 py-12">
-          <div className="flex flex-col items-center justify-between gap-6 md:flex-row">
-            <div className="text-center md:text-left">
-              <p className="text-sm font-medium text-white">SiriusB iQ Investor Portal</p>
-              <p className="mt-1 text-xs text-white/50">Confidential & Proprietary Information</p>
-            </div>
-            <div className="flex gap-6 text-sm text-white/70">
-              <Link href="/company" className="transition-colors hover:text-purple-400">Company</Link>
-              <Link href="/security-governance" className="transition-colors hover:text-purple-400">Security</Link>
-              <a href="mailto:investors@siriusb.ai" className="transition-colors hover:text-purple-400">Contact</a>
             </div>
           </div>
         </div>
-      </footer>
-    </main>
+
+        <Footer />
+      </div>
+    </>
   );
 }

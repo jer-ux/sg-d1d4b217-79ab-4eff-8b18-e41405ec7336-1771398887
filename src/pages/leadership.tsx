@@ -2,11 +2,10 @@
 
 import { motion } from "framer-motion";
 import { useState } from "react";
-import { Target, Users, Zap, Shield, TrendingUp, Award, X, ChevronRight } from "lucide-react";
+import { Shield, Users, TrendingUp, Award, X, ChevronRight } from "lucide-react";
 import Nav from "@/components/Nav";
 import Footer from "@/components/Footer";
 import { SEO } from "@/components/SEO";
-import { Hero3D } from "@/components/Hero3D";
 
 const boardMembers = [
   {

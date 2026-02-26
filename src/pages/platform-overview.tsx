@@ -2,7 +2,7 @@
 
 import { motion } from "framer-motion";
 import Link from "next/link";
-import { Shield, Zap, Database, Brain, Lock, TrendingUp, Users, CheckCircle, FileText, BarChart3, Globe, Award } from "lucide-react";
+import { Shield, Zap, Database, Brain, Lock, TrendingUp, Users, CheckCircle, FileText, BarChart3, Globe, Award, DollarSign } from "lucide-react";
 import Nav from "@/components/Nav";
 import Footer from "@/components/Footer";
 import { SEO } from "@/components/SEO";

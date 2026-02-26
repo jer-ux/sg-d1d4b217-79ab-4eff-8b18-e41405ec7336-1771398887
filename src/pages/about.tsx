@@ -342,7 +342,7 @@ export default function AboutPage() {
                       Founder & CEO
                     </p>
                     <p className="text-gray-400 text-sm leading-relaxed mb-4">
-                      Humanitarian and business leader with over two decades of experience engineering intelligent operating systems and scaling organizations. Drives enterprise-wide revenue growth through actuarial precision and ethical AI deployment.
+                      Humanitarian and business leader with over two decades of experience engineering intelligent operating systems and scaling organizations. Achieved #2 in North America for Canon while working 60 hours/week and attending IWU full-time. Currently earning his '27 EMBA in AI Change Leadership at the DeVos School of Business at IWU. Drives enterprise-wide revenue growth through actuarial precision and ethical AI deployment.
                     </p>
                     <Link
                       href="/board-of-directors"

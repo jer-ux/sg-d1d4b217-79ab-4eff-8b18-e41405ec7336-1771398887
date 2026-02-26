@@ -2,7 +2,7 @@
 
 import { motion } from "framer-motion";
 import Link from "next/link";
-import { Target, Users, Zap, Shield, TrendingUp, Award, Globe, Lightbulb } from "lucide-react";
+import { Target, Users, Zap, Shield, TrendingUp, Award, Globe, Lightbulb, ChevronRight } from "lucide-react";
 import Nav from "@/components/Nav";
 import Footer from "@/components/Footer";
 import { SEO } from "@/components/SEO";
@@ -261,6 +261,116 @@ export default function AboutPage() {
                 </p>
               </motion.div>
             </div>
+          </div>
+        </section>
+
+        {/* Leadership Team */}
+        <section className="py-24">
+          <div className="max-w-7xl mx-auto px-6">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              className="text-center mb-16"
+            >
+              <h2 className="text-3xl md:text-5xl font-bold mb-4 bg-gradient-to-r from-amber-200 to-white bg-clip-text text-transparent">
+                Leadership Team
+              </h2>
+              <p className="text-xl text-gray-400 max-w-3xl mx-auto">
+                Visionary leaders driving innovation in algorithmic fiduciary intelligence
+              </p>
+            </motion.div>
+
+            <div className="grid md:grid-cols-2 gap-8 max-w-5xl mx-auto">
+              {/* Jeremiah Shrack */}
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                className="group relative"
+              >
+                <div className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-amber-950/40 via-zinc-900/40 to-black/40 border border-amber-500/20 p-8 hover:border-amber-500/40 transition-all duration-500">
+                  <div className="relative w-32 h-32 mx-auto mb-6 rounded-full overflow-hidden border-4 border-amber-500/30 group-hover:border-amber-400/60 transition-all duration-500">
+                    <img
+                      src="/jeremiah-shrack-professional.png"
+                      alt="Jeremiah Shrack"
+                      className="w-full h-full object-cover"
+                    />
+                  </div>
+                  <div className="text-center">
+                    <h3 className="text-2xl font-bold text-amber-100 mb-2">
+                      Jeremiah Shrack
+                    </h3>
+                    <p className="text-amber-400 font-semibold mb-4">
+                      Founder & CEO
+                    </p>
+                    <p className="text-gray-400 text-sm leading-relaxed mb-4">
+                      Humanitarian and business leader with over two decades of experience engineering intelligent operating systems and scaling organizations. Drives enterprise-wide revenue growth through actuarial precision and ethical AI deployment.
+                    </p>
+                    <Link
+                      href="/board-of-directors"
+                      className="inline-flex items-center gap-2 text-amber-400 text-sm font-semibold hover:text-amber-300 transition-colors"
+                    >
+                      <span>View Full Profile</span>
+                      <ChevronRight className="h-4 w-4" />
+                    </Link>
+                  </div>
+                </div>
+              </motion.div>
+
+              {/* Dr. Michael Ochieng' */}
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: 0.1 }}
+                className="group relative"
+              >
+                <div className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-amber-950/40 via-zinc-900/40 to-black/40 border border-amber-500/20 p-8 hover:border-amber-500/40 transition-all duration-500">
+                  <div className="relative w-32 h-32 mx-auto mb-6 rounded-full overflow-hidden border-4 border-amber-500/30 group-hover:border-amber-400/60 transition-all duration-500">
+                    <img
+                      src="/1766487748644.jpeg"
+                      alt="Dr. Michael Ochieng'"
+                      className="w-full h-full object-cover"
+                    />
+                  </div>
+                  <div className="text-center">
+                    <h3 className="text-2xl font-bold text-amber-100 mb-2">
+                      Dr. Michael Ochieng'
+                    </h3>
+                    <p className="text-amber-400 font-semibold mb-4">
+                      Distinguished Chief Technology Officer
+                    </p>
+                    <p className="text-gray-400 text-sm leading-relaxed mb-4">
+                      Career forged in deploying large-scale LTE and 5G infrastructure for global operators. Creator of DILLO (Decision Intelligence & Logic Layer Orchestrator) - the deterministic decision layer that governs AI systems before probabilistic outputs touch the real world.
+                    </p>
+                    <Link
+                      href="/board-of-directors"
+                      className="inline-flex items-center gap-2 text-amber-400 text-sm font-semibold hover:text-amber-300 transition-colors"
+                    >
+                      <span>View Full Profile</span>
+                      <ChevronRight className="h-4 w-4" />
+                    </Link>
+                  </div>
+                </div>
+              </motion.div>
+            </div>
+
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: 0.2 }}
+              className="text-center mt-12"
+            >
+              <Link
+                href="/board-of-directors"
+                className="inline-flex items-center gap-2 px-6 py-3 bg-white/5 backdrop-blur-sm border border-white/10 text-white font-medium rounded-full hover:bg-white/10 transition-all hover:scale-105"
+              >
+                <span>Meet Our Full Board of Directors</span>
+                <ChevronRight className="h-5 w-5" />
+              </Link>
+            </motion.div>
           </div>
         </section>
 

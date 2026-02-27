@@ -108,6 +108,27 @@ const boardMembers: BoardMember[] = [
     },
     linkedin: "https://www.linkedin.com/in/dr-jacqueline-el-sayed",
     email: "jacqueline.elsayed@siriusbiq.com"
+  },
+  {
+    name: "Catherine Farley",
+    title: "Board Member - Operational Excellence & Wealth Management",
+    image: "/catherine-farley.jpg",
+    bio: {
+      leadership: "Catherine Farley is a President/COO operator with exceptional depth across Client Operations, Finance, Technology, HR, and Compliance. She specializes in building Registered Investment Advisors (RIAs) that scale profitably while maintaining the personalized, bespoke client experience that defines boutique wealth management. Her approach transforms strategy into a scalable operating system through segmented client service models, pricing discipline, workflow optimization, and management routines that simultaneously lift margins, strengthen client loyalty, and protect the enterprise franchise.",
+      platform: "Catherine's operational framework is built on four integrated pillars: Operating Design (workflows, handoffs, dashboards/metrics, and operating cadence that align cross-functional teams), Financial Rigor (client/segment profitability modeling, pricing guardrails, budgeting discipline, and capital planning), People & Culture (role clarity and decision rights that accelerate execution and improve accountability, supported by managers who coach rather than command), and Governance (practical control frameworks that strengthen risk posture and audit readiness without bureaucratic overhead). This integrated approach has consistently delivered measurable business impact: 0% turnover in a 40-person Client Service organization (reduced from 50%+), revenue uplift via legacy-book pricing resets and tighter offer architecture, turnaround to profitability in under 2 years through expense governance and clearer decision rights, post-deal integration delivering approximately 35% bottom-line impact through streamlined processes and role clarity, and the establishment of first-time risk & compliance programs that reduce enterprise risk while supporting growth.",
+      philosophy: "Catherine's leadership philosophy centers on cultivating cultures that perform through disciplined execution, transparent communication, and developing leaders who multiply the impact of advisors and client teams. She believes that sustainable scale in wealth management requires operational excellence that preserves—not sacrifices—the client experience. Her approach rejects the false choice between growth and quality, instead engineering systems where both reinforce each other. She is known for her ability to diagnose operational friction points, design practical solutions that teams can execute, and install management routines that ensure new capabilities become embedded habits rather than temporary initiatives.",
+      expertise: [
+        "RIA Operational Excellence & Scalability",
+        "Client Service Model Design & Segmentation",
+        "Financial Operations & Profitability Management",
+        "Post-Merger Integration & Organizational Transformation",
+        "Risk & Compliance Framework Development",
+        "Talent Retention & Organizational Culture",
+        "Pricing Strategy & Revenue Optimization",
+        "Workflow Design & Process Automation"
+      ],
+      vision: "Catherine brings to SiriusB iQ's board a rare combination: deep operational expertise in wealth management combined with a proven track record of building systems that scale. Her experience transforming RIAs from founder-led practices into institutional-grade operating platforms provides strategic insight into how intelligent automation can enhance—rather than replace—high-touch client relationships. She understands the delicate balance between operational efficiency and relationship preservation, making her perspective invaluable as SiriusB iQ develops AI-driven platforms for industries where trust, transparency, and personalized service remain competitive differentiators. Her focus on measurable outcomes, cultural transformation, and governance frameworks aligns perfectly with SiriusB iQ's commitment to building algorithmic fiduciary systems that augment human judgment rather than attempting to automate it away."
+    }
   }
 ];
 

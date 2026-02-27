@@ -394,8 +394,9 @@ export default function BoardOfDirectorsPage() {
 
       {lightboxImage && (
         <ImageLightbox
-          src={lightboxImage}
-          alt="Board member profile"
+          isOpen
+          imageSrc={lightboxImage}
+          imageAlt="Board member profile"
           onClose={() => setLightboxImage(null)}
         />
       )}

@@ -137,7 +137,7 @@ export default function CompanyPage() {
               </p>
             </motion.div>
             
-            <div className="grid gap-12 md:grid-cols-1 max-w-2xl mx-auto">
+            <div className="grid gap-12 md:grid-cols-2 max-w-5xl mx-auto">
               {leadershipTeam.map((member, idx) => (
                 <motion.div 
                   key={idx}

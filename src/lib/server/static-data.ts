@@ -194,10 +194,17 @@ export const foundingPrinciples = [
 export const leadershipTeam = [
   {
     name: "Jeremiah Shrack",
-    role: "Founder & CEO",
+    role: "Founder & Chief Executive Officer",
     image: "/jeremiah-shrack-professional.png",
-    bio: "Former healthcare executive turned AI entrepreneur. Built SiriusB IQ after witnessing billions in wasteful healthcare spending.",
-    linkedin: "#"
+    bio: "Humanitarian and business leader with over two decades of experience engineering intelligent operating systems and scaling organizations. Achieved #2 in North America for Canon while working 60 hours/week and attending IWU full-time.",
+    linkedin: "https://www.linkedin.com/in/jeremiah-shrack"
+  },
+  {
+    name: "Dr. Michael Ochieng'",
+    role: "Distinguished Chief Technology Officer",
+    image: "/1766487748644.jpeg",
+    bio: "Dr. Michael Ochieng' came to AI from the high-stakes world of wireless networks, where systems fail loudly when governance is absent. His career was forged in deploying large-scale LTE and 5G infrastructure for global operators like Verizon, T-Mobile, Sprint, Safaricom, and Huawei.",
+    linkedin: "https://www.linkedin.com/in/michael-ochieng"
   }
 ];
 

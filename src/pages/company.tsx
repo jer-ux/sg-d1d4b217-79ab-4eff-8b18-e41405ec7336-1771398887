@@ -87,292 +87,17 @@ interface TeamMember {
   name: string;
   title: string;
   image: string;
-  bio: string;
+  bio?: string;
   detailedProfile: DetailedProfile;
 }
 
-const teamMembers: TeamMember[] = [
-  {
-    name: "Jeremiah Shrack",
-    title: "Founder & Chief Executive Officer",
-    image: "/jeremiah-shrack-professional.png",
-    bio: "Humanitarian and business leader with over two decades of experience engineering intelligent operating systems and scaling organizations.",
-    detailedProfile: {
-      introduction: "Over two decades, Jeremiah Shrack has built a reputation for engineering intelligent operating systems, scaling organizations, and redefining how advanced analytics intersect with human judgment. As President and Chief Executive Officer of Kincaid Risk Management Consultants (KRMC), Jeremiah drives enterprise-wide revenue growth, operational excellence, and high-impact PBM/Rx consulting engagements.",
-      careerHighlights: [
-        {
-          title: "Kincaid Risk Management Consultants",
-          role: "President & Chief Executive Officer",
-          period: "Present",
-          achievements: [
-            "Built Kincaid IQ - next-generation intelligent consulting operating system",
-            "Achieved 20-35% savings on self-funded Anthem PBM and Rx contracts",
-            "Scaled enterprise-wide revenue growth and operational excellence",
-            "Led high-impact PBM/Rx consulting engagements for mid- and large-market organizations",
-          ],
-        },
-        {
-          title: "Canon North America",
-          role: "Sales Executive",
-          period: "Early Career",
-          achievements: [
-            "Achieved #2 ranking in North America",
-            "Maintained 60 hours/week work schedule while attending IWU full-time",
-            "Demonstrated exceptional work ethic and time management",
-            "Mastered enterprise sales and relationship building",
-          ],
-        },
-      ],
-      platform: {
-        name: "Kincaid IQ",
-        description: "A next-generation intelligent consulting operating system that integrates six purpose-built subsystems extending the reasoning frameworks of VortexAI, LogicAI, and JimShrackExpressAI.",
-        subsystems: [
-          "VortexAI - Advanced pattern recognition and trend analysis",
-          "LogicAI - Deterministic reasoning and rule-based decision making",
-          "JimShrackExpressAI - Rapid insight generation and executive summaries",
-          "Contract Intelligence - Automated contract analysis and risk identification",
-          "Cost Compression - AI-driven cost optimization and waste elimination",
-          "Performance Analytics - Real-time metrics and predictive modeling",
-        ],
-        impact: "Each operating system is strategically designed to accelerate AI transformation in industries identified as early adopters of intelligent automation. The platform combines ethical machine reasoning, actuarial precision, and human-centered design to drive measurable performance improvements for clients.",
-      },
-      philosophy: {
-        title: "Leadership Philosophy",
-        principles: [
-          "Clarity: Establish clear objectives and transparent communication channels",
-          "Accountability: Own outcomes and maintain high standards of responsibility",
-          "Innovation: Continuously evolve systems and processes for maximum efficiency",
-          "Ethics: Ensure AI enhances rather than replaces human decision-making",
-          "Service: Technology must serve humanity, not the other way around",
-        ],
-        approach: "Jeremiah approaches AI and analytics through an ethical lens—ensuring that Kincaid's systems enhance, not replace, human decision-making. His leadership philosophy emphasizes clarity, accountability, and innovation, translating strategic objectives into scalable processes and measurable outcomes across the enterprise.",
-      },
-      expertise: [
-        "Enterprise Executive Sales and Leadership",
-        "Benefits Actuarial Consulting (Jumbo and Large-Market)",
-        "AI System Architecture (LogicAI + VertexAI)",
-        "PBM/Rx Contract Analytics and Negotiation",
-        "Ethical AI Deployment & Governance Frameworks",
-        "Organizational Transformation at Scale",
-        "Revenue Growth and Operational Excellence",
-        "Strategic Partnership Development",
-      ],
-      education: [
-        {
-          institution: "Indiana Wesleyan University",
-          degree: "Undergraduate Studies",
-          note: "Completed while working full-time at Canon",
-        },
-      ],
-      vision: "Grounded in business discipline, faith in God, and respect for humanity, Jeremiah is dedicated to helping employers outperform in the rapidly evolving health, benefits, and AI transformation landscape. Under his leadership, Kincaid RMC leverages a combined 20 years of consulting experience to deliver 20–35% savings on self-funded Anthem PBM and Rx contracts, empowering mid- and large-market organizations through transparent, data-driven actuarial insights.",
-      personalValues: [
-        "Faith: Deeply grounded in Christian values and service",
-        "Family: Committed to work-life integration and leading by example",
-        "Integrity: Unwavering commitment to ethical business practices",
-        "Excellence: Pursuit of the highest standards in all endeavors",
-        "Humanity: Technology and business must serve human flourishing",
-      ],
-    },
-  },
-  {
-    name: "Catherine Farley",
-    title: "Chief Operating Officer & Strategic Partnerships",
-    image: "/catherine-farley.jpg",
-    bio: "Strategic operations leader and partnership architect with deep expertise in scaling technology platforms and building high-performance teams.",
-    detailedProfile: {
-      introduction: "Catherine Farley brings a unique blend of operational excellence and strategic vision to SiriusB iQ. As Chief Operating Officer, she orchestrates the daily execution of the company's ambitious vision while simultaneously architecting strategic partnerships that expand market reach and accelerate product adoption. Her leadership style combines data-driven decision-making with a deep understanding of human dynamics, making her instrumental in both internal operations and external relationship building.",
-      careerHighlights: [
-        {
-          title: "SiriusB iQ / Kincaid RMC",
-          role: "Chief Operating Officer",
-          period: "Present",
-          achievements: [
-            "Orchestrates daily execution of company vision",
-            "Architects strategic partnerships for market expansion",
-            "Manages intersection of product development and client success",
-            "Ensures rapid innovation without compromising reliability",
-          ]
-        },
-        {
-          title: "Operations Leadership",
-          role: "Executive Leader",
-          period: "Previous Experience",
-          achievements: [
-            "Scaled operations from startup phase to enterprise readiness",
-            "Built and managed high-performance cross-functional teams",
-            "Implemented operational frameworks improving efficiency by 40%+",
-            "Led successful market expansion initiatives across multiple verticals",
-          ]
-        }
-      ],
-      platform: {
-        name: "Operational Excellence Engine",
-        description: "Catherine oversees the operational infrastructure that makes Kincaid IQ's intelligent systems scalable and reliable.",
-        components: [
-          "Strategic Partnership Architecture",
-          "Cross-Functional Team Orchestration",
-          "Client Success Frameworks",
-          "Scalable Process Design",
-          "Performance Metric Systems"
-        ],
-        impact: "Her focus on operational discipline ensures that rapid innovation doesn't compromise system reliability or client satisfaction."
-      },
-      philosophy: {
-        title: "Operational Philosophy",
-        principles: [
-          "Execution Excellence: Strategy is meaningless without flawless execution",
-          "People First: High-performing teams drive superior outcomes",
-          "Partnership Mindset: Collaboration multiplies impact",
-          "Data-Informed Decisions: Combine metrics with intuition",
-          "Continuous Improvement: Operational excellence is a journey, not a destination",
-        ],
-        approach: "Catherine believes that the best technology platforms succeed not just because of their capabilities, but because of the operational discipline that ensures consistent delivery, satisfied clients, and sustainable growth."
-      },
-      expertise: [
-        "Operations Management & Process Optimization",
-        "Strategic Partnership Development",
-        "Cross-Functional Team Leadership",
-        "Market Expansion & Go-to-Market Strategy",
-        "Client Success & Retention Programs",
-        "Technology Platform Scaling",
-        "Performance Metrics & KPI Development",
-        "Change Management & Organizational Development",
-      ],
-      education: [
-        {
-          institution: "University",
-          degree: "Advanced Degree in Business Administration",
-          note: "Focus on Operations Management and Strategic Leadership",
-        }
-      ],
-      vision: "Catherine envisions an organization where operational excellence enables innovation at scale. Her mission is to build the operational foundation that allows SiriusB iQ to transform entire industries while maintaining the agility and client focus of a startup.",
-      personalValues: [
-        "Integrity: Transparent operations and honest communication",
-        "Excellence: Commitment to the highest standards in everything we do",
-        "Collaboration: Success is a team sport",
-        "Accountability: Own outcomes and drive results",
-        "Innovation: Embrace change and continuous improvement",
-      ],
-    },
-  },
-  {
-    name: "Mike Hamann",
-    title: "Board Member - Public Service & Fiscal Leadership",
-    image: "/1517039361817_1_.jpeg",
-    bio: "Distinguished public servant with two terms as St. Joseph County Auditor, bringing deep expertise in fiscal stewardship and government operations.",
-    detailedProfile: {
-      introduction: "Mike Hamann's career in public service is defined by a deep commitment to the residents of St. Joseph County. Most notably, Mike served two terms as the St. Joseph County Auditor, acting as the county's chief financial officer and fiduciary steward until the end of 2022. His leadership was marked by a 'boots-on-the-ground' philosophy, whether he was challenging property assessment loopholes to protect the local tax base or advocating for federal relief funds to support high-impact community initiatives like Motels4Now.",
-      careerHighlights: [
-        {
-          title: "St. Joseph County Auditor",
-          role: "Chief Financial Officer",
-          period: "2014-2022 (Two Terms)",
-          achievements: [
-            "Served as county's chief financial officer and fiduciary steward",
-            "Challenged property assessment loopholes to protect local tax base",
-            "Advocated for federal relief funds for community initiatives",
-            "Implemented 'boots-on-the-ground' leadership philosophy",
-            "Maintained fiscal discipline and transparency",
-          ],
-        },
-        {
-          title: "St. Joseph County Council",
-          role: "Council Member",
-          period: "2008-2014",
-          achievements: [
-            "Elected to County Council in 2008",
-            "Shaped local legislation and budget priorities",
-            "Bridged executive policy and fiscal reality",
-            "Built consensus across political divides",
-          ],
-        },
-        {
-          title: "Board of Commissioners",
-          role: "Commissioner",
-          period: "1999-2002",
-          achievements: [
-            "Served on executive leadership team",
-            "Developed policy implementation expertise",
-            "Gained comprehensive governance experience",
-          ],
-        },
-        {
-          title: "Marian High School & Saint Joseph's High School",
-          role: "U.S. History & Government Teacher",
-          period: "Concurrent with Public Service",
-          achievements: [
-            "Taught while serving in public office",
-            "Transformed government studies into living case studies",
-            "Bridged theory and practice for students",
-            "Currently teaching full-time at Marian High School (retired from government)",
-          ],
-        },
-      ],
-      platform: {
-        name: "Triple-Threat Governance Experience",
-        description: "Mike's unique combination of roles across all three branches of local government provides unparalleled insight into how policy, legislation, and fiscal management intersect.",
-        components: [
-          "Executive Experience: Board of Commissioners (policy implementation)",
-          "Legislative Experience: County Council (lawmaking and budgeting)",
-          "Fiscal Management: County Auditor (financial stewardship)",
-        ],
-        impact: "This comprehensive background gave him a masterclass view of the intersection between executive policy, legislative intent, and fiscal reality—experience that few public servants can claim.",
-      },
-      philosophy: {
-        title: "Public Service Philosophy",
-        principles: [
-          "Boots-on-the-Ground Leadership: Active engagement with community needs",
-          "Fiscal Responsibility: Protect taxpayer dollars and local tax base",
-          "Community Impact: Support initiatives that create real change",
-          "Education as Service: Teaching is a concurrent calling, not a second act",
-          "Living Government: Make civics real through active participation",
-        ],
-        approach: "What sets Mike apart is that his commitment to the classroom was never a 'second act'—it was a concurrent calling. For years, Mike balanced the heavy responsibilities of public office with the rigorous demands of teaching. By serving as a public servant and a teacher simultaneously, Mike transformed the study of U.S. History and Government from a textbook exercise into a living, breathing case study.",
-      },
-      expertise: [
-        "County-Level Fiscal Management & Fiduciary Stewardship",
-        "Legislative & Executive Policy Implementation",
-        "Property Assessment & Tax Base Protection",
-        "Federal Relief Fund Allocation & Community Impact",
-        "Government Education & Civic Leadership",
-        "U.S. History & Government Instruction",
-        "Budget Management and Financial Oversight",
-        "Cross-Branch Government Collaboration",
-      ],
-      education: [
-        {
-          institution: "University of Notre Dame",
-          degree: "Undergraduate Degree",
-          note: "Foundation for public service career",
-        },
-        {
-          institution: "Marian High School",
-          degree: "High School (Alumnus)",
-          note: "Returned to teach at alma mater",
-        },
-      ],
-      vision: "A proud Marian High School alum and a graduate of the University of Notre Dame, Mike's career has come full circle. Now retired from government and teaching full-time at Marian, he continues to bridge the gap between the town hall and the classroom, ensuring the next generation of leaders understands that 'Government' isn't just a textbook chapter—it's a tool for community transformation.",
-      personalValues: [
-        "Service: Dedicated to improving lives in St. Joseph County",
-        "Education: Committed to teaching the next generation",
-        "Integrity: Honest stewardship of public resources",
-        "Community: Deep roots in South Bend and surrounding areas",
-        "Accessibility: Boots-on-the-ground approach to leadership",
-      ],
-      impact: [
-        "Protected local tax base through property assessment advocacy",
-        "Secured federal relief funds for critical community programs",
-        "Mentored hundreds of students in government and civics",
-        "Brought real-world governance experience into the classroom",
-        "Served constituents with distinction across three government roles",
-      ],
-    },
-  },
+const teamMembers = [
   {
     name: "Dr. Michael Ochieng'",
-    title: "Distinguished Chief Research & Technology Officer",
+    title: "Distinguished Chief Technology Officer",
     image: "/1766487748644.jpeg",
-    bio: "Telecommunications infrastructure architect turned AI governance expert, bringing carrier-grade discipline to enterprise AI systems.",
+    role: "Distinguished Chief Technology Officer",
+    bio: "Distinguished Chief Technology Officer pioneering deterministic AI governance and carrier-grade reliability.",
     detailedProfile: {
       introduction: "Dr. Michael Ochieng' did not come to AI from the software hype cycle. He came from the high-stakes world of wireless networks—an environment where systems fail loudly, and often dangerously, when governance is absent. His career was forged in the deployment of large-scale LTE and 5G infrastructure for global operators like Verizon, T-Mobile, Sprint, Safaricom, and Huawei. In the telecom sector, Dr. Ochieng' mastered a fundamental truth decades ago: intelligence must always be decoupled from control.",
       careerHighlights: [
@@ -470,7 +195,8 @@ const teamMembers: TeamMember[] = [
     name: "Dr. Jacqueline El-Sayed",
     title: "Distinguished Chief Scientist Officer",
     image: "/1517661622997_1_.jpeg",
-    bio: "Accomplished CEO, engineering educator, and research leader with $60M+ in funded projects and extensive government service.",
+    role: "Distinguished Chief Scientist Officer",
+    bio: "Distinguished Chief Scientist Officer leading global engineering education, research, and workforce development.",
     detailedProfile: {
       introduction: "Dr. Jacqueline El-Sayed is the Chief Executive Officer (CEO) for Intentional Design Group LLC and Intentional Design Institute 501c3. She is a builder and global speaker with leadership experience across industry, education, and government. She recently served as CEO for the group: SAE International (SAE), Performance Review Institute (PRI), Industry Technologies Consortia (ITC) & Fullsight Shared Services. Her previous role was CEO for the American Society for Engineering Education (ASEE).",
       careerHighlights: [
@@ -635,6 +361,285 @@ const teamMembers: TeamMember[] = [
         "Influenced Michigan public safety legislation",
         "Mentored generations of engineering students",
         "Advanced diversity in engineering through WEPAN leadership",
+      ],
+    },
+  },
+  {
+    name: "Catherine Farley",
+    title: "Board Member - Chief Operating Officer & Strategic Partnerships",
+    image: "/catherine-farley.jpg",
+    role: "Board Member - Chief Operating Officer & Strategic Partnerships",
+    bio: "Operational excellence architect scaling SiriusB iQ's platform while building strategic partnerships.",
+    detailedProfile: {
+      introduction: "Catherine Farley brings a unique blend of operational excellence and strategic vision to SiriusB iQ. As Chief Operating Officer, she orchestrates the daily execution of the company's ambitious vision while simultaneously architecting strategic partnerships that expand market reach and accelerate product adoption. Her leadership style combines data-driven decision-making with a deep understanding of human dynamics, making her instrumental in both internal operations and external relationship building.",
+      careerHighlights: [
+        {
+          title: "SiriusB iQ / Kincaid RMC",
+          role: "Chief Operating Officer",
+          period: "Present",
+          achievements: [
+            "Orchestrates daily execution of company vision",
+            "Architects strategic partnerships for market expansion",
+            "Manages intersection of product development and client success",
+            "Ensures rapid innovation without compromising reliability",
+          ]
+        },
+        {
+          title: "Operations Leadership",
+          role: "Executive Leader",
+          period: "Previous Experience",
+          achievements: [
+            "Scaled operations from startup phase to enterprise readiness",
+            "Built and managed high-performance cross-functional teams",
+            "Implemented operational frameworks improving efficiency by 40%+",
+            "Led successful market expansion initiatives across multiple verticals",
+          ]
+        }
+      ],
+      platform: {
+        name: "Operational Excellence Engine",
+        description: "Catherine oversees the operational infrastructure that makes Kincaid IQ's intelligent systems scalable and reliable.",
+        components: [
+          "Strategic Partnership Architecture",
+          "Cross-Functional Team Orchestration",
+          "Client Success Frameworks",
+          "Scalable Process Design",
+          "Performance Metric Systems"
+        ],
+        impact: "Her focus on operational discipline ensures that rapid innovation doesn't compromise system reliability or client satisfaction."
+      },
+      philosophy: {
+        title: "Operational Philosophy",
+        principles: [
+          "Execution Excellence: Strategy is meaningless without flawless execution",
+          "People First: High-performing teams drive superior outcomes",
+          "Partnership Mindset: Collaboration multiplies impact",
+          "Data-Informed Decisions: Combine metrics with intuition",
+          "Continuous Improvement: Operational excellence is a journey, not a destination",
+        ],
+        approach: "Catherine believes that the best technology platforms succeed not just because of their capabilities, but because of the operational discipline that ensures consistent delivery, satisfied clients, and sustainable growth."
+      },
+      expertise: [
+        "Operations Management & Process Optimization",
+        "Strategic Partnership Development",
+        "Cross-Functional Team Leadership",
+        "Market Expansion & Go-to-Market Strategy",
+        "Client Success & Retention Programs",
+        "Technology Platform Scaling",
+        "Performance Metrics & KPI Development",
+        "Change Management & Organizational Development",
+      ],
+      education: [
+        {
+          institution: "University",
+          degree: "Advanced Degree in Business Administration",
+          note: "Focus on Operations Management and Strategic Leadership",
+        }
+      ],
+      vision: "Catherine envisions an organization where operational excellence enables innovation at scale. Her mission is to build the operational foundation that allows SiriusB iQ to transform entire industries while maintaining the agility and client focus of a startup.",
+      personalValues: [
+        "Integrity: Transparent operations and honest communication",
+        "Excellence: Commitment to the highest standards in everything we do",
+        "Collaboration: Success is a team sport",
+        "Accountability: Own outcomes and drive results",
+        "Innovation: Embrace change and continuous improvement",
+      ],
+    },
+  },
+  {
+    name: "Mike Hamann",
+    title: "Board Member - Public Service & Fiscal Leadership",
+    image: "/Hamann_Michael.jpg",
+    role: "Board Member - Public Service & Fiscal Leadership",
+    bio: "Public servant and fiscal leader bringing government accountability and stewardship principles to enterprise governance.",
+    detailedProfile: {
+      introduction: "Mike Hamann's career in public service is defined by a deep commitment to the residents of St. Joseph County. Most notably, Mike served two terms as the St. Joseph County Auditor, acting as the county's chief financial officer and fiduciary steward until the end of 2022. His leadership was marked by a 'boots-on-the-ground' philosophy, whether he was challenging property assessment loopholes to protect the local tax base or advocating for federal relief funds to support high-impact community initiatives like Motels4Now.",
+      careerHighlights: [
+        {
+          title: "St. Joseph County Auditor",
+          role: "Chief Financial Officer",
+          period: "2014-2022 (Two Terms)",
+          achievements: [
+            "Served as county's chief financial officer and fiduciary steward",
+            "Challenged property assessment loopholes to protect local tax base",
+            "Advocated for federal relief funds for critical community programs",
+            "Implemented 'boots-on-the-ground' leadership philosophy",
+            "Maintained fiscal discipline and transparency",
+          ],
+        },
+        {
+          title: "St. Joseph County Council",
+          role: "Council Member",
+          period: "2008-2014",
+          achievements: [
+            "Elected to County Council in 2008",
+            "Shaped local legislation and budget priorities",
+            "Bridged executive policy and fiscal reality",
+            "Built consensus across political divides",
+          ],
+        },
+        {
+          title: "Board of Commissioners",
+          role: "Commissioner",
+          period: "1999-2002",
+          achievements: [
+            "Served on executive leadership team",
+            "Developed policy implementation expertise",
+            "Gained comprehensive governance experience",
+          ],
+        },
+        {
+          title: "Marian High School & Saint Joseph's High School",
+          role: "U.S. History & Government Teacher",
+          period: "Concurrent with Public Service",
+          achievements: [
+            "Taught while serving in public office",
+            "Transformed government studies into living case studies",
+            "Bridged theory and practice for students",
+            "Currently teaching full-time at Marian High School (retired from government)",
+          ],
+        },
+      ],
+      platform: {
+        name: "Triple-Threat Governance Experience",
+        description: "Mike's unique combination of roles across all three branches of local government provides unparalleled insight into how policy, legislation, and fiscal management intersect.",
+        components: [
+          "Executive Experience: Board of Commissioners (policy implementation)",
+          "Legislative Experience: County Council (lawmaking and budgeting)",
+          "Fiscal Management: County Auditor (financial stewardship)",
+        ],
+        impact: "This comprehensive background gave him a masterclass view of the intersection between executive policy, legislative intent, and fiscal reality—experience that few public servants can claim.",
+      },
+      philosophy: {
+        title: "Public Service Philosophy",
+        principles: [
+          "Boots-on-the-Ground Leadership: Active engagement with community needs",
+          "Fiscal Responsibility: Protect taxpayer dollars and local tax base",
+          "Community Impact: Support initiatives that create real change",
+          "Education as Service: Teaching is a concurrent calling, not a second act",
+          "Living Government: Make civics real through active participation",
+        ],
+        approach: "What sets Mike apart is that his commitment to the classroom was never a 'second act'—it was a concurrent calling. For years, Mike balanced the heavy responsibilities of public office with the rigorous demands of teaching. By serving as a public servant and a teacher simultaneously, Mike transformed the study of U.S. History and Government from a textbook exercise into a living, breathing case study.",
+      },
+      expertise: [
+        "County-Level Fiscal Management & Fiduciary Stewardship",
+        "Legislative & Executive Policy Implementation",
+        "Property Assessment & Tax Base Protection",
+        "Federal Relief Fund Allocation & Community Impact",
+        "Government Education & Civic Leadership",
+        "U.S. History & Government Instruction",
+        "Budget Management and Financial Oversight",
+        "Cross-Branch Government Collaboration",
+      ],
+      education: [
+        {
+          institution: "University of Notre Dame",
+          degree: "Undergraduate Degree",
+          note: "Foundation for public service career",
+        },
+        {
+          institution: "Marian High School",
+          degree: "High School (Alumnus)",
+          note: "Returned to teach at alma mater",
+        },
+      ],
+      vision: "A proud Marian High School alum and a graduate of the University of Notre Dame, Mike's career has come full circle. Now retired from government and teaching full-time at Marian, he continues to bridge the gap between the town hall and the classroom, ensuring the next generation of leaders understands that 'Government' isn't just a textbook chapter—it's a tool for community transformation.",
+      personalValues: [
+        "Service: Dedicated to improving lives in St. Joseph County",
+        "Education: Committed to teaching the next generation",
+        "Integrity: Honest stewardship of public resources",
+        "Community: Deep roots in South Bend and surrounding areas",
+        "Accessibility: Boots-on-the-ground approach to leadership",
+      ],
+      impact: [
+        "Protected local tax base through property assessment advocacy",
+        "Secured federal relief funds for critical community programs",
+        "Mentored hundreds of students in government and civics",
+        "Brought real-world governance experience into the classroom",
+        "Served constituents with distinction across three government roles",
+      ],
+    },
+  },
+  {
+    name: "Jeremiah Shrack",
+    title: "Founder & Chief Executive Officer",
+    image: "/jeremiah-shrack-professional.png",
+    role: "Founder & Chief Executive Officer",
+    bio: "Founder and CEO leading algorithmic fiduciary intelligence for institutional benefits governance.",
+    detailedProfile: {
+      introduction: "Over two decades, Jeremiah Shrack has built a reputation for engineering intelligent operating systems, scaling organizations, and redefining how advanced analytics intersect with human judgment. As President and Chief Executive Officer of Kincaid Risk Management Consultants (KRMC), Jeremiah drives enterprise-wide revenue growth, operational excellence, and high-impact PBM/Rx consulting engagements.",
+      careerHighlights: [
+        {
+          title: "Kincaid Risk Management Consultants",
+          role: "President & Chief Executive Officer",
+          period: "Present",
+          achievements: [
+            "Built Kincaid IQ - next-generation intelligent consulting operating system",
+            "Achieved 20-35% savings on self-funded Anthem PBM and Rx contracts",
+            "Scaled enterprise-wide revenue growth and operational excellence",
+            "Led high-impact PBM/Rx consulting engagements for mid- and large-market organizations",
+          ],
+        },
+        {
+          title: "Canon North America",
+          role: "Sales Executive",
+          period: "Early Career",
+          achievements: [
+            "Achieved #2 ranking in North America",
+            "Maintained 60 hours/week work schedule while attending IWU full-time",
+            "Demonstrated exceptional work ethic and time management",
+            "Mastered enterprise sales and relationship building",
+          ],
+        },
+      ],
+      platform: {
+        name: "Kincaid IQ",
+        description: "A next-generation intelligent consulting operating system that integrates six purpose-built subsystems extending the reasoning frameworks of VortexAI, LogicAI, and JimShrackExpressAI.",
+        subsystems: [
+          "VortexAI - Advanced pattern recognition and trend analysis",
+          "LogicAI - Deterministic reasoning and rule-based decision making",
+          "JimShrackExpressAI - Rapid insight generation and executive summaries",
+          "Contract Intelligence - Automated contract analysis and risk identification",
+          "Cost Compression - AI-driven cost optimization and waste elimination",
+          "Performance Analytics - Real-time metrics and predictive modeling",
+        ],
+        impact: "Each operating system is strategically designed to accelerate AI transformation in industries identified as early adopters of intelligent automation. The platform combines ethical machine reasoning, actuarial precision, and human-centered design to drive measurable performance improvements for clients.",
+      },
+      philosophy: {
+        title: "Leadership Philosophy",
+        principles: [
+          "Clarity: Establish clear objectives and transparent communication channels",
+          "Accountability: Own outcomes and maintain high standards of responsibility",
+          "Innovation: Continuously evolve systems and processes for maximum efficiency",
+          "Ethics: Ensure AI enhances rather than replaces human decision-making",
+          "Service: Technology must serve humanity, not the other way around",
+        ],
+        approach: "Jeremiah approaches AI and analytics through an ethical lens—ensuring that Kincaid's systems enhance, not replace, human decision-making. His leadership philosophy emphasizes clarity, accountability, and innovation, translating strategic objectives into scalable processes and measurable outcomes across the enterprise.",
+      },
+      expertise: [
+        "Enterprise Executive Sales and Leadership",
+        "Benefits Actuarial Consulting (Jumbo and Large-Market)",
+        "AI System Architecture (LogicAI + VertexAI)",
+        "PBM/Rx Contract Analytics and Negotiation",
+        "Ethical AI Deployment & Governance Frameworks",
+        "Organizational Transformation at Scale",
+        "Revenue Growth and Operational Excellence",
+        "Strategic Partnership Development",
+      ],
+      education: [
+        {
+          institution: "Indiana Wesleyan University",
+          degree: "Undergraduate Studies",
+          note: "Completed while working full-time at Canon",
+        },
+      ],
+      vision: "Grounded in business discipline, faith in God, and respect for humanity, Jeremiah is dedicated to helping employers outperform in the rapidly evolving health, benefits, and AI transformation landscape. Under his leadership, Kincaid RMC leverages a combined 20 years of consulting experience to deliver 20–35% savings on self-funded Anthem PBM and Rx contracts, empowering mid- and large-market organizations through transparent, data-driven actuarial insights.",
+      personalValues: [
+        "Faith: Deeply grounded in Christian values and service",
+        "Family: Committed to work-life integration and leading by example",
+        "Integrity: Unwavering commitment to ethical business practices",
+        "Excellence: Pursuit of the highest standards in all endeavors",
+        "Humanity: Technology and business must serve human flourishing",
       ],
     },
   },
@@ -1158,7 +1163,7 @@ const Modal = ({ member, onClose }: { member: TeamMember; onClose: () => void })
                   <motion.div
                     key={idx}
                     className="flex items-start gap-3 p-4 rounded-xl bg-gradient-to-br from-rose-950/40 to-pink-950/40 border border-rose-500/20"
-                    whileHover={{ scale: 1.05, borderColor: "rgba(244, 63, 94, 0.4)" }}
+                    whileHover={{ scale: 1.05, borderColor: "rgba(244, 63, 129, 0.4)" }}
                   >
                     <ChevronRight className="h-5 w-5 text-rose-400 flex-shrink-0 mt-0.5" />
                     <span className="text-gray-300">{value}</span>
@@ -1305,7 +1310,7 @@ export default function CompanyPage() {
                       <p className="text-amber-400 font-semibold mb-4 text-lg">
                         {member.title}
                       </p>
-                      <p className="text-gray-400 text-sm leading-relaxed mb-6 max-w-sm mx-auto">
+                      <p className="text-gray-300 text-sm leading-relaxed mb-6 max-w-sm mx-auto">
                         {member.bio}
                       </p>
                       <div className="flex items-center justify-center gap-2 text-amber-400 text-sm font-semibold group-hover:text-amber-300 transition-colors bg-amber-500/10 py-2 px-4 rounded-full w-fit mx-auto border border-amber-500/20 group-hover:bg-amber-500/20">

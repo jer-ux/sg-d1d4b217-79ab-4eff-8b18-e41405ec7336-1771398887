@@ -1,434 +1,697 @@
-import Head from "next/head";
-import Link from "next/link";
-import { Activity, AlertTriangle, LineChart, Shield } from "lucide-react";
+"use client";
 
-import { Button } from "@/components/ui/button";
-import { Card, CardContent } from "@/components/ui/card";
-import { WarRoomPreview } from "@/components/kincaid-iq/WarRoomPreview";
+import { SEO } from "@/components/SEO";
+import { motion, useScroll, useTransform } from "framer-motion";
+import { useRef, useState } from "react";
+import {
+  Shield,
+  Zap,
+  TrendingUp,
+  AlertTriangle,
+  BarChart3,
+  Clock,
+  CheckCircle2,
+  ArrowRight,
+  Eye,
+  Bell,
+  Target,
+  Sparkles,
+  Activity,
+  Database,
+  Users,
+  Lock,
+} from "lucide-react";
+import { SiteHeader } from "@/components/site/SiteHeader";
+import { SiteFooter } from "@/components/site/SiteFooter";
 
-export default function WarRoomProduct() {
+const keyFeatures = [
+  {
+    icon: Activity,
+    title: "Real-Time Monitoring",
+    description: "Track critical events as they happen with sub-second latency and instant alerts",
+    gradient: "from-blue-500/20 via-cyan-500/20 to-blue-600/20",
+    color: "blue",
+  },
+  {
+    icon: AlertTriangle,
+    title: "Risk Intelligence",
+    description: "AI-powered risk scoring and prioritization for proactive decision making",
+    gradient: "from-red-500/20 via-orange-500/20 to-red-600/20",
+    color: "red",
+  },
+  {
+    icon: BarChart3,
+    title: "Impact Analytics",
+    description: "Quantify financial impact and track savings opportunities in real-time",
+    gradient: "from-green-500/20 via-emerald-500/20 to-green-600/20",
+    color: "green",
+  },
+  {
+    icon: Users,
+    title: "Team Collaboration",
+    description: "Unified workspace for cross-functional teams to coordinate responses",
+    gradient: "from-purple-500/20 via-violet-500/20 to-purple-600/20",
+    color: "purple",
+  },
+];
+
+const useCases = [
+  {
+    icon: Shield,
+    title: "Claims Monitoring",
+    description: "Real-time oversight of claims processing with automated fraud detection",
+    impact: "35% reduction in claims leakage",
+  },
+  {
+    icon: TrendingUp,
+    title: "Contract Compliance",
+    description: "Monitor vendor performance against contractual obligations",
+    impact: "$2.4M average annual savings",
+  },
+  {
+    icon: Clock,
+    title: "Operational Efficiency",
+    description: "Track workflow bottlenecks and optimize process execution",
+    impact: "45% faster resolution times",
+  },
+  {
+    icon: Database,
+    title: "Data Quality",
+    description: "Continuous validation and reconciliation of critical data streams",
+    impact: "99.9% data accuracy maintained",
+  },
+];
+
+const capabilities = [
+  "Event stream processing with <1s latency",
+  "AI-powered anomaly detection",
+  "Customizable alerting and notifications",
+  "Automated evidence collection",
+  "Impact quantification and reporting",
+  "Integration with existing systems",
+  "Role-based access and audit trails",
+  "Mobile-responsive command center",
+];
+
+export default function WarRoomProductPage() {
+  const containerRef = useRef<HTMLDivElement>(null);
+  const { scrollYProgress } = useScroll({
+    target: containerRef,
+    offset: ["start start", "end start"],
+  });
+
+  const y = useTransform(scrollYProgress, [0, 1], ["0%", "50%"]);
+  const opacity = useTransform(scrollYProgress, [0, 0.5], [1, 0]);
+
+  const [selectedUseCase, setSelectedUseCase] = useState<typeof useCases[0] | null>(null);
+
   return (
     <>
-      <Head>
-        <title>War Room — Real-Time Benefits Intelligence Platform</title>
-        <meta
-          name="description"
-          content="Live analytics dashboard exposing benefits spend anomalies, vendor accountability gaps, and financial leakage in real-time with audit-grade evidence trails."
-        />
-      </Head>
+      <SEO
+        title="War Room | Real-Time Intelligence Command Center"
+        description="Monitor, analyze, and respond to critical events in real-time with AI-powered risk intelligence and collaborative decision-making."
+      />
+      <SiteHeader />
 
-      <div className="min-h-screen bg-black text-white">
-        <main>
-          {/* HERO */}
-          <section className="relative overflow-hidden border-b border-white/10">
-            <div className="pointer-events-none absolute -top-40 left-1/2 h-[520px] w-[520px] -translate-x-1/2 rounded-full bg-white/10 blur-[90px]" />
-            <div className="mx-auto max-w-7xl px-6 py-16 md:py-24">
-              <div className="max-w-3xl">
-                <div className="text-xs text-white/60">Command Center</div>
+      <div ref={containerRef} className="min-h-screen bg-black text-white overflow-hidden">
+        {/* Premium 3D Hero Section */}
+        <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
+          {/* Animated 3D Background */}
+          <div className="absolute inset-0">
+            <motion.div
+              className="absolute inset-0"
+              style={{
+                background: "radial-gradient(circle at 50% 50%, rgba(239, 68, 68, 0.15) 0%, transparent 50%)",
+              }}
+              animate={{
+                scale: [1, 1.3, 1],
+                rotate: [0, 180, 360],
+              }}
+              transition={{
+                duration: 25,
+                repeat: Infinity,
+                ease: "linear",
+              }}
+            />
+            <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-red-900/20 via-black to-black" />
+            
+            {/* Floating Orbs */}
+            {[...Array(10)].map((_, i) => (
+              <motion.div
+                key={i}
+                className="absolute rounded-full blur-3xl"
+                style={{
+                  width: Math.random() * 350 + 200,
+                  height: Math.random() * 350 + 200,
+                  left: `${Math.random() * 100}%`,
+                  top: `${Math.random() * 100}%`,
+                  background: `radial-gradient(circle, ${
+                    ["rgba(239, 68, 68, 0.3)", "rgba(249, 115, 22, 0.3)", "rgba(220, 38, 38, 0.3)"][i % 3]
+                  } 0%, transparent 70%)`,
+                }}
+                animate={{
+                  x: [0, Math.random() * 120 - 60, 0],
+                  y: [0, Math.random() * 120 - 60, 0],
+                  scale: [1, 1.4, 1],
+                }}
+                transition={{
+                  duration: Math.random() * 12 + 12,
+                  repeat: Infinity,
+                  ease: "easeInOut",
+                }}
+              />
+            ))}
 
-                <h1 className="mt-4 text-4xl font-semibold tracking-tight md:text-6xl">
-                  The Benefits War Room
-                </h1>
-                <div className="mt-2 text-lg font-medium text-white/70">Real-Time Intelligence Platform</div>
+            {/* 3D Grid */}
+            <motion.div
+              className="absolute inset-0 opacity-20"
+              style={{
+                backgroundImage: `
+                  linear-gradient(to right, rgba(239, 68, 68, 0.15) 1px, transparent 1px),
+                  linear-gradient(to bottom, rgba(239, 68, 68, 0.15) 1px, transparent 1px)
+                `,
+                backgroundSize: "60px 60px",
+                perspective: "1200px",
+                transformStyle: "preserve-3d",
+              }}
+              animate={{
+                rotateX: [0, 8, 0],
+                rotateY: [0, 8, 0],
+              }}
+              transition={{
+                duration: 25,
+                repeat: Infinity,
+                ease: "easeInOut",
+              }}
+            />
+          </div>
 
-                <p className="mt-6 text-lg text-white/70 md:text-xl">
-                  A live analytics dashboard that exposes benefits spend anomalies, vendor accountability gaps, and
-                  financial leakage in real-time—with audit-grade evidence trails that survive board scrutiny.
-                </p>
+          {/* Hero Content */}
+          <motion.div
+            style={{ y, opacity }}
+            className="relative z-10 max-w-7xl mx-auto px-6 text-center"
+          >
+            <motion.div
+              initial={{ opacity: 0, scale: 0.8, rotateX: -25 }}
+              animate={{ opacity: 1, scale: 1, rotateX: 0 }}
+              transition={{ duration: 1.2, ease: "easeOut" }}
+              style={{
+                perspective: "1200px",
+                transformStyle: "preserve-3d",
+              }}
+            >
+              {/* 3D Rotating Badge */}
+              <motion.div
+                className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-gradient-to-r from-red-500/20 to-orange-500/20 border border-red-400/30 mb-8"
+                animate={{
+                  rotateY: [0, 360],
+                }}
+                transition={{
+                  duration: 20,
+                  repeat: Infinity,
+                  ease: "linear",
+                }}
+                style={{
+                  transformStyle: "preserve-3d",
+                }}
+              >
+                <Shield className="h-5 w-5 text-red-400" />
+                <span className="text-red-300 font-semibold">Real-Time Intelligence Command Center</span>
+                <Activity className="h-5 w-5 text-orange-400" />
+              </motion.div>
 
-                <div className="mt-8 flex flex-col gap-3 sm:flex-row">
-                  <Button asChild className="h-11 rounded-2xl px-6">
-                    <Link href="/contact">Request Demo</Link>
-                  </Button>
-                  <Button
-                    asChild
-                    variant="outline"
-                    className="h-11 rounded-2xl border-white/15 bg-transparent px-6"
-                  >
-                    <Link href="/war-room">Launch Live Demo</Link>
-                  </Button>
-                </div>
-
-                <div className="mt-10 grid gap-4 md:grid-cols-3">
-                  <ValueCard
-                    title="Live Visibility"
-                    body="Real-time dashboards showing actual plan performance, spend patterns, and outlier detection across pharmacy and medical."
-                  />
-                  <ValueCard
-                    title="Evidence-Backed"
-                    body="Every alert tied to verifiable claims data, contract terms, and defined methodologies. No black boxes."
-                  />
-                  <ValueCard
-                    title="Action-Ready"
-                    body="Ranked decision levers with quantified impact, exportable evidence packs, and audit trails for governance."
-                  />
-                </div>
-              </div>
-            </div>
-          </section>
-
-          {/* LIVE PREVIEW */}
-          <section id="preview" className="border-b border-white/10">
-            <div className="mx-auto max-w-7xl px-6 py-16 md:py-20">
-              <div className="flex items-end justify-between gap-6">
-                <div>
-                  <div className="text-xs text-white/60">Live Platform</div>
-                  <h2 className="mt-3 text-2xl font-semibold md:text-3xl">See It In Action</h2>
-                  <p className="mt-3 max-w-3xl text-white/70">
-                    Real-time KPIs that expose financial leakage, incentive misalignment, and structural blind spots
-                    across your benefits program.
-                  </p>
-                </div>
-
-                <div className="hidden md:block">
-                  <Button asChild className="rounded-2xl">
-                    <Link href="/war-room">Launch Full War Room →</Link>
-                  </Button>
-                </div>
-              </div>
-
-              <div className="mt-12">
-                <WarRoomPreview 
-                  totalHiddenFees={850000}
-                  pbmArbitrage={1200000}
-                  brokerOverpayment={650000}
-                  conflictsDetected={3}
-                />
-              </div>
-
-              <p className="mt-4 text-sm text-white/60">
-                Sample metrics shown. Full platform includes drill-downs, scenario modeling, and exportable evidence
-                packs.
+              <h1 className="text-6xl md:text-8xl font-bold mb-6 bg-gradient-to-r from-red-300 via-orange-300 to-amber-300 bg-clip-text text-transparent">
+                War Room
+              </h1>
+              <p className="text-xl md:text-2xl text-gray-300 max-w-4xl mx-auto mb-12">
+                Monitor critical events in real-time, analyze risk with AI-powered intelligence,
+                and coordinate team responses from a unified command center
               </p>
 
-              <div className="mt-6 md:hidden">
-                <Button asChild className="w-full rounded-2xl">
-                  <Link href="/war-room">Launch Full War Room →</Link>
-                </Button>
+              {/* 3D CTA Buttons */}
+              <div className="flex flex-wrap justify-center gap-6">
+                <motion.a
+                  href="/war-room"
+                  className="group relative px-8 py-4 rounded-xl font-semibold text-lg overflow-hidden"
+                  whileHover={{ scale: 1.05, z: 50 }}
+                  whileTap={{ scale: 0.95 }}
+                  style={{
+                    perspective: "1000px",
+                    transformStyle: "preserve-3d",
+                  }}
+                >
+                  <div className="absolute inset-0 bg-gradient-to-r from-red-600 to-orange-600 rounded-xl" />
+                  <motion.div
+                    className="absolute inset-0 bg-gradient-to-r from-red-400 to-orange-400 rounded-xl"
+                    initial={{ x: "-100%" }}
+                    whileHover={{ x: "100%" }}
+                    transition={{ duration: 0.5 }}
+                  />
+                  <span className="relative z-10 flex items-center gap-2">
+                    View Live Demo
+                    <Eye className="h-5 w-5 group-hover:scale-110 transition-transform" />
+                  </span>
+                </motion.a>
+
+                <motion.a
+                  href="/request-demo"
+                  className="group relative px-8 py-4 rounded-xl font-semibold text-lg border-2 border-red-400/30 hover:border-red-400/60 transition-colors"
+                  whileHover={{ scale: 1.05, z: 50 }}
+                  whileTap={{ scale: 0.95 }}
+                  style={{
+                    perspective: "1000px",
+                    transformStyle: "preserve-3d",
+                  }}
+                >
+                  <span className="flex items-center gap-2">
+                    Request Demo
+                    <ArrowRight className="h-5 w-5 group-hover:translate-x-1 transition-transform" />
+                  </span>
+                </motion.a>
               </div>
-            </div>
-          </section>
+            </motion.div>
 
-          {/* KEY CAPABILITIES */}
-          <section className="border-b border-white/10">
-            <div className="mx-auto max-w-7xl px-6 py-16 md:py-20">
-              <h2 className="text-2xl font-semibold md:text-3xl">What the War Room Delivers</h2>
-
-              <div className="mt-8 grid gap-6 md:grid-cols-2">
-                <Card className="rounded-3xl border-white/10 bg-white/5">
-                  <CardContent className="p-8">
-                    <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-white/10">
-                      <Activity className="h-5 w-5" />
-                    </div>
-                    <h3 className="mt-4 text-xl font-semibold">Real-Time Anomaly Detection</h3>
-                    <p className="mt-3 text-white/70">
-                      Automated monitoring of spend patterns, utilization trends, and vendor performance against
-                      contract terms. Get alerted to issues before they compound.
-                    </p>
-                    <ul className="mt-4 space-y-2 text-sm text-white/60">
-                      <li>• PBM pass-through variance tracking</li>
-                      <li>• High-cost claimant identification</li>
-                      <li>• Specialty drug utilization monitoring</li>
-                      <li>• Generic dispensing rate analysis</li>
-                    </ul>
-                  </CardContent>
-                </Card>
-
-                <Card className="rounded-3xl border-white/10 bg-white/5">
-                  <CardContent className="p-8">
-                    <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-white/10">
-                      <Shield className="h-5 w-5" />
-                    </div>
-                    <h3 className="mt-4 text-xl font-semibold">Vendor Accountability Framework</h3>
-                    <p className="mt-3 text-white/70">
-                      Compare what vendors promise in contracts versus what they actually deliver. Quantify gaps and
-                      build evidence packs for negotiations.
-                    </p>
-                    <ul className="mt-4 space-y-2 text-sm text-white/60">
-                      <li>• Contract compliance scoring</li>
-                      <li>• Guarantee validation & reconciliation</li>
-                      <li>• Network performance benchmarking</li>
-                      <li>• Pricing transparency audits</li>
-                    </ul>
-                  </CardContent>
-                </Card>
-
-                <Card className="rounded-3xl border-white/10 bg-white/5">
-                  <CardContent className="p-8">
-                    <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-white/10">
-                      <AlertTriangle className="h-5 w-5" />
-                    </div>
-                    <h3 className="mt-4 text-xl font-semibold">Financial Leakage Exposure</h3>
-                    <p className="mt-3 text-white/70">
-                      Identify and quantify where benefits dollars are leaking through structural gaps, misaligned
-                      incentives, or vendor fee opacity.
-                    </p>
-                    <ul className="mt-4 space-y-2 text-sm text-white/60">
-                      <li>• Hidden spread identification</li>
-                      <li>• Plan design inefficiency analysis</li>
-                      <li>• Administrative fee reconciliation</li>
-                      <li>• Rebate pass-through validation</li>
-                    </ul>
-                  </CardContent>
-                </Card>
-
-                <Card className="rounded-3xl border-white/10 bg-white/5">
-                  <CardContent className="p-8">
-                    <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-white/10">
-                      <LineChart className="h-5 w-5" />
-                    </div>
-                    <h3 className="mt-4 text-xl font-semibold">Executive Reporting & Governance</h3>
-                    <p className="mt-3 text-white/70">
-                      Board-ready summaries with actionable insights, ranked decision levers, and complete audit trails
-                      that finance and legal can defend.
-                    </p>
-                    <ul className="mt-4 space-y-2 text-sm text-white/60">
-                      <li>• CFO-ready KPI dashboards</li>
-                      <li>• Exportable evidence packs</li>
-                      <li>• Scenario modeling & forecasting</li>
-                      <li>• Audit trail documentation</li>
-                    </ul>
-                  </CardContent>
-                </Card>
-              </div>
-            </div>
-          </section>
-
-          {/* HOW IT WORKS */}
-          <section className="border-b border-white/10">
-            <div className="mx-auto max-w-7xl px-6 py-16 md:py-20">
-              <h2 className="text-2xl font-semibold md:text-3xl">How the War Room Works</h2>
-
-              <div className="mt-10 grid gap-4 md:grid-cols-4">
-                <StepCard
-                  n="01"
-                  title="Connect"
-                  body="Integrate claims feeds, plan documents, and vendor contracts through secure data pipelines"
-                />
-                <StepCard
-                  n="02"
-                  title="Monitor"
-                  body="Continuous analysis of spend patterns, utilization trends, and contract compliance in real-time"
-                />
-                <StepCard
-                  n="03"
-                  title="Alert"
-                  body="Automated detection of anomalies, variances, and opportunities with evidence trails"
-                />
-                <StepCard
-                  n="04"
-                  title="Act"
-                  body="Prioritized action paths with quantified impact and exportable reporting for governance"
-                />
-              </div>
-
-              <div className="mt-10 rounded-3xl border border-white/10 bg-white/5 p-6 md:p-8">
-                <div className="text-lg font-semibold">Most dashboards show you what happened.</div>
-                <div className="mt-1 text-lg font-semibold">The War Room shows you why—and what to do about it.</div>
-                <p className="mt-4 max-w-4xl text-white/70">
-                  Every metric is connected to the underlying data—claims, contracts, and methodologies—so you can trace
-                  from headline KPI to individual transaction. That's the difference between a dashboard and a decision
-                  engine.
-                </p>
-              </div>
-            </div>
-          </section>
-
-          {/* WHO IT'S FOR */}
-          <section className="border-b border-white/10">
-            <div className="mx-auto max-w-7xl px-6 py-16 md:py-20">
-              <h2 className="text-2xl font-semibold md:text-3xl">Built For</h2>
-
-              <div className="mt-8 grid gap-4 md:grid-cols-3">
-                <BulletCard text="CFOs demanding defensible metrics and vendor accountability" />
-                <BulletCard text="Benefits leaders tired of opaque PBM reporting and hidden costs" />
-                <BulletCard text="Risk managers protecting EBITDA from benefits cost volatility" />
-                <BulletCard text="Finance teams preparing for vendor negotiations and renewals" />
-                <BulletCard text="Board members requiring audit-grade governance documentation" />
-                <BulletCard text="Private equity sponsors tracking portfolio company benefits performance" />
-              </div>
-            </div>
-          </section>
-
-          {/* USE CASES */}
-          <section className="border-b border-white/10">
-            <div className="mx-auto max-w-7xl px-6 py-16 md:py-20">
-              <h2 className="text-2xl font-semibold md:text-3xl">Common Use Cases</h2>
-
-              <div className="mt-8 grid gap-6 md:grid-cols-2">
-                <Card className="rounded-3xl border-white/10 bg-white/5">
-                  <CardContent className="p-8">
-                    <h3 className="text-xl font-semibold">Vendor Negotiations</h3>
-                    <p className="mt-3 text-white/70">
-                      Armed with contract-specific variance analysis and quantified leakage, benefits leaders use the
-                      War Room to challenge PBM guarantees, validate TPA performance, and negotiate from strength.
-                    </p>
-                    <p className="mt-3 text-sm text-white/60">
-                      Typical outcome: 3-7% spend reduction through improved contract terms and accountability
-                      mechanisms.
-                    </p>
-                  </CardContent>
-                </Card>
-
-                <Card className="rounded-3xl border-white/10 bg-white/5">
-                  <CardContent className="p-8">
-                    <h3 className="text-xl font-semibold">Plan Design Optimization</h3>
-                    <p className="mt-3 text-white/70">
-                      Finance teams model the impact of formulary changes, network restrictions, and utilization
-                      management programs before implementation—then track results in real-time post-launch.
-                    </p>
-                    <p className="mt-3 text-sm text-white/60">
-                      Typical outcome: 8-12% reduction in avoidable specialty drug spend through targeted interventions.
-                    </p>
-                  </CardContent>
-                </Card>
-
-                <Card className="rounded-3xl border-white/10 bg-white/5">
-                  <CardContent className="p-8">
-                    <h3 className="text-xl font-semibold">Board Reporting & Governance</h3>
-                    <p className="mt-3 text-white/70">
-                      CFOs present benefits performance with the same rigor as other financial metrics—defensible KPIs,
-                      variance analysis, and audit trails that satisfy fiduciary obligations.
-                    </p>
-                    <p className="mt-3 text-sm text-white/60">
-                      Typical outcome: Elevated board confidence in benefits governance and decision-making process.
-                    </p>
-                  </CardContent>
-                </Card>
-
-                <Card className="rounded-3xl border-white/10 bg-white/5">
-                  <CardContent className="p-8">
-                    <h3 className="text-xl font-semibold">M&A Due Diligence</h3>
-                    <p className="mt-3 text-white/70">
-                      Private equity sponsors and corporate acquirers use the War Room to assess target company benefits
-                      liabilities, identify integration risks, and quantify post-close optimization opportunities.
-                    </p>
-                    <p className="mt-3 text-sm text-white/60">
-                      Typical outcome: 2-5% of deal value captured through benefits program optimization post-close.
-                    </p>
-                  </CardContent>
-                </Card>
-              </div>
-            </div>
-          </section>
-
-          {/* INTEGRATION */}
-          <section className="border-b border-white/10">
-            <div className="mx-auto max-w-7xl px-6 py-16 md:py-20">
-              <h2 className="text-2xl font-semibold md:text-3xl">Data Integration</h2>
-
-              <div className="mt-8 rounded-3xl border border-white/10 bg-white/5 p-6 md:p-8">
-                <p className="text-white/70">
-                  The War Room connects to your existing data infrastructure through secure, encrypted pipelines. We
-                  integrate with major PBMs, TPAs, carriers, and data warehouses—pulling claims, eligibility, contracts,
-                  and financial data into a unified analytics layer.
-                </p>
-
-                <div className="mt-6 grid gap-3 text-sm text-white/60 md:grid-cols-2">
-                  <div>
-                    <div className="font-semibold text-white">Core Data Sources:</div>
-                    <ul className="mt-2 space-y-1">
-                      <li>• Pharmacy claims (837, 835, flat files)</li>
-                      <li>• Medical claims (837I/P, 835)</li>
-                      <li>• Eligibility & demographics (834)</li>
-                      <li>• Plan documents & contracts</li>
-                    </ul>
+            {/* 3D Stats Cards */}
+            <motion.div
+              initial={{ opacity: 0, y: 40 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8, delay: 0.3 }}
+              className="grid grid-cols-2 md:grid-cols-4 gap-6 mt-20"
+            >
+              {[
+                { label: "Response Time", value: "<1s", icon: Zap },
+                { label: "Events/Day", value: "100K+", icon: Activity },
+                { label: "Risk Reduction", value: "35%", icon: Shield },
+                { label: "Uptime", value: "99.9%", icon: CheckCircle2 },
+              ].map((stat, i) => (
+                <motion.div
+                  key={i}
+                  className="relative group"
+                  whileHover={{
+                    scale: 1.05,
+                    rotateY: 5,
+                    z: 50,
+                  }}
+                  style={{
+                    perspective: "1000px",
+                    transformStyle: "preserve-3d",
+                  }}
+                >
+                  <div className="relative p-6 rounded-2xl bg-gradient-to-br from-red-500/10 to-orange-500/10 border border-red-400/20 group-hover:border-red-400/40 transition-all duration-500">
+                    <stat.icon className="h-8 w-8 text-red-400 mb-3 group-hover:scale-110 transition-transform" />
+                    <div className="text-3xl font-bold text-red-100 mb-1">{stat.value}</div>
+                    <div className="text-sm text-gray-400">{stat.label}</div>
+                    
+                    {/* 3D Glow Effect */}
+                    <motion.div
+                      className="absolute inset-0 rounded-2xl bg-gradient-to-br from-red-500/20 to-orange-500/20 blur-xl opacity-0 group-hover:opacity-100"
+                      animate={{
+                        scale: [1, 1.2, 1],
+                      }}
+                      transition={{
+                        duration: 2,
+                        repeat: Infinity,
+                      }}
+                    />
                   </div>
-                  <div>
-                    <div className="font-semibold text-white">Optional Enhancements:</div>
-                    <ul className="mt-2 space-y-1">
-                      <li>• Actuarial models & forecasts</li>
-                      <li>• Vendor performance reports</li>
-                      <li>• Financial system exports (AP, GL)</li>
-                      <li>• Third-party benchmarks</li>
-                    </ul>
+                </motion.div>
+              ))}
+            </motion.div>
+          </motion.div>
+        </section>
+
+        {/* Premium 3D Key Features */}
+        <section className="relative py-32 overflow-hidden">
+          <div className="absolute inset-0 bg-gradient-to-b from-black via-red-950/5 to-black" />
+          
+          <div className="relative max-w-7xl mx-auto px-6">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.8 }}
+              className="text-center mb-20"
+            >
+              <h2 className="text-5xl font-bold text-red-100 mb-6">
+                Core Command Center Features
+              </h2>
+              <p className="text-xl text-gray-400 max-w-3xl mx-auto">
+                Real-time intelligence and coordination tools for mission-critical operations
+              </p>
+            </motion.div>
+
+            <div className="grid md:grid-cols-2 gap-8">
+              {keyFeatures.map((feature, index) => (
+                <motion.div
+                  key={index}
+                  initial={{ opacity: 0, y: 40 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.6, delay: index * 0.1 }}
+                  className="group relative"
+                  whileHover={{
+                    scale: 1.02,
+                    rotateY: 3,
+                    z: 50,
+                  }}
+                  style={{
+                    perspective: "1500px",
+                    transformStyle: "preserve-3d",
+                  }}
+                >
+                  <div className="relative p-8 rounded-2xl bg-gradient-to-br from-zinc-900/80 to-black/80 border border-red-400/20 group-hover:border-red-400/40 transition-all duration-500 overflow-hidden">
+                    {/* 3D Rotating Icon */}
+                    <motion.div
+                      className="relative mb-6"
+                      whileHover={{
+                        rotateY: 180,
+                      }}
+                      transition={{
+                        duration: 0.6,
+                        ease: "easeOut",
+                      }}
+                      style={{
+                        transformStyle: "preserve-3d",
+                      }}
+                    >
+                      <feature.icon className={`h-12 w-12 text-${feature.color}-400`} />
+                    </motion.div>
+
+                    <h3 className="text-2xl font-bold text-red-100 mb-4">
+                      {feature.title}
+                    </h3>
+                    <p className="text-gray-400 leading-relaxed">
+                      {feature.description}
+                    </p>
+
+                    {/* Animated Glow */}
+                    <motion.div
+                      className={`absolute top-0 right-0 w-64 h-64 rounded-full bg-gradient-to-br ${feature.gradient} blur-3xl`}
+                      animate={{
+                        scale: [1, 1.3, 1],
+                        opacity: [0.3, 0.5, 0.3],
+                      }}
+                      transition={{
+                        duration: 4,
+                        repeat: Infinity,
+                        ease: "easeInOut",
+                      }}
+                    />
+
+                    {/* 3D Corner Accent */}
+                    <motion.div
+                      className={`absolute bottom-0 left-0 w-32 h-32 bg-gradient-to-tr ${feature.gradient} rounded-tr-3xl opacity-0 group-hover:opacity-100`}
+                      initial={{ scale: 0, rotate: -45 }}
+                      whileHover={{ scale: 1, rotate: 0 }}
+                      transition={{ duration: 0.5 }}
+                      style={{
+                        transformStyle: "preserve-3d",
+                        transform: "translateZ(20px)",
+                      }}
+                    />
                   </div>
+                </motion.div>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        {/* 3D Use Cases Grid */}
+        <section className="relative py-32 overflow-hidden">
+          <div className="absolute inset-0 bg-gradient-to-b from-black via-orange-950/5 to-black" />
+          
+          <div className="relative max-w-7xl mx-auto px-6">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.8 }}
+              className="text-center mb-20"
+            >
+              <h2 className="text-5xl font-bold text-orange-100 mb-6">
+                Real-World Applications
+              </h2>
+              <p className="text-xl text-gray-400 max-w-3xl mx-auto">
+                Proven use cases delivering measurable business impact
+              </p>
+            </motion.div>
+
+            <div className="grid md:grid-cols-2 gap-8">
+              {useCases.map((useCase, index) => (
+                <motion.div
+                  key={index}
+                  initial={{ opacity: 0, scale: 0.9 }}
+                  whileInView={{ opacity: 1, scale: 1 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.6, delay: index * 0.1 }}
+                  className="group relative cursor-pointer"
+                  onClick={() => setSelectedUseCase(useCase)}
+                  whileHover={{
+                    scale: 1.02,
+                    rotateY: -3,
+                    z: 50,
+                  }}
+                  style={{
+                    perspective: "1500px",
+                    transformStyle: "preserve-3d",
+                  }}
+                >
+                  <div className="relative p-8 rounded-2xl bg-gradient-to-br from-orange-500/10 to-red-500/10 border border-orange-400/20 group-hover:border-orange-400/40 transition-all duration-500">
+                    {/* 3D Rotating Icon */}
+                    <motion.div
+                      animate={{
+                        rotateZ: [0, 360],
+                      }}
+                      transition={{
+                        duration: 20,
+                        repeat: Infinity,
+                        ease: "linear",
+                      }}
+                      className="inline-block mb-6"
+                    >
+                      <useCase.icon className="h-12 w-12 text-orange-400" />
+                    </motion.div>
+
+                    <h3 className="text-2xl font-bold text-orange-100 mb-3">
+                      {useCase.title}
+                    </h3>
+                    <p className="text-gray-400 mb-6">
+                      {useCase.description}
+                    </p>
+
+                    {/* Impact Badge */}
+                    <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-gradient-to-r from-green-500/20 to-emerald-500/20 border border-green-400/30">
+                      <TrendingUp className="h-4 w-4 text-green-400" />
+                      <span className="text-green-300 font-semibold text-sm">{useCase.impact}</span>
+                    </div>
+
+                    {/* Glow Effect */}
+                    <motion.div
+                      className="absolute inset-0 rounded-2xl bg-gradient-to-br from-orange-500/20 to-red-500/20 blur-2xl opacity-0 group-hover:opacity-100"
+                      animate={{
+                        scale: [1, 1.1, 1],
+                      }}
+                      transition={{
+                        duration: 3,
+                        repeat: Infinity,
+                      }}
+                    />
+                  </div>
+                </motion.div>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        {/* 3D Capabilities Checklist */}
+        <section className="relative py-32 overflow-hidden">
+          <div className="absolute inset-0 bg-gradient-to-b from-black via-red-950/5 to-black" />
+          
+          <div className="relative max-w-5xl mx-auto px-6">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.8 }}
+              className="text-center mb-16"
+            >
+              <h2 className="text-5xl font-bold text-red-100 mb-6">
+                Complete Capabilities
+              </h2>
+              <p className="text-xl text-gray-400">
+                Everything you need for real-time command and control
+              </p>
+            </motion.div>
+
+            <motion.div
+              initial={{ opacity: 0, scale: 0.95 }}
+              whileInView={{ opacity: 1, scale: 1 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.8 }}
+              className="relative p-10 rounded-3xl bg-gradient-to-br from-red-500/10 to-orange-500/10 border border-red-400/20"
+              whileHover={{
+                scale: 1.01,
+                z: 30,
+              }}
+              style={{
+                perspective: "1200px",
+                transformStyle: "preserve-3d",
+              }}
+            >
+              <div className="grid md:grid-cols-2 gap-4">
+                {capabilities.map((capability, index) => (
+                  <motion.div
+                    key={index}
+                    initial={{ opacity: 0, x: -20 }}
+                    whileInView={{ opacity: 1, x: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ duration: 0.5, delay: index * 0.05 }}
+                    className="flex items-start gap-3 p-4 rounded-lg bg-black/20 border border-red-400/10 hover:border-red-400/30 transition-colors"
+                  >
+                    <CheckCircle2 className="h-6 w-6 text-red-400 flex-shrink-0 mt-0.5" />
+                    <span className="text-gray-300">{capability}</span>
+                  </motion.div>
+                ))}
+              </div>
+
+              {/* Animated Background Glow */}
+              <motion.div
+                className="absolute inset-0 rounded-3xl bg-gradient-to-br from-red-500/20 to-orange-500/20 blur-3xl"
+                animate={{
+                  scale: [1, 1.1, 1],
+                  opacity: [0.2, 0.4, 0.2],
+                }}
+                transition={{
+                  duration: 5,
+                  repeat: Infinity,
+                }}
+              />
+            </motion.div>
+          </div>
+        </section>
+
+        {/* 3D CTA Section */}
+        <section className="relative py-32 overflow-hidden">
+          <div className="absolute inset-0">
+            {[...Array(8)].map((_, i) => (
+              <motion.div
+                key={i}
+                className="absolute rounded-full blur-3xl"
+                style={{
+                  width: Math.random() * 400 + 200,
+                  height: Math.random() * 400 + 200,
+                  left: `${Math.random() * 100}%`,
+                  top: `${Math.random() * 100}%`,
+                  background: `radial-gradient(circle, ${
+                    ["rgba(239, 68, 68, 0.2)", "rgba(249, 115, 22, 0.2)"][i % 2]
+                  } 0%, transparent 70%)`,
+                }}
+                animate={{
+                  x: [0, Math.random() * 50 - 25, 0],
+                  y: [0, Math.random() * 50 - 25, 0],
+                  scale: [1, 1.3, 1],
+                }}
+                transition={{
+                  duration: Math.random() * 8 + 8,
+                  repeat: Infinity,
+                  ease: "easeInOut",
+                }}
+              />
+            ))}
+          </div>
+
+          <div className="relative max-w-4xl mx-auto px-6 text-center">
+            <motion.div
+              initial={{ opacity: 0, scale: 0.9 }}
+              whileInView={{ opacity: 1, scale: 1 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.8 }}
+              className="group relative"
+              whileHover={{
+                scale: 1.02,
+                z: 50,
+              }}
+              style={{
+                perspective: "1500px",
+                transformStyle: "preserve-3d",
+              }}
+            >
+              <div className="relative p-12 rounded-3xl bg-gradient-to-br from-red-500/20 via-orange-500/20 to-amber-500/20 border border-red-400/30 group-hover:border-red-400/50 transition-all duration-500">
+                {/* 3D Rotating Icon */}
+                <motion.div
+                  className="inline-block mb-8"
+                  animate={{
+                    rotateY: [0, 360],
+                  }}
+                  transition={{
+                    duration: 20,
+                    repeat: Infinity,
+                    ease: "linear",
+                  }}
+                >
+                  <Target className="h-16 w-16 text-red-400 mx-auto" />
+                </motion.div>
+
+                <h2 className="text-4xl font-bold text-red-100 mb-6">
+                  Experience the War Room
+                </h2>
+                <p className="text-xl text-gray-300 mb-8 max-w-2xl mx-auto">
+                  See real-time intelligence in action with our live demo environment
+                </p>
+
+                <div className="flex flex-wrap justify-center gap-6">
+                  <motion.a
+                    href="/war-room"
+                    className="group/button inline-flex items-center gap-3 px-10 py-5 rounded-xl bg-gradient-to-r from-red-600 to-orange-600 text-white font-semibold text-lg relative overflow-hidden"
+                    whileHover={{ scale: 1.05, z: 30 }}
+                    whileTap={{ scale: 0.95 }}
+                    style={{
+                      perspective: "1000px",
+                      transformStyle: "preserve-3d",
+                    }}
+                  >
+                    <motion.div
+                      className="absolute inset-0 bg-gradient-to-r from-red-400 to-orange-400"
+                      initial={{ x: "-100%" }}
+                      whileHover={{ x: "100%" }}
+                      transition={{ duration: 0.5 }}
+                    />
+                    <span className="relative z-10 flex items-center gap-2">
+                      Launch Live Demo
+                      <Eye className="h-6 w-6 group-hover/button:scale-110 transition-transform" />
+                    </span>
+                  </motion.a>
+
+                  <motion.a
+                    href="/request-demo"
+                    className="inline-flex items-center gap-3 px-10 py-5 rounded-xl border-2 border-red-400/30 hover:border-red-400/60 text-white font-semibold text-lg transition-colors"
+                    whileHover={{ scale: 1.05, z: 30 }}
+                    whileTap={{ scale: 0.95 }}
+                  >
+                    Schedule Demo
+                    <ArrowRight className="h-6 w-6" />
+                  </motion.a>
                 </div>
 
-                <p className="mt-6 text-sm text-white/60">
-                  Setup typically takes 2-4 weeks. You'll see preliminary insights within days, with full historical
-                  analysis available at go-live.
-                </p>
+                {/* Animated Background Glow */}
+                <motion.div
+                  className="absolute inset-0 rounded-3xl bg-gradient-to-br from-red-500/30 to-orange-500/30 blur-3xl"
+                  animate={{
+                    scale: [1, 1.2, 1],
+                    opacity: [0.3, 0.6, 0.3],
+                  }}
+                  transition={{
+                    duration: 4,
+                    repeat: Infinity,
+                  }}
+                />
               </div>
-            </div>
-          </section>
+            </motion.div>
+          </div>
+        </section>
 
-          {/* FINAL CTA */}
-          <section>
-            <div className="mx-auto max-w-7xl px-6 py-16 md:py-20">
-              <Card className="rounded-3xl border-white/10 bg-white/5">
-                <CardContent className="p-8 md:p-10">
-                  <h3 className="text-2xl font-semibold md:text-3xl">Ready to See Your Data?</h3>
-                  <p className="mt-3 max-w-3xl text-white/70">
-                    Request a demo to see the War Room in action with your actual claims data and vendor contracts.
-                  </p>
-
-                  <div className="mt-6 flex flex-col gap-3 sm:flex-row">
-                    <Button asChild className="h-11 rounded-2xl px-6">
-                      <Link href="/contact">Request Demo</Link>
-                    </Button>
-                    <Button
-                      asChild
-                      variant="outline"
-                      className="h-11 rounded-2xl border-white/15 bg-transparent px-6"
-                    >
-                      <Link href="/war-room">Launch Live Demo</Link>
-                    </Button>
-                    <Button
-                      asChild
-                      variant="outline"
-                      className="h-11 rounded-2xl border-white/15 bg-transparent px-6"
-                    >
-                      <a href="mailto:jer@kincaidrmc.com">jer@kincaidrmc.com</a>
-                    </Button>
-                  </div>
-
-                  <p className="mt-6 text-sm text-white/60">
-                    Explore the full{" "}
-                    <Link href="/kincaid-iq" className="text-white hover:underline">
-                      Kincaid IQ platform
-                    </Link>
-                    , or learn about our{" "}
-                    <Link href="/verified-savings-ledger" className="text-white hover:underline">
-                      Verified Savings Ledger
-                    </Link>{" "}
-                    for tracking realized benefits program improvements.
-                  </p>
-                </CardContent>
-              </Card>
-            </div>
-          </section>
-        </main>
+        <SiteFooter />
       </div>
     </>
-  );
-}
-
-function ValueCard({ title, body }: { title: string; body: string }) {
-  return (
-    <Card className="rounded-3xl border-white/10 bg-white/5">
-      <CardContent className="p-6">
-        <h3 className="text-base font-semibold">{title}</h3>
-        <p className="mt-2 text-sm text-white/70">{body}</p>
-      </CardContent>
-    </Card>
-  );
-}
-
-function BulletCard({ text }: { text: string }) {
-  return (
-    <div className="rounded-3xl border border-white/10 bg-white/5 p-6 text-sm text-white/80">{text}</div>
-  );
-}
-
-function StepCard({ n, title, body }: { n: string; title: string; body: string }) {
-  return (
-    <Card className="rounded-3xl border-white/10 bg-white/5">
-      <CardContent className="p-6">
-        <div className="text-xs text-white/50">{n}</div>
-        <div className="mt-2 text-base font-semibold">{title}</div>
-        <p className="mt-2 text-sm text-white/70">{body}</p>
-      </CardContent>
-    </Card>
   );
 }

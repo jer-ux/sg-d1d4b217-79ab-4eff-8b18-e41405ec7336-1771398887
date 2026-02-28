@@ -1,423 +1,710 @@
 "use client";
 
-import { motion } from "framer-motion";
-import Link from "next/link";
-import { Shield, Zap, Database, Brain, Lock, TrendingUp, Users, CheckCircle, FileText, BarChart3, Globe, Award, DollarSign } from "lucide-react";
-import Nav from "@/components/Nav";
-import Footer from "@/components/Footer";
 import { SEO } from "@/components/SEO";
-import { Hero3D } from "@/components/Hero3D";
+import { motion, useScroll, useTransform } from "framer-motion";
+import { useRef, useState } from "react";
+import {
+  Cpu,
+  Shield,
+  TrendingUp,
+  Zap,
+  Database,
+  Lock,
+  BarChart3,
+  Users,
+  CheckCircle2,
+  ArrowRight,
+  Sparkles,
+  Brain,
+  Target,
+  Layers,
+} from "lucide-react";
+import { SiteHeader } from "@/components/site/SiteHeader";
+import { SiteFooter } from "@/components/site/SiteFooter";
+
+const platformFeatures = [
+  {
+    icon: Brain,
+    title: "AI-Powered Analytics",
+    description: "Advanced machine learning models that analyze millions of data points in real-time",
+    gradient: "from-blue-500/20 via-cyan-500/20 to-blue-600/20",
+    color: "blue",
+  },
+  {
+    icon: Shield,
+    title: "Enterprise Security",
+    description: "Bank-grade encryption and compliance with SOC 2, HIPAA, and ERISA standards",
+    gradient: "from-purple-500/20 via-violet-500/20 to-purple-600/20",
+    color: "purple",
+  },
+  {
+    icon: Zap,
+    title: "Real-Time Processing",
+    description: "Process and analyze data streams with sub-second latency for instant insights",
+    gradient: "from-amber-500/20 via-yellow-500/20 to-amber-600/20",
+    color: "amber",
+  },
+  {
+    icon: Database,
+    title: "Unified Data Layer",
+    description: "Integrate all your data sources into a single, coherent intelligence platform",
+    gradient: "from-green-500/20 via-emerald-500/20 to-green-600/20",
+    color: "green",
+  },
+];
+
+const integrationPartners = [
+  { name: "Snowflake", category: "Data Warehouse" },
+  { name: "Databricks", category: "Analytics" },
+  { name: "ServiceNow", category: "Workflow" },
+  { name: "Salesforce", category: "CRM" },
+  { name: "SAP", category: "ERP" },
+  { name: "Oracle", category: "Database" },
+];
+
+const capabilities = [
+  {
+    icon: Target,
+    title: "Predictive Intelligence",
+    description: "Forecast trends and identify opportunities before they emerge",
+    items: [
+      "Machine learning forecasting",
+      "Anomaly detection",
+      "Risk scoring",
+      "Trend analysis",
+    ],
+  },
+  {
+    icon: Layers,
+    title: "Data Integration",
+    description: "Connect and harmonize data from any source",
+    items: [
+      "API connectors",
+      "ETL pipelines",
+      "Real-time sync",
+      "Data validation",
+    ],
+  },
+  {
+    icon: BarChart3,
+    title: "Advanced Reporting",
+    description: "Custom dashboards and automated reporting",
+    items: [
+      "Interactive visualizations",
+      "Scheduled reports",
+      "Export capabilities",
+      "White-label options",
+    ],
+  },
+  {
+    icon: Users,
+    title: "Collaboration Tools",
+    description: "Enable team-wide visibility and coordination",
+    items: [
+      "Shared workspaces",
+      "Role-based access",
+      "Audit trails",
+      "Team notifications",
+    ],
+  },
+];
 
 export default function PlatformOverviewPage() {
+  const containerRef = useRef<HTMLDivElement>(null);
+  const { scrollYProgress } = useScroll({
+    target: containerRef,
+    offset: ["start start", "end start"],
+  });
+
+  const y = useTransform(scrollYProgress, [0, 1], ["0%", "50%"]);
+  const opacity = useTransform(scrollYProgress, [0, 0.5], [1, 0]);
+
+  const [selectedCapability, setSelectedCapability] = useState<typeof capabilities[0] | null>(null);
+
   return (
     <>
-      <SEO 
-        title="Platform Overview - SiriusB iQ Algorithmic Fiduciary Intelligence"
-        description="Discover the SiriusB iQ platform: real-time data orchestration, AI-powered analytics, automated compliance, and enterprise-grade governance in one integrated system."
+      <SEO
+        title="Platform Overview | SiriusB iQ"
+        description="Discover the AI-powered platform transforming health economics and benefits intelligence with real-time analytics and enterprise security."
       />
-      <Nav />
-      
-      <main className="min-h-screen bg-black text-white">
-        {/* Hero Section */}
-        <section className="relative min-h-[70vh] flex items-center justify-center overflow-hidden">
-          <Hero3D />
-          
-          <div className="relative z-10 max-w-7xl mx-auto px-6 py-24">
+      <SiteHeader />
+
+      <div ref={containerRef} className="min-h-screen bg-black text-white overflow-hidden">
+        {/* Premium 3D Hero Section */}
+        <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
+          {/* Animated 3D Background */}
+          <div className="absolute inset-0">
             <motion.div
-              initial={{ opacity: 0, y: 30 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8 }}
-              className="text-center"
-            >
+              className="absolute inset-0"
+              style={{
+                background: "radial-gradient(circle at 50% 50%, rgba(59, 130, 246, 0.1) 0%, transparent 50%)",
+              }}
+              animate={{
+                scale: [1, 1.2, 1],
+                rotate: [0, 180, 360],
+              }}
+              transition={{
+                duration: 20,
+                repeat: Infinity,
+                ease: "linear",
+              }}
+            />
+            <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-blue-900/20 via-black to-black" />
+            
+            {/* Floating Orbs */}
+            {[...Array(8)].map((_, i) => (
               <motion.div
-                initial={{ scale: 0 }}
-                animate={{ scale: 1 }}
-                transition={{ duration: 0.6, delay: 0.2 }}
-                className="inline-flex items-center gap-2 px-4 py-2 bg-amber-500/10 border border-amber-500/30 rounded-full mb-6"
+                key={i}
+                className="absolute rounded-full blur-3xl"
+                style={{
+                  width: Math.random() * 300 + 200,
+                  height: Math.random() * 300 + 200,
+                  left: `${Math.random() * 100}%`,
+                  top: `${Math.random() * 100}%`,
+                  background: `radial-gradient(circle, ${
+                    ["rgba(59, 130, 246, 0.3)", "rgba(147, 51, 234, 0.3)", "rgba(34, 211, 238, 0.3)"][i % 3]
+                  } 0%, transparent 70%)`,
+                }}
+                animate={{
+                  x: [0, Math.random() * 100 - 50, 0],
+                  y: [0, Math.random() * 100 - 50, 0],
+                  scale: [1, 1.2, 1],
+                }}
+                transition={{
+                  duration: Math.random() * 10 + 10,
+                  repeat: Infinity,
+                  ease: "easeInOut",
+                }}
+              />
+            ))}
+
+            {/* 3D Grid */}
+            <motion.div
+              className="absolute inset-0 opacity-20"
+              style={{
+                backgroundImage: `
+                  linear-gradient(to right, rgba(59, 130, 246, 0.1) 1px, transparent 1px),
+                  linear-gradient(to bottom, rgba(59, 130, 246, 0.1) 1px, transparent 1px)
+                `,
+                backgroundSize: "50px 50px",
+                perspective: "1000px",
+                transformStyle: "preserve-3d",
+              }}
+              animate={{
+                rotateX: [0, 5, 0],
+                rotateY: [0, 5, 0],
+              }}
+              transition={{
+                duration: 20,
+                repeat: Infinity,
+                ease: "easeInOut",
+              }}
+            />
+          </div>
+
+          {/* Hero Content */}
+          <motion.div
+            style={{ y, opacity }}
+            className="relative z-10 max-w-7xl mx-auto px-6 text-center"
+          >
+            <motion.div
+              initial={{ opacity: 0, scale: 0.8, rotateX: -20 }}
+              animate={{ opacity: 1, scale: 1, rotateX: 0 }}
+              transition={{ duration: 1, ease: "easeOut" }}
+              style={{
+                perspective: "1000px",
+                transformStyle: "preserve-3d",
+              }}
+            >
+              {/* Rotating Badge */}
+              <motion.div
+                className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-gradient-to-r from-blue-500/20 to-purple-500/20 border border-blue-400/30 mb-8"
+                animate={{
+                  rotateY: [0, 360],
+                }}
+                transition={{
+                  duration: 20,
+                  repeat: Infinity,
+                  ease: "linear",
+                }}
+                style={{
+                  transformStyle: "preserve-3d",
+                }}
               >
-                <Shield className="w-4 h-4 text-amber-400" />
-                <span className="text-sm font-medium text-amber-300">Enterprise Intelligence Platform</span>
+                <Sparkles className="h-5 w-5 text-blue-400" />
+                <span className="text-blue-300 font-semibold">Next-Generation Intelligence Platform</span>
+                <Cpu className="h-5 w-5 text-purple-400" />
               </motion.div>
 
-              <h1 className="text-5xl md:text-7xl font-bold mb-6 bg-gradient-to-r from-amber-200 via-amber-100 to-white bg-clip-text text-transparent">
-                The World's First
-                <br />
-                <span className="bg-gradient-to-r from-amber-400 via-amber-300 to-amber-200 bg-clip-text text-transparent">
-                  Algorithmic Fiduciary Platform
-                </span>
+              <h1 className="text-6xl md:text-8xl font-bold mb-6 bg-gradient-to-r from-blue-300 via-purple-300 to-cyan-300 bg-clip-text text-transparent">
+                Platform Overview
               </h1>
-
-              <p className="text-xl md:text-2xl text-gray-300 max-w-4xl mx-auto mb-8 leading-relaxed">
-                Real-time data orchestration, AI-powered analytics, automated compliance monitoring, 
-                and enterprise governance—all unified in a single, continuously learning platform.
+              <p className="text-xl md:text-2xl text-gray-300 max-w-4xl mx-auto mb-12">
+                The AI-powered intelligence platform transforming health economics and benefits management
+                through real-time analytics, enterprise security, and seamless integration
               </p>
 
-              <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                <Link
+              {/* 3D CTA Buttons */}
+              <div className="flex flex-wrap justify-center gap-6">
+                <motion.a
                   href="/request-demo"
-                  className="px-8 py-4 bg-gradient-to-r from-amber-600 to-amber-500 text-white font-bold rounded-full hover:shadow-lg hover:shadow-amber-500/50 transition-all hover:scale-105"
+                  className="group relative px-8 py-4 rounded-xl font-semibold text-lg overflow-hidden"
+                  whileHover={{ scale: 1.05, z: 50 }}
+                  whileTap={{ scale: 0.95 }}
+                  style={{
+                    perspective: "1000px",
+                    transformStyle: "preserve-3d",
+                  }}
                 >
-                  Schedule Platform Demo
-                </Link>
-                <Link
-                  href="/war-room"
-                  className="px-8 py-4 bg-white/5 backdrop-blur-sm border border-white/10 text-white font-medium rounded-full hover:bg-white/10 transition-all hover:scale-105"
+                  <div className="absolute inset-0 bg-gradient-to-r from-blue-600 to-purple-600 rounded-xl" />
+                  <motion.div
+                    className="absolute inset-0 bg-gradient-to-r from-blue-400 to-purple-400 rounded-xl"
+                    initial={{ x: "-100%" }}
+                    whileHover={{ x: "100%" }}
+                    transition={{ duration: 0.5 }}
+                  />
+                  <span className="relative z-10 flex items-center gap-2">
+                    Request Demo
+                    <ArrowRight className="h-5 w-5 group-hover:translate-x-1 transition-transform" />
+                  </span>
+                </motion.a>
+
+                <motion.a
+                  href="/contact"
+                  className="group relative px-8 py-4 rounded-xl font-semibold text-lg border-2 border-blue-400/30 hover:border-blue-400/60 transition-colors"
+                  whileHover={{ scale: 1.05, z: 50 }}
+                  whileTap={{ scale: 0.95 }}
+                  style={{
+                    perspective: "1000px",
+                    transformStyle: "preserve-3d",
+                  }}
                 >
-                  Explore War Room
-                </Link>
+                  <span className="flex items-center gap-2">
+                    Contact Sales
+                    <ArrowRight className="h-5 w-5 group-hover:translate-x-1 transition-transform" />
+                  </span>
+                </motion.a>
               </div>
             </motion.div>
-          </div>
+
+            {/* 3D Stats Cards */}
+            <motion.div
+              initial={{ opacity: 0, y: 40 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8, delay: 0.3 }}
+              className="grid grid-cols-2 md:grid-cols-4 gap-6 mt-20"
+            >
+              {[
+                { label: "Data Points", value: "10B+", icon: Database },
+                { label: "Processing Speed", value: "<1s", icon: Zap },
+                { label: "Uptime", value: "99.9%", icon: Shield },
+                { label: "Integrations", value: "50+", icon: Layers },
+              ].map((stat, i) => (
+                <motion.div
+                  key={i}
+                  className="relative group"
+                  whileHover={{
+                    scale: 1.05,
+                    rotateY: 5,
+                    z: 50,
+                  }}
+                  style={{
+                    perspective: "1000px",
+                    transformStyle: "preserve-3d",
+                  }}
+                >
+                  <div className="relative p-6 rounded-2xl bg-gradient-to-br from-blue-500/10 to-purple-500/10 border border-blue-400/20 group-hover:border-blue-400/40 transition-all duration-500">
+                    <stat.icon className="h-8 w-8 text-blue-400 mb-3 group-hover:scale-110 transition-transform" />
+                    <div className="text-3xl font-bold text-blue-100 mb-1">{stat.value}</div>
+                    <div className="text-sm text-gray-400">{stat.label}</div>
+                    
+                    {/* 3D Glow Effect */}
+                    <motion.div
+                      className="absolute inset-0 rounded-2xl bg-gradient-to-br from-blue-500/20 to-purple-500/20 blur-xl opacity-0 group-hover:opacity-100"
+                      animate={{
+                        scale: [1, 1.2, 1],
+                      }}
+                      transition={{
+                        duration: 2,
+                        repeat: Infinity,
+                      }}
+                    />
+                  </div>
+                </motion.div>
+              ))}
+            </motion.div>
+          </motion.div>
         </section>
 
-        {/* Platform Architecture */}
-        <section className="py-24 bg-gradient-to-b from-gray-900/50 to-black">
-          <div className="max-w-7xl mx-auto px-6">
+        {/* Premium 3D Platform Features */}
+        <section className="relative py-32 overflow-hidden">
+          <div className="absolute inset-0 bg-gradient-to-b from-black via-blue-950/5 to-black" />
+          
+          <div className="relative max-w-7xl mx-auto px-6">
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
-              className="text-center mb-16"
+              transition={{ duration: 0.8 }}
+              className="text-center mb-20"
             >
-              <h2 className="text-3xl md:text-5xl font-bold mb-4 bg-gradient-to-r from-amber-200 to-white bg-clip-text text-transparent">
-                Three-Layer Architecture
+              <h2 className="text-5xl font-bold text-blue-100 mb-6">
+                Core Platform Features
               </h2>
               <p className="text-xl text-gray-400 max-w-3xl mx-auto">
-                Data ingestion, intelligent processing, and actionable insights—working together 24/7
+                Enterprise-grade capabilities designed for scale, security, and performance
               </p>
-            </motion.div>
-
-            <div className="grid md:grid-cols-3 gap-8">
-              {[
-                {
-                  icon: Database,
-                  layer: "Layer 1",
-                  title: "Data Orchestration",
-                  description: "Universal connectors ingest data from any source: EHR, TPA, PBM, payroll, HRIS, claims systems, and more.",
-                  features: [
-                    "Real-time API integrations",
-                    "Automated data validation",
-                    "Schema mapping & normalization",
-                    "Secure data lake storage"
-                  ]
-                },
-                {
-                  icon: Brain,
-                  layer: "Layer 2",
-                  title: "AI Intelligence Engine",
-                  description: "Proprietary algorithms analyze every transaction, detect anomalies, score risks, and identify optimization opportunities.",
-                  features: [
-                    "Pattern recognition AI",
-                    "Anomaly detection algorithms",
-                    "Predictive risk scoring",
-                    "Continuous learning models"
-                  ]
-                },
-                {
-                  icon: Shield,
-                  layer: "Layer 3",
-                  title: "Action & Governance",
-                  description: "Executive War Room surfaces actionable insights, automated workflows execute corrections, and immutable audit trails document everything.",
-                  features: [
-                    "Real-time dashboards",
-                    "Automated remediation",
-                    "Compliance monitoring",
-                    "Audit trail generation"
-                  ]
-                }
-              ].map((layer, index) => {
-                const Icon = layer.icon;
-                return (
-                  <motion.div
-                    key={layer.title}
-                    initial={{ opacity: 0, y: 30 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    viewport={{ once: true }}
-                    transition={{ duration: 0.5, delay: index * 0.2 }}
-                    className="bg-gradient-to-br from-gray-800/60 to-gray-900/40 rounded-2xl border border-gray-700/50 p-8 hover:border-amber-500/50 transition-all"
-                  >
-                    <div className="flex items-center gap-3 mb-4">
-                      <div className="w-12 h-12 rounded-lg bg-gradient-to-br from-amber-500/20 to-amber-600/20 flex items-center justify-center border border-amber-500/30">
-                        <Icon className="w-6 h-6 text-amber-400" />
-                      </div>
-                      <span className="text-sm font-medium text-amber-400">{layer.layer}</span>
-                    </div>
-                    <h3 className="text-2xl font-bold text-white mb-3">{layer.title}</h3>
-                    <p className="text-gray-400 mb-6">{layer.description}</p>
-                    <ul className="space-y-2">
-                      {layer.features.map((feature) => (
-                        <li key={feature} className="flex items-center gap-2 text-sm text-gray-300">
-                          <CheckCircle className="w-4 h-4 text-amber-400 flex-shrink-0" />
-                          <span>{feature}</span>
-                        </li>
-                      ))}
-                    </ul>
-                  </motion.div>
-                );
-              })}
-            </div>
-          </div>
-        </section>
-
-        {/* Core Modules */}
-        <section className="py-24">
-          <div className="max-w-7xl mx-auto px-6">
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              className="text-center mb-16"
-            >
-              <h2 className="text-3xl md:text-5xl font-bold mb-4 bg-gradient-to-r from-amber-200 to-white bg-clip-text text-transparent">
-                Integrated Platform Modules
-              </h2>
-              <p className="text-xl text-gray-400 max-w-3xl mx-auto">
-                Every module works together to deliver comprehensive enterprise intelligence
-              </p>
-            </motion.div>
-
-            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {[
-                {
-                  icon: BarChart3,
-                  title: "Executive War Room",
-                  description: "Real-time operational intelligence dashboard with ranked events, risk scoring, and action workflows",
-                  link: "/war-room"
-                },
-                {
-                  icon: FileText,
-                  title: "Verified Savings Ledger",
-                  description: "Immutable audit trail of all cost savings, recoveries, and optimizations with verifiable evidence",
-                  link: "/verified-savings-ledger"
-                },
-                {
-                  icon: CheckCircle,
-                  title: "Evidence Receipts",
-                  description: "Blockchain-grade proof packets for every transaction, decision, and compliance action",
-                  link: "/evidence-receipts"
-                },
-                {
-                  icon: Shield,
-                  title: "Compliance Automation",
-                  description: "ERISA, HIPAA, SOC 2, and fiduciary duty monitoring with automated reporting",
-                  link: "/compliance"
-                },
-                {
-                  icon: TrendingUp,
-                  title: "Actuarial Benefits",
-                  description: "Predictive modeling, trend analysis, and cost forecasting for employee benefits programs",
-                  link: "/actuarial-benefits"
-                },
-                {
-                  icon: Brain,
-                  title: "Agentic Workflows",
-                  description: "AI agents that autonomously execute tasks, remediate issues, and optimize operations",
-                  link: "/agentic-workflow"
-                },
-                {
-                  icon: Lock,
-                  title: "Contract Intelligence",
-                  description: "Automated contract analysis, clause extraction, and compliance verification",
-                  link: "/contract-intelligence"
-                },
-                {
-                  icon: DollarSign,
-                  title: "EBITDA Governance",
-                  description: "Financial performance monitoring with impact attribution and ROI tracking",
-                  link: "/ebitda-governance"
-                },
-                {
-                  icon: Globe,
-                  title: "Data Connectors",
-                  description: "Universal integrations with Snowflake, Databricks, ServiceNow, and 100+ enterprise systems",
-                  link: "/marketplace"
-                }
-              ].map((module, index) => {
-                const Icon = module.icon;
-                return (
-                  <motion.div
-                    key={module.title}
-                    initial={{ opacity: 0, y: 20 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    viewport={{ once: true }}
-                    transition={{ duration: 0.5, delay: index * 0.1 }}
-                  >
-                    <Link href={module.link}>
-                      <div className="h-full p-6 bg-gradient-to-br from-gray-800/40 to-gray-900/40 rounded-xl border border-gray-700/50 hover:border-amber-500/50 transition-all group cursor-pointer">
-                        <div className="w-12 h-12 rounded-lg bg-gradient-to-br from-amber-500/20 to-amber-600/20 flex items-center justify-center mb-4 border border-amber-500/30 group-hover:scale-110 transition-transform">
-                          <Icon className="w-6 h-6 text-amber-400" />
-                        </div>
-                        <h3 className="text-lg font-semibold text-white mb-2 group-hover:text-amber-400 transition-colors">{module.title}</h3>
-                        <p className="text-sm text-gray-400">{module.description}</p>
-                      </div>
-                    </Link>
-                  </motion.div>
-                );
-              })}
-            </div>
-          </div>
-        </section>
-
-        {/* Key Differentiators */}
-        <section className="py-24 bg-gradient-to-b from-gray-900/50 to-black">
-          <div className="max-w-7xl mx-auto px-6">
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              className="text-center mb-16"
-            >
-              <h2 className="text-3xl md:text-5xl font-bold mb-4 bg-gradient-to-r from-amber-200 to-white bg-clip-text text-transparent">
-                What Makes SiriusB iQ Different
-              </h2>
             </motion.div>
 
             <div className="grid md:grid-cols-2 gap-8">
-              {[
-                {
-                  icon: Zap,
-                  title: "Real-Time Processing",
-                  traditional: "Monthly/quarterly batch processing with delayed insights",
-                  siriusb: "24/7 continuous analysis with immediate alerting and automated responses"
-                },
-                {
-                  icon: Brain,
-                  title: "AI-Native Intelligence",
-                  traditional: "Manual analysis by consultants with human bias and delays",
-                  siriusb: "Proprietary algorithms that learn, adapt, and improve accuracy over time"
-                },
-                {
-                  icon: Shield,
-                  title: "Immutable Audit Trail",
-                  traditional: "Scattered documentation across emails, spreadsheets, and systems",
-                  siriusb: "Blockchain-grade evidence receipts with cryptographic proof of every action"
-                },
-                {
-                  icon: Users,
-                  title: "Unified Platform",
-                  traditional: "Siloed tools requiring manual data reconciliation and duplicate entry",
-                  siriusb: "Single source of truth with all data, insights, and workflows in one system"
-                },
-                {
-                  icon: TrendingUp,
-                  title: "Predictive Analytics",
-                  traditional: "Reactive problem-solving after issues have already cost money",
-                  siriusb: "Proactive risk identification with recommendations before losses occur"
-                },
-                {
-                  icon: Award,
-                  title: "Verifiable ROI",
-                  traditional: "Estimated savings with unclear attribution and no verification",
-                  siriusb: "Every dollar of savings tracked, verified, and documented with evidence"
-                }
-              ].map((diff, index) => {
-                const Icon = diff.icon;
-                return (
-                  <motion.div
-                    key={diff.title}
-                    initial={{ opacity: 0, x: index % 2 === 0 ? -20 : 20 }}
-                    whileInView={{ opacity: 1, x: 0 }}
-                    viewport={{ once: true }}
-                    transition={{ duration: 0.5, delay: index * 0.1 }}
-                    className="bg-gradient-to-br from-gray-800/60 to-gray-900/40 rounded-xl border border-gray-700/50 p-8"
-                  >
-                    <div className="flex items-center gap-3 mb-6">
-                      <div className="w-12 h-12 rounded-lg bg-gradient-to-br from-amber-500/20 to-amber-600/20 flex items-center justify-center border border-amber-500/30">
-                        <Icon className="w-6 h-6 text-amber-400" />
-                      </div>
-                      <h3 className="text-xl font-bold text-white">{diff.title}</h3>
-                    </div>
-                    <div className="space-y-4">
-                      <div>
-                        <div className="text-sm font-medium text-red-400 mb-1">❌ Traditional Approach:</div>
-                        <p className="text-sm text-gray-400">{diff.traditional}</p>
-                      </div>
-                      <div>
-                        <div className="text-sm font-medium text-green-400 mb-1">✅ SiriusB iQ:</div>
-                        <p className="text-sm text-gray-300">{diff.siriusb}</p>
-                      </div>
-                    </div>
-                  </motion.div>
-                );
-              })}
-            </div>
-          </div>
-        </section>
-
-        {/* Stats Section */}
-        <section className="py-24">
-          <div className="max-w-7xl mx-auto px-6">
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              className="text-center mb-16"
-            >
-              <h2 className="text-3xl md:text-5xl font-bold mb-4 bg-gradient-to-r from-amber-200 to-white bg-clip-text text-transparent">
-                Platform Performance
-              </h2>
-            </motion.div>
-
-            <div className="grid md:grid-cols-4 gap-8">
-              {[
-                { value: "99.9%", label: "Platform Uptime" },
-                { value: "<100ms", label: "Average Response Time" },
-                { value: "1B+", label: "Transactions Analyzed Daily" },
-                { value: "24/7", label: "Continuous Monitoring" }
-              ].map((stat, index) => (
+              {platformFeatures.map((feature, index) => (
                 <motion.div
-                  key={stat.label}
-                  initial={{ opacity: 0, scale: 0.9 }}
-                  whileInView={{ opacity: 1, scale: 1 }}
+                  key={index}
+                  initial={{ opacity: 0, y: 40 }}
+                  whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
-                  transition={{ duration: 0.5, delay: index * 0.1 }}
-                  className="text-center p-8 bg-gradient-to-br from-amber-900/20 via-amber-800/10 to-amber-900/20 rounded-xl border border-amber-500/30"
+                  transition={{ duration: 0.6, delay: index * 0.1 }}
+                  className="group relative"
+                  whileHover={{
+                    scale: 1.02,
+                    rotateY: 3,
+                    z: 50,
+                  }}
+                  style={{
+                    perspective: "1500px",
+                    transformStyle: "preserve-3d",
+                  }}
                 >
-                  <div className="text-4xl md:text-5xl font-bold bg-gradient-to-r from-amber-200 to-white bg-clip-text text-transparent mb-2">
-                    {stat.value}
+                  <div className="relative p-8 rounded-2xl bg-gradient-to-br from-zinc-900/80 to-black/80 border border-blue-400/20 group-hover:border-blue-400/40 transition-all duration-500 overflow-hidden">
+                    {/* 3D Rotating Icon */}
+                    <motion.div
+                      className="relative mb-6"
+                      whileHover={{
+                        rotateY: 180,
+                      }}
+                      transition={{
+                        duration: 0.6,
+                        ease: "easeOut",
+                      }}
+                      style={{
+                        transformStyle: "preserve-3d",
+                      }}
+                    >
+                      <feature.icon className={`h-12 w-12 text-${feature.color}-400`} />
+                    </motion.div>
+
+                    <h3 className="text-2xl font-bold text-blue-100 mb-4">
+                      {feature.title}
+                    </h3>
+                    <p className="text-gray-400 leading-relaxed">
+                      {feature.description}
+                    </p>
+
+                    {/* Animated Glow */}
+                    <motion.div
+                      className={`absolute top-0 right-0 w-64 h-64 rounded-full bg-gradient-to-br ${feature.gradient} blur-3xl`}
+                      animate={{
+                        scale: [1, 1.3, 1],
+                        opacity: [0.3, 0.5, 0.3],
+                      }}
+                      transition={{
+                        duration: 4,
+                        repeat: Infinity,
+                        ease: "easeInOut",
+                      }}
+                    />
+
+                    {/* 3D Corner Accent */}
+                    <motion.div
+                      className={`absolute bottom-0 left-0 w-32 h-32 bg-gradient-to-tr ${feature.gradient} rounded-tr-3xl opacity-0 group-hover:opacity-100`}
+                      initial={{ scale: 0, rotate: -45 }}
+                      whileHover={{ scale: 1, rotate: 0 }}
+                      transition={{ duration: 0.5 }}
+                      style={{
+                        transformStyle: "preserve-3d",
+                        transform: "translateZ(20px)",
+                      }}
+                    />
                   </div>
-                  <div className="text-gray-400">{stat.label}</div>
                 </motion.div>
               ))}
             </div>
           </div>
         </section>
 
-        {/* CTA Section */}
-        <section className="py-24 bg-gradient-to-b from-gray-900/50 to-black">
-          <div className="max-w-4xl mx-auto px-6 text-center">
+        {/* 3D Capabilities Grid */}
+        <section className="relative py-32 overflow-hidden">
+          <div className="absolute inset-0 bg-gradient-to-b from-black via-purple-950/5 to-black" />
+          
+          <div className="relative max-w-7xl mx-auto px-6">
             <motion.div
-              initial={{ opacity: 0, y: 30 }}
+              initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
-              className="bg-gradient-to-br from-amber-900/20 via-amber-800/10 to-amber-900/20 rounded-2xl border border-amber-500/30 p-12"
+              transition={{ duration: 0.8 }}
+              className="text-center mb-20"
             >
-              <h2 className="text-3xl md:text-4xl font-bold mb-4 bg-gradient-to-r from-amber-200 to-white bg-clip-text text-transparent">
-                Experience the Platform
+              <h2 className="text-5xl font-bold text-purple-100 mb-6">
+                Advanced Capabilities
               </h2>
-              <p className="text-xl text-gray-300 mb-8">
-                See how SiriusB iQ transforms enterprise data into actionable intelligence in real-time.
+              <p className="text-xl text-gray-400 max-w-3xl mx-auto">
+                Comprehensive toolset for data-driven decision making
               </p>
-              <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                <Link
+            </motion.div>
+
+            <div className="grid md:grid-cols-2 gap-8">
+              {capabilities.map((capability, index) => (
+                <motion.div
+                  key={index}
+                  initial={{ opacity: 0, scale: 0.9 }}
+                  whileInView={{ opacity: 1, scale: 1 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.6, delay: index * 0.1 }}
+                  className="group relative cursor-pointer"
+                  onClick={() => setSelectedCapability(capability)}
+                  whileHover={{
+                    scale: 1.02,
+                    rotateY: -3,
+                    z: 50,
+                  }}
+                  style={{
+                    perspective: "1500px",
+                    transformStyle: "preserve-3d",
+                  }}
+                >
+                  <div className="relative p-8 rounded-2xl bg-gradient-to-br from-purple-500/10 to-blue-500/10 border border-purple-400/20 group-hover:border-purple-400/40 transition-all duration-500">
+                    {/* 3D Icon */}
+                    <motion.div
+                      animate={{
+                        rotateZ: [0, 360],
+                      }}
+                      transition={{
+                        duration: 20,
+                        repeat: Infinity,
+                        ease: "linear",
+                      }}
+                      className="inline-block mb-6"
+                    >
+                      <capability.icon className="h-12 w-12 text-purple-400" />
+                    </motion.div>
+
+                    <h3 className="text-2xl font-bold text-purple-100 mb-3">
+                      {capability.title}
+                    </h3>
+                    <p className="text-gray-400 mb-6">
+                      {capability.description}
+                    </p>
+
+                    <div className="space-y-2">
+                      {capability.items.map((item, i) => (
+                        <motion.div
+                          key={i}
+                          className="flex items-center gap-2 text-gray-300"
+                          initial={{ opacity: 0, x: -20 }}
+                          whileInView={{ opacity: 1, x: 0 }}
+                          viewport={{ once: true }}
+                          transition={{ delay: i * 0.1 }}
+                        >
+                          <CheckCircle2 className="h-5 w-5 text-purple-400 flex-shrink-0" />
+                          <span>{item}</span>
+                        </motion.div>
+                      ))}
+                    </div>
+
+                    {/* Glow Effect */}
+                    <motion.div
+                      className="absolute inset-0 rounded-2xl bg-gradient-to-br from-purple-500/20 to-blue-500/20 blur-2xl opacity-0 group-hover:opacity-100"
+                      animate={{
+                        scale: [1, 1.1, 1],
+                      }}
+                      transition={{
+                        duration: 3,
+                        repeat: Infinity,
+                      }}
+                    />
+                  </div>
+                </motion.div>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        {/* 3D Integration Partners */}
+        <section className="relative py-32 overflow-hidden">
+          <div className="absolute inset-0 bg-gradient-to-b from-black via-cyan-950/5 to-black" />
+          
+          <div className="relative max-w-7xl mx-auto px-6">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.8 }}
+              className="text-center mb-20"
+            >
+              <h2 className="text-5xl font-bold text-cyan-100 mb-6">
+                Enterprise Integrations
+              </h2>
+              <p className="text-xl text-gray-400 max-w-3xl mx-auto">
+                Seamlessly connect with your existing technology stack
+              </p>
+            </motion.div>
+
+            <div className="grid grid-cols-2 md:grid-cols-3 gap-6">
+              {integrationPartners.map((partner, index) => (
+                <motion.div
+                  key={index}
+                  initial={{ opacity: 0, scale: 0.8 }}
+                  whileInView={{ opacity: 1, scale: 1 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.5, delay: index * 0.05 }}
+                  className="group relative"
+                  whileHover={{
+                    scale: 1.05,
+                    rotateY: 5,
+                    z: 30,
+                  }}
+                  style={{
+                    perspective: "1000px",
+                    transformStyle: "preserve-3d",
+                  }}
+                >
+                  <div className="relative p-8 rounded-2xl bg-gradient-to-br from-cyan-500/10 to-blue-500/10 border border-cyan-400/20 group-hover:border-cyan-400/40 transition-all duration-500 text-center">
+                    <div className="text-2xl font-bold text-cyan-100 mb-2">
+                      {partner.name}
+                    </div>
+                    <div className="text-sm text-gray-400">
+                      {partner.category}
+                    </div>
+
+                    {/* Hover Glow */}
+                    <motion.div
+                      className="absolute inset-0 rounded-2xl bg-cyan-500/10 blur-xl opacity-0 group-hover:opacity-100"
+                      animate={{
+                        scale: [1, 1.2, 1],
+                      }}
+                      transition={{
+                        duration: 2,
+                        repeat: Infinity,
+                      }}
+                    />
+                  </div>
+                </motion.div>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        {/* 3D CTA Section */}
+        <section className="relative py-32 overflow-hidden">
+          <div className="absolute inset-0">
+            {[...Array(6)].map((_, i) => (
+              <motion.div
+                key={i}
+                className="absolute rounded-full blur-3xl"
+                style={{
+                  width: Math.random() * 400 + 200,
+                  height: Math.random() * 400 + 200,
+                  left: `${Math.random() * 100}%`,
+                  top: `${Math.random() * 100}%`,
+                  background: `radial-gradient(circle, ${
+                    ["rgba(59, 130, 246, 0.2)", "rgba(147, 51, 234, 0.2)"][i % 2]
+                  } 0%, transparent 70%)`,
+                }}
+                animate={{
+                  x: [0, Math.random() * 50 - 25, 0],
+                  y: [0, Math.random() * 50 - 25, 0],
+                  scale: [1, 1.3, 1],
+                }}
+                transition={{
+                  duration: Math.random() * 8 + 8,
+                  repeat: Infinity,
+                  ease: "easeInOut",
+                }}
+              />
+            ))}
+          </div>
+
+          <div className="relative max-w-4xl mx-auto px-6 text-center">
+            <motion.div
+              initial={{ opacity: 0, scale: 0.9 }}
+              whileInView={{ opacity: 1, scale: 1 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.8 }}
+              className="group relative"
+              whileHover={{
+                scale: 1.02,
+                z: 50,
+              }}
+              style={{
+                perspective: "1500px",
+                transformStyle: "preserve-3d",
+              }}
+            >
+              <div className="relative p-12 rounded-3xl bg-gradient-to-br from-blue-500/20 via-purple-500/20 to-cyan-500/20 border border-blue-400/30 group-hover:border-blue-400/50 transition-all duration-500">
+                {/* 3D Rotating Icon */}
+                <motion.div
+                  className="inline-block mb-8"
+                  animate={{
+                    rotateY: [0, 360],
+                  }}
+                  transition={{
+                    duration: 20,
+                    repeat: Infinity,
+                    ease: "linear",
+                  }}
+                >
+                  <Target className="h-16 w-16 text-blue-400 mx-auto" />
+                </motion.div>
+
+                <h2 className="text-4xl font-bold text-blue-100 mb-6">
+                  Ready to Transform Your Operations?
+                </h2>
+                <p className="text-xl text-gray-300 mb-8 max-w-2xl mx-auto">
+                  Join leading organizations leveraging AI-powered intelligence
+                  to drive measurable business outcomes
+                </p>
+
+                <motion.a
                   href="/request-demo"
-                  className="px-8 py-4 bg-gradient-to-r from-amber-600 to-amber-500 text-white font-bold rounded-full hover:shadow-lg hover:shadow-amber-500/50 transition-all hover:scale-105"
+                  className="group/button inline-flex items-center gap-3 px-10 py-5 rounded-xl bg-gradient-to-r from-blue-600 to-purple-600 text-white font-semibold text-lg relative overflow-hidden"
+                  whileHover={{ scale: 1.05, z: 30 }}
+                  whileTap={{ scale: 0.95 }}
+                  style={{
+                    perspective: "1000px",
+                    transformStyle: "preserve-3d",
+                  }}
                 >
-                  Schedule Live Demo
-                </Link>
-                <Link
-                  href="/war-room"
-                  className="px-8 py-4 bg-white/5 backdrop-blur-sm border border-white/10 text-white font-medium rounded-full hover:bg-white/10 transition-all hover:scale-105"
-                >
-                  Explore War Room
-                </Link>
+                  <motion.div
+                    className="absolute inset-0 bg-gradient-to-r from-blue-400 to-purple-400"
+                    initial={{ x: "-100%" }}
+                    whileHover={{ x: "100%" }}
+                    transition={{ duration: 0.5 }}
+                  />
+                  <span className="relative z-10 flex items-center gap-2">
+                    Schedule Your Demo
+                    <ArrowRight className="h-6 w-6 group-hover/button:translate-x-2 transition-transform" />
+                  </span>
+                </motion.a>
+
+                {/* Animated Background Glow */}
+                <motion.div
+                  className="absolute inset-0 rounded-3xl bg-gradient-to-br from-blue-500/30 to-purple-500/30 blur-3xl"
+                  animate={{
+                    scale: [1, 1.2, 1],
+                    opacity: [0.3, 0.6, 0.3],
+                  }}
+                  transition={{
+                    duration: 4,
+                    repeat: Infinity,
+                  }}
+                />
               </div>
             </motion.div>
           </div>
         </section>
-      </main>
 
-      <Footer />
+        <SiteFooter />
+      </div>
     </>
   );
 }

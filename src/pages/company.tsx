@@ -24,7 +24,7 @@ const teamMembers = [
     name: "Jeremiah Shrack",
     role: "Founder & Chief Executive Officer",
     image: "/jeremiah-shrack-professional.png",
-    bio: "Jeremiah Shrack is the Founder and Chief Executive Officer of SiriusB iQ AI Data Sciences, where he serves as the Chief Actuarial AI Architect of Kincaid IQ. He also leads Kincaid Risk Management Consultants as President & CEO, focusing on practical, high-impact AI and actuarial solutions designed around real health & benefits operating environments.",
+    bio: "Jeremiah Shrack is the Founder and Chief Executive Officer of SiriusB iQ AI Data Sciences, where he serves as the Chief Actuarial AI Architect of Kincaid IQ. A humanitarian and business leader with over two decades of experience engineering intelligent operating systems and scaling organizations.",
     education: [
       {
         school: "Indiana Wesleyan University",
@@ -60,30 +60,6 @@ const teamMembers = [
     ],
     experience: [
       {
-        company: "Kincaid Risk Management Consultants",
-        title: "President & Chief Executive Officer",
-        period: "Jan 2026 - Present",
-        description: "Leading Kincaid RMC with a focus on building practical, high-impact AI and actuarial solutions designed around the real health & benefits operating environments of clients. Setting strategic direction, shaping offerings, and maintaining close relationships with principals and leadership teams. Directly translating emerging capabilities—particularly in AI and advanced analytics—into applied solutions that are relevant, discreet, and durable.",
-        highlights: [
-          "Strategic leadership of AI and actuarial solution development",
-          "Context-aware solutions built for longevity and precision",
-          "Trusted partner to organizations and family offices",
-          "Author of proprietary Kincaid IQ analytics platform"
-        ]
-      },
-      {
-        company: "Kincaid Risk Management Consultants",
-        title: "Chief Operating Officer & President",
-        period: "Sep 2025 - Jan 2026",
-        description: "Founder, COO and Chief Systems Architect driving enterprise sales & growth, operational efficiency, and organizational transformation. Author of proprietary benefits & business analytics AI software Kincaid IQ by SiriusB iQ, translating vision into scalable systems and measurable outcomes.",
-        highlights: [
-          "Translated long-term strategic goals into executable business models",
-          "Embedded AI-first mindset across all operations",
-          "Established ethical AI governance and compliance policies",
-          "Implemented performance frameworks powered by SiriusB iQ AI"
-        ]
-      },
-      {
         company: "SiriusB iQ AI Data Sciences Company",
         title: "Founder & Chief Executive Officer",
         period: "Apr 2023 - Present",
@@ -92,7 +68,9 @@ const teamMembers = [
           "Designed AI reasoning layer and modeling frameworks",
           "Integrated Vertex AI and governed model deployment",
           "Aligned Harvard-level decision science with MIT-grade systems engineering",
-          "Executive-grade intelligence engine operating as strategic co-pilot"
+          "Executive-grade intelligence engine operating as strategic co-pilot",
+          "AI profit-generator implementing strategic AR & AP accounting methodologies",
+          "Platform produces financial, health & benefits, accounting, Board, and C-Suite deliverables"
         ]
       },
       {
@@ -308,6 +286,38 @@ const teamMembers = [
     ],
     philosophy: "Science without rigor is merely speculation. Every data point matters, every assumption must be tested, and every conclusion must be defensible. The pursuit of truth requires both intellectual humility and methodological discipline.",
     vision: "To build a scientific culture at SiriusB iQ where curiosity drives innovation, evidence guides decisions, and methodological excellence is non-negotiable. Our commitment to scientific integrity will differentiate us in an industry often driven by hype over substance."
+  },
+  {
+    name: "Catherine Farley",
+    role: "Executive Chair, Committee on Algorithmic Governance & Fiduciary Risk",
+    image: "/catherine-farley.jpg",
+    bio: "Catherine Farley is a seasoned financial services executive with deep expertise in operational excellence, wealth management, and strategic transformation. Her career spans leadership roles at major financial institutions where she drove innovation and operational efficiency at scale.",
+    experience: [
+      {
+        company: "Major Financial Institutions",
+        title: "Senior Executive Leadership",
+        period: "20+ Years",
+        description: "Led transformative initiatives across wealth management, operations, and strategic planning at leading financial institutions.",
+        highlights: [
+          "Operational excellence and process optimization",
+          "Wealth management and fiduciary governance",
+          "Strategic transformation and change management",
+          "Risk management and compliance frameworks"
+        ]
+      }
+    ],
+    expertise: [
+      "Operational Excellence & Process Optimization",
+      "Wealth Management & Fiduciary Governance",
+      "Strategic Transformation & Change Management",
+      "Risk Management & Compliance Frameworks",
+      "Financial Services Leadership",
+      "Board Governance & Oversight",
+      "Algorithmic Governance",
+      "Fiduciary Risk Management"
+    ],
+    philosophy: "The intersection of AI and fiduciary duty requires a new governance framework—one that treats algorithmic decision-making with the same rigor as human fiduciary responsibility. I advocate for transparent AI systems that can be audited, explained, and held accountable to the same standards as human decision-makers in positions of trust.",
+    vision: "As Executive Chair of the Committee on Algorithmic Governance & Fiduciary Risk, my vision is to establish SiriusB iQ as the gold standard for ethical AI deployment in benefits management. Every algorithmic decision made by the platform must withstand the scrutiny of fiduciary duty, regulatory review, and client trust."
   }
 ];
 

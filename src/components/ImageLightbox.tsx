@@ -28,17 +28,6 @@ export function ImageLightbox({
   alt,
   className
 }: ImageLightboxProps) {
-  // If used as a simple image (not a lightbox), render just the img
-  if (!isOpen && src) {
-    return (
-      <img
-        src={src}
-        alt={alt || "Image"}
-        className={className}
-      />
-    );
-  }
-
   // Lightbox modal functionality
   useEffect(() => {
     if (isOpen) {
@@ -67,6 +56,17 @@ export function ImageLightbox({
       window.removeEventListener("keydown", handleEscape);
     };
   }, [isOpen, onClose]);
+
+  // If used as a simple image (not a lightbox), render just the img
+  if (!isOpen && src) {
+    return (
+      <img
+        src={src}
+        alt={alt || "Image"}
+        className={className}
+      />
+    );
+  }
 
   if (!isOpen) return null;
 

@@ -20,6 +20,8 @@ import {
   GraduationCap,
   BookOpen,
   Lightbulb,
+  Heart,
+  Sparkles,
 } from "lucide-react";
 
 // Interfaces for type safety
@@ -33,7 +35,16 @@ interface CareerHighlight {
 interface Education {
   institution: string;
   degree: string;
+  period?: string;
+  grade?: string;
   note?: string;
+}
+
+interface Certification {
+  title: string;
+  issuer: string;
+  date: string;
+  credentialId?: string;
 }
 
 interface Platform {
@@ -73,6 +84,7 @@ interface DetailedProfile {
   philosophy?: Philosophy;
   expertise: string[];
   education?: Education[];
+  certifications?: Certification[];
   governmentService?: GovernmentService[];
   recognition?: string[];
   currentBoardService?: string[];
@@ -81,6 +93,17 @@ interface DetailedProfile {
   personalValues?: string[];
   impact?: string[];
   vision?: string;
+  spiritualPractice?: {
+    title: string;
+    description: string;
+    practices: string[];
+  };
+  volunteering?: {
+    role: string;
+    organization: string;
+    period: string;
+    focus: string;
+  }[];
 }
 
 interface TeamMember {
@@ -93,11 +116,233 @@ interface TeamMember {
 
 const teamMembers = [
   {
+    name: "Jeremiah Shrack",
+    title: "Founder & Chief Executive Officer",
+    image: "/jeremiah-shrack-professional.png",
+    bio: "Humanitarian and business leader with over two decades of experience engineering intelligent operating systems and scaling organizations. Founder of SiriusB iQ and Kincaid RMC, driving enterprise-wide revenue growth through actuarial precision and ethical AI deployment.",
+    detailedProfile: {
+      introduction: "Over two decades, Jeremiah Shrack has built a reputation for engineering intelligent operating systems, scaling organizations, and redefining how advanced analytics intersect with human judgment. As Founder and Chief Executive Officer of both SiriusB iQ and Kincaid Risk Management Consultants (KRMC), Jeremiah leads with a unique combination of technical mastery, spiritual depth, and unwavering commitment to human flourishing. His journey from achieving #2 ranking at Canon North America while earning his bachelor's degree full-time, to founding enterprise AI platforms, reflects a relentless pursuit of excellence grounded in faith, family, and service.",
+      careerHighlights: [
+        {
+          title: "SiriusB iQ AI Data Sciences Company",
+          role: "Founder & Chief Executive Officer",
+          period: "Apr 2023 - Present",
+          achievements: [
+            "Founded and architected SiriusB iQ as an AI-enabled enterprise intelligence platform for CEOs, COOs, CFOs, and CHROs",
+            "Built Kincaid IQ on blue-giant computational architecture consolidating fragmented finance, health, Rx, workforce, ERP, and CRM data",
+            "Designed 1,000+ validated KPI algorithms powering real-time intelligence models",
+            "Lead strategic, technical, and ethical architecture ensuring transparency and actuarial rigor",
+            "Established Harvard-level decision science with MIT-grade systems engineering",
+            "Transform operational inefficiencies into profit by proving EBITDA drag",
+          ],
+        },
+        {
+          title: "Kincaid Risk Management Consultants",
+          role: "President & Chief Executive Officer",
+          period: "Jan 2026 - Present",
+          achievements: [
+            "Lead strategic direction focused on practical, high-impact AI and actuarial solutions",
+            "Maintain close relationships with principals and leadership teams",
+            "Translate emerging AI capabilities into applied, relevant, and durable solutions",
+            "Founded on belief that meaningful value is created with deep understanding of context",
+            "Built as trusted partner to organizations requiring tailored, context-aware solutions",
+            "Lead with how clients operate, not tools or trends",
+          ],
+        },
+        {
+          title: "Kincaid Risk Management Consultants",
+          role: "Chief Operating Officer & President",
+          period: "Sep 2025 - Jan 2026",
+          achievements: [
+            "Author of proprietary Kincaid IQ benefits & business analytics AI software",
+            "Drove enterprise sales & growth, operational efficiency, and organizational transformation",
+            "Translated long-term strategic goals into executable business models and operational roadmaps",
+            "Implemented performance frameworks and data-driven decision systems powered by AI",
+            "Established clear ethical, compliance, and governance policies for AI use",
+            "Embedded AI thinking into every aspect of strategy and operations",
+          ],
+        },
+        {
+          title: "Retro Redesign & Fine Arts Lab",
+          role: "Chief Executive Officer / Co-Founder",
+          period: "Mar 2020 - Oct 2025",
+          achievements: [
+            "Opened 1st showroom in downtown Noblesville competing directly with HGTV's Good Bones",
+            "Achieved profitability within 30 days of launch",
+            "Consistently outpaced projected revenues month-to-month",
+            "Generated $1M in revenue through 80+ custom furniture projects",
+            "Built strong local reputation for antique furniture and new build commissions",
+            "Hired former Google MBA marketing expert to drive data analytics and sales",
+          ],
+        },
+        {
+          title: "Huntington National Bank",
+          role: "Vice President, Client Strategy & Benefit Innovation",
+          period: "Feb 2018 - Feb 2020",
+          achievements: [
+            "Recruited to shift servicing capabilities and sales leadership towards middle and large markets",
+            "Closed largest account in office in 2019",
+            "Won Huntington Service Heart Award presented by CEO",
+            "Nominated for Service Heart Award due to sales innovations",
+            "Addressed cultural issues between Commercial Banking and Management Consulting teams",
+          ],
+        },
+        {
+          title: "Aon",
+          role: "Vice President of Business Development",
+          period: "Feb 2016 - Feb 2018",
+          achievements: [
+            "Recognized for selling largest account in all of Aon USA in Q3 2016",
+            "Qualified for Aon's producer bonus despite 6 surgeries in 2017",
+            "Led Indiana Food, Ag, and Bev Practice with no prior property/casualty experience",
+            "Teamed with National Middle Market Practice leader on sales processes",
+            "Collaborated with Aon Hewitt's executive on HR Effectiveness solution for 12,000-employee Berkshire Hathaway subsidiary",
+          ],
+        },
+        {
+          title: "Brown & Brown Insurance",
+          role: "Vice President of Health & Wellness",
+          period: "Jan 2012 - Dec 2014",
+          achievements: [
+            "Led health and wellness practice development",
+            "Established foundation for future consulting career",
+            "Developed expertise in benefits consulting and client relationships",
+          ],
+        },
+        {
+          title: "Canon North America",
+          role: "Sales Executive",
+          period: "Early Career",
+          achievements: [
+            "Achieved #2 ranking in North America out of 1,000 software sales reps",
+            "Maintained 60 hours/week work schedule while attending IWU full-time",
+            "Demonstrated exceptional work ethic and time management",
+            "Mastered enterprise sales and relationship building",
+            "Earned Business Marketing bachelor's degree while excelling in sales",
+          ],
+        },
+      ],
+      platform: {
+        name: "Kincaid IQ by SiriusB iQ",
+        description: "An AI-enabled enterprise intelligence platform engineered for CEOs, COOs, CFOs, and CHROs who require forward-looking visibility, precise financial modeling, and disciplined operational oversight. Built on blue-giant computational architecture, consolidating fragmented finance, accounting, health, Rx pharmacy, workforce, ERP, CRM, and financial data into real-time intelligence models.",
+        subsystems: [
+          "1,000+ Validated KPI Algorithms",
+          "Real-Time Intelligence Models",
+          "Financial & Accounting Intelligence",
+          "Health & Benefits Analytics",
+          "Workforce & HR Intelligence",
+          "ERP & CRM Integration",
+          "Predictive Financial Modeling",
+          "Executive-Grade Decision Science",
+        ],
+        impact: "SiriusB iQ is not another dashboard. It is a disciplined, predictive, executive-grade intelligence engine—built to operate beside the modern CEO, CFO, and CHRO as their strategic co-pilot. The platform produces financial, health & benefits, accounting, Board, and C-Suite deliverables through the Kincaid IQ module Adviser.",
+        philosophy: "Built on the belief that meaningful value is created when technology and strategy are developed with a deep understanding of context. Rather than leading with tools or trends, we lead with how our clients operate, what they prioritize, and where long-term advantage is actually created.",
+      },
+      philosophy: {
+        title: "Leadership Philosophy",
+        principles: [
+          "Context Over Technology: Lead with understanding how clients operate, not with tools or trends",
+          "AI-First Mindset: Embed AI thinking into every aspect of strategy and operations",
+          "Responsible AI & Governance: Clear ethical, compliance, and governance policies covering data integrity, privacy, and bias mitigation",
+          "Precision Over Scale: Built for longevity and precision, not hype or scale for scale's sake",
+          "Human-Centered Innovation: Technology must serve human flourishing and organizational transformation",
+          "Faith-Driven Service: Grounded in Christian values, commitment to healing, and service to humanity",
+          "Continuous Mastery: Evolution from knowledge to mastery through learning-oriented approach",
+          "Actuarial Rigor: Harvard-level decision science with MIT-grade systems engineering",
+        ],
+        approach: "Jeremiah combines technical mastery with spiritual depth, viewing business as a calling to serve humanity. His approach integrates AI innovation with ethical governance, actuarial precision with human judgment, and entrepreneurial drive with deep faith. He leads with vulnerability, transparency, and unwavering commitment to excellence.",
+      },
+      expertise: [
+        "AI-Enabled Enterprise Intelligence Platforms",
+        "Actuarial Science & Financial Modeling",
+        "Benefits Analytics & PBM/Rx Consulting",
+        "Enterprise Sales & Business Development",
+        "Organizational Transformation & Change Leadership",
+        "Data Engineering & Systems Architecture",
+        "KPI Algorithm Development (1,000+ Algorithms)",
+        "Ethical AI Deployment & Governance Frameworks",
+        "Strategic Partnership Development",
+        "Executive Decision Science & Operations",
+        "Health & Benefits Consulting",
+        "Spiritual Healing & Energy Work",
+      ],
+      education: [
+        {
+          institution: "Indiana Wesleyan University",
+          degree: "'27 EMBA AI Change Leadership",
+          period: "Jan 2026 - Dec 2027",
+          note: "Business Administration, Management and Operations - DeVos School of Business",
+        },
+        {
+          institution: "Indiana Wesleyan University",
+          degree: "Bachelor of Science, Business Marketing",
+          period: "2005 - 2007",
+          grade: "3.22 GPA",
+          note: "Earned degree while working full-time at Canon, achieving #2 sales ranking out of 1,000 reps",
+        },
+      ],
+      certifications: [
+        {
+          title: "Reiki II Master Practitioner",
+          issuer: "James Charles Institute of Kabbalah Reiki",
+          date: "Jan 2025 - Mar 2034",
+          credentialId: "814855",
+        },
+        {
+          title: "Archcardinal",
+          issuer: "Universal Life Church",
+          date: "Jan 2022 - Present",
+        },
+      ],
+      spiritualPractice: {
+        title: "Spiritual Healing & Ministry",
+        description: "Coming from a family with 8 siblings, my Turtle Mountain Chippewa mother and French Huguenot father were heavily reliant on their intuition and spirituality. Growing up in a Charismatic Catholic family whose belief in the gifts of the Holy Spirit was prevalent, I now act as a channel for the Holy Spirit to heal others physically, emotionally, and psychologically through my practice of Kabbalah Reiki.",
+        practices: [
+          "Kabbalah Reiki II Master Practitioner - Physical, emotional, and psychological healing",
+          "Home Clearings & Land Blessings - Removal of negative energy on photonic and astral levels",
+          "Shamanistic Healing - Drawing on Turtle Mountain Chippewa heritage and spiritual gifts",
+          "Ministry Work - Ordained Archcardinal through Universal Life Church",
+          "Spiritual Counseling - Helping others connect with healing energy and divine guidance",
+        ],
+      },
+      volunteering: [
+        {
+          role: "Facilitator",
+          organization: "IRONMAN",
+          period: "Jul 2016 - Present (9+ years)",
+          focus: "Health & Wellness Community Support",
+        },
+      ],
+      vision: "Grounded in business discipline, faith in God, and respect for humanity, Jeremiah is dedicated to helping employers outperform in the rapidly evolving health, benefits, and AI transformation landscape. His vision is to democratize enterprise-grade intelligence, making sophisticated analysis accessible to organizations of all sizes. Under his leadership, Kincaid RMC and SiriusB iQ deliver 20-35% savings on self-funded contracts while empowering organizations through transparent, data-driven actuarial insights. More than a technologist or entrepreneur, Jeremiah is a healer, minister, and servant leader committed to human flourishing through the integration of cutting-edge technology and timeless spiritual wisdom.",
+      personalValues: [
+        "Faith: Deeply grounded in Christian values and charismatic spirituality",
+        "Family: Committed to work-life integration and leading by example",
+        "Service: Dedicated to healing and serving humanity through business and ministry",
+        "Integrity: Unwavering commitment to ethical business practices and transparency",
+        "Excellence: Pursuit of the highest standards in all endeavors",
+        "Humanity: Technology and business must serve human flourishing",
+        "Spiritual Connection: Active practice of healing, energy work, and ministry",
+        "Community: IRONMAN facilitator and health & wellness advocate",
+      ],
+      impact: [
+        "Founded two enterprise AI platforms serving CEOs, CFOs, and CHROs nationwide",
+        "Architected 1,000+ KPI algorithms transforming operational data into strategic intelligence",
+        "Achieved #2 sales ranking at Canon while earning bachelor's degree full-time",
+        "Built profitable retail business competing with HGTV brands, generating $1M revenue",
+        "Won Huntington Bank's Service Heart Award presented by CEO",
+        "Sold largest account in all of Aon USA while overcoming major health challenges",
+        "Ordained minister providing spiritual healing and home clearings for 9+ years",
+        "IRONMAN facilitator supporting health & wellness community since 2016",
+        "Helping organizations achieve 20-35% savings on benefits contracts",
+        "Combining actuarial rigor with spiritual wisdom to serve humanity",
+      ],
+    },
+  },
+  {
     name: "Dr. Michael Ochieng'",
-    title: "Distinguished Chief Technology Officer",
+    title: "Distinguished Chief Research & Technology Officer",
     image: "/1766487748644.jpeg",
-    role: "Distinguished Chief Technology Officer",
-    bio: "Distinguished Chief Technology Officer pioneering deterministic AI governance and carrier-grade reliability.",
+    bio: "Leading AI/ML innovation and research strategy with expertise in healthcare technology, data science, and computational methods",
     detailedProfile: {
       introduction: "Dr. Michael Ochieng' did not come to AI from the software hype cycle. He came from the high-stakes world of wireless networks—an environment where systems fail loudly, and often dangerously, when governance is absent. His career was forged in the deployment of large-scale LTE and 5G infrastructure for global operators like Verizon, T-Mobile, Sprint, Safaricom, and Huawei. In the telecom sector, Dr. Ochieng' mastered a fundamental truth decades ago: intelligence must always be decoupled from control.",
       careerHighlights: [
@@ -365,88 +610,6 @@ const teamMembers = [
     },
   },
   {
-    name: "Catherine Farley",
-    title: "Board Member - Chief Operating Officer & Strategic Partnerships",
-    image: "/catherine-farley.jpg",
-    role: "Board Member - Chief Operating Officer & Strategic Partnerships",
-    bio: "Operational excellence architect scaling SiriusB iQ's platform while building strategic partnerships.",
-    detailedProfile: {
-      introduction: "Catherine Farley brings a unique blend of operational excellence and strategic vision to SiriusB iQ. As Chief Operating Officer, she orchestrates the daily execution of the company's ambitious vision while simultaneously architecting strategic partnerships that expand market reach and accelerate product adoption. Her leadership style combines data-driven decision-making with a deep understanding of human dynamics, making her instrumental in both internal operations and external relationship building.",
-      careerHighlights: [
-        {
-          title: "SiriusB iQ / Kincaid RMC",
-          role: "Chief Operating Officer",
-          period: "Present",
-          achievements: [
-            "Orchestrates daily execution of company vision",
-            "Architects strategic partnerships for market expansion",
-            "Manages intersection of product development and client success",
-            "Ensures rapid innovation without compromising reliability",
-          ]
-        },
-        {
-          title: "Operations Leadership",
-          role: "Executive Leader",
-          period: "Previous Experience",
-          achievements: [
-            "Scaled operations from startup phase to enterprise readiness",
-            "Built and managed high-performance cross-functional teams",
-            "Implemented operational frameworks improving efficiency by 40%+",
-            "Led successful market expansion initiatives across multiple verticals",
-          ]
-        }
-      ],
-      platform: {
-        name: "Operational Excellence Engine",
-        description: "Catherine oversees the operational infrastructure that makes Kincaid IQ's intelligent systems scalable and reliable.",
-        components: [
-          "Strategic Partnership Architecture",
-          "Cross-Functional Team Orchestration",
-          "Client Success Frameworks",
-          "Scalable Process Design",
-          "Performance Metric Systems"
-        ],
-        impact: "Her focus on operational discipline ensures that rapid innovation doesn't compromise system reliability or client satisfaction."
-      },
-      philosophy: {
-        title: "Operational Philosophy",
-        principles: [
-          "Execution Excellence: Strategy is meaningless without flawless execution",
-          "People First: High-performing teams drive superior outcomes",
-          "Partnership Mindset: Collaboration multiplies impact",
-          "Data-Informed Decisions: Combine metrics with intuition",
-          "Continuous Improvement: Operational excellence is a journey, not a destination",
-        ],
-        approach: "Catherine believes that the best technology platforms succeed not just because of their capabilities, but because of the operational discipline that ensures consistent delivery, satisfied clients, and sustainable growth."
-      },
-      expertise: [
-        "Operations Management & Process Optimization",
-        "Strategic Partnership Development",
-        "Cross-Functional Team Leadership",
-        "Market Expansion & Go-to-Market Strategy",
-        "Client Success & Retention Programs",
-        "Technology Platform Scaling",
-        "Performance Metrics & KPI Development",
-        "Change Management & Organizational Development",
-      ],
-      education: [
-        {
-          institution: "University",
-          degree: "Advanced Degree in Business Administration",
-          note: "Focus on Operations Management and Strategic Leadership",
-        }
-      ],
-      vision: "Catherine envisions an organization where operational excellence enables innovation at scale. Her mission is to build the operational foundation that allows SiriusB iQ to transform entire industries while maintaining the agility and client focus of a startup.",
-      personalValues: [
-        "Integrity: Transparent operations and honest communication",
-        "Excellence: Commitment to the highest standards in everything we do",
-        "Collaboration: Success is a team sport",
-        "Accountability: Own outcomes and drive results",
-        "Innovation: Embrace change and continuous improvement",
-      ],
-    },
-  },
-  {
     name: "Mike Hamann",
     title: "Board Member - Public Service & Fiscal Leadership",
     image: "/Hamann_Michael.jpg",
@@ -557,89 +720,6 @@ const teamMembers = [
         "Mentored hundreds of students in government and civics",
         "Brought real-world governance experience into the classroom",
         "Served constituents with distinction across three government roles",
-      ],
-    },
-  },
-  {
-    name: "Jeremiah Shrack",
-    title: "Founder & Chief Executive Officer",
-    image: "/jeremiah-shrack-professional.png",
-    role: "Founder & Chief Executive Officer",
-    bio: "Founder and CEO leading algorithmic fiduciary intelligence for institutional benefits governance.",
-    detailedProfile: {
-      introduction: "Over two decades, Jeremiah Shrack has built a reputation for engineering intelligent operating systems, scaling organizations, and redefining how advanced analytics intersect with human judgment. As President and Chief Executive Officer of Kincaid Risk Management Consultants (KRMC), Jeremiah drives enterprise-wide revenue growth, operational excellence, and high-impact PBM/Rx consulting engagements.",
-      careerHighlights: [
-        {
-          title: "Kincaid Risk Management Consultants",
-          role: "President & Chief Executive Officer",
-          period: "Present",
-          achievements: [
-            "Built Kincaid IQ - next-generation intelligent consulting operating system",
-            "Achieved 20-35% savings on self-funded Anthem PBM and Rx contracts",
-            "Scaled enterprise-wide revenue growth and operational excellence",
-            "Led high-impact PBM/Rx consulting engagements for mid- and large-market organizations",
-          ],
-        },
-        {
-          title: "Canon North America",
-          role: "Sales Executive",
-          period: "Early Career",
-          achievements: [
-            "Achieved #2 ranking in North America",
-            "Maintained 60 hours/week work schedule while attending IWU full-time",
-            "Demonstrated exceptional work ethic and time management",
-            "Mastered enterprise sales and relationship building",
-          ],
-        },
-      ],
-      platform: {
-        name: "Kincaid IQ",
-        description: "A next-generation intelligent consulting operating system that integrates six purpose-built subsystems extending the reasoning frameworks of VortexAI, LogicAI, and JimShrackExpressAI.",
-        subsystems: [
-          "VortexAI - Advanced pattern recognition and trend analysis",
-          "LogicAI - Deterministic reasoning and rule-based decision making",
-          "JimShrackExpressAI - Rapid insight generation and executive summaries",
-          "Contract Intelligence - Automated contract analysis and risk identification",
-          "Cost Compression - AI-driven cost optimization and waste elimination",
-          "Performance Analytics - Real-time metrics and predictive modeling",
-        ],
-        impact: "Each operating system is strategically designed to accelerate AI transformation in industries identified as early adopters of intelligent automation. The platform combines ethical machine reasoning, actuarial precision, and human-centered design to drive measurable performance improvements for clients.",
-      },
-      philosophy: {
-        title: "Leadership Philosophy",
-        principles: [
-          "Clarity: Establish clear objectives and transparent communication channels",
-          "Accountability: Own outcomes and maintain high standards of responsibility",
-          "Innovation: Continuously evolve systems and processes for maximum efficiency",
-          "Ethics: Ensure AI enhances rather than replaces human decision-making",
-          "Service: Technology must serve humanity, not the other way around",
-        ],
-        approach: "Jeremiah approaches AI and analytics through an ethical lens—ensuring that Kincaid's systems enhance, not replace, human decision-making. His leadership philosophy emphasizes clarity, accountability, and innovation, translating strategic objectives into scalable processes and measurable outcomes across the enterprise.",
-      },
-      expertise: [
-        "Enterprise Executive Sales and Leadership",
-        "Benefits Actuarial Consulting (Jumbo and Large-Market)",
-        "AI System Architecture (LogicAI + VertexAI)",
-        "PBM/Rx Contract Analytics and Negotiation",
-        "Ethical AI Deployment & Governance Frameworks",
-        "Organizational Transformation at Scale",
-        "Revenue Growth and Operational Excellence",
-        "Strategic Partnership Development",
-      ],
-      education: [
-        {
-          institution: "Indiana Wesleyan University",
-          degree: "Undergraduate Studies",
-          note: "Completed while working full-time at Canon",
-        },
-      ],
-      vision: "Grounded in business discipline, faith in God, and respect for humanity, Jeremiah is dedicated to helping employers outperform in the rapidly evolving health, benefits, and AI transformation landscape. Under his leadership, Kincaid RMC leverages a combined 20 years of consulting experience to deliver 20–35% savings on self-funded Anthem PBM and Rx contracts, empowering mid- and large-market organizations through transparent, data-driven actuarial insights.",
-      personalValues: [
-        "Faith: Deeply grounded in Christian values and service",
-        "Family: Committed to work-life integration and leading by example",
-        "Integrity: Unwavering commitment to ethical business practices",
-        "Excellence: Pursuit of the highest standards in all endeavors",
-        "Humanity: Technology and business must serve human flourishing",
       ],
     },
   },
@@ -764,6 +844,79 @@ const Modal = ({ member, onClose }: { member: TeamMember; onClose: () => void })
             </div>
           </motion.section>
 
+          {/* Spiritual Practice (Jeremiah only) */}
+          {profile.spiritualPractice && (
+            <motion.section
+              className="mb-12"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.35 }}
+            >
+              <div className="flex items-center gap-3 mb-6">
+                <motion.div
+                  className="p-3 rounded-xl bg-gradient-to-br from-purple-500/30 to-pink-600/20 shadow-lg shadow-purple-500/30"
+                  whileHover={{ rotate: 360 }}
+                  transition={{ duration: 0.6 }}
+                >
+                  <Heart className="h-6 w-6 text-purple-400" />
+                </motion.div>
+                <h3 className="text-3xl font-bold text-amber-100">{profile.spiritualPractice.title}</h3>
+              </div>
+              <div className="rounded-2xl border border-purple-500/30 bg-gradient-to-br from-purple-950/40 to-pink-950/40 p-6 backdrop-blur-sm">
+                <p className="text-gray-300 leading-relaxed mb-6">
+                  {profile.spiritualPractice.description}
+                </p>
+                <div className="space-y-3">
+                  {profile.spiritualPractice.practices.map((practice, idx) => (
+                    <motion.div
+                      key={idx}
+                      className="flex items-start gap-3 p-3 rounded-lg bg-black/40 border border-purple-500/20"
+                      whileHover={{ scale: 1.02, backgroundColor: "rgba(168, 85, 247, 0.1)" }}
+                    >
+                      <Sparkles className="h-5 w-5 text-purple-400 flex-shrink-0 mt-0.5" />
+                      <span className="text-gray-300">{practice}</span>
+                    </motion.div>
+                  ))}
+                </div>
+              </div>
+            </motion.section>
+          )}
+
+          {/* Volunteering */}
+          {profile.volunteering && (
+            <motion.section
+              className="mb-12"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.38 }}
+            >
+              <div className="flex items-center gap-3 mb-6">
+                <motion.div
+                  className="p-3 rounded-xl bg-gradient-to-br from-green-500/30 to-emerald-600/20 shadow-lg shadow-green-500/30"
+                  whileHover={{ rotate: 360 }}
+                  transition={{ duration: 0.6 }}
+                >
+                  <Heart className="h-6 w-6 text-green-400" />
+                </motion.div>
+                <h3 className="text-3xl font-bold text-amber-100">Community Service</h3>
+              </div>
+              <div className="space-y-3">
+                {profile.volunteering.map((vol, idx) => (
+                  <motion.div
+                    key={idx}
+                    className="p-4 rounded-xl bg-gradient-to-br from-green-950/40 to-emerald-950/40 border border-green-500/20"
+                    whileHover={{ scale: 1.02, borderColor: "rgba(34, 197, 94, 0.4)" }}
+                  >
+                    <h4 className="text-lg font-bold text-green-300">{vol.role}</h4>
+                    <p className="text-green-400">{vol.organization}</p>
+                    <p className="text-sm text-gray-400 mt-1">{vol.period}</p>
+                    <p className="text-gray-300 mt-2">{vol.focus}</p>
+                  </motion.div>
+                ))}
+              </div>
+            </motion.section>
+          )}
+
           {/* Platform/System (if exists) */}
           {profile.platform && (
             <motion.section
@@ -817,7 +970,7 @@ const Modal = ({ member, onClose }: { member: TeamMember; onClose: () => void })
                   </div>
                 )}
                 {profile.platform.architecture && (
-                  <div className="mt-6 space-y-3">
+                  <div className="space-y-3">
                     {profile.platform.architecture.map((item, idx) => (
                       <motion.div
                         key={idx}
@@ -831,7 +984,7 @@ const Modal = ({ member, onClose }: { member: TeamMember; onClose: () => void })
                   </div>
                 )}
                 {profile.platform.majorProjects && (
-                  <div className="mt-6 space-y-3">
+                  <div className="space-y-3">
                     <h4 className="text-lg font-bold text-blue-300 mb-3">Major Projects</h4>
                     {profile.platform.majorProjects.map((project, idx) => (
                       <motion.div
@@ -965,7 +1118,46 @@ const Modal = ({ member, onClose }: { member: TeamMember; onClose: () => void })
                   >
                     <h4 className="text-lg font-bold text-indigo-300">{edu.institution}</h4>
                     <p className="text-indigo-400">{edu.degree}</p>
+                    {edu.period && <p className="text-sm text-gray-400 mt-1">{edu.period}</p>}
+                    {edu.grade && <p className="text-sm text-gray-400">{edu.grade}</p>}
                     {edu.note && <p className="text-gray-400 text-sm mt-1">{edu.note}</p>}
+                  </motion.div>
+                ))}
+              </div>
+            </motion.section>
+          )}
+
+          {/* Certifications */}
+          {profile.certifications && (
+            <motion.section
+              className="mb-12"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.75 }}
+            >
+              <div className="flex items-center gap-3 mb-6">
+                <motion.div
+                  className="p-3 rounded-xl bg-gradient-to-br from-cyan-500/30 to-blue-600/20 shadow-lg shadow-cyan-500/30"
+                  whileHover={{ rotate: 360 }}
+                  transition={{ duration: 0.6 }}
+                >
+                  <Award className="h-6 w-6 text-cyan-400" />
+                </motion.div>
+                <h3 className="text-3xl font-bold text-amber-100">Certifications</h3>
+              </div>
+              <div className="space-y-3">
+                {profile.certifications.map((cert, idx) => (
+                  <motion.div
+                    key={idx}
+                    className="p-4 rounded-xl bg-gradient-to-br from-cyan-950/40 to-blue-950/40 border border-cyan-500/20"
+                    whileHover={{ scale: 1.02, borderColor: "rgba(6, 182, 212, 0.4)" }}
+                  >
+                    <h4 className="text-lg font-bold text-cyan-300">{cert.title}</h4>
+                    <p className="text-cyan-400">{cert.issuer}</p>
+                    <p className="text-sm text-gray-400 mt-1">{cert.date}</p>
+                    {cert.credentialId && (
+                      <p className="text-xs text-gray-500 mt-1">Credential ID: {cert.credentialId}</p>
+                    )}
                   </motion.div>
                 ))}
               </div>
@@ -1236,7 +1428,7 @@ export default function CompanyPage() {
   return (
     <>
       <SEO
-        title="Company - Our Team | SiriusB iQ"
+        title="Leadership - Our Team | SiriusB iQ"
         description="Meet the leadership team behind SiriusB iQ's algorithmic fiduciary intelligence platform."
       />
       <div className="min-h-screen bg-black text-white">
@@ -1260,7 +1452,7 @@ export default function CompanyPage() {
               <div className="flex items-center justify-center gap-3 mb-6">
                 <Shield className="h-12 w-12 text-amber-400" />
                 <h1 className="text-5xl md:text-7xl font-bold bg-gradient-to-r from-amber-300 via-amber-100 to-white bg-clip-text text-transparent">
-                  Our Team
+                  Leadership Team
                 </h1>
               </div>
               <p className="text-xl text-gray-400 max-w-3xl mx-auto">

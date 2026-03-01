@@ -52,7 +52,7 @@ const boardMembers = [
   {
     name: "Dr. Michael Ochieng'",
     title: "Distinguished Chief Technology Officer",
-    image: "/1766487748644_1_.jpeg",
+    image: "/1517661622997_1_.jpeg",
     bio: "Dr. Michael Ochieng' came to AI from the high-stakes world of wireless networks, where systems fail loudly when governance is absent. His career was forged in deploying large-scale LTE and 5G infrastructure for global operators like Verizon, T-Mobile, Sprint, Safaricom, and Huawei.",
     fullBio: {
       introduction: "Dr. Michael Ochieng' did not come to AI from the software hype cycle. He came from the high-stakes world of wireless networks—an environment where systems fail loudly, and often dangerously, when governance is absent. His career was forged in the deployment of large-scale LTE and 5G infrastructure for global operators like Verizon, T-Mobile, Sprint, Safaricom, and Huawei. In the telecom sector, Dr. Ochieng' mastered a fundamental truth decades ago: intelligence must always be decoupled from control.",
@@ -72,7 +72,7 @@ const boardMembers = [
   {
     name: "Dr. Jacqueline El-Sayed",
     title: "Distinguished Chief Scientist Officer",
-    image: "/1517661622997_1_.jpeg",
+    image: "/1766487748644_1_.jpeg",
     bio: "Dr. Jacqueline El-Sayed is the Chief Executive Officer for Intentional Design Group LLC and Intentional Design Institute 501c3. She is a builder and global speaker with leadership experience across industry, education, and government.",
     fullBio: {
       introduction: "Dr. Jacqueline El-Sayed is the Chief Executive Officer (CEO) for Intentional Design Group LLC and Intentional Design Institute 501c3. She is a builder and global speaker with leadership experience across industry, education, and government. She recently served as CEO for the group: SAE International (SAE), Performance Review Institute (PRI), Industry Technologies Consortia (ITC) & Fullsight Shared Services. Her previous role was CEO for the American Society for Engineering Education (ASEE). She joined ASEE as Chief Academic Officer driving growth and alignment across all professional services & leading new business innovation. Before this, she served as Chief Academic Officer & Vice President for Academic Affairs at Marygrove College.",

@@ -226,7 +226,7 @@ const teamMembers = [
   {
     name: "Dr. Michael Ochieng'",
     role: "Distinguished Chief Research & Technology Officer",
-    image: "/1772044203221.png",
+    image: "/dr-michael-ochieng-company.png",
     bio: "Dr. Michael Ochieng' serves as Distinguished Chief Research & Technology Officer, bringing world-class expertise in AI research, machine learning systems, and computational science. His academic credentials and research contributions position SiriusB iQ at the forefront of AI innovation.",
     experience: [
       {

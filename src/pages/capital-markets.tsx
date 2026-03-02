@@ -8,6 +8,8 @@ import Link from "next/link";
 import dynamic from "next/dynamic";
 
 // Lazy load 3D components with loading fallbacks
+// logic: dynamic() handles the code bundle loading
+// logic: Suspense in JSX handles the 3D asset/model loading
 const Hero3DInvestor = dynamic(() => import("@/components/investor/Hero3DInvestor"), { 
   ssr: false,
   loading: () => (
@@ -56,32 +58,33 @@ const ROIVisualization3D = dynamic(() => import("@/components/investor/ROIVisual
   )
 });
 
+// Animation variants with standard easing to prevent TS errors
 const fadeInUp = {
   initial: { opacity: 0, y: 60 },
   whileInView: { opacity: 1, y: 0 },
   viewport: { once: true, margin: "-100px" },
-  transition: { duration: 0.8, ease: [0.6, -0.05, 0.01, 0.99] }
+  transition: { duration: 0.8, ease: "easeOut" }
 };
 
 const scaleIn = {
   initial: { opacity: 0, scale: 0.8 },
   whileInView: { opacity: 1, scale: 1 },
   viewport: { once: true, margin: "-100px" },
-  transition: { duration: 0.7, ease: [0.6, -0.05, 0.01, 0.99] }
+  transition: { duration: 0.7, ease: "easeOut" }
 };
 
 const slideInLeft = {
   initial: { opacity: 0, x: -60 },
   whileInView: { opacity: 1, x: 0 },
   viewport: { once: true, margin: "-100px" },
-  transition: { duration: 0.8, ease: [0.6, -0.05, 0.01, 0.99] }
+  transition: { duration: 0.8, ease: "easeOut" }
 };
 
 const slideInRight = {
   initial: { opacity: 0, x: 60 },
   whileInView: { opacity: 1, x: 0 },
   viewport: { once: true, margin: "-100px" },
-  transition: { duration: 0.8, ease: [0.6, -0.05, 0.01, 0.99] }
+  transition: { duration: 0.8, ease: "easeOut" }
 };
 
 const staggerContainer = {

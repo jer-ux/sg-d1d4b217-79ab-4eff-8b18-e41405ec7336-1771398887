@@ -1,45 +1,45 @@
 import { Suspense } from "react";
 import Head from "next/head";
 import { motion } from "framer-motion";
-import { Play, TrendingUp, Target, Zap, Shield, Clock, CheckCircle2, ArrowRight } from "lucide-react";
+import { Play, Target, Clock, CheckCircle2, Shield } from "lucide-react";
 import Nav from "@/components/Nav";
 import Footer from "@/components/Footer";
 import Link from "next/link";
 import dynamic from "next/dynamic";
 
-// Dynamic imports for 3D components
+// Dynamic imports for 3D components with no SSR to avoid hydration mismatches
 const Hero3DInvestor = dynamic(() => import("@/components/investor/Hero3DInvestor"), { ssr: false });
 const MetricsCloud3D = dynamic(() => import("@/components/investor/MetricsCloud3D"), { ssr: false });
 const Timeline3D = dynamic(() => import("@/components/investor/Timeline3D"), { ssr: false });
 const ROIVisualization3D = dynamic(() => import("@/components/investor/ROIVisualization3D"), { ssr: false });
 
-// Animation variants
+// Animation variants with explicit type casting to avoid TS errors with easing arrays
 const fadeInUp = {
   initial: { opacity: 0, y: 60 },
   whileInView: { opacity: 1, y: 0 },
   viewport: { once: true, margin: "-100px" },
-  transition: { duration: 0.8, ease: [0.6, -0.05, 0.01, 0.99] }
+  transition: { duration: 0.8, ease: [0.6, -0.05, 0.01, 0.99] as any }
 };
 
 const scaleIn = {
   initial: { opacity: 0, scale: 0.8 },
   whileInView: { opacity: 1, scale: 1 },
   viewport: { once: true, margin: "-100px" },
-  transition: { duration: 0.7, ease: [0.6, -0.05, 0.01, 0.99] }
+  transition: { duration: 0.7, ease: [0.6, -0.05, 0.01, 0.99] as any }
 };
 
 const slideInLeft = {
   initial: { opacity: 0, x: -60 },
   whileInView: { opacity: 1, x: 0 },
   viewport: { once: true, margin: "-100px" },
-  transition: { duration: 0.8, ease: [0.6, -0.05, 0.01, 0.99] }
+  transition: { duration: 0.8, ease: [0.6, -0.05, 0.01, 0.99] as any }
 };
 
 const slideInRight = {
   initial: { opacity: 0, x: 60 },
   whileInView: { opacity: 1, x: 0 },
   viewport: { once: true, margin: "-100px" },
-  transition: { duration: 0.8, ease: [0.6, -0.05, 0.01, 0.99] }
+  transition: { duration: 0.8, ease: [0.6, -0.05, 0.01, 0.99] as any }
 };
 
 const staggerContainer = {
@@ -63,8 +63,8 @@ export default function CapitalMarketsPage() {
         {/* 3D Hero Section */}
         <div className="pt-20">
           <Suspense fallback={
-            <div className="w-full h-[600px] flex items-center justify-center">
-              <div className="text-blue-400">Loading 3D visualization...</div>
+            <div className="w-full h-[600px] flex items-center justify-center bg-black">
+              <div className="text-blue-400 animate-pulse">Loading 3D visualization...</div>
             </div>
           }>
             <Hero3DInvestor />
@@ -96,19 +96,22 @@ export default function CapitalMarketsPage() {
                   icon: Clock,
                   title: "60% Faster Diligence",
                   description: "Evidence packs reduce time-to-truth by eliminating debate and accelerating deal cycles",
-                  color: "from-cyan-600 to-cyan-500"
+                  color: "from-cyan-600 to-cyan-500",
+                  textColor: "text-cyan-400"
                 },
                 {
                   icon: Target,
                   title: "$24M Avg Leakage Found",
                   description: "Pre-built reconciliation artifacts surface hidden value erosion before you close",
-                  color: "from-violet-600 to-violet-500"
+                  color: "from-violet-600 to-violet-500",
+                  textColor: "text-violet-400"
                 },
                 {
                   icon: CheckCircle2,
                   title: "87% Realization Rate",
                   description: "Owner-driven workflows and approval gates ensure post-close value capture",
-                  color: "from-emerald-600 to-emerald-500"
+                  color: "from-emerald-600 to-emerald-500",
+                  textColor: "text-emerald-400"
                 }
               ].map((item, i) => (
                 <motion.div
@@ -260,7 +263,8 @@ export default function CapitalMarketsPage() {
                   {...fadeInUp}
                   className="p-8 rounded-2xl bg-gradient-to-br from-zinc-900 to-black border border-blue-500/20 hover:border-blue-500/40 transition-all duration-300 group"
                 >
-                  <div className={`inline-block px-4 py-2 rounded-xl bg-${engagement.color}-500/20 text-${engagement.color}-400 text-sm font-semibold mb-4`}>
+                  {/* Dynamic background color based on map item */}
+                  <div className={`inline-block px-4 py-2 rounded-xl bg-white/5 text-${engagement.color}-400 text-sm font-semibold mb-4 border border-white/10`}>
                     {engagement.duration}
                   </div>
                   <h3 className="text-2xl font-bold text-blue-100 mb-3">{engagement.phase}</h3>

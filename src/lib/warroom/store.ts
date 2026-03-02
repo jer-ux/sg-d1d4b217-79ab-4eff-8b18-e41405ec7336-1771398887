@@ -231,7 +231,7 @@ class WarRoomStore {
 
 // IMPORTANT: global singleton for dev hot-reload
 declare global {
-  // eslint-disable-next-line no-var
+   
   var __WARROOM_STORE__: WarRoomStore | undefined;
 }
 

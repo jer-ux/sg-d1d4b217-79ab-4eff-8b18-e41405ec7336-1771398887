@@ -258,7 +258,7 @@ const teamMembers = [
   {
     name: "Dr. Jacqueline El-Sayed",
     role: "Distinguished Chief Scientist Officer",
-    image: "/catherine-farley.jpg",
+    image: "/dr-jacqueline-el-sayed-company.png",
     bio: "Dr. Jacqueline El-Sayed serves as Distinguished Chief Scientist Officer, bringing exceptional expertise in data science, statistical analysis, and scientific methodology. Her leadership ensures SiriusB iQ maintains the highest standards of scientific excellence and analytical rigor.",
     experience: [
       {

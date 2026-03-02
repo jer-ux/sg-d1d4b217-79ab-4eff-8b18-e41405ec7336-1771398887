@@ -2,7 +2,6 @@ import Link from "next/link";
 import { useEffect, useState, useMemo } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Search, Filter, ArrowUpDown, AlertTriangle, CheckCircle, Eye, Zap, TrendingUp } from "lucide-react";
-import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { WarRoomEvent } from "@/lib/warroom/types";
 
@@ -27,13 +26,7 @@ type Event = {
   why: string[];
 };
 
-export function RankedEventsPanel({
-  events = [],
-  onSelect,
-}: {
-  events?: WarRoomEvent[];
-  onSelect?: (e: WarRoomEvent) => void;
-}) {
+export function RankedEventsPanel() {
   const [loading, setLoading] = useState(true);
   const [eventsState, setEvents] = useState<Event[]>([]);
   const [err, setErr] = useState<string | null>(null);
@@ -55,9 +48,10 @@ export function RankedEventsPanel({
         if (!alive) return;
         if (!d?.ok) throw new Error(d?.error || "Failed to load events");
         setEvents(d.events || []);
-      } catch (e: any) {
+      } catch (e) {
         if (!alive) return;
-        setErr(e?.message || "Failed to load");
+        const errorMessage = e instanceof Error ? e.message : "Failed to load";
+        setErr(errorMessage);
       } finally {
         if (alive) setLoading(false);
       }

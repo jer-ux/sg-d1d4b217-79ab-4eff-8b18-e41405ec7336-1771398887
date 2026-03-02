@@ -2,8 +2,6 @@ import Link from "next/link";
 import { Shield, CheckCircle, Lock, Award } from "lucide-react";
 
 export default function Footer() {
-  const currentYear = new Date().getFullYear();
-
   return (
     <footer className="bg-black border-t border-gray-800">
       {/* Compliance Badges Section */}

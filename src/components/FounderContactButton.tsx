@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Mail, MessageCircle, Send, X, Linkedin, Instagram, Facebook, FileText } from "lucide-react";
+import { Mail, MessageCircle, Send, Linkedin, Instagram, Facebook } from "lucide-react";
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import {
@@ -11,12 +11,10 @@ import {
 } from "@/components/ui/dialog";
 import { Separator } from "@/components/ui/separator";
 import { supabase } from "@/integrations/supabase/client";
-import { useRouter } from "next/router";
 
 export function FounderContactButton() {
   const [isOpen, setIsOpen] = useState(false);
   const [isLoggingIn, setIsLoggingIn] = useState(false);
-  const router = useRouter();
 
   const contactOptions = [
     {
@@ -64,7 +62,7 @@ export function FounderContactButton() {
     setIsLoggingIn(true);
     
     try {
-      const { data, error } = await supabase.auth.signInWithOAuth({
+      const { error } = await supabase.auth.signInWithOAuth({
         provider: "google",
         options: {
           redirectTo: `${window.location.origin}/case-studies?download=true`,

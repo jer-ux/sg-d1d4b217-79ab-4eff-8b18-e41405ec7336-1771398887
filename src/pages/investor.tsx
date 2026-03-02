@@ -1,138 +1,20 @@
-import { useState, Suspense } from "react";
+import { Suspense } from "react";
 import Head from "next/head";
-import { motion, AnimatePresence } from "framer-motion";
-import { ChevronLeft, ChevronRight, Play, TrendingUp, Target, Zap } from "lucide-react";
+import { motion } from "framer-motion";
+import { Play, TrendingUp, Target, Zap, ChevronLeft, ChevronRight } from "lucide-react";
 import Nav from "@/components/Nav";
 import Footer from "@/components/Footer";
 import Link from "next/link";
 import dynamic from "next/dynamic";
+import { AnimatePresence } from "framer-motion";
 
 // Dynamic imports for 3D components
 const Hero3DInvestor = dynamic(() => import("@/components/investor/Hero3DInvestor"), { ssr: false });
-const Slide3D = dynamic(() => import("@/components/investor/Slide3D"), { ssr: false });
 const MetricsCloud3D = dynamic(() => import("@/components/investor/MetricsCloud3D"), { ssr: false });
 const Timeline3D = dynamic(() => import("@/components/investor/Timeline3D"), { ssr: false });
 const ROIVisualization3D = dynamic(() => import("@/components/investor/ROIVisualization3D"), { ssr: false });
 
-interface Slide {
-  id: string;
-  image: string;
-  title: string;
-  description: string;
-}
-
 export default function InvestorPage() {
-  const [currentSlide, setCurrentSlide] = useState(0);
-  const [direction, setDirection] = useState(0);
-
-  const slides: Slide[] = [
-    {
-      id: "title",
-      image: "/slide01_title.png",
-      title: "SiriusB iQ - Algorithmic Fiduciary Intelligence Platform",
-      description: "Transforming enterprise benefits into verifiable alpha"
-    },
-    {
-      id: "problem",
-      image: "/slide02_problem.png",
-      title: "The Problem",
-      description: "Enterprise benefits opacity creates $850B in annual waste"
-    },
-    {
-      id: "thesis",
-      image: "/slide03_thesis.png",
-      title: "Investment Thesis",
-      description: "AI-native infrastructure for benefits intelligence"
-    },
-    {
-      id: "architecture",
-      image: "/slide04_architecture.png",
-      title: "Technical Architecture",
-      description: "Algorithmic fiduciary system with real-time evidence"
-    },
-    {
-      id: "moat",
-      image: "/slide05_moat.png",
-      title: "Competitive Moat",
-      description: "Proprietary evidence network with compounding data effects"
-    },
-    {
-      id: "warroom",
-      image: "/slide06_warroom.png",
-      title: "War Room Intelligence",
-      description: "Real-time anomaly detection and intervention orchestration"
-    },
-    {
-      id: "ledger",
-      image: "/slide07_ledger.png",
-      title: "Verified Savings Ledger",
-      description: "Blockchain-grade proof of economic impact"
-    },
-    {
-      id: "trust",
-      image: "/slide08_trust.png",
-      title: "Trust Architecture",
-      description: "Cryptographic evidence chain with regulatory compliance"
-    },
-    {
-      id: "platform",
-      image: "/slide09_platform.png",
-      title: "Platform Economics",
-      description: "Network effects driving 10x margin expansion"
-    },
-    {
-      id: "cta",
-      image: "/slide10_cta.png",
-      title: "Investment Opportunity",
-      description: "Join us in redefining enterprise benefits intelligence"
-    },
-    {
-      id: "whynow",
-      image: "/slide_whynow.png",
-      title: "Why Now",
-      description: "AI maturity meets regulatory demand for transparency"
-    },
-    {
-      id: "dataquality",
-      image: "/slide_dataquality.png",
-      title: "Data Quality Advantage",
-      description: "99.7% accuracy through multi-source validation"
-    },
-    {
-      id: "roi",
-      image: "/slide_roi.png",
-      title: "ROI Framework",
-      description: "Measurable value creation across enterprise stakeholders"
-    },
-    {
-      id: "timeline",
-      image: "/slide_timeline.png",
-      title: "Go-to-Market Timeline",
-      description: "18-month path to market leadership"
-    },
-    {
-      id: "partnership",
-      image: "/slide_partnership.png",
-      title: "Strategic Partnerships",
-      description: "Building the future with industry leaders"
-    }
-  ];
-
-  const nextSlide = () => {
-    setDirection(1);
-    setCurrentSlide((prev) => (prev + 1) % slides.length);
-  };
-
-  const prevSlide = () => {
-    setDirection(-1);
-    setCurrentSlide((prev) => (prev - 1 + slides.length) % slides.length);
-  };
-
-  const goToSlide = (index: number) => {
-    setDirection(index > currentSlide ? 1 : -1);
-    setCurrentSlide(index);
-  };
-
   return (
     <>
       <Head>
@@ -147,7 +29,7 @@ export default function InvestorPage() {
         <div className="pt-20">
           <Suspense fallback={
             <div className="w-full h-[600px] flex items-center justify-center">
-              <div className="text-amber-400">Loading 3D visualization...</div>
+              <div className="text-blue-400">Loading 3D visualization...</div>
             </div>
           }>
             <Hero3DInvestor />
@@ -199,91 +81,6 @@ export default function InvestorPage() {
                     <p className="text-gray-400">{stat.label}</p>
                   </div>
                 </motion.div>
-              ))}
-            </div>
-          </div>
-        </section>
-
-        {/* Main Presentation Area */}
-        <section className="py-16 px-6">
-          <div className="max-w-7xl mx-auto">
-            <motion.h2
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6 }}
-              viewport={{ once: true }}
-              className="text-4xl font-bold text-blue-100 mb-8 text-center"
-            >
-              Investment Deck
-            </motion.h2>
-
-            {/* Slide Container with 3D Effects */}
-            <div className="relative aspect-[16/9]">
-              <AnimatePresence mode="wait">
-                <Suspense
-                  key={currentSlide}
-                  fallback={
-                    <div className="absolute inset-0 bg-zinc-900/50 rounded-2xl animate-pulse" />
-                  }
-                >
-                  <Slide3D
-                    image={slides[currentSlide].image}
-                    title={slides[currentSlide].title}
-                    description={slides[currentSlide].description}
-                    isActive={true}
-                  />
-                </Suspense>
-              </AnimatePresence>
-
-              {/* Navigation Arrows */}
-              <button
-                onClick={prevSlide}
-                className="absolute left-4 top-1/2 -translate-y-1/2 p-3 rounded-full bg-black/50 hover:bg-blue-500/20 border border-blue-500/20 hover:border-blue-500/40 transition-all duration-300 group z-10"
-                aria-label="Previous slide"
-              >
-                <ChevronLeft className="h-6 w-6 text-blue-400 group-hover:text-blue-300" />
-              </button>
-
-              <button
-                onClick={nextSlide}
-                className="absolute right-4 top-1/2 -translate-y-1/2 p-3 rounded-full bg-black/50 hover:bg-blue-500/20 border border-blue-500/20 hover:border-blue-500/40 transition-all duration-300 group z-10"
-                aria-label="Next slide"
-              >
-                <ChevronRight className="h-6 w-6 text-blue-400 group-hover:text-blue-300" />
-              </button>
-            </div>
-
-            {/* Slide Counter */}
-            <div className="mt-6 text-center">
-              <span className="text-gray-400">
-                Slide {currentSlide + 1} of {slides.length}
-              </span>
-            </div>
-
-            {/* Thumbnail Navigation */}
-            <div className="mt-8 grid grid-cols-5 md:grid-cols-10 lg:grid-cols-15 gap-3">
-              {slides.map((slide, index) => (
-                <motion.button
-                  key={slide.id}
-                  onClick={() => goToSlide(index)}
-                  className={`relative aspect-[16/9] rounded-lg overflow-hidden border-2 transition-all duration-300 ${
-                    currentSlide === index
-                      ? "border-blue-400 shadow-lg shadow-blue-500/30"
-                      : "border-blue-500/20 hover:border-blue-500/40 opacity-60 hover:opacity-100"
-                  }`}
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.95 }}
-                  aria-label={`Go to slide ${index + 1}`}
-                >
-                  <img
-                    src={slide.image}
-                    alt={`Slide ${index + 1}`}
-                    className="w-full h-full object-cover"
-                  />
-                  {currentSlide === index && (
-                    <div className="absolute inset-0 bg-blue-500/10" />
-                  )}
-                </motion.button>
               ))}
             </div>
           </div>

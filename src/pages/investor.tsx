@@ -1,18 +1,57 @@
 import { Suspense } from "react";
 import Head from "next/head";
 import { motion } from "framer-motion";
-import { Play, TrendingUp, Target, Zap, ChevronLeft, ChevronRight } from "lucide-react";
+import { Play, TrendingUp, Target, Zap } from "lucide-react";
 import Nav from "@/components/Nav";
 import Footer from "@/components/Footer";
 import Link from "next/link";
 import dynamic from "next/dynamic";
-import { AnimatePresence } from "framer-motion";
 
 // Dynamic imports for 3D components
 const Hero3DInvestor = dynamic(() => import("@/components/investor/Hero3DInvestor"), { ssr: false });
 const MetricsCloud3D = dynamic(() => import("@/components/investor/MetricsCloud3D"), { ssr: false });
 const Timeline3D = dynamic(() => import("@/components/investor/Timeline3D"), { ssr: false });
 const ROIVisualization3D = dynamic(() => import("@/components/investor/ROIVisualization3D"), { ssr: false });
+
+// Animation variants
+const fadeInUp = {
+  initial: { opacity: 0, y: 60 },
+  animate: { opacity: 1, y: 0 },
+  transition: { duration: 0.8, ease: [0.6, -0.05, 0.01, 0.99] }
+};
+
+const fadeIn = {
+  initial: { opacity: 0 },
+  animate: { opacity: 1 },
+  transition: { duration: 1 }
+};
+
+const staggerContainer = {
+  initial: {},
+  animate: {
+    transition: {
+      staggerChildren: 0.15
+    }
+  }
+};
+
+const scaleIn = {
+  initial: { opacity: 0, scale: 0.8 },
+  animate: { opacity: 1, scale: 1 },
+  transition: { duration: 0.7, ease: [0.6, -0.05, 0.01, 0.99] }
+};
+
+const slideInLeft = {
+  initial: { opacity: 0, x: -60 },
+  animate: { opacity: 1, x: 0 },
+  transition: { duration: 0.8, ease: [0.6, -0.05, 0.01, 0.99] }
+};
+
+const slideInRight = {
+  initial: { opacity: 0, x: 60 },
+  animate: { opacity: 1, x: 0 },
+  transition: { duration: 0.8, ease: [0.6, -0.05, 0.01, 0.99] }
+};
 
 export default function InvestorPage() {
   return (
@@ -26,7 +65,12 @@ export default function InvestorPage() {
         <Nav />
 
         {/* 3D Hero Section */}
-        <div className="pt-20">
+        <motion.div 
+          className="pt-20"
+          initial="initial"
+          animate="animate"
+          variants={fadeIn}
+        >
           <Suspense fallback={
             <div className="w-full h-[600px] flex items-center justify-center">
               <div className="text-blue-400">Loading 3D visualization...</div>
@@ -34,16 +78,16 @@ export default function InvestorPage() {
           }>
             <Hero3DInvestor />
           </Suspense>
-        </div>
+        </motion.div>
 
         {/* Key Metrics Section with 3D */}
         <section className="py-16 px-6">
           <div className="max-w-7xl mx-auto">
             <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6 }}
-              viewport={{ once: true }}
+              initial="initial"
+              whileInView="animate"
+              viewport={{ once: true, margin: "-100px" }}
+              variants={fadeInUp}
               className="text-center mb-12"
             >
               <h2 className="text-4xl font-bold text-blue-100 mb-4">
@@ -54,12 +98,25 @@ export default function InvestorPage() {
               </p>
             </motion.div>
 
-            <Suspense fallback={<div className="w-full h-[500px] bg-zinc-900/50 rounded-2xl animate-pulse" />}>
-              <MetricsCloud3D />
-            </Suspense>
+            <motion.div
+              initial="initial"
+              whileInView="animate"
+              viewport={{ once: true, margin: "-100px" }}
+              variants={scaleIn}
+            >
+              <Suspense fallback={<div className="w-full h-[500px] bg-zinc-900/50 rounded-2xl animate-pulse" />}>
+                <MetricsCloud3D />
+              </Suspense>
+            </motion.div>
 
             {/* Stats Grid */}
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-12">
+            <motion.div 
+              className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-12"
+              initial="initial"
+              whileInView="animate"
+              viewport={{ once: true, margin: "-100px" }}
+              variants={staggerContainer}
+            >
               {[
                 { icon: TrendingUp, label: "Market Growth", value: "23% CAGR", color: "from-blue-600 to-blue-500" },
                 { icon: Target, label: "Addressable Market", value: "$120B TAM", color: "from-blue-500 to-blue-400" },
@@ -67,10 +124,7 @@ export default function InvestorPage() {
               ].map((stat, i) => (
                 <motion.div
                   key={i}
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.6, delay: i * 0.1 }}
-                  viewport={{ once: true }}
+                  variants={fadeInUp}
                   className="relative group"
                 >
                   <div className="p-6 rounded-2xl bg-gradient-to-br from-zinc-900 to-black border border-blue-500/20 hover:border-blue-500/40 transition-all duration-300">
@@ -82,7 +136,7 @@ export default function InvestorPage() {
                   </div>
                 </motion.div>
               ))}
-            </div>
+            </motion.div>
           </div>
         </section>
 
@@ -90,10 +144,10 @@ export default function InvestorPage() {
         <section className="py-16 px-6 bg-gradient-to-b from-black to-zinc-950">
           <div className="max-w-7xl mx-auto">
             <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6 }}
-              viewport={{ once: true }}
+              initial="initial"
+              whileInView="animate"
+              viewport={{ once: true, margin: "-100px" }}
+              variants={slideInLeft}
               className="text-center mb-12"
             >
               <h2 className="text-4xl font-bold text-blue-100 mb-4">
@@ -104,9 +158,16 @@ export default function InvestorPage() {
               </p>
             </motion.div>
 
-            <Suspense fallback={<div className="w-full h-[500px] bg-zinc-900/50 rounded-2xl animate-pulse" />}>
-              <ROIVisualization3D />
-            </Suspense>
+            <motion.div
+              initial="initial"
+              whileInView="animate"
+              viewport={{ once: true, margin: "-100px" }}
+              variants={scaleIn}
+            >
+              <Suspense fallback={<div className="w-full h-[500px] bg-zinc-900/50 rounded-2xl animate-pulse" />}>
+                <ROIVisualization3D />
+              </Suspense>
+            </motion.div>
           </div>
         </section>
 
@@ -114,10 +175,10 @@ export default function InvestorPage() {
         <section className="py-16 px-6">
           <div className="max-w-7xl mx-auto">
             <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6 }}
-              viewport={{ once: true }}
+              initial="initial"
+              whileInView="animate"
+              viewport={{ once: true, margin: "-100px" }}
+              variants={slideInRight}
               className="text-center mb-12"
             >
               <h2 className="text-4xl font-bold text-blue-100 mb-4">
@@ -128,9 +189,16 @@ export default function InvestorPage() {
               </p>
             </motion.div>
 
-            <Suspense fallback={<div className="w-full h-[400px] bg-zinc-900/50 rounded-2xl animate-pulse" />}>
-              <Timeline3D />
-            </Suspense>
+            <motion.div
+              initial="initial"
+              whileInView="animate"
+              viewport={{ once: true, margin: "-100px" }}
+              variants={scaleIn}
+            >
+              <Suspense fallback={<div className="w-full h-[400px] bg-zinc-900/50 rounded-2xl animate-pulse" />}>
+                <Timeline3D />
+              </Suspense>
+            </motion.div>
           </div>
         </section>
 
@@ -138,13 +206,17 @@ export default function InvestorPage() {
         <section className="py-16 px-6 bg-gradient-to-b from-zinc-950 to-black">
           <div className="max-w-4xl mx-auto">
             <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6 }}
-              viewport={{ once: true }}
+              initial="initial"
+              whileInView="animate"
+              viewport={{ once: true, margin: "-100px" }}
+              variants={fadeInUp}
               className="text-center"
             >
-              <div className="inline-flex flex-col items-center gap-6 p-12 rounded-2xl bg-gradient-to-br from-blue-950/20 to-transparent border border-blue-500/20">
+              <motion.div 
+                className="inline-flex flex-col items-center gap-6 p-12 rounded-2xl bg-gradient-to-br from-blue-950/20 to-transparent border border-blue-500/20"
+                whileHover={{ scale: 1.02, borderColor: "rgba(59, 130, 246, 0.4)" }}
+                transition={{ duration: 0.3 }}
+              >
                 <h3 className="text-3xl font-bold text-blue-100">
                   Ready to Learn More?
                 </h3>
@@ -158,7 +230,7 @@ export default function InvestorPage() {
                   <Play className="h-6 w-6" />
                   <span>Request Investor Meeting</span>
                 </Link>
-              </div>
+              </motion.div>
             </motion.div>
           </div>
         </section>

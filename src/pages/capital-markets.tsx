@@ -7,37 +7,81 @@ import Footer from "@/components/Footer";
 import Link from "next/link";
 import dynamic from "next/dynamic";
 
-const Hero3DInvestor = dynamic(() => import("@/components/investor/Hero3DInvestor"), { ssr: false });
-const MetricsCloud3D = dynamic(() => import("@/components/investor/MetricsCloud3D"), { ssr: false });
-const Timeline3D = dynamic(() => import("@/components/investor/Timeline3D"), { ssr: false });
-const ROIVisualization3D = dynamic(() => import("@/components/investor/ROIVisualization3D"), { ssr: false });
+// Lazy load 3D components with loading fallbacks
+const Hero3DInvestor = dynamic(() => import("@/components/investor/Hero3DInvestor"), { 
+  ssr: false,
+  loading: () => (
+    <div className="w-full h-[600px] flex items-center justify-center bg-gradient-to-b from-black to-zinc-950">
+      <div className="text-center">
+        <div className="w-16 h-16 border-4 border-blue-500 border-t-transparent rounded-full animate-spin mx-auto mb-4" />
+        <p className="text-blue-400 text-sm">Loading 3D Experience...</p>
+      </div>
+    </div>
+  )
+});
+
+const MetricsCloud3D = dynamic(() => import("@/components/investor/MetricsCloud3D"), { 
+  ssr: false,
+  loading: () => (
+    <div className="w-full h-[400px] bg-zinc-900/50 rounded-2xl flex items-center justify-center">
+      <div className="text-center">
+        <div className="w-12 h-12 border-4 border-cyan-500 border-t-transparent rounded-full animate-spin mx-auto mb-3" />
+        <p className="text-cyan-400 text-sm">Loading Metrics Cloud...</p>
+      </div>
+    </div>
+  )
+});
+
+const Timeline3D = dynamic(() => import("@/components/investor/Timeline3D"), { 
+  ssr: false,
+  loading: () => (
+    <div className="w-full h-[400px] bg-zinc-900/50 rounded-2xl flex items-center justify-center">
+      <div className="text-center">
+        <div className="w-12 h-12 border-4 border-violet-500 border-t-transparent rounded-full animate-spin mx-auto mb-3" />
+        <p className="text-violet-400 text-sm">Loading Timeline...</p>
+      </div>
+    </div>
+  )
+});
+
+const ROIVisualization3D = dynamic(() => import("@/components/investor/ROIVisualization3D"), { 
+  ssr: false,
+  loading: () => (
+    <div className="w-full h-[400px] bg-zinc-900/50 rounded-2xl flex items-center justify-center">
+      <div className="text-center">
+        <div className="w-12 h-12 border-4 border-emerald-500 border-t-transparent rounded-full animate-spin mx-auto mb-3" />
+        <p className="text-emerald-400 text-sm">Loading ROI Visualization...</p>
+      </div>
+    </div>
+  )
+});
 
 const fadeInUp = {
   initial: { opacity: 0, y: 60 },
   whileInView: { opacity: 1, y: 0 },
   viewport: { once: true, margin: "-100px" },
-  transition: { duration: 0.8, ease: [0.6, -0.05, 0.01, 0.99] as any }
+  transition: { duration: 0.8, ease: [0.6, -0.05, 0.01, 0.99] }
 };
 
 const scaleIn = {
   initial: { opacity: 0, scale: 0.8 },
   whileInView: { opacity: 1, scale: 1 },
   viewport: { once: true, margin: "-100px" },
-  transition: { duration: 0.7, ease: [0.6, -0.05, 0.01, 0.99] as any }
+  transition: { duration: 0.7, ease: [0.6, -0.05, 0.01, 0.99] }
 };
 
 const slideInLeft = {
   initial: { opacity: 0, x: -60 },
   whileInView: { opacity: 1, x: 0 },
   viewport: { once: true, margin: "-100px" },
-  transition: { duration: 0.8, ease: [0.6, -0.05, 0.01, 0.99] as any }
+  transition: { duration: 0.8, ease: [0.6, -0.05, 0.01, 0.99] }
 };
 
 const slideInRight = {
   initial: { opacity: 0, x: 60 },
   whileInView: { opacity: 1, x: 0 },
   viewport: { once: true, margin: "-100px" },
-  transition: { duration: 0.8, ease: [0.6, -0.05, 0.01, 0.99] as any }
+  transition: { duration: 0.8, ease: [0.6, -0.05, 0.01, 0.99] }
 };
 
 const staggerContainer = {
@@ -58,16 +102,21 @@ export default function CapitalMarketsPage() {
       <div className="min-h-screen bg-black text-white">
         <Nav />
 
+        {/* Hero Section with 3D Background */}
         <div className="pt-20">
           <Suspense fallback={
-            <div className="w-full h-[600px] flex items-center justify-center bg-black">
-              <div className="text-blue-400 animate-pulse">Loading...</div>
+            <div className="w-full h-[600px] flex items-center justify-center bg-gradient-to-b from-black to-zinc-950">
+              <div className="text-center">
+                <div className="w-16 h-16 border-4 border-blue-500 border-t-transparent rounded-full animate-spin mx-auto mb-4" />
+                <p className="text-blue-400 text-sm">Loading 3D Experience...</p>
+              </div>
             </div>
           }>
             <Hero3DInvestor />
           </Suspense>
         </div>
 
+        {/* Market Opportunity Section */}
         <section className="py-20 px-6 bg-gradient-to-b from-black to-zinc-950">
           <div className="max-w-7xl mx-auto">
             <motion.div {...slideInLeft} className="text-center mb-16">
@@ -81,7 +130,14 @@ export default function CapitalMarketsPage() {
             </motion.div>
 
             <motion.div {...scaleIn} className="mb-16">
-              <Suspense fallback={<div className="w-full h-[400px] bg-zinc-900/50 rounded-2xl animate-pulse" />}>
+              <Suspense fallback={
+                <div className="w-full h-[400px] bg-zinc-900/50 rounded-2xl flex items-center justify-center">
+                  <div className="text-center">
+                    <div className="w-12 h-12 border-4 border-cyan-500 border-t-transparent rounded-full animate-spin mx-auto mb-3" />
+                    <p className="text-cyan-400 text-sm">Loading Metrics Cloud...</p>
+                  </div>
+                </div>
+              }>
                 <MetricsCloud3D />
               </Suspense>
             </motion.div>
@@ -123,6 +179,7 @@ export default function CapitalMarketsPage() {
           </div>
         </section>
 
+        {/* Value Creation Section */}
         <section className="py-20 px-6 bg-gradient-to-b from-zinc-950 to-black">
           <div className="max-w-7xl mx-auto">
             <motion.div {...slideInRight} className="text-center mb-16">
@@ -136,7 +193,14 @@ export default function CapitalMarketsPage() {
             </motion.div>
 
             <motion.div {...scaleIn} className="mb-16">
-              <Suspense fallback={<div className="w-full h-[400px] bg-zinc-900/50 rounded-2xl animate-pulse" />}>
+              <Suspense fallback={
+                <div className="w-full h-[400px] bg-zinc-900/50 rounded-2xl flex items-center justify-center">
+                  <div className="text-center">
+                    <div className="w-12 h-12 border-4 border-emerald-500 border-t-transparent rounded-full animate-spin mx-auto mb-3" />
+                    <p className="text-emerald-400 text-sm">Loading ROI Visualization...</p>
+                  </div>
+                </div>
+              }>
                 <ROIVisualization3D />
               </Suspense>
             </motion.div>
@@ -191,6 +255,7 @@ export default function CapitalMarketsPage() {
           </div>
         </section>
 
+        {/* Engagement Models Section */}
         <section className="py-20 px-6 bg-gradient-to-b from-black to-zinc-950">
           <div className="max-w-7xl mx-auto">
             <motion.div {...slideInLeft} className="text-center mb-16">
@@ -203,7 +268,14 @@ export default function CapitalMarketsPage() {
             </motion.div>
 
             <motion.div {...scaleIn} className="mb-16">
-              <Suspense fallback={<div className="w-full h-[400px] bg-zinc-900/50 rounded-2xl animate-pulse" />}>
+              <Suspense fallback={
+                <div className="w-full h-[400px] bg-zinc-900/50 rounded-2xl flex items-center justify-center">
+                  <div className="text-center">
+                    <div className="w-12 h-12 border-4 border-violet-500 border-t-transparent rounded-full animate-spin mx-auto mb-3" />
+                    <p className="text-violet-400 text-sm">Loading Timeline...</p>
+                  </div>
+                </div>
+              }>
                 <Timeline3D />
               </Suspense>
             </motion.div>
@@ -271,6 +343,7 @@ export default function CapitalMarketsPage() {
           </div>
         </section>
 
+        {/* Why Choose Us Section */}
         <section className="py-20 px-6 bg-gradient-to-b from-zinc-950 to-black">
           <div className="max-w-7xl mx-auto">
             <motion.div {...slideInRight} className="text-center mb-16">
@@ -325,6 +398,7 @@ export default function CapitalMarketsPage() {
           </div>
         </section>
 
+        {/* CTA Section */}
         <section className="py-20 px-6 bg-gradient-to-b from-black to-zinc-950">
           <div className="max-w-4xl mx-auto">
             <motion.div {...fadeInUp} className="text-center">

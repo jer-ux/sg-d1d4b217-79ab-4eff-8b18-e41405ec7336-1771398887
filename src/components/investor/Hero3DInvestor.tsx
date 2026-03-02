@@ -1,217 +1,172 @@
 import { motion } from "framer-motion";
-import { useEffect, useState } from "react";
+import { useEffect, useRef } from "react";
 
 export default function Hero3DInvestor() {
-  const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
+  const canvasRef = useRef<HTMLCanvasElement>(null);
 
   useEffect(() => {
-    const handleMouseMove = (e: MouseEvent) => {
-      setMousePosition({
-        x: (e.clientX / window.innerWidth - 0.5) * 20,
-        y: (e.clientY / window.innerHeight - 0.5) * 20,
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+
+    const ctx = canvas.getContext("2d");
+    if (!ctx) return;
+
+    canvas.width = window.innerWidth;
+    canvas.height = 600;
+
+    // Particle system for the ring
+    const particles: Array<{
+      angle: number;
+      radius: number;
+      speed: number;
+      size: number;
+      opacity: number;
+      color: string;
+    }> = [];
+
+    const particleCount = 200;
+    const centerX = canvas.width / 2;
+    const centerY = canvas.height / 2;
+    const baseRadius = 180;
+
+    // Create particles
+    for (let i = 0; i < particleCount; i++) {
+      particles.push({
+        angle: (i / particleCount) * Math.PI * 2,
+        radius: baseRadius + (Math.random() - 0.5) * 40,
+        speed: 0.002 + Math.random() * 0.003,
+        size: 1 + Math.random() * 3,
+        opacity: 0.3 + Math.random() * 0.7,
+        color: `rgba(96, 165, 250, ${0.5 + Math.random() * 0.5})`, // Blue colors
       });
+    }
+
+    let animationFrame: number;
+
+    const animate = () => {
+      ctx.fillStyle = "rgba(0, 0, 0, 0.1)";
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+      particles.forEach((particle, i) => {
+        // Update particle position
+        particle.angle += particle.speed;
+
+        const x = centerX + Math.cos(particle.angle) * particle.radius;
+        const y = centerY + Math.sin(particle.angle) * particle.radius;
+
+        // Create glow effect
+        const gradient = ctx.createRadialGradient(x, y, 0, x, y, particle.size * 3);
+        gradient.addColorStop(0, particle.color);
+        gradient.addColorStop(1, "rgba(96, 165, 250, 0)");
+
+        ctx.fillStyle = gradient;
+        ctx.beginPath();
+        ctx.arc(x, y, particle.size * 3, 0, Math.PI * 2);
+        ctx.fill();
+
+        // Draw particle core
+        ctx.fillStyle = `rgba(255, 255, 255, ${particle.opacity})`;
+        ctx.beginPath();
+        ctx.arc(x, y, particle.size, 0, Math.PI * 2);
+        ctx.fill();
+
+        // Connect nearby particles
+        for (let j = i + 1; j < Math.min(i + 5, particles.length); j++) {
+          const other = particles[j];
+          const otherX = centerX + Math.cos(other.angle) * other.radius;
+          const otherY = centerY + Math.sin(other.angle) * other.radius;
+          
+          const distance = Math.hypot(x - otherX, y - otherY);
+          if (distance < 50) {
+            ctx.strokeStyle = `rgba(96, 165, 250, ${0.1 * (1 - distance / 50)})`;
+            ctx.lineWidth = 1;
+            ctx.beginPath();
+            ctx.moveTo(x, y);
+            ctx.lineTo(otherX, otherY);
+            ctx.stroke();
+          }
+        }
+      });
+
+      // Draw central glow
+      const centralGlow = ctx.createRadialGradient(centerX, centerY, 0, centerX, centerY, baseRadius);
+      centralGlow.addColorStop(0, "rgba(96, 165, 250, 0.1)");
+      centralGlow.addColorStop(0.5, "rgba(96, 165, 250, 0.05)");
+      centralGlow.addColorStop(1, "rgba(96, 165, 250, 0)");
+      ctx.fillStyle = centralGlow;
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+      animationFrame = requestAnimationFrame(animate);
     };
 
-    window.addEventListener("mousemove", handleMouseMove);
-    return () => window.removeEventListener("mousemove", handleMouseMove);
+    animate();
+
+    const handleResize = () => {
+      canvas.width = window.innerWidth;
+      canvas.height = 600;
+    };
+
+    window.addEventListener("resize", handleResize);
+
+    return () => {
+      cancelAnimationFrame(animationFrame);
+      window.removeEventListener("resize", handleResize);
+    };
   }, []);
 
-  const nodes = [
-    { id: 1, label: "AI Core", x: 50, y: 30, size: 120, delay: 0 },
-    { id: 2, label: "Data Lake", x: 20, y: 50, size: 100, delay: 0.1 },
-    { id: 3, label: "Analytics", x: 80, y: 50, size: 100, delay: 0.2 },
-    { id: 4, label: "Evidence", x: 35, y: 70, size: 90, delay: 0.3 },
-    { id: 5, label: "Trust", x: 65, y: 70, size: 90, delay: 0.4 },
-    { id: 6, label: "Insights", x: 50, y: 85, size: 80, delay: 0.5 },
-  ];
-
-  const connections = [
-    { from: 0, to: 1 },
-    { from: 0, to: 2 },
-    { from: 1, to: 3 },
-    { from: 2, to: 4 },
-    { from: 3, to: 5 },
-    { from: 4, to: 5 },
-  ];
-
   return (
-    <div className="relative w-full h-[600px] overflow-hidden bg-gradient-to-b from-black via-zinc-950 to-black">
-      {/* Animated background grid */}
-      <div className="absolute inset-0" style={{ perspective: "1000px" }}>
-        <motion.div
-          className="absolute inset-0"
-          style={{
-            backgroundImage: `
-              linear-gradient(rgba(251, 191, 36, 0.03) 1px, transparent 1px),
-              linear-gradient(90deg, rgba(251, 191, 36, 0.03) 1px, transparent 1px)
-            `,
-            backgroundSize: "50px 50px",
-            transform: "rotateX(60deg) translateZ(-200px)",
-          }}
-          animate={{
-            backgroundPosition: ["0% 0%", "100% 100%"],
-          }}
-          transition={{
-            duration: 20,
-            repeat: Infinity,
-            ease: "linear",
-          }}
-        />
-      </div>
+    <div className="relative w-full h-[600px] overflow-hidden bg-black">
+      {/* Canvas for particle ring */}
+      <canvas
+        ref={canvasRef}
+        className="absolute inset-0 w-full h-full"
+      />
 
-      {/* Floating particles */}
-      {[...Array(20)].map((_, i) => (
+      {/* Gradient background */}
+      <div className="absolute inset-0 bg-gradient-to-b from-blue-950/30 via-black to-black pointer-events-none" />
+
+      {/* Additional floating particles */}
+      {[...Array(30)].map((_, i) => (
         <motion.div
           key={i}
-          className="absolute w-1 h-1 bg-amber-400 rounded-full"
+          className="absolute w-1 h-1 bg-blue-400 rounded-full"
           style={{
             left: `${Math.random() * 100}%`,
             top: `${Math.random() * 100}%`,
           }}
           animate={{
-            y: [0, -30, 0],
-            opacity: [0.2, 0.8, 0.2],
-            scale: [1, 1.5, 1],
+            y: [0, -50, 0],
+            opacity: [0, 1, 0],
+            scale: [0, 1.5, 0],
           }}
           transition={{
-            duration: 3 + Math.random() * 2,
+            duration: 3 + Math.random() * 3,
             repeat: Infinity,
-            delay: Math.random() * 2,
+            delay: Math.random() * 3,
           }}
         />
       ))}
 
-      {/* 3D Network visualization */}
-      <div className="relative w-full h-full" style={{ perspective: "1000px" }}>
-        <motion.div
-          className="absolute inset-0"
-          style={{
-            transformStyle: "preserve-3d",
-            transform: `rotateX(${mousePosition.y * 0.5}deg) rotateY(${mousePosition.x * 0.5}deg)`,
-          }}
-          transition={{ type: "spring", stiffness: 50, damping: 20 }}
-        >
-          {/* Connection lines */}
-          <svg className="absolute inset-0 w-full h-full pointer-events-none">
-            <defs>
-              <linearGradient id="lineGradient" x1="0%" y1="0%" x2="100%" y2="0%">
-                <stop offset="0%" stopColor="#fbbf24" stopOpacity="0.1" />
-                <stop offset="50%" stopColor="#fbbf24" stopOpacity="0.4" />
-                <stop offset="100%" stopColor="#fbbf24" stopOpacity="0.1" />
-              </linearGradient>
-            </defs>
-            {connections.map((conn, i) => (
-              <motion.line
-                key={i}
-                x1={`${nodes[conn.from].x}%`}
-                y1={`${nodes[conn.from].y}%`}
-                x2={`${nodes[conn.to].x}%`}
-                y2={`${nodes[conn.to].y}%`}
-                stroke="url(#lineGradient)"
-                strokeWidth="2"
-                initial={{ pathLength: 0, opacity: 0 }}
-                animate={{ pathLength: 1, opacity: 1 }}
-                transition={{ duration: 1.5, delay: 0.5 + i * 0.1 }}
-              />
-            ))}
-          </svg>
-
-          {/* Nodes */}
-          {nodes.map((node, i) => (
-            <motion.div
-              key={node.id}
-              className="absolute"
-              style={{
-                left: `${node.x}%`,
-                top: `${node.y}%`,
-                transform: "translate(-50%, -50%)",
-                transformStyle: "preserve-3d",
-              }}
-              initial={{ scale: 0, opacity: 0 }}
-              animate={{ scale: 1, opacity: 1 }}
-              transition={{ duration: 0.6, delay: node.delay }}
-            >
-              {/* Glow effect */}
-              <motion.div
-                className="absolute inset-0 rounded-full bg-amber-500/30 blur-xl"
-                style={{
-                  width: `${node.size}px`,
-                  height: `${node.size}px`,
-                  transform: "translate(-50%, -50%)",
-                  left: "50%",
-                  top: "50%",
-                }}
-                animate={{
-                  scale: [1, 1.2, 1],
-                  opacity: [0.3, 0.6, 0.3],
-                }}
-                transition={{
-                  duration: 2,
-                  repeat: Infinity,
-                  delay: i * 0.2,
-                }}
-              />
-
-              {/* Node sphere */}
-              <motion.div
-                className="relative rounded-full bg-gradient-to-br from-amber-400 to-amber-600 border-2 border-amber-300/50 shadow-2xl"
-                style={{
-                  width: `${node.size}px`,
-                  height: `${node.size}px`,
-                  transform: "translateZ(50px)",
-                }}
-                whileHover={{ scale: 1.1, translateZ: 100 }}
-                animate={{
-                  rotateY: [0, 360],
-                }}
-                transition={{
-                  rotateY: { duration: 10, repeat: Infinity, ease: "linear" },
-                }}
-              >
-                {/* Inner shine */}
-                <div className="absolute inset-2 rounded-full bg-gradient-to-br from-white/40 to-transparent" />
-              </motion.div>
-
-              {/* Label */}
-              <motion.div
-                className="absolute left-1/2 -translate-x-1/2 mt-2 text-center whitespace-nowrap"
-                style={{
-                  top: `${node.size}px`,
-                  transform: "translateZ(50px)",
-                }}
-                initial={{ opacity: 0, y: -10 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: node.delay + 0.3 }}
-              >
-                <div className="px-3 py-1 rounded-lg bg-black/80 border border-amber-500/30 backdrop-blur-sm">
-                  <span className="text-sm font-semibold text-amber-100">{node.label}</span>
-                </div>
-              </motion.div>
-            </motion.div>
-          ))}
-        </motion.div>
-      </div>
-
       {/* Hero content overlay */}
-      <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-        <div className="text-center max-w-4xl px-6" style={{ transform: "translateZ(100px)" }}>
+      <div className="absolute inset-0 flex items-center justify-center pointer-events-none z-10">
+        <div className="text-center max-w-4xl px-6">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.3 }}
           >
-            <div className="inline-block mb-4 px-4 py-2 rounded-full bg-amber-500/10 border border-amber-500/30 backdrop-blur-sm">
-              <span className="text-amber-400 text-sm font-semibold">INVESTOR PRESENTATION</span>
+            <div className="inline-block mb-4 px-4 py-2 rounded-full bg-blue-500/10 border border-blue-500/30 backdrop-blur-sm">
+              <span className="text-blue-400 text-sm font-semibold">INVESTOR PRESENTATION</span>
             </div>
           </motion.div>
 
           <motion.h1
-            className="text-6xl md:text-7xl font-bold mb-6 bg-gradient-to-r from-amber-200 via-amber-400 to-amber-200 bg-clip-text text-transparent"
+            className="text-6xl md:text-7xl font-bold mb-6 bg-gradient-to-r from-blue-200 via-blue-400 to-blue-200 bg-clip-text text-transparent"
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.5 }}
             style={{
-              textShadow: "0 0 80px rgba(251, 191, 36, 0.3)",
+              textShadow: "0 0 80px rgba(96, 165, 250, 0.5)",
             }}
           >
             SiriusB iQ
@@ -225,13 +180,13 @@ export default function Hero3DInvestor() {
           >
             Algorithmic Fiduciary Intelligence Platform
             <br />
-            <span className="text-amber-400">Transforming $850B benefits waste into verifiable alpha</span>
+            <span className="text-blue-400">Transforming $850B benefits waste into verifiable alpha</span>
           </motion.p>
         </div>
       </div>
 
       {/* Bottom gradient fade */}
-      <div className="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-t from-black to-transparent pointer-events-none" />
+      <div className="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-t from-black to-transparent pointer-events-none z-20" />
     </div>
   );
 }

@@ -164,7 +164,7 @@ export default function InvestorPage() {
               viewport={{ once: true }}
               className="text-center mb-12"
             >
-              <h2 className="text-4xl font-bold text-amber-100 mb-4">
+              <h2 className="text-4xl font-bold text-blue-100 mb-4">
                 Market Opportunity
               </h2>
               <p className="text-xl text-gray-400">
@@ -179,9 +179,9 @@ export default function InvestorPage() {
             {/* Stats Grid */}
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-12">
               {[
-                { icon: TrendingUp, label: "Market Growth", value: "23% CAGR", color: "from-amber-600 to-amber-500" },
-                { icon: Target, label: "Addressable Market", value: "$120B TAM", color: "from-amber-500 to-amber-400" },
-                { icon: Zap, label: "Time to Value", value: "< 90 Days", color: "from-amber-600 to-amber-500" },
+                { icon: TrendingUp, label: "Market Growth", value: "23% CAGR", color: "from-blue-600 to-blue-500" },
+                { icon: Target, label: "Addressable Market", value: "$120B TAM", color: "from-blue-500 to-blue-400" },
+                { icon: Zap, label: "Time to Value", value: "< 90 Days", color: "from-blue-600 to-blue-500" },
               ].map((stat, i) => (
                 <motion.div
                   key={i}
@@ -191,11 +191,11 @@ export default function InvestorPage() {
                   viewport={{ once: true }}
                   className="relative group"
                 >
-                  <div className="p-6 rounded-2xl bg-gradient-to-br from-zinc-900 to-black border border-amber-500/20 hover:border-amber-500/40 transition-all duration-300">
+                  <div className="p-6 rounded-2xl bg-gradient-to-br from-zinc-900 to-black border border-blue-500/20 hover:border-blue-500/40 transition-all duration-300">
                     <div className={`inline-flex p-3 rounded-xl bg-gradient-to-br ${stat.color} mb-4`}>
                       <stat.icon className="h-6 w-6 text-white" />
                     </div>
-                    <h3 className="text-3xl font-bold text-amber-100 mb-2">{stat.value}</h3>
+                    <h3 className="text-3xl font-bold text-blue-100 mb-2">{stat.value}</h3>
                     <p className="text-gray-400">{stat.label}</p>
                   </div>
                 </motion.div>
@@ -212,7 +212,7 @@ export default function InvestorPage() {
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6 }}
               viewport={{ once: true }}
-              className="text-4xl font-bold text-amber-100 mb-8 text-center"
+              className="text-4xl font-bold text-blue-100 mb-8 text-center"
             >
               Investment Deck
             </motion.h2>
@@ -238,18 +238,18 @@ export default function InvestorPage() {
               {/* Navigation Arrows */}
               <button
                 onClick={prevSlide}
-                className="absolute left-4 top-1/2 -translate-y-1/2 p-3 rounded-full bg-black/50 hover:bg-amber-500/20 border border-amber-500/20 hover:border-amber-500/40 transition-all duration-300 group z-10"
+                className="absolute left-4 top-1/2 -translate-y-1/2 p-3 rounded-full bg-black/50 hover:bg-blue-500/20 border border-blue-500/20 hover:border-blue-500/40 transition-all duration-300 group z-10"
                 aria-label="Previous slide"
               >
-                <ChevronLeft className="h-6 w-6 text-amber-400 group-hover:text-amber-300" />
+                <ChevronLeft className="h-6 w-6 text-blue-400 group-hover:text-blue-300" />
               </button>
 
               <button
                 onClick={nextSlide}
-                className="absolute right-4 top-1/2 -translate-y-1/2 p-3 rounded-full bg-black/50 hover:bg-amber-500/20 border border-amber-500/20 hover:border-amber-500/40 transition-all duration-300 group z-10"
+                className="absolute right-4 top-1/2 -translate-y-1/2 p-3 rounded-full bg-black/50 hover:bg-blue-500/20 border border-blue-500/20 hover:border-blue-500/40 transition-all duration-300 group z-10"
                 aria-label="Next slide"
               >
-                <ChevronRight className="h-6 w-6 text-amber-400 group-hover:text-amber-300" />
+                <ChevronRight className="h-6 w-6 text-blue-400 group-hover:text-blue-300" />
               </button>
             </div>
 
@@ -268,8 +268,8 @@ export default function InvestorPage() {
                   onClick={() => goToSlide(index)}
                   className={`relative aspect-[16/9] rounded-lg overflow-hidden border-2 transition-all duration-300 ${
                     currentSlide === index
-                      ? "border-amber-400 shadow-lg shadow-amber-500/30"
-                      : "border-amber-500/20 hover:border-amber-500/40 opacity-60 hover:opacity-100"
+                      ? "border-blue-400 shadow-lg shadow-blue-500/30"
+                      : "border-blue-500/20 hover:border-blue-500/40 opacity-60 hover:opacity-100"
                   }`}
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
@@ -281,7 +281,7 @@ export default function InvestorPage() {
                     className="w-full h-full object-cover"
                   />
                   {currentSlide === index && (
-                    <div className="absolute inset-0 bg-amber-500/10" />
+                    <div className="absolute inset-0 bg-blue-500/10" />
                   )}
                 </motion.button>
               ))}
@@ -299,7 +299,7 @@ export default function InvestorPage() {
               viewport={{ once: true }}
               className="text-center mb-12"
             >
-              <h2 className="text-4xl font-bold text-amber-100 mb-4">
+              <h2 className="text-4xl font-bold text-blue-100 mb-4">
                 Return on Investment
               </h2>
               <p className="text-xl text-gray-400">
@@ -323,7 +323,7 @@ export default function InvestorPage() {
               viewport={{ once: true }}
               className="text-center mb-12"
             >
-              <h2 className="text-4xl font-bold text-amber-100 mb-4">
+              <h2 className="text-4xl font-bold text-blue-100 mb-4">
                 Execution Roadmap
               </h2>
               <p className="text-xl text-gray-400">
@@ -347,8 +347,8 @@ export default function InvestorPage() {
               viewport={{ once: true }}
               className="text-center"
             >
-              <div className="inline-flex flex-col items-center gap-6 p-12 rounded-2xl bg-gradient-to-br from-amber-950/20 to-transparent border border-amber-500/20">
-                <h3 className="text-3xl font-bold text-amber-100">
+              <div className="inline-flex flex-col items-center gap-6 p-12 rounded-2xl bg-gradient-to-br from-blue-950/20 to-transparent border border-blue-500/20">
+                <h3 className="text-3xl font-bold text-blue-100">
                   Ready to Learn More?
                 </h3>
                 <p className="text-gray-400 max-w-2xl text-lg">
@@ -356,7 +356,7 @@ export default function InvestorPage() {
                 </p>
                 <Link
                   href="/request-demo"
-                  className="inline-flex items-center gap-3 px-10 py-5 rounded-xl bg-gradient-to-r from-amber-600 to-amber-500 text-white text-lg font-semibold hover:from-amber-500 hover:to-amber-400 transition-all duration-300 shadow-lg shadow-amber-500/20 hover:shadow-amber-500/40 hover:scale-105"
+                  className="inline-flex items-center gap-3 px-10 py-5 rounded-xl bg-gradient-to-r from-blue-600 to-blue-500 text-white text-lg font-semibold hover:from-blue-500 hover:to-blue-400 transition-all duration-300 shadow-lg shadow-blue-500/20 hover:shadow-blue-500/40 hover:scale-105"
                 >
                   <Play className="h-6 w-6" />
                   <span>Request Investor Meeting</span>

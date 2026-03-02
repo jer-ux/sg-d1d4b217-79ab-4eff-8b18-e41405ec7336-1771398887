@@ -105,8 +105,8 @@ export default function CapitalMarketsPage() {
       <div className="min-h-screen bg-black text-white">
         <Nav />
 
-        {/* Hero Section with 3D Background */}
-        <div className="pt-20">
+        {/* Hero Section with 3D Background - Reduced top padding */}
+        <div className="pt-16">
           <Suspense fallback={
             <div className="w-full h-[600px] flex items-center justify-center bg-gradient-to-b from-black to-zinc-950">
               <div className="text-center">
@@ -119,8 +119,8 @@ export default function CapitalMarketsPage() {
           </Suspense>
         </div>
 
-        {/* Market Opportunity Section */}
-        <section className="py-20 px-6 bg-gradient-to-b from-black to-zinc-950">
+        {/* Market Opportunity Section - Reduced padding */}
+        <section className="py-12 px-6 bg-gradient-to-b from-black to-zinc-950">
           <div className="max-w-7xl mx-auto">
             <motion.div {...slideInLeft} className="text-center mb-16">
               <h2 className="text-4xl md:text-5xl font-bold text-blue-100 mb-6">
@@ -182,8 +182,8 @@ export default function CapitalMarketsPage() {
           </div>
         </section>
 
-        {/* Value Creation Section */}
-        <section className="py-20 px-6 bg-gradient-to-b from-zinc-950 to-black">
+        {/* Value Creation Section - Reduced padding */}
+        <section className="py-12 px-6 bg-gradient-to-b from-zinc-950 to-black">
           <div className="max-w-7xl mx-auto">
             <motion.div {...slideInRight} className="text-center mb-16">
               <h2 className="text-4xl md:text-5xl font-bold text-blue-100 mb-6">
@@ -258,8 +258,8 @@ export default function CapitalMarketsPage() {
           </div>
         </section>
 
-        {/* Engagement Models Section */}
-        <section className="py-20 px-6 bg-gradient-to-b from-black to-zinc-950">
+        {/* Engagement Models Section - Reduced padding */}
+        <section className="py-12 px-6 bg-gradient-to-b from-black to-zinc-950">
           <div className="max-w-7xl mx-auto">
             <motion.div {...slideInLeft} className="text-center mb-16">
               <h2 className="text-4xl md:text-5xl font-bold text-blue-100 mb-6">
@@ -346,8 +346,8 @@ export default function CapitalMarketsPage() {
           </div>
         </section>
 
-        {/* Why Choose Us Section */}
-        <section className="py-20 px-6 bg-gradient-to-b from-zinc-950 to-black">
+        {/* Why Choose Us Section - Reduced padding */}
+        <section className="py-12 px-6 bg-gradient-to-b from-zinc-950 to-black">
           <div className="max-w-7xl mx-auto">
             <motion.div {...slideInRight} className="text-center mb-16">
               <h2 className="text-4xl md:text-5xl font-bold text-blue-100 mb-6">
@@ -401,8 +401,8 @@ export default function CapitalMarketsPage() {
           </div>
         </section>
 
-        {/* CTA Section */}
-        <section className="py-20 px-6 bg-gradient-to-b from-black to-zinc-950">
+        {/* CTA Section - Reduced padding */}
+        <section className="py-12 px-6 bg-gradient-to-b from-black to-zinc-950">
           <div className="max-w-4xl mx-auto">
             <motion.div {...fadeInUp} className="text-center">
               <div className="p-8 md:p-12 rounded-2xl bg-gradient-to-br from-blue-950/20 to-transparent border border-blue-500/20">

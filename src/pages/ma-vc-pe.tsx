@@ -7,27 +7,11 @@ import { SiteFooter } from "@/components/site/SiteFooter";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { TrendingUp, Target, Shield, FileCheck, Briefcase, Activity, DollarSign, CheckCircle2, ArrowRight, Sparkles, Zap, AlertTriangle, LineChart } from "lucide-react";
+import { TrendingUp, Target, Shield, FileCheck, Briefcase, Activity, CheckCircle2, ArrowRight, Sparkles, Zap, AlertTriangle } from "lucide-react";
 import Link from "next/link";
 import { motion, useScroll, useTransform, useInView } from "framer-motion";
 import { PremiumBackground } from "@/components/premium/PremiumBackground";
 import { Interactive3DCard } from "@/components/premium/Interactive3DCard";
-
-function AnimatedCounter({ value, suffix = "", prefix = "", duration = 2 }: { value: number | string; suffix?: string; prefix?: string; duration?: number }) {
-  const ref = useRef(null);
-  const isInView = useInView(ref, { once: true, margin: "-100px" });
-  
-  return (
-    <motion.span
-      ref={ref}
-      initial={{ opacity: 0, scale: 0.5 }}
-      animate={isInView ? { opacity: 1, scale: 1 } : {}}
-      transition={{ duration: 0.5, ease: "easeOut" }}
-    >
-      {prefix}{value}{suffix}
-    </motion.span>
-  );
-}
 
 function StatsCard({ title, value, description, gradient, icon: Icon, delay = 0 }: { title: string; value: string; description: string; gradient: string; icon: any; delay?: number }) {
   const ref = useRef(null);
@@ -289,6 +273,7 @@ export default function MaVcPePage() {
                   title="Pre-Close Promises"
                   description="Management claims '$15M in cost synergies' with PowerPoint decks and high-level categories. No owners, no timelines, no evidence receipts. Deal model assumes 80% realization based on 'confidence'. Board approves without proof framework."
                   gradient="linear-gradient(135deg, #f97316, #ea580c)"
+                  href="/capital-library"
                   delay={0.1}
                 />
                 <Interactive3DCard
@@ -296,6 +281,7 @@ export default function MaVcPePage() {
                   title="Post-Close Reality"
                   description="18 months later, CFO can't prove any realization. No ledger, no reconciliation, no accountability. Integration team disbanded, knowledge lost. Exit valuation drops $60M due to unproven synergies. LP confidence shattered."
                   gradient="linear-gradient(135deg, #ef4444, #dc2626)"
+                  href="/capital-library"
                   delay={0.2}
                 />
               </div>
@@ -376,6 +362,7 @@ export default function MaVcPePage() {
                   title="Diligence Sprint (Pre-Close)"
                   description="Rapid signal extraction with proof standards: what's real, what's recoverable, what's speculation. Evidence pack build (claims → receipts), value leakage identification with cost breakdown, at-risk assessment with probability weighting. Typical: 2-4 weeks, $50K-$150K."
                   gradient="linear-gradient(135deg, #06b6d4, #0891b2)"
+                  href="/request-demo"
                   delay={0.1}
                 />
                 <Interactive3DCard
@@ -383,6 +370,7 @@ export default function MaVcPePage() {
                   title="Post-Close Value Office (Integration)"
                   description="Convert identified value into realized value, with owners, dates, and evidence-backed accountability. Value ledger setup, owner assignment + approval workflows, weekly realization tracking, quarterly board reporting with evidence packs. Typical: 90-180 days, retained or success-fee."
                   gradient="linear-gradient(135deg, #10b981, #059669)"
+                  href="/request-demo"
                   delay={0.2}
                 />
               </div>

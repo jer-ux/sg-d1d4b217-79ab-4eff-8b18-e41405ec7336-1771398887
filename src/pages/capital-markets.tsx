@@ -13,36 +13,36 @@ const MetricsCloud3D = dynamic(() => import("@/components/investor/MetricsCloud3
 const Timeline3D = dynamic(() => import("@/components/investor/Timeline3D"), { ssr: false });
 const ROIVisualization3D = dynamic(() => import("@/components/investor/ROIVisualization3D"), { ssr: false });
 
-// Animation variants
-const fadeInUp = {
+// Animation variants - typed as any to resolve Framer Motion strict type checking on easing arrays
+const fadeInUp: any = {
   initial: { opacity: 0, y: 60 },
   whileInView: { opacity: 1, y: 0 },
   viewport: { once: true, margin: "-100px" },
   transition: { duration: 0.8, ease: [0.6, -0.05, 0.01, 0.99] }
 };
 
-const scaleIn = {
+const scaleIn: any = {
   initial: { opacity: 0, scale: 0.8 },
   whileInView: { opacity: 1, scale: 1 },
   viewport: { once: true, margin: "-100px" },
   transition: { duration: 0.7, ease: [0.6, -0.05, 0.01, 0.99] }
 };
 
-const slideInLeft = {
+const slideInLeft: any = {
   initial: { opacity: 0, x: -60 },
   whileInView: { opacity: 1, x: 0 },
   viewport: { once: true, margin: "-100px" },
   transition: { duration: 0.8, ease: [0.6, -0.05, 0.01, 0.99] }
 };
 
-const slideInRight = {
+const slideInRight: any = {
   initial: { opacity: 0, x: 60 },
   whileInView: { opacity: 1, x: 0 },
   viewport: { once: true, margin: "-100px" },
   transition: { duration: 0.8, ease: [0.6, -0.05, 0.01, 0.99] }
 };
 
-const staggerContainer = {
+const staggerContainer: any = {
   initial: {},
   whileInView: {},
   viewport: { once: true, margin: "-100px" },
@@ -72,55 +72,58 @@ export default function CapitalMarketsPage() {
         </div>
 
         {/* Market Opportunity Section */}
-        <section className="py-20 px-6 bg-gradient-to-b from-black to-zinc-950">
+        <section className="py-24 px-6 bg-gradient-to-b from-black to-zinc-950">
           <div className="max-w-7xl mx-auto">
-            <motion.div {...slideInLeft} className="text-center mb-12">
-              <h2 className="text-4xl md:text-5xl font-bold text-blue-100 mb-4">
+            <motion.div {...slideInLeft} className="text-center mb-16">
+              <h2 className="text-5xl font-bold text-blue-100 mb-6">
                 The Capital Markets Opportunity
               </h2>
-              <p className="text-lg md:text-xl text-gray-400 max-w-3xl mx-auto">
+              <p className="text-xl text-gray-400 max-w-3xl mx-auto">
                 $4.2T in dry powder seeks repeatable value creation discipline. 
                 Traditional diligence can't keep pace with deal flow complexity.
               </p>
             </motion.div>
 
-            <motion.div {...scaleIn} className="mb-12">
-              <Suspense fallback={<div className="w-full h-[400px] bg-zinc-900/50 rounded-2xl animate-pulse" />}>
+            <motion.div {...scaleIn} className="mb-16">
+              <Suspense fallback={<div className="w-full h-[500px] bg-zinc-900/50 rounded-2xl animate-pulse" />}>
                 <MetricsCloud3D />
               </Suspense>
             </motion.div>
 
-            <motion.div {...staggerContainer} className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <motion.div {...staggerContainer} className="grid grid-cols-1 md:grid-cols-3 gap-8">
               {[
                 {
                   icon: Clock,
                   title: "60% Faster Diligence",
                   description: "Evidence packs reduce time-to-truth by eliminating debate and accelerating deal cycles",
-                  color: "from-cyan-600 to-cyan-500"
+                  color: "from-cyan-600 to-cyan-500",
+                  textColor: "text-cyan-400"
                 },
                 {
                   icon: Target,
                   title: "$24M Avg Leakage Found",
                   description: "Pre-built reconciliation artifacts surface hidden value erosion before you close",
-                  color: "from-violet-600 to-violet-500"
+                  color: "from-violet-600 to-violet-500",
+                  textColor: "text-violet-400"
                 },
                 {
                   icon: CheckCircle2,
                   title: "87% Realization Rate",
                   description: "Owner-driven workflows and approval gates ensure post-close value capture",
-                  color: "from-emerald-600 to-emerald-500"
+                  color: "from-emerald-600 to-emerald-500",
+                  textColor: "text-emerald-400"
                 }
               ].map((item, i) => (
                 <motion.div
                   key={i}
                   {...fadeInUp}
-                  className="p-6 rounded-2xl bg-gradient-to-br from-zinc-900 to-black border border-blue-500/20 hover:border-blue-500/40 transition-all duration-300"
+                  className="p-8 rounded-2xl bg-gradient-to-br from-zinc-900 to-black border border-blue-500/20 hover:border-blue-500/40 transition-all duration-300"
                 >
-                  <div className={`inline-flex p-3 rounded-xl bg-gradient-to-br ${item.color} mb-4`}>
-                    <item.icon className="h-7 w-7 text-white" />
+                  <div className={`inline-flex p-3 rounded-xl bg-gradient-to-br ${item.color} mb-6`}>
+                    <item.icon className="h-8 w-8 text-white" />
                   </div>
-                  <h3 className="text-xl font-bold text-blue-100 mb-3">{item.title}</h3>
-                  <p className="text-gray-400 text-sm leading-relaxed">{item.description}</p>
+                  <h3 className="text-2xl font-bold text-blue-100 mb-4">{item.title}</h3>
+                  <p className="text-gray-400 leading-relaxed">{item.description}</p>
                 </motion.div>
               ))}
             </motion.div>
@@ -128,56 +131,70 @@ export default function CapitalMarketsPage() {
         </section>
 
         {/* ROI Visualization Section */}
-        <section className="py-20 px-6 bg-gradient-to-b from-zinc-950 to-black">
+        <section className="py-24 px-6 bg-gradient-to-b from-zinc-950 to-black">
           <div className="max-w-7xl mx-auto">
-            <motion.div {...slideInRight} className="text-center mb-12">
-              <h2 className="text-4xl md:text-5xl font-bold text-blue-100 mb-4">
+            <motion.div {...slideInRight} className="text-center mb-16">
+              <h2 className="text-5xl font-bold text-blue-100 mb-6">
                 Exponential Value Creation
               </h2>
-              <p className="text-lg md:text-xl text-gray-400 max-w-3xl mx-auto">
+              <p className="text-xl text-gray-400 max-w-3xl mx-auto">
                 SiriusB iQ compounds returns through evidence-backed diligence, 
                 controlled value realization, and portfolio-wide governance discipline.
               </p>
             </motion.div>
 
-            <motion.div {...scaleIn} className="mb-12">
-              <Suspense fallback={<div className="w-full h-[400px] bg-zinc-900/50 rounded-2xl animate-pulse" />}>
+            <motion.div {...scaleIn} className="mb-16">
+              <Suspense fallback={<div className="w-full h-[500px] bg-zinc-900/50 rounded-2xl animate-pulse" />}>
                 <ROIVisualization3D />
               </Suspense>
             </motion.div>
 
-            <motion.div {...staggerContainer} className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <motion.div {...staggerContainer} className="grid grid-cols-1 md:grid-cols-2 gap-8">
+              {/* Without SiriusB iQ */}
               <motion.div
                 {...fadeInUp}
-                className="p-6 rounded-2xl bg-gradient-to-br from-rose-950/20 to-transparent border border-rose-500/30"
+                className="p-8 rounded-2xl bg-gradient-to-br from-rose-950/20 to-transparent border border-rose-500/30"
               >
-                <div className="flex items-center gap-3 mb-4">
-                  <div className="w-12 h-12 rounded-xl bg-rose-500/20 flex items-center justify-center text-2xl">
+                <div className="flex items-center gap-4 mb-6">
+                  <div className="w-14 h-14 rounded-xl bg-rose-500/20 flex items-center justify-center text-3xl">
                     ❌
                   </div>
-                  <h3 className="text-xl font-semibold text-rose-300">Traditional Approach</h3>
+                  <h3 className="text-2xl font-semibold text-rose-300">Traditional Approach</h3>
                 </div>
-                <div className="space-y-3 text-gray-400 text-sm">
-                  <p>PE firm acquires SaaS company with "$8M in cost synergies" promised during diligence.</p>
-                  <p>18 months later, CFO can't prove any realization. Value evaporated during integration chaos.</p>
-                  <p>Exit valuation drops $40M. LP confidence shattered. Fund returns impacted.</p>
+                <div className="space-y-4 text-gray-400">
+                  <p className="leading-relaxed">
+                    PE firm acquires SaaS company with "$8M in cost synergies" promised during diligence.
+                  </p>
+                  <p className="leading-relaxed">
+                    18 months later, CFO can't prove any realization. Value evaporated during integration chaos.
+                  </p>
+                  <p className="leading-relaxed">
+                    Exit valuation drops $40M. LP confidence shattered. Fund returns impacted.
+                  </p>
                 </div>
               </motion.div>
 
+              {/* With SiriusB iQ */}
               <motion.div
                 {...fadeInUp}
-                className="p-6 rounded-2xl bg-gradient-to-br from-emerald-950/20 to-transparent border border-emerald-500/30"
+                className="p-8 rounded-2xl bg-gradient-to-br from-emerald-950/20 to-transparent border border-emerald-500/30"
               >
-                <div className="flex items-center gap-3 mb-4">
-                  <div className="w-12 h-12 rounded-xl bg-emerald-500/20 flex items-center justify-center text-2xl">
+                <div className="flex items-center gap-4 mb-6">
+                  <div className="w-14 h-14 rounded-xl bg-emerald-500/20 flex items-center justify-center text-3xl">
                     ✓
                   </div>
-                  <h3 className="text-xl font-semibold text-emerald-300">With SiriusB iQ</h3>
+                  <h3 className="text-2xl font-semibold text-emerald-300">With SiriusB iQ</h3>
                 </div>
-                <div className="space-y-3 text-gray-400 text-sm">
-                  <p>Same scenario, but SiriusB iQ Value Office deployed on Day 1 post-close.</p>
-                  <p>Every synergy has an owner, evidence receipt, and weekly reconciliation workflow.</p>
-                  <p>$5.2M realized and proven. $1.8M at-risk flagged early with recovery plans. Exit closes at premium with buyer adopting the framework.</p>
+                <div className="space-y-4 text-gray-400">
+                  <p className="leading-relaxed">
+                    Same scenario, but SiriusB iQ Value Office deployed on Day 1 post-close.
+                  </p>
+                  <p className="leading-relaxed">
+                    Every synergy has an owner, evidence receipt, and weekly reconciliation workflow.
+                  </p>
+                  <p className="leading-relaxed">
+                    $5.2M realized and proven. $1.8M at-risk flagged early with recovery plans. Exit closes at premium with buyer adopting the framework.
+                  </p>
                 </div>
               </motion.div>
             </motion.div>
@@ -185,24 +202,24 @@ export default function CapitalMarketsPage() {
         </section>
 
         {/* Execution Roadmap Section */}
-        <section className="py-20 px-6 bg-gradient-to-b from-black to-zinc-950">
+        <section className="py-24 px-6 bg-gradient-to-b from-black to-zinc-950">
           <div className="max-w-7xl mx-auto">
-            <motion.div {...slideInLeft} className="text-center mb-12">
-              <h2 className="text-4xl md:text-5xl font-bold text-blue-100 mb-4">
+            <motion.div {...slideInLeft} className="text-center mb-16">
+              <h2 className="text-5xl font-bold text-blue-100 mb-6">
                 Engagement Models
               </h2>
-              <p className="text-lg md:text-xl text-gray-400 max-w-3xl mx-auto">
+              <p className="text-xl text-gray-400 max-w-3xl mx-auto">
                 Flexible frameworks that scale from diligence sprints to portfolio-wide governance
               </p>
             </motion.div>
 
-            <motion.div {...scaleIn} className="mb-12">
-              <Suspense fallback={<div className="w-full h-[400px] bg-zinc-900/50 rounded-2xl animate-pulse" />}>
+            <motion.div {...scaleIn} className="mb-16">
+              <Suspense fallback={<div className="w-full h-[500px] bg-zinc-900/50 rounded-2xl animate-pulse" />}>
                 <Timeline3D />
               </Suspense>
             </motion.div>
 
-            <motion.div {...staggerContainer} className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <motion.div {...staggerContainer} className="grid grid-cols-1 md:grid-cols-3 gap-8">
               {[
                 {
                   phase: "Diligence Sprint",
@@ -244,17 +261,17 @@ export default function CapitalMarketsPage() {
                 <motion.div
                   key={i}
                   {...fadeInUp}
-                  className="p-6 rounded-2xl bg-gradient-to-br from-zinc-900 to-black border border-blue-500/20 hover:border-blue-500/40 transition-all duration-300"
+                  className="p-8 rounded-2xl bg-gradient-to-br from-zinc-900 to-black border border-blue-500/20 hover:border-blue-500/40 transition-all duration-300 group"
                 >
-                  <div className={`inline-block px-3 py-1 rounded-lg bg-${engagement.color}-500/10 text-${engagement.color}-400 text-xs font-semibold mb-3 border border-${engagement.color}-500/20`}>
+                  <div className={`inline-block px-4 py-2 rounded-xl bg-${engagement.color}-500/20 text-${engagement.color}-400 text-sm font-semibold mb-4`}>
                     {engagement.duration}
                   </div>
-                  <h3 className="text-xl font-bold text-blue-100 mb-2">{engagement.phase}</h3>
-                  <p className="text-gray-400 mb-4 text-sm leading-relaxed">{engagement.description}</p>
+                  <h3 className="text-2xl font-bold text-blue-100 mb-3">{engagement.phase}</h3>
+                  <p className="text-gray-400 mb-6 leading-relaxed">{engagement.description}</p>
                   <div className="space-y-2">
                     {engagement.deliverables.map((item, j) => (
-                      <div key={j} className="flex items-center gap-2 text-xs text-gray-500">
-                        <CheckCircle2 className={`h-3 w-3 text-${engagement.color}-400 flex-shrink-0`} />
+                      <div key={j} className="flex items-center gap-2 text-sm text-gray-500">
+                        <CheckCircle2 className={`h-4 w-4 text-${engagement.color}-400`} />
                         <span>{item}</span>
                       </div>
                     ))}
@@ -266,10 +283,10 @@ export default function CapitalMarketsPage() {
         </section>
 
         {/* Value Proposition Cards */}
-        <section className="py-20 px-6 bg-gradient-to-b from-zinc-950 to-black">
+        <section className="py-24 px-6 bg-gradient-to-b from-zinc-950 to-black">
           <div className="max-w-7xl mx-auto">
-            <motion.div {...slideInRight} className="text-center mb-12">
-              <h2 className="text-4xl md:text-5xl font-bold text-blue-100 mb-4">
+            <motion.div {...slideInRight} className="text-center mb-16">
+              <h2 className="text-5xl font-bold text-blue-100 mb-6">
                 Why Capital Markets Choose SiriusB iQ
               </h2>
               <p className="text-lg md:text-xl text-gray-400 max-w-3xl mx-auto">
@@ -321,7 +338,7 @@ export default function CapitalMarketsPage() {
         </section>
 
         {/* CTA Section */}
-        <section className="py-20 px-6 bg-gradient-to-b from-black to-zinc-950">
+        <section className="py-24 px-6 bg-gradient-to-b from-black to-zinc-950">
           <div className="max-w-4xl mx-auto">
             <motion.div {...fadeInUp} className="text-center">
               <div className="p-8 md:p-12 rounded-2xl bg-gradient-to-br from-blue-950/20 to-transparent border border-blue-500/20">

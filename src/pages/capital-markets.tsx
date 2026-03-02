@@ -7,42 +7,40 @@ import Footer from "@/components/Footer";
 import Link from "next/link";
 import dynamic from "next/dynamic";
 
-// Dynamic imports for 3D components with no SSR
 const Hero3DInvestor = dynamic(() => import("@/components/investor/Hero3DInvestor"), { ssr: false });
 const MetricsCloud3D = dynamic(() => import("@/components/investor/MetricsCloud3D"), { ssr: false });
 const Timeline3D = dynamic(() => import("@/components/investor/Timeline3D"), { ssr: false });
 const ROIVisualization3D = dynamic(() => import("@/components/investor/ROIVisualization3D"), { ssr: false });
 
-// Animation variants - typed as any to resolve Framer Motion strict type checking on easing arrays
-const fadeInUp: any = {
+const fadeInUp = {
   initial: { opacity: 0, y: 60 },
   whileInView: { opacity: 1, y: 0 },
   viewport: { once: true, margin: "-100px" },
-  transition: { duration: 0.8, ease: [0.6, -0.05, 0.01, 0.99] }
+  transition: { duration: 0.8, ease: [0.6, -0.05, 0.01, 0.99] as any }
 };
 
-const scaleIn: any = {
+const scaleIn = {
   initial: { opacity: 0, scale: 0.8 },
   whileInView: { opacity: 1, scale: 1 },
   viewport: { once: true, margin: "-100px" },
-  transition: { duration: 0.7, ease: [0.6, -0.05, 0.01, 0.99] }
+  transition: { duration: 0.7, ease: [0.6, -0.05, 0.01, 0.99] as any }
 };
 
-const slideInLeft: any = {
+const slideInLeft = {
   initial: { opacity: 0, x: -60 },
   whileInView: { opacity: 1, x: 0 },
   viewport: { once: true, margin: "-100px" },
-  transition: { duration: 0.8, ease: [0.6, -0.05, 0.01, 0.99] }
+  transition: { duration: 0.8, ease: [0.6, -0.05, 0.01, 0.99] as any }
 };
 
-const slideInRight: any = {
+const slideInRight = {
   initial: { opacity: 0, x: 60 },
   whileInView: { opacity: 1, x: 0 },
   viewport: { once: true, margin: "-100px" },
-  transition: { duration: 0.8, ease: [0.6, -0.05, 0.01, 0.99] }
+  transition: { duration: 0.8, ease: [0.6, -0.05, 0.01, 0.99] as any }
 };
 
-const staggerContainer: any = {
+const staggerContainer = {
   initial: {},
   whileInView: {},
   viewport: { once: true, margin: "-100px" },
@@ -60,32 +58,30 @@ export default function CapitalMarketsPage() {
       <div className="min-h-screen bg-black text-white">
         <Nav />
 
-        {/* 3D Hero Section */}
         <div className="pt-20">
           <Suspense fallback={
             <div className="w-full h-[600px] flex items-center justify-center bg-black">
-              <div className="text-blue-400 animate-pulse">Loading 3D visualization...</div>
+              <div className="text-blue-400 animate-pulse">Loading...</div>
             </div>
           }>
             <Hero3DInvestor />
           </Suspense>
         </div>
 
-        {/* Market Opportunity Section */}
-        <section className="py-24 px-6 bg-gradient-to-b from-black to-zinc-950">
+        <section className="py-20 px-6 bg-gradient-to-b from-black to-zinc-950">
           <div className="max-w-7xl mx-auto">
             <motion.div {...slideInLeft} className="text-center mb-16">
-              <h2 className="text-5xl font-bold text-blue-100 mb-6">
+              <h2 className="text-4xl md:text-5xl font-bold text-blue-100 mb-6">
                 The Capital Markets Opportunity
               </h2>
-              <p className="text-xl text-gray-400 max-w-3xl mx-auto">
+              <p className="text-lg md:text-xl text-gray-400 max-w-3xl mx-auto">
                 $4.2T in dry powder seeks repeatable value creation discipline. 
                 Traditional diligence can't keep pace with deal flow complexity.
               </p>
             </motion.div>
 
             <motion.div {...scaleIn} className="mb-16">
-              <Suspense fallback={<div className="w-full h-[500px] bg-zinc-900/50 rounded-2xl animate-pulse" />}>
+              <Suspense fallback={<div className="w-full h-[400px] bg-zinc-900/50 rounded-2xl animate-pulse" />}>
                 <MetricsCloud3D />
               </Suspense>
             </motion.div>
@@ -96,22 +92,19 @@ export default function CapitalMarketsPage() {
                   icon: Clock,
                   title: "60% Faster Diligence",
                   description: "Evidence packs reduce time-to-truth by eliminating debate and accelerating deal cycles",
-                  color: "from-cyan-600 to-cyan-500",
-                  textColor: "text-cyan-400"
+                  color: "from-cyan-600 to-cyan-500"
                 },
                 {
                   icon: Target,
                   title: "$24M Avg Leakage Found",
                   description: "Pre-built reconciliation artifacts surface hidden value erosion before you close",
-                  color: "from-violet-600 to-violet-500",
-                  textColor: "text-violet-400"
+                  color: "from-violet-600 to-violet-500"
                 },
                 {
                   icon: CheckCircle2,
                   title: "87% Realization Rate",
                   description: "Owner-driven workflows and approval gates ensure post-close value capture",
-                  color: "from-emerald-600 to-emerald-500",
-                  textColor: "text-emerald-400"
+                  color: "from-emerald-600 to-emerald-500"
                 }
               ].map((item, i) => (
                 <motion.div
@@ -130,27 +123,25 @@ export default function CapitalMarketsPage() {
           </div>
         </section>
 
-        {/* ROI Visualization Section */}
-        <section className="py-24 px-6 bg-gradient-to-b from-zinc-950 to-black">
+        <section className="py-20 px-6 bg-gradient-to-b from-zinc-950 to-black">
           <div className="max-w-7xl mx-auto">
             <motion.div {...slideInRight} className="text-center mb-16">
-              <h2 className="text-5xl font-bold text-blue-100 mb-6">
+              <h2 className="text-4xl md:text-5xl font-bold text-blue-100 mb-6">
                 Exponential Value Creation
               </h2>
-              <p className="text-xl text-gray-400 max-w-3xl mx-auto">
+              <p className="text-lg md:text-xl text-gray-400 max-w-3xl mx-auto">
                 SiriusB iQ compounds returns through evidence-backed diligence, 
                 controlled value realization, and portfolio-wide governance discipline.
               </p>
             </motion.div>
 
             <motion.div {...scaleIn} className="mb-16">
-              <Suspense fallback={<div className="w-full h-[500px] bg-zinc-900/50 rounded-2xl animate-pulse" />}>
+              <Suspense fallback={<div className="w-full h-[400px] bg-zinc-900/50 rounded-2xl animate-pulse" />}>
                 <ROIVisualization3D />
               </Suspense>
             </motion.div>
 
             <motion.div {...staggerContainer} className="grid grid-cols-1 md:grid-cols-2 gap-8">
-              {/* Without SiriusB iQ */}
               <motion.div
                 {...fadeInUp}
                 className="p-8 rounded-2xl bg-gradient-to-br from-rose-950/20 to-transparent border border-rose-500/30"
@@ -174,7 +165,6 @@ export default function CapitalMarketsPage() {
                 </div>
               </motion.div>
 
-              {/* With SiriusB iQ */}
               <motion.div
                 {...fadeInUp}
                 className="p-8 rounded-2xl bg-gradient-to-br from-emerald-950/20 to-transparent border border-emerald-500/30"
@@ -201,20 +191,19 @@ export default function CapitalMarketsPage() {
           </div>
         </section>
 
-        {/* Execution Roadmap Section */}
-        <section className="py-24 px-6 bg-gradient-to-b from-black to-zinc-950">
+        <section className="py-20 px-6 bg-gradient-to-b from-black to-zinc-950">
           <div className="max-w-7xl mx-auto">
             <motion.div {...slideInLeft} className="text-center mb-16">
-              <h2 className="text-5xl font-bold text-blue-100 mb-6">
+              <h2 className="text-4xl md:text-5xl font-bold text-blue-100 mb-6">
                 Engagement Models
               </h2>
-              <p className="text-xl text-gray-400 max-w-3xl mx-auto">
+              <p className="text-lg md:text-xl text-gray-400 max-w-3xl mx-auto">
                 Flexible frameworks that scale from diligence sprints to portfolio-wide governance
               </p>
             </motion.div>
 
             <motion.div {...scaleIn} className="mb-16">
-              <Suspense fallback={<div className="w-full h-[500px] bg-zinc-900/50 rounded-2xl animate-pulse" />}>
+              <Suspense fallback={<div className="w-full h-[400px] bg-zinc-900/50 rounded-2xl animate-pulse" />}>
                 <Timeline3D />
               </Suspense>
             </motion.div>
@@ -261,7 +250,7 @@ export default function CapitalMarketsPage() {
                 <motion.div
                   key={i}
                   {...fadeInUp}
-                  className="p-8 rounded-2xl bg-gradient-to-br from-zinc-900 to-black border border-blue-500/20 hover:border-blue-500/40 transition-all duration-300 group"
+                  className="p-8 rounded-2xl bg-gradient-to-br from-zinc-900 to-black border border-blue-500/20 hover:border-blue-500/40 transition-all duration-300"
                 >
                   <div className={`inline-block px-4 py-2 rounded-xl bg-${engagement.color}-500/20 text-${engagement.color}-400 text-sm font-semibold mb-4`}>
                     {engagement.duration}
@@ -282,11 +271,10 @@ export default function CapitalMarketsPage() {
           </div>
         </section>
 
-        {/* Value Proposition Cards */}
-        <section className="py-24 px-6 bg-gradient-to-b from-zinc-950 to-black">
+        <section className="py-20 px-6 bg-gradient-to-b from-zinc-950 to-black">
           <div className="max-w-7xl mx-auto">
             <motion.div {...slideInRight} className="text-center mb-16">
-              <h2 className="text-5xl font-bold text-blue-100 mb-6">
+              <h2 className="text-4xl md:text-5xl font-bold text-blue-100 mb-6">
                 Why Capital Markets Choose SiriusB iQ
               </h2>
               <p className="text-lg md:text-xl text-gray-400 max-w-3xl mx-auto">
@@ -337,8 +325,7 @@ export default function CapitalMarketsPage() {
           </div>
         </section>
 
-        {/* CTA Section */}
-        <section className="py-24 px-6 bg-gradient-to-b from-black to-zinc-950">
+        <section className="py-20 px-6 bg-gradient-to-b from-black to-zinc-950">
           <div className="max-w-4xl mx-auto">
             <motion.div {...fadeInUp} className="text-center">
               <div className="p-8 md:p-12 rounded-2xl bg-gradient-to-br from-blue-950/20 to-transparent border border-blue-500/20">
@@ -355,7 +342,7 @@ export default function CapitalMarketsPage() {
                     className="inline-flex items-center justify-center gap-3 px-8 py-4 rounded-xl bg-gradient-to-r from-blue-600 to-blue-500 text-white text-lg font-semibold hover:from-blue-500 hover:to-blue-400 transition-all duration-300 shadow-lg shadow-blue-500/20 hover:shadow-blue-500/40 hover:scale-105"
                   >
                     <Play className="h-5 w-5" />
-                    <span>Request Investor Access</span>
+                    <span>Request Investor Meeting</span>
                   </Link>
                   <Link
                     href="/case-studies"

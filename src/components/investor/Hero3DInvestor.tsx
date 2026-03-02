@@ -1,149 +1,237 @@
-import { useRef, useState } from "react";
-import { Canvas, useFrame } from "@react-three/fiber";
-import { OrbitControls, Sphere, MeshDistortMaterial, Float, Text3D, Center } from "@react-three/drei";
-import * as THREE from "three";
+import { motion } from "framer-motion";
+import { useEffect, useState } from "react";
 
-function NetworkNodes() {
-  const groupRef = useRef<THREE.Group>(null);
-  const [hovered, setHovered] = useState<number | null>(null);
+export default function Hero3DInvestor() {
+  const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
 
-  useFrame((state) => {
-    if (groupRef.current) {
-      groupRef.current.rotation.y = state.clock.elapsedTime * 0.1;
-    }
-  });
+  useEffect(() => {
+    const handleMouseMove = (e: MouseEvent) => {
+      setMousePosition({
+        x: (e.clientX / window.innerWidth - 0.5) * 20,
+        y: (e.clientY / window.innerHeight - 0.5) * 20,
+      });
+    };
+
+    window.addEventListener("mousemove", handleMouseMove);
+    return () => window.removeEventListener("mousemove", handleMouseMove);
+  }, []);
 
   const nodes = [
-    { pos: [0, 0, 0], scale: 1.5, label: "Core" },
-    { pos: [3, 1, 2], scale: 0.8, label: "AI" },
-    { pos: [-3, -1, 2], scale: 0.8, label: "Data" },
-    { pos: [2, -2, -1], scale: 0.8, label: "Trust" },
-    { pos: [-2, 2, -1], scale: 0.8, label: "Evidence" },
-    { pos: [1, 3, 1], scale: 0.6, label: "Analytics" },
-    { pos: [-1, -3, 1], scale: 0.6, label: "Insights" },
+    { id: 1, label: "AI Core", x: 50, y: 30, size: 120, delay: 0 },
+    { id: 2, label: "Data Lake", x: 20, y: 50, size: 100, delay: 0.1 },
+    { id: 3, label: "Analytics", x: 80, y: 50, size: 100, delay: 0.2 },
+    { id: 4, label: "Evidence", x: 35, y: 70, size: 90, delay: 0.3 },
+    { id: 5, label: "Trust", x: 65, y: 70, size: 90, delay: 0.4 },
+    { id: 6, label: "Insights", x: 50, y: 85, size: 80, delay: 0.5 },
+  ];
+
+  const connections = [
+    { from: 0, to: 1 },
+    { from: 0, to: 2 },
+    { from: 1, to: 3 },
+    { from: 2, to: 4 },
+    { from: 3, to: 5 },
+    { from: 4, to: 5 },
   ];
 
   return (
-    <group ref={groupRef}>
-      {nodes.map((node, i) => (
-        <Float key={i} speed={1.5} rotationIntensity={0.5} floatIntensity={0.5}>
-          <mesh
-            position={node.pos as [number, number, number]}
-            scale={hovered === i ? node.scale * 1.2 : node.scale}
-            onPointerOver={() => setHovered(i)}
-            onPointerOut={() => setHovered(null)}
-          >
-            <sphereGeometry args={[1, 32, 32]} />
-            <meshStandardMaterial
-              color={hovered === i ? "#fbbf24" : "#f59e0b"}
-              emissive={hovered === i ? "#fbbf24" : "#f59e0b"}
-              emissiveIntensity={hovered === i ? 0.8 : 0.3}
-              metalness={0.8}
-              roughness={0.2}
-            />
-          </mesh>
-        </Float>
+    <div className="relative w-full h-[600px] overflow-hidden bg-gradient-to-b from-black via-zinc-950 to-black">
+      {/* Animated background grid */}
+      <div className="absolute inset-0" style={{ perspective: "1000px" }}>
+        <motion.div
+          className="absolute inset-0"
+          style={{
+            backgroundImage: `
+              linear-gradient(rgba(251, 191, 36, 0.03) 1px, transparent 1px),
+              linear-gradient(90deg, rgba(251, 191, 36, 0.03) 1px, transparent 1px)
+            `,
+            backgroundSize: "50px 50px",
+            transform: "rotateX(60deg) translateZ(-200px)",
+          }}
+          animate={{
+            backgroundPosition: ["0% 0%", "100% 100%"],
+          }}
+          transition={{
+            duration: 20,
+            repeat: Infinity,
+            ease: "linear",
+          }}
+        />
+      </div>
+
+      {/* Floating particles */}
+      {[...Array(20)].map((_, i) => (
+        <motion.div
+          key={i}
+          className="absolute w-1 h-1 bg-amber-400 rounded-full"
+          style={{
+            left: `${Math.random() * 100}%`,
+            top: `${Math.random() * 100}%`,
+          }}
+          animate={{
+            y: [0, -30, 0],
+            opacity: [0.2, 0.8, 0.2],
+            scale: [1, 1.5, 1],
+          }}
+          transition={{
+            duration: 3 + Math.random() * 2,
+            repeat: Infinity,
+            delay: Math.random() * 2,
+          }}
+        />
       ))}
 
-      {/* Connection Lines */}
-      {nodes.map((_, i) =>
-        nodes.slice(i + 1).map((_, j) => {
-          const start = new THREE.Vector3(...(nodes[i].pos as [number, number, number]));
-          const end = new THREE.Vector3(...(nodes[i + j + 1].pos as [number, number, number]));
-          const distance = start.distanceTo(end);
-          
-          return (
-            <mesh
-              key={`${i}-${j}`}
-              position={[
-                (start.x + end.x) / 2,
-                (start.y + end.y) / 2,
-                (start.z + end.z) / 2,
-              ]}
-              rotation={[
-                0,
-                Math.atan2(end.z - start.z, end.x - start.x),
-                Math.atan2(end.y - start.y, Math.sqrt((end.x - start.x) ** 2 + (end.z - start.z) ** 2)),
-              ]}
-            >
-              <cylinderGeometry args={[0.02, 0.02, distance, 8]} />
-              <meshStandardMaterial
-                color="#f59e0b"
-                emissive="#f59e0b"
-                emissiveIntensity={0.3}
-                transparent
-                opacity={0.4}
+      {/* 3D Network visualization */}
+      <div className="relative w-full h-full" style={{ perspective: "1000px" }}>
+        <motion.div
+          className="absolute inset-0"
+          style={{
+            transformStyle: "preserve-3d",
+            transform: `rotateX(${mousePosition.y * 0.5}deg) rotateY(${mousePosition.x * 0.5}deg)`,
+          }}
+          transition={{ type: "spring", stiffness: 50, damping: 20 }}
+        >
+          {/* Connection lines */}
+          <svg className="absolute inset-0 w-full h-full pointer-events-none">
+            <defs>
+              <linearGradient id="lineGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+                <stop offset="0%" stopColor="#fbbf24" stopOpacity="0.1" />
+                <stop offset="50%" stopColor="#fbbf24" stopOpacity="0.4" />
+                <stop offset="100%" stopColor="#fbbf24" stopOpacity="0.1" />
+              </linearGradient>
+            </defs>
+            {connections.map((conn, i) => (
+              <motion.line
+                key={i}
+                x1={`${nodes[conn.from].x}%`}
+                y1={`${nodes[conn.from].y}%`}
+                x2={`${nodes[conn.to].x}%`}
+                y2={`${nodes[conn.to].y}%`}
+                stroke="url(#lineGradient)"
+                strokeWidth="2"
+                initial={{ pathLength: 0, opacity: 0 }}
+                animate={{ pathLength: 1, opacity: 1 }}
+                transition={{ duration: 1.5, delay: 0.5 + i * 0.1 }}
               />
-            </mesh>
-          );
-        })
-      )}
-    </group>
-  );
-}
+            ))}
+          </svg>
 
-function AnimatedText() {
-  const textRef = useRef<THREE.Mesh>(null);
+          {/* Nodes */}
+          {nodes.map((node, i) => (
+            <motion.div
+              key={node.id}
+              className="absolute"
+              style={{
+                left: `${node.x}%`,
+                top: `${node.y}%`,
+                transform: "translate(-50%, -50%)",
+                transformStyle: "preserve-3d",
+              }}
+              initial={{ scale: 0, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              transition={{ duration: 0.6, delay: node.delay }}
+            >
+              {/* Glow effect */}
+              <motion.div
+                className="absolute inset-0 rounded-full bg-amber-500/30 blur-xl"
+                style={{
+                  width: `${node.size}px`,
+                  height: `${node.size}px`,
+                  transform: "translate(-50%, -50%)",
+                  left: "50%",
+                  top: "50%",
+                }}
+                animate={{
+                  scale: [1, 1.2, 1],
+                  opacity: [0.3, 0.6, 0.3],
+                }}
+                transition={{
+                  duration: 2,
+                  repeat: Infinity,
+                  delay: i * 0.2,
+                }}
+              />
 
-  useFrame((state) => {
-    if (textRef.current) {
-      textRef.current.position.y = Math.sin(state.clock.elapsedTime * 0.5) * 0.2;
-    }
-  });
+              {/* Node sphere */}
+              <motion.div
+                className="relative rounded-full bg-gradient-to-br from-amber-400 to-amber-600 border-2 border-amber-300/50 shadow-2xl"
+                style={{
+                  width: `${node.size}px`,
+                  height: `${node.size}px`,
+                  transform: "translateZ(50px)",
+                }}
+                whileHover={{ scale: 1.1, translateZ: 100 }}
+                animate={{
+                  rotateY: [0, 360],
+                }}
+                transition={{
+                  rotateY: { duration: 10, repeat: Infinity, ease: "linear" },
+                }}
+              >
+                {/* Inner shine */}
+                <div className="absolute inset-2 rounded-full bg-gradient-to-br from-white/40 to-transparent" />
+              </motion.div>
 
-  return (
-    <Center position={[0, -4, 0]}>
-      <Text3D
-        ref={textRef}
-        font="/fonts/helvetiker_regular.typeface.json"
-        size={0.5}
-        height={0.2}
-        curveSegments={12}
-      >
-        SiriusB iQ
-        <meshStandardMaterial
-          color="#fbbf24"
-          emissive="#f59e0b"
-          emissiveIntensity={0.5}
-          metalness={0.8}
-          roughness={0.2}
-        />
-      </Text3D>
-    </Center>
-  );
-}
+              {/* Label */}
+              <motion.div
+                className="absolute left-1/2 -translate-x-1/2 mt-2 text-center whitespace-nowrap"
+                style={{
+                  top: `${node.size}px`,
+                  transform: "translateZ(50px)",
+                }}
+                initial={{ opacity: 0, y: -10 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: node.delay + 0.3 }}
+              >
+                <div className="px-3 py-1 rounded-lg bg-black/80 border border-amber-500/30 backdrop-blur-sm">
+                  <span className="text-sm font-semibold text-amber-100">{node.label}</span>
+                </div>
+              </motion.div>
+            </motion.div>
+          ))}
+        </motion.div>
+      </div>
 
-export default function Hero3DInvestor() {
-  return (
-    <div className="w-full h-[600px] relative">
-      <Canvas camera={{ position: [0, 0, 10], fov: 50 }}>
-        <ambientLight intensity={0.3} />
-        <pointLight position={[10, 10, 10]} intensity={1} />
-        <pointLight position={[-10, -10, -10]} intensity={0.5} color="#f59e0b" />
-        
-        <NetworkNodes />
-        
-        <OrbitControls
-          enableZoom={false}
-          enablePan={false}
-          autoRotate
-          autoRotateSpeed={0.5}
-          maxPolarAngle={Math.PI / 2}
-          minPolarAngle={Math.PI / 2}
-        />
-      </Canvas>
+      {/* Hero content overlay */}
+      <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+        <div className="text-center max-w-4xl px-6" style={{ transform: "translateZ(100px)" }}>
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, delay: 0.3 }}
+          >
+            <div className="inline-block mb-4 px-4 py-2 rounded-full bg-amber-500/10 border border-amber-500/30 backdrop-blur-sm">
+              <span className="text-amber-400 text-sm font-semibold">INVESTOR PRESENTATION</span>
+            </div>
+          </motion.div>
 
-      {/* Overlay Text */}
-      <div className="absolute inset-0 flex flex-col items-center justify-center pointer-events-none">
-        <div className="text-center space-y-4 px-6">
-          <h1 className="text-5xl md:text-7xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-amber-200 via-amber-400 to-amber-600">
-            Algorithmic Fiduciary
-          </h1>
-          <p className="text-xl md:text-2xl text-gray-300 max-w-3xl">
-            Transforming $850B in enterprise benefits waste into verifiable alpha
-          </p>
+          <motion.h1
+            className="text-6xl md:text-7xl font-bold mb-6 bg-gradient-to-r from-amber-200 via-amber-400 to-amber-200 bg-clip-text text-transparent"
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, delay: 0.5 }}
+            style={{
+              textShadow: "0 0 80px rgba(251, 191, 36, 0.3)",
+            }}
+          >
+            SiriusB iQ
+          </motion.h1>
+
+          <motion.p
+            className="text-xl md:text-2xl text-gray-300 leading-relaxed"
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, delay: 0.7 }}
+          >
+            Algorithmic Fiduciary Intelligence Platform
+            <br />
+            <span className="text-amber-400">Transforming $850B benefits waste into verifiable alpha</span>
+          </motion.p>
         </div>
       </div>
+
+      {/* Bottom gradient fade */}
+      <div className="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-t from-black to-transparent pointer-events-none" />
     </div>
   );
 }

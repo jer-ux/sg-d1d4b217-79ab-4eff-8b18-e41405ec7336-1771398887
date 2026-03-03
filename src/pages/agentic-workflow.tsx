@@ -1,7 +1,6 @@
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import { motion, useScroll, useTransform, AnimatePresence } from "framer-motion";
-import dynamic from "next/dynamic";
 import Footer from "@/components/Footer";
 import { SEO } from "@/components/SEO";
 import { InteractiveStageCard } from "@/components/agentic/InteractiveStageCard";
@@ -38,17 +37,6 @@ import {
   PieChart,
   LineChart,
 } from "lucide-react";
-
-// Dynamically import 3D components (client-side only)
-const Hero3DScene = dynamic(
-  () => import("@/components/agentic/Hero3D").then((mod) => mod.Hero3DScene),
-  { ssr: false }
-);
-
-const WorkflowPipeline3D = dynamic(
-  () => import("@/components/agentic/WorkflowPipeline3D").then((mod) => mod.WorkflowPipeline3D),
-  { ssr: false }
-);
 
 const workflowStages = [
   {
@@ -612,15 +600,8 @@ export default function AgenticWorkflowPage() {
           <div className="absolute inset-0 bg-[linear-gradient(rgba(251,191,36,0.03)_1px,transparent_1px),linear-gradient(90deg,rgba(251,191,36,0.03)_1px,transparent_1px)] bg-[size:100px_100px] [mask-image:radial-gradient(ellipse_80%_50%_at_50%_50%,black,transparent)]" />
         </div>
 
-        {/* Hero Section with 3D Background */}
+        {/* Hero Section */}
         <section className="relative min-h-[85vh] flex items-center justify-center pt-20 pb-12 px-6 overflow-hidden">
-          {/* 3D Animated Background */}
-          {mounted && (
-            <motion.div style={{ opacity, scale }} className="absolute inset-0">
-              <Hero3DScene />
-            </motion.div>
-          )}
-
           {/* Gradient Overlays */}
           <div className="absolute inset-0 bg-gradient-to-b from-black/50 via-transparent to-black pointer-events-none" />
           <div className="absolute inset-0 bg-gradient-to-r from-amber-900/20 via-yellow-900/20 to-orange-900/20 pointer-events-none" />
@@ -739,7 +720,7 @@ export default function AgenticWorkflowPage() {
           </div>
         </section>
 
-        {/* 3D Workflow Pipeline Visualization */}
+        {/* Workflow Pipeline Section */}
         <section className="py-12 px-6 relative">
           <div className="absolute inset-0 bg-gradient-to-b from-black via-amber-950/20 to-black" />
           <div className="relative z-10 max-w-7xl mx-auto">
@@ -758,19 +739,6 @@ export default function AgenticWorkflowPage() {
                 comprehensive audit trails at every step. Click any stage to explore in detail.
               </p>
             </motion.div>
-
-            {/* 3D Pipeline Visualization */}
-            {mounted && (
-              <motion.div
-                initial={{ opacity: 0, scale: 0.9 }}
-                whileInView={{ opacity: 1, scale: 1 }}
-                viewport={{ once: true }}
-                transition={{ duration: 1 }}
-                className="mb-8"
-              >
-                <WorkflowPipeline3D />
-              </motion.div>
-            )}
           </div>
         </section>
 

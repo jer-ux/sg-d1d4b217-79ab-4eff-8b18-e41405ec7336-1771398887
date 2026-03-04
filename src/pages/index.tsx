@@ -177,7 +177,6 @@ export default function HomePage() {
                     >
                       Algorithmic Fiduciary
                     </motion.span>
-                    <br />
                     <motion.span 
                       className="text-white"
                       style={{ display: "block", transform: "translateZ(20px)" }}
@@ -271,7 +270,6 @@ export default function HomePage() {
                     <span className="bg-gradient-to-r from-blue-400 via-cyan-300 to-purple-400 bg-clip-text text-transparent">
                       Algorithmic Fiduciary
                     </span>
-                    <br />
                     <span className="text-white">Intelligence Platform</span>
                   </h1>
                 </div>

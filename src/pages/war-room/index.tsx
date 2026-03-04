@@ -17,6 +17,7 @@ import { WarRoomHero3D } from "@/components/kincaid-iq/WarRoomHero3D";
 import { mockWarRoomData } from "@/lib/mocks/mockWarRoom";
 import type { WarEvent } from "@/lib/warroom/types";
 import { getTerm, COMPLIANCE_SECTIONS } from "@/lib/compliance/terminology";
+import { ConsultingInsightsTab } from "@/components/warroom/ConsultingInsightsTab";
 
 type TileConfig = {
   id: string;
@@ -459,6 +460,54 @@ export default function WarRoomPage() {
             </motion.section>
           )}
         </AnimatePresence>
+
+        {/* Consulting Insights Section - NEW */}
+        <section className="relative py-32 border-t border-amber-500/10">
+          <div className="max-w-7xl mx-auto px-6">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.8 }}
+              className="text-center mb-20"
+            >
+              <motion.div
+                initial={{ opacity: 0, scale: 0.9 }}
+                whileInView={{ opacity: 1, scale: 1 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.6 }}
+                className="inline-block mb-6"
+              >
+                <Badge className="px-6 py-2 text-sm bg-gradient-to-r from-blue-500/20 to-purple-500/20 border-blue-500/30 text-blue-300">
+                  <Brain className="w-4 h-4 mr-2" />
+                  Strategic Consulting Frameworks
+                </Badge>
+              </motion.div>
+              
+              <h2 className="text-5xl md:text-6xl font-bold mb-6">
+                <span className="bg-gradient-to-r from-white via-blue-200 to-purple-300 bg-clip-text text-transparent">
+                  McKinsey & Bain Insights
+                </span>
+              </h2>
+              <p className="text-xl text-white/60 max-w-3xl mx-auto leading-relaxed">
+                World-class strategic frameworks applied to your operational data for actionable executive insights
+              </p>
+            </motion.div>
+
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: 0.2, duration: 0.6 }}
+            >
+              <Card className="bg-white/5 backdrop-blur-xl border-blue-500/20">
+                <div className="p-8">
+                  <ConsultingInsightsTab />
+                </div>
+              </Card>
+            </motion.div>
+          </div>
+        </section>
 
         {/* Why War Room Section */}
         <section className="relative py-32 border-t border-amber-500/10">

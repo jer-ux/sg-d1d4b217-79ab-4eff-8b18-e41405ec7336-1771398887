@@ -331,7 +331,7 @@ export default function MaVcPePage() {
                   icon={TrendingUp}
                   title="Realization Governance"
                   description="At-risk decay logic, exception queues, and weekly/monthly reconciliation routines. 87% average realization rate with evidence framework vs 23% industry average."
-                  href="/war-room-product"
+                  href="/war-room-showcase"
                   gradient="linear-gradient(135deg, #10b981, #059669)"
                   delay={0.3}
                 />

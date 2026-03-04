@@ -283,7 +283,7 @@ export default function Nav() {
               {companyDropdownOpen && (
                 <div className="ml-4 mt-2 space-y-1">
                   <Link
-                    href="/about"
+                    href="/company"
                     className="block px-4 py-2 text-sm text-gray-300 hover:bg-gray-800 hover:text-white transition-colors"
                   >
                     About Us
@@ -429,7 +429,7 @@ export default function Nav() {
 
             <Link
               href="/request-demo"
-              className="block px-4 py-3 text-center bg-gradient-to-r from-amber-600 to-amber-500 text-white font-medium rounded-lg hover:shadow-lg hover:shadow-amber-500/50 transition-all"
+              className="block px-4 py-3 text-center bg-gradient-to-r from-purple-600 to-pink-600 text-white font-medium rounded-lg hover:from-purple-700 hover:to-pink-700 transition-all"
             >
               Request Demo
             </Link>

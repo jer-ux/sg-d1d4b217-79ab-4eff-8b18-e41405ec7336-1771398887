@@ -25,13 +25,8 @@ export const menuItems = [
   {
     label: "Platform",
     items: [
-      { label: "War Room", href: "/war-room-showcase" },
       { label: "Executive War Room", href: "/executive-war-room" },
       { label: "Verified Savings Ledger", href: "/verified-savings-ledger" },
-      { label: "Evidence Receipts", href: "/evidence-receipts" },
-      { label: "Arbitrage Events", href: "/arbitrage-events" },
-      { label: "Proof Library", href: "/proof-library" },
-      { label: "Agentic Policy", href: "/agentic-policy" },
     ],
   },
 ];

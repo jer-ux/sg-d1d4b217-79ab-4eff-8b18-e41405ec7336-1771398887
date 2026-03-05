@@ -181,14 +181,6 @@ export default function Nav() {
               </NavigationMenuList>
             </NavigationMenu>
 
-            {/* War Room Showcase - Standalone Link */}
-            <Link 
-              href="/war-room-showcase" 
-              className="px-4 py-2 text-sm font-medium text-gray-300 hover:text-white hover:bg-white/5 rounded-md transition-colors"
-            >
-              War Room
-            </Link>
-
             {/* Company Menu */}
             <NavigationMenu>
               <NavigationMenuList>
@@ -322,9 +314,6 @@ export default function Nav() {
                   <Link href="/platform" className="block px-4 py-2 text-sm text-gray-400 hover:text-white hover:bg-white/5 rounded-lg transition-colors">
                     Platform Overview
                   </Link>
-                  <Link href="/war-room" className="block px-4 py-2 text-sm text-gray-400 hover:text-white hover:bg-white/5 rounded-lg transition-colors">
-                    War Room
-                  </Link>
                   <Link href="/verified-savings-ledger" className="block px-4 py-2 text-sm text-gray-400 hover:text-white hover:bg-white/5 rounded-lg transition-colors">
                     Verified Savings Ledger
                   </Link>
@@ -417,15 +406,6 @@ export default function Nav() {
                 </div>
               )}
             </div>
-
-            {/* War Room Showcase - Mobile */}
-            <Link
-              href="/war-room-showcase"
-              className="block rounded-lg px-3 py-2 text-base font-medium text-gray-300 hover:bg-white/5 hover:text-white"
-              onClick={() => setIsOpen(false)}
-            >
-              War Room
-            </Link>
 
             <Link
               href="/request-demo"

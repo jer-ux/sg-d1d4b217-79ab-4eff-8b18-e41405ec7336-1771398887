@@ -2,8 +2,8 @@ import React, { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { ChevronLeft, ChevronRight, X, Maximize2 } from "lucide-react";
 import { SEO } from "@/components/SEO";
-import { Nav } from "@/components/Nav";
-import { Footer } from "@/components/Footer";
+import Nav from "@/components/Nav";
+import Footer from "@/components/Footer";
 
 const demos = [
   {

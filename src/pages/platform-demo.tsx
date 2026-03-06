@@ -2,8 +2,8 @@ import React, { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { ChevronLeft, ChevronRight, X, Maximize2 } from "lucide-react";
 import { SEO } from "@/components/SEO";
-import { SiriusBNav } from "@/components/siriusb/SiriusBNav";
-import { SiriusBFooter } from "@/components/siriusb/SiriusBFooter";
+import { Nav } from "@/components/Nav";
+import { Footer } from "@/components/Footer";
 
 const demos = [
   {
@@ -98,7 +98,7 @@ export default function PlatformDemo() {
       />
       
       <div className="min-h-screen bg-gradient-to-br from-zinc-950 via-purple-950/20 to-zinc-950">
-        <SiriusBNav />
+        <Nav />
 
         {/* Hero Section */}
         <section className="relative pt-32 pb-20 px-4">
@@ -306,21 +306,8 @@ export default function PlatformDemo() {
           )}
         </AnimatePresence>
 
-        <SiriusBFooter />
+        <Footer />
       </div>
-
-      {/* Keyboard Navigation */}
-      <script
-        dangerouslySetInnerHTML={{
-          __html: `
-            document.addEventListener('keydown', (e) => {
-              if (e.key === 'ArrowLeft') document.querySelector('[data-nav="prev"]')?.click();
-              if (e.key === 'ArrowRight') document.querySelector('[data-nav="next"]')?.click();
-              if (e.key === 'Escape') document.querySelector('[data-lightbox="close"]')?.click();
-            });
-          `
-        }}
-      />
     </>
   );
 }

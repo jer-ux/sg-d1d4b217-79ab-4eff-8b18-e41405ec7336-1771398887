@@ -151,8 +151,10 @@ export default function HomePage() {
         <div className="fixed inset-0 bg-gradient-to-br from-purple-950/20 via-black to-blue-950/10 pointer-events-none" style={{ zIndex: 0 }} />
 
         {/* Hero Section with 3D Effects */}
-        <section className="relative min-h-screen flex items-center justify-center overflow-hidden" ref={heroRef}>
-          <Hero3D />
+        <section className="relative min-h-screen flex items-center justify-center overflow-hidden z-0" ref={heroRef}>
+          <div className="absolute inset-0 z-0">
+            <Hero3D />
+          </div>
           <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
             {mounted ? (
               <motion.div 

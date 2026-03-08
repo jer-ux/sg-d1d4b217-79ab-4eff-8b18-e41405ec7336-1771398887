@@ -49,7 +49,7 @@ export default function Nav() {
                       <div className="text-xs text-gray-400">Complete solution suite</div>
                     </Link>
                     <Link
-                      href="/war-room"
+                      href="/#dashboard"
                       className="block px-4 py-3 text-gray-300 hover:text-white hover:bg-amber-500/10 rounded-lg transition-all"
                     >
                       <div className="font-medium">War Room</div>

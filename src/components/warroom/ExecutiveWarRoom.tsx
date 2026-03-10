@@ -49,7 +49,7 @@ export function ExecutiveWarRoom() {
   const handleDashboardChange = (value: string) => {
     setSelectedDashboard(value);
     if (value === "kincaid-iq") {
-      router.push("/war-room");
+      router.push("/#dashboard");
     }
   };
 

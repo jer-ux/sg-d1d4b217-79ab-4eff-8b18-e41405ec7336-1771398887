@@ -1,7 +1,7 @@
 import { useMemo, useState } from "react";
 import Link from "next/link";
-import { TrendingUp, TrendingDown, Minus, Shield, AlertTriangle } from "lucide-react";
-import { LineChart, Line, ResponsiveContainer, Area, AreaChart } from "recharts";
+import { TrendingUp, TrendingDown, Minus, Shield, AlertTriangle, Info, BarChart3, Calendar, Target } from "lucide-react";
+import { LineChart, Line, ResponsiveContainer, Area, AreaChart, Tooltip } from "recharts";
 import type { TileData } from "../executiveTypes";
 
 const TILE_THEMES = {
@@ -63,10 +63,127 @@ const TILE_THEMES = {
   },
 };
 
+// Detailed view data for each tile type
+const TILE_DETAILS = {
+  costTrendStress: {
+    title: "Cost Trend Stress Analysis",
+    metrics: [
+      { label: "Monthly Trend", value: "+2.3%", status: "warning" },
+      { label: "Quarterly Variance", value: "-$1.2M", status: "danger" },
+      { label: "Risk Score", value: "7.8/10", status: "danger" },
+      { label: "Forecast Accuracy", value: "94%", status: "success" },
+    ],
+    insights: [
+      "Pharmaceutical costs increasing 18% faster than expected",
+      "Stop-loss threshold projected to breach in Q3 2026",
+      "High-cost claimants up 34% YoY",
+    ],
+  },
+  planDesignAdoption: {
+    title: "Plan Design Adoption Metrics",
+    metrics: [
+      { label: "Adoption Rate", value: "87%", status: "success" },
+      { label: "Engagement Score", value: "8.2/10", status: "success" },
+      { label: "Cost Savings", value: "$3.4M", status: "success" },
+      { label: "Member Satisfaction", value: "91%", status: "success" },
+    ],
+    insights: [
+      "HDHP adoption exceeding targets by 12%",
+      "HSA contributions up 45% from prior year",
+      "Preventive care utilization improved 28%",
+    ],
+  },
+  pharmacyExposure: {
+    title: "Pharmacy Exposure Analysis",
+    metrics: [
+      { label: "Specialty Drug %", value: "32%", status: "warning" },
+      { label: "Generic Fill Rate", value: "78%", status: "warning" },
+      { label: "Cost Per Script", value: "$147", status: "danger" },
+      { label: "Formulary Compliance", value: "82%", status: "warning" },
+    ],
+    insights: [
+      "Specialty pharmacy costs up 41% YoY",
+      "GLP-1 drugs driving $2.1M annual increase",
+      "Prior authorization saves averaging $890 per approval",
+    ],
+  },
+  contractLeakage: {
+    title: "Contract Leakage Detection",
+    metrics: [
+      { label: "Leakage Amount", value: "$2.8M", status: "danger" },
+      { label: "Recovery Rate", value: "23%", status: "warning" },
+      { label: "Open Issues", value: "47", status: "warning" },
+      { label: "Avg Resolution Time", value: "18 days", status: "warning" },
+    ],
+    insights: [
+      "Rebate reconciliation gaps found in 15 contracts",
+      "Administrative fee overcharges detected: $320K",
+      "Performance guarantee shortfalls totaling $1.1M",
+    ],
+  },
+  contractAmbiguity: {
+    title: "Contract Ambiguity Risk",
+    metrics: [
+      { label: "Ambiguous Clauses", value: "23", status: "danger" },
+      { label: "Risk Exposure", value: "$4.2M", status: "danger" },
+      { label: "Dispute Likelihood", value: "68%", status: "warning" },
+      { label: "Clarity Score", value: "6.1/10", status: "warning" },
+    ],
+    insights: [
+      "Pricing methodology unclear in 8 vendor contracts",
+      "Termination clauses conflict across 5 agreements",
+      "SLA definitions need standardization",
+    ],
+  },
+  contractCompliance: {
+    title: "Contract Compliance Status",
+    metrics: [
+      { label: "Compliance Rate", value: "94%", status: "success" },
+      { label: "Violations", value: "3", status: "warning" },
+      { label: "Audit Score", value: "A-", status: "success" },
+      { label: "Documentation", value: "98%", status: "success" },
+    ],
+    insights: [
+      "All critical SLAs met for 11 consecutive months",
+      "Vendor reporting compliance improved 22%",
+      "HIPAA audit readiness at 97%",
+    ],
+  },
+  benefitsNPS: {
+    title: "Benefits Net Promoter Score",
+    metrics: [
+      { label: "Current NPS", value: "+42", status: "success" },
+      { label: "Promoters", value: "56%", status: "success" },
+      { label: "Detractors", value: "14%", status: "success" },
+      { label: "Trend vs Q1", value: "+8 pts", status: "success" },
+    ],
+    insights: [
+      "Mental health benefits driving positive sentiment",
+      "Virtual care adoption correlates with higher NPS",
+      "Benefits portal redesign improved satisfaction 18%",
+    ],
+  },
+  employeeNPS: {
+    title: "Employee Net Promoter Score",
+    metrics: [
+      { label: "Current NPS", value: "+38", status: "success" },
+      { label: "Response Rate", value: "72%", status: "success" },
+      { label: "Trend vs Prior", value: "+5 pts", status: "success" },
+      { label: "Engagement Index", value: "8.1/10", status: "success" },
+    ],
+    insights: [
+      "Overall employee satisfaction up 12%",
+      "Healthcare benefits rated #1 satisfaction driver",
+      "Cost transparency initiatives well-received",
+    ],
+  },
+};
+
 export function KPITile({ data, onClick }: { data?: TileData; onClick?: (tile: TileData) => void }) {
   const [open, setOpen] = useState(false);
+  const [showHoverDetails, setShowHoverDetails] = useState(false);
 
-  // Extract necessary props for hooks safeley
+  // Extract necessary props for hooks safely
   const tileKey = data?.key;
   const receipt = data?.receipt;
   const verified = Boolean(receipt?.verified);
@@ -99,6 +216,13 @@ export function KPITile({ data, onClick }: { data?: TileData; onClick?: (tile: T
     return null;
   }, [framework]);
 
+  const details = useMemo(() => {
+    if (tileKey && tileKey in TILE_DETAILS) {
+      return TILE_DETAILS[tileKey as keyof typeof TILE_DETAILS];
+    }
+    return null;
+  }, [tileKey]);
+
   // Loading state check AFTER hooks
   if (!data) {
     return (
@@ -130,6 +254,13 @@ export function KPITile({ data, onClick }: { data?: TileData; onClick?: (tile: T
     return theme.accent;
   };
 
+  const getStatusColor = (status?: string) => {
+    if (status === "success") return "text-emerald-400";
+    if (status === "warning") return "text-amber-400";
+    if (status === "danger") return "text-rose-400";
+    return "text-zinc-400";
+  };
+
   const href = data?.key ? `/war-room/${data.key}` : "/war-room";
 
   return (
@@ -142,6 +273,8 @@ export function KPITile({ data, onClick }: { data?: TileData; onClick?: (tile: T
           onClick(data);
         }
       }}
+      onMouseEnter={() => setShowHoverDetails(true)}
+      onMouseLeave={() => setShowHoverDetails(false)}
       onKeyDown={(e) => {
         if ((e.key === 'Enter' || e.key === ' ') && onClick) {
           e.preventDefault();
@@ -179,6 +312,46 @@ export function KPITile({ data, onClick }: { data?: TileData; onClick?: (tile: T
               />
             </AreaChart>
           </ResponsiveContainer>
+        </div>
+      )}
+
+      {/* Hover Details Overlay */}
+      {showHoverDetails && details && (
+        <div className="absolute inset-0 z-10 flex flex-col rounded-2xl border border-zinc-700/80 bg-zinc-950/98 p-6 backdrop-blur-xl animate-in fade-in-0 slide-in-from-bottom-4 duration-200">
+          <div className="mb-4 flex items-center justify-between border-b border-zinc-800/60 pb-3">
+            <h3 className="text-sm font-semibold text-zinc-100">{details.title}</h3>
+            <Info className="h-4 w-4 text-zinc-400" />
+          </div>
+
+          {/* Key Metrics Grid */}
+          <div className="mb-4 grid grid-cols-2 gap-3">
+            {details.metrics.map((metric, i) => (
+              <div key={i} className="rounded-lg border border-zinc-800/40 bg-zinc-900/40 p-3">
+                <div className="text-xs text-zinc-500">{metric.label}</div>
+                <div className={`mt-1 text-lg font-semibold ${getStatusColor(metric.status)}`}>
+                  {metric.value}
+                </div>
+              </div>
+            ))}
+          </div>
+
+          {/* Key Insights */}
+          <div className="flex-1 space-y-2 overflow-y-auto">
+            <div className="mb-2 flex items-center gap-2 text-xs font-medium text-zinc-400">
+              <Target className="h-3 w-3" />
+              <span>Key Insights</span>
+            </div>
+            {details.insights.map((insight, i) => (
+              <div key={i} className="flex items-start gap-2 text-xs text-zinc-300">
+                <span className="mt-1 h-1 w-1 shrink-0 rounded-full bg-zinc-500" />
+                <span>{insight}</span>
+              </div>
+            ))}
+          </div>
+
+          <div className="mt-4 text-center text-xs text-zinc-500">
+            Click tile for full analysis
+          </div>
         </div>
       )}
 

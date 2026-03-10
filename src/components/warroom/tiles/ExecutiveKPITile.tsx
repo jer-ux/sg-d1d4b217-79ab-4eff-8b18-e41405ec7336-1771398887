@@ -1,4 +1,5 @@
-import { TrendingUp, TrendingDown, Minus, Shield, AlertTriangle } from "lucide-react";
+import { useState, useMemo } from "react";
+import { TrendingUp, TrendingDown, Minus, Shield, AlertTriangle, Info, Target, BarChart3 } from "lucide-react";
 import type { TileData } from "../executiveTypes";
 import { LineChart, Line, ResponsiveContainer, Area, AreaChart } from "recharts";
 
@@ -69,7 +70,174 @@ const TILE_THEMES = {
   },
 };
 
+// Detailed hover data for Executive tiles
+const EXECUTIVE_DETAILS = {
+  costTrendStress: {
+    title: "Cost Trend Deep Dive",
+    metrics: [
+      { label: "Projected Annual Impact", value: "$12.4M", status: "danger" },
+      { label: "Risk Probability", value: "87%", status: "danger" },
+      { label: "Mitigation Potential", value: "$4.8M", status: "warning" },
+      { label: "Board Escalation", value: "Required", status: "danger" },
+    ],
+    insights: [
+      "Immediate action required to prevent Q3 budget overrun",
+      "Stop-loss carrier reviewing rates for renewal",
+      "CFO briefing scheduled for detailed mitigation plan",
+    ],
+    actionItems: [
+      "Review specialty drug management program",
+      "Evaluate high-cost claimant strategies",
+      "Consider plan design modifications for 2027",
+    ],
+  },
+  planDesignAdoption: {
+    title: "Plan Design Performance",
+    metrics: [
+      { label: "ROI Achievement", value: "142%", status: "success" },
+      { label: "Target Enrollment", value: "103%", status: "success" },
+      { label: "Cost Avoidance", value: "$5.2M", status: "success" },
+      { label: "Member Satisfaction", value: "4.6/5", status: "success" },
+    ],
+    insights: [
+      "Plan design changes exceeding all success metrics",
+      "HDHP adoption driving significant savings",
+      "HSA participation at industry-leading levels",
+    ],
+    actionItems: [
+      "Expand wellness incentive programs",
+      "Consider additional HDHP options for 2027",
+      "Document success for board presentation",
+    ],
+  },
+  pharmacyExposure: {
+    title: "Pharmacy Cost Analysis",
+    metrics: [
+      { label: "Exposure Growth", value: "+41%", status: "danger" },
+      { label: "Specialty Drug Impact", value: "$8.3M", status: "danger" },
+      { label: "Formulary Adherence", value: "82%", status: "warning" },
+      { label: "Prior Auth Savings", value: "$1.9M", status: "success" },
+    ],
+    insights: [
+      "Specialty pharmacy driving unprecedented cost growth",
+      "GLP-1 and oncology drugs major contributors",
+      "PBM contract renegotiation recommended for 2026",
+    ],
+    actionItems: [
+      "Implement enhanced formulary controls",
+      "Evaluate specialty pharmacy carve-out",
+      "Review alternative funding arrangements",
+    ],
+  },
+  contractLeakage: {
+    title: "Revenue Recovery Opportunities",
+    metrics: [
+      { label: "Total Leakage Identified", value: "$2.8M", status: "danger" },
+      { label: "Recoverable Amount", value: "$2.1M", status: "warning" },
+      { label: "Average Recovery Time", value: "18 days", status: "warning" },
+      { label: "Vendor Compliance", value: "76%", status: "warning" },
+    ],
+    insights: [
+      "Significant opportunity for cash recovery identified",
+      "Rebate reconciliation errors most common issue",
+      "Administrative fee discrepancies in 15 contracts",
+    ],
+    actionItems: [
+      "Initiate vendor recovery negotiations",
+      "Implement automated contract monitoring",
+      "Consider legal action for non-compliant vendors",
+    ],
+  },
+  contractAmbiguity: {
+    title: "Contract Risk Assessment",
+    metrics: [
+      { label: "Exposure Value", value: "$4.2M", status: "danger" },
+      { label: "High-Risk Clauses", value: "23", status: "danger" },
+      { label: "Legal Review Status", value: "In Progress", status: "warning" },
+      { label: "Resolution Timeline", value: "45 days", status: "warning" },
+    ],
+    insights: [
+      "Critical contract language deficiencies identified",
+      "Potential disputes could impact vendor relationships",
+      "Legal recommends immediate remediation",
+    ],
+    actionItems: [
+      "Schedule vendor negotiation meetings",
+      "Develop standardized contract templates",
+      "Implement contract approval workflow",
+    ],
+  },
+  contractCompliance: {
+    title: "Compliance Performance",
+    metrics: [
+      { label: "Overall Score", value: "94/100", status: "success" },
+      { label: "Audit Readiness", value: "97%", status: "success" },
+      { label: "SLA Achievement", value: "100%", status: "success" },
+      { label: "Documentation", value: "Complete", status: "success" },
+    ],
+    insights: [
+      "Industry-leading compliance performance",
+      "All critical vendor SLAs met consistently",
+      "HIPAA audit preparation ahead of schedule",
+    ],
+    actionItems: [
+      "Continue quarterly compliance reviews",
+      "Share best practices with peer organizations",
+      "Maintain documentation standards",
+    ],
+  },
+  benefitsNPS: {
+    title: "Benefits Sentiment Analysis",
+    metrics: [
+      { label: "NPS Trend", value: "+12 pts YoY", status: "success" },
+      { label: "Promoter Growth", value: "+8%", status: "success" },
+      { label: "Detractor Reduction", value: "-4%", status: "success" },
+      { label: "Engagement Rate", value: "89%", status: "success" },
+    ],
+    insights: [
+      "Benefits program driving employee satisfaction",
+      "Mental health benefits highest rated feature",
+      "Virtual care adoption correlates with positive NPS",
+    ],
+    actionItems: [
+      "Expand mental health provider network",
+      "Enhance benefits communication strategy",
+      "Launch targeted campaigns for high-value services",
+    ],
+  },
+  employeeNPS: {
+    title: "Employee Experience Metrics",
+    metrics: [
+      { label: "Overall NPS", value: "+38", status: "success" },
+      { label: "Response Rate", value: "72%", status: "success" },
+      { label: "Trust Score", value: "8.1/10", status: "success" },
+      { label: "Benefit Awareness", value: "84%", status: "success" },
+    ],
+    insights: [
+      "Strong employee satisfaction with benefits program",
+      "Healthcare benefits top driver of employer loyalty",
+      "Cost transparency initiatives well-received",
+    ],
+    actionItems: [
+      "Continue quarterly pulse surveys",
+      "Enhance benefits education programs",
+      "Recognize high-performing benefits team",
+    ],
+  },
+};
+
 export function ExecutiveKPITile({ data }: { data?: TileData }) {
+  const [showHoverDetails, setShowHoverDetails] = useState(false);
+
+  const tileKey = data?.key;
+
+  const details = useMemo(() => {
+    if (tileKey && tileKey in EXECUTIVE_DETAILS) {
+      return EXECUTIVE_DETAILS[tileKey as keyof typeof EXECUTIVE_DETAILS];
+    }
+    return null;
+  }, [tileKey]);
+
   if (!data) {
     return (
       <div className="rounded-2xl border border-zinc-800/60 bg-zinc-950/60 p-6">
@@ -99,13 +267,82 @@ export function ExecutiveKPITile({ data }: { data?: TileData }) {
     return null;
   })();
 
+  const getStatusColor = (status?: string) => {
+    if (status === "success") return "text-emerald-400";
+    if (status === "warning") return "text-amber-400";
+    if (status === "danger") return "text-rose-400";
+    return "text-zinc-400";
+  };
+
   return (
-    <div className={`group relative overflow-hidden rounded-2xl border ${theme.border} bg-gradient-to-br ${theme.gradient} p-6 transition-all hover:shadow-2xl ${theme.glow} backdrop-blur-sm`}>
+    <div 
+      className={`group relative overflow-hidden rounded-2xl border ${theme.border} bg-gradient-to-br ${theme.gradient} p-6 transition-all hover:shadow-2xl ${theme.glow} backdrop-blur-sm`}
+      onMouseEnter={() => setShowHoverDetails(true)}
+      onMouseLeave={() => setShowHoverDetails(false)}
+    >
       {/* 3D Background Effect */}
-      <div className="absolute inset-0 opacity-20">
+      <div className="absolute inset-0 opacity-20 pointer-events-none">
         <div className={`absolute -right-8 -top-8 h-32 w-32 rounded-full ${theme.iconBg} blur-3xl`} />
         <div className={`absolute -left-8 -bottom-8 h-32 w-32 rounded-full ${theme.iconBg} blur-3xl`} />
       </div>
+
+      {/* Hover Details Overlay */}
+      {showHoverDetails && details && (
+        <div className="absolute inset-0 z-20 flex flex-col overflow-y-auto rounded-2xl border border-zinc-700/80 bg-zinc-950/98 p-6 backdrop-blur-xl animate-in fade-in-0 slide-in-from-bottom-4 duration-200">
+          <div className="mb-4 flex items-center justify-between border-b border-zinc-800/60 pb-3">
+            <h3 className="text-sm font-semibold text-zinc-100">{details.title}</h3>
+            <BarChart3 className="h-4 w-4 text-zinc-400" />
+          </div>
+
+          {/* Executive Metrics Grid */}
+          <div className="mb-4 grid grid-cols-2 gap-3">
+            {details.metrics.map((metric, i) => (
+              <div key={i} className="rounded-lg border border-zinc-800/40 bg-zinc-900/60 p-3">
+                <div className="text-xs text-zinc-500">{metric.label}</div>
+                <div className={`mt-1 text-base font-bold ${getStatusColor(metric.status)}`}>
+                  {metric.value}
+                </div>
+              </div>
+            ))}
+          </div>
+
+          {/* Executive Insights */}
+          <div className="mb-4">
+            <div className="mb-2 flex items-center gap-2 text-xs font-semibold text-zinc-400">
+              <Info className="h-3 w-3" />
+              <span>Executive Summary</span>
+            </div>
+            <div className="space-y-2">
+              {details.insights.map((insight, i) => (
+                <div key={i} className="flex items-start gap-2 rounded-lg border border-zinc-800/40 bg-zinc-900/40 p-2 text-xs text-zinc-300">
+                  <span className="mt-1.5 h-1 w-1 shrink-0 rounded-full bg-amber-500" />
+                  <span>{insight}</span>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* Action Items */}
+          <div>
+            <div className="mb-2 flex items-center gap-2 text-xs font-semibold text-zinc-400">
+              <Target className="h-3 w-3" />
+              <span>Recommended Actions</span>
+            </div>
+            <div className="space-y-1.5">
+              {details.actionItems.map((action, i) => (
+                <div key={i} className="flex items-start gap-2 text-xs text-zinc-400">
+                  <span className="mt-1 h-1.5 w-1.5 shrink-0 rounded-sm bg-emerald-500" />
+                  <span>{action}</span>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          <div className="mt-4 border-t border-zinc-800/60 pt-3 text-center text-xs text-zinc-500">
+            Hover off to return to summary view
+          </div>
+        </div>
+      )}
 
       <div className="relative">
         <div className="mb-4 flex items-start justify-between">

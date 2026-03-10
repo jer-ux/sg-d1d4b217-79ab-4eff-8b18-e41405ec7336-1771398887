@@ -71,7 +71,7 @@ const boardMembers = [
   },
   {
     name: "Dr. Jacqueline El-Sayed",
-    title: "Distinguished Chief Scientist Officer",
+    title: "Board Member and Distinguished Chief Scientist Officer",
     image: "/dr-jacqueline-el-sayed.png",
     bio: "Dr. Jacqueline El-Sayed is the Chief Executive Officer for Intentional Design Group LLC and Intentional Design Institute 501c3. She is a builder and global speaker with leadership experience across industry, education, and government.",
     fullBio: {

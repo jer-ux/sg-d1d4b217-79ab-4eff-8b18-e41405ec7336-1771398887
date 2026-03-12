@@ -29,7 +29,7 @@ const menuItems: MenuItem[] = [
   {
     icon: <Shield className="w-5 h-5" />,
     label: "War Room",
-    href: "/war-room-v2",
+    href: "/war-room/demo/claims-efficiency",
     description: "Incident management",
   },
   {

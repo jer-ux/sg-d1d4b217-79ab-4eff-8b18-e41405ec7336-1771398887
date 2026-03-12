@@ -24,6 +24,125 @@ export default function Nav() {
 
           {/* Desktop Navigation */}
           <div className="hidden md:flex md:items-center md:space-x-1">
+            {/* Company Menu */}
+            <div className="relative">
+              <button
+                onMouseEnter={() => setCompanyDropdownOpen(true)}
+                onMouseLeave={() => setCompanyDropdownOpen(false)}
+                className="px-4 py-2 text-gray-300 hover:text-white transition-colors rounded-lg hover:bg-white/5"
+              >
+                Company
+              </button>
+              {companyDropdownOpen && (
+                <div
+                  onMouseEnter={() => setCompanyDropdownOpen(true)}
+                  onMouseLeave={() => setCompanyDropdownOpen(false)}
+                  className="absolute top-full left-0 mt-2 w-64 bg-gray-900/95 backdrop-blur-xl rounded-xl border border-gray-700/50 shadow-xl overflow-hidden z-[210]"
+                >
+                  <div className="p-2">
+                    <Link
+                      href="/company"
+                      className="block px-4 py-3 text-gray-300 hover:text-white hover:bg-amber-500/10 rounded-lg transition-all"
+                    >
+                      <div className="font-medium">About Us</div>
+                      <div className="text-xs text-gray-400">Company overview</div>
+                    </Link>
+                    <Link
+                      href="/board-of-directors"
+                      className="block px-4 py-3 text-gray-300 hover:text-white hover:bg-amber-500/10 rounded-lg transition-all"
+                    >
+                      <div className="font-medium">Board of Directors</div>
+                      <div className="text-xs text-gray-400">Leadership team</div>
+                    </Link>
+                    <Link
+                      href="/investor"
+                      className="block px-4 py-3 text-gray-300 hover:text-white hover:bg-amber-500/10 rounded-lg transition-all"
+                    >
+                      <div className="font-medium">Investors</div>
+                      <div className="text-xs text-gray-400">Investment overview</div>
+                    </Link>
+                    <Link
+                      href="/capital-markets"
+                      className="block px-4 py-3 text-gray-300 hover:text-white hover:bg-amber-500/10 rounded-lg transition-all"
+                    >
+                      <div className="font-medium">Capital Markets</div>
+                      <div className="text-xs text-gray-400">Market solutions</div>
+                    </Link>
+                    <Link
+                      href="/family-offices"
+                      className="block px-4 py-3 text-gray-300 hover:text-white hover:bg-amber-500/10 rounded-lg transition-all"
+                    >
+                      <div className="font-medium">Family Offices</div>
+                      <div className="text-xs text-gray-400">Private wealth management</div>
+                    </Link>
+                    <Link
+                      href="/ma-vc-pe"
+                      className="block px-4 py-3 text-gray-300 hover:text-white hover:bg-amber-500/10 rounded-lg transition-all"
+                    >
+                      <div className="font-medium">M&A / VC / PE</div>
+                      <div className="text-xs text-gray-400">Deal intelligence</div>
+                    </Link>
+                  </div>
+                </div>
+              )}
+            </div>
+
+            {/* Platform Menu */}
+            <div className="relative">
+              <button
+                onMouseEnter={() => setPlatformDropdownOpen(true)}
+                onMouseLeave={() => setPlatformDropdownOpen(false)}
+                className="px-4 py-2 text-gray-300 hover:text-white transition-colors rounded-lg hover:bg-white/5"
+              >
+                Platform
+              </button>
+              {platformDropdownOpen && (
+                <div
+                  onMouseEnter={() => setPlatformDropdownOpen(true)}
+                  onMouseLeave={() => setPlatformDropdownOpen(false)}
+                  className="absolute top-full left-0 mt-2 w-64 bg-gray-900/95 backdrop-blur-xl rounded-xl border border-gray-700/50 shadow-xl overflow-hidden z-[210]"
+                >
+                  <div className="p-2">
+                    <Link
+                      href="/kincaid-iq"
+                      className="block px-4 py-3 text-gray-300 hover:text-white hover:bg-amber-500/10 rounded-lg transition-all"
+                    >
+                      <div className="font-medium">Kincaid IQ</div>
+                      <div className="text-xs text-gray-400">Actuarial intelligence platform</div>
+                    </Link>
+                    <Link
+                      href="/actuarial-benefits"
+                      className="block px-4 py-3 text-gray-300 hover:text-white hover:bg-amber-500/10 rounded-lg transition-all"
+                    >
+                      <div className="font-medium">Actuarial Benefits</div>
+                      <div className="text-xs text-gray-400">Benefits modeling & analysis</div>
+                    </Link>
+                    <Link
+                      href="/solutions/risk-assessment"
+                      className="block px-4 py-3 text-gray-300 hover:text-white hover:bg-amber-500/10 rounded-lg transition-all"
+                    >
+                      <div className="font-medium">Risk Assessment</div>
+                      <div className="text-xs text-gray-400">Predictive risk modeling</div>
+                    </Link>
+                    <Link
+                      href="/solutions/premium-calculation"
+                      className="block px-4 py-3 text-gray-300 hover:text-white hover:bg-amber-500/10 rounded-lg transition-all"
+                    >
+                      <div className="font-medium">Premium Calculation</div>
+                      <div className="text-xs text-gray-400">Accurate rate setting</div>
+                    </Link>
+                    <Link
+                      href="/solutions/claims-analytics"
+                      className="block px-4 py-3 text-gray-300 hover:text-white hover:bg-amber-500/10 rounded-lg transition-all"
+                    >
+                      <div className="font-medium">Claims Analytics</div>
+                      <div className="text-xs text-gray-400">Advanced claims intelligence</div>
+                    </Link>
+                  </div>
+                </div>
+              )}
+            </div>
+
             {/* Solutions Menu */}
             <div className="relative">
               <button
@@ -127,125 +246,6 @@ export default function Nav() {
               )}
             </div>
 
-            {/* Platform Menu */}
-            <div className="relative">
-              <button
-                onMouseEnter={() => setPlatformDropdownOpen(true)}
-                onMouseLeave={() => setPlatformDropdownOpen(false)}
-                className="px-4 py-2 text-gray-300 hover:text-white transition-colors rounded-lg hover:bg-white/5"
-              >
-                Platform
-              </button>
-              {platformDropdownOpen && (
-                <div
-                  onMouseEnter={() => setPlatformDropdownOpen(true)}
-                  onMouseLeave={() => setPlatformDropdownOpen(false)}
-                  className="absolute top-full left-0 mt-2 w-64 bg-gray-900/95 backdrop-blur-xl rounded-xl border border-gray-700/50 shadow-xl overflow-hidden z-[210]"
-                >
-                  <div className="p-2">
-                    <Link
-                      href="/kincaid-iq"
-                      className="block px-4 py-3 text-gray-300 hover:text-white hover:bg-amber-500/10 rounded-lg transition-all"
-                    >
-                      <div className="font-medium">Kincaid IQ</div>
-                      <div className="text-xs text-gray-400">Actuarial intelligence platform</div>
-                    </Link>
-                    <Link
-                      href="/actuarial-benefits"
-                      className="block px-4 py-3 text-gray-300 hover:text-white hover:bg-amber-500/10 rounded-lg transition-all"
-                    >
-                      <div className="font-medium">Actuarial Benefits</div>
-                      <div className="text-xs text-gray-400">Benefits modeling & analysis</div>
-                    </Link>
-                    <Link
-                      href="/solutions/risk-assessment"
-                      className="block px-4 py-3 text-gray-300 hover:text-white hover:bg-amber-500/10 rounded-lg transition-all"
-                    >
-                      <div className="font-medium">Risk Assessment</div>
-                      <div className="text-xs text-gray-400">Predictive risk modeling</div>
-                    </Link>
-                    <Link
-                      href="/solutions/premium-calculation"
-                      className="block px-4 py-3 text-gray-300 hover:text-white hover:bg-amber-500/10 rounded-lg transition-all"
-                    >
-                      <div className="font-medium">Premium Calculation</div>
-                      <div className="text-xs text-gray-400">Accurate rate setting</div>
-                    </Link>
-                    <Link
-                      href="/solutions/claims-analytics"
-                      className="block px-4 py-3 text-gray-300 hover:text-white hover:bg-amber-500/10 rounded-lg transition-all"
-                    >
-                      <div className="font-medium">Claims Analytics</div>
-                      <div className="text-xs text-gray-400">Advanced claims intelligence</div>
-                    </Link>
-                  </div>
-                </div>
-              )}
-            </div>
-
-            {/* Company Menu */}
-            <div className="relative">
-              <button
-                onMouseEnter={() => setCompanyDropdownOpen(true)}
-                onMouseLeave={() => setCompanyDropdownOpen(false)}
-                className="px-4 py-2 text-gray-300 hover:text-white transition-colors rounded-lg hover:bg-white/5"
-              >
-                Company
-              </button>
-              {companyDropdownOpen && (
-                <div
-                  onMouseEnter={() => setCompanyDropdownOpen(true)}
-                  onMouseLeave={() => setCompanyDropdownOpen(false)}
-                  className="absolute top-full left-0 mt-2 w-64 bg-gray-900/95 backdrop-blur-xl rounded-xl border border-gray-700/50 shadow-xl overflow-hidden z-[210]"
-                >
-                  <div className="p-2">
-                    <Link
-                      href="/company"
-                      className="block px-4 py-3 text-gray-300 hover:text-white hover:bg-amber-500/10 rounded-lg transition-all"
-                    >
-                      <div className="font-medium">About Us</div>
-                      <div className="text-xs text-gray-400">Company overview</div>
-                    </Link>
-                    <Link
-                      href="/board-of-directors"
-                      className="block px-4 py-3 text-gray-300 hover:text-white hover:bg-amber-500/10 rounded-lg transition-all"
-                    >
-                      <div className="font-medium">Board of Directors</div>
-                      <div className="text-xs text-gray-400">Leadership team</div>
-                    </Link>
-                    <Link
-                      href="/investor"
-                      className="block px-4 py-3 text-gray-300 hover:text-white hover:bg-amber-500/10 rounded-lg transition-all"
-                    >
-                      <div className="font-medium">Investors</div>
-                      <div className="text-xs text-gray-400">Investment overview</div>
-                    </Link>
-                    <Link
-                      href="/capital-markets"
-                      className="block px-4 py-3 text-gray-300 hover:text-white hover:bg-amber-500/10 rounded-lg transition-all"
-                    >
-                      <div className="font-medium">Capital Markets</div>
-                      <div className="text-xs text-gray-400">Market solutions</div>
-                    </Link>
-                    <Link
-                      href="/family-offices"
-                      className="block px-4 py-3 text-gray-300 hover:text-white hover:bg-amber-500/10 rounded-lg transition-all"
-                    >
-                      <div className="font-medium">Family Offices</div>
-                      <div className="text-xs text-gray-400">Private wealth management</div>
-                    </Link>
-                    <Link
-                      href="/ma-vc-pe"
-                      className="block px-4 py-3 text-gray-300 hover:text-white hover:bg-amber-500/10 rounded-lg transition-all"
-                    >
-                      <div className="font-medium">M&A / VC / PE</div>
-                      <div className="text-xs text-gray-400">Deal intelligence</div>
-                    </Link>
-                  </div>
-                </div>
-              )}
-            </div>
-
             {/* Request Demo Button */}
             <Link
               href="/request-demo"
@@ -305,6 +305,36 @@ export default function Nav() {
               )}
             </div>
 
+            {/* Actuarial Benefits Dropdown - Mobile */}
+            <div>
+              <button
+                onClick={() => setActuarialDropdownOpen(!actuarialDropdownOpen)}
+                className="flex items-center justify-between w-full px-4 py-3 text-gray-300 hover:text-white hover:bg-white/5 rounded-lg transition-colors"
+              >
+                <span className="font-medium">Platform</span>
+                <ChevronDown className={`w-4 h-4 transition-transform ${actuarialDropdownOpen ? "rotate-180" : ""}`} />
+              </button>
+              {actuarialDropdownOpen && (
+                <div className="ml-4 mt-2 space-y-1">
+                  <Link href="/kincaid-iq" className="block px-4 py-2 text-sm text-gray-400 hover:text-white hover:bg-white/5 rounded-lg transition-colors">
+                    Kincaid IQ
+                  </Link>
+                  <Link href="/actuarial-benefits" className="block px-4 py-2 text-sm text-gray-400 hover:text-white hover:bg-white/5 rounded-lg transition-colors">
+                    Actuarial Benefits
+                  </Link>
+                  <Link href="/solutions/risk-assessment" className="block px-4 py-2 text-sm text-gray-400 hover:text-white hover:bg-white/5 rounded-lg transition-colors">
+                    Risk Assessment
+                  </Link>
+                  <Link href="/solutions/premium-calculation" className="block px-4 py-2 text-sm text-gray-400 hover:text-white hover:bg-white/5 rounded-lg transition-colors">
+                    Premium Calculation
+                  </Link>
+                  <Link href="/solutions/claims-analytics" className="block px-4 py-2 text-sm text-gray-400 hover:text-white hover:bg-white/5 rounded-lg transition-colors">
+                    Claims Analytics
+                  </Link>
+                </div>
+              )}
+            </div>
+
             {/* Solutions Dropdown - Mobile */}
             <div>
               <button
@@ -348,36 +378,6 @@ export default function Nav() {
                   </Link>
                   <Link href="/ebitda-governance" className="block px-4 py-2 text-sm text-gray-400 hover:text-white hover:bg-white/5 rounded-lg transition-colors">
                     EBITDA Governance
-                  </Link>
-                </div>
-              )}
-            </div>
-
-            {/* Actuarial Benefits Dropdown - Mobile */}
-            <div>
-              <button
-                onClick={() => setActuarialDropdownOpen(!actuarialDropdownOpen)}
-                className="flex items-center justify-between w-full px-4 py-3 text-gray-300 hover:text-white hover:bg-white/5 rounded-lg transition-colors"
-              >
-                <span className="font-medium">Actuarial Benefits</span>
-                <ChevronDown className={`w-4 h-4 transition-transform ${actuarialDropdownOpen ? "rotate-180" : ""}`} />
-              </button>
-              {actuarialDropdownOpen && (
-                <div className="ml-4 mt-2 space-y-1">
-                  <Link href="/kincaid-iq" className="block px-4 py-2 text-sm text-gray-400 hover:text-white hover:bg-white/5 rounded-lg transition-colors">
-                    Kincaid IQ
-                  </Link>
-                  <Link href="/actuarial-benefits" className="block px-4 py-2 text-sm text-gray-400 hover:text-white hover:bg-white/5 rounded-lg transition-colors">
-                    Actuarial Benefits
-                  </Link>
-                  <Link href="/solutions/risk-assessment" className="block px-4 py-2 text-sm text-gray-400 hover:text-white hover:bg-white/5 rounded-lg transition-colors">
-                    Risk Assessment
-                  </Link>
-                  <Link href="/solutions/premium-calculation" className="block px-4 py-2 text-sm text-gray-400 hover:text-white hover:bg-white/5 rounded-lg transition-colors">
-                    Premium Calculation
-                  </Link>
-                  <Link href="/solutions/claims-analytics" className="block px-4 py-2 text-sm text-gray-400 hover:text-white hover:bg-white/5 rounded-lg transition-colors">
-                    Claims Analytics
                   </Link>
                 </div>
               )}

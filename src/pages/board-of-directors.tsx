@@ -108,6 +108,27 @@ const boardMembers = [
       ],
       vision: "As Executive Chair of the Committee on Algorithmic Governance & Fiduciary Risk, Catherine's vision is to establish SiriusB iQ as the gold standard for ethical AI deployment in benefits management. She is committed to ensuring that every algorithmic decision made by the platform can withstand the scrutiny of fiduciary duty, regulatory review, and client trust."
     }
+  },
+  {
+    name: "Melissa Colpitts",
+    title: "Board Member - Human Resources Leadership & Fiduciary Governance",
+    image: "/melissa-colpitts.jpg",
+    bio: "Melissa Colpitts brings practitioner-grade expertise in HR leadership and fiduciary governance from her roles as Vice Chancellor of Human Resources at Ivy Tech Community College and Senior HR Specialist at Saint Joseph Health System.",
+    fullBio: {
+      introduction: "Melissa Colpitts has spent her career at the exact intersection where fiduciary obligation meets human consequence — where a budget decision in a boardroom becomes a medication decision at a pharmacy counter. As Vice Chancellor of Human Resources at Ivy Tech Community College and as a Senior HR Specialist inside Saint Joseph Health System, she has lived the tension between institutional constraints and genuine care for the people those institutions are supposed to serve.",
+      platform: "Melissa brings to the board something that no algorithm produces: the lived, practitioner-grade understanding of what happens to real people when governance fails, and what becomes possible for real people when governance is done right. She has seen the employee who couldn't afford her insulin because her employer's PBM was silently pocketing rebates. The family that hit their stop-loss corridor because nobody caught the specialty drug trend in month four. The plan participant who trusted that someone, somewhere, was watching the receipts. She has been that somebody.",
+      philosophy: "Melissa's approach is grounded in moral clarity that no credential can manufacture. She understands that technology without human wisdom is just a faster way to make the same mistakes. Her work embodies the humanitarian accounting at the core of SiriusB iQ — making the invisible visible, sealing evidence with cryptographic receipts, and giving boards, CFOs, and fiduciaries the instruments they need to govern what has always been governed by opacity.",
+      expertise: [
+        "Vice Chancellor of Human Resources - Ivy Tech Community College",
+        "Senior HR Specialist - Saint Joseph Health System",
+        "Gallup-Certified Strengths Coach",
+        "Certified Human Resources Investigator",
+        "Benefits Administration & Fiduciary Oversight",
+        "Employee Advocacy & Healthcare Navigation",
+        "Institutional Governance & Policy Implementation"
+      ],
+      vision: "Melissa brings the wisdom that ensures technology serves humanity rather than replacing it. She has fought for real people when governance failed, and championed what becomes possible when governance is done right. Her presence on the board ensures that every system built, every algorithm deployed, and every decision made is measured not just by its technical precision, but by its human impact. The receipts just got a conscience."
+    }
   }
 ];
 

@@ -106,7 +106,7 @@ const boardMembers = [
         "Financial Services Leadership",
         "Board Governance & Oversight"
       ],
-      vision: "As Executive Chair of the Committee on Algorithmic Governance & Fiduciary Risk, Catherine's vision is to establish SiriusB iQ as the gold standard for ethical AI deployment in benefits management. She is committed to ensuring that every algorithmic decision made by the platform can withstand the scrutiny of fiduciary duty, regulatory review, and client trust."
+      vision: "As Executive Chair of the Committee on Algorithmic Governance & Fiduciary Risk, Catherine's vision is to establish SiriusB iQ AI Data Sciences Lab as the gold standard for ethical AI deployment in benefits management. She is committed to ensuring that every algorithmic decision made by the platform can withstand the scrutiny of fiduciary duty, regulatory review, and client trust."
     }
   },
   {
@@ -117,7 +117,7 @@ const boardMembers = [
     fullBio: {
       introduction: "Melissa Colpitts has spent her career at the exact intersection where fiduciary obligation meets human consequence — where a budget decision in a boardroom becomes a medication decision at a pharmacy counter. As Vice Chancellor of Human Resources at Ivy Tech Community College and as a Senior HR Specialist inside Saint Joseph Health System, she has lived the tension between institutional constraints and genuine care for the people those institutions are supposed to serve.",
       platform: "Melissa brings to the board something that no algorithm produces: the lived, practitioner-grade understanding of what happens to real people when governance fails, and what becomes possible for real people when governance is done right. She has seen the employee who couldn't afford her insulin because her employer's PBM was silently pocketing rebates. The family that hit their stop-loss corridor because nobody caught the specialty drug trend in month four. The plan participant who trusted that someone, somewhere, was watching the receipts. She has been that somebody.",
-      philosophy: "Melissa's approach is grounded in moral clarity that no credential can manufacture. She understands that technology without human wisdom is just a faster way to make the same mistakes. Her work embodies the humanitarian accounting at the core of SiriusB iQ — making the invisible visible, sealing evidence with cryptographic receipts, and giving boards, CFOs, and fiduciaries the instruments they need to govern what has always been governed by opacity.",
+      philosophy: "Melissa's approach is grounded in moral clarity that no credential can manufacture. She understands that technology without human wisdom is just a faster way to make the same mistakes. Her work embodies the humanitarian accounting at the core of SiriusB iQ AI Data Sciences Lab — making the invisible visible, sealing evidence with cryptographic receipts, and giving boards, CFOs, and fiduciaries the instruments they need to govern what has always been governed by opacity.",
       expertise: [
         "Vice Chancellor of Human Resources - Ivy Tech Community College",
         "Senior HR Specialist - Saint Joseph Health System",
@@ -139,8 +139,8 @@ export default function BoardOfDirectorsPage() {
   return (
     <>
       <SEO
-        title="Board of Directors | SiriusB iQ"
-        description="Meet the board of directors guiding SiriusB iQ's mission to revolutionize health economics and benefits intelligence through algorithmic fiduciary platforms."
+        title="Board of Directors | SiriusB iQ AI Data Sciences Lab"
+        description="Meet the board of directors guiding SiriusB iQ AI Data Sciences Lab's mission to revolutionize health economics and benefits intelligence through algorithmic fiduciary platforms."
       />
       <Nav />
 

@@ -51,7 +51,7 @@ export default function Nav() {
                       href="/investor"
                       className="block px-4 py-3 text-gray-300 hover:text-white hover:bg-amber-500/10 rounded-lg transition-all"
                     >
-                      <div className="font-medium">Investors</div>
+                      <div className="font-medium">Investor Groups</div>
                       <div className="text-xs text-gray-400">Investment overview</div>
                     </Link>
                     <Link
@@ -277,7 +277,7 @@ export default function Nav() {
                     Board of Directors
                   </Link>
                   <Link href="/investor" className="block px-4 py-2 text-sm text-gray-400 hover:text-white hover:bg-white/5 rounded-lg transition-colors">
-                    Investors
+                    Investor Groups
                   </Link>
                   <Link href="/capital-markets" className="block px-4 py-2 text-sm text-gray-400 hover:text-white hover:bg-white/5 rounded-lg transition-colors">
                     Capital Markets

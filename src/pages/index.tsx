@@ -5,6 +5,7 @@ import { motion, useScroll, useTransform, useInView } from "framer-motion";
 import { SEO } from "@/components/SEO";
 import { FileText, Shield, TrendingUp, CheckCircle2, Sparkles, Zap, Crown, Star, Activity, ArrowRight, Lock } from "lucide-react";
 import { ExecutiveWarRoom } from "@/components/warroom/ExecutiveWarRoom";
+import { CHROWarRoom } from "@/components/warroom/CHROWarRoom";
 import { BadgeDetailSystem } from "@/components/home/BadgeDetailSystem";
 import { Hero3D } from "@/components/Hero3D";
 
@@ -523,29 +524,29 @@ export default function HomePage() {
           >
             <div className="flex items-center gap-3 mb-4">
               <motion.div 
-                className="h-12 w-12 rounded-xl bg-gradient-to-br from-amber-500/30 to-orange-500/30 flex items-center justify-center shadow-lg shadow-amber-500/30"
+                className="h-12 w-12 rounded-xl bg-gradient-to-br from-emerald-500/30 to-teal-500/30 flex items-center justify-center shadow-lg shadow-emerald-500/30"
                 whileHover={{ rotate: 360, scale: 1.15 }}
                 transition={{ duration: 0.8, type: "spring" }}
               >
-                <Activity className="h-6 w-6 text-amber-400 drop-shadow-[0_0_12px_rgba(251,191,36,0.6)]" />
+                <Activity className="h-6 w-6 text-emerald-400 drop-shadow-[0_0_12px_rgba(16,185,129,0.6)]" />
               </motion.div>
               <div>
-                <h2 className="text-4xl font-black bg-gradient-to-br from-white via-amber-200 to-orange-200 bg-clip-text text-transparent">
-                  CFO War Room
+                <h2 className="text-4xl font-black bg-gradient-to-br from-white via-emerald-200 to-teal-200 bg-clip-text text-transparent">
+                  CHRO War Room
                 </h2>
                 <p className="text-sm text-zinc-400 mt-1">
-                  Real-time operational intelligence for executive decision-making
+                  Human capital analytics and benefits intelligence for talent strategy
                 </p>
               </div>
             </div>
             <p className="text-base text-zinc-300 leading-relaxed max-w-3xl">
-              Command center for financial operations. Monitor critical metrics, investigate anomalies, 
-              and drill down to evidence-backed details. Every number tells a story—and every story has receipts.
+              Command center for human capital operations. Monitor employee engagement, benefits utilization, 
+              and retention metrics. Data-driven insights for talent strategy—every decision backed by evidence.
             </p>
           </motion.div>
 
           <motion.div
-            className="rounded-3xl border border-amber-500/40 bg-gradient-to-br from-zinc-950/95 via-amber-950/10 to-zinc-900/90 p-8 shadow-2xl backdrop-blur-sm"
+            className="rounded-3xl border border-emerald-500/40 bg-gradient-to-br from-zinc-950/95 via-emerald-950/10 to-zinc-900/90 p-8 shadow-2xl backdrop-blur-sm"
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
@@ -553,9 +554,9 @@ export default function HomePage() {
             whileHover={{ scale: 1.01 }}
             style={{ perspective: "1500px", transformStyle: "preserve-3d" }}
           >
-            <div className="absolute -inset-1 rounded-3xl bg-gradient-to-r from-amber-600/20 via-orange-500/20 to-amber-600/20 opacity-50 blur-xl" />
+            <div className="absolute -inset-1 rounded-3xl bg-gradient-to-r from-emerald-600/20 via-teal-500/20 to-emerald-600/20 opacity-50 blur-xl" />
             <div className="relative">
-              <ExecutiveWarRoom />
+              <CHROWarRoom />
             </div>
           </motion.div>
 
@@ -573,10 +574,10 @@ export default function HomePage() {
             >
               <Link
                 href="/executive-war-room"
-                className="inline-flex items-center gap-2 rounded-xl border border-amber-500/40 bg-gradient-to-r from-amber-600/30 to-orange-600/30 px-8 py-4 text-base font-bold backdrop-blur-xl transition-all hover:border-amber-400/60 hover:shadow-lg hover:shadow-amber-500/30"
+                className="inline-flex items-center gap-2 rounded-xl border border-emerald-500/40 bg-gradient-to-r from-emerald-600/30 to-teal-600/30 px-8 py-4 text-base font-bold backdrop-blur-xl transition-all hover:border-emerald-400/60 hover:shadow-lg hover:shadow-emerald-500/30"
               >
-                <Activity className="h-5 w-5 text-amber-400" />
-                <span>Explore Full War Room</span>
+                <Activity className="h-5 w-5 text-emerald-400" />
+                <span>Explore Full CHRO Dashboard</span>
                 <ArrowRight className="h-5 w-5" />
               </Link>
             </motion.div>
@@ -587,9 +588,9 @@ export default function HomePage() {
             >
               <Link
                 href="/request-demo"
-                className="inline-flex items-center gap-2 rounded-xl border border-amber-500/50 bg-zinc-950/80 px-8 py-4 text-base font-bold text-white backdrop-blur-sm transition-all hover:border-amber-400/70 hover:bg-amber-950/40"
+                className="inline-flex items-center gap-2 rounded-xl border border-emerald-500/50 bg-zinc-950/80 px-8 py-4 text-base font-bold text-white backdrop-blur-sm transition-all hover:border-emerald-400/70 hover:bg-emerald-950/40"
               >
-                <Lock className="h-5 w-5 text-amber-400" />
+                <Lock className="h-5 w-5 text-emerald-400" />
                 <span>Request Demo Access</span>
               </Link>
             </motion.div>

@@ -17,6 +17,15 @@ export type TileKey =
   | "contractCompliance" 
   | "benefitsNPS" 
   | "employeeNPS"
+  // CHRO Keys (Human Capital & Benefits)
+  | "benefitsUtilization"
+  | "employeeRetention"
+  | "healthcareROI"
+  | "wellnessEngagement"
+  | "dependentCoverage"
+  | "benefitsAdoption"
+  | "employeeSatisfaction"
+  | "totalRewards"
   // Legacy Keys (kept for compatibility with WarRoom.tsx)
   | "cashflow"
   | "recoverableEbitda"

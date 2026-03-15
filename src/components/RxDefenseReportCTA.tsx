@@ -129,7 +129,7 @@ export function RxDefenseReportCTA() {
 
               <div className="flex items-center gap-2 text-xs text-blue-300 bg-blue-500/10 rounded-lg p-2 border border-blue-500/20">
                 <CheckCircle2 className="w-4 h-4 flex-shrink-0 text-blue-400" />
-                <span>48-hour delivery guaranteed</span>
+                <span>Instant delivery upon upload</span>
               </div>
             </div>
           </motion.div>
@@ -166,8 +166,8 @@ export function RxDefenseReportCTA() {
               <div className="text-xs text-blue-200">Ready Format</div>
             </div>
             <div className="text-center space-y-2 p-4 rounded-lg bg-blue-500/5 border border-blue-500/10">
-              <div className="text-2xl font-bold text-blue-400">48hrs</div>
-              <div className="text-xs text-blue-200">Delivery Guarantee</div>
+              <div className="text-2xl font-bold text-blue-400">Instant</div>
+              <div className="text-xs text-blue-200">Report Delivery</div>
             </div>
           </div>
 
@@ -239,7 +239,7 @@ export function RxDefenseReportCTA() {
                 <li>Click below to proceed to secure payment (Credit Card or Venmo)</li>
                 <li>Complete your $199 payment via Stripe</li>
                 <li>Upload your PBM contract PDF on the confirmation page</li>
-                <li>Receive your board report within 48 hours via email</li>
+                <li>Receive your board report instantly via email</li>
               </ol>
             </div>
 

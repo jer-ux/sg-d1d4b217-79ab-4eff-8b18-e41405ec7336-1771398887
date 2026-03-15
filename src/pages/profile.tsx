@@ -126,8 +126,8 @@ export default function ProfilePage() {
               <h1 className="text-4xl md:text-5xl font-bold bg-gradient-to-r from-blue-400 via-purple-400 to-pink-400 bg-clip-text text-transparent">
                 My Account
               </h1>
-              <p className="text-blue-200 text-lg">
-                Manage your profile and track your RX Defense Board Reports
+              <p className="text-purple-200 mb-8">
+                Purchase comprehensive RX Defense IQ Board Reports for your PBM contracts. Get instant analysis of critical clauses, transparency gaps, and negotiation opportunities.
               </p>
             </div>
 

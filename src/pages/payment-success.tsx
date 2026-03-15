@@ -99,7 +99,7 @@ export default function PaymentSuccess() {
               </h1>
               
               <p className="text-xl text-blue-200 max-w-2xl mx-auto">
-                Thank you for your purchase. Your RX Defense Board Report is ready to be generated.
+                Thank you for your purchase. Your RX Defense Board Report will be generated instantly upon contract upload.
               </p>
             </div>
 
@@ -149,10 +149,10 @@ export default function PaymentSuccess() {
                   <div>
                     <h3 className="text-lg font-semibold text-white mb-2 flex items-center gap-2">
                       <Clock className="w-5 h-5 text-blue-400" />
-                      Receive Your Board Report (48 Hours)
+                      Receive Your Board Report (Instantly)
                     </h3>
                     <p className="text-blue-200">
-                      You'll receive a professional, board-ready report via email within 48 hours, including executive summary, clause-by-clause analysis, and negotiation recommendations.
+                      Your professional, board-ready report will be generated and delivered instantly via email upon contract upload, including executive summary, clause-by-clause analysis, and negotiation recommendations.
                     </p>
                   </div>
                 </div>
@@ -182,7 +182,7 @@ export default function PaymentSuccess() {
                 Upload Your Contract Now
               </h2>
               <p className="text-blue-200 mb-6">
-                Ready to get started? Upload your PBM contract PDF below, and we'll begin the analysis immediately.
+                Ready to get started? Upload your PBM contract PDF below to receive your instant board-ready analysis.
               </p>
               
               <div className="flex gap-4">
@@ -258,8 +258,8 @@ export default function PaymentSuccess() {
                   <div className="flex items-start gap-3">
                     <CheckCircle2 className="w-5 h-5 text-green-400 mt-0.5 flex-shrink-0" />
                     <div>
-                      <h3 className="font-semibold text-white">48-Hour Delivery</h3>
-                      <p className="text-sm text-blue-200">Guaranteed turnaround time</p>
+                      <h3 className="font-semibold text-white">Instant Delivery</h3>
+                      <p className="text-sm text-blue-200">Report generated immediately upon upload</p>
                     </div>
                   </div>
                 </div>

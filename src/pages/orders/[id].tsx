@@ -346,6 +346,59 @@ export default function OrderDetailPage() {
               </Card>
             )}
 
+            <Card className="bg-white/5 border-white/10 backdrop-blur-xl p-6">
+              <h2 className="text-xl font-bold text-white mb-4 flex items-center gap-2">
+                <Clock className="w-5 h-5 text-blue-400" />
+                Report Status
+              </h2>
+
+              <div className="space-y-4">
+                <div className="flex items-center gap-3">
+                  <div className={`w-10 h-10 rounded-full flex items-center justify-center ${
+                    order.report_status === 'awaiting_contract' ? 'bg-yellow-500/20 border-2 border-yellow-500' : 'bg-green-500/20 border-2 border-green-500'
+                  }`}>
+                    <FileText className="w-5 h-5 text-white" />
+                  </div>
+                  <div className="flex-1">
+                    <div className="text-white font-semibold">Contract Upload</div>
+                    <div className="text-sm text-blue-200">
+                      {order.contract_file_url ? 'Contract received' : 'Awaiting contract upload'}
+                    </div>
+                  </div>
+                </div>
+
+                <div className="flex items-center gap-3">
+                  <div className={`w-10 h-10 rounded-full flex items-center justify-center ${
+                    ['analyzing', 'completed', 'delivered'].includes(order.report_status) ? 'bg-green-500/20 border-2 border-green-500' : 'bg-slate-500/20 border-2 border-slate-500'
+                  }`}>
+                    <Loader2 className={`w-5 h-5 text-white ${order.report_status === 'analyzing' ? 'animate-spin' : ''}`} />
+                  </div>
+                  <div className="flex-1">
+                    <div className="text-white font-semibold">AI Analysis</div>
+                    <div className="text-sm text-blue-200">
+                      {order.report_status === 'analyzing' ? 'Analysis in progress (instant)' : 
+                       ['completed', 'delivered'].includes(order.report_status) ? 'Analysis complete' : 'Pending contract upload'}
+                    </div>
+                  </div>
+                </div>
+
+                <div className="flex items-center gap-3">
+                  <div className={`w-10 h-10 rounded-full flex items-center justify-center ${
+                    ['completed', 'delivered'].includes(order.report_status) ? 'bg-green-500/20 border-2 border-green-500' : 'bg-slate-500/20 border-2 border-slate-500'
+                  }`}>
+                    <CheckCircle2 className="w-5 h-5 text-white" />
+                  </div>
+                  <div className="flex-1">
+                    <div className="text-white font-semibold">Report Delivery</div>
+                    <div className="text-sm text-blue-200">
+                      {order.report_status === 'delivered' ? 'Report delivered via email' :
+                       order.report_status === 'completed' ? 'Ready for download' : 'Pending analysis'}
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </Card>
+
             {/* Support */}
             <Card className="bg-white/5 border-white/10 backdrop-blur-xl p-6 text-center">
               <p className="text-blue-200">

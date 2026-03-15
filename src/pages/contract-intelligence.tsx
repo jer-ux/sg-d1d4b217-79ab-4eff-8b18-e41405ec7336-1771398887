@@ -9,7 +9,7 @@ import { Badge } from "@/components/ui/badge";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import {
   FileText, Shield, AlertTriangle, CheckCircle2, Target, Download,
-  FileUp, Activity, Search, BookOpen, Scale, FileSearch
+  FileUp, Activity, Search, BookOpen, Scale, FileSearch, Upload
 } from "lucide-react";
 import { ContractIntelligenceEngine, IntelligenceResult } from "@/lib/contracts/contractIntelligence";
 

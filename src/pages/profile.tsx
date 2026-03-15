@@ -61,17 +61,17 @@ export default function ProfilePage() {
     setOrders(userOrders);
   }
 
-  function getStatusBadge(status: Order["status"]) {
-    const statusConfig = {
-      payment_confirmed: { color: "bg-blue-500/20 text-blue-300 border-blue-500/30", icon: Clock, label: "Payment Confirmed" },
-      contract_uploaded: { color: "bg-purple-500/20 text-purple-300 border-purple-500/30", icon: FileText, label: "Contract Uploaded" },
-      analysis_in_progress: { color: "bg-yellow-500/20 text-yellow-300 border-yellow-500/30", icon: Loader2, label: "Analysis In Progress" },
-      report_ready: { color: "bg-green-500/20 text-green-300 border-green-500/30", icon: CheckCircle2, label: "Report Ready" },
+  function getStatusBadge(status: Order["report_status"]) {
+    const statusConfig: Record<string, {color: string, icon: any, label: string}> = {
+      awaiting_contract: { color: "bg-blue-500/20 text-blue-300 border-blue-500/30", icon: Clock, label: "Payment Confirmed" },
+      processing: { color: "bg-purple-500/20 text-purple-300 border-purple-500/30", icon: FileText, label: "Contract Uploaded" },
+      analyzing: { color: "bg-yellow-500/20 text-yellow-300 border-yellow-500/30", icon: Loader2, label: "Analysis In Progress" },
+      completed: { color: "bg-green-500/20 text-green-300 border-green-500/30", icon: CheckCircle2, label: "Report Ready" },
       delivered: { color: "bg-green-500/20 text-green-300 border-green-500/30", icon: CheckCircle2, label: "Delivered" },
-      cancelled: { color: "bg-red-500/20 text-red-300 border-red-500/30", icon: AlertCircle, label: "Cancelled" }
+      failed: { color: "bg-red-500/20 text-red-300 border-red-500/30", icon: AlertCircle, label: "Issue Detected" }
     };
 
-    const config = statusConfig[status] || statusConfig.payment_confirmed;
+    const config = statusConfig[status] || statusConfig.awaiting_contract;
     const Icon = config.icon;
 
     return (
@@ -185,7 +185,7 @@ export default function ProfilePage() {
                             <div className="text-2xl font-bold text-white">
                               {formatCurrency(order.amount_paid)}
                             </div>
-                            {getStatusBadge(order.status)}
+                            {getStatusBadge(order.report_status)}
                           </div>
                         </div>
 
@@ -196,12 +196,12 @@ export default function ProfilePage() {
                             <div className="flex items-center gap-2 text-sm">
                               <Building2 className="w-4 h-4 text-blue-400" />
                               <span className="text-blue-200">Company:</span>
-                              <span className="text-white font-medium">{order.company}</span>
+                              <span className="text-white font-medium">{order.customer_company || "N/A"}</span>
                             </div>
                             <div className="flex items-center gap-2 text-sm">
                               <Briefcase className="w-4 h-4 text-blue-400" />
                               <span className="text-blue-200">Role:</span>
-                              <span className="text-white font-medium">{order.job_title}</span>
+                              <span className="text-white font-medium">{order.customer_job_title || "N/A"}</span>
                             </div>
                           </div>
                           <div className="space-y-2">
@@ -211,18 +211,18 @@ export default function ProfilePage() {
                                 <span className="text-green-200">Contract: {order.contract_file_name}</span>
                               </div>
                             )}
-                            {order.report_delivered_at && (
+                            {order.report_generated_date && (
                               <div className="flex items-center gap-2 text-sm">
                                 <CheckCircle2 className="w-4 h-4 text-green-400" />
                                 <span className="text-green-200">
-                                  Delivered {formatDate(order.report_delivered_at)}
+                                  Delivered {formatDate(order.report_generated_date)}
                                 </span>
                               </div>
                             )}
                           </div>
                         </div>
 
-                        {order.status === "report_ready" || order.status === "delivered" ? (
+                        {order.report_status === "completed" || order.report_status === "delivered" ? (
                           <div className="mt-4 pt-4 border-t border-white/10">
                             <Button
                               className="w-full bg-gradient-to-r from-green-500 to-emerald-500 hover:from-green-600 hover:to-emerald-600"
@@ -330,7 +330,7 @@ export default function ProfilePage() {
                       </div>
                       <div>
                         <div className="text-3xl font-bold text-white">
-                          {orders.filter(o => o.status === "delivered").length}
+                          {orders.filter(o => o.report_status === "delivered" || o.report_status === "completed").length}
                         </div>
                         <div className="text-sm text-green-200">Delivered</div>
                       </div>
@@ -344,7 +344,7 @@ export default function ProfilePage() {
                       </div>
                       <div>
                         <div className="text-3xl font-bold text-white">
-                          {orders.filter(o => o.status === "analysis_in_progress").length}
+                          {orders.filter(o => o.report_status === "analyzing" || o.report_status === "processing").length}
                         </div>
                         <div className="text-sm text-purple-200">In Progress</div>
                       </div>

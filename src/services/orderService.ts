@@ -26,12 +26,12 @@ export class OrderService {
       stripe_session_id: data.stripeSessionId,
       customer_email: data.customerEmail,
       customer_name: data.customerName,
-      company: data.company,
-      job_title: data.jobTitle,
-      phone: data.phone,
+      customer_company: data.company,
+      customer_job_title: data.jobTitle,
+      customer_phone: data.phone,
       amount_paid: data.amount,
-      status: "payment_confirmed",
-      payment_status: "paid"
+      report_status: "awaiting_contract",
+      payment_status: "succeeded"
     };
 
     const { data: order, error } = await supabase
@@ -57,8 +57,8 @@ export class OrderService {
       .update({
         contract_file_url: contractFileUrl,
         contract_file_name: fileName,
-        status: "contract_uploaded",
-        contract_uploaded_at: new Date().toISOString()
+        report_status: "processing",
+        contract_upload_date: new Date().toISOString()
       })
       .eq("id", orderId);
 
@@ -133,14 +133,14 @@ export class OrderService {
    */
   static async updateOrderStatus(
     orderId: string,
-    status: Order["status"],
-    reportFileUrl?: string
+    status: Order["report_status"],
+    reportUrl?: string
   ): Promise<boolean> {
-    const updateData: OrderUpdate = { status };
+    const updateData: OrderUpdate = { report_status: status };
     
-    if (reportFileUrl) {
-      updateData.report_file_url = reportFileUrl;
-      updateData.report_delivered_at = new Date().toISOString();
+    if (reportUrl) {
+      updateData.report_url = reportUrl;
+      updateData.report_generated_date = new Date().toISOString();
     }
 
     const { error } = await supabase
@@ -190,7 +190,7 @@ export class OrderService {
         order_id: data.orderId,
         deliverable_type: data.deliverableType,
         file_url: data.fileUrl,
-        file_name: data.fileName,
+        deliverable_name: data.fileName,
         metadata: data.metadata
       })
       .select()

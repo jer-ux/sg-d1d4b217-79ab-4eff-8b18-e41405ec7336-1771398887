@@ -61,27 +61,27 @@ export default function OrderDetailPage() {
     }).format(amount);
   }
 
-  function getStatusInfo(status: Order["status"]) {
-    const statusConfig = {
-      payment_confirmed: {
+  function getStatusInfo(status: Order["report_status"]) {
+    const statusConfig: Record<string, {color: string, icon: any, label: string, description: string}> = {
+      awaiting_contract: {
         color: "bg-blue-500/20 text-blue-300 border-blue-500/30",
         icon: Clock,
         label: "Payment Confirmed",
         description: "Your payment has been received. Please upload your PBM contract to begin analysis."
       },
-      contract_uploaded: {
+      processing: {
         color: "bg-purple-500/20 text-purple-300 border-purple-500/30",
         icon: FileText,
         label: "Contract Uploaded",
         description: "We've received your contract and will begin analysis shortly."
       },
-      analysis_in_progress: {
+      analyzing: {
         color: "bg-yellow-500/20 text-yellow-300 border-yellow-500/30",
         icon: Loader2,
         label: "Analysis In Progress",
         description: "Our team is analyzing your PBM contract. You'll receive your report within 48 hours."
       },
-      report_ready: {
+      completed: {
         color: "bg-green-500/20 text-green-300 border-green-500/30",
         icon: CheckCircle2,
         label: "Report Ready",
@@ -93,15 +93,15 @@ export default function OrderDetailPage() {
         label: "Delivered",
         description: "Your report has been delivered via email and is available for download below."
       },
-      cancelled: {
+      failed: {
         color: "bg-red-500/20 text-red-300 border-red-500/30",
         icon: AlertCircle,
-        label: "Cancelled",
-        description: "This order has been cancelled."
+        label: "Issue Detected",
+        description: "There was an issue processing your contract. Our team has been notified."
       }
     };
 
-    return statusConfig[status] || statusConfig.payment_confirmed;
+    return statusConfig[status] || statusConfig.awaiting_contract;
   }
 
   if (loading) {
@@ -128,7 +128,7 @@ export default function OrderDetailPage() {
     );
   }
 
-  const statusInfo = getStatusInfo(order.status);
+  const statusInfo = getStatusInfo(order.report_status);
   const StatusIcon = statusInfo.icon;
 
   return (
@@ -182,7 +182,7 @@ export default function OrderDetailPage() {
             <Card className="bg-white/5 border-white/10 backdrop-blur-xl p-8">
               <div className="flex items-start gap-4">
                 <div className="w-12 h-12 rounded-lg bg-gradient-to-br from-blue-500/20 to-purple-500/20 flex items-center justify-center flex-shrink-0">
-                  <StatusIcon className={`w-6 h-6 ${order.status === "analysis_in_progress" ? "animate-spin" : ""}`} />
+                  <StatusIcon className={`w-6 h-6 ${order.report_status === "analyzing" ? "animate-spin" : ""}`} />
                 </div>
                 <div className="flex-1">
                   <h3 className="text-xl font-semibold text-white mb-2">{statusInfo.label}</h3>
@@ -225,13 +225,13 @@ export default function OrderDetailPage() {
                 </div>
 
                 <div className="space-y-4">
-                  {order.contract_uploaded_at && (
+                  {order.contract_upload_date && (
                     <div>
                       <div className="flex items-center gap-2 text-sm text-blue-200 mb-1">
                         <FileText className="w-4 h-4" />
                         Contract Uploaded
                       </div>
-                      <div className="text-white font-medium">{formatDate(order.contract_uploaded_at)}</div>
+                      <div className="text-white font-medium">{formatDate(order.contract_upload_date)}</div>
                     </div>
                   )}
 
@@ -245,13 +245,13 @@ export default function OrderDetailPage() {
                     </div>
                   )}
 
-                  {order.report_delivered_at && (
+                  {order.report_generated_date && (
                     <div>
                       <div className="flex items-center gap-2 text-sm text-blue-200 mb-1">
                         <CheckCircle2 className="w-4 h-4" />
                         Report Delivered
                       </div>
-                      <div className="text-white font-medium">{formatDate(order.report_delivered_at)}</div>
+                      <div className="text-white font-medium">{formatDate(order.report_generated_date)}</div>
                     </div>
                   )}
                 </div>
@@ -265,23 +265,23 @@ export default function OrderDetailPage() {
                   <div className="flex items-center gap-2 text-sm">
                     <Building2 className="w-4 h-4 text-blue-400" />
                     <span className="text-blue-200">Company:</span>
-                    <span className="text-white font-medium">{order.company}</span>
+                    <span className="text-white font-medium">{order.customer_company || "N/A"}</span>
                   </div>
                   <div className="flex items-center gap-2 text-sm">
                     <Briefcase className="w-4 h-4 text-blue-400" />
                     <span className="text-blue-200">Role:</span>
-                    <span className="text-white font-medium">{order.job_title}</span>
+                    <span className="text-white font-medium">{order.customer_job_title || "N/A"}</span>
                   </div>
                   <div className="flex items-center gap-2 text-sm">
                     <Mail className="w-4 h-4 text-blue-400" />
                     <span className="text-blue-200">Email:</span>
                     <span className="text-white font-medium">{order.customer_email}</span>
                   </div>
-                  {order.phone && (
+                  {order.customer_phone && (
                     <div className="flex items-center gap-2 text-sm">
                       <Phone className="w-4 h-4 text-blue-400" />
                       <span className="text-blue-200">Phone:</span>
-                      <span className="text-white font-medium">{order.phone}</span>
+                      <span className="text-white font-medium">{order.customer_phone}</span>
                     </div>
                   )}
                 </div>
@@ -301,7 +301,7 @@ export default function OrderDetailPage() {
                       <div className="flex items-center gap-3">
                         <FileText className="w-5 h-5 text-blue-400" />
                         <div>
-                          <div className="text-white font-medium">{deliverable.file_name}</div>
+                          <div className="text-white font-medium">{deliverable.deliverable_name}</div>
                           <div className="text-sm text-blue-200">
                             {deliverable.deliverable_type.replace(/_/g, " ").toUpperCase()}
                           </div>
@@ -322,7 +322,7 @@ export default function OrderDetailPage() {
             )}
 
             {/* Download Report Button (if ready) */}
-            {(order.status === "report_ready" || order.status === "delivered") && order.report_file_url && (
+            {(order.report_status === "completed" || order.report_status === "delivered") && order.report_url && (
               <Card className="bg-gradient-to-r from-green-500/20 to-emerald-500/20 border-green-500/30 backdrop-blur-xl p-8">
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-4">
@@ -337,7 +337,7 @@ export default function OrderDetailPage() {
                   <Button
                     size="lg"
                     className="bg-gradient-to-r from-green-500 to-emerald-500 hover:from-green-600 hover:to-emerald-600"
-                    onClick={() => window.open(order.report_file_url!, "_blank")}
+                    onClick={() => window.open(order.report_url!, "_blank")}
                   >
                     <Download className="w-5 h-5 mr-2" />
                     Download Report

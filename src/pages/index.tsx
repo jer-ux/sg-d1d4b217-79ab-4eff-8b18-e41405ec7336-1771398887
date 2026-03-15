@@ -224,7 +224,7 @@ export default function HomePage() {
                       >
                         <span>Explore Platform</span>
                         <svg className="ml-2 h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 5l7 7m0 0l-7 7m7-7H3" />
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 5l7 7m0 0l-7 7m7-7H6" />
                         </svg>
                       </Link>
                     </motion.div>
@@ -509,6 +509,90 @@ export default function HomePage() {
             transition={{ duration: 0.6, delay: 0.2 }}
           >
             <ExecutiveWarRoom />
+          </motion.div>
+        </section>
+
+        {/* CFO War Room Section */}
+        <section id="war-room" className="relative z-10 mx-auto w-full max-w-7xl px-6 py-20">
+          <motion.div
+            className="mb-12"
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6 }}
+          >
+            <div className="flex items-center gap-3 mb-4">
+              <motion.div 
+                className="h-12 w-12 rounded-xl bg-gradient-to-br from-amber-500/30 to-orange-500/30 flex items-center justify-center shadow-lg shadow-amber-500/30"
+                whileHover={{ rotate: 360, scale: 1.15 }}
+                transition={{ duration: 0.8, type: "spring" }}
+              >
+                <Activity className="h-6 w-6 text-amber-400 drop-shadow-[0_0_12px_rgba(251,191,36,0.6)]" />
+              </motion.div>
+              <div>
+                <h2 className="text-4xl font-black bg-gradient-to-br from-white via-amber-200 to-orange-200 bg-clip-text text-transparent">
+                  CFO War Room
+                </h2>
+                <p className="text-sm text-zinc-400 mt-1">
+                  Real-time operational intelligence for executive decision-making
+                </p>
+              </div>
+            </div>
+            <p className="text-base text-zinc-300 leading-relaxed max-w-3xl">
+              Command center for financial operations. Monitor critical metrics, investigate anomalies, 
+              and drill down to evidence-backed details. Every number tells a story—and every story has receipts.
+            </p>
+          </motion.div>
+
+          <motion.div
+            className="rounded-3xl border border-amber-500/40 bg-gradient-to-br from-zinc-950/95 via-amber-950/10 to-zinc-900/90 p-8 shadow-2xl backdrop-blur-sm"
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6, delay: 0.2 }}
+            whileHover={{ scale: 1.01 }}
+            style={{ perspective: "1500px", transformStyle: "preserve-3d" }}
+          >
+            <div className="absolute -inset-1 rounded-3xl bg-gradient-to-r from-amber-600/20 via-orange-500/20 to-amber-600/20 opacity-50 blur-xl" />
+            <div className="relative">
+              <ExecutiveWarRoom />
+            </div>
+          </motion.div>
+
+          <motion.div
+            className="mt-10 flex flex-col sm:flex-row gap-4 justify-center"
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6, delay: 0.6 }}
+          >
+            <motion.div
+              whileHover={{ scale: 1.05, z: 30 }}
+              whileTap={{ scale: 0.95 }}
+              style={{ perspective: "1000px", transformStyle: "preserve-3d" }}
+            >
+              <Link
+                href="/executive-war-room"
+                className="inline-flex items-center gap-2 rounded-xl border border-amber-500/40 bg-gradient-to-r from-amber-600/30 to-orange-600/30 px-8 py-4 text-base font-bold backdrop-blur-xl transition-all hover:border-amber-400/60 hover:shadow-lg hover:shadow-amber-500/30"
+              >
+                <Activity className="h-5 w-5 text-amber-400" />
+                <span>Explore Full War Room</span>
+                <ArrowRight className="h-5 w-5" />
+              </Link>
+            </motion.div>
+            <motion.div
+              whileHover={{ scale: 1.05, z: 30 }}
+              whileTap={{ scale: 0.95 }}
+              style={{ perspective: "1000px", transformStyle: "preserve-3d" }}
+            >
+              <Link
+                href="/request-demo"
+                className="inline-flex items-center gap-2 rounded-xl border border-amber-500/50 bg-zinc-950/80 px-8 py-4 text-base font-bold text-white backdrop-blur-sm transition-all hover:border-amber-400/70 hover:bg-amber-950/40"
+              >
+                <Lock className="h-5 w-5 text-amber-400" />
+                <span>Request Demo Access</span>
+              </Link>
+            </motion.div>
           </motion.div>
         </section>
 

@@ -1,11 +1,10 @@
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Shield, X, Upload, CheckCircle2, Loader2, DollarSign } from "lucide-react";
+import { Shield, X, DollarSign, CheckCircle2, Loader2, CreditCard } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Textarea } from "@/components/ui/textarea";
 import { loadStripe } from "@stripe/stripe-js";
 
 // Initialize Stripe
@@ -21,18 +20,16 @@ export function RxDefenseReportCTA() {
     email: "",
     company: "",
     jobTitle: "",
-    phone: "",
-    notes: "",
   });
 
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFormData(prev => ({
       ...prev,
       [e.target.name]: e.target.value
     }));
   };
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handlePayment = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsProcessing(true);
 
@@ -48,7 +45,6 @@ export function RxDefenseReportCTA() {
           customerName: formData.fullName,
           company: formData.company,
           jobTitle: formData.jobTitle,
-          phone: formData.phone,
         }),
       });
 
@@ -175,8 +171,8 @@ export function RxDefenseReportCTA() {
             </div>
           </div>
 
-          {/* Payment Form */}
-          <form onSubmit={handleSubmit} className="space-y-4">
+          {/* Simplified Payment Form - Just Contact Info */}
+          <form onSubmit={handlePayment} className="space-y-4">
             <div className="grid grid-cols-2 gap-4">
               <div className="space-y-2">
                 <Label htmlFor="fullName" className="text-white">Full Name *</Label>
@@ -234,37 +230,15 @@ export function RxDefenseReportCTA() {
               </div>
             </div>
 
-            <div className="space-y-2">
-              <Label htmlFor="phone" className="text-white">Phone Number (Optional)</Label>
-              <Input
-                id="phone"
-                name="phone"
-                type="tel"
-                value={formData.phone}
-                onChange={handleInputChange}
-                className="bg-slate-800 border-slate-700 text-white"
-                placeholder="+1 (555) 123-4567"
-              />
-            </div>
-
-            <div className="space-y-2">
-              <Label htmlFor="notes" className="text-white">Additional Notes (Optional)</Label>
-              <Textarea
-                id="notes"
-                name="notes"
-                value={formData.notes}
-                onChange={handleInputChange}
-                className="bg-slate-800 border-slate-700 text-white min-h-[80px]"
-                placeholder="Any specific concerns or areas you'd like us to focus on..."
-              />
-            </div>
-
             <div className="bg-blue-500/10 border border-blue-500/20 rounded-lg p-4 space-y-2">
-              <h4 className="text-white font-semibold text-sm">What happens next?</h4>
+              <h4 className="text-white font-semibold text-sm flex items-center gap-2">
+                <CreditCard className="w-4 h-4 text-blue-400" />
+                What happens next?
+              </h4>
               <ol className="text-xs text-blue-200 space-y-1 list-decimal list-inside">
-                <li>Complete payment via secure Stripe checkout</li>
-                <li>Upload your PBM contract PDF on the next page</li>
-                <li>Our AI analyzes your contract (20-point analysis)</li>
+                <li>Click below to proceed to secure payment (Credit Card or Venmo)</li>
+                <li>Complete your $199 payment via Stripe</li>
+                <li>Upload your PBM contract PDF on the confirmation page</li>
                 <li>Receive your board report within 48 hours via email</li>
               </ol>
             </div>
@@ -291,15 +265,15 @@ export function RxDefenseReportCTA() {
                   </>
                 ) : (
                   <>
-                    <DollarSign className="w-4 h-4 mr-2" />
-                    Pay $199 & Continue
+                    <CreditCard className="w-4 h-4 mr-2" />
+                    Continue to Payment ($199)
                   </>
                 )}
               </Button>
             </div>
 
             <p className="text-xs text-center text-blue-300">
-              Secure payment processed by Stripe. Your contract data is confidential and handled with enterprise-grade security.
+              Secure payment processed by Stripe. Accepts all major credit cards and Venmo.
             </p>
           </form>
         </DialogContent>

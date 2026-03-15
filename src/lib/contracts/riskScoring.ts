@@ -1,296 +1,261 @@
-/**
- * Litigation & Fiduciary Risk Scoring Engine
- * Quantifies legal exposure and fiduciary breach probability
- */
+// Risk scoring and evaluation engine
 
-import {
-  ContractClause,
-  RiskFlag,
-  FiduciaryRiskAssessment,
-  ClauseType,
-  RiskLevel,
-} from "./types";
+import type { Clause, ClauseScore, PBMClauseCategory, RiskExplanation } from "./types";
 
 /**
- * Fiduciary breach precedent cases
+ * Score a clause across 5 dimensions
  */
-const FIDUCIARY_PRECEDENTS = {
-  data_ownership: [
-    "Johnson v. Aetna (2018) - $38M settlement for undisclosed data monetization",
-    "ERISA § 404(a)(1) - Prudent person standard breach",
-  ],
-  rebates: [
-    "Lewandowski v. CVS Caremark (2020) - Rebate retention without disclosure",
-    "DOL Advisory Opinion 97-15A - Rebate pass-through requirement",
-  ],
-  audit: [
-    "Braden v. Wal-Mart (2014) - Audit right restrictions deemed imprudent",
-  ],
-};
-
-/**
- * Litigation cost benchmarks by case type
- */
-const LITIGATION_COSTS = {
-  fiduciary_breach: {
-    defense_min: 500000,
-    defense_max: 2000000,
-    settlement_median: 5000000,
-  },
-  data_misuse: {
-    defense_min: 300000,
-    defense_max: 1500000,
-    settlement_median: 3000000,
-  },
-  contract_dispute: {
-    defense_min: 200000,
-    defense_max: 800000,
-    settlement_median: 1000000,
-  },
-};
-
-export class RiskScoringEngine {
-  /**
-   * Assess fiduciary breach risk for a clause
-   */
-  static assessFiduciaryRisk(clause: ContractClause): FiduciaryRiskAssessment {
-    const breachProbability = this.calculateBreachProbability(clause);
-    const potentialDamages = this.estimateDamages(clause);
-    const defenseCosts = this.estimateDefenseCosts(clause);
-    const precedentStrength = this.assessPrecedentStrength(clause.clause_type);
-
-    return {
-      clause_id: clause.id,
-      breach_probability: breachProbability,
-      potential_damages: potentialDamages,
-      defense_cost_estimate: defenseCosts,
-      precedent_strength: precedentStrength,
-      recommendation: this.generateRiskRecommendation(
-        breachProbability,
-        potentialDamages,
-        precedentStrength
-      ),
-    };
-  }
-
-  /**
-   * Calculate probability of fiduciary breach
-   */
-  private static calculateBreachProbability(clause: ContractClause): number {
-    let probability = 0.0;
-
-    const text = clause.clause_text.toLowerCase();
-
-    // High-risk indicators
-    const riskIndicators = [
-      { pattern: /undisclosed.*fee/i, weight: 0.25 },
-      { pattern: /affiliate.*arrangement/i, weight: 0.20 },
-      { pattern: /proprietary.*data/i, weight: 0.15 },
-      { pattern: /rebate.*retention/i, weight: 0.30 },
-      { pattern: /conflict.*not.*disclosed/i, weight: 0.35 },
-      { pattern: /spread.*pricing/i, weight: 0.20 },
-      { pattern: /formulary.*rebate/i, weight: 0.15 },
-    ];
-
-    riskIndicators.forEach(({ pattern, weight }) => {
-      if (pattern.test(text)) {
-        probability += weight;
+export function scoreClause(clause: Clause): ClauseScore {
+  const text = clause.textSnippet.toLowerCase();
+  const category = clause.category;
+  
+  // Base scores (would use AI analysis in production)
+  let transparencyScore = 5;
+  let employerProtectionScore = 5;
+  let economicAlignmentScore = 5;
+  let auditabilityScore = 5;
+  let exitFlexibilityScore = 5;
+  
+  // Category-specific scoring logic
+  switch (category) {
+    case "rebate_ownership":
+      if (text.includes("100%") && text.includes("employer")) {
+        transparencyScore = 9;
+        employerProtectionScore = 10;
+        economicAlignmentScore = 10;
+      } else if (text.includes("pbm retains") || text.includes("shared")) {
+        transparencyScore = 3;
+        employerProtectionScore = 2;
+        economicAlignmentScore = 2;
       }
-    });
-
-    // Clause-specific risk multipliers
-    const clauseMultipliers: Partial<Record<ClauseType, number>> = {
-      rebates: 1.5,
-      data_ownership: 1.4,
-      audit: 1.2,
-      pricing: 1.3,
-    };
-
-    const multiplier = clauseMultipliers[clause.clause_type] || 1.0;
-    probability *= multiplier;
-
-    // Cap at 85% (never claim certainty)
-    return Math.min(probability, 0.85);
-  }
-
-  /**
-   * Estimate potential damages
-   */
-  private static estimateDamages(clause: ContractClause): number {
-    const baselineByType: Partial<Record<ClauseType, number>> = {
-      rebates: 2000000, // Average rebate leakage per year
-      data_ownership: 5000000, // ERISA class action baseline
-      audit: 1000000, // Cost recovery + penalties
-      pricing: 1500000, // Overcharge accumulation
-      termination: 500000, // Lock-in penalty costs
-    };
-
-    let baseDamages = baselineByType[clause.clause_type] || 500000;
-
-    // Escalate based on risk indicators
-    if (clause.economic_flag) {
-      baseDamages *= 1.5;
-    }
-
-    if (clause.risk_flag === "critical") {
-      baseDamages *= 2.0;
-    } else if (clause.risk_flag === "high") {
-      baseDamages *= 1.5;
-    }
-
-    return Math.round(baseDamages);
-  }
-
-  /**
-   * Estimate defense costs
-   */
-  private static estimateDefenseCosts(clause: ContractClause): number {
-    const categoryMap: Record<ClauseType, keyof typeof LITIGATION_COSTS> = {
-      rebates: "fiduciary_breach",
-      data_ownership: "data_misuse",
-      audit: "fiduciary_breach",
-      pricing: "fiduciary_breach",
-      termination: "contract_dispute",
-      specialty: "contract_dispute",
-      mac: "contract_dispute",
-      formulary: "fiduciary_breach",
-      network: "contract_dispute",
-      reporting: "contract_dispute",
-      spread: "fiduciary_breach",
-      transparency: "fiduciary_breach",
-      mail_order: "contract_dispute",
-      liability: "contract_dispute",
-      indemnification: "contract_dispute",
-      confidentiality: "data_misuse",
-      force_majeure: "contract_dispute",
-    };
-
-    const category = categoryMap[clause.clause_type];
-    const costs = LITIGATION_COSTS[category];
-
-    // Return average of min/max defense costs
-    return Math.round((costs.defense_min + costs.defense_max) / 2);
-  }
-
-  /**
-   * Assess strength of legal precedent
-   */
-  private static assessPrecedentStrength(clauseType: ClauseType): RiskLevel {
-    const strongPrecedents: ClauseType[] = ["rebates", "data_ownership", "audit"];
-    const moderatePrecedents: ClauseType[] = ["pricing", "termination", "specialty"];
-
-    if (strongPrecedents.includes(clauseType)) return "high";
-    if (moderatePrecedents.includes(clauseType)) return "medium";
-    return "low";
-  }
-
-  /**
-   * Generate risk recommendation
-   */
-  private static generateRiskRecommendation(
-    probability: number,
-    damages: number,
-    precedent: RiskLevel
-  ): string {
-    const expectedValue = probability * damages;
-
-    if (probability > 0.5 && precedent === "high") {
-      return `CRITICAL RISK: ${Math.round(
-        probability * 100
-      )}% breach probability with strong precedent. Expected exposure: $${expectedValue.toLocaleString()}. Immediate renegotiation required.`;
-    }
-
-    if (probability > 0.3) {
-      return `HIGH RISK: ${Math.round(
-        probability * 100
-      )}% breach probability. Expected exposure: $${expectedValue.toLocaleString()}. Recommend legal review and contract amendment.`;
-    }
-
-    if (probability > 0.15) {
-      return `MODERATE RISK: ${Math.round(
-        probability * 100
-      )}% breach probability. Expected exposure: $${expectedValue.toLocaleString()}. Monitor and consider mitigation strategies.`;
-    }
-
-    return `LOW RISK: ${Math.round(
-      probability * 100
-    )}% breach probability. Expected exposure: $${expectedValue.toLocaleString()}. Continue monitoring.`;
-  }
-
-  /**
-   * Calculate aggregate risk score for entire contract
-   */
-  static calculateContractRiskScore(clauses: ContractClause[]): {
-    total_risk_score: number;
-    expected_litigation_cost: number;
-    critical_clauses: number;
-    risk_breakdown: Record<ClauseType, number>;
-  } {
-    let totalRisk = 0;
-    let totalExpectedCost = 0;
-    let criticalCount = 0;
-    const breakdown: Partial<Record<ClauseType, number>> = {};
-
-    clauses.forEach(clause => {
-      const assessment = this.assessFiduciaryRisk(clause);
-      const clauseRisk =
-        assessment.breach_probability *
-        (assessment.potential_damages + assessment.defense_cost_estimate);
-
-      totalRisk += clauseRisk;
-      totalExpectedCost +=
-        assessment.breach_probability *
-        (assessment.potential_damages + assessment.defense_cost_estimate);
-
-      if (clause.risk_flag === "critical" || clause.risk_flag === "high") {
-        criticalCount++;
+      break;
+      
+    case "audit_rights":
+      if (text.includes("unlimited") || text.includes("unrestricted")) {
+        auditabilityScore = 10;
+        transparencyScore = 9;
+      } else if (text.includes("once per year") || text.includes("limited")) {
+        auditabilityScore = 4;
+        transparencyScore = 5;
       }
-
-      breakdown[clause.clause_type] =
-        (breakdown[clause.clause_type] || 0) + clauseRisk;
-    });
-
-    return {
-      total_risk_score: Math.round(totalRisk),
-      expected_litigation_cost: Math.round(totalExpectedCost),
-      critical_clauses: criticalCount,
-      risk_breakdown: breakdown as Record<ClauseType, number>,
-    };
+      break;
+      
+    case "spread_pricing":
+      if (text.includes("prohibited") || text.includes("not permitted")) {
+        transparencyScore = 10;
+        economicAlignmentScore = 10;
+      } else if (text.includes("allowed") || text.includes("permitted")) {
+        transparencyScore = 2;
+        economicAlignmentScore = 2;
+      }
+      break;
+      
+    case "termination_rights":
+      if (text.includes("for cause") && text.includes("30 day")) {
+        exitFlexibilityScore = 9;
+        employerProtectionScore = 8;
+      } else if (text.includes("180 day") || text.includes("no cause")) {
+        exitFlexibilityScore = 3;
+      }
+      break;
+      
+    case "data_ownership":
+      if (text.includes("employer owns")) {
+        transparencyScore = 10;
+        auditabilityScore = 9;
+      } else if (text.includes("pbm owns") || text.includes("proprietary")) {
+        transparencyScore = 3;
+        auditabilityScore = 3;
+      }
+      break;
+      
+    default:
+      // Default scoring - look for red flag keywords
+      if (text.includes("proprietary") || text.includes("confidential")) {
+        transparencyScore -= 2;
+        auditabilityScore -= 2;
+      }
+      if (text.includes("unlimited") || text.includes("unrestricted")) {
+        employerProtectionScore += 2;
+      }
   }
+  
+  // Calculate overall score
+  const overallScore = Math.round(
+    (transparencyScore + employerProtectionScore + economicAlignmentScore + 
+     auditabilityScore + exitFlexibilityScore) / 5
+  );
+  
+  // Determine risk level
+  let riskLevel: "red" | "yellow" | "green" = "green";
+  if (overallScore < 5) riskLevel = "red";
+  else if (overallScore < 7) riskLevel = "yellow";
+  
+  return {
+    clauseId: clause.id,
+    transparencyScore,
+    employerProtectionScore,
+    economicAlignmentScore,
+    auditabilityScore,
+    exitFlexibilityScore,
+    overallScore,
+    riskLevel
+  };
+}
 
-  /**
-   * Compare risk between two contracts
-   */
-  static compareContractRisks(
-    currentClauses: ContractClause[],
-    templateClauses: ContractClause[]
-  ): {
-    current_risk: number;
-    template_risk: number;
-    risk_reduction: number;
-    risk_reduction_percentage: number;
-  } {
-    const currentRisk = this.calculateContractRiskScore(currentClauses);
-    const templateRisk = this.calculateContractRiskScore(templateClauses);
+/**
+ * Generate risk explanation for a clause
+ */
+export function generateRiskExplanation(
+  clause: Clause,
+  score: ClauseScore
+): RiskExplanation {
+  const category = clause.category;
+  const riskLevel = score.riskLevel;
+  
+  // Template-based explanations (would use AI in production)
+  const explanations: Record<PBMClauseCategory, RiskExplanation> = {
+    rebate_ownership: {
+      clauseId: clause.id,
+      whatItSays: "This clause defines who owns pharmaceutical rebates generated from your plan.",
+      whyItMatters: "Rebates can represent 20-40% of drug costs. Ownership determines whether savings flow to your plan or the PBM.",
+      riskIfUnchanged: riskLevel === "red" 
+        ? "PBM retains rebates, costing you $500K-$2M annually in hidden revenue."
+        : "Rebate ownership is unclear, creating audit and recovery challenges.",
+      economicConcern: "Annual hidden cost of $1.2M-$3.5M for typical mid-market employer.",
+      suggestedPosition: "Demand 100% rebate pass-through with quarterly reconciliation."
+    },
+    
+    audit_rights: {
+      clauseId: clause.id,
+      whatItSays: "This clause defines your rights to audit PBM performance and billing.",
+      whyItMatters: "Without audit rights, you cannot verify discounts, rebates, or fee calculations.",
+      riskIfUnchanged: riskLevel === "red"
+        ? "No meaningful audit rights means zero accountability and likely overcharges."
+        : "Limited audit rights restrict your ability to verify PBM performance.",
+      economicConcern: "Unaudited PBMs typically overbill 8-15% annually.",
+      suggestedPosition: "Require unlimited audit rights with full data access."
+    },
+    
+    spread_pricing: {
+      clauseId: clause.id,
+      whatItSays: "This clause addresses whether the PBM can charge you more than they pay pharmacies.",
+      whyItMatters: "Spread pricing creates hidden markups on every claim, typically $2-$15 per prescription.",
+      riskIfUnchanged: riskLevel === "red"
+        ? "PBM can charge unlimited spreads, costing $300K-$1M annually."
+        : "Spread pricing exists but may be capped or disclosed.",
+      economicConcern: "Typical spread costs: $8-$12 per Rx × 50,000 Rx = $400K-$600K annually.",
+      suggestedPosition: "Prohibit spread pricing or require full AWP-minus pass-through."
+    },
+    
+    data_ownership: {
+      clauseId: clause.id,
+      whatItSays: "This clause defines who owns your pharmacy claims data.",
+      whyItMatters: "Data ownership determines your ability to analyze costs, switch vendors, and negotiate.",
+      riskIfUnchanged: riskLevel === "red"
+        ? "PBM owns your data, blocking analytics, audits, and clean exits."
+        : "Data ownership is shared or unclear, limiting your control.",
+      economicConcern: "Loss of data control blocks $500K+ in optimization opportunities.",
+      suggestedPosition: "Demand full data ownership with unrestricted access and portability."
+    },
+    
+    termination_rights: {
+      clauseId: clause.id,
+      whatItSays: "This clause defines how and when you can terminate the PBM relationship.",
+      whyItMatters: "Termination rights determine whether you're locked in or can exit if performance fails.",
+      riskIfUnchanged: riskLevel === "red"
+        ? "Extended lock-in period prevents exit even if PBM underperforms or overbills."
+        : "Limited termination rights make exits difficult and costly.",
+      economicConcern: "Inability to exit costs $2M+ if PBM fails to perform.",
+      suggestedPosition: "Require for-cause termination with 30-60 day notice."
+    },
+    
+    specialty_drug: {
+      clauseId: clause.id,
+      whatItSays: "This clause governs how specialty medications are managed and priced.",
+      whyItMatters: "Specialty drugs represent 2% of prescriptions but 50%+ of costs.",
+      riskIfUnchanged: riskLevel === "red"
+        ? "PBM controls specialty pricing with no transparency or guarantees."
+        : "Specialty terms may allow markups or steering to high-cost channels.",
+      economicConcern: "Hidden specialty markups cost $500K-$2M annually.",
+      suggestedPosition: "Demand specialty carve-out or guaranteed net pricing with full transparency."
+    },
+    
+    fiduciary_commitment: {
+      clauseId: clause.id,
+      whatItSays: "This clause addresses whether the PBM has a fiduciary duty to act in your best interest.",
+      whyItMatters: "Fiduciary status means legal obligation to prioritize your interests over their profits.",
+      riskIfUnchanged: riskLevel === "red"
+        ? "No fiduciary duty means PBM can prioritize their revenue over your savings."
+        : "Limited fiduciary language provides weak legal protections.",
+      economicConcern: "Non-fiduciary PBMs cost 15-25% more than fiduciary arrangements.",
+      suggestedPosition: "Require explicit ERISA fiduciary acknowledgment."
+    },
+    
+    transition_assistance: {
+      clauseId: clause.id,
+      whatItSays: "This clause covers PBM obligations when you switch vendors.",
+      whyItMatters: "Poor transition assistance can cause member disruption and data loss.",
+      riskIfUnchanged: riskLevel === "red"
+        ? "No transition support means difficult exits and potential data loss."
+        : "Limited transition assistance creates switching friction.",
+      economicConcern: "Poor exits cost $200K-$500K in consulting and member issues.",
+      suggestedPosition: "Require 90-day transition support with full data transfer."
+    },
+    
+    // Simplified explanations for remaining categories
+    rebate_definition: createGenericExplanation(clause.id, "rebate definitions and calculations"),
+    rebate_timing: createGenericExplanation(clause.id, "rebate reconciliation timing"),
+    admin_fees: createGenericExplanation(clause.id, "administrative fee structure"),
+    data_access: createGenericExplanation(clause.id, "data access and reporting rights"),
+    guaranteed_discounts: createGenericExplanation(clause.id, "discount guarantees"),
+    guaranteed_rebates: createGenericExplanation(clause.id, "rebate guarantees"),
+    formulary_control: createGenericExplanation(clause.id, "formulary management"),
+    pharmacy_network: createGenericExplanation(clause.id, "pharmacy network terms"),
+    mail_order_steering: createGenericExplanation(clause.id, "mail-order requirements"),
+    manufacturer_revenue: createGenericExplanation(clause.id, "manufacturer revenue streams"),
+    lowest_net_cost: createGenericExplanation(clause.id, "pricing methodology"),
+    carve_out_rights: createGenericExplanation(clause.id, "vendor carve-out options"),
+    unclassified: createGenericExplanation(clause.id, "contract terms")
+  };
+  
+  return explanations[category] || explanations.unclassified;
+}
 
-    const reduction = currentRisk.total_risk_score - templateRisk.total_risk_score;
-    const percentage =
-      currentRisk.total_risk_score > 0
-        ? (reduction / currentRisk.total_risk_score) * 100
-        : 0;
+function createGenericExplanation(clauseId: string, topic: string): RiskExplanation {
+  return {
+    clauseId,
+    whatItSays: `This clause addresses ${topic}.`,
+    whyItMatters: `Understanding ${topic} is critical for contract governance.`,
+    riskIfUnchanged: `This clause requires review to ensure employer protection.`,
+    economicConcern: `Unclear ${topic} may create economic exposure.`,
+    suggestedPosition: `Negotiate clearer language around ${topic}.`
+  };
+}
 
-    return {
-      current_risk: currentRisk.total_risk_score,
-      template_risk: templateRisk.total_risk_score,
-      risk_reduction: reduction,
-      risk_reduction_percentage: percentage,
-    };
-  }
+/**
+ * Calculate overall contract score
+ */
+export function calculateContractScore(scores: ClauseScore[]): number {
+  if (scores.length === 0) return 0;
+  
+  const sum = scores.reduce((acc, score) => acc + score.overallScore, 0);
+  return Math.round(sum / scores.length);
+}
 
-  /**
-   * Get precedent cases for clause type
-   */
-  static getPrecedentCases(clauseType: ClauseType): string[] {
-    return FIDUCIARY_PRECEDENTS[clauseType as keyof typeof FIDUCIARY_PRECEDENTS] || [];
-  }
+/**
+ * Count risk levels across contract
+ */
+export function countRiskLevels(scores: ClauseScore[]): {
+  red: number;
+  yellow: number;
+  green: number;
+} {
+  return scores.reduce(
+    (acc, score) => {
+      acc[score.riskLevel]++;
+      return acc;
+    },
+    { red: 0, yellow: 0, green: 0 }
+  );
 }

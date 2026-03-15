@@ -1,135 +1,175 @@
-/**
- * Contract Intelligence System - Core Type Definitions
- */
+// Core type definitions for PBM Contract Intelligence Engine
 
-export type ClauseType = 
-  | "rebates"
-  | "audit"
+export type PBMClauseCategory =
+  | "rebate_ownership"
+  | "rebate_definition"
+  | "rebate_timing"
+  | "spread_pricing"
+  | "admin_fees"
+  | "audit_rights"
   | "data_ownership"
-  | "termination"
-  | "specialty"
-  | "mac"
-  | "pricing"
-  | "formulary"
-  | "network"
-  | "reporting"
-  | "liability"
-  | "indemnification"
-  | "confidentiality"
-  | "force_majeure"
-  | "spread"
-  | "transparency"
-  | "mail_order";
+  | "data_access"
+  | "guaranteed_discounts"
+  | "guaranteed_rebates"
+  | "specialty_drug"
+  | "formulary_control"
+  | "pharmacy_network"
+  | "mail_order_steering"
+  | "manufacturer_revenue"
+  | "lowest_net_cost"
+  | "fiduciary_commitment"
+  | "termination_rights"
+  | "transition_assistance"
+  | "carve_out_rights"
+  | "unclassified";
 
-export type RiskLevel = "low" | "medium" | "high" | "critical";
-
-export type EconomicImpact = {
-  annual_cost_delta: number; // Positive = cost increase
-  risk_adjusted_value: number;
-  confidence: number; // 0-1
-  basis: string;
+export const CLAUSE_CATEGORIES: Record<PBMClauseCategory, string> = {
+  rebate_ownership: "Rebate Ownership",
+  rebate_definition: "Rebate Definition",
+  rebate_timing: "Rebate Timing and Reconciliation",
+  spread_pricing: "Spread Pricing Allowance",
+  admin_fees: "Administrative Fee Structure",
+  audit_rights: "Audit Rights",
+  data_ownership: "Data Ownership",
+  data_access: "Data Access and Reporting",
+  guaranteed_discounts: "Guaranteed Discounts",
+  guaranteed_rebates: "Guaranteed Rebates",
+  specialty_drug: "Specialty Drug Treatment",
+  formulary_control: "Formulary Control",
+  pharmacy_network: "Pharmacy Network Control",
+  mail_order_steering: "Mail-Order and Specialty Steering",
+  manufacturer_revenue: "Manufacturer Revenue Beyond Rebates",
+  lowest_net_cost: "Lowest Net Cost or Clinical Integrity",
+  fiduciary_commitment: "Fiduciary or Loyalty Commitment",
+  termination_rights: "Termination Rights",
+  transition_assistance: "Transition Assistance and Clean Exit",
+  carve_out_rights: "Carve-out and Vendor Access Rights",
+  unclassified: "Unclassified / Other"
 };
-
-export type RiskFlag = {
-  category: "fiduciary" | "litigation" | "economic" | "operational" | "regulatory";
-  severity: RiskLevel;
-  description: string;
-  mitigation?: string;
-  precedent_cases?: string[];
-};
-
-export interface ContractClause {
-  id: string;
-  contract_id: string;
-  clause_type: ClauseType;
-  clause_text: string;
-  section_number?: string;
-  page_number?: number;
-  economic_flag: boolean;
-  risk_flag: RiskLevel;
-  risk_score?: number; // Added for risk scoring
-  extracted_at: string;
-  confidence_score: number;
-  location?: { page: number; start_idx?: number; end_idx?: number }; // Standardized location
-}
 
 export interface Contract {
   id: string;
-  name: string;
-  pbm_name: string;
-  effective_date: string;
-  term_months: number;
-  client_lives: number;
-  annual_spend: number;
-  contract_type: "current" | "template" | "proposed";
-  uploaded_at: string;
-  status: "uploaded" | "processing" | "analyzed" | "archived";
-  clauses?: ContractClause[];
+  fileName: string;
+  uploadDate: Date;
+  organization: string;
+  extractedText: string;
+  version: string;
+  status: "processing" | "analyzed" | "error";
+  pageCount?: number;
 }
 
-export interface ClauseComparison {
-  clause_type: ClauseType;
-  current_text: string;
-  model_text: string;
-  deviation_score: number;
-  similarity_score: number;
-  economic_alignment: number;
-  key_differences: string[];
-  estimated_annual_exposure: number;
-  confidence: number;
-  calculation_basis: string;
-  priority_rank: "CRITICAL" | "HIGH" | "MEDIUM" | "LOW";
-  priority_score: number;
-  negotiation_rationale: string;
-  page_number?: number;
-  severity: "critical" | "high" | "medium" | "low";
+export interface Clause {
+  id: string;
+  contractId: string;
+  pageNumber: number;
+  heading: string;
+  textSnippet: string;
+  category: PBMClauseCategory;
+  classificationConfidence: number; // 0-1
+  sequenceNumber: number;
 }
 
-export interface SemanticDifference {
-  field: string;
-  current_value: string;
-  template_value: string;
-  impact_level: RiskLevel;
-  explanation: string;
+export interface ClauseScore {
+  clauseId: string;
+  transparencyScore: number; // 1-10
+  employerProtectionScore: number; // 1-10
+  economicAlignmentScore: number; // 1-10
+  auditabilityScore: number; // 1-10
+  exitFlexibilityScore: number; // 1-10
+  overallScore: number; // computed average
+  riskLevel: "red" | "yellow" | "green";
 }
 
-export interface RedlineAnalysis {
-  overall_alignment_score: number;
-  total_estimated_exposure: number;
-  critical_issues: number;
-  high_priority_issues: number;
-  clause_comparisons: ClauseComparison[];
-  executive_summary: string;
-  generated_at: string;
+export interface RiskExplanation {
+  clauseId: string;
+  whatItSays: string;
+  whyItMatters: string;
+  riskIfUnchanged: string;
+  economicConcern: string;
+  suggestedPosition: string;
 }
 
-export interface IndianaRebateBenchmark {
-  drug_category: "brand" | "generic" | "specialty" | "biosimilar";
-  min_rebate_pct: number;
-  median_rebate_pct: number;
-  max_rebate_pct: number;
-  sample_size: number;
-  effective_date: string;
-  source: string;
+export interface NegotiationLanguage {
+  category: PBMClauseCategory;
+  modelLanguage: string;
+  fallbackLanguage: string;
+  brokerTalkingPoints: string[];
+  executiveExplanation: string;
 }
 
-export interface FiduciaryRiskAssessment {
-  clause_id: string;
-  breach_probability: number;
-  potential_damages: number;
-  defense_cost_estimate: number;
-  precedent_strength: RiskLevel;
-  recommendation: string;
+export interface ContractReport {
+  contractId: string;
+  quickLook: QuickLookSummary;
+  executiveScorecard: ExecutiveScorecard;
+  negotiationGuide: NegotiationGuide;
+  boardSummary: BoardSummary;
+  generatedAt: Date;
 }
 
-export interface ConfidenceWeightedExtraction {
-  field_name: string;
-  extracted_value: any;
-  confidence_score: number;
-  extraction_method: "ocr" | "pattern_match" | "ai_inference" | "manual";
-  validation_status: "verified" | "needs_review" | "rejected";
-  source_location: {
-    page: number;
-    coordinates?: { x: number; y: number; width: number; height: number };
-  };
+export interface QuickLookSummary {
+  topRisks: Array<{ category: string; severity: string; brief: string }>;
+  topStrengths: Array<{ category: string; brief: string }>;
+  overallRating: "red" | "yellow" | "green";
+  contractScore: number;
+}
+
+export interface ExecutiveScorecard {
+  totalContractScore: number;
+  categoryScores: Array<{
+    category: PBMClauseCategory;
+    score: number;
+    riskLevel: "red" | "yellow" | "green";
+  }>;
+  majorFindings: string[];
+  negotiationPriorities: string[];
+}
+
+export interface NegotiationGuide {
+  riskyClause: Array<{
+    clauseId: string;
+    category: string;
+    currentLanguage: string;
+    recommendedLanguage: string;
+    talkingPoints: string[];
+  }>;
+  priorityOrder: string[];
+}
+
+export interface BoardSummary {
+  overallGovernanceScore: number;
+  topEconomicExposures: Array<{ exposure: string; impact: string }>;
+  topTransparencyFailures: Array<{ failure: string; consequence: string }>;
+  terminationExitRisk: string;
+  recommendation: "renegotiate" | "escalate" | "approve" | "reject";
+  confidenceLevel: "high" | "medium" | "low";
+  executiveBrief: string;
+}
+
+export interface ComparisonReport {
+  originalContractId: string;
+  revisedContractId: string;
+  improvements: Array<{
+    category: string;
+    description: string;
+    impact: "major" | "moderate" | "minor";
+  }>;
+  regressions: Array<{
+    category: string;
+    description: string;
+    impact: "major" | "moderate" | "minor";
+  }>;
+  unresolvedGaps: Array<{
+    category: string;
+    description: string;
+    priority: "high" | "medium" | "low";
+  }>;
+  netScoreChange: number;
+  summary: string;
+}
+
+export interface ClauseAnalysis {
+  clause: Clause;
+  score: ClauseScore;
+  riskExplanation: RiskExplanation;
+  negotiationLanguage?: NegotiationLanguage;
 }

@@ -3,7 +3,7 @@
 import type {
   ContractReport,
   ClauseAnalysis,
-  QuickLook,
+  QuickLookSummary,
   ExecutiveScorecard,
   NegotiationGuide,
   BoardSummary
@@ -20,11 +20,12 @@ export function generateReport(contractId: string, analyses: ClauseAnalysis[]): 
   const greenFlags = analyses.filter(a => a.score.riskLevel === "green");
 
   // 1. Quick Look Triage
-  const quickLook: QuickLook = {
+  const quickLook: QuickLookSummary = {
     contractScore: avgScore,
-    colorRating: avgScore >= 7 ? "green" : avgScore >= 5 ? "yellow" : "red",
+    overallRating: avgScore >= 7 ? "green" : avgScore >= 5 ? "yellow" : "red",
     topRisks: redFlags.slice(0, 3).map(a => ({
       category: a.clause.category,
+      severity: a.score.riskLevel,
       brief: a.riskExplanation.whyItMatters
     })),
     topStrengths: greenFlags.slice(0, 3).map(a => ({
@@ -34,13 +35,14 @@ export function generateReport(contractId: string, analyses: ClauseAnalysis[]): 
   };
 
   // 2. Executive Scorecard
-  const categoryScores: Record<string, number> = {};
-  analyses.forEach(a => {
-    categoryScores[a.clause.category] = a.score.overallScore;
-  });
+  const categoryScores = analyses.map(a => ({
+    category: a.clause.category,
+    score: a.score.overallScore,
+    riskLevel: a.score.riskLevel
+  }));
 
   const executiveScorecard: ExecutiveScorecard = {
-    totalScore: avgScore,
+    totalContractScore: avgScore,
     categoryScores,
     majorFindings: [
       "Significant economic exposure hidden in definitional language.",
@@ -55,13 +57,15 @@ export function generateReport(contractId: string, analyses: ClauseAnalysis[]): 
     riskyClause: analyses
       .filter(a => a.score.riskLevel === "red" || a.score.riskLevel === "yellow")
       .map(a => ({
+        clauseId: a.clause.id,
         category: a.clause.category,
         currentLanguage: a.clause.textSnippet,
         recommendedLanguage: a.negotiationLanguage?.modelLanguage || "Mandate 100% pass-through and full data ownership.",
         talkingPoints: a.negotiationLanguage?.brokerTalkingPoints || [
           "This is non-negotiable for ERIS/fiduciary compliance."
         ]
-      }))
+      })),
+    priorityOrder: redFlags.map(a => a.clause.category)
   };
 
   // 4. Board Summary
@@ -92,6 +96,7 @@ export function generateReport(contractId: string, analyses: ClauseAnalysis[]): 
     quickLook,
     executiveScorecard,
     negotiationGuide,
-    boardSummary
+    boardSummary,
+    generatedAt: new Date()
   };
 }

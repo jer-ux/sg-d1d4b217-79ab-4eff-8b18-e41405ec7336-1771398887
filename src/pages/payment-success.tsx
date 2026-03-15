@@ -3,8 +3,9 @@ import { useRouter } from "next/router";
 import { SEO } from "@/components/SEO";
 import { SiriusBNav } from "@/components/siriusb/SiriusBNav";
 import { SiriusBFooter } from "@/components/siriusb/SiriusBFooter";
+import { OrderService } from "@/services/orderService";
 import { motion } from "framer-motion";
-import { CheckCircle2, FileText, Mail, Clock, Upload } from "lucide-react";
+import { CheckCircle2, FileText, Mail, Clock, Upload, File, Loader2, User } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import Link from "next/link";
@@ -13,13 +14,58 @@ export default function PaymentSuccess() {
   const router = useRouter();
   const { session_id } = router.query;
   const [uploadReady, setUploadReady] = useState(false);
+  const [uploadedFile, setUploadedFile] = useState<File | null>(null);
+  const [uploading, setUploading] = useState(false);
+  const [uploadSuccess, setUploadSuccess] = useState(false);
+  const [notes, setNotes] = useState("");
+  const [orderId, setOrderId] = useState<string | null>(null);
 
   useEffect(() => {
-    // In production, verify the session_id with Stripe
-    if (session_id) {
-      setUploadReady(true);
+    if (session_id && typeof session_id === "string") {
+      initializeOrder(session_id);
     }
   }, [session_id]);
+
+  async function initializeOrder(sessionId: string) {
+    // Check if order already exists for this session
+    const existingOrder = await OrderService.getOrderBySession(sessionId);
+    
+    if (existingOrder) {
+      setOrderId(existingOrder.id);
+      setUploadReady(true);
+      
+      // If contract already uploaded, show success
+      if (existingOrder.contract_file_url) {
+        setUploadSuccess(true);
+      }
+    } else {
+      // In production, fetch session details from Stripe and create order
+      // For now, we'll wait for the webhook or manual creation
+      setUploadReady(true);
+    }
+  }
+
+  const handleUpload = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!uploadedFile || !orderId) return;
+
+    setUploading(true);
+
+    try {
+      // In production, upload file to storage and update order
+      // const fileUrl = await uploadToStorage(uploadedFile);
+      // await OrderService.uploadContract(orderId, fileUrl, uploadedFile.name);
+      
+      // Simulate upload
+      setTimeout(() => {
+        setUploading(false);
+        setUploadSuccess(true);
+      }, 2000);
+    } catch (error) {
+      console.error("Upload failed:", error);
+      setUploading(false);
+    }
+  };
 
   return (
     <>
@@ -219,6 +265,20 @@ export default function PaymentSuccess() {
                 </div>
               </div>
             </Card>
+
+            {/* Add View Profile Button after success */}
+            {uploadSuccess && (
+              <div className="text-center">
+                <Button
+                  size="lg"
+                  onClick={() => router.push("/profile")}
+                  className="bg-gradient-to-r from-blue-500 to-purple-500 hover:from-blue-600 hover:to-purple-600"
+                >
+                  <User className="w-5 h-5 mr-2" />
+                  View My Orders
+                </Button>
+              </div>
+            )}
 
             {/* Support */}
             <div className="text-center space-y-4">

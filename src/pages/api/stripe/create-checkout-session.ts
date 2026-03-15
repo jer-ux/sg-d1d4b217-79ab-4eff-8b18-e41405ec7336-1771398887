@@ -22,13 +22,13 @@ export default async function handler(
       line_items: [
         {
           price_data: {
-            currency: STRIPE_CONFIG.CURRENCY,
+            currency: "usd",
             product_data: {
               name: "Kincaid IQ RX Defense Board Report",
-              description: "Comprehensive PBM contract analysis with board-ready deliverables. Includes 20-point clause analysis, risk scoring, and negotiation recommendations.",
+              description: "Comprehensive PBM contract analysis with board-ready deliverables. Includes 20-point clause analysis, risk scoring, executive summary, and negotiation guide.",
               images: ["https://siriusb-iq.vercel.app/og-image.png"],
             },
-            unit_amount: STRIPE_CONFIG.BOARD_REPORT_AMOUNT,
+            unit_amount: 19900, // $199.00
           },
           quantity: 1,
         },
@@ -38,20 +38,12 @@ export default async function handler(
       cancel_url: STRIPE_CONFIG.CANCEL_URL,
       customer_email: customerEmail,
       metadata: {
-        customerName,
-        company: company || "",
-        jobTitle: jobTitle || "",
-        phone: phone || "",
-        productType: "rx_defense_board_report",
-      },
-      payment_intent_data: {
-        metadata: {
-          customerName,
-          company: company || "",
-          jobTitle: jobTitle || "",
-          phone: phone || "",
-          productType: "rx_defense_board_report",
-        },
+        customer_name: customerName,
+        customer_email: customerEmail,
+        customer_company: company,
+        customer_job_title: jobTitle,
+        customer_phone: phone || "",
+        product_type: "rx_defense_board_report",
       },
     });
 

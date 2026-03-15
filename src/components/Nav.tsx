@@ -1,6 +1,7 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Link from "next/link";
-import { Menu, X, ChevronDown, Sparkles } from "lucide-react";
+import { Menu, X, ChevronDown, Sparkles, User } from "lucide-react";
+import { supabase } from "@/integrations/supabase/client";
 
 export default function Nav() {
   const [isOpen, setIsOpen] = useState(false);
@@ -9,6 +10,31 @@ export default function Nav() {
   const [actuarialDropdownOpen, setActuarialDropdownOpen] = useState(false);
   const [agenticDropdownOpen, setAgenticDropdownOpen] = useState(false);
   const [platformDropdownOpen, setPlatformDropdownOpen] = useState(false);
+  const [isScrolled, setIsScrolled] = useState(false);
+  const [user, setUser] = useState<any>(null);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setIsScrolled(window.scrollY > 10);
+    };
+
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
+  useEffect(() => {
+    // Check for authenticated user
+    supabase.auth.getUser().then(({ data }) => {
+      setUser(data.user);
+    });
+
+    // Listen for auth changes
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
+      setUser(session?.user ?? null);
+    });
+
+    return () => subscription.unsubscribe();
+  }, []);
 
   return (
     <nav className="fixed top-0 z-[200] w-full border-b border-white/10 bg-black/80 backdrop-blur-xl">
@@ -238,6 +264,17 @@ export default function Nav() {
                 </div>
               )}
             </div>
+
+            {/* Add Profile Link for Authenticated Users */}
+            {user && (
+              <Link
+                href="/profile"
+                className="px-4 py-2 rounded-lg font-medium text-blue-200 hover:text-white hover:bg-white/10 transition-all flex items-center gap-2"
+              >
+                <User className="w-4 h-4" />
+                Profile
+              </Link>
+            )}
 
             {/* Request Demo Button */}
             <Link

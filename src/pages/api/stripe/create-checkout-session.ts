@@ -5,18 +5,33 @@ export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse
 ) {
+  // Log incoming request
+  console.log("🔵 Checkout session request received");
+
   if (req.method !== "POST") {
+    console.error("❌ Invalid method:", req.method);
     return res.status(405).json({ error: "Method not allowed" });
   }
 
   try {
     const { customerEmail, customerName, company, jobTitle, phone } = req.body;
 
+    console.log("📧 Customer details:", { customerEmail, customerName, company, jobTitle });
+
     if (!customerEmail || !customerName) {
-      return res.status(400).json({ error: "Missing required fields" });
+      console.error("❌ Missing required fields");
+      return res.status(400).json({ error: "Missing required fields: email and name are required" });
     }
 
+    // Log Stripe configuration
+    console.log("🔧 Stripe config:", {
+      successUrl: STRIPE_CONFIG.SUCCESS_URL,
+      cancelUrl: STRIPE_CONFIG.CANCEL_URL,
+      amount: STRIPE_CONFIG.BOARD_REPORT_AMOUNT,
+    });
+
     // Create Stripe Checkout Session
+    console.log("🚀 Creating Stripe checkout session...");
     const session = await stripe.checkout.sessions.create({
       payment_method_types: ["card", "us_bank_account"],
       line_items: [
@@ -40,18 +55,28 @@ export default async function handler(
       metadata: {
         customer_name: customerName,
         customer_email: customerEmail,
-        customer_company: company,
-        customer_job_title: jobTitle,
+        customer_company: company || "",
+        customer_job_title: jobTitle || "",
         customer_phone: phone || "",
         product_type: "rx_defense_board_report",
       },
     });
 
+    console.log("✅ Checkout session created:", session.id);
     return res.status(200).json({ sessionId: session.id, url: session.url });
   } catch (error) {
-    console.error("Stripe checkout error:", error);
+    console.error("❌ Stripe checkout error:", error);
+    
+    // More detailed error logging
+    if (error instanceof Error) {
+      console.error("Error name:", error.name);
+      console.error("Error message:", error.message);
+      console.error("Error stack:", error.stack);
+    }
+
     return res.status(500).json({
       error: error instanceof Error ? error.message : "Payment processing failed",
+      details: process.env.NODE_ENV === "development" ? error : undefined,
     });
   }
 }

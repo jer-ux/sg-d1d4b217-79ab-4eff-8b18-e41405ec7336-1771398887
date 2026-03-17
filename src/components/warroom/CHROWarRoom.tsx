@@ -13,9 +13,53 @@ const DEFAULT_FILTERS: Filters = {
   businessUnit: "All",
 };
 
+// Performance rating types
+type PerformanceRating = "excellent" | "good" | "warning" | "critical";
+
+interface PerformanceThreshold {
+  excellent: number;
+  good: number;
+  warning: number;
+  // Below warning is critical
+}
+
+// CHRO-specific performance thresholds
+const PERFORMANCE_THRESHOLDS: Record<string, PerformanceThreshold> = {
+  benefitsUtilization: { excellent: 75, good: 70, warning: 60 },
+  employeeRetention: { excellent: 90, good: 85, warning: 80 },
+  healthcareROI: { excellent: 2.5, good: 2.0, warning: 1.5 },
+  wellnessEngagement: { excellent: 60, good: 50, warning: 40 },
+  dependentCoverage: { excellent: 65, good: 60, warning: 50 },
+  benefitsAdoption: { excellent: 50, good: 45, warning: 35 },
+  employeeSatisfaction: { excellent: 40, good: 30, warning: 20 },
+  totalRewards: { excellent: 85, good: 80, warning: 75 },
+};
+
+function getPerformanceRating(key: string, value: string): PerformanceRating {
+  const thresholds = PERFORMANCE_THRESHOLDS[key];
+  if (!thresholds) return "good";
+
+  // Extract numeric value (handle percentages and multipliers)
+  const numericValue = parseFloat(value.replace(/[^0-9.-]/g, ""));
+
+  if (numericValue >= thresholds.excellent) return "excellent";
+  if (numericValue >= thresholds.good) return "good";
+  if (numericValue >= thresholds.warning) return "warning";
+  return "critical";
+}
+
+function getPerformanceColor(rating: PerformanceRating): string {
+  switch (rating) {
+    case "excellent": return "emerald";
+    case "good": return "cyan";
+    case "warning": return "amber";
+    case "critical": return "rose";
+  }
+}
+
 // CHRO-specific mock data
 function getCHROTiles(): TileData[] {
-  return [
+  const tiles: TileData[] = [
     {
       key: "benefitsUtilization",
       title: "Benefits Utilization Rate",
@@ -137,6 +181,13 @@ function getCHROTiles(): TileData[] {
       ]
     },
   ];
+
+  // Add performance ratings to each tile
+  return tiles.map(tile => ({
+    ...tile,
+    performanceRating: getPerformanceRating(tile.key, tile.value),
+    performanceColor: getPerformanceColor(getPerformanceRating(tile.key, tile.value))
+  }));
 }
 
 function getCHROTickerItems(): string[] {
@@ -215,6 +266,12 @@ export function CHROWarRoom() {
               Employee Benefits & Engagement
             </h2>
             <div className="text-xs text-emerald-400/80 font-medium px-2 py-0.5 rounded-full bg-emerald-900/30 border border-emerald-500/20">McKinsey Framework</div>
+            <div className="text-xs text-zinc-500">
+              <span className="inline-block w-2 h-2 rounded-full bg-emerald-500 mr-1" />Excellent
+              <span className="inline-block w-2 h-2 rounded-full bg-cyan-500 ml-3 mr-1" />Good
+              <span className="inline-block w-2 h-2 rounded-full bg-amber-500 ml-3 mr-1" />Warning
+              <span className="inline-block w-2 h-2 rounded-full bg-rose-500 ml-3 mr-1" />Critical
+            </div>
           </div>
           <div className="grid grid-cols-1 gap-4 lg:grid-cols-2 xl:grid-cols-4">
             <KPITile data={tileMap.get("benefitsUtilization")} onClick={handleTileClick} />

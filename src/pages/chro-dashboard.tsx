@@ -10,9 +10,7 @@ export default function CHRODashboardPage() {
         description="Executive CHRO dashboard with real-time employee benefits, engagement metrics, and human capital analytics."
       />
       <Nav />
-      <main className="pt-16">
-        <CHROWarRoom />
-      </main>
+      <CHROWarRoom />
     </>
   );
 }

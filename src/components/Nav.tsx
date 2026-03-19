@@ -218,6 +218,13 @@ export default function Nav() {
                       <div className="text-xs text-gray-400">All compliance solutions</div>
                     </Link>
                     <Link
+                      href="/security/nist-compliance"
+                      className="block px-4 py-3 text-gray-300 hover:text-white hover:bg-amber-500/10 rounded-lg transition-all"
+                    >
+                      <div className="font-medium">NIST Cybersecurity Framework</div>
+                      <div className="text-xs text-gray-400">Security compliance status</div>
+                    </Link>
+                    <Link
                       href="/solutions/erisa-compliance"
                       className="block px-4 py-3 text-gray-300 hover:text-white hover:bg-amber-500/10 rounded-lg transition-all"
                     >
@@ -384,6 +391,9 @@ export default function Nav() {
                   <div className="px-4 py-2 mt-2 text-xs font-semibold text-amber-400 uppercase tracking-wider">Compliance</div>
                   <Link href="/compliance" className="block px-4 py-2 text-sm text-gray-400 hover:text-white hover:bg-white/5 rounded-lg transition-colors">
                     Compliance Hub
+                  </Link>
+                  <Link href="/security/nist-compliance" className="block px-4 py-2 text-sm text-gray-400 hover:text-white hover:bg-white/5 rounded-lg transition-colors">
+                    NIST Cybersecurity Framework
                   </Link>
                   <Link href="/solutions/erisa-compliance" className="block px-4 py-2 text-sm text-gray-400 hover:text-white hover:bg-white/5 rounded-lg transition-colors">
                     ERISA Compliance

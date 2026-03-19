@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import Link from "next/link";
 import { Menu, X, ChevronDown, Sparkles, User } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
+import { ToasterMenu } from "./ToasterMenu";
 
 export default function Nav() {
   const [isOpen, setIsOpen] = useState(false);
@@ -275,6 +276,11 @@ export default function Nav() {
                 Profile
               </Link>
             )}
+
+            {/* Toaster Menu Badge */}
+            <div className="ml-2">
+              <ToasterMenu />
+            </div>
 
             {/* Request Demo Button */}
             <Link

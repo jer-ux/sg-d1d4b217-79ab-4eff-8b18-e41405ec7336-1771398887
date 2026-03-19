@@ -1,6 +1,6 @@
 import { SEO } from "@/components/SEO";
-import { Nav } from "@/components/Nav";
-import { Footer } from "@/components/Footer";
+import Nav from "@/components/Nav";
+import Footer from "@/components/Footer";
 import { NISTComplianceDashboard } from "@/components/security/NISTComplianceDashboard";
 
 export default function NISTCompliancePage() {

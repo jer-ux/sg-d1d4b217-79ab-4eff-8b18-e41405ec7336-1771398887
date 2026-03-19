@@ -49,11 +49,6 @@ export default function Nav() {
             </span>
           </Link>
 
-          {/* Toaster Menu Badge */}
-          <div className="ml-2">
-            <ToasterMenu />
-          </div>
-
           {/* Desktop Navigation */}
           <div className="hidden md:flex md:items-center md:space-x-1">
             {/* Company Menu */}
@@ -281,6 +276,11 @@ export default function Nav() {
                 Profile
               </Link>
             )}
+
+            {/* Toaster Menu Badge */}
+            <div className="ml-2">
+              <ToasterMenu />
+            </div>
 
             {/* Request Demo Button */}
             <Link

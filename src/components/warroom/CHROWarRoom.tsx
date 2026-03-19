@@ -604,7 +604,7 @@ export function CHROWarRoom() {
   };
 
   return (
-    <div className="min-h-screen bg-transparent text-zinc-100">
+    <div className="min-h-screen bg-transparent text-zinc-100 pt-16">
       <header className="border-b border-emerald-500/30 bg-zinc-950/60 backdrop-blur-md sticky top-16 z-50">
         <div className="mx-auto max-w-[1600px] px-6 py-5">
           <div className="flex items-start justify-between gap-4">

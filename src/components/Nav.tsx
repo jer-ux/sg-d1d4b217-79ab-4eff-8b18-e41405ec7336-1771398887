@@ -277,11 +277,6 @@ export default function Nav() {
               </Link>
             )}
 
-            {/* Toaster Menu Badge */}
-            <div className="ml-2">
-              <ToasterMenu />
-            </div>
-
             {/* Request Demo Button */}
             <Link
               href="/request-demo"

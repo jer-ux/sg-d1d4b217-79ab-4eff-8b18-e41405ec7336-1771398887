@@ -2,6 +2,7 @@ import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { AcronymTooltip } from "@/components/ui/acronym-tooltip";
 import { 
   Shield, 
   Search, 
@@ -56,7 +57,9 @@ export function NISTComplianceDashboard() {
     <div className="space-y-6">
       {/* Header */}
       <div className="text-center space-y-2">
-        <h1 className="text-4xl font-bold">NIST Cybersecurity Framework</h1>
+        <h1 className="text-4xl font-bold">
+          <AcronymTooltip acronym="NIST">NIST</AcronymTooltip> Cybersecurity Framework
+        </h1>
         <p className="text-muted-foreground text-lg">
           Compliance Status & Security Controls
         </p>
@@ -87,7 +90,9 @@ export function NISTComplianceDashboard() {
             </div>
             <div>
               <p className="text-muted-foreground">Framework Version</p>
-              <p className="text-xl font-semibold">CSF 1.1</p>
+              <p className="text-xl font-semibold">
+                <AcronymTooltip acronym="CSF">CSF</AcronymTooltip> 1.1
+              </p>
             </div>
           </div>
         </div>

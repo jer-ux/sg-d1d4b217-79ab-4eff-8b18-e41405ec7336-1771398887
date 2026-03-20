@@ -2,6 +2,7 @@ import { SEO } from "@/components/SEO";
 import Nav from "@/components/Nav";
 import Footer from "@/components/Footer";
 import { NISTComplianceDashboard } from "@/components/security/NISTComplianceDashboard";
+import { AcronymTooltip } from "@/components/ui/acronym-tooltip";
 
 export default function NISTCompliancePage() {
   return (

@@ -3,6 +3,7 @@ import Nav from "@/components/Nav";
 import Footer from "@/components/Footer";
 import { Card } from "@/components/ui/card";
 import { Shield, Lock, Eye, FileText } from "lucide-react";
+import { AcronymTooltip } from "@/components/ui/acronym-tooltip";
 
 export default function PrivacyPolicyPage() {
   return (
@@ -29,7 +30,7 @@ export default function PrivacyPolicyPage() {
             {/* Introduction */}
             <Card className="p-6">
               <p className="text-muted-foreground">
-                At SiriusB iQ AI Data Sciences Lab, we are committed to protecting your privacy and ensuring the security of your personal information. This Privacy Policy explains how we collect, use, disclose, and safeguard your data in accordance with the NIST Privacy Framework and applicable data protection regulations including HIPAA, ERISA, and SOC 2 requirements.
+                At SiriusB iQ AI Data Sciences Lab, we are committed to protecting your privacy and ensuring the security of your personal information. This Privacy Policy explains how we collect, use, disclose, and safeguard your data in accordance with the <AcronymTooltip acronym="NIST">NIST</AcronymTooltip> Privacy Framework and applicable data protection regulations including <AcronymTooltip acronym="HIPAA">HIPAA</AcronymTooltip>, <AcronymTooltip acronym="ERISA">ERISA</AcronymTooltip>, and <AcronymTooltip acronym="SOC 2">SOC 2</AcronymTooltip> requirements.
               </p>
             </Card>
 
@@ -37,10 +38,12 @@ export default function PrivacyPolicyPage() {
             <Card className="p-6">
               <div className="flex items-center gap-3 mb-4">
                 <FileText className="w-6 h-6 text-blue-600" />
-                <h2 className="text-2xl font-bold">NIST Privacy Framework Compliance</h2>
+                <h2 className="text-2xl font-bold">
+                  <AcronymTooltip acronym="NIST">NIST</AcronymTooltip> Privacy Framework Compliance
+                </h2>
               </div>
               <p className="text-muted-foreground mb-4">
-                Our privacy practices align with the NIST Privacy Framework Core Functions:
+                Our privacy practices align with the <AcronymTooltip acronym="NIST">NIST</AcronymTooltip> Privacy Framework Core Functions:
               </p>
               <ul className="space-y-2 text-muted-foreground">
                 <li className="flex items-start gap-2">
@@ -76,15 +79,15 @@ export default function PrivacyPolicyPage() {
                 </div>
                 <div>
                   <h3 className="font-semibold text-foreground mb-2">Healthcare Data</h3>
-                  <p>Claims data, actuarial information, benefits data (protected under HIPAA)</p>
+                  <p>Claims data, actuarial information, benefits data (protected under <AcronymTooltip acronym="HIPAA">HIPAA</AcronymTooltip>)</p>
                 </div>
                 <div>
                   <h3 className="font-semibold text-foreground mb-2">Usage Information</h3>
-                  <p>Platform interactions, feature usage, audit logs (NIST AU-2, AU-3)</p>
+                  <p>Platform interactions, feature usage, audit logs (<AcronymTooltip acronym="NIST">NIST</AcronymTooltip> AU-2, AU-3)</p>
                 </div>
                 <div>
                   <h3 className="font-semibold text-foreground mb-2">Technical Information</h3>
-                  <p>IP addresses, browser types, device information for security monitoring</p>
+                  <p><AcronymTooltip acronym="IP">IP</AcronymTooltip> addresses, browser types, device information for security monitoring</p>
                 </div>
               </div>
             </Card>
@@ -98,15 +101,15 @@ export default function PrivacyPolicyPage() {
               <ul className="space-y-2 text-muted-foreground">
                 <li className="flex items-start gap-2">
                   <span className="text-green-600 mt-1">✓</span>
-                  <span><strong>Encryption:</strong> AES-256 encryption at rest, TLS 1.3 in transit (NIST 800-53 SC-8, SC-13)</span>
+                  <span><strong>Encryption:</strong> <AcronymTooltip acronym="AES">AES</AcronymTooltip>-256 encryption at rest, <AcronymTooltip acronym="TLS">TLS</AcronymTooltip> 1.3 in transit (<AcronymTooltip acronym="NIST">NIST</AcronymTooltip> 800-53 SC-8, SC-13)</span>
                 </li>
                 <li className="flex items-start gap-2">
                   <span className="text-green-600 mt-1">✓</span>
-                  <span><strong>Access Controls:</strong> Role-based access control (RBAC) and multi-factor authentication (NIST 800-53 AC-2, AC-3)</span>
+                  <span><strong>Access Controls:</strong> Role-based access control (<AcronymTooltip acronym="RBAC">RBAC</AcronymTooltip>) and multi-factor authentication (<AcronymTooltip acronym="NIST">NIST</AcronymTooltip> 800-53 AC-2, AC-3)</span>
                 </li>
                 <li className="flex items-start gap-2">
                   <span className="text-green-600 mt-1">✓</span>
-                  <span><strong>Audit Logging:</strong> Comprehensive activity logs for security monitoring (NIST 800-53 AU-2, AU-3, AU-12)</span>
+                  <span><strong>Audit Logging:</strong> Comprehensive activity logs for security monitoring (<AcronymTooltip acronym="NIST">NIST</AcronymTooltip> 800-53 AU-2, AU-3, AU-12)</span>
                 </li>
                 <li className="flex items-start gap-2">
                   <span className="text-green-600 mt-1">✓</span>
@@ -114,7 +117,7 @@ export default function PrivacyPolicyPage() {
                 </li>
                 <li className="flex items-start gap-2">
                   <span className="text-green-600 mt-1">✓</span>
-                  <span><strong>Regular Audits:</strong> SOC 2 Type II certified security practices</span>
+                  <span><strong>Regular Audits:</strong> <AcronymTooltip acronym="SOC 2">SOC 2</AcronymTooltip> Type II certified security practices</span>
                 </li>
               </ul>
             </Card>
@@ -193,8 +196,8 @@ export default function PrivacyPolicyPage() {
             <Card className="p-6 bg-blue-600/5 border-blue-600/20">
               <h3 className="font-semibold mb-2">Compliance Frameworks</h3>
               <p className="text-sm text-muted-foreground">
-                Our privacy practices comply with: NIST Privacy Framework, NIST 800-53, HIPAA Privacy Rule, 
-                ERISA Section 408(b)(2), SOC 2 Type II, and applicable state privacy laws.
+                Our privacy practices comply with: <AcronymTooltip acronym="NIST">NIST</AcronymTooltip> Privacy Framework, <AcronymTooltip acronym="NIST">NIST</AcronymTooltip> 800-53, <AcronymTooltip acronym="HIPAA">HIPAA</AcronymTooltip> Privacy Rule, 
+                <AcronymTooltip acronym="ERISA">ERISA</AcronymTooltip> Section 408(b)(2), <AcronymTooltip acronym="SOC 2">SOC 2</AcronymTooltip> Type II, and applicable state privacy laws.
               </p>
             </Card>
           </div>

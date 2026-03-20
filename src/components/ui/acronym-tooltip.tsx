@@ -2,11 +2,14 @@ import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/comp
 
 interface AcronymTooltipProps {
   acronym: string;
-  definition: string;
+  definition?: string;
   children?: React.ReactNode;
 }
 
 export function AcronymTooltip({ acronym, definition, children }: AcronymTooltipProps) {
+  // Use provided definition or look up from dictionary
+  const def = definition || ACRONYM_DEFINITIONS[acronym] || "Definition not found";
+
   return (
     <TooltipProvider delayDuration={200}>
       <Tooltip>
@@ -17,7 +20,7 @@ export function AcronymTooltip({ acronym, definition, children }: AcronymTooltip
         </TooltipTrigger>
         <TooltipContent side="top" className="max-w-xs bg-gray-900 border-gray-700 text-white">
           <p className="font-semibold text-amber-400">{acronym}</p>
-          <p className="text-sm text-gray-300">{definition}</p>
+          <p className="text-sm text-gray-300">{def}</p>
         </TooltipContent>
       </Tooltip>
     </TooltipProvider>

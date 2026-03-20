@@ -50,13 +50,21 @@ function getStatusBadge(status: string) {
   }
 }
 
-export function NISTComplianceDashboard() {
+interface NISTComplianceDashboardProps {
+  activeSection?: string;
+  onSectionChange?: (section: string) => void;
+}
+
+export function NISTComplianceDashboard({ 
+  activeSection = "identify",
+  onSectionChange 
+}: NISTComplianceDashboardProps) {
   const summary = getComplianceSummary();
 
   return (
     <div className="space-y-6">
       {/* Header */}
-      <div className="text-center space-y-2">
+      <div className="text-center space-y-2" id="overview">
         <h1 className="text-4xl font-bold">
           <AcronymTooltip acronym="NIST">NIST</AcronymTooltip> Cybersecurity Framework
         </h1>
@@ -123,7 +131,7 @@ export function NISTComplianceDashboard() {
       </div>
 
       {/* Detailed Controls */}
-      <Tabs defaultValue="identify" className="w-full">
+      <Tabs value={activeSection} onValueChange={onSectionChange} className="w-full">
         <TabsList className="grid w-full grid-cols-5">
           <TabsTrigger value="identify">Identify</TabsTrigger>
           <TabsTrigger value="protect">Protect</TabsTrigger>
@@ -133,7 +141,7 @@ export function NISTComplianceDashboard() {
         </TabsList>
 
         {(['identify', 'protect', 'detect', 'respond', 'recover'] as NISTFunction[]).map(func => (
-          <TabsContent key={func} value={func} className="space-y-4">
+          <TabsContent key={func} value={func} className="space-y-4" id={func}>
             <div className="flex items-center gap-2 mb-4">
               {(() => {
                 const Icon = functionIcons[func];

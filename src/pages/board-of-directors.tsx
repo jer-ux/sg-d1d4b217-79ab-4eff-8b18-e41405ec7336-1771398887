@@ -13,6 +13,7 @@ const boardMembers = [
     name: "Jeremiah Shrack",
     title: "Founder & Chief Executive Officer",
     image: "/jeremiah-shrack-professional.png",
+    linkedin: "https://www.linkedin.com/in/shrack",
     bio: "Humanitarian and business leader with over two decades of experience engineering intelligent operating systems and scaling organizations. Achieved #2 in North America for Canon while working 60 hours/week and attending IWU full-time.",
     fullBio: {
       introduction: "Over two decades, he has built a reputation for engineering intelligent operating systems, scaling organizations, and redefining how advanced analytics intersect with human judgment. As President and Chief Executive Officer of Kincaid Risk Management Consultants (KRMC), Jeremiah drives enterprise-wide revenue growth, operational excellence, and high-impact PBM/Rx consulting engagements.",
@@ -33,6 +34,7 @@ const boardMembers = [
     name: "Mike Hamann",
     title: "Board Member - Public Service & Fiscal Leadership",
     image: "/1517039361817_1_.jpeg",
+    linkedin: "https://www.linkedin.com/in/mike-hamann-33274023/",
     bio: "Mike Hamann's career in public service is defined by a deep commitment to the residents of St. Joseph County. He served two terms as County Auditor, acting as the county's chief financial officer and fiduciary steward until the end of 2022.",
     fullBio: {
       introduction: "Mike Hamann's career in public service is defined by a deep commitment to the residents of St. Joseph County. Most notably, Mike served two terms as the St. Joseph County Auditor, acting as the county's chief financial officer and fiduciary steward until the end of 2022. His leadership was marked by a 'boots-on-the-ground' philosophy, whether he was challenging property assessment loopholes to protect the local tax base or advocating for federal relief funds to support high-impact community initiatives like Motels4Now.",
@@ -53,6 +55,7 @@ const boardMembers = [
     name: "Dr. Michael Ochieng'",
     title: "Distinguished Chief Technology Officer",
     image: "/dr-michael-ochieng.png",
+    linkedin: "https://www.linkedin.com/in/michael9ochieng/",
     bio: "Dr. Michael Ochieng' came to AI from the high-stakes world of wireless networks, where systems fail loudly when governance is absent. His career was forged in deploying large-scale LTE and 5G infrastructure for global operators like Verizon, T-Mobile, Sprint, Safaricom, and Huawei.",
     fullBio: {
       introduction: "Dr. Michael Ochieng' did not come to AI from the software hype cycle. He came from the high-stakes world of wireless networks—an environment where systems fail loudly, and often dangerously, when governance is absent. His career was forged in the deployment of large-scale LTE and 5G infrastructure for global operators like Verizon, T-Mobile, Sprint, Safaricom, and Huawei. In the telecom sector, Dr. Ochieng' mastered a fundamental truth decades ago: intelligence must always be decoupled from control.",
@@ -73,6 +76,7 @@ const boardMembers = [
     name: "Dr. Jacqueline El-Sayed",
     title: "Board Member and Distinguished Chief Scientist Officer",
     image: "/dr-jacqueline-el-sayed.png",
+    linkedin: "https://www.linkedin.com/in/jacquelineelsayed/",
     bio: "Dr. Jacqueline El-Sayed is the Chief Executive Officer for Intentional Design Group LLC and Intentional Design Institute 501c3. She is a builder and global speaker with leadership experience across industry, education, and government.",
     fullBio: {
       introduction: "Dr. Jacqueline El-Sayed is the Chief Executive Officer (CEO) for Intentional Design Group LLC and Intentional Design Institute 501c3. She is a builder and global speaker with leadership experience across industry, education, and government. She recently served as CEO for the group: SAE International (SAE), Performance Review Institute (PRI), Industry Technologies Consortia (ITC) & Fullsight Shared Services. Her previous role was CEO for the American Society for Engineering Education (ASEE). She joined ASEE as Chief Academic Officer driving growth and alignment across all professional services & leading new business innovation. Before this, she served as Chief Academic Officer & Vice President for Academic Affairs at Marygrove College.",
@@ -93,6 +97,7 @@ const boardMembers = [
     name: "Catherine Farley",
     title: "Executive Chair, Committee on Algorithmic Governance & Fiduciary Risk",
     image: "/catherine-farley.jpg",
+    linkedin: "https://www.linkedin.com/in/catherine-farley-233b28/",
     bio: "Catherine Farley is a seasoned financial services executive with deep expertise in operational excellence, wealth management, and strategic transformation. Her career spans leadership roles at major financial institutions where she drove innovation and operational efficiency at scale.",
     fullBio: {
       introduction: "Catherine Farley brings over two decades of financial services leadership to SiriusB iQ's board, with a proven track record of driving operational excellence and strategic transformation at major institutions. Her expertise spans wealth management, fiduciary governance, and large-scale operational optimization, making her uniquely qualified to guide algorithmic governance frameworks in the emerging AI-driven benefits landscape.",

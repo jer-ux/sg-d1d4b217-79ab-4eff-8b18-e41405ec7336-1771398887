@@ -3,8 +3,8 @@ import Head from "next/head";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { MoveLeft, Home, Compass } from "lucide-react";
-import { Nav } from "@/components/Nav";
-import { Footer } from "@/components/Footer";
+import Nav from "@/components/Nav";
+import Footer from "@/components/Footer";
 
 export default function Custom404() {
   return (

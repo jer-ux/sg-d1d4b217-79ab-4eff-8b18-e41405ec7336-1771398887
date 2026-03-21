@@ -1,8 +1,6 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import Link from "next/link";
-import { Menu, X, ChevronDown, Sparkles, User } from "lucide-react";
-import { supabase } from "@/integrations/supabase/client";
-import { ToasterMenu } from "./ToasterMenu";
+import { Menu, X, ChevronDown, Sparkles } from "lucide-react";
 
 export default function Nav() {
   const [isOpen, setIsOpen] = useState(false);
@@ -11,31 +9,6 @@ export default function Nav() {
   const [actuarialDropdownOpen, setActuarialDropdownOpen] = useState(false);
   const [agenticDropdownOpen, setAgenticDropdownOpen] = useState(false);
   const [platformDropdownOpen, setPlatformDropdownOpen] = useState(false);
-  const [isScrolled, setIsScrolled] = useState(false);
-  const [user, setUser] = useState<any>(null);
-
-  useEffect(() => {
-    const handleScroll = () => {
-      setIsScrolled(window.scrollY > 10);
-    };
-
-    window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
-
-  useEffect(() => {
-    // Check for authenticated user
-    supabase.auth.getUser().then(({ data }) => {
-      setUser(data.user);
-    });
-
-    // Listen for auth changes
-    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
-      setUser(session?.user ?? null);
-    });
-
-    return () => subscription.unsubscribe();
-  }, []);
 
   return (
     <nav className="fixed top-0 z-[200] w-full border-b border-white/10 bg-black/80 backdrop-blur-xl">
@@ -218,13 +191,6 @@ export default function Nav() {
                       <div className="text-xs text-gray-400">All compliance solutions</div>
                     </Link>
                     <Link
-                      href="/security/nist-compliance"
-                      className="block px-4 py-3 text-gray-300 hover:text-white hover:bg-amber-500/10 rounded-lg transition-all"
-                    >
-                      <div className="font-medium">NIST Cybersecurity Framework</div>
-                      <div className="text-xs text-gray-400">Security compliance status</div>
-                    </Link>
-                    <Link
                       href="/solutions/erisa-compliance"
                       className="block px-4 py-3 text-gray-300 hover:text-white hover:bg-amber-500/10 rounded-lg transition-all"
                     >
@@ -272,17 +238,6 @@ export default function Nav() {
                 </div>
               )}
             </div>
-
-            {/* Add Profile Link for Authenticated Users */}
-            {user && (
-              <Link
-                href="/profile"
-                className="px-4 py-2 rounded-lg font-medium text-blue-200 hover:text-white hover:bg-white/10 transition-all flex items-center gap-2"
-              >
-                <User className="w-4 h-4" />
-                Profile
-              </Link>
-            )}
 
             {/* Request Demo Button */}
             <Link
@@ -391,9 +346,6 @@ export default function Nav() {
                   <div className="px-4 py-2 mt-2 text-xs font-semibold text-amber-400 uppercase tracking-wider">Compliance</div>
                   <Link href="/compliance" className="block px-4 py-2 text-sm text-gray-400 hover:text-white hover:bg-white/5 rounded-lg transition-colors">
                     Compliance Hub
-                  </Link>
-                  <Link href="/security/nist-compliance" className="block px-4 py-2 text-sm text-gray-400 hover:text-white hover:bg-white/5 rounded-lg transition-colors">
-                    NIST Cybersecurity Framework
                   </Link>
                   <Link href="/solutions/erisa-compliance" className="block px-4 py-2 text-sm text-gray-400 hover:text-white hover:bg-white/5 rounded-lg transition-colors">
                     ERISA Compliance

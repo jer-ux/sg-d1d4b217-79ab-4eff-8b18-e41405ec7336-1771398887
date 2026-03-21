@@ -2,7 +2,7 @@
 
 import { motion } from "framer-motion";
 import { useState } from "react";
-import { Shield, Users, TrendingUp, Award, X, ChevronRight, Sparkles } from "lucide-react";
+import { Shield, Users, TrendingUp, Award, X, ChevronRight, Sparkles, Linkedin } from "lucide-react";
 import Nav from "@/components/Nav";
 import Footer from "@/components/Footer";
 import { SEO } from "@/components/SEO";
@@ -119,6 +119,7 @@ const boardMembers = [
 export default function BoardOfDirectorsPage() {
   const [selectedMember, setSelectedMember] = useState<typeof boardMembers[0] | null>(null);
   const [lightboxImage, setLightboxImage] = useState<string | null>(null);
+  const [hoveredCard, setHoveredCard] = useState<number | null>(null);
 
   return (
     <>
@@ -168,48 +169,198 @@ export default function BoardOfDirectorsPage() {
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.6, delay: index * 0.1 }}
                   className="group relative cursor-pointer"
+                  onMouseEnter={() => setHoveredCard(index)}
+                  onMouseLeave={() => setHoveredCard(null)}
                   onClick={() => setSelectedMember(member)}
                 >
-                  <div className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-amber-950/30 via-zinc-900/50 to-slate-900/30 border border-amber-500/20 p-8 hover:border-amber-500/50 transition-all duration-500 hover:shadow-2xl hover:shadow-amber-500/20 hover:scale-[1.02]">
+                  <div className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-amber-950/30 via-zinc-900/50 to-slate-900/30 border border-amber-500/20 p-8 transition-all duration-700 hover:border-amber-400/70 hover:shadow-2xl hover:shadow-amber-500/30 hover:scale-[1.03]">
                     {/* Animated gradient border overlay */}
-                    <div className="absolute inset-0 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none">
-                      <div className="absolute inset-0 rounded-2xl bg-gradient-to-r from-amber-500/0 via-amber-400/20 to-amber-500/0 animate-pulse" />
-                    </div>
+                    <motion.div
+                      className="absolute inset-0 rounded-2xl pointer-events-none"
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: hoveredCard === index ? 1 : 0 }}
+                      transition={{ duration: 0.5 }}
+                    >
+                      <div className="absolute inset-0 rounded-2xl bg-gradient-to-r from-amber-500/0 via-amber-400/30 to-amber-500/0 animate-pulse" />
+                    </motion.div>
 
                     {/* Background glow effect */}
-                    <div className="absolute inset-0 bg-gradient-radial from-amber-500/5 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+                    <motion.div
+                      className="absolute inset-0 bg-gradient-radial from-amber-500/10 via-transparent to-transparent pointer-events-none"
+                      initial={{ opacity: 0, scale: 0.8 }}
+                      animate={{
+                        opacity: hoveredCard === index ? 1 : 0,
+                        scale: hoveredCard === index ? 1 : 0.8
+                      }}
+                      transition={{ duration: 0.6 }}
+                    />
+
+                    {/* Particle effect on hover */}
+                    {hoveredCard === index && (
+                      <motion.div
+                        className="absolute inset-0 pointer-events-none"
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        transition={{ duration: 0.4 }}
+                      >
+                        {[...Array(12)].map((_, i) => (
+                          <motion.div
+                            key={i}
+                            className="absolute w-1 h-1 bg-amber-400 rounded-full"
+                            style={{
+                              left: `${Math.random() * 100}%`,
+                              top: `${Math.random() * 100}%`,
+                            }}
+                            animate={{
+                              y: [0, -20, 0],
+                              opacity: [0, 1, 0],
+                            }}
+                            transition={{
+                              duration: 2,
+                              repeat: Infinity,
+                              delay: i * 0.1,
+                            }}
+                          />
+                        ))}
+                      </motion.div>
+                    )}
 
                     {/* Member Image */}
-                    <div className="relative w-32 h-32 mx-auto mb-6 rounded-full overflow-hidden border-4 border-amber-500/30 group-hover:border-amber-400/60 transition-all duration-500 group-hover:scale-110 group-hover:shadow-xl group-hover:shadow-amber-400/30">
-                      <img
+                    <motion.div
+                      className="relative w-32 h-32 mx-auto mb-6 rounded-full overflow-hidden border-4 border-amber-500/30 transition-all duration-700"
+                      animate={{
+                        borderColor: hoveredCard === index ? "rgba(251, 191, 36, 0.8)" : "rgba(251, 191, 36, 0.3)",
+                        scale: hoveredCard === index ? 1.15 : 1,
+                        rotate: hoveredCard === index ? [0, -2, 2, 0] : 0,
+                      }}
+                      transition={{ duration: 0.7 }}
+                    >
+                      <motion.img
                         src={member.image}
                         alt={member.name}
-                        className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+                        className="w-full h-full object-cover"
+                        animate={{
+                          scale: hoveredCard === index ? 1.1 : 1,
+                        }}
+                        transition={{ duration: 0.7 }}
                       />
-                      <div className="absolute inset-0 bg-gradient-to-t from-amber-500/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-                    </div>
+                      <motion.div
+                        className="absolute inset-0 bg-gradient-to-t from-amber-500/30 to-transparent"
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: hoveredCard === index ? 1 : 0 }}
+                        transition={{ duration: 0.5 }}
+                      />
+                      
+                      {/* Pulsing ring effect */}
+                      {hoveredCard === index && (
+                        <motion.div
+                          className="absolute inset-0 rounded-full border-2 border-amber-400"
+                          initial={{ scale: 1, opacity: 0.8 }}
+                          animate={{ scale: 1.3, opacity: 0 }}
+                          transition={{ duration: 1.5, repeat: Infinity }}
+                        />
+                      )}
+                    </motion.div>
 
                     {/* Member Info */}
                     <div className="relative text-center">
-                      <h3 className="text-2xl font-bold text-amber-100 mb-2 group-hover:text-amber-50 transition-colors">
+                      <motion.h3
+                        className="text-2xl font-bold text-amber-100 mb-2 transition-colors duration-500"
+                        animate={{
+                          color: hoveredCard === index ? "rgb(254, 243, 199)" : "rgb(254, 243, 199)",
+                          scale: hoveredCard === index ? 1.05 : 1,
+                        }}
+                        transition={{ duration: 0.4 }}
+                      >
                         {member.name}
-                      </h3>
-                      <p className="text-amber-400 font-semibold mb-4 text-sm group-hover:text-amber-300 transition-colors">
+                      </motion.h3>
+                      <motion.p
+                        className="text-amber-400 font-semibold mb-4 text-sm transition-colors duration-500"
+                        animate={{
+                          color: hoveredCard === index ? "rgb(251, 191, 36)" : "rgb(251, 191, 36)",
+                        }}
+                      >
                         {member.title}
-                      </p>
-                      <p className="text-gray-400 text-sm leading-relaxed mb-6 line-clamp-3 group-hover:text-gray-300 transition-colors">
+                      </motion.p>
+                      <motion.p
+                        className="text-gray-400 text-sm leading-relaxed mb-6 line-clamp-3 transition-colors duration-500"
+                        animate={{
+                          color: hoveredCard === index ? "rgb(209, 213, 219)" : "rgb(156, 163, 175)",
+                        }}
+                      >
                         {member.bio}
-                      </p>
-                      <div className="flex items-center justify-center gap-2 text-amber-400 text-sm font-semibold group-hover:text-amber-300 transition-all">
+                      </motion.p>
+
+                      {/* LinkedIn Button */}
+                      <motion.a
+                        href={member.linkedin}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="inline-flex items-center gap-2 px-4 py-2 mb-4 rounded-lg bg-amber-500/10 hover:bg-amber-500/20 border border-amber-500/30 hover:border-amber-400/60 text-amber-400 hover:text-amber-300 text-sm font-semibold transition-all duration-300"
+                        onClick={(e) => e.stopPropagation()}
+                        whileHover={{ scale: 1.05 }}
+                        whileTap={{ scale: 0.95 }}
+                      >
+                        <Linkedin className="h-4 w-4" />
+                        <span>View LinkedIn Profile</span>
+                      </motion.a>
+
+                      <motion.div
+                        className="flex items-center justify-center gap-2 text-amber-400 text-sm font-semibold transition-all duration-500"
+                        animate={{
+                          color: hoveredCard === index ? "rgb(251, 191, 36)" : "rgb(251, 191, 36)",
+                        }}
+                      >
                         <Sparkles className="h-4 w-4 group-hover:animate-pulse" />
                         <span>View Full Profile</span>
-                        <ChevronRight className="h-4 w-4 group-hover:translate-x-1 transition-transform" />
-                      </div>
+                        <motion.div
+                          animate={{
+                            x: hoveredCard === index ? 4 : 0,
+                          }}
+                          transition={{ duration: 0.3 }}
+                        >
+                          <ChevronRight className="h-4 w-4" />
+                        </motion.div>
+                      </motion.div>
                     </div>
 
-                    {/* Decorative corner accent */}
-                    <div className="absolute top-0 right-0 w-24 h-24 bg-gradient-to-br from-amber-500/30 via-amber-400/10 to-transparent rounded-bl-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-                    <div className="absolute bottom-0 left-0 w-24 h-24 bg-gradient-to-tr from-amber-500/30 via-amber-400/10 to-transparent rounded-tr-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+                    {/* Decorative corner accents with animation */}
+                    <motion.div
+                      className="absolute top-0 right-0 w-24 h-24 bg-gradient-to-br from-amber-500/30 via-amber-400/10 to-transparent rounded-bl-3xl pointer-events-none"
+                      initial={{ opacity: 0, scale: 0.8 }}
+                      animate={{
+                        opacity: hoveredCard === index ? 1 : 0,
+                        scale: hoveredCard === index ? 1 : 0.8,
+                      }}
+                      transition={{ duration: 0.5 }}
+                    />
+                    <motion.div
+                      className="absolute bottom-0 left-0 w-24 h-24 bg-gradient-to-tr from-amber-500/30 via-amber-400/10 to-transparent rounded-tr-3xl pointer-events-none"
+                      initial={{ opacity: 0, scale: 0.8 }}
+                      animate={{
+                        opacity: hoveredCard === index ? 1 : 0,
+                        scale: hoveredCard === index ? 1 : 0.8,
+                      }}
+                      transition={{ duration: 0.5 }}
+                    />
+
+                    {/* Animated border shine effect */}
+                    {hoveredCard === index && (
+                      <motion.div
+                        className="absolute inset-0 rounded-2xl pointer-events-none"
+                        style={{
+                          background: "linear-gradient(90deg, transparent, rgba(251, 191, 36, 0.3), transparent)",
+                        }}
+                        animate={{
+                          x: ["-100%", "200%"],
+                        }}
+                        transition={{
+                          duration: 2,
+                          repeat: Infinity,
+                          ease: "linear",
+                        }}
+                      />
+                    )}
                   </div>
                 </motion.div>
               ))}
@@ -261,6 +412,16 @@ export default function BoardOfDirectorsPage() {
                       <p className="text-xl text-amber-400 font-semibold mb-4">
                         {selectedMember.title}
                       </p>
+                      <a
+                        href={selectedMember.linkedin}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="inline-flex items-center gap-2 px-4 py-2 mb-4 rounded-lg bg-amber-500/10 hover:bg-amber-500/20 border border-amber-500/30 hover:border-amber-400/60 text-amber-400 hover:text-amber-300 text-sm font-semibold transition-all duration-300"
+                        onClick={(e) => e.stopPropagation()}
+                      >
+                        <Linkedin className="h-4 w-4" />
+                        <span>View LinkedIn Profile</span>
+                      </a>
                       <p className="text-gray-300 leading-relaxed">
                         {selectedMember.bio}
                       </p>

@@ -221,6 +221,13 @@ export default function Nav() {
 
                     <div className="px-4 py-2 mt-2 text-xs font-semibold text-amber-400 uppercase tracking-wider">Industry Solutions</div>
                     <Link
+                      href="/solutions/ai-transformation"
+                      className="block px-4 py-3 text-gray-300 hover:text-white hover:bg-amber-500/10 rounded-lg transition-all"
+                    >
+                      <div className="font-medium">AI Transformation</div>
+                      <div className="text-xs text-gray-400">100% enterprise automation</div>
+                    </Link>
+                    <Link
                       href="/contract-intelligence"
                       className="block px-4 py-3 text-gray-300 hover:text-white hover:bg-amber-500/10 rounded-lg transition-all"
                     >
@@ -360,6 +367,9 @@ export default function Nav() {
                     Fiduciary Governance
                   </Link>
                   <div className="px-4 py-2 mt-2 text-xs font-semibold text-amber-400 uppercase tracking-wider">Industry Solutions</div>
+                  <Link href="/solutions/ai-transformation" className="block px-4 py-2 text-sm text-gray-400 hover:text-white hover:bg-white/5 rounded-lg transition-colors">
+                    AI Transformation
+                  </Link>
                   <Link href="/contract-intelligence" className="block px-4 py-2 text-sm text-gray-400 hover:text-white hover:bg-white/5 rounded-lg transition-colors">
                     Contract Intelligence
                   </Link>

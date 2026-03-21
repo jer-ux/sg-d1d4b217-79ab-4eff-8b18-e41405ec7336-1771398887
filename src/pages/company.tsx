@@ -24,6 +24,7 @@ const teamMembers = [
     name: "Jeremiah Shrack",
     role: "Founder & Chief Executive Officer",
     image: "/jeremiah-shrack-professional.png",
+    linkedin: "https://www.linkedin.com/in/shrack",
     bio: "Jeremiah Shrack is the Founder and Chief Executive Officer of SiriusB iQ AI Data Sciences, where he serves as the Chief Actuarial AI Architect of Kincaid IQ. A humanitarian and business leader with over two decades of experience engineering intelligent operating systems and scaling organizations.",
     education: [
       {
@@ -195,6 +196,7 @@ const teamMembers = [
     name: "Mike Hamann",
     role: "Board Member - Public Service & Fiscal Leadership",
     image: "/Hamann_Michael.jpg",
+    linkedin: "https://www.linkedin.com/in/mike-hamann-33274023/",
     bio: "Mike Hamann brings decades of distinguished public service and fiscal leadership to SiriusB iQ. As former Indiana State Representative and Budget Director, he has proven expertise in legislative strategy, government operations, and financial stewardship at the highest levels of state government.",
     experience: [
       {
@@ -227,6 +229,7 @@ const teamMembers = [
     name: "Dr. Michael Ochieng'",
     role: "Distinguished Chief Research & Technology Officer",
     image: "/dr-michael-ochieng-company.png",
+    linkedin: "https://www.linkedin.com/in/michael9ochieng/",
     bio: "Dr. Michael Ochieng' serves as Distinguished Chief Research & Technology Officer, bringing world-class expertise in AI research, machine learning systems, and computational science. His academic credentials and research contributions position SiriusB iQ at the forefront of AI innovation.",
     experience: [
       {
@@ -259,6 +262,7 @@ const teamMembers = [
     name: "Dr. Jacqueline El-Sayed",
     role: "Board Member and Distinguished Chief Scientist Officer",
     image: "/dr-jacqueline-el-sayed-company.png",
+    linkedin: "https://www.linkedin.com/in/jacquelineelsayed/",
     bio: "Dr. Jacqueline El-Sayed serves as Board Member and Distinguished Chief Scientist Officer, bringing exceptional expertise in data science, statistical analysis, and scientific methodology. Her leadership ensures SiriusB iQ maintains the highest standards of scientific excellence and analytical rigor.",
     experience: [
       {
@@ -291,6 +295,7 @@ const teamMembers = [
     name: "Catherine Farley",
     role: "Executive Chair, Committee on Algorithmic Governance & Fiduciary Risk",
     image: "/catherine-farley.jpg",
+    linkedin: "https://www.linkedin.com/in/catherine-farley-233b28/",
     bio: "Catherine Farley is a seasoned financial services executive with deep expertise in operational excellence, wealth management, and strategic transformation. Her career spans leadership roles at major financial institutions where she drove innovation and operational efficiency at scale.",
     experience: [
       {

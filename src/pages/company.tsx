@@ -372,13 +372,15 @@ function TeamMemberModal({ member, onClose }: { member: TeamMember; onClose: () 
         initial={{ scale: 0.9, opacity: 0 }}
         animate={{ scale: 1, opacity: 1 }}
         exit={{ scale: 0.9, opacity: 0 }}
-        className="bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 rounded-2xl max-w-4xl w-full max-h-[90vh] overflow-y-auto border border-amber-500/20 shadow-2xl shadow-amber-500/10"
+        className="relative bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 rounded-2xl max-w-4xl w-full max-h-[90vh] overflow-y-auto border border-blue-500/20 shadow-2xl shadow-blue-500/10"
         onClick={(e) => e.stopPropagation()}
       >
-        <div className="sticky top-0 z-10 bg-gradient-to-b from-slate-900 to-slate-900/95 backdrop-blur-sm border-b border-amber-500/20 p-6">
+        <div className="absolute inset-0 bg-gradient-to-br from-blue-500/5 via-purple-500/5 to-pink-500/5 rounded-2xl" />
+        
+        <div className="relative sticky top-0 z-10 bg-gradient-to-b from-slate-900 to-slate-900/95 backdrop-blur-sm border-b border-blue-500/20 p-6">
           <div className="flex items-start justify-between">
             <div className="flex items-center gap-4">
-              <div className="relative w-20 h-20 rounded-full overflow-hidden ring-2 ring-amber-500/30">
+              <div className="relative w-20 h-20 rounded-full overflow-hidden ring-2 ring-blue-500/30">
                 <ImageLightbox
                   src={member.image}
                   alt={member.name}
@@ -386,13 +388,15 @@ function TeamMemberModal({ member, onClose }: { member: TeamMember; onClose: () 
                 />
               </div>
               <div>
-                <h3 className="text-2xl font-bold text-amber-400">{member.name}</h3>
-                <p className="text-amber-200/70">{member.role}</p>
+                <h3 className="text-2xl font-bold bg-gradient-to-r from-blue-400 via-purple-400 to-pink-400 bg-clip-text text-transparent">
+                  {member.name}
+                </h3>
+                <p className="text-slate-300">{member.role}</p>
               </div>
             </div>
             <button
               onClick={onClose}
-              className="text-amber-400/60 hover:text-amber-400 transition-colors"
+              className="text-slate-400 hover:text-white transition-colors"
             >
               <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
@@ -401,9 +405,9 @@ function TeamMemberModal({ member, onClose }: { member: TeamMember; onClose: () 
           </div>
         </div>
 
-        <div className="p-6 space-y-8">
+        <div className="relative p-6 space-y-8">
           <div>
-            <h4 className="text-lg font-semibold text-amber-400 mb-3 flex items-center gap-2">
+            <h4 className="text-lg font-semibold text-blue-400 mb-3 flex items-center gap-2">
               <BookOpen className="w-5 h-5" />
               Professional Summary
             </h4>
@@ -412,27 +416,30 @@ function TeamMemberModal({ member, onClose }: { member: TeamMember; onClose: () 
 
           {member.education && member.education.length > 0 && (
             <div>
-              <h4 className="text-lg font-semibold text-amber-400 mb-4 flex items-center gap-2">
+              <h4 className="text-lg font-semibold text-blue-400 mb-4 flex items-center gap-2">
                 <GraduationCap className="w-5 h-5" />
                 Education
               </h4>
               <div className="space-y-4">
                 {member.education.map((edu, idx) => (
-                  <div key={idx} className="bg-slate-800/50 rounded-lg p-4 border border-amber-500/10">
-                    <div className="flex items-start justify-between mb-2">
-                      <div>
-                        <h5 className="font-semibold text-amber-300">{edu.degree}</h5>
-                        <p className="text-slate-400 text-sm">{edu.school}</p>
-                        {edu.focus && <p className="text-slate-500 text-sm">{edu.focus}</p>}
+                  <div key={idx} className="relative bg-slate-800/50 rounded-lg p-4 border border-blue-500/10 overflow-hidden group hover:border-blue-500/30 transition-all">
+                    <div className="absolute inset-0 bg-gradient-to-r from-blue-500/0 via-purple-500/5 to-pink-500/0 opacity-0 group-hover:opacity-100 transition-opacity" />
+                    <div className="relative">
+                      <div className="flex items-start justify-between mb-2">
+                        <div>
+                          <h5 className="font-semibold text-blue-300">{edu.degree}</h5>
+                          <p className="text-slate-400 text-sm">{edu.school}</p>
+                          {edu.focus && <p className="text-slate-500 text-sm">{edu.focus}</p>}
+                        </div>
+                        <span className="text-blue-400/60 text-sm">{edu.years}</span>
                       </div>
-                      <span className="text-amber-400/60 text-sm">{edu.years}</span>
+                      {edu.gpa && (
+                        <p className="text-slate-400 text-sm mb-1">GPA: {edu.gpa}</p>
+                      )}
+                      {edu.details && (
+                        <p className="text-slate-300 text-sm mt-2">{edu.details}</p>
+                      )}
                     </div>
-                    {edu.gpa && (
-                      <p className="text-slate-400 text-sm mb-1">GPA: {edu.gpa}</p>
-                    )}
-                    {edu.details && (
-                      <p className="text-slate-300 text-sm mt-2">{edu.details}</p>
-                    )}
                   </div>
                 ))}
               </div>
@@ -441,23 +448,24 @@ function TeamMemberModal({ member, onClose }: { member: TeamMember; onClose: () 
 
           {member.certifications && member.certifications.length > 0 && (
             <div>
-              <h4 className="text-lg font-semibold text-amber-400 mb-4 flex items-center gap-2">
+              <h4 className="text-lg font-semibold text-blue-400 mb-4 flex items-center gap-2">
                 <Medal className="w-5 h-5" />
                 Certifications
               </h4>
               <div className="space-y-3">
                 {member.certifications.map((cert, idx) => (
-                  <div key={idx} className="bg-slate-800/50 rounded-lg p-4 border border-amber-500/10">
-                    <div className="flex items-start justify-between">
+                  <div key={idx} className="relative bg-slate-800/50 rounded-lg p-4 border border-blue-500/10 overflow-hidden group hover:border-blue-500/30 transition-all">
+                    <div className="absolute inset-0 bg-gradient-to-r from-blue-500/0 via-purple-500/5 to-pink-500/0 opacity-0 group-hover:opacity-100 transition-opacity" />
+                    <div className="relative flex items-start justify-between">
                       <div>
-                        <h5 className="font-semibold text-amber-300">{cert.title}</h5>
+                        <h5 className="font-semibold text-blue-300">{cert.title}</h5>
                         <p className="text-slate-400 text-sm">{cert.issuer}</p>
                         {cert.credentialId && (
                           <p className="text-slate-500 text-xs mt-1">Credential ID: {cert.credentialId}</p>
                         )}
                       </div>
                       <div className="text-right">
-                        <p className="text-amber-400/60 text-sm">Issued: {cert.issued}</p>
+                        <p className="text-blue-400/60 text-sm">Issued: {cert.issued}</p>
                         {cert.expires && (
                           <p className="text-slate-500 text-xs">Expires: {cert.expires}</p>
                         )}
@@ -471,20 +479,21 @@ function TeamMemberModal({ member, onClose }: { member: TeamMember; onClose: () 
 
           {member.volunteering && member.volunteering.length > 0 && (
             <div>
-              <h4 className="text-lg font-semibold text-amber-400 mb-4 flex items-center gap-2">
+              <h4 className="text-lg font-semibold text-blue-400 mb-4 flex items-center gap-2">
                 <Heart className="w-5 h-5" />
                 Volunteering
               </h4>
               <div className="space-y-3">
                 {member.volunteering.map((vol, idx) => (
-                  <div key={idx} className="bg-slate-800/50 rounded-lg p-4 border border-amber-500/10">
-                    <div className="flex items-start justify-between">
+                  <div key={idx} className="relative bg-slate-800/50 rounded-lg p-4 border border-blue-500/10 overflow-hidden group hover:border-blue-500/30 transition-all">
+                    <div className="absolute inset-0 bg-gradient-to-r from-blue-500/0 via-purple-500/5 to-pink-500/0 opacity-0 group-hover:opacity-100 transition-opacity" />
+                    <div className="relative flex items-start justify-between">
                       <div>
-                        <h5 className="font-semibold text-amber-300">{vol.role}</h5>
+                        <h5 className="font-semibold text-blue-300">{vol.role}</h5>
                         <p className="text-slate-400 text-sm">{vol.organization}</p>
                         <p className="text-slate-500 text-xs mt-1">{vol.focus}</p>
                       </div>
-                      <span className="text-amber-400/60 text-sm">{vol.duration}</span>
+                      <span className="text-blue-400/60 text-sm">{vol.duration}</span>
                     </div>
                   </div>
                 ))}
@@ -493,38 +502,41 @@ function TeamMemberModal({ member, onClose }: { member: TeamMember; onClose: () 
           )}
 
           <div>
-            <h4 className="text-lg font-semibold text-amber-400 mb-4 flex items-center gap-2">
+            <h4 className="text-lg font-semibold text-blue-400 mb-4 flex items-center gap-2">
               <Briefcase className="w-5 h-5" />
               Leadership & Experience
             </h4>
             <div className="space-y-6">
               {member.experience.map((exp, idx) => (
-                <div key={idx} className="bg-slate-800/50 rounded-lg p-4 border border-amber-500/10">
-                  <div className="flex items-start justify-between mb-3">
-                    <div>
-                      <h5 className="font-semibold text-amber-300">{exp.title}</h5>
-                      <p className="text-slate-400 text-sm">{exp.company}</p>
+                <div key={idx} className="relative bg-slate-800/50 rounded-lg p-4 border border-blue-500/10 overflow-hidden group hover:border-blue-500/30 transition-all">
+                  <div className="absolute inset-0 bg-gradient-to-r from-blue-500/0 via-purple-500/5 to-pink-500/0 opacity-0 group-hover:opacity-100 transition-opacity" />
+                  <div className="relative">
+                    <div className="flex items-start justify-between mb-3">
+                      <div>
+                        <h5 className="font-semibold text-blue-300">{exp.title}</h5>
+                        <p className="text-slate-400 text-sm">{exp.company}</p>
+                      </div>
+                      <span className="text-blue-400/60 text-sm">{exp.period}</span>
                     </div>
-                    <span className="text-amber-400/60 text-sm">{exp.period}</span>
+                    <p className="text-slate-300 text-sm mb-3 leading-relaxed">{exp.description}</p>
+                    {exp.highlights.length > 0 && (
+                      <ul className="space-y-1">
+                        {exp.highlights.map((highlight, hidx) => (
+                          <li key={hidx} className="text-slate-400 text-sm flex items-start gap-2">
+                            <span className="text-blue-400 mt-1">•</span>
+                            <span>{highlight}</span>
+                          </li>
+                        ))}
+                      </ul>
+                    )}
                   </div>
-                  <p className="text-slate-300 text-sm mb-3 leading-relaxed">{exp.description}</p>
-                  {exp.highlights.length > 0 && (
-                    <ul className="space-y-1">
-                      {exp.highlights.map((highlight, hidx) => (
-                        <li key={hidx} className="text-slate-400 text-sm flex items-start gap-2">
-                          <span className="text-amber-400 mt-1">•</span>
-                          <span>{highlight}</span>
-                        </li>
-                      ))}
-                    </ul>
-                  )}
                 </div>
               ))}
             </div>
           </div>
 
           <div>
-            <h4 className="text-lg font-semibold text-amber-400 mb-4 flex items-center gap-2">
+            <h4 className="text-lg font-semibold text-blue-400 mb-4 flex items-center gap-2">
               <Target className="w-5 h-5" />
               Areas of Expertise
             </h4>
@@ -532,7 +544,7 @@ function TeamMemberModal({ member, onClose }: { member: TeamMember; onClose: () 
               {member.expertise.map((skill, idx) => (
                 <span
                   key={idx}
-                  className="px-3 py-1 bg-amber-500/10 text-amber-300 rounded-full text-sm border border-amber-500/20"
+                  className="px-3 py-1 bg-gradient-to-r from-blue-500/10 via-purple-500/10 to-pink-500/10 text-blue-300 rounded-full text-sm border border-blue-500/20 hover:border-blue-500/40 transition-colors"
                 >
                   {skill}
                 </span>
@@ -541,7 +553,7 @@ function TeamMemberModal({ member, onClose }: { member: TeamMember; onClose: () 
           </div>
 
           <div>
-            <h4 className="text-lg font-semibold text-amber-400 mb-3 flex items-center gap-2">
+            <h4 className="text-lg font-semibold text-blue-400 mb-3 flex items-center gap-2">
               <Sparkles className="w-5 h-5" />
               Philosophy & Approach
             </h4>
@@ -549,7 +561,7 @@ function TeamMemberModal({ member, onClose }: { member: TeamMember; onClose: () 
           </div>
 
           <div>
-            <h4 className="text-lg font-semibold text-amber-400 mb-3 flex items-center gap-2">
+            <h4 className="text-lg font-semibold text-blue-400 mb-3 flex items-center gap-2">
               <TrendingUp className="w-5 h-5" />
               Vision & Ethos
             </h4>
@@ -580,12 +592,12 @@ export default function CompanyPage() {
             animate={{ opacity: 1, y: 0 }}
             className="text-center mb-16"
           >
-            <div className="inline-flex items-center gap-2 px-4 py-2 bg-amber-500/10 border border-amber-500/20 rounded-full mb-6">
-              <Users className="w-4 h-4 text-amber-400" />
-              <span className="text-amber-400 text-sm font-medium">Leadership Team</span>
+            <div className="inline-flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-blue-500/10 via-purple-500/10 to-pink-500/10 border border-blue-500/20 rounded-full mb-6">
+              <Users className="w-4 h-4 text-blue-400" />
+              <span className="text-blue-400 text-sm font-medium">Leadership Team</span>
             </div>
             
-            <h1 className="text-5xl md:text-6xl font-bold mb-6 bg-gradient-to-r from-amber-200 via-amber-400 to-amber-200 bg-clip-text text-transparent">
+            <h1 className="text-5xl md:text-6xl font-bold mb-6 bg-gradient-to-r from-blue-400 via-purple-400 to-pink-400 bg-clip-text text-transparent">
               World-Class Leadership
             </h1>
             
@@ -602,27 +614,30 @@ export default function CompanyPage() {
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: idx * 0.1 }}
-                className="group relative bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 rounded-2xl overflow-hidden border border-amber-500/20 hover:border-amber-500/40 transition-all duration-300 cursor-pointer hover:shadow-2xl hover:shadow-amber-500/20"
+                className="group relative bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 rounded-2xl overflow-hidden border border-blue-500/20 hover:border-blue-500/40 transition-all duration-500 cursor-pointer hover:shadow-2xl hover:shadow-blue-500/20 hover:scale-[1.02]"
                 onClick={() => setSelectedMember(member)}
               >
-                <div className="absolute inset-0 bg-gradient-to-br from-amber-500/5 via-transparent to-amber-500/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                <div className="absolute inset-0 bg-gradient-to-br from-blue-500/5 via-purple-500/5 to-pink-500/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+                <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500">
+                  <div className="absolute inset-0 bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 animate-spin-slow blur-xl opacity-20" />
+                </div>
                 
                 <div className="relative p-8">
                   <div className="flex items-start gap-6 mb-6">
-                    <div className="relative w-32 h-32 rounded-2xl overflow-hidden ring-2 ring-amber-500/30 group-hover:ring-amber-500/60 transition-all duration-300 flex-shrink-0">
+                    <div className="relative w-32 h-32 rounded-2xl overflow-hidden ring-2 ring-blue-500/30 group-hover:ring-blue-500/60 transition-all duration-500 flex-shrink-0">
                       <ImageLightbox
                         src={member.image}
                         alt={member.name}
-                        className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"
+                        className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
                       />
-                      <div className="absolute inset-0 bg-gradient-to-t from-slate-900/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                      <div className="absolute inset-0 bg-gradient-to-t from-slate-900/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
                     </div>
                     
                     <div className="flex-1 min-w-0">
-                      <h3 className="text-2xl font-bold text-amber-400 mb-2 group-hover:text-amber-300 transition-colors">
+                      <h3 className="text-2xl font-bold bg-gradient-to-r from-blue-400 via-purple-400 to-pink-400 bg-clip-text text-transparent mb-2">
                         {member.name}
                       </h3>
-                      <p className="text-amber-200/70 text-sm mb-4 leading-relaxed">
+                      <p className="text-slate-300 text-sm mb-4 leading-relaxed">
                         {member.role}
                       </p>
                       
@@ -630,13 +645,13 @@ export default function CompanyPage() {
                         {member.expertise.slice(0, 3).map((skill, idx) => (
                           <span
                             key={idx}
-                            className="px-2 py-1 bg-amber-500/10 text-amber-300 rounded text-xs border border-amber-500/20"
+                            className="px-2 py-1 bg-gradient-to-r from-blue-500/10 via-purple-500/10 to-pink-500/10 text-blue-300 rounded text-xs border border-blue-500/20"
                           >
                             {skill}
                           </span>
                         ))}
                         {member.expertise.length > 3 && (
-                          <span className="px-2 py-1 bg-amber-500/10 text-amber-400 rounded text-xs border border-amber-500/20">
+                          <span className="px-2 py-1 bg-gradient-to-r from-blue-500/10 via-purple-500/10 to-pink-500/10 text-blue-400 rounded text-xs border border-blue-500/20">
                             +{member.expertise.length - 3} more
                           </span>
                         )}
@@ -648,7 +663,7 @@ export default function CompanyPage() {
                     {member.bio}
                   </p>
                   
-                  <div className="flex items-center gap-2 text-amber-400 text-sm font-medium group-hover:gap-3 transition-all">
+                  <div className="flex items-center gap-2 text-blue-400 text-sm font-medium group-hover:gap-3 transition-all">
                     <span>View Full Profile</span>
                     <Award className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
                   </div>

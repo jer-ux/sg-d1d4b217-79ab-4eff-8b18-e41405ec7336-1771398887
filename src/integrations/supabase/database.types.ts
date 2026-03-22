@@ -1029,8 +1029,11 @@ export type Database = {
           last_login_at: string | null
           last_login_ip: unknown
           locale: string | null
+          mfa_enabled: boolean | null
           notification_preferences: Json | null
+          organization_id: string | null
           phone_number: string | null
+          role: string | null
           security_settings: Json | null
           timezone: string | null
           updated_at: string | null
@@ -1046,8 +1049,11 @@ export type Database = {
           last_login_at?: string | null
           last_login_ip?: unknown
           locale?: string | null
+          mfa_enabled?: boolean | null
           notification_preferences?: Json | null
+          organization_id?: string | null
           phone_number?: string | null
+          role?: string | null
           security_settings?: Json | null
           timezone?: string | null
           updated_at?: string | null
@@ -1063,13 +1069,24 @@ export type Database = {
           last_login_at?: string | null
           last_login_ip?: unknown
           locale?: string | null
+          mfa_enabled?: boolean | null
           notification_preferences?: Json | null
+          organization_id?: string | null
           phone_number?: string | null
+          role?: string | null
           security_settings?: Json | null
           timezone?: string | null
           updated_at?: string | null
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: "profiles_organization_id_fkey"
+            columns: ["organization_id"]
+            isOneToOne: false
+            referencedRelation: "organizations"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       report_deliverables: {
         Row: {

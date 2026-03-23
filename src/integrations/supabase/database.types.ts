@@ -1,4 +1,4 @@
- 
+/* eslint-disable @typescript-eslint/no-empty-object-type */
 export type Json =
   | string
   | number
@@ -558,6 +558,89 @@ export type Database = {
           },
         ]
       }
+      contract_ai_messages: {
+        Row: {
+          content: string
+          created_at: string | null
+          id: string
+          metadata: Json | null
+          role: string
+          session_id: string | null
+        }
+        Insert: {
+          content: string
+          created_at?: string | null
+          id?: string
+          metadata?: Json | null
+          role: string
+          session_id?: string | null
+        }
+        Update: {
+          content?: string
+          created_at?: string | null
+          id?: string
+          metadata?: Json | null
+          role?: string
+          session_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "contract_ai_messages_session_id_fkey"
+            columns: ["session_id"]
+            isOneToOne: false
+            referencedRelation: "contract_ai_sessions"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      contract_ai_sessions: {
+        Row: {
+          created_at: string | null
+          id: string
+          organization_id: string | null
+          session_type: string
+          status: string
+          updated_at: string | null
+          upload_id: string | null
+          user_id: string | null
+        }
+        Insert: {
+          created_at?: string | null
+          id?: string
+          organization_id?: string | null
+          session_type: string
+          status?: string
+          updated_at?: string | null
+          upload_id?: string | null
+          user_id?: string | null
+        }
+        Update: {
+          created_at?: string | null
+          id?: string
+          organization_id?: string | null
+          session_type?: string
+          status?: string
+          updated_at?: string | null
+          upload_id?: string | null
+          user_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "contract_ai_sessions_organization_id_fkey"
+            columns: ["organization_id"]
+            isOneToOne: false
+            referencedRelation: "contract_organizations"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "contract_ai_sessions_upload_id_fkey"
+            columns: ["upload_id"]
+            isOneToOne: false
+            referencedRelation: "contract_uploads"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       contract_analysis_results: {
         Row: {
           analysis_summary: Json | null
@@ -656,6 +739,53 @@ export type Database = {
         }
         Relationships: []
       }
+      contract_benchmarks: {
+        Row: {
+          best_in_class: number | null
+          created_at: string | null
+          gap_analysis: string | null
+          id: string
+          improvement_potential: number | null
+          industry_average: number | null
+          percentile_rank: number | null
+          provision_type: string
+          upload_id: string | null
+          your_score: number | null
+        }
+        Insert: {
+          best_in_class?: number | null
+          created_at?: string | null
+          gap_analysis?: string | null
+          id?: string
+          improvement_potential?: number | null
+          industry_average?: number | null
+          percentile_rank?: number | null
+          provision_type: string
+          upload_id?: string | null
+          your_score?: number | null
+        }
+        Update: {
+          best_in_class?: number | null
+          created_at?: string | null
+          gap_analysis?: string | null
+          id?: string
+          improvement_potential?: number | null
+          industry_average?: number | null
+          percentile_rank?: number | null
+          provision_type?: string
+          upload_id?: string | null
+          your_score?: number | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "contract_benchmarks_upload_id_fkey"
+            columns: ["upload_id"]
+            isOneToOne: false
+            referencedRelation: "contract_uploads"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       contract_board_analytics: {
         Row: {
           average_contract_score: number | null
@@ -705,6 +835,59 @@ export type Database = {
             columns: ["organization_id"]
             isOneToOne: false
             referencedRelation: "contract_organizations"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      contract_insights: {
+        Row: {
+          ai_reasoning: string | null
+          category: string
+          confidence_score: number | null
+          created_at: string | null
+          description: string
+          financial_impact: number | null
+          id: string
+          insight_type: string
+          severity: string | null
+          supporting_evidence: Json | null
+          title: string
+          upload_id: string | null
+        }
+        Insert: {
+          ai_reasoning?: string | null
+          category: string
+          confidence_score?: number | null
+          created_at?: string | null
+          description: string
+          financial_impact?: number | null
+          id?: string
+          insight_type: string
+          severity?: string | null
+          supporting_evidence?: Json | null
+          title: string
+          upload_id?: string | null
+        }
+        Update: {
+          ai_reasoning?: string | null
+          category?: string
+          confidence_score?: number | null
+          created_at?: string | null
+          description?: string
+          financial_impact?: number | null
+          id?: string
+          insight_type?: string
+          severity?: string | null
+          supporting_evidence?: Json | null
+          title?: string
+          upload_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "contract_insights_upload_id_fkey"
+            columns: ["upload_id"]
+            isOneToOne: false
+            referencedRelation: "contract_uploads"
             referencedColumns: ["id"]
           },
         ]
@@ -909,6 +1092,59 @@ export type Database = {
             columns: ["contract_id"]
             isOneToOne: false
             referencedRelation: "pbm_contracts"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      contract_recommendations: {
+        Row: {
+          action_items: Json | null
+          created_at: string | null
+          description: string
+          expected_impact: number | null
+          id: string
+          implementation_effort: string | null
+          priority: number | null
+          recommendation_type: string
+          success_probability: number | null
+          timeline_days: number | null
+          title: string
+          upload_id: string | null
+        }
+        Insert: {
+          action_items?: Json | null
+          created_at?: string | null
+          description: string
+          expected_impact?: number | null
+          id?: string
+          implementation_effort?: string | null
+          priority?: number | null
+          recommendation_type: string
+          success_probability?: number | null
+          timeline_days?: number | null
+          title: string
+          upload_id?: string | null
+        }
+        Update: {
+          action_items?: Json | null
+          created_at?: string | null
+          description?: string
+          expected_impact?: number | null
+          id?: string
+          implementation_effort?: string | null
+          priority?: number | null
+          recommendation_type?: string
+          success_probability?: number | null
+          timeline_days?: number | null
+          title?: string
+          upload_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "contract_recommendations_upload_id_fkey"
+            columns: ["upload_id"]
+            isOneToOne: false
+            referencedRelation: "contract_uploads"
             referencedColumns: ["id"]
           },
         ]

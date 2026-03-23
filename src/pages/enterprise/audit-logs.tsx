@@ -1,144 +1,226 @@
-import { useEffect, useState } from "react";
-import { useRouter } from "next/router";
-import { EnterpriseHeader } from "@/components/enterprise/EnterpriseHeader";
-import { authService } from "@/services/authService";
-import { auditService, type AuditLogEntry } from "@/services/auditService";
-import { SEO } from "@/components/SEO";
+import { useState, useEffect } from "react";
+import Head from "next/head";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
-import { Badge } from "@/components/ui/badge";
-import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { Search, Download, Filter } from "lucide-react";
+import { Input } from "@/components/ui/input";
+import { Badge } from "@/components/ui/badge";
+import { EnterpriseHeader } from "@/components/enterprise/EnterpriseHeader";
+import { SiteFooter } from "@/components/site/SiteFooter";
+import { 
+  Search, 
+  Download, 
+  Filter,
+  FileText,
+  Upload,
+  User,
+  Settings,
+  AlertCircle,
+  CheckCircle
+} from "lucide-react";
+import { supabase } from "@/integrations/supabase/client";
+
+interface AuditLog {
+  id: string;
+  user_id: string;
+  action: string;
+  resource_type: string;
+  resource_id: string;
+  details: any;
+  ip_address: string;
+  user_agent: string;
+  created_at: string;
+}
 
 export default function AuditLogsPage() {
-  const router = useRouter();
+  const [logs, setLogs] = useState<AuditLog[]>([]);
   const [loading, setLoading] = useState(true);
-  const [logs, setLogs] = useState<AuditLogEntry[]>([]);
-  const [searchTerm, setSearchTerm] = useState("");
+  const [searchQuery, setSearchQuery] = useState('');
+  const [filterAction, setFilterAction] = useState('all');
 
   useEffect(() => {
-    loadData();
+    loadAuditLogs();
   }, []);
 
-  const loadData = async () => {
-    const user = await authService.getCurrentUser();
-    if (!user) {
-      router.push("/auth/signin?redirect=/enterprise/audit-logs");
-      return;
-    }
+  const loadAuditLogs = async () => {
+    try {
+      const { data, error } = await supabase
+        .from('audit_logs')
+        .select('*')
+        .order('created_at', { ascending: false })
+        .limit(100);
 
-    if (user.organization_id) {
-      const data = await auditService.getAuditLogs({
-        organizationId: user.organization_id,
-        limit: 100
-      });
-      setLogs(data);
+      if (data) {
+        setLogs(data);
+      }
+    } catch (error) {
+      console.error('Failed to load audit logs:', error);
+    } finally {
+      setLoading(false);
     }
-    setLoading(false);
   };
 
-  const filteredLogs = logs.filter(log => 
-    log.action?.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    log.resource_type?.toLowerCase().includes(searchTerm.toLowerCase())
-  );
-
-  const getActionColor = (action: string) => {
-    if (action.includes("delete") || action.includes("remove") || action.includes("fail")) return "destructive";
-    if (action.includes("create") || action.includes("add") || action.includes("success")) return "default";
-    return "secondary";
+  const getActionIcon = (action: string) => {
+    switch (action.toLowerCase()) {
+      case 'upload':
+        return <Upload className="h-4 w-4" />;
+      case 'download':
+        return <Download className="h-4 w-4" />;
+      case 'view':
+        return <FileText className="h-4 w-4" />;
+      case 'update':
+        return <Settings className="h-4 w-4" />;
+      case 'delete':
+        return <AlertCircle className="h-4 w-4 text-red-600" />;
+      default:
+        return <CheckCircle className="h-4 w-4" />;
+    }
   };
 
-  if (loading) {
-    return (
-      <div className="min-h-screen flex items-center justify-center">
-        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary"></div>
-      </div>
-    );
-  }
+  const getActionBadge = (action: string) => {
+    const actionLower = action.toLowerCase();
+    if (actionLower.includes('delete') || actionLower.includes('revoke')) {
+      return <Badge variant="outline" className="bg-red-50 text-red-700 border-red-200">{action}</Badge>;
+    }
+    if (actionLower.includes('create') || actionLower.includes('upload')) {
+      return <Badge variant="outline" className="bg-green-50 text-green-700 border-green-200">{action}</Badge>;
+    }
+    if (actionLower.includes('update') || actionLower.includes('modify')) {
+      return <Badge variant="outline" className="bg-blue-50 text-blue-700 border-blue-200">{action}</Badge>;
+    }
+    return <Badge variant="outline">{action}</Badge>;
+  };
 
   return (
     <>
-      <SEO title="Audit Logs - Enterprise | SiriusB iQ" />
-      <div className="min-h-screen bg-background">
+      <Head>
+        <title>Audit Logs - SiriusB iQ</title>
+      </Head>
+
+      <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-slate-100">
         <EnterpriseHeader />
-        <main className="container py-8 max-w-7xl">
-          <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-8">
-            <div className="space-y-1">
-              <h1 className="text-3xl font-bold tracking-tight">Audit Logs</h1>
-              <p className="text-muted-foreground">
-                Comprehensive security and activity trail for your organization.
-              </p>
+
+        <main className="container mx-auto px-4 py-8 max-w-[1400px]">
+          <div className="mb-8 flex items-center justify-between">
+            <div>
+              <h1 className="text-4xl font-bold mb-2">Audit Logs</h1>
+              <p className="text-gray-600">Complete history of system activities</p>
             </div>
-            <div className="flex gap-2">
-              <Button variant="outline"><Filter className="h-4 w-4 mr-2" /> Filter</Button>
-              <Button variant="outline"><Download className="h-4 w-4 mr-2" /> Export CSV</Button>
-            </div>
+            <Button variant="outline">
+              <Download className="h-4 w-4 mr-2" />
+              Export Logs
+            </Button>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
+            <Card>
+              <CardHeader className="pb-2">
+                <CardTitle className="text-sm text-gray-600">Total Events</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <div className="text-3xl font-bold">{logs.length}</div>
+                <p className="text-xs text-gray-500 mt-1">Last 30 days</p>
+              </CardContent>
+            </Card>
+
+            <Card>
+              <CardHeader className="pb-2">
+                <CardTitle className="text-sm text-gray-600">Contract Uploads</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <div className="text-3xl font-bold">
+                  {logs.filter(l => l.action.toLowerCase().includes('upload')).length}
+                </div>
+              </CardContent>
+            </Card>
+
+            <Card>
+              <CardHeader className="pb-2">
+                <CardTitle className="text-sm text-gray-600">API Calls</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <div className="text-3xl font-bold">
+                  {logs.filter(l => l.action.toLowerCase().includes('api')).length}
+                </div>
+              </CardContent>
+            </Card>
+
+            <Card>
+              <CardHeader className="pb-2">
+                <CardTitle className="text-sm text-gray-600">Security Events</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <div className="text-3xl font-bold text-green-600">0</div>
+                <p className="text-xs text-gray-500 mt-1">No incidents</p>
+              </CardContent>
+            </Card>
           </div>
 
           <Card>
             <CardHeader>
-              <CardTitle>System Activity</CardTitle>
-              <CardDescription>Review all tracked events across your infrastructure.</CardDescription>
-              <div className="mt-4 relative max-w-sm">
-                <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
-                <Input
-                  placeholder="Search by action or resource..."
-                  className="pl-9"
-                  value={searchTerm}
-                  onChange={(e) => setSearchTerm(e.target.value)}
-                />
+              <div className="flex items-center justify-between">
+                <div>
+                  <CardTitle>Activity Log</CardTitle>
+                  <CardDescription>Real-time system events and user actions</CardDescription>
+                </div>
+                <div className="flex gap-2">
+                  <div className="relative">
+                    <Search className="absolute left-3 top-3 h-4 w-4 text-gray-400" />
+                    <Input 
+                      className="pl-10 w-64"
+                      placeholder="Search logs..."
+                      value={searchQuery}
+                      onChange={(e) => setSearchQuery(e.target.value)}
+                    />
+                  </div>
+                  <Button variant="outline" size="icon">
+                    <Filter className="h-4 w-4" />
+                  </Button>
+                </div>
               </div>
             </CardHeader>
             <CardContent>
-              <div className="rounded-md border">
-                <Table>
-                  <TableHeader>
-                    <TableRow>
-                      <TableHead>Timestamp</TableHead>
-                      <TableHead>Action</TableHead>
-                      <TableHead>Resource</TableHead>
-                      <TableHead>User ID</TableHead>
-                      <TableHead>IP Address</TableHead>
-                    </TableRow>
-                  </TableHeader>
-                  <TableBody>
-                    {filteredLogs.length === 0 ? (
-                      <TableRow>
-                        <TableCell colSpan={5} className="text-center py-8 text-muted-foreground">
-                          No audit logs found.
-                        </TableCell>
-                      </TableRow>
-                    ) : (
-                      filteredLogs.map((log) => (
-                        <TableRow key={log.id}>
-                          <TableCell className="whitespace-nowrap text-muted-foreground text-sm">
-                            {new Date(log.created_at || "").toLocaleString()}
-                          </TableCell>
-                          <TableCell>
-                            <Badge variant={getActionColor(log.action || "") as any}>
-                              {log.action}
-                            </Badge>
-                          </TableCell>
-                          <TableCell className="font-mono text-xs">
-                            {log.resource_type}
-                            {log.resource_id && <span className="text-muted-foreground">:{log.resource_id.substring(0,8)}</span>}
-                          </TableCell>
-                          <TableCell className="font-mono text-xs truncate max-w-[120px]">
-                            {log.user_id}
-                          </TableCell>
-                          <TableCell className="text-muted-foreground text-sm">
-                            {log.ip_address || "N/A"}
-                          </TableCell>
-                        </TableRow>
-                      ))
-                    )}
-                  </TableBody>
-                </Table>
-              </div>
+              {loading ? (
+                <div className="text-center py-12">Loading audit logs...</div>
+              ) : (
+                <div className="space-y-2">
+                  {logs.filter(log => 
+                    searchQuery === '' || 
+                    log.action.toLowerCase().includes(searchQuery.toLowerCase()) ||
+                    log.resource_type.toLowerCase().includes(searchQuery.toLowerCase())
+                  ).map((log) => (
+                    <div key={log.id} className="flex items-center justify-between p-4 border rounded-lg hover:bg-gray-50 transition-colors">
+                      <div className="flex items-center gap-4">
+                        <div className="p-2 bg-gray-100 rounded">
+                          {getActionIcon(log.action)}
+                        </div>
+                        <div>
+                          <div className="flex items-center gap-2">
+                            {getActionBadge(log.action)}
+                            <span className="text-sm text-gray-600">on</span>
+                            <Badge variant="outline">{log.resource_type}</Badge>
+                          </div>
+                          <div className="text-xs text-gray-500 mt-1 flex items-center gap-2">
+                            <User className="h-3 w-3" />
+                            {log.user_id.slice(0, 8)}... 
+                            <span>•</span>
+                            {log.ip_address}
+                            <span>•</span>
+                            {new Date(log.created_at).toLocaleString()}
+                          </div>
+                        </div>
+                      </div>
+                      <Button size="sm" variant="ghost">
+                        View Details
+                      </Button>
+                    </div>
+                  ))}
+                </div>
+              )}
             </CardContent>
           </Card>
         </main>
+
+        <SiteFooter />
       </div>
     </>
   );

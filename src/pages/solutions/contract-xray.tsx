@@ -536,27 +536,34 @@ export default function ContractXRayPage() {
 
         <main className="relative">
           {/* Hero Section */}
-          <section className="relative py-20 overflow-hidden">
-            <div className="absolute inset-0 bg-gradient-to-b from-blue-900/20 via-transparent to-transparent" />
+          <section className="relative py-32 overflow-hidden border-b border-white/10">
+            {/* Enterprise Background */}
+            <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-blue-900/20 via-slate-950 to-slate-950" />
+            <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-20 mix-blend-overlay"></div>
             <div className="absolute inset-0">
-              <div className="absolute top-20 left-10 w-72 h-72 bg-blue-500/10 rounded-full blur-3xl" />
-              <div className="absolute bottom-20 right-10 w-96 h-96 bg-purple-500/10 rounded-full blur-3xl" />
+              <div className="absolute top-1/4 left-1/4 w-[500px] h-[500px] bg-blue-500/20 rounded-full blur-[120px]" />
+              <div className="absolute bottom-1/4 right-1/4 w-[600px] h-[600px] bg-purple-600/10 rounded-full blur-[150px]" />
             </div>
 
             <div className="container mx-auto px-4 relative z-10">
-              <div className="max-w-4xl mx-auto text-center">
-                <Badge className="mb-6 bg-blue-500/10 text-blue-400 border-blue-500/20">
-                  <Shield className="w-3 h-3 mr-1" />
-                  Enterprise Contract Intelligence
-                </Badge>
+              <div className="max-w-5xl mx-auto text-center">
+                <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/5 border border-white/10 backdrop-blur-md mb-8">
+                  <span className="flex h-2 w-2 rounded-full bg-blue-500 animate-pulse"></span>
+                  <span className="text-sm text-blue-200 font-medium tracking-wide">Enterprise Contract Intelligence Platform</span>
+                </div>
                 
-                <h1 className="text-5xl md:text-6xl font-bold mb-6 bg-gradient-to-r from-blue-400 via-purple-400 to-pink-400 bg-clip-text text-transparent">
-                  Rx Defense: Contract X-Ray
+                <h1 className="text-5xl md:text-7xl font-extrabold mb-8 tracking-tight">
+                  <span className="bg-gradient-to-r from-white via-gray-200 to-gray-400 bg-clip-text text-transparent">
+                    Rx Defense: 
+                  </span>
+                  <br />
+                  <span className="bg-gradient-to-r from-blue-400 via-indigo-400 to-purple-400 bg-clip-text text-transparent">
+                    Contract X-Ray
+                  </span>
                 </h1>
                 
-                <p className="text-xl text-gray-300 mb-8 max-w-3xl mx-auto">
-                  AI-powered analysis of PBM contracts identifying hidden costs, unfavorable clauses, and millions in potential savings. 
-                  Get comprehensive contract intelligence in minutes, not months.
+                <p className="text-xl md:text-2xl text-gray-400 mb-10 max-w-3xl mx-auto leading-relaxed">
+                  Military-grade AI analysis of PBM contracts. Identify hidden margin spreads, unfavorable clauses, and millions in uncaptured savings in under 3 minutes.
                 </p>
 
                 <div className="flex flex-wrap gap-4 justify-center">
@@ -607,7 +614,7 @@ export default function ContractXRayPage() {
                     </Button>
                   </Link>
                   <Link href="/board/contract-intelligence">
-                    <Button size="lg" variant="outline">
+                    <Button size="lg" variant="outline" className="border-white/20 text-white hover:bg-white/10 rounded-xl">
                       <BarChart3 className="w-5 h-5 mr-2" />
                       Board Dashboard
                     </Button>
@@ -616,7 +623,7 @@ export default function ContractXRayPage() {
 
                 {/* Demo Mode Indicator */}
                 {isDemoModeEnabled() && (
-                  <Alert className="mt-6 bg-green-500/10 border-green-500/20">
+                  <Alert className="mt-6 bg-green-500/10 border-green-500/20 max-w-md mx-auto text-left">
                     <PlayCircle className="h-4 w-4 text-green-400" />
                     <AlertDescription className="text-green-300">
                       Demo mode enabled - no authentication required for testing
@@ -627,196 +634,181 @@ export default function ContractXRayPage() {
             </div>
           </section>
 
-          {/* Stats Section */}
-          <section className="py-12 border-y border-gray-800">
+          {/* Enterprise Metrics Strip */}
+          <section className="relative z-20 -mt-10 mb-20">
             <div className="container mx-auto px-4">
-              <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
-                {stats.map((stat, idx) => (
-                  <div key={idx} className="text-center">
-                    <div className="flex items-center justify-center mb-3">
-                      <div className="p-3 bg-blue-500/10 rounded-lg">
-                        <stat.icon className="w-6 h-6 text-blue-400" />
+              <div className="bg-white/5 border border-white/10 backdrop-blur-xl rounded-2xl p-8 shadow-2xl">
+                <div className="grid grid-cols-2 md:grid-cols-4 gap-8 divide-x divide-white/5">
+                  {stats.map((stat, idx) => (
+                    <div key={idx} className="text-center px-4">
+                      <div className="flex items-center justify-center mb-4">
+                        <div className="p-3 bg-blue-500/10 rounded-xl border border-blue-500/20">
+                          <stat.icon className="w-6 h-6 text-blue-400" />
+                        </div>
+                      </div>
+                      <div className="text-4xl font-bold mb-2 tracking-tight text-white">{stat.value}</div>
+                      <div className="text-sm text-gray-400 font-medium mb-3 uppercase tracking-wider">{stat.label}</div>
+                      <div className="inline-flex items-center text-xs font-semibold text-emerald-400 bg-emerald-400/10 px-2 py-1 rounded-full">
+                        <TrendingUp className="w-3 h-3 mr-1" />
+                        {stat.trend}
                       </div>
                     </div>
-                    <div className="text-3xl font-bold mb-1">{stat.value}</div>
-                    <div className="text-sm text-gray-400 mb-1">{stat.label}</div>
-                    <Badge variant="outline" className="text-xs text-green-500">
-                      <TrendingUp className="w-3 h-3 mr-1" />
-                      {stat.trend}
-                    </Badge>
-                  </div>
-                ))}
+                  ))}
+                </div>
               </div>
             </div>
           </section>
 
-          {/* Key Provisions Section */}
-          <section className="py-20">
-            <div className="container mx-auto px-4">
-              <div className="text-center mb-12">
-                <Badge className="mb-4 bg-purple-500/10 text-purple-400 border-purple-500/20">
-                  <Search className="w-3 h-3 mr-1" />
-                  10 Critical Provisions Analyzed
-                </Badge>
-                <h2 className="text-4xl font-bold mb-4">What We Examine in Every Contract</h2>
+          {/* Intelligence Engine Section */}
+          <section className="py-24 relative">
+            <div className="absolute inset-0 bg-slate-950" />
+            <div className="container mx-auto px-4 relative z-10">
+              <div className="text-center mb-20">
+                <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-purple-500/10 border border-purple-500/20 mb-6">
+                  <Search className="w-4 h-4 text-purple-400" />
+                  <span className="text-sm text-purple-300 font-medium">10 Critical Provisions Analyzed</span>
+                </div>
+                <h2 className="text-4xl md:text-5xl font-bold mb-6 text-white tracking-tight">Continuous Intelligence Engine</h2>
                 <p className="text-xl text-gray-400 max-w-2xl mx-auto">
-                  Our AI analyzes each provision for unfavorable terms, hidden costs, and potential savings opportunities
+                  Our proprietary AI models extract and evaluate every clause against a massive database of benchmarked PBM contracts to detect precise risk vectors.
                 </p>
               </div>
 
               <div className="grid md:grid-cols-2 gap-6 max-w-6xl mx-auto">
                 {provisions.map((provision, idx) => (
-                  <Card key={idx} className="bg-gray-900 border-gray-800 p-6 hover:border-blue-500/50 transition-all">
-                    <div className="flex items-start justify-between mb-4">
-                      <div className="flex-1">
-                        <h3 className="text-lg font-semibold mb-2">{provision.title}</h3>
-                        <p className="text-sm text-gray-400">{provision.description}</p>
-                      </div>
-                      <Badge 
-                        variant="outline" 
-                        className={`ml-4 ${
-                          provision.risk === 'Critical' ? 'text-red-500 border-red-500/50' :
-                          provision.risk === 'High' ? 'text-orange-500 border-orange-500/50' :
-                          provision.risk === 'Medium' ? 'text-yellow-500 border-yellow-500/50' :
-                          'text-green-500 border-green-500/50'
-                        }`}
-                      >
-                        {provision.risk}
-                      </Badge>
+                  <div key={idx} className="group relative">
+                    <div className={`w-24 h-24 rounded-2xl flex items-center justify-center mx-auto mb-6 bg-slate-900 border border-white/10 shadow-xl group-hover:scale-110 transition-transform duration-300`}>
+                      <Shield className="w-10 h-10 text-blue-400" />
                     </div>
-                    <div className="flex items-center justify-between pt-4 border-t border-gray-800">
-                      <span className="text-sm text-gray-400">Avg Savings Impact</span>
-                      <span className="text-lg font-bold text-green-400">{provision.impact}</span>
+                    <div className="inline-flex items-center justify-center w-8 h-8 rounded-full bg-slate-800 border border-white/10 text-sm font-bold text-white mb-4 -mt-10 relative z-20">
+                      {idx + 1}
                     </div>
-                  </Card>
+                    <h3 className="text-xl font-bold mb-3 text-white">{provision.title}</h3>
+                    <p className="text-gray-400 leading-relaxed text-sm">{provision.description}</p>
+                  </div>
                 ))}
               </div>
             </div>
           </section>
 
-          {/* How It Works Section */}
-          <section className="py-20 bg-gradient-to-b from-transparent via-blue-900/5 to-transparent">
+          {/* Enterprise Workflow Section */}
+          <section className="py-24 bg-slate-950 border-t border-white/5">
             <div className="container mx-auto px-4">
-              <div className="text-center mb-12">
-                <Badge className="mb-4 bg-green-500/10 text-green-400 border-green-500/20">
-                  <Zap className="w-3 h-3 mr-1" />
-                  Fast & Simple Process
-                </Badge>
-                <h2 className="text-4xl font-bold mb-4">How Contract X-Ray Works</h2>
+              <div className="text-center mb-20">
+                <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/20 mb-6">
+                  <Zap className="w-4 h-4 text-emerald-400" />
+                  <span className="text-sm text-emerald-300 font-medium">Automated Pipeline</span>
+                </div>
+                <h2 className="text-4xl md:text-5xl font-bold mb-6 text-white tracking-tight">Zero-Friction Analysis Workflow</h2>
                 <p className="text-xl text-gray-400 max-w-2xl mx-auto">
-                  From upload to actionable insights in under 5 minutes
+                  Transform opaque 200-page contracts into boardroom-ready intelligence in under 5 minutes.
                 </p>
               </div>
 
-              <div className="grid md:grid-cols-4 gap-8 max-w-6xl mx-auto">
-                <div className="text-center">
-                  <div className="w-16 h-16 bg-blue-500/10 rounded-full flex items-center justify-center mx-auto mb-4">
-                    <Upload className="w-8 h-8 text-blue-400" />
-                  </div>
-                  <h3 className="text-xl font-semibold mb-2">1. Upload Contract</h3>
-                  <p className="text-gray-400">Securely upload your PBM contract (PDF, DOC, DOCX)</p>
-                </div>
+              <div className="grid md:grid-cols-4 gap-8 max-w-6xl mx-auto relative">
+                {/* Connecting Line */}
+                <div className="hidden md:block absolute top-12 left-[12.5%] right-[12.5%] h-[2px] bg-gradient-to-r from-blue-500/20 via-purple-500/20 to-emerald-500/20" />
 
-                <div className="text-center">
-                  <div className="w-16 h-16 bg-purple-500/10 rounded-full flex items-center justify-center mx-auto mb-4">
-                    <Search className="w-8 h-8 text-purple-400" />
+                {[
+                  { icon: Upload, title: "Secure Ingestion", desc: "SOC2-compliant upload of PDF/DOCX files into isolated storage.", color: "blue" },
+                  { icon: Search, title: "Neural Extraction", desc: "Multi-modal AI parses legalese, tables, and hidden addendums.", color: "purple" },
+                  { icon: AlertTriangle, title: "Risk Arbitration", desc: "Cross-references against 1,200+ benchmarked market terms.", color: "orange" },
+                  { icon: Download, title: "Executive Output", desc: "Generates interactive dashboard with direct savings strategies.", color: "emerald" }
+                ].map((step, idx) => (
+                  <div key={idx} className="relative z-10 text-center group">
+                    <div className={`w-24 h-24 rounded-2xl flex items-center justify-center mx-auto mb-6 bg-slate-900 border border-white/10 shadow-xl group-hover:scale-110 transition-transform duration-300`}>
+                      <step.icon className={`w-10 h-10 text-${step.color}-400`} />
+                    </div>
+                    <div className="inline-flex items-center justify-center w-8 h-8 rounded-full bg-slate-800 border border-white/10 text-sm font-bold text-white mb-4 -mt-10 relative z-20">
+                      {idx + 1}
+                    </div>
+                    <h3 className="text-xl font-bold mb-3 text-white">{step.title}</h3>
+                    <p className="text-gray-400 leading-relaxed text-sm">{step.desc}</p>
                   </div>
-                  <h3 className="text-xl font-semibold mb-2">2. AI Analysis</h3>
-                  <p className="text-gray-400">Our AI extracts and analyzes 35+ critical provisions</p>
-                </div>
-
-                <div className="text-center">
-                  <div className="w-16 h-16 bg-green-500/10 rounded-full flex items-center justify-center mx-auto mb-4">
-                    <AlertTriangle className="w-8 h-8 text-green-400" />
-                  </div>
-                  <h3 className="text-xl font-semibold mb-2">3. Risk Scoring</h3>
-                  <p className="text-gray-400">Identify red flags and unfavorable terms instantly</p>
-                </div>
-
-                <div className="text-center">
-                  <div className="w-16 h-16 bg-pink-500/10 rounded-full flex items-center justify-center mx-auto mb-4">
-                    <Download className="w-8 h-8 text-pink-400" />
-                  </div>
-                  <h3 className="text-xl font-semibold mb-2">4. Get Report</h3>
-                  <p className="text-gray-400">Receive comprehensive analysis with savings opportunities</p>
-                </div>
+                ))}
               </div>
             </div>
           </section>
 
           {/* CTA Section */}
-          <section className="py-20">
-            <div className="container mx-auto px-4">
-              <Card className="bg-gradient-to-r from-blue-900/50 to-purple-900/50 border-blue-500/20 p-12">
-                <div className="max-w-3xl mx-auto text-center">
-                  <h2 className="text-4xl font-bold mb-4">Ready to Uncover Hidden Contract Costs?</h2>
-                  <p className="text-xl text-gray-300 mb-8">
-                    Join 89 leading organizations using Contract X-Ray to identify millions in potential savings
-                  </p>
-                  <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                    {!isAuthenticated ? (
-                      <>
-                        <Button 
-                          size="lg" 
-                          className="bg-gradient-to-r from-green-600 to-emerald-600 hover:from-green-700 hover:to-emerald-700"
-                          onClick={handleDemoSignIn}
-                          disabled={signingInAsDemo}
-                        >
-                          {signingInAsDemo ? (
-                            <>
-                              <Loader2 className="w-5 h-5 mr-2 animate-spin" />
-                              Starting Demo...
-                            </>
-                          ) : (
-                            <>
-                              <PlayCircle className="w-5 h-5 mr-2" />
-                              Try Demo Now
-                            </>
-                          )}
-                        </Button>
-                        <Button 
-                          size="lg" 
-                          variant="outline"
-                          onClick={() => router.push("/api/auth/signin")}
-                        >
-                          <LogIn className="w-5 h-5 mr-2" />
-                          Sign In
-                        </Button>
-                      </>
-                    ) : (
+          <section className="py-32 relative overflow-hidden border-t border-white/10">
+            <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_bottom,_var(--tw-gradient-stops))] from-blue-900/20 via-slate-950 to-slate-950" />
+            <div className="container mx-auto px-4 relative z-10">
+              <div className="max-w-4xl mx-auto text-center bg-white/[0.02] border border-white/10 backdrop-blur-xl rounded-3xl p-12 md:p-20 shadow-2xl relative overflow-hidden">
+                <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500" />
+                <h2 className="text-4xl md:text-5xl font-bold mb-6 text-white tracking-tight">Activate Your Intelligence Layer</h2>
+                <p className="text-xl text-gray-400 mb-12 leading-relaxed">
+                  Join leading healthcare CFOs and benefits leaders using Contract X-Ray to audit, negotiate, and enforce PBM compliance.
+                </p>
+                <div className="flex flex-col sm:flex-row gap-6 justify-center items-center">
+                  {!isAuthenticated ? (
+                    <>
                       <Button 
                         size="lg" 
-                        className="bg-white text-black hover:bg-gray-100"
-                        onClick={handleUploadClick}
+                        className="h-14 px-8 text-lg bg-white text-slate-950 hover:bg-gray-200 transition-colors shadow-[0_0_20px_rgba(255,255,255,0.3)] font-semibold rounded-xl"
+                        onClick={handleDemoSignIn}
+                        disabled={signingInAsDemo}
                       >
-                        <Upload className="w-5 h-5 mr-2" />
-                        Upload Your Contract
+                        {signingInAsDemo ? (
+                          <>
+                            <Loader2 className="w-6 h-6 mr-3 animate-spin" />
+                            Initializing...
+                          </>
+                        ) : (
+                          <>
+                            <PlayCircle className="w-6 h-6 mr-3" />
+                            Launch Demo Mode
+                          </>
+                        )}
                       </Button>
-                    )}
-                    <Link href="/request-demo">
-                      <Button size="lg" variant="outline">
-                        <Users className="w-5 h-5 mr-2" />
-                        Schedule a Demo
+                      <Button 
+                        size="lg" 
+                        variant="outline"
+                        className="h-14 px-8 text-lg border-white/20 text-white hover:bg-white/10 rounded-xl"
+                        onClick={() => router.push("/api/auth/signin")}
+                      >
+                        <LogIn className="w-6 h-6 mr-3" />
+                        Enterprise Sign In
                       </Button>
-                    </Link>
-                  </div>
+                    </>
+                  ) : (
+                    <Button 
+                      size="lg" 
+                      className="h-14 px-8 text-lg bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-white shadow-lg shadow-blue-500/25 border border-blue-400/50 rounded-xl"
+                      onClick={handleUploadClick}
+                    >
+                      <Upload className="w-6 h-6 mr-3" />
+                      Upload Target Contract
+                    </Button>
+                  )}
+                  <Link href="/request-demo">
+                    <Button size="lg" variant="outline" className="h-14 px-8 text-lg border-white/20 text-white hover:bg-white/10 rounded-xl hidden sm:flex">
+                      <Users className="w-6 h-6 mr-3" />
+                      Schedule a Demo
+                    </Button>
+                  </Link>
                 </div>
-              </Card>
+              </div>
             </div>
           </section>
         </main>
 
-        {/* Upload Modal */}
+        {/* Enterprise Upload Modal */}
         <Dialog open={showUploadModal} onOpenChange={setShowUploadModal}>
-          <DialogContent className="bg-gray-900 border-gray-800 max-w-2xl">
-            <DialogHeader>
-              <DialogTitle className="text-2xl">Upload PBM Contract for Analysis</DialogTitle>
-              <DialogDescription>
-                Our AI will analyze your contract and identify potential savings opportunities within minutes
+          <DialogContent className="bg-slate-950/95 backdrop-blur-2xl border-white/10 max-w-3xl shadow-[0_0_50px_rgba(0,0,0,0.5)]">
+            <DialogHeader className="border-b border-white/10 pb-6 mb-6">
+              <div className="flex items-center gap-3 mb-2">
+                <div className="p-2 bg-blue-500/20 rounded-lg border border-blue-500/30">
+                  <Shield className="w-6 h-6 text-blue-400" />
+                </div>
+                <DialogTitle className="text-2xl font-bold text-white tracking-tight">Secure Ingestion Portal</DialogTitle>
+              </div>
+              <DialogDescription className="text-base text-gray-400">
+                Establish secure connection to upload PBM contract for neural analysis and benchmarking.
               </DialogDescription>
             </DialogHeader>
 
-            <div className="space-y-6">
+            <div className="space-y-8">
               {!uploadSuccess && !analyzing && (
                 <>
                   {/* Error Alert */}

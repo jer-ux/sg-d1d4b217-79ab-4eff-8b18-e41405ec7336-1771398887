@@ -144,15 +144,16 @@ export default function ContractXRayPage() {
 
       if (uploadError) throw uploadError;
 
-      // Create contract upload record
-      const { data: contract, error: dbError } = await supabase
+      // 2. Add record to contract_uploads
+      const { data: uploadData, error: dbError } = await supabase
         .from('contract_uploads')
         .insert({
-          organization_id: user.id, // Using user ID as org ID for demo
-          file_name: selectedFile.name,
-          file_path: filePath,
-          file_size: selectedFile.size,
-          status: 'processing'
+          file_name: file.name,
+          file_size: file.size,
+          file_type: file.type || 'application/pdf',
+          storage_path: filePath,
+          upload_status: 'completed',
+          organization_id: '11111111-1111-1111-1111-111111111111' // Demo org ID
         })
         .select()
         .single();
@@ -161,12 +162,12 @@ export default function ContractXRayPage() {
 
       clearInterval(progressInterval);
       setUploadProgress(100);
-      setUploadedContractId(contract.id);
+      setUploadedContractId(uploadData.id);
       setUploadSuccess(true);
 
       // Start analysis simulation
       setTimeout(() => {
-        startAnalysis(contract.id);
+        startAnalysis(uploadData.id);
       }, 1000);
 
       toast({

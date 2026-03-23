@@ -22,7 +22,8 @@ import {
   Download,
   RefreshCw,
   Shield,
-  Zap
+  Zap,
+  Upload
 } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 
@@ -164,6 +165,38 @@ export default function BoardDashboard() {
           }));
 
         setRecentActivity(recent);
+      }
+
+      // Fetch recent uploads
+      const { data: uploadsData } = await supabase
+        .from('contract_uploads')
+        .select(`
+          id,
+          file_name,
+          upload_status,
+          uploaded_at,
+          contract_analysis_results (
+            risk_level,
+            overall_score,
+            potential_savings
+          )
+        `)
+        .order('uploaded_at', { ascending: false })
+        .limit(5);
+
+      if (uploadsData) {
+        setRecentUploads(uploadsData.map(u => {
+          const analysis = u.contract_analysis_results?.[0];
+          return {
+            id: u.id,
+            name: u.file_name,
+            status: u.upload_status,
+            riskLevel: analysis?.risk_level || 'Pending',
+            score: analysis?.overall_score || 0,
+            potentialSavings: analysis?.potential_savings || 0,
+            date: new Date(u.uploaded_at || '').toLocaleDateString()
+          };
+        }));
       }
 
       // Simulate top issues data

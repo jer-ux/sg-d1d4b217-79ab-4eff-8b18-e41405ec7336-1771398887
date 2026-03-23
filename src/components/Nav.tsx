@@ -80,6 +80,14 @@ export default function Nav() {
               )}
             </div>
 
+            {/* Rx Defense Link */}
+            <Link
+              href="/solutions/contract-xray"
+              className="px-4 py-2 text-gray-300 hover:text-white transition-colors rounded-lg hover:bg-white/5 flex items-center gap-2"
+            >
+              <span>Rx Defense</span>
+            </Link>
+
             {/* Platform Menu */}
             <div className="relative">
               <button
@@ -306,6 +314,14 @@ export default function Nav() {
                 </div>
               )}
             </div>
+
+            {/* Rx Defense Link - Mobile */}
+            <Link
+              href="/solutions/contract-xray"
+              className="block px-4 py-3 text-gray-300 hover:text-white hover:bg-white/5 rounded-lg transition-colors font-medium"
+            >
+              Rx Defense
+            </Link>
 
             {/* Actuarial Benefits Dropdown - Mobile */}
             <div>

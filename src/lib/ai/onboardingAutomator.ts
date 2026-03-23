@@ -299,8 +299,8 @@ Recommendations should be:
         role: "user",
         content: `Analyze learning progress:
 
-USER: ${profile.name} (${profile.role})
-GOALS: ${profile.goals.join(", ")}
+USER: ${userProfile.name} (${userProfile.role})
+GOALS: ${userProfile.goals.join(", ")}
 
 COMPLETED MODULES (${completedModules.length}):
 ${completedModules.join(", ")}

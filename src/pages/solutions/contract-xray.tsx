@@ -148,9 +148,9 @@ export default function ContractXRayPage() {
       const { data: uploadData, error: dbError } = await supabase
         .from('contract_uploads')
         .insert({
-          file_name: file.name,
-          file_size: file.size,
-          file_type: file.type || 'application/pdf',
+          file_name: selectedFile.name,
+          file_size: selectedFile.size,
+          file_type: selectedFile.type || 'application/pdf',
           storage_path: filePath,
           upload_status: 'completed',
           organization_id: '11111111-1111-1111-1111-111111111111' // Demo org ID
@@ -209,11 +209,20 @@ export default function ContractXRayPage() {
     await supabase
       .from('contract_uploads')
       .update({ 
-        status: 'completed',
-        risk_score: Math.floor(Math.random() * 30) + 60, // 60-90
-        estimated_savings: Math.floor(Math.random() * 2000000) + 500000 // $500k-$2.5M
+        upload_status: 'completed'
       })
       .eq('id', contractId);
+
+    // Insert mock analysis results
+    await supabase
+      .from('contract_analysis_results')
+      .insert({
+        upload_id: contractId,
+        contract_name: selectedFile?.name || "Uploaded Contract",
+        overall_score: Math.floor(Math.random() * 30) + 60,
+        potential_savings: Math.floor(Math.random() * 2000000) + 500000,
+        risk_level: 'Medium'
+      });
 
     setAnalyzing(false);
     

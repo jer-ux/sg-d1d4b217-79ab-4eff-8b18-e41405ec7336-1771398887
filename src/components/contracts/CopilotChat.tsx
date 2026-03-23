@@ -1,153 +1,251 @@
 import { useState, useRef, useEffect } from "react";
-import { Send, Bot, User, Sparkles, AlertCircle, ChevronDown, ChevronUp } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { Card } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { Card, CardHeader, CardTitle, CardContent, CardFooter } from "@/components/ui/card";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Avatar, AvatarFallback } from "@/components/ui/avatar";
+import { Send, Loader2, User, Bot, Sparkles } from "lucide-react";
+import { Badge } from "@/components/ui/badge";
 
 interface Message {
+  id: string;
   role: "user" | "assistant";
   content: string;
+  timestamp: Date;
+  suggested?: string[];
 }
 
-export function CopilotChat({ contractId, contractName }: { contractId: string, contractName: string }) {
+interface CopilotChatProps {
+  contractId: string;
+  contractText?: string;
+  analysisData?: any;
+}
+
+export function CopilotChat({
+  contractId,
+  contractText,
+  analysisData,
+}: CopilotChatProps) {
   const [messages, setMessages] = useState<Message[]>([
     {
+      id: "welcome",
       role: "assistant",
-      content: `Hello! I'm your Claude-powered Contract Co-Pilot. I've completely analyzed "${contractName}". You can ask me about hidden risks, rebate terms, termination clauses, or request a negotiation strategy.`
-    }
+      content:
+        "Hello! I'm your Contract Intelligence Copilot. I've analyzed this contract and can answer questions about specific clauses, risks, and recommendations. What would you like to know?",
+      timestamp: new Date(),
+      suggested: [
+        "What are the top 3 risks?",
+        "Explain the pricing structure",
+        "What can we negotiate?",
+        "Compare to industry standards",
+      ],
+    },
   ]);
   const [input, setInput] = useState("");
-  const [isTyping, setIsTyping] = useState(false);
-  const [isExpanded, setIsExpanded] = useState(true);
+  const [loading, setLoading] = useState(false);
   const scrollRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
+    scrollToBottom();
+  }, [messages]);
+
+  const scrollToBottom = () => {
     if (scrollRef.current) {
-      scrollRef.current.scrollTop = scrollRef.current.scrollHeight;
+      scrollRef.current.scrollIntoView({ behavior: "smooth" });
     }
-  }, [messages, isTyping, isExpanded]);
+  };
 
-  const handleSend = async () => {
-    if (!input.trim()) return;
+  const handleSend = async (question?: string) => {
+    const messageText = question || input.trim();
+    if (!messageText || loading) return;
 
-    const userMessage = input;
+    const userMessage: Message = {
+      id: `user-${Date.now()}`,
+      role: "user",
+      content: messageText,
+      timestamp: new Date(),
+    };
+
+    setMessages((prev) => [...prev, userMessage]);
     setInput("");
-    setMessages(prev => [...prev, { role: "user", content: userMessage }]);
-    setIsTyping(true);
+    setLoading(true);
 
     try {
-      const res = await fetch("/api/contracts/copilot", {
+      const response = await fetch("/api/contracts/copilot", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           contractId,
-          message: userMessage,
-          history: messages
-        })
+          question: messageText,
+          conversationHistory: messages.slice(-10),
+          contractText,
+          analysisData,
+        }),
       });
-      
-      const data = await res.json();
-      if (data.success) {
-        setMessages(prev => [...prev, { role: "assistant", content: data.response }]);
-      }
-    } catch (err) {
-      console.error(err);
-      setMessages(prev => [...prev, { role: "assistant", content: "I encountered an error analyzing that request. Please try again." }]);
+
+      const data = await response.json();
+
+      const assistantMessage: Message = {
+        id: `assistant-${Date.now()}`,
+        role: "assistant",
+        content: data.answer,
+        timestamp: new Date(),
+        suggested: data.suggested,
+      };
+
+      setMessages((prev) => [...prev, assistantMessage]);
+    } catch (error) {
+      console.error("Copilot error:", error);
+      const errorMessage: Message = {
+        id: `error-${Date.now()}`,
+        role: "assistant",
+        content:
+          "I'm sorry, I encountered an error processing your question. Please try again.",
+        timestamp: new Date(),
+      };
+      setMessages((prev) => [...prev, errorMessage]);
     } finally {
-      setIsTyping(false);
+      setLoading(false);
     }
   };
 
-  if (!isExpanded) {
-    return (
-      <Button 
-        onClick={() => setIsExpanded(true)}
-        className="fixed bottom-6 right-6 h-14 rounded-full shadow-2xl bg-slate-900 hover:bg-slate-800 border border-slate-700 text-white px-6 flex items-center gap-3 z-50 transition-all duration-300 hover:scale-105"
-      >
-        <Sparkles className="w-5 h-5 text-blue-400" />
-        <span className="font-semibold">Claude Co-Pilot</span>
-      </Button>
-    );
-  }
+  const handleKeyPress = (e: React.KeyboardEvent) => {
+    if (e.key === "Enter" && !e.shiftKey) {
+      e.preventDefault();
+      handleSend();
+    }
+  };
 
   return (
-    <Card className="fixed bottom-6 right-6 w-96 shadow-2xl border-slate-700/50 bg-slate-900/95 backdrop-blur-xl z-50 flex flex-col overflow-hidden animate-in slide-in-from-bottom-5">
-      <CardHeader className="p-4 border-b border-slate-800 bg-slate-900 flex flex-row items-center justify-between sticky top-0 z-10">
-        <div className="flex items-center gap-2">
-          <div className="p-2 bg-blue-500/20 rounded-lg">
-            <Sparkles className="w-5 h-5 text-blue-400" />
-          </div>
-          <div>
-            <CardTitle className="text-sm font-bold text-slate-100">Claude Co-Pilot</CardTitle>
-            <p className="text-xs text-slate-400">Enterprise Intelligence</p>
-          </div>
+    <Card className="flex flex-col h-[600px] bg-slate-900/50 backdrop-blur border-white/10">
+      {/* Header */}
+      <div className="flex items-center gap-3 p-4 border-b border-white/10">
+        <div className="flex items-center justify-center w-10 h-10 rounded-lg bg-gradient-to-br from-blue-500 to-purple-600">
+          <Sparkles className="w-5 h-5 text-white" />
         </div>
-        <Button variant="ghost" size="icon" onClick={() => setIsExpanded(false)} className="text-slate-400 hover:text-white">
-          <ChevronDown className="w-5 h-5" />
-        </Button>
-      </CardHeader>
-      
-      <CardContent className="p-0 flex-1 h-[400px] relative">
-        <ScrollArea className="h-full p-4" ref={scrollRef}>
-          <div className="space-y-4 pb-4">
-            {messages.map((msg, idx) => (
-              <div key={idx} className={`flex gap-3 ${msg.role === "user" ? "justify-end" : "justify-start"}`}>
-                {msg.role === "assistant" && (
-                  <Avatar className="w-8 h-8 border border-slate-700 shrink-0">
-                    <AvatarFallback className="bg-slate-800 text-blue-400"><Bot size={16}/></AvatarFallback>
-                  </Avatar>
-                )}
-                <div className={`p-3 rounded-2xl max-w-[80%] text-sm leading-relaxed ${
-                  msg.role === "user" 
-                    ? "bg-blue-600 text-white rounded-tr-none" 
-                    : "bg-slate-800 text-slate-200 rounded-tl-none border border-slate-700/50"
-                }`}>
-                  {/* Basic markdown parsing for bold text */}
-                  {msg.content.split('**').map((text, i) => 
-                    i % 2 === 1 ? <strong key={i} className="text-white">{text}</strong> : text
-                  )}
-                </div>
-              </div>
-            ))}
-            {isTyping && (
-              <div className="flex gap-3 justify-start">
-                <Avatar className="w-8 h-8 border border-slate-700 shrink-0">
-                  <AvatarFallback className="bg-slate-800 text-blue-400"><Bot size={16}/></AvatarFallback>
-                </Avatar>
-                <div className="p-4 rounded-2xl bg-slate-800 text-slate-200 rounded-tl-none border border-slate-700/50 flex items-center gap-2">
-                  <div className="w-2 h-2 rounded-full bg-blue-400 animate-bounce" style={{ animationDelay: "0ms" }} />
-                  <div className="w-2 h-2 rounded-full bg-blue-400 animate-bounce" style={{ animationDelay: "150ms" }} />
-                  <div className="w-2 h-2 rounded-full bg-blue-400 animate-bounce" style={{ animationDelay: "300ms" }} />
-                </div>
-              </div>
-            )}
-          </div>
-        </ScrollArea>
-      </CardContent>
+        <div>
+          <h3 className="font-semibold text-white">Contract Copilot</h3>
+          <p className="text-sm text-gray-400">Claude-powered AI assistant</p>
+        </div>
+        <Badge className="ml-auto bg-emerald-500/20 text-emerald-300 border-emerald-500/30">
+          Online
+        </Badge>
+      </div>
 
-      <CardFooter className="p-3 border-t border-slate-800 bg-slate-900/90">
-        <form 
-          onSubmit={(e) => { e.preventDefault(); handleSend(); }}
-          className="flex w-full gap-2 items-center"
-        >
-          <Input 
+      {/* Messages */}
+      <ScrollArea className="flex-1 p-4">
+        <div className="space-y-4">
+          {messages.map((message) => (
+            <div
+              key={message.id}
+              className={`flex gap-3 ${
+                message.role === "user" ? "justify-end" : "justify-start"
+              }`}
+            >
+              {message.role === "assistant" && (
+                <Avatar className="w-8 h-8 border border-white/10">
+                  <AvatarFallback className="bg-gradient-to-br from-blue-500 to-purple-600">
+                    <Bot className="w-4 h-4 text-white" />
+                  </AvatarFallback>
+                </Avatar>
+              )}
+
+              <div
+                className={`flex flex-col gap-2 max-w-[80%] ${
+                  message.role === "user" ? "items-end" : "items-start"
+                }`}
+              >
+                <Card
+                  className={`p-3 ${
+                    message.role === "user"
+                      ? "bg-blue-600 text-white border-blue-500"
+                      : "bg-slate-800/50 text-white border-white/10"
+                  }`}
+                >
+                  <p className="text-sm whitespace-pre-wrap">{message.content}</p>
+                </Card>
+
+                {message.suggested && message.suggested.length > 0 && (
+                  <div className="flex flex-wrap gap-2">
+                    {message.suggested.map((suggestion, idx) => (
+                      <Button
+                        key={idx}
+                        variant="outline"
+                        size="sm"
+                        className="text-xs bg-slate-800/50 border-white/10 hover:bg-slate-700/50 hover:border-white/20"
+                        onClick={() => handleSend(suggestion)}
+                      >
+                        {suggestion}
+                      </Button>
+                    ))}
+                  </div>
+                )}
+
+                <span className="text-xs text-gray-500">
+                  {message.timestamp.toLocaleTimeString([], {
+                    hour: "2-digit",
+                    minute: "2-digit",
+                  })}
+                </span>
+              </div>
+
+              {message.role === "user" && (
+                <Avatar className="w-8 h-8 border border-white/10">
+                  <AvatarFallback className="bg-slate-700">
+                    <User className="w-4 h-4 text-white" />
+                  </AvatarFallback>
+                </Avatar>
+              )}
+            </div>
+          ))}
+
+          {loading && (
+            <div className="flex gap-3 justify-start">
+              <Avatar className="w-8 h-8 border border-white/10">
+                <AvatarFallback className="bg-gradient-to-br from-blue-500 to-purple-600">
+                  <Bot className="w-4 h-4 text-white" />
+                </AvatarFallback>
+              </Avatar>
+              <Card className="p-3 bg-slate-800/50 border-white/10">
+                <div className="flex items-center gap-2">
+                  <Loader2 className="w-4 h-4 animate-spin text-blue-400" />
+                  <span className="text-sm text-gray-400">Analyzing...</span>
+                </div>
+              </Card>
+            </div>
+          )}
+
+          <div ref={scrollRef} />
+        </div>
+      </ScrollArea>
+
+      {/* Input */}
+      <div className="p-4 border-t border-white/10">
+        <div className="flex gap-2">
+          <Input
             value={input}
             onChange={(e) => setInput(e.target.value)}
-            placeholder="Ask about risk, pricing, clauses..." 
-            className="flex-1 bg-slate-800 border-slate-700 text-slate-100 placeholder:text-slate-500 focus-visible:ring-blue-500"
+            onKeyPress={handleKeyPress}
+            placeholder="Ask about this contract..."
+            disabled={loading}
+            className="bg-slate-800/50 border-white/10 text-white placeholder:text-gray-500 focus:border-blue-500"
           />
-          <Button 
-            type="submit" 
-            size="icon" 
-            disabled={!input.trim() || isTyping}
-            className="bg-blue-600 hover:bg-blue-700 text-white shrink-0"
+          <Button
+            onClick={() => handleSend()}
+            disabled={!input.trim() || loading}
+            className="bg-blue-600 hover:bg-blue-700"
           >
-            <Send className="w-4 h-4" />
+            {loading ? (
+              <Loader2 className="w-4 h-4 animate-spin" />
+            ) : (
+              <Send className="w-4 h-4" />
+            )}
           </Button>
-        </form>
-      </CardFooter>
+        </div>
+        <p className="mt-2 text-xs text-gray-500 text-center">
+          Powered by Claude 3.5 Sonnet • Enterprise-grade accuracy
+        </p>
+      </div>
     </Card>
   );
 }

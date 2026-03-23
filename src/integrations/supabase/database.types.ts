@@ -1,4 +1,4 @@
- 
+/* eslint-disable @typescript-eslint/no-empty-object-type */
 export type Json =
   | string
   | number
@@ -1332,6 +1332,59 @@ export type Database = {
           },
         ]
       }
+      cost_allocation: {
+        Row: {
+          ai_api_calls: number | null
+          budget_allocated: number | null
+          budget_consumed: number | null
+          contracts_analyzed: number | null
+          cost_center: string | null
+          created_at: string | null
+          department: string
+          id: string
+          organization_id: string
+          period_end: string
+          period_start: string
+          storage_gb_used: number | null
+        }
+        Insert: {
+          ai_api_calls?: number | null
+          budget_allocated?: number | null
+          budget_consumed?: number | null
+          contracts_analyzed?: number | null
+          cost_center?: string | null
+          created_at?: string | null
+          department: string
+          id?: string
+          organization_id: string
+          period_end: string
+          period_start: string
+          storage_gb_used?: number | null
+        }
+        Update: {
+          ai_api_calls?: number | null
+          budget_allocated?: number | null
+          budget_consumed?: number | null
+          contracts_analyzed?: number | null
+          cost_center?: string | null
+          created_at?: string | null
+          department?: string
+          id?: string
+          organization_id?: string
+          period_end?: string
+          period_start?: string
+          storage_gb_used?: number | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "cost_allocation_organization_id_fkey"
+            columns: ["organization_id"]
+            isOneToOne: false
+            referencedRelation: "contract_organizations"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       data_retention_policies: {
         Row: {
           archive_enabled: boolean | null
@@ -1463,6 +1516,56 @@ export type Database = {
           },
         ]
       }
+      notification_templates: {
+        Row: {
+          body_template: string
+          created_at: string | null
+          event_trigger: string
+          id: string
+          is_active: boolean | null
+          organization_id: string
+          subject: string | null
+          template_name: string
+          template_type: string
+          updated_at: string | null
+          variables: Json | null
+        }
+        Insert: {
+          body_template: string
+          created_at?: string | null
+          event_trigger: string
+          id?: string
+          is_active?: boolean | null
+          organization_id: string
+          subject?: string | null
+          template_name: string
+          template_type: string
+          updated_at?: string | null
+          variables?: Json | null
+        }
+        Update: {
+          body_template?: string
+          created_at?: string | null
+          event_trigger?: string
+          id?: string
+          is_active?: boolean | null
+          organization_id?: string
+          subject?: string | null
+          template_name?: string
+          template_type?: string
+          updated_at?: string | null
+          variables?: Json | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "notification_templates_organization_id_fkey"
+            columns: ["organization_id"]
+            isOneToOne: false
+            referencedRelation: "contract_organizations"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       orders: {
         Row: {
           amount_paid: number
@@ -1545,6 +1648,59 @@ export type Database = {
             columns: ["user_id"]
             isOneToOne: false
             referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      organization_branding: {
+        Row: {
+          accent_color: string | null
+          created_at: string | null
+          font_family: string | null
+          id: string
+          logo_url: string | null
+          organization_id: string
+          primary_color: string | null
+          report_footer_text: string | null
+          report_header_text: string | null
+          secondary_color: string | null
+          updated_at: string | null
+          white_label_enabled: boolean | null
+        }
+        Insert: {
+          accent_color?: string | null
+          created_at?: string | null
+          font_family?: string | null
+          id?: string
+          logo_url?: string | null
+          organization_id: string
+          primary_color?: string | null
+          report_footer_text?: string | null
+          report_header_text?: string | null
+          secondary_color?: string | null
+          updated_at?: string | null
+          white_label_enabled?: boolean | null
+        }
+        Update: {
+          accent_color?: string | null
+          created_at?: string | null
+          font_family?: string | null
+          id?: string
+          logo_url?: string | null
+          organization_id?: string
+          primary_color?: string | null
+          report_footer_text?: string | null
+          report_header_text?: string | null
+          secondary_color?: string | null
+          updated_at?: string | null
+          white_label_enabled?: boolean | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "organization_branding_organization_id_fkey"
+            columns: ["organization_id"]
+            isOneToOne: true
+            referencedRelation: "contract_organizations"
             referencedColumns: ["id"]
           },
         ]
@@ -2003,6 +2159,59 @@ export type Database = {
           },
         ]
       }
+      sla_metrics: {
+        Row: {
+          avg_analysis_time_seconds: number | null
+          avg_api_response_ms: number | null
+          avg_upload_time_seconds: number | null
+          created_at: string | null
+          failed_requests: number | null
+          id: string
+          metric_date: string
+          organization_id: string
+          p95_response_time_ms: number | null
+          successful_requests: number | null
+          total_requests: number | null
+          uptime_percentage: number | null
+        }
+        Insert: {
+          avg_analysis_time_seconds?: number | null
+          avg_api_response_ms?: number | null
+          avg_upload_time_seconds?: number | null
+          created_at?: string | null
+          failed_requests?: number | null
+          id?: string
+          metric_date: string
+          organization_id: string
+          p95_response_time_ms?: number | null
+          successful_requests?: number | null
+          total_requests?: number | null
+          uptime_percentage?: number | null
+        }
+        Update: {
+          avg_analysis_time_seconds?: number | null
+          avg_api_response_ms?: number | null
+          avg_upload_time_seconds?: number | null
+          created_at?: string | null
+          failed_requests?: number | null
+          id?: string
+          metric_date?: string
+          organization_id?: string
+          p95_response_time_ms?: number | null
+          successful_requests?: number | null
+          total_requests?: number | null
+          uptime_percentage?: number | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "sla_metrics_organization_id_fkey"
+            columns: ["organization_id"]
+            isOneToOne: false
+            referencedRelation: "contract_organizations"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       sso_configurations: {
         Row: {
           configuration: Json
@@ -2078,6 +2287,50 @@ export type Database = {
             columns: ["organization_id"]
             isOneToOne: false
             referencedRelation: "organizations"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      webhook_configurations: {
+        Row: {
+          created_at: string | null
+          events: string[]
+          id: string
+          is_active: boolean | null
+          last_triggered_at: string | null
+          organization_id: string
+          secret_key: string | null
+          webhook_name: string
+          webhook_url: string
+        }
+        Insert: {
+          created_at?: string | null
+          events: string[]
+          id?: string
+          is_active?: boolean | null
+          last_triggered_at?: string | null
+          organization_id: string
+          secret_key?: string | null
+          webhook_name: string
+          webhook_url: string
+        }
+        Update: {
+          created_at?: string | null
+          events?: string[]
+          id?: string
+          is_active?: boolean | null
+          last_triggered_at?: string | null
+          organization_id?: string
+          secret_key?: string | null
+          webhook_name?: string
+          webhook_url?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "webhook_configurations_organization_id_fkey"
+            columns: ["organization_id"]
+            isOneToOne: false
+            referencedRelation: "contract_organizations"
             referencedColumns: ["id"]
           },
         ]

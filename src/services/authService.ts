@@ -84,7 +84,7 @@ export const authService = {
       await supabase.from('audit_logs').insert({
         user_id: currentUser,
         action: activity,
-        table_name: 'session',
+        resource_type: 'session',
         metadata: { status, ...metadata }
       });
     } catch (error) {

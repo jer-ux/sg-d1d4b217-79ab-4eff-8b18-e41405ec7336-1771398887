@@ -5,8 +5,8 @@ export interface AuditLogEntry {
   organization_id?: string;
   user_id?: string;
   action?: string;
-  table_name?: string;
-  record_id?: string;
+  resource_type?: string;
+  resource_id?: string;
   metadata?: any;
   ip_address?: string;
   user_agent?: string;
@@ -18,8 +18,8 @@ export const auditService = {
   // Log audit event
   async logEvent(event: {
     action: string;
-    table_name?: string;
-    record_id?: string;
+    resource_type?: string;
+    resource_id?: string;
     metadata?: any;
   }): Promise<{ error: any }> {
     try {
@@ -40,8 +40,8 @@ export const auditService = {
           organization_id: profile?.organization_id,
           user_id: user.id,
           action: event.action,
-          table_name: event.table_name,
-          record_id: event.record_id,
+          resource_type: event.resource_type || 'system',
+          resource_id: event.resource_id,
           metadata: event.metadata,
         });
 

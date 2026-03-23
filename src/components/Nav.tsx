@@ -243,6 +243,13 @@ export default function Nav() {
                       <div className="text-xs text-gray-400">PBM contract analysis</div>
                     </Link>
                     <Link
+                      href="/pbm-contract-vault"
+                      className="block px-4 py-3 text-gray-300 hover:text-white hover:bg-amber-500/10 rounded-lg transition-all"
+                    >
+                      <div className="font-medium">Contract Vault</div>
+                      <div className="text-xs text-gray-400">60+ PBM contracts analyzed and ready to compare</div>
+                    </Link>
+                    <Link
                       href="/ebitda-governance"
                       className="block px-4 py-3 text-gray-300 hover:text-white hover:bg-amber-500/10 rounded-lg transition-all"
                     >
@@ -396,6 +403,9 @@ export default function Nav() {
                   </Link>
                   <Link href="/contract-intelligence" className="block px-4 py-2 text-sm text-gray-400 hover:text-white hover:bg-white/5 rounded-lg transition-colors">
                     Contract Intelligence
+                  </Link>
+                  <Link href="/pbm-contract-vault" className="block px-4 py-2 text-sm text-gray-400 hover:text-white hover:bg-white/5 rounded-lg transition-colors">
+                    Contract Vault
                   </Link>
                   <Link href="/ebitda-governance" className="block px-4 py-2 text-sm text-gray-400 hover:text-white hover:bg-white/5 rounded-lg transition-colors">
                     EBITDA Governance

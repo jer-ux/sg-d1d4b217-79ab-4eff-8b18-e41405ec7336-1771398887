@@ -558,6 +558,71 @@ export type Database = {
           },
         ]
       }
+      contract_analysis_results: {
+        Row: {
+          analysis_summary: Json | null
+          annual_cost_estimate: number | null
+          contract_name: string
+          contract_type: string | null
+          created_at: string | null
+          effective_date: string | null
+          expiration_date: string | null
+          id: string
+          overall_score: number | null
+          pbm_name: string | null
+          potential_savings: number | null
+          red_flags_count: number | null
+          risk_level: string | null
+          total_provisions_analyzed: number | null
+          updated_at: string | null
+          upload_id: string | null
+        }
+        Insert: {
+          analysis_summary?: Json | null
+          annual_cost_estimate?: number | null
+          contract_name: string
+          contract_type?: string | null
+          created_at?: string | null
+          effective_date?: string | null
+          expiration_date?: string | null
+          id?: string
+          overall_score?: number | null
+          pbm_name?: string | null
+          potential_savings?: number | null
+          red_flags_count?: number | null
+          risk_level?: string | null
+          total_provisions_analyzed?: number | null
+          updated_at?: string | null
+          upload_id?: string | null
+        }
+        Update: {
+          analysis_summary?: Json | null
+          annual_cost_estimate?: number | null
+          contract_name?: string
+          contract_type?: string | null
+          created_at?: string | null
+          effective_date?: string | null
+          expiration_date?: string | null
+          id?: string
+          overall_score?: number | null
+          pbm_name?: string | null
+          potential_savings?: number | null
+          red_flags_count?: number | null
+          risk_level?: string | null
+          total_provisions_analyzed?: number | null
+          updated_at?: string | null
+          upload_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "contract_analysis_results_upload_id_fkey"
+            columns: ["upload_id"]
+            isOneToOne: false
+            referencedRelation: "contract_uploads"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       contract_analytics: {
         Row: {
           avg_cost_estimate: number | null
@@ -590,6 +655,213 @@ export type Database = {
           total_contracts?: number | null
         }
         Relationships: []
+      }
+      contract_board_analytics: {
+        Row: {
+          average_contract_score: number | null
+          contracts_by_pbm: Json | null
+          created_at: string | null
+          date: string
+          high_risk_contracts: number | null
+          id: string
+          organization_id: string | null
+          top_risk_categories: Json | null
+          total_contracts_analyzed: number | null
+          total_potential_savings: number | null
+          total_red_flags_identified: number | null
+          user_activity: Json | null
+        }
+        Insert: {
+          average_contract_score?: number | null
+          contracts_by_pbm?: Json | null
+          created_at?: string | null
+          date?: string
+          high_risk_contracts?: number | null
+          id?: string
+          organization_id?: string | null
+          top_risk_categories?: Json | null
+          total_contracts_analyzed?: number | null
+          total_potential_savings?: number | null
+          total_red_flags_identified?: number | null
+          user_activity?: Json | null
+        }
+        Update: {
+          average_contract_score?: number | null
+          contracts_by_pbm?: Json | null
+          created_at?: string | null
+          date?: string
+          high_risk_contracts?: number | null
+          id?: string
+          organization_id?: string | null
+          top_risk_categories?: Json | null
+          total_contracts_analyzed?: number | null
+          total_potential_savings?: number | null
+          total_red_flags_identified?: number | null
+          user_activity?: Json | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "contract_board_analytics_organization_id_fkey"
+            columns: ["organization_id"]
+            isOneToOne: false
+            referencedRelation: "contract_organizations"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      contract_organizations: {
+        Row: {
+          api_enabled: boolean | null
+          contract_limit: number
+          created_at: string | null
+          id: string
+          metadata: Json | null
+          name: string
+          priority_support: boolean | null
+          slug: string
+          subscription_tier: string
+          updated_at: string | null
+          user_limit: number
+          white_label_enabled: boolean | null
+        }
+        Insert: {
+          api_enabled?: boolean | null
+          contract_limit?: number
+          created_at?: string | null
+          id?: string
+          metadata?: Json | null
+          name: string
+          priority_support?: boolean | null
+          slug: string
+          subscription_tier: string
+          updated_at?: string | null
+          user_limit?: number
+          white_label_enabled?: boolean | null
+        }
+        Update: {
+          api_enabled?: boolean | null
+          contract_limit?: number
+          created_at?: string | null
+          id?: string
+          metadata?: Json | null
+          name?: string
+          priority_support?: boolean | null
+          slug?: string
+          subscription_tier?: string
+          updated_at?: string | null
+          user_limit?: number
+          white_label_enabled?: boolean | null
+        }
+        Relationships: []
+      }
+      contract_pdf_exports: {
+        Row: {
+          analysis_id: string | null
+          completed_at: string | null
+          download_count: number | null
+          expires_at: string | null
+          export_type: string
+          file_size: number | null
+          id: string
+          metadata: Json | null
+          requested_at: string | null
+          status: string
+          storage_path: string | null
+          user_id: string | null
+        }
+        Insert: {
+          analysis_id?: string | null
+          completed_at?: string | null
+          download_count?: number | null
+          expires_at?: string | null
+          export_type: string
+          file_size?: number | null
+          id?: string
+          metadata?: Json | null
+          requested_at?: string | null
+          status?: string
+          storage_path?: string | null
+          user_id?: string | null
+        }
+        Update: {
+          analysis_id?: string | null
+          completed_at?: string | null
+          download_count?: number | null
+          expires_at?: string | null
+          export_type?: string
+          file_size?: number | null
+          id?: string
+          metadata?: Json | null
+          requested_at?: string | null
+          status?: string
+          storage_path?: string | null
+          user_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "contract_pdf_exports_analysis_id_fkey"
+            columns: ["analysis_id"]
+            isOneToOne: false
+            referencedRelation: "contract_analysis_results"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      contract_provision_analysis: {
+        Row: {
+          analysis_id: string | null
+          compliance_status: string | null
+          created_at: string | null
+          financial_impact: number | null
+          id: string
+          industry_benchmark: number | null
+          is_red_flag: boolean | null
+          provision_category: string
+          provision_name: string
+          provision_text: string | null
+          recommendation: string | null
+          risk_level: string | null
+          score: number | null
+        }
+        Insert: {
+          analysis_id?: string | null
+          compliance_status?: string | null
+          created_at?: string | null
+          financial_impact?: number | null
+          id?: string
+          industry_benchmark?: number | null
+          is_red_flag?: boolean | null
+          provision_category: string
+          provision_name: string
+          provision_text?: string | null
+          recommendation?: string | null
+          risk_level?: string | null
+          score?: number | null
+        }
+        Update: {
+          analysis_id?: string | null
+          compliance_status?: string | null
+          created_at?: string | null
+          financial_impact?: number | null
+          id?: string
+          industry_benchmark?: number | null
+          is_red_flag?: boolean | null
+          provision_category?: string
+          provision_name?: string
+          provision_text?: string | null
+          recommendation?: string | null
+          risk_level?: string | null
+          score?: number | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "contract_provision_analysis_analysis_id_fkey"
+            columns: ["analysis_id"]
+            isOneToOne: false
+            referencedRelation: "contract_analysis_results"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       contract_provisions: {
         Row: {
@@ -637,6 +909,115 @@ export type Database = {
             columns: ["contract_id"]
             isOneToOne: false
             referencedRelation: "pbm_contracts"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      contract_uploads: {
+        Row: {
+          error_message: string | null
+          file_name: string
+          file_size: number
+          file_type: string
+          id: string
+          metadata: Json | null
+          organization_id: string | null
+          processing_completed_at: string | null
+          processing_started_at: string | null
+          storage_path: string
+          upload_status: string
+          uploaded_at: string | null
+          user_id: string | null
+        }
+        Insert: {
+          error_message?: string | null
+          file_name: string
+          file_size: number
+          file_type: string
+          id?: string
+          metadata?: Json | null
+          organization_id?: string | null
+          processing_completed_at?: string | null
+          processing_started_at?: string | null
+          storage_path: string
+          upload_status?: string
+          uploaded_at?: string | null
+          user_id?: string | null
+        }
+        Update: {
+          error_message?: string | null
+          file_name?: string
+          file_size?: number
+          file_type?: string
+          id?: string
+          metadata?: Json | null
+          organization_id?: string | null
+          processing_completed_at?: string | null
+          processing_started_at?: string | null
+          storage_path?: string
+          upload_status?: string
+          uploaded_at?: string | null
+          user_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "contract_uploads_organization_id_fkey"
+            columns: ["organization_id"]
+            isOneToOne: false
+            referencedRelation: "contract_organizations"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      contract_usage_logs: {
+        Row: {
+          action: string
+          created_at: string | null
+          duration_ms: number | null
+          error_message: string | null
+          id: string
+          ip_address: unknown
+          organization_id: string | null
+          resource_id: string | null
+          resource_type: string
+          success: boolean | null
+          user_agent: string | null
+          user_id: string | null
+        }
+        Insert: {
+          action: string
+          created_at?: string | null
+          duration_ms?: number | null
+          error_message?: string | null
+          id?: string
+          ip_address?: unknown
+          organization_id?: string | null
+          resource_id?: string | null
+          resource_type: string
+          success?: boolean | null
+          user_agent?: string | null
+          user_id?: string | null
+        }
+        Update: {
+          action?: string
+          created_at?: string | null
+          duration_ms?: number | null
+          error_message?: string | null
+          id?: string
+          ip_address?: unknown
+          organization_id?: string | null
+          resource_id?: string | null
+          resource_type?: string
+          success?: boolean | null
+          user_agent?: string | null
+          user_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "contract_usage_logs_organization_id_fkey"
+            columns: ["organization_id"]
+            isOneToOne: false
+            referencedRelation: "contract_organizations"
             referencedColumns: ["id"]
           },
         ]

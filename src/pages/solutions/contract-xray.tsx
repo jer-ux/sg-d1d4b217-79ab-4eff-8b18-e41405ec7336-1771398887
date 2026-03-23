@@ -9,7 +9,6 @@ import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/components/ui/dialog";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useToast } from "@/hooks/use-toast";
 import { 
   Shield, 
@@ -109,10 +108,10 @@ export default function ContractXRayPage() {
     setUploadProgress(0);
 
     try {
-      // Get current user
-      const { data: { user } } = await supabase.auth.getUser();
+      // 1. Check authentication
+      const { data: { user }, error: authError } = await supabase.auth.getUser();
       
-      if (!user) {
+      if (authError || !user) {
         toast({
           title: "Authentication Required",
           description: "Please sign in to upload contracts.",
@@ -120,6 +119,19 @@ export default function ContractXRayPage() {
         });
         setUploading(false);
         return;
+      }
+
+      // 2. Get or create user's organization
+      let orgId = "11111111-1111-1111-1111-111111111111"; // Demo org fallback
+      
+      const { data: memberData } = await supabase
+        .from('organization_members')
+        .select('organization_id')
+        .eq('user_id', user.id)
+        .single();
+      
+      if (memberData) {
+        orgId = memberData.organization_id;
       }
 
       // Simulate upload progress
@@ -133,32 +145,51 @@ export default function ContractXRayPage() {
         });
       }, 200);
 
-      // Upload file to storage
+      // 3. Upload file to Supabase Storage
       const fileExt = selectedFile.name.split('.').pop();
       const fileName = `${Date.now()}-${Math.random().toString(36).substring(7)}.${fileExt}`;
-      const filePath = `contracts/${fileName}`;
+      const filePath = `${user.id}/${fileName}`;
 
       const { error: uploadError } = await supabase.storage
         .from('contract-uploads')
-        .upload(filePath, selectedFile);
+        .upload(filePath, selectedFile, {
+          cacheControl: '3600',
+          upsert: false
+        });
 
-      if (uploadError) throw uploadError;
+      if (uploadError) {
+        console.error('Storage upload error:', uploadError);
+        throw new Error(`Upload failed: ${uploadError.message}`);
+      }
 
-      // 2. Add record to contract_uploads
+      // 4. Get public URL
+      const { data: { publicUrl } } = supabase.storage
+        .from('contract-uploads')
+        .getPublicUrl(filePath);
+
+      // 5. Add record to contract_uploads table
       const { data: uploadData, error: dbError } = await supabase
         .from('contract_uploads')
         .insert({
+          organization_id: orgId,
+          user_id: user.id,
           file_name: selectedFile.name,
           file_size: selectedFile.size,
           file_type: selectedFile.type || 'application/pdf',
           storage_path: filePath,
           upload_status: 'completed',
-          organization_id: '11111111-1111-1111-1111-111111111111' // Demo org ID
+          metadata: {
+            original_name: selectedFile.name,
+            uploaded_at: new Date().toISOString()
+          }
         })
         .select()
         .single();
 
-      if (dbError) throw dbError;
+      if (dbError) {
+        console.error('Database insert error:', dbError);
+        throw new Error(`Database error: ${dbError.message}`);
+      }
 
       clearInterval(progressInterval);
       setUploadProgress(100);
@@ -175,11 +206,11 @@ export default function ContractXRayPage() {
         description: "Your contract is being analyzed. You'll receive results shortly.",
       });
 
-    } catch (error) {
+    } catch (error: any) {
       console.error('Upload error:', error);
       toast({
         title: "Upload Failed",
-        description: "There was an error uploading your contract. Please try again.",
+        description: error.message || "There was an error uploading your contract. Please try again.",
         variant: "destructive"
       });
       setUploading(false);
@@ -205,40 +236,69 @@ export default function ContractXRayPage() {
       setAnalysisProgress(stage.progress);
     }
 
-    // Update contract status
-    await supabase
-      .from('contract_uploads')
-      .update({ 
-        upload_status: 'completed'
-      })
-      .eq('id', contractId);
+    try {
+      // Update contract status
+      await supabase
+        .from('contract_uploads')
+        .update({ 
+          upload_status: 'completed',
+          processing_completed_at: new Date().toISOString()
+        })
+        .eq('id', contractId);
 
-    // Insert mock analysis results
-    await supabase
-      .from('contract_analysis_results')
-      .insert({
-        upload_id: contractId,
-        contract_name: selectedFile?.name || "Uploaded Contract",
-        overall_score: Math.floor(Math.random() * 30) + 60,
-        potential_savings: Math.floor(Math.random() * 2000000) + 500000,
-        risk_level: 'Medium'
+      // Insert mock analysis results
+      await supabase
+        .from('contract_analysis_results')
+        .insert({
+          upload_id: contractId,
+          contract_name: selectedFile?.name || "Uploaded Contract",
+          pbm_name: "Express Scripts",
+          contract_type: "Commercial",
+          overall_score: Math.floor(Math.random() * 30) + 60,
+          potential_savings: Math.floor(Math.random() * 2000000) + 500000,
+          risk_level: 'Medium',
+          total_provisions_analyzed: 35,
+          red_flags_count: Math.floor(Math.random() * 10) + 3,
+          annual_cost_estimate: Math.floor(Math.random() * 5000000) + 2000000,
+          analysis_summary: {
+            strengths: [
+              "Strong audit rights provision",
+              "Reasonable termination clauses",
+              "Clear data ownership terms"
+            ],
+            concerns: [
+              "Limited rebate pass-through (65%)",
+              "Opaque MAC pricing methodology",
+              "Restrictive specialty pharmacy network"
+            ],
+            critical_issues: [
+              "No spread pricing disclosure",
+              "Lack of generic substitution guarantees"
+            ]
+          }
+        });
+
+      setAnalyzing(false);
+      
+      toast({
+        title: "Analysis Complete!",
+        description: "Your contract analysis is ready to view.",
       });
 
-    setAnalyzing(false);
-    
-    toast({
-      title: "Analysis Complete!",
-      description: "Your contract analysis is ready to view.",
-    });
+      // Redirect to results after a moment
+      setTimeout(() => {
+        router.push(`/contract-analysis/${contractId}`);
+      }, 2000);
 
-    // Redirect to results after a moment
-    setTimeout(() => {
-      router.push(`/contract-analysis/${contractId}`);
-    }, 2000);
-  };
-
-  const exportToPDF = () => {
-    window.print();
+    } catch (error: any) {
+      console.error('Analysis error:', error);
+      toast({
+        title: "Analysis Failed",
+        description: "There was an error analyzing your contract.",
+        variant: "destructive"
+      });
+      setAnalyzing(false);
+    }
   };
 
   const resetUpload = () => {

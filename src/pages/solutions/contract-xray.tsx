@@ -30,9 +30,11 @@ import {
   X,
   Loader2,
   ArrowRight,
-  LogIn
+  LogIn,
+  PlayCircle
 } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
+import { signInAsDemo, isDemoModeEnabled } from "@/lib/auth/demoUser";
 
 export default function ContractXRayPage() {
   const router = useRouter();
@@ -43,6 +45,7 @@ export default function ContractXRayPage() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [userId, setUserId] = useState<string | null>(null);
   const [checkingAuth, setCheckingAuth] = useState(true);
+  const [signingInAsDemo, setSigningInAsDemo] = useState(false);
 
   // Upload state
   const [showUploadModal, setShowUploadModal] = useState(false);
@@ -69,11 +72,56 @@ export default function ContractXRayPage() {
       const { data: { user } } = await supabase.auth.getUser();
       setIsAuthenticated(!!user);
       setUserId(user?.id || null);
+      
+      if (user) {
+        console.log("✅ User authenticated:", user.email);
+      } else {
+        console.log("ℹ️ No user authenticated");
+      }
     } catch (error) {
       console.error("Auth check error:", error);
       setIsAuthenticated(false);
     } finally {
       setCheckingAuth(false);
+    }
+  };
+
+  const handleDemoSignIn = async () => {
+    setSigningInAsDemo(true);
+    
+    try {
+      console.log("🎭 Signing in as demo user...");
+      const result = await signInAsDemo();
+      
+      if (result.success) {
+        toast({
+          title: "Demo Mode Activated!",
+          description: "You're now signed in as a demo user. Feel free to test all features.",
+        });
+        
+        // Refresh auth state
+        await checkAuth();
+        
+        // Open upload modal after successful sign-in
+        setTimeout(() => {
+          setShowUploadModal(true);
+        }, 500);
+      } else {
+        toast({
+          title: "Demo Sign-In Failed",
+          description: result.error || "Unable to create demo session. Please try again.",
+          variant: "destructive"
+        });
+      }
+    } catch (error: any) {
+      console.error("Demo sign-in error:", error);
+      toast({
+        title: "Error",
+        description: error.message || "Failed to sign in as demo user.",
+        variant: "destructive"
+      });
+    } finally {
+      setSigningInAsDemo(false);
     }
   };
 
@@ -127,17 +175,19 @@ export default function ContractXRayPage() {
 
     setSelectedFile(file);
     setUploadError(null);
+    console.log("✅ File selected:", file.name, `(${(file.size / 1024 / 1024).toFixed(2)} MB)`);
   };
 
   const handleUploadClick = async () => {
-    if (!isAuthenticated) {
+    // Check if demo mode is enabled or user is authenticated
+    const demoMode = isDemoModeEnabled();
+    
+    if (!isAuthenticated && !demoMode) {
       toast({
-        title: "Sign In Required",
-        description: "Please sign in to upload contracts.",
+        title: "Authentication Required",
+        description: "Please sign in or try demo mode to upload contracts.",
         variant: "destructive"
       });
-      // Redirect to sign in
-      router.push("/api/auth/signin");
       return;
     }
 
@@ -145,7 +195,25 @@ export default function ContractXRayPage() {
   };
 
   const uploadContract = async () => {
-    if (!selectedFile || !userId) return;
+    if (!selectedFile) {
+      toast({
+        title: "No File Selected",
+        description: "Please select a file to upload.",
+        variant: "destructive"
+      });
+      return;
+    }
+
+    // Check auth or demo mode
+    const demoMode = isDemoModeEnabled();
+    if (!userId && !demoMode) {
+      toast({
+        title: "Authentication Required",
+        description: "Please sign in to upload contracts.",
+        variant: "destructive"
+      });
+      return;
+    }
 
     setUploading(true);
     setUploadProgress(0);
@@ -154,26 +222,32 @@ export default function ContractXRayPage() {
     try {
       console.log("🚀 Starting upload process...");
       console.log("File:", selectedFile.name, "Size:", selectedFile.size);
+      console.log("Demo mode:", demoMode);
 
-      // 1. Get or create user's organization
+      // Get or determine org ID
       let orgId = "11111111-1111-1111-1111-111111111111"; // Demo org fallback
+      const effectiveUserId = userId || "00000000-0000-0000-0000-000000000001"; // Demo user fallback
       
-      console.log("📋 Checking user's organization...");
-      const { data: memberData, error: memberError } = await supabase
-        .from('organization_members')
-        .select('organization_id')
-        .eq('user_id', userId)
-        .maybeSingle();
-      
-      if (memberError) {
-        console.warn("Organization lookup error:", memberError);
-      }
-      
-      if (memberData) {
-        orgId = memberData.organization_id;
-        console.log("✅ Found organization:", orgId);
+      if (userId && !demoMode) {
+        console.log("📋 Checking user's organization...");
+        const { data: memberData, error: memberError } = await supabase
+          .from('organization_members')
+          .select('organization_id')
+          .eq('user_id', userId)
+          .maybeSingle();
+        
+        if (memberError) {
+          console.warn("Organization lookup warning:", memberError);
+        }
+        
+        if (memberData) {
+          orgId = memberData.organization_id;
+          console.log("✅ Found organization:", orgId);
+        } else {
+          console.log("ℹ️ No organization found, using demo org");
+        }
       } else {
-        console.log("⚠️ Using demo organization");
+        console.log("🎭 Using demo organization for upload");
       }
 
       // Simulate upload progress
@@ -187,11 +261,11 @@ export default function ContractXRayPage() {
         });
       }, 200);
 
-      // 2. Upload file to Supabase Storage
+      // Upload file to Supabase Storage
       console.log("☁️ Uploading to Supabase Storage...");
       const fileExt = selectedFile.name.split('.').pop();
       const fileName = `${Date.now()}-${Math.random().toString(36).substring(7)}.${fileExt}`;
-      const filePath = `${userId}/${fileName}`;
+      const filePath = `${effectiveUserId}/${fileName}`;
 
       const { error: uploadError } = await supabase.storage
         .from('contract-uploads')
@@ -203,9 +277,11 @@ export default function ContractXRayPage() {
       if (uploadError) {
         console.error("❌ Storage upload error:", uploadError);
         
-        // Check if bucket exists
         if (uploadError.message.includes("Bucket not found")) {
-          throw new Error("Storage bucket not configured. Please contact support or set up the 'contract-uploads' bucket in Supabase Dashboard.");
+          throw new Error(
+            "Storage bucket 'contract-uploads' not found. " +
+            "Please create it in Supabase Dashboard: Storage → New Bucket → Name: 'contract-uploads' → Public: YES"
+          );
         }
         
         throw new Error(`Upload failed: ${uploadError.message}`);
@@ -213,20 +289,20 @@ export default function ContractXRayPage() {
 
       console.log("✅ File uploaded to storage:", filePath);
 
-      // 3. Get public URL
+      // Get public URL
       const { data: { publicUrl } } = supabase.storage
         .from('contract-uploads')
         .getPublicUrl(filePath);
 
       console.log("🔗 Public URL:", publicUrl);
 
-      // 4. Add record to contract_uploads table
+      // Create database record
       console.log("💾 Creating database record...");
       const { data: uploadData, error: dbError } = await supabase
         .from('contract_uploads')
         .insert({
           organization_id: orgId,
-          user_id: userId,
+          user_id: effectiveUserId,
           file_name: selectedFile.name,
           file_size: selectedFile.size,
           file_type: selectedFile.type || 'application/pdf',
@@ -235,7 +311,8 @@ export default function ContractXRayPage() {
           metadata: {
             original_name: selectedFile.name,
             uploaded_at: new Date().toISOString(),
-            public_url: publicUrl
+            public_url: publicUrl,
+            demo_mode: demoMode
           }
         })
         .select()
@@ -255,10 +332,10 @@ export default function ContractXRayPage() {
 
       toast({
         title: "Upload Successful!",
-        description: "Your contract is being analyzed. You'll receive results shortly.",
+        description: "Your contract is being analyzed. Results will be ready shortly.",
       });
 
-      // Start analysis simulation
+      // Start analysis
       setTimeout(() => {
         startAnalysis(uploadData.id);
       }, 1000);
@@ -280,13 +357,13 @@ export default function ContractXRayPage() {
     setAnalyzing(true);
     setAnalysisProgress(0);
 
-    // Simulate AI analysis progress
+    // Simulate AI analysis with realistic stages
     const stages = [
       { progress: 20, message: "Extracting text and provisions...", delay: 1500 },
       { progress: 40, message: "Analyzing pricing structures...", delay: 1500 },
       { progress: 60, message: "Identifying red flags...", delay: 1500 },
       { progress: 80, message: "Calculating risk scores...", delay: 1500 },
-      { progress: 100, message: "Generating report...", delay: 1500 }
+      { progress: 100, message: "Generating comprehensive report...", delay: 1500 }
     ];
 
     for (const stage of stages) {
@@ -307,7 +384,7 @@ export default function ContractXRayPage() {
         })
         .eq('id', contractId);
 
-      // Insert mock analysis results
+      // Insert comprehensive mock analysis results
       await supabase
         .from('contract_analysis_results')
         .insert({
@@ -323,18 +400,19 @@ export default function ContractXRayPage() {
           annual_cost_estimate: Math.floor(Math.random() * 5000000) + 2000000,
           analysis_summary: {
             strengths: [
-              "Strong audit rights provision",
-              "Reasonable termination clauses",
-              "Clear data ownership terms"
+              "Strong audit rights provision with quarterly access",
+              "Reasonable termination clauses (90-day notice)",
+              "Clear data ownership terms favoring client"
             ],
             concerns: [
-              "Limited rebate pass-through (65%)",
-              "Opaque MAC pricing methodology",
-              "Restrictive specialty pharmacy network"
+              "Limited rebate pass-through (only 65% vs industry standard 80%)",
+              "Opaque MAC pricing methodology without transparency",
+              "Restrictive specialty pharmacy network (mandatory single source)"
             ],
             critical_issues: [
-              "No spread pricing disclosure",
-              "Lack of generic substitution guarantees"
+              "No spread pricing disclosure requirements",
+              "Lack of generic substitution guarantees",
+              "Unclear administrative fee structure"
             ]
           }
         });
@@ -344,10 +422,10 @@ export default function ContractXRayPage() {
       
       toast({
         title: "Analysis Complete!",
-        description: "Your contract analysis is ready to view.",
+        description: "Your comprehensive contract analysis is ready to view.",
       });
 
-      // Redirect to results after a moment
+      // Redirect to results after brief delay
       setTimeout(() => {
         router.push(`/contract-analysis/${contractId}`);
       }, 2000);
@@ -356,7 +434,7 @@ export default function ContractXRayPage() {
       console.error("❌ Analysis error:", error);
       toast({
         title: "Analysis Failed",
-        description: "There was an error analyzing your contract.",
+        description: error.message || "There was an error analyzing your contract.",
         variant: "destructive"
       });
       setAnalyzing(false);
@@ -482,29 +560,46 @@ export default function ContractXRayPage() {
                 </p>
 
                 <div className="flex flex-wrap gap-4 justify-center">
-                  <Button 
-                    size="lg" 
-                    className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700"
-                    onClick={handleUploadClick}
-                    disabled={checkingAuth}
-                  >
-                    {checkingAuth ? (
-                      <>
-                        <Loader2 className="w-5 h-5 mr-2 animate-spin" />
-                        Loading...
-                      </>
-                    ) : !isAuthenticated ? (
-                      <>
+                  {!isAuthenticated ? (
+                    <>
+                      <Button 
+                        size="lg" 
+                        className="bg-gradient-to-r from-green-600 to-emerald-600 hover:from-green-700 hover:to-emerald-700"
+                        onClick={handleDemoSignIn}
+                        disabled={signingInAsDemo}
+                      >
+                        {signingInAsDemo ? (
+                          <>
+                            <Loader2 className="w-5 h-5 mr-2 animate-spin" />
+                            Starting Demo...
+                          </>
+                        ) : (
+                          <>
+                            <PlayCircle className="w-5 h-5 mr-2" />
+                            Try Demo (No Sign-Up)
+                          </>
+                        )}
+                      </Button>
+                      <Button 
+                        size="lg" 
+                        variant="outline"
+                        onClick={() => router.push("/api/auth/signin")}
+                      >
                         <LogIn className="w-5 h-5 mr-2" />
                         Sign In to Upload
-                      </>
-                    ) : (
-                      <>
-                        <Upload className="w-5 h-5 mr-2" />
-                        Analyze Your Contract
-                      </>
-                    )}
-                  </Button>
+                      </Button>
+                    </>
+                  ) : (
+                    <Button 
+                      size="lg" 
+                      className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700"
+                      onClick={handleUploadClick}
+                    >
+                      <Upload className="w-5 h-5 mr-2" />
+                      Analyze Your Contract
+                    </Button>
+                  )}
+                  
                   <Link href="/pbm-contract-vault">
                     <Button size="lg" variant="outline">
                       <FileText className="w-5 h-5 mr-2" />
@@ -518,6 +613,16 @@ export default function ContractXRayPage() {
                     </Button>
                   </Link>
                 </div>
+
+                {/* Demo Mode Indicator */}
+                {isDemoModeEnabled() && (
+                  <Alert className="mt-6 bg-green-500/10 border-green-500/20">
+                    <PlayCircle className="h-4 w-4 text-green-400" />
+                    <AlertDescription className="text-green-300">
+                      Demo mode enabled - no authentication required for testing
+                    </AlertDescription>
+                  </Alert>
+                )}
               </div>
             </div>
           </section>
@@ -649,24 +754,45 @@ export default function ContractXRayPage() {
                     Join 89 leading organizations using Contract X-Ray to identify millions in potential savings
                   </p>
                   <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                    <Button 
-                      size="lg" 
-                      className="bg-white text-black hover:bg-gray-100"
-                      onClick={handleUploadClick}
-                      disabled={checkingAuth}
-                    >
-                      {!isAuthenticated ? (
-                        <>
+                    {!isAuthenticated ? (
+                      <>
+                        <Button 
+                          size="lg" 
+                          className="bg-gradient-to-r from-green-600 to-emerald-600 hover:from-green-700 hover:to-emerald-700"
+                          onClick={handleDemoSignIn}
+                          disabled={signingInAsDemo}
+                        >
+                          {signingInAsDemo ? (
+                            <>
+                              <Loader2 className="w-5 h-5 mr-2 animate-spin" />
+                              Starting Demo...
+                            </>
+                          ) : (
+                            <>
+                              <PlayCircle className="w-5 h-5 mr-2" />
+                              Try Demo Now
+                            </>
+                          )}
+                        </Button>
+                        <Button 
+                          size="lg" 
+                          variant="outline"
+                          onClick={() => router.push("/api/auth/signin")}
+                        >
                           <LogIn className="w-5 h-5 mr-2" />
-                          Sign In to Upload
-                        </>
-                      ) : (
-                        <>
-                          <Upload className="w-5 h-5 mr-2" />
-                          Upload Your Contract
-                        </>
-                      )}
-                    </Button>
+                          Sign In
+                        </Button>
+                      </>
+                    ) : (
+                      <Button 
+                        size="lg" 
+                        className="bg-white text-black hover:bg-gray-100"
+                        onClick={handleUploadClick}
+                      >
+                        <Upload className="w-5 h-5 mr-2" />
+                        Upload Your Contract
+                      </Button>
+                    )}
                     <Link href="/request-demo">
                       <Button size="lg" variant="outline">
                         <Users className="w-5 h-5 mr-2" />
@@ -778,7 +904,7 @@ export default function ContractXRayPage() {
                     <ul className="space-y-3 text-sm text-gray-400">
                       <li className="flex items-start gap-3">
                         <CheckCircle2 className="w-5 h-5 text-green-500 flex-shrink-0 mt-0.5" />
-                        <span>AI analyst evaluates 35+ contract provisions</span>
+                        <span>AI extracts and analyzes 35+ contract provisions</span>
                       </li>
                       <li className="flex items-start gap-3">
                         <CheckCircle2 className="w-5 h-5 text-green-500 flex-shrink-0 mt-0.5" />
@@ -786,7 +912,7 @@ export default function ContractXRayPage() {
                       </li>
                       <li className="flex items-start gap-3">
                         <CheckCircle2 className="w-5 h-5 text-green-500 flex-shrink-0 mt-0.5" />
-                        <span>Generates comprehensive analysis report</span>
+                        <span>Generates comprehensive risk analysis report</span>
                       </li>
                       <li className="flex items-start gap-3">
                         <CheckCircle2 className="w-5 h-5 text-green-500 flex-shrink-0 mt-0.5" />
@@ -863,7 +989,7 @@ export default function ContractXRayPage() {
                     </div>
                     <div className={`flex items-center gap-3 ${analysisProgress >= 100 ? 'text-green-400' : 'text-gray-500'}`}>
                       {analysisProgress >= 100 ? <CheckCircle2 className="w-5 h-5" /> : <Clock className="w-5 h-5" />}
-                      <span>Generating report</span>
+                      <span>Generating comprehensive report</span>
                     </div>
                   </div>
                 </div>

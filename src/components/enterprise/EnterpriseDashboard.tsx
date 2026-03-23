@@ -23,6 +23,13 @@ import {
 import { authService } from "@/services/authService";
 import { organizationService } from "@/services/organizationService";
 import { auditService } from "@/services/auditService";
+import { EnterpriseAnalytics } from "./EnterpriseAnalytics";
+import { EnterpriseTeamManagement } from "./EnterpriseTeamManagement";
+import { EnterpriseCompliance } from "./EnterpriseCompliance";
+import { EnterpriseSecurityCenter } from "./EnterpriseSecurityCenter";
+import { EnterpriseBilling } from "./EnterpriseBilling";
+import { EnterpriseIntegrations } from "./EnterpriseIntegrations";
+import { EnterpriseReporting } from "./EnterpriseReporting";
 
 interface DashboardMetrics {
   users: { total: number; active: number; trend: number };
@@ -187,15 +194,19 @@ export function EnterpriseDashboard() {
       </div>
 
       {/* Main Content Tabs */}
-      <Tabs defaultValue="activity" className="space-y-4">
-        <TabsList className="grid w-full grid-cols-4 lg:w-auto">
-          <TabsTrigger value="activity">Activity</TabsTrigger>
+      <Tabs defaultValue="overview" className="space-y-6">
+        <TabsList className="grid w-full grid-cols-8">
+          <TabsTrigger value="overview">Overview</TabsTrigger>
           <TabsTrigger value="analytics">Analytics</TabsTrigger>
+          <TabsTrigger value="team">Team</TabsTrigger>
+          <TabsTrigger value="security">Security</TabsTrigger>
           <TabsTrigger value="compliance">Compliance</TabsTrigger>
-          <TabsTrigger value="settings">Settings</TabsTrigger>
+          <TabsTrigger value="billing">Billing</TabsTrigger>
+          <TabsTrigger value="integrations">Integrations</TabsTrigger>
+          <TabsTrigger value="reports">Reports</TabsTrigger>
         </TabsList>
 
-        <TabsContent value="activity" className="space-y-4">
+        <TabsContent value="overview" className="space-y-4">
           <Card>
             <CardHeader>
               <CardTitle>Recent Activity</CardTitle>
@@ -237,120 +248,32 @@ export function EnterpriseDashboard() {
           </Card>
         </TabsContent>
 
-        <TabsContent value="analytics" className="space-y-4">
-          <div className="grid gap-4 md:grid-cols-2">
-            <Card>
-              <CardHeader>
-                <CardTitle>Usage Trends</CardTitle>
-                <CardDescription>API calls over time</CardDescription>
-              </CardHeader>
-              <CardContent>
-                <div className="h-64 flex items-center justify-center text-muted-foreground">
-                  <div className="text-center">
-                    <BarChart3 className="h-12 w-12 mx-auto mb-2 opacity-50" />
-                    <p>Analytics charts coming soon</p>
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
-
-            <Card>
-              <CardHeader>
-                <CardTitle>Cost Optimization</CardTitle>
-                <CardDescription>Monthly spending trends</CardDescription>
-              </CardHeader>
-              <CardContent>
-                <div className="h-64 flex items-center justify-center text-muted-foreground">
-                  <div className="text-center">
-                    <DollarSign className="h-12 w-12 mx-auto mb-2 opacity-50" />
-                    <p>Cost analytics coming soon</p>
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
-          </div>
+        <TabsContent value="analytics">
+          <EnterpriseAnalytics />
         </TabsContent>
 
-        <TabsContent value="compliance" className="space-y-4">
-          <Card>
-            <CardHeader>
-              <CardTitle>Compliance Status</CardTitle>
-              <CardDescription>
-                Current certification and audit status
-              </CardDescription>
-            </CardHeader>
-            <CardContent>
-              <div className="space-y-4">
-                <div className="flex items-center justify-between p-4 rounded-lg border">
-                  <div className="flex items-center gap-3">
-                    <CheckCircle2 className="h-5 w-5 text-green-500" />
-                    <div>
-                      <p className="font-medium">SOC 2 Type II</p>
-                      <p className="text-sm text-muted-foreground">Certified until Dec 2026</p>
-                    </div>
-                  </div>
-                  <Badge variant="secondary" className="bg-green-500 text-white">Active</Badge>
-                </div>
-
-                <div className="flex items-center justify-between p-4 rounded-lg border">
-                  <div className="flex items-center gap-3">
-                    <CheckCircle2 className="h-5 w-5 text-green-500" />
-                    <div>
-                      <p className="font-medium">HIPAA Compliance</p>
-                      <p className="text-sm text-muted-foreground">Last audit: Jan 2026</p>
-                    </div>
-                  </div>
-                  <Badge variant="secondary" className="bg-green-500 text-white">Active</Badge>
-                </div>
-
-                <div className="flex items-center justify-between p-4 rounded-lg border">
-                  <div className="flex items-center gap-3">
-                    <Clock className="h-5 w-5 text-yellow-500" />
-                    <div>
-                      <p className="font-medium">ISO 27001</p>
-                      <p className="text-sm text-muted-foreground">Audit scheduled for Mar 2026</p>
-                    </div>
-                  </div>
-                  <Badge variant="secondary" className="bg-yellow-500 text-white">Pending</Badge>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
+        <TabsContent value="team">
+          <EnterpriseTeamManagement />
         </TabsContent>
 
-        <TabsContent value="settings" className="space-y-4">
-          <Card>
-            <CardHeader>
-              <CardTitle>Quick Settings</CardTitle>
-              <CardDescription>
-                Manage your organization configuration
-              </CardDescription>
-            </CardHeader>
-            <CardContent>
-              <div className="space-y-3">
-                <Button variant="outline" className="w-full justify-start">
-                  <Users className="h-4 w-4 mr-2" />
-                  Manage Team Members
-                </Button>
-                <Button variant="outline" className="w-full justify-start">
-                  <Key className="h-4 w-4 mr-2" />
-                  API Keys & Integrations
-                </Button>
-                <Button variant="outline" className="w-full justify-start">
-                  <Shield className="h-4 w-4 mr-2" />
-                  Security Settings
-                </Button>
-                <Button variant="outline" className="w-full justify-start">
-                  <FileText className="h-4 w-4 mr-2" />
-                  Data Retention Policies
-                </Button>
-                <Button variant="outline" className="w-full justify-start">
-                  <Settings className="h-4 w-4 mr-2" />
-                  Advanced Configuration
-                </Button>
-              </div>
-            </CardContent>
-          </Card>
+        <TabsContent value="security">
+          <EnterpriseSecurityCenter />
+        </TabsContent>
+
+        <TabsContent value="compliance">
+          <EnterpriseCompliance />
+        </TabsContent>
+
+        <TabsContent value="billing">
+          <EnterpriseBilling />
+        </TabsContent>
+
+        <TabsContent value="integrations">
+          <EnterpriseIntegrations />
+        </TabsContent>
+
+        <TabsContent value="reports">
+          <EnterpriseReporting />
         </TabsContent>
       </Tabs>
     </div>

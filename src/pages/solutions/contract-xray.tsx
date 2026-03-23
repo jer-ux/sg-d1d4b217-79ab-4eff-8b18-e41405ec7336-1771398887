@@ -1,4 +1,4 @@
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import Head from "next/head";
 import Link from "next/link";
 import { useRouter } from "next/router";
@@ -9,6 +9,7 @@ import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import { Alert, AlertDescription } from "@/components/ui/alert";
 import { useToast } from "@/hooks/use-toast";
 import { 
   Shield, 
@@ -28,7 +29,8 @@ import {
   FileCheck,
   X,
   Loader2,
-  ArrowRight
+  ArrowRight,
+  LogIn
 } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 
@@ -37,6 +39,11 @@ export default function ContractXRayPage() {
   const { toast } = useToast();
   const fileInputRef = useRef<HTMLInputElement>(null);
   
+  // Auth state
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [userId, setUserId] = useState<string | null>(null);
+  const [checkingAuth, setCheckingAuth] = useState(true);
+
   // Upload state
   const [showUploadModal, setShowUploadModal] = useState(false);
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
@@ -45,10 +52,30 @@ export default function ContractXRayPage() {
   const [dragActive, setDragActive] = useState(false);
   const [uploadSuccess, setUploadSuccess] = useState(false);
   const [uploadedContractId, setUploadedContractId] = useState<string | null>(null);
+  const [uploadError, setUploadError] = useState<string | null>(null);
 
   // Analysis state
   const [analyzing, setAnalyzing] = useState(false);
   const [analysisProgress, setAnalysisProgress] = useState(0);
+  const [analysisStage, setAnalysisStage] = useState("");
+
+  // Check authentication on mount
+  useEffect(() => {
+    checkAuth();
+  }, []);
+
+  const checkAuth = async () => {
+    try {
+      const { data: { user } } = await supabase.auth.getUser();
+      setIsAuthenticated(!!user);
+      setUserId(user?.id || null);
+    } catch (error) {
+      console.error("Auth check error:", error);
+      setIsAuthenticated(false);
+    } finally {
+      setCheckingAuth(false);
+    }
+  };
 
   const handleDrag = (e: React.DragEvent) => {
     e.preventDefault();
@@ -99,39 +126,54 @@ export default function ContractXRayPage() {
     }
 
     setSelectedFile(file);
+    setUploadError(null);
+  };
+
+  const handleUploadClick = async () => {
+    if (!isAuthenticated) {
+      toast({
+        title: "Sign In Required",
+        description: "Please sign in to upload contracts.",
+        variant: "destructive"
+      });
+      // Redirect to sign in
+      router.push("/api/auth/signin");
+      return;
+    }
+
+    setShowUploadModal(true);
   };
 
   const uploadContract = async () => {
-    if (!selectedFile) return;
+    if (!selectedFile || !userId) return;
 
     setUploading(true);
     setUploadProgress(0);
+    setUploadError(null);
 
     try {
-      // 1. Check authentication
-      const { data: { user }, error: authError } = await supabase.auth.getUser();
-      
-      if (authError || !user) {
-        toast({
-          title: "Authentication Required",
-          description: "Please sign in to upload contracts.",
-          variant: "destructive"
-        });
-        setUploading(false);
-        return;
-      }
+      console.log("🚀 Starting upload process...");
+      console.log("File:", selectedFile.name, "Size:", selectedFile.size);
 
-      // 2. Get or create user's organization
+      // 1. Get or create user's organization
       let orgId = "11111111-1111-1111-1111-111111111111"; // Demo org fallback
       
-      const { data: memberData } = await supabase
+      console.log("📋 Checking user's organization...");
+      const { data: memberData, error: memberError } = await supabase
         .from('organization_members')
         .select('organization_id')
-        .eq('user_id', user.id)
-        .single();
+        .eq('user_id', userId)
+        .maybeSingle();
+      
+      if (memberError) {
+        console.warn("Organization lookup error:", memberError);
+      }
       
       if (memberData) {
         orgId = memberData.organization_id;
+        console.log("✅ Found organization:", orgId);
+      } else {
+        console.log("⚠️ Using demo organization");
       }
 
       // Simulate upload progress
@@ -145,10 +187,11 @@ export default function ContractXRayPage() {
         });
       }, 200);
 
-      // 3. Upload file to Supabase Storage
+      // 2. Upload file to Supabase Storage
+      console.log("☁️ Uploading to Supabase Storage...");
       const fileExt = selectedFile.name.split('.').pop();
       const fileName = `${Date.now()}-${Math.random().toString(36).substring(7)}.${fileExt}`;
-      const filePath = `${user.id}/${fileName}`;
+      const filePath = `${userId}/${fileName}`;
 
       const { error: uploadError } = await supabase.storage
         .from('contract-uploads')
@@ -158,21 +201,32 @@ export default function ContractXRayPage() {
         });
 
       if (uploadError) {
-        console.error('Storage upload error:', uploadError);
+        console.error("❌ Storage upload error:", uploadError);
+        
+        // Check if bucket exists
+        if (uploadError.message.includes("Bucket not found")) {
+          throw new Error("Storage bucket not configured. Please contact support or set up the 'contract-uploads' bucket in Supabase Dashboard.");
+        }
+        
         throw new Error(`Upload failed: ${uploadError.message}`);
       }
 
-      // 4. Get public URL
+      console.log("✅ File uploaded to storage:", filePath);
+
+      // 3. Get public URL
       const { data: { publicUrl } } = supabase.storage
         .from('contract-uploads')
         .getPublicUrl(filePath);
 
-      // 5. Add record to contract_uploads table
+      console.log("🔗 Public URL:", publicUrl);
+
+      // 4. Add record to contract_uploads table
+      console.log("💾 Creating database record...");
       const { data: uploadData, error: dbError } = await supabase
         .from('contract_uploads')
         .insert({
           organization_id: orgId,
-          user_id: user.id,
+          user_id: userId,
           file_name: selectedFile.name,
           file_size: selectedFile.size,
           file_type: selectedFile.type || 'application/pdf',
@@ -180,34 +234,38 @@ export default function ContractXRayPage() {
           upload_status: 'completed',
           metadata: {
             original_name: selectedFile.name,
-            uploaded_at: new Date().toISOString()
+            uploaded_at: new Date().toISOString(),
+            public_url: publicUrl
           }
         })
         .select()
         .single();
 
       if (dbError) {
-        console.error('Database insert error:', dbError);
+        console.error("❌ Database insert error:", dbError);
         throw new Error(`Database error: ${dbError.message}`);
       }
+
+      console.log("✅ Database record created:", uploadData.id);
 
       clearInterval(progressInterval);
       setUploadProgress(100);
       setUploadedContractId(uploadData.id);
       setUploadSuccess(true);
 
-      // Start analysis simulation
-      setTimeout(() => {
-        startAnalysis(uploadData.id);
-      }, 1000);
-
       toast({
         title: "Upload Successful!",
         description: "Your contract is being analyzed. You'll receive results shortly.",
       });
 
+      // Start analysis simulation
+      setTimeout(() => {
+        startAnalysis(uploadData.id);
+      }, 1000);
+
     } catch (error: any) {
-      console.error('Upload error:', error);
+      console.error("❌ Upload error:", error);
+      setUploadError(error.message || "Upload failed. Please try again.");
       toast({
         title: "Upload Failed",
         description: error.message || "There was an error uploading your contract. Please try again.",
@@ -224,19 +282,22 @@ export default function ContractXRayPage() {
 
     // Simulate AI analysis progress
     const stages = [
-      { progress: 20, message: "Extracting text and provisions..." },
-      { progress: 40, message: "Analyzing pricing structures..." },
-      { progress: 60, message: "Identifying red flags..." },
-      { progress: 80, message: "Calculating risk scores..." },
-      { progress: 100, message: "Generating report..." }
+      { progress: 20, message: "Extracting text and provisions...", delay: 1500 },
+      { progress: 40, message: "Analyzing pricing structures...", delay: 1500 },
+      { progress: 60, message: "Identifying red flags...", delay: 1500 },
+      { progress: 80, message: "Calculating risk scores...", delay: 1500 },
+      { progress: 100, message: "Generating report...", delay: 1500 }
     ];
 
     for (const stage of stages) {
-      await new Promise(resolve => setTimeout(resolve, 1500));
+      setAnalysisStage(stage.message);
+      await new Promise(resolve => setTimeout(resolve, stage.delay));
       setAnalysisProgress(stage.progress);
     }
 
     try {
+      console.log("📊 Creating analysis results...");
+
       // Update contract status
       await supabase
         .from('contract_uploads')
@@ -278,6 +339,7 @@ export default function ContractXRayPage() {
           }
         });
 
+      console.log("✅ Analysis complete!");
       setAnalyzing(false);
       
       toast({
@@ -291,7 +353,7 @@ export default function ContractXRayPage() {
       }, 2000);
 
     } catch (error: any) {
-      console.error('Analysis error:', error);
+      console.error("❌ Analysis error:", error);
       toast({
         title: "Analysis Failed",
         description: "There was an error analyzing your contract.",
@@ -310,6 +372,8 @@ export default function ContractXRayPage() {
     setAnalyzing(false);
     setAnalysisProgress(0);
     setUploadedContractId(null);
+    setUploadError(null);
+    setAnalysisStage("");
   };
 
   const provisions = [
@@ -421,10 +485,25 @@ export default function ContractXRayPage() {
                   <Button 
                     size="lg" 
                     className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700"
-                    onClick={() => setShowUploadModal(true)}
+                    onClick={handleUploadClick}
+                    disabled={checkingAuth}
                   >
-                    <Upload className="w-5 h-5 mr-2" />
-                    Analyze Your Contract
+                    {checkingAuth ? (
+                      <>
+                        <Loader2 className="w-5 h-5 mr-2 animate-spin" />
+                        Loading...
+                      </>
+                    ) : !isAuthenticated ? (
+                      <>
+                        <LogIn className="w-5 h-5 mr-2" />
+                        Sign In to Upload
+                      </>
+                    ) : (
+                      <>
+                        <Upload className="w-5 h-5 mr-2" />
+                        Analyze Your Contract
+                      </>
+                    )}
                   </Button>
                   <Link href="/pbm-contract-vault">
                     <Button size="lg" variant="outline">
@@ -573,10 +652,20 @@ export default function ContractXRayPage() {
                     <Button 
                       size="lg" 
                       className="bg-white text-black hover:bg-gray-100"
-                      onClick={() => setShowUploadModal(true)}
+                      onClick={handleUploadClick}
+                      disabled={checkingAuth}
                     >
-                      <Upload className="w-5 h-5 mr-2" />
-                      Upload Your Contract
+                      {!isAuthenticated ? (
+                        <>
+                          <LogIn className="w-5 h-5 mr-2" />
+                          Sign In to Upload
+                        </>
+                      ) : (
+                        <>
+                          <Upload className="w-5 h-5 mr-2" />
+                          Upload Your Contract
+                        </>
+                      )}
                     </Button>
                     <Link href="/request-demo">
                       <Button size="lg" variant="outline">
@@ -604,6 +693,14 @@ export default function ContractXRayPage() {
             <div className="space-y-6">
               {!uploadSuccess && !analyzing && (
                 <>
+                  {/* Error Alert */}
+                  {uploadError && (
+                    <Alert variant="destructive">
+                      <AlertTriangle className="h-4 w-4" />
+                      <AlertDescription>{uploadError}</AlertDescription>
+                    </Alert>
+                  )}
+
                   {/* File Upload Area */}
                   <div
                     className={`border-2 border-dashed rounded-lg p-12 text-center transition-colors ${
@@ -736,7 +833,7 @@ export default function ContractXRayPage() {
                       <Loader2 className="w-10 h-10 text-blue-400 animate-spin" />
                     </div>
                     <h3 className="text-xl font-semibold mb-2">Analyzing Your Contract</h3>
-                    <p className="text-gray-400">Our AI is examining your contract provisions...</p>
+                    <p className="text-gray-400">{analysisStage}</p>
                   </div>
 
                   <div className="space-y-2">

@@ -8,11 +8,135 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
-import { Shield, Upload, BarChart3, FileText, CheckCircle2, AlertTriangle, XCircle, Zap, Lock, TrendingUp, Users, Download, ArrowRight, Star } from "lucide-react";
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import { useToast } from "@/hooks/use-toast";
+import { Shield, Upload, BarChart3, FileText, CheckCircle2, AlertTriangle, XCircle, Zap, Lock, TrendingUp, Users, Download, ArrowRight, Star, X, FileCheck } from "lucide-react";
+import { supabase } from "@/integrations/supabase/client";
 
 export default function ContractXRayPage() {
   const [selectedTier, setSelectedTier] = useState("professional");
   const [uploadedFile, setUploadedFile] = useState<File | null>(null);
+  const [showUploadModal, setShowUploadModal] = useState(false);
+  const [uploading, setUploading] = useState(false);
+  const [uploadProgress, setUploadProgress] = useState(0);
+  const [dragActive, setDragActive] = useState(false);
+  const { toast } = useToast();
+
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      validateAndSetFile(file);
+    }
+  };
+
+  const handleDrag = (e: React.DragEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    if (e.type === "dragenter" || e.type === "dragover") {
+      setDragActive(true);
+    } else if (e.type === "dragleave") {
+      setDragActive(false);
+    }
+  };
+
+  const handleDrop = (e: React.DragEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setDragActive(false);
+    
+    const file = e.dataTransfer.files?.[0];
+    if (file) {
+      validateAndSetFile(file);
+    }
+  };
+
+  const validateAndSetFile = (file: File) => {
+    const allowedTypes = [
+      "application/pdf",
+      "application/msword",
+      "application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+    ];
+    
+    const maxSize = 10 * 1024 * 1024; // 10MB
+
+    if (!allowedTypes.includes(file.type)) {
+      toast({
+        title: "Invalid File Type",
+        description: "Please upload a PDF, DOC, or DOCX file.",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    if (file.size > maxSize) {
+      toast({
+        title: "File Too Large",
+        description: "Please upload a file smaller than 10MB.",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    setUploadedFile(file);
+  };
+
+  const handleUpload = async () => {
+    if (!uploadedFile) return;
+
+    setUploading(true);
+    setUploadProgress(0);
+
+    try {
+      // Simulate progress
+      const progressInterval = setInterval(() => {
+        setUploadProgress((prev) => {
+          if (prev >= 90) {
+            clearInterval(progressInterval);
+            return prev;
+          }
+          return prev + 10;
+        });
+      }, 200);
+
+      // Upload to Supabase Storage
+      const fileExt = uploadedFile.name.split(".").pop();
+      const fileName = `${Date.now()}-${Math.random().toString(36).substring(7)}.${fileExt}`;
+      const filePath = `contracts/${fileName}`;
+
+      const { data, error } = await supabase.storage
+        .from("contract-uploads")
+        .upload(filePath, uploadedFile);
+
+      clearInterval(progressInterval);
+      setUploadProgress(100);
+
+      if (error) {
+        throw error;
+      }
+
+      // Success
+      setTimeout(() => {
+        toast({
+          title: "Contract Uploaded Successfully!",
+          description: "Our AI analyst will evaluate your contract within 24-48 hours. We'll email you when your reports are ready.",
+        });
+        setShowUploadModal(false);
+        setUploadedFile(null);
+        setUploading(false);
+        setUploadProgress(0);
+      }, 500);
+
+    } catch (error) {
+      console.error("Upload error:", error);
+      toast({
+        title: "Upload Failed",
+        description: "There was an error uploading your contract. Please try again or contact support.",
+        variant: "destructive",
+      });
+      setUploading(false);
+      setUploadProgress(0);
+    }
+  };
 
   const provisions = [
     { name: "Fiduciary Loyalty Commitment", score: 42, rating: "red", weight: 10 },
@@ -82,7 +206,7 @@ export default function ContractXRayPage() {
               </p>
 
               <div className="flex flex-wrap gap-4 justify-center mb-12">
-                <Button size="lg" className="bg-gradient-to-r from-blue-600 to-cyan-600 hover:from-blue-700 hover:to-cyan-700">
+                <Button size="lg" className="bg-gradient-to-r from-blue-600 to-cyan-600 hover:from-blue-700 hover:to-cyan-700" onClick={() => setShowUploadModal(true)}>
                   <Upload className="w-5 h-5 mr-2" />
                   Analyze Your Contract
                 </Button>
@@ -643,7 +767,7 @@ export default function ContractXRayPage() {
               Employer-first. Independent expertise. No vendor conflicts.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Button size="lg" className="bg-gradient-to-r from-blue-600 to-cyan-600 hover:from-blue-700 hover:to-cyan-700">
+              <Button size="lg" className="bg-gradient-to-r from-blue-600 to-cyan-600 hover:from-blue-700 hover:to-cyan-700" onClick={() => setShowUploadModal(true)}>
                 <Upload className="w-5 h-5 mr-2" />
                 Upload Your Contract
               </Button>
@@ -654,6 +778,152 @@ export default function ContractXRayPage() {
             </div>
           </div>
         </section>
+
+        {/* Upload Modal */}
+        <Dialog open={showUploadModal} onOpenChange={setShowUploadModal}>
+          <DialogContent className="sm:max-w-[600px] bg-slate-900 border-blue-500/30">
+            <DialogHeader>
+              <DialogTitle className="text-2xl text-white flex items-center gap-2">
+                <Shield className="w-6 h-6 text-blue-400" />
+                Upload PBM Contract for Analysis
+              </DialogTitle>
+              <DialogDescription className="text-gray-400">
+                Upload your PBM contract (PDF, DOC, or DOCX). Our AI analyst will evaluate it against Fiduciary-Aligned Standards.
+              </DialogDescription>
+            </DialogHeader>
+
+            <div className="space-y-6 py-4">
+              {!uploadedFile ? (
+                <div
+                  className={`border-2 border-dashed rounded-lg p-12 text-center transition-colors ${
+                    dragActive
+                      ? "border-blue-500 bg-blue-500/10"
+                      : "border-gray-600 hover:border-blue-500/50"
+                  }`}
+                  onDragEnter={handleDrag}
+                  onDragLeave={handleDrag}
+                  onDragOver={handleDrag}
+                  onDrop={handleDrop}
+                >
+                  <Upload className="w-12 h-12 mx-auto mb-4 text-gray-400" />
+                  <p className="text-lg text-gray-300 mb-2">
+                    Drag and drop your contract here
+                  </p>
+                  <p className="text-sm text-gray-500 mb-4">or</p>
+                  <label htmlFor="file-upload">
+                    <Button variant="outline" className="cursor-pointer border-blue-500/30 text-blue-300" asChild>
+                      <span>
+                        <FileText className="w-4 h-4 mr-2" />
+                        Browse Files
+                      </span>
+                    </Button>
+                    <input
+                      id="file-upload"
+                      type="file"
+                      className="hidden"
+                      accept=".pdf,.doc,.docx"
+                      onChange={handleFileChange}
+                    />
+                  </label>
+                  <p className="text-xs text-gray-500 mt-4">
+                    Accepted formats: PDF, DOC, DOCX (Max 10MB)
+                  </p>
+                </div>
+              ) : (
+                <div className="space-y-4">
+                  <div className="flex items-center justify-between p-4 bg-slate-800/50 rounded-lg border border-blue-500/20">
+                    <div className="flex items-center gap-3">
+                      <FileCheck className="w-8 h-8 text-green-400" />
+                      <div>
+                        <p className="text-white font-medium">{uploadedFile.name}</p>
+                        <p className="text-sm text-gray-400">
+                          {(uploadedFile.size / 1024 / 1024).toFixed(2)} MB
+                        </p>
+                      </div>
+                    </div>
+                    {!uploading && (
+                      <Button
+                        variant="ghost"
+                        size="sm"
+                        onClick={() => setUploadedFile(null)}
+                        className="text-gray-400 hover:text-white"
+                      >
+                        <X className="w-4 h-4" />
+                      </Button>
+                    )}
+                  </div>
+
+                  {uploading && (
+                    <div className="space-y-2">
+                      <div className="flex justify-between text-sm">
+                        <span className="text-gray-400">Uploading...</span>
+                        <span className="text-blue-400">{uploadProgress}%</span>
+                      </div>
+                      <Progress value={uploadProgress} className="h-2" />
+                    </div>
+                  )}
+
+                  <div className="bg-blue-500/10 border border-blue-500/20 rounded-lg p-4">
+                    <h4 className="text-white font-medium mb-2 flex items-center gap-2">
+                      <Shield className="w-4 h-4 text-blue-400" />
+                      What Happens Next?
+                    </h4>
+                    <ul className="space-y-2 text-sm text-gray-300">
+                      <li className="flex items-start gap-2">
+                        <CheckCircle2 className="w-4 h-4 text-green-400 mt-0.5 flex-shrink-0" />
+                        <span>AI analyst evaluates your contract against 35 issues across 10 provisions</span>
+                      </li>
+                      <li className="flex items-start gap-2">
+                        <CheckCircle2 className="w-4 h-4 text-green-400 mt-0.5 flex-shrink-0" />
+                        <span>Receive comprehensive reports (Quick Look, Scorecard, Negotiation Guide)</span>
+                      </li>
+                      <li className="flex items-start gap-2">
+                        <CheckCircle2 className="w-4 h-4 text-green-400 mt-0.5 flex-shrink-0" />
+                        <span>Analysis typically completed within 24-48 hours</span>
+                      </li>
+                      <li className="flex items-start gap-2">
+                        <CheckCircle2 className="w-4 h-4 text-green-400 mt-0.5 flex-shrink-0" />
+                        <span>Email notification when reports are ready for download</span>
+                      </li>
+                    </ul>
+                  </div>
+
+                  <div className="flex gap-3">
+                    <Button
+                      className="flex-1 bg-gradient-to-r from-blue-600 to-cyan-600 hover:from-blue-700 hover:to-cyan-700"
+                      onClick={handleUpload}
+                      disabled={uploading}
+                    >
+                      {uploading ? (
+                        <>
+                          <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white mr-2" />
+                          Uploading...
+                        </>
+                      ) : (
+                        <>
+                          <Upload className="w-4 h-4 mr-2" />
+                          Upload & Analyze
+                        </>
+                      )}
+                    </Button>
+                    {!uploading && (
+                      <Button
+                        variant="outline"
+                        className="border-gray-600 text-gray-300"
+                        onClick={() => {
+                          setShowUploadModal(false);
+                          setUploadedFile(null);
+                        }}
+                      >
+                        Cancel
+                      </Button>
+                    )}
+                  </div>
+                </div>
+              )}
+            </div>
+          </DialogContent>
+        </Dialog>
 
         <SiteFooter />
       </div>

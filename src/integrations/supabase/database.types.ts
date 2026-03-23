@@ -1,4 +1,4 @@
- 
+/* eslint-disable @typescript-eslint/no-empty-object-type */
 export type Json =
   | string
   | number
@@ -460,6 +460,42 @@ export type Database = {
           },
         ]
       }
+      comparison_sessions: {
+        Row: {
+          accessed_at: string | null
+          comparison_results: Json | null
+          contract_ids: string[]
+          cost_variance: number | null
+          created_at: string | null
+          id: string
+          key_findings: string[] | null
+          session_name: string | null
+          user_id: string | null
+        }
+        Insert: {
+          accessed_at?: string | null
+          comparison_results?: Json | null
+          contract_ids: string[]
+          cost_variance?: number | null
+          created_at?: string | null
+          id?: string
+          key_findings?: string[] | null
+          session_name?: string | null
+          user_id?: string | null
+        }
+        Update: {
+          accessed_at?: string | null
+          comparison_results?: Json | null
+          contract_ids?: string[]
+          cost_variance?: number | null
+          created_at?: string | null
+          id?: string
+          key_findings?: string[] | null
+          session_name?: string | null
+          user_id?: string | null
+        }
+        Relationships: []
+      }
       compliance_certifications: {
         Row: {
           auditor_name: string | null
@@ -518,6 +554,89 @@ export type Database = {
             columns: ["organization_id"]
             isOneToOne: false
             referencedRelation: "organizations"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      contract_analytics: {
+        Row: {
+          avg_cost_estimate: number | null
+          avg_score: number | null
+          common_red_flags: string[] | null
+          high_risk_count: number | null
+          id: string
+          last_updated: string | null
+          pbm_name: string
+          total_contracts: number | null
+        }
+        Insert: {
+          avg_cost_estimate?: number | null
+          avg_score?: number | null
+          common_red_flags?: string[] | null
+          high_risk_count?: number | null
+          id?: string
+          last_updated?: string | null
+          pbm_name: string
+          total_contracts?: number | null
+        }
+        Update: {
+          avg_cost_estimate?: number | null
+          avg_score?: number | null
+          common_red_flags?: string[] | null
+          high_risk_count?: number | null
+          id?: string
+          last_updated?: string | null
+          pbm_name?: string
+          total_contracts?: number | null
+        }
+        Relationships: []
+      }
+      contract_provisions: {
+        Row: {
+          analysis: string | null
+          contract_id: string
+          cost_impact: number | null
+          created_at: string | null
+          extracted_text: string | null
+          id: string
+          provision_name: string
+          provision_type: string
+          recommendations: string | null
+          risk_flag: string | null
+          score: number | null
+        }
+        Insert: {
+          analysis?: string | null
+          contract_id: string
+          cost_impact?: number | null
+          created_at?: string | null
+          extracted_text?: string | null
+          id?: string
+          provision_name: string
+          provision_type: string
+          recommendations?: string | null
+          risk_flag?: string | null
+          score?: number | null
+        }
+        Update: {
+          analysis?: string | null
+          contract_id?: string
+          cost_impact?: number | null
+          created_at?: string | null
+          extracted_text?: string | null
+          id?: string
+          provision_name?: string
+          provision_type?: string
+          recommendations?: string | null
+          risk_flag?: string | null
+          score?: number | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "contract_provisions_contract_id_fkey"
+            columns: ["contract_id"]
+            isOneToOne: false
+            referencedRelation: "pbm_contracts"
             referencedColumns: ["id"]
           },
         ]
@@ -937,6 +1056,69 @@ export type Database = {
           slug?: string
           trial_ends_at?: string | null
           updated_at?: string | null
+        }
+        Relationships: []
+      }
+      pbm_contracts: {
+        Row: {
+          annual_cost_estimate: number | null
+          contract_name: string
+          contract_type: string
+          created_at: string | null
+          effective_date: string
+          expiration_date: string | null
+          file_url: string | null
+          id: string
+          metadata: Json | null
+          overall_score: number | null
+          pbm_name: string
+          plan_size: string | null
+          red_flags: number | null
+          risk_level: string | null
+          total_provisions: number | null
+          updated_at: string | null
+          uploaded_at: string | null
+          uploaded_by: string | null
+        }
+        Insert: {
+          annual_cost_estimate?: number | null
+          contract_name: string
+          contract_type: string
+          created_at?: string | null
+          effective_date: string
+          expiration_date?: string | null
+          file_url?: string | null
+          id?: string
+          metadata?: Json | null
+          overall_score?: number | null
+          pbm_name: string
+          plan_size?: string | null
+          red_flags?: number | null
+          risk_level?: string | null
+          total_provisions?: number | null
+          updated_at?: string | null
+          uploaded_at?: string | null
+          uploaded_by?: string | null
+        }
+        Update: {
+          annual_cost_estimate?: number | null
+          contract_name?: string
+          contract_type?: string
+          created_at?: string | null
+          effective_date?: string
+          expiration_date?: string | null
+          file_url?: string | null
+          id?: string
+          metadata?: Json | null
+          overall_score?: number | null
+          pbm_name?: string
+          plan_size?: string | null
+          red_flags?: number | null
+          risk_level?: string | null
+          total_provisions?: number | null
+          updated_at?: string | null
+          uploaded_at?: string | null
+          uploaded_by?: string | null
         }
         Relationships: []
       }

@@ -246,6 +246,14 @@ export default function Nav() {
               )}
             </div>
 
+            {/* Enterprise Portal Link */}
+            <Link
+              href="/enterprise/dashboard"
+              className="px-4 py-2 text-gray-300 hover:text-white transition-colors rounded-lg hover:bg-white/5 flex items-center gap-2"
+            >
+              <span>Enterprise</span>
+            </Link>
+
             {/* Request Demo Button */}
             <Link
               href="/request-demo"

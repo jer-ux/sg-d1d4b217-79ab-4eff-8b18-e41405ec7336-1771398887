@@ -15,7 +15,7 @@ import { Badge } from "@/components/ui/badge";
 import { Building2, ChevronDown, Shield, Settings, LogOut, Users, Key, Bell, Activity } from "lucide-react";
 import { authService, type AuthUser } from "@/services/authService";
 import { organizationService } from "@/services/organizationService";
-import { CommandPalette } from "@/components/CommandPalette";
+import CommandPalette from "@/components/CommandPalette";
 
 export function EnterpriseHeader() {
   const router = useRouter();

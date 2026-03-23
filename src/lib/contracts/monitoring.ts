@@ -36,7 +36,10 @@ export async function checkRenewalDates() {
   const today = new Date();
 
   contracts?.forEach((contract) => {
-    const renewalDate = new Date(contract.metadata.renewal_date);
+    const metadata = contract.metadata as any;
+    if (!metadata?.renewal_date) return;
+    
+    const renewalDate = new Date(metadata.renewal_date);
     const daysUntilRenewal = differenceInDays(renewalDate, today);
 
     // Alert at 90, 60, 30, and 7 days
@@ -203,6 +206,7 @@ export async function scheduleMonitoring() {
     if (renewalAlerts.length > 0) {
       await supabase.from("contract_alerts").insert(
         renewalAlerts.map(alert => ({
+          id: alert.id,
           contract_id: alert.contractId,
           type: alert.type,
           severity: alert.severity,

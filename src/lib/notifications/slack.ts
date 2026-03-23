@@ -159,3 +159,37 @@ export async function notifyMention(data: {
     severity: "info"
   });
 }
+
+/**
+ * Notify about renewal due date
+ */
+export async function notifySlackRenewalDue(data: {
+  contractId: string;
+  contractName: string;
+  daysUntilRenewal: number;
+}) {
+  const severity = data.daysUntilRenewal <= 30 ? "critical" : data.daysUntilRenewal <= 60 ? "warning" : "info";
+  
+  return sendSlackNotification({
+    channel: "#contract-alerts",
+    message: `*⏰ Contract Renewal Alert: ${data.contractName}*\n\nThis contract is due for renewal in *${data.daysUntilRenewal} days*.\n\n<https://siriusb.ai/contract-analysis/${data.contractId}|Review Contract>`,
+    contractId: data.contractId,
+    severity
+  });
+}
+
+/**
+ * Notify about clause change
+ */
+export async function notifySlackClauseChange(data: {
+  contractId: string;
+  clause: string;
+  change: string;
+}) {
+  return sendSlackNotification({
+    channel: "#contract-alerts",
+    message: `*⚠️ Clause Change Detected*\n\n*Clause:* ${data.clause}\n\n*Details:*\n${data.change}\n\n<https://siriusb.ai/contract-analysis/${data.contractId}|Review Changes>`,
+    contractId: data.contractId,
+    severity: "warning"
+  });
+}

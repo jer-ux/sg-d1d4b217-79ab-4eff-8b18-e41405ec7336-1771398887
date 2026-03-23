@@ -65,7 +65,7 @@ export function PDFViewerWithHighlights({
         page: 1, // TODO: Detect actual page from text position
         text: flag.title,
         type: "redFlag",
-        severity: flag.severity,
+        severity: flag.severity as "Low" | "Medium" | "High" | "Critical",
         title: flag.title,
         description: flag.description
       };

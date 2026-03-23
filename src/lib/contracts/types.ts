@@ -58,18 +58,21 @@ export interface ProvisionAnalysis {
   riskLevel: 'Low' | 'Medium' | 'High' | 'Critical';
   estimatedImpact: number;
   impact?: string;
+  benchmark?: string;
   recommendation: string;
   extractedText?: string;
   pageReferences?: number[];
+  pageReference?: number;
 }
 
 export interface RedFlag {
   title: string;
   description: string;
-  severity: 'Low' | 'Medium' | 'High' | 'Critical';
+  severity: string;
   provision: string;
   estimatedImpact: number;
-  estimatedCost?: string;
+  estimatedCost?: number;
+  location?: string;
   recommendation: string;
   pageReference?: number;
 }

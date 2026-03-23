@@ -1,217 +1,191 @@
-import { useState } from "react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import {
+import { Button } from "@/components/ui/button";
+import { Switch } from "@/components/ui/switch";
+import { 
+  Slack, 
+  Webhook, 
+  Code, 
+  Mail,
+  Calendar,
+  FileText,
   Database,
-  Cloud,
-  Workflow,
-  Zap,
-  CheckCircle2,
-  Settings,
-  ExternalLink,
-  Key,
-  RefreshCw
+  Zap
 } from "lucide-react";
 
-interface Integration {
-  id: string;
-  name: string;
-  description: string;
-  icon: any;
-  status: "connected" | "available" | "coming_soon";
-  category: string;
-  lastSync?: string;
-}
-
 export function EnterpriseIntegrations() {
-  const [integrations] = useState<Integration[]>([
-    {
-      id: "snowflake",
-      name: "Snowflake",
-      description: "Cloud data warehouse for analytics and data science",
-      icon: Database,
-      status: "connected",
-      category: "Data Warehouse",
-      lastSync: "2 minutes ago"
+  const integrations = [
+    { 
+      name: 'Slack', 
+      icon: <Slack className="h-6 w-6" />, 
+      description: 'Real-time notifications for contract analysis', 
+      enabled: true,
+      status: 'Connected',
+      category: 'Communication'
     },
-    {
-      id: "databricks",
-      name: "Databricks",
-      description: "Unified analytics platform for big data and AI",
-      icon: Zap,
-      status: "connected",
-      category: "Data Lakehouse",
-      lastSync: "5 minutes ago"
+    { 
+      name: 'Microsoft Teams', 
+      icon: <Mail className="h-6 w-6" />, 
+      description: 'Send alerts to Teams channels', 
+      enabled: true,
+      status: 'Connected',
+      category: 'Communication'
     },
-    {
-      id: "servicenow",
-      name: "ServiceNow",
-      description: "IT service management and workflow automation",
-      icon: Workflow,
-      status: "available",
-      category: "ITSM"
+    { 
+      name: 'Webhooks', 
+      icon: <Webhook className="h-6 w-6" />, 
+      description: 'Custom HTTP callbacks for events', 
+      enabled: true,
+      status: '3 Active',
+      category: 'Developer'
     },
-    {
-      id: "salesforce",
-      name: "Salesforce",
-      description: "Customer relationship management platform",
-      icon: Cloud,
-      status: "available",
-      category: "CRM"
+    { 
+      name: 'REST API', 
+      icon: <Code className="h-6 w-6" />, 
+      description: 'Full API access for custom integrations', 
+      enabled: true,
+      status: 'Active',
+      category: 'Developer'
     },
-    {
-      id: "workday",
-      name: "Workday",
-      description: "Enterprise resource planning and HCM",
-      icon: Database,
-      status: "coming_soon",
-      category: "ERP"
+    { 
+      name: 'Email Notifications', 
+      icon: <Mail className="h-6 w-6" />, 
+      description: 'Automated email alerts and reports', 
+      enabled: true,
+      status: 'Active',
+      category: 'Communication'
     },
-    {
-      id: "sap",
-      name: "SAP S/4HANA",
-      description: "Enterprise resource planning system",
-      icon: Database,
-      status: "coming_soon",
-      category: "ERP"
-    }
-  ]);
-
-  const getStatusBadge = (status: string) => {
-    switch (status) {
-      case "connected":
-        return <Badge className="bg-green-500 text-white gap-1"><CheckCircle2 className="h-3 w-3" />Connected</Badge>;
-      case "available":
-        return <Badge variant="secondary">Available</Badge>;
-      case "coming_soon":
-        return <Badge variant="outline">Coming Soon</Badge>;
-      default:
-        return null;
-    }
-  };
-
-  const categories = ["All", "Data Warehouse", "Data Lakehouse", "ITSM", "CRM", "ERP"];
-  const [selectedCategory, setSelectedCategory] = useState("All");
-
-  const filteredIntegrations = selectedCategory === "All" 
-    ? integrations 
-    : integrations.filter(i => i.category === selectedCategory);
+    { 
+      name: 'Salesforce CRM', 
+      icon: <Database className="h-6 w-6" />, 
+      description: 'Sync contracts to Salesforce', 
+      enabled: false,
+      status: 'Available',
+      category: 'CRM'
+    },
+    { 
+      name: 'DocuSign', 
+      icon: <FileText className="h-6 w-6" />, 
+      description: 'Send contracts for e-signature', 
+      enabled: false,
+      status: 'Available',
+      category: 'Documents'
+    },
+    { 
+      name: 'SharePoint', 
+      icon: <Database className="h-6 w-6" />, 
+      description: 'Store contracts in SharePoint', 
+      enabled: false,
+      status: 'Available',
+      category: 'Storage'
+    },
+  ];
 
   return (
     <div className="space-y-6">
-      <div className="flex justify-between items-center">
+      <div className="flex items-center justify-between">
         <div>
-          <h2 className="text-2xl font-bold">Enterprise Integrations</h2>
-          <p className="text-muted-foreground">Connect your enterprise systems and data sources</p>
+          <h3 className="text-2xl font-bold">Integrations</h3>
+          <p className="text-gray-500">Connect with your enterprise tools</p>
         </div>
-        <Button className="gap-2">
-          <Key className="h-4 w-4" />
-          API Documentation
+        <Button className="bg-blue-600 hover:bg-blue-700">
+          <Zap className="h-4 w-4 mr-2" />
+          Browse Marketplace
         </Button>
       </div>
 
-      {/* Category Filter */}
-      <div className="flex gap-2 flex-wrap">
-        {categories.map((category) => (
-          <Button
-            key={category}
-            variant={selectedCategory === category ? "default" : "outline"}
-            onClick={() => setSelectedCategory(category)}
-            size="sm"
-          >
-            {category}
-          </Button>
-        ))}
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <Card>
+          <CardHeader className="pb-2">
+            <CardTitle className="text-sm text-gray-600">Active Integrations</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="text-3xl font-bold">5</div>
+            <p className="text-xs text-gray-500 mt-1">Connected services</p>
+          </CardContent>
+        </Card>
+
+        <Card>
+          <CardHeader className="pb-2">
+            <CardTitle className="text-sm text-gray-600">Webhook Events</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="text-3xl font-bold">1,247</div>
+            <p className="text-xs text-gray-500 mt-1">Last 30 days</p>
+          </CardContent>
+        </Card>
+
+        <Card>
+          <CardHeader className="pb-2">
+            <CardTitle className="text-sm text-gray-600">API Calls</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="text-3xl font-bold">24.5K</div>
+            <p className="text-xs text-gray-500 mt-1">This month</p>
+          </CardContent>
+        </Card>
       </div>
 
-      {/* Integrations Grid */}
-      <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-        {filteredIntegrations.map((integration) => {
-          const Icon = integration.icon;
-          return (
-            <Card key={integration.id} className="hover:shadow-lg transition-shadow">
-              <CardHeader>
-                <div className="flex items-start justify-between">
-                  <div className="flex items-center gap-3">
-                    <div className="h-12 w-12 rounded-lg bg-primary/10 flex items-center justify-center">
-                      <Icon className="h-6 w-6 text-primary" />
-                    </div>
-                    <div>
-                      <CardTitle className="text-lg">{integration.name}</CardTitle>
-                      <Badge variant="secondary" className="mt-1 text-xs">
-                        {integration.category}
-                      </Badge>
-                    </div>
-                  </div>
-                  {getStatusBadge(integration.status)}
-                </div>
-              </CardHeader>
-              <CardContent className="space-y-4">
-                <CardDescription>{integration.description}</CardDescription>
-                
-                {integration.status === "connected" && integration.lastSync && (
-                  <div className="flex items-center gap-2 text-xs text-muted-foreground">
-                    <RefreshCw className="h-3 w-3" />
-                    Last synced {integration.lastSync}
-                  </div>
-                )}
-
-                <div className="flex gap-2">
-                  {integration.status === "connected" ? (
-                    <>
-                      <Button variant="outline" size="sm" className="flex-1 gap-2">
-                        <Settings className="h-3 w-3" />
-                        Configure
-                      </Button>
-                      <Button variant="outline" size="sm" className="flex-1 gap-2">
-                        <ExternalLink className="h-3 w-3" />
-                        View Logs
-                      </Button>
-                    </>
-                  ) : integration.status === "available" ? (
-                    <Button className="w-full" size="sm">
-                      Connect
-                    </Button>
-                  ) : (
-                    <Button className="w-full" size="sm" disabled>
-                      Coming Soon
-                    </Button>
-                  )}
-                </div>
-              </CardContent>
-            </Card>
-          );
-        })}
-      </div>
-
-      {/* Custom Integration Section */}
       <Card>
         <CardHeader>
-          <CardTitle>Custom Integration</CardTitle>
-          <CardDescription>
-            Need a custom integration? Our enterprise team can help you connect any system.
-          </CardDescription>
+          <CardTitle>Available Integrations</CardTitle>
+          <CardDescription>Connect your enterprise tools and workflows</CardDescription>
+        </CardHeader>
+        <CardContent>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            {integrations.map((integration) => (
+              <div 
+                key={integration.name} 
+                className="flex items-center justify-between p-4 border rounded-lg hover:shadow-md transition-shadow"
+              >
+                <div className="flex items-center gap-4">
+                  <div className={`p-2 rounded-lg ${integration.enabled ? 'bg-blue-100' : 'bg-gray-100'}`}>
+                    {integration.icon}
+                  </div>
+                  <div>
+                    <div className="font-medium">{integration.name}</div>
+                    <div className="text-sm text-gray-500">{integration.description}</div>
+                    <Badge variant="outline" className="mt-1 text-xs">
+                      {integration.category}
+                    </Badge>
+                  </div>
+                </div>
+                <div className="flex items-center gap-4">
+                  <Badge 
+                    variant={integration.enabled ? 'default' : 'outline'}
+                    className={integration.enabled ? 'bg-green-600' : ''}
+                  >
+                    {integration.status}
+                  </Badge>
+                  <Switch checked={integration.enabled} />
+                </div>
+              </div>
+            ))}
+          </div>
+        </CardContent>
+      </Card>
+
+      <Card>
+        <CardHeader>
+          <CardTitle>API Configuration</CardTitle>
+          <CardDescription>Manage API access and rate limits</CardDescription>
         </CardHeader>
         <CardContent className="space-y-4">
-          <div className="grid gap-4 md:grid-cols-2">
-            <div className="space-y-2">
-              <Label>Integration Name</Label>
-              <Input placeholder="e.g., Custom ERP System" />
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div className="p-4 border rounded-lg">
+              <div className="font-medium mb-2">Rate Limit</div>
+              <div className="text-2xl font-bold">10,000</div>
+              <div className="text-sm text-gray-500">requests per hour</div>
             </div>
-            <div className="space-y-2">
-              <Label>System Type</Label>
-              <Input placeholder="e.g., ERP, CRM, Data Warehouse" />
+            <div className="p-4 border rounded-lg">
+              <div className="font-medium mb-2">Usage This Month</div>
+              <div className="text-2xl font-bold">24,547</div>
+              <div className="text-sm text-gray-500">API calls</div>
             </div>
           </div>
-          <div className="space-y-2">
-            <Label>Description</Label>
-            <Input placeholder="Brief description of your integration requirements" />
-          </div>
-          <Button>
-            Request Custom Integration
+          <Button variant="outline" className="w-full">
+            <Code className="h-4 w-4 mr-2" />
+            View API Documentation
           </Button>
         </CardContent>
       </Card>

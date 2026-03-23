@@ -1,192 +1,101 @@
-import { useState, useEffect } from "react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
-import { 
-  UserPlus, 
-  Search, 
-  MoreVertical, 
-  Shield,
-  Mail,
-  Calendar,
-  Filter
-} from "lucide-react";
-import { organizationService } from "@/services/organizationService";
-import { authService } from "@/services/authService";
-import { useToast } from "@/hooks/use-toast";
+import { Avatar, AvatarFallback } from "@/components/ui/avatar";
+import { UserPlus, Mail, Shield, Users } from "lucide-react";
 
 export function EnterpriseTeamManagement() {
-  const { toast } = useToast();
-  const [members, setMembers] = useState<any[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [searchTerm, setSearchTerm] = useState("");
-  const [roleFilter, setRoleFilter] = useState<string>("all");
-
-  useEffect(() => {
-    loadMembers();
-  }, []);
-
-  const loadMembers = async () => {
-    const user = await authService.getCurrentUser();
-    if (!user?.organization_id) return;
-
-    const data = await organizationService.getMembers(user.organization_id);
-    setMembers(data);
-    setLoading(false);
-  };
-
-  const getRoleBadgeColor = (role: string) => {
-    switch (role) {
-      case "owner": return "bg-purple-500 text-white";
-      case "admin": return "bg-blue-500 text-white";
-      case "member": return "bg-green-500 text-white";
-      default: return "bg-gray-500 text-white";
-    }
-  };
-
-  const filteredMembers = members.filter(member => {
-    const matchesSearch = member.profiles?.email?.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                         member.profiles?.full_name?.toLowerCase().includes(searchTerm.toLowerCase());
-    const matchesRole = roleFilter === "all" || member.role === roleFilter;
-    return matchesSearch && matchesRole;
-  });
+  const teamMembers = [
+    { name: 'John Smith', email: 'john@democorp.com', role: 'Admin', dept: 'Legal', status: 'active' },
+    { name: 'Sarah Johnson', email: 'sarah@democorp.com', role: 'Analyst', dept: 'Procurement', status: 'active' },
+    { name: 'Michael Chen', email: 'michael@democorp.com', role: 'Viewer', dept: 'Finance', status: 'active' },
+    { name: 'Emily Davis', email: 'emily@democorp.com', role: 'Analyst', dept: 'Risk Management', status: 'invited' },
+  ];
 
   return (
     <div className="space-y-6">
-      <div className="flex justify-between items-center">
+      <div className="flex items-center justify-between">
         <div>
-          <h2 className="text-2xl font-bold">Team Management</h2>
-          <p className="text-muted-foreground">Manage your organization members and permissions</p>
+          <h3 className="text-2xl font-bold">Team Members</h3>
+          <p className="text-gray-500">Manage user access and permissions</p>
         </div>
-        <Button className="gap-2">
-          <UserPlus className="h-4 w-4" />
+        <Button className="bg-blue-600 hover:bg-blue-700">
+          <UserPlus className="h-4 w-4 mr-2" />
           Invite Member
         </Button>
       </div>
 
-      {/* Filters */}
       <Card>
-        <CardContent className="pt-6">
-          <div className="flex gap-4">
-            <div className="relative flex-1">
-              <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-              <Input
-                placeholder="Search by name or email..."
-                className="pl-10"
-                value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)}
-              />
-            </div>
-            <Select value={roleFilter} onValueChange={setRoleFilter}>
-              <SelectTrigger className="w-[180px]">
-                <Filter className="h-4 w-4 mr-2" />
-                <SelectValue placeholder="Filter by role" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="all">All Roles</SelectItem>
-                <SelectItem value="owner">Owner</SelectItem>
-                <SelectItem value="admin">Admin</SelectItem>
-                <SelectItem value="member">Member</SelectItem>
-                <SelectItem value="viewer">Viewer</SelectItem>
-              </SelectContent>
-            </Select>
+        <CardHeader>
+          <CardTitle>Active Users</CardTitle>
+          <CardDescription>24 active users across 4 departments</CardDescription>
+        </CardHeader>
+        <CardContent>
+          <div className="space-y-4">
+            {teamMembers.map((member) => (
+              <div key={member.email} className="flex items-center justify-between p-4 border rounded-lg hover:bg-gray-50 transition-colors">
+                <div className="flex items-center gap-4">
+                  <Avatar>
+                    <AvatarFallback>{member.name.split(' ').map(n => n[0]).join('')}</AvatarFallback>
+                  </Avatar>
+                  <div>
+                    <div className="font-medium">{member.name}</div>
+                    <div className="text-sm text-gray-500 flex items-center gap-2">
+                      <Mail className="h-3 w-3" />
+                      {member.email}
+                    </div>
+                  </div>
+                </div>
+                <div className="flex items-center gap-4">
+                  <Badge variant="outline">{member.dept}</Badge>
+                  <Badge variant={member.role === 'Admin' ? 'default' : 'secondary'}>
+                    <Shield className="h-3 w-3 mr-1" />
+                    {member.role}
+                  </Badge>
+                  <Badge 
+                    variant={member.status === 'active' ? 'default' : 'outline'}
+                    className={member.status === 'active' ? 'bg-green-600' : ''}
+                  >
+                    {member.status}
+                  </Badge>
+                </div>
+              </div>
+            ))}
           </div>
         </CardContent>
       </Card>
 
-      {/* Members Table */}
-      <Card>
-        <CardHeader>
-          <CardTitle>Organization Members ({filteredMembers.length})</CardTitle>
-          <CardDescription>
-            Manage roles and permissions for your team
-          </CardDescription>
-        </CardHeader>
-        <CardContent>
-          <Table>
-            <TableHeader>
-              <TableRow>
-                <TableHead>Member</TableHead>
-                <TableHead>Role</TableHead>
-                <TableHead>Joined</TableHead>
-                <TableHead>Last Active</TableHead>
-                <TableHead className="text-right">Actions</TableHead>
-              </TableRow>
-            </TableHeader>
-            <TableBody>
-              {loading ? (
-                <TableRow>
-                  <TableCell colSpan={5} className="text-center py-8">
-                    <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary mx-auto"></div>
-                  </TableCell>
-                </TableRow>
-              ) : filteredMembers.length === 0 ? (
-                <TableRow>
-                  <TableCell colSpan={5} className="text-center py-8 text-muted-foreground">
-                    No members found
-                  </TableCell>
-                </TableRow>
-              ) : (
-                filteredMembers.map((member) => (
-                  <TableRow key={member.id}>
-                    <TableCell>
-                      <div className="flex items-center gap-3">
-                        <Avatar>
-                          <AvatarImage src={member.profiles?.avatar_url} />
-                          <AvatarFallback>
-                            {member.profiles?.email?.charAt(0).toUpperCase()}
-                          </AvatarFallback>
-                        </Avatar>
-                        <div>
-                          <div className="font-medium">
-                            {member.profiles?.full_name || "Unknown"}
-                          </div>
-                          <div className="text-sm text-muted-foreground flex items-center gap-1">
-                            <Mail className="h-3 w-3" />
-                            {member.profiles?.email}
-                          </div>
-                        </div>
-                      </div>
-                    </TableCell>
-                    <TableCell>
-                      <Badge className={getRoleBadgeColor(member.role)}>
-                        <Shield className="h-3 w-3 mr-1" />
-                        {member.role}
-                      </Badge>
-                    </TableCell>
-                    <TableCell>
-                      <div className="flex items-center gap-1 text-sm text-muted-foreground">
-                        <Calendar className="h-3 w-3" />
-                        {new Date(member.created_at).toLocaleDateString()}
-                      </div>
-                    </TableCell>
-                    <TableCell className="text-sm text-muted-foreground">
-                      {member.profiles?.last_login_at 
-                        ? new Date(member.profiles.last_login_at).toLocaleDateString()
-                        : "Never"}
-                    </TableCell>
-                    <TableCell className="text-right">
-                      <Button variant="ghost" size="icon">
-                        <MoreVertical className="h-4 w-4" />
-                      </Button>
-                    </TableCell>
-                  </TableRow>
-                ))
-              )}
-            </TableBody>
-          </Table>
-        </CardContent>
-      </Card>
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <Card>
+          <CardHeader>
+            <CardTitle className="text-sm">Admin Users</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="text-3xl font-bold">3</div>
+            <p className="text-xs text-gray-500 mt-1">Full system access</p>
+          </CardContent>
+        </Card>
+
+        <Card>
+          <CardHeader>
+            <CardTitle className="text-sm">Analysts</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="text-3xl font-bold">15</div>
+            <p className="text-xs text-gray-500 mt-1">Can analyze and report</p>
+          </CardContent>
+        </Card>
+
+        <Card>
+          <CardHeader>
+            <CardTitle className="text-sm">Viewers</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="text-3xl font-bold">6</div>
+            <p className="text-xs text-gray-500 mt-1">Read-only access</p>
+          </CardContent>
+        </Card>
+      </div>
     </div>
   );
 }

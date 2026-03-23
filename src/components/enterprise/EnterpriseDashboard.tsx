@@ -1,281 +1,237 @@
 import { useState, useEffect } from "react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
-import {
-  Activity,
-  Users,
-  Building2,
-  TrendingUp,
-  Shield,
-  Key,
-  Database,
-  Zap,
-  AlertTriangle,
-  CheckCircle2,
-  Clock,
+import { Progress } from "@/components/ui/progress";
+import { 
+  TrendingUp, 
+  Users, 
+  FileText, 
+  AlertTriangle, 
   DollarSign,
-  BarChart3,
-  FileText,
-  Settings
+  Activity,
+  CheckCircle2,
+  Clock
 } from "lucide-react";
-import { authService } from "@/services/authService";
-import { organizationService } from "@/services/organizationService";
-import { auditService } from "@/services/auditService";
-import { EnterpriseAnalytics } from "./EnterpriseAnalytics";
-import { EnterpriseTeamManagement } from "./EnterpriseTeamManagement";
-import { EnterpriseCompliance } from "./EnterpriseCompliance";
-import { EnterpriseSecurityCenter } from "./EnterpriseSecurityCenter";
-import { EnterpriseBilling } from "./EnterpriseBilling";
-import { EnterpriseIntegrations } from "./EnterpriseIntegrations";
-import { EnterpriseReporting } from "./EnterpriseReporting";
+import { supabase } from "@/integrations/supabase/client";
 
 interface DashboardMetrics {
-  users: { total: number; active: number; trend: number };
-  apiCalls: { total: number; today: number; trend: number };
-  storage: { used: number; total: number; trend: number };
-  incidents: { open: number; resolved: number; critical: number };
+  totalContracts: number;
+  activeUsers: number;
+  avgScore: number;
+  totalSavings: number;
+  riskDistribution: { low: number; medium: number; high: number; critical: number };
+  recentActivity: Array<{ id: string; type: string; timestamp: string; user: string }>;
 }
 
 export function EnterpriseDashboard() {
   const [metrics, setMetrics] = useState<DashboardMetrics>({
-    users: { total: 0, active: 0, trend: 0 },
-    apiCalls: { total: 0, today: 0, trend: 0 },
-    storage: { used: 0, total: 100, trend: 0 },
-    incidents: { open: 0, resolved: 0, critical: 0 }
+    totalContracts: 0,
+    activeUsers: 0,
+    avgScore: 0,
+    totalSavings: 0,
+    riskDistribution: { low: 0, medium: 0, high: 0, critical: 0 },
+    recentActivity: []
   });
-  const [recentActivity, setRecentActivity] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    loadDashboardData();
+    loadDashboardMetrics();
   }, []);
 
-  const loadDashboardData = async () => {
+  const loadDashboardMetrics = async () => {
     try {
-      const user = await authService.getCurrentUser();
-      if (!user?.organization_id) return;
+      // Load contracts
+      const { data: contracts } = await supabase
+        .from('contract_analysis_results')
+        .select('overall_score, potential_savings, risk_level');
 
-      // Load audit logs
-      const logs = await auditService.getAuditLogs({
-        organizationId: user.organization_id,
-        limit: 10
-      });
-      setRecentActivity(logs);
+      if (contracts) {
+        const totalContracts = contracts.length;
+        const avgScore = contracts.reduce((acc, c) => acc + (c.overall_score || 0), 0) / totalContracts || 0;
+        const totalSavings = contracts.reduce((acc, c) => acc + (c.potential_savings || 0), 0);
 
-      // Mock metrics (would come from actual usage tracking in production)
-      setMetrics({
-        users: { total: 142, active: 89, trend: 12 },
-        apiCalls: { total: 1847293, today: 45829, trend: 8 },
-        storage: { used: 67.5, total: 100, trend: 5 },
-        incidents: { open: 3, resolved: 28, critical: 1 }
-      });
+        const riskDistribution = {
+          low: contracts.filter(c => c.risk_level === 'Low').length,
+          medium: contracts.filter(c => c.risk_level === 'Medium').length,
+          high: contracts.filter(c => c.risk_level === 'High').length,
+          critical: contracts.filter(c => c.risk_level === 'Critical').length,
+        };
 
-      setLoading(false);
+        setMetrics({
+          totalContracts,
+          activeUsers: 24, // Mock data
+          avgScore: Math.round(avgScore),
+          totalSavings,
+          riskDistribution,
+          recentActivity: [] // Will be populated from audit logs
+        });
+      }
     } catch (error) {
-      console.error("Failed to load dashboard data:", error);
+      console.error('Failed to load metrics:', error);
+    } finally {
       setLoading(false);
     }
   };
 
-  const formatNumber = (num: number) => {
-    if (num >= 1000000) return `${(num / 1000000).toFixed(1)}M`;
-    if (num >= 1000) return `${(num / 1000).toFixed(1)}K`;
-    return num.toString();
-  };
-
-  const getActivityIcon = (action: string) => {
-    if (action.includes("login")) return <Users className="h-4 w-4" />;
-    if (action.includes("api")) return <Key className="h-4 w-4" />;
-    if (action.includes("data")) return <Database className="h-4 w-4" />;
-    return <Activity className="h-4 w-4" />;
-  };
-
-  const getTrendColor = (trend: number) => {
-    if (trend > 0) return "text-green-500";
-    if (trend < 0) return "text-red-500";
-    return "text-gray-500";
-  };
-
   if (loading) {
-    return (
-      <div className="flex items-center justify-center h-96">
-        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary"></div>
-      </div>
-    );
+    return <div className="text-center py-12">Loading dashboard...</div>;
   }
 
   return (
-    <div className="space-y-8">
-      {/* Hero Stats */}
-      <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
-        <Card className="hover:shadow-lg transition-shadow">
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Total Users</CardTitle>
-            <Users className="h-4 w-4 text-muted-foreground" />
+    <div className="space-y-6">
+      {/* Key Metrics */}
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+        <Card>
+          <CardHeader className="flex flex-row items-center justify-between pb-2">
+            <CardTitle className="text-sm font-medium text-gray-600">Total Contracts</CardTitle>
+            <FileText className="h-4 w-4 text-blue-600" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">{metrics.users.total}</div>
-            <p className="text-xs text-muted-foreground">
-              <span className={getTrendColor(metrics.users.trend)}>
-                {metrics.users.trend > 0 ? "+" : ""}{metrics.users.trend}%
-              </span>
-              {" "}from last month
+            <div className="text-3xl font-bold">{metrics.totalContracts}</div>
+            <p className="text-xs text-gray-500 mt-1">
+              <TrendingUp className="inline h-3 w-3 text-green-600 mr-1" />
+              +12% from last month
             </p>
-            <div className="mt-2">
-              <Badge variant="secondary">{metrics.users.active} active</Badge>
-            </div>
           </CardContent>
         </Card>
 
-        <Card className="hover:shadow-lg transition-shadow">
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">API Calls</CardTitle>
-            <Zap className="h-4 w-4 text-muted-foreground" />
+        <Card>
+          <CardHeader className="flex flex-row items-center justify-between pb-2">
+            <CardTitle className="text-sm font-medium text-gray-600">Active Users</CardTitle>
+            <Users className="h-4 w-4 text-green-600" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">{formatNumber(metrics.apiCalls.total)}</div>
-            <p className="text-xs text-muted-foreground">
-              <span className={getTrendColor(metrics.apiCalls.trend)}>
-                {metrics.apiCalls.trend > 0 ? "+" : ""}{metrics.apiCalls.trend}%
-              </span>
-              {" "}from last month
+            <div className="text-3xl font-bold">{metrics.activeUsers}</div>
+            <p className="text-xs text-gray-500 mt-1">
+              <Activity className="inline h-3 w-3 text-green-600 mr-1" />
+              8 online now
             </p>
-            <div className="mt-2">
-              <Badge variant="secondary">{formatNumber(metrics.apiCalls.today)} today</Badge>
-            </div>
           </CardContent>
         </Card>
 
-        <Card className="hover:shadow-lg transition-shadow">
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Storage Used</CardTitle>
-            <Database className="h-4 w-4 text-muted-foreground" />
+        <Card>
+          <CardHeader className="flex flex-row items-center justify-between pb-2">
+            <CardTitle className="text-sm font-medium text-gray-600">Avg Contract Score</CardTitle>
+            <CheckCircle2 className="h-4 w-4 text-purple-600" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">{metrics.storage.used}GB</div>
-            <p className="text-xs text-muted-foreground">
-              of {metrics.storage.total}GB available
-            </p>
-            <div className="mt-2 h-2 bg-gray-200 rounded-full overflow-hidden">
-              <div 
-                className="h-full bg-primary transition-all"
-                style={{ width: `${(metrics.storage.used / metrics.storage.total) * 100}%` }}
-              />
-            </div>
+            <div className="text-3xl font-bold">{metrics.avgScore}/100</div>
+            <Progress value={metrics.avgScore} className="mt-2" />
           </CardContent>
         </Card>
 
-        <Card className="hover:shadow-lg transition-shadow">
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Security</CardTitle>
-            <Shield className="h-4 w-4 text-muted-foreground" />
+        <Card>
+          <CardHeader className="flex flex-row items-center justify-between pb-2">
+            <CardTitle className="text-sm font-medium text-gray-600">Total Savings</CardTitle>
+            <DollarSign className="h-4 w-4 text-green-600" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">{metrics.incidents.open}</div>
-            <p className="text-xs text-muted-foreground">
-              {metrics.incidents.resolved} resolved this month
-            </p>
-            <div className="mt-2 flex gap-2">
-              {metrics.incidents.critical > 0 && (
-                <Badge variant="destructive">
-                  {metrics.incidents.critical} critical
-                </Badge>
-              )}
-              {metrics.incidents.critical === 0 && (
-                <Badge variant="secondary" className="bg-green-500 text-white">
-                  All clear
-                </Badge>
-              )}
+            <div className="text-3xl font-bold">
+              ${(metrics.totalSavings / 1000000).toFixed(1)}M
             </div>
+            <p className="text-xs text-gray-500 mt-1">Identified opportunities</p>
           </CardContent>
         </Card>
       </div>
 
-      {/* Main Content Tabs */}
-      <Tabs defaultValue="overview" className="space-y-6">
-        <TabsList className="grid w-full grid-cols-8">
-          <TabsTrigger value="overview">Overview</TabsTrigger>
-          <TabsTrigger value="analytics">Analytics</TabsTrigger>
-          <TabsTrigger value="team">Team</TabsTrigger>
-          <TabsTrigger value="security">Security</TabsTrigger>
-          <TabsTrigger value="compliance">Compliance</TabsTrigger>
-          <TabsTrigger value="billing">Billing</TabsTrigger>
-          <TabsTrigger value="integrations">Integrations</TabsTrigger>
-          <TabsTrigger value="reports">Reports</TabsTrigger>
-        </TabsList>
-
-        <TabsContent value="overview" className="space-y-4">
-          <Card>
-            <CardHeader>
-              <CardTitle>Recent Activity</CardTitle>
-              <CardDescription>
-                Latest actions across your organization
-              </CardDescription>
-            </CardHeader>
-            <CardContent>
-              <div className="space-y-4">
-                {recentActivity.map((activity) => (
-                  <div
-                    key={activity.id}
-                    className="flex items-start gap-4 p-4 rounded-lg border hover:bg-accent transition-colors"
-                  >
-                    <div className="mt-1">{getActivityIcon(activity.action || "")}</div>
-                    <div className="flex-1 space-y-1">
-                      <div className="flex items-center justify-between">
-                        <p className="text-sm font-medium">{activity.action}</p>
-                        <Badge variant="outline" className="text-xs">
-                          {activity.resource_type}
-                        </Badge>
-                      </div>
-                      <p className="text-xs text-muted-foreground">
-                        User: {activity.user_id?.substring(0, 8)}...
-                      </p>
-                      <p className="text-xs text-muted-foreground">
-                        {new Date(activity.created_at).toLocaleString()}
-                      </p>
-                    </div>
-                  </div>
-                ))}
-                {recentActivity.length === 0 && (
-                  <div className="text-center py-8 text-muted-foreground">
-                    No recent activity
-                  </div>
-                )}
+      {/* Risk Distribution */}
+      <Card>
+        <CardHeader>
+          <CardTitle>Risk Distribution</CardTitle>
+          <CardDescription>Contract risk levels across your portfolio</CardDescription>
+        </CardHeader>
+        <CardContent>
+          <div className="space-y-4">
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-2">
+                <Badge variant="outline" className="bg-green-50 text-green-700 border-green-200">
+                  Low Risk
+                </Badge>
+                <span className="text-sm text-gray-600">{metrics.riskDistribution.low} contracts</span>
               </div>
-            </CardContent>
-          </Card>
-        </TabsContent>
+              <Progress 
+                value={(metrics.riskDistribution.low / metrics.totalContracts) * 100} 
+                className="w-1/2"
+              />
+            </div>
 
-        <TabsContent value="analytics">
-          <EnterpriseAnalytics />
-        </TabsContent>
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-2">
+                <Badge variant="outline" className="bg-yellow-50 text-yellow-700 border-yellow-200">
+                  Medium Risk
+                </Badge>
+                <span className="text-sm text-gray-600">{metrics.riskDistribution.medium} contracts</span>
+              </div>
+              <Progress 
+                value={(metrics.riskDistribution.medium / metrics.totalContracts) * 100} 
+                className="w-1/2"
+              />
+            </div>
 
-        <TabsContent value="team">
-          <EnterpriseTeamManagement />
-        </TabsContent>
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-2">
+                <Badge variant="outline" className="bg-orange-50 text-orange-700 border-orange-200">
+                  High Risk
+                </Badge>
+                <span className="text-sm text-gray-600">{metrics.riskDistribution.high} contracts</span>
+              </div>
+              <Progress 
+                value={(metrics.riskDistribution.high / metrics.totalContracts) * 100} 
+                className="w-1/2"
+              />
+            </div>
 
-        <TabsContent value="security">
-          <EnterpriseSecurityCenter />
-        </TabsContent>
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-2">
+                <Badge variant="outline" className="bg-red-50 text-red-700 border-red-200">
+                  Critical Risk
+                </Badge>
+                <span className="text-sm text-gray-600">{metrics.riskDistribution.critical} contracts</span>
+              </div>
+              <Progress 
+                value={(metrics.riskDistribution.critical / metrics.totalContracts) * 100} 
+                className="w-1/2"
+              />
+            </div>
+          </div>
+        </CardContent>
+      </Card>
 
-        <TabsContent value="compliance">
-          <EnterpriseCompliance />
-        </TabsContent>
+      {/* System Health */}
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <Card>
+          <CardHeader>
+            <CardTitle className="text-sm">API Uptime</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="text-2xl font-bold text-green-600">99.98%</div>
+            <p className="text-xs text-gray-500 mt-1">Last 30 days</p>
+          </CardContent>
+        </Card>
 
-        <TabsContent value="billing">
-          <EnterpriseBilling />
-        </TabsContent>
+        <Card>
+          <CardHeader>
+            <CardTitle className="text-sm">Avg Response Time</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="text-2xl font-bold">142ms</div>
+            <p className="text-xs text-gray-500 mt-1">p95: 350ms</p>
+          </CardContent>
+        </Card>
 
-        <TabsContent value="integrations">
-          <EnterpriseIntegrations />
-        </TabsContent>
-
-        <TabsContent value="reports">
-          <EnterpriseReporting />
-        </TabsContent>
-      </Tabs>
+        <Card>
+          <CardHeader>
+            <CardTitle className="text-sm">Processing Queue</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="text-2xl font-bold flex items-center gap-2">
+              <Clock className="h-6 w-6 text-blue-600" />
+              2
+            </div>
+            <p className="text-xs text-gray-500 mt-1">Contracts in queue</p>
+          </CardContent>
+        </Card>
+      </div>
     </div>
   );
 }

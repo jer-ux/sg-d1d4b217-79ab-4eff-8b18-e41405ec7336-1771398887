@@ -33,14 +33,6 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       reply = "Here is the executive summary:\n\n1. **Overall Risk:** Medium-High\n2. **Financial Opportunity:** ~$1.2M in recoverable value\n3. **Key Weaknesses:** Restrictive audit rights, generic spread pricing, and aggressive termination penalties.\n\nWould you like me to draft an email summary to your Board detailing these points?";
     }
 
-    // Store the conversation in the database
-    await supabase.from('contract_ai_conversations').insert({
-      upload_id: contractId,
-      user_message: message,
-      ai_response: reply,
-      context_used: '{"provisions": true, "scoring": true}'
-    });
-
     return res.status(200).json({ 
       success: true, 
       response: reply 

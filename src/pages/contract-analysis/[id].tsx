@@ -557,8 +557,8 @@ export default function ContractAnalysisPage() {
           </Tabs>
         </main>
         
-        {contractId && analysis && (
-          <CopilotChat contractId={contractId} contractName={analysis.contract_name} />
+        {id && typeof id === 'string' && contract && analysis && (
+          <CopilotChat contractId={id} contractName={contract.file_name} />
         )}
 
         <SiteFooter />

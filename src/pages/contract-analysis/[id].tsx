@@ -29,6 +29,7 @@ import {
 import { supabase } from "@/integrations/supabase/client";
 import type { ContractAnalysisResult } from "@/lib/contracts/types";
 import { exportToPDF } from "@/lib/contracts/reportGenerator";
+import { CopilotChat } from "@/components/contracts/CopilotChat";
 
 export default function ContractAnalysisPage() {
   const router = useRouter();
@@ -555,6 +556,10 @@ export default function ContractAnalysisPage() {
             </TabsContent>
           </Tabs>
         </main>
+        
+        {contractId && analysis && (
+          <CopilotChat contractId={contractId} contractName={analysis.contract_name} />
+        )}
 
         <SiteFooter />
       </div>

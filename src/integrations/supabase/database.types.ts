@@ -648,6 +648,7 @@ export type Database = {
           contract_name: string
           contract_type: string | null
           created_at: string | null
+          detailed_analysis: Json | null
           effective_date: string | null
           expiration_date: string | null
           id: string
@@ -666,6 +667,7 @@ export type Database = {
           contract_name: string
           contract_type?: string | null
           created_at?: string | null
+          detailed_analysis?: Json | null
           effective_date?: string | null
           expiration_date?: string | null
           id?: string
@@ -684,6 +686,7 @@ export type Database = {
           contract_name?: string
           contract_type?: string | null
           created_at?: string | null
+          detailed_analysis?: Json | null
           effective_date?: string | null
           expiration_date?: string | null
           id?: string
@@ -1844,7 +1847,7 @@ export type Database = {
           id: string
           metadata: Json | null
           overall_score: number | null
-          pbm_name: string
+          pbm_name: string | null
           plan_size: string | null
           red_flags: number | null
           risk_level: string | null
@@ -1864,7 +1867,7 @@ export type Database = {
           id?: string
           metadata?: Json | null
           overall_score?: number | null
-          pbm_name: string
+          pbm_name?: string | null
           plan_size?: string | null
           red_flags?: number | null
           risk_level?: string | null
@@ -1884,7 +1887,7 @@ export type Database = {
           id?: string
           metadata?: Json | null
           overall_score?: number | null
-          pbm_name?: string
+          pbm_name?: string | null
           plan_size?: string | null
           red_flags?: number | null
           risk_level?: string | null

@@ -23,6 +23,32 @@ export interface ContractAnalysisResult {
   estimatedSavings: number;
   processingTime: number;
   analyzedAt: string;
+  aiModel?: string;
+  confidence?: number;
+}
+
+export interface ContractDocument {
+  id: string;
+  fileName: string;
+  fileType: string;
+  fileSize: number;
+  uploadDate: Date;
+}
+
+export interface ExtractionResult {
+  success: boolean;
+  text: string;
+  error?: string;
+  metadata: {
+    fileName: string;
+    fileSize: number;
+    fileType: string;
+    extractionMethod: string;
+    processingTimeMs: number;
+    wordCount: number;
+    characterCount: number;
+    pageCount: number;
+  };
 }
 
 export interface ProvisionAnalysis {

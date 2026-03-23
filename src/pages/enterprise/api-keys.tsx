@@ -12,9 +12,9 @@ import { supabase } from "@/integrations/supabase/client";
 
 interface ApiKey {
   id: string;
-  key_name: string;
-  key_value: string;
-  key_type: string;
+  name: string;
+  key_hash: string;
+  key_prefix: string;
   is_active: boolean;
   last_used_at: string | null;
   created_at: string;
@@ -32,7 +32,7 @@ export default function ApiKeysPage() {
   const loadApiKeys = async () => {
     try {
       const { data, error } = await supabase
-        .from('api_key_management')
+        .from('api_keys')
         .select('*')
         .order('created_at', { ascending: false });
 
@@ -63,12 +63,19 @@ export default function ApiKeysPage() {
     const newKey = 'sk_live_' + Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
 
     try {
+      const { data: orgData } = await supabase.from('organizations').select('id').limit(1).single();
+      const { data: authData } = await supabase.auth.getUser();
+      const orgId = orgData?.id || '00000000-0000-0000-0000-000000000000';
+      const userId = authData?.user?.id || '00000000-0000-0000-0000-000000000000';
+
       const { error } = await supabase
-        .from('api_key_management')
+        .from('api_keys')
         .insert({
-          key_name: keyName,
-          key_value: newKey,
-          key_type: 'api',
+          organization_id: orgId,
+          created_by: userId,
+          name: keyName,
+          key_hash: newKey,
+          key_prefix: 'sk_live_',
           is_active: true
         });
 
@@ -88,7 +95,7 @@ export default function ApiKeysPage() {
 
     try {
       const { error } = await supabase
-        .from('api_key_management')
+        .from('api_keys')
         .update({ is_active: false })
         .eq('id', keyId);
 
@@ -176,10 +183,10 @@ export default function ApiKeysPage() {
                   {apiKeys.map((key) => (
                     <div key={key.id} className="flex items-center justify-between p-4 border rounded-lg">
                       <div className="flex-1">
-                        <div className="font-medium">{key.key_name}</div>
+                        <div className="font-medium">{key.name}</div>
                         <div className="flex items-center gap-2 mt-1">
                           <code className="text-sm bg-gray-100 px-2 py-1 rounded">
-                            {showKey[key.id] ? key.key_value : maskKey(key.key_value)}
+                            {showKey[key.id] ? key.key_hash : maskKey(key.key_hash)}
                           </code>
                           <Button
                             size="sm"
@@ -191,7 +198,7 @@ export default function ApiKeysPage() {
                           <Button
                             size="sm"
                             variant="ghost"
-                            onClick={() => copyToClipboard(key.key_value)}
+                            onClick={() => copyToClipboard(key.key_hash)}
                           >
                             <Copy className="h-4 w-4" />
                           </Button>

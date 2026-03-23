@@ -25,7 +25,7 @@ interface AuditLog {
   action: string;
   resource_type: string;
   resource_id: string;
-  details: any;
+  metadata: any;
   ip_address: string;
   user_agent: string;
   created_at: string;

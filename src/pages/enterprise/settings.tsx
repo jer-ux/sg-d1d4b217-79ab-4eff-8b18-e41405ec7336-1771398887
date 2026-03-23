@@ -88,17 +88,17 @@ export default function EnterpriseSettings() {
 
       // Load API keys (masked for security)
       const { data: apiData } = await supabase
-        .from('api_key_management')
+        .from('api_keys')
         .select('*')
         .eq('is_active', true);
 
       if (apiData && apiData.length > 0) {
-        const anthropicKey = apiData.find(k => k.key_name === 'anthropic_api_key');
-        const openaiKey = apiData.find(k => k.key_name === 'openai_api_key');
+        const anthropicKey = apiData.find(k => k.name === 'anthropic_api_key');
+        const openaiKey = apiData.find(k => k.name === 'openai_api_key');
         
         setApiKeys({
-          anthropicApiKey: anthropicKey ? '••••••••••••' + anthropicKey.key_value?.slice(-4) : '',
-          openaiApiKey: openaiKey ? '••••••••••••' + openaiKey.key_value?.slice(-4) : '',
+          anthropicApiKey: anthropicKey ? '••••••••••••' + anthropicKey.key_hash?.slice(-4) : '',
+          openaiApiKey: openaiKey ? '••••••••••••' + openaiKey.key_hash?.slice(-4) : '',
           webhookSecret: '••••••••••••',
           apiRateLimit: 1000
         });
@@ -111,9 +111,13 @@ export default function EnterpriseSettings() {
   const saveBranding = async () => {
     setSaving(true);
     try {
+      const { data: orgData } = await supabase.from('organizations').select('id').limit(1).single();
+      const orgId = orgData?.id || '00000000-0000-0000-0000-000000000000';
+
       const { error } = await supabase
         .from('organization_branding')
         .upsert({
+          organization_id: orgId,
           logo_url: branding.logoUrl,
           primary_color: branding.primaryColor,
           secondary_color: branding.secondaryColor,
@@ -138,12 +142,19 @@ export default function EnterpriseSettings() {
   const saveApiKeys = async () => {
     setSaving(true);
     try {
+      const { data: orgData } = await supabase.from('organizations').select('id').limit(1).single();
+      const { data: authData } = await supabase.auth.getUser();
+      const orgId = orgData?.id || '00000000-0000-0000-0000-000000000000';
+      const userId = authData?.user?.id || '00000000-0000-0000-0000-000000000000';
+
       // Only update if user entered new keys (not masked)
       if (apiKeys.anthropicApiKey && !apiKeys.anthropicApiKey.includes('••')) {
-        await supabase.from('api_key_management').upsert({
-          key_name: 'anthropic_api_key',
-          key_value: apiKeys.anthropicApiKey,
-          key_type: 'api',
+        await supabase.from('api_keys').insert({
+          organization_id: orgId,
+          created_by: userId,
+          name: 'anthropic_api_key',
+          key_hash: apiKeys.anthropicApiKey,
+          key_prefix: 'sk_ant_',
           is_active: true
         });
       }

@@ -98,14 +98,14 @@ export default async function handler(
           critical_issues: analysis.redFlags
             .filter(f => f.severity === "Critical")
             .map(f => f.title)
-        },
+        } as any,
         detailed_analysis: {
           provisions: analysis.provisions,
           redFlags: analysis.redFlags,
           processingTime: analysis.processingTime,
           aiModel: analysis.aiModel,
           confidence: analysis.confidence
-        }
+        } as any
       })
       .select()
       .single();

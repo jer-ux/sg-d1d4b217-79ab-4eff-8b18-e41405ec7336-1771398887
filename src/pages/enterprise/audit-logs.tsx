@@ -50,7 +50,12 @@ export default function AuditLogsPage() {
         .limit(100);
 
       if (data) {
-        setLogs(data);
+        const formattedLogs = data.map(log => ({
+          ...log,
+          ip_address: (log.ip_address as string) || 'System',
+          user_agent: (log.user_agent as string) || 'Unknown'
+        })) as unknown as AuditLog[];
+        setLogs(formattedLogs);
       }
     } catch (error) {
       console.error('Failed to load audit logs:', error);

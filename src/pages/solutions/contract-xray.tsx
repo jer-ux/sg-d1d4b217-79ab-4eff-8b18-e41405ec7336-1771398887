@@ -359,16 +359,17 @@ export default function ContractXRayPage() {
       console.log("✅ Analysis complete! Redirecting to results page...");
       
       setAnalyzing(false);
+      setUploadedContractId(analysisData.id); // Store the analysis result ID, not upload ID
       
       toast({
         title: "Analysis Complete!",
         description: "Your comprehensive contract analysis is ready to view.",
       });
 
-      // Redirect to results after brief delay
+      // Redirect to results using the analysis result ID
       setTimeout(() => {
-        console.log("🔄 Redirecting to:", `/contract-analysis/${contractId}`);
-        router.push(`/contract-analysis/${contractId}`);
+        console.log("🔄 Redirecting to:", `/contract-analysis/${analysisData.id}`);
+        router.push(`/contract-analysis/${analysisData.id}`);
       }, 2000);
 
     } catch (error: any) {
@@ -870,7 +871,7 @@ export default function ContractXRayPage() {
                     <p className="text-gray-400">Your contract analysis is ready to view</p>
                   </div>
                   <div className="flex gap-3">
-                    <Button className="flex-1" onClick={() => router.push(`/contract-analysis/${uploadedContractId}`)}>
+                    <Button className="flex-1" onClick={() => uploadedContractId && router.push(`/contract-analysis/${uploadedContractId}`)}>
                       <Eye className="w-4 h-4 mr-2" />
                       View Results
                     </Button>

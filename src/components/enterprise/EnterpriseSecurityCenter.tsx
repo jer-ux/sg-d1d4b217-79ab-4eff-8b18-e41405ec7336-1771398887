@@ -1,206 +1,324 @@
+/**
+ * Enterprise Security Center
+ * Security monitoring and audit logs
+ */
+
+import { useState } from "react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Switch } from "@/components/ui/switch";
-import { 
-  Shield, 
-  Lock, 
-  Key, 
-  AlertTriangle, 
-  CheckCircle2,
-  Bell,
+import { Badge } from "@/components/ui/badge";
+import { Input } from "@/components/ui/input";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
+import {
+  Shield,
+  Lock,
+  Key,
+  AlertTriangle,
+  CheckCircle,
+  Search,
+  Download,
   Eye,
-  Database,
-  Server
 } from "lucide-react";
 
-export function EnterpriseSecurityCenter() {
-  const securityFeatures = [
-    { name: 'Two-Factor Authentication', enabled: true, description: 'Require 2FA for all users' },
-    { name: 'IP Whitelisting', enabled: true, description: 'Restrict access to approved IPs' },
-    { name: 'Session Timeout', enabled: true, description: 'Auto-logout after 30 minutes' },
-    { name: 'Data Encryption at Rest', enabled: true, description: 'AES-256 encryption' },
-    { name: 'Audit Logging', enabled: true, description: 'Track all system activities' },
-    { name: 'Anomaly Detection', enabled: false, description: 'AI-powered threat detection' },
-  ];
+interface AuditLogEntry {
+  id: string;
+  timestamp: string;
+  user: string;
+  action: string;
+  resource: string;
+  status: "success" | "failed" | "warning";
+  ipAddress: string;
+}
 
-  const securityMetrics = [
-    { label: 'Password Strength', value: 95, status: 'excellent' },
-    { label: 'Data Encryption', value: 100, status: 'excellent' },
-    { label: 'Access Controls', value: 88, status: 'good' },
-    { label: 'Vulnerability Scan', value: 92, status: 'excellent' },
-  ];
+export function EnterpriseSecurityCenter() {
+  const [searchTerm, setSearchTerm] = useState("");
+  const [auditLogs] = useState<AuditLogEntry[]>([
+    {
+      id: "1",
+      timestamp: "2026-03-24 10:30:15",
+      user: "sarah.johnson@company.com",
+      action: "Report Generated",
+      resource: "Contract Analysis #1247",
+      status: "success",
+      ipAddress: "192.168.1.100",
+    },
+    {
+      id: "2",
+      timestamp: "2026-03-24 09:15:42",
+      user: "mike.chen@company.com",
+      action: "Contract Uploaded",
+      resource: "CVS_Caremark_2026.pdf",
+      status: "success",
+      ipAddress: "192.168.1.101",
+    },
+    {
+      id: "3",
+      timestamp: "2026-03-24 08:45:22",
+      user: "admin@company.com",
+      action: "User Role Changed",
+      resource: "User: alex.martinez",
+      status: "success",
+      ipAddress: "192.168.1.102",
+    },
+    {
+      id: "4",
+      timestamp: "2026-03-23 16:20:10",
+      user: "unknown",
+      action: "Failed Login Attempt",
+      resource: "Admin Portal",
+      status: "failed",
+      ipAddress: "185.220.101.45",
+    },
+  ]);
+
+  const securityMetrics = {
+    totalEvents: 1247,
+    failedLogins: 12,
+    activeApiKeys: 8,
+    suspiciousActivity: 2,
+  };
+
+  const getStatusBadge = (status: string) => {
+    switch (status) {
+      case "success":
+        return <Badge variant="default">Success</Badge>;
+      case "failed":
+        return <Badge variant="destructive">Failed</Badge>;
+      case "warning":
+        return <Badge variant="secondary">Warning</Badge>;
+      default:
+        return <Badge variant="outline">{status}</Badge>;
+    }
+  };
 
   return (
     <div className="space-y-6">
-      <div className="flex items-center justify-between">
-        <div>
-          <h3 className="text-2xl font-bold">Security Center</h3>
-          <p className="text-gray-500">Enterprise security configuration and monitoring</p>
-        </div>
-        <Badge variant="outline" className="bg-green-50 text-green-700 border-green-200">
-          <CheckCircle2 className="h-3 w-3 mr-1" />
-          All Systems Secure
-        </Badge>
+      <div>
+        <h2 className="text-2xl font-bold">Security Center</h2>
+        <p className="text-gray-500 mt-1">
+          Monitor security events and audit logs
+        </p>
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
         <Card>
-          <CardHeader className="pb-2">
-            <CardTitle className="text-sm text-gray-600">Security Score</CardTitle>
+          <CardHeader className="flex flex-row items-center justify-between pb-2">
+            <CardTitle className="text-sm font-medium">Total Events</CardTitle>
+            <Shield className="h-4 w-4 text-gray-500" />
           </CardHeader>
           <CardContent>
-            <div className="text-3xl font-bold text-green-600">94%</div>
-            <p className="text-xs text-gray-500 mt-1">Excellent</p>
+            <div className="text-2xl font-bold">{securityMetrics.totalEvents}</div>
+            <p className="text-xs text-gray-500 mt-1">Last 30 days</p>
           </CardContent>
         </Card>
 
         <Card>
-          <CardHeader className="pb-2">
-            <CardTitle className="text-sm text-gray-600">Active Sessions</CardTitle>
+          <CardHeader className="flex flex-row items-center justify-between pb-2">
+            <CardTitle className="text-sm font-medium">Failed Logins</CardTitle>
+            <AlertTriangle className="h-4 w-4 text-red-500" />
           </CardHeader>
           <CardContent>
-            <div className="text-3xl font-bold">18</div>
-            <p className="text-xs text-gray-500 mt-1">8 users online</p>
+            <div className="text-2xl font-bold text-red-600">
+              {securityMetrics.failedLogins}
+            </div>
+            <p className="text-xs text-gray-500 mt-1">Requires attention</p>
           </CardContent>
         </Card>
 
         <Card>
-          <CardHeader className="pb-2">
-            <CardTitle className="text-sm text-gray-600">Failed Login Attempts</CardTitle>
+          <CardHeader className="flex flex-row items-center justify-between pb-2">
+            <CardTitle className="text-sm font-medium">Active API Keys</CardTitle>
+            <Key className="h-4 w-4 text-gray-500" />
           </CardHeader>
           <CardContent>
-            <div className="text-3xl font-bold text-green-600">0</div>
-            <p className="text-xs text-gray-500 mt-1">Last 24 hours</p>
+            <div className="text-2xl font-bold">{securityMetrics.activeApiKeys}</div>
+            <p className="text-xs text-gray-500 mt-1">In use</p>
           </CardContent>
         </Card>
 
         <Card>
-          <CardHeader className="pb-2">
-            <CardTitle className="text-sm text-gray-600">Data Backups</CardTitle>
+          <CardHeader className="flex flex-row items-center justify-between pb-2">
+            <CardTitle className="text-sm font-medium">Suspicious Activity</CardTitle>
+            <Lock className="h-4 w-4 text-yellow-500" />
           </CardHeader>
           <CardContent>
-            <div className="text-3xl font-bold">✓</div>
-            <p className="text-xs text-gray-500 mt-1">Daily + Real-time</p>
+            <div className="text-2xl font-bold text-yellow-600">
+              {securityMetrics.suspiciousActivity}
+            </div>
+            <p className="text-xs text-gray-500 mt-1">Under review</p>
           </CardContent>
         </Card>
       </div>
 
-      <Card>
-        <CardHeader>
-          <CardTitle>Security Features</CardTitle>
-          <CardDescription>Configure enterprise security settings</CardDescription>
-        </CardHeader>
-        <CardContent>
-          <div className="space-y-4">
-            {securityFeatures.map((feature) => (
-              <div key={feature.name} className="flex items-center justify-between p-4 border rounded-lg">
-                <div className="flex items-center gap-4">
-                  <Shield className={`h-5 w-5 ${feature.enabled ? 'text-green-600' : 'text-gray-400'}`} />
-                  <div>
-                    <div className="font-medium">{feature.name}</div>
-                    <div className="text-sm text-gray-500">{feature.description}</div>
+      <Tabs defaultValue="audit" className="space-y-6">
+        <TabsList>
+          <TabsTrigger value="audit">Audit Logs</TabsTrigger>
+          <TabsTrigger value="access">Access Control</TabsTrigger>
+          <TabsTrigger value="api">API Keys</TabsTrigger>
+        </TabsList>
+
+        <TabsContent value="audit" className="space-y-4">
+          <Card>
+            <CardHeader>
+              <div className="flex items-center justify-between">
+                <div>
+                  <CardTitle>Audit Trail</CardTitle>
+                  <CardDescription>Complete history of system activities</CardDescription>
+                </div>
+                <div className="flex items-center gap-2">
+                  <div className="relative">
+                    <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400" />
+                    <Input
+                      placeholder="Search logs..."
+                      value={searchTerm}
+                      onChange={(e) => setSearchTerm(e.target.value)}
+                      className="pl-9 w-[250px]"
+                    />
+                  </div>
+                  <Button variant="outline" size="sm">
+                    <Download className="h-4 w-4 mr-2" />
+                    Export
+                  </Button>
+                </div>
+              </div>
+            </CardHeader>
+            <CardContent>
+              <Table>
+                <TableHeader>
+                  <TableRow>
+                    <TableHead>Timestamp</TableHead>
+                    <TableHead>User</TableHead>
+                    <TableHead>Action</TableHead>
+                    <TableHead>Resource</TableHead>
+                    <TableHead>Status</TableHead>
+                    <TableHead>IP Address</TableHead>
+                  </TableRow>
+                </TableHeader>
+                <TableBody>
+                  {auditLogs.map((log) => (
+                    <TableRow key={log.id}>
+                      <TableCell className="font-mono text-xs">{log.timestamp}</TableCell>
+                      <TableCell className="text-sm">{log.user}</TableCell>
+                      <TableCell className="text-sm">{log.action}</TableCell>
+                      <TableCell className="text-sm text-gray-500">{log.resource}</TableCell>
+                      <TableCell>{getStatusBadge(log.status)}</TableCell>
+                      <TableCell className="font-mono text-xs">{log.ipAddress}</TableCell>
+                    </TableRow>
+                  ))}
+                </TableBody>
+              </Table>
+            </CardContent>
+          </Card>
+        </TabsContent>
+
+        <TabsContent value="access">
+          <Card>
+            <CardHeader>
+              <CardTitle>Access Control</CardTitle>
+              <CardDescription>Manage user permissions and roles</CardDescription>
+            </CardHeader>
+            <CardContent>
+              <div className="space-y-4">
+                <div className="flex items-center justify-between p-4 rounded-lg bg-gray-50 dark:bg-gray-800">
+                  <div className="flex items-center gap-3">
+                    <CheckCircle className="h-5 w-5 text-green-600" />
+                    <div>
+                      <p className="font-medium">Two-Factor Authentication</p>
+                      <p className="text-xs text-gray-500">Enabled for all admin users</p>
+                    </div>
+                  </div>
+                  <Badge variant="default">Active</Badge>
+                </div>
+                <div className="flex items-center justify-between p-4 rounded-lg bg-gray-50 dark:bg-gray-800">
+                  <div className="flex items-center gap-3">
+                    <CheckCircle className="h-5 w-5 text-green-600" />
+                    <div>
+                      <p className="font-medium">IP Whitelisting</p>
+                      <p className="text-xs text-gray-500">12 IPs configured</p>
+                    </div>
+                  </div>
+                  <Button variant="ghost" size="sm">Configure</Button>
+                </div>
+                <div className="flex items-center justify-between p-4 rounded-lg bg-gray-50 dark:bg-gray-800">
+                  <div className="flex items-center gap-3">
+                    <CheckCircle className="h-5 w-5 text-green-600" />
+                    <div>
+                      <p className="font-medium">Session Management</p>
+                      <p className="text-xs text-gray-500">Auto-logout after 30 minutes</p>
+                    </div>
+                  </div>
+                  <Button variant="ghost" size="sm">Configure</Button>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+        </TabsContent>
+
+        <TabsContent value="api">
+          <Card>
+            <CardHeader>
+              <div className="flex items-center justify-between">
+                <div>
+                  <CardTitle>API Keys</CardTitle>
+                  <CardDescription>Manage API access credentials</CardDescription>
+                </div>
+                <Button size="sm">
+                  <Key className="h-4 w-4 mr-2" />
+                  Create Key
+                </Button>
+              </div>
+            </CardHeader>
+            <CardContent>
+              <div className="space-y-3">
+                <div className="flex items-center justify-between p-4 rounded-lg border">
+                  <div className="flex items-center gap-4">
+                    <div className="p-2 bg-blue-100 dark:bg-blue-900/20 rounded-lg">
+                      <Key className="h-5 w-5 text-blue-600" />
+                    </div>
+                    <div>
+                      <p className="font-medium">Production API Key</p>
+                      <p className="text-xs text-gray-500 font-mono">sk_prod_***************abc123</p>
+                      <p className="text-xs text-gray-400 mt-1">Created on Jan 15, 2026</p>
+                    </div>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <Badge variant="default">Active</Badge>
+                    <Button variant="ghost" size="sm">
+                      <Eye className="h-4 w-4" />
+                    </Button>
                   </div>
                 </div>
-                <Switch checked={feature.enabled} />
-              </div>
-            ))}
-          </div>
-        </CardContent>
-      </Card>
-
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-        <Card>
-          <CardHeader>
-            <CardTitle>Security Metrics</CardTitle>
-            <CardDescription>Real-time security health monitoring</CardDescription>
-          </CardHeader>
-          <CardContent className="space-y-4">
-            {securityMetrics.map((metric) => (
-              <div key={metric.label}>
-                <div className="flex items-center justify-between mb-2">
-                  <span className="text-sm font-medium">{metric.label}</span>
-                  <span className="text-sm text-gray-600">{metric.value}%</span>
-                </div>
-                <div className="w-full bg-gray-200 rounded-full h-2">
-                  <div 
-                    className={`h-2 rounded-full ${
-                      metric.status === 'excellent' ? 'bg-green-600' : 'bg-yellow-500'
-                    }`}
-                    style={{ width: `${metric.value}%` }}
-                  />
+                <div className="flex items-center justify-between p-4 rounded-lg border">
+                  <div className="flex items-center gap-4">
+                    <div className="p-2 bg-purple-100 dark:bg-purple-900/20 rounded-lg">
+                      <Key className="h-5 w-5 text-purple-600" />
+                    </div>
+                    <div>
+                      <p className="font-medium">Staging API Key</p>
+                      <p className="text-xs text-gray-500 font-mono">sk_test_***************def456</p>
+                      <p className="text-xs text-gray-400 mt-1">Created on Feb 10, 2026</p>
+                    </div>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <Badge variant="secondary">Staging</Badge>
+                    <Button variant="ghost" size="sm">
+                      <Eye className="h-4 w-4" />
+                    </Button>
+                  </div>
                 </div>
               </div>
-            ))}
-          </CardContent>
-        </Card>
-
-        <Card>
-          <CardHeader>
-            <CardTitle>Access Control</CardTitle>
-            <CardDescription>API keys and authentication</CardDescription>
-          </CardHeader>
-          <CardContent className="space-y-4">
-            <div className="flex items-center justify-between p-4 bg-gray-50 rounded-lg">
-              <div className="flex items-center gap-3">
-                <Key className="h-5 w-5 text-blue-600" />
-                <div>
-                  <div className="font-medium">Production API Key</div>
-                  <div className="text-xs text-gray-500">Created: Jan 15, 2026</div>
-                </div>
-              </div>
-              <Badge variant="outline" className="bg-green-50 text-green-700">Active</Badge>
-            </div>
-
-            <div className="flex items-center justify-between p-4 bg-gray-50 rounded-lg">
-              <div className="flex items-center gap-3">
-                <Lock className="h-5 w-5 text-purple-600" />
-                <div>
-                  <div className="font-medium">Webhook Secret</div>
-                  <div className="text-xs text-gray-500">Rotated: Mar 1, 2026</div>
-                </div>
-              </div>
-              <Badge variant="outline" className="bg-green-50 text-green-700">Active</Badge>
-            </div>
-
-            <Button className="w-full" variant="outline">
-              <Key className="h-4 w-4 mr-2" />
-              Generate New API Key
-            </Button>
-          </CardContent>
-        </Card>
-      </div>
-
-      <Card>
-        <CardHeader>
-          <CardTitle>Data Protection</CardTitle>
-          <CardDescription>Encryption, backups, and data residency</CardDescription>
-        </CardHeader>
-        <CardContent>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-            <div className="p-4 border rounded-lg">
-              <Database className="h-8 w-8 text-blue-600 mb-2" />
-              <div className="font-medium mb-1">Encryption at Rest</div>
-              <div className="text-sm text-gray-500">AES-256 encryption for all data</div>
-              <Badge variant="outline" className="mt-2 bg-green-50 text-green-700">Enabled</Badge>
-            </div>
-
-            <div className="p-4 border rounded-lg">
-              <Server className="h-8 w-8 text-purple-600 mb-2" />
-              <div className="font-medium mb-1">Encryption in Transit</div>
-              <div className="text-sm text-gray-500">TLS 1.3 for all connections</div>
-              <Badge variant="outline" className="mt-2 bg-green-50 text-green-700">Enabled</Badge>
-            </div>
-
-            <div className="p-4 border rounded-lg">
-              <Eye className="h-8 w-8 text-orange-600 mb-2" />
-              <div className="font-medium mb-1">Data Residency</div>
-              <div className="text-sm text-gray-500">US East (Virginia)</div>
-              <Badge variant="outline" className="mt-2">Configured</Badge>
-            </div>
-          </div>
-        </CardContent>
-      </Card>
+            </CardContent>
+          </Card>
+        </TabsContent>
+      </Tabs>
     </div>
   );
 }

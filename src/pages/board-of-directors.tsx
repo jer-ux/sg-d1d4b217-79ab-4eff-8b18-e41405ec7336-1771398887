@@ -12,7 +12,7 @@ const boardMembers = [
   {
     name: "Jeremiah Shrack",
     title: "Founder & Chief Executive Officer",
-    image: "/jeremiah-shrack-professional.png",
+    image: "/jeremiah-shrack-board.jpg",
     linkedin: "https://www.linkedin.com/in/shrack",
     bio: "Humanitarian and business leader with over two decades of experience engineering intelligent operating systems and scaling organizations. Achieved #2 in North America for Canon while working 60 hours/week and attending IWU full-time.",
     fullBio: {

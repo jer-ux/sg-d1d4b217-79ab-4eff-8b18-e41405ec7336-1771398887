@@ -1,445 +1,508 @@
+/**
+ * Referrer Profile Dashboard
+ * Detailed referrer performance analytics
+ */
+
+import { useState } from "react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Progress } from "@/components/ui/progress";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Gift, Users, DollarSign, TrendingUp, Link2, Copy, CheckCircle2, Star, Crown, Mail, Linkedin, Twitter, Share2 } from "lucide-react";
-import { useState } from "react";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import {
+  TrendingUp,
+  Users,
+  DollarSign,
+  Target,
+  Award,
+  Share2,
+  Link as LinkIcon,
+  Mail,
+  Download,
+  Info,
+  ChevronRight,
+} from "lucide-react";
 
-interface ReferrerStats {
-  referrer_id: string;
-  referrer_name: string;
-  referrer_email: string;
-  tier: "standard" | "ambassador" | "partner";
-  total_referrals: number;
-  active_customers: number;
-  conversion_rate: number;
-  monthly_commission: number;
-  ytd_commission: number;
-  lifetime_value: number;
-  referral_code: string;
-  next_tier_referrals_needed: number;
-  viral_coefficient: number;
+interface ReferralMetric {
+  month: string;
+  clicks: number;
+  signups: number;
+  conversions: number;
+  revenue: number;
+  commission: number;
 }
 
-interface ReferralRecord {
-  company_name: string;
-  contact_email: string;
-  status: "active" | "trial" | "churned";
-  plan: string;
-  referred_date: string;
-  closed_date: string | null;
-  mrr: number;
-  commission: string;
-  lifetime_commission: string;
+interface TopReferral {
+  name: string;
+  company: string;
+  value: number;
+  status: "Active" | "Churned" | "Trial";
+  joinDate: string;
 }
 
-interface ReferrerProfileProps {
-  stats: ReferrerStats;
-  referrals: ReferralRecord[];
-  channelPerformance: Array<{
-    channel: string;
-    referrals: number;
-    icon: typeof Mail;
-  }>;
-}
+export function ReferrerProfile() {
+  const [timeRange, setTimeRange] = useState<string>("12m");
+  const [selectedMetric, setSelectedMetric] = useState<string | null>(null);
+  const [hoveredBar, setHoveredBar] = useState<string | null>(null);
 
-export function ReferrerProfile({ stats, referrals, channelPerformance }: ReferrerProfileProps) {
-  const [copied, setCopied] = useState(false);
-  const referralLink = `https://siriusb.ai/signup?ref=${stats.referral_code}`;
+  const metrics: ReferralMetric[] = [
+    { month: "Jan", clicks: 342, signups: 28, conversions: 12, revenue: 36000, commission: 5400 },
+    { month: "Feb", clicks: 389, signups: 31, conversions: 15, revenue: 45000, commission: 6750 },
+    { month: "Mar", clicks: 412, signups: 35, conversions: 18, revenue: 54000, commission: 8100 },
+    { month: "Apr", clicks: 456, signups: 38, conversions: 20, revenue: 60000, commission: 9000 },
+    { month: "May", clicks: 501, signups: 42, conversions: 22, revenue: 66000, commission: 9900 },
+    { month: "Jun", clicks: 478, signups: 40, conversions: 21, revenue: 63000, commission: 9450 },
+  ];
 
-  const handleCopyLink = () => {
-    navigator.clipboard.writeText(referralLink);
-    setCopied(true);
-    setTimeout(() => setCopied(false), 2000);
+  const topReferrals: TopReferral[] = [
+    { name: "Acme Corp", company: "Healthcare", value: 12000, status: "Active", joinDate: "Jan 2026" },
+    { name: "TechStart Inc", company: "Technology", value: 9500, status: "Active", joinDate: "Feb 2026" },
+    { name: "Global Benefits", company: "Insurance", value: 8200, status: "Trial", joinDate: "Mar 2026" },
+    { name: "HR Solutions", company: "HR Tech", value: 7800, status: "Active", joinDate: "Jan 2026" },
+    { name: "HealthFirst", company: "Healthcare", value: 6500, status: "Churned", joinDate: "Nov 2025" },
+  ];
+
+  const totalMetrics = {
+    clicks: metrics.reduce((sum, m) => sum + m.clicks, 0),
+    signups: metrics.reduce((sum, m) => sum + m.signups, 0),
+    conversions: metrics.reduce((sum, m) => sum + m.conversions, 0),
+    revenue: metrics.reduce((sum, m) => sum + m.revenue, 0),
+    commission: metrics.reduce((sum, m) => sum + m.commission, 0),
   };
 
-  const getTierInfo = (tier: string) => {
-    switch (tier) {
-      case "partner":
-        return {
-          name: "Strategic Partner",
-          icon: Crown,
-          color: "bg-purple-600",
-          commission: "20%",
-          bonus: "$2,500"
-        };
-      case "ambassador":
-        return {
-          name: "Brand Ambassador",
-          icon: Star,
-          color: "bg-blue-600",
-          commission: "15%",
-          bonus: "$1,000"
-        };
-      default:
-        return {
-          name: "Standard Referrer",
-          icon: Gift,
-          color: "bg-slate-600",
-          commission: "10%",
-          bonus: "$500"
-        };
-    }
-  };
+  const conversionRate = ((totalMetrics.conversions / totalMetrics.signups) * 100).toFixed(1);
+  const clickToSignup = ((totalMetrics.signups / totalMetrics.clicks) * 100).toFixed(1);
 
-  const tierInfo = getTierInfo(stats.tier);
-  const TierIcon = tierInfo.icon;
+  const getStatusColor = (status: string) => {
+    const colors: Record<string, string> = {
+      Active: "bg-green-100 text-green-800",
+      Trial: "bg-blue-100 text-blue-800",
+      Churned: "bg-red-100 text-red-800",
+    };
+    return colors[status] || "bg-gray-100 text-gray-800";
+  };
 
   return (
     <div className="space-y-6">
-      {/* Profile Header */}
-      <Card className="border-2 bg-gradient-to-br from-slate-50 to-purple-50">
-        <CardHeader>
-          <div className="flex items-center justify-between">
-            <div className="flex items-center gap-4">
-              <div className="h-16 w-16 bg-gradient-to-br from-purple-500 to-blue-600 rounded-full flex items-center justify-center text-white text-2xl font-bold">
-                {stats.referrer_name.split(' ').map(n => n[0]).join('')}
-              </div>
-              <div>
-                <CardTitle className="text-2xl">{stats.referrer_name}</CardTitle>
-                <CardDescription className="flex items-center gap-2 mt-1">
-                  <Badge className={tierInfo.color}>
-                    {tierInfo.name.toUpperCase()}
-                  </Badge>
-                  <span>{stats.referrer_email}</span>
-                </CardDescription>
-              </div>
-            </div>
-            <div className="text-right">
-              <p className="text-3xl font-bold text-green-600">${stats.monthly_commission.toLocaleString()}</p>
-              <p className="text-sm text-muted-foreground">Monthly Commission</p>
-            </div>
-          </div>
-        </CardHeader>
+      {/* Header */}
+      <div className="flex items-center justify-between">
+        <div>
+          <h2 className="text-3xl font-bold">Referrer Dashboard</h2>
+          <p className="text-muted-foreground mt-1">
+            Track your referral performance and earnings
+          </p>
+        </div>
+        <div className="flex items-center gap-3">
+          <Select value={timeRange} onValueChange={setTimeRange}>
+            <SelectTrigger className="w-32">
+              <SelectValue />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="3m">Last 3 months</SelectItem>
+              <SelectItem value="6m">Last 6 months</SelectItem>
+              <SelectItem value="12m">Last 12 months</SelectItem>
+              <SelectItem value="all">All time</SelectItem>
+            </SelectContent>
+          </Select>
+          <Button variant="outline" size="sm">
+            <Download className="h-4 w-4 mr-2" />
+            Export
+          </Button>
+        </div>
+      </div>
 
-        <CardContent>
-          <div className="grid md:grid-cols-4 gap-4 mb-6">
-            <div className="p-4 bg-white rounded-lg shadow-sm">
-              <div className="flex items-center justify-between mb-2">
-                <Users className="h-5 w-5 text-blue-600" />
-                <TrendingUp className="h-4 w-4 text-green-600" />
+      {/* Summary Cards */}
+      <div className="grid grid-cols-1 md:grid-cols-5 gap-4">
+        <Card className="cursor-pointer hover:shadow-lg transition-shadow">
+          <CardHeader className="pb-3">
+            <CardTitle className="text-sm font-medium flex items-center gap-2">
+              <LinkIcon className="h-4 w-4" />
+              Total Clicks
+              <div className="relative group ml-auto">
+                <Info className="h-4 w-4 text-muted-foreground cursor-help" />
+                <div className="absolute bottom-full right-0 mb-2 px-3 py-2 bg-gray-900 text-white text-xs rounded shadow-lg opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none whitespace-nowrap z-10">
+                  Unique clicks on your referral link
+                </div>
               </div>
-              <p className="text-2xl font-bold">{stats.total_referrals}</p>
-              <p className="text-xs text-muted-foreground">Total Referrals</p>
-            </div>
+            </CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="text-3xl font-bold">{totalMetrics.clicks.toLocaleString()}</div>
+            <p className="text-xs text-muted-foreground mt-1">+12% from last period</p>
+          </CardContent>
+        </Card>
 
-            <div className="p-4 bg-white rounded-lg shadow-sm">
-              <div className="flex items-center justify-between mb-2">
-                <CheckCircle2 className="h-5 w-5 text-green-600" />
-                <span className="text-xs font-semibold text-green-600">{stats.conversion_rate}%</span>
+        <Card className="cursor-pointer hover:shadow-lg transition-shadow">
+          <CardHeader className="pb-3">
+            <CardTitle className="text-sm font-medium flex items-center gap-2">
+              <Users className="h-4 w-4" />
+              Sign-ups
+              <div className="relative group ml-auto">
+                <Info className="h-4 w-4 text-muted-foreground cursor-help" />
+                <div className="absolute bottom-full right-0 mb-2 px-3 py-2 bg-gray-900 text-white text-xs rounded shadow-lg opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none whitespace-nowrap z-10">
+                  Users who created an account
+                </div>
               </div>
-              <p className="text-2xl font-bold">{stats.active_customers}</p>
-              <p className="text-xs text-muted-foreground">Paying Customers</p>
-            </div>
+            </CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="text-3xl font-bold">{totalMetrics.signups}</div>
+            <p className="text-xs text-muted-foreground mt-1">{clickToSignup}% of clicks</p>
+          </CardContent>
+        </Card>
 
-            <div className="p-4 bg-white rounded-lg shadow-sm">
-              <div className="flex items-center justify-between mb-2">
-                <DollarSign className="h-5 w-5 text-purple-600" />
-                <span className="text-xs text-muted-foreground">YTD</span>
+        <Card className="cursor-pointer hover:shadow-lg transition-shadow">
+          <CardHeader className="pb-3">
+            <CardTitle className="text-sm font-medium flex items-center gap-2">
+              <Target className="h-4 w-4" />
+              Conversions
+              <div className="relative group ml-auto">
+                <Info className="h-4 w-4 text-muted-foreground cursor-help" />
+                <div className="absolute bottom-full right-0 mb-2 px-3 py-2 bg-gray-900 text-white text-xs rounded shadow-lg opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none whitespace-nowrap z-10">
+                  Sign-ups who became paying customers
+                </div>
               </div>
-              <p className="text-2xl font-bold">${stats.ytd_commission.toLocaleString()}</p>
-              <p className="text-xs text-muted-foreground">Commission Earned</p>
-            </div>
+            </CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="text-3xl font-bold">{totalMetrics.conversions}</div>
+            <p className="text-xs text-muted-foreground mt-1">{conversionRate}% conversion rate</p>
+          </CardContent>
+        </Card>
 
-            <div className="p-4 bg-white rounded-lg shadow-sm">
-              <div className="flex items-center justify-between mb-2">
-                <TrendingUp className="h-5 w-5 text-orange-600" />
-                <span className="text-xs font-semibold text-orange-600">{stats.viral_coefficient.toFixed(2)}x</span>
+        <Card className="cursor-pointer hover:shadow-lg transition-shadow">
+          <CardHeader className="pb-3">
+            <CardTitle className="text-sm font-medium flex items-center gap-2">
+              <DollarSign className="h-4 w-4" />
+              Revenue
+              <div className="relative group ml-auto">
+                <Info className="h-4 w-4 text-muted-foreground cursor-help" />
+                <div className="absolute bottom-full right-0 mb-2 px-3 py-2 bg-gray-900 text-white text-xs rounded shadow-lg opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none whitespace-nowrap z-10">
+                  Total revenue from your referrals
+                </div>
               </div>
-              <p className="text-2xl font-bold">${stats.lifetime_value.toLocaleString()}</p>
-              <p className="text-xs text-muted-foreground">Lifetime Value</p>
+            </CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="text-3xl font-bold">
+              ${(totalMetrics.revenue / 1000).toFixed(0)}K
             </div>
-          </div>
+            <p className="text-xs text-muted-foreground mt-1">ARR generated</p>
+          </CardContent>
+        </Card>
 
-          {/* Tier Progress */}
-          {stats.tier !== "partner" && (
-            <div className="p-4 bg-purple-100 border border-purple-300 rounded-lg">
-              <div className="flex items-center justify-between mb-3">
-                <p className="font-semibold text-purple-900 flex items-center gap-2">
-                  <Crown className="h-5 w-5" />
-                  {stats.next_tier_referrals_needed} more referrals to unlock {stats.tier === "ambassador" ? "Strategic Partner" : "Brand Ambassador"} tier
-                </p>
-                <span className="text-sm font-bold text-purple-900">
-                  {Math.round(((stats.total_referrals % 20) / 20) * 100)}%
-                </span>
+        <Card className="cursor-pointer hover:shadow-lg transition-shadow bg-gradient-to-br from-green-50 to-emerald-50 dark:from-green-950 dark:to-emerald-950">
+          <CardHeader className="pb-3">
+            <CardTitle className="text-sm font-medium flex items-center gap-2">
+              <Award className="h-4 w-4 text-green-600" />
+              Your Earnings
+              <div className="relative group ml-auto">
+                <Info className="h-4 w-4 text-muted-foreground cursor-help" />
+                <div className="absolute bottom-full right-0 mb-2 px-3 py-2 bg-gray-900 text-white text-xs rounded shadow-lg opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none whitespace-nowrap z-10">
+                  15% commission on all referrals
+                </div>
               </div>
-              <Progress value={((stats.total_referrals % 20) / 20) * 100} className="h-2 mb-2" />
-              <p className="text-sm text-purple-800">
-                Upgrade to unlock {stats.tier === "ambassador" ? "20%" : "15%"} commission + ${stats.tier === "ambassador" ? "2,500" : "1,000"} per deal bonuses
-              </p>
+            </CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="text-3xl font-bold text-green-600">
+              ${(totalMetrics.commission / 1000).toFixed(1)}K
             </div>
-          )}
-        </CardContent>
-      </Card>
+            <p className="text-xs text-muted-foreground mt-1">Next payout: Apr 1</p>
+          </CardContent>
+        </Card>
+      </div>
 
-      <Tabs defaultValue="overview" className="space-y-6">
-        <TabsList className="grid w-full grid-cols-4">
-          <TabsTrigger value="overview">Overview</TabsTrigger>
-          <TabsTrigger value="referrals">My Referrals</TabsTrigger>
-          <TabsTrigger value="share">Share & Earn</TabsTrigger>
-          <TabsTrigger value="earnings">Earnings</TabsTrigger>
+      {/* Main Analytics */}
+      <Tabs defaultValue="performance" className="space-y-6">
+        <TabsList>
+          <TabsTrigger value="performance">Performance</TabsTrigger>
+          <TabsTrigger value="referrals">Top Referrals</TabsTrigger>
+          <TabsTrigger value="tools">Referral Tools</TabsTrigger>
+          <TabsTrigger value="payouts">Payouts</TabsTrigger>
         </TabsList>
 
-        <TabsContent value="overview" className="space-y-6">
-          {/* Current Tier Benefits */}
+        <TabsContent value="performance" className="space-y-6">
+          {/* Performance Chart */}
           <Card>
             <CardHeader>
-              <CardTitle className="flex items-center gap-3">
-                <TierIcon className={`h-6 w-6 ${stats.tier === "partner" ? "text-purple-600" : stats.tier === "ambassador" ? "text-blue-600" : "text-slate-600"}`} />
-                Your {tierInfo.name} Benefits
-              </CardTitle>
+              <CardTitle>Monthly Performance</CardTitle>
+              <CardDescription>
+                Hover over bars for detailed metrics. Click to drill down.
+              </CardDescription>
             </CardHeader>
-            <CardContent className="space-y-3">
-              <div className="flex items-center justify-between p-4 border rounded-lg">
-                <span className="font-medium">Commission Rate</span>
-                <span className="text-2xl font-bold text-green-600">{tierInfo.commission}</span>
-              </div>
-              <div className="flex items-center justify-between p-4 border rounded-lg">
-                <span className="font-medium">Sign-Up Bonus</span>
-                <span className="text-2xl font-bold text-purple-600">{tierInfo.bonus}</span>
-              </div>
-              <div className="grid md:grid-cols-2 gap-3 pt-2">
-                <div className="flex items-start gap-2 p-3 border rounded-lg">
-                  <CheckCircle2 className="h-4 w-4 text-green-600 mt-0.5 flex-shrink-0" />
-                  <span className="text-sm">Priority support queue</span>
-                </div>
-                <div className="flex items-start gap-2 p-3 border rounded-lg">
-                  <CheckCircle2 className="h-4 w-4 text-green-600 mt-0.5 flex-shrink-0" />
-                  <span className="text-sm">Co-marketing opportunities</span>
-                </div>
-                {stats.tier === "ambassador" || stats.tier === "partner" ? (
-                  <>
-                    <div className="flex items-start gap-2 p-3 border rounded-lg">
-                      <CheckCircle2 className="h-4 w-4 text-green-600 mt-0.5 flex-shrink-0" />
-                      <span className="text-sm">Early feature access</span>
+            <CardContent>
+              <div className="space-y-4">
+                {metrics.map((metric) => (
+                  <div
+                    key={metric.month}
+                    className="space-y-2 cursor-pointer"
+                    onMouseEnter={() => setHoveredBar(metric.month)}
+                    onMouseLeave={() => setHoveredBar(null)}
+                    onClick={() =>
+                      setSelectedMetric(selectedMetric === metric.month ? null : metric.month)
+                    }
+                  >
+                    <div className="flex items-center justify-between text-sm">
+                      <span className="font-medium">{metric.month}</span>
+                      <div className="flex items-center gap-4">
+                        <span className="text-muted-foreground">
+                          {metric.conversions} conversions
+                        </span>
+                        <span className="font-semibold text-green-600">
+                          ${(metric.commission / 1000).toFixed(1)}K
+                        </span>
+                      </div>
                     </div>
-                    <div className="flex items-start gap-2 p-3 border rounded-lg">
-                      <CheckCircle2 className="h-4 w-4 text-green-600 mt-0.5 flex-shrink-0" />
-                      <span className="text-sm">24-month commission (vs 12)</span>
+
+                    <div className="relative">
+                      <div className="h-10 bg-gray-100 rounded-lg overflow-hidden">
+                        <div
+                          className="h-full bg-gradient-to-r from-blue-500 to-green-500 transition-all"
+                          style={{
+                            width: `${(metric.commission / 10000) * 100}%`,
+                          }}
+                        />
+                      </div>
+
+                      {hoveredBar === metric.month && (
+                        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-gray-900 text-white px-4 py-3 rounded shadow-lg text-sm whitespace-nowrap z-10">
+                          <div className="font-semibold">{metric.month} 2026</div>
+                          <div className="grid grid-cols-2 gap-x-4 gap-y-1 mt-2">
+                            <div className="text-gray-300">Clicks:</div>
+                            <div className="text-right">{metric.clicks}</div>
+                            <div className="text-gray-300">Sign-ups:</div>
+                            <div className="text-right">{metric.signups}</div>
+                            <div className="text-gray-300">Conversions:</div>
+                            <div className="text-right">{metric.conversions}</div>
+                            <div className="text-gray-300">Revenue:</div>
+                            <div className="text-right">
+                              ${(metric.revenue / 1000).toFixed(0)}K
+                            </div>
+                            <div className="text-green-400">Commission:</div>
+                            <div className="text-right text-green-400">
+                              ${(metric.commission / 1000).toFixed(1)}K
+                            </div>
+                          </div>
+                        </div>
+                      )}
                     </div>
-                  </>
-                ) : null}
-                {stats.tier === "partner" && (
-                  <>
-                    <div className="flex items-start gap-2 p-3 border rounded-lg">
-                      <CheckCircle2 className="h-4 w-4 text-green-600 mt-0.5 flex-shrink-0" />
-                      <span className="text-sm">Lifetime commission</span>
-                    </div>
-                    <div className="flex items-start gap-2 p-3 border rounded-lg">
-                      <CheckCircle2 className="h-4 w-4 text-green-600 mt-0.5 flex-shrink-0" />
-                      <span className="text-sm">Dedicated partner manager</span>
-                    </div>
-                  </>
-                )}
+
+                    {selectedMetric === metric.month && (
+                      <div className="mt-2 p-4 border rounded-lg bg-blue-50 dark:bg-blue-950">
+                        <div className="grid grid-cols-4 gap-4 text-sm">
+                          <div>
+                            <div className="text-muted-foreground">Click-through</div>
+                            <div className="text-lg font-semibold">
+                              {((metric.signups / metric.clicks) * 100).toFixed(1)}%
+                            </div>
+                          </div>
+                          <div>
+                            <div className="text-muted-foreground">Conversion</div>
+                            <div className="text-lg font-semibold">
+                              {((metric.conversions / metric.signups) * 100).toFixed(1)}%
+                            </div>
+                          </div>
+                          <div>
+                            <div className="text-muted-foreground">Avg Deal Size</div>
+                            <div className="text-lg font-semibold">
+                              ${(metric.revenue / metric.conversions / 1000).toFixed(1)}K
+                            </div>
+                          </div>
+                          <div>
+                            <div className="text-muted-foreground">Commission Rate</div>
+                            <div className="text-lg font-semibold">15%</div>
+                          </div>
+                        </div>
+                      </div>
+                    )}
+                  </div>
+                ))}
               </div>
             </CardContent>
           </Card>
 
-          {/* Channel Performance */}
+          {/* Funnel Analysis */}
           <Card>
             <CardHeader>
-              <CardTitle>Top Performing Channels</CardTitle>
-              <CardDescription>Where your referrals are coming from</CardDescription>
+              <CardTitle>Conversion Funnel</CardTitle>
+              <CardDescription>Visual breakdown of your referral funnel</CardDescription>
             </CardHeader>
-            <CardContent className="space-y-3">
-              {channelPerformance.map((channel, idx) => {
-                const ChannelIcon = channel.icon;
-                return (
-                  <div key={idx} className="flex items-center justify-between p-3 border rounded-lg">
-                    <div className="flex items-center gap-3">
-                      <ChannelIcon className="h-5 w-5 text-muted-foreground" />
-                      <span className="font-medium">{channel.channel}</span>
-                    </div>
-                    <div className="flex items-center gap-4">
-                      <span className="font-bold">{channel.referrals} referrals</span>
-                      <div className="w-24 bg-slate-200 rounded-full h-2">
-                        <div className="bg-blue-600 h-2 rounded-full" style={{ width: `${(channel.referrals / stats.total_referrals) * 100}%` }}></div>
-                      </div>
-                      <span className="text-sm text-muted-foreground w-12 text-right">
-                        {Math.round((channel.referrals / stats.total_referrals) * 100)}%
+            <CardContent>
+              <div className="space-y-3">
+                <div className="flex items-center gap-4">
+                  <div className="w-32 text-sm font-medium">Clicks</div>
+                  <div className="flex-1 h-12 bg-blue-100 rounded-lg overflow-hidden">
+                    <div className="h-full w-full bg-blue-500 flex items-center justify-end pr-4">
+                      <span className="text-white font-semibold">
+                        {totalMetrics.clicks.toLocaleString()}
                       </span>
                     </div>
                   </div>
-                );
-              })}
+                </div>
+
+                <div className="flex items-center gap-4">
+                  <div className="w-32 text-sm font-medium">Sign-ups</div>
+                  <div className="flex-1 h-12 bg-purple-100 rounded-lg overflow-hidden">
+                    <div
+                      className="h-full bg-purple-500 flex items-center justify-end pr-4"
+                      style={{
+                        width: `${(totalMetrics.signups / totalMetrics.clicks) * 100}%`,
+                      }}
+                    >
+                      <span className="text-white font-semibold">{totalMetrics.signups}</span>
+                    </div>
+                  </div>
+                  <div className="w-20 text-sm text-muted-foreground">{clickToSignup}%</div>
+                </div>
+
+                <div className="flex items-center gap-4">
+                  <div className="w-32 text-sm font-medium">Conversions</div>
+                  <div className="flex-1 h-12 bg-green-100 rounded-lg overflow-hidden">
+                    <div
+                      className="h-full bg-green-500 flex items-center justify-end pr-4"
+                      style={{
+                        width: `${(totalMetrics.conversions / totalMetrics.clicks) * 100}%`,
+                      }}
+                    >
+                      <span className="text-white font-semibold">{totalMetrics.conversions}</span>
+                    </div>
+                  </div>
+                  <div className="w-20 text-sm text-muted-foreground">{conversionRate}%</div>
+                </div>
+              </div>
             </CardContent>
           </Card>
         </TabsContent>
 
         <TabsContent value="referrals" className="space-y-6">
-          {referrals.map((referral, idx) => (
-            <Card key={idx} className="border-2">
-              <CardHeader>
-                <div className="flex items-start justify-between">
-                  <div>
-                    <CardTitle className="flex items-center gap-3">
-                      {referral.company_name}
-                      <Badge variant={referral.status === "active" ? "default" : referral.status === "trial" ? "secondary" : "outline"}>
+          <Card>
+            <CardHeader>
+              <CardTitle>Top Referrals</CardTitle>
+              <CardDescription>Your highest-value customer referrals</CardDescription>
+            </CardHeader>
+            <CardContent>
+              <div className="space-y-3">
+                {topReferrals.map((referral, index) => (
+                  <div
+                    key={index}
+                    className="flex items-center justify-between p-4 border rounded-lg hover:shadow-md transition-shadow cursor-pointer"
+                  >
+                    <div className="flex items-center gap-4">
+                      <div className="flex items-center justify-center w-10 h-10 rounded-full bg-blue-100 text-blue-600 font-bold">
+                        {index + 1}
+                      </div>
+                      <div>
+                        <div className="font-semibold">{referral.name}</div>
+                        <div className="text-sm text-muted-foreground">{referral.company}</div>
+                      </div>
+                    </div>
+                    <div className="flex items-center gap-4">
+                      <div className="text-right">
+                        <div className="font-semibold">
+                          ${(referral.value / 1000).toFixed(1)}K/yr
+                        </div>
+                        <div className="text-sm text-muted-foreground">{referral.joinDate}</div>
+                      </div>
+                      <Badge className={getStatusColor(referral.status)}>
                         {referral.status}
                       </Badge>
-                    </CardTitle>
-                    <CardDescription className="mt-2">
-                      {referral.contact_email} • {referral.plan} Plan
-                    </CardDescription>
+                      <ChevronRight className="h-5 w-5 text-muted-foreground" />
+                    </div>
                   </div>
-                  <div className="text-right">
-                    <p className="text-2xl font-bold text-green-600">{referral.commission}</p>
-                    <p className="text-sm text-muted-foreground">Your Commission</p>
-                  </div>
-                </div>
-              </CardHeader>
-              <CardContent>
-                <div className="grid md:grid-cols-4 gap-4">
-                  <div>
-                    <p className="text-sm text-muted-foreground">Referred Date</p>
-                    <p className="font-semibold">{referral.referred_date}</p>
-                  </div>
-                  <div>
-                    <p className="text-sm text-muted-foreground">Closed Date</p>
-                    <p className="font-semibold">{referral.closed_date || "Pending"}</p>
-                  </div>
-                  <div>
-                    <p className="text-sm text-muted-foreground">Their MRR</p>
-                    <p className="font-semibold">${referral.mrr.toLocaleString()}</p>
-                  </div>
-                  <div>
-                    <p className="text-sm text-muted-foreground">Lifetime Commission</p>
-                    <p className="font-semibold text-purple-600">{referral.lifetime_commission}</p>
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
-          ))}
-        </TabsContent>
-
-        <TabsContent value="share" className="space-y-6">
-          <Card>
-            <CardHeader>
-              <CardTitle>Your Unique Referral Link</CardTitle>
-              <CardDescription>Share this link to earn commissions on new customers</CardDescription>
-            </CardHeader>
-            <CardContent className="space-y-4">
-              <div className="flex gap-2">
-                <Input value={referralLink} readOnly className="font-mono text-sm" />
-                <Button onClick={handleCopyLink} variant="outline" className="flex-shrink-0">
-                  {copied ? <CheckCircle2 className="h-4 w-4 text-green-600" /> : <Copy className="h-4 w-4" />}
-                </Button>
-              </div>
-
-              <div className="grid md:grid-cols-4 gap-3">
-                <Button variant="outline" className="gap-2">
-                  <Mail className="h-4 w-4" />
-                  Email
-                </Button>
-                <Button variant="outline" className="gap-2">
-                  <Linkedin className="h-4 w-4" />
-                  LinkedIn
-                </Button>
-                <Button variant="outline" className="gap-2">
-                  <Twitter className="h-4 w-4" />
-                  Twitter
-                </Button>
-                <Button variant="outline" className="gap-2">
-                  <Share2 className="h-4 w-4" />
-                  More
-                </Button>
-              </div>
-            </CardContent>
-          </Card>
-
-          <Card>
-            <CardHeader>
-              <CardTitle>Pre-Written Templates</CardTitle>
-              <CardDescription>Copy these proven templates to boost conversions</CardDescription>
-            </CardHeader>
-            <CardContent className="space-y-4">
-              <div className="p-4 border rounded-lg">
-                <div className="flex items-center justify-between mb-3">
-                  <p className="font-semibold">LinkedIn Post</p>
-                  <Button variant="outline" size="sm">Copy</Button>
-                </div>
-                <p className="text-sm text-muted-foreground italic">
-                  "Just saved our team 200+ hours analyzing PBM contracts with @SiriusBiQ's AI platform. 
-                  Game-changing transparency for healthcare benefits. Check it out: {referralLink}"
-                </p>
-              </div>
-
-              <div className="p-4 border rounded-lg">
-                <div className="flex items-center justify-between mb-3">
-                  <p className="font-semibold">Email Template</p>
-                  <Button variant="outline" size="sm">Copy</Button>
-                </div>
-                <p className="text-sm text-muted-foreground italic">
-                  Subject: Cut your benefits costs by 20%+ with AI<br /><br />
-                  Hi [Name],<br /><br />
-                  I've been using SiriusB iQ to analyze our PBM contracts and uncover hidden costs. 
-                  We found $2M in savings in the first month.<br /><br />
-                  Thought you might benefit from this: {referralLink}<br /><br />
-                  (Full disclosure: I'm a partner and earn commission, but I genuinely love the platform.)
-                </p>
+                ))}
               </div>
             </CardContent>
           </Card>
         </TabsContent>
 
-        <TabsContent value="earnings" className="space-y-6">
-          <div className="grid md:grid-cols-3 gap-6">
-            <Card>
-              <CardHeader className="pb-3">
-                <CardTitle className="text-sm">This Month</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <p className="text-3xl font-bold text-green-600">${stats.monthly_commission.toLocaleString()}</p>
-                <p className="text-xs text-muted-foreground mt-1">Pending payout</p>
-              </CardContent>
-            </Card>
-
-            <Card>
-              <CardHeader className="pb-3">
-                <CardTitle className="text-sm">Year to Date</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <p className="text-3xl font-bold text-blue-600">${stats.ytd_commission.toLocaleString()}</p>
-                <p className="text-xs text-green-600 mt-1">+23% vs last year</p>
-              </CardContent>
-            </Card>
-
-            <Card>
-              <CardHeader className="pb-3">
-                <CardTitle className="text-sm">Lifetime Total</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <p className="text-3xl font-bold text-purple-600">${stats.lifetime_value.toLocaleString()}</p>
-                <p className="text-xs text-muted-foreground mt-1">All-time earnings</p>
-              </CardContent>
-            </Card>
-          </div>
-
+        <TabsContent value="tools">
           <Card>
             <CardHeader>
-              <CardTitle>Earnings Breakdown</CardTitle>
-              <CardDescription>Where your commission comes from</CardDescription>
+              <CardTitle>Referral Tools</CardTitle>
+              <CardDescription>Share your referral link and track performance</CardDescription>
             </CardHeader>
-            <CardContent className="space-y-3">
-              <div className="flex justify-between items-center p-4 border rounded-lg">
-                <span className="font-medium">Recurring Commission</span>
-                <span className="text-xl font-bold text-green-600">
-                  ${(stats.monthly_commission * 0.7).toLocaleString()}/mo
-                </span>
+            <CardContent className="space-y-6">
+              <div>
+                <label className="text-sm font-medium mb-2 block">Your Referral Link</label>
+                <div className="flex gap-2">
+                  <input
+                    type="text"
+                    readOnly
+                    value="https://siriusb.ai/ref/YOUR_CODE"
+                    className="flex-1 px-3 py-2 border rounded-lg bg-gray-50"
+                  />
+                  <Button>
+                    <LinkIcon className="h-4 w-4 mr-2" />
+                    Copy
+                  </Button>
+                </div>
               </div>
-              <div className="flex justify-between items-center p-4 border rounded-lg">
-                <span className="font-medium">Sign-Up Bonuses (YTD)</span>
-                <span className="text-xl font-bold text-purple-600">
-                  ${(stats.ytd_commission * 0.3).toLocaleString()}
-                </span>
+
+              <div className="grid grid-cols-3 gap-4">
+                <Button variant="outline" className="justify-start">
+                  <Mail className="h-4 w-4 mr-2" />
+                  Email Template
+                </Button>
+                <Button variant="outline" className="justify-start">
+                  <Share2 className="h-4 w-4 mr-2" />
+                  Social Share
+                </Button>
+                <Button variant="outline" className="justify-start">
+                  <Download className="h-4 w-4 mr-2" />
+                  Marketing Kit
+                </Button>
               </div>
-              <div className="flex justify-between items-center p-4 bg-blue-50 border border-blue-200 rounded-lg">
-                <span className="font-medium">Next Payout (April 15)</span>
-                <span className="text-xl font-bold text-blue-600">
-                  ${(stats.monthly_commission * 1.05).toLocaleString()}
-                </span>
+            </CardContent>
+          </Card>
+        </TabsContent>
+
+        <TabsContent value="payouts">
+          <Card>
+            <CardHeader>
+              <CardTitle>Payout History</CardTitle>
+              <CardDescription>Track your commission payments</CardDescription>
+            </CardHeader>
+            <CardContent>
+              <div className="space-y-3">
+                {[
+                  { date: "Mar 1, 2026", amount: 9450, status: "Paid" },
+                  { date: "Feb 1, 2026", amount: 8100, status: "Paid" },
+                  { date: "Jan 1, 2026", amount: 6750, status: "Paid" },
+                  { date: "Apr 1, 2026", amount: 9900, status: "Pending" },
+                ].map((payout, index) => (
+                  <div
+                    key={index}
+                    className="flex items-center justify-between p-4 border rounded-lg"
+                  >
+                    <div>
+                      <div className="font-semibold">{payout.date}</div>
+                      <div className="text-sm text-muted-foreground">Monthly commission</div>
+                    </div>
+                    <div className="flex items-center gap-4">
+                      <div className="text-right">
+                        <div className="font-semibold text-lg">
+                          ${(payout.amount / 1000).toFixed(1)}K
+                        </div>
+                      </div>
+                      <Badge
+                        className={
+                          payout.status === "Paid"
+                            ? "bg-green-100 text-green-800"
+                            : "bg-yellow-100 text-yellow-800"
+                        }
+                      >
+                        {payout.status}
+                      </Badge>
+                    </div>
+                  </div>
+                ))}
               </div>
             </CardContent>
           </Card>

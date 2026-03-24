@@ -1,4 +1,4 @@
- 
+/* eslint-disable @typescript-eslint/no-empty-object-type */
 export type Json =
   | string
   | number
@@ -2084,6 +2084,33 @@ export type Database = {
           },
         ]
       }
+      report_analytics: {
+        Row: {
+          active_templates: number | null
+          id: string
+          last_updated: string | null
+          organization_id: string | null
+          scheduled_reports: number | null
+          total_reports_generated: number | null
+        }
+        Insert: {
+          active_templates?: number | null
+          id?: string
+          last_updated?: string | null
+          organization_id?: string | null
+          scheduled_reports?: number | null
+          total_reports_generated?: number | null
+        }
+        Update: {
+          active_templates?: number | null
+          id?: string
+          last_updated?: string | null
+          organization_id?: string | null
+          scheduled_reports?: number | null
+          total_reports_generated?: number | null
+        }
+        Relationships: []
+      }
       report_deliverables: {
         Row: {
           created_at: string | null
@@ -2130,6 +2157,166 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      report_email_logs: {
+        Row: {
+          id: string
+          recipients: Json | null
+          report_id: string | null
+          sent_at: string | null
+          sent_by: string | null
+          status: string | null
+        }
+        Insert: {
+          id?: string
+          recipients?: Json | null
+          report_id?: string | null
+          sent_at?: string | null
+          sent_by?: string | null
+          status?: string | null
+        }
+        Update: {
+          id?: string
+          recipients?: Json | null
+          report_id?: string | null
+          sent_at?: string | null
+          sent_by?: string | null
+          status?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "report_email_logs_report_id_fkey"
+            columns: ["report_id"]
+            isOneToOne: false
+            referencedRelation: "report_history"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      report_history: {
+        Row: {
+          contract_ids: Json | null
+          created_at: string | null
+          format: string | null
+          generated_by: string | null
+          id: string
+          organization_id: string | null
+          report_count: number | null
+          status: string | null
+          template_id: string | null
+        }
+        Insert: {
+          contract_ids?: Json | null
+          created_at?: string | null
+          format?: string | null
+          generated_by?: string | null
+          id?: string
+          organization_id?: string | null
+          report_count?: number | null
+          status?: string | null
+          template_id?: string | null
+        }
+        Update: {
+          contract_ids?: Json | null
+          created_at?: string | null
+          format?: string | null
+          generated_by?: string | null
+          id?: string
+          organization_id?: string | null
+          report_count?: number | null
+          status?: string | null
+          template_id?: string | null
+        }
+        Relationships: []
+      }
+      report_schedules: {
+        Row: {
+          created_at: string | null
+          created_by: string | null
+          filters: Json | null
+          frequency: string
+          id: string
+          is_active: boolean | null
+          last_run: string | null
+          name: string
+          next_run: string | null
+          organization_id: string | null
+          recipients: Json | null
+          template_id: string | null
+        }
+        Insert: {
+          created_at?: string | null
+          created_by?: string | null
+          filters?: Json | null
+          frequency: string
+          id?: string
+          is_active?: boolean | null
+          last_run?: string | null
+          name: string
+          next_run?: string | null
+          organization_id?: string | null
+          recipients?: Json | null
+          template_id?: string | null
+        }
+        Update: {
+          created_at?: string | null
+          created_by?: string | null
+          filters?: Json | null
+          frequency?: string
+          id?: string
+          is_active?: boolean | null
+          last_run?: string | null
+          name?: string
+          next_run?: string | null
+          organization_id?: string | null
+          recipients?: Json | null
+          template_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "report_schedules_template_id_fkey"
+            columns: ["template_id"]
+            isOneToOne: false
+            referencedRelation: "report_templates"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      report_templates: {
+        Row: {
+          created_at: string | null
+          created_by: string | null
+          description: string | null
+          format: string | null
+          id: string
+          is_custom: boolean | null
+          name: string
+          organization_id: string | null
+          sections: Json | null
+        }
+        Insert: {
+          created_at?: string | null
+          created_by?: string | null
+          description?: string | null
+          format?: string | null
+          id?: string
+          is_custom?: boolean | null
+          name: string
+          organization_id?: string | null
+          sections?: Json | null
+        }
+        Update: {
+          created_at?: string | null
+          created_by?: string | null
+          description?: string | null
+          format?: string | null
+          id?: string
+          is_custom?: boolean | null
+          name?: string
+          organization_id?: string | null
+          sections?: Json | null
+        }
+        Relationships: []
       }
       security_incidents: {
         Row: {

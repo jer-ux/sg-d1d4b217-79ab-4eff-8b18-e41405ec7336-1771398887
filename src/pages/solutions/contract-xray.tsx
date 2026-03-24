@@ -202,7 +202,6 @@ export default function ContractXRayPage() {
         .from('contract_uploads')
         .insert({
           organization_id: orgId,
-          user_id: effectiveUserId,
           file_name: selectedFile.name,
           file_size: selectedFile.size,
           file_type: selectedFile.type || 'application/pdf',

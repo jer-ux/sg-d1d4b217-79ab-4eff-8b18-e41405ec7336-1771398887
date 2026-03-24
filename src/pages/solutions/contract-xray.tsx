@@ -218,12 +218,19 @@ export default function ContractXRayPage() {
       });
 
       // Start analysis
+      console.log("🔍 Starting analysis for contract:", uploadData.id);
       setTimeout(() => {
         startAnalysis(uploadData.id);
       }, 1000);
 
     } catch (error: any) {
       console.error("❌ Upload error:", error);
+      console.error("Error details:", {
+        message: error.message,
+        code: error.code,
+        details: error.details,
+        hint: error.hint
+      });
       setUploadError(error.message || "Upload failed. Please try again.");
       toast({
         title: "Upload Failed",
@@ -236,29 +243,31 @@ export default function ContractXRayPage() {
   };
 
   const startAnalysis = async (contractId: string) => {
+    console.log("📊 Starting analysis for contract ID:", contractId);
     setAnalyzing(true);
     setAnalysisProgress(0);
 
-    // Simulate AI analysis with realistic stages
-    const stages = [
-      { progress: 20, message: "Extracting text and provisions...", delay: 1500 },
-      { progress: 40, message: "Analyzing pricing structures...", delay: 1500 },
-      { progress: 60, message: "Identifying red flags...", delay: 1500 },
-      { progress: 80, message: "Calculating risk scores...", delay: 1500 },
-      { progress: 100, message: "Generating comprehensive report...", delay: 1500 }
-    ];
-
-    for (const stage of stages) {
-      setAnalysisStage(stage.message);
-      await new Promise(resolve => setTimeout(resolve, stage.delay));
-      setAnalysisProgress(stage.progress);
-    }
-
     try {
-      console.log("📊 Creating analysis results...");
+      // Simulate AI analysis with realistic stages
+      const stages = [
+        { progress: 20, message: "Extracting text and provisions...", delay: 1500 },
+        { progress: 40, message: "Analyzing pricing structures...", delay: 1500 },
+        { progress: 60, message: "Identifying red flags...", delay: 1500 },
+        { progress: 80, message: "Calculating risk scores...", delay: 1500 },
+        { progress: 100, message: "Generating comprehensive report...", delay: 1500 }
+      ];
+
+      for (const stage of stages) {
+        console.log(`📈 Analysis stage: ${stage.message} (${stage.progress}%)`);
+        setAnalysisStage(stage.message);
+        await new Promise(resolve => setTimeout(resolve, stage.delay));
+        setAnalysisProgress(stage.progress);
+      }
+
+      console.log("💾 Creating analysis results in database...");
 
       // Update contract status
-      await supabase
+      const { error: updateError } = await supabase
         .from('contract_uploads')
         .update({ 
           upload_status: 'completed',
@@ -266,8 +275,15 @@ export default function ContractXRayPage() {
         })
         .eq('id', contractId);
 
+      if (updateError) {
+        console.error("❌ Error updating contract status:", updateError);
+        throw new Error(`Failed to update contract status: ${updateError.message}`);
+      }
+
+      console.log("✅ Contract status updated to completed");
+
       // Insert comprehensive mock analysis results
-      await supabase
+      const { data: analysisData, error: analysisError } = await supabase
         .from('contract_analysis_results')
         .insert({
           upload_id: contractId,
@@ -297,9 +313,24 @@ export default function ContractXRayPage() {
               "Unclear administrative fee structure"
             ]
           }
-        });
+        })
+        .select()
+        .single();
 
-      console.log("✅ Analysis complete!");
+      if (analysisError) {
+        console.error("❌ Error creating analysis results:", analysisError);
+        console.error("Analysis error details:", {
+          message: analysisError.message,
+          code: analysisError.code,
+          details: analysisError.details,
+          hint: analysisError.hint
+        });
+        throw new Error(`Failed to create analysis results: ${analysisError.message}`);
+      }
+
+      console.log("✅ Analysis results created:", analysisData);
+      console.log("✅ Analysis complete! Redirecting to results page...");
+      
       setAnalyzing(false);
       
       toast({
@@ -309,17 +340,22 @@ export default function ContractXRayPage() {
 
       // Redirect to results after brief delay
       setTimeout(() => {
+        console.log("🔄 Redirecting to:", `/contract-analysis/${contractId}`);
         router.push(`/contract-analysis/${contractId}`);
       }, 2000);
 
     } catch (error: any) {
       console.error("❌ Analysis error:", error);
+      console.error("Full error object:", error);
+      
       toast({
         title: "Analysis Failed",
-        description: error.message || "There was an error analyzing your contract.",
+        description: error.message || "There was an error analyzing your contract. Please check the console for details.",
         variant: "destructive"
       });
+      
       setAnalyzing(false);
+      setUploadError(error.message || "Analysis failed. Please try again.");
     }
   };
 

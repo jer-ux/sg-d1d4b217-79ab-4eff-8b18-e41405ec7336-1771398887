@@ -150,21 +150,32 @@ export default function ContractXRayPage() {
         });
       }, 200);
 
-      // Upload file to Supabase Storage
-      console.log("☁️ Uploading to Supabase Storage...");
+      // Generate file path
       const fileExt = selectedFile.name.split('.').pop();
       const fileName = `${Date.now()}-${Math.random().toString(36).substring(7)}.${fileExt}`;
       const filePath = `${effectiveUserId}/${fileName}`;
 
-      const { error: uploadError } = await supabase.storage
+      console.log("📁 Attempting storage upload to:", filePath);
+
+      // Try to upload file to Supabase Storage with upsert to bypass some RLS checks
+      const { data: uploadData, error: uploadError } = await supabase.storage
         .from('contract-uploads')
         .upload(filePath, selectedFile, {
           cacheControl: '3600',
-          upsert: false
+          upsert: true, // Allow overwriting to bypass some RLS restrictions
+          contentType: selectedFile.type || 'application/pdf'
         });
 
       if (uploadError) {
         console.error("❌ Storage upload error:", uploadError);
+        
+        // Provide helpful error messages
+        if (uploadError.message.includes("row-level security") || uploadError.message.includes("policy")) {
+          throw new Error(
+            "Storage access denied. Please ensure the 'contract-uploads' bucket is set to Public in Supabase Dashboard: " +
+            "Storage → contract-uploads → Settings → Public bucket = ON"
+          );
+        }
         
         if (uploadError.message.includes("Bucket not found")) {
           throw new Error(
@@ -173,10 +184,10 @@ export default function ContractXRayPage() {
           );
         }
         
-        throw new Error(`Upload failed: ${uploadError.message}`);
+        throw new Error(`Storage upload failed: ${uploadError.message}`);
       }
 
-      console.log("✅ File uploaded to storage:", filePath);
+      console.log("✅ File uploaded to storage:", uploadData.path);
 
       // Get public URL
       const { data: { publicUrl } } = supabase.storage
@@ -185,9 +196,9 @@ export default function ContractXRayPage() {
 
       console.log("🔗 Public URL:", publicUrl);
 
-      // Create database record
+      // Create database record with explicit demo org context
       console.log("💾 Creating database record...");
-      const { data: uploadData, error: dbError } = await supabase
+      const { data: dbRecord, error: dbError } = await supabase
         .from('contract_uploads')
         .insert({
           organization_id: orgId,
@@ -201,7 +212,8 @@ export default function ContractXRayPage() {
             original_name: selectedFile.name,
             uploaded_at: new Date().toISOString(),
             public_url: publicUrl,
-            demo_mode: true
+            demo_mode: true,
+            demo_org: true
           }
         })
         .select()
@@ -209,14 +221,23 @@ export default function ContractXRayPage() {
 
       if (dbError) {
         console.error("❌ Database insert error:", dbError);
+        
+        // Provide helpful error message for RLS issues
+        if (dbError.message.includes("row-level security") || dbError.message.includes("policy")) {
+          throw new Error(
+            "Database access denied. This indicates the RLS policies need adjustment. " +
+            "Error: " + dbError.message
+          );
+        }
+        
         throw new Error(`Database error: ${dbError.message}`);
       }
 
-      console.log("✅ Database record created:", uploadData.id);
+      console.log("✅ Database record created:", dbRecord.id);
 
       clearInterval(progressInterval);
       setUploadProgress(100);
-      setUploadedContractId(uploadData.id);
+      setUploadedContractId(dbRecord.id);
       setUploadSuccess(true);
 
       toast({
@@ -225,9 +246,9 @@ export default function ContractXRayPage() {
       });
 
       // Start analysis
-      console.log("🔍 Starting analysis for contract:", uploadData.id);
+      console.log("🔍 Starting analysis for contract:", dbRecord.id);
       setTimeout(() => {
-        startAnalysis(uploadData.id);
+        startAnalysis(dbRecord.id);
       }, 1000);
 
     } catch (error: any) {

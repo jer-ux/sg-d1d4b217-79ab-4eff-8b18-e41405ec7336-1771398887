@@ -106,10 +106,15 @@ export default function ContractXRayPage() {
     console.log("✅ File selected:", file.name, `(${(file.size / 1024 / 1024).toFixed(2)} MB)`);
   };
 
-  const handleUploadClick = async () => {
-    console.log("🔵 Upload button clicked, opening modal...");
+  const handleUploadClick = () => {
+    console.log("🔵 Upload button clicked");
+    console.log("🔵 Current showUploadModal state:", showUploadModal);
     setShowUploadModal(true);
-    console.log("🔵 Modal state set to:", true);
+    console.log("🔵 Setting showUploadModal to true");
+    // Force a small delay to ensure state updates
+    setTimeout(() => {
+      console.log("🔵 Modal state after timeout:", showUploadModal);
+    }, 100);
   };
 
   const uploadContract = async () => {

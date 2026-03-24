@@ -41,9 +41,10 @@ export default async function handler(
 
     // Generate reports for each contract
     const reports = await Promise.all(
-      contracts.map(async (contract) => {
-        const detailedAnalysis = contract.detailed_analysis as any;
-        const analysisSummary = contract.analysis_summary as any;
+      contracts.map(async (c) => {
+        const contract = c as any;
+        const detailedAnalysis = contract.detailed_analysis;
+        const analysisSummary = contract.analysis_summary;
 
         const fullAnalysisResult = {
           overallScore: contract.overall_score,

@@ -16,7 +16,8 @@ import {
   CheckCircle2,
   Clock,
   Globe,
-  User
+  User,
+  FileText
 } from "lucide-react";
 
 interface SecuritySetting {

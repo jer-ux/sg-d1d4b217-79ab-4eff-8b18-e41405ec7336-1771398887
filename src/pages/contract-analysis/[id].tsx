@@ -135,18 +135,21 @@ export default function ContractAnalysisPage() {
     try {
       setGenerating(true);
 
+      const detailedAnalysis = (analysis as any).detailed_analysis;
+      const analysisSummary = (analysis as any).analysis_summary;
+
       const fullAnalysisResult = {
         overallScore: analysis.overall_score,
         riskLevel: analysis.risk_level as 'Low' | 'Medium' | 'High' | 'Critical',
-        provisions: analysis.detailed_analysis?.provisions || [],
-        redFlags: analysis.detailed_analysis?.redFlags || [],
-        criticalIssuesCount: analysis.analysis_summary?.critical_issues?.length || 0,
+        provisions: detailedAnalysis?.provisions || [],
+        redFlags: detailedAnalysis?.redFlags || [],
+        criticalIssuesCount: analysisSummary?.critical_issues?.length || 0,
         totalRedFlags: analysis.red_flags_count || 0,
         estimatedSavings: analysis.potential_savings || 0,
-        processingTime: analysis.detailed_analysis?.processingTime || 0,
+        processingTime: detailedAnalysis?.processingTime || 0,
         analyzedAt: new Date().toISOString(),
-        aiModel: analysis.detailed_analysis?.aiModel,
-        confidence: analysis.detailed_analysis?.confidence
+        aiModel: detailedAnalysis?.aiModel,
+        confidence: detailedAnalysis?.confidence
       };
 
       const html = generateExecutiveSummary(

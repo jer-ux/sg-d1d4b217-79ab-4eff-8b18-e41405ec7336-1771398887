@@ -124,6 +124,19 @@ export function generateExecutiveSummary(
   const companyName = options.companyName || "SiriusB iQ";
   const confidentiality = options.confidentialityLevel || "Confidential";
 
+  // Validate input data
+  if (!contractName || !pbmName) {
+    console.warn("Missing contract name or PBM name");
+  }
+
+  if (!analysis.provisions || analysis.provisions.length === 0) {
+    console.warn("No provisions found in analysis");
+  }
+
+  if (!analysis.redFlags || analysis.redFlags.length === 0) {
+    console.warn("No red flags found in analysis");
+  }
+
   const getScoreColor = (score: number): string => {
     if (score >= 80) return "#10b981";
     if (score >= 70) return "#3b82f6";
@@ -156,15 +169,25 @@ export function generateExecutiveSummary(
     day: "numeric",
   });
 
-  // Generate risk breakdown data
+  // Generate risk breakdown data with safe filtering
   const riskCategories = [
-    { name: "Critical", count: analysis.redFlags.filter(f => f.severity === "Critical").length },
-    { name: "High", count: analysis.redFlags.filter(f => f.severity === "High").length },
-    { name: "Medium", count: analysis.redFlags.filter(f => f.severity === "Medium").length },
-    { name: "Low", count: analysis.redFlags.filter(f => f.severity === "Low").length },
+    { name: "Critical", count: (analysis.redFlags || []).filter(f => f.severity === "Critical").length },
+    { name: "High", count: (analysis.redFlags || []).filter(f => f.severity === "High").length },
+    { name: "Medium", count: (analysis.redFlags || []).filter(f => f.severity === "Medium").length },
+    { name: "Low", count: (analysis.redFlags || []).filter(f => f.severity === "Low").length },
   ];
 
   const maxRiskCount = Math.max(...riskCategories.map(r => r.count), 1);
+
+  // Log report data for debugging
+  console.log("Generating report with data:", {
+    contractName,
+    pbmName,
+    provisionsCount: analysis.provisions?.length || 0,
+    redFlagsCount: analysis.redFlags?.length || 0,
+    overallScore,
+    potentialSavings,
+  });
 
   return `
 <!DOCTYPE html>
@@ -604,22 +627,28 @@ export function generateExecutiveSummary(
       <div class="page-number">Page 3 of 5</div>
     </div>
 
-    ${analysis.redFlags
-      .slice(0, 8)
-      .map(
-        (flag: RedFlag) => `
-      <div class="risk-flag">
-        <div class="risk-flag-header">
-          <div class="risk-flag-title">${flag.title}</div>
-          <div class="risk-badge" style="background-color: ${getRiskColor(flag.severity)}">
-            ${flag.severity}
+    ${analysis.redFlags && analysis.redFlags.length > 0
+      ? analysis.redFlags
+          .slice(0, 8)
+          .map(
+            (flag: RedFlag) => `
+          <div class="risk-flag">
+            <div class="risk-flag-header">
+              <div class="risk-flag-title">${flag.title || "Untitled Risk"}</div>
+              <div class="risk-badge" style="background-color: ${getRiskColor(flag.severity)}">
+                ${flag.severity || "Medium"}
+              </div>
+            </div>
+            <div class="risk-flag-description">${flag.description || "No description available"}</div>
           </div>
+        `
+          )
+          .join("")
+      : `
+        <div style="text-align: center; padding: 40px; color: #6b7280;">
+          <p>No critical risks identified in this analysis.</p>
         </div>
-        <div class="risk-flag-description">${flag.description}</div>
-      </div>
-    `
-      )
-      .join("")}
+      `}
 
     <div class="page-footer">
       <span>${companyName} - ${confidentiality}</span>
@@ -634,29 +663,35 @@ export function generateExecutiveSummary(
       <div class="page-number">Page 4 of 5</div>
     </div>
 
-    ${analysis.provisions
-      .slice(0, 10)
-      .map(
-        (provision: ProvisionAnalysis) => `
-      <div class="provision-item">
-        <div class="provision-header">
-          <div class="provision-title">${provision.name}</div>
-          <div class="provision-score" style="color: ${getScoreColor(provision.score)}">
-            ${provision.score}/100
+    ${analysis.provisions && analysis.provisions.length > 0
+      ? analysis.provisions
+          .slice(0, 10)
+          .map(
+            (provision: ProvisionAnalysis) => `
+          <div class="provision-item">
+            <div class="provision-header">
+              <div class="provision-title">${provision.name || "Untitled Provision"}</div>
+              <div class="provision-score" style="color: ${getScoreColor(provision.score)}">
+                ${provision.score || 0}/100
+              </div>
+            </div>
+            <div class="chart-bar-track">
+              <div 
+                class="chart-bar-fill" 
+                style="width: ${provision.score || 0}%; background-color: ${getScoreColor(provision.score)}"
+              >
+                ${provision.score || 0}%
+              </div>
+            </div>
           </div>
+        `
+          )
+          .join("")
+      : `
+        <div style="text-align: center; padding: 40px; color: #6b7280;">
+          <p>No provisions analyzed in this contract.</p>
         </div>
-        <div class="chart-bar-track">
-          <div 
-            class="chart-bar-fill" 
-            style="width: ${provision.score}%; background-color: ${getScoreColor(provision.score)}"
-          >
-            ${provision.score}%
-          </div>
-        </div>
-      </div>
-    `
-      )
-      .join("")}
+      `}
 
     <div class="page-footer">
       <span>${companyName} - ${confidentiality}</span>

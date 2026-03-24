@@ -510,7 +510,7 @@ export function BainRepeatabilityFramework() {
                     What's Working
                   </h4>
                   <ul className="space-y-1 text-sm text-muted-foreground">
-                    <li>• Enterprise customers (>$1B) show highest loyalty (NPS 85)</li>
+                    <li>• Enterprise customers (&gt;$1B) show highest loyalty (NPS 85)</li>
                     <li>• Healthcare payers strongly satisfied with platform (NPS 80)</li>
                     <li>• Overall NPS of 72 significantly exceeds SaaS benchmark (31)</li>
                   </ul>

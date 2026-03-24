@@ -471,16 +471,6 @@ export default function ContractXRayPage() {
                     </Button>
                   </Link>
                 </div>
-
-                {/* Demo Mode Indicator */}
-                {isDemoModeEnabled() && (
-                  <Alert className="mt-6 bg-green-500/10 border-green-500/20 max-w-md mx-auto text-left">
-                    <PlayCircle className="h-4 w-4 text-green-400" />
-                    <AlertDescription className="text-green-300">
-                      Demo mode enabled - no authentication required for testing
-                    </AlertDescription>
-                  </Alert>
-                )}
               </div>
             </div>
           </section>

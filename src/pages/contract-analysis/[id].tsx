@@ -9,6 +9,23 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { 
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
+import { Label } from "@/components/ui/label";
+import { Input } from "@/components/ui/input";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import { supabase } from "@/integrations/supabase/client";
 import { 
   FileText, 
@@ -20,9 +37,10 @@ import {
   Shield,
   Target,
   BarChart3,
-  FileCheck
+  FileCheck,
+  FileDown
 } from "lucide-react";
-import { generateExecutiveSummary, downloadReport } from "@/lib/contracts/reportGenerator";
+import { generateExecutiveSummary, generatePDFReport, downloadHTMLReport } from "@/lib/contracts/reportGenerator";
 import type { ProvisionAnalysis, RedFlag } from "@/lib/contracts/types";
 
 // Dynamic import to avoid SSR issues with react-pdf
@@ -63,6 +81,14 @@ export default function ContractAnalysisPage() {
   const [analysis, setAnalysis] = useState<AnalysisResult | null>(null);
   const [loading, setLoading] = useState(true);
   const [pdfUrl, setPdfUrl] = useState<string>("");
+  const [generating, setGenerating] = useState(false);
+  const [reportDialogOpen, setReportDialogOpen] = useState(false);
+  const [reportOptions, setReportOptions] = useState({
+    format: "pdf",
+    companyName: "SiriusB iQ",
+    confidentialityLevel: "Confidential",
+    theme: "professional",
+  });
 
   useEffect(() => {
     if (id) {
@@ -103,41 +129,66 @@ export default function ContractAnalysisPage() {
     }
   }
 
-  const handleDownloadReport = () => {
+  const handleDownloadReport = async () => {
     if (!analysis) return;
 
-    const fullAnalysisResult = {
-      overallScore: analysis.overall_score,
-      riskLevel: analysis.risk_level as 'Low' | 'Medium' | 'High' | 'Critical',
-      provisions: analysis.detailed_analysis?.provisions || [],
-      redFlags: analysis.detailed_analysis?.redFlags || [],
-      criticalIssuesCount: analysis.analysis_summary?.critical_issues?.length || 0,
-      totalRedFlags: analysis.red_flags_count || 0,
-      estimatedSavings: analysis.potential_savings || 0,
-      processingTime: analysis.detailed_analysis?.processingTime || 0,
-      analyzedAt: new Date().toISOString(),
-      aiModel: analysis.detailed_analysis?.aiModel,
-      confidence: analysis.detailed_analysis?.confidence
-    };
+    try {
+      setGenerating(true);
 
-    const html = generateExecutiveSummary(
-      analysis.contract_name,
-      analysis.pbm_name,
-      fullAnalysisResult,
-      {
-        financial: 75,
-        legal: 80,
-        operational: 70,
-        compliance: 85,
-        overall: analysis.overall_score
-      },
-      analysis.overall_score,
-      analysis.potential_savings,
-      analysis.annual_cost_estimate
-    );
+      const fullAnalysisResult = {
+        overallScore: analysis.overall_score,
+        riskLevel: analysis.risk_level as 'Low' | 'Medium' | 'High' | 'Critical',
+        provisions: analysis.detailed_analysis?.provisions || [],
+        redFlags: analysis.detailed_analysis?.redFlags || [],
+        criticalIssuesCount: analysis.analysis_summary?.critical_issues?.length || 0,
+        totalRedFlags: analysis.red_flags_count || 0,
+        estimatedSavings: analysis.potential_savings || 0,
+        processingTime: analysis.detailed_analysis?.processingTime || 0,
+        analyzedAt: new Date().toISOString(),
+        aiModel: analysis.detailed_analysis?.aiModel,
+        confidence: analysis.detailed_analysis?.confidence
+      };
 
-    const filename = `${analysis.contract_name.replace(/\s+/g, "_")}_Analysis_Report.html`;
-    downloadReport(html, filename);
+      const html = generateExecutiveSummary(
+        analysis.contract_name,
+        analysis.pbm_name,
+        fullAnalysisResult,
+        {
+          financial: 75,
+          legal: 80,
+          operational: 70,
+          compliance: 85,
+          overall: analysis.overall_score
+        },
+        analysis.overall_score,
+        analysis.potential_savings,
+        analysis.annual_cost_estimate,
+        {
+          companyName: reportOptions.companyName,
+          confidentialityLevel: reportOptions.confidentialityLevel as any,
+          theme: reportOptions.theme as any,
+        }
+      );
+
+      const baseFilename = `${analysis.contract_name.replace(/\s+/g, "_")}_Analysis_Report`;
+
+      if (reportOptions.format === "pdf") {
+        await generatePDFReport(html, `${baseFilename}.pdf`, {
+          companyName: reportOptions.companyName,
+          confidentialityLevel: reportOptions.confidentialityLevel as any,
+          watermark: reportOptions.confidentialityLevel === "Highly Confidential" ? "CONFIDENTIAL" : undefined,
+        });
+      } else {
+        downloadHTMLReport(html, `${baseFilename}.html`);
+      }
+
+      setReportDialogOpen(false);
+    } catch (error) {
+      console.error("Error generating report:", error);
+      alert("Failed to generate report. Please try again.");
+    } finally {
+      setGenerating(false);
+    }
   };
 
   const getRiskColor = (riskLevel: string) => {
@@ -225,10 +276,125 @@ export default function ContractAnalysisPage() {
                     <Share2 className="h-4 w-4 mr-2" />
                     Share
                   </Button>
-                  <Button variant="outline" size="sm" onClick={handleDownloadReport}>
-                    <Download className="h-4 w-4 mr-2" />
-                    Download Report
-                  </Button>
+                  
+                  <Dialog open={reportDialogOpen} onOpenChange={setReportDialogOpen}>
+                    <DialogTrigger asChild>
+                      <Button variant="outline" size="sm">
+                        <Download className="h-4 w-4 mr-2" />
+                        Download Report
+                      </Button>
+                    </DialogTrigger>
+                    <DialogContent className="sm:max-w-[500px]">
+                      <DialogHeader>
+                        <DialogTitle>Download Analysis Report</DialogTitle>
+                        <DialogDescription>
+                          Configure your report options and download format
+                        </DialogDescription>
+                      </DialogHeader>
+                      
+                      <div className="space-y-4 py-4">
+                        <div className="space-y-2">
+                          <Label htmlFor="format">Report Format</Label>
+                          <Select
+                            value={reportOptions.format}
+                            onValueChange={(value) => 
+                              setReportOptions({ ...reportOptions, format: value })
+                            }
+                          >
+                            <SelectTrigger id="format">
+                              <SelectValue />
+                            </SelectTrigger>
+                            <SelectContent>
+                              <SelectItem value="pdf">
+                                <div className="flex items-center gap-2">
+                                  <FileDown className="h-4 w-4" />
+                                  PDF Document (Recommended)
+                                </div>
+                              </SelectItem>
+                              <SelectItem value="html">
+                                <div className="flex items-center gap-2">
+                                  <FileText className="h-4 w-4" />
+                                  HTML Document
+                                </div>
+                              </SelectItem>
+                            </SelectContent>
+                          </Select>
+                        </div>
+
+                        <div className="space-y-2">
+                          <Label htmlFor="company">Company Name</Label>
+                          <Input
+                            id="company"
+                            value={reportOptions.companyName}
+                            onChange={(e) =>
+                              setReportOptions({ ...reportOptions, companyName: e.target.value })
+                            }
+                          />
+                        </div>
+
+                        <div className="space-y-2">
+                          <Label htmlFor="confidentiality">Confidentiality Level</Label>
+                          <Select
+                            value={reportOptions.confidentialityLevel}
+                            onValueChange={(value) =>
+                              setReportOptions({ ...reportOptions, confidentialityLevel: value })
+                            }
+                          >
+                            <SelectTrigger id="confidentiality">
+                              <SelectValue />
+                            </SelectTrigger>
+                            <SelectContent>
+                              <SelectItem value="Public">Public</SelectItem>
+                              <SelectItem value="Internal">Internal</SelectItem>
+                              <SelectItem value="Confidential">Confidential</SelectItem>
+                              <SelectItem value="Highly Confidential">Highly Confidential</SelectItem>
+                            </SelectContent>
+                          </Select>
+                        </div>
+
+                        <div className="space-y-2">
+                          <Label htmlId="theme">Report Theme</Label>
+                          <Select
+                            value={reportOptions.theme}
+                            onValueChange={(value) =>
+                              setReportOptions({ ...reportOptions, theme: value })
+                            }
+                          >
+                            <SelectTrigger id="theme">
+                              <SelectValue />
+                            </SelectTrigger>
+                            <SelectContent>
+                              <SelectItem value="professional">Professional</SelectItem>
+                              <SelectItem value="modern">Modern</SelectItem>
+                              <SelectItem value="classic">Classic</SelectItem>
+                            </SelectContent>
+                          </Select>
+                        </div>
+                      </div>
+
+                      <div className="flex justify-end gap-2">
+                        <Button
+                          variant="outline"
+                          onClick={() => setReportDialogOpen(false)}
+                        >
+                          Cancel
+                        </Button>
+                        <Button
+                          onClick={handleDownloadReport}
+                          disabled={generating}
+                        >
+                          {generating ? (
+                            <>Generating...</>
+                          ) : (
+                            <>
+                              <Download className="h-4 w-4 mr-2" />
+                              Download
+                            </>
+                          )}
+                        </Button>
+                      </div>
+                    </DialogContent>
+                  </Dialog>
                 </div>
               </div>
 

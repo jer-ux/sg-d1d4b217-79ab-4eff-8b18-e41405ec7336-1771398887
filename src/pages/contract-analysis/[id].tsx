@@ -100,10 +100,24 @@ export default function ContractAnalysisPage() {
   const handleDownloadReport = () => {
     if (!analysis) return;
 
+    const fullAnalysisResult = {
+      overallScore: analysis.overall_score,
+      riskLevel: analysis.risk_level as 'Low' | 'Medium' | 'High' | 'Critical',
+      provisions: analysis.detailed_analysis?.provisions || [],
+      redFlags: analysis.detailed_analysis?.redFlags || [],
+      criticalIssuesCount: analysis.analysis_summary?.critical_issues?.length || 0,
+      totalRedFlags: analysis.red_flags_count || 0,
+      estimatedSavings: analysis.potential_savings || 0,
+      processingTime: analysis.detailed_analysis?.processingTime || 0,
+      analyzedAt: new Date().toISOString(),
+      aiModel: analysis.detailed_analysis?.aiModel,
+      confidence: analysis.detailed_analysis?.confidence
+    };
+
     const html = generateExecutiveSummary(
       analysis.contract_name,
       analysis.pbm_name,
-      analysis.detailed_analysis,
+      fullAnalysisResult,
       {
         financial: 75,
         legal: 80,

@@ -107,7 +107,9 @@ export default function ContractXRayPage() {
   };
 
   const handleUploadClick = async () => {
+    console.log("🔵 Upload button clicked, opening modal...");
     setShowUploadModal(true);
+    console.log("🔵 Modal state set to:", true);
   };
 
   const uploadContract = async () => {

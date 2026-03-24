@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import Head from "next/head";
 import { useRouter } from "next/router";
+import dynamic from "next/dynamic";
 import { SiteHeader } from "@/components/site/SiteHeader";
 import { SiteFooter } from "@/components/site/SiteFooter";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
@@ -21,9 +22,14 @@ import {
   BarChart3,
   FileCheck
 } from "lucide-react";
-import { PDFViewerWithHighlights } from "@/components/contracts/PDFViewerWithHighlights";
 import { generateExecutiveSummary, downloadReport } from "@/lib/contracts/reportGenerator";
 import type { ProvisionAnalysis, RedFlag } from "@/lib/contracts/types";
+
+// Dynamic import to avoid SSR issues with react-pdf
+const PDFViewerWithHighlights = dynamic(
+  () => import("@/components/contracts/PDFViewerWithHighlights").then(mod => ({ default: mod.PDFViewerWithHighlights })),
+  { ssr: false }
+);
 
 interface AnalysisResult {
   id: string;

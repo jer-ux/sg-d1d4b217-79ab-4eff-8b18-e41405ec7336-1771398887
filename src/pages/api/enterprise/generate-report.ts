@@ -55,19 +55,22 @@ export default async function handler(
 
     // For single contract, generate detailed report
     if (contracts.length === 1) {
-      const contract = contracts[0];
+      const contract = contracts[0] as any;
+      const detailedAnalysis = contract.detailed_analysis;
+      const analysisSummary = contract.analysis_summary;
+
       const fullAnalysisResult = {
         overallScore: contract.overall_score,
         riskLevel: contract.risk_level as 'Low' | 'Medium' | 'High' | 'Critical',
-        provisions: contract.detailed_analysis?.provisions || [],
-        redFlags: contract.detailed_analysis?.redFlags || [],
-        criticalIssuesCount: contract.analysis_summary?.critical_issues?.length || 0,
+        provisions: detailedAnalysis?.provisions || [],
+        redFlags: detailedAnalysis?.redFlags || [],
+        criticalIssuesCount: analysisSummary?.critical_issues?.length || 0,
         totalRedFlags: contract.red_flags_count || 0,
         estimatedSavings: contract.potential_savings || 0,
-        processingTime: contract.detailed_analysis?.processingTime || 0,
+        processingTime: detailedAnalysis?.processingTime || 0,
         analyzedAt: new Date().toISOString(),
-        aiModel: contract.detailed_analysis?.aiModel,
-        confidence: contract.detailed_analysis?.confidence
+        aiModel: detailedAnalysis?.aiModel,
+        confidence: detailedAnalysis?.confidence
       };
 
       const html = generateExecutiveSummary(

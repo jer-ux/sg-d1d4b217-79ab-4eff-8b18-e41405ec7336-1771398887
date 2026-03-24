@@ -3,9 +3,9 @@
  * Role-based access control and enterprise features
  */
 
-import { createMiddlewareClient } from "@supabase/auth-helpers-nextjs";
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
+import { supabase } from "@/integrations/supabase/client";
 
 export interface EnterpriseUser {
   id: string;
@@ -98,9 +98,6 @@ export async function verifyEnterpriseSession(
   request: NextRequest
 ): Promise<EnterpriseSession | null> {
   try {
-    const res = NextResponse.next();
-    const supabase = createMiddlewareClient({ req: request, res });
-
     const {
       data: { session },
     } = await supabase.auth.getSession();
@@ -133,17 +130,17 @@ export async function verifyEnterpriseSession(
     return {
       user: {
         id: profile.id,
-        email: profile.email,
-        role: profile.role || "user",
-        organization_id: profile.organization_id,
-        permissions: profile.permissions || [],
-        subscription_tier: profile.organizations.subscription_tier,
+        email: profile.email || "",
+        role: (profile as any).role || "user",
+        organization_id: (profile as any).organization_id,
+        permissions: (profile as any).permissions || [],
+        subscription_tier: (profile as any).organizations.subscription_tier,
       },
       organization: {
-        id: profile.organizations.id,
-        name: profile.organizations.name,
-        tier: profile.organizations.subscription_tier,
-        features: profile.organizations.features || [],
+        id: (profile as any).organizations.id,
+        name: (profile as any).organizations.name,
+        tier: (profile as any).organizations.subscription_tier,
+        features: (profile as any).organizations.features || [],
       },
     };
   } catch (error) {

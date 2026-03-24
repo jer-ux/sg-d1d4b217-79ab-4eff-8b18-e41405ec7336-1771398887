@@ -12,24 +12,24 @@ type ReportHistory = Database["public"]["Tables"]["report_history"]["Row"];
 export interface ReportTemplate {
   id: string;
   name: string;
-  description: string;
-  sections: string[];
-  format: "pdf" | "html" | "excel";
-  is_custom: boolean;
-  created_by?: string;
-  organization_id?: string;
+  description: string | null;
+  sections: any;
+  format: string | null;
+  is_custom: boolean | null;
+  created_by?: string | null;
+  organization_id?: string | null;
 }
 
 export interface ScheduledReport {
   id: string;
   name: string;
-  template_id: string;
-  frequency: "daily" | "weekly" | "monthly" | "quarterly";
-  recipients: string[];
-  filters?: Record<string, any>;
-  next_run: string;
-  last_run?: string;
-  is_active: boolean;
+  template_id: string | null;
+  frequency: string;
+  recipients: any;
+  filters?: any;
+  next_run: string | null;
+  last_run?: string | null;
+  is_active: boolean | null;
 }
 
 export interface ReportGenerationOptions {
@@ -78,7 +78,7 @@ export class EnterpriseReportingService {
   ): Promise<ReportTemplate | null> {
     const { data, error } = await supabase
       .from("report_templates")
-      .insert(template)
+      .insert(template as any)
       .select()
       .single();
 
@@ -116,7 +116,7 @@ export class EnterpriseReportingService {
   ): Promise<ScheduledReport | null> {
     const { data, error } = await supabase
       .from("report_schedules")
-      .insert(schedule)
+      .insert(schedule as any)
       .select()
       .single();
 
@@ -137,7 +137,7 @@ export class EnterpriseReportingService {
   ): Promise<boolean> {
     const { error } = await supabase
       .from("report_schedules")
-      .update(updates)
+      .update(updates as any)
       .eq("id", id);
 
     if (error) {

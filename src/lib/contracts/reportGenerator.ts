@@ -610,7 +610,7 @@ export function generateExecutiveSummary(
         (flag: RedFlag) => `
       <div class="risk-flag">
         <div class="risk-flag-header">
-          <div class="risk-flag-title">${flag.issue}</div>
+          <div class="risk-flag-title">${flag.title}</div>
           <div class="risk-badge" style="background-color: ${getRiskColor(flag.severity)}">
             ${flag.severity}
           </div>
@@ -640,7 +640,7 @@ export function generateExecutiveSummary(
         (provision: ProvisionAnalysis) => `
       <div class="provision-item">
         <div class="provision-header">
-          <div class="provision-title">${provision.type}</div>
+          <div class="provision-title">${provision.name}</div>
           <div class="provision-score" style="color: ${getScoreColor(provision.score)}">
             ${provision.score}/100
           </div>

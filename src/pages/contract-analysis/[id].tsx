@@ -353,7 +353,7 @@ export default function ContractAnalysisPage() {
                         </div>
 
                         <div className="space-y-2">
-                          <Label htmlId="theme">Report Theme</Label>
+                          <Label htmlFor="theme">Report Theme</Label>
                           <Select
                             value={reportOptions.theme}
                             onValueChange={(value) =>

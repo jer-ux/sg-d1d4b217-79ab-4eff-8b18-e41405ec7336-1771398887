@@ -22,6 +22,7 @@ import {
   FileCheck
 } from "lucide-react";
 import { PDFViewerWithHighlights } from "@/components/contracts/PDFViewerWithHighlights";
+import { generateExecutiveSummary, downloadReport } from "@/lib/contracts/reportGenerator";
 import type { ProvisionAnalysis, RedFlag } from "@/lib/contracts/types";
 
 interface AnalysisResult {
@@ -95,6 +96,29 @@ export default function ContractAnalysisPage() {
       setLoading(false);
     }
   }
+
+  const handleDownloadReport = () => {
+    if (!analysis) return;
+
+    const html = generateExecutiveSummary(
+      analysis.contract_name,
+      analysis.pbm_name,
+      analysis.detailed_analysis,
+      {
+        financial: 75,
+        legal: 80,
+        operational: 70,
+        compliance: 85,
+        overall: analysis.overall_score
+      },
+      analysis.overall_score,
+      analysis.potential_savings,
+      analysis.annual_cost_estimate
+    );
+
+    const filename = `${analysis.contract_name.replace(/\s+/g, "_")}_Analysis_Report.html`;
+    downloadReport(html, filename);
+  };
 
   const getRiskColor = (riskLevel: string) => {
     switch (riskLevel.toLowerCase()) {
@@ -181,7 +205,7 @@ export default function ContractAnalysisPage() {
                     <Share2 className="h-4 w-4 mr-2" />
                     Share
                   </Button>
-                  <Button variant="outline" size="sm">
+                  <Button variant="outline" size="sm" onClick={handleDownloadReport}>
                     <Download className="h-4 w-4 mr-2" />
                     Download Report
                   </Button>

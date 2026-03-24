@@ -1,376 +1,548 @@
+/**
+ * A/B Test Results Dashboard
+ * Interactive analytics with drill-downs and tooltips
+ */
+
+import { useState } from "react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Progress } from "@/components/ui/progress";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { TrendingUp, TrendingDown, AlertCircle, CheckCircle2, Crown, BarChart3, Users, DollarSign } from "lucide-react";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import {
+  TrendingUp,
+  TrendingDown,
+  Users,
+  DollarSign,
+  Target,
+  ChevronDown,
+  ChevronUp,
+  Info,
+  Download,
+  Filter,
+} from "lucide-react";
 
-interface ABTestResult {
+interface ABTestMetric {
   id: string;
   name: string;
+  variantA: number;
+  variantB: number;
+  improvement: number;
+  confidence: number;
+  sampleSize: number;
   status: "running" | "completed" | "paused";
-  start_date: string;
-  end_date: string | null;
-  hypothesis: string;
-  variant_a: {
-    name: string;
-    price: string;
-    sample_size: number;
-    conversions: number;
-    conversion_rate: number;
-    revenue: number;
-    avg_deal_size: number;
-  };
-  variant_b: {
-    name: string;
-    price: string;
-    sample_size: number;
-    conversions: number;
-    conversion_rate: number;
-    revenue: number;
-    avg_deal_size: number;
-  };
-  statistical_significance: number;
-  winner: "a" | "b" | null;
-  revenue_impact: string;
-  recommendation: string;
 }
 
-interface ABTestResultsProps {
-  tests: ABTestResult[];
+interface DrillDownData {
+  segment: string;
+  variantA: number;
+  variantB: number;
+  improvement: number;
+  users: number;
 }
 
-export function ABTestResults({ tests }: ABTestResultsProps) {
-  const calculateLift = (variantA: number, variantB: number) => {
-    const lift = ((variantB - variantA) / variantA) * 100;
-    return lift;
+export function ABTestResults() {
+  const [selectedTest, setSelectedTest] = useState<string>("pricing-tiers");
+  const [timeRange, setTimeRange] = useState<string>("7d");
+  const [expandedMetric, setExpandedMetric] = useState<string | null>(null);
+  const [hoveredBar, setHoveredBar] = useState<string | null>(null);
+
+  // Mock A/B test data
+  const tests: ABTestMetric[] = [
+    {
+      id: "pricing-tiers",
+      name: "Pricing Tier Display",
+      variantA: 12.4,
+      variantB: 15.8,
+      improvement: 27.4,
+      confidence: 95,
+      sampleSize: 5420,
+      status: "completed",
+    },
+    {
+      id: "cta-button",
+      name: "CTA Button Color",
+      variantA: 8.2,
+      variantB: 11.3,
+      improvement: 37.8,
+      confidence: 98,
+      sampleSize: 8930,
+      status: "completed",
+    },
+    {
+      id: "feature-highlight",
+      name: "Feature Highlighting",
+      variantA: 22.1,
+      variantB: 19.8,
+      improvement: -10.4,
+      confidence: 91,
+      sampleSize: 3210,
+      status: "running",
+    },
+    {
+      id: "trial-duration",
+      name: "Trial Duration Copy",
+      variantA: 5.6,
+      variantB: 7.9,
+      improvement: 41.1,
+      confidence: 99,
+      sampleSize: 12400,
+      status: "completed",
+    },
+  ];
+
+  // Drill-down data by segment
+  const drillDownData: Record<string, DrillDownData[]> = {
+    "pricing-tiers": [
+      { segment: "Enterprise", variantA: 18.2, variantB: 24.5, improvement: 34.6, users: 1240 },
+      { segment: "SMB", variantA: 10.8, variantB: 12.4, improvement: 14.8, users: 2890 },
+      { segment: "Startup", variantA: 8.1, variantB: 11.2, improvement: 38.3, users: 1290 },
+    ],
+    "cta-button": [
+      { segment: "Desktop", variantA: 9.4, variantB: 13.2, improvement: 40.4, users: 5120 },
+      { segment: "Mobile", variantA: 6.8, variantB: 9.1, improvement: 33.8, users: 3810 },
+    ],
+    "feature-highlight": [
+      { segment: "New Users", variantA: 28.4, variantB: 31.2, improvement: 9.9, users: 1580 },
+      { segment: "Returning", variantA: 18.7, variantB: 14.2, improvement: -24.1, users: 1630 },
+    ],
+    "trial-duration": [
+      { segment: "Tech Industry", variantA: 6.8, variantB: 9.4, improvement: 38.2, users: 4820 },
+      { segment: "Healthcare", variantA: 4.2, variantB: 6.1, improvement: 45.2, users: 3910 },
+      { segment: "Finance", variantA: 5.9, variantB: 8.2, improvement: 39.0, users: 3670 },
+    ],
   };
 
-  const getSignificanceColor = (significance: number) => {
-    if (significance >= 95) return "text-green-600";
-    if (significance >= 80) return "text-yellow-600";
+  const currentTest = tests.find((t) => t.id === selectedTest);
+  const currentDrillDown = drillDownData[selectedTest] || [];
+
+  const getImprovementColor = (improvement: number) => {
+    if (improvement > 20) return "text-green-600";
+    if (improvement > 0) return "text-blue-600";
     return "text-red-600";
   };
 
-  const getSignificanceLabel = (significance: number) => {
-    if (significance >= 95) return "Ready to deploy";
-    if (significance >= 80) return "Continue monitoring";
-    return "Insufficient data";
+  const getConfidenceColor = (confidence: number) => {
+    if (confidence >= 95) return "bg-green-100 text-green-800";
+    if (confidence >= 90) return "bg-yellow-100 text-yellow-800";
+    return "bg-red-100 text-red-800";
+  };
+
+  const getStatusColor = (status: string) => {
+    if (status === "completed") return "bg-green-100 text-green-800";
+    if (status === "running") return "bg-blue-100 text-blue-800";
+    return "bg-gray-100 text-gray-800";
   };
 
   return (
     <div className="space-y-6">
-      {tests.map((test) => {
-        const conversionLift = calculateLift(test.variant_a.conversion_rate, test.variant_b.conversion_rate);
-        const revenueLift = calculateLift(test.variant_a.revenue, test.variant_b.revenue);
-        const dealSizeLift = calculateLift(test.variant_a.avg_deal_size, test.variant_b.avg_deal_size);
+      {/* Header */}
+      <div className="flex items-center justify-between">
+        <div>
+          <h2 className="text-3xl font-bold">A/B Test Results</h2>
+          <p className="text-muted-foreground mt-1">
+            Interactive analytics with drill-down capabilities
+          </p>
+        </div>
+        <div className="flex items-center gap-3">
+          <Select value={timeRange} onValueChange={setTimeRange}>
+            <SelectTrigger className="w-32">
+              <SelectValue />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="24h">Last 24h</SelectItem>
+              <SelectItem value="7d">Last 7 days</SelectItem>
+              <SelectItem value="30d">Last 30 days</SelectItem>
+              <SelectItem value="90d">Last 90 days</SelectItem>
+            </SelectContent>
+          </Select>
+          <Button variant="outline" size="sm">
+            <Filter className="h-4 w-4 mr-2" />
+            Filters
+          </Button>
+          <Button variant="outline" size="sm">
+            <Download className="h-4 w-4 mr-2" />
+            Export
+          </Button>
+        </div>
+      </div>
 
-        return (
-          <Card key={test.id} className="border-2">
-            <CardHeader>
-              <div className="flex items-start justify-between">
-                <div className="flex-1">
-                  <div className="flex items-center gap-3 mb-2">
-                    <CardTitle>{test.name}</CardTitle>
-                    <Badge variant={test.status === "running" ? "default" : test.status === "completed" ? "secondary" : "outline"}>
-                      {test.status}
-                    </Badge>
-                    {test.winner && (
-                      <Badge className="bg-green-600">
-                        Winner: Variant {test.winner.toUpperCase()}
-                      </Badge>
-                    )}
-                  </div>
-                  <CardDescription className="mb-3">{test.hypothesis}</CardDescription>
-                  <div className="flex items-center gap-4 text-sm text-muted-foreground">
-                    <span>Started: {test.start_date}</span>
-                    {test.end_date && <span>Ended: {test.end_date}</span>}
-                    <span className={getSignificanceColor(test.statistical_significance)}>
-                      {test.statistical_significance}% confidence
-                    </span>
-                  </div>
+      {/* Test Selector */}
+      <Card>
+        <CardHeader>
+          <CardTitle>Active Tests</CardTitle>
+          <CardDescription>Select a test to view detailed analytics</CardDescription>
+        </CardHeader>
+        <CardContent>
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
+            {tests.map((test) => (
+              <button
+                key={test.id}
+                onClick={() => setSelectedTest(test.id)}
+                className={`p-4 rounded-lg border-2 text-left transition-all hover:shadow-md ${
+                  selectedTest === test.id
+                    ? "border-blue-500 bg-blue-50 dark:bg-blue-950"
+                    : "border-gray-200 hover:border-gray-300"
+                }`}
+              >
+                <div className="flex items-center justify-between mb-2">
+                  <Badge className={getStatusColor(test.status)}>
+                    {test.status}
+                  </Badge>
+                  {test.improvement > 0 ? (
+                    <TrendingUp className="h-4 w-4 text-green-600" />
+                  ) : (
+                    <TrendingDown className="h-4 w-4 text-red-600" />
+                  )}
                 </div>
-                <div className="text-right">
-                  <p className="text-3xl font-bold text-green-600">{test.revenue_impact}</p>
-                  <p className="text-sm text-muted-foreground">Projected Impact</p>
+                <h4 className="font-semibold text-sm mb-1">{test.name}</h4>
+                <div className={`text-2xl font-bold ${getImprovementColor(test.improvement)}`}>
+                  {test.improvement > 0 ? "+" : ""}
+                  {test.improvement.toFixed(1)}%
                 </div>
-              </div>
-            </CardHeader>
+                <p className="text-xs text-muted-foreground mt-1">
+                  {test.sampleSize.toLocaleString()} samples
+                </p>
+              </button>
+            ))}
+          </div>
+        </CardContent>
+      </Card>
 
-            <CardContent>
-              <Tabs defaultValue="comparison" className="space-y-4">
-                <TabsList className="grid w-full grid-cols-3">
-                  <TabsTrigger value="comparison">Comparison</TabsTrigger>
-                  <TabsTrigger value="analytics">Analytics</TabsTrigger>
-                  <TabsTrigger value="insights">Insights</TabsTrigger>
-                </TabsList>
+      {/* Main Analytics */}
+      {currentTest && (
+        <Tabs defaultValue="overview" className="space-y-6">
+          <TabsList>
+            <TabsTrigger value="overview">Overview</TabsTrigger>
+            <TabsTrigger value="segments">Segment Analysis</TabsTrigger>
+            <TabsTrigger value="timeline">Timeline</TabsTrigger>
+            <TabsTrigger value="details">Details</TabsTrigger>
+          </TabsList>
 
-                <TabsContent value="comparison" className="space-y-4">
-                  <div className="grid md:grid-cols-2 gap-6">
-                    {/* Variant A */}
-                    <div className="space-y-4">
-                      <div className={`flex items-center justify-between p-4 rounded-lg ${test.winner === "a" ? "bg-green-50 border-2 border-green-600" : "bg-blue-50"}`}>
-                        <div>
-                          <p className="text-sm font-medium text-muted-foreground">Variant A (Control)</p>
-                          <p className="text-2xl font-bold">{test.variant_a.price}</p>
-                          <p className="text-xs text-muted-foreground">{test.variant_a.name}</p>
-                        </div>
-                        {test.winner === "a" && <Crown className="h-6 w-6 text-yellow-500" />}
+          <TabsContent value="overview" className="space-y-6">
+            {/* Key Metrics */}
+            <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+              <Card>
+                <CardHeader className="pb-3">
+                  <CardTitle className="text-sm font-medium flex items-center gap-2">
+                    <Target className="h-4 w-4" />
+                    Conversion Rate
+                    <div className="relative group ml-auto">
+                      <Info className="h-4 w-4 text-muted-foreground cursor-help" />
+                      <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 px-3 py-2 bg-gray-900 text-white text-xs rounded shadow-lg opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none whitespace-nowrap z-10">
+                        Percentage of users who completed the desired action
                       </div>
+                    </div>
+                  </CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <div className="text-2xl font-bold">{currentTest.variantB}%</div>
+                  <div className="flex items-center gap-2 mt-1">
+                    <Badge className={getImprovementColor(currentTest.improvement)}>
+                      {currentTest.improvement > 0 ? "+" : ""}
+                      {currentTest.improvement.toFixed(1)}%
+                    </Badge>
+                    <span className="text-xs text-muted-foreground">vs control</span>
+                  </div>
+                </CardContent>
+              </Card>
 
-                      <div className="space-y-3">
-                        <div className="flex justify-between items-center p-3 border rounded-lg">
-                          <span className="text-sm">Sample Size</span>
-                          <span className="font-bold">{test.variant_a.sample_size.toLocaleString()}</span>
+              <Card>
+                <CardHeader className="pb-3">
+                  <CardTitle className="text-sm font-medium flex items-center gap-2">
+                    <Users className="h-4 w-4" />
+                    Sample Size
+                    <div className="relative group ml-auto">
+                      <Info className="h-4 w-4 text-muted-foreground cursor-help" />
+                      <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 px-3 py-2 bg-gray-900 text-white text-xs rounded shadow-lg opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none whitespace-nowrap z-10">
+                        Total number of users in the test
+                      </div>
+                    </div>
+                  </CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <div className="text-2xl font-bold">
+                    {currentTest.sampleSize.toLocaleString()}
+                  </div>
+                  <p className="text-xs text-muted-foreground mt-1">unique users</p>
+                </CardContent>
+              </Card>
+
+              <Card>
+                <CardHeader className="pb-3">
+                  <CardTitle className="text-sm font-medium flex items-center gap-2">
+                    <TrendingUp className="h-4 w-4" />
+                    Confidence
+                    <div className="relative group ml-auto">
+                      <Info className="h-4 w-4 text-muted-foreground cursor-help" />
+                      <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 px-3 py-2 bg-gray-900 text-white text-xs rounded shadow-lg opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none whitespace-nowrap z-10">
+                        Statistical confidence level
+                      </div>
+                    </div>
+                  </CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <div className="text-2xl font-bold">{currentTest.confidence}%</div>
+                  <Badge className={getConfidenceColor(currentTest.confidence)} variant="outline">
+                    {currentTest.confidence >= 95 ? "High" : "Medium"}
+                  </Badge>
+                </CardContent>
+              </Card>
+
+              <Card>
+                <CardHeader className="pb-3">
+                  <CardTitle className="text-sm font-medium flex items-center gap-2">
+                    <DollarSign className="h-4 w-4" />
+                    Est. Impact
+                    <div className="relative group ml-auto">
+                      <Info className="h-4 w-4 text-muted-foreground cursor-help" />
+                      <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 px-3 py-2 bg-gray-900 text-white text-xs rounded shadow-lg opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none whitespace-nowrap z-10">
+                        Projected annual revenue impact
+                      </div>
+                    </div>
+                  </CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <div className="text-2xl font-bold">
+                    ${Math.round(currentTest.improvement * 10000).toLocaleString()}
+                  </div>
+                  <p className="text-xs text-muted-foreground mt-1">annual increase</p>
+                </CardContent>
+              </Card>
+            </div>
+
+            {/* Interactive Chart */}
+            <Card>
+              <CardHeader>
+                <CardTitle>Variant Comparison</CardTitle>
+                <CardDescription>
+                  Hover over bars for detailed metrics. Click to expand segment analysis.
+                </CardDescription>
+              </CardHeader>
+              <CardContent>
+                <div className="space-y-6">
+                  <div className="space-y-4">
+                    {/* Variant A */}
+                    <div className="relative">
+                      <div className="flex items-center justify-between mb-2">
+                        <div className="flex items-center gap-2">
+                          <div className="w-3 h-3 rounded-full bg-gray-400" />
+                          <span className="font-medium">Variant A (Control)</span>
                         </div>
-                        <div className="flex justify-between items-center p-3 border rounded-lg">
-                          <span className="text-sm">Conversions</span>
-                          <span className="font-bold">{test.variant_a.conversions}</span>
-                        </div>
-                        <div className="flex justify-between items-center p-3 border rounded-lg">
-                          <span className="text-sm">Conversion Rate</span>
-                          <span className="font-bold">{test.variant_a.conversion_rate}%</span>
-                        </div>
-                        <div className="flex justify-between items-center p-3 border rounded-lg">
-                          <span className="text-sm">Revenue</span>
-                          <span className="font-bold">${test.variant_a.revenue.toLocaleString()}</span>
-                        </div>
-                        <div className="flex justify-between items-center p-3 border rounded-lg">
-                          <span className="text-sm">Avg Deal Size</span>
-                          <span className="font-bold">${test.variant_a.avg_deal_size.toLocaleString()}</span>
-                        </div>
+                        <span className="text-sm font-semibold">{currentTest.variantA}%</span>
+                      </div>
+                      <div
+                        className="relative h-12 bg-gray-100 rounded-lg overflow-hidden cursor-pointer group"
+                        onMouseEnter={() => setHoveredBar("variant-a")}
+                        onMouseLeave={() => setHoveredBar(null)}
+                      >
+                        <div
+                          className="h-full bg-gray-400 transition-all group-hover:bg-gray-500"
+                          style={{ width: `${(currentTest.variantA / 25) * 100}%` }}
+                        />
+                        {hoveredBar === "variant-a" && (
+                          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-gray-900 text-white px-4 py-2 rounded shadow-lg text-sm whitespace-nowrap z-10">
+                            <div className="font-semibold">Variant A</div>
+                            <div>Conversion: {currentTest.variantA}%</div>
+                            <div>Users: {Math.round(currentTest.sampleSize * 0.5).toLocaleString()}</div>
+                          </div>
+                        )}
                       </div>
                     </div>
 
                     {/* Variant B */}
-                    <div className="space-y-4">
-                      <div className={`flex items-center justify-between p-4 rounded-lg ${test.winner === "b" ? "bg-green-50 border-2 border-green-600" : "bg-purple-50"}`}>
-                        <div>
-                          <p className="text-sm font-medium text-muted-foreground">Variant B (Test)</p>
-                          <p className="text-2xl font-bold">{test.variant_b.price}</p>
-                          <p className="text-xs text-muted-foreground">{test.variant_b.name}</p>
+                    <div className="relative">
+                      <div className="flex items-center justify-between mb-2">
+                        <div className="flex items-center gap-2">
+                          <div className="w-3 h-3 rounded-full bg-blue-500" />
+                          <span className="font-medium">Variant B (Test)</span>
                         </div>
-                        {test.winner === "b" && <Crown className="h-6 w-6 text-yellow-500" />}
+                        <span className="text-sm font-semibold">{currentTest.variantB}%</span>
                       </div>
-
-                      <div className="space-y-3">
-                        <div className="flex justify-between items-center p-3 border rounded-lg">
-                          <span className="text-sm">Sample Size</span>
-                          <span className="font-bold">{test.variant_b.sample_size.toLocaleString()}</span>
-                        </div>
-                        <div className="flex justify-between items-center p-3 border rounded-lg">
-                          <span className="text-sm">Conversions</span>
-                          <div className="flex items-center gap-2">
-                            <span className="font-bold">{test.variant_b.conversions}</span>
-                            {test.variant_b.conversions > test.variant_a.conversions ? (
-                              <TrendingUp className="h-4 w-4 text-green-600" />
-                            ) : (
-                              <TrendingDown className="h-4 w-4 text-red-600" />
-                            )}
+                      <div
+                        className="relative h-12 bg-blue-100 rounded-lg overflow-hidden cursor-pointer group"
+                        onMouseEnter={() => setHoveredBar("variant-b")}
+                        onMouseLeave={() => setHoveredBar(null)}
+                      >
+                        <div
+                          className="h-full bg-blue-500 transition-all group-hover:bg-blue-600"
+                          style={{ width: `${(currentTest.variantB / 25) * 100}%` }}
+                        />
+                        {hoveredBar === "variant-b" && (
+                          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-gray-900 text-white px-4 py-2 rounded shadow-lg text-sm whitespace-nowrap z-10">
+                            <div className="font-semibold">Variant B</div>
+                            <div>Conversion: {currentTest.variantB}%</div>
+                            <div>Users: {Math.round(currentTest.sampleSize * 0.5).toLocaleString()}</div>
+                            <div className="text-green-400">
+                              +{currentTest.improvement.toFixed(1)}% improvement
+                            </div>
                           </div>
-                        </div>
-                        <div className="flex justify-between items-center p-3 border rounded-lg">
-                          <span className="text-sm">Conversion Rate</span>
-                          <div className="flex items-center gap-2">
-                            <span className="font-bold">{test.variant_b.conversion_rate}%</span>
-                            <Badge variant={conversionLift > 0 ? "default" : "destructive"} className="text-xs">
-                              {conversionLift > 0 ? "+" : ""}{conversionLift.toFixed(1)}%
-                            </Badge>
-                          </div>
-                        </div>
-                        <div className="flex justify-between items-center p-3 border rounded-lg">
-                          <span className="text-sm">Revenue</span>
-                          <div className="flex items-center gap-2">
-                            <span className="font-bold">${test.variant_b.revenue.toLocaleString()}</span>
-                            <Badge variant={revenueLift > 0 ? "default" : "destructive"} className="text-xs">
-                              {revenueLift > 0 ? "+" : ""}{revenueLift.toFixed(1)}%
-                            </Badge>
-                          </div>
-                        </div>
-                        <div className="flex justify-between items-center p-3 border rounded-lg">
-                          <span className="text-sm">Avg Deal Size</span>
-                          <div className="flex items-center gap-2">
-                            <span className="font-bold">${test.variant_b.avg_deal_size.toLocaleString()}</span>
-                            <Badge variant={dealSizeLift > 0 ? "default" : "destructive"} className="text-xs">
-                              {dealSizeLift > 0 ? "+" : ""}{dealSizeLift.toFixed(1)}%
-                            </Badge>
-                          </div>
-                        </div>
+                        )}
                       </div>
                     </div>
                   </div>
+                </div>
+              </CardContent>
+            </Card>
+          </TabsContent>
 
-                  {/* Statistical Significance */}
-                  <div className="p-4 bg-slate-50 rounded-lg">
-                    <div className="flex items-center justify-between mb-3">
-                      <div className="flex items-center gap-2">
-                        <BarChart3 className="h-5 w-5 text-blue-600" />
-                        <span className="font-semibold">Statistical Significance</span>
-                      </div>
-                      <span className={`text-lg font-bold ${getSignificanceColor(test.statistical_significance)}`}>
-                        {test.statistical_significance}%
-                      </span>
-                    </div>
-                    <Progress value={test.statistical_significance} className="h-3 mb-2" />
-                    <div className="flex items-center justify-between text-sm">
-                      <span className="text-muted-foreground">
-                        Total sample: {(test.variant_a.sample_size + test.variant_b.sample_size).toLocaleString()} users
-                      </span>
-                      <span className={`font-semibold ${getSignificanceColor(test.statistical_significance)}`}>
-                        {getSignificanceLabel(test.statistical_significance)}
-                      </span>
-                    </div>
-                  </div>
-                </TabsContent>
-
-                <TabsContent value="analytics" className="space-y-4">
-                  <div className="grid md:grid-cols-3 gap-4">
-                    <Card>
-                      <CardHeader className="pb-3">
-                        <CardTitle className="text-sm flex items-center gap-2">
-                          <Users className="h-4 w-4 text-blue-600" />
-                          Conversion Lift
-                        </CardTitle>
-                      </CardHeader>
-                      <CardContent>
-                        <p className={`text-3xl font-bold ${conversionLift > 0 ? "text-green-600" : "text-red-600"}`}>
-                          {conversionLift > 0 ? "+" : ""}{conversionLift.toFixed(1)}%
-                        </p>
-                        <p className="text-xs text-muted-foreground mt-1">
-                          Variant B vs Control
-                        </p>
-                      </CardContent>
-                    </Card>
-
-                    <Card>
-                      <CardHeader className="pb-3">
-                        <CardTitle className="text-sm flex items-center gap-2">
-                          <DollarSign className="h-4 w-4 text-green-600" />
-                          Revenue Lift
-                        </CardTitle>
-                      </CardHeader>
-                      <CardContent>
-                        <p className={`text-3xl font-bold ${revenueLift > 0 ? "text-green-600" : "text-red-600"}`}>
-                          {revenueLift > 0 ? "+" : ""}{revenueLift.toFixed(1)}%
-                        </p>
-                        <p className="text-xs text-muted-foreground mt-1">
-                          Total revenue impact
-                        </p>
-                      </CardContent>
-                    </Card>
-
-                    <Card>
-                      <CardHeader className="pb-3">
-                        <CardTitle className="text-sm flex items-center gap-2">
-                          <TrendingUp className="h-4 w-4 text-purple-600" />
-                          Deal Size Lift
-                        </CardTitle>
-                      </CardHeader>
-                      <CardContent>
-                        <p className={`text-3xl font-bold ${dealSizeLift > 0 ? "text-green-600" : "text-red-600"}`}>
-                          {dealSizeLift > 0 ? "+" : ""}{dealSizeLift.toFixed(1)}%
-                        </p>
-                        <p className="text-xs text-muted-foreground mt-1">
-                          Average contract value
-                        </p>
-                      </CardContent>
-                    </Card>
-                  </div>
-
-                  <Card>
-                    <CardHeader>
-                      <CardTitle className="text-base">Performance Metrics Comparison</CardTitle>
-                    </CardHeader>
-                    <CardContent>
-                      <div className="space-y-3">
-                        <div>
-                          <div className="flex justify-between text-sm mb-1">
-                            <span>Conversion Rate Difference</span>
-                            <span className="font-semibold">
-                              {Math.abs(test.variant_b.conversion_rate - test.variant_a.conversion_rate).toFixed(2)}%
-                            </span>
+          <TabsContent value="segments" className="space-y-6">
+            <Card>
+              <CardHeader>
+                <CardTitle>Segment Drill-Down Analysis</CardTitle>
+                <CardDescription>
+                  Performance breakdown by user segment. Click segments for deeper insights.
+                </CardDescription>
+              </CardHeader>
+              <CardContent>
+                <div className="space-y-4">
+                  {currentDrillDown.map((segment, index) => (
+                    <div
+                      key={index}
+                      className="border rounded-lg p-4 hover:shadow-md transition-shadow cursor-pointer"
+                      onClick={() =>
+                        setExpandedMetric(expandedMetric === segment.segment ? null : segment.segment)
+                      }
+                    >
+                      <div className="flex items-center justify-between mb-3">
+                        <div className="flex items-center gap-3">
+                          <h4 className="font-semibold">{segment.segment}</h4>
+                          <Badge variant="outline">{segment.users.toLocaleString()} users</Badge>
+                        </div>
+                        <div className="flex items-center gap-3">
+                          <div className={`text-lg font-bold ${getImprovementColor(segment.improvement)}`}>
+                            {segment.improvement > 0 ? "+" : ""}
+                            {segment.improvement.toFixed(1)}%
                           </div>
-                          <div className="flex gap-2">
-                            <div className="flex-1 bg-blue-200 h-2 rounded-full" style={{ width: `${(test.variant_a.conversion_rate / Math.max(test.variant_a.conversion_rate, test.variant_b.conversion_rate)) * 100}%` }}></div>
-                            <div className="flex-1 bg-purple-200 h-2 rounded-full" style={{ width: `${(test.variant_b.conversion_rate / Math.max(test.variant_a.conversion_rate, test.variant_b.conversion_rate)) * 100}%` }}></div>
+                          {expandedMetric === segment.segment ? (
+                            <ChevronUp className="h-5 w-5" />
+                          ) : (
+                            <ChevronDown className="h-5 w-5" />
+                          )}
+                        </div>
+                      </div>
+
+                      <div className="grid grid-cols-2 gap-4">
+                        <div className="relative group">
+                          <div className="text-xs text-muted-foreground mb-1">Variant A</div>
+                          <div className="h-8 bg-gray-100 rounded overflow-hidden">
+                            <div
+                              className="h-full bg-gray-400 flex items-center justify-end pr-2"
+                              style={{ width: `${(segment.variantA / 35) * 100}%` }}
+                            >
+                              <span className="text-xs font-semibold text-white">
+                                {segment.variantA}%
+                              </span>
+                            </div>
                           </div>
                         </div>
-
-                        <div>
-                          <div className="flex justify-between text-sm mb-1">
-                            <span>Revenue per User</span>
-                            <span className="font-semibold">
-                              ${Math.abs((test.variant_b.revenue / test.variant_b.sample_size) - (test.variant_a.revenue / test.variant_a.sample_size)).toFixed(2)}
-                            </span>
-                          </div>
-                          <div className="flex gap-2">
-                            <div className="flex-1 bg-blue-200 h-2 rounded-full" style={{ width: `${((test.variant_a.revenue / test.variant_a.sample_size) / Math.max((test.variant_a.revenue / test.variant_a.sample_size), (test.variant_b.revenue / test.variant_b.sample_size))) * 100}%` }}></div>
-                            <div className="flex-1 bg-purple-200 h-2 rounded-full" style={{ width: `${((test.variant_b.revenue / test.variant_b.sample_size) / Math.max((test.variant_a.revenue / test.variant_a.sample_size), (test.variant_b.revenue / test.variant_b.sample_size))) * 100}%` }}></div>
+                        <div className="relative group">
+                          <div className="text-xs text-muted-foreground mb-1">Variant B</div>
+                          <div className="h-8 bg-blue-100 rounded overflow-hidden">
+                            <div
+                              className="h-full bg-blue-500 flex items-center justify-end pr-2"
+                              style={{ width: `${(segment.variantB / 35) * 100}%` }}
+                            >
+                              <span className="text-xs font-semibold text-white">
+                                {segment.variantB}%
+                              </span>
+                            </div>
                           </div>
                         </div>
                       </div>
-                    </CardContent>
-                  </Card>
-                </TabsContent>
 
-                <TabsContent value="insights" className="space-y-4">
-                  <Card>
-                    <CardHeader>
-                      <CardTitle className="text-base flex items-center gap-2">
-                        {test.winner ? <CheckCircle2 className="h-5 w-5 text-green-600" /> : <AlertCircle className="h-5 w-5 text-yellow-600" />}
-                        Test Recommendation
-                      </CardTitle>
-                    </CardHeader>
-                    <CardContent>
-                      <p className="text-muted-foreground mb-4">{test.recommendation}</p>
-                      {test.statistical_significance >= 95 ? (
-                        <Button className="w-full bg-green-600 hover:bg-green-700">
-                          <CheckCircle2 className="mr-2 h-4 w-4" />
-                          Deploy Winning Variant
-                        </Button>
-                      ) : test.statistical_significance >= 80 ? (
-                        <Button className="w-full" variant="outline">
-                          Continue Test (Need More Data)
-                        </Button>
-                      ) : (
-                        <Button className="w-full" variant="outline">
-                          Extend Test Duration
-                        </Button>
+                      {expandedMetric === segment.segment && (
+                        <div className="mt-4 pt-4 border-t space-y-2">
+                          <div className="text-sm">
+                            <strong>Detailed Metrics:</strong>
+                          </div>
+                          <div className="grid grid-cols-2 gap-4 text-sm">
+                            <div>
+                              <div className="text-muted-foreground">Sample Size</div>
+                              <div className="font-semibold">{segment.users.toLocaleString()}</div>
+                            </div>
+                            <div>
+                              <div className="text-muted-foreground">Confidence</div>
+                              <div className="font-semibold">
+                                {Math.min(95, 85 + Math.random() * 10).toFixed(1)}%
+                              </div>
+                            </div>
+                            <div>
+                              <div className="text-muted-foreground">Conversions (A)</div>
+                              <div className="font-semibold">
+                                {Math.round((segment.variantA / 100) * segment.users * 0.5)}
+                              </div>
+                            </div>
+                            <div>
+                              <div className="text-muted-foreground">Conversions (B)</div>
+                              <div className="font-semibold">
+                                {Math.round((segment.variantB / 100) * segment.users * 0.5)}
+                              </div>
+                            </div>
+                          </div>
+                        </div>
                       )}
-                    </CardContent>
-                  </Card>
+                    </div>
+                  ))}
+                </div>
+              </CardContent>
+            </Card>
+          </TabsContent>
 
-                  <Card>
-                    <CardHeader>
-                      <CardTitle className="text-base">Projected Annual Impact</CardTitle>
-                    </CardHeader>
-                    <CardContent className="space-y-3">
-                      <div className="flex justify-between items-center p-3 bg-slate-50 rounded">
-                        <span className="text-sm">If deployed today</span>
-                        <span className="font-bold">{test.revenue_impact} ARR</span>
-                      </div>
-                      <div className="flex justify-between items-center p-3 bg-blue-50 rounded">
-                        <span className="text-sm">At current growth rate</span>
-                        <span className="font-bold text-blue-600">
-                          {test.revenue_impact.replace(/[+-]/, (match) => match === "+" ? "+" : "-")}
-                          {(parseFloat(test.revenue_impact.replace(/[^0-9.]/g, "")) * 1.3).toFixed(0)}K ARR
-                        </span>
-                      </div>
-                      <div className="flex justify-between items-center p-3 bg-green-50 rounded">
-                        <span className="text-sm">12-month projection</span>
-                        <span className="font-bold text-green-600">
-                          {test.revenue_impact.replace(/[+-]/, (match) => match === "+" ? "+" : "-")}
-                          {(parseFloat(test.revenue_impact.replace(/[^0-9.]/g, "")) * 2.1).toFixed(0)}K ARR
-                        </span>
-                      </div>
-                    </CardContent>
-                  </Card>
-                </TabsContent>
-              </Tabs>
-            </CardContent>
-          </Card>
-        );
-      })}
+          <TabsContent value="timeline">
+            <Card>
+              <CardHeader>
+                <CardTitle>Performance Timeline</CardTitle>
+                <CardDescription>Conversion trends over time</CardDescription>
+              </CardHeader>
+              <CardContent>
+                <div className="h-64 flex items-center justify-center text-muted-foreground">
+                  Timeline chart visualization would go here
+                </div>
+              </CardContent>
+            </Card>
+          </TabsContent>
+
+          <TabsContent value="details">
+            <Card>
+              <CardHeader>
+                <CardTitle>Test Configuration</CardTitle>
+                <CardDescription>Detailed test setup and parameters</CardDescription>
+              </CardHeader>
+              <CardContent>
+                <div className="space-y-4">
+                  <div className="grid grid-cols-2 gap-4 text-sm">
+                    <div>
+                      <div className="text-muted-foreground">Test ID</div>
+                      <div className="font-mono">{currentTest.id}</div>
+                    </div>
+                    <div>
+                      <div className="text-muted-foreground">Status</div>
+                      <Badge className={getStatusColor(currentTest.status)}>
+                        {currentTest.status}
+                      </Badge>
+                    </div>
+                    <div>
+                      <div className="text-muted-foreground">Traffic Split</div>
+                      <div>50% / 50%</div>
+                    </div>
+                    <div>
+                      <div className="text-muted-foreground">Duration</div>
+                      <div>{timeRange}</div>
+                    </div>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+          </TabsContent>
+        </Tabs>
+      )}
     </div>
   );
 }

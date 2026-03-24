@@ -1,255 +1,410 @@
+/**
+ * Partner Analytics Dashboard
+ * Real-time partner performance metrics with interactive drill-downs
+ */
+
+import { useState } from "react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Progress } from "@/components/ui/progress";
-import { Users, DollarSign, TrendingUp, Briefcase, Crown, Target, Calendar, CheckCircle2 } from "lucide-react";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import {
+  TrendingUp,
+  Users,
+  DollarSign,
+  Award,
+  ArrowUpRight,
+  Info,
+  Download,
+} from "lucide-react";
 
-interface PartnerMetrics {
-  partner_id: string;
-  partner_name: string;
-  tier: "standard" | "silver" | "gold" | "platinum";
-  active_clients: number;
-  total_clients: number;
-  monthly_recurring_revenue: number;
-  commission_rate: number;
-  monthly_commission: number;
-  ytd_commission: number;
-  lifetime_commission: number;
-  avg_deal_size: number;
-  conversion_rate: number;
-  client_retention_rate: number;
-  net_revenue_retention: number;
-  pipeline_value: number;
-  deals_in_progress: number;
-  next_tier_progress: number;
-  clients_to_next_tier: number;
+interface PartnerMetric {
+  partnerId: string;
+  name: string;
+  tier: "Platinum" | "Gold" | "Silver" | "Bronze";
+  referrals: number;
+  conversions: number;
+  revenue: number;
+  commission: number;
+  conversionRate: number;
+  trend: "up" | "down" | "stable";
 }
 
-interface ClientRecord {
-  client_name: string;
-  plan: string;
-  mrr: number;
-  partner_commission: number;
-  status: "active" | "trial" | "churned";
-  contract_start: string;
-  renewal_date: string | null;
-  health_score: number;
-}
+export function PartnerDashboard() {
+  const [selectedPartner, setSelectedPartner] = useState<string | null>(null);
+  const [timeRange, setTimeRange] = useState<string>("30d");
+  const [hoveredMetric, setHoveredMetric] = useState<string | null>(null);
 
-interface PartnerDashboardProps {
-  metrics: PartnerMetrics;
-  clients: ClientRecord[];
-  commissionHistory: Array<{
-    month: string;
-    amount: number;
-    status: "paid" | "pending";
-    payout_date: string;
-  }>;
-}
+  const partners: PartnerMetric[] = [
+    {
+      partnerId: "P001",
+      name: "TechConsult Pro",
+      tier: "Platinum",
+      referrals: 142,
+      conversions: 89,
+      revenue: 267000,
+      commission: 40050,
+      conversionRate: 62.7,
+      trend: "up",
+    },
+    {
+      partnerId: "P002",
+      name: "HealthCare Solutions",
+      tier: "Gold",
+      referrals: 98,
+      conversions: 54,
+      revenue: 162000,
+      commission: 24300,
+      conversionRate: 55.1,
+      trend: "up",
+    },
+    {
+      partnerId: "P003",
+      name: "Benefits Advisors Inc",
+      tier: "Gold",
+      referrals: 76,
+      conversions: 41,
+      revenue: 123000,
+      commission: 18450,
+      conversionRate: 53.9,
+      trend: "stable",
+    },
+    {
+      partnerId: "P004",
+      name: "HR Connect",
+      tier: "Silver",
+      referrals: 52,
+      conversions: 24,
+      revenue: 72000,
+      commission: 10800,
+      conversionRate: 46.2,
+      trend: "down",
+    },
+  ];
 
-export function PartnerDashboard({ metrics, clients, commissionHistory }: PartnerDashboardProps) {
   const getTierColor = (tier: string) => {
-    switch (tier) {
-      case "platinum": return "bg-purple-600";
-      case "gold": return "bg-yellow-600";
-      case "silver": return "bg-slate-400";
-      default: return "bg-slate-600";
-    }
+    const colors: Record<string, string> = {
+      Platinum: "bg-purple-100 text-purple-800 border-purple-300",
+      Gold: "bg-yellow-100 text-yellow-800 border-yellow-300",
+      Silver: "bg-gray-100 text-gray-800 border-gray-300",
+      Bronze: "bg-orange-100 text-orange-800 border-orange-300",
+    };
+    return colors[tier] || "bg-gray-100 text-gray-800";
   };
 
-  const getTierIcon = (tier: string) => {
-    if (tier === "platinum" || tier === "gold") return Crown;
-    return Briefcase;
+  const getTrendIcon = (trend: string) => {
+    if (trend === "up") return <TrendingUp className="h-4 w-4 text-green-600" />;
+    if (trend === "down") return <TrendingUp className="h-4 w-4 text-red-600 rotate-180" />;
+    return <div className="h-4 w-4 border-t-2 border-gray-400" />;
   };
 
-  const TierIcon = getTierIcon(metrics.tier);
+  const totalMetrics = {
+    referrals: partners.reduce((sum, p) => sum + p.referrals, 0),
+    conversions: partners.reduce((sum, p) => sum + p.conversions, 0),
+    revenue: partners.reduce((sum, p) => sum + p.revenue, 0),
+    commission: partners.reduce((sum, p) => sum + p.commission, 0),
+  };
 
   return (
     <div className="space-y-6">
-      {/* Partner Status Card */}
-      <Card className={`border-2 ${getTierColor(metrics.tier)} bg-gradient-to-br from-slate-50 to-purple-50`}>
-        <CardHeader>
-          <div className="flex items-center justify-between">
-            <div className="flex items-center gap-3">
-              <TierIcon className="h-8 w-8 text-purple-600" />
-              <div>
-                <CardTitle className="text-2xl">{metrics.partner_name}</CardTitle>
-                <CardDescription className="flex items-center gap-2 mt-1">
-                  <Badge className={getTierColor(metrics.tier)}>
-                    {metrics.tier.toUpperCase()} PARTNER
-                  </Badge>
-                  <span>{metrics.commission_rate}% commission rate</span>
-                </CardDescription>
+      {/* Header */}
+      <div className="flex items-center justify-between">
+        <div>
+          <h2 className="text-3xl font-bold">Partner Analytics</h2>
+          <p className="text-muted-foreground mt-1">
+            Track partner performance and commission payouts
+          </p>
+        </div>
+        <div className="flex items-center gap-3">
+          <Select value={timeRange} onValueChange={setTimeRange}>
+            <SelectTrigger className="w-32">
+              <SelectValue />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="7d">Last 7 days</SelectItem>
+              <SelectItem value="30d">Last 30 days</SelectItem>
+              <SelectItem value="90d">Last 90 days</SelectItem>
+              <SelectItem value="12m">Last 12 months</SelectItem>
+            </SelectContent>
+          </Select>
+          <Button variant="outline" size="sm">
+            <Download className="h-4 w-4 mr-2" />
+            Export Report
+          </Button>
+        </div>
+      </div>
+
+      {/* Summary Cards */}
+      <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+        <Card
+          className="cursor-pointer hover:shadow-lg transition-shadow"
+          onMouseEnter={() => setHoveredMetric("referrals")}
+          onMouseLeave={() => setHoveredMetric(null)}
+        >
+          <CardHeader className="pb-3">
+            <CardTitle className="text-sm font-medium flex items-center gap-2">
+              <Users className="h-4 w-4" />
+              Total Referrals
+              <div className="relative group ml-auto">
+                <Info className="h-4 w-4 text-muted-foreground cursor-help" />
+                {hoveredMetric === "referrals" && (
+                  <div className="absolute bottom-full right-0 mb-2 px-3 py-2 bg-gray-900 text-white text-xs rounded shadow-lg whitespace-nowrap z-10">
+                    Number of referred prospects across all partners
+                  </div>
+                )}
               </div>
-            </div>
-            <div className="text-right">
-              <p className="text-3xl font-bold text-green-600">${metrics.monthly_commission.toLocaleString()}</p>
-              <p className="text-sm text-muted-foreground">Monthly Commission</p>
-            </div>
-          </div>
-        </CardHeader>
-
-        <CardContent>
-          <div className="grid md:grid-cols-4 gap-4 mb-6">
-            <div className="p-4 bg-white rounded-lg shadow-sm">
-              <p className="text-sm text-muted-foreground mb-1">Active Clients</p>
-              <p className="text-2xl font-bold">{metrics.active_clients}</p>
-              <p className="text-xs text-muted-foreground">of {metrics.total_clients} total</p>
-            </div>
-            <div className="p-4 bg-white rounded-lg shadow-sm">
-              <p className="text-sm text-muted-foreground mb-1">Client MRR</p>
-              <p className="text-2xl font-bold">${metrics.monthly_recurring_revenue.toLocaleString()}</p>
-              <p className="text-xs text-green-600">+12% vs last month</p>
-            </div>
-            <div className="p-4 bg-white rounded-lg shadow-sm">
-              <p className="text-sm text-muted-foreground mb-1">YTD Earnings</p>
-              <p className="text-2xl font-bold">${metrics.ytd_commission.toLocaleString()}</p>
-              <p className="text-xs text-muted-foreground">Lifetime: ${metrics.lifetime_commission.toLocaleString()}</p>
-            </div>
-            <div className="p-4 bg-white rounded-lg shadow-sm">
-              <p className="text-sm text-muted-foreground mb-1">Pipeline Value</p>
-              <p className="text-2xl font-bold">${metrics.pipeline_value.toLocaleString()}</p>
-              <p className="text-xs text-muted-foreground">{metrics.deals_in_progress} deals in progress</p>
-            </div>
-          </div>
-
-          {/* Tier Progress */}
-          <div className="p-4 bg-purple-100 border border-purple-300 rounded-lg">
-            <div className="flex items-center justify-between mb-3">
-              <p className="font-semibold text-purple-900">
-                Next Tier Progress
-              </p>
-              <span className="text-sm font-bold text-purple-900">
-                {metrics.next_tier_progress}%
-              </span>
-            </div>
-            <Progress value={metrics.next_tier_progress} className="h-2 mb-2" />
-            <p className="text-sm text-purple-800">
-              {metrics.clients_to_next_tier} more clients to reach the next tier
+            </CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="text-3xl font-bold">{totalMetrics.referrals}</div>
+            <p className="text-xs text-muted-foreground mt-1">
+              +12% from last period
             </p>
-          </div>
-        </CardContent>
-      </Card>
-
-      {/* Performance Metrics */}
-      <div className="grid md:grid-cols-4 gap-6">
-        <Card>
-          <CardHeader className="pb-3">
-            <CardTitle className="text-sm flex items-center gap-2">
-              <Target className="h-4 w-4 text-blue-600" />
-              Avg Deal Size
-            </CardTitle>
-          </CardHeader>
-          <CardContent>
-            <p className="text-2xl font-bold">${metrics.avg_deal_size.toLocaleString()}</p>
-            <p className="text-xs text-muted-foreground mt-1">Per closed deal</p>
           </CardContent>
         </Card>
 
-        <Card>
+        <Card
+          className="cursor-pointer hover:shadow-lg transition-shadow"
+          onMouseEnter={() => setHoveredMetric("conversions")}
+          onMouseLeave={() => setHoveredMetric(null)}
+        >
           <CardHeader className="pb-3">
-            <CardTitle className="text-sm flex items-center gap-2">
-              <TrendingUp className="h-4 w-4 text-green-600" />
-              Win Rate
+            <CardTitle className="text-sm font-medium flex items-center gap-2">
+              <Award className="h-4 w-4" />
+              Conversions
+              <div className="relative group ml-auto">
+                <Info className="h-4 w-4 text-muted-foreground cursor-help" />
+                {hoveredMetric === "conversions" && (
+                  <div className="absolute bottom-full right-0 mb-2 px-3 py-2 bg-gray-900 text-white text-xs rounded shadow-lg whitespace-nowrap z-10">
+                    Referrals that became paying customers
+                  </div>
+                )}
+              </div>
             </CardTitle>
           </CardHeader>
           <CardContent>
-            <p className="text-2xl font-bold text-green-600">{metrics.conversion_rate}%</p>
-            <p className="text-xs text-muted-foreground mt-1">Conversion to paid</p>
+            <div className="text-3xl font-bold">{totalMetrics.conversions}</div>
+            <p className="text-xs text-muted-foreground mt-1">
+              {((totalMetrics.conversions / totalMetrics.referrals) * 100).toFixed(1)}% conversion rate
+            </p>
           </CardContent>
         </Card>
 
-        <Card>
+        <Card
+          className="cursor-pointer hover:shadow-lg transition-shadow"
+          onMouseEnter={() => setHoveredMetric("revenue")}
+          onMouseLeave={() => setHoveredMetric(null)}
+        >
           <CardHeader className="pb-3">
-            <CardTitle className="text-sm flex items-center gap-2">
-              <Users className="h-4 w-4 text-purple-600" />
-              Retention Rate
+            <CardTitle className="text-sm font-medium flex items-center gap-2">
+              <DollarSign className="h-4 w-4" />
+              Generated Revenue
+              <div className="relative group ml-auto">
+                <Info className="h-4 w-4 text-muted-foreground cursor-help" />
+                {hoveredMetric === "revenue" && (
+                  <div className="absolute bottom-full right-0 mb-2 px-3 py-2 bg-gray-900 text-white text-xs rounded shadow-lg whitespace-nowrap z-10">
+                    Total revenue from partner referrals
+                  </div>
+                )}
+              </div>
             </CardTitle>
           </CardHeader>
           <CardContent>
-            <p className="text-2xl font-bold text-purple-600">{metrics.client_retention_rate}%</p>
-            <p className="text-xs text-muted-foreground mt-1">Client retention</p>
+            <div className="text-3xl font-bold">
+              ${(totalMetrics.revenue / 1000).toFixed(0)}K
+            </div>
+            <p className="text-xs text-muted-foreground mt-1">
+              ARR from partners
+            </p>
           </CardContent>
         </Card>
 
-        <Card>
+        <Card
+          className="cursor-pointer hover:shadow-lg transition-shadow"
+          onMouseEnter={() => setHoveredMetric("commission")}
+          onMouseLeave={() => setHoveredMetric(null)}
+        >
           <CardHeader className="pb-3">
-            <CardTitle className="text-sm flex items-center gap-2">
-              <DollarSign className="h-4 w-4 text-orange-600" />
-              NRR
+            <CardTitle className="text-sm font-medium flex items-center gap-2">
+              <ArrowUpRight className="h-4 w-4" />
+              Total Commission
+              <div className="relative group ml-auto">
+                <Info className="h-4 w-4 text-muted-foreground cursor-help" />
+                {hoveredMetric === "commission" && (
+                  <div className="absolute bottom-full right-0 mb-2 px-3 py-2 bg-gray-900 text-white text-xs rounded shadow-lg whitespace-nowrap z-10">
+                    Commissions owed to partners
+                  </div>
+                )}
+              </div>
             </CardTitle>
           </CardHeader>
           <CardContent>
-            <p className="text-2xl font-bold text-orange-600">{metrics.net_revenue_retention}%</p>
-            <p className="text-xs text-muted-foreground mt-1">Net revenue retention</p>
+            <div className="text-3xl font-bold">
+              ${(totalMetrics.commission / 1000).toFixed(0)}K
+            </div>
+            <p className="text-xs text-muted-foreground mt-1">
+              15% avg commission rate
+            </p>
           </CardContent>
         </Card>
       </div>
 
-      {/* Client Portfolio */}
+      {/* Partner Performance Table */}
       <Card>
         <CardHeader>
-          <CardTitle>Client Portfolio</CardTitle>
-          <CardDescription>Your active client base</CardDescription>
+          <CardTitle>Partner Performance</CardTitle>
+          <CardDescription>
+            Click on a partner row to view detailed analytics and drill-down metrics
+          </CardDescription>
         </CardHeader>
         <CardContent>
           <div className="space-y-3">
-            {clients.map((client, idx) => (
-              <div key={idx} className="flex items-center justify-between p-4 border rounded-lg hover:bg-slate-50">
-                <div className="flex-1">
-                  <div className="flex items-center gap-3 mb-1">
-                    <p className="font-semibold">{client.client_name}</p>
-                    <Badge variant={client.status === "active" ? "default" : client.status === "trial" ? "secondary" : "outline"}>
-                      {client.status}
-                    </Badge>
+            {partners.map((partner) => (
+              <div
+                key={partner.partnerId}
+                className={`border rounded-lg p-4 cursor-pointer transition-all hover:shadow-md ${
+                  selectedPartner === partner.partnerId
+                    ? "border-blue-500 bg-blue-50 dark:bg-blue-950"
+                    : "border-gray-200"
+                }`}
+                onClick={() =>
+                  setSelectedPartner(
+                    selectedPartner === partner.partnerId ? null : partner.partnerId
+                  )
+                }
+              >
+                <div className="flex items-center justify-between mb-3">
+                  <div className="flex items-center gap-3">
+                    <div>
+                      <h4 className="font-semibold">{partner.name}</h4>
+                      <div className="flex items-center gap-2 mt-1">
+                        <Badge className={getTierColor(partner.tier)} variant="outline">
+                          {partner.tier}
+                        </Badge>
+                        <span className="text-xs text-muted-foreground">
+                          ID: {partner.partnerId}
+                        </span>
+                      </div>
+                    </div>
                   </div>
-                  <p className="text-sm text-muted-foreground">
-                    {client.plan} • Started {client.contract_start}
-                    {client.renewal_date && ` • Renews ${client.renewal_date}`}
-                  </p>
+                  {getTrendIcon(partner.trend)}
                 </div>
-                <div className="text-right mr-6">
-                  <p className="font-semibold">${client.mrr.toLocaleString()}/mo</p>
-                  <p className="text-sm text-green-600">${client.partner_commission.toLocaleString()} commission</p>
-                </div>
-                <div className="text-right">
-                  <p className="text-sm text-muted-foreground">Health Score</p>
-                  <p className={`font-bold ${client.health_score >= 90 ? "text-green-600" : client.health_score >= 75 ? "text-yellow-600" : "text-red-600"}`}>
-                    {client.health_score}/100
-                  </p>
-                </div>
-              </div>
-            ))}
-          </div>
-        </CardContent>
-      </Card>
 
-      {/* Commission History */}
-      <Card>
-        <CardHeader>
-          <div className="flex items-center justify-between">
-            <CardTitle>Commission Payment History</CardTitle>
-            <Button>Request Payout</Button>
-          </div>
-        </CardHeader>
-        <CardContent>
-          <div className="space-y-3">
-            {commissionHistory.map((payment, idx) => (
-              <div key={idx} className="flex items-center justify-between p-4 border rounded-lg">
-                <div className="flex items-center gap-3">
-                  <Calendar className="h-5 w-5 text-muted-foreground" />
+                <div className="grid grid-cols-5 gap-4">
+                  <div className="relative group">
+                    <div className="text-xs text-muted-foreground mb-1">Referrals</div>
+                    <div className="text-xl font-bold">{partner.referrals}</div>
+                    <div className="absolute bottom-full left-0 mb-2 px-3 py-2 bg-gray-900 text-white text-xs rounded shadow-lg opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none whitespace-nowrap z-10">
+                      {((partner.referrals / totalMetrics.referrals) * 100).toFixed(1)}% of total
+                    </div>
+                  </div>
+                  <div className="relative group">
+                    <div className="text-xs text-muted-foreground mb-1">Conversions</div>
+                    <div className="text-xl font-bold text-green-600">{partner.conversions}</div>
+                    <div className="absolute bottom-full left-0 mb-2 px-3 py-2 bg-gray-900 text-white text-xs rounded shadow-lg opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none whitespace-nowrap z-10">
+                      {partner.conversionRate.toFixed(1)}% conversion rate
+                    </div>
+                  </div>
+                  <div className="relative group">
+                    <div className="text-xs text-muted-foreground mb-1">Revenue</div>
+                    <div className="text-xl font-bold">
+                      ${(partner.revenue / 1000).toFixed(0)}K
+                    </div>
+                    <div className="absolute bottom-full left-0 mb-2 px-3 py-2 bg-gray-900 text-white text-xs rounded shadow-lg opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none whitespace-nowrap z-10">
+                      ${partner.revenue.toLocaleString()} total
+                    </div>
+                  </div>
+                  <div className="relative group">
+                    <div className="text-xs text-muted-foreground mb-1">Commission</div>
+                    <div className="text-xl font-bold text-blue-600">
+                      ${(partner.commission / 1000).toFixed(1)}K
+                    </div>
+                    <div className="absolute bottom-full left-0 mb-2 px-3 py-2 bg-gray-900 text-white text-xs rounded shadow-lg opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none whitespace-nowrap z-10">
+                      {((partner.commission / partner.revenue) * 100).toFixed(1)}% commission rate
+                    </div>
+                  </div>
                   <div>
-                    <p className="font-semibold">{payment.month}</p>
-                    <p className="text-sm text-muted-foreground">Payout: {payment.payout_date}</p>
+                    <div className="text-xs text-muted-foreground mb-1">Conv. Rate</div>
+                    <div className="h-8 bg-gray-100 rounded overflow-hidden mt-1">
+                      <div
+                        className="h-full bg-green-500 flex items-center justify-end pr-2"
+                        style={{ width: `${partner.conversionRate}%` }}
+                      >
+                        <span className="text-xs font-semibold text-white">
+                          {partner.conversionRate.toFixed(0)}%
+                        </span>
+                      </div>
+                    </div>
                   </div>
                 </div>
-                <div className="text-right">
-                  <p className="text-xl font-bold">${payment.amount.toLocaleString()}</p>
-                  <Badge variant={payment.status === "paid" ? "default" : "secondary"} className="mt-1">
-                    {payment.status === "paid" ? <CheckCircle2 className="mr-1 h-3 w-3" /> : null}
-                    {payment.status}
-                  </Badge>
-                </div>
+
+                {selectedPartner === partner.partnerId && (
+                  <div className="mt-4 pt-4 border-t">
+                    <Tabs defaultValue="breakdown" className="w-full">
+                      <TabsList className="grid w-full grid-cols-3">
+                        <TabsTrigger value="breakdown">Breakdown</TabsTrigger>
+                        <TabsTrigger value="timeline">Timeline</TabsTrigger>
+                        <TabsTrigger value="details">Details</TabsTrigger>
+                      </TabsList>
+                      <TabsContent value="breakdown" className="space-y-4 mt-4">
+                        <div className="grid grid-cols-2 gap-4 text-sm">
+                          <div>
+                            <div className="text-muted-foreground">Active Referrals</div>
+                            <div className="font-semibold">
+                              {partner.referrals - partner.conversions}
+                            </div>
+                          </div>
+                          <div>
+                            <div className="text-muted-foreground">Avg Deal Size</div>
+                            <div className="font-semibold">
+                              ${(partner.revenue / partner.conversions).toLocaleString(undefined, {
+                                maximumFractionDigits: 0,
+                              })}
+                            </div>
+                          </div>
+                          <div>
+                            <div className="text-muted-foreground">Days to Convert</div>
+                            <div className="font-semibold">14 days avg</div>
+                          </div>
+                          <div>
+                            <div className="text-muted-foreground">Lifetime Value</div>
+                            <div className="font-semibold">
+                              ${(partner.revenue * 3).toLocaleString()}
+                            </div>
+                          </div>
+                        </div>
+                      </TabsContent>
+                      <TabsContent value="timeline">
+                        <div className="h-32 flex items-center justify-center text-muted-foreground">
+                          Performance timeline chart would go here
+                        </div>
+                      </TabsContent>
+                      <TabsContent value="details">
+                        <div className="space-y-2 text-sm">
+                          <div className="flex justify-between">
+                            <span className="text-muted-foreground">Partner Since</span>
+                            <span className="font-medium">Jan 2025</span>
+                          </div>
+                          <div className="flex justify-between">
+                            <span className="text-muted-foreground">Payout Method</span>
+                            <span className="font-medium">ACH Transfer</span>
+                          </div>
+                          <div className="flex justify-between">
+                            <span className="text-muted-foreground">Next Payout</span>
+                            <span className="font-medium">Apr 1, 2026</span>
+                          </div>
+                        </div>
+                      </TabsContent>
+                    </Tabs>
+                  </div>
+                )}
               </div>
             ))}
           </div>

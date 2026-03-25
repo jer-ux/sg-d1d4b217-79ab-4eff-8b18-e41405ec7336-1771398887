@@ -44,29 +44,26 @@ interface NegotiationGuideReport {
 }
 
 class PBMReportService {
-  // Generate Quick Look report
   async generateQuickLook(analysisId: string): Promise<QuickLookReport> {
     const result = await pbmContractService.getAnalysis(analysisId);
     
-    // Get version separately
     const { data: version } = await supabase
-      .from("pbm_full_contract_versions")
+      .from("pbm_full_contract_versions" as any)
       .select("contract_id")
       .eq("id", result.analysis.contract_version_id)
       .single();
 
     if (!version) throw new Error("Contract version not found");
 
-    // Get contract separately
     const { data: contract } = await supabase
-      .from("pbm_full_contracts")
+      .from("pbm_full_contracts" as any)
       .select("contract_title, pbm_name, employer_name")
       .eq("id", version.contract_id)
       .single();
 
     const provisionsSummary = result.provisionScores.map((ps: any) => {
       return {
-        provision: "Provision", // Would look up name in real implementation
+        provision: "Provision", 
         status: ps.score >= 75 ? "Good" as const : ps.score >= 60 ? "Concern" as const : "Red Flag" as const,
         score: ps.score,
       };
@@ -91,13 +88,11 @@ class PBMReportService {
     };
   }
 
-  // Generate Scorecard report
   async generateScorecard(analysisId: string): Promise<ScorecardReport> {
     const result = await pbmContractService.getAnalysis(analysisId);
     
-    // Get version and contract
     const { data: version } = await supabase
-      .from("pbm_full_contract_versions")
+      .from("pbm_full_contract_versions" as any)
       .select("contract_id")
       .eq("id", result.analysis.contract_version_id)
       .single();
@@ -105,7 +100,7 @@ class PBMReportService {
     let contractTitle = "Unknown Contract";
     if (version) {
       const { data: contract } = await supabase
-        .from("pbm_full_contracts")
+        .from("pbm_full_contracts" as any)
         .select("contract_title")
         .eq("id", version.contract_id)
         .single();
@@ -114,7 +109,7 @@ class PBMReportService {
     }
 
     const provisionBreakdown = result.provisionScores.map((ps: any) => ({
-      provision: "Provision", // Mocked
+      provision: "Provision", 
       score: ps.score,
       band: ps.rating_band || "Unknown",
     }));
@@ -134,13 +129,11 @@ class PBMReportService {
     };
   }
 
-  // Generate Negotiation Guide report
   async generateNegotiationGuide(analysisId: string): Promise<NegotiationGuideReport> {
     const result = await pbmContractService.getAnalysis(analysisId);
     
-    // Get version and contract
     const { data: version } = await supabase
-      .from("pbm_full_contract_versions")
+      .from("pbm_full_contract_versions" as any)
       .select("contract_id")
       .eq("id", result.analysis.contract_version_id)
       .single();
@@ -148,7 +141,7 @@ class PBMReportService {
     let contractTitle = "Unknown Contract";
     if (version) {
       const { data: contract } = await supabase
-        .from("pbm_full_contracts")
+        .from("pbm_full_contracts" as any)
         .select("contract_title")
         .eq("id", version.contract_id)
         .single();
@@ -165,8 +158,8 @@ class PBMReportService {
         } catch (e) {}
 
         return {
-          issue: "Issue Title", // Mocked
-          provision: "Provision Name", // Mocked
+          issue: "Issue Title", 
+          provision: "Provision Name", 
           currentLanguage: f.clause_excerpt || "No explicit language found",
           modelLanguage: f.model_language || "Model language not available",
           talkingPoints,
@@ -200,7 +193,6 @@ class PBMReportService {
     };
   }
 
-  // Generate Comparison Report
   async generateComparison(baseAnalysisId: string, revisedAnalysisId: string) {
     const baseResult = await pbmContractService.getAnalysis(baseAnalysisId);
     const revisedResult = await pbmContractService.getAnalysis(revisedAnalysisId);
@@ -212,7 +204,7 @@ class PBMReportService {
     const provisionChanges = baseResult.provisionScores.map((basePs: any, idx: number) => {
       const revisedPs = revisedResult.provisionScores[idx] || basePs;
       return {
-        provision: "Provision Name", // Mocked
+        provision: "Provision Name", 
         baseScore: basePs.score,
         revisedScore: revisedPs.score,
         delta: revisedPs.score - basePs.score,

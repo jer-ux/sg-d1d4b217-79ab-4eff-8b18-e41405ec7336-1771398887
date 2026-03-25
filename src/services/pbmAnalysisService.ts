@@ -1,13 +1,8 @@
 import { supabase } from "@/integrations/supabase/client";
-import type { Database } from "@/integrations/supabase/types";
 
-type Analysis = Database["public"]["Tables"]["pbm_full_analyses"]["Row"];
-type IssueFound = Database["public"]["Tables"]["pbm_full_issue_findings"]["Insert"];
-type ProvisionScore = Database["public"]["Tables"]["pbm_full_provision_scores"]["Insert"];
-
-// Create simpler helper types to avoid excessive nesting errors
-type DbProvision = { id: string; name: string; weight: number; };
-type DbIssue = { id: string; provision_id: string; title: string; model_language: string | null; talking_points: string | null; };
+type Analysis = any;
+type IssueFound = any;
+type ProvisionScore = any;
 
 interface MockAnalysisResult {
   overallScore: number;
@@ -18,30 +13,24 @@ interface MockAnalysisResult {
 }
 
 class PBMAnalysisService {
-  // Mock analysis generation (to be replaced with real AI pipeline)
   async generateMockAnalysis(contractVersionId: string): Promise<string> {
-    // Get provisions and issues
-    const { data: rawProvisions } = await supabase
-      .from("pbm_provisions")
-      .select("id, name, weight")
+    const { data: provisions } = await supabase
+      .from("pbm_provisions" as any)
+      .select("*")
       .eq("version_set", "v1")
       .order("display_order");
 
-    const { data: rawIssues } = await supabase
-      .from("pbm_issues")
-      .select("id, provision_id, title, model_language, talking_points")
+    const { data: issues } = await supabase
+      .from("pbm_issues" as any)
+      .select("*")
       .eq("active_version", "v1");
 
-    if (!rawProvisions || !rawIssues) throw new Error("Standards not loaded");
-    
-    const provisions = rawProvisions as DbProvision[];
-    const issues = rawIssues as DbIssue[];
+    if (!provisions || !issues) throw new Error("Standards not loaded");
 
-    // Generate realistic mock scores
-    const issueFindings: any[] = issues.map(issue => {
-      const score = Math.floor(Math.random() * 5); // 0-4
+    const issueFindings: IssueFound[] = issues.map((issue: any) => {
+      const score = Math.floor(Math.random() * 5);
       return {
-        analysis_id: "", // Will be set after analysis is created
+        analysis_id: "", 
         issue_id: issue.id,
         score,
         finding_status: score >= 3 ? "pass" : score >= 2 ? "review" : "fail",
@@ -55,21 +44,20 @@ class PBMAnalysisService {
       };
     });
 
-    // Calculate provision scores
-    const provisionScores: any[] = provisions.map(provision => {
-      const provisionIssues = issues.filter(i => i.provision_id === provision.id);
-      const provisionFindings = issueFindings.filter(f => 
-        provisionIssues.some(pi => pi.id === f.issue_id)
+    const provisionScores: ProvisionScore[] = provisions.map((provision: any) => {
+      const provisionIssues = issues.filter((i: any) => i.provision_id === provision.id);
+      const provisionFindings = issueFindings.filter((f: any) => 
+        provisionIssues.some((pi: any) => pi.id === f.issue_id)
       );
 
       const avgScore = provisionFindings.length > 0
-        ? provisionFindings.reduce((sum, f) => sum + f.score, 0) / provisionFindings.length
+        ? provisionFindings.reduce((sum: number, f: any) => sum + f.score, 0) / provisionFindings.length
         : 0;
 
-      const normalizedScore = (avgScore / 4) * 100; // Convert 0-4 scale to 0-100
+      const normalizedScore = (avgScore / 4) * 100;
 
       return {
-        analysis_id: "", // Will be set after analysis is created
+        analysis_id: "", 
         provision_id: provision.id,
         score: Math.round(normalizedScore * 10) / 10,
         rating_band: this.getRatingBand(normalizedScore),
@@ -77,22 +65,20 @@ class PBMAnalysisService {
       };
     });
 
-    // Calculate overall score
     const weightedSum = provisionScores.reduce(
-      (sum, ps) => {
-        const provision = provisions.find(p => p.id === ps.provision_id);
+      (sum: number, ps: any) => {
+        const provision = provisions.find((p: any) => p.id === ps.provision_id);
         return sum + ps.score * (provision?.weight || 1);
       },
       0
     );
 
-    const totalWeight = provisions.reduce((sum, p) => sum + p.weight, 0);
+    const totalWeight = provisions.reduce((sum: number, p: any) => sum + p.weight, 0);
     const overallScore = Math.round((weightedSum / totalWeight) * 10) / 10;
     const ratingBand = this.getRatingBand(overallScore);
 
-    // Create analysis record
     const { data: analysis, error: analysisError } = await supabase
-      .from("pbm_full_analyses")
+      .from("pbm_full_analyses" as any)
       .insert({
         contract_version_id: contractVersionId,
         overall_score: overallScore,
@@ -106,40 +92,37 @@ class PBMAnalysisService {
 
     if (analysisError) throw analysisError;
 
-    // Insert issue findings
-    const findingsWithAnalysisId = issueFindings.map(f => ({
+    const findingsWithAnalysisId = issueFindings.map((f: any) => ({
       ...f,
       analysis_id: analysis.id,
     }));
 
     const { error: findingsError } = await supabase
-      .from("pbm_full_issue_findings")
+      .from("pbm_full_issue_findings" as any)
       .insert(findingsWithAnalysisId);
 
     if (findingsError) throw findingsError;
 
-    // Insert provision scores
-    const scoresWithAnalysisId = provisionScores.map(s => ({
+    const scoresWithAnalysisId = provisionScores.map((s: any) => ({
       ...s,
       analysis_id: analysis.id,
     }));
 
     const { error: scoresError } = await supabase
-      .from("pbm_full_provision_scores")
+      .from("pbm_full_provision_scores" as any)
       .insert(scoresWithAnalysisId);
 
     if (scoresError) throw scoresError;
 
-    // Update contract status
     const { data: version } = await supabase
-      .from("pbm_full_contract_versions")
+      .from("pbm_full_contract_versions" as any)
       .select("contract_id")
       .eq("id", contractVersionId)
       .single();
 
     if (version) {
       await supabase
-        .from("pbm_full_contracts")
+        .from("pbm_full_contracts" as any)
         .update({ status: "analyzed" })
         .eq("id", version.contract_id);
     }
@@ -204,9 +187,9 @@ class PBMAnalysisService {
   private generateExecutiveSummary(
     overallScore: number,
     ratingBand: string,
-    provisionScores: any[]
+    provisionScores: ProvisionScore[]
   ): string {
-    const weakProvisions = provisionScores.filter(ps => ps.score < 60);
+    const weakProvisions = provisionScores.filter((ps: any) => ps.score < 60);
     
     return `Overall Contract Assessment: ${ratingBand} (${overallScore}/100)
 
@@ -233,10 +216,9 @@ Recommendation: ${
 }`;
   }
 
-  // Approve analysis (for workflow)
   async approveAnalysis(analysisId: string, userId: string) {
     const { data, error } = await supabase
-      .from("pbm_full_analyses")
+      .from("pbm_full_analyses" as any)
       .update({
         status: "approved",
         approved_at: new Date().toISOString(),
@@ -250,7 +232,6 @@ Recommendation: ${
     return data;
   }
 
-  // Update issue finding (for reviewer overrides)
   async updateIssueFinding(
     findingId: string,
     updates: {
@@ -260,7 +241,7 @@ Recommendation: ${
     }
   ) {
     const { data, error } = await supabase
-      .from("pbm_full_issue_findings")
+      .from("pbm_full_issue_findings" as any)
       .update({
         ...updates,
         updated_at: new Date().toISOString(),

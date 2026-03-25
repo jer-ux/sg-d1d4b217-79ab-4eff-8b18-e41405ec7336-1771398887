@@ -1873,6 +1873,41 @@ export type Database = {
         }
         Relationships: []
       }
+      pbm_contract_versions: {
+        Row: {
+          contract_id: string
+          created_at: string | null
+          extracted_text: string | null
+          file_url: string
+          id: string
+          version_name: string
+        }
+        Insert: {
+          contract_id: string
+          created_at?: string | null
+          extracted_text?: string | null
+          file_url: string
+          id?: string
+          version_name: string
+        }
+        Update: {
+          contract_id?: string
+          created_at?: string | null
+          extracted_text?: string | null
+          file_url?: string
+          id?: string
+          version_name?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "pbm_contract_versions_contract_id_fkey"
+            columns: ["contract_id"]
+            isOneToOne: false
+            referencedRelation: "pbm_full_contracts"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       pbm_contracts: {
         Row: {
           annual_cost_estimate: number | null
@@ -1933,6 +1968,653 @@ export type Database = {
           updated_at?: string | null
           uploaded_at?: string | null
           uploaded_by?: string | null
+        }
+        Relationships: []
+      }
+      pbm_full_analyses: {
+        Row: {
+          analyzed_at: string | null
+          approved_at: string | null
+          approved_by: string | null
+          contract_version_id: string
+          created_at: string | null
+          executive_summary: string | null
+          id: string
+          overall_score: number | null
+          rating_band: string | null
+          status: string | null
+        }
+        Insert: {
+          analyzed_at?: string | null
+          approved_at?: string | null
+          approved_by?: string | null
+          contract_version_id: string
+          created_at?: string | null
+          executive_summary?: string | null
+          id?: string
+          overall_score?: number | null
+          rating_band?: string | null
+          status?: string | null
+        }
+        Update: {
+          analyzed_at?: string | null
+          approved_at?: string | null
+          approved_by?: string | null
+          contract_version_id?: string
+          created_at?: string | null
+          executive_summary?: string | null
+          id?: string
+          overall_score?: number | null
+          rating_band?: string | null
+          status?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "pbm_full_analyses_approved_by_fkey"
+            columns: ["approved_by"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "pbm_full_analyses_contract_version_id_fkey"
+            columns: ["contract_version_id"]
+            isOneToOne: false
+            referencedRelation: "pbm_contract_versions"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      pbm_full_audit_log: {
+        Row: {
+          action: string
+          after_json: Json | null
+          before_json: Json | null
+          created_at: string | null
+          entity_id: string
+          entity_type: string
+          id: string
+          user_id: string | null
+        }
+        Insert: {
+          action: string
+          after_json?: Json | null
+          before_json?: Json | null
+          created_at?: string | null
+          entity_id: string
+          entity_type: string
+          id?: string
+          user_id?: string | null
+        }
+        Update: {
+          action?: string
+          after_json?: Json | null
+          before_json?: Json | null
+          created_at?: string | null
+          entity_id?: string
+          entity_type?: string
+          id?: string
+          user_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "pbm_full_audit_log_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      pbm_full_comments: {
+        Row: {
+          analysis_id: string | null
+          author_id: string
+          body: string
+          contract_id: string | null
+          created_at: string | null
+          id: string
+        }
+        Insert: {
+          analysis_id?: string | null
+          author_id: string
+          body: string
+          contract_id?: string | null
+          created_at?: string | null
+          id?: string
+        }
+        Update: {
+          analysis_id?: string | null
+          author_id?: string
+          body?: string
+          contract_id?: string | null
+          created_at?: string | null
+          id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "pbm_full_comments_analysis_id_fkey"
+            columns: ["analysis_id"]
+            isOneToOne: false
+            referencedRelation: "pbm_full_analyses"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "pbm_full_comments_author_id_fkey"
+            columns: ["author_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "pbm_full_comments_contract_id_fkey"
+            columns: ["contract_id"]
+            isOneToOne: false
+            referencedRelation: "pbm_full_contracts"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      pbm_full_comparisons: {
+        Row: {
+          base_analysis_id: string
+          created_at: string | null
+          id: string
+          revised_analysis_id: string
+          score_delta: number | null
+          summary: Json | null
+        }
+        Insert: {
+          base_analysis_id: string
+          created_at?: string | null
+          id?: string
+          revised_analysis_id: string
+          score_delta?: number | null
+          summary?: Json | null
+        }
+        Update: {
+          base_analysis_id?: string
+          created_at?: string | null
+          id?: string
+          revised_analysis_id?: string
+          score_delta?: number | null
+          summary?: Json | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "pbm_full_comparisons_base_analysis_id_fkey"
+            columns: ["base_analysis_id"]
+            isOneToOne: false
+            referencedRelation: "pbm_full_analyses"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "pbm_full_comparisons_revised_analysis_id_fkey"
+            columns: ["revised_analysis_id"]
+            isOneToOne: false
+            referencedRelation: "pbm_full_analyses"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      pbm_full_contracts: {
+        Row: {
+          contract_title: string
+          contract_type: string | null
+          created_at: string | null
+          created_by: string | null
+          effective_date: string | null
+          employer_name: string
+          extracted_text: string | null
+          id: string
+          organization_id: string
+          pbm_name: string
+          renewal_date: string | null
+          status: string | null
+          updated_at: string | null
+          uploaded_file_url: string | null
+        }
+        Insert: {
+          contract_title: string
+          contract_type?: string | null
+          created_at?: string | null
+          created_by?: string | null
+          effective_date?: string | null
+          employer_name: string
+          extracted_text?: string | null
+          id?: string
+          organization_id: string
+          pbm_name: string
+          renewal_date?: string | null
+          status?: string | null
+          updated_at?: string | null
+          uploaded_file_url?: string | null
+        }
+        Update: {
+          contract_title?: string
+          contract_type?: string | null
+          created_at?: string | null
+          created_by?: string | null
+          effective_date?: string | null
+          employer_name?: string
+          extracted_text?: string | null
+          id?: string
+          organization_id?: string
+          pbm_name?: string
+          renewal_date?: string | null
+          status?: string | null
+          updated_at?: string | null
+          uploaded_file_url?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "pbm_full_contracts_created_by_fkey"
+            columns: ["created_by"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "pbm_full_contracts_organization_id_fkey"
+            columns: ["organization_id"]
+            isOneToOne: false
+            referencedRelation: "contract_organizations"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      pbm_full_index_entries: {
+        Row: {
+          analysis_id: string | null
+          created_at: string | null
+          id: string
+          pbm_name: string
+          publication_status: string | null
+          rating_band: string | null
+          score: number | null
+        }
+        Insert: {
+          analysis_id?: string | null
+          created_at?: string | null
+          id?: string
+          pbm_name: string
+          publication_status?: string | null
+          rating_band?: string | null
+          score?: number | null
+        }
+        Update: {
+          analysis_id?: string | null
+          created_at?: string | null
+          id?: string
+          pbm_name?: string
+          publication_status?: string | null
+          rating_band?: string | null
+          score?: number | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "pbm_full_index_entries_analysis_id_fkey"
+            columns: ["analysis_id"]
+            isOneToOne: false
+            referencedRelation: "pbm_full_analyses"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      pbm_full_opportunities: {
+        Row: {
+          created_at: string | null
+          estimated_value: number | null
+          expected_close_date: string | null
+          id: string
+          name: string
+          notes: string | null
+          organization_id: string
+          owner_id: string | null
+          stage: string | null
+          updated_at: string | null
+        }
+        Insert: {
+          created_at?: string | null
+          estimated_value?: number | null
+          expected_close_date?: string | null
+          id?: string
+          name: string
+          notes?: string | null
+          organization_id: string
+          owner_id?: string | null
+          stage?: string | null
+          updated_at?: string | null
+        }
+        Update: {
+          created_at?: string | null
+          estimated_value?: number | null
+          expected_close_date?: string | null
+          id?: string
+          name?: string
+          notes?: string | null
+          organization_id?: string
+          owner_id?: string | null
+          stage?: string | null
+          updated_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "pbm_full_opportunities_organization_id_fkey"
+            columns: ["organization_id"]
+            isOneToOne: false
+            referencedRelation: "contract_organizations"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "pbm_full_opportunities_owner_id_fkey"
+            columns: ["owner_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      pbm_full_referrals: {
+        Row: {
+          created_at: string | null
+          estimated_value: number | null
+          id: string
+          notes: string | null
+          partner_org_id: string
+          referred_org_id: string
+          status: string | null
+        }
+        Insert: {
+          created_at?: string | null
+          estimated_value?: number | null
+          id?: string
+          notes?: string | null
+          partner_org_id: string
+          referred_org_id: string
+          status?: string | null
+        }
+        Update: {
+          created_at?: string | null
+          estimated_value?: number | null
+          id?: string
+          notes?: string | null
+          partner_org_id?: string
+          referred_org_id?: string
+          status?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "pbm_full_referrals_partner_org_id_fkey"
+            columns: ["partner_org_id"]
+            isOneToOne: false
+            referencedRelation: "contract_organizations"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "pbm_full_referrals_referred_org_id_fkey"
+            columns: ["referred_org_id"]
+            isOneToOne: false
+            referencedRelation: "contract_organizations"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      pbm_full_tasks: {
+        Row: {
+          assigned_to: string | null
+          contract_id: string | null
+          created_at: string | null
+          description: string | null
+          due_date: string | null
+          id: string
+          organization_id: string
+          status: string | null
+          title: string
+          updated_at: string | null
+        }
+        Insert: {
+          assigned_to?: string | null
+          contract_id?: string | null
+          created_at?: string | null
+          description?: string | null
+          due_date?: string | null
+          id?: string
+          organization_id: string
+          status?: string | null
+          title: string
+          updated_at?: string | null
+        }
+        Update: {
+          assigned_to?: string | null
+          contract_id?: string | null
+          created_at?: string | null
+          description?: string | null
+          due_date?: string | null
+          id?: string
+          organization_id?: string
+          status?: string | null
+          title?: string
+          updated_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "pbm_full_tasks_assigned_to_fkey"
+            columns: ["assigned_to"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "pbm_full_tasks_contract_id_fkey"
+            columns: ["contract_id"]
+            isOneToOne: false
+            referencedRelation: "pbm_full_contracts"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "pbm_full_tasks_organization_id_fkey"
+            columns: ["organization_id"]
+            isOneToOne: false
+            referencedRelation: "contract_organizations"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      pbm_issue_findings: {
+        Row: {
+          analysis_id: string
+          clause_excerpt: string | null
+          confidence: number | null
+          evidence_text: string | null
+          finding_status: string | null
+          id: string
+          issue_id: string
+          model_language: string | null
+          rationale: string | null
+          recommendation_priority: string | null
+          reviewer_notes: string | null
+          reviewer_override: boolean | null
+          score: number | null
+          talking_points: string | null
+          updated_at: string | null
+        }
+        Insert: {
+          analysis_id: string
+          clause_excerpt?: string | null
+          confidence?: number | null
+          evidence_text?: string | null
+          finding_status?: string | null
+          id?: string
+          issue_id: string
+          model_language?: string | null
+          rationale?: string | null
+          recommendation_priority?: string | null
+          reviewer_notes?: string | null
+          reviewer_override?: boolean | null
+          score?: number | null
+          talking_points?: string | null
+          updated_at?: string | null
+        }
+        Update: {
+          analysis_id?: string
+          clause_excerpt?: string | null
+          confidence?: number | null
+          evidence_text?: string | null
+          finding_status?: string | null
+          id?: string
+          issue_id?: string
+          model_language?: string | null
+          rationale?: string | null
+          recommendation_priority?: string | null
+          reviewer_notes?: string | null
+          reviewer_override?: boolean | null
+          score?: number | null
+          talking_points?: string | null
+          updated_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "pbm_issue_findings_analysis_id_fkey"
+            columns: ["analysis_id"]
+            isOneToOne: false
+            referencedRelation: "pbm_full_analyses"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "pbm_issue_findings_issue_id_fkey"
+            columns: ["issue_id"]
+            isOneToOne: false
+            referencedRelation: "pbm_issues"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      pbm_issues: {
+        Row: {
+          active_version: string | null
+          code: string
+          created_at: string | null
+          description: string | null
+          id: string
+          model_language: string | null
+          provision_id: string
+          scoring_rule: string | null
+          talking_points: string | null
+          title: string
+          weight: number | null
+        }
+        Insert: {
+          active_version?: string | null
+          code: string
+          created_at?: string | null
+          description?: string | null
+          id?: string
+          model_language?: string | null
+          provision_id: string
+          scoring_rule?: string | null
+          talking_points?: string | null
+          title: string
+          weight?: number | null
+        }
+        Update: {
+          active_version?: string | null
+          code?: string
+          created_at?: string | null
+          description?: string | null
+          id?: string
+          model_language?: string | null
+          provision_id?: string
+          scoring_rule?: string | null
+          talking_points?: string | null
+          title?: string
+          weight?: number | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "pbm_issues_provision_id_fkey"
+            columns: ["provision_id"]
+            isOneToOne: false
+            referencedRelation: "pbm_provisions"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      pbm_provision_scores: {
+        Row: {
+          analysis_id: string
+          created_at: string | null
+          id: string
+          provision_id: string
+          rating_band: string | null
+          score: number | null
+          summary: string | null
+        }
+        Insert: {
+          analysis_id: string
+          created_at?: string | null
+          id?: string
+          provision_id: string
+          rating_band?: string | null
+          score?: number | null
+          summary?: string | null
+        }
+        Update: {
+          analysis_id?: string
+          created_at?: string | null
+          id?: string
+          provision_id?: string
+          rating_band?: string | null
+          score?: number | null
+          summary?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "pbm_provision_scores_analysis_id_fkey"
+            columns: ["analysis_id"]
+            isOneToOne: false
+            referencedRelation: "pbm_full_analyses"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "pbm_provision_scores_provision_id_fkey"
+            columns: ["provision_id"]
+            isOneToOne: false
+            referencedRelation: "pbm_provisions"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      pbm_provisions: {
+        Row: {
+          code: string
+          created_at: string | null
+          description: string | null
+          display_order: number | null
+          id: string
+          name: string
+          version_set: string | null
+          weight: number | null
+        }
+        Insert: {
+          code: string
+          created_at?: string | null
+          description?: string | null
+          display_order?: number | null
+          id?: string
+          name: string
+          version_set?: string | null
+          weight?: number | null
+        }
+        Update: {
+          code?: string
+          created_at?: string | null
+          description?: string | null
+          display_order?: number | null
+          id?: string
+          name?: string
+          version_set?: string | null
+          weight?: number | null
         }
         Relationships: []
       }

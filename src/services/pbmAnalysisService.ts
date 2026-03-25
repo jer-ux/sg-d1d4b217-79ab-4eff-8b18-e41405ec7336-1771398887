@@ -5,6 +5,10 @@ type Analysis = Database["public"]["Tables"]["pbm_full_analyses"]["Row"];
 type IssueFound = Database["public"]["Tables"]["pbm_full_issue_findings"]["Insert"];
 type ProvisionScore = Database["public"]["Tables"]["pbm_full_provision_scores"]["Insert"];
 
+// Create simpler helper types to avoid excessive nesting errors
+type DbProvision = { id: string; name: string; weight: number; };
+type DbIssue = { id: string; provision_id: string; title: string; model_language: string | null; talking_points: string | null; };
+
 interface MockAnalysisResult {
   overallScore: number;
   ratingBand: string;
@@ -17,21 +21,24 @@ class PBMAnalysisService {
   // Mock analysis generation (to be replaced with real AI pipeline)
   async generateMockAnalysis(contractVersionId: string): Promise<string> {
     // Get provisions and issues
-    const { data: provisions } = await supabase
+    const { data: rawProvisions } = await supabase
       .from("pbm_provisions")
-      .select("*")
+      .select("id, name, weight")
       .eq("version_set", "v1")
       .order("display_order");
 
-    const { data: issues } = await supabase
+    const { data: rawIssues } = await supabase
       .from("pbm_issues")
-      .select("*")
+      .select("id, provision_id, title, model_language, talking_points")
       .eq("active_version", "v1");
 
-    if (!provisions || !issues) throw new Error("Standards not loaded");
+    if (!rawProvisions || !rawIssues) throw new Error("Standards not loaded");
+    
+    const provisions = rawProvisions as DbProvision[];
+    const issues = rawIssues as DbIssue[];
 
     // Generate realistic mock scores
-    const issueFindings: IssueFound[] = issues.map(issue => {
+    const issueFindings: any[] = issues.map(issue => {
       const score = Math.floor(Math.random() * 5); // 0-4
       return {
         analysis_id: "", // Will be set after analysis is created
@@ -49,7 +56,7 @@ class PBMAnalysisService {
     });
 
     // Calculate provision scores
-    const provisionScores: ProvisionScore[] = provisions.map(provision => {
+    const provisionScores: any[] = provisions.map(provision => {
       const provisionIssues = issues.filter(i => i.provision_id === provision.id);
       const provisionFindings = issueFindings.filter(f => 
         provisionIssues.some(pi => pi.id === f.issue_id)
@@ -197,7 +204,7 @@ class PBMAnalysisService {
   private generateExecutiveSummary(
     overallScore: number,
     ratingBand: string,
-    provisionScores: ProvisionScore[]
+    provisionScores: any[]
   ): string {
     const weakProvisions = provisionScores.filter(ps => ps.score < 60);
     

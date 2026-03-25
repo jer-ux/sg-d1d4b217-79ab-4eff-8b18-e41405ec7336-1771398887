@@ -14,14 +14,14 @@ interface MockAnalysisResult {
 
 class PBMAnalysisService {
   async generateMockAnalysis(contractVersionId: string): Promise<string> {
-    const { data: provisions } = await supabase
-      .from("pbm_provisions" as any)
+    const { data: provisions } = await (supabase as any)
+      .from("pbm_provisions")
       .select("*")
       .eq("version_set", "v1")
       .order("display_order");
 
-    const { data: issues } = await supabase
-      .from("pbm_issues" as any)
+    const { data: issues } = await (supabase as any)
+      .from("pbm_issues")
       .select("*")
       .eq("active_version", "v1");
 
@@ -77,8 +77,8 @@ class PBMAnalysisService {
     const overallScore = Math.round((weightedSum / totalWeight) * 10) / 10;
     const ratingBand = this.getRatingBand(overallScore);
 
-    const { data: analysis, error: analysisError } = await supabase
-      .from("pbm_full_analyses" as any)
+    const { data: analysis, error: analysisError } = await (supabase as any)
+      .from("pbm_full_analyses")
       .insert({
         contract_version_id: contractVersionId,
         overall_score: overallScore,
@@ -97,8 +97,8 @@ class PBMAnalysisService {
       analysis_id: analysis.id,
     }));
 
-    const { error: findingsError } = await supabase
-      .from("pbm_full_issue_findings" as any)
+    const { error: findingsError } = await (supabase as any)
+      .from("pbm_full_issue_findings")
       .insert(findingsWithAnalysisId);
 
     if (findingsError) throw findingsError;
@@ -108,21 +108,21 @@ class PBMAnalysisService {
       analysis_id: analysis.id,
     }));
 
-    const { error: scoresError } = await supabase
-      .from("pbm_full_provision_scores" as any)
+    const { error: scoresError } = await (supabase as any)
+      .from("pbm_full_provision_scores")
       .insert(scoresWithAnalysisId);
 
     if (scoresError) throw scoresError;
 
-    const { data: version } = await supabase
-      .from("pbm_full_contract_versions" as any)
+    const { data: version } = await (supabase as any)
+      .from("pbm_full_contract_versions")
       .select("contract_id")
       .eq("id", contractVersionId)
       .single();
 
     if (version) {
-      await supabase
-        .from("pbm_full_contracts" as any)
+      await (supabase as any)
+        .from("pbm_full_contracts")
         .update({ status: "analyzed" })
         .eq("id", version.contract_id);
     }
@@ -217,8 +217,8 @@ Recommendation: ${
   }
 
   async approveAnalysis(analysisId: string, userId: string) {
-    const { data, error } = await supabase
-      .from("pbm_full_analyses" as any)
+    const { data, error } = await (supabase as any)
+      .from("pbm_full_analyses")
       .update({
         status: "approved",
         approved_at: new Date().toISOString(),
@@ -240,8 +240,8 @@ Recommendation: ${
       reviewerNotes?: string;
     }
   ) {
-    const { data, error } = await supabase
-      .from("pbm_full_issue_findings" as any)
+    const { data, error } = await (supabase as any)
+      .from("pbm_full_issue_findings")
       .update({
         ...updates,
         updated_at: new Date().toISOString(),

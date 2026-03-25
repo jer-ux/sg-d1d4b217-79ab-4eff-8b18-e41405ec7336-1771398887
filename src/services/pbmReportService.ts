@@ -47,16 +47,16 @@ class PBMReportService {
   async generateQuickLook(analysisId: string): Promise<QuickLookReport> {
     const result = await pbmContractService.getAnalysis(analysisId);
     
-    const { data: version } = await supabase
-      .from("pbm_full_contract_versions" as any)
+    const { data: version } = await (supabase as any)
+      .from("pbm_full_contract_versions")
       .select("contract_id")
       .eq("id", result.analysis.contract_version_id)
       .single();
 
     if (!version) throw new Error("Contract version not found");
 
-    const { data: contract } = await supabase
-      .from("pbm_full_contracts" as any)
+    const { data: contract } = await (supabase as any)
+      .from("pbm_full_contracts")
       .select("contract_title, pbm_name, employer_name")
       .eq("id", version.contract_id)
       .single();
@@ -91,16 +91,16 @@ class PBMReportService {
   async generateScorecard(analysisId: string): Promise<ScorecardReport> {
     const result = await pbmContractService.getAnalysis(analysisId);
     
-    const { data: version } = await supabase
-      .from("pbm_full_contract_versions" as any)
+    const { data: version } = await (supabase as any)
+      .from("pbm_full_contract_versions")
       .select("contract_id")
       .eq("id", result.analysis.contract_version_id)
       .single();
 
     let contractTitle = "Unknown Contract";
     if (version) {
-      const { data: contract } = await supabase
-        .from("pbm_full_contracts" as any)
+      const { data: contract } = await (supabase as any)
+        .from("pbm_full_contracts")
         .select("contract_title")
         .eq("id", version.contract_id)
         .single();
@@ -132,16 +132,16 @@ class PBMReportService {
   async generateNegotiationGuide(analysisId: string): Promise<NegotiationGuideReport> {
     const result = await pbmContractService.getAnalysis(analysisId);
     
-    const { data: version } = await supabase
-      .from("pbm_full_contract_versions" as any)
+    const { data: version } = await (supabase as any)
+      .from("pbm_full_contract_versions")
       .select("contract_id")
       .eq("id", result.analysis.contract_version_id)
       .single();
 
     let contractTitle = "Unknown Contract";
     if (version) {
-      const { data: contract } = await supabase
-        .from("pbm_full_contracts" as any)
+      const { data: contract } = await (supabase as any)
+        .from("pbm_full_contracts")
         .select("contract_title")
         .eq("id", version.contract_id)
         .single();

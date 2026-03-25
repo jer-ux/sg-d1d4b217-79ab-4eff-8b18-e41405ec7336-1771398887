@@ -53,16 +53,16 @@ class PBMContractService {
       created_by: user.id,
     };
 
-    const { data: contract, error: contractError } = await supabase
-      .from("pbm_full_contracts" as any)
+    const { data: contract, error: contractError } = await (supabase as any)
+      .from("pbm_full_contracts")
       .insert(contractData)
       .select()
       .single();
 
     if (contractError) throw contractError;
 
-    const { data: version, error: versionError } = await supabase
-      .from("pbm_full_contract_versions" as any)
+    const { data: version, error: versionError } = await (supabase as any)
+      .from("pbm_full_contract_versions")
       .insert({
         contract_id: contract.id,
         version_name: data.versionName || "v1.0",
@@ -77,28 +77,28 @@ class PBMContractService {
   }
 
   async getContract(contractId: string) {
-    const { data: contract, error: contractError } = await supabase
-      .from("pbm_full_contracts" as any)
+    const { data: contract, error: contractError } = await (supabase as any)
+      .from("pbm_full_contracts")
       .select("*")
       .eq("id", contractId)
       .single();
 
     if (contractError) throw contractError;
 
-    const { data: versions } = await supabase
-      .from("pbm_full_contract_versions" as any)
+    const { data: versions } = await (supabase as any)
+      .from("pbm_full_contract_versions")
       .select("*")
       .eq("contract_id", contractId);
 
     if (versions && versions.length > 0) {
       const versionIds = versions.map((v: any) => v.id);
-      const { data: analyses } = await supabase
-        .from("pbm_full_analyses" as any)
+      const { data: analyses } = await (supabase as any)
+        .from("pbm_full_analyses")
         .select("*")
         .in("contract_version_id", versionIds);
 
       return {
-        ...contract,
+        ...(contract || {}),
         versions: versions.map((v: any) => ({
           ...v,
           analyses: analyses?.filter((a: any) => a.contract_version_id === v.id) || []
@@ -106,12 +106,12 @@ class PBMContractService {
       };
     }
 
-    return { ...contract, versions: [] };
+    return { ...(contract || {}), versions: [] };
   }
 
   async listContracts(organizationId: string) {
-    const { data, error } = await supabase
-      .from("pbm_full_contracts" as any)
+    const { data, error } = await (supabase as any)
+      .from("pbm_full_contracts")
       .select("*")
       .eq("organization_id", organizationId)
       .order("created_at", { ascending: false });
@@ -122,23 +122,23 @@ class PBMContractService {
   }
 
   async getAnalysis(analysisId: string): Promise<any> {
-    const { data: analysis, error: analysisError } = await supabase
-      .from("pbm_full_analyses" as any)
+    const { data: analysis, error: analysisError } = await (supabase as any)
+      .from("pbm_full_analyses")
       .select("*")
       .eq("id", analysisId)
       .single();
 
     if (analysisError) throw analysisError;
 
-    const { data: findings, error: findingsError } = await supabase
-      .from("pbm_full_issue_findings" as any)
+    const { data: findings, error: findingsError } = await (supabase as any)
+      .from("pbm_full_issue_findings")
       .select("*")
       .eq("analysis_id", analysisId);
 
     if (findingsError) throw findingsError;
 
-    const { data: provisionScores, error: scoresError } = await supabase
-      .from("pbm_full_provision_scores" as any)
+    const { data: provisionScores, error: scoresError } = await (supabase as any)
+      .from("pbm_full_provision_scores")
       .select("*")
       .eq("analysis_id", analysisId);
 
@@ -176,8 +176,8 @@ class PBMContractService {
 
     const scoreDelta = (revisedResult.analysis.overall_score || 0) - (baseResult.analysis.overall_score || 0);
 
-    const { data, error } = await supabase
-      .from("pbm_full_comparisons" as any)
+    const { data, error } = await (supabase as any)
+      .from("pbm_full_comparisons")
       .insert({
         base_analysis_id: baseAnalysisId,
         revised_analysis_id: revisedAnalysisId,
@@ -195,8 +195,8 @@ class PBMContractService {
     const futureDate = new Date();
     futureDate.setDate(futureDate.getDate() + daysAhead);
 
-    const { data, error } = await supabase
-      .from("pbm_full_contracts" as any)
+    const { data, error } = await (supabase as any)
+      .from("pbm_full_contracts")
       .select("*")
       .eq("organization_id", organizationId)
       .lte("renewal_date", futureDate.toISOString())
@@ -208,8 +208,8 @@ class PBMContractService {
   }
 
   async getDashboardStats(organizationId: string) {
-    const { data: contracts } = await supabase
-      .from("pbm_full_contracts" as any)
+    const { data: contracts } = await (supabase as any)
+      .from("pbm_full_contracts")
       .select("id")
       .eq("organization_id", organizationId);
 

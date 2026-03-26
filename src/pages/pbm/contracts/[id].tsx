@@ -16,9 +16,9 @@ import {
   Share2,
   MoreVertical,
   Eye,
-  Edit,
-  Trash2,
+  Loader2,
   PlayCircle,
+  AlertCircle,
 } from "lucide-react";
 import { pbmContractService } from "@/services/pbmContractService";
 import { pbmAnalysisService } from "@/services/pbmAnalysisService";
@@ -29,6 +29,7 @@ export default function ContractDetailPage() {
   const [contract, setContract] = useState<any>(null);
   const [loading, setLoading] = useState(true);
   const [analyzing, setAnalyzing] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     if (id && typeof id === "string") {
@@ -38,10 +39,13 @@ export default function ContractDetailPage() {
 
   const loadContract = async (contractId: string) => {
     try {
+      setLoading(true);
+      setError(null);
       const data = await pbmContractService.getContract(contractId);
       setContract(data);
-    } catch (error) {
-      console.error("Error loading contract:", error);
+    } catch (err: any) {
+      console.error("Error loading contract:", err);
+      setError(err.message || "Failed to load contract");
     } finally {
       setLoading(false);
     }
@@ -56,13 +60,12 @@ export default function ContractDetailPage() {
         contract.versions[0].id
       );
       
-      // Reload contract to show new analysis
       await loadContract(contract.id);
       
-      // Navigate to analysis results
       router.push(`/pbm/analyses/${analysisId}/quick-look`);
     } catch (error) {
       console.error("Analysis error:", error);
+      setError("Failed to start analysis. Please try again.");
     } finally {
       setAnalyzing(false);
     }
@@ -85,20 +88,48 @@ export default function ContractDetailPage() {
 
   if (loading) {
     return (
-      <div className="flex min-h-screen items-center justify-center">
-        <div className="h-12 w-12 animate-spin rounded-full border-4 border-blue-200 border-t-blue-600" />
+      <div className="flex min-h-screen items-center justify-center bg-gradient-to-br from-slate-50 to-blue-50">
+        <div className="text-center">
+          <Loader2 className="mx-auto h-12 w-12 animate-spin text-blue-600" />
+          <p className="mt-4 text-slate-600">Loading contract...</p>
+        </div>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="flex min-h-screen items-center justify-center bg-gradient-to-br from-slate-50 to-blue-50">
+        <div className="text-center">
+          <AlertCircle className="mx-auto h-16 w-16 text-red-500" />
+          <h3 className="mt-4 text-lg font-semibold text-slate-900">
+            Error Loading Contract
+          </h3>
+          <p className="mt-2 text-sm text-slate-600">{error}</p>
+          <div className="mt-6 flex gap-3 justify-center">
+            <Link href="/pbm/contracts">
+              <Button variant="outline">Back to Contracts</Button>
+            </Link>
+            <Button onClick={() => loadContract(id as string)}>
+              Try Again
+            </Button>
+          </div>
+        </div>
       </div>
     );
   }
 
   if (!contract) {
     return (
-      <div className="flex min-h-screen items-center justify-center">
+      <div className="flex min-h-screen items-center justify-center bg-gradient-to-br from-slate-50 to-blue-50">
         <div className="text-center">
           <FileText className="mx-auto h-16 w-16 text-slate-300" />
           <h3 className="mt-4 text-lg font-semibold text-slate-900">
             Contract not found
           </h3>
+          <p className="mt-2 text-sm text-slate-600">
+            The contract you're looking for doesn't exist or has been deleted.
+          </p>
           <Link href="/pbm/contracts">
             <Button className="mt-6">Back to Contracts</Button>
           </Link>
@@ -118,7 +149,7 @@ export default function ContractDetailPage() {
 
       <div className="min-h-screen bg-gradient-to-br from-slate-50 to-blue-50">
         {/* Header */}
-        <header className="border-b bg-white/80 backdrop-blur-sm">
+        <header className="border-b bg-white/80 backdrop-blur-sm sticky top-0 z-10">
           <div className="mx-auto max-w-7xl px-6 py-4">
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-4">
@@ -239,7 +270,6 @@ export default function ContractDetailPage() {
               <TabsTrigger value="overview">Overview</TabsTrigger>
               <TabsTrigger value="analyses">Analyses</TabsTrigger>
               <TabsTrigger value="versions">Versions</TabsTrigger>
-              <TabsTrigger value="tasks">Tasks</TabsTrigger>
               <TabsTrigger value="activity">Activity</TabsTrigger>
             </TabsList>
 
@@ -297,7 +327,14 @@ export default function ContractDetailPage() {
                     onClick={handleStartAnalysis}
                     disabled={analyzing}
                   >
-                    {analyzing ? "Analyzing..." : "Start Analysis"}
+                    {analyzing ? (
+                      <>
+                        <Loader2 className="h-4 w-4 animate-spin" />
+                        Analyzing...
+                      </>
+                    ) : (
+                      "Start Analysis"
+                    )}
                   </Button>
                 </Card>
               )}
@@ -401,6 +438,9 @@ export default function ContractDetailPage() {
                           <p className="text-sm text-slate-600">
                             {new Date(version.created_at).toLocaleDateString()}
                           </p>
+                          {version.notes && (
+                            <p className="mt-2 text-sm text-slate-500">{version.notes}</p>
+                          )}
                         </div>
                         <Button size="sm" variant="outline" className="gap-2">
                           <Download className="h-4 w-4" />
@@ -413,27 +453,34 @@ export default function ContractDetailPage() {
               </Card>
             </TabsContent>
 
-            {/* Tasks Tab */}
-            <TabsContent value="tasks">
-              <Card className="p-6">
-                <h2 className="mb-4 text-lg font-semibold text-slate-900">
-                  Tasks & Workflow
-                </h2>
-                <p className="text-center text-sm text-slate-600">
-                  No tasks assigned
-                </p>
-              </Card>
-            </TabsContent>
-
             {/* Activity Tab */}
             <TabsContent value="activity">
               <Card className="p-6">
                 <h2 className="mb-4 text-lg font-semibold text-slate-900">
                   Activity Log
                 </h2>
-                <p className="text-center text-sm text-slate-600">
-                  No activity recorded
-                </p>
+                <div className="space-y-3">
+                  <div className="flex items-start gap-3 text-sm">
+                    <div className="mt-0.5 h-2 w-2 rounded-full bg-blue-500" />
+                    <div>
+                      <p className="font-medium text-slate-900">Contract uploaded</p>
+                      <p className="text-slate-600">
+                        {new Date(contract.created_at).toLocaleString()}
+                      </p>
+                    </div>
+                  </div>
+                  {contract.versions?.[0]?.analyses?.map((analysis: any) => (
+                    <div key={analysis.id} className="flex items-start gap-3 text-sm">
+                      <div className="mt-0.5 h-2 w-2 rounded-full bg-green-500" />
+                      <div>
+                        <p className="font-medium text-slate-900">Analysis completed</p>
+                        <p className="text-slate-600">
+                          {new Date(analysis.analyzed_at).toLocaleString()}
+                        </p>
+                      </div>
+                    </div>
+                  ))}
+                </div>
               </Card>
             </TabsContent>
           </Tabs>

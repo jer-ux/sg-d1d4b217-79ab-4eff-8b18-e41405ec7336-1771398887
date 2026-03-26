@@ -14,7 +14,7 @@ import {
 } from "@/components/ui/select";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import { Upload, FileText, AlertCircle, ArrowLeft, Loader2 } from "lucide-react";
+import { Upload, FileText, AlertCircle, ArrowLeft, Loader2, CheckCircle } from "lucide-react";
 import { pbmContractService } from "@/services/pbmContractService";
 
 export default function ContractUploadPage() {
@@ -33,6 +33,7 @@ export default function ContractUploadPage() {
     notes: "",
   });
   const [error, setError] = useState("");
+  const [uploadProgress, setUploadProgress] = useState("");
 
   const handleDrag = (e: React.DragEvent) => {
     e.preventDefault();
@@ -55,6 +56,7 @@ export default function ContractUploadPage() {
           droppedFile.type === "application/vnd.openxmlformats-officedocument.wordprocessingml.document") {
         setFile(droppedFile);
         setError("");
+        setUploadProgress(`File selected: ${droppedFile.name}`);
       } else {
         setError("Please upload a PDF or DOCX file");
       }
@@ -68,6 +70,7 @@ export default function ContractUploadPage() {
           selectedFile.type === "application/vnd.openxmlformats-officedocument.wordprocessingml.document") {
         setFile(selectedFile);
         setError("");
+        setUploadProgress(`File selected: ${selectedFile.name}`);
       } else {
         setError("Please upload a PDF or DOCX file");
       }
@@ -82,12 +85,22 @@ export default function ContractUploadPage() {
       return;
     }
 
+    // Validate required fields
+    if (!formData.employerName || !formData.pbmName || !formData.contractTitle || 
+        !formData.effectiveDate || !formData.renewalDate) {
+      setError("Please fill in all required fields");
+      return;
+    }
+
     setUploading(true);
     setError("");
+    setUploadProgress("Starting upload...");
 
     try {
       // Mock organization ID for demo
-      const orgId = "demo-org-id";
+      const orgId = "demo-org-" + Date.now();
+
+      setUploadProgress("Uploading file to storage...");
 
       const result = await pbmContractService.uploadContract({
         organizationId: orgId,
@@ -102,11 +115,17 @@ export default function ContractUploadPage() {
         notes: formData.notes,
       });
 
-      // Redirect to contract detail page
-      router.push(`/pbm/contracts/${result.contractId}`);
+      setUploadProgress("Upload successful! Redirecting...");
+
+      // Small delay to show success message
+      setTimeout(() => {
+        router.push(`/pbm/contracts/${result.contractId}`);
+      }, 1000);
+
     } catch (err: any) {
       console.error("Upload error:", err);
-      setError(err.message || "Failed to upload contract");
+      setError(err.message || "Failed to upload contract. Please try again.");
+      setUploadProgress("");
       setUploading(false);
     }
   };
@@ -120,7 +139,7 @@ export default function ContractUploadPage() {
 
       <div className="min-h-screen bg-gradient-to-br from-slate-50 to-blue-50">
         {/* Header */}
-        <header className="border-b bg-white/80 backdrop-blur-sm">
+        <header className="border-b bg-white/80 backdrop-blur-sm sticky top-0 z-10">
           <div className="mx-auto max-w-4xl px-6 py-4">
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-4">
@@ -169,6 +188,7 @@ export default function ContractUploadPage() {
                     className="hidden"
                     accept=".pdf,.docx"
                     onChange={handleFileChange}
+                    disabled={uploading}
                   />
                   
                   {file ? (
@@ -180,14 +200,19 @@ export default function ContractUploadPage() {
                           {(file.size / 1024 / 1024).toFixed(2)} MB
                         </p>
                       </div>
-                      <Button
-                        type="button"
-                        variant="outline"
-                        size="sm"
-                        onClick={() => setFile(null)}
-                      >
-                        Remove
-                      </Button>
+                      {!uploading && (
+                        <Button
+                          type="button"
+                          variant="outline"
+                          size="sm"
+                          onClick={() => {
+                            setFile(null);
+                            setUploadProgress("");
+                          }}
+                        >
+                          Remove
+                        </Button>
+                      )}
                     </div>
                   ) : (
                     <div className="space-y-4">
@@ -207,6 +232,17 @@ export default function ContractUploadPage() {
                     </div>
                   )}
                 </div>
+
+                {uploadProgress && !error && (
+                  <div className="mt-4 flex items-center gap-2 rounded-lg bg-blue-50 p-3 text-sm text-blue-800">
+                    {uploading ? (
+                      <Loader2 className="h-4 w-4 animate-spin" />
+                    ) : (
+                      <CheckCircle className="h-4 w-4" />
+                    )}
+                    {uploadProgress}
+                  </div>
+                )}
 
                 {error && (
                   <div className="mt-4 flex items-center gap-2 rounded-lg bg-red-50 p-3 text-sm text-red-800">
@@ -233,6 +269,7 @@ export default function ContractUploadPage() {
                       }
                       required
                       placeholder="ABC Corporation"
+                      disabled={uploading}
                     />
                   </div>
 
@@ -246,6 +283,7 @@ export default function ContractUploadPage() {
                       }
                       required
                       placeholder="OptumRx"
+                      disabled={uploading}
                     />
                   </div>
 
@@ -259,6 +297,7 @@ export default function ContractUploadPage() {
                       }
                       required
                       placeholder="Pharmacy Benefit Management Services Agreement"
+                      disabled={uploading}
                     />
                   </div>
 
@@ -269,6 +308,7 @@ export default function ContractUploadPage() {
                       onValueChange={(value) =>
                         setFormData({ ...formData, contractType: value })
                       }
+                      disabled={uploading}
                     >
                       <SelectTrigger id="contractType">
                         <SelectValue />
@@ -292,6 +332,7 @@ export default function ContractUploadPage() {
                         setFormData({ ...formData, versionName: e.target.value })
                       }
                       placeholder="v1.0"
+                      disabled={uploading}
                     />
                   </div>
 
@@ -305,6 +346,7 @@ export default function ContractUploadPage() {
                         setFormData({ ...formData, effectiveDate: e.target.value })
                       }
                       required
+                      disabled={uploading}
                     />
                   </div>
 
@@ -318,6 +360,7 @@ export default function ContractUploadPage() {
                         setFormData({ ...formData, renewalDate: e.target.value })
                       }
                       required
+                      disabled={uploading}
                     />
                   </div>
 
@@ -331,6 +374,7 @@ export default function ContractUploadPage() {
                       }
                       placeholder="Add any additional context or notes about this contract"
                       rows={3}
+                      disabled={uploading}
                     />
                   </div>
                 </div>
@@ -339,11 +383,11 @@ export default function ContractUploadPage() {
               {/* Submit */}
               <div className="flex items-center justify-end gap-4">
                 <Link href="/pbm/contracts">
-                  <Button type="button" variant="outline">
+                  <Button type="button" variant="outline" disabled={uploading}>
                     Cancel
                   </Button>
                 </Link>
-                <Button type="submit" disabled={uploading} className="gap-2">
+                <Button type="submit" disabled={uploading || !file} className="gap-2">
                   {uploading ? (
                     <>
                       <Loader2 className="h-4 w-4 animate-spin" />

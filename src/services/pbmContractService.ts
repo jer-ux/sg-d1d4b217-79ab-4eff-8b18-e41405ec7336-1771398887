@@ -29,17 +29,34 @@ export interface AnalysisResult {
 class PBMContractService {
   async uploadContract(data: ContractUploadData): Promise<{ contractId: string; versionId: string }> {
     const { data: { user } } = await supabase.auth.getUser();
-    if (!user) throw new Error("Not authenticated");
+    if (!user) {
+      throw new Error("Not authenticated");
+    }
 
-    const fileName = `${data.organizationId}/${Date.now()}_${data.file.name}`;
+    // Generate unique file name
+    const timestamp = Date.now();
+    const sanitizedFileName = data.file.name.replace(/[^a-zA-Z0-9.-]/g, '_');
+    const fileName = `${data.organizationId}/${timestamp}_${sanitizedFileName}`;
+
+    // Upload to Supabase Storage
     const { data: uploadData, error: uploadError } = await supabase.storage
       .from("contracts")
-      .upload(fileName, data.file);
+      .upload(fileName, data.file, {
+        cacheControl: '3600',
+        upsert: false
+      });
 
-    if (uploadError) throw uploadError;
+    if (uploadError) {
+      console.error("Storage upload error:", uploadError);
+      throw new Error(`File upload failed: ${uploadError.message}`);
+    }
 
-    const fileUrl = supabase.storage.from("contracts").getPublicUrl(fileName).data.publicUrl;
+    // Get public URL
+    const { data: { publicUrl } } = supabase.storage
+      .from("contracts")
+      .getPublicUrl(fileName);
 
+    // Create contract record
     const contractData: ContractInsert = {
       organization_id: data.organizationId,
       employer_name: data.employerName,
@@ -49,7 +66,7 @@ class PBMContractService {
       effective_date: data.effectiveDate,
       renewal_date: data.renewalDate,
       status: "uploaded",
-      uploaded_file_url: fileUrl,
+      uploaded_file_url: publicUrl,
       created_by: user.id,
     };
 
@@ -59,19 +76,27 @@ class PBMContractService {
       .select()
       .single();
 
-    if (contractError) throw contractError;
+    if (contractError) {
+      console.error("Contract insert error:", contractError);
+      throw new Error(`Failed to create contract record: ${contractError.message}`);
+    }
 
+    // Create version record
     const { data: version, error: versionError } = await (supabase as any)
       .from("pbm_full_contract_versions")
       .insert({
         contract_id: contract.id,
         version_name: data.versionName || "v1.0",
-        file_url: fileUrl,
+        file_url: publicUrl,
+        created_by: user.id,
       })
       .select()
       .single();
 
-    if (versionError) throw versionError;
+    if (versionError) {
+      console.error("Version insert error:", versionError);
+      throw new Error(`Failed to create version record: ${versionError.message}`);
+    }
 
     return { contractId: contract.id, versionId: version.id };
   }
@@ -83,19 +108,24 @@ class PBMContractService {
       .eq("id", contractId)
       .single();
 
-    if (contractError) throw contractError;
+    if (contractError) {
+      console.error("Get contract error:", contractError);
+      throw new Error(`Failed to get contract: ${contractError.message}`);
+    }
 
     const { data: versions } = await (supabase as any)
       .from("pbm_full_contract_versions")
       .select("*")
-      .eq("contract_id", contractId);
+      .eq("contract_id", contractId)
+      .order("created_at", { ascending: false });
 
     if (versions && versions.length > 0) {
       const versionIds = versions.map((v: any) => v.id);
       const { data: analyses } = await (supabase as any)
         .from("pbm_full_analyses")
         .select("*")
-        .in("contract_version_id", versionIds);
+        .in("contract_version_id", versionIds)
+        .order("created_at", { ascending: false });
 
       return {
         ...(contract || {}),
@@ -116,7 +146,10 @@ class PBMContractService {
       .eq("organization_id", organizationId)
       .order("created_at", { ascending: false });
 
-    if (error) throw error;
+    if (error) {
+      console.error("List contracts error:", error);
+      throw new Error(`Failed to list contracts: ${error.message}`);
+    }
     
     return data || [];
   }
@@ -128,21 +161,28 @@ class PBMContractService {
       .eq("id", analysisId)
       .single();
 
-    if (analysisError) throw analysisError;
+    if (analysisError) {
+      console.error("Get analysis error:", analysisError);
+      throw new Error(`Failed to get analysis: ${analysisError.message}`);
+    }
 
     const { data: findings, error: findingsError } = await (supabase as any)
       .from("pbm_full_issue_findings")
       .select("*")
       .eq("analysis_id", analysisId);
 
-    if (findingsError) throw findingsError;
+    if (findingsError) {
+      console.error("Get findings error:", findingsError);
+    }
 
     const { data: provisionScores, error: scoresError } = await (supabase as any)
       .from("pbm_full_provision_scores")
       .select("*")
       .eq("analysis_id", analysisId);
 
-    if (scoresError) throw scoresError;
+    if (scoresError) {
+      console.error("Get scores error:", scoresError);
+    }
 
     return {
       analysis,
@@ -187,7 +227,11 @@ class PBMContractService {
       .select()
       .single();
 
-    if (error) throw error;
+    if (error) {
+      console.error("Create comparison error:", error);
+      throw new Error(`Failed to create comparison: ${error.message}`);
+    }
+    
     return data;
   }
 
@@ -203,7 +247,11 @@ class PBMContractService {
       .gte("renewal_date", new Date().toISOString())
       .order("renewal_date", { ascending: true });
 
-    if (error) throw error;
+    if (error) {
+      console.error("Get renewals error:", error);
+      throw new Error(`Failed to get renewals: ${error.message}`);
+    }
+    
     return data || [];
   }
 

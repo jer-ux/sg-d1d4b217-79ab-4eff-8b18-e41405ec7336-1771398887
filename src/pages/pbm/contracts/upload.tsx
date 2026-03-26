@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
+import { Progress } from "@/components/ui/progress";
 import {
   Select,
   SelectContent,
@@ -15,7 +16,7 @@ import {
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { Upload, FileText, AlertCircle, ArrowLeft, Loader2, CheckCircle } from "lucide-react";
-import { pbmContractService } from "@/services/pbmContractService";
+import { pbmContractService, type UploadProgress } from "@/services/pbmContractService";
 
 export default function ContractUploadPage() {
   const router = useRouter();
@@ -33,7 +34,11 @@ export default function ContractUploadPage() {
     notes: "",
   });
   const [error, setError] = useState("");
-  const [uploadProgress, setUploadProgress] = useState("");
+  const [uploadProgress, setUploadProgress] = useState<UploadProgress>({
+    status: 'uploading',
+    progress: 0,
+    message: ''
+  });
 
   const handleDrag = (e: React.DragEvent) => {
     e.preventDefault();
@@ -56,7 +61,6 @@ export default function ContractUploadPage() {
           droppedFile.type === "application/vnd.openxmlformats-officedocument.wordprocessingml.document") {
         setFile(droppedFile);
         setError("");
-        setUploadProgress(`File selected: ${droppedFile.name}`);
       } else {
         setError("Please upload a PDF or DOCX file");
       }
@@ -70,7 +74,6 @@ export default function ContractUploadPage() {
           selectedFile.type === "application/vnd.openxmlformats-officedocument.wordprocessingml.document") {
         setFile(selectedFile);
         setError("");
-        setUploadProgress(`File selected: ${selectedFile.name}`);
       } else {
         setError("Please upload a PDF or DOCX file");
       }
@@ -94,13 +97,10 @@ export default function ContractUploadPage() {
 
     setUploading(true);
     setError("");
-    setUploadProgress("Starting upload...");
 
     try {
-      // Mock organization ID for demo
+      // Generate organization ID (in real app, this comes from user's org)
       const orgId = "demo-org-" + Date.now();
-
-      setUploadProgress("Uploading file to storage...");
 
       const result = await pbmContractService.uploadContract({
         organizationId: orgId,
@@ -113,21 +113,33 @@ export default function ContractUploadPage() {
         file,
         versionName: formData.versionName,
         notes: formData.notes,
+      }, (progress) => {
+        setUploadProgress(progress);
       });
 
-      setUploadProgress("Upload successful! Redirecting...");
+      // Wait a moment to show success message
+      await new Promise(resolve => setTimeout(resolve, 1000));
 
-      // Small delay to show success message
-      setTimeout(() => {
-        router.push(`/pbm/contracts/${result.contractId}`);
-      }, 1000);
+      // Redirect to contracts list instead of detail page
+      router.push('/pbm/contracts');
 
     } catch (err: any) {
       console.error("Upload error:", err);
       setError(err.message || "Failed to upload contract. Please try again.");
-      setUploadProgress("");
       setUploading(false);
     }
+  };
+
+  const getProgressColor = () => {
+    if (uploadProgress.status === 'error') return 'bg-red-500';
+    if (uploadProgress.status === 'complete') return 'bg-green-500';
+    return 'bg-blue-500';
+  };
+
+  const getProgressIcon = () => {
+    if (uploadProgress.status === 'error') return <AlertCircle className="h-4 w-4" />;
+    if (uploadProgress.status === 'complete') return <CheckCircle className="h-4 w-4" />;
+    return <Loader2 className="h-4 w-4 animate-spin" />;
   };
 
   return (
@@ -207,7 +219,7 @@ export default function ContractUploadPage() {
                           size="sm"
                           onClick={() => {
                             setFile(null);
-                            setUploadProgress("");
+                            setUploadProgress({ status: 'uploading', progress: 0, message: '' });
                           }}
                         >
                           Remove
@@ -233,14 +245,20 @@ export default function ContractUploadPage() {
                   )}
                 </div>
 
-                {uploadProgress && !error && (
-                  <div className="mt-4 flex items-center gap-2 rounded-lg bg-blue-50 p-3 text-sm text-blue-800">
-                    {uploading ? (
-                      <Loader2 className="h-4 w-4 animate-spin" />
-                    ) : (
-                      <CheckCircle className="h-4 w-4" />
-                    )}
-                    {uploadProgress}
+                {/* Upload Progress */}
+                {uploading && uploadProgress.progress > 0 && (
+                  <div className="mt-4 space-y-2">
+                    <div className="flex items-center justify-between text-sm">
+                      <div className="flex items-center gap-2 text-slate-700">
+                        {getProgressIcon()}
+                        <span>{uploadProgress.message}</span>
+                      </div>
+                      <span className="font-medium">{uploadProgress.progress}%</span>
+                    </div>
+                    <Progress 
+                      value={uploadProgress.progress} 
+                      className="h-2"
+                    />
                   </div>
                 )}
 
@@ -391,7 +409,7 @@ export default function ContractUploadPage() {
                   {uploading ? (
                     <>
                       <Loader2 className="h-4 w-4 animate-spin" />
-                      Uploading...
+                      {uploadProgress.status === 'complete' ? 'Redirecting...' : 'Uploading...'}
                     </>
                   ) : (
                     <>

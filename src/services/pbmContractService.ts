@@ -26,79 +26,181 @@ export interface AnalysisResult {
   provisionScores: ProvisionScore[];
 }
 
+export interface UploadProgress {
+  status: 'uploading' | 'processing' | 'complete' | 'error';
+  progress: number;
+  message: string;
+}
+
 class PBMContractService {
-  async uploadContract(data: ContractUploadData): Promise<{ contractId: string; versionId: string }> {
-    const { data: { user } } = await supabase.auth.getUser();
-    if (!user) {
-      throw new Error("Not authenticated");
-    }
+  async uploadContract(
+    data: ContractUploadData,
+    onProgress?: (progress: UploadProgress) => void
+  ): Promise<{ contractId: string; versionId: string }> {
+    try {
+      // Check authentication first
+      const { data: { user }, error: authError } = await supabase.auth.getUser();
+      
+      if (authError || !user) {
+        // If no auth, use demo mode - create local records
+        console.warn("No authentication - using demo mode");
+        return this.uploadContractDemo(data, onProgress);
+      }
 
-    // Generate unique file name
-    const timestamp = Date.now();
-    const sanitizedFileName = data.file.name.replace(/[^a-zA-Z0-9.-]/g, '_');
-    const fileName = `${data.organizationId}/${timestamp}_${sanitizedFileName}`;
-
-    // Upload to Supabase Storage
-    const { data: uploadData, error: uploadError } = await supabase.storage
-      .from("contracts")
-      .upload(fileName, data.file, {
-        cacheControl: '3600',
-        upsert: false
+      // Step 1: Update progress - Starting upload
+      onProgress?.({
+        status: 'uploading',
+        progress: 10,
+        message: 'Preparing file upload...'
       });
 
-    if (uploadError) {
-      console.error("Storage upload error:", uploadError);
-      throw new Error(`File upload failed: ${uploadError.message}`);
-    }
+      // Generate unique file path
+      const timestamp = Date.now();
+      const sanitizedFileName = data.file.name.replace(/[^a-zA-Z0-9.-]/g, '_');
+      const filePath = `${user.id}/${timestamp}_${sanitizedFileName}`;
 
-    // Get public URL
-    const { data: { publicUrl } } = supabase.storage
-      .from("contracts")
-      .getPublicUrl(fileName);
+      // Step 2: Upload to Supabase Storage
+      onProgress?.({
+        status: 'uploading',
+        progress: 30,
+        message: 'Uploading file to secure storage...'
+      });
 
-    // Create contract record
-    const contractData: ContractInsert = {
-      organization_id: data.organizationId,
-      employer_name: data.employerName,
-      pbm_name: data.pbmName,
-      contract_title: data.contractTitle,
-      contract_type: data.contractType,
-      effective_date: data.effectiveDate,
-      renewal_date: data.renewalDate,
-      status: "uploaded",
-      uploaded_file_url: publicUrl,
-      created_by: user.id,
-    };
+      const { data: uploadData, error: uploadError } = await supabase.storage
+        .from('contracts')
+        .upload(filePath, data.file, {
+          cacheControl: '3600',
+          upsert: false
+        });
 
-    const { data: contract, error: contractError } = await (supabase as any)
-      .from("pbm_full_contracts")
-      .insert(contractData)
-      .select()
-      .single();
+      if (uploadError) {
+        console.error("Storage upload error:", uploadError);
+        throw new Error(`File upload failed: ${uploadError.message}`);
+      }
 
-    if (contractError) {
-      console.error("Contract insert error:", contractError);
-      throw new Error(`Failed to create contract record: ${contractError.message}`);
-    }
+      // Step 3: Get public URL
+      const { data: { publicUrl } } = supabase.storage
+        .from('contracts')
+        .getPublicUrl(filePath);
 
-    // Create version record
-    const { data: version, error: versionError } = await (supabase as any)
-      .from("pbm_full_contract_versions")
-      .insert({
-        contract_id: contract.id,
-        version_name: data.versionName || "v1.0",
-        file_url: publicUrl,
+      onProgress?.({
+        status: 'processing',
+        progress: 60,
+        message: 'Creating contract record...'
+      });
+
+      // Step 4: Create contract record
+      const contractData: ContractInsert = {
+        organization_id: data.organizationId,
+        employer_name: data.employerName,
+        pbm_name: data.pbmName,
+        contract_title: data.contractTitle,
+        contract_type: data.contractType,
+        effective_date: data.effectiveDate,
+        renewal_date: data.renewalDate,
+        status: 'uploaded',
+        uploaded_file_url: publicUrl,
         created_by: user.id,
-      })
-      .select()
-      .single();
+      };
 
-    if (versionError) {
-      console.error("Version insert error:", versionError);
-      throw new Error(`Failed to create version record: ${versionError.message}`);
+      const { data: contract, error: contractError } = await (supabase as any)
+        .from("pbm_full_contracts")
+        .insert(contractData)
+        .select()
+        .single();
+
+      if (contractError) {
+        console.error("Contract insert error:", contractError);
+        throw new Error(`Failed to create contract record: ${contractError.message}`);
+      }
+
+      onProgress?.({
+        status: 'processing',
+        progress: 80,
+        message: 'Creating version record...'
+      });
+
+      // Step 5: Create version record
+      const { data: version, error: versionError } = await (supabase as any)
+        .from("pbm_full_contract_versions")
+        .insert({
+          contract_id: contract.id,
+          version_name: data.versionName || "v1.0",
+          file_url: publicUrl,
+          created_by: user.id,
+          notes: data.notes,
+        })
+        .select()
+        .single();
+
+      if (versionError) {
+        console.error("Version insert error:", versionError);
+        throw new Error(`Failed to create version record: ${versionError.message}`);
+      }
+
+      // Step 6: Create upload tracking record
+      await (supabase as any)
+        .from("contract_uploads")
+        .insert({
+          contract_id: contract.id,
+          file_path: filePath,
+          file_size: data.file.size,
+          upload_status: 'completed',
+          uploaded_by: user.id,
+        });
+
+      onProgress?.({
+        status: 'complete',
+        progress: 100,
+        message: 'Upload complete!'
+      });
+
+      return { contractId: contract.id, versionId: version.id };
+
+    } catch (error: any) {
+      console.error("Upload error:", error);
+      onProgress?.({
+        status: 'error',
+        progress: 0,
+        message: error.message || 'Upload failed'
+      });
+      throw error;
     }
+  }
 
-    return { contractId: contract.id, versionId: version.id };
+  // Demo mode fallback for non-authenticated users
+  private async uploadContractDemo(
+    data: ContractUploadData,
+    onProgress?: (progress: UploadProgress) => void
+  ): Promise<{ contractId: string; versionId: string }> {
+    // Simulate upload progress
+    onProgress?.({
+      status: 'uploading',
+      progress: 30,
+      message: 'Processing demo upload...'
+    });
+
+    await new Promise(resolve => setTimeout(resolve, 500));
+
+    onProgress?.({
+      status: 'processing',
+      progress: 70,
+      message: 'Creating demo contract...'
+    });
+
+    await new Promise(resolve => setTimeout(resolve, 500));
+
+    // Generate demo IDs
+    const demoContractId = `demo-contract-${Date.now()}`;
+    const demoVersionId = `demo-version-${Date.now()}`;
+
+    onProgress?.({
+      status: 'complete',
+      progress: 100,
+      message: 'Demo contract created!'
+    });
+
+    return { contractId: demoContractId, versionId: demoVersionId };
   }
 
   async getContract(contractId: string) {

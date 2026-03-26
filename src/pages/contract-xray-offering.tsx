@@ -1,14 +1,16 @@
-import React from "react";
+import React, { useState } from "react";
 import { SiteHeader } from "@/components/site/SiteHeader";
 import { SiteFooter } from "@/components/site/SiteFooter";
 import { SEO } from "@/components/SEO";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Check, Shield, TrendingUp, Clock, Users, FileText, BarChart3, Zap, ArrowRight, Lock, AlertTriangle } from "lucide-react";
+import { Check, Shield, TrendingUp, Clock, Users, FileText, BarChart3, Zap, ArrowRight, Lock, AlertTriangle, Menu, X } from "lucide-react";
 import Link from "next/link";
 
 export default function ContractXRayOffering() {
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+
   return (
     <>
       <SEO
@@ -18,29 +20,34 @@ export default function ContractXRayOffering() {
       <SiteHeader />
       
       <main className="min-h-screen bg-gradient-to-b from-slate-50 to-white">
-        {/* Hero Section */}
+        {/* Hero Section with Animations */}
         <section className="relative overflow-hidden bg-gradient-to-br from-blue-900 via-slate-800 to-blue-950 text-white py-24">
           <div className="absolute inset-0 bg-[url('/grid.svg')] opacity-10"></div>
+          
+          {/* Animated gradient orbs */}
+          <div className="absolute top-0 left-1/4 w-96 h-96 bg-blue-500/20 rounded-full blur-3xl animate-pulse"></div>
+          <div className="absolute bottom-0 right-1/4 w-96 h-96 bg-amber-500/20 rounded-full blur-3xl animate-pulse delay-1000"></div>
+          
           <div className="container mx-auto px-6 relative z-10">
             <div className="max-w-4xl mx-auto text-center">
-              <Badge className="mb-4 bg-amber-500/20 text-amber-300 border-amber-500/30">
+              <Badge className="mb-4 bg-amber-500/20 text-amber-300 border-amber-500/30 animate-fade-in">
                 Product Architecture
               </Badge>
-              <h1 className="text-5xl md:text-6xl font-bold mb-6">
+              <h1 className="text-5xl md:text-6xl font-bold mb-6 animate-slide-up">
                 Contract X-Ray<sup className="text-2xl">™</sup>
               </h1>
-              <p className="text-xl md:text-2xl text-blue-100 mb-4">
+              <p className="text-xl md:text-2xl text-blue-100 mb-4 animate-slide-up delay-100">
                 Fiduciary-Aligned PBM Contract Standards
               </p>
-              <p className="text-lg text-slate-300 mb-8 max-w-2xl mx-auto">
+              <p className="text-lg text-slate-300 mb-8 max-w-2xl mx-auto animate-slide-up delay-200">
                 Start with a quick screen. Expand to continuous governance. 
                 Transform how you protect plan participants through every contract lifecycle stage.
               </p>
-              <div className="flex flex-wrap gap-4 justify-center">
-                <Button size="lg" className="bg-amber-500 hover:bg-amber-600 text-slate-900 font-semibold">
+              <div className="flex flex-wrap gap-4 justify-center animate-slide-up delay-300">
+                <Button size="lg" className="bg-amber-500 hover:bg-amber-600 text-slate-900 font-semibold transition-all hover:scale-105 hover:shadow-xl">
                   Compare Tiers
                 </Button>
-                <Button size="lg" variant="outline" className="border-white text-white hover:bg-white/10">
+                <Button size="lg" variant="outline" className="border-white text-white hover:bg-white/10 transition-all hover:scale-105">
                   Download Product Guide
                 </Button>
               </div>
@@ -62,22 +69,22 @@ export default function ContractXRayOffering() {
               </div>
               
               <div className="grid md:grid-cols-3 gap-8">
-                <div className="text-center">
-                  <div className="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                <div className="text-center group hover:scale-105 transition-transform">
+                  <div className="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-4 group-hover:bg-blue-200 transition-colors">
                     <Zap className="w-8 h-8 text-blue-600" />
                   </div>
                   <h3 className="font-semibold text-lg mb-2">Low-Friction Entry</h3>
                   <p className="text-slate-600">Start with Quick Screen. Get insights in minutes, not weeks.</p>
                 </div>
-                <div className="text-center">
-                  <div className="w-16 h-16 bg-amber-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                <div className="text-center group hover:scale-105 transition-transform">
+                  <div className="w-16 h-16 bg-amber-100 rounded-full flex items-center justify-center mx-auto mb-4 group-hover:bg-amber-200 transition-colors">
                     <TrendingUp className="w-8 h-8 text-amber-600" />
                   </div>
                   <h3 className="font-semibold text-lg mb-2">Higher-Value Expansion</h3>
                   <p className="text-slate-600">Progress to Full X-Ray, Negotiation OS, and Continuous Accountability.</p>
                 </div>
-                <div className="text-center">
-                  <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                <div className="text-center group hover:scale-105 transition-transform">
+                  <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4 group-hover:bg-green-200 transition-colors">
                     <Shield className="w-8 h-8 text-green-600" />
                   </div>
                   <h3 className="font-semibold text-lg mb-2">Durable Governance</h3>
@@ -88,7 +95,7 @@ export default function ContractXRayOffering() {
           </div>
         </section>
 
-        {/* 4-Tier Offering Model */}
+        {/* Enhanced 4-Tier Offering Model */}
         <section className="py-20 bg-slate-50">
           <div className="container mx-auto px-6">
             <div className="text-center mb-12">
@@ -102,17 +109,19 @@ export default function ContractXRayOffering() {
 
             <div className="grid lg:grid-cols-4 gap-6 max-w-7xl mx-auto">
               {/* Tier 1: Quick Screen */}
-              <Card className="p-6 bg-white border-2 border-slate-200 hover:border-blue-400 transition-all hover:shadow-xl">
+              <Card className="p-6 bg-white border-2 border-slate-200 hover:border-blue-400 transition-all hover:shadow-2xl hover:-translate-y-2 duration-300 group">
                 <div className="mb-4">
                   <Badge className="bg-blue-100 text-blue-700">Tier 1</Badge>
                 </div>
-                <h3 className="text-2xl font-bold mb-2">Quick Screen</h3>
-                <p className="text-slate-600 mb-4">Fast contract triage. Know if deeper analysis is worth it.</p>
+                <h3 className="text-2xl font-bold mb-2 group-hover:text-blue-600 transition-colors">Quick Screen</h3>
+                <p className="text-slate-600 mb-4 min-h-[3rem]">Fast contract triage. Know if deeper analysis is worth it.</p>
                 
-                <div className="text-3xl font-bold text-slate-900 mb-1">$1,500</div>
-                <p className="text-sm text-slate-500 mb-6">One-time analysis</p>
+                <div className="mb-6">
+                  <div className="text-3xl font-bold text-slate-900 mb-1">$1,500</div>
+                  <p className="text-sm text-slate-500">One-time analysis</p>
+                </div>
 
-                <div className="space-y-3 mb-6">
+                <div className="space-y-3 mb-6 min-h-[280px]">
                   <div className="flex items-start gap-2">
                     <Check className="w-5 h-5 text-green-600 flex-shrink-0 mt-0.5" />
                     <span className="text-sm">Quick Look Report (1 page)</span>
@@ -131,26 +140,29 @@ export default function ContractXRayOffering() {
                   </div>
                 </div>
 
-                <Button className="w-full" variant="outline">
+                <Button className="w-full group-hover:bg-blue-600 group-hover:text-white transition-all" variant="outline">
                   Start with Quick Screen
+                  <ArrowRight className="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform" />
                 </Button>
               </Card>
 
               {/* Tier 2: Full Contract X-Ray */}
-              <Card className="p-6 bg-white border-2 border-amber-400 hover:border-amber-500 transition-all hover:shadow-xl relative">
+              <Card className="p-6 bg-white border-2 border-amber-400 hover:border-amber-500 transition-all hover:shadow-2xl hover:-translate-y-2 duration-300 relative group">
                 <div className="absolute -top-3 left-1/2 transform -translate-x-1/2">
-                  <Badge className="bg-amber-500 text-white">Most Popular</Badge>
+                  <Badge className="bg-amber-500 text-white shadow-lg">Most Popular</Badge>
                 </div>
                 <div className="mb-4 mt-2">
                   <Badge className="bg-amber-100 text-amber-700">Tier 2</Badge>
                 </div>
-                <h3 className="text-2xl font-bold mb-2">Full Contract X-Ray</h3>
-                <p className="text-slate-600 mb-4">Complete analysis. Board-ready insights. Clause-level findings.</p>
+                <h3 className="text-2xl font-bold mb-2 group-hover:text-amber-600 transition-colors">Full Contract X-Ray</h3>
+                <p className="text-slate-600 mb-4 min-h-[3rem]">Complete analysis. Board-ready insights. Clause-level findings.</p>
                 
-                <div className="text-3xl font-bold text-slate-900 mb-1">$4,500</div>
-                <p className="text-sm text-slate-500 mb-6">One-time analysis</p>
+                <div className="mb-6">
+                  <div className="text-3xl font-bold text-slate-900 mb-1">$4,500</div>
+                  <p className="text-sm text-slate-500">One-time analysis</p>
+                </div>
 
-                <div className="space-y-3 mb-6">
+                <div className="space-y-3 mb-6 min-h-[280px]">
                   <div className="flex items-start gap-2">
                     <Check className="w-5 h-5 text-green-600 flex-shrink-0 mt-0.5" />
                     <span className="text-sm font-medium">Everything in Quick Screen, plus:</span>
@@ -173,23 +185,26 @@ export default function ContractXRayOffering() {
                   </div>
                 </div>
 
-                <Button className="w-full bg-amber-500 hover:bg-amber-600">
+                <Button className="w-full bg-amber-500 hover:bg-amber-600 text-white shadow-lg group-hover:shadow-xl transition-all">
                   Get Full X-Ray
+                  <ArrowRight className="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform" />
                 </Button>
               </Card>
 
               {/* Tier 3: Negotiation OS */}
-              <Card className="p-6 bg-white border-2 border-green-400 hover:border-green-500 transition-all hover:shadow-xl">
+              <Card className="p-6 bg-white border-2 border-green-400 hover:border-green-500 transition-all hover:shadow-2xl hover:-translate-y-2 duration-300 group">
                 <div className="mb-4">
                   <Badge className="bg-green-100 text-green-700">Tier 3</Badge>
                 </div>
-                <h3 className="text-2xl font-bold mb-2">Negotiation OS</h3>
-                <p className="text-slate-600 mb-4">Turn scores into strategy. Model provisions. Track negotiation progress.</p>
+                <h3 className="text-2xl font-bold mb-2 group-hover:text-green-600 transition-colors">Negotiation OS</h3>
+                <p className="text-slate-600 mb-4 min-h-[3rem]">Turn scores into strategy. Model provisions. Track negotiation progress.</p>
                 
-                <div className="text-3xl font-bold text-slate-900 mb-1">$9,500</div>
-                <p className="text-sm text-slate-500 mb-6">One-time analysis + tools</p>
+                <div className="mb-6">
+                  <div className="text-3xl font-bold text-slate-900 mb-1">$9,500</div>
+                  <p className="text-sm text-slate-500">One-time analysis + tools</p>
+                </div>
 
-                <div className="space-y-3 mb-6">
+                <div className="space-y-3 mb-6 min-h-[280px]">
                   <div className="flex items-start gap-2">
                     <Check className="w-5 h-5 text-green-600 flex-shrink-0 mt-0.5" />
                     <span className="text-sm font-medium">Everything in Full X-Ray, plus:</span>
@@ -216,23 +231,29 @@ export default function ContractXRayOffering() {
                   </div>
                 </div>
 
-                <Button className="w-full bg-green-600 hover:bg-green-700">
+                <Button className="w-full bg-green-600 hover:bg-green-700 text-white shadow-lg group-hover:shadow-xl transition-all">
                   Access Negotiation OS
+                  <ArrowRight className="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform" />
                 </Button>
               </Card>
 
               {/* Tier 4: Continuous Accountability */}
-              <Card className="p-6 bg-gradient-to-br from-slate-800 to-slate-900 text-white border-2 border-slate-700 hover:border-slate-600 transition-all hover:shadow-xl">
-                <div className="mb-4">
+              <Card className="p-6 bg-gradient-to-br from-slate-800 to-slate-900 text-white border-2 border-slate-700 hover:border-slate-600 transition-all hover:shadow-2xl hover:-translate-y-2 duration-300 group relative overflow-hidden">
+                {/* Animated shimmer effect */}
+                <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/5 to-transparent -skew-x-12 group-hover:animate-shimmer"></div>
+                
+                <div className="mb-4 relative z-10">
                   <Badge className="bg-slate-700 text-slate-100">Tier 4</Badge>
                 </div>
-                <h3 className="text-2xl font-bold mb-2">Continuous Accountability</h3>
-                <p className="text-slate-300 mb-4">Ongoing governance. Version control. Renewal readiness. Full system.</p>
+                <h3 className="text-2xl font-bold mb-2 relative z-10 group-hover:text-amber-300 transition-colors">Continuous Accountability</h3>
+                <p className="text-slate-300 mb-4 min-h-[3rem] relative z-10">Ongoing governance. Version control. Renewal readiness. Full system.</p>
                 
-                <div className="text-3xl font-bold mb-1">$18,000/yr</div>
-                <p className="text-sm text-slate-400 mb-6">Annual subscription</p>
+                <div className="mb-6 relative z-10">
+                  <div className="text-3xl font-bold mb-1">$18,000/yr</div>
+                  <p className="text-sm text-slate-400">Annual subscription</p>
+                </div>
 
-                <div className="space-y-3 mb-6">
+                <div className="space-y-3 mb-6 min-h-[280px] relative z-10">
                   <div className="flex items-start gap-2">
                     <Check className="w-5 h-5 text-green-400 flex-shrink-0 mt-0.5" />
                     <span className="text-sm font-medium">Everything in Negotiation OS, plus:</span>
@@ -263,8 +284,9 @@ export default function ContractXRayOffering() {
                   </div>
                 </div>
 
-                <Button className="w-full bg-white text-slate-900 hover:bg-slate-100">
+                <Button className="w-full bg-white text-slate-900 hover:bg-slate-100 shadow-lg group-hover:shadow-xl transition-all relative z-10">
                   Enable Continuous Governance
+                  <ArrowRight className="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform" />
                 </Button>
               </Card>
             </div>
@@ -292,7 +314,7 @@ export default function ContractXRayOffering() {
             <div className="max-w-5xl mx-auto">
               <div className="space-y-6">
                 {/* Pre-Signing Review */}
-                <Card className="p-6 border-l-4 border-l-blue-500">
+                <Card className="p-6 border-l-4 border-l-blue-500 hover:shadow-lg transition-all hover:-translate-x-2 duration-300">
                   <div className="flex items-start gap-4">
                     <div className="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center flex-shrink-0">
                       <FileText className="w-6 h-6 text-blue-600" />
@@ -312,7 +334,7 @@ export default function ContractXRayOffering() {
                 </Card>
 
                 {/* Negotiation Improvement */}
-                <Card className="p-6 border-l-4 border-l-green-500">
+                <Card className="p-6 border-l-4 border-l-green-500 hover:shadow-lg transition-all hover:-translate-x-2 duration-300">
                   <div className="flex items-start gap-4">
                     <div className="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center flex-shrink-0">
                       <Users className="w-6 h-6 text-green-600" />
@@ -332,7 +354,7 @@ export default function ContractXRayOffering() {
                 </Card>
 
                 {/* Post-Redline Validation */}
-                <Card className="p-6 border-l-4 border-l-amber-500">
+                <Card className="p-6 border-l-4 border-l-amber-500 hover:shadow-lg transition-all hover:-translate-x-2 duration-300">
                   <div className="flex items-start gap-4">
                     <div className="w-12 h-12 bg-amber-100 rounded-lg flex items-center justify-center flex-shrink-0">
                       <BarChart3 className="w-6 h-6 text-amber-600" />
@@ -352,7 +374,7 @@ export default function ContractXRayOffering() {
                 </Card>
 
                 {/* Ongoing Renewal Governance */}
-                <Card className="p-6 border-l-4 border-l-purple-500">
+                <Card className="p-6 border-l-4 border-l-purple-500 hover:shadow-lg transition-all hover:-translate-x-2 duration-300">
                   <div className="flex items-start gap-4">
                     <div className="w-12 h-12 bg-purple-100 rounded-lg flex items-center justify-center flex-shrink-0">
                       <Clock className="w-6 h-6 text-purple-600" />
@@ -389,8 +411,8 @@ export default function ContractXRayOffering() {
             </div>
 
             <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-6xl mx-auto">
-              <Card className="p-6 bg-white hover:shadow-lg transition-shadow">
-                <div className="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center mb-4">
+              <Card className="p-6 bg-white hover:shadow-lg transition-all hover:-translate-y-1 duration-300 group">
+                <div className="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center mb-4 group-hover:bg-blue-200 transition-colors">
                   <Zap className="w-6 h-6 text-blue-600" />
                 </div>
                 <h3 className="text-lg font-bold mb-2">Contract X-Ray Triage</h3>
@@ -399,8 +421,8 @@ export default function ContractXRayOffering() {
                 </p>
               </Card>
 
-              <Card className="p-6 bg-white hover:shadow-lg transition-shadow">
-                <div className="w-12 h-12 bg-amber-100 rounded-lg flex items-center justify-center mb-4">
+              <Card className="p-6 bg-white hover:shadow-lg transition-all hover:-translate-y-1 duration-300 group">
+                <div className="w-12 h-12 bg-amber-100 rounded-lg flex items-center justify-center mb-4 group-hover:bg-amber-200 transition-colors">
                   <BarChart3 className="w-6 h-6 text-amber-600" />
                 </div>
                 <h3 className="text-lg font-bold mb-2">Contract X-Ray Score</h3>
@@ -409,8 +431,8 @@ export default function ContractXRayOffering() {
                 </p>
               </Card>
 
-              <Card className="p-6 bg-white hover:shadow-lg transition-shadow">
-                <div className="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center mb-4">
+              <Card className="p-6 bg-white hover:shadow-lg transition-all hover:-translate-y-1 duration-300 group">
+                <div className="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center mb-4 group-hover:bg-green-200 transition-colors">
                   <FileText className="w-6 h-6 text-green-600" />
                 </div>
                 <h3 className="text-lg font-bold mb-2">Negotiation Studio</h3>
@@ -419,8 +441,8 @@ export default function ContractXRayOffering() {
                 </p>
               </Card>
 
-              <Card className="p-6 bg-white hover:shadow-lg transition-shadow">
-                <div className="w-12 h-12 bg-purple-100 rounded-lg flex items-center justify-center mb-4">
+              <Card className="p-6 bg-white hover:shadow-lg transition-all hover:-translate-y-1 duration-300 group">
+                <div className="w-12 h-12 bg-purple-100 rounded-lg flex items-center justify-center mb-4 group-hover:bg-purple-200 transition-colors">
                   <TrendingUp className="w-6 h-6 text-purple-600" />
                 </div>
                 <h3 className="text-lg font-bold mb-2">Contract X-Ray Compare</h3>
@@ -429,8 +451,8 @@ export default function ContractXRayOffering() {
                 </p>
               </Card>
 
-              <Card className="p-6 bg-white hover:shadow-lg transition-shadow">
-                <div className="w-12 h-12 bg-red-100 rounded-lg flex items-center justify-center mb-4">
+              <Card className="p-6 bg-white hover:shadow-lg transition-all hover:-translate-y-1 duration-300 group">
+                <div className="w-12 h-12 bg-red-100 rounded-lg flex items-center justify-center mb-4 group-hover:bg-red-200 transition-colors">
                   <Shield className="w-6 h-6 text-red-600" />
                 </div>
                 <h3 className="text-lg font-bold mb-2">PBM Accountability Index</h3>
@@ -439,8 +461,8 @@ export default function ContractXRayOffering() {
                 </p>
               </Card>
 
-              <Card className="p-6 bg-white hover:shadow-lg transition-shadow">
-                <div className="w-12 h-12 bg-indigo-100 rounded-lg flex items-center justify-center mb-4">
+              <Card className="p-6 bg-white hover:shadow-lg transition-all hover:-translate-y-1 duration-300 group">
+                <div className="w-12 h-12 bg-indigo-100 rounded-lg flex items-center justify-center mb-4 group-hover:bg-indigo-200 transition-colors">
                   <Lock className="w-6 h-6 text-indigo-600" />
                 </div>
                 <h3 className="text-lg font-bold mb-2">Contract Vault</h3>
@@ -449,8 +471,8 @@ export default function ContractXRayOffering() {
                 </p>
               </Card>
 
-              <Card className="p-6 bg-white hover:shadow-lg transition-shadow">
-                <div className="w-12 h-12 bg-orange-100 rounded-lg flex items-center justify-center mb-4">
+              <Card className="p-6 bg-white hover:shadow-lg transition-all hover:-translate-y-1 duration-300 group">
+                <div className="w-12 h-12 bg-orange-100 rounded-lg flex items-center justify-center mb-4 group-hover:bg-orange-200 transition-colors">
                   <Clock className="w-6 h-6 text-orange-600" />
                 </div>
                 <h3 className="text-lg font-bold mb-2">Renewal Watch</h3>
@@ -476,7 +498,7 @@ export default function ContractXRayOffering() {
               </div>
 
               <div className="grid md:grid-cols-2 gap-6">
-                <Card className="p-6 bg-gradient-to-br from-blue-50 to-white border-2 border-blue-200">
+                <Card className="p-6 bg-gradient-to-br from-blue-50 to-white border-2 border-blue-200 hover:shadow-lg transition-all hover:-translate-y-1 duration-300">
                   <h3 className="text-xl font-bold mb-3 flex items-center gap-2">
                     <Shield className="w-6 h-6 text-blue-600" />
                     Board Snapshot
@@ -501,7 +523,7 @@ export default function ContractXRayOffering() {
                   </ul>
                 </Card>
 
-                <Card className="p-6 bg-gradient-to-br from-amber-50 to-white border-2 border-amber-200">
+                <Card className="p-6 bg-gradient-to-br from-amber-50 to-white border-2 border-amber-200 hover:shadow-lg transition-all hover:-translate-y-1 duration-300">
                   <h3 className="text-xl font-bold mb-3 flex items-center gap-2">
                     <AlertTriangle className="w-6 h-6 text-amber-600" />
                     Fiduciary Risk Summary
@@ -526,7 +548,7 @@ export default function ContractXRayOffering() {
                   </ul>
                 </Card>
 
-                <Card className="p-6 bg-gradient-to-br from-green-50 to-white border-2 border-green-200">
+                <Card className="p-6 bg-gradient-to-br from-green-50 to-white border-2 border-green-200 hover:shadow-lg transition-all hover:-translate-y-1 duration-300">
                   <h3 className="text-xl font-bold mb-3 flex items-center gap-2">
                     <TrendingUp className="w-6 h-6 text-green-600" />
                     Negotiation Delta Memo
@@ -551,7 +573,7 @@ export default function ContractXRayOffering() {
                   </ul>
                 </Card>
 
-                <Card className="p-6 bg-gradient-to-br from-purple-50 to-white border-2 border-purple-200">
+                <Card className="p-6 bg-gradient-to-br from-purple-50 to-white border-2 border-purple-200 hover:shadow-lg transition-all hover:-translate-y-1 duration-300">
                   <h3 className="text-xl font-bold mb-3 flex items-center gap-2">
                     <Clock className="w-6 h-6 text-purple-600" />
                     Renewal Decision Brief
@@ -581,8 +603,13 @@ export default function ContractXRayOffering() {
         </section>
 
         {/* Upsell Path Visualization */}
-        <section className="py-20 bg-gradient-to-br from-slate-900 to-blue-950 text-white">
-          <div className="container mx-auto px-6">
+        <section className="py-20 bg-gradient-to-br from-slate-900 to-blue-950 text-white relative overflow-hidden">
+          {/* Animated background */}
+          <div className="absolute inset-0 opacity-10">
+            <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-br from-blue-500/20 to-transparent animate-pulse"></div>
+          </div>
+          
+          <div className="container mx-auto px-6 relative z-10">
             <div className="max-w-5xl mx-auto">
               <div className="text-center mb-12">
                 <h2 className="text-4xl font-bold mb-4">
@@ -595,7 +622,7 @@ export default function ContractXRayOffering() {
 
               <div className="space-y-4">
                 {/* Stage 1 */}
-                <div className="flex items-center gap-4 bg-white/10 backdrop-blur-sm rounded-lg p-6 border border-white/20">
+                <div className="flex items-center gap-4 bg-white/10 backdrop-blur-sm rounded-lg p-6 border border-white/20 hover:bg-white/15 transition-all hover:scale-[1.02] duration-300">
                   <div className="flex-shrink-0 w-12 h-12 bg-blue-500 rounded-full flex items-center justify-center font-bold text-xl">
                     1
                   </div>
@@ -609,7 +636,7 @@ export default function ContractXRayOffering() {
                 </div>
 
                 {/* Stage 2 */}
-                <div className="flex items-center gap-4 bg-white/10 backdrop-blur-sm rounded-lg p-6 border border-white/20">
+                <div className="flex items-center gap-4 bg-white/10 backdrop-blur-sm rounded-lg p-6 border border-white/20 hover:bg-white/15 transition-all hover:scale-[1.02] duration-300">
                   <div className="flex-shrink-0 w-12 h-12 bg-amber-500 rounded-full flex items-center justify-center font-bold text-xl">
                     2
                   </div>
@@ -623,7 +650,7 @@ export default function ContractXRayOffering() {
                 </div>
 
                 {/* Stage 3 */}
-                <div className="flex items-center gap-4 bg-white/10 backdrop-blur-sm rounded-lg p-6 border border-white/20">
+                <div className="flex items-center gap-4 bg-white/10 backdrop-blur-sm rounded-lg p-6 border border-white/20 hover:bg-white/15 transition-all hover:scale-[1.02] duration-300">
                   <div className="flex-shrink-0 w-12 h-12 bg-green-500 rounded-full flex items-center justify-center font-bold text-xl">
                     3
                   </div>
@@ -637,7 +664,7 @@ export default function ContractXRayOffering() {
                 </div>
 
                 {/* Stage 4 */}
-                <div className="flex items-center gap-4 bg-white/10 backdrop-blur-sm rounded-lg p-6 border border-white/20">
+                <div className="flex items-center gap-4 bg-white/10 backdrop-blur-sm rounded-lg p-6 border border-white/20 hover:bg-white/15 transition-all hover:scale-[1.02] duration-300">
                   <div className="flex-shrink-0 w-12 h-12 bg-purple-500 rounded-full flex items-center justify-center font-bold text-xl">
                     4
                   </div>
@@ -651,7 +678,7 @@ export default function ContractXRayOffering() {
               </div>
 
               <div className="mt-12 text-center">
-                <div className="bg-amber-500/20 border border-amber-500/30 rounded-lg p-6 max-w-2xl mx-auto">
+                <div className="bg-amber-500/20 border border-amber-500/30 rounded-lg p-6 max-w-2xl mx-auto hover:bg-amber-500/25 transition-colors">
                   <p className="text-lg font-semibold mb-2">Typical Expansion Timeline</p>
                   <p className="text-blue-100">
                     Quick Screen → Full X-Ray (30 days) → Negotiation OS (60 days) → Continuous Accountability (12 months)
@@ -671,7 +698,7 @@ export default function ContractXRayOffering() {
               </h2>
 
               <div className="space-y-8">
-                <div className="border-l-4 border-blue-500 pl-6">
+                <div className="border-l-4 border-blue-500 pl-6 hover:border-blue-600 transition-colors">
                   <h3 className="text-xl font-bold mb-2">1. Clear Entry Point, Obvious Next Steps</h3>
                   <p className="text-slate-700">
                     Old model: "Submit contract, get reports." New model: "Start with Quick Screen ($1,500), 
@@ -679,7 +706,7 @@ export default function ContractXRayOffering() {
                   </p>
                 </div>
 
-                <div className="border-l-4 border-green-500 pl-6">
+                <div className="border-l-4 border-green-500 pl-6 hover:border-green-600 transition-colors">
                   <h3 className="text-xl font-bold mb-2">2. Recurring Value, Not Just One-Time Analysis</h3>
                   <p className="text-slate-700">
                     Continuous Accountability tier creates subscription revenue. Contract Vault, Renewal Watch, 
@@ -687,7 +714,7 @@ export default function ContractXRayOffering() {
                   </p>
                 </div>
 
-                <div className="border-l-4 border-amber-500 pl-6">
+                <div className="border-l-4 border-amber-500 pl-6 hover:border-amber-600 transition-colors">
                   <h3 className="text-xl font-bold mb-2">3. Lifecycle Coverage = Strategic Positioning</h3>
                   <p className="text-slate-700">
                     Not just "analyze a contract." Cover pre-signing, negotiation, post-redline, and renewal. 
@@ -695,7 +722,7 @@ export default function ContractXRayOffering() {
                   </p>
                 </div>
 
-                <div className="border-l-4 border-purple-500 pl-6">
+                <div className="border-l-4 border-purple-500 pl-6 hover:border-purple-600 transition-colors">
                   <h3 className="text-xl font-bold mb-2">4. Named Modules = Product Clarity</h3>
                   <p className="text-slate-700">
                     "Contract X-Ray Triage," "Negotiation Studio," "Renewal Watch" are product features people can talk about. 
@@ -703,7 +730,7 @@ export default function ContractXRayOffering() {
                   </p>
                 </div>
 
-                <div className="border-l-4 border-red-500 pl-6">
+                <div className="border-l-4 border-red-500 pl-6 hover:border-red-600 transition-colors">
                   <h3 className="text-xl font-bold mb-2">5. Executive Layer = Board Adoption</h3>
                   <p className="text-slate-700">
                     Board Snapshot, Fiduciary Risk Summary, Renewal Decision Briefs speak the language of governance. 
@@ -711,7 +738,7 @@ export default function ContractXRayOffering() {
                   </p>
                 </div>
 
-                <div className="border-l-4 border-indigo-500 pl-6">
+                <div className="border-l-4 border-indigo-500 pl-6 hover:border-indigo-600 transition-colors">
                   <h3 className="text-xl font-bold mb-2">6. Expansion Path = Revenue Growth</h3>
                   <p className="text-slate-700">
                     Tier 1 → Tier 2 → Tier 3 → Tier 4 progression creates predictable expansion revenue. 
@@ -723,20 +750,27 @@ export default function ContractXRayOffering() {
           </div>
         </section>
 
-        {/* CTA Section */}
-        <section className="py-20 bg-gradient-to-br from-blue-600 to-blue-800 text-white">
-          <div className="container mx-auto px-6 text-center">
-            <h2 className="text-4xl font-bold mb-4">
+        {/* Enhanced CTA Section with Animations */}
+        <section className="py-20 bg-gradient-to-br from-blue-600 to-blue-800 text-white relative overflow-hidden">
+          {/* Animated background elements */}
+          <div className="absolute inset-0 opacity-20">
+            <div className="absolute top-1/4 left-1/4 w-64 h-64 bg-blue-400 rounded-full blur-3xl animate-pulse"></div>
+            <div className="absolute bottom-1/4 right-1/4 w-64 h-64 bg-blue-300 rounded-full blur-3xl animate-pulse delay-700"></div>
+          </div>
+          
+          <div className="container mx-auto px-6 text-center relative z-10">
+            <h2 className="text-4xl font-bold mb-4 animate-fade-in">
               Ready to See What's in Your PBM Contract?
             </h2>
-            <p className="text-xl text-blue-100 mb-8 max-w-2xl mx-auto">
+            <p className="text-xl text-blue-100 mb-8 max-w-2xl mx-auto animate-fade-in delay-100">
               Start with Quick Screen. Expand to full governance. Protect plan participants at every stage.
             </p>
-            <div className="flex flex-wrap gap-4 justify-center">
-              <Button size="lg" className="bg-white text-blue-600 hover:bg-blue-50 font-semibold">
+            <div className="flex flex-wrap gap-4 justify-center animate-fade-in delay-200">
+              <Button size="lg" className="bg-white text-blue-600 hover:bg-blue-50 font-semibold transition-all hover:scale-105 hover:shadow-2xl">
                 Start with Quick Screen — $1,500
+                <ArrowRight className="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform" />
               </Button>
-              <Button size="lg" variant="outline" className="border-white text-white hover:bg-white/10">
+              <Button size="lg" variant="outline" className="border-white text-white hover:bg-white/10 transition-all hover:scale-105">
                 Download Product Guide
               </Button>
             </div>
@@ -745,6 +779,69 @@ export default function ContractXRayOffering() {
       </main>
 
       <SiteFooter />
+
+      <style jsx>{`
+        @keyframes fade-in {
+          from {
+            opacity: 0;
+          }
+          to {
+            opacity: 1;
+          }
+        }
+
+        @keyframes slide-up {
+          from {
+            opacity: 0;
+            transform: translateY(20px);
+          }
+          to {
+            opacity: 1;
+            transform: translateY(0);
+          }
+        }
+
+        @keyframes shimmer {
+          0% {
+            transform: translateX(-100%) skewX(-12deg);
+          }
+          100% {
+            transform: translateX(200%) skewX(-12deg);
+          }
+        }
+
+        .animate-fade-in {
+          animation: fade-in 0.6s ease-out forwards;
+        }
+
+        .animate-slide-up {
+          animation: slide-up 0.6s ease-out forwards;
+        }
+
+        .delay-100 {
+          animation-delay: 0.1s;
+        }
+
+        .delay-200 {
+          animation-delay: 0.2s;
+        }
+
+        .delay-300 {
+          animation-delay: 0.3s;
+        }
+
+        .delay-700 {
+          animation-delay: 0.7s;
+        }
+
+        .delay-1000 {
+          animation-delay: 1s;
+        }
+
+        .animate-shimmer {
+          animation: shimmer 2s infinite;
+        }
+      `}</style>
     </>
   );
 }

@@ -177,7 +177,7 @@ export default function HomePage() {
                   </div>
 
                   <motion.h1 
-                    className="text-5xl md:text-7xl font-bold"
+                    className="text-4xl md:text-[64px] leading-tight font-bold"
                     style={{ transformStyle: "preserve-3d" }}
                   >
                     <motion.span 
@@ -299,7 +299,7 @@ export default function HomePage() {
             ) : (
               <div className="grid lg:grid-cols-2 gap-12 items-center">
                 <div className="space-y-8">
-                  <h1 className="text-5xl md:text-7xl font-bold leading-tight">
+                  <h1 className="text-4xl md:text-[64px] font-bold leading-tight">
                     <span className="bg-gradient-to-r from-blue-400 via-cyan-300 to-purple-400 bg-clip-text text-transparent">
                       Enterprise Algorithmic
                     </span>

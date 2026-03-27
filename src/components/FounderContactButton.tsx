@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Mail, MessageCircle, Send, Linkedin, Instagram, Facebook } from "lucide-react";
+import { Mail, MessageCircle, Send, Linkedin, Instagram } from "lucide-react";
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import {
@@ -49,12 +49,6 @@ export function FounderContactButton() {
       href: "https://instagram.com/jfshrack",
       icon: Instagram,
       color: "text-pink-600 hover:text-pink-700",
-    },
-    {
-      label: "Facebook",
-      href: "https://facebook.com/yourusername", // TODO: Replace with actual Facebook profile URL
-      icon: Facebook,
-      color: "text-blue-500 hover:text-blue-600",
     },
   ];
 

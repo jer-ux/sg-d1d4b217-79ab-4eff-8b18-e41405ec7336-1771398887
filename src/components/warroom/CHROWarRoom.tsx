@@ -176,21 +176,21 @@ export function CHROWarRoom() {
 
   return (
     <div className="min-h-screen bg-transparent text-zinc-100">
-      <header className="border-b border-emerald-500/30 bg-zinc-950/60 backdrop-blur-md sticky top-0 z-50">
+      <header className="border-b border-purple-500/30 bg-zinc-950/60 backdrop-blur-md sticky top-0 z-50">
         <div className="mx-auto max-w-[1600px] px-6 py-5">
           <div className="flex items-start justify-between gap-4">
             <div className="flex-1">
               <div className="flex items-center gap-3">
-                <div className="text-xs tracking-wide text-emerald-400 font-semibold uppercase">Kincaid IQ</div>
-                <div className="text-sm font-bold text-emerald-300">CHRO Dashboard</div>
+                <div className="text-xs tracking-wide text-purple-400 font-semibold uppercase">Kincaid IQ</div>
+                <div className="text-sm font-bold text-purple-300">CHRO Dashboard</div>
               </div>
-              <h1 className="mt-3 text-2xl font-bold tracking-tight bg-gradient-to-r from-white via-emerald-100 to-teal-100 bg-clip-text text-transparent">Human Capital & Benefits Analytics</h1>
+              <h1 className="mt-3 text-2xl font-bold tracking-tight bg-gradient-to-r from-white via-purple-100 to-indigo-100 bg-clip-text text-transparent">Human Capital & Benefits Analytics</h1>
               <div className="mt-1 text-sm text-zinc-400">
-                People metrics with evidence receipts. <span className="text-emerald-300 font-medium">Data-driven</span> talent strategy.
+                People metrics with evidence receipts. <span className="text-purple-300 font-medium">Data-driven</span> talent strategy.
               </div>
               <div className="mt-2 text-xs text-zinc-500 flex items-center gap-2">
-                <span className="flex h-2 w-2 rounded-full bg-emerald-500 shadow-[0_0_8px_rgba(16,185,129,0.5)] animate-pulse" />
-                Status: <span className="text-emerald-400 font-semibold">LIVE</span>
+                <span className="flex h-2 w-2 rounded-full bg-purple-500 shadow-[0_0_8px_rgba(168,85,247,0.5)] animate-pulse" />
+                Status: <span className="text-purple-400 font-semibold">LIVE</span>
               </div>
             </div>
 
@@ -211,10 +211,10 @@ export function CHROWarRoom() {
         <section className="mb-8">
           <div className="mb-4 flex items-baseline gap-3">
             <h2 className="text-lg font-bold text-zinc-100 flex items-center gap-2">
-              <span className="h-1.5 w-1.5 rounded-full bg-emerald-500" />
+              <span className="h-1.5 w-1.5 rounded-full bg-purple-500" />
               Employee Benefits & Engagement
             </h2>
-            <div className="text-xs text-emerald-400/80 font-medium px-2 py-0.5 rounded-full bg-emerald-900/30 border border-emerald-500/20">McKinsey Framework</div>
+            <div className="text-xs text-purple-400/80 font-medium px-2 py-0.5 rounded-full bg-purple-900/30 border border-purple-500/20">McKinsey Framework</div>
           </div>
           <div className="grid grid-cols-1 gap-4 lg:grid-cols-2 xl:grid-cols-4">
             <KPITile data={tileMap.get("benefitsUtilization")} onClick={handleTileClick} />
@@ -227,10 +227,10 @@ export function CHROWarRoom() {
         <section className="mb-8">
           <div className="mb-4 flex items-baseline gap-3">
             <h2 className="text-lg font-bold text-zinc-100 flex items-center gap-2">
-              <span className="h-1.5 w-1.5 rounded-full bg-teal-500" />
+              <span className="h-1.5 w-1.5 rounded-full bg-blue-500" />
               Coverage & Adoption Metrics
             </h2>
-            <div className="text-xs text-teal-400/80 font-medium px-2 py-0.5 rounded-full bg-teal-900/30 border border-teal-500/20">McKinsey Framework</div>
+            <div className="text-xs text-blue-400/80 font-medium px-2 py-0.5 rounded-full bg-blue-900/30 border border-blue-500/20">McKinsey Framework</div>
           </div>
           <div className="grid grid-cols-1 gap-4 lg:grid-cols-2">
             <KPITile data={tileMap.get("dependentCoverage")} onClick={handleTileClick} />
@@ -241,10 +241,10 @@ export function CHROWarRoom() {
         <section className="mb-8">
           <div className="mb-4 flex items-baseline gap-3">
             <h2 className="text-lg font-bold text-zinc-100 flex items-center gap-2">
-              <span className="h-1.5 w-1.5 rounded-full bg-cyan-500" />
+              <span className="h-1.5 w-1.5 rounded-full bg-rose-500" />
               Employee Experience & Satisfaction
             </h2>
-            <div className="text-xs text-cyan-400/80 font-medium px-2 py-0.5 rounded-full bg-cyan-900/30 border border-cyan-500/20">Bain Net Promoter System</div>
+            <div className="text-xs text-rose-400/80 font-medium px-2 py-0.5 rounded-full bg-rose-900/30 border border-rose-500/20">Bain Net Promoter System</div>
           </div>
           <div className="grid grid-cols-1 gap-4 lg:grid-cols-2">
             <KPITile data={tileMap.get("employeeSatisfaction")} onClick={handleTileClick} />

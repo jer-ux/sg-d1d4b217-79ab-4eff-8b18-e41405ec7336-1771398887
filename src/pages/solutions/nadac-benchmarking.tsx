@@ -52,7 +52,7 @@ export default function NadacBenchmarkingPage() {
   return (
     <div className="min-h-screen bg-[#050505] text-zinc-300 font-sans selection:bg-emerald-500/30 selection:text-emerald-200">
       <SEO 
-        title="ClearScript Architecture | NADAC Claims Benchmarking" 
+        title="Platform Architecture | NADAC Claims Benchmarking" 
         description="Fiduciary-grade claims benchmarking against the National Average Drug Acquisition Cost (NADAC)." 
       />
 
@@ -64,7 +64,7 @@ export default function NadacBenchmarkingPage() {
               <Database className="h-4 w-4" />
             </div>
             <div>
-              <div className="text-xs font-bold tracking-widest text-emerald-500 uppercase">ClearScript Architecture</div>
+              <div className="text-xs font-bold tracking-widest text-emerald-500 uppercase">Platform Architecture</div>
               <div className="text-sm font-medium text-zinc-100">NADAC Claims Benchmarking Engine</div>
             </div>
           </div>
@@ -312,7 +312,7 @@ export default function NadacBenchmarkingPage() {
                 <Zap className="h-5 w-5 text-emerald-400" /> Audit Request Automation
               </h3>
               <p className="text-sm text-zinc-400 mb-6 relative z-10">
-                ClearScript has identified sufficient variance to trigger a formal contractual audit. Generate the legally-binding audit notification package.
+                The system has identified sufficient variance to trigger a formal contractual audit. Generate the legally-binding audit notification package.
               </p>
 
               <div className="space-y-3 relative z-10 mb-6">

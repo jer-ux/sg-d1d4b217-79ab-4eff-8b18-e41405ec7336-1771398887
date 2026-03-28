@@ -61,6 +61,63 @@ const TILE_THEMES = {
     glow: "shadow-cyan-900/20",
     accent: "#06b6d4",
   },
+  // CHRO Dashboard Themes
+  benefitsUtilization: {
+    gradient: "from-purple-950/80 via-fuchsia-950/60 to-zinc-900/40",
+    border: "border-purple-800/40",
+    orb: "bg-purple-500/20",
+    glow: "shadow-purple-900/20",
+    accent: "#a855f7",
+  },
+  employeeRetention: {
+    gradient: "from-indigo-950/80 via-blue-950/60 to-zinc-900/40",
+    border: "border-indigo-800/40",
+    orb: "bg-indigo-500/20",
+    glow: "shadow-indigo-900/20",
+    accent: "#6366f1",
+  },
+  healthcareROI: {
+    gradient: "from-blue-950/80 via-cyan-950/60 to-zinc-900/40",
+    border: "border-blue-800/40",
+    orb: "bg-blue-500/20",
+    glow: "shadow-blue-900/20",
+    accent: "#3b82f6",
+  },
+  wellnessEngagement: {
+    gradient: "from-sky-950/80 via-blue-950/60 to-zinc-900/40",
+    border: "border-sky-800/40",
+    orb: "bg-sky-500/20",
+    glow: "shadow-sky-900/20",
+    accent: "#0ea5e9",
+  },
+  dependentCoverage: {
+    gradient: "from-cyan-950/80 via-teal-950/60 to-zinc-900/40",
+    border: "border-cyan-800/40",
+    orb: "bg-cyan-500/20",
+    glow: "shadow-cyan-900/20",
+    accent: "#06b6d4",
+  },
+  benefitsAdoption: {
+    gradient: "from-violet-950/80 via-purple-950/60 to-zinc-900/40",
+    border: "border-violet-800/40",
+    orb: "bg-violet-500/20",
+    glow: "shadow-violet-900/20",
+    accent: "#8b5cf6",
+  },
+  employeeSatisfaction: {
+    gradient: "from-rose-950/80 via-pink-950/60 to-zinc-900/40",
+    border: "border-rose-800/40",
+    orb: "bg-rose-500/20",
+    glow: "shadow-rose-900/20",
+    accent: "#f43f5e",
+  },
+  totalRewards: {
+    gradient: "from-pink-950/80 via-rose-950/60 to-zinc-900/40",
+    border: "border-pink-800/40",
+    orb: "bg-pink-500/20",
+    glow: "shadow-pink-900/20",
+    accent: "#ec4899",
+  },
 };
 
 export function KPITile({ data, onClick }: { data?: TileData; onClick?: (tile: TileData) => void }) {
@@ -113,20 +170,18 @@ export function KPITile({ data, onClick }: { data?: TileData; onClick?: (tile: T
   const confidencePct = receipt ? Math.round(receipt.confidence * 100) : null;
 
   const getTrendIcon = () => {
-    if (trend === "up") return <TrendingUp className="h-4 w-4 text-emerald-400" />;
-    if (trend === "down") return <TrendingDown className="h-4 w-4 text-rose-400" />;
+    if (trend === "up") return <TrendingUp className="h-4 w-4 opacity-80" style={{ color: theme.accent }} />;
+    if (trend === "down") return <TrendingDown className="h-4 w-4 opacity-80" style={{ color: theme.accent }} />;
     return <Minus className="h-4 w-4 text-zinc-500" />;
   };
 
   const getTrendColor = () => {
-    if (trend === "up") return "text-emerald-400";
-    if (trend === "down") return "text-rose-400";
+    if (trend === "up" || trend === "down") return ""; // We'll apply the inline style for the color
     return "text-zinc-500";
   };
 
   const getChartColor = () => {
-    if (trend === "up") return "#34d399";
-    if (trend === "down") return "#fb7185";
+    // Always use the theme's vibrant accent color instead of hardcoding green for "up" trends
     return theme.accent;
   };
 
@@ -204,7 +259,10 @@ export function KPITile({ data, onClick }: { data?: TileData; onClick?: (tile: T
             <div className="mt-2 flex items-baseline gap-3">
               <div className="text-3xl font-semibold tracking-tight text-zinc-100">{value}</div>
               {delta && (
-                <div className={`flex items-center gap-1 text-sm font-medium ${getTrendColor()}`}>
+                <div 
+                  className={`flex items-center gap-1 text-sm font-medium ${getTrendColor()}`}
+                  style={{ color: (trend === "up" || trend === "down") ? theme.accent : undefined }}
+                >
                   {getTrendIcon()}
                   <span>{delta}</span>
                 </div>

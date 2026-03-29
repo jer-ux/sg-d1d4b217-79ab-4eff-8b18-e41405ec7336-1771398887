@@ -581,20 +581,6 @@ export default function HomePage() {
               style={{ perspective: "1000px", transformStyle: "preserve-3d" }}
             >
               <Link
-                href="/executive-war-room"
-                className="inline-flex items-center gap-2 rounded-xl border border-emerald-500/40 bg-gradient-to-r from-emerald-600/30 to-teal-600/30 px-8 py-4 text-base font-bold backdrop-blur-xl transition-all hover:border-emerald-400/60 hover:shadow-lg hover:shadow-emerald-500/30"
-              >
-                <Activity className="h-5 w-5 text-emerald-400" />
-                <span>Full CHRO Dashboard</span>
-                <ArrowRight className="h-5 w-5" />
-              </Link>
-            </motion.div>
-            <motion.div
-              whileHover={{ scale: 1.05, z: 30 }}
-              whileTap={{ scale: 0.95 }}
-              style={{ perspective: "1000px", transformStyle: "preserve-3d" }}
-            >
-              <Link
                 href="/enterprise/dashboard"
                 className="inline-flex items-center gap-2 rounded-xl border border-emerald-500/50 bg-zinc-950/80 px-8 py-4 text-base font-bold text-white backdrop-blur-sm transition-all hover:border-emerald-400/70 hover:bg-emerald-950/40"
               >

@@ -492,7 +492,7 @@ export default function AboutPage() {
                   <div className="relative z-10">
                     <button
                       onClick={() => openLightbox(
-                        "/1709575941859.jpeg",
+                        "/nicole-burns.jpg",
                         "Nicole Burns",
                         "Nicole Burns",
                         "Go-To-Market (GTM) Expert"
@@ -500,7 +500,7 @@ export default function AboutPage() {
                       className="relative w-32 h-32 mx-auto mb-6 rounded-full overflow-hidden border-4 border-pink-500/30 group-hover:border-pink-400/60 transition-all duration-500 cursor-pointer hover:scale-110"
                     >
                       <img
-                        src="/1709575941859.jpeg"
+                        src="/nicole-burns.jpg"
                         alt="Nicole Burns"
                         className="w-full h-full object-cover"
                       />

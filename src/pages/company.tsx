@@ -327,7 +327,7 @@ const teamMembers = [
   {
     name: "Nicole Burns",
     role: "Go-To-Market (GTM) Expert",
-    image: "/1709575941859.jpeg",
+    image: "/nicole-burns.jpg",
     linkedin: "https://www.linkedin.com/in/nicburns/",
     bio: "Nicole Burns brings extensive expertise in Go-To-Market (GTM) strategy, driving enterprise growth, strategic partnerships, and market expansion. With a proven track record of scaling technology platforms and aligning complex value propositions with market needs, she leads the commercialization strategy for SiriusB iQ.",
     experience: [

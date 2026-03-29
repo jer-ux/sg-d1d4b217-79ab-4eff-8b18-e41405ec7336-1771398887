@@ -113,6 +113,27 @@ const boardMembers = [
       ],
       vision: "As Executive Chair of the Committee on Algorithmic Governance & Fiduciary Risk, Catherine's vision is to establish SiriusB iQ AI Data Sciences Lab as the gold standard for ethical AI deployment in benefits management. She is committed to ensuring that every algorithmic decision made by the platform can withstand the scrutiny of fiduciary duty, regulatory review, and client trust."
     }
+  },
+  {
+    name: "Nicole Burns",
+    title: "Board Member - Go-To-Market & Commercial Strategy",
+    image: "/nicole-burns.jpg",
+    linkedin: "https://www.linkedin.com/in/nicburns/",
+    bio: "Nicole Burns brings extensive expertise in Go-To-Market (GTM) strategy, driving enterprise growth, strategic partnerships, and market expansion. With a proven track record of scaling technology platforms and aligning complex value propositions with market needs, she leads the commercialization strategy for SiriusB iQ.",
+    fullBio: {
+      introduction: "Nicole Burns is a recognized Go-To-Market strategy expert with extensive experience driving growth, strategic partnerships, and market expansion across enterprise landscapes. Her leadership on the board ensures that SiriusB iQ's sophisticated algorithmic fiduciary platforms are effectively commercialized and scaled to meet urgent market demands.",
+      platform: "Her strategic platform focuses on translating complex actuarial and AI capabilities into compelling enterprise value propositions. By designing and executing scalable GTM frameworks, Nicole aligns SiriusB iQ's core intelligence products with the specific financial and operational needs of large-market employers and fiduciaries.",
+      philosophy: "Nicole's philosophy centers on the belief that effective go-to-market strategies require deep alignment between market needs and product capabilities. She advocates for commercialization strategies that build lasting client partnerships by demystifying complex technologies and focusing on measurable, deterministic outcomes.",
+      expertise: [
+        "Go-To-Market (GTM) Strategy",
+        "Enterprise Sales Leadership",
+        "Strategic Partnerships & Alliances",
+        "Market Expansion & Scaling",
+        "Revenue Operations",
+        "Commercialization Strategy"
+      ],
+      vision: "As a member of the Board of Directors, Nicole's vision is to accelerate the adoption of algorithmic fiduciary intelligence across the enterprise landscape, establishing SiriusB iQ as the undeniable standard for healthcare financial governance and strategic decision-making."
+    }
   }
 ];
 

@@ -4,7 +4,7 @@ import { ExecutiveTicker } from "./widgets/ExecutiveTicker";
 import { ExecutiveFiltersBar } from "./widgets/ExecutiveFiltersBar";
 import { KPITile } from "./tiles/KPITile";
 import { ExecutiveEventStream } from "./ExecutiveEventStream";
-import { ExecutiveKPIDrawer } from "./ExecutiveKPIDrawer";
+import { CHRODrillDownDrawer } from "./CHRODrillDownDrawer";
 
 const DEFAULT_FILTERS: Filters = {
   org: "Portfolio",
@@ -254,7 +254,7 @@ export function CHROWarRoom() {
       </main>
 
       {selectedTile && (
-        <ExecutiveKPIDrawer
+        <CHRODrillDownDrawer
           tile={selectedTile}
           isOpen={drawerOpen}
           onClose={handleCloseDrawer}

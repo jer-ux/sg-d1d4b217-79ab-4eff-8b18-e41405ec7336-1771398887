@@ -373,7 +373,7 @@ export default function AboutPage() {
               </p>
             </motion.div>
 
-            <div className="grid md:grid-cols-2 gap-8 max-w-5xl mx-auto">
+            <div className="grid md:grid-cols-3 gap-8 max-w-6xl mx-auto">
               {/* Jeremiah Shrack */}
               <motion.div
                 initial={{ opacity: 0, y: 20 }}
@@ -478,17 +478,70 @@ export default function AboutPage() {
                   </div>
                 </div>
               </motion.div>
+
+              {/* Nicole Burns */}
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: 0.2 }}
+                className="group relative"
+              >
+                <div className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-pink-950/40 via-blue-900/40 to-purple-950/40 border border-pink-500/30 p-8 hover:border-pink-400/50 transition-all duration-500 hover:scale-[1.02]">
+                  <div className="absolute inset-0 bg-gradient-to-r from-pink-500/0 via-blue-500/0 to-purple-500/0 group-hover:from-pink-500/10 group-hover:via-blue-500/10 group-hover:to-purple-500/10 transition-all duration-500" />
+                  <div className="relative z-10">
+                    <button
+                      onClick={() => openLightbox(
+                        "/1709575941859.jpeg",
+                        "Nicole Burns",
+                        "Nicole Burns",
+                        "Go-To-Market (GTM) Expert"
+                      )}
+                      className="relative w-32 h-32 mx-auto mb-6 rounded-full overflow-hidden border-4 border-pink-500/30 group-hover:border-pink-400/60 transition-all duration-500 cursor-pointer hover:scale-110"
+                    >
+                      <img
+                        src="/1709575941859.jpeg"
+                        alt="Nicole Burns"
+                        className="w-full h-full object-cover"
+                      />
+                      <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors duration-300 flex items-center justify-center">
+                        <span className="text-white text-xs opacity-0 group-hover:opacity-100 transition-opacity">
+                          Click to enlarge
+                        </span>
+                      </div>
+                    </button>
+                    <div className="text-center">
+                      <h3 className="text-2xl font-bold bg-gradient-to-r from-pink-200 to-blue-200 bg-clip-text text-transparent mb-2">
+                        Nicole Burns
+                      </h3>
+                      <p className="text-pink-400 font-semibold mb-4">
+                        Go-To-Market (GTM) Expert
+                      </p>
+                      <p className="text-gray-400 text-sm leading-relaxed mb-4">
+                        Recognized Go-To-Market strategy expert with extensive experience driving growth, strategic partnerships, and market expansion. She leads the commercialization strategy, translating complex actuarial and AI capabilities into compelling enterprise value propositions.
+                      </p>
+                      <Link
+                        href="/company"
+                        className="inline-flex items-center gap-2 text-pink-400 text-sm font-semibold hover:text-pink-300 transition-colors"
+                      >
+                        <span>View Full Profile</span>
+                        <ChevronRight className="h-4 w-4" />
+                      </Link>
+                    </div>
+                  </div>
+                </div>
+              </motion.div>
             </div>
 
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
-              transition={{ delay: 0.2 }}
+              transition={{ delay: 0.3 }}
               className="text-center mt-12"
             >
               <Link
-                href="/board-of-directors"
+                href="/company"
                 className="inline-flex items-center gap-2 px-6 py-3 bg-white/5 backdrop-blur-sm border border-white/10 text-white font-medium rounded-full hover:bg-white/10 transition-all hover:scale-105"
               >
                 <span>Meet Our Full Board of Directors</span>

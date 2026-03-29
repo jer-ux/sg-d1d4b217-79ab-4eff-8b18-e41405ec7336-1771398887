@@ -323,6 +323,37 @@ const teamMembers = [
     ],
     philosophy: "The intersection of AI and fiduciary duty requires a new governance framework—one that treats algorithmic decision-making with the same rigor as human fiduciary responsibility. I advocate for transparent AI systems that can be audited, explained, and held accountable to the same standards as human decision-makers in positions of trust.",
     vision: "As Executive Chair of the Committee on Algorithmic Governance & Fiduciary Risk, my vision is to establish SiriusB iQ as the gold standard for ethical AI deployment in benefits management. Every algorithmic decision made by the platform must withstand the scrutiny of fiduciary duty, regulatory review, and client trust."
+  },
+  {
+    name: "Nicole Burns",
+    role: "Go-To-Market (GTM) Expert",
+    image: "/1709575941859.jpeg",
+    linkedin: "https://www.linkedin.com/in/nicburns/",
+    bio: "Nicole Burns brings extensive expertise in Go-To-Market (GTM) strategy, driving enterprise growth, strategic partnerships, and market expansion. With a proven track record of scaling technology platforms and aligning complex value propositions with market needs, she leads the commercialization strategy for SiriusB iQ.",
+    experience: [
+      {
+        company: "SiriusB iQ AI Data Sciences",
+        title: "Go-To-Market (GTM) Expert",
+        period: "Present",
+        description: "Leading comprehensive go-to-market strategies, revenue operations, and strategic partnerships for the algorithmic fiduciary intelligence platform.",
+        highlights: [
+          "Designs and executes scalable GTM frameworks",
+          "Aligns product capabilities with enterprise market demands",
+          "Drives strategic partnerships and channel growth",
+          "Optimizes revenue operations and commercialization strategy"
+        ]
+      }
+    ],
+    expertise: [
+      "Go-To-Market (GTM) Strategy",
+      "Enterprise Sales Leadership",
+      "Strategic Partnerships",
+      "Market Expansion",
+      "Revenue Operations",
+      "Commercialization Strategy"
+    ],
+    philosophy: "Effective go-to-market strategies require a deep alignment between market needs and product capabilities. It's about translating complex technical value propositions into clear, compelling narratives that drive enterprise adoption and build lasting client partnerships.",
+    vision: "To accelerate the adoption of algorithmic fiduciary intelligence across the enterprise landscape, establishing SiriusB iQ as the undeniable standard for healthcare financial governance and strategic decision-making."
   }
 ];
 

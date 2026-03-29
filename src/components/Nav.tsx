@@ -88,6 +88,14 @@ export default function Nav() {
               <span>Rx Defense</span>
             </Link>
 
+            {/* Kincaid IQ War Room Link */}
+            <Link
+              href="/kincaid-iq"
+              className="px-4 py-2 text-gray-300 hover:text-white transition-colors rounded-lg hover:bg-white/5 flex items-center gap-2"
+            >
+              <span>Kincaid IQ War Room</span>
+            </Link>
+
             {/* Platform Menu */}
             <div className="relative">
               <button
@@ -327,6 +335,14 @@ export default function Nav() {
               className="block px-4 py-3 text-gray-300 hover:text-white hover:bg-white/5 rounded-lg transition-colors font-medium"
             >
               Rx Defense
+            </Link>
+
+            {/* Kincaid IQ War Room Link - Mobile */}
+            <Link
+              href="/kincaid-iq"
+              className="block px-4 py-3 text-gray-300 hover:text-white hover:bg-white/5 rounded-lg transition-colors font-medium"
+            >
+              Kincaid IQ War Room
             </Link>
 
             {/* Actuarial Benefits Dropdown - Mobile */}

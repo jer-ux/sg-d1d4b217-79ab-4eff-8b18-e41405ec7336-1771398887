@@ -31,6 +31,27 @@ const boardMembers = [
     }
   },
   {
+    name: "Kyle Riddle",
+    title: "Distinguished Chief of Insurance",
+    image: "/1759522317489.png",
+    linkedin: "https://www.linkedin.com/in/kyle-riddle-47581946/",
+    bio: "Certified Employee Benefits Manager (University of Pennsylvania) and Certified Financial Planner who brings MIT engineering rigor and Stanford MBA strategic thinking to insurance and benefits management. Father of four, dedicated to ensuring people live lives better than they could have ever dreamed of.",
+    fullBio: {
+      introduction: "Kyle Riddle is a distinguished insurance executive whose career exemplifies the convergence of academic excellence and practical wisdom in the employee benefits landscape. As a Certified Employee Benefits Manager from the University of Pennsylvania and a Certified Financial Planner, Kyle has built a reputation for bringing uncompromising analytical rigor to complex insurance and risk management challenges. His unique educational foundation—combining MIT's engineering discipline with Stanford's MBA strategic frameworks—enables him to approach benefits design and insurance governance with a level of precision rarely seen in the industry.",
+      platform: "Kyle's approach to insurance and benefits consulting is rooted in the belief that technical complexity should never obscure human outcomes. He systematically deconstructs insurance products, regulatory frameworks, and actuarial models to identify inefficiencies, hidden costs, and structural risks that erode employer value and member experience. By applying engineering-level rigor to financial planning, Kyle transforms insurance from an opaque compliance exercise into a strategic lever for organizational performance and employee wellbeing. His methodology emphasizes transparency, quantifiable results, and alignment between fiduciary duty and operational reality.",
+      philosophy: "Kyle's guiding philosophy is profoundly simple yet radically ambitious: 'People deserve to live lives better than they could have ever dreamed of.' This conviction drives every actuarial model, every risk assessment, and every benefits recommendation he produces. As a father of four, Kyle approaches his work with the understanding that insurance and benefits are not abstract financial instruments—they are the safety nets that protect families, enable dreams, and provide dignity in moments of crisis. He believes that when fiduciary responsibility is executed with precision and empathy, employers can deliver benefits programs that don't just meet regulatory standards—they transform lives.",
+      expertise: [
+        "Regulatory Compliance & Fiduciary Governance",
+        "Insurance Risk Management & Actuarial Analysis",
+        "Employee Benefits Strategy & Plan Design",
+        "Certified Financial Planning & Wealth Management",
+        "MIT Engineering Rigor Applied to Benefits Architecture",
+        "Stanford MBA Strategic Frameworks for Insurance Operations"
+      ],
+      vision: "At SiriusB iQ, Kyle's vision is to establish a new standard for insurance and benefits intelligence—one where actuarial precision, regulatory mastery, and human-centered design converge to deliver measurable improvements in both employer outcomes and member experiences. He is committed to leveraging algorithmic fiduciary platforms to expose inefficiencies, eliminate waste, and redirect savings toward benefits that genuinely enhance quality of life. Under his leadership, SiriusB iQ's insurance practice will serve as the bridge between technical excellence and the deeply human aspiration that every individual deserves access to benefits that enable them to live beyond their expectations."
+    }
+  },
+  {
     name: "Mike Hamann",
     title: "Board Member - Public Service & Fiscal Leadership",
     image: "/1517039361817_1_.jpeg",

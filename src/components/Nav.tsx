@@ -1,6 +1,8 @@
 import { useState } from "react";
 import Link from "next/link";
-import { Menu, X, ChevronDown, Sparkles } from "lucide-react";
+import { Menu, X, ChevronDown, Sparkles, Search } from "lucide-react";
+import { useRouter } from "next/router";
+import { Button } from "@/components/ui/button";
 
 export default function Nav() {
   const [isOpen, setIsOpen] = useState(false);
@@ -20,6 +22,15 @@ export default function Nav() {
             <span className="text-xl font-bold bg-gradient-to-r from-purple-400 to-pink-400 bg-clip-text text-transparent">
               SiriusB iQ AI Data Sciences Lab
             </span>
+          </Link>
+
+          {/* RX DEFENSE - Standalone Forensic Link */}
+          <Link 
+            href="/solutions/contract-xray" 
+            className="flex items-center gap-2 px-4 py-2 rounded-lg border border-red-500/30 bg-red-950/30 hover:bg-red-950/50 hover:border-red-500/50 transition-all group"
+          >
+            <Search className="w-4 h-4 text-red-400 group-hover:text-red-300" />
+            <span className="text-sm font-bold text-red-300 group-hover:text-red-200">Rx Defense</span>
           </Link>
 
           {/* Desktop Navigation */}

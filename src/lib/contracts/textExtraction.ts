@@ -74,7 +74,9 @@ export async function extractTextFromFile(
  */
 async function extractFromPDF(file: File): Promise<string> {
   // Dynamic import for browser compatibility
-  const pdfParse = (await import("pdf-parse")).default;
+  const pdfParseModule = await import("pdf-parse");
+  // @ts-expect-error - Handle CommonJS/ESM interop differences
+  const pdfParse = pdfParseModule.default || pdfParseModule;
   
   const arrayBuffer = await file.arrayBuffer();
   const buffer = Buffer.from(arrayBuffer);

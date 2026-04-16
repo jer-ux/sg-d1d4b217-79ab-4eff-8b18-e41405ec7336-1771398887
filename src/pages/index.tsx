@@ -3,7 +3,7 @@ import { useRef, useState, useEffect } from "react";
 import Link from "next/link";
 import { motion, useScroll, useTransform, useInView } from "framer-motion";
 import { SEO } from "@/components/SEO";
-import { FileText, Shield, TrendingUp, CheckCircle2, Sparkles, Zap, Crown, Star, Activity, ArrowRight, Lock, Building2, Users, Database, BarChart3, Globe, Award } from "lucide-react";
+import { FileText, Shield, TrendingUp, CheckCircle2, Sparkles, Zap, Crown, Star, Activity, ArrowRight, Lock, Building2, Users, Database, BarChart3, Globe, Award, AlertTriangle, Search } from "lucide-react";
 import { ExecutiveWarRoom } from "@/components/warroom/ExecutiveWarRoom";
 import { CHROWarRoom } from "@/components/warroom/CHROWarRoom";
 import { BadgeDetailSystem } from "@/components/home/BadgeDetailSystem";
@@ -432,6 +432,43 @@ export default function HomePage() {
               Generate cryptographically signed audit packages: hashed files, extraction outputs, approval workflows, and audit trails. Your evidence survives the most rigorous scrutiny.
             </Card3D>
           </div>
+        </section>
+
+        {/* Forensics Section */}
+        <section id="forensics" className="relative z-10 mx-auto w-full max-w-7xl px-6 py-20">
+          <motion.div
+            className="mb-12"
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6 }}
+          >
+            <div className="flex items-center gap-3 text-lg font-black bg-gradient-to-r from-red-400 to-red-200 bg-clip-text text-transparent mb-4">
+              <AlertTriangle className="h-6 w-6 text-red-500 drop-shadow-[0_0_12px_rgba(239,68,68,0.6)]" />
+              Contract Forensics Engine
+            </div>
+            <h2 className="text-4xl md:text-5xl font-black text-white leading-tight">
+              Your PBM contract is a crime scene.<br/>
+              <span className="bg-gradient-to-br from-red-400 via-red-500 to-red-700 bg-clip-text text-transparent">We have the forensics.</span>
+            </h2>
+            <p className="mt-6 text-xl text-zinc-300 max-w-3xl leading-relaxed">
+              Rx Defense IQ Contract X-Ray is the only actuarially-anchored, evidence-spine-governed PBM contract forensic engine built for ERISA fiduciaries who refuse to lose.
+            </p>
+            <div className="mt-8 bg-red-950/30 border border-red-500/20 rounded-xl p-6 backdrop-blur-sm max-w-3xl">
+              <p className="text-lg font-medium text-red-200">
+                "Most PBM contracts are written to be misunderstood. Ours are written to be prosecuted."
+              </p>
+            </div>
+            <div className="mt-8">
+              <Link
+                href="/solutions/contract-xray"
+                className="inline-flex items-center justify-center px-8 py-4 text-lg font-bold text-white bg-gradient-to-r from-red-600 to-red-800 rounded-xl hover:from-red-500 hover:to-red-700 transition-all duration-200 shadow-lg hover:shadow-red-500/25"
+              >
+                <Search className="mr-2 h-5 w-5" />
+                Launch Forensic Investigation
+              </Link>
+            </div>
+          </motion.div>
         </section>
 
         {/* Dashboard Section with 3D Effects */}

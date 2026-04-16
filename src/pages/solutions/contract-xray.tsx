@@ -12,24 +12,9 @@ import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } f
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { useToast } from "@/hooks/use-toast";
 import { 
-  Shield, 
-  Upload, 
-  FileText, 
-  Search, 
-  TrendingUp, 
-  AlertTriangle,
-  CheckCircle2,
-  Download,
-  Eye,
-  Clock,
-  DollarSign,
-  Users,
-  BarChart3,
-  Zap,
-  FileCheck,
-  X,
-  Loader2,
-  ArrowRight
+  Shield, Upload, FileText, Search, TrendingUp, AlertTriangle,
+  CheckCircle2, Download, Eye, Clock, DollarSign, Users,
+  BarChart3, Zap, FileCheck, X, Loader2, ArrowRight, FileSearch, Scale
 } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 
@@ -473,63 +458,61 @@ export default function ContractXRayPage() {
   return (
     <>
       <Head>
-        <title>Rx Defense: Contract X-Ray | Enterprise PBM Contract Intelligence</title>
-        <meta name="description" content="AI-powered PBM contract analysis identifying hidden costs, unfavorable clauses, and savings opportunities. Enterprise-grade contract intelligence for CFOs and benefits leaders." />
+        <title>Rx Defense: Contract X-Ray | Forensic PBM Contract Intelligence</title>
+        <meta name="description" content="Your PBM contract is a crime scene. We have the forensics. Actuarially-anchored, evidence-spine-governed PBM contract forensic engine." />
       </Head>
 
-      <div className="min-h-screen bg-black text-white">
+      <div className="min-h-screen bg-slate-950 text-white">
         <SiteHeader />
 
         <main className="relative">
           {/* Hero Section */}
-          <section className="relative py-32 overflow-hidden border-b border-white/10">
-            {/* Enterprise Background */}
-            <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-blue-900/20 via-slate-950 to-slate-950" />
-            <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-20 mix-blend-overlay"></div>
+          <section className="relative py-32 overflow-hidden border-b border-red-500/10">
+            <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-red-950/40 via-slate-950 to-slate-950" />
+            <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-10 mix-blend-overlay"></div>
             <div className="absolute inset-0">
-              <div className="absolute top-1/4 left-1/4 w-[500px] h-[500px] bg-blue-500/20 rounded-full blur-[120px]" />
-              <div className="absolute bottom-1/4 right-1/4 w-[600px] h-[600px] bg-purple-600/10 rounded-full blur-[150px]" />
+              <div className="absolute top-1/4 left-1/4 w-[500px] h-[500px] bg-red-600/10 rounded-full blur-[120px]" />
+              <div className="absolute bottom-1/4 right-1/4 w-[600px] h-[600px] bg-slate-800/50 rounded-full blur-[150px]" />
             </div>
 
             <div className="container mx-auto px-4 relative z-10">
               <div className="max-w-5xl mx-auto text-center">
-                <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/5 border border-white/10 backdrop-blur-md mb-8">
-                  <span className="flex h-2 w-2 rounded-full bg-blue-500 animate-pulse"></span>
-                  <span className="text-sm text-blue-200 font-medium tracking-wide">Enterprise Contract Intelligence Platform</span>
+                <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-red-500/10 border border-red-500/20 backdrop-blur-md mb-8">
+                  <span className="flex h-2 w-2 rounded-full bg-red-500 animate-pulse"></span>
+                  <span className="text-sm text-red-200 font-medium tracking-wide">Forensic Contract Intelligence</span>
                 </div>
                 
-                <h1 className="text-5xl md:text-7xl font-extrabold mb-8 tracking-tight">
-                  <span className="bg-gradient-to-r from-white via-gray-200 to-gray-400 bg-clip-text text-transparent">
-                    Rx Defense: 
-                  </span>
+                <h1 className="text-5xl md:text-7xl font-extrabold mb-6 tracking-tight">
+                  Your PBM contract is a crime scene.
                   <br />
-                  <span className="bg-gradient-to-r from-blue-400 via-indigo-400 to-purple-400 bg-clip-text text-transparent">
-                    Contract X-Ray
+                  <span className="bg-gradient-to-r from-red-400 via-red-500 to-red-700 bg-clip-text text-transparent mt-2 block">
+                    We have the forensics.
                   </span>
                 </h1>
                 
-                <p className="text-xl md:text-2xl text-gray-400 mb-10 max-w-3xl mx-auto leading-relaxed">
-                  Military-grade AI analysis of PBM contracts. Identify hidden margin spreads, unfavorable clauses, and millions in uncaptured savings in under 3 minutes.
+                <p className="text-xl md:text-2xl text-gray-300 mb-6 max-w-4xl mx-auto leading-relaxed">
+                  Rx Defense IQ Contract X-Ray is the only actuarially-anchored, evidence-spine-governed PBM contract forensic engine built for ERISA fiduciaries who refuse to lose.
                 </p>
+
+                <div className="bg-red-950/40 border border-red-500/30 rounded-xl p-5 mb-10 max-w-3xl mx-auto backdrop-blur-sm">
+                  <p className="text-xl font-semibold text-red-200">
+                    Most PBM contracts are written to be misunderstood.<br />
+                    Ours are written to be prosecuted.
+                  </p>
+                </div>
 
                 <div className="flex flex-wrap gap-4 justify-center">
                   <Button 
                     size="lg" 
-                    className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700"
+                    className="bg-gradient-to-r from-red-600 to-red-800 hover:from-red-500 hover:to-red-700 text-white border border-red-500/50 h-14 px-8 text-lg rounded-xl shadow-lg shadow-red-900/50"
                     onClick={handleUploadClick}
                   >
-                    <Upload className="w-5 h-5 mr-2" />
-                    Analyze Your Contract
+                    <Search className="w-5 h-5 mr-2" />
+                    Request Forensic Review
                   </Button>
                   
-                  <Link href="/pbm-contract-vault">
-                    <Button size="lg" variant="outline">
-                      <FileText className="w-5 h-5 mr-2" />
-                      Browse Contract Database
-                    </Button>
-                  </Link>
                   <Link href="/board/contract-intelligence">
-                    <Button size="lg" variant="outline" className="border-white/20 text-white hover:bg-white/10 rounded-xl">
+                    <Button size="lg" variant="outline" className="border-white/20 text-white hover:bg-white/10 rounded-xl h-14 px-8 text-lg">
                       <BarChart3 className="w-5 h-5 mr-2" />
                       Board Dashboard
                     </Button>
@@ -539,128 +522,211 @@ export default function ContractXRayPage() {
             </div>
           </section>
 
-          {/* Enterprise Metrics Strip */}
-          <section className="relative z-20 -mt-10 mb-20">
-            <div className="container mx-auto px-4">
-              <div className="bg-white/5 border border-white/10 backdrop-blur-xl rounded-2xl p-8 shadow-2xl">
-                <div className="grid grid-cols-2 md:grid-cols-4 gap-8 divide-x divide-white/5">
-                  {stats.map((stat, idx) => (
-                    <div key={idx} className="text-center px-4">
-                      <div className="flex items-center justify-center mb-4">
-                        <div className="p-3 bg-blue-500/10 rounded-xl border border-blue-500/20">
-                          <stat.icon className="w-6 h-6 text-blue-400" />
-                        </div>
-                      </div>
-                      <div className="text-4xl font-bold mb-2 tracking-tight text-white">{stat.value}</div>
-                      <div className="text-sm text-gray-400 font-medium mb-3 uppercase tracking-wider">{stat.label}</div>
-                      <div className="inline-flex items-center text-xs font-semibold text-emerald-400 bg-emerald-400/10 px-2 py-1 rounded-full">
-                        <TrendingUp className="w-3 h-3 mr-1" />
-                        {stat.trend}
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            </div>
-          </section>
-
-          {/* Intelligence Engine Section */}
-          <section className="py-24 relative">
-            <div className="absolute inset-0 bg-slate-950" />
+          {/* Problem / Solution Block */}
+          <section className="py-24 relative bg-slate-900">
             <div className="container mx-auto px-4 relative z-10">
-              <div className="text-center mb-20">
-                <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-purple-500/10 border border-purple-500/20 mb-6">
-                  <Search className="w-4 h-4 text-purple-400" />
-                  <span className="text-sm text-purple-300 font-medium">10 Critical Provisions Analyzed</span>
-                </div>
-                <h2 className="text-4xl md:text-5xl font-bold mb-6 text-white tracking-tight">Continuous Intelligence Engine</h2>
-                <p className="text-xl text-gray-400 max-w-2xl mx-auto">
-                  Our proprietary AI models extract and evaluate every clause against a massive database of benchmarked PBM contracts to detect precise risk vectors.
-                </p>
-              </div>
-
-              <div className="grid md:grid-cols-2 gap-6 max-w-6xl mx-auto">
-                {provisions.map((provision, idx) => (
-                  <div key={idx} className="group relative">
-                    <div className={`w-24 h-24 rounded-2xl flex items-center justify-center mx-auto mb-6 bg-slate-900 border border-white/10 shadow-xl group-hover:scale-110 transition-transform duration-300`}>
-                      <Shield className="w-10 h-10 text-blue-400" />
-                    </div>
-                    <div className="inline-flex items-center justify-center w-8 h-8 rounded-full bg-slate-800 border border-white/10 text-sm font-bold text-white mb-4 -mt-10 relative z-20">
-                      {idx + 1}
-                    </div>
-                    <h3 className="text-xl font-bold mb-3 text-white">{provision.title}</h3>
-                    <p className="text-gray-400 leading-relaxed text-sm">{provision.description}</p>
+              <div className="max-w-6xl mx-auto grid md:grid-cols-2 gap-8">
+                {/* The Problem */}
+                <div className="bg-slate-950 border border-red-500/20 rounded-2xl p-8 md:p-10 shadow-2xl relative overflow-hidden group">
+                  <div className="absolute top-0 left-0 w-full h-1 bg-red-600/50"></div>
+                  <div className="w-16 h-16 bg-red-950/50 border border-red-500/20 rounded-xl flex items-center justify-center mb-8">
+                    <AlertTriangle className="w-8 h-8 text-red-400" />
                   </div>
-                ))}
+                  <h2 className="text-3xl font-bold mb-6 text-white">The Problem</h2>
+                  <p className="text-gray-300 text-lg leading-relaxed mb-6">
+                    Your PBM contract is <strong className="text-gray-200">80 pages of deliberately engineered ambiguity</strong>. 
+                    Spread pricing buried in footnotes. MAC lists that reset quarterly without notice. 
+                    AWP discounts that look aggressive until you price the actual dispensed drug.
+                  </p>
+                  <p className="text-gray-300 text-lg leading-relaxed mb-6">
+                    Specialty carve-outs that swallow your margin in silence.
+                  </p>
+                  <div className="p-4 bg-red-950/30 rounded-lg border border-red-900/50">
+                    <p className="text-red-200 font-semibold text-lg">
+                      Your broker reviewed it. Your legal team blessed it. Nobody ran the math.
+                    </p>
+                  </div>
+                </div>
+
+                {/* The Solution */}
+                <div className="bg-slate-950 border border-emerald-500/20 rounded-2xl p-8 md:p-10 shadow-2xl relative overflow-hidden group">
+                  <div className="absolute top-0 left-0 w-full h-1 bg-emerald-500/50"></div>
+                  <div className="w-16 h-16 bg-emerald-950/50 border border-emerald-500/20 rounded-xl flex items-center justify-center mb-8">
+                    <FileSearch className="w-8 h-8 text-emerald-400" />
+                  </div>
+                  <h2 className="text-3xl font-bold mb-6 text-white">The Solution</h2>
+                  <p className="text-gray-300 text-lg leading-relaxed mb-6">
+                    <strong className="text-gray-200">Rx Defense IQ Contract X-Ray</strong> dissects every clause, guarantee, 
+                    and pricing mechanism in your PBM agreement against <strong className="text-gray-200">757,000+ rows</strong> of 
+                    national DOL disclosure data, live benchmark baselines, and the Kincaid 7-Gate Enforcement Chain.
+                  </p>
+                  <p className="text-gray-300 text-lg leading-relaxed mb-6">
+                    Every finding carries a provenance trail. Every claim carries a number. 
+                    Every number carries a citation.
+                  </p>
+                  <div className="p-4 bg-emerald-950/30 rounded-lg border border-emerald-900/50">
+                    <p className="text-emerald-400 font-medium text-xl uppercase tracking-wider">
+                      No anchor, no claim.
+                    </p>
+                  </div>
+                </div>
               </div>
             </div>
           </section>
 
-          {/* Enterprise Workflow Section */}
-          <section className="py-24 bg-slate-950 border-t border-white/5">
-            <div className="container mx-auto px-4">
-              <div className="text-center mb-20">
-                <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/20 mb-6">
-                  <Zap className="w-4 h-4 text-emerald-400" />
-                  <span className="text-sm text-emerald-300 font-medium">Automated Pipeline</span>
-                </div>
-                <h2 className="text-4xl md:text-5xl font-bold mb-6 text-white tracking-tight">Zero-Friction Analysis Workflow</h2>
-                <p className="text-xl text-gray-400 max-w-2xl mx-auto">
-                  Transform opaque 200-page contracts into boardroom-ready intelligence in under 5 minutes.
+          {/* 5 Feature Blocks */}
+          <section className="py-24 relative bg-slate-950">
+            <div className="container mx-auto px-4 relative z-10">
+              <div className="text-center mb-16">
+                <h2 className="text-4xl md:text-5xl font-bold mb-6 text-white tracking-tight">Forensic Intelligence Layer</h2>
+                <p className="text-xl text-gray-400 max-w-3xl mx-auto">
+                  Five evidence-anchored capabilities that transform contract review from opinion to prosecution.
                 </p>
               </div>
 
-              <div className="grid md:grid-cols-4 gap-8 max-w-6xl mx-auto relative">
-                {/* Connecting Line */}
-                <div className="hidden md:block absolute top-12 left-[12.5%] right-[12.5%] h-[2px] bg-gradient-to-r from-blue-500/20 via-purple-500/20 to-emerald-500/20" />
-
-                {[
-                  { icon: Upload, title: "Secure Ingestion", desc: "SOC2-compliant upload of PDF/DOCX files into isolated storage.", color: "blue" },
-                  { icon: Search, title: "Neural Extraction", desc: "Multi-modal AI parses legalese, tables, and hidden addendums.", color: "purple" },
-                  { icon: AlertTriangle, title: "Risk Arbitration", desc: "Cross-references against 1,200+ benchmarked market terms.", color: "orange" },
-                  { icon: Download, title: "Executive Output", desc: "Generates interactive dashboard with direct savings strategies.", color: "emerald" }
-                ].map((step, idx) => (
-                  <div key={idx} className="relative z-10 text-center group">
-                    <div className={`w-24 h-24 rounded-2xl flex items-center justify-center mx-auto mb-6 bg-slate-900 border border-white/10 shadow-xl group-hover:scale-110 transition-transform duration-300`}>
-                      <step.icon className={`w-10 h-10 text-${step.color}-400`} />
-                    </div>
-                    <div className="inline-flex items-center justify-center w-8 h-8 rounded-full bg-slate-800 border border-white/10 text-sm font-bold text-white mb-4 -mt-10 relative z-20">
-                      {idx + 1}
-                    </div>
-                    <h3 className="text-xl font-bold mb-3 text-white">{step.title}</h3>
-                    <p className="text-gray-400 leading-relaxed text-sm">{step.desc}</p>
+              <div className="grid md:grid-cols-1 gap-6 max-w-5xl mx-auto">
+                <div className="bg-slate-900/50 border border-white/5 rounded-2xl p-8 flex flex-col md:flex-row gap-8 items-start hover:bg-slate-900 transition-colors">
+                  <div className="w-16 h-16 rounded-xl bg-blue-950/50 border border-blue-500/20 flex items-center justify-center flex-shrink-0">
+                    <FileText className="w-8 h-8 text-blue-400" />
                   </div>
-                ))}
+                  <div>
+                    <h3 className="text-2xl font-bold mb-3 text-white">1. The Evidence Spine</h3>
+                    <p className="text-gray-400 text-lg leading-relaxed mb-3">
+                      Your audit means nothing without lineage. Every finding in Contract X-Ray is traceable to its source — <strong className="text-gray-200">claim line, contract clause, benchmark cohort, and DOL filing</strong>.
+                    </p>
+                    <p className="text-blue-300 font-medium">When your fiduciary record is challenged, your defense is already built.</p>
+                  </div>
+                </div>
+
+                <div className="bg-slate-900/50 border border-white/5 rounded-2xl p-8 flex flex-col md:flex-row gap-8 items-start hover:bg-slate-900 transition-colors">
+                  <div className="w-16 h-16 rounded-xl bg-amber-950/50 border border-amber-500/20 flex items-center justify-center flex-shrink-0">
+                    <Scale className="w-8 h-8 text-amber-400" />
+                  </div>
+                  <div>
+                    <h3 className="text-2xl font-bold mb-3 text-white">2. 7-Gate Enforcement Chain</h3>
+                    <p className="text-gray-400 text-lg leading-relaxed mb-3">
+                      From contractual language to economic exposure, every finding passes <strong className="text-gray-200">seven verification gates</strong> before it ever reaches your desk.
+                    </p>
+                    <p className="text-amber-300 font-medium">This isn't a consultant's opinion. It's machine-enforced actuarial logic.</p>
+                  </div>
+                </div>
+
+                <div className="bg-slate-900/50 border border-white/5 rounded-2xl p-8 flex flex-col md:flex-row gap-8 items-start hover:bg-slate-900 transition-colors">
+                  <div className="w-16 h-16 rounded-xl bg-red-950/50 border border-red-500/20 flex items-center justify-center flex-shrink-0">
+                    <DollarSign className="w-8 h-8 text-red-400" />
+                  </div>
+                  <div>
+                    <h3 className="text-2xl font-bold mb-3 text-white">3. Shadow Tax Quantification</h3>
+                    <p className="text-gray-400 text-lg leading-relaxed mb-3">
+                      Contract X-Ray calculates the <strong className="text-gray-200">hidden economic transfer</strong> your plan is absorbing — the spread, the rebate withholding, the DIR fee equivalent — and expresses it as what it is: <strong className="text-gray-200">a shadow tax on your working families</strong>.
+                    </p>
+                    <p className="text-red-300 font-medium">Named. Quantified. Documented.</p>
+                  </div>
+                </div>
+
+                <div className="bg-slate-900/50 border border-white/5 rounded-2xl p-8 flex flex-col md:flex-row gap-8 items-start hover:bg-slate-900 transition-colors">
+                  <div className="w-16 h-16 rounded-xl bg-purple-950/50 border border-purple-500/20 flex items-center justify-center flex-shrink-0">
+                    <BarChart3 className="w-8 h-8 text-purple-400" />
+                  </div>
+                  <div>
+                    <h3 className="text-2xl font-bold mb-3 text-white">4. Benchmark Intelligence</h3>
+                    <p className="text-gray-400 text-lg leading-relaxed mb-3">
+                      Your contract doesn't exist in a vacuum. Contract X-Ray positions every pricing term, dispensing fee, and guarantee structure against <strong className="text-gray-200">national cohort data</strong> from comparable plan designs, plan sizes, and industry verticals.
+                    </p>
+                    <p className="text-purple-300 font-medium">You'll know not just what you're paying — but what you should be paying.</p>
+                  </div>
+                </div>
+
+                <div className="bg-slate-900/50 border border-white/5 rounded-2xl p-8 flex flex-col md:flex-row gap-8 items-start hover:bg-slate-900 transition-colors">
+                  <div className="w-16 h-16 rounded-xl bg-emerald-950/50 border border-emerald-500/20 flex items-center justify-center flex-shrink-0">
+                    <Shield className="w-8 h-8 text-emerald-400" />
+                  </div>
+                  <div>
+                    <h3 className="text-2xl font-bold mb-3 text-white">5. ERISA Fiduciary Armor</h3>
+                    <p className="text-gray-400 text-lg leading-relaxed mb-3">
+                      <strong className="text-gray-200">ERISA Section 3(21)</strong> doesn't care what your broker told you. Contract X-Ray produces a <strong className="text-gray-200">documented, timestamped, evidence-anchored forensic record</strong> designed to meet the prudent expert standard.
+                    </p>
+                    <p className="text-emerald-300 font-medium">When the DOL comes calling, you'll have an answer that holds.</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          {/* Persona Callouts */}
+          <section className="py-24 bg-slate-900 relative border-t border-white/5">
+            <div className="container mx-auto px-4 relative z-10">
+              <div className="text-center mb-16">
+                <h2 className="text-4xl font-bold mb-4 text-white">Built For Decision Makers Who Matter</h2>
+                <p className="text-xl text-gray-400">Every stakeholder gets the evidence they need, in the language they understand.</p>
+              </div>
+
+              <div className="grid md:grid-cols-3 gap-8 max-w-6xl mx-auto">
+                {/* CFO */}
+                <div className="bg-slate-950 border border-blue-500/20 rounded-2xl p-8 text-center hover:-translate-y-2 transition-transform duration-300">
+                  <div className="w-16 h-16 rounded-full bg-blue-950/50 border border-blue-500/30 flex items-center justify-center mx-auto mb-6">
+                    <DollarSign className="w-8 h-8 text-blue-400" />
+                  </div>
+                  <h3 className="text-2xl font-bold mb-4 text-white">For the CFO</h3>
+                  <p className="text-gray-400 leading-relaxed">
+                    Your PBM contract is a <strong className="text-white">revenue recognition document</strong> dressed as a health benefit. 
+                    Contract X-Ray tells you what you're actually buying — and what it's actually costing.
+                  </p>
+                </div>
+
+                {/* CHRO */}
+                <div className="bg-slate-950 border border-purple-500/20 rounded-2xl p-8 text-center hover:-translate-y-2 transition-transform duration-300">
+                  <div className="w-16 h-16 rounded-full bg-purple-950/50 border border-purple-500/30 flex items-center justify-center mx-auto mb-6">
+                    <Users className="w-8 h-8 text-purple-400" />
+                  </div>
+                  <h3 className="text-2xl font-bold mb-4 text-white">For the CHRO</h3>
+                  <p className="text-gray-400 leading-relaxed">
+                    The benefits your employees depend on are being <strong className="text-white">quietly eroded</strong> by contract mechanics 
+                    nobody explained to you. Contract X-Ray makes the invisible visible — and makes the inexcusable accountable.
+                  </p>
+                </div>
+
+                {/* Fiduciary */}
+                <div className="bg-slate-950 border border-emerald-500/20 rounded-2xl p-8 text-center hover:-translate-y-2 transition-transform duration-300">
+                  <div className="w-16 h-16 rounded-full bg-emerald-950/50 border border-emerald-500/30 flex items-center justify-center mx-auto mb-6">
+                    <Shield className="w-8 h-8 text-emerald-400" />
+                  </div>
+                  <h3 className="text-2xl font-bold mb-4 text-white">For the Plan Fiduciary</h3>
+                  <p className="text-gray-400 leading-relaxed">
+                    Your duty of prudence <strong className="text-white">doesn't end at signing. It begins there.</strong> Contract X-Ray gives you 
+                    the evidence chain that proves you looked — and found what others missed.
+                  </p>
+                </div>
               </div>
             </div>
           </section>
 
           {/* CTA Section */}
-          <section className="py-32 relative overflow-hidden border-t border-white/10">
-            <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_bottom,_var(--tw-gradient-stops))] from-blue-900/20 via-slate-950 to-slate-950" />
+          <section className="py-32 relative overflow-hidden bg-slate-950 border-t border-red-500/10">
+            <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_bottom,_var(--tw-gradient-stops))] from-red-900/20 via-slate-950 to-slate-950" />
             <div className="container mx-auto px-4 relative z-10">
-              <div className="max-w-4xl mx-auto text-center bg-white/[0.02] border border-white/10 backdrop-blur-xl rounded-3xl p-12 md:p-20 shadow-2xl relative overflow-hidden">
-                <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500" />
-                <h2 className="text-4xl md:text-5xl font-bold mb-6 text-white tracking-tight">Activate Your Intelligence Layer</h2>
+              <div className="max-w-4xl mx-auto text-center">
+                <h2 className="text-4xl md:text-5xl font-bold mb-6 text-white tracking-tight">
+                  You negotiated a contract.<br/>
+                  You signed a document.<br/>
+                  <span className="text-red-500 mt-2 block">You probably don't know the difference.</span>
+                </h2>
                 <p className="text-xl text-gray-400 mb-12 leading-relaxed">
-                  Join leading healthcare CFOs and benefits leaders using Contract X-Ray to audit, negotiate, and enforce PBM compliance.
+                  Rx Defense IQ Contract X-Ray was built for the moment you decide to find out.
                 </p>
                 <div className="flex flex-col sm:flex-row gap-6 justify-center items-center">
                   <Button 
                     size="lg" 
-                    className="h-14 px-8 text-lg bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-white shadow-lg shadow-blue-500/25 border border-blue-400/50 rounded-xl"
+                    className="h-14 px-8 text-lg bg-gradient-to-r from-red-600 to-red-800 hover:from-red-500 hover:to-red-700 text-white shadow-lg shadow-red-900/50 border border-red-500/50 rounded-xl"
                     onClick={handleUploadClick}
                   >
                     <Upload className="w-6 h-6 mr-3" />
                     Upload Target Contract
                   </Button>
-                  <Link href="/request-demo">
-                    <Button size="lg" variant="outline" className="h-14 px-8 text-lg border-white/20 text-white hover:bg-white/10 rounded-xl hidden sm:flex">
-                      <Users className="w-6 h-6 mr-3" />
-                      Schedule a Demo
-                    </Button>
-                  </Link>
                 </div>
+                <p className="text-red-400 font-bold tracking-widest uppercase mt-8 text-sm">
+                  No anchor, no claim.
+                </p>
               </div>
             </div>
           </section>

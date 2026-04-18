@@ -1,6 +1,6 @@
 ---
 title: Build Rx Claims Data Upload & Processing Flow
-status: todo
+status: in_progress
 priority: high
 type: feature
 tags: [kincaid-iq, upload, ui]
@@ -13,9 +13,9 @@ position: 2
 Create robust claims ingestion system that accepts Rx claims files (CSV/Excel), validates structure, normalizes data, and triggers analysis pipeline. Must handle real-world pharmacy claims formats and provide immediate feedback.
 
 ## Checklist
-- [ ] Create RxClaimsUploader.tsx component with drag-and-drop
-- [ ] Build claims parser for common pharmacy data formats
-- [ ] Add data validation and normalization logic
-- [ ] Create claims preview table with statistics
-- [ ] Implement progress indicators for processing
-- [ ] Add error handling for malformed data
+- [x] Create RxClaimsUploader.tsx component with drag-and-drop
+- [x] Build claims parser for common pharmacy data formats
+- [x] Add data validation and normalization logic
+- [x] Create claims preview table with statistics
+- [x] Implement progress indicators for processing
+- [x] Add error handling for malformed data

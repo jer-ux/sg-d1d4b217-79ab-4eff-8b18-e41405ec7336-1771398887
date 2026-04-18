@@ -173,8 +173,8 @@ export function reconstructRebates(claims: RxClaim[]): RebateReconstruction {
       return {
         claim_id: claim.id,
         rebate_amount: claim.rebate_amount,
-        estimation_method: "observed",
-        confidence: "high",
+        estimation_method: "observed" as const,
+        confidence: "high" as const,
       };
     }
 
@@ -188,8 +188,8 @@ export function reconstructRebates(claims: RxClaim[]): RebateReconstruction {
     return {
       claim_id: claim.id,
       rebate_amount: estimatedRebate,
-      estimation_method: "class_inference",
-      confidence: drugClass === "generic" ? "high" : "medium",
+      estimation_method: "class_inference" as const,
+      confidence: (drugClass === "generic" ? "high" : "medium") as "high" | "medium" | "low",
       drug_class: drugClass,
     };
   });
@@ -437,6 +437,8 @@ export function generateExecutiveReport(
     },
     contract_performance: {
       overall_score: complianceAnalysis.overall_score,
+      guarantees_met: complianceAnalysis.guarantees_met,
+      guarantees_total: complianceAnalysis.guarantees_total,
       guarantees: complianceAnalysis.guarantees,
       total_recoverable: complianceAnalysis.total_recoverable_dollars,
       fiduciary_risk_flags: complianceAnalysis.fiduciary_risk_flags,

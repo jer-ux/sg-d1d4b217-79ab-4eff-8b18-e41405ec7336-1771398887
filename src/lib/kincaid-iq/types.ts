@@ -279,6 +279,8 @@ export type ExecutiveReport = {
   };
   contract_performance: {
     overall_score: number;
+    guarantees_met: number;
+    guarantees_total: number;
     guarantees: Array<{
       name: string;
       target: number;

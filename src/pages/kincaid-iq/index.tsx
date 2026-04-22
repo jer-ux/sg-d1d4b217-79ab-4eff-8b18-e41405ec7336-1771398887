@@ -5,7 +5,6 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Alert, AlertDescription } from "@/components/ui/alert";
-import { RxClaimsUploader } from "@/components/kincaid-iq/RxClaimsUploader";
 import { DRAPAnalysisPanel } from "@/components/kincaid-iq/DRAPAnalysisPanel";
 import { SpreadDistributionChart } from "@/components/kincaid-iq/SpreadDistributionChart";
 import { ContractComplianceScorecard } from "@/components/kincaid-iq/ContractComplianceScorecard";
@@ -19,19 +18,7 @@ import type { RxClaim, ExecutiveReport } from "@/lib/kincaid-iq/types";
 export default function KincaidIQPage() {
   const [claims, setClaims] = useState<RxClaim[]>([]);
   const [report, setReport] = useState<ExecutiveReport | null>(null);
-  const [analysisMode, setAnalysisMode] = useState<"upload" | "demo" | "complete">("upload");
-
-  const handleClaimsProcessed = (processedClaims: RxClaim[]) => {
-    setClaims(processedClaims);
-    runAnalysis(processedClaims);
-  };
-
-  const handleUseMockData = () => {
-    const mockClaims = generateMockRxClaims(500);
-    setClaims(mockClaims);
-    setAnalysisMode("demo");
-    runAnalysis(mockClaims);
-  };
+  const [analysisMode, setAnalysisMode] = useState<"demo" | "complete">("demo");
 
   const runAnalysis = (claimsData: RxClaim[]) => {
     const nadacPrices = getNADACPriceMap();
@@ -46,6 +33,16 @@ export default function KincaidIQPage() {
 
     setReport(executiveReport);
     setAnalysisMode("complete");
+  };
+
+  const handleRunDemo = () => {
+    const mockClaims = generateMockRxClaims(500);
+    setClaims(mockClaims);
+    setAnalysisMode("demo");
+    
+    setTimeout(() => {
+      runAnalysis(mockClaims);
+    }, 1500);
   };
 
   const formatCurrency = (value: number) => {
@@ -89,15 +86,30 @@ export default function KincaidIQPage() {
           </div>
 
           {/* Analysis Flow */}
-          {analysisMode === "upload" && (
-            <div className="max-w-3xl mx-auto">
-              <RxClaimsUploader
-                onClaimsProcessed={handleClaimsProcessed}
-                onUseMockData={handleUseMockData}
-              />
+          {analysisMode === "demo" && !report && (
+            <div className="max-w-3xl mx-auto space-y-6">
+              <Card className="border-slate-700 bg-slate-900/50">
+                <CardHeader>
+                  <CardTitle className="text-lg flex items-center gap-2">
+                    <Activity className="h-5 w-5 text-blue-400" />
+                    Demo Analysis
+                  </CardTitle>
+                  <CardDescription>
+                    Run a full DRAP analysis on 500 demo claims with intentional spread patterns
+                  </CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <Button 
+                    onClick={handleRunDemo}
+                    className="w-full bg-blue-600 hover:bg-blue-700"
+                  >
+                    Run Demo Analysis
+                  </Button>
+                </CardContent>
+              </Card>
 
               {/* Methodology Card */}
-              <Card className="mt-8 border-slate-700 bg-slate-900/50">
+              <Card className="border-slate-700 bg-slate-900/50">
                 <CardHeader>
                   <CardTitle className="text-lg flex items-center gap-2">
                     <Activity className="h-5 w-5 text-blue-400" />
@@ -144,13 +156,13 @@ export default function KincaidIQPage() {
             </div>
           )}
 
-          {analysisMode === "demo" && (
-            <div className="max-w-3xl mx-auto">
+          {analysisMode === "demo" && report && (
+            <div className="max-w-3xl mx-auto mb-8">
               <Alert className="border-yellow-500/30 bg-yellow-950/20">
                 <AlertTriangle className="h-4 w-4 text-yellow-500" />
                 <AlertDescription className="text-yellow-400">
-                  Running analysis on {claims.length} demo claims with intentional spread patterns.
-                  Processing DRAP calculation, rebate reconstruction, and compliance scoring...
+                  Analysis complete on {claims.length} demo claims with intentional spread patterns.
+                  DRAP calculation, rebate reconstruction, and compliance scoring finished.
                 </AlertDescription>
               </Alert>
             </div>
@@ -236,12 +248,12 @@ export default function KincaidIQPage() {
                   onClick={() => {
                     setClaims([]);
                     setReport(null);
-                    setAnalysisMode("upload");
+                    setAnalysisMode("demo");
                   }}
                   variant="outline"
                   className="border-blue-500/30 hover:border-blue-500 hover:bg-blue-950/20"
                 >
-                  Analyze New Claims
+                  Run New Analysis
                 </Button>
               </div>
 

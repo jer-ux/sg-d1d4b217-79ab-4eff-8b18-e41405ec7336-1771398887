@@ -248,8 +248,11 @@ export default function HomePage() {
 
                   {/* CTA Buttons with 3D */}
                   <motion.div 
-                    className="flex flex-col sm:flex-row gap-4 mb-8"
-                    style={{ transform: "translateZ(30px)" }}
+                    className="mt-10 flex justify-center"
+                    initial={{ opacity: 0, y: 20 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ duration: 0.6, delay: 0.6 }}
                   >
                     <motion.div
                       whileHover={{ scale: 1.05, z: 30 }}
@@ -258,12 +261,10 @@ export default function HomePage() {
                     >
                       <Link
                         href="/request-demo"
-                        className="inline-flex items-center justify-center px-8 py-4 text-lg font-semibold text-white bg-gradient-to-r from-blue-600 to-purple-600 rounded-lg hover:from-blue-700 hover:to-purple-700 transition-all duration-200 shadow-lg hover:shadow-xl"
+                        className="inline-flex items-center gap-2 rounded-xl border border-emerald-500/50 bg-zinc-950/80 px-8 py-4 text-base font-bold text-white backdrop-blur-sm transition-all hover:border-emerald-400/70 hover:bg-emerald-950/40"
                       >
-                        <span>Request Enterprise Demo</span>
-                        <svg className="ml-2 h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 5l7 7m0 0l-7 7m7-7H6" />
-                        </svg>
+                        <Users className="h-5 w-5 text-emerald-400" />
+                        <span>Schedule HR Analytics Demo</span>
                       </Link>
                     </motion.div>
                   </motion.div>

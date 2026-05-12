@@ -252,7 +252,7 @@ export default function HomePage() {
                     style={{ transform: "translateZ(30px)" }}
                   >
                     <motion.div
-                      whileHover={{ scale: 1.05, z: 50, rotateY: -5 }}
+                      whileHover={{ scale: 1.05, z: 30 }}
                       whileTap={{ scale: 0.95 }}
                       style={{ perspective: "1000px", transformStyle: "preserve-3d" }}
                     >
@@ -632,6 +632,27 @@ export default function HomePage() {
               </Link>
             </motion.div>
           </motion.div>
+          <motion.div
+            className="mt-10 flex justify-center"
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6, delay: 0.6 }}
+          >
+            <motion.div
+              whileHover={{ scale: 1.05, z: 30 }}
+              whileTap={{ scale: 0.95 }}
+              style={{ perspective: "1000px", transformStyle: "preserve-3d" }}
+            >
+              <Link
+                href="/request-demo"
+                className="inline-flex items-center gap-2 rounded-xl border border-emerald-500/50 bg-zinc-950/80 px-8 py-4 text-base font-bold text-white backdrop-blur-sm transition-all hover:border-emerald-400/70 hover:bg-emerald-950/40"
+              >
+                <Users className="h-5 w-5 text-emerald-400" />
+                <span>Schedule HR Analytics Demo</span>
+              </Link>
+            </motion.div>
+          </motion.div>
         </section>
 
         {/* Enterprise Trust Section */}
@@ -692,7 +713,7 @@ export default function HomePage() {
                     className="inline-flex items-center gap-2 rounded-2xl border border-purple-500/40 bg-gradient-to-r from-purple-600/30 to-blue-600/30 px-6 py-3 text-base font-bold backdrop-blur-xl transition-all hover:border-purple-400/60 hover:shadow-lg hover:shadow-purple-500/30"
                   >
                     <Building2 className="h-5 w-5 relative" />
-                    <span className="relative">Enterprise Portal →</span>
+                    <span className="relative">Contact Sales →</span>
                   </Link>
                 </motion.div>
                 <motion.div 

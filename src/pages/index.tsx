@@ -201,6 +201,28 @@ export default function HomePage() {
                     Transform enterprise operations with AI-powered governance, real-time oversight, and algorithmic compliance enforcement. Multi-tenant architecture, SSO integration, and cryptographic audit trails built for Fortune 500 scale.
                   </motion.p>
 
+                  {/* CTA Buttons with 3D */}
+                  <motion.div 
+                    className="flex flex-col sm:flex-row gap-4 mb-8"
+                    style={{ transform: "translateZ(30px)" }}
+                  >
+                    <motion.div
+                      whileHover={{ scale: 1.05, z: 50, rotateY: -5 }}
+                      whileTap={{ scale: 0.95 }}
+                      style={{ perspective: "1000px", transformStyle: "preserve-3d" }}
+                    >
+                      <Link
+                        href="/request-demo"
+                        className="inline-flex items-center justify-center px-8 py-4 text-lg font-semibold text-white bg-gradient-to-r from-blue-600 to-purple-600 rounded-lg hover:from-blue-700 hover:to-purple-700 transition-all duration-200 shadow-lg hover:shadow-xl"
+                      >
+                        <span>Request Enterprise Demo</span>
+                        <svg className="ml-2 h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 5l7 7m0 0l-7 7m7-7H6" />
+                        </svg>
+                      </Link>
+                    </motion.div>
+                  </motion.div>
+
                   {/* Enterprise Trust Badges */}
                   <motion.div
                     className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8"
@@ -230,29 +252,13 @@ export default function HomePage() {
                     style={{ transform: "translateZ(30px)" }}
                   >
                     <motion.div
-                      whileHover={{ scale: 1.05, z: 50, rotateY: 5 }}
-                      whileTap={{ scale: 0.95 }}
-                      style={{ perspective: "1000px", transformStyle: "preserve-3d" }}
-                    >
-                      <Link
-                        href="/enterprise/dashboard"
-                        className="inline-flex items-center justify-center px-8 py-4 text-lg font-semibold text-white bg-gradient-to-r from-blue-600 to-purple-600 rounded-lg hover:from-blue-700 hover:to-purple-700 transition-all duration-200 shadow-lg hover:shadow-xl"
-                      >
-                        <Building2 className="mr-2 h-5 w-5" />
-                        <span>Enterprise Portal</span>
-                        <svg className="ml-2 h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5m0 0l-5 5m5-5H6" />
-                        </svg>
-                      </Link>
-                    </motion.div>
-                    <motion.div
                       whileHover={{ scale: 1.05, z: 50, rotateY: -5 }}
                       whileTap={{ scale: 0.95 }}
                       style={{ perspective: "1000px", transformStyle: "preserve-3d" }}
                     >
                       <Link
                         href="/request-demo"
-                        className="inline-flex items-center justify-center px-8 py-4 text-lg font-semibold text-white bg-white/10 backdrop-blur-sm border border-white/20 rounded-lg hover:bg-white/20 transition-all duration-200 shadow-lg hover:shadow-xl"
+                        className="inline-flex items-center justify-center px-8 py-4 text-lg font-semibold text-white bg-gradient-to-r from-blue-600 to-purple-600 rounded-lg hover:from-blue-700 hover:to-purple-700 transition-all duration-200 shadow-lg hover:shadow-xl"
                       >
                         <span>Request Enterprise Demo</span>
                         <svg className="ml-2 h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">

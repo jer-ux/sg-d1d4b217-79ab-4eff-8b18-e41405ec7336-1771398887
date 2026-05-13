@@ -1,0 +1,31 @@
+# robots.txt for SiriusB iQ AI Data Sciences Lab
+# https://kincaidiq.ai
+
+# Allow all crawlers
+User-agent: *
+Allow: /
+
+# Sitemap location
+Sitemap: https://kincaidiq.ai/api/sitemap.xml
+
+# Crawl-delay for specific bots (optional)
+User-agent: GPTBot
+Crawl-delay: 2
+
+User-agent: CCBot
+Crawl-delay: 2
+
+# Disallow crawling of API routes (except sitemap)
+User-agent: *
+Disallow: /api/*
+Allow: /api/sitemap.xml
+
+# Disallow crawling of admin/enterprise backend pages
+Disallow: /enterprise/api-keys
+Disallow: /enterprise/audit-logs
+Disallow: /platform/admin
+
+# Allow crawling of public enterprise pages
+Allow: /enterprise/dashboard
+Allow: /enterprise/marketplace
+Allow: /enterprise/professional-services

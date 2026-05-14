@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import Head from "next/head";
 import { 
   ShieldAlert, 
@@ -7,10 +7,14 @@ import {
   AlertCircle,
   ArrowRight,
   Lock,
-  CheckCircle2
+  CheckCircle2,
+  FileText,
+  TrendingUp,
+  Target
 } from "lucide-react";
 import { SiteHeader } from "@/components/site/SiteHeader";
 import { SiteFooter } from "@/components/site/SiteFooter";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
 const provisions = [
   {
@@ -339,6 +343,8 @@ const provisions = [
 ];
 
 export default function RxDefenseReport() {
+  const [activeTab, setActiveTab] = useState("summary");
+
   return (
     <div className="min-h-screen bg-[#050505] text-slate-300 font-sans selection:bg-rose-500/30">
       <Head>
@@ -401,7 +407,7 @@ export default function RxDefenseReport() {
         </div>
 
         {/* 5 Metric Cards */}
-        <div className="grid grid-cols-2 md:grid-cols-5 gap-4 mb-24">
+        <div className="grid grid-cols-2 md:grid-cols-5 gap-4 mb-16">
           <div className="bg-[#0f0f0f] border border-white/5 rounded-xl p-6 flex flex-col justify-between">
             <div className="text-3xl font-bold text-emerald-400 mb-2">$3.6M</div>
             <div className="text-[10px] font-bold tracking-widest text-slate-500 uppercase leading-relaxed">Estimated<br/>Annual<br/>Savings</div>
@@ -423,6 +429,335 @@ export default function RxDefenseReport() {
             <div className="text-[10px] font-bold tracking-widest text-slate-500 uppercase leading-relaxed">Provisions<br/>Analyzed</div>
           </div>
         </div>
+
+        {/* Tabs Navigation */}
+        <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
+          <TabsList className="grid w-full grid-cols-4 mb-12 bg-[#0a0a0a] border border-white/10 p-1 rounded-xl">
+            <TabsTrigger 
+              value="summary" 
+              className="data-[state=active]:bg-gradient-to-r data-[state=active]:from-blue-600 data-[state=active]:to-blue-800 data-[state=active]:text-white flex items-center gap-2 rounded-lg"
+            >
+              <FileText className="w-4 h-4" />
+              <span className="hidden sm:inline">Executive Summary</span>
+              <span className="sm:hidden">Summary</span>
+            </TabsTrigger>
+            <TabsTrigger 
+              value="provisions" 
+              className="data-[state=active]:bg-gradient-to-r data-[state=active]:from-rose-600 data-[state=active]:to-rose-800 data-[state=active]:text-white flex items-center gap-2 rounded-lg"
+            >
+              <ShieldAlert className="w-4 h-4" />
+              <span className="hidden sm:inline">Provisions</span>
+              <span className="sm:hidden">Issues</span>
+            </TabsTrigger>
+            <TabsTrigger 
+              value="financial" 
+              className="data-[state=active]:bg-gradient-to-r data-[state=active]:from-emerald-600 data-[state=active]:to-emerald-800 data-[state=active]:text-white flex items-center gap-2 rounded-lg"
+            >
+              <TrendingUp className="w-4 h-4" />
+              <span className="hidden sm:inline">Financial Impact</span>
+              <span className="sm:hidden">Impact</span>
+            </TabsTrigger>
+            <TabsTrigger 
+              value="playbook" 
+              className="data-[state=active]:bg-gradient-to-r data-[state=active]:from-orange-600 data-[state=active]:to-orange-800 data-[state=active]:text-white flex items-center gap-2 rounded-lg"
+            >
+              <Target className="w-4 h-4" />
+              <span className="hidden sm:inline">Action Plan</span>
+              <span className="sm:hidden">Actions</span>
+            </TabsTrigger>
+          </TabsList>
+
+          {/* Tab 1: Executive Summary */}
+          <TabsContent value="summary" className="space-y-12">
+          </TabsContent>
+
+          {/* Tab 2: Provisions Analysis */}
+          <TabsContent value="provisions" className="space-y-12">
+            {provisions.map((prov, i) => (
+              <section key={prov.id} className="mb-24">
+                <div className={`text-xs font-bold tracking-[0.2em] ${prov.statusColor} mb-4 uppercase`}>Provision {prov.id} of 10</div>
+                
+                <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-8 border-b border-white/10 pb-8">
+                  <div>
+                    <h2 className="text-4xl font-bold text-white tracking-tight mb-3">{prov.title}</h2>
+                    <div className="flex items-center gap-3">
+                      <span className={`${prov.bgStatusColor} text-black text-xs font-bold px-3 py-1 rounded tracking-widest uppercase`}>{prov.status}</span>
+                      <span className="text-slate-400 text-sm">{prov.met}</span>
+                    </div>
+                  </div>
+                  <div className="mt-6 md:mt-0 text-right">
+                    <div className={`text-5xl font-black ${prov.statusColor} mb-1 tracking-tighter`}>{prov.score.toFixed(1)} <span className="text-xl text-slate-500 font-medium">/ 10</span></div>
+                    <div className="text-xl font-bold text-emerald-400">{prov.savings} <span className="text-sm font-normal text-slate-500 block uppercase tracking-widest mt-1">Savings Opp</span></div>
+                  </div>
+                </div>
+
+                <div className="bg-[#111] border border-white/5 rounded-2xl p-8 mb-12">
+                  <h4 className={`text-xs font-bold tracking-[0.15em] ${prov.statusColor} mb-3 uppercase`}>Why This Provision Matters</h4>
+                  <p className="text-slate-300 leading-relaxed mb-8">{prov.why}</p>
+                  
+                  <h4 className="text-xs font-bold tracking-[0.15em] text-cyan-500 mb-3 uppercase">Financial Context</h4>
+                  <p className="text-slate-300 leading-relaxed mb-8">{prov.financial}</p>
+
+                  <h4 className="text-xs font-bold tracking-[0.15em] text-purple-500 mb-3 uppercase">Fiduciary Significance</h4>
+                  <p className="text-slate-300 leading-relaxed">{prov.fiduciary}</p>
+                </div>
+
+                {prov.issues.map((issue, issueIdx) => (
+                  <div key={issueIdx} className={`border-l-2 border-rose-500 pl-8 relative ${issueIdx > 0 ? 'mt-16' : ''}`}>
+                    <div className="absolute -left-[17px] top-0 bg-[#050505] p-1">
+                      <AlertCircle className="text-rose-500" size={24} />
+                    </div>
+                    
+                    <h3 className="text-2xl font-bold text-white mb-6">{issue.title}</h3>
+                    
+                    <div className="bg-[#1a0505] border border-rose-900/30 rounded-xl p-6 mb-8">
+                      <h4 className="text-xs font-bold tracking-[0.15em] text-rose-500 mb-3 uppercase">AI Analysis &mdash; What was found in this contract</h4>
+                      <p className="text-rose-200">{issue.found}</p>
+                    </div>
+
+                    <h4 className="text-xs font-bold tracking-[0.15em] text-orange-400 mb-4 uppercase flex items-center gap-2">
+                      <AlertTriangle size={16} /> How PBMs Exploit This Gap
+                    </h4>
+                    <ul className="space-y-4 mb-8 text-slate-300">
+                      {issue.exploits.map((exploit, idx) => (
+                        <li key={idx} className="flex gap-4">
+                          <span className="flex-shrink-0 w-6 h-6 rounded-full bg-orange-400/20 text-orange-400 flex items-center justify-center text-xs font-bold">{idx + 1}</span>
+                          <p>{exploit}</p>
+                        </li>
+                      ))}
+                    </ul>
+
+                    <div className="bg-gradient-to-r from-[#051510] to-[#052015] border border-emerald-900/30 rounded-xl p-6 mb-8">
+                      <h4 className="text-xs font-bold tracking-[0.15em] text-emerald-400 mb-3 uppercase flex items-center gap-2">
+                        <DollarSign size={16} /> Dollar Impact &mdash; How this costs your plan
+                      </h4>
+                      <p className="text-emerald-100/80 leading-relaxed">
+                        {issue.impact}
+                      </p>
+                    </div>
+
+                    <h4 className="text-xs font-bold tracking-[0.15em] text-rose-500 mb-4 uppercase flex items-center gap-2">
+                      <ShieldAlert size={16} /> Red-Flag Language Found In Your Contract
+                    </h4>
+                    <div className="space-y-3 mb-8">
+                      {issue.redFlags.map((flag, idx) => (
+                        <div key={idx} className="bg-[#111] border border-rose-900/50 rounded-lg p-4 font-mono text-sm text-rose-300/80">
+                          {flag}
+                        </div>
+                      ))}
+                    </div>
+
+                    <div className="bg-[#05101a] border border-cyan-900/50 rounded-xl p-6">
+                      <h4 className="text-xs font-bold tracking-[0.15em] text-cyan-400 mb-4 uppercase flex items-center gap-2">
+                        <Lock size={16} /> Required Fix &mdash; Add this language to the contract
+                      </h4>
+                      <div className="font-mono text-sm text-cyan-300/90 leading-relaxed bg-[#020810] p-5 rounded-lg border border-cyan-900/30 whitespace-pre-line">
+                        {issue.fix}
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </section>
+            ))}
+          </TabsContent>
+
+          {/* Tab 4: Negotiation Playbook */}
+          <TabsContent value="playbook" className="space-y-12">
+            <section>
+              <h2 className="text-3xl font-bold text-white mb-8 tracking-tight">Negotiation Playbook</h2>
+              <p className="text-slate-400 text-lg mb-12 max-w-3xl leading-relaxed">
+                The following is a consolidated negotiation roadmap, ordered by financial impact. Use this as your primary action document in PBM renegotiation meetings.
+              </p>
+
+              <div className="space-y-4">
+                <div className="bg-[#0a0a0a] border border-white/10 hover:border-white/20 transition-colors rounded-xl p-6">
+                  <div className="flex justify-between items-start mb-4">
+                    <div className="flex items-center gap-3">
+                      <span className="text-slate-500 font-mono font-bold">#1</span>
+                      <h3 className="text-lg font-bold text-white">Provision 2: Pass-Through Pharmacy Costs</h3>
+                    </div>
+                    <div className="text-right flex items-center gap-4">
+                      <span className="text-[10px] font-bold text-orange-400 tracking-widest uppercase border border-orange-400/20 px-2 py-1 bg-orange-400/5 rounded">Concern</span>
+                      <span className="text-xl font-bold text-emerald-400">$960K</span>
+                    </div>
+                  </div>
+                  <div className="bg-[#111] rounded-lg p-4 mb-4 flex items-start gap-3">
+                    <ArrowRight className="text-orange-400 shrink-0 mt-0.5" size={16} />
+                    <p className="text-slate-300 italic">"Stress the importance of fair pricing and access for plan participants."</p>
+                  </div>
+                  <p className="text-sm text-slate-500"><span className="font-bold text-slate-400">Gap:</span> Ambiguities around cost pass-through and MAC transparency.</p>
+                </div>
+
+                <div className="bg-[#0a0a0a] border border-white/10 hover:border-white/20 transition-colors rounded-xl p-6">
+                  <div className="flex justify-between items-start mb-4">
+                    <div className="flex items-center gap-3">
+                      <span className="text-slate-500 font-mono font-bold">#2</span>
+                      <h3 className="text-lg font-bold text-white">Provision 3: Rebate & Manufacturer Revenue</h3>
+                    </div>
+                    <div className="text-right flex items-center gap-4">
+                      <span className="text-[10px] font-bold text-orange-400 tracking-widest uppercase border border-orange-400/20 px-2 py-1 bg-orange-400/5 rounded">Concern</span>
+                      <span className="text-xl font-bold text-emerald-400">$583K</span>
+                    </div>
+                  </div>
+                  <div className="bg-[#111] rounded-lg p-4 mb-4 flex items-start gap-3">
+                    <ArrowRight className="text-orange-400 shrink-0 mt-0.5" size={16} />
+                    <p className="text-slate-300 italic">"Ensure alignment with plan's cost-management goals and audit readiness for compliance."</p>
+                  </div>
+                  <p className="text-sm text-slate-500"><span className="font-bold text-slate-400">Gap:</span> Rebate transparency and allocation need clarity and commitment.</p>
+                </div>
+                
+                <div className="bg-[#0a0a0a] border border-rose-900/30 hover:border-rose-900/60 transition-colors rounded-xl p-6 relative overflow-hidden">
+                  <div className="absolute top-0 left-0 w-1 h-full bg-rose-500" />
+                  <div className="flex justify-between items-start mb-4">
+                    <div className="flex items-center gap-3">
+                      <span className="text-slate-500 font-mono font-bold">#3</span>
+                      <h3 className="text-lg font-bold text-white">Provision 8: Lowest Net Cost & Clinical Integrity</h3>
+                    </div>
+                    <div className="text-right flex items-center gap-4">
+                      <span className="text-[10px] font-bold text-orange-400 tracking-widest uppercase border border-orange-400/20 px-2 py-1 bg-orange-400/5 rounded">Concern</span>
+                      <span className="text-xl font-bold text-emerald-400">$583K</span>
+                    </div>
+                  </div>
+                  <div className="bg-[#111] rounded-lg p-4 mb-4 flex items-start gap-3">
+                    <ArrowRight className="text-orange-400 shrink-0 mt-0.5" size={16} />
+                    <p className="text-slate-300 italic">"Push for formulary decisions based on clinical evidence and lowest net cost."</p>
+                  </div>
+                  <p className="text-sm text-slate-500"><span className="font-bold text-slate-400">Gap:</span> No explicit lowest-cost mandate or biosimilar substitution requirements.</p>
+                </div>
+
+                <div className="bg-[#0a0a0a] border border-rose-900/30 hover:border-rose-900/60 transition-colors rounded-xl p-6 relative overflow-hidden">
+                  <div className="absolute top-0 left-0 w-1 h-full bg-rose-500" />
+                  <div className="flex justify-between items-start mb-4">
+                    <div className="flex items-center gap-3">
+                      <span className="text-slate-500 font-mono font-bold">#4</span>
+                      <h3 className="text-lg font-bold text-white">Provision 7: Carve-Out & Vendor Rights</h3>
+                    </div>
+                    <div className="text-right flex items-center gap-4">
+                      <span className="text-[10px] font-bold text-rose-500 tracking-widest uppercase border border-rose-500/20 px-2 py-1 bg-rose-500/5 rounded">Red Flag</span>
+                      <span className="text-xl font-bold text-emerald-400">$410K</span>
+                    </div>
+                  </div>
+                  <div className="bg-[#111] rounded-lg p-4 mb-4 flex items-start gap-3">
+                    <ArrowRight className="text-rose-500 shrink-0 mt-0.5" size={16} />
+                    <p className="text-slate-300 italic">"Focus on ensuring plan flexibility and adaptability for managing specialty drugs."</p>
+                  </div>
+                  <p className="text-sm text-slate-500"><span className="font-bold text-slate-400">Gap:</span> Carve-out and vendor flexibility for specialty drugs are not supported.</p>
+                </div>
+
+                <div className="bg-[#0a0a0a] border border-white/10 hover:border-white/20 transition-colors rounded-xl p-6">
+                  <div className="flex justify-between items-start mb-4">
+                    <div className="flex items-center gap-3">
+                      <span className="text-slate-500 font-mono font-bold">#5</span>
+                      <h3 className="text-lg font-bold text-white">Provision 5: Audit Rights & Extrapolation</h3>
+                    </div>
+                    <div className="text-right flex items-center gap-4">
+                      <span className="text-[10px] font-bold text-orange-400 tracking-widest uppercase border border-orange-400/20 px-2 py-1 bg-orange-400/5 rounded">Concern</span>
+                      <span className="text-xl font-bold text-emerald-400">$339K</span>
+                    </div>
+                  </div>
+                  <div className="bg-[#111] rounded-lg p-4 mb-4 flex items-start gap-3">
+                    <ArrowRight className="text-orange-400 shrink-0 mt-0.5" size={16} />
+                    <p className="text-slate-300 italic">"Demand comprehensive audit rights with extrapolation and 36-month lookback."</p>
+                  </div>
+                  <p className="text-sm text-slate-500"><span className="font-bold text-slate-400">Gap:</span> Audit timeline and statistical extrapolation rights not defined.</p>
+                </div>
+
+                <div className="bg-[#0a0a0a] border border-white/10 hover:border-white/20 transition-colors rounded-xl p-6">
+                  <div className="flex justify-between items-start mb-4">
+                    <div className="flex items-center gap-3">
+                      <span className="text-slate-500 font-mono font-bold">#6</span>
+                      <h3 className="text-lg font-bold text-white">Provision 6: Pharmacy Ownership & Neutrality</h3>
+                    </div>
+                    <div className="text-right flex items-center gap-4">
+                      <span className="text-[10px] font-bold text-orange-400 tracking-widest uppercase border border-orange-400/20 px-2 py-1 bg-orange-400/5 rounded">Concern</span>
+                      <span className="text-xl font-bold text-emerald-400">$192K</span>
+                    </div>
+                  </div>
+                  <div className="bg-[#111] rounded-lg p-4 mb-4 flex items-start gap-3">
+                    <ArrowRight className="text-orange-400 shrink-0 mt-0.5" size={16} />
+                    <p className="text-slate-300 italic">"Require explicit anti-steering protections and specialty pharmacy neutrality."</p>
+                  </div>
+                  <p className="text-sm text-slate-500"><span className="font-bold text-slate-400">Gap:</span> No protections against owned-pharmacy steering.</p>
+                </div>
+
+                <div className="bg-[#0a0a0a] border border-rose-900/30 hover:border-rose-900/60 transition-colors rounded-xl p-6 relative overflow-hidden">
+                  <div className="absolute top-0 left-0 w-1 h-full bg-rose-500" />
+                  <div className="flex justify-between items-start mb-4">
+                    <div className="flex items-center gap-3">
+                      <span className="text-slate-500 font-mono font-bold">#7</span>
+                      <h3 className="text-lg font-bold text-white">Provision 1: Fiduciary Loyalty Commitment</h3>
+                    </div>
+                    <div className="text-right flex items-center gap-4">
+                      <span className="text-[10px] font-bold text-rose-500 tracking-widest uppercase border border-rose-500/20 px-2 py-1 bg-rose-500/5 rounded">Red Flag</span>
+                      <span className="text-xl font-bold text-emerald-400">$174K</span>
+                    </div>
+                  </div>
+                  <div className="bg-[#111] rounded-lg p-4 mb-4 flex items-start gap-3">
+                    <ArrowRight className="text-rose-500 shrink-0 mt-0.5" size={16} />
+                    <p className="text-slate-300 italic">"Insist on explicit fiduciary acceptance and ERISA compliance language."</p>
+                  </div>
+                  <p className="text-sm text-slate-500"><span className="font-bold text-slate-400">Gap:</span> No fiduciary status acceptance or conflict disclosure.</p>
+                </div>
+
+                <div className="bg-[#0a0a0a] border border-rose-900/30 hover:border-rose-900/60 transition-colors rounded-xl p-6 relative overflow-hidden">
+                  <div className="absolute top-0 left-0 w-1 h-full bg-rose-500" />
+                  <div className="flex justify-between items-start mb-4">
+                    <div className="flex items-center gap-3">
+                      <span className="text-slate-500 font-mono font-bold">#8</span>
+                      <h3 className="text-lg font-bold text-white">Provision 9: Termination & Clean Exit</h3>
+                    </div>
+                    <div className="text-right flex items-center gap-4">
+                      <span className="text-[10px] font-bold text-rose-500 tracking-widest uppercase border border-rose-500/20 px-2 py-1 bg-rose-500/5 rounded">Red Flag</span>
+                      <span className="text-xl font-bold text-emerald-400">$154K</span>
+                    </div>
+                  </div>
+                  <div className="bg-[#111] rounded-lg p-4 mb-4 flex items-start gap-3">
+                    <ArrowRight className="text-rose-500 shrink-0 mt-0.5" size={16} />
+                    <p className="text-slate-300 italic">"Secure 30-day termination rights with no penalties or data withholding."</p>
+                  </div>
+                  <p className="text-sm text-slate-500"><span className="font-bold text-slate-400">Gap:</span> Long notice periods and potential exit penalties.</p>
+                </div>
+
+                <div className="bg-[#0a0a0a] border border-white/10 hover:border-white/20 transition-colors rounded-xl p-6">
+                  <div className="flex justify-between items-start mb-4">
+                    <div className="flex items-center gap-3">
+                      <span className="text-slate-500 font-mono font-bold">#9</span>
+                      <h3 className="text-lg font-bold text-white">Provision 10: Administrative Fee Verification</h3>
+                    </div>
+                    <div className="text-right flex items-center gap-4">
+                      <span className="text-[10px] font-bold text-orange-400 tracking-widest uppercase border border-orange-400/20 px-2 py-1 bg-orange-400/5 rounded">Concern</span>
+                      <span className="text-xl font-bold text-emerald-400">$119K</span>
+                    </div>
+                  </div>
+                  <div className="bg-[#111] rounded-lg p-4 mb-4 flex items-start gap-3">
+                    <ArrowRight className="text-orange-400 shrink-0 mt-0.5" size={16} />
+                    <p className="text-slate-300 italic">"Request itemized fee schedules and benchmarking rights with at-risk guarantees."</p>
+                  </div>
+                  <p className="text-sm text-slate-500"><span className="font-bold text-slate-400">Gap:</span> Hidden fees and weak performance guarantee structure.</p>
+                </div>
+
+                <div className="bg-[#0a0a0a] border border-rose-900/30 hover:border-rose-900/60 transition-colors rounded-xl p-6 relative overflow-hidden">
+                  <div className="absolute top-0 left-0 w-1 h-full bg-rose-500" />
+                  <div className="flex justify-between items-start mb-4">
+                    <div className="flex items-center gap-3">
+                      <span className="text-slate-500 font-mono font-bold">#10</span>
+                      <h3 className="text-lg font-bold text-white">Provision 4: Data Ownership & Access</h3>
+                    </div>
+                    <div className="text-right flex items-center gap-4">
+                      <span className="text-[10px] font-bold text-rose-500 tracking-widest uppercase border border-rose-500/20 px-2 py-1 bg-rose-500/5 rounded">Red Flag</span>
+                      <span className="text-xl font-bold text-emerald-400">$78K</span>
+                    </div>
+                  </div>
+                  <div className="bg-[#111] rounded-lg p-4 mb-4 flex items-start gap-3">
+                    <ArrowRight className="text-rose-500 shrink-0 mt-0.5" size={16} />
+                    <p className="text-slate-300 italic">"Establish complete data ownership and prohibit PBM commercialization of plan data."</p>
+                  </div>
+                  <p className="text-sm text-slate-500"><span className="font-bold text-slate-400">Gap:</span> Data ownership unclear, PBM retains commercial rights.</p>
+                </div>
+              </div>
+            </section>
+          </TabsContent>
+        </Tabs>
 
         {/* Section 1: Executive Summary */}
         <section className="mb-24">
@@ -743,74 +1078,8 @@ export default function RxDefenseReport() {
           </section>
         ))}
 
-        {/* Playbook Section */}
-        <section className="mb-24">
-          <div className="text-xs font-bold tracking-[0.2em] text-orange-400 mb-4 uppercase">Section 14</div>
-          <h2 className="text-3xl font-bold text-white mb-8 tracking-tight">Negotiation Playbook</h2>
-          <p className="text-slate-400 text-lg mb-12 max-w-3xl leading-relaxed">
-            The following is a consolidated negotiation roadmap, ordered by financial impact. Use this as your primary action document in PBM renegotiation meetings.
-          </p>
-
-          <div className="space-y-4">
-            <div className="bg-[#0a0a0a] border border-white/10 hover:border-white/20 transition-colors rounded-xl p-6">
-              <div className="flex justify-between items-start mb-4">
-                <div className="flex items-center gap-3">
-                  <span className="text-slate-500 font-mono font-bold">#1</span>
-                  <h3 className="text-lg font-bold text-white">Provision 2: Pass-Through Pharmacy Costs</h3>
-                </div>
-                <div className="text-right flex items-center gap-4">
-                  <span className="text-[10px] font-bold text-orange-400 tracking-widest uppercase border border-orange-400/20 px-2 py-1 bg-orange-400/5 rounded">Concern</span>
-                  <span className="text-xl font-bold text-emerald-400">$960K</span>
-                </div>
-              </div>
-              <div className="bg-[#111] rounded-lg p-4 mb-4 flex items-start gap-3">
-                <ArrowRight className="text-orange-400 shrink-0 mt-0.5" size={16} />
-                <p className="text-slate-300 italic">"Stress the importance of fair pricing and access for plan participants."</p>
-              </div>
-              <p className="text-sm text-slate-500"><span className="font-bold text-slate-400">Gap:</span> Ambiguities around cost pass-through and MAC transparency.</p>
-            </div>
-
-            <div className="bg-[#0a0a0a] border border-white/10 hover:border-white/20 transition-colors rounded-xl p-6">
-              <div className="flex justify-between items-start mb-4">
-                <div className="flex items-center gap-3">
-                  <span className="text-slate-500 font-mono font-bold">#2</span>
-                  <h3 className="text-lg font-bold text-white">Provision 3: Rebate & Manufacturer Revenue</h3>
-                </div>
-                <div className="text-right flex items-center gap-4">
-                  <span className="text-[10px] font-bold text-orange-400 tracking-widest uppercase border border-orange-400/20 px-2 py-1 bg-orange-400/5 rounded">Concern</span>
-                  <span className="text-xl font-bold text-emerald-400">$583K</span>
-                </div>
-              </div>
-              <div className="bg-[#111] rounded-lg p-4 mb-4 flex items-start gap-3">
-                <ArrowRight className="text-orange-400 shrink-0 mt-0.5" size={16} />
-                <p className="text-slate-300 italic">"Ensure alignment with plan's cost-management goals and audit readiness for compliance."</p>
-              </div>
-              <p className="text-sm text-slate-500"><span className="font-bold text-slate-400">Gap:</span> Rebate transparency and allocation need clarity and commitment.</p>
-            </div>
-            
-            <div className="bg-[#0a0a0a] border border-rose-900/30 hover:border-rose-900/60 transition-colors rounded-xl p-6 relative overflow-hidden">
-              <div className="absolute top-0 left-0 w-1 h-full bg-rose-500" />
-              <div className="flex justify-between items-start mb-4">
-                <div className="flex items-center gap-3">
-                  <span className="text-slate-500 font-mono font-bold">#4</span>
-                  <h3 className="text-lg font-bold text-white">Provision 7: Carve-Out & Vendor Rights</h3>
-                </div>
-                <div className="text-right flex items-center gap-4">
-                  <span className="text-[10px] font-bold text-rose-500 tracking-widest uppercase border border-rose-500/20 px-2 py-1 bg-rose-500/5 rounded">Red Flag</span>
-                  <span className="text-xl font-bold text-emerald-400">$410K</span>
-                </div>
-              </div>
-              <div className="bg-[#111] rounded-lg p-4 mb-4 flex items-start gap-3">
-                <ArrowRight className="text-rose-500 shrink-0 mt-0.5" size={16} />
-                <p className="text-slate-300 italic">"Focus on ensuring plan flexibility and adaptability for managing specialty drugs."</p>
-              </div>
-              <p className="text-sm text-slate-500"><span className="font-bold text-slate-400">Gap:</span> Carve-out and vendor flexibility for specialty drugs are not supported.</p>
-            </div>
-          </div>
-        </section>
-
         {/* Disclaimer Footer */}
-        <div className="border-t border-white/10 pt-12 text-center pb-12">
+        <div className="border-t border-white/10 pt-12 text-center pb-12 mt-24">
           <p className="text-xs text-slate-600 uppercase tracking-widest font-bold mb-4">
             Kincaid IQ &mdash; Strictly Confidential &middot; Account SHRACK-7742
           </p>

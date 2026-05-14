@@ -143,11 +143,13 @@ export default function HomePage() {
 
   return (
     <>
-      <SEO
-        title="SiriusB iQ - Enterprise Algorithmic Fiduciary Platform"
-        description="Enterprise-grade governance platform. Multi-tenancy, SSO, SOC2 compliance. Every decision backed by cryptographic proof, every metric traced to evidence."
-        image="/og-image.png"
-      />
+      <Head>
+        <title>SiriusB iQ - Kincaid IQ</title>
+        <meta
+          name="description"
+          content="AI-powered fiduciary intelligence platform for employee benefits compliance and cost optimization"
+        />
+      </Head>
       <main className="relative min-h-screen bg-black text-zinc-100 overflow-hidden">
         <div className="fixed inset-0 bg-gradient-to-br from-purple-950/20 via-black to-blue-950/10 pointer-events-none" style={{ zIndex: 0 }} />
 
@@ -743,22 +745,8 @@ export default function HomePage() {
           viewport={{ once: true }}
           transition={{ duration: 0.6 }}
         >
-          <div className="flex flex-col gap-3 border-t border-purple-500/30 pt-8 text-xs text-zinc-500 md:flex-row md:items-center md:justify-between">
-            <div className="flex items-center gap-2">
-              <Building2 className="h-3 w-3 text-purple-500/70" />
-              <span>© {new Date().getFullYear()} SiriusB iQ - Enterprise Algorithmic Fiduciary Platform</span>
-            </div>
-            <div className="flex gap-6">
-              <Link href="/enterprise/dashboard" className="transition-all hover:text-purple-400 hover:drop-shadow-[0_0_8px_rgba(168,85,247,0.6)]">
-                Enterprise Portal
-              </Link>
-              <Link href="#proof" className="transition-all hover:text-purple-400 hover:drop-shadow-[0_0_8px_rgba(168,85,247,0.6)]">
-                Security
-              </Link>
-              <Link href="/request-demo" className="transition-all hover:text-purple-400 hover:drop-shadow-[0_0_8px_rgba(168,85,247,0.6)]">
-                Contact Sales
-              </Link>
-            </div>
+          <div className="text-center py-8 border-t border-white/10">
+            <span>© {new Date().getFullYear()} SiriusB iQ - Kincaid IQ</span>
           </div>
         </motion.footer>
       </main>

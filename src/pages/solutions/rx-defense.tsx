@@ -469,6 +469,228 @@ export default function RxDefenseReport() {
 
           {/* Tab 1: Executive Summary */}
           <TabsContent value="summary" className="space-y-12">
+            <section>
+              <h2 className="text-3xl font-bold text-white mb-8 tracking-tight">Executive Summary</h2>
+              
+              <div className="bg-[#111] border-l-4 border-rose-500 p-8 rounded-r-xl mb-12 text-lg text-slate-300 leading-relaxed">
+                This contract presents severe fiduciary risk. With a score of 38/100, it falls in the Red Flag tier — indicating that the PBM retains significant authority to act against the economic interests of the plan and its participants. Immediate renegotiation is warranted across all major provisions.
+              </div>
+
+              <div className="bg-gradient-to-r from-[#051510] to-[#052015] border border-emerald-900/30 rounded-2xl p-8 mb-12 flex flex-col md:flex-row items-center gap-8">
+                <div className="text-6xl text-emerald-400"><DollarSign size={64} className="stroke-[2.5]" /></div>
+                <div>
+                  <div className="text-5xl font-bold text-emerald-400 tracking-tight mb-2">$3.6M</div>
+                  <p className="text-slate-300 text-lg leading-relaxed">
+                    Estimated annual savings opportunity if all identified gaps are remediated through renegotiation. This represents the cumulative financial impact of spread pricing, unreturned rebates, audit recovery potential, specialty pharmacy excess cost, and administrative fee reduction.
+                  </p>
+                </div>
+              </div>
+
+              <h3 className="text-xs font-bold tracking-[0.15em] text-slate-500 mb-6 uppercase">Key Findings</h3>
+              
+              <div className="space-y-4">
+                <div className="flex items-start gap-4">
+                  <ShieldAlert className="text-rose-500 shrink-0 mt-1" size={20} />
+                  <div className="bg-[#110505] border border-rose-900/30 rounded-xl p-5 flex-1">
+                    <p className="text-rose-200">No explicit acceptance of fiduciary status or compliance with ERISA fiduciary standards.</p>
+                  </div>
+                </div>
+                <div className="flex items-start gap-4">
+                  <ShieldAlert className="text-rose-500 shrink-0 mt-1" size={20} />
+                  <div className="bg-[#110505] border border-rose-900/30 rounded-xl p-5 flex-1">
+                    <p className="text-rose-200">Data ownership rights are insufficiently defined, and PBM retains commercial control over plan data.</p>
+                  </div>
+                </div>
+                <div className="flex items-start gap-4 mt-6">
+                  <AlertTriangle className="text-orange-400 shrink-0 mt-1" size={20} />
+                  <div className="bg-[#151005] border border-orange-900/30 rounded-xl p-5 flex-1">
+                    <p className="text-orange-200">Rebate and manufacturer revenue disclosures lack transparency and specificity.</p>
+                  </div>
+                </div>
+                <div className="flex items-start gap-4">
+                  <AlertTriangle className="text-orange-400 shrink-0 mt-1" size={20} />
+                  <div className="bg-[#151005] border border-orange-900/30 rounded-xl p-5 flex-1">
+                    <p className="text-orange-200">Audit rights and processes have limited detail and lack sufficient guarantees for independent verification.</p>
+                  </div>
+                </div>
+              </div>
+
+              <div className="mt-16 space-y-6">
+                <h3 className="text-2xl font-bold text-white mb-6">Savings Opportunity by Provision</h3>
+                
+                <div className="space-y-3">
+                  <div className="bg-[#0a0a0a] border border-white/10 rounded-xl p-6">
+                    <div className="flex justify-between items-end mb-4">
+                      <div className="flex items-center gap-4">
+                        <span className="text-slate-500 font-mono text-sm">02</span>
+                        <h3 className="text-xl font-bold text-white">Pass-Through Pharmacy Costs</h3>
+                      </div>
+                      <div className="text-right">
+                        <span className="text-xs font-bold text-orange-400 tracking-wider uppercase px-2 py-1 bg-orange-400/10 rounded mr-4">Concern (4.0/10)</span>
+                        <span className="text-3xl font-bold text-emerald-400">$960K</span>
+                      </div>
+                    </div>
+                    <div className="w-full bg-slate-900 rounded-full h-1.5 mb-4">
+                      <div className="bg-emerald-400 h-1.5 rounded-full" style={{ width: '27%' }}></div>
+                    </div>
+                    <p className="text-slate-500 text-sm">Spread pricing elimination and MAC pricing transparency (27% of total)</p>
+                  </div>
+
+                  <div className="bg-[#0a0a0a] border border-white/10 rounded-xl p-6">
+                    <div className="flex justify-between items-end mb-4">
+                      <div className="flex items-center gap-4">
+                        <span className="text-slate-500 font-mono text-sm">03</span>
+                        <h3 className="text-xl font-bold text-white">Rebate & Manufacturer Revenue</h3>
+                      </div>
+                      <div className="text-right">
+                        <span className="text-xs font-bold text-orange-400 tracking-wider uppercase px-2 py-1 bg-orange-400/10 rounded mr-4">Concern (3.0/10)</span>
+                        <span className="text-3xl font-bold text-emerald-400">$583K</span>
+                      </div>
+                    </div>
+                    <div className="w-full bg-slate-900 rounded-full h-1.5 mb-4">
+                      <div className="bg-emerald-400 h-1.5 rounded-full" style={{ width: '16%' }}></div>
+                    </div>
+                    <p className="text-slate-500 text-sm">Full manufacturer revenue pass-through including pooled rebates (16% of total)</p>
+                  </div>
+
+                  <div className="bg-[#0a0a0a] border border-white/10 rounded-xl p-6">
+                    <div className="flex justify-between items-end mb-4">
+                      <div className="flex items-center gap-4">
+                        <span className="text-slate-500 font-mono text-sm">08</span>
+                        <h3 className="text-xl font-bold text-white">Lowest Net Cost & Clinical Integrity</h3>
+                      </div>
+                      <div className="text-right">
+                        <span className="text-xs font-bold text-orange-400 tracking-wider uppercase px-2 py-1 bg-orange-400/10 rounded mr-4">Concern (3.0/10)</span>
+                        <span className="text-3xl font-bold text-emerald-400">$583K</span>
+                      </div>
+                    </div>
+                    <div className="w-full bg-slate-900 rounded-full h-1.5 mb-4">
+                      <div className="bg-emerald-400 h-1.5 rounded-full" style={{ width: '16%' }}></div>
+                    </div>
+                    <p className="text-slate-500 text-sm">Formulary optimization and lowest net cost mandatory fulfillment (16% of total)</p>
+                  </div>
+
+                  <div className="bg-[#0a0a0a] border border-white/10 rounded-xl p-6">
+                    <div className="flex justify-between items-end mb-4">
+                      <div className="flex items-center gap-4">
+                        <span className="text-slate-500 font-mono text-sm">07</span>
+                        <h3 className="text-xl font-bold text-white">Carve-Out & Vendor Rights</h3>
+                      </div>
+                      <div className="text-right">
+                        <span className="text-xs font-bold text-rose-500 tracking-wider uppercase px-2 py-1 bg-rose-500/10 rounded mr-4">Red Flag (2.0/10)</span>
+                        <span className="text-3xl font-bold text-emerald-400">$410K</span>
+                      </div>
+                    </div>
+                    <div className="w-full bg-slate-900 rounded-full h-1.5 mb-4">
+                      <div className="bg-emerald-400 h-1.5 rounded-full" style={{ width: '11%' }}></div>
+                    </div>
+                    <p className="text-slate-500 text-sm">Specialty carve-out and competitive vendor flexibility (11% of total)</p>
+                  </div>
+
+                  <div className="bg-[#0a0a0a] border border-white/10 rounded-xl p-6">
+                    <div className="flex justify-between items-end mb-4">
+                      <div className="flex items-center gap-4">
+                        <span className="text-slate-500 font-mono text-sm">05</span>
+                        <h3 className="text-xl font-bold text-white">Audit Rights & Extrapolation</h3>
+                      </div>
+                      <div className="text-right">
+                        <span className="text-xs font-bold text-orange-400 tracking-wider uppercase px-2 py-1 bg-orange-400/10 rounded mr-4">Concern (3.5/10)</span>
+                        <span className="text-3xl font-bold text-emerald-400">$339K</span>
+                      </div>
+                    </div>
+                    <div className="w-full bg-slate-900 rounded-full h-1.5 mb-4">
+                      <div className="bg-emerald-400 h-1.5 rounded-full" style={{ width: '9%' }}></div>
+                    </div>
+                    <p className="text-slate-500 text-sm">Retroactive audit recovery and extrapolation rights (9% of total)</p>
+                  </div>
+                  
+                  <div className="bg-[#0a0a0a] border border-white/10 rounded-xl p-6">
+                    <div className="flex justify-between items-end mb-4">
+                      <div className="flex items-center gap-4">
+                        <span className="text-slate-500 font-mono text-sm">06</span>
+                        <h3 className="text-xl font-bold text-white">Pharmacy Ownership & Neutrality</h3>
+                      </div>
+                      <div className="text-right">
+                        <span className="text-xs font-bold text-orange-400 tracking-wider uppercase px-2 py-1 bg-orange-400/10 rounded mr-4">Concern (4.0/10)</span>
+                        <span className="text-3xl font-bold text-emerald-400">$192K</span>
+                      </div>
+                    </div>
+                    <div className="w-full bg-slate-900 rounded-full h-1.5 mb-4">
+                      <div className="bg-emerald-400 h-1.5 rounded-full" style={{ width: '5%' }}></div>
+                    </div>
+                    <p className="text-slate-500 text-sm">Specialty pharmacy steering prevention and network neutrality (5% of total)</p>
+                  </div>
+                  
+                  <div className="bg-[#0a0a0a] border border-white/10 rounded-xl p-6">
+                    <div className="flex justify-between items-end mb-4">
+                      <div className="flex items-center gap-4">
+                        <span className="text-slate-500 font-mono text-sm">01</span>
+                        <h3 className="text-xl font-bold text-white">Fiduciary Loyalty Commitment</h3>
+                      </div>
+                      <div className="text-right">
+                        <span className="text-xs font-bold text-rose-500 tracking-wider uppercase px-2 py-1 bg-rose-500/10 rounded mr-4">Red Flag (1.5/10)</span>
+                        <span className="text-3xl font-bold text-emerald-400">$174K</span>
+                      </div>
+                    </div>
+                    <div className="w-full bg-slate-900 rounded-full h-1.5 mb-4">
+                      <div className="bg-emerald-400 h-1.5 rounded-full" style={{ width: '5%' }}></div>
+                    </div>
+                    <p className="text-slate-500 text-sm">Legal exposure mitigation and ERISA fiduciary compliance (5% of total)</p>
+                  </div>
+                  
+                  <div className="bg-[#0a0a0a] border border-white/10 rounded-xl p-6">
+                    <div className="flex justify-between items-end mb-4">
+                      <div className="flex items-center gap-4">
+                        <span className="text-slate-500 font-mono text-sm">09</span>
+                        <h3 className="text-xl font-bold text-white">Termination & Clean Exit</h3>
+                      </div>
+                      <div className="text-right">
+                        <span className="text-xs font-bold text-rose-500 tracking-wider uppercase px-2 py-1 bg-rose-500/10 rounded mr-4">Red Flag (2.5/10)</span>
+                        <span className="text-3xl font-bold text-emerald-400">$154K</span>
+                      </div>
+                    </div>
+                    <div className="w-full bg-slate-900 rounded-full h-1.5 mb-4">
+                      <div className="bg-emerald-400 h-1.5 rounded-full" style={{ width: '4%' }}></div>
+                    </div>
+                    <p className="text-slate-500 text-sm">Termination penalty avoidance and clean exit rights (4% of total)</p>
+                  </div>
+                  
+                  <div className="bg-[#0a0a0a] border border-white/10 rounded-xl p-6">
+                    <div className="flex justify-between items-end mb-4">
+                      <div className="flex items-center gap-4">
+                        <span className="text-slate-500 font-mono text-sm">10</span>
+                        <h3 className="text-xl font-bold text-white">Administrative Fee Verification</h3>
+                      </div>
+                      <div className="text-right">
+                        <span className="text-xs font-bold text-orange-400 tracking-wider uppercase px-2 py-1 bg-orange-400/10 rounded mr-4">Concern (4.5/10)</span>
+                        <span className="text-3xl font-bold text-emerald-400">$119K</span>
+                      </div>
+                    </div>
+                    <div className="w-full bg-slate-900 rounded-full h-1.5 mb-4">
+                      <div className="bg-emerald-400 h-1.5 rounded-full" style={{ width: '3%' }}></div>
+                    </div>
+                    <p className="text-slate-500 text-sm">Administrative fee reduction and performance guarantee recovery (3% of total)</p>
+                  </div>
+                  
+                  <div className="bg-[#0a0a0a] border border-white/10 rounded-xl p-6">
+                    <div className="flex justify-between items-end mb-4">
+                      <div className="flex items-center gap-4">
+                        <span className="text-slate-500 font-mono text-sm">04</span>
+                        <h3 className="text-xl font-bold text-white">Data Ownership & Access</h3>
+                      </div>
+                      <div className="text-right">
+                        <span className="text-xs font-bold text-rose-500 tracking-wider uppercase px-2 py-1 bg-rose-500/10 rounded mr-4">Red Flag (2.5/10)</span>
+                        <span className="text-3xl font-bold text-emerald-400">$78K</span>
+                      </div>
+                    </div>
+                    <div className="w-full bg-slate-900 rounded-full h-1.5 mb-4">
+                      <div className="bg-emerald-400 h-1.5 rounded-full" style={{ width: '2%' }}></div>
+                    </div>
+                    <p className="text-slate-500 text-sm">Data commercialization prevention and real-time access value (2% of total)</p>
+                  </div>
+                </div>
+              </div>
+            </section>
           </TabsContent>
 
           {/* Tab 2: Provisions Analysis */}
@@ -953,325 +1175,6 @@ export default function RxDefenseReport() {
             </section>
           </TabsContent>
         </Tabs>
-
-        {/* Section 1: Executive Summary */}
-        <section className="mb-24">
-          <div className="text-xs font-bold tracking-[0.2em] text-blue-500 mb-4 uppercase">Section 1</div>
-          <h2 className="text-3xl font-bold text-white mb-8 tracking-tight">Executive Summary</h2>
-          
-          <div className="bg-[#111] border-l-4 border-rose-500 p-8 rounded-r-xl mb-12 text-lg text-slate-300 leading-relaxed">
-            This contract presents severe fiduciary risk. With a score of 38/100, it falls in the Red Flag tier — indicating that the PBM retains significant authority to act against the economic interests of the plan and its participants. Immediate renegotiation is warranted across all major provisions.
-          </div>
-
-          <div className="bg-gradient-to-r from-[#051510] to-[#052015] border border-emerald-900/30 rounded-2xl p-8 mb-12 flex flex-col md:flex-row items-center gap-8">
-            <div className="text-6xl text-emerald-400"><DollarSign size={64} className="stroke-[2.5]" /></div>
-            <div>
-              <div className="text-5xl font-bold text-emerald-400 tracking-tight mb-2">$3.6M</div>
-              <p className="text-slate-300 text-lg leading-relaxed">
-                Estimated annual savings opportunity if all identified gaps are remediated through renegotiation. This represents the cumulative financial impact of spread pricing, unreturned rebates, audit recovery potential, specialty pharmacy excess cost, and administrative fee reduction.
-              </p>
-            </div>
-          </div>
-
-          <h3 className="text-xs font-bold tracking-[0.15em] text-slate-500 mb-6 uppercase">Key Findings</h3>
-          
-          <div className="space-y-4">
-            <div className="flex items-start gap-4">
-              <ShieldAlert className="text-rose-500 shrink-0 mt-1" size={20} />
-              <div className="bg-[#110505] border border-rose-900/30 rounded-xl p-5 flex-1">
-                <p className="text-rose-200">No explicit acceptance of fiduciary status or compliance with ERISA fiduciary standards.</p>
-              </div>
-            </div>
-            <div className="flex items-start gap-4">
-              <ShieldAlert className="text-rose-500 shrink-0 mt-1" size={20} />
-              <div className="bg-[#110505] border border-rose-900/30 rounded-xl p-5 flex-1">
-                <p className="text-rose-200">Data ownership rights are insufficiently defined, and PBM retains commercial control over plan data.</p>
-              </div>
-            </div>
-            <div className="flex items-start gap-4 mt-6">
-              <AlertTriangle className="text-orange-400 shrink-0 mt-1" size={20} />
-              <div className="bg-[#151005] border border-orange-900/30 rounded-xl p-5 flex-1">
-                <p className="text-orange-200">Rebate and manufacturer revenue disclosures lack transparency and specificity.</p>
-              </div>
-            </div>
-            <div className="flex items-start gap-4">
-              <AlertTriangle className="text-orange-400 shrink-0 mt-1" size={20} />
-              <div className="bg-[#151005] border border-orange-900/30 rounded-xl p-5 flex-1">
-                <p className="text-orange-200">Audit rights and processes have limited detail and lack sufficient guarantees for independent verification.</p>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        {/* Section 2: Financial Impact Analysis */}
-        <section className="mb-24">
-          <div className="text-xs font-bold tracking-[0.2em] text-emerald-500 mb-4 uppercase">Section 2</div>
-          <h2 className="text-3xl font-bold text-white mb-8 tracking-tight">Financial Impact Analysis</h2>
-          <p className="text-slate-400 text-lg mb-12 max-w-3xl leading-relaxed">
-            The following savings estimates represent the potential annual financial benefit to the plan if the identified contractual gaps in each provision are remediated through renegotiation.
-          </p>
-
-          <div className="space-y-6">
-            <div className="bg-[#0a0a0a] border border-white/10 rounded-xl p-6">
-              <div className="flex justify-between items-end mb-4">
-                <div className="flex items-center gap-4">
-                  <span className="text-slate-500 font-mono text-sm">02</span>
-                  <h3 className="text-xl font-bold text-white">Pass-Through Pharmacy Costs</h3>
-                </div>
-                <div className="text-right">
-                  <span className="text-xs font-bold text-orange-400 tracking-wider uppercase px-2 py-1 bg-orange-400/10 rounded mr-4">Concern (4.0/10)</span>
-                  <span className="text-3xl font-bold text-emerald-400">$960K</span>
-                </div>
-              </div>
-              <div className="w-full bg-slate-900 rounded-full h-1.5 mb-4">
-                <div className="bg-emerald-400 h-1.5 rounded-full" style={{ width: '27%' }}></div>
-              </div>
-              <p className="text-slate-500 text-sm">Spread pricing elimination and MAC pricing transparency (27% of total)</p>
-            </div>
-
-            <div className="bg-[#0a0a0a] border border-white/10 rounded-xl p-6">
-              <div className="flex justify-between items-end mb-4">
-                <div className="flex items-center gap-4">
-                  <span className="text-slate-500 font-mono text-sm">03</span>
-                  <h3 className="text-xl font-bold text-white">Rebate & Manufacturer Revenue</h3>
-                </div>
-                <div className="text-right">
-                  <span className="text-xs font-bold text-orange-400 tracking-wider uppercase px-2 py-1 bg-orange-400/10 rounded mr-4">Concern (3.0/10)</span>
-                  <span className="text-3xl font-bold text-emerald-400">$583K</span>
-                </div>
-              </div>
-              <div className="w-full bg-slate-900 rounded-full h-1.5 mb-4">
-                <div className="bg-emerald-400 h-1.5 rounded-full" style={{ width: '16%' }}></div>
-              </div>
-              <p className="text-slate-500 text-sm">Full manufacturer revenue pass-through including pooled rebates (16% of total)</p>
-            </div>
-
-            <div className="bg-[#0a0a0a] border border-white/10 rounded-xl p-6">
-              <div className="flex justify-between items-end mb-4">
-                <div className="flex items-center gap-4">
-                  <span className="text-slate-500 font-mono text-sm">08</span>
-                  <h3 className="text-xl font-bold text-white">Lowest Net Cost & Clinical Integrity</h3>
-                </div>
-                <div className="text-right">
-                  <span className="text-xs font-bold text-orange-400 tracking-wider uppercase px-2 py-1 bg-orange-400/10 rounded mr-4">Concern (3.0/10)</span>
-                  <span className="text-3xl font-bold text-emerald-400">$583K</span>
-                </div>
-              </div>
-              <div className="w-full bg-slate-900 rounded-full h-1.5 mb-4">
-                <div className="bg-emerald-400 h-1.5 rounded-full" style={{ width: '16%' }}></div>
-              </div>
-              <p className="text-slate-500 text-sm">Formulary optimization and lowest net cost mandatory fulfillment (16% of total)</p>
-            </div>
-
-            <div className="bg-[#0a0a0a] border border-white/10 rounded-xl p-6">
-              <div className="flex justify-between items-end mb-4">
-                <div className="flex items-center gap-4">
-                  <span className="text-slate-500 font-mono text-sm">07</span>
-                  <h3 className="text-xl font-bold text-white">Carve-Out & Vendor Rights</h3>
-                </div>
-                <div className="text-right">
-                  <span className="text-xs font-bold text-rose-500 tracking-wider uppercase px-2 py-1 bg-rose-500/10 rounded mr-4">Red Flag (2.0/10)</span>
-                  <span className="text-3xl font-bold text-emerald-400">$410K</span>
-                </div>
-              </div>
-              <div className="w-full bg-slate-900 rounded-full h-1.5 mb-4">
-                <div className="bg-emerald-400 h-1.5 rounded-full" style={{ width: '11%' }}></div>
-              </div>
-              <p className="text-slate-500 text-sm">Specialty carve-out and competitive vendor flexibility (11% of total)</p>
-            </div>
-
-            <div className="bg-[#0a0a0a] border border-white/10 rounded-xl p-6">
-              <div className="flex justify-between items-end mb-4">
-                <div className="flex items-center gap-4">
-                  <span className="text-slate-500 font-mono text-sm">05</span>
-                  <h3 className="text-xl font-bold text-white">Audit Rights & Extrapolation</h3>
-                </div>
-                <div className="text-right">
-                  <span className="text-xs font-bold text-orange-400 tracking-wider uppercase px-2 py-1 bg-orange-400/10 rounded mr-4">Concern (3.5/10)</span>
-                  <span className="text-3xl font-bold text-emerald-400">$339K</span>
-                </div>
-              </div>
-              <div className="w-full bg-slate-900 rounded-full h-1.5 mb-4">
-                <div className="bg-emerald-400 h-1.5 rounded-full" style={{ width: '9%' }}></div>
-              </div>
-              <p className="text-slate-500 text-sm">Retroactive audit recovery and extrapolation rights (9% of total)</p>
-            </div>
-            
-            <div className="bg-[#0a0a0a] border border-white/10 rounded-xl p-6">
-              <div className="flex justify-between items-end mb-4">
-                <div className="flex items-center gap-4">
-                  <span className="text-slate-500 font-mono text-sm">06</span>
-                  <h3 className="text-xl font-bold text-white">Pharmacy Ownership & Neutrality</h3>
-                </div>
-                <div className="text-right">
-                  <span className="text-xs font-bold text-orange-400 tracking-wider uppercase px-2 py-1 bg-orange-400/10 rounded mr-4">Concern (4.0/10)</span>
-                  <span className="text-3xl font-bold text-emerald-400">$192K</span>
-                </div>
-              </div>
-              <div className="w-full bg-slate-900 rounded-full h-1.5 mb-4">
-                <div className="bg-emerald-400 h-1.5 rounded-full" style={{ width: '5%' }}></div>
-              </div>
-              <p className="text-slate-500 text-sm">Specialty pharmacy steering prevention and network neutrality (5% of total)</p>
-            </div>
-            
-            <div className="bg-[#0a0a0a] border border-white/10 rounded-xl p-6">
-              <div className="flex justify-between items-end mb-4">
-                <div className="flex items-center gap-4">
-                  <span className="text-slate-500 font-mono text-sm">01</span>
-                  <h3 className="text-xl font-bold text-white">Fiduciary Loyalty Commitment</h3>
-                </div>
-                <div className="text-right">
-                  <span className="text-xs font-bold text-rose-500 tracking-wider uppercase px-2 py-1 bg-rose-500/10 rounded mr-4">Red Flag (1.5/10)</span>
-                  <span className="text-3xl font-bold text-emerald-400">$174K</span>
-                </div>
-              </div>
-              <div className="w-full bg-slate-900 rounded-full h-1.5 mb-4">
-                <div className="bg-emerald-400 h-1.5 rounded-full" style={{ width: '5%' }}></div>
-              </div>
-              <p className="text-slate-500 text-sm">Legal exposure mitigation and ERISA fiduciary compliance (5% of total)</p>
-            </div>
-            
-            <div className="bg-[#0a0a0a] border border-white/10 rounded-xl p-6">
-              <div className="flex justify-between items-end mb-4">
-                <div className="flex items-center gap-4">
-                  <span className="text-slate-500 font-mono text-sm">09</span>
-                  <h3 className="text-xl font-bold text-white">Termination & Clean Exit</h3>
-                </div>
-                <div className="text-right">
-                  <span className="text-xs font-bold text-rose-500 tracking-wider uppercase px-2 py-1 bg-rose-500/10 rounded mr-4">Red Flag (2.5/10)</span>
-                  <span className="text-3xl font-bold text-emerald-400">$154K</span>
-                </div>
-              </div>
-              <div className="w-full bg-slate-900 rounded-full h-1.5 mb-4">
-                <div className="bg-emerald-400 h-1.5 rounded-full" style={{ width: '4%' }}></div>
-              </div>
-              <p className="text-slate-500 text-sm">Termination penalty avoidance and clean exit rights (4% of total)</p>
-            </div>
-            
-            <div className="bg-[#0a0a0a] border border-white/10 rounded-xl p-6">
-              <div className="flex justify-between items-end mb-4">
-                <div className="flex items-center gap-4">
-                  <span className="text-slate-500 font-mono text-sm">10</span>
-                  <h3 className="text-xl font-bold text-white">Administrative Fee Verification</h3>
-                </div>
-                <div className="text-right">
-                  <span className="text-xs font-bold text-orange-400 tracking-wider uppercase px-2 py-1 bg-orange-400/10 rounded mr-4">Concern (4.5/10)</span>
-                  <span className="text-3xl font-bold text-emerald-400">$119K</span>
-                </div>
-              </div>
-              <div className="w-full bg-slate-900 rounded-full h-1.5 mb-4">
-                <div className="bg-emerald-400 h-1.5 rounded-full" style={{ width: '3%' }}></div>
-              </div>
-              <p className="text-slate-500 text-sm">Administrative fee reduction and performance guarantee recovery (3% of total)</p>
-            </div>
-            
-            <div className="bg-[#0a0a0a] border border-white/10 rounded-xl p-6">
-              <div className="flex justify-between items-end mb-4">
-                <div className="flex items-center gap-4">
-                  <span className="text-slate-500 font-mono text-sm">04</span>
-                  <h3 className="text-xl font-bold text-white">Data Ownership & Access</h3>
-                </div>
-                <div className="text-right">
-                  <span className="text-xs font-bold text-rose-500 tracking-wider uppercase px-2 py-1 bg-rose-500/10 rounded mr-4">Red Flag (2.5/10)</span>
-                  <span className="text-3xl font-bold text-emerald-400">$78K</span>
-                </div>
-              </div>
-              <div className="w-full bg-slate-900 rounded-full h-1.5 mb-4">
-                <div className="bg-emerald-400 h-1.5 rounded-full" style={{ width: '2%' }}></div>
-              </div>
-              <p className="text-slate-500 text-sm">Data commercialization prevention and real-time access value (2% of total)</p>
-            </div>
-
-          </div>
-        </section>
-
-        {/* Detailed Provisions Breakdown */}
-        {provisions.map((prov, i) => (
-          <section key={prov.id} className="mb-24">
-            <div className={`text-xs font-bold tracking-[0.2em] ${prov.statusColor} mb-4 uppercase`}>Section {i + 4} &middot; Provision {prov.id} of 10</div>
-            
-            <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-8 border-b border-white/10 pb-8">
-              <div>
-                <h2 className="text-4xl font-bold text-white tracking-tight mb-3">{prov.title}</h2>
-                <div className="flex items-center gap-3">
-                  <span className={`${prov.bgStatusColor} text-black text-xs font-bold px-3 py-1 rounded tracking-widest uppercase`}>{prov.status}</span>
-                  <span className="text-slate-400 text-sm">{prov.met}</span>
-                </div>
-              </div>
-              <div className="mt-6 md:mt-0 text-right">
-                <div className={`text-5xl font-black ${prov.statusColor} mb-1 tracking-tighter`}>{prov.score.toFixed(1)} <span className="text-xl text-slate-500 font-medium">/ 10</span></div>
-                <div className="text-xl font-bold text-emerald-400">{prov.savings} <span className="text-sm font-normal text-slate-500 block uppercase tracking-widest mt-1">Savings Opp</span></div>
-              </div>
-            </div>
-
-            <div className="bg-[#111] border border-white/5 rounded-2xl p-8 mb-12">
-              <h4 className={`text-xs font-bold tracking-[0.15em] ${prov.statusColor} mb-3 uppercase`}>Why This Provision Matters</h4>
-              <p className="text-slate-300 leading-relaxed mb-8">{prov.why}</p>
-              
-              <h4 className="text-xs font-bold tracking-[0.15em] text-cyan-500 mb-3 uppercase">Financial Context</h4>
-              <p className="text-slate-300 leading-relaxed mb-8">{prov.financial}</p>
-
-              <h4 className="text-xs font-bold tracking-[0.15em] text-purple-500 mb-3 uppercase">Fiduciary Significance</h4>
-              <p className="text-slate-300 leading-relaxed">{prov.fiduciary}</p>
-            </div>
-
-            {prov.issues.map((issue, issueIdx) => (
-              <div key={issueIdx} className={`border-l-2 border-rose-500 pl-8 relative ${issueIdx > 0 ? 'mt-16' : ''}`}>
-                <div className="absolute -left-[17px] top-0 bg-[#050505] p-1">
-                  <AlertCircle className="text-rose-500" size={24} />
-                </div>
-                
-                <h3 className="text-2xl font-bold text-white mb-6">{issue.title}</h3>
-                
-                <div className="bg-[#1a0505] border border-rose-900/30 rounded-xl p-6 mb-8">
-                  <h4 className="text-xs font-bold tracking-[0.15em] text-rose-500 mb-3 uppercase">AI Analysis &mdash; What was found in this contract</h4>
-                  <p className="text-rose-200">{issue.found}</p>
-                </div>
-
-                <h4 className="text-xs font-bold tracking-[0.15em] text-orange-400 mb-4 uppercase flex items-center gap-2">
-                  <AlertTriangle size={16} /> How PBMs Exploit This Gap
-                </h4>
-                <ul className="space-y-4 mb-8 text-slate-300">
-                  {issue.exploits.map((exploit, idx) => (
-                    <li key={idx} className="flex gap-4">
-                      <span className="flex-shrink-0 w-6 h-6 rounded-full bg-orange-400/20 text-orange-400 flex items-center justify-center text-xs font-bold">{idx + 1}</span>
-                      <p>{exploit}</p>
-                    </li>
-                  ))}
-                </ul>
-
-                <div className="bg-gradient-to-r from-[#051510] to-[#052015] border border-emerald-900/30 rounded-xl p-6 mb-8">
-                  <h4 className="text-xs font-bold tracking-[0.15em] text-emerald-400 mb-3 uppercase flex items-center gap-2">
-                    <DollarSign size={16} /> Dollar Impact &mdash; How this costs your plan
-                  </h4>
-                  <p className="text-emerald-100/80 leading-relaxed">
-                    {issue.impact}
-                  </p>
-                </div>
-
-                <h4 className="text-xs font-bold tracking-[0.15em] text-rose-500 mb-4 uppercase flex items-center gap-2">
-                  <ShieldAlert size={16} /> Red-Flag Language Found In Your Contract
-                </h4>
-                <div className="space-y-3 mb-8">
-                  {issue.redFlags.map((flag, idx) => (
-                    <div key={idx} className="bg-[#111] border border-rose-900/50 rounded-lg p-4 font-mono text-sm text-rose-300/80">
-                      {flag}
-                    </div>
-                  ))}
-                </div>
-
-                <div className="bg-[#05101a] border border-cyan-900/50 rounded-xl p-6">
-                  <h4 className="text-xs font-bold tracking-[0.15em] text-cyan-400 mb-4 uppercase flex items-center gap-2">
-                    <Lock size={16} /> Required Fix &mdash; Add this language to the contract
-                  </h4>
-                  <div className="font-mono text-sm text-cyan-300/90 leading-relaxed bg-[#020810] p-5 rounded-lg border border-cyan-900/30 whitespace-pre-line">
-                    {issue.fix}
-                  </div>
-                </div>
-              </div>
-            ))}
-          </section>
-        ))}
 
         {/* Disclaimer Footer */}
         <div className="border-t border-white/10 pt-12 text-center pb-12 mt-24">

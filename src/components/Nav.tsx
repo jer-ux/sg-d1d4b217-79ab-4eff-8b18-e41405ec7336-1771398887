@@ -53,35 +53,35 @@ export default function Nav() {
                   <div className="p-2">
                     <Link
                       href="/board-of-directors"
-                      className="block px-4 py-3 text-gray-300 hover:text-white hover:bg-amber-500/10 rounded-lg transition-all"
+                      className="block px-4 py-3 text-gray-300 hover:text-white hover:bg-amber-500/10 rounded-lg transition-colors duration-300"
                     >
                       <div className="font-medium">Board of Directors</div>
                       <div className="text-xs text-gray-400">Leadership team</div>
                     </Link>
                     <Link
                       href="/investor"
-                      className="block px-4 py-3 text-gray-300 hover:text-white hover:bg-amber-500/10 rounded-lg transition-all"
+                      className="block px-4 py-3 text-gray-300 hover:text-white hover:bg-amber-500/10 rounded-lg transition-colors duration-300"
                     >
                       <div className="font-medium">Investor Groups</div>
                       <div className="text-xs text-gray-400">Investment overview</div>
                     </Link>
                     <Link
                       href="/capital-markets"
-                      className="block px-4 py-3 text-gray-300 hover:text-white hover:bg-amber-500/10 rounded-lg transition-all"
+                      className="block px-4 py-3 text-gray-300 hover:text-white hover:bg-amber-500/10 rounded-lg transition-colors duration-300"
                     >
                       <div className="font-medium">Capital Markets</div>
                       <div className="text-xs text-gray-400">Market solutions</div>
                     </Link>
                     <Link
                       href="/family-offices"
-                      className="block px-4 py-3 text-gray-300 hover:text-white hover:bg-amber-500/10 rounded-lg transition-all"
+                      className="block px-4 py-3 text-gray-300 hover:text-white hover:bg-amber-500/10 rounded-lg transition-colors duration-300"
                     >
                       <div className="font-medium">Family Offices</div>
                       <div className="text-xs text-gray-400">Private wealth management</div>
                     </Link>
                     <Link
                       href="/ma-vc-pe"
-                      className="block px-4 py-3 text-gray-300 hover:text-white hover:bg-amber-500/10 rounded-lg transition-all"
+                      className="block px-4 py-3 text-gray-300 hover:text-white hover:bg-amber-500/10 rounded-lg transition-colors duration-300"
                     >
                       <div className="font-medium">M&A / VC / PE</div>
                       <div className="text-xs text-gray-400">Deal intelligence</div>

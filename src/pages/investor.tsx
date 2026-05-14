@@ -167,16 +167,16 @@ export default function InvestorPage() {
         </motion.div>
 
         {/* Executive Summary */}
-        <section className="py-16 px-6 bg-gradient-to-b from-black to-zinc-950">
+        <section className="py-8 px-6 bg-gradient-to-b from-black to-zinc-950">
           <div className="max-w-7xl mx-auto">
             <motion.div
               initial="initial"
               whileInView="animate"
               viewport={{ once: true, margin: "-100px" }}
               variants={fadeInUp}
-              className="text-center mb-16"
+              className="text-center mb-8"
             >
-              <h2 className="text-5xl font-bold text-blue-100 mb-6">
+              <h2 className="text-5xl font-bold text-blue-100 mb-4">
                 Investment Thesis
               </h2>
               <p className="text-2xl text-gray-300 max-w-4xl mx-auto leading-relaxed">
@@ -186,7 +186,7 @@ export default function InvestorPage() {
 
             {/* Investment Highlights Grid */}
             <motion.div
-              className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6"
+              className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4"
               initial="initial"
               whileInView="animate"
               viewport={{ once: true, margin: "-100px" }}
@@ -212,9 +212,9 @@ export default function InvestorPage() {
         </section>
 
         {/* Problem/Solution */}
-        <section className="py-16 px-6">
+        <section className="py-8 px-6">
           <div className="max-w-7xl mx-auto">
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
               {/* Problem */}
               <motion.div
                 initial="initial"
@@ -285,16 +285,16 @@ export default function InvestorPage() {
         </section>
 
         {/* Competitive Advantages */}
-        <section className="py-16 px-6 bg-gradient-to-b from-zinc-950 to-black">
+        <section className="py-8 px-6 bg-gradient-to-b from-zinc-950 to-black">
           <div className="max-w-7xl mx-auto">
             <motion.div
               initial="initial"
               whileInView="animate"
               viewport={{ once: true, margin: "-100px" }}
               variants={fadeInUp}
-              className="text-center mb-12"
+              className="text-center mb-8"
             >
-              <h2 className="text-4xl font-bold text-blue-100 mb-4">
+              <h2 className="text-4xl font-bold text-blue-100 mb-3">
                 Our Competitive Moat
               </h2>
               <p className="text-xl text-gray-400 max-w-3xl mx-auto">
@@ -303,7 +303,7 @@ export default function InvestorPage() {
             </motion.div>
 
             <motion.div
-              className="grid grid-cols-1 md:grid-cols-2 gap-8"
+              className="grid grid-cols-1 md:grid-cols-2 gap-6"
               initial="initial"
               whileInView="animate"
               viewport={{ once: true, margin: "-100px" }}
@@ -331,16 +331,16 @@ export default function InvestorPage() {
         </section>
 
         {/* Market Opportunity with 3D */}
-        <section className="py-16 px-6">
+        <section className="py-8 px-6">
           <div className="max-w-7xl mx-auto">
             <motion.div
               initial="initial"
               whileInView="animate"
               viewport={{ once: true, margin: "-100px" }}
               variants={fadeInUp}
-              className="text-center mb-12"
+              className="text-center mb-8"
             >
-              <h2 className="text-4xl font-bold text-blue-100 mb-4">
+              <h2 className="text-4xl font-bold text-blue-100 mb-3">
                 Market Opportunity
               </h2>
               <p className="text-xl text-gray-400">
@@ -361,7 +361,7 @@ export default function InvestorPage() {
 
             {/* Stats Grid */}
             <motion.div 
-              className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-12"
+              className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-8"
               initial="initial"
               whileInView="animate"
               viewport={{ once: true, margin: "-100px" }}
@@ -392,16 +392,16 @@ export default function InvestorPage() {
         </section>
 
         {/* Traction & Metrics */}
-        <section className="py-16 px-6 bg-gradient-to-b from-black to-zinc-950">
+        <section className="py-8 px-6 bg-gradient-to-b from-black to-zinc-950">
           <div className="max-w-7xl mx-auto">
             <motion.div
               initial="initial"
               whileInView="animate"
               viewport={{ once: true, margin: "-100px" }}
               variants={fadeInUp}
-              className="text-center mb-12"
+              className="text-center mb-8"
             >
-              <h2 className="text-4xl font-bold text-blue-100 mb-4">
+              <h2 className="text-4xl font-bold text-blue-100 mb-3">
                 Traction & Validation
               </h2>
               <p className="text-xl text-gray-400">
@@ -410,7 +410,7 @@ export default function InvestorPage() {
             </motion.div>
 
             <motion.div
-              className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
+              className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4"
               initial="initial"
               whileInView="animate"
               viewport={{ once: true, margin: "-100px" }}
@@ -432,16 +432,16 @@ export default function InvestorPage() {
         </section>
 
         {/* ROI Visualization Section */}
-        <section className="py-16 px-6">
+        <section className="py-8 px-6">
           <div className="max-w-7xl mx-auto">
             <motion.div
               initial="initial"
               whileInView="animate"
               viewport={{ once: true, margin: "-100px" }}
               variants={slideInLeft}
-              className="text-center mb-12"
+              className="text-center mb-8"
             >
-              <h2 className="text-4xl font-bold text-blue-100 mb-4">
+              <h2 className="text-4xl font-bold text-blue-100 mb-3">
                 Return on Investment
               </h2>
               <p className="text-xl text-gray-400">
@@ -463,16 +463,16 @@ export default function InvestorPage() {
         </section>
 
         {/* Use of Funds */}
-        <section className="py-16 px-6 bg-gradient-to-b from-zinc-950 to-black">
+        <section className="py-8 px-6 bg-gradient-to-b from-zinc-950 to-black">
           <div className="max-w-7xl mx-auto">
             <motion.div
               initial="initial"
               whileInView="animate"
               viewport={{ once: true, margin: "-100px" }}
               variants={fadeInUp}
-              className="text-center mb-12"
+              className="text-center mb-8"
             >
-              <h2 className="text-4xl font-bold text-blue-100 mb-4">
+              <h2 className="text-4xl font-bold text-blue-100 mb-3">
                 Use of Funds
               </h2>
               <p className="text-xl text-gray-400">
@@ -481,7 +481,7 @@ export default function InvestorPage() {
             </motion.div>
 
             <motion.div
-              className="max-w-4xl mx-auto space-y-6"
+              className="max-w-4xl mx-auto space-y-4"
               initial="initial"
               whileInView="animate"
               viewport={{ once: true, margin: "-100px" }}
@@ -514,16 +514,16 @@ export default function InvestorPage() {
         </section>
 
         {/* Timeline Section */}
-        <section className="py-16 px-6">
+        <section className="py-8 px-6">
           <div className="max-w-7xl mx-auto">
             <motion.div
               initial="initial"
               whileInView="animate"
               viewport={{ once: true, margin: "-100px" }}
               variants={slideInRight}
-              className="text-center mb-12"
+              className="text-center mb-8"
             >
-              <h2 className="text-4xl font-bold text-blue-100 mb-4">
+              <h2 className="text-4xl font-bold text-blue-100 mb-3">
                 Execution Roadmap
               </h2>
               <p className="text-xl text-gray-400">
@@ -536,7 +536,7 @@ export default function InvestorPage() {
               whileInView="animate"
               viewport={{ once: true, margin: "-100px" }}
               variants={scaleIn}
-              className="mb-12"
+              className="mb-8"
             >
               <Suspense fallback={<div className="w-full h-[400px] bg-zinc-900/50 rounded-2xl animate-pulse" />}>
                 <Timeline3D />
@@ -545,7 +545,7 @@ export default function InvestorPage() {
 
             {/* Milestone Cards */}
             <motion.div
-              className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
+              className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4"
               initial="initial"
               whileInView="animate"
               viewport={{ once: true, margin: "-100px" }}
@@ -569,16 +569,16 @@ export default function InvestorPage() {
         </section>
 
         {/* Risk Factors */}
-        <section className="py-16 px-6 bg-gradient-to-b from-black to-zinc-950">
+        <section className="py-8 px-6 bg-gradient-to-b from-black to-zinc-950">
           <div className="max-w-7xl mx-auto">
             <motion.div
               initial="initial"
               whileInView="animate"
               viewport={{ once: true, margin: "-100px" }}
               variants={fadeInUp}
-              className="text-center mb-12"
+              className="text-center mb-8"
             >
-              <h2 className="text-4xl font-bold text-blue-100 mb-4">
+              <h2 className="text-4xl font-bold text-blue-100 mb-3">
                 Risk Factors & Mitigation
               </h2>
               <p className="text-xl text-gray-400">
@@ -587,7 +587,7 @@ export default function InvestorPage() {
             </motion.div>
 
             <motion.div
-              className="max-w-5xl mx-auto space-y-6"
+              className="max-w-5xl mx-auto space-y-4"
               initial="initial"
               whileInView="animate"
               viewport={{ once: true, margin: "-100px" }}
@@ -622,16 +622,16 @@ export default function InvestorPage() {
         </section>
 
         {/* Team Highlight */}
-        <section className="py-16 px-6">
+        <section className="py-8 px-6">
           <div className="max-w-7xl mx-auto">
             <motion.div
               initial="initial"
               whileInView="animate"
               viewport={{ once: true, margin: "-100px" }}
               variants={fadeInUp}
-              className="text-center mb-12"
+              className="text-center mb-8"
             >
-              <h2 className="text-4xl font-bold text-blue-100 mb-4">
+              <h2 className="text-4xl font-bold text-blue-100 mb-3">
                 Leadership Team
               </h2>
               <p className="text-xl text-gray-400">
@@ -667,7 +667,7 @@ export default function InvestorPage() {
         </section>
 
         {/* CTA Section */}
-        <section className="py-16 px-6 bg-gradient-to-b from-zinc-950 to-black">
+        <section className="py-8 px-6 bg-gradient-to-b from-zinc-950 to-black">
           <div className="max-w-4xl mx-auto">
             <motion.div
               initial="initial"
@@ -677,7 +677,7 @@ export default function InvestorPage() {
               className="text-center"
             >
               <motion.div 
-                className="inline-flex flex-col items-center gap-6 p-12 rounded-2xl bg-gradient-to-br from-blue-950/20 to-transparent border border-blue-500/20"
+                className="inline-flex flex-col items-center gap-4 p-8 rounded-2xl bg-gradient-to-br from-blue-950/20 to-transparent border border-blue-500/20"
                 whileHover={{ scale: 1.02, borderColor: "rgba(59, 130, 246, 0.4)" }}
                 transition={{ duration: 0.3 }}
               >

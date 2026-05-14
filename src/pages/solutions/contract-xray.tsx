@@ -10,379 +10,75 @@ import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Alert, AlertDescription } from "@/components/ui/alert";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Textarea } from "@/components/ui/textarea";
 import { useToast } from "@/hooks/use-toast";
 import { 
   Shield, Upload, FileText, Search, TrendingUp, AlertTriangle,
   CheckCircle2, Download, Eye, Clock, DollarSign, Users,
   BarChart3, Zap, FileCheck, X, Loader2, ArrowRight, FileSearch, Scale
 } from "lucide-react";
-import { supabase } from "@/integrations/supabase/client";
 
 export default function ContractXRayPage() {
   const router = useRouter();
   const { toast } = useToast();
-  const fileInputRef = useRef<HTMLInputElement>(null);
   
-  // Upload state
-  const [showUploadModal, setShowUploadModal] = useState(false);
-  const [selectedFile, setSelectedFile] = useState<File | null>(null);
-  const [uploading, setUploading] = useState(false);
-  const [uploadProgress, setUploadProgress] = useState(0);
-  const [dragActive, setDragActive] = useState(false);
-  const [uploadSuccess, setUploadSuccess] = useState(false);
-  const [uploadedContractId, setUploadedContractId] = useState<string | null>(null);
-  const [uploadError, setUploadError] = useState<string | null>(null);
+  // Contact form state
+  const [showContactModal, setShowContactModal] = useState(false);
+  const [submitting, setSubmitting] = useState(false);
+  const [submitSuccess, setSubmitSuccess] = useState(false);
+  const [contactInfo, setContactInfo] = useState({
+    name: "",
+    email: "",
+    company: "",
+    phone: "",
+    message: ""
+  });
 
-  // Analysis state
-  const [analyzing, setAnalyzing] = useState(false);
-  const [analysisProgress, setAnalysisProgress] = useState(0);
-  const [analysisStage, setAnalysisStage] = useState("");
-
-  const handleDrag = (e: React.DragEvent) => {
+  const handleContactSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    e.stopPropagation();
-    if (e.type === "dragenter" || e.type === "dragover") {
-      setDragActive(true);
-    } else if (e.type === "dragleave") {
-      setDragActive(false);
-    }
-  };
-
-  const handleDrop = (e: React.DragEvent) => {
-    e.preventDefault();
-    e.stopPropagation();
-    setDragActive(false);
-    
-    if (e.dataTransfer.files && e.dataTransfer.files[0]) {
-      handleFileSelection(e.dataTransfer.files[0]);
-    }
-  };
-
-  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (e.target.files && e.target.files[0]) {
-      handleFileSelection(e.target.files[0]);
-    }
-  };
-
-  const handleFileSelection = (file: File) => {
-    const validTypes = ['application/pdf', 'application/msword', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'];
-    const maxSize = 10 * 1024 * 1024; // 10MB
-
-    if (!validTypes.includes(file.type)) {
-      toast({
-        title: "Invalid File Type",
-        description: "Please upload a PDF, DOC, or DOCX file.",
-        variant: "destructive"
-      });
-      return;
-    }
-
-    if (file.size > maxSize) {
-      toast({
-        title: "File Too Large",
-        description: "File size must be less than 10MB.",
-        variant: "destructive"
-      });
-      return;
-    }
-
-    setSelectedFile(file);
-    setUploadError(null);
-    console.log("✅ File selected:", file.name, `(${(file.size / 1024 / 1024).toFixed(2)} MB)`);
-  };
-
-  const handleUploadClick = () => {
-    console.log("🔵 Upload button clicked");
-    console.log("🔵 Current showUploadModal state:", showUploadModal);
-    setShowUploadModal(true);
-    console.log("🔵 Setting showUploadModal to true");
-    // Force a small delay to ensure state updates
-    setTimeout(() => {
-      console.log("🔵 Modal state after timeout:", showUploadModal);
-    }, 100);
-  };
-
-  const uploadContract = async () => {
-    if (!selectedFile) {
-      toast({
-        title: "No File Selected",
-        description: "Please select a file to upload.",
-        variant: "destructive"
-      });
-      return;
-    }
-
-    setUploading(true);
-    setUploadProgress(0);
-    setUploadError(null);
+    setSubmitting(true);
 
     try {
-      console.log("🚀 Starting upload process...");
-      console.log("File:", selectedFile.name, "Size:", selectedFile.size);
+      // Simulate submission
+      await new Promise(resolve => setTimeout(resolve, 1500));
 
-      // Use demo org and user for all uploads (no authentication required)
-      const orgId = "11111111-1111-1111-1111-111111111111"; // Demo org
-      const effectiveUserId = "00000000-0000-0000-0000-000000000001"; // Demo user
-
-      // Simulate upload progress
-      const progressInterval = setInterval(() => {
-        setUploadProgress(prev => {
-          if (prev >= 90) {
-            clearInterval(progressInterval);
-            return prev;
-          }
-          return prev + 10;
-        });
-      }, 200);
-
-      // Generate file path
-      const fileExt = selectedFile.name.split('.').pop();
-      const fileName = `${Date.now()}-${Math.random().toString(36).substring(7)}.${fileExt}`;
-      const filePath = `${effectiveUserId}/${fileName}`;
-
-      console.log("📁 Attempting storage upload to:", filePath);
-
-      // Try to upload file to Supabase Storage with upsert to bypass some RLS checks
-      const { data: uploadData, error: uploadError } = await supabase.storage
-        .from('contract-uploads')
-        .upload(filePath, selectedFile, {
-          cacheControl: '3600',
-          upsert: true, // Allow overwriting to bypass some RLS restrictions
-          contentType: selectedFile.type || 'application/pdf'
-        });
-
-      if (uploadError) {
-        console.error("❌ Storage upload error:", uploadError);
-        
-        // Provide helpful error messages
-        if (uploadError.message.includes("row-level security") || uploadError.message.includes("policy")) {
-          throw new Error(
-            "Storage access denied. Please ensure the 'contract-uploads' bucket is set to Public in Supabase Dashboard: " +
-            "Storage → contract-uploads → Settings → Public bucket = ON"
-          );
-        }
-        
-        if (uploadError.message.includes("Bucket not found")) {
-          throw new Error(
-            "Storage bucket 'contract-uploads' not found. " +
-            "Please create it in Supabase Dashboard: Storage → New Bucket → Name: 'contract-uploads' → Public: YES"
-          );
-        }
-        
-        throw new Error(`Storage upload failed: ${uploadError.message}`);
-      }
-
-      console.log("✅ File uploaded to storage:", uploadData.path);
-
-      // Get public URL
-      const { data: { publicUrl } } = supabase.storage
-        .from('contract-uploads')
-        .getPublicUrl(filePath);
-
-      console.log("🔗 Public URL:", publicUrl);
-
-      // Create database record with explicit demo org context
-      console.log("💾 Creating database record...");
-      const { data: dbRecord, error: dbError } = await supabase
-        .from('contract_uploads')
-        .insert({
-          organization_id: orgId,
-          file_name: selectedFile.name,
-          file_size: selectedFile.size,
-          file_type: selectedFile.type || 'application/pdf',
-          storage_path: filePath,
-          upload_status: 'completed',
-          metadata: {
-            original_name: selectedFile.name,
-            uploaded_at: new Date().toISOString(),
-            public_url: publicUrl,
-            demo_mode: true,
-            demo_org: true
-          }
-        })
-        .select()
-        .single();
-
-      if (dbError) {
-        console.error("❌ Database insert error:", dbError);
-        
-        // Provide helpful error message for RLS issues
-        if (dbError.message.includes("row-level security") || dbError.message.includes("policy")) {
-          throw new Error(
-            "Database access denied. This indicates the RLS policies need adjustment. " +
-            "Error: " + dbError.message
-          );
-        }
-        
-        throw new Error(`Database error: ${dbError.message}`);
-      }
-
-      console.log("✅ Database record created:", dbRecord.id);
-
-      clearInterval(progressInterval);
-      setUploadProgress(100);
-      setUploadedContractId(dbRecord.id);
-      setUploadSuccess(true);
-
+      console.log("Contact information submitted:", contactInfo);
+      
+      setSubmitSuccess(true);
       toast({
-        title: "Upload Successful!",
-        description: "Your contract is being analyzed. Results will be ready shortly.",
+        title: "Request Submitted!",
+        description: "We'll contact you within 24 hours to schedule your forensic review.",
       });
 
-      // Start analysis
-      console.log("🔍 Starting analysis for contract:", dbRecord.id);
+      // Reset form after 3 seconds
       setTimeout(() => {
-        startAnalysis(dbRecord.id);
-      }, 1000);
+        resetContactForm();
+      }, 3000);
 
     } catch (error: any) {
-      console.error("❌ Upload error:", error);
-      console.error("Error details:", {
-        message: error.message,
-        code: error.code,
-        details: error.details,
-        hint: error.hint
-      });
-      setUploadError(error.message || "Upload failed. Please try again.");
+      console.error("Submit error:", error);
       toast({
-        title: "Upload Failed",
-        description: error.message || "There was an error uploading your contract. Please try again.",
+        title: "Submission Failed",
+        description: "There was an error submitting your request. Please try again.",
         variant: "destructive"
       });
-      setUploading(false);
-      setUploadProgress(0);
+      setSubmitting(false);
     }
   };
 
-  const startAnalysis = async (contractId: string) => {
-    console.log("📊 Starting analysis for contract ID:", contractId);
-    setAnalyzing(true);
-    setAnalysisProgress(0);
-
-    try {
-      // Simulate AI analysis with realistic stages
-      const stages = [
-        { progress: 20, message: "Extracting text and provisions...", delay: 1500 },
-        { progress: 40, message: "Analyzing pricing structures...", delay: 1500 },
-        { progress: 60, message: "Identifying red flags...", delay: 1500 },
-        { progress: 80, message: "Calculating risk scores...", delay: 1500 },
-        { progress: 100, message: "Generating comprehensive report...", delay: 1500 }
-      ];
-
-      for (const stage of stages) {
-        console.log(`📈 Analysis stage: ${stage.message} (${stage.progress}%)`);
-        setAnalysisStage(stage.message);
-        await new Promise(resolve => setTimeout(resolve, stage.delay));
-        setAnalysisProgress(stage.progress);
-      }
-
-      console.log("💾 Creating analysis results in database...");
-
-      // Update contract status
-      const { error: updateError } = await supabase
-        .from('contract_uploads')
-        .update({ 
-          upload_status: 'completed',
-          processing_completed_at: new Date().toISOString()
-        })
-        .eq('id', contractId);
-
-      if (updateError) {
-        console.error("❌ Error updating contract status:", updateError);
-        throw new Error(`Failed to update contract status: ${updateError.message}`);
-      }
-
-      console.log("✅ Contract status updated to completed");
-
-      // Insert comprehensive mock analysis results
-      const { data: analysisData, error: analysisError } = await supabase
-        .from('contract_analysis_results')
-        .insert({
-          upload_id: contractId,
-          contract_name: selectedFile?.name || "Uploaded Contract",
-          pbm_name: "Express Scripts",
-          contract_type: "Commercial",
-          overall_score: Math.floor(Math.random() * 30) + 60,
-          potential_savings: Math.floor(Math.random() * 2000000) + 500000,
-          risk_level: 'Medium',
-          total_provisions_analyzed: 35,
-          red_flags_count: Math.floor(Math.random() * 10) + 3,
-          annual_cost_estimate: Math.floor(Math.random() * 5000000) + 2000000,
-          analysis_summary: {
-            strengths: [
-              "Strong audit rights provision with quarterly access",
-              "Reasonable termination clauses (90-day notice)",
-              "Clear data ownership terms favoring client"
-            ],
-            concerns: [
-              "Limited rebate pass-through (only 65% vs industry standard 80%)",
-              "Opaque MAC pricing methodology without transparency",
-              "Restrictive specialty pharmacy network (mandatory single source)"
-            ],
-            critical_issues: [
-              "No spread pricing disclosure requirements",
-              "Lack of generic substitution guarantees",
-              "Unclear administrative fee structure"
-            ]
-          }
-        })
-        .select()
-        .single();
-
-      if (analysisError) {
-        console.error("❌ Error creating analysis results:", analysisError);
-        console.error("Analysis error details:", {
-          message: analysisError.message,
-          code: analysisError.code,
-          details: analysisError.details,
-          hint: analysisError.hint
-        });
-        throw new Error(`Failed to create analysis results: ${analysisError.message}`);
-      }
-
-      console.log("✅ Analysis results created:", analysisData);
-      console.log("✅ Analysis complete! Redirecting to results page...");
-      
-      setAnalyzing(false);
-      setUploadedContractId(analysisData.id); // Store the analysis result ID, not upload ID
-      
-      toast({
-        title: "Analysis Complete!",
-        description: "Your comprehensive contract analysis is ready to view.",
-      });
-
-      // Redirect to results using the analysis result ID
-      setTimeout(() => {
-        console.log("🔄 Redirecting to:", `/contract-analysis/${analysisData.id}`);
-        router.push(`/contract-analysis/${analysisData.id}`);
-      }, 2000);
-
-    } catch (error: any) {
-      console.error("❌ Analysis error:", error);
-      console.error("Full error object:", error);
-      
-      toast({
-        title: "Analysis Failed",
-        description: error.message || "There was an error analyzing your contract. Please check the console for details.",
-        variant: "destructive"
-      });
-      
-      setAnalyzing(false);
-      setUploadError(error.message || "Analysis failed. Please try again.");
-    }
-  };
-
-  const resetUpload = () => {
-    setShowUploadModal(false);
-    setSelectedFile(null);
-    setUploading(false);
-    setUploadProgress(0);
-    setUploadSuccess(false);
-    setAnalyzing(false);
-    setAnalysisProgress(0);
-    setUploadedContractId(null);
-    setUploadError(null);
-    setAnalysisStage("");
+  const resetContactForm = () => {
+    setShowContactModal(false);
+    setSubmitting(false);
+    setSubmitSuccess(false);
+    setContactInfo({
+      name: "",
+      email: "",
+      company: "",
+      phone: "",
+      message: ""
+    });
   };
 
   const provisions = [
@@ -505,7 +201,7 @@ export default function ContractXRayPage() {
                   <Button 
                     size="lg" 
                     className="bg-gradient-to-r from-red-600 to-red-800 hover:from-red-500 hover:to-red-700 text-white border border-red-500/50 h-14 px-8 text-lg rounded-xl shadow-lg shadow-red-900/50"
-                    onClick={handleUploadClick}
+                    onClick={() => setShowContactModal(true)}
                   >
                     <Search className="w-5 h-5 mr-2" />
                     Request Forensic Review
@@ -718,10 +414,10 @@ export default function ContractXRayPage() {
                   <Button 
                     size="lg" 
                     className="h-14 px-8 text-lg bg-gradient-to-r from-red-600 to-red-800 hover:from-red-500 hover:to-red-700 text-white shadow-lg shadow-red-900/50 border border-red-500/50 rounded-xl"
-                    onClick={handleUploadClick}
+                    onClick={() => setShowContactModal(true)}
                   >
-                    <Upload className="w-6 h-6 mr-3" />
-                    Upload Target Contract
+                    <Search className="w-6 h-6 mr-3" />
+                    Request Forensic Review
                   </Button>
                 </div>
                 <p className="text-red-400 font-bold tracking-widest uppercase mt-8 text-sm">
@@ -732,223 +428,150 @@ export default function ContractXRayPage() {
           </section>
         </main>
 
-        {/* Enterprise Upload Modal */}
-        <Dialog open={showUploadModal} onOpenChange={setShowUploadModal}>
-          <DialogContent className="bg-slate-950/95 backdrop-blur-2xl border-white/10 max-w-3xl shadow-[0_0_50px_rgba(0,0,0,0.5)]">
+        {/* Enterprise Contact Modal */}
+        <Dialog open={showContactModal} onOpenChange={setShowContactModal}>
+          <DialogContent className="bg-slate-950/95 backdrop-blur-2xl border-white/10 max-w-2xl shadow-[0_0_50px_rgba(0,0,0,0.5)]">
             <DialogHeader className="border-b border-white/10 pb-6 mb-6">
               <div className="flex items-center gap-3 mb-2">
                 <div className="p-2 bg-blue-500/20 rounded-lg border border-blue-500/30">
                   <Shield className="w-6 h-6 text-blue-400" />
                 </div>
-                <DialogTitle className="text-2xl font-bold text-white tracking-tight">Secure Ingestion Portal</DialogTitle>
+                <DialogTitle className="text-2xl font-bold text-white tracking-tight">Request Forensic Review</DialogTitle>
               </div>
               <DialogDescription className="text-base text-gray-400">
-                Establish secure connection to upload PBM contract for neural analysis and benchmarking.
+                Share your information and we'll contact you within 24 hours to begin your contract analysis.
               </DialogDescription>
             </DialogHeader>
 
-            <div className="space-y-8">
-              {!uploadSuccess && !analyzing && (
-                <>
-                  {/* Error Alert */}
-                  {uploadError && (
-                    <Alert variant="destructive">
-                      <AlertTriangle className="h-4 w-4" />
-                      <AlertDescription>{uploadError}</AlertDescription>
-                    </Alert>
-                  )}
-
-                  {/* File Upload Area */}
-                  <div
-                    className={`border-2 border-dashed rounded-lg p-12 text-center transition-colors ${
-                      dragActive ? 'border-blue-500 bg-blue-500/10' : 'border-gray-700 hover:border-gray-600'
-                    }`}
-                    onDragEnter={handleDrag}
-                    onDragLeave={handleDrag}
-                    onDragOver={handleDrag}
-                    onDrop={handleDrop}
-                  >
-                    {selectedFile ? (
-                      <div className="space-y-4">
-                        <FileCheck className="w-16 h-16 text-green-500 mx-auto" />
-                        <div>
-                          <p className="font-semibold">{selectedFile.name}</p>
-                          <p className="text-sm text-gray-400">
-                            {(selectedFile.size / 1024 / 1024).toFixed(2)} MB
-                          </p>
-                        </div>
-                        <Button
-                          variant="outline"
-                          size="sm"
-                          onClick={() => setSelectedFile(null)}
-                        >
-                          <X className="w-4 h-4 mr-2" />
-                          Remove
-                        </Button>
-                      </div>
-                    ) : (
-                      <>
-                        <Upload className="w-16 h-16 text-gray-400 mx-auto mb-4" />
-                        <p className="text-lg font-semibold mb-2">
-                          Drag and drop your contract here
-                        </p>
-                        <p className="text-sm text-gray-400 mb-4">
-                          or click to browse files
-                        </p>
-                        <input
-                          ref={fileInputRef}
-                          type="file"
-                          accept=".pdf,.doc,.docx"
-                          onChange={handleFileChange}
-                          className="hidden"
-                        />
-                        <Button
-                          variant="outline"
-                          onClick={() => fileInputRef.current?.click()}
-                        >
-                          Browse Files
-                        </Button>
-                        <p className="text-xs text-gray-500 mt-4">
-                          Accepted formats: PDF, DOC, DOCX (max 10MB)
-                        </p>
-                      </>
-                    )}
-                  </div>
-
-                  {/* Upload Progress */}
-                  {uploading && (
-                    <div className="space-y-2">
-                      <div className="flex items-center justify-between text-sm">
-                        <span className="text-gray-400">Uploading contract...</span>
-                        <span className="font-semibold">{uploadProgress}%</span>
-                      </div>
-                      <Progress value={uploadProgress} className="h-2" />
-                    </div>
-                  )}
-
-                  {/* What Happens Next */}
-                  <div className="bg-gray-800/50 rounded-lg p-6 space-y-4">
-                    <h3 className="font-semibold flex items-center gap-2">
-                      <Clock className="w-5 h-5 text-blue-400" />
-                      What Happens Next
-                    </h3>
-                    <ul className="space-y-3 text-sm text-gray-400">
-                      <li className="flex items-start gap-3">
-                        <CheckCircle2 className="w-5 h-5 text-green-500 flex-shrink-0 mt-0.5" />
-                        <span>AI extracts and analyzes 35+ contract provisions</span>
-                      </li>
-                      <li className="flex items-start gap-3">
-                        <CheckCircle2 className="w-5 h-5 text-green-500 flex-shrink-0 mt-0.5" />
-                        <span>Identifies hidden costs and unfavorable terms</span>
-                      </li>
-                      <li className="flex items-start gap-3">
-                        <CheckCircle2 className="w-5 h-5 text-green-500 flex-shrink-0 mt-0.5" />
-                        <span>Generates comprehensive risk analysis report</span>
-                      </li>
-                      <li className="flex items-start gap-3">
-                        <CheckCircle2 className="w-5 h-5 text-green-500 flex-shrink-0 mt-0.5" />
-                        <span>Results ready in 3-5 minutes</span>
-                      </li>
-                    </ul>
-                  </div>
-
-                  {/* Action Buttons */}
-                  <div className="flex gap-3">
-                    <Button
-                      className="flex-1"
-                      onClick={uploadContract}
-                      disabled={!selectedFile || uploading}
-                    >
-                      {uploading ? (
-                        <>
-                          <Loader2 className="w-4 h-4 mr-2 animate-spin" />
-                          Uploading...
-                        </>
-                      ) : (
-                        <>
-                          <Upload className="w-4 h-4 mr-2" />
-                          Analyze Contract
-                        </>
-                      )}
-                    </Button>
-                    <Button
-                      variant="outline"
-                      onClick={resetUpload}
-                      disabled={uploading}
-                    >
-                      Cancel
-                    </Button>
-                  </div>
-                </>
-              )}
-
-              {/* Analysis Progress */}
-              {analyzing && (
-                <div className="space-y-6">
-                  <div className="text-center">
-                    <div className="w-20 h-20 bg-blue-500/10 rounded-full flex items-center justify-center mx-auto mb-4">
-                      <Loader2 className="w-10 h-10 text-blue-400 animate-spin" />
-                    </div>
-                    <h3 className="text-xl font-semibold mb-2">Analyzing Your Contract</h3>
-                    <p className="text-gray-400">{analysisStage}</p>
+            {!submitSuccess ? (
+              <form onSubmit={handleContactSubmit} className="space-y-6">
+                <div className="space-y-4">
+                  <div className="space-y-2">
+                    <Label htmlFor="name" className="text-white">Full Name *</Label>
+                    <Input
+                      id="name"
+                      required
+                      value={contactInfo.name}
+                      onChange={(e) => setContactInfo({ ...contactInfo, name: e.target.value })}
+                      placeholder="John Smith"
+                      className="bg-slate-900 border-gray-700 text-white"
+                    />
                   </div>
 
                   <div className="space-y-2">
-                    <div className="flex items-center justify-between text-sm">
-                      <span className="text-gray-400">Analysis Progress</span>
-                      <span className="font-semibold">{analysisProgress}%</span>
-                    </div>
-                    <Progress value={analysisProgress} className="h-2" />
+                    <Label htmlFor="email" className="text-white">Email Address *</Label>
+                    <Input
+                      id="email"
+                      type="email"
+                      required
+                      value={contactInfo.email}
+                      onChange={(e) => setContactInfo({ ...contactInfo, email: e.target.value })}
+                      placeholder="john.smith@company.com"
+                      className="bg-slate-900 border-gray-700 text-white"
+                    />
                   </div>
 
-                  <div className="bg-gray-800/50 rounded-lg p-6 space-y-3 text-sm">
-                    <div className={`flex items-center gap-3 ${analysisProgress >= 20 ? 'text-green-400' : 'text-gray-500'}`}>
-                      {analysisProgress >= 20 ? <CheckCircle2 className="w-5 h-5" /> : <Clock className="w-5 h-5" />}
-                      <span>Extracting text and provisions</span>
-                    </div>
-                    <div className={`flex items-center gap-3 ${analysisProgress >= 40 ? 'text-green-400' : 'text-gray-500'}`}>
-                      {analysisProgress >= 40 ? <CheckCircle2 className="w-5 h-5" /> : <Clock className="w-5 h-5" />}
-                      <span>Analyzing pricing structures</span>
-                    </div>
-                    <div className={`flex items-center gap-3 ${analysisProgress >= 60 ? 'text-green-400' : 'text-gray-500'}`}>
-                      {analysisProgress >= 60 ? <CheckCircle2 className="w-5 h-5" /> : <Clock className="w-5 h-5" />}
-                      <span>Identifying red flags</span>
-                    </div>
-                    <div className={`flex items-center gap-3 ${analysisProgress >= 80 ? 'text-green-400' : 'text-gray-500'}`}>
-                      {analysisProgress >= 80 ? <CheckCircle2 className="w-5 h-5" /> : <Clock className="w-5 h-5" />}
-                      <span>Calculating risk scores</span>
-                    </div>
-                    <div className={`flex items-center gap-3 ${analysisProgress >= 100 ? 'text-green-400' : 'text-gray-500'}`}>
-                      {analysisProgress >= 100 ? <CheckCircle2 className="w-5 h-5" /> : <Clock className="w-5 h-5" />}
-                      <span>Generating comprehensive report</span>
-                    </div>
+                  <div className="space-y-2">
+                    <Label htmlFor="company" className="text-white">Company Name *</Label>
+                    <Input
+                      id="company"
+                      required
+                      value={contactInfo.company}
+                      onChange={(e) => setContactInfo({ ...contactInfo, company: e.target.value })}
+                      placeholder="Acme Corporation"
+                      className="bg-slate-900 border-gray-700 text-white"
+                    />
                   </div>
-                </div>
-              )}
 
-              {/* Success State */}
-              {uploadSuccess && !analyzing && (
-                <div className="text-center space-y-6">
-                  <div className="w-20 h-20 bg-green-500/10 rounded-full flex items-center justify-center mx-auto">
-                    <CheckCircle2 className="w-10 h-10 text-green-400" />
+                  <div className="space-y-2">
+                    <Label htmlFor="phone" className="text-white">Phone Number</Label>
+                    <Input
+                      id="phone"
+                      type="tel"
+                      value={contactInfo.phone}
+                      onChange={(e) => setContactInfo({ ...contactInfo, phone: e.target.value })}
+                      placeholder="(555) 123-4567"
+                      className="bg-slate-900 border-gray-700 text-white"
+                    />
                   </div>
-                  <div>
-                    <h3 className="text-2xl font-semibold mb-2">Analysis Complete!</h3>
-                    <p className="text-gray-400">Your contract analysis is ready to view</p>
-                  </div>
-                  <div className="flex gap-3">
-                    <Button className="flex-1" onClick={() => uploadedContractId && router.push(`/contract-analysis/${uploadedContractId}`)}>
-                      <Eye className="w-4 h-4 mr-2" />
-                      View Results
-                    </Button>
-                    <Button variant="outline" onClick={resetUpload}>
-                      <Upload className="w-4 h-4 mr-2" />
-                      Upload Another
-                    </Button>
+
+                  <div className="space-y-2">
+                    <Label htmlFor="message" className="text-white">Additional Details</Label>
+                    <Textarea
+                      id="message"
+                      value={contactInfo.message}
+                      onChange={(e) => setContactInfo({ ...contactInfo, message: e.target.value })}
+                      placeholder="Tell us about your PBM contract concerns..."
+                      rows={4}
+                      className="bg-slate-900 border-gray-700 text-white resize-none"
+                    />
                   </div>
                 </div>
-              )}
-            </div>
+
+                <div className="bg-blue-950/30 rounded-lg p-4 space-y-3 text-sm">
+                  <h3 className="font-semibold flex items-center gap-2 text-white">
+                    <Clock className="w-5 h-5 text-blue-400" />
+                    What Happens Next
+                  </h3>
+                  <ul className="space-y-2 text-gray-400">
+                    <li className="flex items-start gap-3">
+                      <CheckCircle2 className="w-5 h-5 text-green-500 flex-shrink-0 mt-0.5" />
+                      <span>Our team reviews your information</span>
+                    </li>
+                    <li className="flex items-start gap-3">
+                      <CheckCircle2 className="w-5 h-5 text-green-500 flex-shrink-0 mt-0.5" />
+                      <span>Schedule initial consultation call</span>
+                    </li>
+                    <li className="flex items-start gap-3">
+                      <CheckCircle2 className="w-5 h-5 text-green-500 flex-shrink-0 mt-0.5" />
+                      <span>Secure contract upload and analysis begins</span>
+                    </li>
+                    <li className="flex items-start gap-3">
+                      <CheckCircle2 className="w-5 h-5 text-green-500 flex-shrink-0 mt-0.5" />
+                      <span>Receive comprehensive forensic report</span>
+                    </li>
+                  </ul>
+                </div>
+
+                <div className="flex gap-3">
+                  <Button
+                    type="submit"
+                    className="flex-1"
+                    disabled={submitting}
+                  >
+                    {submitting ? (
+                      <>
+                        <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                        Submitting...
+                      </>
+                    ) : (
+                      <>
+                        <ArrowRight className="w-4 h-4 mr-2" />
+                        Submit Request
+                      </>
+                    )}
+                  </Button>
+                  <Button
+                    type="button"
+                    variant="outline"
+                    onClick={resetContactForm}
+                    disabled={submitting}
+                  >
+                    Cancel
+                  </Button>
+                </div>
+              </form>
+            ) : (
+              <div className="text-center space-y-6 py-8">
+                <div className="w-20 h-20 bg-green-500/10 rounded-full flex items-center justify-center mx-auto">
+                  <CheckCircle2 className="w-10 h-10 text-green-400" />
+                </div>
+                <div>
+                  <h3 className="text-2xl font-semibold mb-2 text-white">Request Submitted!</h3>
+                  <p className="text-gray-400">We'll contact you within 24 hours to schedule your forensic contract review.</p>
+                </div>
+              </div>
+            )}
           </DialogContent>
         </Dialog>
 

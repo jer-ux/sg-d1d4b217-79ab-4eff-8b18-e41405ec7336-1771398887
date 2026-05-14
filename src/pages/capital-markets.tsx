@@ -120,10 +120,10 @@ export default function CapitalMarketsPage() {
         </div>
 
         {/* Market Opportunity Section - Reduced padding */}
-        <section className="py-12 px-6 bg-gradient-to-b from-black to-zinc-950">
+        <section className="py-6 px-6 bg-gradient-to-b from-black to-zinc-950">
           <div className="max-w-7xl mx-auto">
-            <motion.div {...slideInLeft} className="text-center mb-16">
-              <h2 className="text-4xl md:text-5xl font-bold text-blue-100 mb-6">
+            <motion.div {...slideInLeft} className="text-center mb-8">
+              <h2 className="text-4xl md:text-5xl font-bold text-blue-100 mb-4">
                 The Capital Markets Opportunity
               </h2>
               <p className="text-lg md:text-xl text-gray-400 max-w-3xl mx-auto">
@@ -132,7 +132,7 @@ export default function CapitalMarketsPage() {
               </p>
             </motion.div>
 
-            <motion.div {...scaleIn} className="mb-16">
+            <motion.div {...scaleIn} className="mb-8">
               <Suspense fallback={
                 <div className="w-full h-[400px] bg-zinc-900/50 rounded-2xl flex items-center justify-center">
                   <div className="text-center">
@@ -145,7 +145,7 @@ export default function CapitalMarketsPage() {
               </Suspense>
             </motion.div>
 
-            <motion.div {...staggerContainer} className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <motion.div {...staggerContainer} className="grid grid-cols-1 md:grid-cols-3 gap-4">
               {[
                 {
                   icon: Clock,
@@ -183,10 +183,10 @@ export default function CapitalMarketsPage() {
         </section>
 
         {/* Value Creation Section - Reduced padding */}
-        <section className="py-12 px-6 bg-gradient-to-b from-zinc-950 to-black">
+        <section className="py-6 px-6 bg-gradient-to-b from-zinc-950 to-black">
           <div className="max-w-7xl mx-auto">
-            <motion.div {...slideInRight} className="text-center mb-16">
-              <h2 className="text-4xl md:text-5xl font-bold text-blue-100 mb-6">
+            <motion.div {...slideInRight} className="text-center mb-8">
+              <h2 className="text-4xl md:text-5xl font-bold text-blue-100 mb-4">
                 Exponential Value Creation
               </h2>
               <p className="text-lg md:text-xl text-gray-400 max-w-3xl mx-auto">
@@ -195,7 +195,7 @@ export default function CapitalMarketsPage() {
               </p>
             </motion.div>
 
-            <motion.div {...scaleIn} className="mb-16">
+            <motion.div {...scaleIn} className="mb-8">
               <Suspense fallback={
                 <div className="w-full h-[400px] bg-zinc-900/50 rounded-2xl flex items-center justify-center">
                   <div className="text-center">
@@ -208,7 +208,7 @@ export default function CapitalMarketsPage() {
               </Suspense>
             </motion.div>
 
-            <motion.div {...staggerContainer} className="grid grid-cols-1 md:grid-cols-2 gap-8">
+            <motion.div {...staggerContainer} className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <motion.div
                 {...fadeInUp}
                 className="p-8 rounded-2xl bg-gradient-to-br from-rose-950/20 to-transparent border border-rose-500/30"
@@ -259,10 +259,10 @@ export default function CapitalMarketsPage() {
         </section>
 
         {/* Engagement Models Section - Reduced padding */}
-        <section className="py-12 px-6 bg-gradient-to-b from-black to-zinc-950">
+        <section className="py-6 px-6 bg-gradient-to-b from-black to-zinc-950">
           <div className="max-w-7xl mx-auto">
-            <motion.div {...slideInLeft} className="text-center mb-16">
-              <h2 className="text-4xl md:text-5xl font-bold text-blue-100 mb-6">
+            <motion.div {...slideInLeft} className="text-center mb-8">
+              <h2 className="text-4xl md:text-5xl font-bold text-blue-100 mb-4">
                 Engagement Models
               </h2>
               <p className="text-lg md:text-xl text-gray-400 max-w-3xl mx-auto">
@@ -270,7 +270,7 @@ export default function CapitalMarketsPage() {
               </p>
             </motion.div>
 
-            <motion.div {...scaleIn} className="mb-16">
+            <motion.div {...scaleIn} className="mb-8">
               <Suspense fallback={
                 <div className="w-full h-[400px] bg-zinc-900/50 rounded-2xl flex items-center justify-center">
                   <div className="text-center">
@@ -283,7 +283,7 @@ export default function CapitalMarketsPage() {
               </Suspense>
             </motion.div>
 
-            <motion.div {...staggerContainer} className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <motion.div {...staggerContainer} className="grid grid-cols-1 md:grid-cols-3 gap-4">
               {[
                 {
                   phase: "Diligence Sprint",
@@ -347,10 +347,10 @@ export default function CapitalMarketsPage() {
         </section>
 
         {/* Why Choose Us Section - Reduced padding */}
-        <section className="py-12 px-6 bg-gradient-to-b from-zinc-950 to-black">
+        <section className="py-6 px-6 bg-gradient-to-b from-zinc-950 to-black">
           <div className="max-w-7xl mx-auto">
-            <motion.div {...slideInRight} className="text-center mb-16">
-              <h2 className="text-4xl md:text-5xl font-bold text-blue-100 mb-6">
+            <motion.div {...slideInRight} className="text-center mb-8">
+              <h2 className="text-4xl md:text-5xl font-bold text-blue-100 mb-4">
                 Why Capital Markets Choose SiriusB iQ
               </h2>
               <p className="text-lg md:text-xl text-gray-400 max-w-3xl mx-auto">
@@ -358,7 +358,7 @@ export default function CapitalMarketsPage() {
               </p>
             </motion.div>
 
-            <motion.div {...staggerContainer} className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+            <motion.div {...staggerContainer} className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
               {[
                 {
                   icon: TrendingUp,
@@ -402,10 +402,10 @@ export default function CapitalMarketsPage() {
         </section>
 
         {/* CTA Section - Reduced padding */}
-        <section className="py-12 px-6 bg-gradient-to-b from-black to-zinc-950">
+        <section className="py-6 px-6 bg-gradient-to-b from-black to-zinc-950">
           <div className="max-w-4xl mx-auto">
             <motion.div {...fadeInUp} className="text-center">
-              <div className="p-8 md:p-12 rounded-2xl bg-gradient-to-br from-blue-950/20 to-transparent border border-blue-500/20">
+              <div className="p-6 md:p-8 rounded-2xl bg-gradient-to-br from-blue-950/20 to-transparent border border-blue-500/20">
                 <h3 className="text-3xl md:text-4xl font-bold text-blue-100 mb-4">
                   Ready to De-Risk Your Next Deal?
                 </h3>

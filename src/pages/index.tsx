@@ -1,4 +1,5 @@
 "use client";
+import Head from "next/head";
 import { useRef, useState, useEffect } from "react";
 import Link from "next/link";
 import { motion, useScroll, useTransform, useInView } from "framer-motion";

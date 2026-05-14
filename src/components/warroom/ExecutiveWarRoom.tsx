@@ -69,7 +69,7 @@ export function ExecutiveWarRoom() {
   return (
     <div className="min-h-screen bg-transparent text-zinc-100">
       <header className="border-b border-purple-500/30 bg-zinc-950/60 backdrop-blur-md sticky top-0 z-50">
-        <div className="mx-auto max-w-[1600px] px-6 py-5">
+        <div className="mx-auto max-w-[1600px] px-6 py-3">
           <div className="flex items-start justify-between gap-4">
             <div className="flex-1">
               <div className="flex items-center gap-3">
@@ -116,8 +116,8 @@ export function ExecutiveWarRoom() {
 
       <ExecutiveTicker items={tickerItems} />
 
-      <main className="mx-auto max-w-[1600px] px-6 py-6">
-        <section className="mb-8">
+      <main className="mx-auto max-w-[1600px] px-6 py-4">
+        <section className="mb-6">
           <div className="mb-4 flex items-baseline gap-3">
             <h2 className="text-lg font-bold text-zinc-100 flex items-center gap-2">
               <span className="h-1.5 w-1.5 rounded-full bg-purple-500" />
@@ -133,7 +133,7 @@ export function ExecutiveWarRoom() {
           </div>
         </section>
 
-        <section className="mb-8">
+        <section className="mb-6">
           <div className="mb-4 flex items-baseline gap-3">
             <h2 className="text-lg font-bold text-zinc-100 flex items-center gap-2">
               <span className="h-1.5 w-1.5 rounded-full bg-blue-500" />
@@ -147,7 +147,7 @@ export function ExecutiveWarRoom() {
           </div>
         </section>
 
-        <section className="mb-8">
+        <section className="mb-6">
           <div className="mb-4 flex items-baseline gap-3">
             <h2 className="text-lg font-bold text-zinc-100 flex items-center gap-2">
               <span className="h-1.5 w-1.5 rounded-full bg-emerald-500" />
@@ -161,7 +161,7 @@ export function ExecutiveWarRoom() {
           </div>
         </section>
 
-        <section className="mb-8">
+        <section className="mb-6">
           <ExecutiveEventStream events={events} />
         </section>
       </main>

@@ -322,7 +322,7 @@ export default function HomePage() {
         </section>
 
         {/* Enterprise Features Section */}
-        <section id="enterprise" className="relative z-10 mx-auto w-full max-w-7xl px-6 py-20">
+        <section id="enterprise" className="relative z-10 mx-auto w-full max-w-7xl px-6 py-12">
           <motion.div
             className="mb-12"
             initial={{ opacity: 0, y: 20 }}
@@ -400,7 +400,7 @@ export default function HomePage() {
         </section>
 
         {/* Proof Section with Enhanced 3D Cards */}
-        <section id="proof" className="relative z-10 mx-auto w-full max-w-7xl px-6 py-20">
+        <section id="proof" className="relative z-10 mx-auto w-full max-w-7xl px-6 py-12">
           <motion.div
             className="mb-12"
             initial={{ opacity: 0, y: 20 }}
@@ -445,7 +445,7 @@ export default function HomePage() {
         </section>
 
         {/* Forensics Section */}
-        <section id="forensics" className="relative z-10 mx-auto w-full max-w-7xl px-6 py-20">
+        <section id="forensics" className="relative z-10 mx-auto w-full max-w-7xl px-6 py-12">
           <motion.div
             className="mb-12"
             initial={{ opacity: 0, y: 20 }}
@@ -482,9 +482,9 @@ export default function HomePage() {
         </section>
 
         {/* Dashboard Section with 3D Effects */}
-        <section id="dashboard" className="relative z-10 mx-auto w-full max-w-7xl px-6 py-20">
+        <section id="dashboard" className="relative z-10 mx-auto w-full max-w-7xl px-6 py-12">
           <motion.div
-            className="mb-12"
+            className="mb-8"
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
@@ -507,57 +507,6 @@ export default function HomePage() {
                 </p>
               </div>
             </div>
-            <motion.div
-              className="mt-8 rounded-2xl border border-emerald-500/40 bg-gradient-to-br from-emerald-950/40 via-zinc-900/50 to-emerald-900/30 p-6 backdrop-blur-sm shadow-xl"
-              initial={{ opacity: 0, scale: 0.95 }}
-              whileInView={{ opacity: 1, scale: 1 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.6, delay: 0.2 }}
-              whileHover={{ scale: 1.01, rotateY: 1 }}
-              style={{ perspective: "1500px", transformStyle: "preserve-3d" }}
-            >
-              <div className="flex items-start gap-4">
-                <div className="flex-shrink-0">
-                  <motion.div
-                    className="rounded-xl bg-emerald-500/30 p-3 shadow-lg shadow-emerald-500/30"
-                    animate={{ rotate: [0, 5, -5, 0] }}
-                    transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
-                  >
-                    <Sparkles className="h-6 w-6 text-emerald-400" />
-                  </motion.div>
-                </div>
-                <div className="flex-1">
-                  <div className="text-lg font-bold text-emerald-300 mb-2">
-                    👆 Interactive 4-Level Evidence Drill-Through
-                  </div>
-                  <div className="text-sm text-zinc-300 leading-relaxed">
-                    All <span className="font-bold text-emerald-400">8 tiles</span> demonstrate enterprise-grade drill-down capabilities with cryptographic proof:
-                    <div className="mt-3 grid grid-cols-1 md:grid-cols-4 gap-2 text-xs">
-                      <div className="flex items-center gap-2 rounded-lg bg-zinc-900/70 px-3 py-2 backdrop-blur-sm">
-                        <div className="flex h-5 w-5 items-center justify-center rounded-full bg-emerald-500/30 text-emerald-400 font-bold text-xs">1</div>
-                        <span className="text-zinc-400">Executive Summary</span>
-                      </div>
-                      <div className="flex items-center gap-2 rounded-lg bg-zinc-900/70 px-3 py-2 backdrop-blur-sm">
-                        <div className="flex h-5 w-5 items-center justify-center rounded-full bg-emerald-500/30 text-emerald-400 font-bold text-xs">2</div>
-                        <span className="text-zinc-400">Factor Analysis</span>
-                      </div>
-                      <div className="flex items-center gap-2 rounded-lg bg-zinc-900/70 px-3 py-2 backdrop-blur-sm">
-                        <div className="flex h-5 w-5 items-center justify-center rounded-full bg-emerald-500/30 text-emerald-400 font-bold text-xs">3</div>
-                        <span className="text-zinc-400">Transactions</span>
-                      </div>
-                      <div className="flex items-center gap-2 rounded-lg bg-zinc-900/70 px-3 py-2 backdrop-blur-sm">
-                        <div className="flex h-5 w-5 items-center justify-center rounded-full bg-emerald-500/30 text-emerald-400 font-bold text-xs">4</div>
-                        <span className="text-zinc-400">Evidence Receipt</span>
-                      </div>
-                    </div>
-                  </div>
-                  <div className="mt-4 flex items-center gap-2 text-xs text-emerald-400/80">
-                    <Shield className="h-3 w-3" />
-                    <span>Every metric cryptographically linked to source documents with SHA-256 hashing</span>
-                  </div>
-                </div>
-              </div>
-            </motion.div>
           </motion.div>
           <motion.div
             initial={{ opacity: 0, y: 30 }}
@@ -570,7 +519,7 @@ export default function HomePage() {
         </section>
 
         {/* CHRO War Room Section */}
-        <section id="war-room" className="relative z-10 mx-auto w-full max-w-7xl px-6 py-20">
+        <section id="war-room" className="relative z-10 mx-auto w-full max-w-7xl px-6 py-12">
           <motion.div
             className="mb-12"
             initial={{ opacity: 0, y: 20 }}
@@ -660,7 +609,7 @@ export default function HomePage() {
         </section>
 
         {/* Enterprise Trust Section */}
-        <section id="trust" className="relative z-10 mx-auto w-full max-w-7xl px-6 py-20">
+        <section id="trust" className="relative z-10 mx-auto w-full max-w-7xl px-6 py-12">
           <motion.div
             className="mb-12"
             initial={{ opacity: 0, y: 20 }}

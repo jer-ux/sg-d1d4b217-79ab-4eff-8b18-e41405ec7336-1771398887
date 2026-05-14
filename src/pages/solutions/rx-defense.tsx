@@ -561,6 +561,201 @@ export default function RxDefenseReport() {
             ))}
           </TabsContent>
 
+          {/* Tab 3: Financial Impact */}
+          <TabsContent value="financial" className="space-y-12">
+            <section>
+              <h2 className="text-3xl font-bold text-white mb-8 tracking-tight">Financial Impact Analysis</h2>
+              <p className="text-slate-400 text-lg mb-12 max-w-3xl leading-relaxed">
+                This section quantifies the estimated financial exposure across all identified contract gaps. These projections are based on industry benchmarks and your plan's characteristics.
+              </p>
+
+              {/* Total Savings Summary */}
+              <div className="bg-gradient-to-br from-emerald-950/40 to-emerald-900/20 border border-emerald-500/30 rounded-2xl p-8 mb-12">
+                <div className="flex items-center justify-between mb-6">
+                  <h3 className="text-2xl font-bold text-white">Total Annual Savings Opportunity</h3>
+                  <div className="text-5xl font-black text-emerald-400">$3.6M</div>
+                </div>
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                  <div className="bg-[#0a0a0a]/50 rounded-xl p-5 border border-white/5">
+                    <div className="text-sm text-emerald-400 font-bold tracking-widest uppercase mb-2">Per Member Per Year</div>
+                    <div className="text-3xl font-bold text-white">$240</div>
+                  </div>
+                  <div className="bg-[#0a0a0a]/50 rounded-xl p-5 border border-white/5">
+                    <div className="text-sm text-emerald-400 font-bold tracking-widest uppercase mb-2">Current Annual Spend</div>
+                    <div className="text-3xl font-bold text-white">$18.5M</div>
+                  </div>
+                  <div className="bg-[#0a0a0a]/50 rounded-xl p-5 border border-white/5">
+                    <div className="text-sm text-emerald-400 font-bold tracking-widest uppercase mb-2">Potential Reduction</div>
+                    <div className="text-3xl font-bold text-white">19.5%</div>
+                  </div>
+                </div>
+              </div>
+
+              {/* Savings Breakdown by Provision */}
+              <div className="space-y-6 mb-12">
+                <h3 className="text-2xl font-bold text-white mb-6">Savings Breakdown by Provision</h3>
+                
+                <div className="space-y-3">
+                  {[
+                    { name: "Pass-Through Pharmacy Costs", amount: "$960K", percent: "26.7%", color: "bg-emerald-500" },
+                    { name: "Rebate & Manufacturer Revenue", amount: "$583K", percent: "16.2%", color: "bg-emerald-400" },
+                    { name: "Lowest Net Cost & Clinical Integrity", amount: "$583K", percent: "16.2%", color: "bg-cyan-500" },
+                    { name: "Carve-Out & Vendor Rights", amount: "$410K", percent: "11.4%", color: "bg-blue-500" },
+                    { name: "Audit Rights & Extrapolation", amount: "$339K", percent: "9.4%", color: "bg-indigo-500" },
+                    { name: "Pharmacy Ownership & Neutrality", amount: "$192K", percent: "5.3%", color: "bg-purple-500" },
+                    { name: "Fiduciary Loyalty Commitment", amount: "$174K", percent: "4.8%", color: "bg-pink-500" },
+                    { name: "Termination & Clean Exit", amount: "$154K", percent: "4.3%", color: "bg-rose-500" },
+                    { name: "Administrative Fee Verification", amount: "$119K", percent: "3.3%", color: "bg-orange-500" },
+                    { name: "Data Ownership & Access", amount: "$78K", percent: "2.2%", color: "bg-yellow-500" },
+                  ].map((item, idx) => (
+                    <div key={idx} className="bg-[#0a0a0a] border border-white/10 rounded-xl p-5 hover:border-white/20 transition-colors">
+                      <div className="flex items-center justify-between mb-3">
+                        <div className="flex items-center gap-4 flex-1">
+                          <span className="text-slate-500 font-mono text-sm font-bold">#{idx + 1}</span>
+                          <span className="text-white font-semibold">{item.name}</span>
+                        </div>
+                        <div className="text-right flex items-center gap-4">
+                          <span className="text-slate-500 text-sm font-mono">{item.percent}</span>
+                          <span className="text-xl font-bold text-emerald-400 min-w-[100px] text-right">{item.amount}</span>
+                        </div>
+                      </div>
+                      <div className="h-2 bg-slate-800 rounded-full overflow-hidden">
+                        <div className={`h-full ${item.color}`} style={{ width: item.percent }} />
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              {/* Cost Category Breakdown */}
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-12">
+                <div className="bg-[#0a0a0a] border border-white/10 rounded-xl p-6">
+                  <h4 className="text-lg font-bold text-white mb-6 flex items-center gap-2">
+                    <DollarSign className="w-5 h-5 text-emerald-400" />
+                    Pharmacy Cost Savings
+                  </h4>
+                  <div className="space-y-4">
+                    <div className="flex justify-between items-center">
+                      <span className="text-slate-400">Pass-Through Pricing</span>
+                      <span className="text-white font-bold">$960K</span>
+                    </div>
+                    <div className="flex justify-between items-center">
+                      <span className="text-slate-400">MAC Optimization</span>
+                      <span className="text-white font-bold">$340K</span>
+                    </div>
+                    <div className="flex justify-between items-center">
+                      <span className="text-slate-400">Generic Substitution</span>
+                      <span className="text-white font-bold">$287K</span>
+                    </div>
+                    <div className="border-t border-white/10 pt-4 flex justify-between items-center">
+                      <span className="text-white font-bold">Subtotal</span>
+                      <span className="text-emerald-400 font-bold text-xl">$1.59M</span>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="bg-[#0a0a0a] border border-white/10 rounded-xl p-6">
+                  <h4 className="text-lg font-bold text-white mb-6 flex items-center gap-2">
+                    <TrendingUp className="w-5 h-5 text-cyan-400" />
+                    Rebate & Revenue Recovery
+                  </h4>
+                  <div className="space-y-4">
+                    <div className="flex justify-between items-center">
+                      <span className="text-slate-400">Rebate Pass-Through</span>
+                      <span className="text-white font-bold">$583K</span>
+                    </div>
+                    <div className="flex justify-between items-center">
+                      <span className="text-slate-400">Manufacturer Direct</span>
+                      <span className="text-white font-bold">$410K</span>
+                    </div>
+                    <div className="flex justify-between items-center">
+                      <span className="text-slate-400">GPO Alignment</span>
+                      <span className="text-white font-bold">$192K</span>
+                    </div>
+                    <div className="border-t border-white/10 pt-4 flex justify-between items-center">
+                      <span className="text-white font-bold">Subtotal</span>
+                      <span className="text-cyan-400 font-bold text-xl">$1.19M</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              {/* Risk Exposure */}
+              <div className="bg-gradient-to-br from-rose-950/40 to-rose-900/20 border border-rose-500/30 rounded-2xl p-8 mb-12">
+                <h3 className="text-2xl font-bold text-white mb-6 flex items-center gap-3">
+                  <AlertTriangle className="w-6 h-6 text-rose-400" />
+                  Annual Risk Exposure
+                </h3>
+                <p className="text-slate-300 mb-8 leading-relaxed">
+                  Without contract remediation, your plan is exposed to ongoing financial risks from PBM discretion, hidden fees, and misaligned incentives.
+                </p>
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                  <div className="bg-[#0a0a0a]/50 rounded-xl p-5 border border-rose-500/20">
+                    <div className="text-sm text-rose-400 font-bold tracking-widest uppercase mb-2">Spread Pricing Risk</div>
+                    <div className="text-3xl font-bold text-white mb-2">$1.2M</div>
+                    <div className="text-xs text-slate-500">Estimated annual hidden margin</div>
+                  </div>
+                  <div className="bg-[#0a0a0a]/50 rounded-xl p-5 border border-rose-500/20">
+                    <div className="text-sm text-rose-400 font-bold tracking-widest uppercase mb-2">Rebate Retention Risk</div>
+                    <div className="text-3xl font-bold text-white mb-2">$840K</div>
+                    <div className="text-xs text-slate-500">Potential withheld rebates</div>
+                  </div>
+                  <div className="bg-[#0a0a0a]/50 rounded-xl p-5 border border-rose-500/20">
+                    <div className="text-sm text-rose-400 font-bold tracking-widest uppercase mb-2">Data Monetization</div>
+                    <div className="text-3xl font-bold text-white mb-2">$320K</div>
+                    <div className="text-xs text-slate-500">Estimated value of your data</div>
+                  </div>
+                </div>
+              </div>
+
+              {/* 3-Year Projection */}
+              <div className="bg-[#0a0a0a] border border-white/10 rounded-xl p-8">
+                <h3 className="text-2xl font-bold text-white mb-6">3-Year Financial Impact Projection</h3>
+                <div className="space-y-6">
+                  <div className="grid grid-cols-5 gap-4 text-sm font-bold text-slate-500 uppercase tracking-wider border-b border-white/10 pb-4">
+                    <div>Year</div>
+                    <div className="text-right">Baseline Spend</div>
+                    <div className="text-right">With Changes</div>
+                    <div className="text-right">Annual Savings</div>
+                    <div className="text-right">Cumulative</div>
+                  </div>
+                  
+                  <div className="grid grid-cols-5 gap-4 items-center">
+                    <div className="text-white font-bold">2026</div>
+                    <div className="text-right text-slate-400">$18.5M</div>
+                    <div className="text-right text-white font-semibold">$14.9M</div>
+                    <div className="text-right text-emerald-400 font-bold">$3.6M</div>
+                    <div className="text-right text-emerald-400 font-bold">$3.6M</div>
+                  </div>
+                  
+                  <div className="grid grid-cols-5 gap-4 items-center bg-white/5 rounded-lg p-3 -mx-3">
+                    <div className="text-white font-bold">2027</div>
+                    <div className="text-right text-slate-400">$19.3M</div>
+                    <div className="text-right text-white font-semibold">$15.5M</div>
+                    <div className="text-right text-emerald-400 font-bold">$3.8M</div>
+                    <div className="text-right text-emerald-400 font-bold">$7.4M</div>
+                  </div>
+                  
+                  <div className="grid grid-cols-5 gap-4 items-center">
+                    <div className="text-white font-bold">2028</div>
+                    <div className="text-right text-slate-400">$20.1M</div>
+                    <div className="text-right text-white font-semibold">$16.1M</div>
+                    <div className="text-right text-emerald-400 font-bold">$4.0M</div>
+                    <div className="text-right text-emerald-400 font-bold">$11.4M</div>
+                  </div>
+
+                  <div className="border-t border-white/10 pt-6 mt-6">
+                    <div className="flex justify-between items-center">
+                      <span className="text-xl font-bold text-white">3-Year Total Savings</span>
+                      <span className="text-4xl font-black text-emerald-400">$11.4M</span>
+                    </div>
+                    <p className="text-sm text-slate-500 mt-2">Based on 4.5% annual trend and full contract remediation in 2026</p>
+                  </div>
+                </div>
+              </div>
+            </section>
+          </TabsContent>
+
           {/* Tab 4: Negotiation Playbook */}
           <TabsContent value="playbook" className="space-y-12">
             <section>

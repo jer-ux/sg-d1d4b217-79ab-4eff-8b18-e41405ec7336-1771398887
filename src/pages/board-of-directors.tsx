@@ -134,6 +134,28 @@ const boardMembers = [
       ],
       vision: "As a member of the Board of Directors, Nicole's vision is to accelerate the adoption of algorithmic fiduciary intelligence across the enterprise landscape, establishing SiriusB iQ as the undeniable standard for healthcare financial governance and strategic decision-making."
     }
+  },
+  {
+    name: "Eric Dreyfus",
+    title: "Senior Adviser - Actuarial Science & Employee Benefits",
+    image: "/eric.jpeg",
+    linkedin: "https://www.linkedin.com/in/eric-dreyfus-ab47915/",
+    bio: "Actuarial science professional with extensive Fortune 500 health and welfare consulting experience. Led employee benefit financials for employers ranging from 100 to 50,000 employees, specializing in renewal negotiations, utilization analytics, and IBNR reserve calculations for self-insured organizations.",
+    fullBio: {
+      introduction: "Eric Dreyfus brings decades of actuarial and underwriting expertise to SiriusB iQ's board, with a distinguished career spanning major insurance carriers (MetLife, Aetna/US Healthcare) and premier consulting firms (Towers Perrin, now Willis Towers Watson, and Mercer). His deep technical proficiency in actuarial science, combined with hands-on experience managing complex employee benefit financials for Fortune 100 and Fortune 500 employers, positions him as a critical strategic adviser on healthcare cost modeling, risk assessment, and fiduciary governance. Eric's career trajectory—from underwriter to practice leader—demonstrates a rare combination of technical precision and strategic business development that directly aligns with SiriusB iQ's mission to bring algorithmic rigor to benefits intelligence.",
+      platform: "Eric's consulting platform is built on a foundation of actuarial precision applied to real-world benefit design challenges. Throughout his career at Towers Perrin, Mercer, Hays, Apex Benefits Group, AssuredPartners, and currently Sympl Benefits, he has developed a methodology that transforms complex financial data—renewal negotiations, premium calculations, utilization analytics, IBNR reserves, and claim projections—into actionable strategic insights for employers. His approach emphasizes moving beyond the 'status quo' by leveraging innovative healthcare strategies that deliver sustainable, high-performing benefit programs. This philosophy of challenging conventional wisdom and building data-driven alternatives mirrors SiriusB iQ's core value proposition of replacing opaque traditional benefits management with transparent, algorithmic intelligence.",
+      philosophy: "Eric's guiding philosophy centers on disrupting the 'status quo' in employee benefits—a principle that has driven his work across small, middle-market, and large employers. He believes that sustainable benefit programs must be built on rigorous financial analysis, transparent cost structures, and a commitment to measurable value rather than industry inertia. By working 'one employer at a time,' Eric focuses on creating bespoke solutions that balance financial performance with genuine value perception among employees. This commitment to individualized, data-driven strategy over one-size-fits-all approaches makes him an invaluable adviser as SiriusB iQ scales its algorithmic platforms to serve diverse employer segments—from middle-market organizations to jumbo accounts requiring actuarial-grade precision.",
+      expertise: [
+        "Actuarial Science & Life/Health Underwriting (MetLife, Aetna)",
+        "Fortune 500 Health & Welfare Consulting (Towers Perrin/WTW)",
+        "Employee Benefit Financial Modeling (Renewal/Marketing Negotiations)",
+        "COBRA/Premium Calculations & Utilization Review Analytics",
+        "IBNR Reserve & Claim Projection Modeling for Self-Insured Employers",
+        "Middle to Large Group Risk Assessment (500-50,000 Employees)",
+        "Practice Leadership & Consultant Team Management"
+      ],
+      vision: "As Senior Adviser to SiriusB iQ, Eric's vision is to ensure that the platform's actuarial intelligence and cost modeling capabilities meet the rigorous standards required by sophisticated employers and their fiduciaries. His experience across the full spectrum of employer sizes—from 100-employee organizations to Fortune 100 enterprises—enables him to guide SiriusB iQ's product roadmap to serve both middle-market and jumbo accounts with equal precision. Eric is committed to leveraging his decades of consulting expertise to validate that SiriusB iQ's algorithmic outputs deliver the same level of actuarial accuracy and strategic insight that he has personally provided to clients throughout his career, while scaling those capabilities through intelligent automation."
+    }
   }
 ];
 

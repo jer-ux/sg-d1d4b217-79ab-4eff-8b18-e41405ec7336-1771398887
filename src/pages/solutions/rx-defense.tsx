@@ -22,6 +22,7 @@ import {
 import { SiteHeader } from "@/components/site/SiteHeader";
 import { SiteFooter } from "@/components/site/SiteFooter";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import Link from "next/link";
 
 const provisions = [
   {
@@ -886,13 +887,13 @@ export default function RxDefenseReport() {
                 Schedule the leak assessment:
               </p>
               <div className="inline-block">
-                <a 
+                <Link 
                   href="/request-demo" 
                   className="inline-flex items-center gap-3 bg-gradient-to-r from-orange-500 to-rose-500 text-white px-8 py-4 rounded-xl font-bold text-lg hover:from-orange-600 hover:to-rose-600 transition-all shadow-lg shadow-orange-500/30"
                 >
                   <span>Request Your 48-Hour Analysis</span>
                   <ArrowRight className="w-5 h-5" />
-                </a>
+                </Link>
               </div>
             </div>
           </div>
@@ -1926,13 +1927,13 @@ export default function RxDefenseReport() {
             <h4 className="text-white font-bold text-lg">Stop the Leakage.</h4>
             <p className="text-slate-400 text-sm">Upload your contract and claims data for a 48-hour deterministic analysis.</p>
           </div>
-          <a 
+          <Link 
             href="/request-demo" 
             className="flex-shrink-0 bg-white text-black px-6 py-3 rounded-lg font-bold hover:bg-slate-200 transition-colors flex items-center gap-2"
           >
             Request 48-Hour Analysis
             <ArrowRight size={18} />
-          </a>
+          </Link>
         </div>
       </div>
     </div>

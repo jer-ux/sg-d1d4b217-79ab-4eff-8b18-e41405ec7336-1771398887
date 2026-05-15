@@ -383,6 +383,237 @@ export default function RxDefenseReport() {
           </p>
         </div>
 
+        {/* Strategic Marketing Framework - Five Operational Pillars */}
+        <section className="mb-24 border-t border-white/10 pt-16">
+          <div className="text-xs font-bold tracking-[0.25em] text-purple-500 mb-6 uppercase text-center">
+            Strategic Marketing Framework
+          </div>
+          <h2 className="text-4xl md:text-5xl font-bold text-white text-center mb-16 tracking-tight">
+            Rx Defense Contract X-Ray™
+          </h2>
+
+          {/* Pillar I: Strategic Insight */}
+          <div className="mb-20">
+            <div className="flex items-center gap-4 mb-8">
+              <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-purple-500/30 to-blue-500/30 flex items-center justify-center text-2xl font-black text-purple-400">
+                I
+              </div>
+              <h3 className="text-3xl font-bold text-white">Strategic Insight</h3>
+            </div>
+            
+            <div className="bg-gradient-to-br from-purple-950/40 to-blue-950/40 border border-purple-500/30 rounded-2xl p-8 mb-8">
+              <div className="text-sm font-bold tracking-wider text-purple-400 mb-4 uppercase">Category Statement</div>
+              <h4 className="text-2xl md:text-3xl font-bold text-white mb-4 leading-tight">
+                Financial Defense Infrastructure for the Self-Insured Employer
+              </h4>
+              <p className="text-slate-300 text-lg leading-relaxed">
+                Not analytics. Not consulting. Not another broker dashboard. The first independent audit of your second-largest expense.
+              </p>
+            </div>
+
+            <div className="bg-[#111] border border-white/5 rounded-xl p-8 mb-6">
+              <h5 className="text-sm font-bold tracking-wider text-cyan-400 mb-4 uppercase">The Asymmetric Insight</h5>
+              <p className="text-slate-300 leading-relaxed mb-6">
+                Every other major line item on your P&L is audited by an independent party. Your auditors are not your accountants. Your tax counsel is not the IRS. Your insurance broker is not your underwriter. Healthcare is the only line where the vendor writes the contract, audits the contract, and reports performance against the contract — and you accept it because no independent alternative has ever existed. Until now.
+              </p>
+            </div>
+
+            <div className="space-y-4">
+              <h5 className="text-sm font-bold tracking-wider text-emerald-400 mb-4 uppercase">Master Headlines</h5>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div className="bg-[#0a0a0a] border border-emerald-500/20 rounded-lg p-5 hover:border-emerald-500/40 transition-colors">
+                  <p className="text-white font-semibold">Your PBM contract leaks. We prove it in 48 hours.</p>
+                </div>
+                <div className="bg-[#0a0a0a] border border-cyan-500/20 rounded-lg p-5 hover:border-cyan-500/40 transition-colors">
+                  <p className="text-white font-semibold">You manage every other line item to the basis point. Why is healthcare the exception?</p>
+                </div>
+                <div className="bg-[#0a0a0a] border border-purple-500/20 rounded-lg p-5 hover:border-purple-500/40 transition-colors">
+                  <p className="text-white font-semibold">Built by an actuary and a software engineer. Sold by neither a broker nor a carrier.</p>
+                </div>
+                <div className="bg-[#0a0a0a] border border-blue-500/20 rounded-lg p-5 hover:border-blue-500/40 transition-colors">
+                  <p className="text-white font-semibold">Your second-largest expense is the only one you cannot audit. We built the X-ray.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Pillar II: System Architecture */}
+          <div className="mb-20">
+            <div className="flex items-center gap-4 mb-8">
+              <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-cyan-500/30 to-blue-500/30 flex items-center justify-center text-2xl font-black text-cyan-400">
+                II
+              </div>
+              <h3 className="text-3xl font-bold text-white">System Architecture</h3>
+            </div>
+
+            <div className="bg-gradient-to-br from-cyan-950/40 to-blue-950/40 border border-cyan-500/30 rounded-2xl p-8 mb-8">
+              <h4 className="text-xl font-bold text-white mb-4">What the X-Ray Actually Does</h4>
+              <p className="text-slate-300 leading-relaxed mb-6">
+                Rx Defense deconstructs every PBM agreement across 10 structural provisions — Brand Effective Rate guarantees, spread pricing, rebate reclassification, specialty exclusivity, audit restrictions, formulary control, market check enforceability, termination and run-out, administrative fee bundling, and data ownership.
+              </p>
+              <p className="text-slate-300 leading-relaxed">
+                Each provision is cross-validated against your Form 5500, your 90-day de-identified claims file (EDI 837/835), and a proprietary benchmark database refined by every prior engagement. The output is not a probability. It is not an estimate. <span className="text-emerald-400 font-semibold">It is a deterministic, dollar-quantified, ERISA-defensible evidence chain</span> — clause by clause, claim by claim, NDC by NDC. Court-admissible. Renewal-grade. Fiduciary-ready.
+              </p>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+              <div className="bg-[#0a0a0a] border border-cyan-500/20 rounded-lg p-6">
+                <div className="text-3xl font-bold text-cyan-400 mb-2">10</div>
+                <div className="text-sm text-slate-400">Structural Provisions Analyzed</div>
+              </div>
+              <div className="bg-[#0a0a0a] border border-purple-500/20 rounded-lg p-6">
+                <div className="text-3xl font-bold text-purple-400 mb-2">48hrs</div>
+                <div className="text-sm text-slate-400">Time to First Report</div>
+              </div>
+              <div className="bg-[#0a0a0a] border border-emerald-500/20 rounded-lg p-6">
+                <div className="text-3xl font-bold text-emerald-400 mb-2">100%</div>
+                <div className="text-sm text-slate-400">ERISA-Defensible Evidence</div>
+              </div>
+            </div>
+          </div>
+
+          {/* Pillar III: Proof Points */}
+          <div className="mb-20">
+            <div className="flex items-center gap-4 mb-8">
+              <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-emerald-500/30 to-cyan-500/30 flex items-center justify-center text-2xl font-black text-emerald-400">
+                III
+              </div>
+              <h3 className="text-3xl font-bold text-white">Proof Points</h3>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div className="bg-[#111] border border-emerald-500/20 rounded-xl p-6">
+                <div className="flex items-start gap-4 mb-4">
+                  <CheckCircle2 className="text-emerald-400 shrink-0 mt-1" size={24} />
+                  <div>
+                    <h5 className="text-white font-bold mb-2">Independent & Conflict-Free</h5>
+                    <p className="text-slate-400 text-sm leading-relaxed">
+                      No broker commissions. No carrier partnerships. No vendor referral fees. Built by a licensed actuary and software engineer who answers only to the plan fiduciary.
+                    </p>
+                  </div>
+                </div>
+              </div>
+
+              <div className="bg-[#111] border border-cyan-500/20 rounded-xl p-6">
+                <div className="flex items-start gap-4 mb-4">
+                  <CheckCircle2 className="text-cyan-400 shrink-0 mt-1" size={24} />
+                  <div>
+                    <h5 className="text-white font-bold mb-2">Court-Admissible Evidence</h5>
+                    <p className="text-slate-400 text-sm leading-relaxed">
+                      Every finding is backed by specific contract clauses, claims data cross-references, and actuarial calculations that meet ERISA litigation standards.
+                    </p>
+                  </div>
+                </div>
+              </div>
+
+              <div className="bg-[#111] border border-purple-500/20 rounded-xl p-6">
+                <div className="flex items-start gap-4 mb-4">
+                  <CheckCircle2 className="text-purple-400 shrink-0 mt-1" size={24} />
+                  <div>
+                    <h5 className="text-white font-bold mb-2">Benchmark Database</h5>
+                    <p className="text-slate-400 text-sm leading-relaxed">
+                      Pricing, rebates, and administrative fees compared against anonymized data from every prior engagement — continuously refined with each new client.
+                    </p>
+                  </div>
+                </div>
+              </div>
+
+              <div className="bg-[#111] border border-blue-500/20 rounded-xl p-6">
+                <div className="flex items-start gap-4 mb-4">
+                  <CheckCircle2 className="text-blue-400 shrink-0 mt-1" size={24} />
+                  <div>
+                    <h5 className="text-white font-bold mb-2">Fiduciary Protection</h5>
+                    <p className="text-slate-400 text-sm leading-relaxed">
+                      Documentation that demonstrates plan fiduciary diligence for DOL audits, participant lawsuits, and board oversight requirements.
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Pillar IV: Execution Model */}
+          <div className="mb-20">
+            <div className="flex items-center gap-4 mb-8">
+              <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-orange-500/30 to-rose-500/30 flex items-center justify-center text-2xl font-black text-orange-400">
+                IV
+              </div>
+              <h3 className="text-3xl font-bold text-white">Execution Model</h3>
+            </div>
+
+            <div className="bg-gradient-to-br from-orange-950/40 to-rose-950/40 border border-orange-500/30 rounded-2xl p-8 mb-8">
+              <h4 className="text-xl font-bold text-white mb-4">How We Engage</h4>
+              <div className="space-y-6">
+                <div className="flex gap-4">
+                  <div className="flex-shrink-0 w-8 h-8 rounded-full bg-orange-500/20 text-orange-400 flex items-center justify-center text-sm font-bold">1</div>
+                  <div>
+                    <h5 className="text-white font-semibold mb-1">Upload Contract + Claims Data</h5>
+                    <p className="text-slate-400 text-sm">Fully executed PBM agreement + 90-day de-identified claims file (EDI 837/835). HIPAA-compliant secure upload.</p>
+                  </div>
+                </div>
+                <div className="flex gap-4">
+                  <div className="flex-shrink-0 w-8 h-8 rounded-full bg-orange-500/20 text-orange-400 flex items-center justify-center text-sm font-bold">2</div>
+                  <div>
+                    <h5 className="text-white font-semibold mb-1">48-Hour Initial Analysis</h5>
+                    <p className="text-slate-400 text-sm">Automated clause extraction, claims validation, benchmark comparison. First-pass findings delivered as executive summary + full technical report.</p>
+                  </div>
+                </div>
+                <div className="flex gap-4">
+                  <div className="flex-shrink-0 w-8 h-8 rounded-full bg-orange-500/20 text-orange-400 flex items-center justify-center text-sm font-bold">3</div>
+                  <div>
+                    <h5 className="text-white font-semibold mb-1">Negotiation Playbook Delivery</h5>
+                    <p className="text-slate-400 text-sm">Provision-by-provision recommended contract language, financial quantification, and fiduciary risk assessment ranked by savings impact.</p>
+                  </div>
+                </div>
+                <div className="flex gap-4">
+                  <div className="flex-shrink-0 w-8 h-8 rounded-full bg-orange-500/20 text-orange-400 flex items-center justify-center text-sm font-bold">4</div>
+                  <div>
+                    <h5 className="text-white font-semibold mb-1">Optional: Renegotiation Support</h5>
+                    <p className="text-slate-400 text-sm">We sit in on renewal meetings, provide technical testimony, and validate PBM counter-proposals in real-time.</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Pillar V: Competitive Moat */}
+          <div className="mb-12">
+            <div className="flex items-center gap-4 mb-8">
+              <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-rose-500/30 to-purple-500/30 flex items-center justify-center text-2xl font-black text-rose-400">
+                V
+              </div>
+              <h3 className="text-3xl font-bold text-white">Why This Exists Now</h3>
+            </div>
+
+            <div className="bg-[#111] border border-white/5 rounded-xl p-8 mb-6">
+              <p className="text-slate-300 text-lg leading-relaxed mb-6">
+                The Consolidated Appropriations Act (2021) and subsequent regulatory guidance created a transparency mandate that PBMs are structurally unable to comply with. They cannot audit themselves. Consultants lack the technical infrastructure to analyze millions of claims. Brokers are financially aligned with the PBM, not the plan.
+              </p>
+              <p className="text-slate-300 text-lg leading-relaxed">
+                <span className="text-white font-semibold">The regulatory window is open.</span> Self-funded plans now have legal standing to demand full contract transparency and fiduciary alignment. The DOL is actively investigating PBM practices. Litigation is rising. The next 24 months represent a structural reset in PBM contracting — and the only way to capture value is with independent, evidence-grade analysis that no conflicted party can provide.
+              </p>
+            </div>
+
+            <div className="bg-gradient-to-br from-rose-950/40 to-purple-950/40 border border-rose-500/30 rounded-2xl p-8">
+              <h4 className="text-xl font-bold text-white mb-4">Who This Is For</h4>
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <div>
+                  <div className="text-rose-400 font-bold mb-2 text-sm uppercase tracking-wider">Self-Insured Employers</div>
+                  <p className="text-slate-400 text-sm">500–5,000 lives. $2M–$50M annual drug spend. HR/Benefits Directors and CFOs who suspect PBM overcharges but lack the tools to prove it.</p>
+                </div>
+                <div>
+                  <div className="text-purple-400 font-bold mb-2 text-sm uppercase tracking-wider">Plan Fiduciaries</div>
+                  <p className="text-slate-400 text-sm">Board members, trustees, and named fiduciaries who need documentation that they fulfilled their ERISA duty to monitor service providers.</p>
+                </div>
+                <div>
+                  <div className="text-cyan-400 font-bold mb-2 text-sm uppercase tracking-wider">Private Equity / PE-Backed CFOs</div>
+                  <p className="text-slate-400 text-sm">Portfolio companies where healthcare is 8–15% of EBITDA and PBM contracts have never been independently audited.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
         {/* Main Scorecard */}
         <div className="grid grid-cols-1 md:grid-cols-12 gap-6 mb-8">
           <div className="md:col-span-12 rounded-2xl bg-gradient-to-br from-[#1a050a] to-[#0a0204] border border-rose-900/50 p-8 md:p-12 relative overflow-hidden">

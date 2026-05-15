@@ -10,7 +10,14 @@ import {
   CheckCircle2,
   FileText,
   TrendingUp,
-  Target
+  Target,
+  ChevronDown,
+  ChevronUp,
+  Calculator,
+  Users,
+  Building,
+  Activity,
+  Award
 } from "lucide-react";
 import { SiteHeader } from "@/components/site/SiteHeader";
 import { SiteFooter } from "@/components/site/SiteFooter";
@@ -345,8 +352,40 @@ const provisions = [
 export default function RxDefenseReport() {
   const [activeTab, setActiveTab] = useState("summary");
 
+  // ROI Calculator State
+  const [calcLives, setCalcLives] = useState<number>(1000);
+  const [calcSpend, setCalcSpend] = useState<number>(12000000);
+  
+  // FAQ State
+  const [openFaq, setOpenFaq] = useState<number | null>(null);
+
+  const formatCurrency = (val: number) => new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD', maximumFractionDigits: 0 }).format(val);
+  const estimatedSavingsMin = calcSpend * 0.12;
+  const estimatedSavingsMax = calcSpend * 0.18;
+  const auditFee = calcLives < 700 ? 15000 : calcLives < 2000 ? 50000 : 200000;
+  const roiMultiple = Math.floor(estimatedSavingsMin / auditFee);
+
+  const faqs = [
+    {
+      q: "How does the 48-hour analysis work?",
+      a: "Once we receive your fully executed PBM agreement and a 90-day de-identified claims file via our SOC 2 compliant portal, our algorithmic engine extracts all clauses and runs deterministic financial modeling. Within 48 hours, you receive a fiduciary-grade report identifying exact dollar-value leaks."
+    },
+    {
+      q: "What if you don't find any savings?",
+      a: "We offer a 3:1 Guarantee: If we identify less than three times your engagement fee in recoverable leakage, the analysis is completely free. To date, we have never had to invoke this clause."
+    },
+    {
+      q: "Is this going to disrupt our current broker relationship?",
+      a: "No. We operate purely as an independent auditor and technology layer. Many brokers actually bring us in to help their clients because our forensic findings give them the leverage they need at the renewal table."
+    },
+    {
+      q: "Are you going to try and sell us a new PBM?",
+      a: "No. We do not sell pharmacy benefits, we take zero broker commissions, and we have no carrier relationships. Our only fiduciary duty is to the plan."
+    }
+  ];
+
   return (
-    <div className="min-h-screen bg-[#050505] text-slate-300 font-sans selection:bg-rose-500/30">
+    <div className="min-h-screen bg-[#050505] text-slate-300 font-sans selection:bg-rose-500/30 relative pb-24">
       <Head>
         <title>RX Defense IQ | Fiduciary Analysis Report</title>
       </Head>
@@ -854,6 +893,188 @@ export default function RxDefenseReport() {
                   <span>Request Your 48-Hour Analysis</span>
                   <ArrowRight className="w-5 h-5" />
                 </a>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* Social Proof Section */}
+        <section className="mb-24 border-t border-white/10 pt-16">
+          <div className="text-xs font-bold tracking-[0.25em] text-emerald-500 mb-6 uppercase text-center">
+            Industry Recognition
+          </div>
+          <h2 className="text-3xl md:text-4xl font-bold text-white text-center mb-12 tracking-tight">
+            Trusted by Fiduciaries & CFOs
+          </h2>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div className="bg-[#111] border border-white/5 rounded-xl p-8">
+              <div className="flex text-emerald-400 mb-4">
+                {[...Array(5)].map((_, i) => <CheckCircle2 key={i} size={16} className="mr-1 fill-emerald-400/20" />)}
+              </div>
+              <p className="text-slate-300 italic mb-6 leading-relaxed">
+                "We had our broker review the contract twice. Rx Defense found $1.2M in hidden spread pricing and rebate reclassifications in 48 hours. The deterministic evidence chain made it impossible for the PBM to argue."
+              </p>
+              <div>
+                <p className="text-white font-bold">CFO, Manufacturing Enterprise</p>
+                <p className="text-sm text-slate-500">3,200 Covered Lives</p>
+              </div>
+            </div>
+            <div className="bg-[#111] border border-white/5 rounded-xl p-8">
+              <div className="flex text-emerald-400 mb-4">
+                {[...Array(5)].map((_, i) => <CheckCircle2 key={i} size={16} className="mr-1 fill-emerald-400/20" />)}
+              </div>
+              <p className="text-slate-300 italic mb-6 leading-relaxed">
+                "As an ERISA fiduciary, I needed proof we were monitoring our vendors properly. The Rx Defense analysis gave us the exact documentation we needed for our DOL compliance file, while saving us millions."
+              </p>
+              <div>
+                <p className="text-white font-bold">VP Total Rewards, Tech Firm</p>
+                <p className="text-sm text-slate-500">1,800 Covered Lives</p>
+              </div>
+            </div>
+            <div className="bg-[#111] border border-white/5 rounded-xl p-8">
+              <div className="flex text-emerald-400 mb-4">
+                {[...Array(5)].map((_, i) => <CheckCircle2 key={i} size={16} className="mr-1 fill-emerald-400/20" />)}
+              </div>
+              <p className="text-slate-300 italic mb-6 leading-relaxed">
+                "We've run this across four of our portfolio companies so far. Total recovered EBITDA is north of $8M. It's the highest ROI initiative we've deployed this year, hands down."
+              </p>
+              <div>
+                <p className="text-white font-bold">Operating Partner, PE Firm</p>
+                <p className="text-sm text-slate-500">Mid-Market Portfolio</p>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* Interactive ROI Calculator */}
+        <section className="mb-24 border-t border-white/10 pt-16">
+          <div className="text-xs font-bold tracking-[0.25em] text-cyan-500 mb-6 uppercase text-center">
+            Financial Impact
+          </div>
+          <h2 className="text-3xl md:text-4xl font-bold text-white text-center mb-12 tracking-tight">
+            Interactive Leakage Calculator
+          </h2>
+          <div className="bg-gradient-to-br from-[#0a1520] to-[#050a10] border border-cyan-900/50 rounded-3xl p-8 md:p-12 max-w-4xl mx-auto">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
+              <div>
+                <h3 className="text-xl font-bold text-white mb-6 flex items-center gap-2">
+                  <Calculator className="text-cyan-400" size={24} />
+                  Plan Inputs
+                </h3>
+                
+                <div className="mb-8">
+                  <label className="block text-sm font-bold text-slate-400 uppercase tracking-wider mb-4 flex justify-between">
+                    <span>Covered Lives</span>
+                    <span className="text-white">{calcLives.toLocaleString()}</span>
+                  </label>
+                  <input 
+                    type="range" 
+                    min="100" 
+                    max="10000" 
+                    step="100"
+                    value={calcLives} 
+                    onChange={(e) => setCalcLives(Number(e.target.value))}
+                    className="w-full accent-cyan-500 h-2 bg-slate-800 rounded-lg appearance-none cursor-pointer"
+                  />
+                </div>
+                
+                <div>
+                  <label className="block text-sm font-bold text-slate-400 uppercase tracking-wider mb-4 flex justify-between">
+                    <span>Annual Rx Spend</span>
+                    <span className="text-white">{formatCurrency(calcSpend)}</span>
+                  </label>
+                  <input 
+                    type="range" 
+                    min="1000000" 
+                    max="100000000" 
+                    step="500000"
+                    value={calcSpend} 
+                    onChange={(e) => setCalcSpend(Number(e.target.value))}
+                    className="w-full accent-cyan-500 h-2 bg-slate-800 rounded-lg appearance-none cursor-pointer"
+                  />
+                </div>
+              </div>
+              
+              <div className="bg-[#050505]/80 rounded-2xl p-6 border border-cyan-500/20 flex flex-col justify-center">
+                <div className="mb-6 text-center">
+                  <p className="text-sm font-bold text-slate-400 uppercase tracking-wider mb-2">Estimated Annual Leakage</p>
+                  <div className="text-4xl md:text-5xl font-black text-cyan-400 tracking-tight">
+                    {formatCurrency(estimatedSavingsMin)} <span className="text-2xl text-slate-500">-</span> {formatCurrency(estimatedSavingsMax)}
+                  </div>
+                </div>
+                <div className="grid grid-cols-2 gap-4 border-t border-white/10 pt-6">
+                  <div className="text-center">
+                    <p className="text-xs font-bold text-slate-500 uppercase tracking-wider mb-1">Audit Fee</p>
+                    <p className="text-xl font-bold text-white">{formatCurrency(auditFee)}</p>
+                  </div>
+                  <div className="text-center">
+                    <p className="text-xs font-bold text-slate-500 uppercase tracking-wider mb-1">Est. ROI</p>
+                    <p className="text-xl font-bold text-emerald-400">{roiMultiple}x</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* Case Studies */}
+        <section className="mb-24 border-t border-white/10 pt-16">
+          <div className="text-xs font-bold tracking-[0.25em] text-purple-500 mb-6 uppercase text-center">
+            Proof of Work
+          </div>
+          <h2 className="text-3xl md:text-4xl font-bold text-white text-center mb-12 tracking-tight">
+            Recent Engagements
+          </h2>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+            <div className="bg-[#111] border border-white/5 hover:border-purple-500/30 transition-colors rounded-2xl overflow-hidden group">
+              <div className="p-8">
+                <div className="flex items-center gap-3 mb-6">
+                  <Building className="text-purple-400" size={24} />
+                  <h3 className="text-xl font-bold text-white">Logistics Enterprise</h3>
+                </div>
+                <div className="flex gap-6 mb-8 border-b border-white/5 pb-6">
+                  <div>
+                    <p className="text-xs font-bold text-slate-500 uppercase tracking-wider mb-1">Lives</p>
+                    <p className="text-lg font-bold text-white">4,200</p>
+                  </div>
+                  <div>
+                    <p className="text-xs font-bold text-slate-500 uppercase tracking-wider mb-1">Prior Spend</p>
+                    <p className="text-lg font-bold text-white">$22.4M</p>
+                  </div>
+                  <div>
+                    <p className="text-xs font-bold text-slate-500 uppercase tracking-wider mb-1">Recovered</p>
+                    <p className="text-lg font-bold text-emerald-400">$3.8M</p>
+                  </div>
+                </div>
+                <p className="text-slate-300 leading-relaxed">
+                  Identified massive spread pricing leakage through MAC list opacity. Renegotiated to a pure pass-through model and secured 100% manufacturer revenue pass-through, resulting in a 17% absolute reduction in pharmacy spend.
+                </p>
+              </div>
+            </div>
+            
+            <div className="bg-[#111] border border-white/5 hover:border-blue-500/30 transition-colors rounded-2xl overflow-hidden group">
+              <div className="p-8">
+                <div className="flex items-center gap-3 mb-6">
+                  <Activity className="text-blue-400" size={24} />
+                  <h3 className="text-xl font-bold text-white">Regional Healthcare System</h3>
+                </div>
+                <div className="flex gap-6 mb-8 border-b border-white/5 pb-6">
+                  <div>
+                    <p className="text-xs font-bold text-slate-500 uppercase tracking-wider mb-1">Lives</p>
+                    <p className="text-lg font-bold text-white">1,500</p>
+                  </div>
+                  <div>
+                    <p className="text-xs font-bold text-slate-500 uppercase tracking-wider mb-1">Prior Spend</p>
+                    <p className="text-lg font-bold text-white">$14.1M</p>
+                  </div>
+                  <div>
+                    <p className="text-xs font-bold text-slate-500 uppercase tracking-wider mb-1">Recovered</p>
+                    <p className="text-lg font-bold text-emerald-400">$2.1M</p>
+                  </div>
+                </div>
+                <p className="text-slate-300 leading-relaxed">
+                  Discovered the PBM was aggressively steering specialty fills to its owned pharmacy at a 14% markup vs. independent specialty pharmacies. Added carve-out rights and neutral network language.
+                </p>
               </div>
             </div>
           </div>
@@ -1652,8 +1873,40 @@ export default function RxDefenseReport() {
           </TabsContent>
         </Tabs>
 
+        {/* FAQ Section */}
+        <section className="mt-32 mb-16 max-w-4xl mx-auto">
+          <div className="text-xs font-bold tracking-[0.25em] text-slate-500 mb-6 uppercase text-center">
+            Clarifications
+          </div>
+          <h2 className="text-3xl md:text-4xl font-bold text-white text-center mb-12 tracking-tight">
+            Frequently Asked Questions
+          </h2>
+          <div className="space-y-4">
+            {faqs.map((faq, i) => (
+              <div key={i} className="bg-[#0a0a0a] border border-white/10 rounded-xl overflow-hidden transition-all duration-200 hover:border-white/20">
+                <button 
+                  onClick={() => setOpenFaq(openFaq === i ? null : i)}
+                  className="w-full px-6 py-5 flex items-center justify-between text-left focus:outline-none"
+                >
+                  <span className="text-lg font-bold text-white">{faq.q}</span>
+                  {openFaq === i ? (
+                    <ChevronUp className="text-cyan-400 flex-shrink-0 ml-4" size={20} />
+                  ) : (
+                    <ChevronDown className="text-slate-500 flex-shrink-0 ml-4" size={20} />
+                  )}
+                </button>
+                {openFaq === i && (
+                  <div className="px-6 pb-6 pt-2 border-t border-white/5">
+                    <p className="text-slate-300 leading-relaxed">{faq.a}</p>
+                  </div>
+                )}
+              </div>
+            ))}
+          </div>
+        </section>
+
         {/* Disclaimer Footer */}
-        <div className="border-t border-white/10 pt-12 text-center pb-12 mt-24">
+        <div className="border-t border-white/10 pt-12 text-center pb-12 mt-12">
           <p className="text-xs text-slate-600 uppercase tracking-widest font-bold mb-4">
             Kincaid IQ &mdash; Strictly Confidential &middot; Account SHRACK-7742
           </p>
@@ -1665,6 +1918,23 @@ export default function RxDefenseReport() {
       </main>
       
       <SiteFooter />
+
+      {/* Sticky CTA Bar */}
+      <div className="fixed bottom-0 left-0 right-0 z-50 bg-[#050505]/90 backdrop-blur-xl border-t border-white/10 py-4 px-6 translate-y-0 transform transition-transform duration-300">
+        <div className="max-w-5xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4">
+          <div className="text-center sm:text-left">
+            <h4 className="text-white font-bold text-lg">Stop the Leakage.</h4>
+            <p className="text-slate-400 text-sm">Upload your contract and claims data for a 48-hour deterministic analysis.</p>
+          </div>
+          <a 
+            href="/request-demo" 
+            className="flex-shrink-0 bg-white text-black px-6 py-3 rounded-lg font-bold hover:bg-slate-200 transition-colors flex items-center gap-2"
+          >
+            Request 48-Hour Analysis
+            <ArrowRight size={18} />
+          </a>
+        </div>
+      </div>
     </div>
   );
 }

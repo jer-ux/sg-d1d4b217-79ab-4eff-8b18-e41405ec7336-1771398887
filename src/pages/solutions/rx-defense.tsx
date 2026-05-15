@@ -947,6 +947,89 @@ export default function RxDefenseReport() {
           </div>
         </section>
 
+        {/* Power Moves Section */}
+        <section className="mb-24 border-t border-white/10 pt-16">
+          <div className="text-xs font-bold tracking-[0.25em] text-rose-500 mb-6 uppercase text-center">
+            Strategic Execution
+          </div>
+          <h2 className="text-4xl md:text-5xl font-bold text-white text-center mb-16 tracking-tight">
+            Power Moves
+          </h2>
+
+          <div className="space-y-8">
+            {/* Power Move 1 */}
+            <div className="bg-gradient-to-br from-[#1a050a] to-[#0a0204] border border-rose-500/30 rounded-2xl p-8">
+              <div className="flex items-start gap-4 mb-6">
+                <div className="flex-shrink-0 w-12 h-12 rounded-xl bg-rose-500/20 text-rose-400 flex items-center justify-center text-xl font-black">1</div>
+                <div>
+                  <h3 className="text-2xl font-bold text-white mb-3">The "Form 5500 Mic Drop" Cold Open</h3>
+                  <p className="text-slate-300 leading-relaxed">
+                    Every outreach sequence opens with the prospect's own federal filing. Not a pitch. Not a product. <span className="text-rose-400 font-semibold">Their data, returned to them, before anyone else does it.</span> This converts a sales call into a fiduciary intervention. Loss aversion does the rest.
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            {/* Power Move 2 */}
+            <div className="bg-gradient-to-br from-[#051015] to-[#020508] border border-cyan-500/30 rounded-2xl p-8">
+              <div className="flex items-start gap-4 mb-6">
+                <div className="flex-shrink-0 w-12 h-12 rounded-xl bg-cyan-500/20 text-cyan-400 flex items-center justify-center text-xl font-black">2</div>
+                <div>
+                  <h3 className="text-2xl font-bold text-white mb-3">The "Carrier Rating System" Preview</h3>
+                  <p className="text-slate-300 leading-relaxed">
+                    Tease, in every channel, the forthcoming <span className="text-cyan-400 font-semibold">Kincaid IQ Carrier Rating</span>. Position it as Moody's for health insurance carriers and PBMs. This single forward-promise reframes Rx Defense from a point product into the leading edge of an industry-wide accountability platform — and the carriers that behave well will promote it for us.
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            {/* Power Move 3 */}
+            <div className="bg-gradient-to-br from-[#0a1005] to-[#030502] border border-emerald-500/30 rounded-2xl p-8">
+              <div className="flex items-start gap-4 mb-6">
+                <div className="flex-shrink-0 w-12 h-12 rounded-xl bg-emerald-500/20 text-emerald-400 flex items-center justify-center text-xl font-black">3</div>
+                <div>
+                  <h3 className="text-2xl font-bold text-white mb-3">The "Independent" Claim, Weaponized</h3>
+                  <p className="text-slate-300 leading-relaxed">
+                    Every competitor will eventually claim transparency. None can claim independence the way Rx Defense can, because the founder holds no carrier appointments and no broker overrides. <span className="text-emerald-400 font-semibold">Make "independence" the category-defining word.</span> It is the one attribute incumbents structurally cannot copy without dismantling their business model.
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            {/* Power Move 4 */}
+            <div className="bg-gradient-to-br from-[#150a05] to-[#080402] border border-orange-500/30 rounded-2xl p-8">
+              <div className="flex items-start gap-4 mb-6">
+                <div className="flex-shrink-0 w-12 h-12 rounded-xl bg-orange-500/20 text-orange-400 flex items-center justify-center text-xl font-black">4</div>
+                <div>
+                  <h3 className="text-2xl font-bold text-white mb-3">The Price-Anchoring Asymmetry</h3>
+                  <p className="text-slate-300 leading-relaxed">
+                    Never lead with the X-Ray fee. Always lead with the average finding. <span className="text-orange-400 font-semibold">"$2.3M discovered. $5,000 to discover it."</span> The fee disappears against the recovery. Pricing to value, not cost — exactly as the board directed.
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            {/* Power Move 5 */}
+            <div className="bg-gradient-to-br from-[#0a0515] to-[#030208] border border-purple-500/30 rounded-2xl p-8">
+              <div className="flex items-start gap-4 mb-6">
+                <div className="flex-shrink-0 w-12 h-12 rounded-xl bg-purple-500/20 text-purple-400 flex items-center justify-center text-xl font-black">5</div>
+                <div>
+                  <h3 className="text-2xl font-bold text-white mb-3">The ERISA Fiduciary Inversion</h3>
+                  <p className="text-slate-300 leading-relaxed">
+                    To General Counsel and Board Audit Committees, position the X-Ray not as a savings opportunity but as a <span className="text-purple-400 font-semibold">fiduciary defense instrument</span>. "Do you have the evidence trail today that would demonstrate diligence if your plan were audited tomorrow?" This converts a CFO purchase into a board-level mandate.
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div className="mt-12 bg-[#111] border border-white/5 rounded-xl p-8">
+            <p className="text-slate-300 text-lg leading-relaxed text-center italic">
+              Rx Defense is the rarest category in enterprise software: a product whose value is so asymmetric to its price that the buyer's cognitive challenge is not whether to buy, but whether the finding is real. The 48-hour offer and the 3:1 guarantee exist to resolve that exact question.
+            </p>
+          </div>
+        </section>
+
         {/* Interactive ROI Calculator */}
         <section className="mb-24 border-t border-white/10 pt-16">
           <div className="text-xs font-bold tracking-[0.25em] text-cyan-500 mb-6 uppercase text-center">

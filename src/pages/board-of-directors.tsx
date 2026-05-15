@@ -137,7 +137,7 @@ const boardMembers = [
   },
   {
     name: "Eric Dreyfus",
-    title: "Senior Adviser - Actuarial Science & Employee Benefits",
+    title: "Board Member - Actuarial Science & Employee Benefits",
     image: "/eric.jpeg",
     linkedin: "https://www.linkedin.com/in/eric-dreyfus-ab47915/",
     bio: "Actuarial science professional with extensive Fortune 500 health and welfare consulting experience. Led employee benefit financials for employers ranging from 100 to 50,000 employees, specializing in renewal negotiations, utilization analytics, and IBNR reserve calculations for self-insured organizations.",

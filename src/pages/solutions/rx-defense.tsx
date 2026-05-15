@@ -456,6 +456,13 @@ export default function RxDefenseReport() {
               </p>
             </div>
 
+            <div className="bg-[#111] border border-cyan-500/20 rounded-xl p-8 mb-8">
+              <h5 className="text-sm font-bold tracking-wider text-cyan-400 mb-4 uppercase">Technical Credibility</h5>
+              <p className="text-slate-300 text-lg leading-relaxed">
+                Most healthcare analytics platforms infer. Rx Defense proves. Statistical inference produces ranges; deterministic forensic computation produces dollar amounts with named clauses and named claims behind them. That is the difference between an insight and a finding. <span className="text-white font-semibold">Brokers offer insights. Rx Defense delivers findings.</span>
+              </p>
+            </div>
+
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
               <div className="bg-[#0a0a0a] border border-cyan-500/20 rounded-lg p-6">
                 <div className="text-3xl font-bold text-cyan-400 mb-2">10</div>
@@ -609,6 +616,244 @@ export default function RxDefenseReport() {
                   <div className="text-cyan-400 font-bold mb-2 text-sm uppercase tracking-wider">Private Equity / PE-Backed CFOs</div>
                   <p className="text-slate-400 text-sm">Portfolio companies where healthcare is 8–15% of EBITDA and PBM contracts have never been independently audited.</p>
                 </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* Product Experience - The Buyer-Facing Promise */}
+        <section className="mb-24 border-t border-white/10 pt-16">
+          <div className="text-xs font-bold tracking-[0.25em] text-blue-500 mb-6 uppercase text-center">
+            Product Experience
+          </div>
+          <h2 className="text-4xl md:text-5xl font-bold text-white text-center mb-16 tracking-tight">
+            The Buyer-Facing Promise
+          </h2>
+
+          {/* The Asymmetric Offer */}
+          <div className="mb-16">
+            <div className="bg-gradient-to-br from-blue-950/60 to-cyan-950/40 border border-blue-500/40 rounded-2xl p-10 mb-8">
+              <h3 className="text-2xl font-bold text-white mb-6">The 48-Hour Leak Assessment</h3>
+              <p className="text-slate-200 text-lg leading-relaxed mb-6">
+                Upload your current PBM contract and a 90-day de-identified claims file to our secure SOC 2 portal. Give us 48 hours. We return a deterministic financial audit of your pharmacy spend.
+              </p>
+              <p className="text-slate-200 text-lg leading-relaxed">
+                If your contract is airtight, you gain peace of mind. If it is leaking, we will show you the exact clauses draining your EBITDA — <span className="text-cyan-400 font-semibold">to the dollar, in language your General Counsel can take to court.</span>
+              </p>
+            </div>
+          </div>
+
+          {/* The Guarantee */}
+          <div className="mb-16">
+            <div className="bg-gradient-to-br from-emerald-950/60 to-cyan-950/40 border border-emerald-500/40 rounded-2xl p-10 mb-8">
+              <h3 className="text-2xl font-bold text-white mb-6">The 3:1 Guarantee</h3>
+              <p className="text-slate-200 text-lg leading-relaxed mb-4">
+                If Rx Defense identifies less than three times your engagement fee in recoverable leakage, the analysis is free.
+              </p>
+              <p className="text-emerald-400 text-xl font-bold">
+                To date, we have not invoked this clause.
+              </p>
+            </div>
+          </div>
+
+          {/* The Differentiator */}
+          <div className="mb-8">
+            <div className="bg-gradient-to-br from-purple-950/60 to-blue-950/40 border border-purple-500/40 rounded-2xl p-10">
+              <h3 className="text-2xl font-bold text-white mb-6">The Differentiator</h3>
+              <div className="text-center mb-8">
+                <p className="text-3xl font-bold text-white mb-2">
+                  No broker commissions. No carrier relationships.
+                </p>
+                <p className="text-2xl text-purple-300">
+                  One fiduciary duty: yours.
+                </p>
+              </div>
+              <p className="text-slate-200 text-lg leading-relaxed">
+                Rx Defense is built by a licensed insurance professional with twenty years of actuarial and global brokerage experience — and an applied AI engineering team. We do not earn overrides. We do not accept carrier bonuses. We do not sell pharmacy benefits. <span className="text-white font-semibold">We sell the truth about the ones you already bought.</span>
+              </p>
+            </div>
+          </div>
+        </section>
+
+        {/* Execution Plan - Audience-Specific Copy Blocks */}
+        <section className="mb-24 border-t border-white/10 pt-16">
+          <div className="text-xs font-bold tracking-[0.25em] text-orange-500 mb-6 uppercase text-center">
+            Execution Plan
+          </div>
+          <h2 className="text-4xl md:text-5xl font-bold text-white text-center mb-16 tracking-tight">
+            Audience-Specific Messaging
+          </h2>
+
+          {/* Block A: CFO Frame */}
+          <div className="mb-12">
+            <div className="flex items-center gap-3 mb-6">
+              <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-orange-500/30 to-red-500/30 flex items-center justify-center text-lg font-black text-orange-400">
+                A
+              </div>
+              <h3 className="text-2xl font-bold text-white">The CFO Frame</h3>
+            </div>
+            <div className="bg-[#111] border border-orange-500/20 rounded-xl p-8">
+              <div className="text-xs font-bold tracking-wider text-orange-400 mb-4 uppercase">Web Hero, Executive Email, Board Memo</div>
+              <p className="text-slate-300 text-lg leading-relaxed">
+                Healthcare is your second-largest operating expense, growing at 12–15% annually against a medical inflation rate of 7–8%. The delta is not inflation. It is structural leakage — and it is recoverable. A 300-life employer at $10M annual spend is hemorrhaging $300,000 to $600,000 per year through ten contractual mechanisms written by the PBM's lawyers, reviewed by the PBM's auditors, and measured by the PBM's reporting system. There is not a single independent party in that chain. <span className="text-white font-semibold">Rx Defense is the independent party.</span> Give us 48 hours and your Form 5500. We will show you your number.
+              </p>
+            </div>
+          </div>
+
+          {/* Block B: Private Equity Frame */}
+          <div className="mb-12">
+            <div className="flex items-center gap-3 mb-6">
+              <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-rose-500/30 to-purple-500/30 flex items-center justify-center text-lg font-black text-rose-400">
+                B
+              </div>
+              <h3 className="text-2xl font-bold text-white">The Private Equity Operator Frame</h3>
+            </div>
+            <div className="bg-[#111] border border-rose-500/20 rounded-xl p-8">
+              <div className="text-xs font-bold tracking-wider text-rose-400 mb-4 uppercase">Highest-Priority Channel</div>
+              <p className="text-slate-300 text-lg leading-relaxed">
+                Across a ten-company portfolio averaging 300 lives and $10M in annual healthcare spend per entity, you are sitting on <span className="text-emerald-400 font-bold">$25M of EBITDA recovery</span> hidden inside your current run rate. Healthcare is 15–20% of portfolio operating cost and is being managed with a fraction of the rigor applied to procurement, real estate, or working capital. Rx Defense delivers a portfolio-level leakage map within 30 days — entity by entity, dollar by dollar, with the evidence chain required to act on it before the next renewal cycle. This is not vendor management. This is balance-sheet recovery at portfolio scale.
+              </p>
+            </div>
+          </div>
+
+          {/* Block C: Benefits Director Frame */}
+          <div className="mb-12">
+            <div className="flex items-center gap-3 mb-6">
+              <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-cyan-500/30 to-blue-500/30 flex items-center justify-center text-lg font-black text-cyan-400">
+                C
+              </div>
+              <h3 className="text-2xl font-bold text-white">The Benefits Director / HR VP Frame</h3>
+            </div>
+            <div className="bg-[#111] border border-cyan-500/20 rounded-xl p-8">
+              <div className="text-xs font-bold tracking-wider text-cyan-400 mb-4 uppercase">The Internal Champion</div>
+              <p className="text-slate-300 text-lg leading-relaxed">
+                You did not write your PBM contract. You inherited it. You renew it under deadline pressure with data your PBM controls and your broker interprets. <span className="text-white font-semibold">Rx Defense is the tool that finally puts you, not them, in the seat of authority at the renewal table.</span> You bring the X-ray. You bring the dollar-quantified findings. You bring the ERISA evidence trail. Your CFO will thank you. Your CEO will promote you. Your employees will never know how close their premiums came to absorbing another year of hidden margin — and that is the point.
+              </p>
+            </div>
+          </div>
+
+          {/* Block D: Broker Partnership Frame */}
+          <div className="mb-12">
+            <div className="flex items-center gap-3 mb-6">
+              <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-purple-500/30 to-blue-500/30 flex items-center justify-center text-lg font-black text-purple-400">
+                D
+              </div>
+              <h3 className="text-2xl font-bold text-white">The Broker Partnership Frame</h3>
+            </div>
+            <div className="bg-[#111] border border-purple-500/20 rounded-xl p-8">
+              <div className="text-xs font-bold tracking-wider text-purple-400 mb-4 uppercase">Channel Expansion</div>
+              <p className="text-slate-300 text-lg leading-relaxed">
+                The brokers who survive the next five years will be the ones who bring independent forensic intelligence to the renewal table — not the ones who hide behind a carrier-fed dashboard. Rx Defense is the upgrade to your advisory: white-label findings, co-branded reporting, and a revenue share that aligns your economics with your client's outcome. <span className="text-white font-semibold">Your competition is about to start carrying an X-ray to every renewal meeting. The question is whether you arrive with one or against one.</span>
+              </p>
+            </div>
+          </div>
+
+          {/* Block E: Cold Outreach */}
+          <div className="mb-12">
+            <div className="flex items-center gap-3 mb-6">
+              <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-emerald-500/30 to-cyan-500/30 flex items-center justify-center text-lg font-black text-emerald-400">
+                E
+              </div>
+              <h3 className="text-2xl font-bold text-white">Cold LinkedIn / Email Opener</h3>
+            </div>
+            <div className="bg-[#111] border border-emerald-500/20 rounded-xl p-8">
+              <div className="text-xs font-bold tracking-wider text-emerald-400 mb-4 uppercase">300 Characters, Weaponized Loss Aversion</div>
+              <div className="bg-[#0a0a0a] border border-emerald-500/30 rounded-lg p-6 font-mono text-emerald-300">
+                "I pulled [Company]'s Form 5500 this morning. There is a number in there your benefits team may not have seen — and it changes the renewal conversation entirely. Worth a quick look?"
+              </div>
+            </div>
+          </div>
+
+          {/* Block F: Proof Stack */}
+          <div className="mb-12">
+            <div className="flex items-center gap-3 mb-6">
+              <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-blue-500/30 to-indigo-500/30 flex items-center justify-center text-lg font-black text-blue-400">
+                F
+              </div>
+              <h3 className="text-2xl font-bold text-white">The Proof Stack</h3>
+            </div>
+            <div className="bg-[#111] border border-blue-500/20 rounded-xl p-8">
+              <div className="text-xs font-bold tracking-wider text-blue-400 mb-6 uppercase">Use Beneath Every Hero Block</div>
+              <div className="overflow-x-auto">
+                <table className="w-full">
+                  <thead>
+                    <tr className="border-b border-white/10">
+                      <th className="text-left py-3 px-4 text-sm font-bold text-slate-400 uppercase tracking-wider">Employer Size</th>
+                      <th className="text-left py-3 px-4 text-sm font-bold text-slate-400 uppercase tracking-wider">Annual Spend</th>
+                      <th className="text-left py-3 px-4 text-sm font-bold text-slate-400 uppercase tracking-wider">X-Ray Fee</th>
+                      <th className="text-left py-3 px-4 text-sm font-bold text-slate-400 uppercase tracking-wider">Average Finding</th>
+                      <th className="text-left py-3 px-4 text-sm font-bold text-slate-400 uppercase tracking-wider">ROI Multiple</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr className="border-b border-white/5 hover:bg-white/5">
+                      <td className="py-3 px-4 text-white">100–250 lives</td>
+                      <td className="py-3 px-4 text-slate-300">$2M–$5M</td>
+                      <td className="py-3 px-4 text-slate-300">$1,500–$3,000</td>
+                      <td className="py-3 px-4 text-emerald-400 font-bold">$300K–$600K</td>
+                      <td className="py-3 px-4 text-cyan-400 font-bold">100x–200x</td>
+                    </tr>
+                    <tr className="border-b border-white/5 hover:bg-white/5">
+                      <td className="py-3 px-4 text-white">250–700 lives</td>
+                      <td className="py-3 px-4 text-slate-300">$5M–$14M</td>
+                      <td className="py-3 px-4 text-slate-300">$5,000–$15,000</td>
+                      <td className="py-3 px-4 text-emerald-400 font-bold">$900K–$2.3M</td>
+                      <td className="py-3 px-4 text-cyan-400 font-bold">60x–153x</td>
+                    </tr>
+                    <tr className="border-b border-white/5 hover:bg-white/5">
+                      <td className="py-3 px-4 text-white">700–2,000 lives</td>
+                      <td className="py-3 px-4 text-slate-300">$14M–$40M</td>
+                      <td className="py-3 px-4 text-slate-300">$50K base</td>
+                      <td className="py-3 px-4 text-emerald-400 font-bold">$2.5M–$6M</td>
+                      <td className="py-3 px-4 text-cyan-400 font-bold">50x–120x</td>
+                    </tr>
+                    <tr className="border-b border-white/5 hover:bg-white/5">
+                      <td className="py-3 px-4 text-white">2,000–5,000 lives</td>
+                      <td className="py-3 px-4 text-slate-300">$40M–$100M</td>
+                      <td className="py-3 px-4 text-slate-300">$200K flat</td>
+                      <td className="py-3 px-4 text-emerald-400 font-bold">$6M–$15M</td>
+                      <td className="py-3 px-4 text-cyan-400 font-bold">30x–75x</td>
+                    </tr>
+                    <tr className="hover:bg-white/5">
+                      <td className="py-3 px-4 text-white">5,000+ lives</td>
+                      <td className="py-3 px-4 text-slate-300">$100M+</td>
+                      <td className="py-3 px-4 text-slate-300">$2M–$5M</td>
+                      <td className="py-3 px-4 text-emerald-400 font-bold">$15M–$50M</td>
+                      <td className="py-3 px-4 text-cyan-400 font-bold">7x–25x</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+              <p className="text-slate-400 text-sm mt-6 leading-relaxed italic">
+                Rx Defense is the rarest category in enterprise software: a product whose value is so asymmetric to its price that the buyer's cognitive challenge is not whether to buy, but whether the finding is real. The 48-hour offer and the 3:1 guarantee exist to resolve that exact question.
+              </p>
+            </div>
+          </div>
+
+          {/* Block G: Call to Action */}
+          <div className="mb-8">
+            <div className="flex items-center gap-3 mb-6">
+              <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-rose-500/30 to-orange-500/30 flex items-center justify-center text-lg font-black text-rose-400">
+                G
+              </div>
+              <h3 className="text-2xl font-bold text-white">The Call to Action</h3>
+            </div>
+            <div className="bg-gradient-to-br from-orange-950/60 to-rose-950/40 border border-orange-500/40 rounded-2xl p-10 text-center">
+              <div className="text-xs font-bold tracking-wider text-orange-400 mb-6 uppercase">Use Everywhere, Single Voice</div>
+              <p className="text-white text-2xl md:text-3xl font-bold leading-relaxed mb-6">
+                Send the contract. Send 90 days of claims. Give us 48 hours.
+              </p>
+              <p className="text-slate-300 text-lg mb-8">
+                Schedule the leak assessment:
+              </p>
+              <div className="inline-block">
+                <a 
+                  href="/request-demo" 
+                  className="inline-flex items-center gap-3 bg-gradient-to-r from-orange-500 to-rose-500 text-white px-8 py-4 rounded-xl font-bold text-lg hover:from-orange-600 hover:to-rose-600 transition-all shadow-lg shadow-orange-500/30"
+                >
+                  <span>Request Your 48-Hour Analysis</span>
+                  <ArrowRight className="w-5 h-5" />
+                </a>
               </div>
             </div>
           </div>

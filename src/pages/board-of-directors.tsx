@@ -1,5 +1,6 @@
 "use client";
 
+import type React from "react";
 import { motion } from "framer-motion";
 import { useState } from "react";
 import { Shield, Users, TrendingUp, Award, X, ChevronRight, Sparkles, Linkedin } from "lucide-react";
@@ -185,6 +186,16 @@ export default function BoardOfDirectorsPage() {
   const [selectedMember, setSelectedMember] = useState<typeof boardMembers[0] | null>(null);
   const [lightboxImage, setLightboxImage] = useState<string | null>(null);
   const [hoveredCard, setHoveredCard] = useState<number | null>(null);
+  const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
+
+  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>, index: number) => {
+    if (hoveredCard !== index) return;
+    
+    const rect = e.currentTarget.getBoundingClientRect();
+    const x = (e.clientX - rect.left) / rect.width;
+    const y = (e.clientY - rect.top) / rect.height;
+    setMousePosition({ x, y });
+  };
 
   return (
     <>
@@ -233,12 +244,37 @@ export default function BoardOfDirectorsPage() {
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.6, delay: index * 0.1 }}
-                  className="group relative cursor-pointer"
+                  className="group relative cursor-pointer perspective-1000"
                   onMouseEnter={() => setHoveredCard(index)}
-                  onMouseLeave={() => setHoveredCard(null)}
+                  onMouseLeave={() => {
+                    setHoveredCard(null);
+                    setMousePosition({ x: 0.5, y: 0.5 });
+                  }}
+                  onMouseMove={(e) => handleMouseMove(e, index)}
                   onClick={() => setSelectedMember(member)}
                 >
-                  <div className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-amber-950/30 via-zinc-900/50 to-slate-900/30 border border-amber-500/20 p-8 transition-all duration-700 hover:border-amber-400/70 hover:shadow-2xl hover:shadow-amber-500/30 hover:scale-[1.03]">
+                  <motion.div
+                    className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-amber-950/30 via-zinc-900/50 to-slate-900/30 border border-amber-500/20 p-8 transition-all duration-700"
+                    animate={{
+                      rotateX: hoveredCard === index ? (mousePosition.y - 0.5) * 10 : 0,
+                      rotateY: hoveredCard === index ? (mousePosition.x - 0.5) * 10 : 0,
+                      scale: hoveredCard === index ? 1.05 : 1,
+                      borderColor: hoveredCard === index ? "rgba(251, 191, 36, 0.7)" : "rgba(251, 191, 36, 0.2)",
+                      boxShadow: hoveredCard === index 
+                        ? "0 25px 50px -12px rgba(251, 191, 36, 0.5)" 
+                        : "0 10px 15px -3px rgba(0, 0, 0, 0.1)",
+                    }}
+                    transition={{ 
+                      type: "spring", 
+                      stiffness: 300, 
+                      damping: 20,
+                      boxShadow: { duration: 0.5 },
+                      borderColor: { duration: 0.5 }
+                    }}
+                    style={{
+                      transformStyle: "preserve-3d",
+                    }}
+                  >
                     {/* Animated gradient border overlay */}
                     <motion.div
                       className="absolute inset-0 rounded-2xl pointer-events-none"
@@ -249,41 +285,84 @@ export default function BoardOfDirectorsPage() {
                       <div className="absolute inset-0 rounded-2xl bg-gradient-to-r from-amber-500/0 via-amber-400/30 to-amber-500/0 animate-pulse" />
                     </motion.div>
 
-                    {/* Background glow effect */}
+                    {/* Dynamic background glow that follows mouse */}
                     <motion.div
-                      className="absolute inset-0 bg-gradient-radial from-amber-500/10 via-transparent to-transparent pointer-events-none"
-                      initial={{ opacity: 0, scale: 0.8 }}
+                      className="absolute w-64 h-64 bg-gradient-radial from-amber-500/30 via-amber-500/10 to-transparent pointer-events-none blur-2xl"
                       animate={{
                         opacity: hoveredCard === index ? 1 : 0,
-                        scale: hoveredCard === index ? 1 : 0.8
+                        left: hoveredCard === index ? `${mousePosition.x * 100}%` : "50%",
+                        top: hoveredCard === index ? `${mousePosition.y * 100}%` : "50%",
+                        x: "-50%",
+                        y: "-50%",
                       }}
-                      transition={{ duration: 0.6 }}
+                      transition={{ duration: 0.3, ease: "easeOut" }}
                     />
 
-                    {/* Particle effect on hover */}
+                    {/* Ripple effect on hover */}
+                    {hoveredCard === index && (
+                      <>
+                        <motion.div
+                          className="absolute rounded-full border-2 border-amber-400/50 pointer-events-none"
+                          style={{
+                            left: `${mousePosition.x * 100}%`,
+                            top: `${mousePosition.y * 100}%`,
+                            x: "-50%",
+                            y: "-50%",
+                          }}
+                          initial={{ width: 0, height: 0, opacity: 0.8 }}
+                          animate={{ 
+                            width: 300, 
+                            height: 300, 
+                            opacity: 0 
+                          }}
+                          transition={{ duration: 1.2, ease: "easeOut" }}
+                        />
+                        <motion.div
+                          className="absolute rounded-full border border-amber-400/30 pointer-events-none"
+                          style={{
+                            left: `${mousePosition.x * 100}%`,
+                            top: `${mousePosition.y * 100}%`,
+                            x: "-50%",
+                            y: "-50%",
+                          }}
+                          initial={{ width: 0, height: 0, opacity: 0.6 }}
+                          animate={{ 
+                            width: 400, 
+                            height: 400, 
+                            opacity: 0 
+                          }}
+                          transition={{ duration: 1.5, ease: "easeOut", delay: 0.1 }}
+                        />
+                      </>
+                    )}
+
+                    {/* Enhanced particle effect */}
                     {hoveredCard === index && (
                       <motion.div
-                        className="absolute inset-0 pointer-events-none"
+                        className="absolute inset-0 pointer-events-none overflow-hidden rounded-2xl"
                         initial={{ opacity: 0 }}
                         animate={{ opacity: 1 }}
                         transition={{ duration: 0.4 }}
                       >
-                        {[...Array(12)].map((_, i) => (
+                        {[...Array(20)].map((_, i) => (
                           <motion.div
                             key={i}
-                            className="absolute w-1 h-1 bg-amber-400 rounded-full"
+                            className="absolute w-1.5 h-1.5 bg-amber-400 rounded-full"
                             style={{
                               left: `${Math.random() * 100}%`,
                               top: `${Math.random() * 100}%`,
                             }}
                             animate={{
-                              y: [0, -20, 0],
+                              y: [0, -30, 0],
+                              x: [(Math.random() - 0.5) * 20, (Math.random() - 0.5) * 40, (Math.random() - 0.5) * 20],
                               opacity: [0, 1, 0],
+                              scale: [0.5, 1, 0.5],
                             }}
                             transition={{
-                              duration: 2,
+                              duration: 2 + Math.random(),
                               repeat: Infinity,
-                              delay: i * 0.1,
+                              delay: i * 0.08,
+                              ease: "easeInOut",
                             }}
                           />
                         ))}
@@ -296,9 +375,17 @@ export default function BoardOfDirectorsPage() {
                       animate={{
                         borderColor: hoveredCard === index ? "rgba(251, 191, 36, 0.8)" : "rgba(251, 191, 36, 0.3)",
                         scale: hoveredCard === index ? 1.15 : 1,
-                        rotate: hoveredCard === index ? [0, -2, 2, 0] : 0,
+                        y: hoveredCard === index ? -8 : 0,
                       }}
-                      transition={{ duration: 0.7 }}
+                      transition={{ 
+                        type: "spring", 
+                        stiffness: 300, 
+                        damping: 20 
+                      }}
+                      style={{
+                        transformStyle: "preserve-3d",
+                        transform: hoveredCard === index ? "translateZ(30px)" : "translateZ(0px)",
+                      }}
                     >
                       <motion.img
                         src={member.image}
@@ -316,33 +403,54 @@ export default function BoardOfDirectorsPage() {
                         transition={{ duration: 0.5 }}
                       />
                       
-                      {/* Pulsing ring effect */}
+                      {/* Multiple pulsing ring effects */}
                       {hoveredCard === index && (
-                        <motion.div
-                          className="absolute inset-0 rounded-full border-2 border-amber-400"
-                          initial={{ scale: 1, opacity: 0.8 }}
-                          animate={{ scale: 1.3, opacity: 0 }}
-                          transition={{ duration: 1.5, repeat: Infinity }}
-                        />
+                        <>
+                          <motion.div
+                            className="absolute inset-0 rounded-full border-2 border-amber-400"
+                            initial={{ scale: 1, opacity: 0.8 }}
+                            animate={{ scale: 1.4, opacity: 0 }}
+                            transition={{ duration: 1.5, repeat: Infinity }}
+                          />
+                          <motion.div
+                            className="absolute inset-0 rounded-full border-2 border-amber-300"
+                            initial={{ scale: 1, opacity: 0.6 }}
+                            animate={{ scale: 1.6, opacity: 0 }}
+                            transition={{ duration: 1.8, repeat: Infinity, delay: 0.3 }}
+                          />
+                        </>
                       )}
                     </motion.div>
 
-                    {/* Member Info */}
-                    <div className="relative text-center">
+                    {/* Member Info with staggered animations */}
+                    <div className="relative text-center" style={{ transformStyle: "preserve-3d" }}>
                       <motion.h3
                         className="text-2xl font-bold text-amber-100 mb-2 transition-colors duration-500"
                         animate={{
-                          color: hoveredCard === index ? "rgb(254, 243, 199)" : "rgb(254, 243, 199)",
+                          y: hoveredCard === index ? -4 : 0,
                           scale: hoveredCard === index ? 1.05 : 1,
                         }}
-                        transition={{ duration: 0.4 }}
+                        transition={{ 
+                          duration: 0.4,
+                          delay: hoveredCard === index ? 0.05 : 0,
+                        }}
+                        style={{
+                          transform: hoveredCard === index ? "translateZ(20px)" : "translateZ(0px)",
+                        }}
                       >
                         {member.name}
                       </motion.h3>
                       <motion.p
                         className="text-amber-400 font-semibold mb-4 text-sm transition-colors duration-500"
                         animate={{
-                          color: hoveredCard === index ? "rgb(251, 191, 36)" : "rgb(251, 191, 36)",
+                          y: hoveredCard === index ? -3 : 0,
+                        }}
+                        transition={{ 
+                          duration: 0.4,
+                          delay: hoveredCard === index ? 0.1 : 0,
+                        }}
+                        style={{
+                          transform: hoveredCard === index ? "translateZ(15px)" : "translateZ(0px)",
                         }}
                       >
                         {member.title}
@@ -351,6 +459,14 @@ export default function BoardOfDirectorsPage() {
                         className="text-gray-400 text-sm leading-relaxed mb-6 line-clamp-3 transition-colors duration-500"
                         animate={{
                           color: hoveredCard === index ? "rgb(209, 213, 219)" : "rgb(156, 163, 175)",
+                          y: hoveredCard === index ? -2 : 0,
+                        }}
+                        transition={{ 
+                          duration: 0.4,
+                          delay: hoveredCard === index ? 0.15 : 0,
+                        }}
+                        style={{
+                          transform: hoveredCard === index ? "translateZ(10px)" : "translateZ(0px)",
                         }}
                       >
                         {member.bio}
@@ -365,6 +481,16 @@ export default function BoardOfDirectorsPage() {
                         onClick={(e) => e.stopPropagation()}
                         whileHover={{ scale: 1.05 }}
                         whileTap={{ scale: 0.95 }}
+                        animate={{
+                          y: hoveredCard === index ? -1 : 0,
+                        }}
+                        transition={{ 
+                          duration: 0.4,
+                          delay: hoveredCard === index ? 0.2 : 0,
+                        }}
+                        style={{
+                          transform: hoveredCard === index ? "translateZ(15px)" : "translateZ(0px)",
+                        }}
                       >
                         <Linkedin className="h-4 w-4" />
                         <span>View LinkedIn Profile</span>
@@ -373,60 +499,118 @@ export default function BoardOfDirectorsPage() {
                       <motion.div
                         className="flex items-center justify-center gap-2 text-amber-400 text-sm font-semibold transition-all duration-500"
                         animate={{
-                          color: hoveredCard === index ? "rgb(251, 191, 36)" : "rgb(251, 191, 36)",
+                          y: hoveredCard === index ? 0 : 0,
+                        }}
+                        transition={{ 
+                          duration: 0.4,
+                          delay: hoveredCard === index ? 0.25 : 0,
+                        }}
+                        style={{
+                          transform: hoveredCard === index ? "translateZ(20px)" : "translateZ(0px)",
                         }}
                       >
-                        <Sparkles className="h-4 w-4 group-hover:animate-pulse" />
+                        <motion.div
+                          animate={{
+                            rotate: hoveredCard === index ? 360 : 0,
+                          }}
+                          transition={{
+                            duration: 2,
+                            repeat: hoveredCard === index ? Infinity : 0,
+                            ease: "linear",
+                          }}
+                        >
+                          <Sparkles className="h-4 w-4" />
+                        </motion.div>
                         <span>View Full Profile</span>
                         <motion.div
                           animate={{
-                            x: hoveredCard === index ? 4 : 0,
+                            x: hoveredCard === index ? 6 : 0,
                           }}
-                          transition={{ duration: 0.3 }}
+                          transition={{ 
+                            duration: 0.3,
+                            repeat: hoveredCard === index ? Infinity : 0,
+                            repeatType: "reverse",
+                          }}
                         >
                           <ChevronRight className="h-4 w-4" />
                         </motion.div>
                       </motion.div>
                     </div>
 
-                    {/* Decorative corner accents with animation */}
+                    {/* Decorative corner accents with enhanced animation */}
                     <motion.div
-                      className="absolute top-0 right-0 w-24 h-24 bg-gradient-to-br from-amber-500/30 via-amber-400/10 to-transparent rounded-bl-3xl pointer-events-none"
+                      className="absolute top-0 right-0 w-32 h-32 bg-gradient-to-br from-amber-500/40 via-amber-400/15 to-transparent rounded-bl-3xl pointer-events-none"
                       initial={{ opacity: 0, scale: 0.8 }}
                       animate={{
                         opacity: hoveredCard === index ? 1 : 0,
-                        scale: hoveredCard === index ? 1 : 0.8,
+                        scale: hoveredCard === index ? 1.1 : 0.8,
+                        rotate: hoveredCard === index ? 5 : 0,
                       }}
-                      transition={{ duration: 0.5 }}
+                      transition={{ duration: 0.6, ease: "easeOut" }}
                     />
                     <motion.div
-                      className="absolute bottom-0 left-0 w-24 h-24 bg-gradient-to-tr from-amber-500/30 via-amber-400/10 to-transparent rounded-tr-3xl pointer-events-none"
+                      className="absolute bottom-0 left-0 w-32 h-32 bg-gradient-to-tr from-amber-500/40 via-amber-400/15 to-transparent rounded-tr-3xl pointer-events-none"
                       initial={{ opacity: 0, scale: 0.8 }}
                       animate={{
                         opacity: hoveredCard === index ? 1 : 0,
-                        scale: hoveredCard === index ? 1 : 0.8,
+                        scale: hoveredCard === index ? 1.1 : 0.8,
+                        rotate: hoveredCard === index ? -5 : 0,
                       }}
-                      transition={{ duration: 0.5 }}
+                      transition={{ duration: 0.6, ease: "easeOut" }}
                     />
 
                     {/* Animated border shine effect */}
                     {hoveredCard === index && (
                       <motion.div
-                        className="absolute inset-0 rounded-2xl pointer-events-none"
+                        className="absolute inset-0 rounded-2xl pointer-events-none overflow-hidden"
                         style={{
-                          background: "linear-gradient(90deg, transparent, rgba(251, 191, 36, 0.3), transparent)",
+                          background: "linear-gradient(90deg, transparent, rgba(251, 191, 36, 0.4), transparent)",
                         }}
                         animate={{
                           x: ["-100%", "200%"],
                         }}
                         transition={{
-                          duration: 2,
+                          duration: 1.8,
                           repeat: Infinity,
                           ease: "linear",
                         }}
                       />
                     )}
-                  </div>
+
+                    {/* Floating light orbs */}
+                    {hoveredCard === index && (
+                      <>
+                        <motion.div
+                          className="absolute w-3 h-3 bg-amber-400/60 rounded-full blur-sm pointer-events-none"
+                          animate={{
+                            x: [20, 80, 20],
+                            y: [30, 60, 30],
+                            opacity: [0.3, 0.8, 0.3],
+                          }}
+                          transition={{
+                            duration: 3,
+                            repeat: Infinity,
+                            ease: "easeInOut",
+                          }}
+                        />
+                        <motion.div
+                          className="absolute w-2 h-2 bg-amber-300/50 rounded-full blur-sm pointer-events-none"
+                          style={{ right: 40, top: 40 }}
+                          animate={{
+                            x: [-10, 10, -10],
+                            y: [0, -20, 0],
+                            opacity: [0.2, 0.6, 0.2],
+                          }}
+                          transition={{
+                            duration: 2.5,
+                            repeat: Infinity,
+                            ease: "easeInOut",
+                            delay: 0.5,
+                          }}
+                        />
+                      </>
+                    )}
+                  </motion.div>
                 </motion.div>
               ))}
             </div>

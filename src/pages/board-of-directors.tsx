@@ -156,6 +156,28 @@ const boardMembers = [
       ],
       vision: "As Senior Adviser to SiriusB iQ, Eric's vision is to ensure that the platform's actuarial intelligence and cost modeling capabilities meet the rigorous standards required by sophisticated employers and their fiduciaries. His experience across the full spectrum of employer sizes—from 100-employee organizations to Fortune 100 enterprises—enables him to guide SiriusB iQ's product roadmap to serve both middle-market and jumbo accounts with equal precision. Eric is committed to leveraging his decades of consulting expertise to validate that SiriusB iQ's algorithmic outputs deliver the same level of actuarial accuracy and strategic insight that he has personally provided to clients throughout his career, while scaling those capabilities through intelligent automation."
     }
+  },
+  {
+    name: "Ann Lewandowski",
+    title: "Board Director - ERISA and Patient Advocacy",
+    image: "/ann-lewandowski.jpg",
+    linkedin: "https://www.linkedin.com/in/annlewandowski/",
+    bio: "Healthcare compliance and patient advocacy expert with deep expertise in ERISA compliance, PBM transparency, and AI/ML applications in healthcare. Dedicated to ensuring algorithmic platforms serve both regulatory rigor and patient-centered outcomes.",
+    fullBio: {
+      introduction: "Ann Lewandowski brings critical expertise in healthcare compliance, ERISA fiduciary standards, and patient advocacy to SiriusB iQ's board. Her career has been dedicated to navigating the complex intersection of regulatory compliance, pharmacy benefit management transparency, and the responsible deployment of AI/ML technologies in healthcare. Ann's deep understanding of ERISA requirements, combined with her commitment to patient-centered care, positions her as a vital voice ensuring that SiriusB iQ's algorithmic platforms deliver both regulatory compliance and measurable patient outcomes. Her leadership bridges the technical precision of AI-driven benefits intelligence with the human imperative of protecting patient rights and ensuring equitable access to quality care.",
+      platform: "Ann's professional platform is built on the conviction that healthcare technology must serve dual masters: regulatory compliance and patient welfare. Throughout her career, she has championed the use of AI/ML to expose opacity in PBM practices, identify pricing inefficiencies, and ensure that benefit designs align with both ERISA fiduciary standards and patient access needs. Her approach emphasizes transparency, accountability, and the ethical deployment of advanced analytics to detect conflicts of interest, pricing arbitrage, and formulary decisions that may compromise patient care. By applying rigorous compliance frameworks to emerging AI technologies, Ann ensures that innovation serves rather than circumvents the regulatory protections designed to safeguard plan participants and beneficiaries.",
+      philosophy: "Ann's guiding philosophy centers on the principle that ERISA compliance and patient advocacy are not competing priorities—they are complementary imperatives. She believes that fiduciaries who fulfill their duty of prudence and loyalty to plan participants will inherently deliver better patient outcomes, and conversely, that patient-centered benefit designs will naturally align with fiduciary best practices. This philosophy challenges the industry's conventional separation of compliance and care quality, arguing instead that algorithmic platforms capable of detecting fiduciary breaches (undisclosed rebates, spread pricing, formulary manipulation) simultaneously protect patients from the downstream consequences of those breaches (higher costs, limited access, suboptimal therapies). Ann's vision for SiriusB iQ is that every algorithmic insight serves both the legal obligation to act in participants' best interests and the moral obligation to improve health outcomes.",
+      expertise: [
+        "ERISA Compliance & Fiduciary Governance",
+        "PBM Transparency & Pricing Analytics",
+        "AI/ML Applications in Healthcare",
+        "Patient Advocacy & Access to Care",
+        "Healthcare Policy & Regulatory Frameworks",
+        "Ethical AI Deployment in Benefits Management",
+        "Pharmacy Benefit Design & Formulary Optimization"
+      ],
+      vision: "As Board Director for ERISA and Patient Advocacy, Ann's vision is to ensure that SiriusB iQ's algorithmic platforms set the industry standard for compliance-first, patient-centered benefits intelligence. She is committed to validating that every AI-driven insight, every cost optimization recommendation, and every fiduciary risk alert aligns with both the letter and spirit of ERISA protections while simultaneously advancing patient access, affordability, and health equity. Ann will guide SiriusB iQ to build platforms that empower fiduciaries to confidently navigate complex regulatory landscapes while delivering measurable improvements in patient outcomes—proving that rigorous compliance and compassionate care are not opposing forces, but mutually reinforcing pillars of responsible benefits management."
+    }
   }
 ];
 

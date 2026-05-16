@@ -160,7 +160,7 @@ const boardMembers = [
   },
   {
     name: "Ann Lewandowski",
-    title: "Board Director - ERISA and Patient Advocacy",
+    title: "Distinguished Chair of ERISA and Patient Advocacy",
     image: "/ann-lewandowski.jpg",
     linkedin: "https://www.linkedin.com/in/annlewandowski/",
     bio: "Healthcare compliance and patient advocacy expert with deep expertise in ERISA compliance, PBM transparency, and AI/ML applications in healthcare. Dedicated to ensuring algorithmic platforms serve both regulatory rigor and patient-centered outcomes.",

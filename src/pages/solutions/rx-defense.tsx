@@ -17,7 +17,11 @@ import {
   Users,
   Building,
   Activity,
-  Award
+  Award,
+  BarChart3,
+  PieChart,
+  TrendingDown,
+  MapPin
 } from "lucide-react";
 import { SiteHeader } from "@/components/site/SiteHeader";
 import { SiteFooter } from "@/components/site/SiteFooter";
@@ -1594,7 +1598,223 @@ export default function RxDefenseReport() {
                 </div>
               </div>
 
-              {/* Savings Breakdown by Provision */}
+              {/* NEW: Provision Score Visualization */}
+              <div className="bg-[#0a0a0a] border border-white/10 rounded-2xl p-8 mb-12">
+                <div className="flex items-center justify-between mb-8">
+                  <h3 className="text-2xl font-bold text-white flex items-center gap-3">
+                    <BarChart3 className="w-6 h-6 text-cyan-400" />
+                    Provision Score Distribution
+                  </h3>
+                  <div className="text-sm text-slate-400">Scale: 0-10 (Higher is Better)</div>
+                </div>
+                <div className="space-y-4">
+                  {provisions.map((prov) => (
+                    <div key={prov.id} className="group">
+                      <div className="flex items-center justify-between mb-2">
+                        <div className="flex items-center gap-3 flex-1">
+                          <span className="text-xs font-mono text-slate-500 w-6">{String(prov.id).padStart(2, '0')}</span>
+                          <span className="text-sm text-white font-medium">{prov.title}</span>
+                        </div>
+                        <div className="flex items-center gap-4">
+                          <span className="text-xs font-mono text-slate-500">{prov.score.toFixed(1)}/10</span>
+                          <span className="text-sm font-bold text-emerald-400 min-w-[80px] text-right">{prov.savings}</span>
+                        </div>
+                      </div>
+                      <div className="flex items-center gap-2">
+                        <div className="flex-1 bg-slate-900 rounded-full h-2 overflow-hidden">
+                          <div 
+                            className={`h-full transition-all ${
+                              prov.score < 3 ? 'bg-rose-500' : prov.score < 5 ? 'bg-orange-400' : 'bg-emerald-400'
+                            }`}
+                            style={{ width: `${prov.score * 10}%` }}
+                          />
+                        </div>
+                        <span className={`text-xs font-bold tracking-wider uppercase px-2 py-1 rounded ${
+                          prov.score < 3 ? 'text-rose-500 bg-rose-500/10' : 
+                          prov.score < 5 ? 'text-orange-400 bg-orange-400/10' : 
+                          'text-emerald-400 bg-emerald-400/10'
+                        }`}>
+                          {prov.score < 3 ? 'Critical' : prov.score < 5 ? 'Concern' : 'Moderate'}
+                        </span>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              {/* NEW: Industry Benchmark Comparison */}
+              <div className="bg-[#0a0a0a] border border-white/10 rounded-2xl p-8 mb-12">
+                <h3 className="text-2xl font-bold text-white mb-8 flex items-center gap-3">
+                  <PieChart className="w-6 h-6 text-purple-400" />
+                  Industry Benchmark Comparison
+                </h3>
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                  <div className="bg-[#111] rounded-xl p-6 border border-white/5">
+                    <div className="flex items-center justify-between mb-4">
+                      <h4 className="text-sm font-bold text-slate-400 uppercase tracking-wider">Your Contract Score</h4>
+                      <div className="text-3xl font-black text-rose-500">38</div>
+                    </div>
+                    <div className="w-full bg-slate-800 rounded-full h-3 mb-2 overflow-hidden">
+                      <div className="bg-rose-500 h-3 rounded-full" style={{ width: '38%' }} />
+                    </div>
+                    <p className="text-xs text-slate-500">Bottom 12th percentile nationally</p>
+                  </div>
+                  
+                  <div className="bg-[#111] rounded-xl p-6 border border-white/5">
+                    <div className="flex items-center justify-between mb-4">
+                      <h4 className="text-sm font-bold text-slate-400 uppercase tracking-wider">Industry Average</h4>
+                      <div className="text-3xl font-black text-orange-400">62</div>
+                    </div>
+                    <div className="w-full bg-slate-800 rounded-full h-3 mb-2 overflow-hidden">
+                      <div className="bg-orange-400 h-3 rounded-full" style={{ width: '62%' }} />
+                    </div>
+                    <p className="text-xs text-slate-500">Median for 500-2000 life plans</p>
+                  </div>
+                  
+                  <div className="bg-[#111] rounded-xl p-6 border border-white/5">
+                    <div className="flex items-center justify-between mb-4">
+                      <h4 className="text-sm font-bold text-slate-400 uppercase tracking-wider">Best-in-Class</h4>
+                      <div className="text-3xl font-black text-emerald-400">91</div>
+                    </div>
+                    <div className="w-full bg-slate-800 rounded-full h-3 mb-2 overflow-hidden">
+                      <div className="bg-emerald-400 h-3 rounded-full" style={{ width: '91%' }} />
+                    </div>
+                    <p className="text-xs text-slate-500">Top 5th percentile protection</p>
+                  </div>
+                </div>
+                
+                <div className="mt-8 bg-gradient-to-r from-rose-950/40 to-orange-950/40 border border-rose-500/20 rounded-xl p-6">
+                  <p className="text-slate-300 leading-relaxed">
+                    <span className="font-bold text-white">Gap Analysis:</span> Your contract scores 24 points below the industry median and 53 points below best-in-class. This represents a structural disadvantage worth an estimated <span className="text-emerald-400 font-bold">$5.2M</span> over the typical 3-year contract term compared to properly negotiated agreements.
+                  </p>
+                </div>
+              </div>
+
+              {/* NEW: Geographic Benchmarking */}
+              <div className="bg-[#0a0a0a] border border-white/10 rounded-2xl p-8 mb-12">
+                <h3 className="text-2xl font-bold text-white mb-8 flex items-center gap-3">
+                  <MapPin className="w-6 h-6 text-blue-400" />
+                  Regional Pricing Analysis
+                </h3>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  <div>
+                    <h4 className="text-sm font-bold text-slate-400 uppercase tracking-wider mb-4">Your Effective Drug Cost</h4>
+                    <div className="space-y-3">
+                      <div className="flex justify-between items-center bg-[#111] rounded-lg p-4">
+                        <span className="text-slate-300">Generic AWP Discount</span>
+                        <span className="font-bold text-white">AWP - 78%</span>
+                      </div>
+                      <div className="flex justify-between items-center bg-[#111] rounded-lg p-4">
+                        <span className="text-slate-300">Brand AWP Discount</span>
+                        <span className="font-bold text-white">AWP - 14%</span>
+                      </div>
+                      <div className="flex justify-between items-center bg-[#111] rounded-lg p-4">
+                        <span className="text-slate-300">Specialty Drug Pricing</span>
+                        <span className="font-bold text-rose-400">WAC + 3.2%</span>
+                      </div>
+                    </div>
+                  </div>
+                  
+                  <div>
+                    <h4 className="text-sm font-bold text-slate-400 uppercase tracking-wider mb-4">Regional Median (Midwest)</h4>
+                    <div className="space-y-3">
+                      <div className="flex justify-between items-center bg-[#111] rounded-lg p-4">
+                        <span className="text-slate-300">Generic AWP Discount</span>
+                        <span className="font-bold text-emerald-400">AWP - 84%</span>
+                      </div>
+                      <div className="flex justify-between items-center bg-[#111] rounded-lg p-4">
+                        <span className="text-slate-300">Brand AWP Discount</span>
+                        <span className="font-bold text-emerald-400">AWP - 18%</span>
+                      </div>
+                      <div className="flex justify-between items-center bg-[#111] rounded-lg p-4">
+                        <span className="text-slate-300">Specialty Drug Pricing</span>
+                        <span className="font-bold text-emerald-400">WAC - 2.1%</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                
+                <div className="mt-6 grid grid-cols-3 gap-4">
+                  <div className="bg-gradient-to-br from-rose-950/40 to-rose-900/20 border border-rose-500/30 rounded-xl p-4 text-center">
+                    <div className="text-xs text-rose-400 font-bold uppercase tracking-wider mb-2">Generic Gap</div>
+                    <div className="text-2xl font-bold text-white">$420K</div>
+                    <div className="text-xs text-slate-500 mt-1">Annual excess cost</div>
+                  </div>
+                  <div className="bg-gradient-to-br from-orange-950/40 to-orange-900/20 border border-orange-500/30 rounded-xl p-4 text-center">
+                    <div className="text-xs text-orange-400 font-bold uppercase tracking-wider mb-2">Brand Gap</div>
+                    <div className="text-2xl font-bold text-white">$310K</div>
+                    <div className="text-xs text-slate-500 mt-1">Annual excess cost</div>
+                  </div>
+                  <div className="bg-gradient-to-br from-rose-950/40 to-rose-900/20 border border-rose-500/30 rounded-xl p-4 text-center">
+                    <div className="text-xs text-rose-400 font-bold uppercase tracking-wider mb-2">Specialty Gap</div>
+                    <div className="text-2xl font-bold text-white">$780K</div>
+                    <div className="text-xs text-slate-500 mt-1">Annual excess cost</div>
+                  </div>
+                </div>
+              </div>
+
+              {/* NEW: Savings Trend Analysis */}
+              <div className="bg-[#0a0a0a] border border-white/10 rounded-2xl p-8 mb-12">
+                <h3 className="text-2xl font-bold text-white mb-8 flex items-center gap-3">
+                  <TrendingUp className="w-6 h-6 text-cyan-400" />
+                  5-Year Savings Trajectory
+                </h3>
+                <div className="space-y-6">
+                  {[
+                    { year: '2026', spend: 18.5, optimized: 14.9, savings: 3.6, cumulative: 3.6 },
+                    { year: '2027', spend: 19.3, optimized: 15.5, savings: 3.8, cumulative: 7.4 },
+                    { year: '2028', spend: 20.1, optimized: 16.1, savings: 4.0, cumulative: 11.4 },
+                    { year: '2029', spend: 20.9, optimized: 16.7, savings: 4.2, cumulative: 15.6 },
+                    { year: '2030', spend: 21.8, optimized: 17.4, savings: 4.4, cumulative: 20.0 },
+                  ].map((item, idx) => (
+                    <div key={idx}>
+                      <div className="flex justify-between items-center mb-2">
+                        <div className="flex items-center gap-4">
+                          <span className="text-lg font-bold text-white w-12">{item.year}</span>
+                          <div className="flex gap-6">
+                            <div>
+                              <span className="text-xs text-slate-500 uppercase tracking-wider">Baseline</span>
+                              <div className="text-sm text-slate-300">${item.spend}M</div>
+                            </div>
+                            <div>
+                              <span className="text-xs text-slate-500 uppercase tracking-wider">Optimized</span>
+                              <div className="text-sm text-emerald-400">${item.optimized}M</div>
+                            </div>
+                          </div>
+                        </div>
+                        <div className="text-right">
+                          <div className="text-xs text-slate-500 uppercase tracking-wider">Annual Savings</div>
+                          <div className="text-xl font-bold text-emerald-400">${item.savings}M</div>
+                        </div>
+                      </div>
+                      <div className="relative h-3 bg-slate-900 rounded-full overflow-hidden">
+                        <div 
+                          className="absolute left-0 top-0 h-full bg-gradient-to-r from-emerald-500 to-cyan-500 rounded-full"
+                          style={{ width: `${(item.savings / item.spend) * 100}%` }}
+                        />
+                      </div>
+                      <div className="flex justify-between mt-1">
+                        <span className="text-xs text-slate-600">0%</span>
+                        <span className="text-xs text-emerald-400 font-bold">Cumulative: ${item.cumulative}M</span>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+                <div className="mt-8 bg-gradient-to-br from-emerald-950/40 to-cyan-950/40 border border-emerald-500/30 rounded-xl p-6">
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <div className="text-sm text-emerald-400 font-bold uppercase tracking-wider mb-2">5-Year Total Impact</div>
+                      <div className="text-4xl font-black text-white">$20.0M</div>
+                    </div>
+                    <div className="text-right">
+                      <div className="text-sm text-slate-400 mb-2">Average Annual Savings</div>
+                      <div className="text-2xl font-bold text-emerald-400">$4.0M/year</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              {/* Existing: Savings Breakdown by Provision */}
               <div className="space-y-6 mb-12">
                 <h3 className="text-2xl font-bold text-white mb-6">Savings Breakdown by Provision</h3>
                 
@@ -1630,7 +1850,7 @@ export default function RxDefenseReport() {
                 </div>
               </div>
 
-              {/* Cost Category Breakdown */}
+              {/* Existing: Cost Category Breakdown */}
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-12">
                 <div className="bg-[#0a0a0a] border border-white/10 rounded-xl p-6">
                   <h4 className="text-lg font-bold text-white mb-6 flex items-center gap-2">
@@ -1683,7 +1903,35 @@ export default function RxDefenseReport() {
                 </div>
               </div>
 
-              {/* Risk Exposure */}
+              {/* NEW: Risk Heat Map */}
+              <div className="bg-[#0a0a0a] border border-white/10 rounded-2xl p-8 mb-12">
+                <h3 className="text-2xl font-bold text-white mb-8 flex items-center gap-3">
+                  <AlertTriangle className="w-6 h-6 text-rose-400" />
+                  Risk Exposure Heat Map
+                </h3>
+                <div className="grid grid-cols-2 md:grid-cols-5 gap-3">
+                  {[
+                    { category: 'Spread Pricing', risk: 'Critical', amount: '$1.2M', color: 'from-rose-600 to-rose-800' },
+                    { category: 'Rebate Retention', risk: 'High', amount: '$840K', color: 'from-orange-600 to-orange-800' },
+                    { category: 'Specialty Steering', risk: 'High', amount: '$580K', color: 'from-orange-600 to-orange-800' },
+                    { category: 'Data Monetization', risk: 'Medium', amount: '$320K', color: 'from-yellow-600 to-yellow-800' },
+                    { category: 'Admin Fees', risk: 'Medium', amount: '$290K', color: 'from-yellow-600 to-yellow-800' },
+                    { category: 'Audit Restrictions', risk: 'High', amount: '$410K', color: 'from-orange-600 to-orange-800' },
+                    { category: 'Exit Penalties', risk: 'Medium', amount: '$180K', color: 'from-yellow-600 to-yellow-800' },
+                    { category: 'MAC Opacity', risk: 'Critical', amount: '$960K', color: 'from-rose-600 to-rose-800' },
+                    { category: 'Formulary Control', risk: 'High', amount: '$720K', color: 'from-orange-600 to-orange-800' },
+                    { category: 'Network Design', risk: 'Low', amount: '$140K', color: 'from-green-600 to-green-800' },
+                  ].map((item, idx) => (
+                    <div key={idx} className={`bg-gradient-to-br ${item.color} rounded-xl p-4 text-center hover:scale-105 transition-transform cursor-pointer`}>
+                      <div className="text-xs font-bold text-white/90 uppercase tracking-wider mb-2">{item.category}</div>
+                      <div className="text-2xl font-black text-white mb-1">{item.amount}</div>
+                      <div className="text-[10px] text-white/70 uppercase tracking-widest">{item.risk} Risk</div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              {/* Existing: Risk Exposure */}
               <div className="bg-gradient-to-br from-rose-950/40 to-rose-900/20 border border-rose-500/30 rounded-2xl p-8 mb-12">
                 <h3 className="text-2xl font-bold text-white mb-6 flex items-center gap-3">
                   <AlertTriangle className="w-6 h-6 text-rose-400" />
@@ -1711,7 +1959,47 @@ export default function RxDefenseReport() {
                 </div>
               </div>
 
-              {/* 3-Year Projection */}
+              {/* NEW: Month-over-Month Savings Projection */}
+              <div className="bg-[#0a0a0a] border border-white/10 rounded-2xl p-8 mb-12">
+                <h3 className="text-2xl font-bold text-white mb-8 flex items-center gap-3">
+                  <TrendingDown className="w-6 h-6 text-emerald-400" />
+                  Monthly Savings Ramp-Up (Year 1)
+                </h3>
+                <div className="grid grid-cols-3 md:grid-cols-6 gap-3">
+                  {[
+                    { month: 'Jan', savings: 0, status: 'Planning' },
+                    { month: 'Feb', savings: 0, status: 'Negotiation' },
+                    { month: 'Mar', savings: 85, status: 'Implementation' },
+                    { month: 'Apr', savings: 180, status: 'Partial' },
+                    { month: 'May', savings: 240, status: 'Partial' },
+                    { month: 'Jun', savings: 300, status: 'Full' },
+                    { month: 'Jul', savings: 300, status: 'Full' },
+                    { month: 'Aug', savings: 300, status: 'Full' },
+                    { month: 'Sep', savings: 300, status: 'Full' },
+                    { month: 'Oct', savings: 300, status: 'Full' },
+                    { month: 'Nov', savings: 300, status: 'Full' },
+                    { month: 'Dec', savings: 300, status: 'Full' },
+                  ].map((item, idx) => (
+                    <div key={idx} className="bg-[#111] rounded-lg p-3 text-center">
+                      <div className="text-xs font-bold text-slate-500 uppercase mb-2">{item.month}</div>
+                      <div className="text-xl font-bold text-white mb-1">${item.savings}K</div>
+                      <div className={`text-[9px] font-bold uppercase tracking-widest px-2 py-1 rounded ${
+                        item.status === 'Full' ? 'bg-emerald-500/20 text-emerald-400' :
+                        item.status === 'Partial' ? 'bg-yellow-500/20 text-yellow-400' :
+                        'bg-slate-700/20 text-slate-500'
+                      }`}>
+                        {item.status}
+                      </div>
+                    </div>
+                  ))}
+                </div>
+                <div className="mt-6 flex justify-between items-center bg-gradient-to-r from-emerald-950/40 to-emerald-900/20 border border-emerald-500/30 rounded-xl p-4">
+                  <span className="text-slate-300">Year 1 Total Realized Savings:</span>
+                  <span className="text-3xl font-bold text-emerald-400">$2.7M</span>
+                </div>
+              </div>
+
+              {/* Existing: 3-Year Projection */}
               <div className="bg-[#0a0a0a] border border-white/10 rounded-xl p-8">
                 <h3 className="text-2xl font-bold text-white mb-6">3-Year Financial Impact Projection</h3>
                 <div className="space-y-6">

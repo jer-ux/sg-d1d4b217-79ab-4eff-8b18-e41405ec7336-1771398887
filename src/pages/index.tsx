@@ -145,10 +145,10 @@ export default function HomePage() {
   return (
     <>
       <Head>
-        <title>SiriusB iQ - Kincaid IQ</title>
+        <title>SiriusB iQ - Stop Overpaying for Healthcare</title>
         <meta
           name="description"
-          content="AI-powered fiduciary intelligence platform for employee benefits compliance and cost optimization"
+          content="Find hidden overcharges in your benefits contracts. Reduce costs by 20-35% while improving employee coverage."
         />
       </Head>
       <main className="relative min-h-screen bg-black text-zinc-100 overflow-hidden">
@@ -174,9 +174,8 @@ export default function HomePage() {
                   style={{ perspective: "1500px", transformStyle: "preserve-3d" }}
                 >
                   <div className="flex flex-wrap gap-3 mb-6">
-                    <Badge icon={Building2}>Enterprise-Grade</Badge>
-                    <Badge icon={Shield}>SOC2 Compliant</Badge>
-                    <Badge icon={Award}>HIPAA Ready</Badge>
+                    <Badge icon={Shield}>Trusted by CFOs</Badge>
+                    <Badge icon={CheckCircle2}>20-35% Savings</Badge>
                   </div>
 
                   <motion.h1 
@@ -187,13 +186,13 @@ export default function HomePage() {
                       className="bg-gradient-to-r from-amber-300 via-amber-100 to-white bg-clip-text text-transparent"
                       style={{ display: "block", transform: "translateZ(30px)" }}
                     >
-                      Enterprise Algorithmic
+                      Stop overpaying
                     </motion.span>
                     <motion.span 
                       className="bg-gradient-to-r from-white via-purple-100 to-blue-100 bg-clip-text text-transparent"
                       style={{ display: "block", transform: "translateZ(20px)" }}
                     >
-                      Fiduciary Platform
+                      for employee benefits
                     </motion.span>
                   </motion.h1>
 
@@ -201,8 +200,19 @@ export default function HomePage() {
                     className="text-xl text-gray-300 mb-8 leading-relaxed"
                     style={{ transform: "translateZ(20px)" }}
                   >
-                    Transform enterprise operations with AI-powered governance, real-time oversight, and algorithmic compliance enforcement. Multi-tenant architecture, SSO integration, and cryptographic audit trails built for Fortune 500 scale.
+                    Find hidden overcharges in PBM contracts. Eliminate wasteful spending. Save 20-35% while improving coverage. Every dollar verified with proof.
                   </motion.p>
+
+                  {/* Value Pills */}
+                  <motion.div 
+                    className="grid grid-cols-2 gap-4 mb-8"
+                    style={{ transform: "translateZ(25px)" }}
+                  >
+                    <Pill k="Average Savings" v="$2.4M/year" />
+                    <Pill k="Contract Issues Found" v="47 per audit" />
+                    <Pill k="Time to Results" v="14 days" />
+                    <Pill k="ROI" v="8-12x" />
+                  </motion.div>
 
                   {/* CTA Buttons with 3D */}
                   <motion.div 
@@ -218,59 +228,18 @@ export default function HomePage() {
                         href="/request-demo"
                         className="inline-flex items-center justify-center px-8 py-4 text-lg font-semibold text-white bg-gradient-to-r from-blue-600 to-purple-600 rounded-lg hover:from-blue-700 hover:to-purple-700 transition-all duration-200 shadow-lg hover:shadow-xl"
                       >
-                        <span>Request Enterprise Demo</span>
-                        <svg className="ml-2 h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 5l7 7m0 0l-7 7m7-7H6" />
-                        </svg>
+                        <span>Find Your Hidden Overcharges</span>
+                        <ArrowRight className="ml-2 h-5 w-5" />
                       </Link>
                     </motion.div>
                   </motion.div>
 
-                  {/* Enterprise Trust Badges */}
-                  <motion.div
-                    className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8"
-                    style={{ transform: "translateZ(25px)" }}
+                  <motion.p 
+                    className="text-sm text-gray-400"
+                    style={{ transform: "translateZ(20px)" }}
                   >
-                    <div className="text-center p-3 rounded-lg bg-white/5 border border-white/10 backdrop-blur-sm">
-                      <div className="text-2xl font-bold text-purple-400">99.99%</div>
-                      <div className="text-xs text-gray-400 mt-1">Uptime SLA</div>
-                    </div>
-                    <div className="text-center p-3 rounded-lg bg-white/5 border border-white/10 backdrop-blur-sm">
-                      <div className="text-2xl font-bold text-purple-400">SOC2</div>
-                      <div className="text-xs text-gray-400 mt-1">Type II</div>
-                    </div>
-                    <div className="text-center p-3 rounded-lg bg-white/5 border border-white/10 backdrop-blur-sm">
-                      <div className="text-2xl font-bold text-purple-400">256-bit</div>
-                      <div className="text-xs text-gray-400 mt-1">Encryption</div>
-                    </div>
-                    <div className="text-center p-3 rounded-lg bg-white/5 border border-white/10 backdrop-blur-sm">
-                      <div className="text-2xl font-bold text-purple-400">24/7</div>
-                      <div className="text-xs text-gray-400 mt-1">Support</div>
-                    </div>
-                  </motion.div>
-
-                  {/* CTA Buttons with 3D */}
-                  <motion.div 
-                    className="mt-10 flex justify-center"
-                    initial={{ opacity: 0, y: 20 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    viewport={{ once: true }}
-                    transition={{ duration: 0.6, delay: 0.6 }}
-                  >
-                    <motion.div
-                      whileHover={{ scale: 1.05, z: 30 }}
-                      whileTap={{ scale: 0.95 }}
-                      style={{ perspective: "1000px", transformStyle: "preserve-3d" }}
-                    >
-                      <Link
-                        href="/request-demo"
-                        className="inline-flex items-center gap-2 rounded-xl border border-emerald-500/50 bg-zinc-950/80 px-8 py-4 text-base font-bold text-white backdrop-blur-sm transition-all hover:border-emerald-400/70 hover:bg-emerald-950/40"
-                      >
-                        <Users className="h-5 w-5 text-emerald-400" />
-                        <span>Schedule HR Analytics Demo</span>
-                      </Link>
-                    </motion.div>
-                  </motion.div>
+                    Free contract analysis • No implementation required • Results in 14 days
+                  </motion.p>
                 </motion.div>
 
                 {/* Right Column - Image with 3D Transform */}
@@ -289,7 +258,7 @@ export default function HomePage() {
                   >
                     <img
                       src="/e36f3ab62edc9c2fba9186685bb06e694fd8e78149112009407488c8477129df.png"
-                      alt="SiriusB iQ Enterprise Platform"
+                      alt="Benefits Cost Analysis Dashboard"
                       className="w-full h-auto"
                     />
                     <motion.div 
@@ -310,10 +279,10 @@ export default function HomePage() {
               <div className="grid lg:grid-cols-2 gap-12 items-center">
                 <div className="space-y-8">
                   <h1 className="text-4xl md:text-[58px] font-bold leading-tight">
-                    <span className="bg-gradient-to-r from-blue-400 via-cyan-300 to-purple-400 bg-clip-text text-transparent">
-                      Enterprise Algorithmic
+                    <span className="bg-gradient-to-r from-amber-300 via-amber-100 to-white bg-clip-text text-transparent">
+                      Stop overpaying
                     </span>
-                    <span className="text-white">Fiduciary Platform</span>
+                    <span className="text-white">for employee benefits</span>
                   </h1>
                 </div>
               </div>
@@ -331,70 +300,70 @@ export default function HomePage() {
             transition={{ duration: 0.6 }}
           >
             <div className="flex items-center gap-3 text-lg font-black bg-gradient-to-r from-purple-300 to-white bg-clip-text text-transparent mb-4">
-              <Building2 className="h-6 w-6 text-purple-400 drop-shadow-[0_0_12px_rgba(168,85,247,0.6)]" />
-              Enterprise-Grade Infrastructure
+              <TrendingUp className="h-6 w-6 text-purple-400 drop-shadow-[0_0_12px_rgba(168,85,247,0.6)]" />
+              What You Get
             </div>
             <h2 className="text-4xl font-black bg-gradient-to-br from-white via-purple-200 to-blue-200 bg-clip-text text-transparent">
-              Built for scale, security, and compliance
+              Complete visibility into where your money goes
             </h2>
             <p className="mt-3 text-base text-zinc-400 max-w-3xl">
-              Multi-tenant architecture, SSO integration, comprehensive audit trails, and enterprise-grade security controls ready for your most demanding workloads.
+              Every contract analyzed. Every overcharge identified. Every saving verified with documentation your auditors will approve.
             </p>
           </motion.div>
 
           <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
             <Card3D
-              title="Multi-Tenant Architecture"
-              subtitle="Isolated data, shared infrastructure"
-              icon={Database}
+              title="Contract Analysis"
+              subtitle="Find overcharges in 14 days"
+              icon={Search}
               delay={0.1}
             >
-              Complete data isolation with organization-level tenancy. Role-based access control, department hierarchies, and granular permissions at every level.
+              Upload your PBM contract. We identify every overcharge, hidden fee, and unfavorable term. Average findings: 47 issues per contract worth $2.4M annually.
             </Card3D>
 
             <Card3D
-              title="SSO & Enterprise Auth"
-              subtitle="SAML 2.0, OAuth 2.0, OIDC support"
-              icon={Shield}
+              title="Real-Time Monitoring"
+              subtitle="Catch problems before they cost you"
+              icon={Activity}
               delay={0.2}
             >
-              Seamless integration with Okta, Azure AD, Google Workspace. Multi-factor authentication, session management, and passwordless login options.
+              Track every claim, every rebate, every pricing change. Alerts when contracts are violated or costs spike unexpectedly. Stop losses immediately.
             </Card3D>
 
             <Card3D
-              title="SOC2 Type II Compliant"
-              subtitle="Audited security controls"
-              icon={Award}
+              title="Proof Documentation"
+              subtitle="Audit-ready evidence for every finding"
+              icon={FileText}
               delay={0.3}
             >
-              Third-party audited security framework. Continuous compliance monitoring, automated policy enforcement, and audit-ready documentation.
+              Every saving backed by timestamped evidence. Cryptographic verification ensures documentation survives audits and negotiations.
             </Card3D>
 
             <Card3D
-              title="Real-Time Analytics"
-              subtitle="Live dashboards, instant insights"
-              icon={BarChart3}
+              title="Savings Guarantee"
+              subtitle="Pay only when you save"
+              icon={CheckCircle2}
               delay={0.4}
             >
-              WebSocket-powered live updates. Executive dashboards, team analytics, and usage metrics refreshed in real-time across all devices.
+              No upfront costs. You only pay when we find savings. Typical return: 8-12x your investment within the first year.
             </Card3D>
 
             <Card3D
-              title="Global CDN & Edge"
-              subtitle="Sub-50ms latency worldwide"
-              icon={Globe}
+              title="Vendor Negotiations"
+              subtitle="Evidence-backed leverage"
+              icon={Shield}
               delay={0.5}
             >
-              Distributed edge network with automatic failover. 99.99% uptime SLA, regional data residency, and disaster recovery built-in.
+              Armed with documented proof, you negotiate from strength. Our clients recover an average of 87% of identified overcharges.
             </Card3D>
 
             <Card3D
-              title="Enterprise API"
-              subtitle="RESTful & GraphQL endpoints"
-              icon={Zap}
+              title="Compliance Protection"
+              subtitle="Stay audit-ready automatically"
+              icon={Lock}
               delay={0.6}
             >
-              Comprehensive API with versioning, webhooks, and real-time subscriptions. Rate limiting, API key management, and developer documentation.
+              Automatic documentation of every decision. Complete audit trails. ERISA compliance built-in. Pass audits with confidence.
             </Card3D>
           </div>
         </section>

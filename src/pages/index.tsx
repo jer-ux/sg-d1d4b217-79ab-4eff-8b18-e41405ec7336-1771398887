@@ -741,7 +741,7 @@ export default function HomePage() {
               </motion.div>
               <div>
                 <h2 className="text-4xl font-black bg-gradient-to-br from-white via-purple-200 to-blue-200 bg-clip-text text-transparent">
-                  Executive Command Center
+                  Kincaid IQ
                 </h2>
                 <p className="text-sm text-zinc-400 mt-1">
                   Real-time metrics, evidence-backed KPIs, and algorithmic insights for C-suite decision making

@@ -227,8 +227,11 @@ export default function BoardOfDirectorsPage() {
                   Board of Directors
                 </h1>
               </div>
-              <p className="text-xl text-gray-400 max-w-3xl mx-auto">
-                Strategic leadership guiding innovation in health economics and benefits intelligence
+              <p className="text-xl md:text-2xl text-gray-300 max-w-3xl mx-auto mb-4">
+                Leaders who protect your bottom line
+              </p>
+              <p className="text-base text-gray-400 max-w-2xl mx-auto">
+                Expert guidance ensuring you pay fair prices, eliminate waste, and maintain compliance
               </p>
             </motion.div>
           </div>

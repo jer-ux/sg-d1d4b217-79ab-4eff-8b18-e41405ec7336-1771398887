@@ -414,7 +414,7 @@ export default function HomePage() {
         </section>
 
         {/* Forensics Section */}
-        <section id="forensics" className="relative z-10 mx-auto w-full max-w-7xl px-6 py-12">
+        <section id="forensics" className="relative z-10 mx-auto w-full max-w-7xl px-6 py-16">
           <motion.div
             className="mb-12"
             initial={{ opacity: 0, y: 20 }}
@@ -433,19 +433,291 @@ export default function HomePage() {
             <p className="mt-6 text-xl text-zinc-300 max-w-3xl leading-relaxed">
               Rx Defense IQ Contract X-Ray is the only actuarially-anchored, evidence-spine-governed PBM contract forensic engine built for ERISA fiduciaries who refuse to lose.
             </p>
-            <div className="mt-8 bg-red-950/30 border border-red-500/20 rounded-xl p-6 backdrop-blur-sm max-w-3xl">
-              <p className="text-lg font-medium text-red-200">
-                "Most PBM contracts are written to be misunderstood. Ours are written to be prosecuted."
+          </motion.div>
+
+          {/* Forensic Statistics Grid */}
+          <motion.div
+            className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-12"
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6, delay: 0.1 }}
+          >
+            <motion.div
+              className="rounded-xl border border-red-500/30 bg-gradient-to-br from-red-950/40 to-black/80 p-6 backdrop-blur-sm shadow-lg"
+              whileHover={{ scale: 1.05, y: -3, boxShadow: "0 0 30px rgba(239, 68, 68, 0.3)" }}
+              transition={{ type: "spring", stiffness: 400, damping: 10 }}
+            >
+              <div className="text-3xl font-black bg-gradient-to-r from-red-400 to-red-200 bg-clip-text text-transparent">47</div>
+              <div className="mt-1 text-xs text-red-300/70 font-medium uppercase tracking-wide">Avg Issues/Contract</div>
+            </motion.div>
+            <motion.div
+              className="rounded-xl border border-red-500/30 bg-gradient-to-br from-red-950/40 to-black/80 p-6 backdrop-blur-sm shadow-lg"
+              whileHover={{ scale: 1.05, y: -3, boxShadow: "0 0 30px rgba(239, 68, 68, 0.3)" }}
+              transition={{ type: "spring", stiffness: 400, damping: 10 }}
+            >
+              <div className="text-3xl font-black bg-gradient-to-r from-red-400 to-red-200 bg-clip-text text-transparent">$2.4M</div>
+              <div className="mt-1 text-xs text-red-300/70 font-medium uppercase tracking-wide">Annual Recovery</div>
+            </motion.div>
+            <motion.div
+              className="rounded-xl border border-red-500/30 bg-gradient-to-br from-red-950/40 to-black/80 p-6 backdrop-blur-sm shadow-lg"
+              whileHover={{ scale: 1.05, y: -3, boxShadow: "0 0 30px rgba(239, 68, 68, 0.3)" }}
+              transition={{ type: "spring", stiffness: 400, damping: 10 }}
+            >
+              <div className="text-3xl font-black bg-gradient-to-r from-red-400 to-red-200 bg-clip-text text-transparent">87%</div>
+              <div className="mt-1 text-xs text-red-300/70 font-medium uppercase tracking-wide">Recovery Success Rate</div>
+            </motion.div>
+            <motion.div
+              className="rounded-xl border border-red-500/30 bg-gradient-to-br from-red-950/40 to-black/80 p-6 backdrop-blur-sm shadow-lg"
+              whileHover={{ scale: 1.05, y: -3, boxShadow: "0 0 30px rgba(239, 68, 68, 0.3)" }}
+              transition={{ type: "spring", stiffness: 400, damping: 10 }}
+            >
+              <div className="text-3xl font-black bg-gradient-to-r from-red-400 to-red-200 bg-clip-text text-transparent">14</div>
+              <div className="mt-1 text-xs text-red-300/70 font-medium uppercase tracking-wide">Days to Evidence</div>
+            </motion.div>
+          </motion.div>
+
+          {/* Forensic Capabilities Grid */}
+          <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3 mb-12">
+            <Card3D
+              title="Spread Analysis"
+              subtitle="AWP vs NADAC forensics"
+              icon={BarChart3}
+              delay={0.1}
+            >
+              Deep analysis of Average Wholesale Price vs NADAC benchmark spreads. Identify overcharging on generic drugs where PBMs exploit spread pricing to inflate costs by 200-400%.
+            </Card3D>
+
+            <Card3D
+              title="Rebate Leakage Detection"
+              subtitle="Follow the money trail"
+              icon={TrendingUp}
+              delay={0.2}
+            >
+              Track manufacturer rebates through every layer. Identify retained rebates, delayed pass-throughs, and contractual violations. Average finding: $847K in unreturned rebates per audit.
+            </Card3D>
+
+            <Card3D
+              title="MAC List Manipulation"
+              subtitle="Maximum Allowable Cost gaming"
+              icon={AlertTriangle}
+              delay={0.3}
+            >
+              Forensic analysis of MAC list updates and pricing changes. Detect when PBMs manipulate pricing lists to capture spread on high-volume generics. Typical recovery: $1.2M annually.
+            </Card3D>
+
+            <Card3D
+              title="Specialty Drug Markups"
+              subtitle="High-cost medication forensics"
+              icon={Activity}
+              delay={0.4}
+            >
+              Deep dive into specialty pharmacy markups and adherence to contracted discount guarantees. Uncover hidden fees, inflated dispensing charges, and violated rebate terms.
+            </Card3D>
+
+            <Card3D
+              title="Dir Fee Clawbacks"
+              subtitle="Point-of-sale vs post-adjudication"
+              icon={Shield}
+              delay={0.5}
+            >
+              Track Direct and Indirect Remuneration fees that appear after claims are paid. Identify retroactive clawbacks that violate transparency requirements. Average recovery: $340K/year.
+            </Card3D>
+
+            <Card3D
+              title="Formulary Manipulation"
+              subtitle="Therapeutic class switching"
+              icon={Search}
+              delay={0.6}
+            >
+              Detect non-clinical formulary changes that drive members to higher-cost alternatives. Identify PBM conflicts of interest and recovered spread opportunities.
+            </Card3D>
+          </div>
+
+          {/* Evidence Standards */}
+          <motion.div
+            className="mb-12 rounded-2xl border border-red-500/30 bg-gradient-to-br from-red-950/20 via-black/90 to-zinc-900/90 p-8 backdrop-blur-sm"
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6, delay: 0.2 }}
+          >
+            <div className="mb-6">
+              <h3 className="text-2xl font-black bg-gradient-to-r from-red-300 to-white bg-clip-text text-transparent mb-3">
+                Court-Grade Evidence Standards
+              </h3>
+              <p className="text-base text-zinc-300 leading-relaxed">
+                Every finding must survive hostile cross-examination. Every number must be reproducible by opposing counsel.
               </p>
             </div>
-            <div className="mt-8">
-              <Link
-                href="/solutions/contract-xray"
-                className="inline-flex items-center justify-center px-8 py-4 text-lg font-bold text-white bg-gradient-to-r from-red-600 to-red-800 rounded-xl hover:from-red-500 hover:to-red-700 transition-all duration-200 shadow-lg hover:shadow-red-500/25"
+            <div className="grid gap-4 md:grid-cols-2">
+              <div className="flex items-start gap-3">
+                <div className="mt-1 flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-red-500/20">
+                  <CheckCircle2 className="h-4 w-4 text-red-400" />
+                </div>
+                <div>
+                  <div className="font-bold text-white">SHA-256 Timestamped Evidence</div>
+                  <div className="mt-1 text-sm text-zinc-400">Every contract clause, claim record, and invoice cryptographically hashed with RFC 3161 timestamps</div>
+                </div>
+              </div>
+              <div className="flex items-start gap-3">
+                <div className="mt-1 flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-red-500/20">
+                  <CheckCircle2 className="h-4 w-4 text-red-400" />
+                </div>
+                <div>
+                  <div className="font-bold text-white">Chain of Custody Tracking</div>
+                  <div className="mt-1 text-sm text-zinc-400">Complete audit trail from data ingestion through analysis to final report with signed attestations</div>
+                </div>
+              </div>
+              <div className="flex items-start gap-3">
+                <div className="mt-1 flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-red-500/20">
+                  <CheckCircle2 className="h-4 w-4 text-red-400" />
+                </div>
+                <div>
+                  <div className="font-bold text-white">Actuarial Validation</div>
+                  <div className="mt-1 text-sm text-zinc-400">Every statistical claim reviewed by credentialed actuaries; ASA/FSA certified methodologies</div>
+                </div>
+              </div>
+              <div className="flex items-start gap-3">
+                <div className="mt-1 flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-red-500/20">
+                  <CheckCircle2 className="h-4 w-4 text-red-400" />
+                </div>
+                <div>
+                  <div className="font-bold text-white">Reproducible Calculations</div>
+                  <div className="mt-1 text-sm text-zinc-400">Open calculation methodologies; opposing experts can verify every number using same inputs</div>
+                </div>
+              </div>
+            </div>
+          </motion.div>
+
+          {/* Quote Box */}
+          <motion.div
+            className="mb-12 bg-gradient-to-br from-red-950/40 via-black/80 to-red-900/20 border border-red-500/30 rounded-2xl p-8 backdrop-blur-sm"
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6, delay: 0.3 }}
+            whileHover={{ scale: 1.01, boxShadow: "0 0 40px rgba(239, 68, 68, 0.2)" }}
+          >
+            <div className="mb-4 flex items-center gap-2">
+              <div className="h-1 w-12 bg-gradient-to-r from-red-500 to-red-700 rounded-full" />
+            </div>
+            <blockquote className="text-2xl font-bold text-red-100 leading-relaxed">
+              "Most PBM contracts are written to be misunderstood. <span className="bg-gradient-to-r from-red-400 to-red-200 bg-clip-text text-transparent">Ours are written to be prosecuted.</span>"
+            </blockquote>
+            <div className="mt-6 text-sm text-red-300/60">
+              — Contract Forensics Methodology, Rx Defense IQ
+            </div>
+          </motion.div>
+
+          {/* What We Prosecute */}
+          <motion.div
+            className="mb-12"
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6, delay: 0.4 }}
+          >
+            <h3 className="text-2xl font-black text-white mb-6">What We Prosecute</h3>
+            <div className="grid gap-4 md:grid-cols-2">
+              <div className="rounded-xl border border-red-500/20 bg-black/40 p-5 backdrop-blur-sm">
+                <div className="flex items-start gap-3">
+                  <AlertTriangle className="mt-1 h-5 w-5 shrink-0 text-red-500" />
+                  <div>
+                    <div className="font-bold text-red-200">Spread Pricing Violations</div>
+                    <div className="mt-1 text-sm text-zinc-400">AWP-based pricing where NADAC benchmarks are contractually required. Average overcharge: $340/claim.</div>
+                  </div>
+                </div>
+              </div>
+              <div className="rounded-xl border border-red-500/20 bg-black/40 p-5 backdrop-blur-sm">
+                <div className="flex items-start gap-3">
+                  <AlertTriangle className="mt-1 h-5 w-5 shrink-0 text-red-500" />
+                  <div>
+                    <div className="font-bold text-red-200">Undisclosed Rebate Retention</div>
+                    <div className="mt-1 text-sm text-zinc-400">Manufacturer rebates kept by PBM despite contractual pass-through obligations. Average finding: $847K/year.</div>
+                  </div>
+                </div>
+              </div>
+              <div className="rounded-xl border border-red-500/20 bg-black/40 p-5 backdrop-blur-sm">
+                <div className="flex items-start gap-3">
+                  <AlertTriangle className="mt-1 h-5 w-5 shrink-0 text-red-500" />
+                  <div>
+                    <div className="font-bold text-red-200">MAC List Gaming</div>
+                    <div className="mt-1 text-sm text-zinc-400">Manipulated Maximum Allowable Cost lists to capture spread on high-volume generics. Recovery: $1.2M annually.</div>
+                  </div>
+                </div>
+              </div>
+              <div className="rounded-xl border border-red-500/20 bg-black/40 p-5 backdrop-blur-sm">
+                <div className="flex items-start gap-3">
+                  <AlertTriangle className="mt-1 h-5 w-5 shrink-0 text-red-500" />
+                  <div>
+                    <div className="font-bold text-red-200">DIR Fee Clawbacks</div>
+                    <div className="mt-1 text-sm text-zinc-400">Retroactive Direct/Indirect Remuneration fees that violate transparency requirements. Average recovery: $340K/year.</div>
+                  </div>
+                </div>
+              </div>
+              <div className="rounded-xl border border-red-500/20 bg-black/40 p-5 backdrop-blur-sm">
+                <div className="flex items-start gap-3">
+                  <AlertTriangle className="mt-1 h-5 w-5 shrink-0 text-red-500" />
+                  <div>
+                    <div className="font-bold text-red-200">Formulary Conflicts</div>
+                    <div className="mt-1 text-sm text-zinc-400">Non-clinical formulary changes driving members to PBM-owned pharmacies or higher-cost alternatives.</div>
+                  </div>
+                </div>
+              </div>
+              <div className="rounded-xl border border-red-500/20 bg-black/40 p-5 backdrop-blur-sm">
+                <div className="flex items-start gap-3">
+                  <AlertTriangle className="mt-1 h-5 w-5 shrink-0 text-red-500" />
+                  <div>
+                    <div className="font-bold text-red-200">Specialty Pharmacy Markups</div>
+                    <div className="mt-1 text-sm text-zinc-400">Violated discount guarantees, hidden fees, and inflated dispensing charges on high-cost medications.</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </motion.div>
+
+          {/* CTA Section */}
+          <motion.div
+            className="flex flex-col items-center gap-6"
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6, delay: 0.5 }}
+          >
+            <div className="text-center max-w-2xl">
+              <p className="text-lg text-zinc-300 mb-6">
+                Ready to discover what your PBM isn't telling you? Launch a forensic investigation and get documented proof of every overcharge.
+              </p>
+            </div>
+            <div className="flex flex-col sm:flex-row gap-4">
+              <motion.div
+                whileHover={{ scale: 1.05, y: -2 }}
+                whileTap={{ scale: 0.95 }}
               >
-                <Search className="mr-2 h-5 w-5" />
-                Launch Forensic Investigation
-              </Link>
+                <Link
+                  href="/solutions/contract-xray"
+                  className="inline-flex items-center justify-center px-8 py-4 text-lg font-bold text-white bg-gradient-to-r from-red-600 to-red-800 rounded-xl hover:from-red-500 hover:to-red-700 transition-all duration-200 shadow-lg hover:shadow-red-500/25"
+                >
+                  <Search className="mr-2 h-5 w-5" />
+                  Launch Forensic Investigation
+                </Link>
+              </motion.div>
+              <motion.div
+                whileHover={{ scale: 1.05, y: -2 }}
+                whileTap={{ scale: 0.95 }}
+              >
+                <Link
+                  href="/solutions/rx-defense"
+                  className="inline-flex items-center justify-center px-8 py-4 text-lg font-bold text-red-300 border-2 border-red-500/50 rounded-xl hover:bg-red-950/30 hover:border-red-400 transition-all duration-200"
+                >
+                  <FileText className="mr-2 h-5 w-5" />
+                  View Sample Audit Report
+                </Link>
+              </motion.div>
+            </div>
+            <div className="text-sm text-zinc-500 text-center">
+              Free contract analysis • Documented findings in 14 days • No commitment required
             </div>
           </motion.div>
         </section>

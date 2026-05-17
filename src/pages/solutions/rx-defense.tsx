@@ -21,11 +21,16 @@ import {
   BarChart3,
   PieChart,
   TrendingDown,
-  MapPin
+  MapPin,
+  Download,
+  X,
+  ExternalLink
 } from "lucide-react";
 import { SiteHeader } from "@/components/site/SiteHeader";
 import { SiteFooter } from "@/components/site/SiteFooter";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import { Button } from "@/components/ui/button";
 import Link from "next/link";
 
 const provisions = [
@@ -364,11 +369,143 @@ export default function RxDefenseReport() {
   // FAQ State
   const [openFaq, setOpenFaq] = useState<number | null>(null);
 
+  // Modal State
+  const [selectedProvision, setSelectedProvision] = useState<typeof provisions[0] | null>(null);
+  const [benchmarkModalOpen, setBenchmarkModalOpen] = useState(false);
+  const [regionalModalOpen, setRegionalModalOpen] = useState(false);
+  const [savingsModalOpen, setSavingsModalOpen] = useState(false);
+  const [riskModalOpen, setRiskModalOpen] = useState(false);
+
   const formatCurrency = (val: number) => new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD', maximumFractionDigits: 0 }).format(val);
   const estimatedSavingsMin = calcSpend * 0.12;
   const estimatedSavingsMax = calcSpend * 0.18;
   const auditFee = calcLives < 700 ? 15000 : calcLives < 2000 ? 50000 : 200000;
   const roiMultiple = Math.floor(estimatedSavingsMin / auditFee);
+
+  // PDF Export Function
+  const exportToPDF = () => {
+    // Create a printable version
+    const printContent = `
+      <!DOCTYPE html>
+      <html>
+      <head>
+        <title>RX Defense IQ Report - TrueRx - March 25, 2026</title>
+        <style>
+          body { font-family: system-ui, -apple-system, sans-serif; padding: 40px; max-width: 1200px; margin: 0 auto; }
+          h1 { color: #DC2626; font-size: 36px; margin-bottom: 10px; }
+          h2 { color: #0F172A; font-size: 24px; margin-top: 30px; border-bottom: 2px solid #E2E8F0; padding-bottom: 10px; }
+          h3 { color: #475569; font-size: 18px; margin-top: 20px; }
+          .header { border-bottom: 2px solid #0F172A; padding-bottom: 20px; margin-bottom: 30px; }
+          .score-box { background: #FEF2F2; border: 2px solid #DC2626; padding: 30px; text-align: center; margin: 20px 0; }
+          .score { font-size: 72px; font-weight: bold; color: #DC2626; }
+          .metric { display: inline-block; margin: 10px 20px; padding: 15px; background: #F1F5F9; border-radius: 8px; }
+          .provision { border-left: 3px solid #DC2626; padding-left: 15px; margin: 15px 0; }
+          .savings { color: #10B981; font-weight: bold; font-size: 20px; }
+          table { width: 100%; border-collapse: collapse; margin: 20px 0; }
+          th, td { border: 1px solid #E2E8F0; padding: 12px; text-align: left; }
+          th { background: #F1F5F9; font-weight: bold; }
+          .footer { margin-top: 50px; padding-top: 20px; border-top: 2px solid #E2E8F0; font-size: 12px; color: #64748B; }
+          @media print { body { padding: 20px; } }
+        </style>
+      </head>
+      <body>
+        <div class="header">
+          <h1>RX Defense IQ™ Fiduciary Analysis Report</h1>
+          <p><strong>Client:</strong> TrueRx - Boone County</p>
+          <p><strong>Report Date:</strong> March 25, 2026</p>
+          <p><strong>Account:</strong> SHRACK-7742</p>
+        </div>
+
+        <div class="score-box">
+          <div class="score">38/100</div>
+          <h2 style="color: #DC2626; margin: 10px 0;">RED FLAG - Critical Fiduciary Risk</h2>
+          <p>This contract presents severe fiduciary risk and requires immediate renegotiation.</p>
+        </div>
+
+        <h2>Executive Summary</h2>
+        <div class="metric">
+          <strong>Estimated Annual Savings:</strong><br/>
+          <span class="savings">$3.6M</span>
+        </div>
+        <div class="metric">
+          <strong>Per Member Per Year:</strong><br/>
+          $240
+        </div>
+        <div class="metric">
+          <strong>Potential Reduction:</strong><br/>
+          19.5%
+        </div>
+
+        <h2>Key Findings</h2>
+        <ul>
+          <li>No explicit acceptance of fiduciary status or ERISA compliance</li>
+          <li>Data ownership rights insufficiently defined - PBM retains commercial control</li>
+          <li>Rebate and manufacturer revenue disclosures lack transparency</li>
+          <li>Audit rights have limited detail and lack sufficient guarantees</li>
+        </ul>
+
+        <h2>Provision Analysis (Top 5 by Financial Impact)</h2>
+        ${provisions.slice(0, 5).map(p => `
+          <div class="provision">
+            <h3>${p.title}</h3>
+            <p><strong>Score:</strong> ${p.score.toFixed(1)}/10 - ${p.status}</p>
+            <p><strong>Savings Opportunity:</strong> <span class="savings">${p.savings}</span></p>
+            <p><strong>Issues Found:</strong> ${p.met}</p>
+          </div>
+        `).join('')}
+
+        <h2>Financial Impact - 5 Year Projection</h2>
+        <table>
+          <thead>
+            <tr>
+              <th>Year</th>
+              <th>Baseline Spend</th>
+              <th>With Optimization</th>
+              <th>Annual Savings</th>
+              <th>Cumulative Savings</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td>2026</td><td>$18.5M</td><td>$14.9M</td><td class="savings">$3.6M</td><td>$3.6M</td></tr>
+            <tr><td>2027</td><td>$19.3M</td><td>$15.5M</td><td class="savings">$3.8M</td><td>$7.4M</td></tr>
+            <tr><td>2028</td><td>$20.1M</td><td>$16.1M</td><td class="savings">$4.0M</td><td>$11.4M</td></tr>
+            <tr><td>2029</td><td>$20.9M</td><td>$16.7M</td><td class="savings">$4.2M</td><td>$15.6M</td></tr>
+            <tr><td>2030</td><td>$21.8M</td><td>$17.4M</td><td class="savings">$4.4M</td><td>$20.0M</td></tr>
+          </tbody>
+        </table>
+
+        <h2>Recommended Next Steps</h2>
+        <ol>
+          <li><strong>Immediate Action:</strong> Schedule contract renegotiation meeting with PBM</li>
+          <li><strong>Priority 1:</strong> Address Pass-Through Pharmacy Costs ($960K impact)</li>
+          <li><strong>Priority 2:</strong> Secure 100% Rebate & Manufacturer Revenue pass-through ($583K impact)</li>
+          <li><strong>Priority 3:</strong> Implement Lowest Net Cost formulary requirements ($583K impact)</li>
+          <li><strong>Governance:</strong> Establish quarterly PBM performance reviews</li>
+          <li><strong>Documentation:</strong> Maintain this analysis for DOL compliance file</li>
+        </ol>
+
+        <div class="footer">
+          <p><strong>CONFIDENTIAL - Kincaid IQ RX Defense IQ™</strong></p>
+          <p>This report is for informational purposes only and does not constitute legal advice. Savings estimates are projections based on industry data. Plan fiduciaries should consult qualified ERISA counsel before making contractual decisions.</p>
+          <p>© ${new Date().getFullYear()} Kincaid IQ. All rights reserved.</p>
+        </div>
+      </body>
+      </html>
+    `;
+
+    // Open in new window for printing
+    const printWindow = window.open('', '_blank');
+    if (printWindow) {
+      printWindow.document.write(printContent);
+      printWindow.document.close();
+      printWindow.focus();
+      
+      // Trigger print dialog after a short delay
+      setTimeout(() => {
+        printWindow.print();
+      }, 250);
+    }
+  };
 
   const faqs = [
     {
@@ -406,11 +543,20 @@ export default function RxDefenseReport() {
             </div>
             <h2 className="text-sm md:text-base text-slate-400">Fiduciary-Grade PBM Contract Intelligence</h2>
           </div>
-          <div className="mt-4 md:mt-0 text-left md:text-right">
-            <div className="text-sm text-slate-400">March 25, 2026</div>
-            <div className="text-[10px] md:text-xs font-mono tracking-wider text-slate-500 mt-1 uppercase">
-              Account: SHRACK-7742
+          <div className="mt-4 md:mt-0 text-left md:text-right flex flex-col gap-3">
+            <div>
+              <div className="text-sm text-slate-400">March 25, 2026</div>
+              <div className="text-[10px] md:text-xs font-mono tracking-wider text-slate-500 mt-1 uppercase">
+                Account: SHRACK-7742
+              </div>
             </div>
+            <Button 
+              onClick={exportToPDF}
+              className="bg-gradient-to-r from-cyan-600 to-blue-600 hover:from-cyan-700 hover:to-blue-700 text-white flex items-center gap-2 shadow-lg"
+            >
+              <Download className="w-4 h-4" />
+              Export PDF Report
+            </Button>
           </div>
         </header>
 
@@ -1598,30 +1744,35 @@ export default function RxDefenseReport() {
                 </div>
               </div>
 
-              {/* NEW: Provision Score Visualization */}
+              {/* NEW: Provision Score Visualization - NOW CLICKABLE */}
               <div className="bg-[#0a0a0a] border border-white/10 rounded-2xl p-8 mb-12">
                 <div className="flex items-center justify-between mb-8">
                   <h3 className="text-2xl font-bold text-white flex items-center gap-3">
                     <BarChart3 className="w-6 h-6 text-cyan-400" />
                     Provision Score Distribution
                   </h3>
-                  <div className="text-sm text-slate-400">Scale: 0-10 (Higher is Better)</div>
+                  <div className="text-sm text-slate-400">Scale: 0-10 (Higher is Better) • Click for details</div>
                 </div>
                 <div className="space-y-4">
                   {provisions.map((prov) => (
-                    <div key={prov.id} className="group">
+                    <div 
+                      key={prov.id} 
+                      className="group cursor-pointer"
+                      onClick={() => setSelectedProvision(prov)}
+                    >
                       <div className="flex items-center justify-between mb-2">
                         <div className="flex items-center gap-3 flex-1">
                           <span className="text-xs font-mono text-slate-500 w-6">{String(prov.id).padStart(2, '0')}</span>
-                          <span className="text-sm text-white font-medium">{prov.title}</span>
+                          <span className="text-sm text-white font-medium group-hover:text-cyan-400 transition-colors">{prov.title}</span>
                         </div>
                         <div className="flex items-center gap-4">
                           <span className="text-xs font-mono text-slate-500">{prov.score.toFixed(1)}/10</span>
                           <span className="text-sm font-bold text-emerald-400 min-w-[80px] text-right">{prov.savings}</span>
+                          <ExternalLink className="w-4 h-4 text-slate-600 group-hover:text-cyan-400 transition-colors" />
                         </div>
                       </div>
                       <div className="flex items-center gap-2">
-                        <div className="flex-1 bg-slate-900 rounded-full h-2 overflow-hidden">
+                        <div className="flex-1 bg-slate-900 rounded-full h-2 overflow-hidden group-hover:h-3 transition-all">
                           <div 
                             className={`h-full transition-all ${
                               prov.score < 3 ? 'bg-rose-500' : prov.score < 5 ? 'bg-orange-400' : 'bg-emerald-400'
@@ -1642,12 +1793,18 @@ export default function RxDefenseReport() {
                 </div>
               </div>
 
-              {/* NEW: Industry Benchmark Comparison */}
-              <div className="bg-[#0a0a0a] border border-white/10 rounded-2xl p-8 mb-12">
-                <h3 className="text-2xl font-bold text-white mb-8 flex items-center gap-3">
-                  <PieChart className="w-6 h-6 text-purple-400" />
-                  Industry Benchmark Comparison
-                </h3>
+              {/* NEW: Industry Benchmark Comparison - NOW CLICKABLE */}
+              <div 
+                className="bg-[#0a0a0a] border border-white/10 rounded-2xl p-8 mb-12 cursor-pointer hover:border-purple-500/50 transition-colors group"
+                onClick={() => setBenchmarkModalOpen(true)}
+              >
+                <div className="flex items-center justify-between mb-8">
+                  <h3 className="text-2xl font-bold text-white flex items-center gap-3 group-hover:text-purple-400 transition-colors">
+                    <PieChart className="w-6 h-6 text-purple-400" />
+                    Industry Benchmark Comparison
+                  </h3>
+                  <ExternalLink className="w-5 h-5 text-slate-600 group-hover:text-purple-400 transition-colors" />
+                </div>
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                   <div className="bg-[#111] rounded-xl p-6 border border-white/5">
                     <div className="flex items-center justify-between mb-4">
@@ -1690,12 +1847,18 @@ export default function RxDefenseReport() {
                 </div>
               </div>
 
-              {/* NEW: Geographic Benchmarking */}
-              <div className="bg-[#0a0a0a] border border-white/10 rounded-2xl p-8 mb-12">
-                <h3 className="text-2xl font-bold text-white mb-8 flex items-center gap-3">
-                  <MapPin className="w-6 h-6 text-blue-400" />
-                  Regional Pricing Analysis
-                </h3>
+              {/* NEW: Geographic Benchmarking - NOW CLICKABLE */}
+              <div 
+                className="bg-[#0a0a0a] border border-white/10 rounded-2xl p-8 mb-12 cursor-pointer hover:border-blue-500/50 transition-colors group"
+                onClick={() => setRegionalModalOpen(true)}
+              >
+                <div className="flex items-center justify-between mb-8">
+                  <h3 className="text-2xl font-bold text-white flex items-center gap-3 group-hover:text-blue-400 transition-colors">
+                    <MapPin className="w-6 h-6 text-blue-400" />
+                    Regional Pricing Analysis
+                  </h3>
+                  <ExternalLink className="w-5 h-5 text-slate-600 group-hover:text-blue-400 transition-colors" />
+                </div>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   <div>
                     <h4 className="text-sm font-bold text-slate-400 uppercase tracking-wider mb-4">Your Effective Drug Cost</h4>
@@ -1753,12 +1916,18 @@ export default function RxDefenseReport() {
                 </div>
               </div>
 
-              {/* NEW: Savings Trend Analysis */}
-              <div className="bg-[#0a0a0a] border border-white/10 rounded-2xl p-8 mb-12">
-                <h3 className="text-2xl font-bold text-white mb-8 flex items-center gap-3">
-                  <TrendingUp className="w-6 h-6 text-cyan-400" />
-                  5-Year Savings Trajectory
-                </h3>
+              {/* NEW: Savings Trend Analysis - NOW CLICKABLE */}
+              <div 
+                className="bg-[#0a0a0a] border border-white/10 rounded-2xl p-8 mb-12 cursor-pointer hover:border-cyan-500/50 transition-colors group"
+                onClick={() => setSavingsModalOpen(true)}
+              >
+                <div className="flex items-center justify-between mb-8">
+                  <h3 className="text-2xl font-bold text-white flex items-center gap-3 group-hover:text-cyan-400 transition-colors">
+                    <TrendingUp className="w-6 h-6 text-cyan-400" />
+                    5-Year Savings Trajectory
+                  </h3>
+                  <ExternalLink className="w-5 h-5 text-slate-600 group-hover:text-cyan-400 transition-colors" />
+                </div>
                 <div className="space-y-6">
                   {[
                     { year: '2026', spend: 18.5, optimized: 14.9, savings: 3.6, cumulative: 3.6 },
@@ -1903,12 +2072,21 @@ export default function RxDefenseReport() {
                 </div>
               </div>
 
-              {/* NEW: Risk Heat Map */}
+              {/* NEW: Risk Heat Map - NOW CLICKABLE */}
               <div className="bg-[#0a0a0a] border border-white/10 rounded-2xl p-8 mb-12">
-                <h3 className="text-2xl font-bold text-white mb-8 flex items-center gap-3">
-                  <AlertTriangle className="w-6 h-6 text-rose-400" />
-                  Risk Exposure Heat Map
-                </h3>
+                <div className="flex items-center justify-between mb-8">
+                  <h3 className="text-2xl font-bold text-white flex items-center gap-3">
+                    <AlertTriangle className="w-6 h-6 text-rose-400" />
+                    Risk Exposure Heat Map
+                  </h3>
+                  <button
+                    onClick={() => setRiskModalOpen(true)}
+                    className="text-sm text-slate-400 hover:text-rose-400 transition-colors flex items-center gap-2"
+                  >
+                    View Details
+                    <ExternalLink className="w-4 h-4" />
+                  </button>
+                </div>
                 <div className="grid grid-cols-2 md:grid-cols-5 gap-3">
                   {[
                     { category: 'Spread Pricing', risk: 'Critical', amount: '$1.2M', color: 'from-rose-600 to-rose-800' },
@@ -2307,6 +2485,468 @@ export default function RxDefenseReport() {
           </Link>
         </div>
       </div>
+
+      {/* MODALS */}
+
+      {/* Provision Detail Modal */}
+      <Dialog open={!!selectedProvision} onOpenChange={() => setSelectedProvision(null)}>
+        <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto bg-[#0a0a0a] border border-white/20 text-white">
+          {selectedProvision && (
+            <>
+              <DialogHeader>
+                <DialogTitle className="text-2xl font-bold text-white flex items-center justify-between">
+                  <span>{selectedProvision.title}</span>
+                  <span className={`text-3xl font-black ${selectedProvision.statusColor}`}>
+                    {selectedProvision.score.toFixed(1)}/10
+                  </span>
+                </DialogTitle>
+              </DialogHeader>
+              
+              <div className="space-y-6 mt-4">
+                <div className="flex items-center gap-4">
+                  <span className={`${selectedProvision.bgStatusColor} text-black text-xs font-bold px-3 py-1 rounded tracking-widest uppercase`}>
+                    {selectedProvision.status}
+                  </span>
+                  <span className="text-slate-400">{selectedProvision.met}</span>
+                  <span className="text-2xl font-bold text-emerald-400 ml-auto">{selectedProvision.savings}</span>
+                </div>
+
+                <div className="bg-[#111] border border-white/10 rounded-xl p-6">
+                  <h4 className="text-sm font-bold text-cyan-500 uppercase tracking-wider mb-3">Why This Matters</h4>
+                  <p className="text-slate-300 leading-relaxed">{selectedProvision.why}</p>
+                </div>
+
+                <div className="bg-[#111] border border-white/10 rounded-xl p-6">
+                  <h4 className="text-sm font-bold text-emerald-500 uppercase tracking-wider mb-3">Financial Context</h4>
+                  <p className="text-slate-300 leading-relaxed">{selectedProvision.financial}</p>
+                </div>
+
+                <div className="bg-[#111] border border-white/10 rounded-xl p-6">
+                  <h4 className="text-sm font-bold text-purple-500 uppercase tracking-wider mb-3">Fiduciary Significance</h4>
+                  <p className="text-slate-300 leading-relaxed">{selectedProvision.fiduciary}</p>
+                </div>
+
+                <div className="bg-rose-950/30 border border-rose-500/30 rounded-xl p-6">
+                  <h4 className="text-sm font-bold text-rose-400 uppercase tracking-wider mb-4">Issues Found</h4>
+                  <div className="space-y-3">
+                    {selectedProvision.issues.map((issue, idx) => (
+                      <div key={idx} className="border-l-2 border-rose-500 pl-4">
+                        <p className="text-white font-semibold mb-2">{issue.title}</p>
+                        <p className="text-slate-300 text-sm">{issue.found}</p>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+
+                <Button
+                  onClick={() => {
+                    setSelectedProvision(null);
+                    setActiveTab('provisions');
+                  }}
+                  className="w-full bg-cyan-600 hover:bg-cyan-700"
+                >
+                  View Full Analysis
+                </Button>
+              </div>
+            </>
+          )}
+        </DialogContent>
+      </Dialog>
+
+      {/* Benchmark Comparison Modal */}
+      <Dialog open={benchmarkModalOpen} onOpenChange={setBenchmarkModalOpen}>
+        <DialogContent className="max-w-5xl max-h-[90vh] overflow-y-auto bg-[#0a0a0a] border border-white/20 text-white">
+          <DialogHeader>
+            <DialogTitle className="text-2xl font-bold text-white">Industry Benchmark Deep Dive</DialogTitle>
+          </DialogHeader>
+          
+          <div className="space-y-6 mt-4">
+            <div className="grid grid-cols-3 gap-4">
+              <div className="bg-gradient-to-br from-rose-950/60 to-rose-900/40 border border-rose-500/40 rounded-xl p-6">
+                <div className="text-center mb-4">
+                  <div className="text-5xl font-black text-rose-400 mb-2">38</div>
+                  <div className="text-sm text-slate-300">Your Score</div>
+                </div>
+                <div className="space-y-2 text-sm">
+                  <div className="flex justify-between"><span className="text-slate-400">Percentile:</span><span className="text-white">12th</span></div>
+                  <div className="flex justify-between"><span className="text-slate-400">National Rank:</span><span className="text-white">Bottom Tier</span></div>
+                  <div className="flex justify-between"><span className="text-slate-400">Risk Level:</span><span className="text-rose-400 font-bold">Critical</span></div>
+                </div>
+              </div>
+
+              <div className="bg-gradient-to-br from-orange-950/60 to-orange-900/40 border border-orange-500/40 rounded-xl p-6">
+                <div className="text-center mb-4">
+                  <div className="text-5xl font-black text-orange-400 mb-2">62</div>
+                  <div className="text-sm text-slate-300">Industry Average</div>
+                </div>
+                <div className="space-y-2 text-sm">
+                  <div className="flex justify-between"><span className="text-slate-400">Percentile:</span><span className="text-white">50th</span></div>
+                  <div className="flex justify-between"><span className="text-slate-400">Plan Size:</span><span className="text-white">500-2000 lives</span></div>
+                  <div className="flex justify-between"><span className="text-slate-400">Gap to You:</span><span className="text-orange-400 font-bold">+24 points</span></div>
+                </div>
+              </div>
+
+              <div className="bg-gradient-to-br from-emerald-950/60 to-emerald-900/40 border border-emerald-500/40 rounded-xl p-6">
+                <div className="text-center mb-4">
+                  <div className="text-5xl font-black text-emerald-400 mb-2">91</div>
+                  <div className="text-sm text-slate-300">Best-in-Class</div>
+                </div>
+                <div className="space-y-2 text-sm">
+                  <div className="flex justify-between"><span className="text-slate-400">Percentile:</span><span className="text-white">95th</span></div>
+                  <div className="flex justify-between"><span className="text-slate-400">Protection:</span><span className="text-white">Comprehensive</span></div>
+                  <div className="flex justify-between"><span className="text-slate-400">Gap to You:</span><span className="text-emerald-400 font-bold">+53 points</span></div>
+                </div>
+              </div>
+            </div>
+
+            <div className="bg-[#111] border border-white/10 rounded-xl p-6">
+              <h4 className="text-lg font-bold text-white mb-4">What This Means</h4>
+              <ul className="space-y-3 text-slate-300">
+                <li className="flex items-start gap-3">
+                  <AlertTriangle className="w-5 h-5 text-rose-400 shrink-0 mt-0.5" />
+                  <span>Your contract ranks in the <strong className="text-white">bottom 12%</strong> nationally for PBM contract protections</span>
+                </li>
+                <li className="flex items-start gap-3">
+                  <DollarSign className="w-5 h-5 text-orange-400 shrink-0 mt-0.5" />
+                  <span>The 24-point gap to industry average represents approximately <strong className="text-emerald-400">$2.1M</strong> in recoverable annual leakage</span>
+                </li>
+                <li className="flex items-start gap-3">
+                  <TrendingUp className="w-5 h-5 text-emerald-400 shrink-0 mt-0.5" />
+                  <span>Reaching best-in-class protection could save an additional <strong className="text-emerald-400">$1.6M</strong> per year beyond industry median</span>
+                </li>
+                <li className="flex items-start gap-3">
+                  <ShieldAlert className="w-5 h-5 text-purple-400 shrink-0 mt-0.5" />
+                  <span>This score represents structural disadvantage in fiduciary protection, not temporary market conditions</span>
+                </li>
+              </ul>
+            </div>
+
+            <div className="grid grid-cols-2 gap-4">
+              <div className="bg-rose-950/30 border border-rose-500/30 rounded-xl p-5">
+                <h5 className="font-bold text-rose-400 mb-3">Your Weakest Areas</h5>
+                <ul className="space-y-2 text-sm text-slate-300">
+                  <li>• Fiduciary Commitment (1.5/10)</li>
+                  <li>• Carve-Out Rights (2.0/10)</li>
+                  <li>• Data Ownership (2.5/10)</li>
+                  <li>• Termination Rights (2.5/10)</li>
+                </ul>
+              </div>
+              <div className="bg-emerald-950/30 border border-emerald-500/30 rounded-xl p-5">
+                <h5 className="font-bold text-emerald-400 mb-3">Best-in-Class Standards</h5>
+                <ul className="space-y-2 text-sm text-slate-300">
+                  <li>• Explicit fiduciary acceptance</li>
+                  <li>• 100% rebate pass-through</li>
+                  <li>• Full data ownership</li>
+                  <li>• 30-day termination rights</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </DialogContent>
+      </Dialog>
+
+      {/* Regional Pricing Modal */}
+      <Dialog open={regionalModalOpen} onOpenChange={setRegionalModalOpen}>
+        <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto bg-[#0a0a0a] border border-white/20 text-white">
+          <DialogHeader>
+            <DialogTitle className="text-2xl font-bold text-white">Regional Pricing Deep Dive</DialogTitle>
+          </DialogHeader>
+          
+          <div className="space-y-6 mt-4">
+            <div className="bg-[#111] border border-white/10 rounded-xl p-6">
+              <h4 className="text-lg font-bold text-white mb-4 flex items-center gap-2">
+                <MapPin className="w-5 h-5 text-blue-400" />
+                Midwest Regional Analysis
+              </h4>
+              <p className="text-slate-300 mb-4">
+                Based on anonymized data from 147 plans in the Midwest region (IL, IN, OH, MI, WI) with 500-2000 covered lives.
+              </p>
+              
+              <div className="grid grid-cols-3 gap-4">
+                <div className="bg-rose-950/30 border border-rose-500/30 rounded-xl p-4 text-center">
+                  <div className="text-xs text-rose-400 font-bold uppercase mb-2">Generic Gap</div>
+                  <div className="text-3xl font-bold text-white mb-1">6%</div>
+                  <div className="text-xs text-slate-400">You pay 6% more than regional median</div>
+                </div>
+                <div className="bg-orange-950/30 border border-orange-500/30 rounded-xl p-4 text-center">
+                  <div className="text-xs text-orange-400 font-bold uppercase mb-2">Brand Gap</div>
+                  <div className="text-3xl font-bold text-white mb-1">4%</div>
+                  <div className="text-xs text-slate-400">You pay 4% more than regional median</div>
+                </div>
+                <div className="bg-rose-950/30 border border-rose-500/30 rounded-xl p-4 text-center">
+                  <div className="text-xs text-rose-400 font-bold uppercase mb-2">Specialty Gap</div>
+                  <div className="text-3xl font-bold text-white mb-1">5.3%</div>
+                  <div className="text-xs text-slate-400">You pay 5.3% more than regional median</div>
+                </div>
+              </div>
+            </div>
+
+            <div className="grid grid-cols-2 gap-4">
+              <div className="bg-[#111] border border-white/10 rounded-xl p-5">
+                <h5 className="font-bold text-cyan-400 mb-4">Your Current Pricing</h5>
+                <div className="space-y-3 text-sm">
+                  <div className="flex justify-between items-center pb-2 border-b border-white/5">
+                    <span className="text-slate-400">Generic AWP Discount</span>
+                    <span className="text-white font-mono">AWP - 78%</span>
+                  </div>
+                  <div className="flex justify-between items-center pb-2 border-b border-white/5">
+                    <span className="text-slate-400">Brand AWP Discount</span>
+                    <span className="text-white font-mono">AWP - 14%</span>
+                  </div>
+                  <div className="flex justify-between items-center pb-2 border-b border-white/5">
+                    <span className="text-slate-400">Specialty Pricing</span>
+                    <span className="text-rose-400 font-mono">WAC + 3.2%</span>
+                  </div>
+                  <div className="flex justify-between items-center pt-2">
+                    <span className="text-white font-bold">Annual Cost</span>
+                    <span className="text-white font-bold">$18.5M</span>
+                  </div>
+                </div>
+              </div>
+
+              <div className="bg-[#111] border border-white/10 rounded-xl p-5">
+                <h5 className="font-bold text-emerald-400 mb-4">Regional Median</h5>
+                <div className="space-y-3 text-sm">
+                  <div className="flex justify-between items-center pb-2 border-b border-white/5">
+                    <span className="text-slate-400">Generic AWP Discount</span>
+                    <span className="text-emerald-400 font-mono">AWP - 84%</span>
+                  </div>
+                  <div className="flex justify-between items-center pb-2 border-b border-white/5">
+                    <span className="text-slate-400">Brand AWP Discount</span>
+                    <span className="text-emerald-400 font-mono">AWP - 18%</span>
+                  </div>
+                  <div className="flex justify-between items-center pb-2 border-b border-white/5">
+                    <span className="text-slate-400">Specialty Pricing</span>
+                    <span className="text-emerald-400 font-mono">WAC - 2.1%</span>
+                  </div>
+                  <div className="flex justify-between items-center pt-2">
+                    <span className="text-white font-bold">Projected Cost</span>
+                    <span className="text-emerald-400 font-bold">$17.0M</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div className="bg-gradient-to-r from-emerald-950/40 to-emerald-900/20 border border-emerald-500/30 rounded-xl p-6">
+              <div className="flex items-center justify-between">
+                <div>
+                  <div className="text-sm text-emerald-400 font-bold uppercase tracking-wider mb-2">Total Annual Opportunity</div>
+                  <div className="text-4xl font-black text-white">$1.51M</div>
+                </div>
+                <div className="text-right">
+                  <div className="text-sm text-slate-400 mb-2">By aligning to regional median pricing</div>
+                  <div className="text-xl text-emerald-400">8.2% reduction</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </DialogContent>
+      </Dialog>
+
+      {/* Savings Trajectory Modal */}
+      <Dialog open={savingsModalOpen} onOpenChange={setSavingsModalOpen}>
+        <DialogContent className="max-w-5xl max-h-[90vh] overflow-y-auto bg-[#0a0a0a] border border-white/20 text-white">
+          <DialogHeader>
+            <DialogTitle className="text-2xl font-bold text-white">5-Year Financial Projection Analysis</DialogTitle>
+          </DialogHeader>
+          
+          <div className="space-y-6 mt-4">
+            <div className="bg-gradient-to-r from-cyan-950/40 to-blue-950/40 border border-cyan-500/30 rounded-xl p-6">
+              <div className="grid grid-cols-3 gap-6 text-center">
+                <div>
+                  <div className="text-xs text-cyan-400 font-bold uppercase tracking-wider mb-2">Total 5-Year Impact</div>
+                  <div className="text-5xl font-black text-white mb-1">$20.0M</div>
+                  <div className="text-sm text-slate-400">Cumulative savings</div>
+                </div>
+                <div>
+                  <div className="text-xs text-emerald-400 font-bold uppercase tracking-wider mb-2">Average Annual</div>
+                  <div className="text-5xl font-black text-emerald-400 mb-1">$4.0M</div>
+                  <div className="text-sm text-slate-400">Per year savings</div>
+                </div>
+                <div>
+                  <div className="text-xs text-purple-400 font-bold uppercase tracking-wider mb-2">ROI Multiple</div>
+                  <div className="text-5xl font-black text-purple-400 mb-1">133x</div>
+                  <div className="text-sm text-slate-400">First year return</div>
+                </div>
+              </div>
+            </div>
+
+            <div className="bg-[#111] border border-white/10 rounded-xl p-6">
+              <h4 className="text-lg font-bold text-white mb-4">Year-over-Year Breakdown</h4>
+              <div className="overflow-x-auto">
+                <table className="w-full">
+                  <thead>
+                    <tr className="border-b border-white/10">
+                      <th className="text-left py-3 px-4 text-sm font-bold text-slate-400 uppercase">Year</th>
+                      <th className="text-right py-3 px-4 text-sm font-bold text-slate-400 uppercase">Baseline</th>
+                      <th className="text-right py-3 px-4 text-sm font-bold text-slate-400 uppercase">Optimized</th>
+                      <th className="text-right py-3 px-4 text-sm font-bold text-slate-400 uppercase">Savings</th>
+                      <th className="text-right py-3 px-4 text-sm font-bold text-slate-400 uppercase">% Reduction</th>
+                      <th className="text-right py-3 px-4 text-sm font-bold text-slate-400 uppercase">Cumulative</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {[
+                      { year: 2026, baseline: 18.5, optimized: 14.9, savings: 3.6, cumulative: 3.6 },
+                      { year: 2027, baseline: 19.3, optimized: 15.5, savings: 3.8, cumulative: 7.4 },
+                      { year: 2028, baseline: 20.1, optimized: 16.1, savings: 4.0, cumulative: 11.4 },
+                      { year: 2029, baseline: 20.9, optimized: 16.7, savings: 4.2, cumulative: 15.6 },
+                      { year: 2030, baseline: 21.8, optimized: 17.4, savings: 4.4, cumulative: 20.0 },
+                    ].map((row, idx) => (
+                      <tr key={idx} className="border-b border-white/5 hover:bg-white/5">
+                        <td className="py-3 px-4 text-white font-bold">{row.year}</td>
+                        <td className="py-3 px-4 text-right text-slate-300">${row.baseline}M</td>
+                        <td className="py-3 px-4 text-right text-cyan-400">${row.optimized}M</td>
+                        <td className="py-3 px-4 text-right text-emerald-400 font-bold">${row.savings}M</td>
+                        <td className="py-3 px-4 text-right text-white">{((row.savings / row.baseline) * 100).toFixed(1)}%</td>
+                        <td className="py-3 px-4 text-right text-emerald-400 font-bold">${row.cumulative}M</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+
+            <div className="grid grid-cols-2 gap-4">
+              <div className="bg-[#111] border border-white/10 rounded-xl p-5">
+                <h5 className="font-bold text-orange-400 mb-3">Key Assumptions</h5>
+                <ul className="space-y-2 text-sm text-slate-300">
+                  <li>• Medical inflation: 7.5% annually</li>
+                  <li>• Full contract remediation: Q2 2026</li>
+                  <li>• Specialty drug trend: 11% annually</li>
+                  <li>• Generic utilization: 88% stable</li>
+                  <li>• Member growth: 2% annually</li>
+                </ul>
+              </div>
+              <div className="bg-[#111] border border-white/10 rounded-xl p-5">
+                <h5 className="font-bold text-cyan-400 mb-3">Conservative Estimates</h5>
+                <ul className="space-y-2 text-sm text-slate-300">
+                  <li>• Best case not shown (would be 25% higher)</li>
+                  <li>• Excludes additional clinical savings</li>
+                  <li>• No biosimilar conversion gains included</li>
+                  <li>• Assumes 85% contract compliance</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </DialogContent>
+      </Dialog>
+
+      {/* Risk Heat Map Modal */}
+      <Dialog open={riskModalOpen} onOpenChange={setRiskModalOpen}>
+        <DialogContent className="max-w-5xl max-h-[90vh] overflow-y-auto bg-[#0a0a0a] border border-white/20 text-white">
+          <DialogHeader>
+            <DialogTitle className="text-2xl font-bold text-white">Risk Exposure Analysis</DialogTitle>
+          </DialogHeader>
+          
+          <div className="space-y-6 mt-4">
+            <div className="bg-[#111] border border-white/10 rounded-xl p-6">
+              <h4 className="text-lg font-bold text-white mb-4">Risk Categories Explained</h4>
+              
+              <div className="space-y-4">
+                <div className="border-l-4 border-rose-500 pl-4 py-2">
+                  <div className="flex items-center justify-between mb-2">
+                    <h5 className="font-bold text-rose-400">Critical Risk ($2.16M total)</h5>
+                    <span className="text-sm text-slate-400">Immediate action required</span>
+                  </div>
+                  <ul className="text-sm text-slate-300 space-y-1">
+                    <li>• <strong>Spread Pricing ($1.2M):</strong> Hidden margin on every prescription claim</li>
+                    <li>• <strong>MAC Opacity ($960K):</strong> No access to pricing methodology or validation</li>
+                  </ul>
+                </div>
+
+                <div className="border-l-4 border-orange-500 pl-4 py-2">
+                  <div className="flex items-center justify-between mb-2">
+                    <h5 className="font-bold text-orange-400">High Risk ($2.55M total)</h5>
+                    <span className="text-sm text-slate-400">Priority renegotiation items</span>
+                  </div>
+                  <ul className="text-sm text-slate-300 space-y-1">
+                    <li>• <strong>Rebate Retention ($840K):</strong> Manufacturer payments not passed through</li>
+                    <li>• <strong>Formulary Control ($720K):</strong> PBM makes decisions for its profit</li>
+                    <li>• <strong>Specialty Steering ($580K):</strong> Routing to owned high-cost pharmacies</li>
+                    <li>• <strong>Audit Restrictions ($410K):</strong> Limited ability to verify pricing</li>
+                  </ul>
+                </div>
+
+                <div className="border-l-4 border-yellow-500 pl-4 py-2">
+                  <div className="flex items-center justify-between mb-2">
+                    <h5 className="font-bold text-yellow-400">Medium Risk ($790K total)</h5>
+                    <span className="text-sm text-slate-400">Secondary priorities</span>
+                  </div>
+                  <ul className="text-sm text-slate-300 space-y-1">
+                    <li>• <strong>Data Monetization ($320K):</strong> Your data sold without permission</li>
+                    <li>• <strong>Admin Fees ($290K):</strong> Opaque and above-market rates</li>
+                    <li>• <strong>Exit Penalties ($180K):</strong> Contractual lock-in provisions</li>
+                  </ul>
+                </div>
+
+                <div className="border-l-4 border-green-500 pl-4 py-2">
+                  <div className="flex items-center justify-between mb-2">
+                    <h5 className="font-bold text-green-400">Low Risk ($140K total)</h5>
+                    <span className="text-sm text-slate-400">Minor exposure</span>
+                  </div>
+                  <ul className="text-sm text-slate-300 space-y-1">
+                    <li>• <strong>Network Design ($140K):</strong> Some flexibility exists</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+
+            <div className="grid grid-cols-2 gap-4">
+              <div className="bg-rose-950/30 border border-rose-500/30 rounded-xl p-5">
+                <h5 className="font-bold text-rose-400 mb-3 text-center">Top 3 Priorities</h5>
+                <ol className="space-y-3 text-sm text-slate-300">
+                  <li className="flex gap-3">
+                    <span className="flex-shrink-0 w-6 h-6 rounded-full bg-rose-500 text-white flex items-center justify-center text-xs font-bold">1</span>
+                    <div>
+                      <div className="font-bold text-white">Eliminate Spread Pricing</div>
+                      <div className="text-xs text-slate-400">Implement pass-through pricing immediately</div>
+                    </div>
+                  </li>
+                  <li className="flex gap-3">
+                    <span className="flex-shrink-0 w-6 h-6 rounded-full bg-rose-500 text-white flex items-center justify-center text-xs font-bold">2</span>
+                    <div>
+                      <div className="font-bold text-white">Secure MAC List Access</div>
+                      <div className="text-xs text-slate-400">Demand full pricing transparency</div>
+                    </div>
+                  </li>
+                  <li className="flex gap-3">
+                    <span className="flex-shrink-0 w-6 h-6 rounded-full bg-rose-500 text-white flex items-center justify-center text-xs font-bold">3</span>
+                    <div>
+                      <div className="font-bold text-white">100% Rebate Pass-Through</div>
+                      <div className="text-xs text-slate-400">Capture all manufacturer revenue</div>
+                    </div>
+                  </li>
+                </ol>
+              </div>
+
+              <div className="bg-emerald-950/30 border border-emerald-500/30 rounded-xl p-5">
+                <h5 className="font-bold text-emerald-400 mb-3 text-center">Immediate ROI</h5>
+                <div className="space-y-4">
+                  <div className="text-center">
+                    <div className="text-4xl font-black text-emerald-400 mb-1">$2.9M</div>
+                    <div className="text-xs text-slate-400">First year savings from top 3 fixes</div>
+                  </div>
+                  <div className="border-t border-white/10 pt-4 space-y-2 text-sm">
+                    <div className="flex justify-between">
+                      <span className="text-slate-400">Implementation time:</span>
+                      <span className="text-white">60-90 days</span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span className="text-slate-400">Renegotiation effort:</span>
+                      <span className="text-white">Medium</span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span className="text-slate-400">Success probability:</span>
+                      <span className="text-emerald-400 font-bold">Very High</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 }

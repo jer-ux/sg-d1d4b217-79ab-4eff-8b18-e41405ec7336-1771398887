@@ -1,8 +1,9 @@
 import { useState } from "react";
 import Link from "next/link";
-import { Menu, X, ChevronDown, Sparkles, Search } from "lucide-react";
+import { Menu, X, ChevronDown, Sparkles, Search, Users, Building2, AlertTriangle } from "lucide-react";
 import { useRouter } from "next/router";
 import { Button } from "@/components/ui/button";
+import { DropdownMenu, DropdownMenuTrigger, DropdownMenuContent, DropdownMenuItem } from "@/components/ui/dropdown-menu";
 
 export default function Nav() {
   const [isOpen, setIsOpen] = useState(false);

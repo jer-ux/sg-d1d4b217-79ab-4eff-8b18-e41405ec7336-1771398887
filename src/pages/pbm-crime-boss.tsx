@@ -7,6 +7,7 @@ import { AlertTriangle, Shield, TrendingUp, ExternalLink, Linkedin, FileText, Ta
 import Nav from "@/components/Nav";
 import Footer from "@/components/Footer";
 import { SEO } from "@/components/SEO";
+import Link from "next/link";
 
 const publications = [
   {
@@ -42,58 +43,123 @@ export default function PBMCrimeBossPage() {
       <Nav />
 
       <div className="min-h-screen bg-black text-white">
-        {/* Hero Banner with Image Overlay */}
-        <section className="relative pt-32 pb-0 overflow-hidden h-[600px]">
+        {/* Hero Banner with Image */}
+        <section className="relative h-[70vh] min-h-[600px] overflow-hidden">
+          {/* Background Image */}
           <div className="absolute inset-0">
-            <motion.img
-              src="/Gemini_Generated_Image_rzwmsjrzwmsjrzwm.png"
-              alt="PBM Crime Boss Investigation"
+            <img 
+              src="/Gemini_Generated_Image_rzwmsjrzwmsjrzwm.png" 
+              alt="PBM Crime Boss Investigation" 
               className="w-full h-full object-cover"
-              initial={{ scale: 1.1 }}
-              animate={{ scale: 1 }}
-              transition={{ duration: 1.5 }}
             />
-            <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-black/80 to-black" />
-            <div className="absolute inset-0 bg-gradient-to-r from-rose-950/40 via-transparent to-red-950/40" />
+            {/* Dark overlay for text readability */}
+            <div className="absolute inset-0 bg-gradient-to-b from-black/70 via-black/50 to-[#050505]" />
           </div>
 
-          <div className="relative h-full flex items-center justify-center max-w-7xl mx-auto px-6">
+          {/* Hero Content */}
+          <div className="relative z-10 h-full flex items-center justify-center px-6">
             <motion.div
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 1, delay: 0.3 }}
-              className="text-center"
+              transition={{ duration: 0.8 }}
+              className="text-center max-w-4xl"
             >
-              <div className="flex items-center justify-center gap-4 mb-6">
-                <motion.div
-                  animate={{ rotate: [0, 5, -5, 0] }}
-                  transition={{ duration: 2, repeat: Infinity, repeatDelay: 3 }}
-                >
-                  <AlertTriangle className="h-16 w-16 text-rose-400 drop-shadow-[0_0_20px_rgba(251,113,133,0.6)]" />
-                </motion.div>
-                <h1 className="text-6xl md:text-8xl font-black bg-gradient-to-r from-rose-200 via-red-100 to-white bg-clip-text text-transparent drop-shadow-2xl">
-                  PBM Crime Boss
-                </h1>
-              </div>
-              <p className="text-2xl md:text-3xl text-gray-200 font-bold max-w-4xl mx-auto mb-4 drop-shadow-lg">
-                An Investigative LinkedIn Publication Series
-              </p>
-              <p className="text-lg text-gray-300 max-w-2xl mx-auto mb-10 drop-shadow-md">
-                Exposing systematic exploitation in pharmacy benefit management through forensic evidence
-              </p>
-
-              <motion.a
-                href="https://www.linkedin.com/in/shrack"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center gap-3 px-10 py-5 bg-gradient-to-r from-rose-600 to-red-600 hover:from-rose-700 hover:to-red-700 rounded-2xl text-white font-bold text-xl transition-all shadow-2xl hover:shadow-rose-500/50 border border-rose-400/30"
-                whileHover={{ scale: 1.05, y: -2 }}
-                whileTap={{ scale: 0.95 }}
+              <motion.div
+                initial={{ opacity: 0, scale: 0.9 }}
+                animate={{ opacity: 1, scale: 1 }}
+                transition={{ delay: 0.2, duration: 0.6 }}
+                className="inline-block mb-6"
               >
-                <Linkedin className="h-7 w-7" />
-                Follow the Investigation
-                <ExternalLink className="h-6 w-6" />
-              </motion.a>
+                <span className="inline-flex items-center gap-2 bg-rose-500/20 text-rose-400 px-4 py-2 rounded-full border border-rose-500/30 text-sm font-bold tracking-wider uppercase">
+                  <AlertTriangle className="w-4 h-4" />
+                  LinkedIn Investigation Series
+                </span>
+              </motion.div>
+
+              <motion.h1
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.4, duration: 0.8 }}
+                className="text-5xl md:text-7xl font-black text-white mb-6 leading-tight"
+              >
+                Stop overpaying on your PBM contract
+              </motion.h1>
+
+              <motion.p
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.6, duration: 0.8 }}
+                className="text-xl md:text-2xl text-slate-300 mb-10 leading-relaxed"
+              >
+                Exposing the hidden tactics that cost employer health plans millions in preventable prescription drug spend
+              </motion.p>
+
+              <motion.div
+                initial={{ opacity: 0, scale: 0.9 }}
+                animate={{ opacity: 1, scale: 1 }}
+                transition={{ delay: 0.8, duration: 0.6 }}
+                className="flex flex-col sm:flex-row gap-4 justify-center"
+              >
+                <a
+                  href="https://www.linkedin.com/in/jeremiah-shrack/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-2 bg-gradient-to-r from-rose-600 to-rose-700 hover:from-rose-700 hover:to-rose-800 text-white px-8 py-4 rounded-xl font-bold text-lg shadow-xl shadow-rose-500/30 transition-all hover:scale-105"
+                >
+                  <ExternalLink className="w-5 h-5" />
+                  Read on LinkedIn
+                </a>
+                <Link
+                  href="/solutions/rx-defense"
+                  className="inline-flex items-center gap-2 bg-white/10 hover:bg-white/20 text-white px-8 py-4 rounded-xl font-bold text-lg border border-white/20 transition-all hover:scale-105"
+                >
+                  <Shield className="w-5 h-5" />
+                  Get Protected
+                </Link>
+              </motion.div>
+            </motion.div>
+          </div>
+        </section>
+
+        {/* Secondary Hero Banner - New Image */}
+        <section className="relative h-[500px] overflow-hidden my-20">
+          <div className="absolute inset-0">
+            <img 
+              src="/Gemini_Generated_Image_gj2y6vgj2y6vgj2y.png" 
+              alt="PBM Contract Analysis" 
+              className="w-full h-full object-cover"
+            />
+            <div className="absolute inset-0 bg-gradient-to-r from-black/80 via-black/60 to-transparent" />
+          </div>
+
+          <div className="relative z-10 h-full flex items-center px-6 max-w-7xl mx-auto">
+            <motion.div
+              initial={{ opacity: 0, x: -50 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.8 }}
+              className="max-w-2xl"
+            >
+              <h2 className="text-4xl md:text-5xl font-black text-white mb-6 leading-tight">
+                The Hidden $20B PBM Industry Scandal
+              </h2>
+              <p className="text-xl text-slate-300 mb-8 leading-relaxed">
+                Behind every prescription claim lies a complex web of hidden spreads, rebate retention, and data monetization that systematically drains employer health plans.
+              </p>
+              <div className="flex flex-wrap gap-4">
+                <div className="bg-rose-500/20 border border-rose-500/30 rounded-xl px-6 py-3">
+                  <div className="text-3xl font-black text-rose-400">$3.6M</div>
+                  <div className="text-sm text-slate-300">Average annual impact</div>
+                </div>
+                <div className="bg-orange-500/20 border border-orange-500/30 rounded-xl px-6 py-3">
+                  <div className="text-3xl font-black text-orange-400">38/100</div>
+                  <div className="text-sm text-slate-300">Typical contract score</div>
+                </div>
+                <div className="bg-yellow-500/20 border border-yellow-500/30 rounded-xl px-6 py-3">
+                  <div className="text-3xl font-black text-yellow-400">10+</div>
+                  <div className="text-sm text-slate-300">Hidden tactics exposed</div>
+                </div>
+              </div>
             </motion.div>
           </div>
         </section>
@@ -216,85 +282,135 @@ export default function PBMCrimeBossPage() {
           </div>
         </section>
 
-        {/* Episode Cards with Banner Backgrounds */}
-        <section className="py-20 bg-gradient-to-b from-black via-rose-950/5 to-black">
-          <div className="max-w-7xl mx-auto px-6">
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.8 }}
-              className="text-center mb-16"
-            >
-              <h2 className="text-5xl font-black text-rose-100 mb-4">
-                The Investigation Episodes
-              </h2>
-              <p className="text-xl text-gray-400 max-w-2xl mx-auto">
-                Follow the forensic evidence trail exposing systematic exploitation
-              </p>
-            </motion.div>
+        {/* Episode Cards */}
+        <section className="max-w-7xl mx-auto px-6 py-20">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6 }}
+            className="text-center mb-16"
+          >
+            <h2 className="text-4xl md:text-5xl font-black text-white mb-4">Investigation Episodes</h2>
+            <p className="text-xl text-slate-400 max-w-3xl mx-auto">
+              Deep dives into the most egregious PBM contract provisions that systematically overcharge employer plans
+            </p>
+          </motion.div>
 
-            <div className="grid gap-8 md:grid-cols-3">
-              {publications.map((article, idx) => (
-                <motion.div
-                  key={idx}
-                  initial={{ opacity: 0, y: 30 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ duration: 0.6, delay: idx * 0.15 }}
-                  className="group relative rounded-2xl overflow-hidden border border-rose-500/30 hover:border-rose-400/60 transition-all duration-500 hover:shadow-2xl hover:shadow-rose-500/20"
-                  whileHover={{ y: -8 }}
-                >
-                  <div className="absolute inset-0">
-                    <img
-                      src="/Gemini_Generated_Image_rzwmsjrzwmsjrzwm.png"
-                      alt={article.title}
-                      className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
-                    />
-                    <div className="absolute inset-0 bg-gradient-to-t from-black via-black/95 to-black/60" />
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-20">
+            {[
+              {
+                episode: 1,
+                title: "The Spread Pricing Scam",
+                description: "How PBMs pocket the difference between what they charge you and what they pay pharmacies",
+                impact: "$1.2M average annual impact",
+                readTime: "8 min read"
+              },
+              {
+                episode: 2,
+                title: "Rebate Retention Schemes",
+                description: "The manufacturer payments that never make it to your bottom line",
+                impact: "$840K average annual impact",
+                readTime: "10 min read"
+              },
+              {
+                episode: 3,
+                title: "Data Monetization",
+                description: "Your prescription data sold without permission or profit sharing",
+                impact: "$320K average annual impact",
+                readTime: "7 min read"
+              }
+            ].map((item, idx) => (
+              <motion.div
+                key={idx}
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: idx * 0.1, duration: 0.6 }}
+                className="group relative overflow-hidden rounded-2xl bg-gradient-to-br from-zinc-900 to-zinc-950 border border-white/10 hover:border-rose-500/50 transition-all duration-300 hover:scale-105 cursor-pointer"
+              >
+                {/* Background Image */}
+                <div className="absolute inset-0 opacity-20 group-hover:opacity-30 transition-opacity">
+                  <img 
+                    src="/Gemini_Generated_Image_rzwmsjrzwmsjrzwm.png" 
+                    alt={item.title}
+                    className="w-full h-full object-cover"
+                  />
+                </div>
+
+                <div className="relative p-8">
+                  <div className="inline-flex items-center gap-2 bg-rose-500/20 text-rose-400 px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider mb-4">
+                    Episode {item.episode}
                   </div>
-
-                  <div className="relative p-8 flex flex-col h-full min-h-[450px]">
-                    <div className="flex items-start justify-between mb-4">
-                      <div className="flex items-center gap-2 px-3 py-1 bg-rose-500/30 border border-rose-400/50 rounded-full">
-                        <span className="text-rose-300 font-bold text-sm">Episode {idx + 1}</span>
-                      </div>
-                      <div className="text-right">
-                        <div className="text-2xl font-black text-rose-400">{article.impactAmount}</div>
-                        <div className="text-xs text-gray-500">Avg Impact</div>
-                      </div>
-                    </div>
-
-                    <h3 className="text-2xl font-bold text-rose-100 mb-4 group-hover:text-white transition-colors leading-tight">
-                      {article.title}
-                    </h3>
-
-                    <p className="text-gray-400 leading-relaxed mb-6 flex-1">
-                      {article.excerpt}
-                    </p>
-
-                    <div className="flex items-center justify-between pt-4 border-t border-rose-500/20">
-                      <div className="flex items-center gap-4 text-sm">
-                        <span className="text-rose-400 font-semibold">{article.publishDate}</span>
-                        <span className="text-gray-600">•</span>
-                        <span className="text-gray-500">{article.readTime}</span>
-                      </div>
-                      <motion.a
-                        href="https://www.linkedin.com/in/shrack"
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="flex items-center gap-2 text-rose-400 hover:text-rose-300 font-semibold text-sm transition-colors"
-                        whileHover={{ x: 3 }}
-                      >
-                        Read
-                        <ExternalLink className="h-4 w-4" />
-                      </motion.a>
-                    </div>
+                  
+                  <h3 className="text-2xl font-bold text-white mb-3 group-hover:text-rose-400 transition-colors">
+                    {item.title}
+                  </h3>
+                  
+                  <p className="text-slate-400 mb-6 leading-relaxed">
+                    {item.description}
+                  </p>
+                  
+                  <div className="flex items-center justify-between pt-4 border-t border-white/10">
+                    <span className="text-rose-400 font-bold">{item.impact}</span>
+                    <span className="text-slate-500 text-sm">{item.readTime}</span>
                   </div>
-                </motion.div>
-              ))}
-            </div>
+                </div>
+              </motion.div>
+            ))}
           </div>
+
+          {/* Full Width Feature Banner with Second Image */}
+          <motion.div
+            initial={{ opacity: 0, scale: 0.95 }}
+            whileInView={{ opacity: 1, scale: 1 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.8 }}
+            className="relative rounded-3xl overflow-hidden border border-white/10 shadow-2xl"
+          >
+            <div className="absolute inset-0">
+              <img 
+                src="/Gemini_Generated_Image_gj2y6vgj2y6vgj2y.png" 
+                alt="Contract Analysis" 
+                className="w-full h-full object-cover"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-black via-black/70 to-black/40" />
+            </div>
+
+            <div className="relative z-10 p-12 md:p-16 text-center">
+              <div className="inline-flex items-center gap-2 bg-amber-500/20 text-amber-400 px-4 py-2 rounded-full text-sm font-bold uppercase tracking-wider mb-6">
+                <TrendingUp className="w-4 h-4" />
+                Featured Analysis
+              </div>
+              
+              <h3 className="text-4xl md:text-5xl font-black text-white mb-6 max-w-4xl mx-auto leading-tight">
+                Is Your PBM Contract a Fiduciary Time Bomb?
+              </h3>
+              
+              <p className="text-xl text-slate-300 mb-10 max-w-3xl mx-auto leading-relaxed">
+                New DOL guidance puts plan sponsors on the hook for PBM oversight failures. Learn how to protect yourself from personal liability.
+              </p>
+              
+              <div className="flex flex-col sm:flex-row gap-4 justify-center">
+                <a
+                  href="https://www.linkedin.com/in/jeremiah-shrack/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-2 bg-gradient-to-r from-amber-600 to-orange-600 hover:from-amber-700 hover:to-orange-700 text-white px-8 py-4 rounded-xl font-bold text-lg shadow-xl shadow-amber-500/30 transition-all hover:scale-105"
+                >
+                  <FileText className="w-5 h-5" />
+                  Read Full Article
+                </a>
+                <Link
+                  href="/solutions/rx-defense"
+                  className="inline-flex items-center gap-2 bg-white/10 hover:bg-white/20 text-white px-8 py-4 rounded-xl font-bold text-lg border border-white/20 transition-all hover:scale-105"
+                >
+                  <Shield className="w-5 h-5" />
+                  Audit My Contract
+                </Link>
+              </div>
+            </div>
+          </motion.div>
         </section>
 
         {/* Split Banner Section */}

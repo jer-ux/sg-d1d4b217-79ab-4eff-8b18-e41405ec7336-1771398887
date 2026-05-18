@@ -1,9 +1,9 @@
 "use client";
 
-import React from "react";
+import React, { useState } from "react";
 import Head from "next/head";
 import { motion } from "framer-motion";
-import { AlertTriangle, Shield, TrendingUp, ExternalLink, Linkedin, FileText, Target, Eye } from "lucide-react";
+import { AlertTriangle, Shield, TrendingUp, ExternalLink, Linkedin, FileText, Target, Eye, X, ChevronLeft, ChevronRight, Calculator, DollarSign } from "lucide-react";
 import Nav from "@/components/Nav";
 import Footer from "@/components/Footer";
 import { SEO } from "@/components/SEO";
@@ -34,6 +34,78 @@ const publications = [
 ];
 
 export default function PBMCrimeBossPage() {
+  // Lightbox state
+  const [lightboxImage, setLightboxImage] = useState<string | null>(null);
+  const [lightboxIndex, setLightboxIndex] = useState<number>(0);
+  
+  // Calculator state
+  const [employees, setEmployees] = useState<number>(500);
+  const [annualSpend, setAnnualSpend] = useState<number>(6000000);
+  
+  // All images for lightbox navigation
+  const allImages = [
+    "/Gemini_Generated_Image_9vb8yz9vb8yz9vb8_1_.png",
+    "/Firefly_Gemini_Flash_The_7.3_Billion_Question-_What_the_Big_Three_PBMs_Have_Cost_Your_Plan_Your_People_981473.png",
+    "/Firefly_Gemini_Flash_Introducing_Rx_Defense_PBM_Contract_x-Ray-_The_Forensic_Infrastructure_That_Turns_Pha_743383.png",
+    "/Gemini_Generated_Image_rzwmsjrzwmsjrzwm.png",
+    "/Gemini_Generated_Image_6m5eog6m5eog6m5e.png",
+    "/Gemini_Generated_Image_h7g1smh7g1smh7g1.png",
+    "/IMG_0078.jpeg",
+    "/Gemini_Generated_Image_gj2y6vgj2y6vgj2y.png"
+  ];
+
+  const openLightbox = (imageSrc: string) => {
+    const index = allImages.indexOf(imageSrc);
+    setLightboxIndex(index >= 0 ? index : 0);
+    setLightboxImage(imageSrc);
+  };
+
+  const closeLightbox = () => {
+    setLightboxImage(null);
+  };
+
+  const nextImage = () => {
+    const newIndex = (lightboxIndex + 1) % allImages.length;
+    setLightboxIndex(newIndex);
+    setLightboxImage(allImages[newIndex]);
+  };
+
+  const prevImage = () => {
+    const newIndex = (lightboxIndex - 1 + allImages.length) % allImages.length;
+    setLightboxIndex(newIndex);
+    setLightboxImage(allImages[newIndex]);
+  };
+
+  // Calculator logic
+  const calculateSavings = () => {
+    const perEmployeeSpend = annualSpend / employees;
+    const savingsLow = annualSpend * 0.12;
+    const savingsHigh = annualSpend * 0.22;
+    const savingsMid = (savingsLow + savingsHigh) / 2;
+    const perEmployeeSavings = savingsMid / employees;
+    const fiveYearSavings = savingsMid * 5;
+    
+    return {
+      savingsLow,
+      savingsHigh,
+      savingsMid,
+      perEmployeeSavings,
+      perEmployeeSpend,
+      fiveYearSavings
+    };
+  };
+
+  const savings = calculateSavings();
+
+  const formatCurrency = (amount: number) => {
+    return new Intl.NumberFormat('en-US', {
+      style: 'currency',
+      currency: 'USD',
+      minimumFractionDigits: 0,
+      maximumFractionDigits: 0
+    }).format(amount);
+  };
+
   return (
     <>
       <SEO
@@ -43,15 +115,66 @@ export default function PBMCrimeBossPage() {
       <Nav />
 
       <div className="min-h-screen bg-black text-white">
+        {/* Lightbox */}
+        {lightboxImage && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 z-[9999] bg-black/95 backdrop-blur-sm flex items-center justify-center"
+            onClick={closeLightbox}
+          >
+            <button
+              onClick={closeLightbox}
+              className="absolute top-6 right-6 text-white hover:text-rose-400 transition-colors z-10"
+            >
+              <X className="w-8 h-8" />
+            </button>
+
+            <button
+              onClick={(e) => { e.stopPropagation(); prevImage(); }}
+              className="absolute left-6 top-1/2 -translate-y-1/2 text-white hover:text-rose-400 transition-colors bg-black/50 rounded-full p-3 z-10"
+            >
+              <ChevronLeft className="w-8 h-8" />
+            </button>
+
+            <button
+              onClick={(e) => { e.stopPropagation(); nextImage(); }}
+              className="absolute right-6 top-1/2 -translate-y-1/2 text-white hover:text-rose-400 transition-colors bg-black/50 rounded-full p-3 z-10"
+            >
+              <ChevronRight className="w-8 h-8" />
+            </button>
+
+            <motion.img
+              initial={{ scale: 0.9 }}
+              animate={{ scale: 1 }}
+              src={lightboxImage}
+              alt="Expanded view"
+              className="max-w-[90vw] max-h-[90vh] object-contain"
+              onClick={(e) => e.stopPropagation()}
+            />
+
+            <div className="absolute bottom-6 left-1/2 -translate-x-1/2 text-white/60 text-sm">
+              {lightboxIndex + 1} / {allImages.length}
+            </div>
+          </motion.div>
+        )}
+
         {/* Hero Banner with Image */}
         <section className="relative h-[70vh] min-h-[600px] overflow-hidden">
           {/* Background Image */}
-          <div className="absolute inset-0">
+          <div 
+            className="absolute inset-0 cursor-pointer group"
+            onClick={() => openLightbox("/Gemini_Generated_Image_9vb8yz9vb8yz9vb8_1_.png")}
+          >
             <img 
               src="/Gemini_Generated_Image_9vb8yz9vb8yz9vb8_1_.png" 
               alt="PBM Crime Boss Investigation" 
-              className="w-full h-full object-cover"
+              className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
             />
+            <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity bg-black/40">
+              <Eye className="w-12 h-12 text-white" />
+            </div>
             {/* Dark overlay for text readability */}
             <div className="absolute inset-0 bg-gradient-to-b from-black/70 via-black/50 to-[#050505]" />
           </div>
@@ -121,14 +244,131 @@ export default function PBMCrimeBossPage() {
           </div>
         </section>
 
+        {/* Interactive Savings Calculator */}
+        <section className="py-20 bg-gradient-to-b from-[#050505] via-cyan-950/5 to-[#050505]">
+          <div className="max-w-4xl mx-auto px-6">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6 }}
+              className="text-center mb-12"
+            >
+              <div className="inline-flex items-center gap-2 bg-cyan-500/20 text-cyan-400 px-4 py-2 rounded-full text-sm font-bold uppercase tracking-wider mb-4">
+                <Calculator className="w-4 h-4" />
+                Interactive Calculator
+              </div>
+              <h2 className="text-4xl md:text-5xl font-black text-white mb-4">
+                Calculate Your Potential Savings
+              </h2>
+              <p className="text-xl text-slate-400">
+                See how much your organization could be overpaying on PBM contracts
+              </p>
+            </motion.div>
+
+            <motion.div
+              initial={{ opacity: 0, scale: 0.95 }}
+              whileInView={{ opacity: 1, scale: 1 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6 }}
+              className="bg-gradient-to-br from-zinc-900 to-zinc-950 border border-cyan-500/30 rounded-3xl p-8 md:p-12 shadow-2xl shadow-cyan-500/10"
+            >
+              <div className="grid md:grid-cols-2 gap-8 mb-10">
+                <div>
+                  <label className="block text-sm font-bold text-cyan-400 mb-3 uppercase tracking-wider">
+                    Number of Employees / Covered Lives
+                  </label>
+                  <input
+                    type="number"
+                    value={employees}
+                    onChange={(e) => setEmployees(Number(e.target.value))}
+                    className="w-full bg-black/50 border border-white/10 rounded-xl px-6 py-4 text-white text-2xl font-bold focus:border-cyan-500 focus:outline-none transition-colors"
+                    min="1"
+                  />
+                  <div className="mt-2 text-sm text-slate-500">Typical range: 100-5,000</div>
+                </div>
+
+                <div>
+                  <label className="block text-sm font-bold text-cyan-400 mb-3 uppercase tracking-wider">
+                    Annual Pharmacy Spend
+                  </label>
+                  <div className="relative">
+                    <DollarSign className="absolute left-6 top-1/2 -translate-y-1/2 w-6 h-6 text-slate-500" />
+                    <input
+                      type="number"
+                      value={annualSpend}
+                      onChange={(e) => setAnnualSpend(Number(e.target.value))}
+                      className="w-full bg-black/50 border border-white/10 rounded-xl pl-14 pr-6 py-4 text-white text-2xl font-bold focus:border-cyan-500 focus:outline-none transition-colors"
+                      min="1"
+                    />
+                  </div>
+                  <div className="mt-2 text-sm text-slate-500">Per employee: {formatCurrency(savings.perEmployeeSpend)}</div>
+                </div>
+              </div>
+
+              <div className="border-t border-white/10 pt-8">
+                <div className="grid md:grid-cols-3 gap-6 mb-8">
+                  <div className="bg-gradient-to-br from-emerald-950/40 to-emerald-900/20 border border-emerald-500/30 rounded-2xl p-6 text-center">
+                    <div className="text-sm text-emerald-400 font-bold uppercase tracking-wider mb-2">Conservative Estimate</div>
+                    <div className="text-4xl font-black text-white mb-1">{formatCurrency(savings.savingsLow)}</div>
+                    <div className="text-sm text-slate-400">12% reduction</div>
+                  </div>
+
+                  <div className="bg-gradient-to-br from-cyan-950/40 to-cyan-900/20 border border-cyan-500/30 rounded-2xl p-6 text-center">
+                    <div className="text-sm text-cyan-400 font-bold uppercase tracking-wider mb-2">Typical Savings</div>
+                    <div className="text-4xl font-black text-white mb-1">{formatCurrency(savings.savingsMid)}</div>
+                    <div className="text-sm text-slate-400">17% reduction</div>
+                  </div>
+
+                  <div className="bg-gradient-to-br from-purple-950/40 to-purple-900/20 border border-purple-500/30 rounded-2xl p-6 text-center">
+                    <div className="text-sm text-purple-400 font-bold uppercase tracking-wider mb-2">Aggressive Optimization</div>
+                    <div className="text-4xl font-black text-white mb-1">{formatCurrency(savings.savingsHigh)}</div>
+                    <div className="text-sm text-slate-400">22% reduction</div>
+                  </div>
+                </div>
+
+                <div className="grid md:grid-cols-2 gap-6">
+                  <div className="bg-black/30 border border-white/10 rounded-xl p-6">
+                    <div className="text-sm text-slate-400 mb-2">Per Employee Annual Savings</div>
+                    <div className="text-3xl font-bold text-cyan-400">{formatCurrency(savings.perEmployeeSavings)}</div>
+                  </div>
+                  <div className="bg-black/30 border border-white/10 rounded-xl p-6">
+                    <div className="text-sm text-slate-400 mb-2">5-Year Cumulative Savings</div>
+                    <div className="text-3xl font-bold text-emerald-400">{formatCurrency(savings.fiveYearSavings)}</div>
+                  </div>
+                </div>
+              </div>
+
+              <div className="mt-8 pt-8 border-t border-white/10 text-center">
+                <p className="text-slate-400 mb-6">
+                  These estimates are based on industry benchmarks from analyzing 400+ PBM contracts. Your actual savings may vary.
+                </p>
+                <Link
+                  href="/solutions/rx-defense"
+                  className="inline-flex items-center gap-2 bg-gradient-to-r from-cyan-600 to-blue-600 hover:from-cyan-700 hover:to-blue-700 text-white px-8 py-4 rounded-xl font-bold text-lg shadow-xl shadow-cyan-500/30 transition-all hover:scale-105"
+                >
+                  <Shield className="w-5 h-5" />
+                  Get Your Exact Savings Analysis
+                </Link>
+              </div>
+            </motion.div>
+          </div>
+        </section>
+
         {/* Secondary Hero Banner - New Image */}
         <section className="relative h-[500px] overflow-hidden my-20">
-          <div className="absolute inset-0">
+          <div 
+            className="absolute inset-0 cursor-pointer group"
+            onClick={() => openLightbox("/Firefly_Gemini_Flash_The_7.3_Billion_Question-_What_the_Big_Three_PBMs_Have_Cost_Your_Plan_Your_People_981473.png")}
+          >
             <img 
               src="/Firefly_Gemini_Flash_The_7.3_Billion_Question-_What_the_Big_Three_PBMs_Have_Cost_Your_Plan_Your_People_981473.png" 
               alt="The $7.3 Billion Question" 
-              className="w-full h-full object-cover"
+              className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
             />
+            <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity bg-black/40">
+              <Eye className="w-12 h-12 text-white" />
+            </div>
             <div className="absolute inset-0 bg-gradient-to-r from-black/90 via-black/70 to-transparent" />
           </div>
 
@@ -174,12 +414,18 @@ export default function PBMCrimeBossPage() {
               transition={{ duration: 0.6 }}
               className="relative rounded-3xl overflow-hidden border border-cyan-500/30 shadow-2xl"
             >
-              <div className="absolute inset-0">
+              <div 
+                className="absolute inset-0 cursor-pointer group"
+                onClick={() => openLightbox("/Firefly_Gemini_Flash_Introducing_Rx_Defense_PBM_Contract_x-Ray-_The_Forensic_Infrastructure_That_Turns_Pha_743383.png")}
+              >
                 <img
                   src="/Firefly_Gemini_Flash_Introducing_Rx_Defense_PBM_Contract_x-Ray-_The_Forensic_Infrastructure_That_Turns_Pha_743383.png"
                   alt="Introducing RX Defense"
-                  className="w-full h-full object-cover"
+                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                 />
+                <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity bg-black/40">
+                  <Eye className="w-12 h-12 text-white" />
+                </div>
                 <div className="absolute inset-0 bg-gradient-to-r from-black/85 via-black/60 to-black/85" />
               </div>
 
@@ -393,6 +639,7 @@ export default function PBMCrimeBossPage() {
                 viewport={{ once: true }}
                 transition={{ delay: idx * 0.1, duration: 0.6 }}
                 className="group relative overflow-hidden rounded-2xl bg-gradient-to-br from-zinc-900 to-zinc-950 border border-white/10 hover:border-rose-500/50 transition-all duration-300 hover:scale-105 cursor-pointer"
+                onClick={() => openLightbox(item.image)}
               >
                 {/* Background Image */}
                 <div className="absolute inset-0 opacity-20 group-hover:opacity-30 transition-opacity">
@@ -401,6 +648,9 @@ export default function PBMCrimeBossPage() {
                     alt={item.title}
                     className="w-full h-full object-cover"
                   />
+                  <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
+                    <Eye className="w-8 h-8 text-white" />
+                  </div>
                 </div>
 
                 <div className="relative p-8">
@@ -576,13 +826,17 @@ export default function PBMCrimeBossPage() {
                   transition={{ delay: idx * 0.1, duration: 0.6 }}
                   className="group relative overflow-hidden rounded-xl border border-white/10 hover:border-cyan-500/50 transition-all cursor-pointer"
                   whileHover={{ y: -5 }}
+                  onClick={() => openLightbox(item.image)}
                 >
-                  <div className="aspect-video overflow-hidden">
+                  <div className="aspect-video overflow-hidden relative">
                     <img
                       src={item.image}
                       alt={item.title}
                       className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
                     />
+                    <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity bg-black/40">
+                      <Eye className="w-10 h-10 text-white" />
+                    </div>
                   </div>
                   <div className="p-6 bg-zinc-900">
                     <h4 className="text-xl font-bold text-white mb-2 group-hover:text-cyan-400 transition-colors">

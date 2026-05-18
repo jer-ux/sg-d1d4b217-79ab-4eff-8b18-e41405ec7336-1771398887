@@ -87,6 +87,16 @@ export default function Nav() {
                       <div className="font-medium">M&A / VC / PE</div>
                       <div className="text-xs text-gray-400">Deal intelligence</div>
                     </Link>
+                    <Link
+                      href="/pbm-crime-boss"
+                      className="block px-4 py-3 text-gray-300 hover:text-white hover:bg-rose-500/10 rounded-lg transition-colors duration-150 border-t border-gray-700/50 mt-2 pt-3"
+                    >
+                      <div className="font-medium flex items-center gap-2">
+                        <AlertTriangle className="h-4 w-4 text-rose-400" />
+                        <span className="text-rose-300">PBM Crime Boss</span>
+                      </div>
+                      <div className="text-xs text-gray-400">LinkedIn publication series</div>
+                    </Link>
                   </div>
                 </div>
               )}
@@ -320,6 +330,12 @@ export default function Nav() {
                   </Link>
                   <Link href="/ma-vc-pe" className="block px-4 py-2 text-sm text-gray-400 hover:text-white hover:bg-white/5 rounded-lg transition-colors">
                     M&A / VC / PE
+                  </Link>
+                  <Link href="/pbm-crime-boss" className="block px-4 py-2 text-sm text-rose-400 hover:text-rose-300 hover:bg-rose-500/10 rounded-lg transition-colors border-t border-gray-700/50 mt-2 pt-2">
+                    <span className="flex items-center gap-2">
+                      <AlertTriangle className="h-3 w-3" />
+                      PBM Crime Boss
+                    </span>
                   </Link>
                 </div>
               )}

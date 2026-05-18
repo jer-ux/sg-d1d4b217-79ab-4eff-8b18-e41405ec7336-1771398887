@@ -48,7 +48,7 @@ export default function PBMCrimeBossPage() {
           {/* Background Image */}
           <div className="absolute inset-0">
             <img 
-              src="/Gemini_Generated_Image_rzwmsjrzwmsjrzwm.png" 
+              src="/Gemini_Generated_Image_9vb8yz9vb8yz9vb8_1_.png" 
               alt="PBM Crime Boss Investigation" 
               className="w-full h-full object-cover"
             />
@@ -176,7 +176,7 @@ export default function PBMCrimeBossPage() {
             >
               <div className="absolute inset-0">
                 <img
-                  src="/Gemini_Generated_Image_rzwmsjrzwmsjrzwm.png"
+                  src="/Gemini_Generated_Image_9vb8yz9vb8yz9vb8_1_.png"
                   alt="Investigation Impact"
                   className="w-full h-full object-cover opacity-20 blur-sm"
                 />
@@ -304,21 +304,24 @@ export default function PBMCrimeBossPage() {
                 title: "The Spread Pricing Scam",
                 description: "How PBMs pocket the difference between what they charge you and what they pay pharmacies",
                 impact: "$1.2M average annual impact",
-                readTime: "8 min read"
+                readTime: "8 min read",
+                image: "/Gemini_Generated_Image_9vb8yz9vb8yz9vb8_1_.png"
               },
               {
                 episode: 2,
                 title: "Rebate Retention Schemes",
                 description: "The manufacturer payments that never make it to your bottom line",
                 impact: "$840K average annual impact",
-                readTime: "10 min read"
+                readTime: "10 min read",
+                image: "/Gemini_Generated_Image_gj2y6vgj2y6vgj2y.png"
               },
               {
                 episode: 3,
                 title: "Data Monetization",
                 description: "Your prescription data sold without permission or profit sharing",
                 impact: "$320K average annual impact",
-                readTime: "7 min read"
+                readTime: "7 min read",
+                image: "/Gemini_Generated_Image_rzwmsjrzwmsjrzwm.png"
               }
             ].map((item, idx) => (
               <motion.div
@@ -332,7 +335,7 @@ export default function PBMCrimeBossPage() {
                 {/* Background Image */}
                 <div className="absolute inset-0 opacity-20 group-hover:opacity-30 transition-opacity">
                   <img 
-                    src="/Gemini_Generated_Image_rzwmsjrzwmsjrzwm.png" 
+                    src={item.image}
                     alt={item.title}
                     className="w-full h-full object-cover"
                   />
@@ -427,7 +430,7 @@ export default function PBMCrimeBossPage() {
               >
                 <div className="absolute inset-0">
                   <img
-                    src="/Gemini_Generated_Image_rzwmsjrzwmsjrzwm.png"
+                    src="/Gemini_Generated_Image_9vb8yz9vb8yz9vb8_1_.png"
                     alt="Contract Analysis"
                     className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
                   />
@@ -458,7 +461,7 @@ export default function PBMCrimeBossPage() {
               >
                 <div className="absolute inset-0">
                   <img
-                    src="/Gemini_Generated_Image_rzwmsjrzwmsjrzwm.png"
+                    src="/Gemini_Generated_Image_gj2y6vgj2y6vgj2y.png"
                     alt="LinkedIn Follow"
                     className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
                   />

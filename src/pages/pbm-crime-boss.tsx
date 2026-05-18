@@ -224,7 +224,7 @@ export default function PBMCrimeBossPage() {
                 className="flex flex-col sm:flex-row gap-4 justify-center"
               >
                 <a
-                  href="https://www.linkedin.com/in/jeremiah-shrack/"
+                  href="https://www.linkedin.com/newsletters/former-pbm-crime-boss-speaks-7447883910010535936/"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="inline-flex items-center gap-2 bg-gradient-to-r from-rose-600 to-rose-700 hover:from-rose-700 hover:to-rose-800 text-white px-8 py-4 rounded-xl font-bold text-lg shadow-xl shadow-rose-500/30 transition-all hover:scale-105"
@@ -456,7 +456,7 @@ export default function PBMCrimeBossPage() {
                         Launch RX Defense
                       </Link>
                       <a
-                        href="https://www.linkedin.com/in/jeremiah-shrack/"
+                        href="https://www.linkedin.com/newsletters/former-pbm-crime-boss-speaks-7447883910010535936/"
                         target="_blank"
                         rel="noopener noreferrer"
                         className="inline-flex items-center gap-2 bg-white/10 hover:bg-white/20 text-white px-8 py-4 rounded-xl font-bold text-lg border border-white/20 transition-all hover:scale-105"
@@ -562,7 +562,7 @@ export default function PBMCrimeBossPage() {
                     </p>
                     <div className="flex flex-wrap gap-4">
                       <motion.a
-                        href="https://www.linkedin.com/in/shrack"
+                        href="https://www.linkedin.com/newsletters/former-pbm-crime-boss-speaks-7447883910010535936/"
                         target="_blank"
                         rel="noopener noreferrer"
                         className="inline-flex items-center gap-3 px-8 py-4 bg-gradient-to-r from-rose-600 to-red-600 hover:from-rose-700 hover:to-red-700 rounded-xl text-white font-bold text-lg transition-all shadow-lg"
@@ -772,7 +772,7 @@ export default function PBMCrimeBossPage() {
               
               <div className="flex flex-col sm:flex-row gap-4 justify-center">
                 <a
-                  href="https://www.linkedin.com/in/jeremiah-shrack/"
+                  href="https://www.linkedin.com/newsletters/former-pbm-crime-boss-speaks-7447883910010535936/"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="inline-flex items-center gap-2 bg-gradient-to-r from-amber-600 to-orange-600 hover:from-amber-700 hover:to-orange-700 text-white px-8 py-4 rounded-xl font-bold text-lg shadow-xl shadow-amber-500/30 transition-all hover:scale-105"
@@ -908,7 +908,7 @@ export default function PBMCrimeBossPage() {
                   <h3 className="text-3xl font-bold text-white mb-3">Follow Updates</h3>
                   <p className="text-gray-300 mb-6">New episodes published weekly. Join 10,000+ industry professionals exposing PBM exploitation.</p>
                   <motion.a
-                    href="https://www.linkedin.com/in/jeremiah-shrack/"
+                    href="https://www.linkedin.com/newsletters/former-pbm-crime-boss-speaks-7447883910010535936/"
                     target="_blank"
                     rel="noopener noreferrer"
                     className="inline-flex items-center gap-2 text-rose-300 hover:text-white font-bold transition-colors"

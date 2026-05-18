@@ -180,11 +180,11 @@ export function CHROWarRoom() {
         <div className="mx-auto max-w-[1600px] px-6 py-5">
           <div className="flex items-start justify-between gap-4">
             <div className="flex-1">
-              <div className="flex items-center gap-3">
-                <div className="text-xs tracking-wide text-purple-400 font-semibold uppercase">Kincaid IQ</div>
-                <div className="text-sm font-bold text-purple-300">CHRO Dashboard</div>
+              <div className="flex items-center gap-3 mb-2">
+                <div className="text-2xl font-black bg-gradient-to-r from-purple-400 via-purple-300 to-indigo-300 bg-clip-text text-transparent">Kincaid IQ</div>
+                <div className="text-xs tracking-wide text-purple-400/70 font-medium uppercase border-l border-purple-500/30 pl-3">CHRO Edition</div>
               </div>
-              <h1 className="mt-3 text-2xl font-bold tracking-tight bg-gradient-to-r from-white via-purple-100 to-indigo-100 bg-clip-text text-transparent">Human Capital & Benefits Analytics</h1>
+              <h1 className="text-xl font-bold tracking-tight text-white">Human Capital & Benefits Analytics</h1>
               <div className="mt-1 text-sm text-zinc-400">
                 People metrics with evidence receipts. <span className="text-purple-300 font-medium">Data-driven</span> talent strategy.
               </div>

@@ -71,9 +71,12 @@ export function CHRODrillDownDrawer({ tile, isOpen, onClose }: CHRODrillDownDraw
                 </button>
               )}
               <div>
+                <div className="flex items-center gap-2 mb-1">
+                  <span className="text-xs font-bold bg-gradient-to-r from-purple-400 to-indigo-400 bg-clip-text text-transparent uppercase tracking-wider">Kincaid IQ</span>
+                  <span className="text-zinc-600">•</span>
+                  <span className="rounded-full bg-purple-500/20 px-2 py-1 text-xs text-purple-400">Level {currentLevel.level} of 7</span>
+                </div>
                 <div className="flex items-center gap-2 text-xs text-zinc-400">
-                  <span className="rounded-full bg-purple-500/20 px-2 py-1 text-purple-400">Level {currentLevel.level} of 7</span>
-                  <span className="text-zinc-600">→</span>
                   {drillStack.slice(0, 3).map((level, idx) => (
                     <span key={idx} className="flex items-center gap-1">
                       {idx > 0 && <span className="text-zinc-600">→</span>}

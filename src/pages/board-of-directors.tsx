@@ -17,9 +17,9 @@ const boardMembers = [
     linkedin: "https://www.linkedin.com/in/shrack",
     bio: "Humanitarian and business leader with over two decades of experience engineering intelligent operating systems and scaling organizations. Achieved #2 in North America for Canon while working 60 hours/week and attending IWU full-time.",
     fullBio: {
-      introduction: "Over two decades, he has built a reputation for engineering intelligent operating systems, scaling organizations, and redefining how advanced analytics intersect with human judgment. As President and Chief Executive Officer of Kincaid Risk Management Consultants (KRMC), Jeremiah drives enterprise-wide revenue growth, operational excellence, and high-impact PBM/Rx consulting engagements.",
-      platform: "Kincaid IQ is a next-generation intelligent consulting operating system that integrates six purpose-built subsystems extending the reasoning frameworks of VortexAI, LogicAI, and JimShrackExpressAI. Each operating system is strategically designed to accelerate AI transformation in industries Jeremiah identifies as early adopters of intelligent automation. The platform combines ethical machine reasoning, actuarial precision, and human-centered design to drive measurable performance improvements for clients.",
-      philosophy: "Jeremiah approaches AI and analytics through an ethical lens — ensuring that Kincaid's systems enhance, not replace, human decision-making. His leadership philosophy emphasizes clarity, accountability, and innovation, translating strategic objectives into scalable processes and measurable outcomes across the enterprise. He believes that the most powerful technology serves humanity — not the other way around.",
+      introduction: "Over two decades, he has built a reputation for engineering intelligent operating systems, scaling organizations, and redefining how advanced analytics intersect with human judgment. As a senior executive, Jeremiah drives enterprise-wide revenue growth, operational excellence, and high-impact PBM/Rx consulting engagements.",
+      platform: "SiriusB iQ is a next-generation intelligent consulting operating system that integrates six purpose-built subsystems extending the reasoning frameworks of VortexAI, LogicAI, and JimShrackExpressAI. Each operating system is strategically designed to accelerate AI transformation in industries Jeremiah identifies as early adopters of intelligent automation. The platform combines ethical machine reasoning, actuarial precision, and human-centered design to drive measurable performance improvements for clients.",
+      philosophy: "Jeremiah approaches AI and analytics through an ethical lens — ensuring that systems enhance, not replace, human decision-making. His leadership philosophy emphasizes clarity, accountability, and innovation, translating strategic objectives into scalable processes and measurable outcomes across the enterprise. He believes that the most powerful technology serves humanity — not the other way around.",
       expertise: [
         "Enterprise Executive Sales and Leadership",
         "Benefits Actuarial Consulting (Jumbo and Large-Market)",
@@ -28,7 +28,7 @@ const boardMembers = [
         "Ethical AI Deployment & Governance",
         "Organizational Transformation at Scale"
       ],
-      vision: "Grounded in business discipline, faith in God, and respect for humanity, Jeremiah is dedicated to helping employers outperform in the rapidly evolving health, benefits, and AI transformation landscape. Under his leadership, Kincaid RMC leverages a combined 20 years of consulting experience to deliver 20–35% savings on self-funded Anthem PBM and Rx contracts, empowering mid- and large-market organizations through transparent, data-driven actuarial insights."
+      vision: "Grounded in business discipline, faith in God, and respect for humanity, Jeremiah is dedicated to helping employers outperform in the rapidly evolving health, benefits, and AI transformation landscape. Under his leadership, SiriusB iQ leverages decades of combined consulting experience to deliver 20–35% savings on self-funded PBM and Rx contracts, empowering mid- and large-market organizations through transparent, data-driven actuarial insights."
     }
   },
   {

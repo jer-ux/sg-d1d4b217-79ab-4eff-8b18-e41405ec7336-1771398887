@@ -125,11 +125,11 @@ export default function PBMCrimeBossPage() {
         <section className="relative h-[500px] overflow-hidden my-20">
           <div className="absolute inset-0">
             <img 
-              src="/Gemini_Generated_Image_gj2y6vgj2y6vgj2y.png" 
-              alt="PBM Contract Analysis" 
+              src="/Firefly_Gemini_Flash_The_7.3_Billion_Question-_What_the_Big_Three_PBMs_Have_Cost_Your_Plan_Your_People_981473.png" 
+              alt="The $7.3 Billion Question" 
               className="w-full h-full object-cover"
             />
-            <div className="absolute inset-0 bg-gradient-to-r from-black/80 via-black/60 to-transparent" />
+            <div className="absolute inset-0 bg-gradient-to-r from-black/90 via-black/70 to-transparent" />
           </div>
 
           <div className="relative z-10 h-full flex items-center px-6 max-w-7xl mx-auto">
@@ -141,23 +141,85 @@ export default function PBMCrimeBossPage() {
               className="max-w-2xl"
             >
               <h2 className="text-4xl md:text-5xl font-black text-white mb-6 leading-tight">
-                The Hidden $20B PBM Industry Scandal
+                The $7.3 Billion Question
               </h2>
               <p className="text-xl text-slate-300 mb-8 leading-relaxed">
-                Behind every prescription claim lies a complex web of hidden spreads, rebate retention, and data monetization that systematically drains employer health plans.
+                What the Big Three PBMs have cost your plan, your people, and your fiduciary duty of prudence. A forensic breakdown of systematic exploitation.
               </p>
               <div className="flex flex-wrap gap-4">
                 <div className="bg-rose-500/20 border border-rose-500/30 rounded-xl px-6 py-3">
-                  <div className="text-3xl font-black text-rose-400">$3.6M</div>
-                  <div className="text-sm text-slate-300">Average annual impact</div>
+                  <div className="text-3xl font-black text-rose-400">$7.3B</div>
+                  <div className="text-sm text-slate-300">Big 3 PBM annual spread</div>
                 </div>
                 <div className="bg-orange-500/20 border border-orange-500/30 rounded-xl px-6 py-3">
-                  <div className="text-3xl font-black text-orange-400">38/100</div>
-                  <div className="text-sm text-slate-300">Typical contract score</div>
+                  <div className="text-3xl font-black text-orange-400">65%</div>
+                  <div className="text-sm text-slate-300">Market concentration</div>
                 </div>
                 <div className="bg-yellow-500/20 border border-yellow-500/30 rounded-xl px-6 py-3">
-                  <div className="text-3xl font-black text-yellow-400">10+</div>
-                  <div className="text-sm text-slate-300">Hidden tactics exposed</div>
+                  <div className="text-3xl font-black text-yellow-400">$4.8K</div>
+                  <div className="text-sm text-slate-300">Per employee annual loss</div>
+                </div>
+              </div>
+            </motion.div>
+          </div>
+        </section>
+
+        {/* RX Defense Introduction Banner */}
+        <section className="py-20">
+          <div className="max-w-7xl mx-auto px-6">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6 }}
+              className="relative rounded-3xl overflow-hidden border border-cyan-500/30 shadow-2xl"
+            >
+              <div className="absolute inset-0">
+                <img
+                  src="/Firefly_Gemini_Flash_Introducing_Rx_Defense_PBM_Contract_x-Ray-_The_Forensic_Infrastructure_That_Turns_Pha_743383.png"
+                  alt="Introducing RX Defense"
+                  className="w-full h-full object-cover"
+                />
+                <div className="absolute inset-0 bg-gradient-to-r from-black/85 via-black/60 to-black/85" />
+              </div>
+
+              <div className="relative p-12 md:p-16">
+                <div className="max-w-4xl mx-auto text-center">
+                  <motion.div
+                    initial={{ opacity: 0, scale: 0.9 }}
+                    whileInView={{ opacity: 1, scale: 1 }}
+                    viewport={{ once: true }}
+                    transition={{ duration: 0.6 }}
+                  >
+                    <div className="inline-flex items-center gap-2 bg-cyan-500/20 text-cyan-400 px-4 py-2 rounded-full text-sm font-bold uppercase tracking-wider mb-6">
+                      <Shield className="w-4 h-4" />
+                      Introducing RX Defense
+                    </div>
+                    <h2 className="text-5xl md:text-6xl font-black text-white mb-6 leading-tight">
+                      PBM Contract X-Ray
+                    </h2>
+                    <p className="text-2xl text-slate-300 mb-8 leading-relaxed">
+                      The forensic infrastructure that turns pharmacy contracts into evidence. Every hidden fee. Every exploitative clause. Every fiduciary breach—documented and quantified.
+                    </p>
+                    <div className="flex flex-col sm:flex-row gap-4 justify-center">
+                      <Link
+                        href="/solutions/rx-defense"
+                        className="inline-flex items-center gap-2 bg-gradient-to-r from-cyan-600 to-blue-600 hover:from-cyan-700 hover:to-blue-700 text-white px-8 py-4 rounded-xl font-bold text-lg shadow-xl shadow-cyan-500/30 transition-all hover:scale-105"
+                      >
+                        <Shield className="w-5 h-5" />
+                        Launch RX Defense
+                      </Link>
+                      <a
+                        href="https://www.linkedin.com/in/jeremiah-shrack/"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="inline-flex items-center gap-2 bg-white/10 hover:bg-white/20 text-white px-8 py-4 rounded-xl font-bold text-lg border border-white/20 transition-all hover:scale-105"
+                      >
+                        <ExternalLink className="w-5 h-5" />
+                        Read Full Story
+                      </a>
+                    </div>
+                  </motion.div>
                 </div>
               </div>
             </motion.div>
@@ -305,7 +367,7 @@ export default function PBMCrimeBossPage() {
                 description: "How PBMs pocket the difference between what they charge you and what they pay pharmacies",
                 impact: "$1.2M average annual impact",
                 readTime: "8 min read",
-                image: "/Gemini_Generated_Image_9vb8yz9vb8yz9vb8_1_.png"
+                image: "/Gemini_Generated_Image_6m5eog6m5eog6m5e.png"
               },
               {
                 episode: 2,
@@ -313,7 +375,7 @@ export default function PBMCrimeBossPage() {
                 description: "The manufacturer payments that never make it to your bottom line",
                 impact: "$840K average annual impact",
                 readTime: "10 min read",
-                image: "/Gemini_Generated_Image_gj2y6vgj2y6vgj2y.png"
+                image: "/Gemini_Generated_Image_h7g1smh7g1smh7g1.png"
               },
               {
                 episode: 3,
@@ -321,7 +383,7 @@ export default function PBMCrimeBossPage() {
                 description: "Your prescription data sold without permission or profit sharing",
                 impact: "$320K average annual impact",
                 readTime: "7 min read",
-                image: "/Gemini_Generated_Image_rzwmsjrzwmsjrzwm.png"
+                image: "/IMG_0078.jpeg"
               }
             ].map((item, idx) => (
               <motion.div
@@ -363,17 +425,81 @@ export default function PBMCrimeBossPage() {
             ))}
           </div>
 
+          {/* Additional Investigation Cards */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6 }}
+            className="mb-20"
+          >
+            <h3 className="text-3xl font-bold text-white mb-8 text-center">Latest Investigations</h3>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+              {[
+                {
+                  title: "The MAC List Manipulation",
+                  subtitle: "Inside the pricing methodology that costs plans millions",
+                  image: "/Gemini_Generated_Image_gj2y6vgj2y6vgj2y.png",
+                  impact: "$960K",
+                  category: "Pricing Fraud"
+                },
+                {
+                  title: "Specialty Drug Steering",
+                  subtitle: "How PBMs force high-cost channels for profit",
+                  image: "/Gemini_Generated_Image_rzwmsjrzwmsjrzwm.png",
+                  impact: "$580K",
+                  category: "Network Abuse"
+                }
+              ].map((item, idx) => (
+                <motion.div
+                  key={idx}
+                  initial={{ opacity: 0, x: idx === 0 ? -20 : 20 }}
+                  whileInView={{ opacity: 1, x: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.6, delay: idx * 0.1 }}
+                  className="group relative overflow-hidden rounded-2xl border border-white/10 hover:border-orange-500/50 transition-all duration-300 cursor-pointer"
+                  whileHover={{ scale: 1.03 }}
+                >
+                  <div className="absolute inset-0">
+                    <img
+                      src={item.image}
+                      alt={item.title}
+                      className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black via-black/70 to-black/40" />
+                  </div>
+
+                  <div className="relative p-8 min-h-[350px] flex flex-col justify-end">
+                    <div className="inline-flex items-center gap-2 bg-orange-500/20 text-orange-400 px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider mb-3 w-fit">
+                      {item.category}
+                    </div>
+                    <h4 className="text-3xl font-bold text-white mb-2 group-hover:text-orange-400 transition-colors">
+                      {item.title}
+                    </h4>
+                    <p className="text-slate-300 mb-4">
+                      {item.subtitle}
+                    </p>
+                    <div className="flex items-center justify-between pt-4 border-t border-white/10">
+                      <span className="text-orange-400 font-bold text-lg">{item.impact} Annual Impact</span>
+                      <ExternalLink className="w-5 h-5 text-slate-500 group-hover:text-orange-400 transition-colors" />
+                    </div>
+                  </div>
+                </motion.div>
+              ))}
+            </div>
+          </motion.div>
+
           {/* Full Width Feature Banner with Second Image */}
           <motion.div
             initial={{ opacity: 0, scale: 0.95 }}
             whileInView={{ opacity: 1, scale: 1 }}
             viewport={{ once: true }}
             transition={{ duration: 0.8 }}
-            className="relative rounded-3xl overflow-hidden border border-white/10 shadow-2xl"
+            className="relative rounded-3xl overflow-hidden border border-white/10 shadow-2xl mb-20"
           >
             <div className="absolute inset-0">
               <img 
-                src="/Gemini_Generated_Image_gj2y6vgj2y6vgj2y.png" 
+                src="/Gemini_Generated_Image_9vb8yz9vb8yz9vb8_1_.png" 
                 alt="Contract Analysis" 
                 className="w-full h-full object-cover"
               />
@@ -414,6 +540,62 @@ export default function PBMCrimeBossPage() {
               </div>
             </div>
           </motion.div>
+
+          {/* Three Column Image Grid */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6 }}
+            className="mb-20"
+          >
+            <h3 className="text-3xl font-bold text-white mb-8 text-center">Key Evidence</h3>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+              {[
+                {
+                  image: "/Gemini_Generated_Image_6m5eog6m5eog6m5e.png",
+                  title: "Contract Forensics",
+                  description: "Line-by-line analysis exposing hidden provisions"
+                },
+                {
+                  image: "/Gemini_Generated_Image_h7g1smh7g1smh7g1.png",
+                  title: "Financial Impact",
+                  description: "Quantified loss calculations by provision"
+                },
+                {
+                  image: "/IMG_0078.jpeg",
+                  title: "Benchmark Comparison",
+                  description: "Your contract vs. best-in-class protections"
+                }
+              ].map((item, idx) => (
+                <motion.div
+                  key={idx}
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: idx * 0.1, duration: 0.6 }}
+                  className="group relative overflow-hidden rounded-xl border border-white/10 hover:border-cyan-500/50 transition-all cursor-pointer"
+                  whileHover={{ y: -5 }}
+                >
+                  <div className="aspect-video overflow-hidden">
+                    <img
+                      src={item.image}
+                      alt={item.title}
+                      className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                    />
+                  </div>
+                  <div className="p-6 bg-zinc-900">
+                    <h4 className="text-xl font-bold text-white mb-2 group-hover:text-cyan-400 transition-colors">
+                      {item.title}
+                    </h4>
+                    <p className="text-slate-400 text-sm">
+                      {item.description}
+                    </p>
+                  </div>
+                </motion.div>
+              ))}
+            </div>
+          </motion.div>
         </section>
 
         {/* Split Banner Section */}
@@ -430,7 +612,7 @@ export default function PBMCrimeBossPage() {
               >
                 <div className="absolute inset-0">
                   <img
-                    src="/Gemini_Generated_Image_9vb8yz9vb8yz9vb8_1_.png"
+                    src="/Firefly_Gemini_Flash_Introducing_Rx_Defense_PBM_Contract_x-Ray-_The_Forensic_Infrastructure_That_Turns_Pha_743383.png"
                     alt="Contract Analysis"
                     className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
                   />
@@ -461,7 +643,7 @@ export default function PBMCrimeBossPage() {
               >
                 <div className="absolute inset-0">
                   <img
-                    src="/Gemini_Generated_Image_gj2y6vgj2y6vgj2y.png"
+                    src="/Firefly_Gemini_Flash_The_7.3_Billion_Question-_What_the_Big_Three_PBMs_Have_Cost_Your_Plan_Your_People_981473.png"
                     alt="LinkedIn Follow"
                     className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
                   />
@@ -472,7 +654,7 @@ export default function PBMCrimeBossPage() {
                   <h3 className="text-3xl font-bold text-white mb-3">Follow Updates</h3>
                   <p className="text-gray-300 mb-6">New episodes published weekly. Join 10,000+ industry professionals exposing PBM exploitation.</p>
                   <motion.a
-                    href="https://www.linkedin.com/in/shrack"
+                    href="https://www.linkedin.com/in/jeremiah-shrack/"
                     target="_blank"
                     rel="noopener noreferrer"
                     className="inline-flex items-center gap-2 text-rose-300 hover:text-white font-bold transition-colors"

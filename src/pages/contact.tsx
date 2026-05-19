@@ -1,6 +1,8 @@
 import { SEO } from "@/components/SEO";
 import { SiteHeader } from "@/components/site/SiteHeader";
 import { SiteFooter } from "@/components/site/SiteFooter";
+import { CalendlyPopupButton } from "@/components/calendly/CalendlyPopupButton";
+import { Calendar } from "lucide-react";
 
 export default function ContactPage() {
   return (
@@ -14,15 +16,45 @@ export default function ContactPage() {
         
         <main>
           <div className="mx-auto max-w-3xl px-6 py-16">
-            <div className="text-3xl font-semibold">Book a Strategy Call</div>
-            <div className="mt-3 text-sm text-white/65">
-              Drop your calendly embed here or add your booking form. This route exists so the CTA is always valid.
+            <div className="text-center mb-12">
+              <h1 className="text-4xl md:text-5xl font-bold mb-4">Book a Strategy Call</h1>
+              <p className="text-lg text-white/70 max-w-2xl mx-auto">
+                Schedule a 30-minute call with Jeremiah to discuss your PBM contract, healthcare costs, and how Kincaid IQ can help.
+              </p>
             </div>
 
-            <div className="mt-8 rounded-2xl border border-white/10 bg-white/5 p-6">
-              <div className="text-sm font-semibold">Next step</div>
-              <div className="mt-2 text-sm text-white/70">
-                Send Jer a note or embed your scheduling link here.
+            <div className="bg-gradient-to-br from-[#0a1520] to-[#050a10] border border-cyan-900/50 rounded-3xl p-8 md:p-12 text-center">
+              <div className="mb-8">
+                <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-cyan-500/20 mb-4">
+                  <Calendar className="w-8 h-8 text-cyan-400" />
+                </div>
+                <h2 className="text-2xl font-bold mb-2">Schedule Your Call</h2>
+                <p className="text-white/70">
+                  Pick a time that works for you
+                </p>
+              </div>
+
+              <CalendlyPopupButton className="bg-gradient-to-r from-cyan-600 to-blue-600 hover:from-cyan-700 hover:to-blue-700 text-white px-8 py-6 text-lg font-bold shadow-lg">
+                Book 30-Minute Strategy Call
+              </CalendlyPopupButton>
+
+              <div className="mt-8 pt-8 border-t border-white/10">
+                <p className="text-sm text-white/60 mb-4">Or reach out directly:</p>
+                <div className="flex flex-col sm:flex-row gap-4 justify-center">
+                  <a 
+                    href="mailto:jer@kincaidrmc.com"
+                    className="text-cyan-400 hover:text-cyan-300 transition-colors"
+                  >
+                    jer@kincaidrmc.com
+                  </a>
+                  <span className="hidden sm:inline text-white/30">•</span>
+                  <a 
+                    href="tel:2192563331"
+                    className="text-cyan-400 hover:text-cyan-300 transition-colors"
+                  >
+                    (219) 256-3331
+                  </a>
+                </div>
               </div>
             </div>
           </div>

@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Mail, MessageCircle, Send, Linkedin, Instagram } from "lucide-react";
+import { Mail, MessageCircle, Send, Linkedin, Instagram, Calendar } from "lucide-react";
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import {
@@ -17,6 +17,12 @@ export function FounderContactButton() {
   const [isLoggingIn, setIsLoggingIn] = useState(false);
 
   const contactOptions = [
+    {
+      icon: Calendar,
+      label: "Schedule a Call",
+      href: "https://calendly.com/jer-kincaidrmc/30min",
+      color: "bg-cyan-500 hover:bg-cyan-600",
+    },
     {
       icon: Mail,
       label: "Email Me",

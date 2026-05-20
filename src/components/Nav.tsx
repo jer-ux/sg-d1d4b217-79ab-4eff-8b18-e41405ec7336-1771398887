@@ -1,6 +1,6 @@
 import { useState } from "react";
 import Link from "next/link";
-import { Menu, X, ChevronDown, Sparkles, Search, Users, Building2, AlertTriangle } from "lucide-react";
+import { Menu, X, ChevronDown, Sparkles, Search, Users, Building2, AlertTriangle, Calculator, FileText, TrendingUp, Briefcase, BarChart3 } from "lucide-react";
 import { useRouter } from "next/router";
 import { Button } from "@/components/ui/button";
 import { DropdownMenu, DropdownMenuTrigger, DropdownMenuContent, DropdownMenuItem } from "@/components/ui/dropdown-menu";
@@ -258,14 +258,106 @@ export default function Nav() {
             </div>
 
             {/* Tools Menu */}
-            <Link href="/tools/savings-calculator" className="px-4 py-2 text-gray-300 hover:text-white transition-colors rounded-lg hover:bg-white/5">
-              Tools
-            </Link>
+            <div className="relative">
+              <button
+                onMouseEnter={() => setPlatformDropdownOpen(true)}
+                onMouseLeave={() => setPlatformDropdownOpen(false)}
+                className="px-4 py-2 text-gray-300 hover:text-white transition-colors rounded-lg hover:bg-white/5"
+              >
+                Tools
+              </button>
+              {platformDropdownOpen && (
+                <div
+                  onMouseEnter={() => setPlatformDropdownOpen(true)}
+                  onMouseLeave={() => setPlatformDropdownOpen(false)}
+                  className="absolute top-full left-0 mt-2 w-72 bg-gray-900/95 backdrop-blur-xl rounded-xl border border-purple-700/50 shadow-xl overflow-hidden z-[210]"
+                >
+                  <div className="p-2">
+                    <Link
+                      href="/tools/savings-calculator"
+                      className="block px-4 py-3 text-gray-300 hover:text-white hover:bg-purple-500/10 rounded-lg transition-all"
+                    >
+                      <div className="font-medium flex items-center gap-2">
+                        <Calculator className="w-4 h-4 text-purple-400" />
+                        PBM Savings Calculator
+                      </div>
+                      <div className="text-xs text-gray-400">Instant ROI projection</div>
+                    </Link>
+                    <Link
+                      href="/tools/contract-health-check"
+                      className="block px-4 py-3 text-gray-300 hover:text-white hover:bg-purple-500/10 rounded-lg transition-all"
+                    >
+                      <div className="font-medium flex items-center gap-2">
+                        <FileText className="w-4 h-4 text-blue-400" />
+                        Contract Health Check
+                      </div>
+                      <div className="text-xs text-gray-400">Free contract analysis</div>
+                    </Link>
+                  </div>
+                </div>
+              )}
+            </div>
 
             {/* Personas Menu */}
-            <Link href="/personas/cfo" className="px-4 py-2 text-gray-300 hover:text-white transition-colors rounded-lg hover:bg-white/5">
-              Personas
-            </Link>
+            <div className="relative">
+              <button
+                onMouseEnter={() => setAgenticDropdownOpen(true)}
+                onMouseLeave={() => setAgenticDropdownOpen(false)}
+                className="px-4 py-2 text-gray-300 hover:text-white transition-colors rounded-lg hover:bg-white/5"
+              >
+                Personas
+              </button>
+              {agenticDropdownOpen && (
+                <div
+                  onMouseEnter={() => setAgenticDropdownOpen(true)}
+                  onMouseLeave={() => setAgenticDropdownOpen(false)}
+                  className="absolute top-full left-0 mt-2 w-72 bg-gray-900/95 backdrop-blur-xl rounded-xl border border-gray-700/50 shadow-xl overflow-hidden z-[210]"
+                >
+                  <div className="p-2">
+                    <Link
+                      href="/personas/cfo"
+                      className="block px-4 py-3 text-gray-300 hover:text-white hover:bg-emerald-500/10 rounded-lg transition-all"
+                    >
+                      <div className="font-medium flex items-center gap-2">
+                        <TrendingUp className="w-4 h-4 text-emerald-400" />
+                        For CFOs
+                      </div>
+                      <div className="text-xs text-gray-400">EBITDA protection & fiduciary defense</div>
+                    </Link>
+                    <Link
+                      href="/personas/hr"
+                      className="block px-4 py-3 text-gray-300 hover:text-white hover:bg-blue-500/10 rounded-lg transition-all"
+                    >
+                      <div className="font-medium flex items-center gap-2">
+                        <Users className="w-4 h-4 text-blue-400" />
+                        For HR Directors
+                      </div>
+                      <div className="text-xs text-gray-400">Member experience & vendor management</div>
+                    </Link>
+                    <Link
+                      href="/personas/broker"
+                      className="block px-4 py-3 text-gray-300 hover:text-white hover:bg-amber-500/10 rounded-lg transition-all"
+                    >
+                      <div className="font-medium flex items-center gap-2">
+                        <Briefcase className="w-4 h-4 text-amber-400" />
+                        For Brokers
+                      </div>
+                      <div className="text-xs text-gray-400">White-label tools & referral revenue</div>
+                    </Link>
+                    <Link
+                      href="/personas/actuarial"
+                      className="block px-4 py-3 text-gray-300 hover:text-white hover:bg-cyan-500/10 rounded-lg transition-all"
+                    >
+                      <div className="font-medium flex items-center gap-2">
+                        <BarChart3 className="w-4 h-4 text-cyan-400" />
+                        For Actuaries
+                      </div>
+                      <div className="text-xs text-gray-400">Statistical validation & Monte Carlo</div>
+                    </Link>
+                  </div>
+                </div>
+              )}
+            </div>
 
             {/* Platform Menu */}
             <div className="relative">

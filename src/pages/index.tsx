@@ -9,6 +9,9 @@ import { ExecutiveWarRoom } from "@/components/warroom/ExecutiveWarRoom";
 import { CHROWarRoom } from "@/components/warroom/CHROWarRoom";
 import { BadgeDetailSystem } from "@/components/home/BadgeDetailSystem";
 import { Hero3D } from "@/components/Hero3D";
+import { ExecutiveKPITile } from "@/components/warroom/tiles/ExecutiveKPITile";
+import { SiteFooter } from "@/components/site/SiteFooter";
+import { FreeContractReviewCTA } from "@/components/marketing/FreeContractReviewCTA";
 
 const Badge = ({ children, icon: Icon }: { children: React.ReactNode; icon?: React.ComponentType<{ className?: string }> }) => (
   <motion.span
@@ -940,6 +943,15 @@ export default function HomePage() {
             <span>© {new Date().getFullYear()} SiriusB iQ - Kincaid IQ</span>
           </div>
         </motion.footer>
+
+        {/* Free Contract Review CTA */}
+        <section className="py-20 px-4 bg-gradient-to-b from-black to-gray-900">
+          <div className="max-w-5xl mx-auto">
+            <FreeContractReviewCTA />
+          </div>
+        </section>
+
+        <SiteFooter />
       </main>
 
       <BadgeDetailSystem

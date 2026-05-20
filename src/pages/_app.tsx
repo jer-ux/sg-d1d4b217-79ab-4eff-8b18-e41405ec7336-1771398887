@@ -1,38 +1,21 @@
-import "@/styles/main.css";
-import { ThemeProvider } from "@/contexts/ThemeProvider";
-import { ToasterMenu } from "@/components/ToasterMenu";
-import { FounderContactButton } from "@/components/FounderContactButton";
-import Nav from "@/components/Nav";
-import { Analytics } from "@/components/Analytics";
 import type { AppProps } from "next/app";
-import { useRouter } from "next/router";
-import { useEffect } from "react";
-import { pageview } from "@/lib/analytics/gtag";
+import { ThemeProvider } from "@/contexts/ThemeProvider";
+import { Toaster } from "@/components/ui/toaster";
+import "@/styles/globals.css";
+import Head from "next/head";
 
 export default function App({ Component, pageProps }: AppProps) {
-  const router = useRouter();
-
-  // Track page views on route change
-  useEffect(() => {
-    const handleRouteChange = (url: string) => {
-      pageview(url);
-    };
-
-    router.events.on('routeChangeComplete', handleRouteChange);
-    return () => {
-      router.events.off('routeChangeComplete', handleRouteChange);
-    };
-  }, [router.events]);
-
   return (
-    <ThemeProvider attribute="class" defaultTheme="dark" enableSystem={false}>
-      <Analytics />
-      <div className="dark">
-        <Nav />
+    <>
+      <Head>
+        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
+      </Head>
+      <ThemeProvider>
         <Component {...pageProps} />
-        <ToasterMenu />
-        <FounderContactButton />
-      </div>
-    </ThemeProvider>
+        <Toaster />
+      </ThemeProvider>
+    </>
   );
 }

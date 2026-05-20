@@ -3,10 +3,28 @@ import Head from "next/head";
 import { motion, AnimatePresence } from "framer-motion";
 import { SiteFooter } from "@/components/site/SiteFooter";
 import Nav from "@/components/Nav";
-import { Hero3DInvestor } from "@/components/investor/Hero3DInvestor";
+import Hero3DInvestor from "@/components/investor/Hero3DInvestor";
 import Footer from "@/components/Footer";
 import Link from "next/link";
 import dynamic from "next/dynamic";
+import {
+  Brain,
+  Shield,
+  TrendingUp,
+  Lock,
+  CheckCircle2,
+  Users,
+  Globe,
+  AlertTriangle,
+  TrendingDown,
+  Lightbulb,
+  Target,
+  Zap,
+  Award,
+  Rocket,
+  Play,
+  BarChart3
+} from "lucide-react";
 
 // Dynamic imports for 3D components
 const MetricsCloud3D = dynamic(() => import("@/components/investor/MetricsCloud3D"), { ssr: false });

@@ -257,6 +257,16 @@ export default function Nav() {
               )}
             </div>
 
+            {/* Tools Menu */}
+            <Link href="/tools/savings-calculator" className="px-4 py-2 text-gray-300 hover:text-white transition-colors rounded-lg hover:bg-white/5">
+              Tools
+            </Link>
+
+            {/* Personas Menu */}
+            <Link href="/personas/cfo" className="px-4 py-2 text-gray-300 hover:text-white transition-colors rounded-lg hover:bg-white/5">
+              Personas
+            </Link>
+
             {/* Platform Menu */}
             <div className="relative">
               <button

@@ -107,7 +107,7 @@ export async function verifyEnterpriseSession(
     }
 
     // Get user profile with organization details
-    const { data: profile } = await supabase
+    const { data: profile } = await (supabase as any)
       .from("profiles")
       .select(
         `
@@ -127,20 +127,22 @@ export async function verifyEnterpriseSession(
       return null;
     }
 
+    const p = profile as any;
+
     return {
       user: {
-        id: profile.id,
-        email: profile.email || "",
-        role: (profile as any).role || "user",
-        organization_id: (profile as any).organization_id,
-        permissions: (profile as any).permissions || [],
-        subscription_tier: (profile as any).organizations.subscription_tier,
+        id: p.id,
+        email: p.email || "",
+        role: p.role || "user",
+        organization_id: p.organization_id,
+        permissions: p.permissions || [],
+        subscription_tier: p.organizations?.subscription_tier || "free",
       },
       organization: {
-        id: (profile as any).organizations.id,
-        name: (profile as any).organizations.name,
-        tier: (profile as any).organizations.subscription_tier,
-        features: (profile as any).organizations.features || [],
+        id: p.organizations?.id || "",
+        name: p.organizations?.name || "",
+        tier: p.organizations?.subscription_tier || "free",
+        features: p.organizations?.features || [],
       },
     };
   } catch (error) {

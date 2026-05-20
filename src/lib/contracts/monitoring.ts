@@ -27,13 +27,15 @@ export interface MonitoringAlert {
  * Check all contracts for upcoming renewals
  */
 export async function checkRenewalDates() {
-  const { data: contracts } = await supabase
+  const { data } = await supabase
     .from("contract_uploads")
     .select("id, file_name, metadata")
     .not("metadata->renewal_date", "is", null);
 
   const alerts: MonitoringAlert[] = [];
   const today = new Date();
+
+  const contracts = data as any[];
 
   contracts?.forEach((contract) => {
     const metadata = contract.metadata as any;

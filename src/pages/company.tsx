@@ -261,7 +261,7 @@ const teamMembers = [
   },
   {
     name: "Dr. Jacqueline El-Sayed",
-    role: "Board Member and Distinguished Chief Scientist Officer",
+    role: "Board Director",
     image: "/dr-jacqueline-el-sayed-company.png",
     linkedin: "https://www.linkedin.com/in/jacquelineelsayed/",
     bio: "Dr. Jacqueline El-Sayed serves as Board Member and Distinguished Chief Scientist Officer, bringing exceptional expertise in data science, statistical analysis, and scientific methodology. Her leadership ensures SiriusB iQ maintains the highest standards of scientific excellence and analytical rigor.",

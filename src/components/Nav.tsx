@@ -22,9 +22,10 @@ export default function Nav() {
         <div className="flex h-16 items-center justify-between">
           {/* Logo */}
           <Link href="/" className="flex items-center space-x-2">
-            <Sparkles className="h-6 w-6 text-purple-400" />
+            <Sparkles className="h-6 w-6 text-purple-400 flex-shrink-0" />
             <span className="text-xl font-bold bg-gradient-to-r from-purple-400 to-pink-400 bg-clip-text text-transparent">
-              SiriusB iQ AI Data Sciences Lab
+              <span className="hidden sm:inline">SiriusB iQ AI Data Sciences Lab</span>
+              <span className="sm:hidden">SiriusB iQ</span>
             </span>
           </Link>
 

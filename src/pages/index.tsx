@@ -58,7 +58,7 @@ const Card3D = ({
   return (
     <motion.div
       ref={cardRef}
-      className="group relative rounded-2xl border border-purple-500/30 bg-gradient-to-br from-zinc-950/95 via-purple-950/20 to-zinc-900/90 p-6 shadow-2xl backdrop-blur-sm transition-all duration-300"
+      className="group relative rounded-xl sm:rounded-2xl border border-purple-500/30 bg-gradient-to-br from-zinc-950/95 via-purple-950/20 to-zinc-900/90 p-4 sm:p-6 shadow-2xl backdrop-blur-sm transition-all duration-300"
       initial={{ opacity: 0, y: 30 }}
       animate={isInView ? { opacity: 1, y: 0 } : {}}
       transition={{ duration: 0.6, delay, ease: [0.22, 1, 0.36, 1] }}
@@ -66,10 +66,10 @@ const Card3D = ({
       onMouseLeave={handleMouseLeave}
       style={{ transformStyle: "preserve-3d" }}
     >
-      <div className="absolute -inset-px rounded-2xl bg-gradient-to-r from-purple-600/0 via-purple-500/40 to-blue-600/20 opacity-0 blur-xl transition-opacity duration-500 group-hover:opacity-100" />
-      <div className="absolute -inset-px rounded-2xl bg-gradient-to-br from-purple-500/10 via-transparent to-blue-500/10 opacity-60" />
+      <div className="absolute -inset-px rounded-xl sm:rounded-2xl bg-gradient-to-r from-purple-600/0 via-purple-500/40 to-blue-600/20 opacity-0 blur-xl transition-opacity duration-500 group-hover:opacity-100" />
+      <div className="absolute -inset-px rounded-xl sm:rounded-2xl bg-gradient-to-br from-purple-500/10 via-transparent to-blue-500/10 opacity-60" />
       <motion.div
-        className="absolute inset-0 rounded-2xl opacity-0 group-hover:opacity-100"
+        className="absolute inset-0 rounded-xl sm:rounded-2xl opacity-0 group-hover:opacity-100"
         animate={{
           background: [
             "radial-gradient(circle at 0% 0%, rgba(168, 85, 247, 0.3) 0%, transparent 50%)",
@@ -82,20 +82,20 @@ const Card3D = ({
       <div className="relative" style={{ transform: "translateZ(50px)" }}>
         {Icon && (
           <motion.div
-            className="mb-4 inline-flex h-14 w-14 items-center justify-center rounded-xl bg-gradient-to-br from-purple-500/30 to-blue-500/30 text-purple-400 shadow-lg shadow-purple-500/40"
+            className="mb-3 sm:mb-4 inline-flex h-10 w-10 sm:h-14 sm:w-14 items-center justify-center rounded-lg sm:rounded-xl bg-gradient-to-br from-purple-500/30 to-blue-500/30 text-purple-400 shadow-lg shadow-purple-500/40"
             whileHover={{ rotate: 360, scale: 1.15 }}
             transition={{ duration: 0.8, type: "spring", stiffness: 200 }}
           >
-            <Icon className="h-7 w-7" />
+            <Icon className="h-5 w-5 sm:h-7 sm:w-7" />
           </motion.div>
         )}
-        <div className="mb-3">
-          <div className="text-xl font-bold bg-gradient-to-r from-white via-purple-100 to-white bg-clip-text text-transparent">
+        <div className="mb-2 sm:mb-3">
+          <div className="text-lg sm:text-xl font-bold bg-gradient-to-r from-white via-purple-100 to-white bg-clip-text text-transparent">
             {title}
           </div>
-          {subtitle && <div className="mt-1 text-sm text-purple-300/70 font-medium">{subtitle}</div>}
+          {subtitle && <div className="mt-1 text-xs sm:text-sm text-purple-300/70 font-medium">{subtitle}</div>}
         </div>
-        <div className="text-sm leading-relaxed text-zinc-300">{children}</div>
+        <div className="text-xs sm:text-sm leading-relaxed text-zinc-300">{children}</div>
       </div>
     </motion.div>
   );
@@ -103,13 +103,13 @@ const Card3D = ({
 
 const Pill = ({ k, v }: { k: string; v: string }) => (
   <motion.div
-    className="rounded-xl border border-purple-500/40 bg-gradient-to-br from-black/80 via-purple-950/40 to-black/80 px-5 py-3 backdrop-blur-sm shadow-lg shadow-purple-500/20"
+    className="rounded-lg sm:rounded-xl border border-purple-500/40 bg-gradient-to-br from-black/80 via-purple-950/40 to-black/80 px-3 sm:px-5 py-2 sm:py-3 backdrop-blur-sm shadow-lg shadow-purple-500/20"
     whileHover={{ scale: 1.08, y: -3, boxShadow: "0 0 30px rgba(168, 85, 247, 0.4)", rotateY: 5, z: 30 }}
     transition={{ type: "spring", stiffness: 400, damping: 10 }}
     style={{ perspective: "1000px", transformStyle: "preserve-3d" }}
   >
-    <div className="text-xs text-purple-400/90 font-semibold uppercase tracking-wide">{k}</div>
-    <div className="mt-1.5 text-base font-bold bg-gradient-to-r from-white to-purple-100 bg-clip-text text-transparent">{v}</div>
+    <div className="text-[10px] sm:text-xs text-purple-400/90 font-semibold uppercase tracking-wide">{k}</div>
+    <div className="mt-1 sm:mt-1.5 text-sm sm:text-base font-bold bg-gradient-to-r from-white to-purple-100 bg-clip-text text-transparent">{v}</div>
   </motion.div>
 );
 
@@ -186,7 +186,7 @@ export default function HomePage() {
                   </div>
 
                   <motion.h1 
-                    className="text-4xl md:text-[58px] leading-tight font-bold"
+                    className="text-3xl sm:text-4xl md:text-5xl lg:text-[58px] leading-tight font-bold"
                     style={{ transformStyle: "preserve-3d" }}
                   >
                     <motion.span 
@@ -204,7 +204,7 @@ export default function HomePage() {
                   </motion.h1>
 
                   <motion.p 
-                    className="text-xl text-gray-300 mb-8 leading-relaxed"
+                    className="text-base sm:text-lg md:text-xl text-gray-300 mb-6 sm:mb-8 leading-relaxed"
                     style={{ transform: "translateZ(20px)" }}
                   >
                     Find hidden overcharges in PBM contracts. Eliminate wasteful spending. Save 20-35% while improving coverage. Every dollar verified with proof.
@@ -212,7 +212,7 @@ export default function HomePage() {
 
                   {/* Value Pills */}
                   <motion.div 
-                    className="grid grid-cols-2 gap-4 mb-8"
+                    className="grid grid-cols-2 gap-3 sm:gap-4 mb-6 sm:mb-8"
                     style={{ transform: "translateZ(25px)" }}
                   >
                     <Pill k="Average Savings" v="$2.4M/year" />
@@ -223,26 +223,27 @@ export default function HomePage() {
 
                   {/* CTA Buttons with 3D */}
                   <motion.div 
-                    className="flex flex-col sm:flex-row gap-4 mb-8"
+                    className="flex flex-col sm:flex-row gap-3 sm:gap-4 mb-6 sm:mb-8"
                     style={{ transform: "translateZ(30px)" }}
                   >
                     <motion.div
                       whileHover={{ scale: 1.05, z: 50, rotateY: -5 }}
                       whileTap={{ scale: 0.95 }}
                       style={{ perspective: "1000px", transformStyle: "preserve-3d" }}
+                      className="w-full sm:w-auto"
                     >
                       <Link
                         href="/request-demo"
-                        className="inline-flex items-center justify-center px-8 py-4 text-lg font-semibold text-white bg-gradient-to-r from-blue-600 to-purple-600 rounded-lg hover:from-blue-700 hover:to-purple-700 transition-all duration-200 shadow-lg hover:shadow-xl"
+                        className="inline-flex items-center justify-center w-full sm:w-auto px-6 sm:px-8 py-3 sm:py-4 text-base sm:text-lg font-semibold text-white bg-gradient-to-r from-blue-600 to-purple-600 rounded-lg hover:from-blue-700 hover:to-purple-700 transition-all duration-200 shadow-lg hover:shadow-xl"
                       >
                         <span>Find Your Hidden Overcharges</span>
-                        <ArrowRight className="ml-2 h-5 w-5" />
+                        <ArrowRight className="ml-2 h-4 w-4 sm:h-5 sm:w-5" />
                       </Link>
                     </motion.div>
                   </motion.div>
 
                   <motion.p 
-                    className="text-sm text-gray-400"
+                    className="text-xs sm:text-sm text-gray-400"
                     style={{ transform: "translateZ(20px)" }}
                   >
                     Free contract analysis • No implementation required • Results in 14 days
@@ -298,27 +299,27 @@ export default function HomePage() {
         </section>
 
         {/* Enterprise Features Section */}
-        <section id="enterprise" className="relative z-10 mx-auto w-full max-w-7xl px-6 py-12">
+        <section id="enterprise" className="relative z-10 mx-auto w-full max-w-7xl px-4 sm:px-6 py-8 sm:py-12">
           <motion.div
-            className="mb-12"
+            className="mb-8 sm:mb-12"
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.6 }}
           >
-            <div className="flex items-center gap-3 text-lg font-black bg-gradient-to-r from-purple-300 to-white bg-clip-text text-transparent mb-4">
-              <TrendingUp className="h-6 w-6 text-purple-400 drop-shadow-[0_0_12px_rgba(168,85,247,0.6)]" />
+            <div className="flex items-center gap-3 text-base sm:text-lg font-black bg-gradient-to-r from-purple-300 to-white bg-clip-text text-transparent mb-3 sm:mb-4">
+              <TrendingUp className="h-5 w-5 sm:h-6 sm:w-6 text-purple-400 drop-shadow-[0_0_12px_rgba(168,85,247,0.6)]" />
               What You Get
             </div>
-            <h2 className="text-4xl font-black bg-gradient-to-br from-white via-purple-200 to-blue-200 bg-clip-text text-transparent">
+            <h2 className="text-2xl sm:text-3xl md:text-4xl font-black bg-gradient-to-br from-white via-purple-200 to-blue-200 bg-clip-text text-transparent">
               Complete visibility into where your money goes
             </h2>
-            <p className="mt-3 text-base text-zinc-400 max-w-3xl">
+            <p className="mt-2 sm:mt-3 text-sm sm:text-base text-zinc-400 max-w-3xl">
               Every contract analyzed. Every overcharge identified. Every saving verified with documentation your auditors will approve.
             </p>
           </motion.div>
 
-          <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
+          <div className="grid gap-6 sm:gap-8 md:grid-cols-2 lg:grid-cols-3">
             <Card3D
               title="Contract Analysis"
               subtitle="Find overcharges in 14 days"
@@ -421,71 +422,71 @@ export default function HomePage() {
         </section>
 
         {/* Forensics Section */}
-        <section id="forensics" className="relative z-10 mx-auto w-full max-w-7xl px-6 py-16">
+        <section id="forensics" className="relative z-10 mx-auto w-full max-w-7xl px-4 sm:px-6 py-12 sm:py-16">
           <motion.div
-            className="mb-12"
+            className="mb-8 sm:mb-12"
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.6 }}
           >
-            <div className="flex items-center gap-3 text-lg font-black bg-gradient-to-r from-red-400 to-red-200 bg-clip-text text-transparent mb-4">
-              <AlertTriangle className="h-6 w-6 text-red-500 drop-shadow-[0_0_12px_rgba(239,68,68,0.6)]" />
+            <div className="flex items-center gap-3 text-base sm:text-lg font-black bg-gradient-to-r from-red-400 to-red-200 bg-clip-text text-transparent mb-3 sm:mb-4">
+              <AlertTriangle className="h-5 w-5 sm:h-6 sm:w-6 text-red-500 drop-shadow-[0_0_12px_rgba(239,68,68,0.6)]" />
               Contract Forensics Engine
             </div>
-            <h2 className="text-4xl md:text-5xl font-black text-white leading-tight">
-              Your PBM contract is a crime scene.<br/>
+            <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-black text-white leading-tight">
+              Your PBM contract is a crime scene.<br className="hidden sm:block"/>
               <span className="bg-gradient-to-br from-red-400 via-red-500 to-red-700 bg-clip-text text-transparent">We have the forensics.</span>
             </h2>
-            <p className="mt-6 text-xl text-zinc-300 max-w-3xl leading-relaxed">
+            <p className="mt-4 sm:mt-6 text-base sm:text-lg md:text-xl text-zinc-300 max-w-3xl leading-relaxed">
               Rx Defense IQ Contract X-Ray is the only actuarially-anchored, evidence-spine-governed PBM contract forensic engine built for ERISA fiduciaries who refuse to lose.
             </p>
           </motion.div>
 
           {/* Forensic Statistics Grid */}
           <motion.div
-            className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-12"
+            className="grid grid-cols-2 md:grid-cols-4 gap-3 sm:gap-4 mb-8 sm:mb-12"
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.6, delay: 0.1 }}
           >
             <motion.div
-              className="rounded-xl border border-red-500/30 bg-gradient-to-br from-red-950/40 to-black/80 p-6 backdrop-blur-sm shadow-lg"
+              className="rounded-lg sm:rounded-xl border border-red-500/30 bg-gradient-to-br from-red-950/40 to-black/80 p-4 sm:p-6 backdrop-blur-sm shadow-lg"
               whileHover={{ scale: 1.05, y: -3, boxShadow: "0 0 30px rgba(239, 68, 68, 0.3)" }}
               transition={{ type: "spring", stiffness: 400, damping: 10 }}
             >
-              <div className="text-3xl font-black bg-gradient-to-r from-red-400 to-red-200 bg-clip-text text-transparent">47</div>
-              <div className="mt-1 text-xs text-red-300/70 font-medium uppercase tracking-wide">Avg Issues/Contract</div>
+              <div className="text-2xl sm:text-3xl font-black bg-gradient-to-r from-red-400 to-red-200 bg-clip-text text-transparent">47</div>
+              <div className="mt-1 text-[10px] sm:text-xs text-red-300/70 font-medium uppercase tracking-wide">Avg Issues/Contract</div>
             </motion.div>
             <motion.div
-              className="rounded-xl border border-red-500/30 bg-gradient-to-br from-red-950/40 to-black/80 p-6 backdrop-blur-sm shadow-lg"
+              className="rounded-lg sm:rounded-xl border border-red-500/30 bg-gradient-to-br from-red-950/40 to-black/80 p-4 sm:p-6 backdrop-blur-sm shadow-lg"
               whileHover={{ scale: 1.05, y: -3, boxShadow: "0 0 30px rgba(239, 68, 68, 0.3)" }}
               transition={{ type: "spring", stiffness: 400, damping: 10 }}
             >
-              <div className="text-3xl font-black bg-gradient-to-r from-red-400 to-red-200 bg-clip-text text-transparent">$2.4M</div>
-              <div className="mt-1 text-xs text-red-300/70 font-medium uppercase tracking-wide">Annual Recovery</div>
+              <div className="text-2xl sm:text-3xl font-black bg-gradient-to-r from-red-400 to-red-200 bg-clip-text text-transparent">$2.4M</div>
+              <div className="mt-1 text-[10px] sm:text-xs text-red-300/70 font-medium uppercase tracking-wide">Annual Recovery</div>
             </motion.div>
             <motion.div
-              className="rounded-xl border border-red-500/30 bg-gradient-to-br from-red-950/40 to-black/80 p-6 backdrop-blur-sm shadow-lg"
+              className="rounded-lg sm:rounded-xl border border-red-500/30 bg-gradient-to-br from-red-950/40 to-black/80 p-4 sm:p-6 backdrop-blur-sm shadow-lg"
               whileHover={{ scale: 1.05, y: -3, boxShadow: "0 0 30px rgba(239, 68, 68, 0.3)" }}
               transition={{ type: "spring", stiffness: 400, damping: 10 }}
             >
-              <div className="text-3xl font-black bg-gradient-to-r from-red-400 to-red-200 bg-clip-text text-transparent">87%</div>
-              <div className="mt-1 text-xs text-red-300/70 font-medium uppercase tracking-wide">Recovery Success Rate</div>
+              <div className="text-2xl sm:text-3xl font-black bg-gradient-to-r from-red-400 to-red-200 bg-clip-text text-transparent">87%</div>
+              <div className="mt-1 text-[10px] sm:text-xs text-red-300/70 font-medium uppercase tracking-wide">Recovery Success Rate</div>
             </motion.div>
             <motion.div
-              className="rounded-xl border border-red-500/30 bg-gradient-to-br from-red-950/40 to-black/80 p-6 backdrop-blur-sm shadow-lg"
+              className="rounded-lg sm:rounded-xl border border-red-500/30 bg-gradient-to-br from-red-950/40 to-black/80 p-4 sm:p-6 backdrop-blur-sm shadow-lg"
               whileHover={{ scale: 1.05, y: -3, boxShadow: "0 0 30px rgba(239, 68, 68, 0.3)" }}
               transition={{ type: "spring", stiffness: 400, damping: 10 }}
             >
-              <div className="text-3xl font-black bg-gradient-to-r from-red-400 to-red-200 bg-clip-text text-transparent">14</div>
-              <div className="mt-1 text-xs text-red-300/70 font-medium uppercase tracking-wide">Days to Evidence</div>
+              <div className="text-2xl sm:text-3xl font-black bg-gradient-to-r from-red-400 to-red-200 bg-clip-text text-transparent">14</div>
+              <div className="mt-1 text-[10px] sm:text-xs text-red-300/70 font-medium uppercase tracking-wide">Days to Evidence</div>
             </motion.div>
           </motion.div>
 
           {/* Forensic Capabilities Grid */}
-          <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3 mb-12">
+          <div className="grid gap-5 sm:gap-6 md:grid-cols-2 lg:grid-cols-3 mb-8 sm:mb-12">
             <Card3D
               title="Spread Analysis"
               subtitle="AWP vs NADAC forensics"
@@ -686,51 +687,53 @@ export default function HomePage() {
 
           {/* CTA Section */}
           <motion.div
-            className="flex flex-col items-center gap-6"
+            className="flex flex-col items-center gap-4 sm:gap-6"
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.6, delay: 0.5 }}
           >
             <div className="text-center max-w-2xl">
-              <p className="text-lg text-zinc-300 mb-6">
+              <p className="text-base sm:text-lg text-zinc-300 mb-4 sm:mb-6">
                 Ready to discover what your PBM isn't telling you? Launch a forensic investigation and get documented proof of every overcharge.
               </p>
             </div>
-            <div className="flex flex-col sm:flex-row gap-4">
+            <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 w-full sm:w-auto">
               <motion.div
                 whileHover={{ scale: 1.05, y: -2 }}
                 whileTap={{ scale: 0.95 }}
+                className="w-full sm:w-auto"
               >
                 <Link
                   href="/solutions/contract-xray"
-                  className="inline-flex items-center justify-center px-8 py-4 text-lg font-bold text-white bg-gradient-to-r from-red-600 to-red-800 rounded-xl hover:from-red-500 hover:to-red-700 transition-all duration-200 shadow-lg hover:shadow-red-500/25"
+                  className="inline-flex items-center justify-center w-full sm:w-auto px-6 sm:px-8 py-3 sm:py-4 text-base sm:text-lg font-bold text-white bg-gradient-to-r from-red-600 to-red-800 rounded-xl hover:from-red-500 hover:to-red-700 transition-all duration-200 shadow-lg hover:shadow-red-500/25"
                 >
-                  <Search className="mr-2 h-5 w-5" />
+                  <Search className="mr-2 h-4 w-4 sm:h-5 sm:w-5" />
                   Launch Forensic Investigation
                 </Link>
               </motion.div>
               <motion.div
                 whileHover={{ scale: 1.05, y: -2 }}
                 whileTap={{ scale: 0.95 }}
+                className="w-full sm:w-auto"
               >
                 <Link
                   href="/solutions/rx-defense"
-                  className="inline-flex items-center justify-center px-8 py-4 text-lg font-bold text-red-300 border-2 border-red-500/50 rounded-xl hover:bg-red-950/30 hover:border-red-400 transition-all duration-200"
+                  className="inline-flex items-center justify-center w-full sm:w-auto px-6 sm:px-8 py-3 sm:py-4 text-base sm:text-lg font-bold text-red-300 border-2 border-red-500/50 rounded-xl hover:bg-red-950/30 hover:border-red-400 transition-all duration-200"
                 >
-                  <FileText className="mr-2 h-5 w-5" />
+                  <FileText className="mr-2 h-4 w-4 sm:h-5 sm:w-5" />
                   View Sample Audit Report
                 </Link>
               </motion.div>
             </div>
-            <div className="text-sm text-zinc-500 text-center">
+            <div className="text-xs sm:text-sm text-zinc-500 text-center px-4">
               Free contract analysis • Documented findings in 14 days • No commitment required
             </div>
           </motion.div>
         </section>
 
         {/* Dashboard Section with 3D Effects */}
-        <section id="dashboard" className="relative z-10 mx-auto w-full max-w-7xl px-6 py-12">
+        <section id="dashboard" className="relative z-10 mx-auto w-full max-w-7xl px-4 sm:px-6 py-8 sm:py-12">
           <motion.div
             className="mb-8"
             initial={{ opacity: 0, y: 20 }}

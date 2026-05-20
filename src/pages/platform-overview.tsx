@@ -21,6 +21,7 @@ import {
 } from "lucide-react";
 import { SiteHeader } from "@/components/site/SiteHeader";
 import { SiteFooter } from "@/components/site/SiteFooter";
+import Nav from "@/components/Nav";
 
 const platformFeatures = [
   {
@@ -126,6 +127,7 @@ export default function PlatformOverviewPage() {
         description="Discover the AI-powered platform transforming health economics and benefits intelligence with real-time analytics and enterprise security."
       />
       <SiteHeader />
+      <Nav />
 
       <div className="min-h-screen bg-gradient-to-b from-gray-950 via-gray-900 to-black text-white">
         {/* Hero Section */}

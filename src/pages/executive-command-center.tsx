@@ -47,6 +47,8 @@ import { BoardReportGenerator } from "@/components/executive/BoardReportGenerato
 import { StrategicDecisionEngine } from "@/components/executive/StrategicDecisionEngine";
 import { RealTimeIntelligenceFeed } from "@/components/executive/RealTimeIntelligenceFeed";
 import { ExecutiveSecurityPanel } from "@/components/executive/ExecutiveSecurityPanel";
+import { ExecutiveWarRoom } from "@/components/warroom/ExecutiveWarRoom";
+import Nav from "@/components/Nav";
 
 export default function ExecutiveCommandCenter() {
   const [activeView, setActiveView] = useState<"overview" | "strategic" | "board" | "security">("overview");

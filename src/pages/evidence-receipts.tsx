@@ -23,6 +23,7 @@ import {
 } from "lucide-react";
 import { SiteHeader } from "@/components/site/SiteHeader";
 import { SiteFooter } from "@/components/site/SiteFooter";
+import Nav from "@/components/Nav";
 
 const keyFeatures = [
   {
@@ -112,6 +113,7 @@ export default function EvidenceReceiptsPage() {
         description="Automated evidence collection and cryptographic verification for financial impact documentation with blockchain-grade proof of authenticity."
       />
       <SiteHeader />
+      <Nav />
 
       <div ref={containerRef} className="min-h-screen bg-black text-white overflow-hidden">
         {/* Premium 3D Hero Section */}

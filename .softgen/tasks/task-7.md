@@ -1,5 +1,3 @@
-
-<![CDATA[
 ---
 title: Stack Modernization & Code Quality Improvements
 status: in_progress
@@ -25,7 +23,8 @@ Keep Next.js 15.5 Page Router (SEO + API routes critical for this project).
 
 ## Checklist
 
-- [ ] Enable Turbopack for faster dev builds (Next.js 15 feature)
+- [x] Enable Turbopack for faster dev builds (Next.js 15 feature)
+- [x] Add strict TypeScript config for better type safety
 - [ ] Split `src/pages/solutions/rx-defense.tsx` (2951 lines) into modules
 - [ ] Split `src/pages/verified-savings-ledger.tsx` (1169 lines) into sections
 - [ ] Split `src/pages/agentic-workflow.tsx` (1300 lines) into workflow steps
@@ -34,7 +33,6 @@ Keep Next.js 15.5 Page Router (SEO + API routes critical for this project).
 - [ ] Split `src/components/home/BadgeDetailSystem.tsx` (915 lines) into badge components
 - [ ] Split `src/lib/warroom/mock.ts` (928 lines) into domain-specific mocks
 - [ ] Refactor `src/lib/warroom/detail.ts` (793 lines) — extract utilities
-- [ ] Add strict TypeScript config for better type safety
 - [ ] Create shared component library for repeated UI patterns
 - [ ] Document code organization standards in README
 
@@ -44,4 +42,3 @@ Keep Next.js 15.5 Page Router (SEO + API routes critical for this project).
 - All `any` types replaced with proper interfaces
 - Dev server starts <3 seconds with Turbopack
 - Type errors eliminated from strict mode
-</![CDATA[

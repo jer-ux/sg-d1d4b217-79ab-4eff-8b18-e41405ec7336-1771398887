@@ -21,7 +21,7 @@ export default async function handler(
       // Get all contacts with filters
       const { status, source, search, startDate, endDate } = req.query;
 
-      let query = supabase
+      let query = (supabase as any)
         .from("contacts")
         .select("*")
         .order("created_at", { ascending: false });
@@ -67,7 +67,7 @@ export default async function handler(
         return res.status(400).json({ error: "Missing contactId or status" });
       }
 
-      const { data, error } = await supabase
+      const { data, error } = await (supabase as any)
         .from("contacts")
         .update({ 
           status,

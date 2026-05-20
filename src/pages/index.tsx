@@ -4,7 +4,7 @@ import { useRef, useState, useEffect } from "react";
 import Link from "next/link";
 import { motion, useScroll, useTransform, useInView } from "framer-motion";
 import { SEO } from "@/components/SEO";
-import { FileText, Shield, TrendingUp, CheckCircle2, Sparkles, Zap, Crown, Star, Activity, ArrowRight, Lock, Building2, Users, Database, BarChart3, Globe, Award, AlertTriangle, Search } from "lucide-react";
+import { FileText, Shield, TrendingUp, CheckCircle2, Sparkles, Zap, Crown, Star, Activity, ArrowRight, Lock, Building2, Users, Database, BarChart3, Globe, Award, AlertTriangle, Search, Clock } from "lucide-react";
 import { ExecutiveWarRoom } from "@/components/warroom/ExecutiveWarRoom";
 import { CHROWarRoom } from "@/components/warroom/CHROWarRoom";
 import { BadgeDetailSystem } from "@/components/home/BadgeDetailSystem";
@@ -315,6 +315,413 @@ export default function HomePage() {
               </div>
             )}
           </div>
+        </section>
+
+        {/* Schedule a Consultation Section */}
+        <section id="consultation" className="relative z-10 mx-auto w-full max-w-7xl px-4 sm:px-6 py-16 sm:py-24">
+          <motion.div
+            className="rounded-3xl border border-amber-500/40 bg-gradient-to-br from-amber-950/30 via-black/95 to-amber-900/20 p-8 sm:p-12 shadow-2xl backdrop-blur-sm"
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6 }}
+          >
+            <div className="absolute -inset-1 rounded-3xl bg-gradient-to-r from-amber-600/20 via-amber-500/30 to-amber-600/20 opacity-60 blur-xl" />
+            
+            <div className="relative grid lg:grid-cols-2 gap-8 lg:gap-12">
+              {/* Left Column - Messaging */}
+              <motion.div
+                initial={{ opacity: 0, x: -20 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.6, delay: 0.2 }}
+                className="flex flex-col justify-center"
+              >
+                <div className="inline-flex items-center gap-2 rounded-full border border-amber-500/40 bg-amber-950/40 px-4 py-2 text-sm font-semibold text-amber-300 mb-6 w-fit">
+                  <Shield className="h-4 w-4" />
+                  Free Contract Analysis
+                </div>
+
+                <h2 className="text-3xl sm:text-4xl lg:text-5xl font-black mb-4">
+                  <span className="bg-gradient-to-r from-amber-300 via-amber-100 to-white bg-clip-text text-transparent">
+                    Schedule Your
+                  </span>
+                  <br />
+                  <span className="text-white">Fiduciary Consultation</span>
+                </h2>
+
+                <p className="text-base sm:text-lg text-zinc-300 leading-relaxed mb-6">
+                  Discover the hidden overcharges in your PBM contract. Our team will conduct a preliminary analysis and show you exactly where your money is going.
+                </p>
+
+                <div className="space-y-4">
+                  <div className="flex items-start gap-3">
+                    <div className="mt-1 flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-amber-500/20">
+                      <CheckCircle2 className="h-4 w-4 text-amber-400" />
+                    </div>
+                    <div>
+                      <div className="font-bold text-white">30-Minute Discovery Call</div>
+                      <div className="text-sm text-zinc-400">Review your contract structure and identify immediate red flags</div>
+                    </div>
+                  </div>
+
+                  <div className="flex items-start gap-3">
+                    <div className="mt-1 flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-amber-500/20">
+                      <CheckCircle2 className="h-4 w-4 text-amber-400" />
+                    </div>
+                    <div>
+                      <div className="font-bold text-white">Preliminary Findings Report</div>
+                      <div className="text-sm text-zinc-400">Documented evidence of potential overcharges within 48 hours</div>
+                    </div>
+                  </div>
+
+                  <div className="flex items-start gap-3">
+                    <div className="mt-1 flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-amber-500/20">
+                      <CheckCircle2 className="h-4 w-4 text-amber-400" />
+                    </div>
+                    <div>
+                      <div className="font-bold text-white">No Obligation</div>
+                      <div className="text-sm text-zinc-400">Free analysis with no commitment required</div>
+                    </div>
+                  </div>
+                </div>
+              </motion.div>
+
+              {/* Right Column - Form */}
+              <motion.div
+                initial={{ opacity: 0, x: 20 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.6, delay: 0.3 }}
+              >
+                <div className="rounded-2xl border border-amber-500/30 bg-black/60 p-6 sm:p-8 backdrop-blur-sm">
+                  <form className="space-y-5">
+                    <div>
+                      <label htmlFor="name" className="block text-sm font-semibold text-amber-100 mb-2">
+                        Full Name *
+                      </label>
+                      <input
+                        type="text"
+                        id="name"
+                        name="name"
+                        required
+                        className="w-full rounded-lg border border-amber-500/30 bg-black/40 px-4 py-3 text-white placeholder-zinc-500 focus:border-amber-400 focus:outline-none focus:ring-2 focus:ring-amber-500/20 transition-all"
+                        placeholder="John Smith"
+                      />
+                    </div>
+
+                    <div>
+                      <label htmlFor="email" className="block text-sm font-semibold text-amber-100 mb-2">
+                        Work Email *
+                      </label>
+                      <input
+                        type="email"
+                        id="email"
+                        name="email"
+                        required
+                        className="w-full rounded-lg border border-amber-500/30 bg-black/40 px-4 py-3 text-white placeholder-zinc-500 focus:border-amber-400 focus:outline-none focus:ring-2 focus:ring-amber-500/20 transition-all"
+                        placeholder="john.smith@company.com"
+                      />
+                    </div>
+
+                    <div>
+                      <label htmlFor="company" className="block text-sm font-semibold text-amber-100 mb-2">
+                        Company Name *
+                      </label>
+                      <input
+                        type="text"
+                        id="company"
+                        name="company"
+                        required
+                        className="w-full rounded-lg border border-amber-500/30 bg-black/40 px-4 py-3 text-white placeholder-zinc-500 focus:border-amber-400 focus:outline-none focus:ring-2 focus:ring-amber-500/20 transition-all"
+                        placeholder="Acme Corporation"
+                      />
+                    </div>
+
+                    <div>
+                      <label htmlFor="phone" className="block text-sm font-semibold text-amber-100 mb-2">
+                        Phone Number
+                      </label>
+                      <input
+                        type="tel"
+                        id="phone"
+                        name="phone"
+                        className="w-full rounded-lg border border-amber-500/30 bg-black/40 px-4 py-3 text-white placeholder-zinc-500 focus:border-amber-400 focus:outline-none focus:ring-2 focus:ring-amber-500/20 transition-all"
+                        placeholder="(555) 123-4567"
+                      />
+                    </div>
+
+                    <div>
+                      <label htmlFor="employees" className="block text-sm font-semibold text-amber-100 mb-2">
+                        Number of Employees
+                      </label>
+                      <select
+                        id="employees"
+                        name="employees"
+                        className="w-full rounded-lg border border-amber-500/30 bg-black/40 px-4 py-3 text-white focus:border-amber-400 focus:outline-none focus:ring-2 focus:ring-amber-500/20 transition-all"
+                      >
+                        <option value="">Select range</option>
+                        <option value="1-50">1-50</option>
+                        <option value="51-200">51-200</option>
+                        <option value="201-500">201-500</option>
+                        <option value="501-1000">501-1,000</option>
+                        <option value="1001+">1,001+</option>
+                      </select>
+                    </div>
+
+                    <div>
+                      <label htmlFor="message" className="block text-sm font-semibold text-amber-100 mb-2">
+                        What's your biggest concern with your current PBM?
+                      </label>
+                      <textarea
+                        id="message"
+                        name="message"
+                        rows={4}
+                        className="w-full rounded-lg border border-amber-500/30 bg-black/40 px-4 py-3 text-white placeholder-zinc-500 focus:border-amber-400 focus:outline-none focus:ring-2 focus:ring-amber-500/20 transition-all resize-none"
+                        placeholder="e.g., Rising costs, lack of transparency, hidden fees..."
+                      />
+                    </div>
+
+                    <motion.button
+                      type="submit"
+                      whileHover={{ scale: 1.02 }}
+                      whileTap={{ scale: 0.98 }}
+                      className="w-full rounded-xl bg-gradient-to-r from-amber-600 to-amber-700 px-8 py-4 text-lg font-bold text-white shadow-lg hover:from-amber-500 hover:to-amber-600 transition-all duration-200 hover:shadow-amber-500/25"
+                    >
+                      Schedule Free Consultation
+                    </motion.button>
+
+                    <p className="text-xs text-center text-zinc-500">
+                      By submitting, you agree to receive communications from SiriusB iQ. We respect your privacy.
+                    </p>
+                  </form>
+                </div>
+              </motion.div>
+            </div>
+          </motion.div>
+        </section>
+
+        {/* How It Works Section */}
+        <section id="how-it-works" className="relative z-10 mx-auto w-full max-w-7xl px-4 sm:px-6 py-16 sm:py-24">
+          <motion.div
+            className="mb-12 text-center"
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6 }}
+          >
+            <div className="inline-flex items-center gap-2 rounded-full border border-purple-500/40 bg-purple-950/40 px-4 py-2 text-sm font-semibold text-purple-300 mb-6">
+              <Sparkles className="h-4 w-4" />
+              Our Process
+            </div>
+
+            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-black mb-4">
+              <span className="bg-gradient-to-r from-purple-300 via-purple-100 to-white bg-clip-text text-transparent">
+                How It Works
+              </span>
+            </h2>
+
+            <p className="text-base sm:text-lg text-zinc-300 max-w-3xl mx-auto leading-relaxed">
+              From contract upload to verified savings in 14 days. Every step documented, every finding backed by evidence.
+            </p>
+          </motion.div>
+
+          <div className="grid gap-8 lg:gap-12">
+            {/* Step 1 */}
+            <motion.div
+              className="grid lg:grid-cols-2 gap-8 items-center"
+              initial={{ opacity: 0, x: -30 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6 }}
+            >
+              <div className="lg:order-1">
+                <div className="inline-flex items-center gap-3 mb-4">
+                  <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-gradient-to-br from-blue-500/30 to-purple-500/30 text-2xl font-black text-blue-400">
+                    1
+                  </div>
+                  <h3 className="text-2xl sm:text-3xl font-bold text-white">Upload Your Contract</h3>
+                </div>
+                <p className="text-base text-zinc-300 leading-relaxed mb-6">
+                  Securely upload your PBM contract through our encrypted portal. We accept PDFs, scanned documents, and digital contracts. Your data is encrypted end-to-end with SOC2 compliance.
+                </p>
+                <div className="space-y-3">
+                  <div className="flex items-center gap-3">
+                    <CheckCircle2 className="h-5 w-5 text-blue-400 shrink-0" />
+                    <span className="text-sm text-zinc-400">256-bit AES encryption</span>
+                  </div>
+                  <div className="flex items-center gap-3">
+                    <CheckCircle2 className="h-5 w-5 text-blue-400 shrink-0" />
+                    <span className="text-sm text-zinc-400">SOC2 Type II certified infrastructure</span>
+                  </div>
+                  <div className="flex items-center gap-3">
+                    <CheckCircle2 className="h-5 w-5 text-blue-400 shrink-0" />
+                    <span className="text-sm text-zinc-400">HIPAA-compliant data handling</span>
+                  </div>
+                </div>
+              </div>
+              <motion.div
+                className="lg:order-2 rounded-2xl border border-blue-500/30 bg-gradient-to-br from-blue-950/40 to-black/60 p-8 backdrop-blur-sm"
+                whileHover={{ scale: 1.02, rotateY: 2 }}
+                transition={{ type: "spring", stiffness: 300 }}
+              >
+                <div className="flex items-center justify-center h-48 sm:h-64">
+                  <FileText className="h-24 w-24 sm:h-32 sm:w-32 text-blue-400/60" />
+                </div>
+              </motion.div>
+            </motion.div>
+
+            {/* Step 2 */}
+            <motion.div
+              className="grid lg:grid-cols-2 gap-8 items-center"
+              initial={{ opacity: 0, x: 30 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6, delay: 0.1 }}
+            >
+              <motion.div
+                className="lg:order-1 rounded-2xl border border-purple-500/30 bg-gradient-to-br from-purple-950/40 to-black/60 p-8 backdrop-blur-sm"
+                whileHover={{ scale: 1.02, rotateY: -2 }}
+                transition={{ type: "spring", stiffness: 300 }}
+              >
+                <div className="flex items-center justify-center h-48 sm:h-64">
+                  <Search className="h-24 w-24 sm:h-32 sm:w-32 text-purple-400/60" />
+                </div>
+              </motion.div>
+              <div className="lg:order-2">
+                <div className="inline-flex items-center gap-3 mb-4">
+                  <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-gradient-to-br from-purple-500/30 to-pink-500/30 text-2xl font-black text-purple-400">
+                    2
+                  </div>
+                  <h3 className="text-2xl sm:text-3xl font-bold text-white">Forensic Analysis</h3>
+                </div>
+                <p className="text-base text-zinc-300 leading-relaxed mb-6">
+                  Our AI-powered Contract X-Ray engine performs a comprehensive forensic analysis. We examine every clause, pricing term, rebate structure, and hidden fee against actuarial benchmarks.
+                </p>
+                <div className="space-y-3">
+                  <div className="flex items-center gap-3">
+                    <CheckCircle2 className="h-5 w-5 text-purple-400 shrink-0" />
+                    <span className="text-sm text-zinc-400">47 common overcharge patterns identified</span>
+                  </div>
+                  <div className="flex items-center gap-3">
+                    <CheckCircle2 className="h-5 w-5 text-purple-400 shrink-0" />
+                    <span className="text-sm text-zinc-400">NADAC benchmark comparison</span>
+                  </div>
+                  <div className="flex items-center gap-3">
+                    <CheckCircle2 className="h-5 w-5 text-purple-400 shrink-0" />
+                    <span className="text-sm text-zinc-400">Actuarial validation of findings</span>
+                  </div>
+                </div>
+              </div>
+            </motion.div>
+
+            {/* Step 3 */}
+            <motion.div
+              className="grid lg:grid-cols-2 gap-8 items-center"
+              initial={{ opacity: 0, x: -30 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6, delay: 0.2 }}
+            >
+              <div className="lg:order-1">
+                <div className="inline-flex items-center gap-3 mb-4">
+                  <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-gradient-to-br from-amber-500/30 to-orange-500/30 text-2xl font-black text-amber-400">
+                    3
+                  </div>
+                  <h3 className="text-2xl sm:text-3xl font-bold text-white">Evidence Package</h3>
+                </div>
+                <p className="text-base text-zinc-300 leading-relaxed mb-6">
+                  Receive a comprehensive audit report with every finding documented and timestamped. Every overcharge is backed by cryptographic proof, ready for negotiation or litigation.
+                </p>
+                <div className="space-y-3">
+                  <div className="flex items-center gap-3">
+                    <CheckCircle2 className="h-5 w-5 text-amber-400 shrink-0" />
+                    <span className="text-sm text-zinc-400">SHA-256 timestamped evidence</span>
+                  </div>
+                  <div className="flex items-center gap-3">
+                    <CheckCircle2 className="h-5 w-5 text-amber-400 shrink-0" />
+                    <span className="text-sm text-zinc-400">Court-grade documentation</span>
+                  </div>
+                  <div className="flex items-center gap-3">
+                    <CheckCircle2 className="h-5 w-5 text-amber-400 shrink-0" />
+                    <span className="text-sm text-zinc-400">Audit-ready compliance reports</span>
+                  </div>
+                </div>
+              </div>
+              <motion.div
+                className="lg:order-2 rounded-2xl border border-amber-500/30 bg-gradient-to-br from-amber-950/40 to-black/60 p-8 backdrop-blur-sm"
+                whileHover={{ scale: 1.02, rotateY: 2 }}
+                transition={{ type: "spring", stiffness: 300 }}
+              >
+                <div className="flex items-center justify-center h-48 sm:h-64">
+                  <Shield className="h-24 w-24 sm:h-32 sm:w-32 text-amber-400/60" />
+                </div>
+              </motion.div>
+            </motion.div>
+
+            {/* Step 4 */}
+            <motion.div
+              className="grid lg:grid-cols-2 gap-8 items-center"
+              initial={{ opacity: 0, x: 30 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6, delay: 0.3 }}
+            >
+              <motion.div
+                className="lg:order-1 rounded-2xl border border-green-500/30 bg-gradient-to-br from-green-950/40 to-black/60 p-8 backdrop-blur-sm"
+                whileHover={{ scale: 1.02, rotateY: -2 }}
+                transition={{ type: "spring", stiffness: 300 }}
+              >
+                <div className="flex items-center justify-center h-48 sm:h-64">
+                  <TrendingUp className="h-24 w-24 sm:h-32 sm:w-32 text-green-400/60" />
+                </div>
+              </motion.div>
+              <div className="lg:order-2">
+                <div className="inline-flex items-center gap-3 mb-4">
+                  <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-gradient-to-br from-green-500/30 to-emerald-500/30 text-2xl font-black text-green-400">
+                    4
+                  </div>
+                  <h3 className="text-2xl sm:text-3xl font-bold text-white">Recover Your Savings</h3>
+                </div>
+                <p className="text-base text-zinc-300 leading-relaxed mb-6">
+                  Armed with documented proof, negotiate with your PBM from a position of strength. Our clients recover an average of 87% of identified overcharges. Typical recovery: $2.4M annually.
+                </p>
+                <div className="space-y-3">
+                  <div className="flex items-center gap-3">
+                    <CheckCircle2 className="h-5 w-5 text-green-400 shrink-0" />
+                    <span className="text-sm text-zinc-400">Evidence-backed negotiations</span>
+                  </div>
+                  <div className="flex items-center gap-3">
+                    <CheckCircle2 className="h-5 w-5 text-green-400 shrink-0" />
+                    <span className="text-sm text-zinc-400">87% average recovery rate</span>
+                  </div>
+                  <div className="flex items-center gap-3">
+                    <CheckCircle2 className="h-5 w-5 text-green-400 shrink-0" />
+                    <span className="text-sm text-zinc-400">Ongoing monitoring included</span>
+                  </div>
+                </div>
+              </div>
+            </motion.div>
+          </div>
+
+          {/* Timeline Summary */}
+          <motion.div
+            className="mt-16 text-center"
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6, delay: 0.4 }}
+          >
+            <div className="inline-flex items-center gap-4 rounded-2xl border border-purple-500/40 bg-gradient-to-r from-purple-950/40 via-black/80 to-blue-950/40 px-8 py-6 backdrop-blur-sm">
+              <Clock className="h-8 w-8 text-purple-400" />
+              <div className="text-left">
+                <div className="text-2xl font-black bg-gradient-to-r from-purple-300 to-white bg-clip-text text-transparent">
+                  14 Days
+                </div>
+                <div className="text-sm text-zinc-400">From upload to documented findings</div>
+              </div>
+            </div>
+          </motion.div>
         </section>
 
         {/* Enterprise Features Section */}

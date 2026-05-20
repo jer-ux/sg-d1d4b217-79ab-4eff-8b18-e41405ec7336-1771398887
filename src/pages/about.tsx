@@ -495,7 +495,7 @@ export default function AboutPage() {
                         "/nicole-burns.jpg",
                         "Nicole Burns",
                         "Nicole Burns",
-                        "Silicon Valley GTM"
+                        "Board Director and Silicon Valley GTM"
                       )}
                       className="relative w-32 h-32 mx-auto mb-6 rounded-full overflow-hidden border-4 border-pink-500/30 group-hover:border-pink-400/60 transition-all duration-500 cursor-pointer hover:scale-110"
                     >
@@ -515,7 +515,7 @@ export default function AboutPage() {
                         Nicole Burns
                       </h3>
                       <p className="text-pink-400 font-semibold mb-4">
-                        Silicon Valley GTM
+                        Board Director and Silicon Valley GTM
                       </p>
                     </div>
                   </div>

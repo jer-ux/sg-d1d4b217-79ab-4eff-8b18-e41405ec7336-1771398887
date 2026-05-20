@@ -76,7 +76,7 @@ const boardMembers = [
   },
   {
     name: "Dr. Jacqueline El-Sayed",
-    title: "Board Member and Distinguished Chief Scientist Officer",
+    title: "Board Director and Distinguished Chief Scientist Officer",
     image: "/dr-jacqueline-el-sayed.png",
     linkedin: "https://www.linkedin.com/in/jacquelineelsayed/",
     bio: "Dr. Jacqueline El-Sayed is the Chief Executive Officer for Intentional Design Group LLC and Intentional Design Institute 501c3. She is a builder and global speaker with leadership experience across industry, education, and government.",
@@ -118,7 +118,7 @@ const boardMembers = [
   },
   {
     name: "Nicole Burns",
-    title: "Silicon Valley GTM",
+    title: "Board Director and Silicon Valley GTM",
     image: "/nicole-burns.jpg",
     linkedin: "https://www.linkedin.com/in/nicburns/",
     bio: "Nicole Burns brings extensive expertise in Go-To-Market (GTM) strategy, driving enterprise growth, strategic partnerships, and market expansion. With a proven track record of scaling technology platforms and aligning complex value propositions with market needs, she leads the commercialization strategy for SiriusB iQ.",

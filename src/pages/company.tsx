@@ -261,10 +261,10 @@ const teamMembers = [
   },
   {
     name: "Dr. Jacqueline El-Sayed",
-    role: "Board Member and Distinguished Chief Scientist Officer",
+    role: "Board Director and Distinguished Chief Scientist Officer",
     image: "/dr-jacqueline-el-sayed-company.png",
     linkedin: "https://www.linkedin.com/in/jacquelineelsayed/",
-    bio: "Dr. Jacqueline El-Sayed serves as Board Member and Distinguished Chief Scientist Officer, bringing exceptional expertise in data science, statistical analysis, and scientific methodology. Her leadership ensures SiriusB iQ maintains the highest standards of scientific excellence and analytical rigor.",
+    bio: "Dr. Jacqueline El-Sayed serves as Board Director and Distinguished Chief Scientist Officer, bringing exceptional expertise in data science, statistical analysis, and scientific methodology. Her leadership ensures SiriusB iQ maintains the highest standards of scientific excellence and analytical rigor.",
     experience: [
       {
         company: "SiriusB iQ AI Data Sciences",
@@ -327,7 +327,7 @@ const teamMembers = [
   },
   {
     name: "Nicole Burns",
-    role: "Silicon Valley GTM",
+    role: "Board Director and Silicon Valley GTM",
     image: "/nicole-burns.jpg",
     linkedin: "https://www.linkedin.com/in/nicburns/",
     bio: "Nicole Burns brings extensive expertise in Go-To-Market (GTM) strategy, driving enterprise growth, strategic partnerships, and market expansion. With a proven track record of scaling technology platforms and aligning complex value propositions with market needs, she leads the commercialization strategy for SiriusB iQ.",

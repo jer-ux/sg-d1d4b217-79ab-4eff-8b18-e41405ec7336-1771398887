@@ -101,7 +101,7 @@ export default function Nav() {
                 className="flex items-center gap-2 px-4 py-2 rounded-lg border border-red-500/30 bg-red-950/30 hover:bg-red-950/50 hover:border-red-500/50 transition-all"
               >
                 <Search className="w-4 h-4 text-red-400" />
-                <span className="text-sm font-bold text-red-300">Rx Defense</span>
+                <span className="text-sm font-bold text-red-300">Kincaid IQ Rx X-Ray</span>
                 <ChevronDown className={`w-3 h-3 text-red-400 transition-transform ${rxDefenseDropdownOpen ? "rotate-180" : ""}`} />
               </button>
               {rxDefenseDropdownOpen && (
@@ -112,7 +112,7 @@ export default function Nav() {
                       onClick={() => setRxDefenseDropdownOpen(false)}
                       className="block px-4 py-3 text-red-300 hover:text-red-200 hover:bg-red-500/10 rounded-lg transition-colors duration-150 border-b border-red-700/30"
                     >
-                      <div className="font-bold">Rx Defense Overview</div>
+                      <div className="font-bold">Kincaid IQ's Rx PBM Contract X-Ray</div>
                       <div className="text-xs text-gray-400">Complete 15-provision analysis</div>
                     </Link>
                     
@@ -504,14 +504,14 @@ export default function Nav() {
               >
                 <span className="font-medium flex items-center gap-2">
                   <Search className="w-4 h-4" />
-                  Rx Defense
+                  Kincaid IQ Rx X-Ray
                 </span>
                 <ChevronDown className={`w-4 h-4 transition-transform ${rxDefenseDropdownOpen ? "rotate-180" : ""}`} />
               </button>
               {rxDefenseDropdownOpen && (
                 <div className="ml-4 mt-2 space-y-1 max-h-96 overflow-y-auto">
                   <Link href="/solutions/rx-defense" className="block px-4 py-2 text-sm text-red-300 hover:text-red-200 hover:bg-red-500/10 rounded-lg transition-colors border-b border-red-700/30 mb-2 pb-3">
-                    <div className="font-bold">Overview</div>
+                    <div className="font-bold">Kincaid IQ's Rx PBM Contract X-Ray</div>
                     <div className="text-xs text-gray-500">All 15 provisions</div>
                   </Link>
                   <Link href="/solutions/rx-defense?page=1" className="block px-4 py-2 text-sm text-gray-400 hover:text-white hover:bg-red-500/10 rounded-lg transition-colors">

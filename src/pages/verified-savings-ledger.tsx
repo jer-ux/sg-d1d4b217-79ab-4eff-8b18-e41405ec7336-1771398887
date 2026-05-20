@@ -1,7 +1,8 @@
 "use client";
 
-import { SEO } from "@/components/SEO";
-import { motion, useScroll, useTransform, useMotionValue, useSpring } from "framer-motion";
+import Head from "next/head";
+import { useState, useMemo, useEffect } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 import { useRef, useState } from "react";
 import {
   Shield,
@@ -26,6 +27,7 @@ import {
 } from "lucide-react";
 import { SiteHeader } from "@/components/site/SiteHeader";
 import { SiteFooter } from "@/components/site/SiteFooter";
+import Nav from "@/components/Nav";
 
 const ledgerFeatures = [
   {
@@ -144,13 +146,12 @@ export default function VerifiedSavingsLedgerPage() {
 
   return (
     <>
-      <SEO
-        title="Verified Savings Ledger | Immutable Financial Impact Tracking"
-        description="Blockchain-grade ledger system for tracking and verifying financial savings with cryptographic proof and automated evidence collection."
-      />
-      <SiteHeader />
+      <Head>
+        <title>Verified Savings Ledger - SiriusB iQ AI Data Sciences Lab</title>
+      </Head>
+      <Nav />
 
-      <div ref={containerRef} className="min-h-screen bg-black text-white overflow-hidden">
+      <div className="min-h-screen bg-black text-white pb-20">
         {/* Premium 3D Hero Section */}
         <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
           {/* Advanced 3D Background */}

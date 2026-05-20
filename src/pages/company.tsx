@@ -18,6 +18,7 @@ import {
   GraduationCap,
   Medal
 } from "lucide-react";
+import Nav from "@/components/Nav";
 
 const teamMembers = [
   {
@@ -621,6 +622,7 @@ export default function CompanyPage() {
       
       <div className="min-h-screen bg-gradient-to-b from-slate-950 via-slate-900 to-slate-950">
         <SiteHeader />
+        <Nav />
         
         <div className="container mx-auto px-4 pt-32 pb-20">
           <motion.div

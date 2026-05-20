@@ -3,6 +3,7 @@ import { SiteHeader } from "@/components/site/SiteHeader";
 import { SiteFooter } from "@/components/site/SiteFooter";
 import { CalendlyPopupButton } from "@/components/calendly/CalendlyPopupButton";
 import { Calendar } from "lucide-react";
+import Nav from "@/components/Nav";
 
 export default function ContactPage() {
   return (
@@ -13,6 +14,7 @@ export default function ContactPage() {
       />
       <div className="min-h-screen bg-[#070B12] text-white">
         <SiteHeader />
+        <Nav />
         
         <main>
           <div className="mx-auto max-w-3xl px-6 py-16">

@@ -1,8 +1,9 @@
 import Head from "next/head";
 import Link from "next/link";
-import { Check, X, Zap, Building2, Briefcase, TrendingUp } from "lucide-react";
+import { Check, X, Zap, Building2, Briefcase, TrendingUp, Shield } from "lucide-react";
 import { SiteHeader } from "@/components/site/SiteHeader";
 import { SiteFooter } from "@/components/site/SiteFooter";
+import Nav from "@/components/Nav";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 
@@ -10,12 +11,14 @@ export default function PricingPage() {
   return (
     <>
       <Head>
-        <title>Pricing & Packages | Kincaid IQ PBM Contract X-Ray</title>
+        <title>Pricing - SiriusB iQ AI Data Sciences Lab</title>
         <meta
           name="description"
           content="Transparent pricing for PBM contract forensic analysis. One-time engagement or ongoing monitoring. No hidden fees."
         />
       </Head>
+
+      <Nav />
 
       <div className="min-h-screen bg-black text-white">
         <SiteHeader />

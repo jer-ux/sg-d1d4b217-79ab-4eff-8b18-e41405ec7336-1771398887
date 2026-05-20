@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { useMemo, useActionState } from "react";
+import Nav from "@/components/Nav";
 
 // Server action for demo request submission
 async function submitDemoRequest(prevState: any, formData: FormData) {
@@ -34,6 +35,7 @@ export default function RequestDemo() {
 
   return (
     <main className="min-h-screen bg-black text-white">
+      <Nav />
       <section className="mx-auto max-w-7xl px-6 py-14">
         <div className="max-w-2xl">
           <div className="text-xs tracking-[0.2em] text-white/50">REQUEST DEMO</div>

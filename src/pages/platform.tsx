@@ -1,3 +1,4 @@
+import Head from "next/head";
 import { useState, useMemo } from "react";
 import Link from "next/link";
 import { 
@@ -26,7 +27,11 @@ import {
   Crown,
   Lock,
   Coins,
-  Brain
+  Brain,
+  Clock,
+  Activity,
+  Globe,
+  Cpu
 } from "lucide-react";
 import Nav from "@/components/Nav";
 import Footer from "@/components/Footer";
@@ -408,7 +413,7 @@ function NavigationSection({ section, filteredCards, onTagClick }: { section: Na
   );
 }
 
-export default function Platform() {
+export default function PlatformPage() {
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedCategory, setSelectedCategory] = useState<string>("All");
   const [selectedTag, setSelectedTag] = useState<string | null>(null);
@@ -749,10 +754,9 @@ export default function Platform() {
 
   return (
     <>
-      <SEO
-        title="Platform - Kincaid IQ"
-        description="Comprehensive platform navigation for AI-powered data intelligence, governance, and verified outcomes"
-      />
+      <Head>
+        <title>Platform Overview - SiriusB iQ AI Data Sciences Lab</title>
+      </Head>
       
       <Nav />
 

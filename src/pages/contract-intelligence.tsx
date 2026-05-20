@@ -1,4 +1,7 @@
+import Head from "next/head";
 import { useState } from "react";
+import { SiteFooter } from "@/components/site/SiteFooter";
+import Nav from "@/components/Nav";
 import { SEO } from "@/components/SEO";
 import { SiriusBNav } from "@/components/siriusb/SiriusBNav";
 import { SiriusBFooter } from "@/components/siriusb/SiriusBFooter";
@@ -95,12 +98,13 @@ PHARMACY BENEFIT MANAGEMENT AGREEMENT
 
   return (
     <>
-      <SEO
-        title="PBM Contract Intelligence Engine | Kincaid IQ"
-        description="AI-powered PBM contract intelligence. Extract, classify, score, and summarize contract clauses."
-      />
+      <Head>
+        <title>Contract Intelligence - SiriusB iQ AI Data Sciences Lab</title>
+      </Head>
 
-      <div className="min-h-screen bg-slate-950 text-slate-200">
+      <Nav />
+
+      <div className="min-h-screen bg-black text-white">
         <SiriusBNav />
 
         <div className="pt-24 pb-12 px-6 max-w-7xl mx-auto">

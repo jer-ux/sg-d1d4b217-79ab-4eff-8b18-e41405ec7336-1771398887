@@ -8,6 +8,7 @@ import Nav from "@/components/Nav";
 import Footer from "@/components/Footer";
 import { SEO } from "@/components/SEO";
 import { ImageLightbox } from "@/components/ImageLightbox";
+import Head from "next/head";
 
 const boardMembers = [
   {
@@ -199,6 +200,9 @@ export default function BoardOfDirectorsPage() {
 
   return (
     <>
+      <Head>
+        <title>Board of Directors Portal - SiriusB iQ AI Data Sciences Lab</title>
+      </Head>
       <SEO
         title="Board of Directors | SiriusB iQ AI Data Sciences Lab"
         description="Meet the board of directors guiding SiriusB iQ AI Data Sciences Lab's mission to revolutionize health economics and benefits intelligence through algorithmic fiduciary platforms."

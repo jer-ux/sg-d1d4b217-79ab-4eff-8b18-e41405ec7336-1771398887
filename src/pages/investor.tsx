@@ -1,18 +1,14 @@
 import { Suspense } from "react";
 import Head from "next/head";
-import { motion } from "framer-motion";
-import { 
-  Play, TrendingUp, Target, Zap, Shield, Users, Rocket, 
-  DollarSign, BarChart3, CheckCircle2, AlertTriangle, 
-  Lightbulb, Award, Brain, Lock, Globe, TrendingDown
-} from "lucide-react";
+import { motion, AnimatePresence } from "framer-motion";
+import { SiteFooter } from "@/components/site/SiteFooter";
 import Nav from "@/components/Nav";
+import { Hero3DInvestor } from "@/components/investor/Hero3DInvestor";
 import Footer from "@/components/Footer";
 import Link from "next/link";
 import dynamic from "next/dynamic";
 
 // Dynamic imports for 3D components
-const Hero3DInvestor = dynamic(() => import("@/components/investor/Hero3DInvestor"), { ssr: false });
 const MetricsCloud3D = dynamic(() => import("@/components/investor/MetricsCloud3D"), { ssr: false });
 const Timeline3D = dynamic(() => import("@/components/investor/Timeline3D"), { ssr: false });
 const ROIVisualization3D = dynamic(() => import("@/components/investor/ROIVisualization3D"), { ssr: false });
@@ -143,13 +139,13 @@ export default function InvestorPage() {
   return (
     <>
       <Head>
-        <title>Investor Deck | SiriusB iQ - Algorithmic Fiduciary Intelligence</title>
+        <title>Investor Relations - SiriusB iQ AI Data Sciences Lab</title>
         <meta name="description" content="SiriusB iQ investor presentation - Revolutionizing enterprise benefits intelligence with AI-native platform" />
       </Head>
 
-      <div className="min-h-screen bg-black text-white">
-        <Nav />
+      <Nav />
 
+      <div className="min-h-screen bg-black text-white overflow-hidden">
         {/* 3D Hero Section */}
         <motion.div 
           className="pt-20"

@@ -3,6 +3,7 @@ import Link from "next/link";
 import { Users, HeartPulse, Shield, FileText, CheckCircle2, Clock } from "lucide-react";
 import { SiteHeader } from "@/components/site/SiteHeader";
 import { SiteFooter } from "@/components/site/SiteFooter";
+import Nav from "@/components/Nav";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 
@@ -16,6 +17,8 @@ export default function HRPage() {
           content="Stop letting your PBM frustrate your employees. Discover how Contract X-Ray improves access to care and reduces out-of-pocket costs."
         />
       </Head>
+
+      <Nav />
 
       <div className="min-h-screen bg-black text-white">
         <SiteHeader />

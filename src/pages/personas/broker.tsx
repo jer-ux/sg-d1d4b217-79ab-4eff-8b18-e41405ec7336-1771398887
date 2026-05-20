@@ -1,8 +1,9 @@
 import Head from "next/head";
 import Link from "next/link";
-import { Users, Briefcase, TrendingUp, Shield, Award, Zap } from "lucide-react";
+import { Users, Briefcase, TrendingUp, Shield, Award, Zap, DollarSign } from "lucide-react";
 import { SiteHeader } from "@/components/site/SiteHeader";
 import { SiteFooter } from "@/components/site/SiteFooter";
+import Nav from "@/components/Nav";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 
@@ -10,12 +11,14 @@ export default function BrokerPage() {
   return (
     <>
       <Head>
-        <title>For Brokers & Consultants: White-Label PBM Intelligence | Kincaid IQ</title>
+        <title>For Brokers & Consultants - SiriusB iQ AI Data Sciences Lab</title>
         <meta
           name="description"
           content="Differentiate your practice with Kincaid IQ's white-label Contract X-Ray. Win more RFPs, protect client relationships, and earn referral commissions."
         />
       </Head>
+
+      <Nav />
 
       <div className="min-h-screen bg-black text-white">
         <SiteHeader />

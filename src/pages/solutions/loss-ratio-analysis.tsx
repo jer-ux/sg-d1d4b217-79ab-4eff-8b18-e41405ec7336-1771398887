@@ -1,9 +1,11 @@
+import Head from "next/head";
 import { motion } from "framer-motion";
 import Link from "next/link";
-import { TrendingDown, BarChart3, AlertTriangle, ArrowRight, CheckCircle2, Target, PieChart, Activity, DollarSign, Calendar, FileText, Zap } from "lucide-react";
+import { TrendingDown, BarChart3, AlertTriangle, ArrowRight, CheckCircle2, Target, PieChart, Activity, DollarSign, Calendar, FileText, Zap, Shield, Clock } from "lucide-react";
 import { SEO } from "@/components/SEO";
 import Nav from "@/components/Nav";
 import Footer from "@/components/Footer";
+import { SiteFooter } from "@/components/site/SiteFooter";
 import { useState } from "react";
 
 export default function LossRatioAnalysis() {
@@ -276,6 +278,9 @@ export default function LossRatioAnalysis() {
 
   return (
     <>
+      <Head>
+        <title>Loss Ratio Analysis - SiriusB iQ AI Data Sciences Lab</title>
+      </Head>
       <SEO
         title="Loss Ratio Analysis & Management | SiriusB iQ"
         description="Advanced loss ratio monitoring and optimization with 82.3% average MLR, predictive modeling, and cost driver analytics for sustainable benefit programs."

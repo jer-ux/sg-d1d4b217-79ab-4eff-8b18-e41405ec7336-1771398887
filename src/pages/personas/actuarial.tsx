@@ -1,8 +1,9 @@
 import Head from "next/head";
 import Link from "next/link";
-import { BarChart3, Calculator, TrendingUp, Database, FileText, Shield } from "lucide-react";
+import { BarChart3, Calculator, TrendingUp, Database, FileText, Shield, Activity, CheckCircle2 } from "lucide-react";
 import { SiteHeader } from "@/components/site/SiteHeader";
 import { SiteFooter } from "@/components/site/SiteFooter";
+import Nav from "@/components/Nav";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 
@@ -10,12 +11,14 @@ export default function ActuarialPage() {
   return (
     <>
       <Head>
-        <title>For Actuaries: PBM Forensic Data Science | Kincaid IQ</title>
+        <title>For Actuaries - SiriusB iQ AI Data Sciences Lab</title>
         <meta
           name="description"
           content="Statistical validation of PBM pricing. Monte Carlo simulations, trend decomposition, and volatility analysis for actuarial-grade contract forensics."
         />
       </Head>
+
+      <Nav />
 
       <div className="min-h-screen bg-black text-white">
         <SiteHeader />

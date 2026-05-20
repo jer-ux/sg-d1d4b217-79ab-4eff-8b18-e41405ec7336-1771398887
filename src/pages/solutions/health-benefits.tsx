@@ -1,10 +1,12 @@
 import { motion } from "framer-motion";
 import Link from "next/link";
-import { Heart, Users, Activity, TrendingUp, Shield, ArrowRight, CheckCircle2, Zap, Target, Award, Star, DollarSign, Brain, BarChart3, Clock, FileText, Settings } from "lucide-react";
+import { Heart, Users, Activity, TrendingUp, Shield, ArrowRight, CheckCircle2, Zap, Target, Award, Star, DollarSign, Brain, BarChart3, Clock, FileText, Settings, AlertTriangle } from "lucide-react";
 import { SEO } from "@/components/SEO";
 import Nav from "@/components/Nav";
 import Footer from "@/components/Footer";
 import { useState } from "react";
+import Head from "next/head";
+import { SiteFooter } from "@/components/site/SiteFooter";
 
 export default function HealthBenefits() {
   const [activeTab, setActiveTab] = useState("medical");
@@ -169,6 +171,9 @@ export default function HealthBenefits() {
 
   return (
     <>
+      <Head>
+        <title>Health Benefits Management - SiriusB iQ AI Data Sciences Lab</title>
+      </Head>
       <SEO
         title="Health Benefits Administration & Wellness Programs | SiriusB iQ"
         description="Comprehensive health benefits platform with 96.8% member satisfaction, integrated wellness programs, and $15.3M cost savings through innovative plan design."

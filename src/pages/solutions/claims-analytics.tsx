@@ -1,3 +1,4 @@
+import Head from "next/head";
 import { motion } from "framer-motion";
 import Link from "next/link";
 import { Activity, TrendingDown, AlertTriangle, Target, ArrowRight, CheckCircle2, BarChart3, Clock, DollarSign, Users, Shield, Zap, Brain, FileText, Bell } from "lucide-react";

@@ -3,6 +3,7 @@ import Link from "next/link";
 import { TrendingDown, Shield, AlertTriangle, DollarSign, FileText, BarChart3, CheckCircle2 } from "lucide-react";
 import { SiteHeader } from "@/components/site/SiteHeader";
 import { SiteFooter } from "@/components/site/SiteFooter";
+import Nav from "@/components/Nav";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 
@@ -16,6 +17,8 @@ export default function CFOPage() {
           content="Protect EBITDA from hidden PBM costs. Contract X-Ray identifies 15-25% in recoverable pharmacy spend and eliminates DOL audit exposure."
         />
       </Head>
+
+      <Nav />
 
       <div className="min-h-screen bg-black text-white">
         <SiteHeader />

@@ -1,6 +1,6 @@
 import { motion } from "framer-motion";
 import Link from "next/link";
-import { BarChart3, Target, TrendingUp, ArrowRight, CheckCircle2, Activity, Zap, PieChart, LineChart, Calendar, Users, DollarSign } from "lucide-react";
+import { BarChart3, Target, TrendingUp, ArrowRight, CheckCircle2, Activity, Zap, PieChart, LineChart, Calendar, Users, DollarSign, Shield, AlertTriangle, FileText, Clock } from "lucide-react";
 import { SEO } from "@/components/SEO";
 import Nav from "@/components/Nav";
 import Footer from "@/components/Footer";

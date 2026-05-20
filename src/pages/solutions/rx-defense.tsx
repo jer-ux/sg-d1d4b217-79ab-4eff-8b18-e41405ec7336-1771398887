@@ -32,6 +32,11 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
+import { RxDefenseHero } from "@/components/rx-defense/RxDefenseHero";
+import { ProblemStatement } from "@/components/rx-defense/ProblemStatement";
+import { ProvisionCard } from "@/components/rx-defense/ProvisionCard";
+import { ROICalculator } from "@/components/rx-defense/ROICalculator";
+import { FAQSection } from "@/components/rx-defense/FAQSection";
 
 const provisions = [
   {

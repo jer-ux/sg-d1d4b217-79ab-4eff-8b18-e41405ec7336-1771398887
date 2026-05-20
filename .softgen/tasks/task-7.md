@@ -25,10 +25,8 @@ Keep Next.js 15.5 Page Router (SEO + API routes critical for this project).
 
 - [x] Enable Turbopack for faster dev builds (Next.js 15 feature)
 - [x] Add strict TypeScript config for better type safety
-- [x] Split `src/pages/solutions/rx-defense.tsx` (2951 lines) into modules
-- [ ] Split `src/pages/verified-savings-ledger.tsx` (1169 lines) into sections
-- [ ] Split `src/pages/agentic-workflow.tsx` (1300 lines) into workflow steps
-- [ ] Split `src/pages/actuarial-benefits.tsx` (1415 lines) into benefit sections
+- [x] Split `src/pages/solutions/rx-defense.tsx` (2951 lines) into modules (5 components extracted)
+- [ ] Continue refactoring large pages: verified-savings-ledger, agentic-workflow, actuarial-benefits
 - [ ] Split `src/pages/ebitda-governance.tsx` (1114 lines) into governance modules
 - [ ] Split `src/components/home/BadgeDetailSystem.tsx` (915 lines) into badge components
 - [ ] Split `src/lib/warroom/mock.ts` (928 lines) into domain-specific mocks

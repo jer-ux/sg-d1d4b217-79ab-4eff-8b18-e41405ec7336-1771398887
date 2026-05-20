@@ -34,7 +34,7 @@ const boardMembers = [
   },
   {
     name: "Kyle Riddle",
-    title: "Distinguished Chief of Insurance",
+    title: "Board Director and Chief of Insurance",
     image: "/1759522317489.png",
     linkedin: "https://www.linkedin.com/in/kyle-riddle-47581946/",
     bio: "Certified Employee Benefits Manager (University of Pennsylvania) and Certified Financial Planner who brings MIT engineering rigor and Stanford MBA strategic thinking to insurance and benefits management. Father of four, dedicated to ensuring people live lives better than they could have ever dreamed of.",

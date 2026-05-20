@@ -4,9 +4,9 @@
  */
 
 import { supabase } from "@/integrations/supabase/client";
-import type { Database } from "@/integrations/supabase/types";
 
-type AdminUser = Database["public"]["Tables"]["admin_users"]["Row"];
+// Use any to avoid strict typing errors when admin_users isn't explicitly defined in the DB types yet
+type AdminUser = any;
 
 export interface AdminAuthResponse {
   success: boolean;
@@ -26,7 +26,8 @@ export async function adminLogin(
     // For demo purposes, we'll use a simple admin check
     // In production, implement proper password hashing
     
-    const { data, error } = await supabase
+    // Cast to any to bypass strict type checking for admin_users
+    const { data, error } = await (supabase as any)
       .from("admin_users")
       .select("*")
       .eq("email", email)
@@ -40,26 +41,28 @@ export async function adminLogin(
       };
     }
 
+    const adminData = data as any;
+
     // Store admin session in localStorage
     if (typeof window !== "undefined") {
       localStorage.setItem("admin_session", JSON.stringify({
-        id: data.id,
-        email: data.email,
-        full_name: data.full_name,
-        role: data.role,
+        id: adminData.id,
+        email: adminData.email,
+        full_name: adminData.full_name,
+        role: adminData.role,
         loginTime: new Date().toISOString(),
       }));
     }
 
     // Update last login
-    await supabase
+    await (supabase as any)
       .from("admin_users")
       .update({ last_login_at: new Date().toISOString() })
-      .eq("id", data.id);
+      .eq("id", adminData.id);
 
     return {
       success: true,
-      admin: data,
+      admin: adminData,
     };
   } catch (error) {
     console.error("Admin login error:", error);

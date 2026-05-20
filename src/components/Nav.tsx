@@ -539,12 +539,15 @@ export default function Nav() {
               )}
             </div>
 
-            {/* Request Demo Button */}
-            <Link
-              href="/request-demo"
-              className="ml-4 inline-flex items-center rounded-lg bg-gradient-to-r from-purple-600 to-pink-600 px-4 py-2 text-sm font-medium text-white hover:from-purple-700 hover:to-pink-700 transition-all"
-            >
-              Request Demo
+            {/* Pricing Link - Desktop */}
+            <Link href="/pricing" className="px-4 py-2 text-gray-300 hover:text-white transition-colors rounded-lg hover:bg-white/5">
+              Pricing
+            </Link>
+
+            <Link href="/request-demo">
+              <Button className="bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600">
+                Contact Sales
+              </Button>
             </Link>
           </div>
 
@@ -660,6 +663,54 @@ export default function Nav() {
                   </Link>
                   <Link href="/solutions/rx-defense?page=15" className="block px-4 py-2 text-sm text-gray-400 hover:text-white hover:bg-red-500/10 rounded-lg transition-colors">
                     15. Transparency Reporting
+                  </Link>
+                </div>
+              )}
+            </div>
+
+            {/* Tools Dropdown - Mobile */}
+            <div>
+              <button
+                onClick={() => setPlatformDropdownOpen(!platformDropdownOpen)}
+                className="flex items-center justify-between w-full px-4 py-3 text-gray-300 hover:text-white hover:bg-white/5 rounded-lg transition-colors"
+              >
+                <span className="font-medium">Tools</span>
+                <ChevronDown className={`w-4 h-4 transition-transform ${platformDropdownOpen ? "rotate-180" : ""}`} />
+              </button>
+              {platformDropdownOpen && (
+                <div className="ml-4 mt-2 space-y-1">
+                  <Link href="/tools/savings-calculator" className="block px-4 py-2 text-sm text-gray-400 hover:text-white hover:bg-purple-500/10 rounded-lg transition-colors">
+                    PBM Savings Calculator
+                  </Link>
+                  <Link href="/tools/contract-health-check" className="block px-4 py-2 text-sm text-gray-400 hover:text-white hover:bg-purple-500/10 rounded-lg transition-colors">
+                    Contract Health Check
+                  </Link>
+                </div>
+              )}
+            </div>
+
+            {/* Personas Dropdown - Mobile */}
+            <div>
+              <button
+                onClick={() => setAgenticDropdownOpen(!agenticDropdownOpen)}
+                className="flex items-center justify-between w-full px-4 py-3 text-gray-300 hover:text-white hover:bg-white/5 rounded-lg transition-colors"
+              >
+                <span className="font-medium">Personas</span>
+                <ChevronDown className={`w-4 h-4 transition-transform ${agenticDropdownOpen ? "rotate-180" : ""}`} />
+              </button>
+              {agenticDropdownOpen && (
+                <div className="ml-4 mt-2 space-y-1">
+                  <Link href="/personas/cfo" className="block px-4 py-2 text-sm text-gray-400 hover:text-white hover:bg-emerald-500/10 rounded-lg transition-colors">
+                    For CFOs
+                  </Link>
+                  <Link href="/personas/hr" className="block px-4 py-2 text-sm text-gray-400 hover:text-white hover:bg-blue-500/10 rounded-lg transition-colors">
+                    For HR Directors
+                  </Link>
+                  <Link href="/personas/broker" className="block px-4 py-2 text-sm text-gray-400 hover:text-white hover:bg-amber-500/10 rounded-lg transition-colors">
+                    For Brokers
+                  </Link>
+                  <Link href="/personas/actuarial" className="block px-4 py-2 text-sm text-gray-400 hover:text-white hover:bg-cyan-500/10 rounded-lg transition-colors">
+                    For Actuaries
                   </Link>
                 </div>
               )}

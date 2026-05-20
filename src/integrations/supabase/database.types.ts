@@ -558,6 +558,51 @@ export type Database = {
           },
         ]
       }
+      contacts: {
+        Row: {
+          company: string | null
+          created_at: string | null
+          email: string
+          full_name: string
+          id: string
+          job_title: string | null
+          message: string
+          metadata: Json | null
+          phone: string | null
+          source: string | null
+          status: string | null
+          updated_at: string | null
+        }
+        Insert: {
+          company?: string | null
+          created_at?: string | null
+          email: string
+          full_name: string
+          id?: string
+          job_title?: string | null
+          message: string
+          metadata?: Json | null
+          phone?: string | null
+          source?: string | null
+          status?: string | null
+          updated_at?: string | null
+        }
+        Update: {
+          company?: string | null
+          created_at?: string | null
+          email?: string
+          full_name?: string
+          id?: string
+          job_title?: string | null
+          message?: string
+          metadata?: Json | null
+          phone?: string | null
+          source?: string | null
+          status?: string | null
+          updated_at?: string | null
+        }
+        Relationships: []
+      }
       contract_ai_messages: {
         Row: {
           content: string

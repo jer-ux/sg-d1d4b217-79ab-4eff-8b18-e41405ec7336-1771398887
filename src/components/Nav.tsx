@@ -262,47 +262,6 @@ export default function Nav() {
               )}
             </div>
 
-            {/* Tools Menu */}
-            <div className="relative">
-              <button
-                onMouseEnter={() => setToolsDropdownOpen(true)}
-                onMouseLeave={() => setToolsDropdownOpen(false)}
-                className="px-4 py-2 text-gray-300 hover:text-white transition-colors rounded-lg hover:bg-white/5"
-              >
-                Tools
-              </button>
-              {toolsDropdownOpen && (
-                <div
-                  onMouseEnter={() => setToolsDropdownOpen(true)}
-                  onMouseLeave={() => setToolsDropdownOpen(false)}
-                  className="absolute top-full left-0 mt-2 w-72 bg-gray-900/95 backdrop-blur-xl rounded-xl border border-purple-700/50 shadow-xl overflow-hidden z-[210]"
-                >
-                  <div className="p-2">
-                    <Link
-                      href="/tools/savings-calculator"
-                      className="block px-4 py-3 text-gray-300 hover:text-white hover:bg-purple-500/10 rounded-lg transition-all"
-                    >
-                      <div className="font-medium flex items-center gap-2">
-                        <Calculator className="w-4 h-4 text-purple-400" />
-                        PBM Savings Calculator
-                      </div>
-                      <div className="text-xs text-gray-400">Instant ROI projection</div>
-                    </Link>
-                    <Link
-                      href="/tools/contract-health-check"
-                      className="block px-4 py-3 text-gray-300 hover:text-white hover:bg-purple-500/10 rounded-lg transition-all"
-                    >
-                      <div className="font-medium flex items-center gap-2">
-                        <FileText className="w-4 h-4 text-blue-400" />
-                        Contract Health Check
-                      </div>
-                      <div className="text-xs text-gray-400">Free contract analysis</div>
-                    </Link>
-                  </div>
-                </div>
-              )}
-            </div>
-
             {/* Focus Areas Menu */}
             <div className="relative">
               <button
@@ -668,27 +627,6 @@ export default function Nav() {
                   </Link>
                   <Link href="/solutions/rx-defense?page=15" className="block px-4 py-2 text-sm text-gray-400 hover:text-white hover:bg-red-500/10 rounded-lg transition-colors">
                     15. Transparency Reporting
-                  </Link>
-                </div>
-              )}
-            </div>
-
-            {/* Tools Dropdown - Mobile */}
-            <div>
-              <button
-                onClick={() => setToolsDropdownOpen(!toolsDropdownOpen)}
-                className="flex items-center justify-between w-full px-4 py-3 text-gray-300 hover:text-white hover:bg-white/5 rounded-lg transition-colors"
-              >
-                <span className="font-medium">Tools</span>
-                <ChevronDown className={`w-4 h-4 transition-transform ${toolsDropdownOpen ? "rotate-180" : ""}`} />
-              </button>
-              {toolsDropdownOpen && (
-                <div className="ml-4 mt-2 space-y-1">
-                  <Link href="/tools/savings-calculator" className="block px-4 py-2 text-sm text-gray-400 hover:text-white hover:bg-purple-500/10 rounded-lg transition-colors">
-                    PBM Savings Calculator
-                  </Link>
-                  <Link href="/tools/contract-health-check" className="block px-4 py-2 text-sm text-gray-400 hover:text-white hover:bg-purple-500/10 rounded-lg transition-colors">
-                    Contract Health Check
                   </Link>
                 </div>
               )}

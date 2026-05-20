@@ -1,9 +1,8 @@
 "use client";
 
 import Head from "next/head";
-import { useState, useMemo, useEffect } from "react";
-import { motion, AnimatePresence } from "framer-motion";
-import { useRef, useState } from "react";
+import { useMemo, useEffect, useState, useRef } from "react";
+import { motion, AnimatePresence, useScroll, useTransform } from "framer-motion";
 import {
   Shield,
   DollarSign,

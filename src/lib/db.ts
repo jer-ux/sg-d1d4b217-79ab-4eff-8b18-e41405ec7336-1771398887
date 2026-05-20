@@ -63,7 +63,7 @@ export const db = {
    */
   table(tableName: string) {
     // Cast to any to allow dynamic table names
-    return supabase.from(tableName as any);
+    return (supabase as any).from(tableName);
   },
 
   /**
@@ -92,7 +92,7 @@ export const queries = {
    * Select all rows from a table with optional filtering
    */
   async selectAll<T = Row>(tableName: string, filter?: Record<string, any>): Promise<T[]> {
-    let query = supabase.from(tableName as any).select("*");
+    let query = (supabase as any).from(tableName).select("*");
     
     if (filter) {
       Object.entries(filter).forEach(([key, value]) => {
@@ -114,8 +114,8 @@ export const queries = {
    * Select a single row by ID
    */
   async selectById<T = Row>(tableName: string, id: string): Promise<T | null> {
-    const { data, error } = await supabase
-      .from(tableName as any)
+    const { data, error } = await (supabase as any)
+      .from(tableName)
       .select("*")
       .eq("id", id)
       .single();
@@ -136,8 +136,8 @@ export const queries = {
    * Insert a new row
    */
   async insert<T = Row>(tableName: string, data: Partial<T>): Promise<T> {
-    const { data: inserted, error } = await supabase
-      .from(tableName as any)
+    const { data: inserted, error } = await (supabase as any)
+      .from(tableName)
       .insert(data)
       .select()
       .single();
@@ -154,8 +154,8 @@ export const queries = {
    * Update an existing row by ID
    */
   async update<T = Row>(tableName: string, id: string, data: Partial<T>): Promise<T> {
-    const { data: updated, error } = await supabase
-      .from(tableName as any)
+    const { data: updated, error } = await (supabase as any)
+      .from(tableName)
       .update(data)
       .eq("id", id)
       .select()
@@ -173,8 +173,8 @@ export const queries = {
    * Delete a row by ID
    */
   async delete(tableName: string, id: string): Promise<void> {
-    const { error } = await supabase
-      .from(tableName as any)
+    const { error } = await (supabase as any)
+      .from(tableName)
       .delete()
       .eq("id", id);
     

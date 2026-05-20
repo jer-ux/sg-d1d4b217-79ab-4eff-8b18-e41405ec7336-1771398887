@@ -118,7 +118,7 @@ const boardMembers = [
   },
   {
     name: "Nicole Burns",
-    title: "Board Member - Go-To-Market & Commercial Strategy",
+    title: "Silicon Valley GTM",
     image: "/nicole-burns.jpg",
     linkedin: "https://www.linkedin.com/in/nicburns/",
     bio: "Nicole Burns brings extensive expertise in Go-To-Market (GTM) strategy, driving enterprise growth, strategic partnerships, and market expansion. With a proven track record of scaling technology platforms and aligning complex value propositions with market needs, she leads the commercialization strategy for SiriusB iQ.",

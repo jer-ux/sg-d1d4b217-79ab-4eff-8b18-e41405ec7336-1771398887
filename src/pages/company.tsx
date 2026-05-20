@@ -327,14 +327,14 @@ const teamMembers = [
   },
   {
     name: "Nicole Burns",
-    role: "Go-To-Market (GTM) Expert",
+    role: "Silicon Valley GTM",
     image: "/nicole-burns.jpg",
     linkedin: "https://www.linkedin.com/in/nicburns/",
     bio: "Nicole Burns brings extensive expertise in Go-To-Market (GTM) strategy, driving enterprise growth, strategic partnerships, and market expansion. With a proven track record of scaling technology platforms and aligning complex value propositions with market needs, she leads the commercialization strategy for SiriusB iQ.",
     experience: [
       {
         company: "SiriusB iQ AI Data Sciences",
-        title: "Go-To-Market (GTM) Expert",
+        title: "Silicon Valley GTM",
         period: "Present",
         description: "Leading comprehensive go-to-market strategies, revenue operations, and strategic partnerships for the algorithmic fiduciary intelligence platform.",
         highlights: [

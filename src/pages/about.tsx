@@ -495,7 +495,7 @@ export default function AboutPage() {
                         "/nicole-burns.jpg",
                         "Nicole Burns",
                         "Nicole Burns",
-                        "Go-To-Market (GTM) Expert"
+                        "Silicon Valley GTM"
                       )}
                       className="relative w-32 h-32 mx-auto mb-6 rounded-full overflow-hidden border-4 border-pink-500/30 group-hover:border-pink-400/60 transition-all duration-500 cursor-pointer hover:scale-110"
                     >
@@ -515,18 +515,8 @@ export default function AboutPage() {
                         Nicole Burns
                       </h3>
                       <p className="text-pink-400 font-semibold mb-4">
-                        Go-To-Market (GTM) Expert
+                        Silicon Valley GTM
                       </p>
-                      <p className="text-gray-400 text-sm leading-relaxed mb-4">
-                        Recognized Go-To-Market strategy expert with extensive experience driving growth, strategic partnerships, and market expansion. She leads the commercialization strategy, translating complex actuarial and AI capabilities into compelling enterprise value propositions.
-                      </p>
-                      <Link
-                        href="/company"
-                        className="inline-flex items-center gap-2 text-pink-400 text-sm font-semibold hover:text-pink-300 transition-colors"
-                      >
-                        <span>View Full Profile</span>
-                        <ChevronRight className="h-4 w-4" />
-                      </Link>
                     </div>
                   </div>
                 </div>

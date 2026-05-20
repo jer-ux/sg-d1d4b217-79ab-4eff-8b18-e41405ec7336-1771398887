@@ -39,6 +39,7 @@ export function ContactForm({
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitStatus, setSubmitStatus] = useState<"idle" | "success" | "error">("idle");
   const [errorMessage, setErrorMessage] = useState<string>("");
+  const [errors, setErrors] = useState<Record<string, string>>({});
 
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
@@ -57,11 +58,11 @@ export function ContactForm({
     
     // Reset states
     setIsSubmitting(true);
-    setSuccessMessage("");
+    setSubmitStatus("idle");
     setErrorMessage("");
 
     // Validate
-    const newErrors: FormErrors = {};
+    const newErrors: Record<string, string> = {};
     
     if (!formData.full_name.trim()) {
       newErrors.full_name = "Name is required";
@@ -111,7 +112,7 @@ export function ContactForm({
       }
 
       // Success!
-      setSuccessMessage(successMessage);
+      setSubmitStatus("success");
       setFormData({
         full_name: "",
         email: "",
@@ -119,15 +120,17 @@ export function ContactForm({
         company: "",
         job_title: "",
         message: "",
+        source,
       });
       setErrors({});
       
       if (onSuccess) {
-        onSuccess(result.data);
+        onSuccess();
       }
     } catch (error) {
       const errorMsg = error instanceof Error ? error.message : "An error occurred. Please try again.";
       setErrorMessage(errorMsg);
+      setSubmitStatus("error");
       
       if (onError) {
         onError(errorMsg);

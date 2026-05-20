@@ -24,7 +24,7 @@ export default async function handler(
     // Save to Supabase database
     const result = await submitContact(formData);
 
-    if (!result.success || !result.data) {
+    if (!result.success || !result.contact) {
       return res.status(500).json({ 
         error: result.error || "Failed to save contact" 
       });
@@ -40,8 +40,8 @@ export default async function handler(
       message: formData.message,
       source: formData.source || "website",
       customFields: {
-        supabase_id: result.data.id,
-        submitted_at: result.data.created_at,
+        supabase_id: result.contact.id,
+        submitted_at: result.contact.created_at,
         user_agent: formData.metadata?.userAgent,
         referrer: formData.metadata?.referrer,
       },
@@ -56,7 +56,7 @@ export default async function handler(
       success: true,
       message: "Contact submitted successfully",
       data: {
-        id: result.data.id,
+        id: result.contact.id,
         crmSynced: crmResult.success,
         crmContactId: crmResult.contactId,
       },

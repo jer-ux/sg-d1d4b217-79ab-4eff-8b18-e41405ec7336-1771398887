@@ -19,7 +19,6 @@ import {
   Zap,
   Brain,
   PieChart,
-  Target,
 } from "lucide-react";
 import { SEO } from "@/components/SEO";
 
@@ -381,7 +380,7 @@ export default function PremiumCalculationPage() {
           </section>
         </main>
 
-        <Footer />
+        <SiteFooter />
       </div>
     </>
   );

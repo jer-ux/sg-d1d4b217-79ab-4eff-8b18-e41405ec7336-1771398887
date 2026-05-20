@@ -12,6 +12,7 @@ import { Hero3D } from "@/components/Hero3D";
 import { ExecutiveKPITile } from "@/components/warroom/tiles/ExecutiveKPITile";
 import { SiteFooter } from "@/components/site/SiteFooter";
 import { FreeContractReviewCTA } from "@/components/marketing/FreeContractReviewCTA";
+import Nav from "@/components/Nav";
 
 const Badge = ({ children, icon: Icon }: { children: React.ReactNode; icon?: React.ComponentType<{ className?: string }> }) => (
   <motion.span
@@ -154,6 +155,9 @@ export default function HomePage() {
           content="Find hidden overcharges in your benefits contracts. Reduce costs by 20-35% while improving employee coverage."
         />
       </Head>
+      
+      <Nav />
+      
       <main className="relative min-h-screen bg-black text-zinc-100 overflow-hidden">
         <div className="fixed inset-0 bg-gradient-to-br from-purple-950/20 via-black to-blue-950/10 pointer-events-none" style={{ zIndex: 0 }} />
 

@@ -361,6 +361,258 @@ const provisions = [
         fix: "Add: \"PBM shall provide Plan with an itemized fee schedule disclosing all components of administrative compensation. Plan shall have the right to benchmark administrative fees against market rates annually and to negotiate adjustments if fees exceed the 60th percentile of market rates for comparable plans. Performance guarantees shall have no less than 10% of total annual PBM compensation at risk, measured quarterly, self-cure periods shall not exceed 30 days, and shall be based on independently verifiable data.\""
       }
     ]
+  },
+  {
+    id: 11,
+    title: "DIR Fees & Post-Point-of-Sale Adjustments",
+    score: 2.0,
+    savings: "$425K",
+    status: "RED FLAG",
+    statusColor: "text-rose-500",
+    bgStatusColor: "bg-rose-500",
+    met: "0 of 2 requirements met",
+    why: "Direct and Indirect Remuneration (DIR) fees are retroactive charges applied to pharmacy claims weeks or months after the member's copay was collected. These fees are invisible at point of sale and systematically increase plan costs while reducing pharmacy reimbursement.",
+    financial: "DIR fees average 8-15% of total prescription cost and are applied retroactively, meaning the plan pays more than the quoted price at point of sale. For a $3M drug spend plan, DIR fees add $240K-$450K in hidden annual costs that never appear in real-time pricing.",
+    fiduciary: "CMS has proposed banning DIR fees in Medicare Part D due to their opacity and anti-competitive effects. Self-funded ERISA plans have no such protection. Contractual prohibition of retroactive price adjustments is essential for cost predictability and fiduciary compliance.",
+    issues: [
+      {
+        title: "DIR fees and retroactive adjustments are not prohibited.",
+        found: "No language preventing post-adjudication price changes or DIR fee assessments.",
+        exploits: [
+          "DIR fees are the perfect hidden margin mechanism. The member pays their copay based on one price, the plan is billed a second price, and then weeks or months later the PBM applies retroactive 'performance fees' that increase the effective cost by another 8-15%.",
+          "PBMs structure DIR fees as 'quality metrics,' 'network participation fees,' or 'performance guarantees' — making them sound like legitimate business practices rather than retroactive price increases.",
+          "The timing delay is intentional. By the time DIR fees hit the plan's books, the claim is closed, the member has their medication, and there is no practical way to dispute the charge. This creates a systematic upward ratchet on pharmacy costs."
+        ],
+        impact: "For a plan with $3M in annual drug spend, DIR fees averaging 12% add $360,000 per year in costs that are invisible at point of sale. These fees are typically excluded from PBM guarantees and performance metrics, meaning they grow year-over-year without contractual limits.",
+        redFlags: [
+          "\"PBM may assess network performance fees on pharmacy claims as determined in PBM's sole discretion\"",
+          "\"Final claim reimbursement amounts may be adjusted for quality metrics and network compliance\"",
+          "\"Plan pricing excludes Direct and Indirect Remuneration fees assessed by PBM or its affiliates\""
+        ],
+        fix: "Add: \"PBM shall not apply any retroactive price adjustments, DIR fees, clawbacks, or post-point-of-sale charges to any claim after the claim has been adjudicated and paid. The amount invoiced to Plan for each claim shall be final and not subject to subsequent adjustment, except for fraud or clear processing error.\""
+      },
+      {
+        title: "Real-time adjudication pricing is not guaranteed.",
+        found: "No commitment that point-of-sale pricing equals final plan cost.",
+        exploits: [
+          "Without real-time adjudication guarantees, PBMs can show one price at the pharmacy counter and bill the plan a completely different amount on the back end."
+        ],
+        impact: "Price opacity at point of sale means plan sponsors cannot accurately budget pharmacy costs or validate PBM performance guarantees.",
+        redFlags: [
+          "\"Pricing provided at adjudication is preliminary and subject to final reconciliation\""
+        ],
+        fix: "Add: \"All pricing communicated at point of sale shall be final. Plan shall not be charged more than the amount adjudicated in real-time for any claim.\""
+      }
+    ]
+  },
+  {
+    id: 12,
+    title: "Formulary Transparency & Independent Review",
+    score: 3.5,
+    savings: "$298K",
+    status: "CONCERN",
+    statusColor: "text-orange-400",
+    bgStatusColor: "bg-orange-400",
+    met: "1 of 3 requirements met",
+    why: "The formulary is the single most powerful tool for managing drug costs, but most PBMs retain complete control over formulary design with no plan input or independent oversight. Transparent formulary management with clinical justification requirements prevents PBM conflicts of interest.",
+    financial: "Formulary placement determines whether a drug is covered, what tier it occupies, and what prior authorization requirements apply. PBMs often favor high-rebate drugs regardless of clinical efficacy or net cost. Independent formulary review can reduce brand drug spend by 15-25% through evidence-based tier placement.",
+    fiduciary: "Formulary decisions affect patient access to medically necessary drugs. ERISA requires that plan fiduciaries act in participants' best interests. Delegating formulary authority to a PBM without oversight or review rights creates fiduciary exposure when PBM decisions prioritize rebate revenue over clinical outcomes.",
+    issues: [
+      {
+        title: "Plan has no input on formulary composition or tier placement.",
+        found: "Formulary is determined solely by PBM with no plan review or approval rights.",
+        exploits: [
+          "PBMs design formularies to maximize their own revenue, not plan savings. High-rebate brand drugs are placed in favorable tiers even when cheaper generic or biosimilar alternatives exist, because PBM earns more from the rebate than the plan saves from the lower-cost alternative.",
+          "Step therapy protocols are structured to funnel members toward high-rebate drugs first, requiring 'failure' on preferred options before allowing access to clinically equivalent but lower-rebate alternatives.",
+          "Formulary changes mid-year are common and almost always move in one direction: toward higher-cost, higher-rebate drugs. Plans have no contractual right to block these changes or require clinical justification."
+        ],
+        impact: "For a plan with 500 members and $1.5M in brand drug spend, formulary decisions that favor rebate revenue over net cost add an estimated $225,000-$375,000 per year in unnecessary spending. This gap represents the difference between evidence-based lowest-net-cost formulary management and PBM rebate-optimization strategies.",
+        redFlags: [
+          "\"Formulary composition is determined by PBM's P&T Committee in its sole discretion\"",
+          "\"PBM may modify the formulary at any time with 60 days notice to Plan\"",
+          "\"Plan may request but not require specific formulary changes\""
+        ],
+        fix: "Add: \"Plan shall have the right to review and approve the initial formulary and all mid-year formulary changes. PBM shall provide clinical justification for all tier placements and shall prioritize lowest net cost options when clinical equivalence exists. No formulary change shall take effect without Plan's written approval.\""
+      },
+      {
+        title: "No independent clinical review of formulary decisions.",
+        found: "PBM's internal P&T committee is the sole authority on clinical decisions.",
+        exploits: [
+          "PBM-employed pharmacists on internal P&T committees are not independent. Their employment and bonuses depend on PBM profitability, creating inherent conflicts when formulary decisions affect PBM revenue."
+        ],
+        impact: "Lack of independent oversight allows systematic bias toward high-margin drugs disguised as clinical decision-making.",
+        redFlags: [
+          "\"PBM's Pharmacy and Therapeutics Committee makes all clinical determinations\""
+        ],
+        fix: "Add: \"Plan may engage an independent clinical pharmacist to review formulary decisions and PBM shall provide all supporting documentation for such review.\""
+      },
+      {
+        title: "Biosimilar and generic substitution is not mandatory.",
+        found: "No requirement to default to lowest-cost interchangeable options.",
+        exploits: [
+          "When biosimilars or AB-rated generics are available, PBMs can continue to favor brand originator products that generate higher rebates."
+        ],
+        impact: "Biosimilar conversion for just 10 Humira users saves $120,000-$180,000 annually at identical clinical outcomes.",
+        redFlags: [
+          "\"PBM shall consider biosimilar alternatives when clinically appropriate\""
+        ],
+        fix: "Add: \"For any drug with an FDA-approved interchangeable biosimilar or AB-rated generic, the biosimilar or generic shall be placed in the lowest-cost tier and substitution shall be mandatory unless medically contraindicated for a specific member.\""
+      }
+    ]
+  },
+  {
+    id: 13,
+    title: "Specialty Pharmacy Network Adequacy",
+    score: 4.0,
+    savings: "$215K",
+    status: "CONCERN",
+    statusColor: "text-orange-400",
+    bgStatusColor: "bg-orange-400",
+    met: "1 of 2 requirements met",
+    why: "Specialty drug spend represents 50-60% of total pharmacy costs for most plans despite accounting for only 1-2% of claims. Network adequacy requirements ensure members have access to high-quality specialty pharmacies and prevent PBM monopolization through mandatory mail-order or owned-pharmacy requirements.",
+    financial: "Specialty drugs dispensed through PBM-owned pharmacies cost 12-20% more than independent specialty pharmacies due to lack of competitive pressure. For a plan with $1M in specialty spend, network restrictions add $120K-$200K in annual excess costs.",
+    fiduciary: "CAA 2026 transparency requirements apply to specialty pharmacy arrangements. Plans must be able to demonstrate that specialty pharmacy choices serve participants' interests, not PBM profit margins. Network adequacy language creates documentation of fiduciary diligence.",
+    issues: [
+      {
+        title: "Limited specialty pharmacy network creates effective monopoly.",
+        found: "Plan members have access to only 1-3 specialty pharmacies, all PBM-affiliated.",
+        exploits: [
+          "PBMs create 'narrow networks' for specialty drugs that include only their owned pharmacies or exclusive partners. This eliminates competitive pricing and allows the PBM to charge monopoly rates.",
+          "Members are told their specialty medications 'must' be filled through specific pharmacies due to clinical requirements, when the real reason is contractual restrictions that benefit the PBM financially.",
+          "Independent specialty pharmacies that offer lower prices are excluded from the network not due to quality concerns but to protect PBM-owned pharmacy margins."
+        ],
+        impact: "For a plan with $1.5M in specialty drug spend, mandatory use of PBM-owned specialty pharmacies adds $180,000-$300,000 per year compared to competitive specialty pharmacy pricing. This gap represents pure margin for the PBM's pharmacy operations.",
+        redFlags: [
+          "\"Specialty medications must be dispensed through PBM's designated specialty network\"",
+          "\"Limited distribution drugs are only available through PBM's specialty pharmacy\"",
+          "\"Plan may request alternative specialty pharmacies subject to PBM approval\""
+        ],
+        fix: "Add: \"Plan members shall have access to at least five (5) independent specialty pharmacies in addition to any PBM-owned specialty pharmacy. Plan retains the right to designate preferred specialty pharmacies and PBM shall credential and contract with Plan's preferred providers within 30 days of request.\""
+      },
+      {
+        title: "No pricing parity requirement across specialty network.",
+        found: "PBM can charge different prices for the same drug depending on which network pharmacy dispenses it.",
+        exploits: [
+          "PBMs charge higher dispensing fees and ingredient costs when members use PBM-owned specialty pharmacies, while steering members away from lower-cost independents through 'preferred pharmacy' incentives that actually cost the plan more."
+        ],
+        impact: "Price variation of 15-25% across specialty network pharmacies for identical drugs represents systematic cost inflation.",
+        redFlags: [
+          "\"Pricing may vary by specialty pharmacy location and may be higher at non-preferred pharmacies\""
+        ],
+        fix: "Add: \"Plan pricing for specialty medications shall be uniform across all network specialty pharmacies. Member cost-sharing and plan reimbursement shall not vary based on which network specialty pharmacy is used.\""
+      }
+    ]
+  },
+  {
+    id: 14,
+    title: "Clinical Program Outcomes & ROI Validation",
+    score: 3.0,
+    savings: "$187K",
+    status: "CONCERN",
+    statusColor: "text-orange-400",
+    bgStatusColor: "bg-orange-400",
+    met: "0 of 3 requirements met",
+    why: "PBMs sell clinical programs — medication therapy management, adherence programs, prior authorization — as value-added services, but these programs often cost more than they save and lack outcomes measurement. ROI validation requirements ensure clinical programs deliver documented value.",
+    financial: "Clinical program fees average $3-$8 PMPM ($36-$96 per member per year) with claimed savings of 3-5:1 ROI. Independent audits typically find actual ROI of 0.8-1.2:1, meaning the programs cost more than they save. For a 500-member plan, this is $18,000-$48,000 per year in fees for programs with negative ROI.",
+    fiduciary: "ERISA requires that plan expenses be reasonable and necessary. Clinical programs that cost more than they save violate this standard. Contractual ROI validation and opt-out rights ensure fiduciaries can demonstrate prudent expense management.",
+    issues: [
+      {
+        title: "Clinical program fees are mandatory with no opt-out provision.",
+        found: "Plan is charged for MTM, adherence programs, and clinical interventions with no ability to decline services.",
+        exploits: [
+          "PBMs bundle clinical programs into the base contract as mandatory services, charging PMPM fees whether or not the plan uses the programs or sees any value from them.",
+          "Claimed savings from clinical programs are often based on projected 'avoided costs' rather than actual measured outcomes, making it impossible to verify ROI.",
+          "Programs are structured to maximize PBM billing rather than optimize outcomes — for example, prior authorizations that delay care and frustrate members while generating administrative fees for the PBM."
+        ],
+        impact: "For a 500-member plan charged $6 PMPM for clinical programs with 1:1 actual ROI (neutral value), the $36,000 in annual fees deliver zero net benefit to the plan. If programs have negative ROI (as independent audits often find), the plan is paying to make its pharmacy benefit more expensive and less user-friendly.",
+        redFlags: [
+          "\"Clinical program fees are included in the base administrative rate and are non-waivable\"",
+          "\"PBM shall provide medication therapy management and adherence programs to all eligible members\"",
+          "\"Clinical program savings are estimated based on industry benchmarks and are not guaranteed\""
+        ],
+        fix: "Add: \"All clinical programs shall be optional and subject to Plan approval. Plan may opt out of any clinical program with 30 days notice. PBM shall provide quarterly reporting of program participation rates, intervention counts, and measured cost savings with independently verifiable methodology. Programs that fail to demonstrate positive ROI may be discontinued by Plan without penalty.\""
+      },
+      {
+        title: "No measurement of clinical program outcomes or ROI.",
+        found: "PBM reports program activity but not validated savings or health outcomes.",
+        exploits: [
+          "PBMs report 'interventions made' and 'members contacted' but never disclose whether those interventions produced cost savings or improved health outcomes."
+        ],
+        impact: "Without outcomes measurement, plans pay for clinical programs that may actively harm member experience (prior authorization delays, medication access barriers) while providing no financial or clinical benefit.",
+        redFlags: [
+          "\"PBM shall report on clinical program activities quarterly\""
+        ],
+        fix: "Add: \"Clinical program reporting shall include measured outcomes: actual cost savings compared to control group, medication adherence rates, hospitalization rates, and member satisfaction scores. ROI calculations shall be independently auditable and based on actual plan-specific data, not industry averages.\""
+      },
+      {
+        title: "Prior authorization creates access barriers without documented clinical value.",
+        found: "PBM applies prior authorization protocols with no measurement of clinical appropriateness or cost-effectiveness.",
+        exploits: [
+          "Prior authorizations are often applied to drugs where clinical evidence does not support the restriction, purely to create administrative friction that reduces utilization and shifts costs to members who abandon therapy."
+        ],
+        impact: "Inappropriate prior authorization protocols increase member out-of-pocket costs, delay medically necessary treatment, and generate administrative fees for PBMs without demonstrable cost savings or clinical benefit.",
+        redFlags: [
+          "\"PBM shall apply prior authorization protocols consistent with PBM's clinical policies\""
+        ],
+        fix: "Add: \"Prior authorization protocols shall be based on peer-reviewed clinical evidence and shall not be applied to medications where such evidence does not support the restriction. Plan retains the right to review and approve all prior authorization criteria annually.\""
+      }
+    ]
+  },
+  {
+    id: 15,
+    title: "Transparency Reporting & Real-Time Data Access",
+    score: 2.5,
+    savings: "$142K",
+    status: "RED FLAG",
+    statusColor: "text-rose-500",
+    bgStatusColor: "bg-rose-500",
+    met: "0 of 3 requirements met",
+    why: "CAA 2026 requires PBMs to provide specific transparency reports to plan sponsors. Beyond compliance, real-time data access enables proactive cost management, fraud detection, and member support. Contracts that restrict data access or delay reporting undermine plan fiduciary responsibility.",
+    financial: "Real-time claims data allows plans to identify high-cost claimants early, intervene with care management, negotiate direct manufacturer programs, and detect billing errors before they become systemic. Delayed reporting costs plans an estimated $40-$80 PMPY in missed intervention opportunities.",
+    fiduciary: "ERISA requires plan fiduciaries to monitor service providers. Without real-time data access, monitoring is impossible. Data delays create legal exposure when fiduciaries cannot demonstrate they had visibility into plan operations or could have detected problems earlier.",
+    issues: [
+      {
+        title: "Claims data is provided quarterly with 45-90 day delays.",
+        found: "Plan receives claims data 6-12 weeks after claims are adjudicated, making real-time intervention impossible.",
+        exploits: [
+          "Delayed data reporting prevents plans from identifying cost trends, high-cost claimants, or billing errors until months after the fact, when intervention opportunities have passed.",
+          "PBMs claim data delays are due to 'processing requirements' but the real reason is to prevent plans from discovering overcharges or switching PBMs mid-contract when problems are identified.",
+          "By the time quarterly reports arrive, the PBM has already collected payment for potentially erroneous claims and has no incentive to correct errors retroactively."
+        ],
+        impact: "For a plan with 500 members and $3M in drug spend, 90-day data delays cost an estimated $60,000-$120,000 per year in missed care management opportunities, uncaught billing errors, and inability to negotiate direct manufacturer programs for identified high-cost members.",
+        redFlags: [
+          "\"PBM shall provide claims data within 60 days of the end of each calendar quarter\"",
+          "\"Data access is subject to PBM's standard reporting schedules\"",
+          "\"Real-time data feeds are available at additional cost\""
+        ],
+        fix: "Add: \"PBM shall provide Plan with real-time data access to all claims information via secure API or data feed, with no more than 24-hour delay from claim adjudication. Quarterly and annual reports required by CAA 2026 shall be provided within 30 days of period close at no additional charge.\""
+      },
+      {
+        title: "Transparency reports do not include all required CAA 2026 disclosures.",
+        found: "PBM reporting lacks detailed rebate allocation, DIR fee breakdowns, and specialty pharmacy margin disclosure.",
+        exploits: [
+          "PBMs provide summary-level reports that technically comply with CAA 2026 while omitting the detailed information needed to actually validate pricing or identify overcharges."
+        ],
+        impact: "Incomplete transparency reporting prevents plan fiduciaries from fulfilling their ERISA monitoring obligations and creates DOL audit risk.",
+        redFlags: [
+          "\"PBM shall provide transparency reports as required by applicable law\"",
+          "\"Certain proprietary pricing information may be excluded from standard reports\""
+        ],
+        fix: "Add: \"PBM shall provide complete CAA 2026 transparency reports including: (i) total rebates by drug, manufacturer, and therapeutic class; (ii) all DIR fees by type and payee; (iii) specialty pharmacy dispensing fees and ingredient cost by drug; (iv) administrative compensation by source; (v) affiliate revenue by type. Reports shall be in machine-readable format (CSV or Excel) with drug-level detail.\""
+      },
+      {
+        title: "Plan has no portal access for member-level inquiry.",
+        found: "When members call with drug cost questions, plan administrators cannot access real-time pricing or coverage information.",
+        exploits: [
+          "Without portal access, plan administrators must rely on PBM call centers for member support, creating delays and preventing independent verification of PBM responses."
+        ],
+        impact: "Member service delays and inability to validate PBM information create member dissatisfaction and increase HR administrative burden.",
+        redFlags: [
+          "\"Member eligibility and claims inquiries shall be directed to PBM's customer service center\""
+        ],
+        fix: "Add: \"PBM shall provide Plan administrators with secure web portal access to real-time member eligibility, formulary coverage, claim status, and pricing information. Portal shall include search and reporting functionality at no additional charge.\""
+      }
+    ]
   }
 ];
 

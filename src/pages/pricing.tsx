@@ -45,17 +45,16 @@ export default function PricingPage() {
                     <Zap className="w-6 h-6 text-purple-400" />
                   </div>
                   <div>
-                    <h3 className="text-2xl font-bold text-white">Contract X-Ray</h3>
+                    <h3 className="text-2xl font-bold text-white">Rx PBM Defense Contract X-Ray</h3>
                     <p className="text-sm text-gray-400">One-time forensic analysis</p>
                   </div>
                 </div>
                 
                 <div className="mb-8">
                   <div className="flex items-baseline gap-2 mb-2">
-                    <span className="text-5xl font-bold text-white">$12K</span>
-                    <span className="text-gray-400">- $18K</span>
+                    <span className="text-5xl font-bold text-white">$58K</span>
                   </div>
-                  <p className="text-sm text-gray-400">Based on plan size & complexity</p>
+                  <p className="text-sm text-gray-400">Complete 15-provision contract analysis</p>
                 </div>
 
                 <div className="space-y-3 mb-8">
@@ -111,17 +110,20 @@ export default function PricingPage() {
                     <Building2 className="w-6 h-6 text-purple-400" />
                   </div>
                   <div>
-                    <h3 className="text-2xl font-bold text-white">Active Monitoring</h3>
-                    <p className="text-sm text-gray-400">Contract X-Ray + ongoing protection</p>
+                    <h3 className="text-2xl font-bold text-white">Monthly Monitoring & RFP Navigation</h3>
+                    <p className="text-sm text-gray-400">Ongoing protection + RFP support</p>
                   </div>
                 </div>
                 
                 <div className="mb-8">
                   <div className="flex items-baseline gap-2 mb-2">
-                    <span className="text-5xl font-bold text-white">$8K</span>
-                    <span className="text-gray-400">/ year</span>
+                    <span className="text-gray-400 text-lg">Starting at</span>
                   </div>
-                  <p className="text-sm text-gray-400">After initial X-Ray engagement</p>
+                  <div className="flex items-baseline gap-2 mb-2">
+                    <span className="text-5xl font-bold text-white">$3K</span>
+                    <span className="text-gray-400">/ month</span>
+                  </div>
+                  <p className="text-sm text-gray-400">After initial Contract X-Ray engagement</p>
                 </div>
 
                 <div className="space-y-3 mb-8">
@@ -148,6 +150,10 @@ export default function PricingPage() {
                   <div className="flex items-start gap-3">
                     <Check className="w-5 h-5 text-emerald-400 flex-shrink-0 mt-0.5" />
                     <div className="text-sm text-gray-300">RFP support & vendor comparison</div>
+                  </div>
+                  <div className="flex items-start gap-3">
+                    <Check className="w-5 h-5 text-emerald-400 flex-shrink-0 mt-0.5" />
+                    <div className="text-sm text-gray-300">PBM RFP navigation & strategy</div>
                   </div>
                   <div className="flex items-start gap-3">
                     <Check className="w-5 h-5 text-emerald-400 flex-shrink-0 mt-0.5" />
@@ -180,13 +186,18 @@ export default function PricingPage() {
                 
                 <div className="mb-8">
                   <div className="flex items-baseline gap-2 mb-2">
-                    <span className="text-5xl font-bold text-white">20%</span>
+                    <span className="text-5xl font-bold text-white">0%</span>
                     <span className="text-gray-400">commission</span>
                   </div>
-                  <p className="text-sm text-gray-400">Recurring on all referrals</p>
+                  <p className="text-sm text-amber-400 font-medium">Until Kincaid IQ Broker Training is complete</p>
+                  <p className="text-xs text-gray-500 mt-1">Then 20% recurring on all referrals</p>
                 </div>
 
                 <div className="space-y-3 mb-8">
+                  <div className="flex items-start gap-3">
+                    <Check className="w-5 h-5 text-emerald-400 flex-shrink-0 mt-0.5" />
+                    <div className="text-sm text-gray-300">Complete Kincaid IQ Broker Training required</div>
+                  </div>
                   <div className="flex items-start gap-3">
                     <Check className="w-5 h-5 text-emerald-400 flex-shrink-0 mt-0.5" />
                     <div className="text-sm text-gray-300">White-label co-branded reports</div>
@@ -209,11 +220,11 @@ export default function PricingPage() {
                   </div>
                   <div className="flex items-start gap-3">
                     <Check className="w-5 h-5 text-emerald-400 flex-shrink-0 mt-0.5" />
-                    <div className="text-sm text-gray-300">$3K commission per engagement</div>
+                    <div className="text-sm text-gray-300">$11.6K commission per X-Ray engagement (after training)</div>
                   </div>
                   <div className="flex items-start gap-3">
                     <Check className="w-5 h-5 text-emerald-400 flex-shrink-0 mt-0.5" />
-                    <div className="text-sm text-gray-300">$1.6K/year recurring per client</div>
+                    <div className="text-sm text-gray-300">$600/month recurring per client (after training)</div>
                   </div>
                   <div className="flex items-start gap-3">
                     <Check className="w-5 h-5 text-emerald-400 flex-shrink-0 mt-0.5" />

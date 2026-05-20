@@ -1,12 +1,33 @@
+import Head from "next/head";
 import { motion, AnimatePresence } from "framer-motion";
 import Link from "next/link";
-import { Shield, TrendingUp, AlertTriangle, BarChart3, Users, FileText, CheckCircle2, ArrowRight, Target, Zap, Brain, Database, Activity, PieChart, X, ChevronRight } from "lucide-react";
-import { SEO } from "@/components/SEO";
+import { SiteFooter } from "@/components/site/SiteFooter";
 import Nav from "@/components/Nav";
+import {
+  Shield,
+  AlertTriangle,
+  TrendingUp,
+  Activity,
+  Target,
+  BarChart3,
+  CheckCircle2,
+  ArrowRight,
+  DollarSign,
+  FileText,
+  Users,
+  Clock,
+  Zap,
+  Brain,
+  Database,
+  PieChart,
+  X,
+  ChevronRight
+} from "lucide-react";
+import { SEO } from "@/components/SEO";
 import Footer from "@/components/Footer";
 import { useState } from "react";
 
-export default function RiskAssessment() {
+export default function RiskAssessmentPage() {
   const [activeTab, setActiveTab] = useState("modeling");
   const [selectedCapability, setSelectedCapability] = useState<number | null>(null);
 
@@ -266,6 +287,9 @@ export default function RiskAssessment() {
 
   return (
     <>
+      <Head>
+        <title>Risk Assessment - SiriusB iQ AI Data Sciences Lab</title>
+      </Head>
       <SEO
         title="Risk Assessment Solutions | Advanced Predictive Modeling | SiriusB iQ"
         description="Comprehensive risk assessment with 99.2% accuracy using advanced predictive modeling, portfolio analysis, and real-time monitoring for employee benefits."

@@ -1,11 +1,29 @@
+import Head from "next/head";
 import { motion } from "framer-motion";
 import Link from "next/link";
-import { TrendingUp, DollarSign, Calculator, BarChart3, Target, ArrowRight, Zap, Shield, Brain, PieChart, CheckCircle2, Activity } from "lucide-react";
-import { SEO } from "@/components/SEO";
+import { SiteFooter } from "@/components/site/SiteFooter";
 import Nav from "@/components/Nav";
-import Footer from "@/components/Footer";
+import {
+  Calculator,
+  TrendingUp,
+  BarChart3,
+  Shield,
+  CheckCircle2,
+  ArrowRight,
+  DollarSign,
+  Users,
+  Activity,
+  Target,
+  FileText,
+  AlertTriangle,
+  Zap,
+  Brain,
+  PieChart,
+  Target,
+} from "lucide-react";
+import { SEO } from "@/components/SEO";
 
-export default function PremiumCalculation() {
+export default function PremiumCalculationPage() {
   const pricingFactors = [
     {
       category: "Claims Experience",
@@ -93,6 +111,9 @@ export default function PremiumCalculation() {
 
   return (
     <>
+      <Head>
+        <title>Premium Calculation - SiriusB iQ AI Data Sciences Lab</title>
+      </Head>
       <SEO
         title="Premium Calculation & Pricing Optimization | SiriusB iQ"
         description="Intelligent premium calculation with 98.7% pricing accuracy using advanced actuarial techniques, predictive analytics, and dynamic rate optimization."

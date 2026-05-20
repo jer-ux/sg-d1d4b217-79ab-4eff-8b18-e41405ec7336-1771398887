@@ -1,11 +1,12 @@
 import { Suspense } from "react";
 import Head from "next/head";
 import { motion } from "framer-motion";
-import { Play, Target, Clock, CheckCircle2, Shield, TrendingUp, Award, Zap } from "lucide-react";
+import { Play, Target, Clock, CheckCircle2, Shield, TrendingUp, Award, Zap, DollarSign, BarChart3, ArrowRight, Users, Globe } from "lucide-react";
 import Nav from "@/components/Nav";
 import Footer from "@/components/Footer";
 import Link from "next/link";
 import dynamic from "next/dynamic";
+import { SiteFooter } from "@/components/site/SiteFooter";
 
 // Lazy load 3D components with loading fallbacks
 // logic: dynamic() handles the code bundle loading
@@ -98,7 +99,7 @@ export default function CapitalMarketsPage() {
   return (
     <>
       <Head>
-        <title>Capital Markets & Investors | SiriusB iQ</title>
+        <title>Capital Markets - SiriusB iQ AI Data Sciences Lab</title>
         <meta name="description" content="Reduce uncertainty. Underwrite value with evidence receipts, controlled ledgers, and repeatable realization discipline." />
       </Head>
 

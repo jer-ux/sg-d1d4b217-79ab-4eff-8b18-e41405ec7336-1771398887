@@ -1,5 +1,7 @@
 import { useState } from "react";
 import Head from "next/head";
+import { motion } from "framer-motion";
+import Link from "next/link";
 import { Activity, TrendingDown, Shield, Target, AlertTriangle } from "lucide-react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -11,6 +13,7 @@ import { ContractComplianceScorecard } from "@/components/kincaid-iq/ContractCom
 import { ActionableStrategies } from "@/components/kincaid-iq/ActionableStrategies";
 import { SiteHeader } from "@/components/site/SiteHeader";
 import { SiteFooter } from "@/components/site/SiteFooter";
+import Nav from "@/components/Nav";
 import { analyzeRxClaims } from "@/lib/kincaid-iq/rxAnalysis";
 import { generateMockRxClaims, getNADACPriceMap, MOCK_CONTRACT_TERMS } from "@/lib/kincaid-iq/nadacBenchmark";
 import type { RxClaim, ExecutiveReport } from "@/lib/kincaid-iq/types";
@@ -57,12 +60,14 @@ export default function KincaidIQPage() {
   return (
     <>
       <Head>
-        <title>Kincaid IQ - Fiduciary-Grade Rx Claims Intelligence | SiriusB iQ</title>
+        <title>Kincaid IQ - SiriusB iQ AI Data Sciences Lab</title>
         <meta
           name="description"
           content="PE-grade pharmacy benefit analysis. DRAP reconstruction, spread detection, contract compliance scoring, and EBITDA impact quantification."
         />
       </Head>
+
+      <Nav />
 
       <div className="min-h-screen bg-gradient-to-b from-slate-950 via-slate-900 to-slate-950">
         <SiteHeader />

@@ -7,6 +7,7 @@ import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import Link from "next/link";
 import { Shield, TrendingUp, AlertTriangle, DollarSign, FileText, BarChart3, Target, Activity, Lock, Award, CheckCircle2, ArrowRight, Zap } from "lucide-react";
+import Nav from "@/components/Nav";
 
 export default function EBITDADefensePage() {
   return (
@@ -509,6 +510,7 @@ export default function EBITDADefensePage() {
 
         <SiteFooter />
       </div>
+      <Nav />
     </>
   );
 }

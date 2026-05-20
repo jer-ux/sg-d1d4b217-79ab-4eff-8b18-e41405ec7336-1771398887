@@ -19,6 +19,7 @@ import {
   CheckCircle2, Download, Eye, Clock, DollarSign, Users,
   BarChart3, Zap, FileCheck, X, Loader2, ArrowRight, FileSearch, Scale
 } from "lucide-react";
+import Nav from "@/components/Nav";
 
 export default function ContractXRayPage() {
   const router = useRouter();
@@ -157,6 +158,8 @@ export default function ContractXRayPage() {
         <title>Rx Defense: Contract X-Ray | Forensic PBM Contract Intelligence</title>
         <meta name="description" content="Your PBM contract is a crime scene. We have the forensics. Actuarially-anchored, evidence-spine-governed PBM contract forensic engine." />
       </Head>
+
+      <Nav />
 
       <div className="min-h-screen bg-slate-950 text-white">
         <SiteHeader />

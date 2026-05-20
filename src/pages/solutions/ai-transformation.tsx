@@ -28,6 +28,7 @@ import {
   Bot,
   Cpu
 } from "lucide-react";
+import Nav from "@/components/Nav";
 
 export default function AITransformationPage() {
   return (
@@ -38,6 +39,7 @@ export default function AITransformationPage() {
         image="/slide04_architecture.png"
       />
       <SiteHeader />
+      <Nav />
 
       {/* Hero Section */}
       <section className="relative bg-gradient-to-br from-slate-950 via-blue-950 to-slate-900 text-white pt-32 pb-20 overflow-hidden">

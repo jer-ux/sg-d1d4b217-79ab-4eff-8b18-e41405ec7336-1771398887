@@ -206,8 +206,8 @@ export async function scheduleMonitoring() {
     
     // Save alerts to database
     if (renewalAlerts.length > 0) {
-      await supabase.from("contract_alerts").insert(
-        renewalAlerts.map(alert => ({
+      await (supabase as any).from("contract_alerts").insert(
+        renewalAlerts.map((alert: MonitoringAlert) => ({
           id: alert.id,
           contract_id: alert.contractId,
           type: alert.type,

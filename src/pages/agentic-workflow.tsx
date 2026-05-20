@@ -4,6 +4,7 @@ import { motion, useScroll, useTransform, AnimatePresence } from "framer-motion"
 import Footer from "@/components/Footer";
 import { SEO } from "@/components/SEO";
 import { InteractiveStageCard } from "@/components/agentic/InteractiveStageCard";
+import Nav from "@/components/Nav";
 import {
   ArrowRight,
   CheckCircle2,

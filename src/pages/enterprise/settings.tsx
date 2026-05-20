@@ -10,6 +10,7 @@ import { Switch } from "@/components/ui/switch";
 import { Badge } from "@/components/ui/badge";
 import { EnterpriseHeader } from "@/components/enterprise/EnterpriseHeader";
 import { SiteFooter } from "@/components/site/SiteFooter";
+import Nav from "@/components/Nav";
 import { 
   Palette, 
   Key, 
@@ -177,6 +178,7 @@ export default function EnterpriseSettings() {
 
       <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-slate-100">
         <EnterpriseHeader />
+        <Nav />
 
         <main className="container mx-auto px-4 py-8 max-w-[1200px]">
           <div className="mb-8">

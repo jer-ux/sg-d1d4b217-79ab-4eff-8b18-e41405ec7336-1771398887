@@ -6,6 +6,7 @@ import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
 import { EnterpriseHeader } from "@/components/enterprise/EnterpriseHeader";
 import { SiteFooter } from "@/components/site/SiteFooter";
+import Nav from "@/components/Nav";
 import { 
   Search,
   Star,
@@ -229,6 +230,7 @@ export default function EnterpriseMarketplace() {
 
       <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-slate-100">
         <EnterpriseHeader />
+        <Nav />
 
         <main className="container mx-auto px-4 py-8 max-w-[1400px]">
           <div className="mb-8">

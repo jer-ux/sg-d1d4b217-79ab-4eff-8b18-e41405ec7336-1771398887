@@ -7,11 +7,12 @@ import { SiteFooter } from "@/components/site/SiteFooter";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Building2, TrendingUp, Shield, LineChart, Users, Target, Briefcase, PieChart, Activity, FileCheck, ArrowRight, CheckCircle2, Sparkles, Zap } from "lucide-react";
+import { Building2, TrendingUp, Shield, LineChart, Users, Target, Briefcase, PieChart, Activity, FileCheck, ArrowRight, CheckCircle2, Sparkles, Zap, Globe, Award, BarChart3 } from "lucide-react";
 import Link from "next/link";
 import { motion, useScroll, useTransform, useInView } from "framer-motion";
 import { PremiumBackground } from "@/components/premium/PremiumBackground";
 import { Interactive3DCard } from "@/components/premium/Interactive3DCard";
+import Nav from "@/components/Nav";
 
 function AnimatedCounter({ value, suffix = "", prefix = "", duration = 2 }: { value: number | string; suffix?: string; prefix?: string; duration?: number }) {
   const ref = useRef(null);
@@ -124,6 +125,7 @@ export default function FamilyOfficesPage() {
       />
       <div className="flex min-h-screen flex-col bg-gradient-to-br from-slate-950 via-purple-950 to-slate-900">
         <SiteHeader />
+        <Nav />
         
         <main className="flex-1">
           {/* Hero Section with Premium Background */}

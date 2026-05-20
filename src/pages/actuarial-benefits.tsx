@@ -1,9 +1,11 @@
+import Head from "next/head";
 import { motion, useMotionValue, useTransform, AnimatePresence } from "framer-motion";
 import Link from "next/link";
-import { Shield, TrendingUp, Heart, BarChart3, Users, FileText, DollarSign, Layers, PieChart, Activity, CheckCircle2, Sparkles, ArrowRight, Zap, Target, Briefcase, Award, Crown, AlertCircle, CheckCircle, ChevronRight, X, TrendingDown, Users2, Building2, LineChart, DollarSign as DollarSignIcon, Brain, Database, Globe } from "lucide-react";
+import { Shield, TrendingUp, Heart, BarChart3, Users, FileText, DollarSign, Layers, PieChart, Activity, CheckCircle2, Sparkles, ArrowRight, Zap, Target, Briefcase, Award, Crown, AlertCircle, CheckCircle, ChevronRight, X, TrendingDown, Users2, Building2, LineChart, DollarSign as DollarSignIcon, Brain, Database, Globe, Calculator, Eye, AlertTriangle } from "lucide-react";
 import { SEO } from "@/components/SEO";
 import Nav from "@/components/Nav";
 import Footer from "@/components/Footer";
+import { SiteFooter } from "@/components/site/SiteFooter";
 import { useState } from "react";
 import React from "react";
 import dynamic from "next/dynamic";
@@ -1183,7 +1185,7 @@ function SolutionDetailModal({ solution, onClose }: { solution: any; onClose: ()
   );
 }
 
-export default function ActuarialBenefits() {
+export default function ActuarialBenefitsPage() {
   const [selectedSolution, setSelectedSolution] = useState<any>(null);
 
   React.useEffect(() => {
@@ -1196,10 +1198,9 @@ export default function ActuarialBenefits() {
 
   return (
     <>
-      <SEO
-        title="Actuarial Employee Benefits Consulting | SiriusB iQ"
-        description="Premium actuarial consulting services for employee benefits with AI-powered analytics, risk assessment, and compliance solutions."
-      />
+      <Head>
+        <title>Actuarial Benefits Analytics - SiriusB iQ AI Data Sciences Lab</title>
+      </Head>
       <div className="min-h-screen bg-black text-white relative overflow-hidden">
         <div className="fixed inset-0 pointer-events-none">
           <div className="absolute inset-0 opacity-10"

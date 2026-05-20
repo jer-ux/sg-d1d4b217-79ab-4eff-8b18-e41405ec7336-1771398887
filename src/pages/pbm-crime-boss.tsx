@@ -3,11 +3,30 @@
 import React, { useState } from "react";
 import Head from "next/head";
 import { motion } from "framer-motion";
-import { AlertTriangle, Shield, TrendingUp, ExternalLink, Linkedin, FileText, Target, Eye, X, ChevronLeft, ChevronRight, Calculator, DollarSign } from "lucide-react";
+import { SiteFooter } from "@/components/site/SiteFooter";
 import Nav from "@/components/Nav";
 import Footer from "@/components/Footer";
 import { SEO } from "@/components/SEO";
 import Link from "next/link";
+import {
+  AlertTriangle,
+  DollarSign,
+  TrendingDown,
+  Shield,
+  Eye,
+  FileText,
+  Users,
+  Target,
+  BarChart3,
+  Zap,
+  ExternalLink,
+  Linkedin,
+  X,
+  ChevronLeft,
+  ChevronRight,
+  Calculator,
+  TrendingUp
+} from "lucide-react";
 
 const publications = [
   {
@@ -108,6 +127,9 @@ export default function PBMCrimeBossPage() {
 
   return (
     <>
+      <Head>
+        <title>PBM Crime Boss - The $7.3 Billion Question | SiriusB iQ</title>
+      </Head>
       <SEO
         title="PBM Crime Boss - LinkedIn Publication Series | SiriusB iQ"
         description="An investigative series exposing systematic exploitation in pharmacy benefit management. Follow the evidence trail on LinkedIn."

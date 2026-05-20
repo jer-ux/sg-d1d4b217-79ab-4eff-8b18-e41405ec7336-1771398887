@@ -195,7 +195,7 @@ const teamMembers = [
   },
   {
     name: "Mike Hamann",
-    role: "Board Member - Public Service & Fiscal Leadership",
+    role: "Board Director",
     image: "/Hamann_Michael.jpg",
     linkedin: "https://www.linkedin.com/in/mike-hamann-33274023/",
     bio: "Mike Hamann brings decades of distinguished public service and fiscal leadership to SiriusB iQ. As former Indiana State Representative and Budget Director, he has proven expertise in legislative strategy, government operations, and financial stewardship at the highest levels of state government.",

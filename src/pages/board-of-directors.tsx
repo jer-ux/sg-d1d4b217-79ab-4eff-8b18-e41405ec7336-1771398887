@@ -55,7 +55,7 @@ const boardMembers = [
   },
   {
     name: "Mike Hamann",
-    title: "Board Member - Public Service & Fiscal Leadership",
+    title: "Board Director",
     image: "/1517039361817_1_.jpeg",
     linkedin: "https://www.linkedin.com/in/mike-hamann-33274023/",
     bio: "Mike Hamann's career in public service is defined by a deep commitment to the residents of St. Joseph County. He served two terms as County Auditor, acting as the county's chief financial officer and fiduciary steward until the end of 2022.",

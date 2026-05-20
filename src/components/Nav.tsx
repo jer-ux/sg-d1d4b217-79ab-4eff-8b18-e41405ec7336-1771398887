@@ -31,24 +31,21 @@ export default function Nav() {
 
           {/* Desktop Navigation */}
           <div className="hidden md:flex md:items-center md:space-x-1">
-            {/* Company Menu */}
+            {/* Company Menu - NOW CLICK-BASED */}
             <div className="relative">
               <button
-                onMouseEnter={() => setCompanyDropdownOpen(true)}
-                onMouseLeave={() => setCompanyDropdownOpen(false)}
-                className="px-4 py-2 text-gray-300 hover:text-white transition-colors rounded-lg hover:bg-white/5"
+                onClick={() => setCompanyDropdownOpen(!companyDropdownOpen)}
+                className="flex items-center gap-2 px-4 py-2 text-gray-300 hover:text-white transition-colors rounded-lg hover:bg-white/5"
               >
                 Company
+                <ChevronDown className={`w-3 h-3 transition-transform ${companyDropdownOpen ? "rotate-180" : ""}`} />
               </button>
               {companyDropdownOpen && (
-                <div
-                  onMouseEnter={() => setCompanyDropdownOpen(true)}
-                  onMouseLeave={() => setCompanyDropdownOpen(false)}
-                  className="absolute top-full left-0 mt-2 w-64 bg-gray-900/95 backdrop-blur-xl rounded-xl border border-gray-700/50 shadow-xl overflow-hidden z-[210]"
-                >
+                <div className="absolute top-full left-0 mt-2 w-64 bg-gray-900/95 backdrop-blur-xl rounded-xl border border-gray-700/50 shadow-xl overflow-hidden z-[210]">
                   <div className="p-2">
                     <Link
                       href="/board-of-directors"
+                      onClick={() => setCompanyDropdownOpen(false)}
                       className="block px-4 py-3 text-gray-300 hover:text-white hover:bg-amber-500/10 rounded-lg transition-colors duration-150"
                     >
                       <div className="font-medium">Board of Directors</div>
@@ -56,6 +53,7 @@ export default function Nav() {
                     </Link>
                     <Link
                       href="/investor"
+                      onClick={() => setCompanyDropdownOpen(false)}
                       className="block px-4 py-3 text-gray-300 hover:text-white hover:bg-amber-500/10 rounded-lg transition-colors duration-150"
                     >
                       <div className="font-medium">Investor Groups</div>
@@ -63,6 +61,7 @@ export default function Nav() {
                     </Link>
                     <Link
                       href="/capital-markets"
+                      onClick={() => setCompanyDropdownOpen(false)}
                       className="block px-4 py-3 text-gray-300 hover:text-white hover:bg-amber-500/10 rounded-lg transition-colors duration-150"
                     >
                       <div className="font-medium">Capital Markets</div>
@@ -70,6 +69,7 @@ export default function Nav() {
                     </Link>
                     <Link
                       href="/family-offices"
+                      onClick={() => setCompanyDropdownOpen(false)}
                       className="block px-4 py-3 text-gray-300 hover:text-white hover:bg-amber-500/10 rounded-lg transition-colors duration-150"
                     >
                       <div className="font-medium">Family Offices</div>
@@ -77,6 +77,7 @@ export default function Nav() {
                     </Link>
                     <Link
                       href="/ma-vc-pe"
+                      onClick={() => setCompanyDropdownOpen(false)}
                       className="block px-4 py-3 text-gray-300 hover:text-white hover:bg-amber-500/10 rounded-lg transition-colors duration-150"
                     >
                       <div className="font-medium">M&A / VC / PE</div>
@@ -84,6 +85,7 @@ export default function Nav() {
                     </Link>
                     <Link
                       href="/pbm-crime-boss"
+                      onClick={() => setCompanyDropdownOpen(false)}
                       className="block px-4 py-3 text-gray-300 hover:text-white hover:bg-rose-500/10 rounded-lg transition-colors duration-150 border-t border-gray-700/50 mt-2 pt-3"
                     >
                       <div className="font-medium flex items-center gap-2">

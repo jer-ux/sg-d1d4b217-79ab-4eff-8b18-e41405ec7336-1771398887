@@ -17,6 +17,7 @@ import { SiteHeader } from "@/components/site/SiteHeader";
 import { SiteFooter } from "@/components/site/SiteFooter";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
+import Nav from "@/components/Nav";
 
 const provisions = [
   {

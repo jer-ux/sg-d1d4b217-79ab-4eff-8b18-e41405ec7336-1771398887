@@ -13,6 +13,8 @@ export default function Nav() {
   const [actuarialDropdownOpen, setActuarialDropdownOpen] = useState(false);
   const [agenticDropdownOpen, setAgenticDropdownOpen] = useState(false);
   const [platformDropdownOpen, setPlatformDropdownOpen] = useState(false);
+  const [toolsDropdownOpen, setToolsDropdownOpen] = useState(false);
+  const [personasDropdownOpen, setPersonasDropdownOpen] = useState(false);
 
   return (
     <nav className="fixed top-0 z-[200] w-full border-b border-white/10 bg-black/80 backdrop-blur-xl">
@@ -260,16 +262,16 @@ export default function Nav() {
             {/* Tools Menu */}
             <div className="relative">
               <button
-                onMouseEnter={() => setPlatformDropdownOpen(true)}
-                onMouseLeave={() => setPlatformDropdownOpen(false)}
+                onMouseEnter={() => setToolsDropdownOpen(true)}
+                onMouseLeave={() => setToolsDropdownOpen(false)}
                 className="px-4 py-2 text-gray-300 hover:text-white transition-colors rounded-lg hover:bg-white/5"
               >
                 Tools
               </button>
-              {platformDropdownOpen && (
+              {toolsDropdownOpen && (
                 <div
-                  onMouseEnter={() => setPlatformDropdownOpen(true)}
-                  onMouseLeave={() => setPlatformDropdownOpen(false)}
+                  onMouseEnter={() => setToolsDropdownOpen(true)}
+                  onMouseLeave={() => setToolsDropdownOpen(false)}
                   className="absolute top-full left-0 mt-2 w-72 bg-gray-900/95 backdrop-blur-xl rounded-xl border border-purple-700/50 shadow-xl overflow-hidden z-[210]"
                 >
                   <div className="p-2">
@@ -301,16 +303,16 @@ export default function Nav() {
             {/* Personas Menu */}
             <div className="relative">
               <button
-                onMouseEnter={() => setAgenticDropdownOpen(true)}
-                onMouseLeave={() => setAgenticDropdownOpen(false)}
+                onMouseEnter={() => setPersonasDropdownOpen(true)}
+                onMouseLeave={() => setPersonasDropdownOpen(false)}
                 className="px-4 py-2 text-gray-300 hover:text-white transition-colors rounded-lg hover:bg-white/5"
               >
                 Personas
               </button>
-              {agenticDropdownOpen && (
+              {personasDropdownOpen && (
                 <div
-                  onMouseEnter={() => setAgenticDropdownOpen(true)}
-                  onMouseLeave={() => setAgenticDropdownOpen(false)}
+                  onMouseEnter={() => setPersonasDropdownOpen(true)}
+                  onMouseLeave={() => setPersonasDropdownOpen(false)}
                   className="absolute top-full left-0 mt-2 w-72 bg-gray-900/95 backdrop-blur-xl rounded-xl border border-gray-700/50 shadow-xl overflow-hidden z-[210]"
                 >
                   <div className="p-2">
@@ -671,13 +673,13 @@ export default function Nav() {
             {/* Tools Dropdown - Mobile */}
             <div>
               <button
-                onClick={() => setPlatformDropdownOpen(!platformDropdownOpen)}
+                onClick={() => setToolsDropdownOpen(!toolsDropdownOpen)}
                 className="flex items-center justify-between w-full px-4 py-3 text-gray-300 hover:text-white hover:bg-white/5 rounded-lg transition-colors"
               >
                 <span className="font-medium">Tools</span>
-                <ChevronDown className={`w-4 h-4 transition-transform ${platformDropdownOpen ? "rotate-180" : ""}`} />
+                <ChevronDown className={`w-4 h-4 transition-transform ${toolsDropdownOpen ? "rotate-180" : ""}`} />
               </button>
-              {platformDropdownOpen && (
+              {toolsDropdownOpen && (
                 <div className="ml-4 mt-2 space-y-1">
                   <Link href="/tools/savings-calculator" className="block px-4 py-2 text-sm text-gray-400 hover:text-white hover:bg-purple-500/10 rounded-lg transition-colors">
                     PBM Savings Calculator
@@ -692,13 +694,13 @@ export default function Nav() {
             {/* Personas Dropdown - Mobile */}
             <div>
               <button
-                onClick={() => setAgenticDropdownOpen(!agenticDropdownOpen)}
+                onClick={() => setPersonasDropdownOpen(!personasDropdownOpen)}
                 className="flex items-center justify-between w-full px-4 py-3 text-gray-300 hover:text-white hover:bg-white/5 rounded-lg transition-colors"
               >
                 <span className="font-medium">Personas</span>
-                <ChevronDown className={`w-4 h-4 transition-transform ${agenticDropdownOpen ? "rotate-180" : ""}`} />
+                <ChevronDown className={`w-4 h-4 transition-transform ${personasDropdownOpen ? "rotate-180" : ""}`} />
               </button>
-              {agenticDropdownOpen && (
+              {personasDropdownOpen && (
                 <div className="ml-4 mt-2 space-y-1">
                   <Link href="/personas/cfo" className="block px-4 py-2 text-sm text-gray-400 hover:text-white hover:bg-emerald-500/10 rounded-lg transition-colors">
                     For CFOs
@@ -716,16 +718,16 @@ export default function Nav() {
               )}
             </div>
 
-            {/* Actuarial Benefits Dropdown - Mobile */}
+            {/* Platform Dropdown - Mobile */}
             <div>
               <button
-                onClick={() => setActuarialDropdownOpen(!actuarialDropdownOpen)}
+                onClick={() => setPlatformDropdownOpen(!platformDropdownOpen)}
                 className="flex items-center justify-between w-full px-4 py-3 text-gray-300 hover:text-white hover:bg-white/5 rounded-lg transition-colors"
               >
                 <span className="font-medium">Platform</span>
-                <ChevronDown className={`w-4 h-4 transition-transform ${actuarialDropdownOpen ? "rotate-180" : ""}`} />
+                <ChevronDown className={`w-4 h-4 transition-transform ${platformDropdownOpen ? "rotate-180" : ""}`} />
               </button>
-              {actuarialDropdownOpen && (
+              {platformDropdownOpen && (
                 <div className="ml-4 mt-2 space-y-1">
                   <Link href="/kincaid-iq" className="block px-4 py-2 text-sm text-gray-400 hover:text-white hover:bg-white/5 rounded-lg transition-colors">
                     Kincaid IQ
@@ -832,6 +834,11 @@ export default function Nav() {
                 </div>
               )}
             </div>
+
+            {/* Pricing Link - Mobile */}
+            <Link href="/pricing" className="block px-4 py-3 text-gray-300 hover:text-white hover:bg-white/5 rounded-lg transition-colors">
+              Pricing
+            </Link>
 
             <Link
               href="/request-demo"

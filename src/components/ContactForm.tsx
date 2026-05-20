@@ -55,42 +55,63 @@ export function ContactForm({
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     
-    // Validation
-    if (!formData.full_name.trim()) {
-      setErrorMessage("Please enter your name");
-      setSubmitStatus("error");
-      return;
-    }
-
-    if (!formData.email.trim() || !validateEmail(formData.email)) {
-      setErrorMessage("Please enter a valid email address");
-      setSubmitStatus("error");
-      return;
-    }
-
-    if (!formData.message.trim()) {
-      setErrorMessage("Please enter a message");
-      setSubmitStatus("error");
-      return;
-    }
-
+    // Reset states
     setIsSubmitting(true);
-    setSubmitStatus("idle");
+    setSuccessMessage("");
     setErrorMessage("");
 
-    const result = await submitContact({
-      ...formData,
-      metadata: {
-        user_agent: navigator.userAgent,
-        referrer: document.referrer,
-        submitted_at: new Date().toISOString(),
-      },
-    });
+    // Validate
+    const newErrors: FormErrors = {};
+    
+    if (!formData.full_name.trim()) {
+      newErrors.full_name = "Name is required";
+    }
+    
+    if (!formData.email.trim()) {
+      newErrors.email = "Email is required";
+    } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
+      newErrors.email = "Please enter a valid email address";
+    }
+    
+    if (!formData.message.trim()) {
+      newErrors.message = "Message is required";
+    }
 
-    setIsSubmitting(false);
+    if (Object.keys(newErrors).length > 0) {
+      setErrors(newErrors);
+      setIsSubmitting(false);
+      return;
+    }
 
-    if (result.success) {
-      setSubmitStatus("success");
+    try {
+      // Gather metadata
+      const metadata = {
+        userAgent: typeof window !== "undefined" ? window.navigator.userAgent : "",
+        referrer: typeof document !== "undefined" ? document.referrer : "",
+        timestamp: new Date().toISOString(),
+      };
+
+      // Call API endpoint that saves to Supabase AND sends to Lightfield CRM
+      const response = await fetch("/api/contact/submit", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          ...formData,
+          source,
+          metadata,
+        }),
+      });
+
+      const result = await response.json();
+
+      if (!response.ok || !result.success) {
+        throw new Error(result.error || "Failed to submit form");
+      }
+
+      // Success!
+      setSuccessMessage(successMessage);
       setFormData({
         full_name: "",
         email: "",
@@ -98,19 +119,21 @@ export function ContactForm({
         company: "",
         job_title: "",
         message: "",
-        source,
       });
+      setErrors({});
       
       if (onSuccess) {
-        onSuccess();
+        onSuccess(result.data);
       }
-    } else {
-      setSubmitStatus("error");
-      setErrorMessage(result.error || "Failed to submit. Please try again.");
+    } catch (error) {
+      const errorMsg = error instanceof Error ? error.message : "An error occurred. Please try again.";
+      setErrorMessage(errorMsg);
       
       if (onError) {
-        onError(result.error || "Submission failed");
+        onError(errorMsg);
       }
+    } finally {
+      setIsSubmitting(false);
     }
   };
 

@@ -12,7 +12,7 @@ export interface ContactFormData {
   job_title?: string;
   message: string;
   source?: string;
-  metadata?: Record<string, unknown>;
+  metadata?: Record<string, any>;
 }
 
 /**
@@ -33,7 +33,7 @@ export async function submitContact(data: ContactFormData): Promise<{
       message: data.message,
       source: data.source || "website",
       status: "new",
-      metadata: data.metadata || {},
+      metadata: (data.metadata || {}) as any,
     };
 
     const { data: contact, error } = await supabase

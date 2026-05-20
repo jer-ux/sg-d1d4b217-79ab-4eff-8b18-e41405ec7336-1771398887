@@ -203,6 +203,25 @@ export default function HomePage() {
                     </motion.span>
                   </motion.h1>
 
+                  {/* Fiduciary Callout */}
+                  <motion.div
+                    className="rounded-xl sm:rounded-2xl border border-amber-500/40 bg-gradient-to-br from-amber-950/40 via-black/90 to-amber-900/20 px-4 sm:px-6 py-4 sm:py-5 backdrop-blur-sm shadow-lg shadow-amber-500/20"
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.6, delay: 0.3 }}
+                    whileHover={{ scale: 1.02, boxShadow: "0 0 40px rgba(251, 191, 36, 0.3)" }}
+                    style={{ transform: "translateZ(25px)" }}
+                  >
+                    <div className="flex items-start gap-3">
+                      <div className="mt-0.5 flex h-8 w-8 sm:h-10 sm:w-10 shrink-0 items-center justify-center rounded-lg bg-amber-500/20">
+                        <Shield className="h-4 w-4 sm:h-5 sm:w-5 text-amber-400" />
+                      </div>
+                      <p className="text-sm sm:text-base md:text-lg text-amber-100 leading-relaxed font-medium">
+                        You are legally required to have a fiduciary for your 401(k) plan. <span className="font-bold bg-gradient-to-r from-amber-300 to-white bg-clip-text text-transparent">Why would your PBM be any different?</span>
+                      </p>
+                    </div>
+                  </motion.div>
+
                   <motion.p 
                     className="text-base sm:text-lg md:text-xl text-gray-300 mb-6 sm:mb-8 leading-relaxed"
                     style={{ transform: "translateZ(20px)" }}

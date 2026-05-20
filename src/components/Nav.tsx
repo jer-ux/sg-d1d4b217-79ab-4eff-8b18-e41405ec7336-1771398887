@@ -13,7 +13,6 @@ export default function Nav() {
   const [actuarialDropdownOpen, setActuarialDropdownOpen] = useState(false);
   const [agenticDropdownOpen, setAgenticDropdownOpen] = useState(false);
   const [platformDropdownOpen, setPlatformDropdownOpen] = useState(false);
-  const [toolsDropdownOpen, setToolsDropdownOpen] = useState(false);
   const [focusAreasDropdownOpen, setFocusAreasDropdownOpen] = useState(false);
 
   return (
@@ -503,11 +502,6 @@ export default function Nav() {
               )}
             </div>
 
-            {/* Pricing Link - Desktop */}
-            <Link href="/pricing" className="px-4 py-2 text-gray-300 hover:text-white transition-colors rounded-lg hover:bg-white/5">
-              Pricing
-            </Link>
-
             <Link href="/request-demo">
               <Button className="bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600">
                 Contact Sales
@@ -775,11 +769,6 @@ export default function Nav() {
                 </div>
               )}
             </div>
-
-            {/* Pricing Link - Mobile */}
-            <Link href="/pricing" className="block px-4 py-3 text-gray-300 hover:text-white hover:bg-white/5 rounded-lg transition-colors">
-              Pricing
-            </Link>
 
             <Link
               href="/request-demo"

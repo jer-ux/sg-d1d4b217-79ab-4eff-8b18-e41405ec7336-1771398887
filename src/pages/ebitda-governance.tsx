@@ -4,6 +4,7 @@ import { motion } from "framer-motion";
 import Link from "next/link";
 import { SiteFooter } from "@/components/site/SiteFooter";
 import Nav from "@/components/Nav";
+import { SEO } from "@/components/SEO";
 import {
   Shield,
   TrendingUp,
@@ -16,7 +17,17 @@ import {
   Lock,
   Eye,
   Activity,
-  Award
+  Award,
+  ArrowRight,
+  AlertCircle,
+  Crown,
+  TrendingDown,
+  FileCheck,
+  Layers,
+  GitBranch,
+  Calculator,
+  Users,
+  Zap
 } from "lucide-react";
 
 const Badge = ({ children, icon: Icon, variant = "default" }: { children: React.ReactNode; icon?: React.ComponentType<{ className?: string }>; variant?: "default" | "success" | "warning" | "danger" }) => {

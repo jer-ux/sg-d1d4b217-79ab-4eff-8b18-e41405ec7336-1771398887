@@ -129,11 +129,11 @@ export function ContractHealthCheck() {
               />
               <label htmlFor="contract-upload">
                 <Button
-                  as="span"
+                  asChild
                   variant="outline"
                   className="border-purple-500/50 text-purple-300 hover:bg-purple-500/10 cursor-pointer"
                 >
-                  Select File
+                  <span>Select File</span>
                 </Button>
               </label>
             </div>

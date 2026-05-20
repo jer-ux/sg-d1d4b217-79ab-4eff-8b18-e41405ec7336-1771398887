@@ -190,7 +190,7 @@ export default function PricingPage() {
                     <span className="text-gray-400">commission</span>
                   </div>
                   <p className="text-sm text-amber-400 font-medium">Until Kincaid IQ Broker Training is complete</p>
-                  <p className="text-xs text-gray-500 mt-1">Then 20% recurring on all referrals</p>
+                  <p className="text-xs text-gray-500 mt-1">Then 30% recurring on all referrals</p>
                 </div>
 
                 <div className="space-y-3 mb-8">
@@ -220,11 +220,11 @@ export default function PricingPage() {
                   </div>
                   <div className="flex items-start gap-3">
                     <Check className="w-5 h-5 text-emerald-400 flex-shrink-0 mt-0.5" />
-                    <div className="text-sm text-gray-300">$11.6K commission per X-Ray engagement (after training)</div>
+                    <div className="text-sm text-gray-300">$17.4K commission per X-Ray engagement (30% of $58K)</div>
                   </div>
                   <div className="flex items-start gap-3">
                     <Check className="w-5 h-5 text-emerald-400 flex-shrink-0 mt-0.5" />
-                    <div className="text-sm text-gray-300">$600/month recurring per client (after training)</div>
+                    <div className="text-sm text-gray-300">$900/month recurring per client (30% of $3K)</div>
                   </div>
                   <div className="flex items-start gap-3">
                     <Check className="w-5 h-5 text-emerald-400 flex-shrink-0 mt-0.5" />

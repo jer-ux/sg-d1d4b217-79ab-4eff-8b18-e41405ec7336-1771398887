@@ -14,7 +14,7 @@ export default function Nav() {
   const [agenticDropdownOpen, setAgenticDropdownOpen] = useState(false);
   const [platformDropdownOpen, setPlatformDropdownOpen] = useState(false);
   const [toolsDropdownOpen, setToolsDropdownOpen] = useState(false);
-  const [personasDropdownOpen, setPersonasDropdownOpen] = useState(false);
+  const [focusAreasDropdownOpen, setFocusAreasDropdownOpen] = useState(false);
 
   return (
     <nav className="fixed top-0 z-[200] w-full border-b border-white/10 bg-black/80 backdrop-blur-xl">
@@ -303,19 +303,19 @@ export default function Nav() {
               )}
             </div>
 
-            {/* Personas Menu */}
+            {/* Focus Areas Menu */}
             <div className="relative">
               <button
-                onMouseEnter={() => setPersonasDropdownOpen(true)}
-                onMouseLeave={() => setPersonasDropdownOpen(false)}
+                onMouseEnter={() => setFocusAreasDropdownOpen(true)}
+                onMouseLeave={() => setFocusAreasDropdownOpen(false)}
                 className="px-4 py-2 text-gray-300 hover:text-white transition-colors rounded-lg hover:bg-white/5"
               >
-                Personas
+                Focus Areas
               </button>
-              {personasDropdownOpen && (
+              {focusAreasDropdownOpen && (
                 <div
-                  onMouseEnter={() => setPersonasDropdownOpen(true)}
-                  onMouseLeave={() => setPersonasDropdownOpen(false)}
+                  onMouseEnter={() => setFocusAreasDropdownOpen(true)}
+                  onMouseLeave={() => setFocusAreasDropdownOpen(false)}
                   className="absolute top-full left-0 mt-2 w-72 bg-gray-900/95 backdrop-blur-xl rounded-xl border border-gray-700/50 shadow-xl overflow-hidden z-[210]"
                 >
                   <div className="p-2">
@@ -694,16 +694,16 @@ export default function Nav() {
               )}
             </div>
 
-            {/* Personas Dropdown - Mobile */}
+            {/* Focus Areas Dropdown - Mobile */}
             <div>
               <button
-                onClick={() => setPersonasDropdownOpen(!personasDropdownOpen)}
+                onClick={() => setFocusAreasDropdownOpen(!focusAreasDropdownOpen)}
                 className="flex items-center justify-between w-full px-4 py-3 text-gray-300 hover:text-white hover:bg-white/5 rounded-lg transition-colors"
               >
-                <span className="font-medium">Personas</span>
-                <ChevronDown className={`w-4 h-4 transition-transform ${personasDropdownOpen ? "rotate-180" : ""}`} />
+                <span className="font-medium">Focus Areas</span>
+                <ChevronDown className={`w-4 h-4 transition-transform ${focusAreasDropdownOpen ? "rotate-180" : ""}`} />
               </button>
-              {personasDropdownOpen && (
+              {focusAreasDropdownOpen && (
                 <div className="ml-4 mt-2 space-y-1">
                   <Link href="/personas/cfo" className="block px-4 py-2 text-sm text-gray-400 hover:text-white hover:bg-emerald-500/10 rounded-lg transition-colors">
                     For CFOs

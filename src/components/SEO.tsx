@@ -9,12 +9,12 @@ interface SEOProps {
 
 // SEO elements that can be used in _document.tsx (returns JSX without Head wrapper)
 export function SEOElements({
-  title = "SiriusB iQ AI Data Sciences Lab | Enterprise Fiduciary Intelligence Platform",
+  title = "Kincaid IQ | Enterprise Fiduciary Intelligence Platform",
   description = "Transform benefits intelligence with algorithmic fiduciary governance. Real-time EBITDA impact tracking, AI-powered contract analysis, actuarial precision, and cryptographic audit trails. Trusted by Fortune 500 enterprises for healthcare cost optimization and compliance excellence.",
   image = "/og-image.png",
   url = "https://kincaidiq.ai",
 }: SEOProps) {
-  const siteName = "SiriusB iQ AI Data Sciences Lab";
+  const siteName = "Kincaid IQ";
   const fullImageUrl = image.startsWith('http') ? image : `${url}${image}`;
   
   return (
@@ -26,8 +26,8 @@ export function SEOElements({
       
       {/* Core SEO */}
       <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
-      <meta name="author" content="SiriusB iQ AI Data Sciences Lab" />
-      <meta name="publisher" content="SiriusB iQ AI Data Sciences Lab" />
+      <meta name="author" content="Kincaid IQ" />
+      <meta name="publisher" content="Kincaid IQ" />
       <meta name="keywords" content="AI benefits platform, fiduciary governance, PBM contract analysis, healthcare cost optimization, EBITDA impact tracking, actuarial intelligence, contract compliance, enterprise benefits, algorithmic governance, verified savings" />
 
       {/* Open Graph */}
@@ -102,12 +102,12 @@ export function SEOElements({
 // SEO component for use in pages/_app.tsx or individual pages (uses next/head)
 // Note: Flattened structure (no fragment) for better Next.js Head compatibility during hot reload
 export function SEO({
-  title = "SiriusB iQ AI Data Sciences Lab | Enterprise Fiduciary Intelligence Platform",
+  title = "Kincaid IQ | Enterprise Fiduciary Intelligence Platform",
   description = "Transform benefits intelligence with algorithmic fiduciary governance. Real-time EBITDA impact tracking, AI-powered contract analysis, actuarial precision, and cryptographic audit trails. Trusted by Fortune 500 enterprises for healthcare cost optimization and compliance excellence.",
   image = "/og-image.png",
   url = "https://kincaidiq.ai"
 }: SEOProps) {
-  const siteName = "SiriusB iQ AI Data Sciences Lab";
+  const siteName = "Kincaid IQ";
   const fullImageUrl = image.startsWith('http') ? image : `${url}${image}`;
   
   return (
@@ -119,8 +119,8 @@ export function SEO({
       
       {/* Core SEO */}
       <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
-      <meta name="author" content="SiriusB iQ AI Data Sciences Lab" />
-      <meta name="publisher" content="SiriusB iQ AI Data Sciences Lab" />
+      <meta name="author" content="Kincaid IQ" />
+      <meta name="publisher" content="Kincaid IQ" />
       <meta name="keywords" content="AI benefits platform, fiduciary governance, PBM contract analysis, healthcare cost optimization, EBITDA impact tracking, actuarial intelligence, contract compliance, enterprise benefits, algorithmic governance, verified savings" />
 
       {/* Open Graph */}

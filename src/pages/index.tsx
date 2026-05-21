@@ -149,7 +149,7 @@ export default function HomePage() {
   return (
     <>
       <Head>
-        <title>SiriusB iQ - Stop Overpaying for Healthcare</title>
+        <title>Kincaid IQ - Stop Overpaying for Healthcare</title>
         <meta
           name="description"
           content="Find hidden overcharges in your benefits contracts. Reduce costs by 20-35% while improving employee coverage."
@@ -515,7 +515,7 @@ export default function HomePage() {
                     </motion.button>
 
                     <p className="text-xs text-center text-zinc-500">
-                      By submitting, you agree to receive communications from SiriusB iQ. We respect your privacy.
+                      By submitting, you agree to receive communications from Kincaid IQ. We respect your privacy.
                     </p>
                   </form>
                 </div>
@@ -1396,7 +1396,7 @@ export default function HomePage() {
           transition={{ duration: 0.6 }}
         >
           <div className="text-center py-8 border-t border-white/10">
-            <span>© {new Date().getFullYear()} SiriusB iQ - Kincaid IQ</span>
+            <span>© {new Date().getFullYear()} Kincaid IQ</span>
           </div>
         </motion.footer>
 

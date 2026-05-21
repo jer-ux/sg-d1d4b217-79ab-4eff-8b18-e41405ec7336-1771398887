@@ -34,7 +34,7 @@ export const menuItems = [
 export type NavItem_Old = { label: string; href: string };
 
 export const siteConfig = {
-  name: "SiriusB iQ Data Sciences Lab",
+  name: "Kincaid IQ",
   description: "High-Velocity Decision Engine for Health Economics & Benefits Intelligence",
   navLinks: [
     { href: "/", label: "Home" },

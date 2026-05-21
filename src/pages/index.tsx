@@ -383,6 +383,37 @@ export default function HomePage() {
                 viewport={{ once: true }}
                 transition={{ duration: 0.6, delay: 0.3 }}
               >
+                {/* Calendly Booking Button */}
+                <motion.div
+                  className="mb-6"
+                  whileHover={{ scale: 1.02 }}
+                  whileTap={{ scale: 0.98 }}
+                >
+                  <a
+                    href="https://calendly.com/jer-kincaidrmc/30min"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex items-center justify-center gap-3 w-full rounded-2xl bg-gradient-to-r from-amber-500 via-amber-600 to-amber-700 px-8 py-5 text-lg font-bold text-white shadow-2xl hover:from-amber-400 hover:via-amber-500 hover:to-amber-600 transition-all duration-200 hover:shadow-amber-500/50"
+                  >
+                    <Clock className="h-6 w-6" />
+                    <span>Book Your Consultation Now</span>
+                    <ArrowRight className="h-5 w-5" />
+                  </a>
+                  <p className="text-center text-sm text-amber-300/70 mt-3">
+                    Schedule directly • 30-minute call • No forms required
+                  </p>
+                </motion.div>
+
+                {/* Divider */}
+                <div className="relative mb-6">
+                  <div className="absolute inset-0 flex items-center">
+                    <div className="w-full border-t border-amber-500/20"></div>
+                  </div>
+                  <div className="relative flex justify-center text-sm">
+                    <span className="px-4 bg-black/60 text-zinc-400">or fill out the form below</span>
+                  </div>
+                </div>
+
                 <div className="rounded-2xl border border-amber-500/30 bg-black/60 p-6 sm:p-8 backdrop-blur-sm">
                   <form className="space-y-5">
                     <div>

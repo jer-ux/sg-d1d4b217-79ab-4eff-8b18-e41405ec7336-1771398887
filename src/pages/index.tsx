@@ -1190,7 +1190,15 @@ export default function HomePage() {
             viewport={{ once: true }}
             transition={{ duration: 0.6 }}
           >
-            <div className="flex items-center gap-3 mb-4">
+            <div className="flex items-center justify-end gap-3 mb-4">
+              <div className="text-right">
+                <h2 className="text-4xl font-black bg-gradient-to-br from-white via-purple-200 to-blue-200 bg-clip-text text-transparent">
+                  Kincaid IQ RX X-Ray
+                </h2>
+                <p className="text-sm text-zinc-400 mt-1">
+                  Real-time metrics, evidence-backed KPIs, and algorithmic insights for C-suite decision making
+                </p>
+              </div>
               <motion.div 
                 className="h-12 w-12 rounded-xl bg-gradient-to-br from-purple-500/30 to-blue-500/30 flex items-center justify-center shadow-lg shadow-purple-500/30"
                 whileHover={{ rotate: 360, scale: 1.15 }}
@@ -1198,14 +1206,6 @@ export default function HomePage() {
               >
                 <TrendingUp className="h-6 w-6 text-purple-400 drop-shadow-[0_0_12px_rgba(168,85,247,0.6)]" />
               </motion.div>
-              <div>
-                <h2 className="text-4xl font-black bg-gradient-to-br from-white via-purple-200 to-blue-200 bg-clip-text text-transparent">
-                  Kincaid IQ
-                </h2>
-                <p className="text-sm text-zinc-400 mt-1">
-                  Real-time metrics, evidence-backed KPIs, and algorithmic insights for C-suite decision making
-                </p>
-              </div>
             </div>
           </motion.div>
           <motion.div

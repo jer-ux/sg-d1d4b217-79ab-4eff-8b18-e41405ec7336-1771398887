@@ -229,17 +229,6 @@ export default function HomePage() {
                     Find hidden overcharges in PBM contracts. Eliminate wasteful spending. Save 20-35% while improving coverage. Every dollar verified with proof.
                   </motion.p>
 
-                  {/* Value Pills */}
-                  <motion.div 
-                    className="grid grid-cols-2 gap-3 sm:gap-4 mb-6 sm:mb-8"
-                    style={{ transform: "translateZ(25px)" }}
-                  >
-                    <Pill k="Average Savings" v="$2.4M/year" />
-                    <Pill k="Contract Issues Found" v="47 per audit" />
-                    <Pill k="Time to Results" v="14 days" />
-                    <Pill k="ROI" v="8-12x" />
-                  </motion.div>
-
                   {/* CTA Buttons with 3D */}
                   <motion.div 
                     className="flex flex-col sm:flex-row gap-3 sm:gap-4 mb-6 sm:mb-8"

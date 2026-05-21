@@ -2,8 +2,8 @@
 
 import { useRef } from "react";
 import { SEO } from "@/components/SEO";
-import { Nav } from "@/components/Nav";
-import { Footer } from "@/components/Footer";
+import Nav from "@/components/Nav";
+import Footer from "@/components/Footer";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";

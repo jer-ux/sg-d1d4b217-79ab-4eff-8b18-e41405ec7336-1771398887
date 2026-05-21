@@ -60,6 +60,7 @@ export default function PBMCrimeBossPage() {
   // All images for lightbox navigation
   const allImages = [
     "/Gemini_Generated_Image_9vb8yz9vb8yz9vb8_1_.png",
+    "/Firefly_Gemini_Flash_A_Fortune_100_CIO_Made_A_Confession_To_Me_Last_Month._Written_by_Jeremiah_Franklin_Sh_28516.png",
     "/Firefly_Gemini_Flash_The_7.3_Billion_Question-_What_the_Big_Three_PBMs_Have_Cost_Your_Plan_Your_People_981473.png",
     "/Firefly_Gemini_Flash_Introducing_Rx_Defense_PBM_Contract_x-Ray-_The_Forensic_Infrastructure_That_Turns_Pha_743383.png",
     "/Gemini_Generated_Image_rzwmsjrzwmsjrzwm.png",
@@ -341,6 +342,79 @@ export default function PBMCrimeBossPage() {
                         <ExternalLink className="w-5 h-5" />
                         Read Full Story
                       </a>
+                    </div>
+                  </motion.div>
+                </div>
+              </div>
+            </motion.div>
+          </div>
+        </section>
+
+        {/* CIO Confession Featured Banner */}
+        <section className="py-20">
+          <div className="max-w-7xl mx-auto px-6">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6 }}
+              className="relative rounded-3xl overflow-hidden border-2 border-purple-500/40 shadow-2xl shadow-purple-500/20 hover:shadow-purple-500/40 transition-shadow duration-500 group"
+            >
+              <div 
+                className="absolute inset-0 cursor-pointer"
+                onClick={() => openLightbox("/Firefly_Gemini_Flash_A_Fortune_100_CIO_Made_A_Confession_To_Me_Last_Month._Written_by_Jeremiah_Franklin_Sh_28516.png")}
+              >
+                <img
+                  src="/Firefly_Gemini_Flash_A_Fortune_100_CIO_Made_A_Confession_To_Me_Last_Month._Written_by_Jeremiah_Franklin_Sh_28516.png"
+                  alt="Fortune 100 CIO Confession"
+                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
+                />
+                <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity bg-black/40">
+                  <Eye className="w-12 h-12 text-white" />
+                </div>
+                <div className="absolute inset-0 bg-gradient-to-r from-black/95 via-black/75 to-transparent" />
+              </div>
+
+              <div className="relative p-12 md:p-16 flex items-center min-h-[500px]">
+                <div className="max-w-2xl">
+                  <motion.div
+                    initial={{ opacity: 0, x: -20 }}
+                    whileInView={{ opacity: 1, x: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ duration: 0.8, delay: 0.2 }}
+                  >
+                    <div className="inline-flex items-center gap-2 px-4 py-2 bg-purple-500/20 border border-purple-400/40 rounded-full text-purple-300 text-sm font-bold mb-6">
+                      <Users className="h-4 w-4" />
+                      EXECUTIVE TESTIMONY
+                    </div>
+                    <h2 className="text-5xl md:text-6xl font-black text-white mb-6 leading-tight">
+                      A Fortune 100 CIO<br />Made A Confession
+                    </h2>
+                    <p className="text-xl text-gray-300 mb-8 leading-relaxed">
+                      "We knew our PBM was overcharging us. We just didn't know how to prove it." A candid conversation revealing why even the most sophisticated organizations struggle to defend against PBM exploitation.
+                    </p>
+                    <div className="flex flex-wrap gap-4">
+                      <motion.a
+                        href="https://www.linkedin.com/newsletters/former-pbm-crime-boss-speaks-7447883910010535936/"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="inline-flex items-center gap-3 px-8 py-4 bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-700 hover:to-indigo-700 rounded-xl text-white font-bold text-lg transition-all shadow-lg"
+                        whileHover={{ scale: 1.05 }}
+                        whileTap={{ scale: 0.95 }}
+                      >
+                        <FileText className="h-5 w-5" />
+                        Read the Confession
+                        <ExternalLink className="h-4 w-4" />
+                      </motion.a>
+                      <motion.a
+                        href="/solutions/rx-defense"
+                        className="inline-flex items-center gap-3 px-8 py-4 border-2 border-purple-500/50 hover:border-purple-400 rounded-xl text-purple-300 hover:text-white font-bold text-lg transition-all"
+                        whileHover={{ scale: 1.05 }}
+                        whileTap={{ scale: 0.95 }}
+                      >
+                        <Shield className="h-5 w-5" />
+                        Get the Proof You Need
+                      </motion.a>
                     </div>
                   </motion.div>
                 </div>

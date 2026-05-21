@@ -240,13 +240,16 @@ export default function HomePage() {
                       style={{ perspective: "1000px", transformStyle: "preserve-3d" }}
                       className="w-full sm:w-auto"
                     >
-                      <Link
-                        href="/request-demo"
+                      <a
+                        href="https://calendly.com/jer-kincaidrmc/30min"
+                        target="_blank"
+                        rel="noopener noreferrer"
                         className="inline-flex items-center justify-center w-full sm:w-auto px-6 sm:px-8 py-3 sm:py-4 text-base sm:text-lg font-semibold text-white bg-gradient-to-r from-blue-600 to-purple-600 rounded-lg hover:from-blue-700 hover:to-purple-700 transition-all duration-200 shadow-lg hover:shadow-xl"
                       >
-                        <span>Find Your Hidden Overcharges</span>
+                        <Clock className="mr-2 h-4 w-4 sm:h-5 sm:w-5" />
+                        <span>Book Your PBM Consultation</span>
                         <ArrowRight className="ml-2 h-4 w-4 sm:h-5 sm:w-5" />
-                      </Link>
+                      </a>
                     </motion.div>
                   </motion.div>
 

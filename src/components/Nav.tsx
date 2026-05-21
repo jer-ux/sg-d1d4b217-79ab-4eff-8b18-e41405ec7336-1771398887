@@ -70,12 +70,12 @@ export default function Nav() {
                       <div className="text-xs text-gray-400">LinkedIn publication series</div>
                     </Link>
                     <Link
-                      href="/capital-markets"
+                      href="/ma-vc-pe"
                       onClick={() => setCompanyDropdownOpen(false)}
                       className="block px-4 py-3 text-gray-300 hover:text-white hover:bg-amber-500/10 rounded-lg transition-colors duration-150"
                     >
-                      <div className="font-medium">Capital Markets</div>
-                      <div className="text-xs text-gray-400">Market solutions</div>
+                      <div className="font-medium">M&A / VC / PE</div>
+                      <div className="text-xs text-gray-400">Deal intelligence</div>
                     </Link>
                     <Link
                       href="/family-offices"
@@ -86,12 +86,12 @@ export default function Nav() {
                       <div className="text-xs text-gray-400">Private wealth management</div>
                     </Link>
                     <Link
-                      href="/ma-vc-pe"
+                      href="/capital-markets"
                       onClick={() => setCompanyDropdownOpen(false)}
                       className="block px-4 py-3 text-gray-300 hover:text-white hover:bg-amber-500/10 rounded-lg transition-colors duration-150"
                     >
-                      <div className="font-medium">M&A / VC / PE</div>
-                      <div className="text-xs text-gray-400">Deal intelligence</div>
+                      <div className="font-medium">Capital Markets</div>
+                      <div className="text-xs text-gray-400">Market solutions</div>
                     </Link>
                   </div>
                 </div>
@@ -557,14 +557,14 @@ export default function Nav() {
                       PBM Crime Boss
                     </span>
                   </Link>
-                  <Link href="/capital-markets" className="block px-4 py-2 text-sm text-gray-400 hover:text-white hover:bg-white/5 rounded-lg transition-colors">
-                    Capital Markets
+                  <Link href="/ma-vc-pe" className="block px-4 py-2 text-sm text-gray-400 hover:text-white hover:bg-white/5 rounded-lg transition-colors">
+                    M&A / VC / PE
                   </Link>
                   <Link href="/family-offices" className="block px-4 py-2 text-sm text-gray-400 hover:text-white hover:bg-white/5 rounded-lg transition-colors">
                     Family Offices
                   </Link>
-                  <Link href="/ma-vc-pe" className="block px-4 py-2 text-sm text-gray-400 hover:text-white hover:bg-white/5 rounded-lg transition-colors">
-                    M&A / VC / PE
+                  <Link href="/capital-markets" className="block px-4 py-2 text-sm text-gray-400 hover:text-white hover:bg-white/5 rounded-lg transition-colors">
+                    Capital Markets
                   </Link>
                 </div>
               )}

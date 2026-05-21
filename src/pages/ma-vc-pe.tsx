@@ -2,8 +2,8 @@
 
 import { useRef } from "react";
 import { SEO } from "@/components/SEO";
-import { SiteHeader } from "@/components/site/SiteHeader";
-import { SiteFooter } from "@/components/site/SiteFooter";
+import { Nav } from "@/components/Nav";
+import { Footer } from "@/components/Footer";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -104,7 +104,7 @@ export default function MaVcPePage() {
         description="Evidence-based M&A diligence and value realization tracking. Turn synergy claims into proven outcomes with cryptographic evidence receipts and autonomous realization tracking."
       />
       <div className="flex min-h-screen flex-col bg-gradient-to-br from-slate-950 via-purple-950 to-slate-900">
-        <SiteHeader />
+        <Nav />
         
         <main className="flex-1">
           {/* Hero Section */}
@@ -502,7 +502,7 @@ export default function MaVcPePage() {
           </section>
         </main>
 
-        <SiteFooter />
+        <Footer />
       </div>
     </>
   );

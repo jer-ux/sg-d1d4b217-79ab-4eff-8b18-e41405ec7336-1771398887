@@ -333,10 +333,10 @@ export default function HomePage() {
 
                 <h2 className="text-3xl sm:text-4xl lg:text-5xl font-black mb-4">
                   <span className="bg-gradient-to-r from-amber-300 via-amber-100 to-white bg-clip-text text-transparent">
-                    Schedule Your
+                    Apply for your
                   </span>
                   <br />
-                  <span className="text-white">Fiduciary Consultation</span>
+                  <span className="text-white">PBM Consultation</span>
                 </h2>
 
                 <p className="text-base sm:text-lg text-zinc-300 leading-relaxed mb-6">
@@ -477,7 +477,7 @@ export default function HomePage() {
                       whileTap={{ scale: 0.98 }}
                       className="w-full rounded-xl bg-gradient-to-r from-amber-600 to-amber-700 px-8 py-4 text-lg font-bold text-white shadow-lg hover:from-amber-500 hover:to-amber-600 transition-all duration-200 hover:shadow-amber-500/25"
                     >
-                      Schedule Free Consultation
+                      Apply for PBM Consultation
                     </motion.button>
 
                     <p className="text-xs text-center text-zinc-500">

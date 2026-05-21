@@ -24,9 +24,8 @@ import {
   Fingerprint,
   Activity,
 } from "lucide-react";
-import { SiteHeader } from "@/components/site/SiteHeader";
-import { SiteFooter } from "@/components/site/SiteFooter";
 import Nav from "@/components/Nav";
+import Footer from "@/components/Footer";
 
 const ledgerFeatures = [
   {
@@ -1163,7 +1162,7 @@ export default function VerifiedSavingsLedgerPage() {
           </div>
         </section>
 
-        <SiteFooter />
+        <Footer />
       </div>
     </>
   );

@@ -193,13 +193,13 @@ export default function HomePage() {
                       className="bg-gradient-to-r from-amber-300 via-amber-100 to-white bg-clip-text text-transparent"
                       style={{ display: "block", transform: "translateZ(30px)" }}
                     >
-                      Stop overpaying
+                      Stop over paying
                     </motion.span>
                     <motion.span 
                       className="bg-gradient-to-r from-white via-purple-100 to-blue-100 bg-clip-text text-transparent"
                       style={{ display: "block", transform: "translateZ(20px)" }}
                     >
-                      for employee benefits
+                      for PBM benefits
                     </motion.span>
                   </motion.h1>
 

@@ -57,10 +57,6 @@ export default function PBMCrimeBossPage() {
   const [lightboxImage, setLightboxImage] = useState<string | null>(null);
   const [lightboxIndex, setLightboxIndex] = useState<number>(0);
   
-  // Calculator state
-  const [employees, setEmployees] = useState<number>(500);
-  const [annualSpend, setAnnualSpend] = useState<number>(6000000);
-  
   // All images for lightbox navigation
   const allImages = [
     "/Gemini_Generated_Image_9vb8yz9vb8yz9vb8_1_.png",
@@ -94,27 +90,6 @@ export default function PBMCrimeBossPage() {
     setLightboxIndex(newIndex);
     setLightboxImage(allImages[newIndex]);
   };
-
-  // Calculator logic
-  const calculateSavings = () => {
-    const perEmployeeSpend = annualSpend / employees;
-    const savingsLow = annualSpend * 0.12;
-    const savingsHigh = annualSpend * 0.22;
-    const savingsMid = (savingsLow + savingsHigh) / 2;
-    const perEmployeeSavings = savingsMid / employees;
-    const fiveYearSavings = savingsMid * 5;
-    
-    return {
-      savingsLow,
-      savingsHigh,
-      savingsMid,
-      perEmployeeSavings,
-      perEmployeeSpend,
-      fiveYearSavings
-    };
-  };
-
-  const savings = calculateSavings();
 
   const formatCurrency = (amount: number) => {
     return new Intl.NumberFormat('en-US', {
@@ -262,117 +237,6 @@ export default function PBMCrimeBossPage() {
                   Get Protected
                 </Link>
               </motion.div>
-            </motion.div>
-          </div>
-        </section>
-
-        {/* Interactive Savings Calculator */}
-        <section className="py-20 bg-gradient-to-b from-[#050505] via-cyan-950/5 to-[#050505]">
-          <div className="max-w-4xl mx-auto px-6">
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.6 }}
-              className="text-center mb-12"
-            >
-              <div className="inline-flex items-center gap-2 bg-cyan-500/20 text-cyan-400 px-4 py-2 rounded-full text-sm font-bold uppercase tracking-wider mb-4">
-                <Calculator className="w-4 h-4" />
-                Interactive Calculator
-              </div>
-              <h2 className="text-4xl md:text-5xl font-black text-white mb-4">
-                Calculate Your Potential Savings
-              </h2>
-              <p className="text-xl text-slate-400">
-                See how much your organization could be overpaying on PBM contracts
-              </p>
-            </motion.div>
-
-            <motion.div
-              initial={{ opacity: 0, scale: 0.95 }}
-              whileInView={{ opacity: 1, scale: 1 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.6 }}
-              className="bg-gradient-to-br from-zinc-900 to-zinc-950 border border-cyan-500/30 rounded-3xl p-8 md:p-12 shadow-2xl shadow-cyan-500/10"
-            >
-              <div className="grid md:grid-cols-2 gap-8 mb-10">
-                <div>
-                  <label className="block text-sm font-bold text-cyan-400 mb-3 uppercase tracking-wider">
-                    Number of Employees / Covered Lives
-                  </label>
-                  <input
-                    type="number"
-                    value={employees}
-                    onChange={(e) => setEmployees(Number(e.target.value))}
-                    className="w-full bg-black/50 border border-white/10 rounded-xl px-6 py-4 text-white text-2xl font-bold focus:border-cyan-500 focus:outline-none transition-colors"
-                    min="1"
-                  />
-                  <div className="mt-2 text-sm text-slate-500">Typical range: 100-5,000</div>
-                </div>
-
-                <div>
-                  <label className="block text-sm font-bold text-cyan-400 mb-3 uppercase tracking-wider">
-                    Annual Pharmacy Spend
-                  </label>
-                  <div className="relative">
-                    <DollarSign className="absolute left-6 top-1/2 -translate-y-1/2 w-6 h-6 text-slate-500" />
-                    <input
-                      type="number"
-                      value={annualSpend}
-                      onChange={(e) => setAnnualSpend(Number(e.target.value))}
-                      className="w-full bg-black/50 border border-white/10 rounded-xl pl-14 pr-6 py-4 text-white text-2xl font-bold focus:border-cyan-500 focus:outline-none transition-colors"
-                      min="1"
-                    />
-                  </div>
-                  <div className="mt-2 text-sm text-slate-500">Per employee: {formatCurrency(savings.perEmployeeSpend)}</div>
-                </div>
-              </div>
-
-              <div className="border-t border-white/10 pt-8">
-                <div className="grid md:grid-cols-3 gap-6 mb-8">
-                  <div className="bg-gradient-to-br from-emerald-950/40 to-emerald-900/20 border border-emerald-500/30 rounded-2xl p-6 text-center">
-                    <div className="text-sm text-emerald-400 font-bold uppercase tracking-wider mb-2">Conservative Estimate</div>
-                    <div className="text-4xl font-black text-white mb-1">{formatCurrency(savings.savingsLow)}</div>
-                    <div className="text-sm text-slate-400">12% reduction</div>
-                  </div>
-
-                  <div className="bg-gradient-to-br from-cyan-950/40 to-cyan-900/20 border border-cyan-500/30 rounded-2xl p-6 text-center">
-                    <div className="text-sm text-cyan-400 font-bold uppercase tracking-wider mb-2">Typical Savings</div>
-                    <div className="text-4xl font-black text-white mb-1">{formatCurrency(savings.savingsMid)}</div>
-                    <div className="text-sm text-slate-400">17% reduction</div>
-                  </div>
-
-                  <div className="bg-gradient-to-br from-purple-950/40 to-purple-900/20 border border-purple-500/30 rounded-2xl p-6 text-center">
-                    <div className="text-sm text-purple-400 font-bold uppercase tracking-wider mb-2">Aggressive Optimization</div>
-                    <div className="text-4xl font-black text-white mb-1">{formatCurrency(savings.savingsHigh)}</div>
-                    <div className="text-sm text-slate-400">22% reduction</div>
-                  </div>
-                </div>
-
-                <div className="grid md:grid-cols-2 gap-6">
-                  <div className="bg-black/30 border border-white/10 rounded-xl p-6">
-                    <div className="text-sm text-slate-400 mb-2">Per Employee Annual Savings</div>
-                    <div className="text-3xl font-bold text-cyan-400">{formatCurrency(savings.perEmployeeSavings)}</div>
-                  </div>
-                  <div className="bg-black/30 border border-white/10 rounded-xl p-6">
-                    <div className="text-sm text-slate-400 mb-2">5-Year Cumulative Savings</div>
-                    <div className="text-3xl font-bold text-emerald-400">{formatCurrency(savings.fiveYearSavings)}</div>
-                  </div>
-                </div>
-              </div>
-
-              <div className="mt-8 pt-8 border-t border-white/10 text-center">
-                <p className="text-slate-400 mb-6">
-                  These estimates are based on industry benchmarks from analyzing 400+ PBM contracts. Your actual savings may vary.
-                </p>
-                <Link
-                  href="/solutions/rx-defense"
-                  className="inline-flex items-center gap-2 bg-gradient-to-r from-cyan-600 to-blue-600 hover:from-cyan-700 hover:to-blue-700 text-white px-8 py-4 rounded-xl font-bold text-lg shadow-xl shadow-cyan-500/30 transition-all hover:scale-105"
-                >
-                  <Shield className="w-5 h-5" />
-                  Get Your Exact Savings Analysis
-                </Link>
-              </div>
             </motion.div>
           </div>
         </section>

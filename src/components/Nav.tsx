@@ -101,30 +101,30 @@ export default function Nav() {
             <div className="relative">
               <button
                 onClick={() => setRxDefenseDropdownOpen(!rxDefenseDropdownOpen)}
-                className="flex items-center gap-2 px-4 py-2 rounded-lg border border-red-500/30 bg-red-950/30 hover:bg-red-950/50 hover:border-red-500/50 transition-all"
+                className="flex items-center gap-2 px-4 py-2 text-gray-300 hover:text-white transition-colors rounded-lg hover:bg-white/5"
               >
-                <Search className="w-4 h-4 text-red-400" />
-                <span className="text-sm font-bold text-red-300">Kincaid IQ Rx X-Ray</span>
-                <ChevronDown className={`w-3 h-3 text-red-400 transition-transform ${rxDefenseDropdownOpen ? "rotate-180" : ""}`} />
+                <Search className="w-4 h-4" />
+                <span className="text-sm font-medium">Kincaid IQ Rx X-Ray</span>
+                <ChevronDown className={`w-3 h-3 transition-transform ${rxDefenseDropdownOpen ? "rotate-180" : ""}`} />
               </button>
               {rxDefenseDropdownOpen && (
-                <div className="absolute top-full left-0 mt-2 w-80 bg-gray-900/95 backdrop-blur-xl rounded-xl border border-red-700/50 shadow-xl overflow-hidden max-h-[80vh] overflow-y-auto z-[210]">
+                <div className="absolute top-full left-0 mt-2 w-80 bg-gray-900/95 backdrop-blur-xl rounded-xl border border-gray-700/50 shadow-xl overflow-hidden max-h-[80vh] overflow-y-auto z-[210]">
                   <div className="p-2">
                     <Link
                       href="/solutions/rx-defense"
                       onClick={() => setRxDefenseDropdownOpen(false)}
-                      className="block px-4 py-3 text-red-300 hover:text-red-200 hover:bg-red-500/10 rounded-lg transition-colors duration-150 border-b border-red-700/30"
+                      className="block px-4 py-3 text-gray-300 hover:text-white hover:bg-purple-500/10 rounded-lg transition-colors duration-150 border-b border-gray-700/30"
                     >
                       <div className="font-bold">Kincaid IQ's Rx PBM Contract X-Ray</div>
                       <div className="text-xs text-gray-400">Complete 15-provision analysis</div>
                     </Link>
                     
-                    <div className="px-4 py-2 mt-2 text-xs font-semibold text-red-400 uppercase tracking-wider">15 Critical Provisions</div>
+                    <div className="px-4 py-2 mt-2 text-xs font-semibold text-purple-400 uppercase tracking-wider">15 Critical Provisions</div>
                     
                     <Link
                       href="/solutions/rx-defense?page=1"
                       onClick={() => setRxDefenseDropdownOpen(false)}
-                      className="block px-4 py-2.5 text-gray-300 hover:text-white hover:bg-red-500/10 rounded-lg transition-colors duration-150"
+                      className="block px-4 py-2.5 text-gray-300 hover:text-white hover:bg-purple-500/10 rounded-lg transition-colors duration-150"
                     >
                       <div className="text-sm font-medium">1. Fiduciary Loyalty</div>
                       <div className="text-xs text-gray-500">$174K savings</div>
@@ -133,7 +133,7 @@ export default function Nav() {
                     <Link
                       href="/solutions/rx-defense?page=2"
                       onClick={() => setRxDefenseDropdownOpen(false)}
-                      className="block px-4 py-2.5 text-gray-300 hover:text-white hover:bg-red-500/10 rounded-lg transition-colors duration-150"
+                      className="block px-4 py-2.5 text-gray-300 hover:text-white hover:bg-purple-500/10 rounded-lg transition-colors duration-150"
                     >
                       <div className="text-sm font-medium">2. Pass-Through Costs</div>
                       <div className="text-xs text-gray-500">$285K savings</div>
@@ -142,7 +142,7 @@ export default function Nav() {
                     <Link
                       href="/solutions/rx-defense?page=3"
                       onClick={() => setRxDefenseDropdownOpen(false)}
-                      className="block px-4 py-2.5 text-gray-300 hover:text-white hover:bg-red-500/10 rounded-lg transition-colors duration-150"
+                      className="block px-4 py-2.5 text-gray-300 hover:text-white hover:bg-purple-500/10 rounded-lg transition-colors duration-150"
                     >
                       <div className="text-sm font-medium">3. Rebate Revenue</div>
                       <div className="text-xs text-gray-500">$627K savings</div>
@@ -151,7 +151,7 @@ export default function Nav() {
                     <Link
                       href="/solutions/rx-defense?page=4"
                       onClick={() => setRxDefenseDropdownOpen(false)}
-                      className="block px-4 py-2.5 text-gray-300 hover:text-white hover:bg-red-500/10 rounded-lg transition-colors duration-150"
+                      className="block px-4 py-2.5 text-gray-300 hover:text-white hover:bg-purple-500/10 rounded-lg transition-colors duration-150"
                     >
                       <div className="text-sm font-medium">4. Data Ownership</div>
                       <div className="text-xs text-gray-500">$96K savings</div>
@@ -160,7 +160,7 @@ export default function Nav() {
                     <Link
                       href="/solutions/rx-defense?page=5"
                       onClick={() => setRxDefenseDropdownOpen(false)}
-                      className="block px-4 py-2.5 text-gray-300 hover:text-white hover:bg-red-500/10 rounded-lg transition-colors duration-150"
+                      className="block px-4 py-2.5 text-gray-300 hover:text-white hover:bg-purple-500/10 rounded-lg transition-colors duration-150"
                     >
                       <div className="text-sm font-medium">5. Audit Rights</div>
                       <div className="text-xs text-gray-500">$384K savings</div>
@@ -169,7 +169,7 @@ export default function Nav() {
                     <Link
                       href="/solutions/rx-defense?page=6"
                       onClick={() => setRxDefenseDropdownOpen(false)}
-                      className="block px-4 py-2.5 text-gray-300 hover:text-white hover:bg-red-500/10 rounded-lg transition-colors duration-150"
+                      className="block px-4 py-2.5 text-gray-300 hover:text-white hover:bg-purple-500/10 rounded-lg transition-colors duration-150"
                     >
                       <div className="text-sm font-medium">6. Pharmacy Ownership</div>
                       <div className="text-xs text-gray-500">$512K savings</div>
@@ -178,7 +178,7 @@ export default function Nav() {
                     <Link
                       href="/solutions/rx-defense?page=7"
                       onClick={() => setRxDefenseDropdownOpen(false)}
-                      className="block px-4 py-2.5 text-gray-300 hover:text-white hover:bg-red-500/10 rounded-lg transition-colors duration-150"
+                      className="block px-4 py-2.5 text-gray-300 hover:text-white hover:bg-purple-500/10 rounded-lg transition-colors duration-150"
                     >
                       <div className="text-sm font-medium">7. Carve-Out Rights</div>
                       <div className="text-xs text-gray-500">$289K savings</div>
@@ -187,7 +187,7 @@ export default function Nav() {
                     <Link
                       href="/solutions/rx-defense?page=8"
                       onClick={() => setRxDefenseDropdownOpen(false)}
-                      className="block px-4 py-2.5 text-gray-300 hover:text-white hover:bg-red-500/10 rounded-lg transition-colors duration-150"
+                      className="block px-4 py-2.5 text-gray-300 hover:text-white hover:bg-purple-500/10 rounded-lg transition-colors duration-150"
                     >
                       <div className="text-sm font-medium">8. Lowest Net Cost</div>
                       <div className="text-xs text-gray-500">$468K savings</div>
@@ -196,7 +196,7 @@ export default function Nav() {
                     <Link
                       href="/solutions/rx-defense?page=9"
                       onClick={() => setRxDefenseDropdownOpen(false)}
-                      className="block px-4 py-2.5 text-gray-300 hover:text-white hover:bg-red-500/10 rounded-lg transition-colors duration-150"
+                      className="block px-4 py-2.5 text-gray-300 hover:text-white hover:bg-purple-500/10 rounded-lg transition-colors duration-150"
                     >
                       <div className="text-sm font-medium">9. Termination Rights</div>
                       <div className="text-xs text-gray-500">$156K savings</div>
@@ -205,7 +205,7 @@ export default function Nav() {
                     <Link
                       href="/solutions/rx-defense?page=10"
                       onClick={() => setRxDefenseDropdownOpen(false)}
-                      className="block px-4 py-2.5 text-gray-300 hover:text-white hover:bg-red-500/10 rounded-lg transition-colors duration-150"
+                      className="block px-4 py-2.5 text-gray-300 hover:text-white hover:bg-purple-500/10 rounded-lg transition-colors duration-150"
                     >
                       <div className="text-sm font-medium">10. Admin Fee Verification</div>
                       <div className="text-xs text-gray-500">$193K savings</div>
@@ -214,7 +214,7 @@ export default function Nav() {
                     <Link
                       href="/solutions/rx-defense?page=11"
                       onClick={() => setRxDefenseDropdownOpen(false)}
-                      className="block px-4 py-2.5 text-gray-300 hover:text-white hover:bg-red-500/10 rounded-lg transition-colors duration-150"
+                      className="block px-4 py-2.5 text-gray-300 hover:text-white hover:bg-purple-500/10 rounded-lg transition-colors duration-150"
                     >
                       <div className="text-sm font-medium">11. DIR Fees</div>
                       <div className="text-xs text-gray-500">$425K savings</div>
@@ -223,7 +223,7 @@ export default function Nav() {
                     <Link
                       href="/solutions/rx-defense?page=12"
                       onClick={() => setRxDefenseDropdownOpen(false)}
-                      className="block px-4 py-2.5 text-gray-300 hover:text-white hover:bg-red-500/10 rounded-lg transition-colors duration-150"
+                      className="block px-4 py-2.5 text-gray-300 hover:text-white hover:bg-purple-500/10 rounded-lg transition-colors duration-150"
                     >
                       <div className="text-sm font-medium">12. Formulary Transparency</div>
                       <div className="text-xs text-gray-500">$298K savings</div>
@@ -232,7 +232,7 @@ export default function Nav() {
                     <Link
                       href="/solutions/rx-defense?page=13"
                       onClick={() => setRxDefenseDropdownOpen(false)}
-                      className="block px-4 py-2.5 text-gray-300 hover:text-white hover:bg-red-500/10 rounded-lg transition-colors duration-150"
+                      className="block px-4 py-2.5 text-gray-300 hover:text-white hover:bg-purple-500/10 rounded-lg transition-colors duration-150"
                     >
                       <div className="text-sm font-medium">13. Specialty Network</div>
                       <div className="text-xs text-gray-500">$215K savings</div>
@@ -241,7 +241,7 @@ export default function Nav() {
                     <Link
                       href="/solutions/rx-defense?page=14"
                       onClick={() => setRxDefenseDropdownOpen(false)}
-                      className="block px-4 py-2.5 text-gray-300 hover:text-white hover:bg-red-500/10 rounded-lg transition-colors duration-150"
+                      className="block px-4 py-2.5 text-gray-300 hover:text-white hover:bg-purple-500/10 rounded-lg transition-colors duration-150"
                     >
                       <div className="text-sm font-medium">14. Clinical Programs</div>
                       <div className="text-xs text-gray-500">$187K savings</div>
@@ -250,7 +250,7 @@ export default function Nav() {
                     <Link
                       href="/solutions/rx-defense?page=15"
                       onClick={() => setRxDefenseDropdownOpen(false)}
-                      className="block px-4 py-2.5 text-gray-300 hover:text-white hover:bg-red-500/10 rounded-lg transition-colors duration-150"
+                      className="block px-4 py-2.5 text-gray-300 hover:text-white hover:bg-purple-500/10 rounded-lg transition-colors duration-150"
                     >
                       <div className="text-sm font-medium">15. Transparency Reporting</div>
                       <div className="text-xs text-gray-500">$142K savings</div>
@@ -472,7 +472,7 @@ export default function Nav() {
             <div>
               <button
                 onClick={() => setRxDefenseDropdownOpen(!rxDefenseDropdownOpen)}
-                className="flex items-center justify-between w-full px-4 py-3 text-red-300 hover:text-red-200 bg-red-950/30 hover:bg-red-950/50 rounded-lg transition-colors border border-red-500/30"
+                className="flex items-center justify-between w-full px-4 py-3 text-gray-300 hover:text-white hover:bg-white/5 rounded-lg transition-colors"
               >
                 <span className="font-medium flex items-center gap-2">
                   <Search className="w-4 h-4" />
@@ -482,53 +482,53 @@ export default function Nav() {
               </button>
               {rxDefenseDropdownOpen && (
                 <div className="ml-4 mt-2 space-y-1 max-h-96 overflow-y-auto">
-                  <Link href="/solutions/rx-defense" className="block px-4 py-2 text-sm text-red-300 hover:text-red-200 hover:bg-red-500/10 rounded-lg transition-colors border-b border-red-700/30 mb-2 pb-3">
+                  <Link href="/solutions/rx-defense" className="block px-4 py-2 text-sm text-gray-300 hover:text-white hover:bg-purple-500/10 rounded-lg transition-colors border-b border-gray-700/30 mb-2 pb-3">
                     <div className="font-bold">Kincaid IQ's Rx PBM Contract X-Ray</div>
                     <div className="text-xs text-gray-500">All 15 provisions</div>
                   </Link>
-                  <Link href="/solutions/rx-defense?page=1" className="block px-4 py-2 text-sm text-gray-400 hover:text-white hover:bg-red-500/10 rounded-lg transition-colors">
+                  <Link href="/solutions/rx-defense?page=1" className="block px-4 py-2 text-sm text-gray-400 hover:text-white hover:bg-purple-500/10 rounded-lg transition-colors">
                     1. Fiduciary Loyalty
                   </Link>
-                  <Link href="/solutions/rx-defense?page=2" className="block px-4 py-2 text-sm text-gray-400 hover:text-white hover:bg-red-500/10 rounded-lg transition-colors">
+                  <Link href="/solutions/rx-defense?page=2" className="block px-4 py-2 text-sm text-gray-400 hover:text-white hover:bg-purple-500/10 rounded-lg transition-colors">
                     2. Pass-Through Costs
                   </Link>
-                  <Link href="/solutions/rx-defense?page=3" className="block px-4 py-2 text-sm text-gray-400 hover:text-white hover:bg-red-500/10 rounded-lg transition-colors">
+                  <Link href="/solutions/rx-defense?page=3" className="block px-4 py-2 text-sm text-gray-400 hover:text-white hover:bg-purple-500/10 rounded-lg transition-colors">
                     3. Rebate Revenue
                   </Link>
-                  <Link href="/solutions/rx-defense?page=4" className="block px-4 py-2 text-sm text-gray-400 hover:text-white hover:bg-red-500/10 rounded-lg transition-colors">
+                  <Link href="/solutions/rx-defense?page=4" className="block px-4 py-2 text-sm text-gray-400 hover:text-white hover:bg-purple-500/10 rounded-lg transition-colors">
                     4. Data Ownership
                   </Link>
-                  <Link href="/solutions/rx-defense?page=5" className="block px-4 py-2 text-sm text-gray-400 hover:text-white hover:bg-red-500/10 rounded-lg transition-colors">
+                  <Link href="/solutions/rx-defense?page=5" className="block px-4 py-2 text-sm text-gray-400 hover:text-white hover:bg-purple-500/10 rounded-lg transition-colors">
                     5. Audit Rights
                   </Link>
-                  <Link href="/solutions/rx-defense?page=6" className="block px-4 py-2 text-sm text-gray-400 hover:text-white hover:bg-red-500/10 rounded-lg transition-colors">
+                  <Link href="/solutions/rx-defense?page=6" className="block px-4 py-2 text-sm text-gray-400 hover:text-white hover:bg-purple-500/10 rounded-lg transition-colors">
                     6. Pharmacy Ownership
                   </Link>
-                  <Link href="/solutions/rx-defense?page=7" className="block px-4 py-2 text-sm text-gray-400 hover:text-white hover:bg-red-500/10 rounded-lg transition-colors">
+                  <Link href="/solutions/rx-defense?page=7" className="block px-4 py-2 text-sm text-gray-400 hover:text-white hover:bg-purple-500/10 rounded-lg transition-colors">
                     7. Carve-Out Rights
                   </Link>
-                  <Link href="/solutions/rx-defense?page=8" className="block px-4 py-2 text-sm text-gray-400 hover:text-white hover:bg-red-500/10 rounded-lg transition-colors">
+                  <Link href="/solutions/rx-defense?page=8" className="block px-4 py-2 text-sm text-gray-400 hover:text-white hover:bg-purple-500/10 rounded-lg transition-colors">
                     8. Lowest Net Cost
                   </Link>
-                  <Link href="/solutions/rx-defense?page=9" className="block px-4 py-2 text-sm text-gray-400 hover:text-white hover:bg-red-500/10 rounded-lg transition-colors">
+                  <Link href="/solutions/rx-defense?page=9" className="block px-4 py-2 text-sm text-gray-400 hover:text-white hover:bg-purple-500/10 rounded-lg transition-colors">
                     9. Termination Rights
                   </Link>
-                  <Link href="/solutions/rx-defense?page=10" className="block px-4 py-2 text-sm text-gray-400 hover:text-white hover:bg-red-500/10 rounded-lg transition-colors">
+                  <Link href="/solutions/rx-defense?page=10" className="block px-4 py-2 text-sm text-gray-400 hover:text-white hover:bg-purple-500/10 rounded-lg transition-colors">
                     10. Admin Fee Verification
                   </Link>
-                  <Link href="/solutions/rx-defense?page=11" className="block px-4 py-2 text-sm text-gray-400 hover:text-white hover:bg-red-500/10 rounded-lg transition-colors">
+                  <Link href="/solutions/rx-defense?page=11" className="block px-4 py-2 text-sm text-gray-400 hover:text-white hover:bg-purple-500/10 rounded-lg transition-colors">
                     11. DIR Fees
                   </Link>
-                  <Link href="/solutions/rx-defense?page=12" className="block px-4 py-2 text-sm text-gray-400 hover:text-white hover:bg-red-500/10 rounded-lg transition-colors">
+                  <Link href="/solutions/rx-defense?page=12" className="block px-4 py-2 text-sm text-gray-400 hover:text-white hover:bg-purple-500/10 rounded-lg transition-colors">
                     12. Formulary Transparency
                   </Link>
-                  <Link href="/solutions/rx-defense?page=13" className="block px-4 py-2 text-sm text-gray-400 hover:text-white hover:bg-red-500/10 rounded-lg transition-colors">
+                  <Link href="/solutions/rx-defense?page=13" className="block px-4 py-2 text-sm text-gray-400 hover:text-white hover:bg-purple-500/10 rounded-lg transition-colors">
                     13. Specialty Network
                   </Link>
-                  <Link href="/solutions/rx-defense?page=14" className="block px-4 py-2 text-sm text-gray-400 hover:text-white hover:bg-red-500/10 rounded-lg transition-colors">
+                  <Link href="/solutions/rx-defense?page=14" className="block px-4 py-2 text-sm text-gray-400 hover:text-white hover:bg-purple-500/10 rounded-lg transition-colors">
                     14. Clinical Programs
                   </Link>
-                  <Link href="/solutions/rx-defense?page=15" className="block px-4 py-2 text-sm text-gray-400 hover:text-white hover:bg-red-500/10 rounded-lg transition-colors">
+                  <Link href="/solutions/rx-defense?page=15" className="block px-4 py-2 text-sm text-gray-400 hover:text-white hover:bg-purple-500/10 rounded-lg transition-colors">
                     15. Transparency Reporting
                   </Link>
                 </div>

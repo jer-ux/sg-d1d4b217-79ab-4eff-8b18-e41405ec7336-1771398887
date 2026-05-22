@@ -1,6 +1,6 @@
 import { useState } from "react";
 import Link from "next/link";
-import { Menu, X, ChevronDown, Sparkles, Search, Users, Building2, AlertTriangle, Calculator, FileText, TrendingUp, Briefcase, BarChart3 } from "lucide-react";
+import { Menu, X, ChevronDown, Sparkles, Search, Users, Building2, AlertTriangle, Calculator, FileText, TrendingUp, Briefcase, BarChart3, Shield, LineChart } from "lucide-react";
 import { useRouter } from "next/router";
 import { Button } from "@/components/ui/button";
 import { DropdownMenu, DropdownMenuTrigger, DropdownMenuContent, DropdownMenuItem } from "@/components/ui/dropdown-menu";
@@ -273,6 +273,39 @@ export default function Nav() {
                 <div className="absolute top-full left-0 mt-2 w-72 bg-gray-900/95 backdrop-blur-xl rounded-xl border border-gray-700/50 shadow-xl overflow-hidden z-[210]">
                   <div className="p-2">
                     <Link
+                      href="/board-of-directors"
+                      onClick={() => setFocusAreasDropdownOpen(false)}
+                      className="block px-4 py-3 text-gray-300 hover:text-white hover:bg-purple-500/10 rounded-lg transition-colors duration-150"
+                    >
+                      <div className="font-medium flex items-center gap-2">
+                        <Shield className="w-4 h-4 text-purple-400" />
+                        For Board Members
+                      </div>
+                      <div className="text-xs text-gray-400">Strategic governance & value creation oversight</div>
+                    </Link>
+                    <Link
+                      href="/capital-markets"
+                      onClick={() => setFocusAreasDropdownOpen(false)}
+                      className="block px-4 py-3 text-gray-300 hover:text-white hover:bg-indigo-500/10 rounded-lg transition-colors duration-150"
+                    >
+                      <div className="font-medium flex items-center gap-2">
+                        <LineChart className="w-4 h-4 text-indigo-400" />
+                        For Capital Markets
+                      </div>
+                      <div className="text-xs text-gray-400">Deal intelligence & value architecture</div>
+                    </Link>
+                    <Link
+                      href="/ma-vc-pe"
+                      onClick={() => setFocusAreasDropdownOpen(false)}
+                      className="block px-4 py-3 text-gray-300 hover:text-white hover:bg-violet-500/10 rounded-lg transition-colors duration-150"
+                    >
+                      <div className="font-medium flex items-center gap-2">
+                        <Building2 className="w-4 h-4 text-violet-400" />
+                        For PE Operators
+                      </div>
+                      <div className="text-xs text-gray-400">Portfolio optimization & operational excellence</div>
+                    </Link>
+                    <Link
                       href="/personas/cfo"
                       onClick={() => setFocusAreasDropdownOpen(false)}
                       className="block px-4 py-3 text-gray-300 hover:text-white hover:bg-emerald-500/10 rounded-lg transition-colors duration-150"
@@ -513,6 +546,15 @@ export default function Nav() {
               </button>
               {focusAreasDropdownOpen && (
                 <div className="ml-4 mt-2 space-y-1">
+                  <Link href="/board-of-directors" className="block px-4 py-2 text-sm text-gray-400 hover:text-white hover:bg-purple-500/10 rounded-lg transition-colors">
+                    For Board Members
+                  </Link>
+                  <Link href="/capital-markets" className="block px-4 py-2 text-sm text-gray-400 hover:text-white hover:bg-indigo-500/10 rounded-lg transition-colors">
+                    For Capital Markets
+                  </Link>
+                  <Link href="/ma-vc-pe" className="block px-4 py-2 text-sm text-gray-400 hover:text-white hover:bg-violet-500/10 rounded-lg transition-colors">
+                    For PE Operators
+                  </Link>
                   <Link href="/personas/cfo" className="block px-4 py-2 text-sm text-gray-400 hover:text-white hover:bg-emerald-500/10 rounded-lg transition-colors">
                     For CFOs
                   </Link>

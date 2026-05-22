@@ -14,18 +14,6 @@ import { SiteFooter } from "@/components/site/SiteFooter";
 import { FreeContractReviewCTA } from "@/components/marketing/FreeContractReviewCTA";
 import Nav from "@/components/Nav";
 
-const Badge = ({ children, icon: Icon }: { children: React.ReactNode; icon?: React.ComponentType<{ className?: string }> }) => (
-  <motion.span
-    className="inline-flex items-center rounded-full border border-purple-500/40 bg-gradient-to-r from-purple-950/80 to-blue-900/60 px-4 py-1.5 text-xs font-medium text-purple-200 shadow-lg shadow-purple-500/20 backdrop-blur-sm"
-    whileHover={{ scale: 1.05, y: -2, boxShadow: "0 0 30px rgba(168, 85, 247, 0.4)" }}
-    transition={{ type: "spring", stiffness: 400, damping: 10 }}
-    style={{ perspective: "1000px", transformStyle: "preserve-3d" }}
-  >
-    {Icon ? <Icon className="mr-1.5 h-3.5 w-3.5 text-purple-400" /> : <Sparkles className="mr-1.5 h-3.5 w-3.5 text-purple-400" />}
-    {children}
-  </motion.span>
-);
-
 const Card3D = ({
   title,
   subtitle,
@@ -528,11 +516,6 @@ export default function HomePage() {
             viewport={{ once: true }}
             transition={{ duration: 0.6 }}
           >
-            <div className="inline-flex items-center gap-2 rounded-full border border-purple-500/40 bg-purple-950/40 px-4 py-2 text-sm font-semibold text-purple-300 mb-6">
-              <Sparkles className="h-4 w-4" />
-              Our Process
-            </div>
-
             <h2 className="text-3xl sm:text-4xl lg:text-5xl font-black mb-4">
               <span className="bg-gradient-to-r from-purple-300 via-purple-100 to-white bg-clip-text text-transparent">
                 How It Works

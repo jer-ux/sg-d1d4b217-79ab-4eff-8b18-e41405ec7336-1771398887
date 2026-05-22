@@ -180,11 +180,6 @@ export default function HomePage() {
                   className="space-y-8"
                   style={{ perspective: "1500px", transformStyle: "preserve-3d" }}
                 >
-                  <div className="flex flex-wrap gap-3 mb-6">
-                    <Badge icon={Shield}>Trusted by CFOs</Badge>
-                    <Badge icon={CheckCircle2}>20-35% Savings</Badge>
-                  </div>
-
                   <motion.h1 
                     className="text-3xl sm:text-4xl md:text-5xl lg:text-[58px] leading-tight font-bold"
                     style={{ transformStyle: "preserve-3d" }}

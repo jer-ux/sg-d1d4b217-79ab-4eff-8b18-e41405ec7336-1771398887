@@ -751,13 +751,6 @@ export default function HomePage() {
             viewport={{ once: true }}
             transition={{ duration: 0.6 }}
           >
-            <div className="flex items-center gap-3 text-lg font-black bg-gradient-to-r from-purple-300 to-white bg-clip-text text-transparent">
-              <Shield className="h-6 w-6 text-purple-400 drop-shadow-[0_0_12px_rgba(168,85,247,0.6)]" />
-              Cryptographic Verification at Scale
-            </div>
-            <div className="mt-3 text-base text-zinc-400">
-              Every metric must cite a receipt. Every receipt must be traceable. Every audit must be reproducible.
-            </div>
           </motion.div>
           <div className="grid gap-8 md:grid-cols-3">
             <Card3D

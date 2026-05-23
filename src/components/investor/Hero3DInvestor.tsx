@@ -1,8 +1,18 @@
 import { motion } from "framer-motion";
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 
 export default function Hero3DInvestor() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth < 768);
+    };
+    checkMobile();
+    window.addEventListener("resize", checkMobile);
+    return () => window.removeEventListener("resize", checkMobile);
+  }, []);
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -11,8 +21,13 @@ export default function Hero3DInvestor() {
     const ctx = canvas.getContext("2d");
     if (!ctx) return;
 
-    canvas.width = window.innerWidth;
-    canvas.height = 600;
+    const updateCanvasSize = () => {
+      canvas.width = window.innerWidth;
+      // Responsive height: 400px mobile, 500px tablet, 600px desktop
+      canvas.height = window.innerWidth < 640 ? 400 : window.innerWidth < 1024 ? 500 : 600;
+    };
+
+    updateCanvasSize();
 
     // Particle system for the ring
     const particles: Array<{
@@ -24,20 +39,21 @@ export default function Hero3DInvestor() {
       color: string;
     }> = [];
 
-    const particleCount = 200;
+    // Responsive particle count and radius
+    const particleCount = window.innerWidth < 640 ? 100 : window.innerWidth < 1024 ? 150 : 200;
     const centerX = canvas.width / 2;
     const centerY = canvas.height / 2;
-    const baseRadius = 180;
+    const baseRadius = window.innerWidth < 640 ? 120 : window.innerWidth < 1024 ? 150 : 180;
 
     // Create particles
     for (let i = 0; i < particleCount; i++) {
       particles.push({
         angle: (i / particleCount) * Math.PI * 2,
-        radius: baseRadius + (Math.random() - 0.5) * 40,
+        radius: baseRadius + (Math.random() - 0.5) * (window.innerWidth < 640 ? 20 : 40),
         speed: 0.002 + Math.random() * 0.003,
-        size: 1 + Math.random() * 3,
+        size: window.innerWidth < 640 ? 1 + Math.random() * 2 : 1 + Math.random() * 3,
         opacity: 0.3 + Math.random() * 0.7,
-        color: `rgba(96, 165, 250, ${0.5 + Math.random() * 0.5})`, // Blue colors
+        color: `rgba(96, 165, 250, ${0.5 + Math.random() * 0.5})`,
       });
     }
 
@@ -46,6 +62,9 @@ export default function Hero3DInvestor() {
     const animate = () => {
       ctx.fillStyle = "rgba(0, 0, 0, 0.1)";
       ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+      const centerX = canvas.width / 2;
+      const centerY = canvas.height / 2;
 
       particles.forEach((particle, i) => {
         // Update particle position
@@ -70,8 +89,9 @@ export default function Hero3DInvestor() {
         ctx.arc(x, y, particle.size, 0, Math.PI * 2);
         ctx.fill();
 
-        // Connect nearby particles
-        for (let j = i + 1; j < Math.min(i + 5, particles.length); j++) {
+        // Connect nearby particles (fewer connections on mobile)
+        const connectionLimit = window.innerWidth < 640 ? 3 : 5;
+        for (let j = i + 1; j < Math.min(i + connectionLimit, particles.length); j++) {
           const other = particles[j];
           const otherX = centerX + Math.cos(other.angle) * other.radius;
           const otherY = centerY + Math.sin(other.angle) * other.radius;
@@ -102,8 +122,7 @@ export default function Hero3DInvestor() {
     animate();
 
     const handleResize = () => {
-      canvas.width = window.innerWidth;
-      canvas.height = 600;
+      updateCanvasSize();
     };
 
     window.addEventListener("resize", handleResize);
@@ -115,7 +134,7 @@ export default function Hero3DInvestor() {
   }, []);
 
   return (
-    <div className="relative w-full h-[600px] overflow-hidden bg-black">
+    <div className="relative w-full h-[400px] sm:h-[500px] lg:h-[600px] overflow-hidden bg-black">
       {/* Canvas for particle ring */}
       <canvas
         ref={canvasRef}
@@ -125,8 +144,8 @@ export default function Hero3DInvestor() {
       {/* Gradient background */}
       <div className="absolute inset-0 bg-gradient-to-b from-blue-950/30 via-black to-black pointer-events-none" />
 
-      {/* Additional floating particles */}
-      {[...Array(30)].map((_, i) => (
+      {/* Additional floating particles - fewer on mobile */}
+      {[...Array(isMobile ? 15 : 30)].map((_, i) => (
         <motion.div
           key={i}
           className="absolute w-1 h-1 bg-blue-400 rounded-full"
@@ -149,19 +168,19 @@ export default function Hero3DInvestor() {
 
       {/* Hero content overlay */}
       <div className="absolute inset-0 flex items-center justify-center pointer-events-none z-10">
-        <div className="text-center max-w-4xl px-6">
+        <div className="text-center max-w-4xl px-4 sm:px-6">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.3 }}
           >
-            <div className="inline-block mb-4 px-4 py-2 rounded-full bg-blue-500/10 border border-blue-500/30 backdrop-blur-sm">
-              <span className="text-blue-400 text-sm font-semibold">INVESTOR PRESENTATION</span>
+            <div className="inline-block mb-3 sm:mb-4 px-3 sm:px-4 py-1.5 sm:py-2 rounded-full bg-blue-500/10 border border-blue-500/30 backdrop-blur-sm">
+              <span className="text-blue-400 text-xs sm:text-sm font-semibold">INVESTOR PRESENTATION</span>
             </div>
           </motion.div>
 
           <motion.h1
-            className="text-6xl md:text-7xl font-bold mb-6 bg-gradient-to-r from-blue-200 via-blue-400 to-blue-200 bg-clip-text text-transparent"
+            className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold mb-4 sm:mb-6 bg-gradient-to-r from-blue-200 via-blue-400 to-blue-200 bg-clip-text text-transparent leading-tight"
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.5 }}
@@ -173,20 +192,20 @@ export default function Hero3DInvestor() {
           </motion.h1>
 
           <motion.p
-            className="text-xl md:text-2xl text-gray-300 leading-relaxed"
+            className="text-base sm:text-lg md:text-xl lg:text-2xl text-gray-300 leading-relaxed px-4"
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.7 }}
           >
             Algorithmic Fiduciary Intelligence Platform
-            <br />
+            <br className="hidden sm:block" />
             <span className="text-blue-400">Transforming $850B benefits waste into verifiable alpha</span>
           </motion.p>
         </div>
       </div>
 
       {/* Bottom gradient fade */}
-      <div className="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-t from-black to-transparent pointer-events-none z-20" />
+      <div className="absolute bottom-0 left-0 right-0 h-24 sm:h-32 bg-gradient-to-t from-black to-transparent pointer-events-none z-20" />
     </div>
   );
 }

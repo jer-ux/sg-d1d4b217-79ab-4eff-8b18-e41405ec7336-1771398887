@@ -107,12 +107,12 @@ export default function CapitalMarketsPage() {
         <Nav />
 
         {/* Hero Section with 3D Background - Reduced top padding */}
-        <div className="pt-16">
+        <div className="pt-12 sm:pt-14 lg:pt-16">
           <Suspense fallback={
-            <div className="w-full h-[600px] flex items-center justify-center bg-gradient-to-b from-black to-zinc-950">
-              <div className="text-center">
-                <div className="w-16 h-16 border-4 border-blue-500 border-t-transparent rounded-full animate-spin mx-auto mb-4" />
-                <p className="text-blue-400 text-sm">Loading 3D Experience...</p>
+            <div className="w-full h-[400px] sm:h-[500px] lg:h-[600px] flex items-center justify-center bg-gradient-to-b from-black to-zinc-950">
+              <div className="text-center px-4">
+                <div className="w-12 h-12 sm:w-16 sm:h-16 border-4 border-blue-500 border-t-transparent rounded-full animate-spin mx-auto mb-4" />
+                <p className="text-blue-400 text-xs sm:text-sm">Loading 3D Experience...</p>
               </div>
             </div>
           }>

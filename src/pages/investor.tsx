@@ -166,14 +166,14 @@ export default function InvestorPage() {
       <div className="min-h-screen bg-black text-white overflow-hidden">
         {/* 3D Hero Section */}
         <motion.div 
-          className="pt-20"
+          className="pt-16 sm:pt-20"
           initial="initial"
           animate="animate"
           variants={fadeIn}
         >
           <Suspense fallback={
-            <div className="w-full h-[600px] flex items-center justify-center">
-              <div className="text-blue-400">Loading 3D visualization...</div>
+            <div className="w-full h-[400px] sm:h-[500px] lg:h-[600px] flex items-center justify-center">
+              <div className="text-blue-400 text-sm sm:text-base">Loading 3D visualization...</div>
             </div>
           }>
             <Hero3DInvestor />

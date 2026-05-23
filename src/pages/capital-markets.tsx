@@ -121,7 +121,7 @@ export default function CapitalMarketsPage() {
         </div>
 
         {/* Market Opportunity Section - Reduced padding */}
-        <section className="py-6 px-6 bg-gradient-to-b from-black to-zinc-950">
+        <section className="pb-12 px-6 bg-gradient-to-b from-black to-zinc-950">
           <div className="max-w-7xl mx-auto">
             <motion.div {...slideInLeft} className="text-center mb-8">
               <h2 className="text-4xl md:text-5xl font-bold text-blue-100 mb-4">

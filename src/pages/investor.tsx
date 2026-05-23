@@ -181,7 +181,7 @@ export default function InvestorPage() {
         </motion.div>
 
         {/* Executive Summary */}
-        <section className="py-8 px-6 bg-gradient-to-b from-black to-zinc-950">
+        <section className="pb-8 px-6 bg-gradient-to-b from-black to-zinc-950">
           <div className="max-w-7xl mx-auto">
             <motion.div
               initial="initial"

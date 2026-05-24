@@ -684,44 +684,6 @@ export default function HomePage() {
           </div>
         </section>
 
-        {/* Proof Section with Enhanced 3D Cards */}
-        
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-        
-
         {/* Forensics Section */}
         <section id="forensics" className="relative z-10 mx-auto w-full max-w-7xl px-4 sm:px-6 py-12 sm:py-16">
           <motion.div

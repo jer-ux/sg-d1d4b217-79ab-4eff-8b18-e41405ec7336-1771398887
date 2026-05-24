@@ -1,11 +1,11 @@
 ---
 title: Create colorful Focus Areas pages
-status: in_progress
+status: done
 priority: high
 type: feature
-tags: [design, personas, focus-areas]
+tags: [personas, design]
 created_by: agent
-created_at: 2026-05-24T08:39:28Z
+created_at: 2026-05-24
 position: 8
 ---
 

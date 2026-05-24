@@ -367,14 +367,6 @@ export default function Nav() {
               <div className="absolute top-full left-0 mt-2 w-64 bg-gray-900/95 backdrop-blur-xl rounded-xl border border-gray-700/50 shadow-xl overflow-hidden z-[210]">
                   <div className="p-2">
                     <Link
-                    href="/kincaid-iq"
-                    onClick={() => setPlatformDropdownOpen(false)}
-                    className="block px-4 py-3 text-gray-300 hover:text-white hover:bg-purple-500/10 rounded-lg transition-colors duration-150">
-                    
-                      <div className="font-medium">Kincaid IQ</div>
-                      <div className="text-xs text-gray-400">Real-time healthcare intelligence</div>
-                    </Link>
-                    <Link
                     href="/#war-room"
                     onClick={() => setPlatformDropdownOpen(false)}
                     className="block px-4 py-3 text-gray-300 hover:text-white hover:bg-amber-500/10 rounded-lg transition-colors duration-150">
@@ -590,9 +582,6 @@ export default function Nav() {
               </button>
               {platformDropdownOpen &&
             <div className="ml-4 mt-2 space-y-1">
-                  <Link href="/kincaid-iq" className="block px-4 py-2 text-sm text-gray-400 hover:text-white hover:bg-purple-500/10 rounded-lg transition-colors">
-                    Kincaid IQ
-                  </Link>
                   <Link href="/#war-room" className="block px-4 py-2 text-sm text-gray-400 hover:text-white hover:bg-white/5 rounded-lg transition-colors">
                     War Room
                   </Link>

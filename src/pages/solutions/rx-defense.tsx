@@ -13,7 +13,6 @@ import {
   Menu,
   X
 } from "lucide-react";
-import { SiteHeader } from "@/components/site/SiteHeader";
 import { SiteFooter } from "@/components/site/SiteFooter";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
@@ -627,7 +626,7 @@ export default function RxDefensePresentation() {
         <title>RX Defense IQ | 15 Critical PBM Contract Provisions</title>
       </Head>
 
-      <SiteHeader />
+      <Nav />
 
       {/* Table of Contents Sidebar */}
       <div className={`fixed top-0 left-0 h-full w-80 bg-[#0a0a0a] border-r border-white/10 z-50 transform transition-transform duration-300 ${tocOpen ? 'translate-x-0' : '-translate-x-full'} overflow-y-auto`}>

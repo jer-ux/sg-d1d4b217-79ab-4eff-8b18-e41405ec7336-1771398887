@@ -109,6 +109,14 @@ export default function Nav() {
               {solutionsDropdownOpen && <div className="absolute top-full left-0 mt-2 w-64 bg-gray-900/95 backdrop-blur-xl rounded-xl border border-gray-700/50 shadow-xl overflow-hidden z-[210]">
                   <div className="p-2">
                     <Link
+                    href="/#war-room"
+                    onClick={() => setSolutionsDropdownOpen(false)}
+                    className="block px-4 py-3 text-gray-300 hover:text-white hover:bg-purple-500/10 rounded-lg transition-colors duration-150">
+                    
+                      <div className="font-medium">War Room</div>
+                      <div className="text-xs text-gray-400">Actuarial intelligence platform</div>
+                    </Link>
+                    <Link
                     href="/solutions/contract-xray"
                     onClick={() => setSolutionsDropdownOpen(false)}
                     className="block px-4 py-3 text-gray-300 hover:text-white hover:bg-purple-500/10 rounded-lg transition-colors duration-150">
@@ -236,14 +244,6 @@ export default function Nav() {
               <div className="absolute top-full left-0 mt-2 w-64 bg-gray-900/95 backdrop-blur-xl rounded-xl border border-gray-700/50 shadow-xl overflow-hidden z-[210]">
                   <div className="p-2">
                     <Link
-                    href="/#war-room"
-                    onClick={() => setPlatformDropdownOpen(false)}
-                    className="block px-4 py-3 text-gray-300 hover:text-white hover:bg-amber-500/10 rounded-lg transition-colors duration-150">
-                    
-                      <div className="font-medium">War Room</div>
-                      <div className="text-xs text-gray-400">Actuarial intelligence platform</div>
-                    </Link>
-                    <Link
                     href="/actuarial-benefits"
                     onClick={() => setPlatformDropdownOpen(false)}
                     className="block px-4 py-3 text-gray-300 hover:text-white hover:bg-amber-500/10 rounded-lg transition-colors duration-150">
@@ -348,6 +348,9 @@ export default function Nav() {
               </button>
               {solutionsDropdownOpen &&
             <div className="ml-4 mt-2 space-y-1">
+                  <Link href="/#war-room" className="block px-4 py-2 text-sm text-gray-400 hover:text-white hover:bg-purple-500/10 rounded-lg transition-colors">
+                    War Room
+                  </Link>
                   <Link href="/solutions/contract-xray" className="block px-4 py-2 text-sm text-gray-400 hover:text-white hover:bg-purple-500/10 rounded-lg transition-colors">
                     PBM Contract X-Ray
                   </Link>
@@ -405,9 +408,6 @@ export default function Nav() {
               </button>
               {platformDropdownOpen &&
             <div className="ml-4 mt-2 space-y-1">
-                  <Link href="/#war-room" className="block px-4 py-2 text-sm text-gray-400 hover:text-white hover:bg-white/5 rounded-lg transition-colors">
-                    War Room
-                  </Link>
                   <Link href="/actuarial-benefits" className="block px-4 py-2 text-sm text-gray-400 hover:text-white hover:bg-white/5 rounded-lg transition-colors">
                     Actuarial Benefits
                   </Link>

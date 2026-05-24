@@ -262,75 +262,85 @@ export default function PEOperatorsPage() {
 
         <section className="py-24 px-4">
           <div className="max-w-4xl mx-auto">
-            <Card className="bg-gradient-to-br from-violet-950/50 to-fuchsia-950/50 border-violet-500/40 p-10">
-              <h2 className="text-4xl font-black text-center mb-4 bg-gradient-to-r from-violet-200 to-fuchsia-200 bg-clip-text text-transparent">
-                Get the Value Creation Playbook
-              </h2>
-              <p className="text-center text-violet-300 mb-8">
-                90-day deployment roadmap, exit documentation templates, and portfolio monitoring dashboard guide.
-              </p>
+            <Card className="relative bg-gradient-to-br from-violet-900/80 to-fuchsia-900/80 border-4 border-violet-400 p-12 shadow-[0_0_60px_rgba(139,92,246,0.6),0_0_100px_rgba(139,92,246,0.4),0_0_140px_rgba(139,92,246,0.2)] animate-pulse">
+              <div className="absolute inset-0 bg-gradient-to-r from-violet-500/20 via-fuchsia-500/20 to-pink-500/20 animate-pulse rounded-lg" />
+              <div className="absolute -inset-1 bg-gradient-to-r from-violet-600 via-fuchsia-600 to-pink-600 rounded-lg blur-xl opacity-75 animate-pulse" />
               
-              <form className="max-w-2xl mx-auto space-y-6">
-                <div className="grid md:grid-cols-2 gap-6">
-                  <div>
-                    <label className="block text-sm font-semibold text-violet-200 mb-2">Full Name</label>
-                    <input
-                      type="text"
-                      required
-                      className="w-full px-4 py-3 bg-black/30 border border-violet-500/30 rounded-lg text-white placeholder-violet-400/50 focus:outline-none focus:border-violet-400 transition-colors"
-                      placeholder="John Smith"
-                    />
+              <div className="relative">
+                <div className="text-center mb-8">
+                  <div className="inline-block px-6 py-2 bg-gradient-to-r from-violet-500 to-fuchsia-500 rounded-full mb-4 shadow-[0_0_30px_rgba(139,92,246,0.8)] animate-pulse">
+                    <span className="text-sm font-black text-white uppercase tracking-wider">🚀 Value Creation Playbook 🚀</span>
                   </div>
-                  <div>
-                    <label className="block text-sm font-semibold text-violet-200 mb-2">Email</label>
-                    <input
-                      type="email"
-                      required
-                      className="w-full px-4 py-3 bg-black/30 border border-violet-500/30 rounded-lg text-white placeholder-violet-400/50 focus:outline-none focus:border-violet-400 transition-colors"
-                      placeholder="john@pefirm.com"
-                    />
-                  </div>
+                  <h2 className="text-5xl font-black mb-4 bg-gradient-to-r from-violet-200 via-white to-fuchsia-200 bg-clip-text text-transparent drop-shadow-[0_0_25px_rgba(139,92,246,0.8)]">
+                    Get the Value Creation Playbook
+                  </h2>
+                  <p className="text-xl text-violet-100 drop-shadow-[0_0_15px_rgba(139,92,246,0.6)]">
+                    90-day deployment roadmap, exit documentation templates, and portfolio monitoring dashboard guide.
+                  </p>
                 </div>
                 
-                <div className="grid md:grid-cols-2 gap-6">
-                  <div>
-                    <label className="block text-sm font-semibold text-violet-200 mb-2">PE Firm</label>
-                    <input
-                      type="text"
-                      required
-                      className="w-full px-4 py-3 bg-black/30 border border-violet-500/30 rounded-lg text-white placeholder-violet-400/50 focus:outline-none focus:border-violet-400 transition-colors"
-                      placeholder="Equity Partners"
-                    />
+                <form className="max-w-2xl mx-auto space-y-6">
+                  <div className="grid md:grid-cols-2 gap-6">
+                    <div>
+                      <label className="block text-sm font-black text-violet-100 mb-2 uppercase tracking-wide drop-shadow-[0_0_10px_rgba(139,92,246,0.8)]">Full Name</label>
+                      <input
+                        type="text"
+                        required
+                        className="w-full px-5 py-4 bg-black/60 border-3 border-violet-400 rounded-xl text-white placeholder-violet-300/70 focus:outline-none focus:border-violet-300 focus:shadow-[0_0_30px_rgba(139,92,246,0.8)] transition-all font-semibold"
+                        placeholder="John Smith"
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-sm font-black text-violet-100 mb-2 uppercase tracking-wide drop-shadow-[0_0_10px_rgba(139,92,246,0.8)]">Email</label>
+                      <input
+                        type="email"
+                        required
+                        className="w-full px-5 py-4 bg-black/60 border-3 border-violet-400 rounded-xl text-white placeholder-violet-300/70 focus:outline-none focus:border-violet-300 focus:shadow-[0_0_30px_rgba(139,92,246,0.8)] transition-all font-semibold"
+                        placeholder="john@pefirm.com"
+                      />
+                    </div>
                   </div>
-                  <div>
-                    <label className="block text-sm font-semibold text-violet-200 mb-2">Role</label>
-                    <select
-                      required
-                      className="w-full px-4 py-3 bg-black/30 border border-violet-500/30 rounded-lg text-white focus:outline-none focus:border-violet-400 transition-colors"
-                    >
-                      <option value="">Select role...</option>
-                      <option value="operating-partner">Operating Partner</option>
-                      <option value="portfolio-ops">Portfolio Operations</option>
-                      <option value="value-creation">Value Creation</option>
-                      <option value="deal-team">Deal Team</option>
-                      <option value="other">Other</option>
-                    </select>
+                  
+                  <div className="grid md:grid-cols-2 gap-6">
+                    <div>
+                      <label className="block text-sm font-black text-violet-100 mb-2 uppercase tracking-wide drop-shadow-[0_0_10px_rgba(139,92,246,0.8)]">PE Firm</label>
+                      <input
+                        type="text"
+                        required
+                        className="w-full px-5 py-4 bg-black/60 border-3 border-violet-400 rounded-xl text-white placeholder-violet-300/70 focus:outline-none focus:border-violet-300 focus:shadow-[0_0_30px_rgba(139,92,246,0.8)] transition-all font-semibold"
+                        placeholder="Equity Partners"
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-sm font-black text-violet-100 mb-2 uppercase tracking-wide drop-shadow-[0_0_10px_rgba(139,92,246,0.8)]">Role</label>
+                      <select
+                        required
+                        className="w-full px-5 py-4 bg-black/60 border-3 border-violet-400 rounded-xl text-white focus:outline-none focus:border-violet-300 focus:shadow-[0_0_30px_rgba(139,92,246,0.8)] transition-all font-semibold"
+                      >
+                        <option value="">Select role...</option>
+                        <option value="operating-partner">Operating Partner</option>
+                        <option value="portfolio-ops">Portfolio Operations</option>
+                        <option value="value-creation">Value Creation</option>
+                        <option value="deal-team">Deal Team</option>
+                        <option value="other">Other</option>
+                      </select>
+                    </div>
                   </div>
-                </div>
 
-                <Button
-                  type="submit"
-                  size="lg"
-                  className="w-full bg-gradient-to-r from-violet-600 to-fuchsia-600 hover:from-violet-700 hover:to-fuchsia-700 text-white text-lg py-6 shadow-xl shadow-violet-500/30"
-                >
-                  Download Playbook
-                  <ArrowRight className="w-5 h-5 ml-2" />
-                </Button>
-                
-                <p className="text-xs text-center text-violet-400">
-                  By submitting, you agree to receive communications about SiriusB iQ value creation solutions. Unsubscribe anytime.
-                </p>
-              </form>
+                  <Button
+                    type="submit"
+                    size="lg"
+                    className="w-full bg-gradient-to-r from-violet-500 via-fuchsia-500 to-pink-500 hover:from-violet-400 hover:via-fuchsia-400 hover:to-pink-400 text-white text-2xl font-black py-8 shadow-[0_0_40px_rgba(139,92,246,0.9),0_0_60px_rgba(139,92,246,0.6),0_0_80px_rgba(139,92,246,0.4)] hover:shadow-[0_0_50px_rgba(139,92,246,1),0_0_80px_rgba(139,92,246,0.8),0_0_120px_rgba(139,92,246,0.6)] animate-pulse uppercase tracking-wider border-2 border-white/50"
+                  >
+                    📈 Download Playbook 📈
+                    <ArrowRight className="w-6 h-6 ml-3" />
+                  </Button>
+                  
+                  <p className="text-xs text-center text-violet-200 drop-shadow-[0_0_8px_rgba(139,92,246,0.6)]">
+                    By submitting, you agree to receive communications about SiriusB iQ value creation solutions. Unsubscribe anytime.
+                  </p>
+                </form>
+              </div>
             </Card>
           </div>
         </section>

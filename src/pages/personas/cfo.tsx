@@ -81,75 +81,85 @@ export default function CFOPage() {
 
         <section className="py-24 px-4">
           <div className="max-w-4xl mx-auto">
-            <Card className="bg-gradient-to-br from-emerald-950/50 to-green-950/50 border-emerald-500/40 p-10">
-              <h2 className="text-4xl font-black text-center mb-4 bg-gradient-to-r from-emerald-200 to-green-200 bg-clip-text text-transparent">
-                Calculate Your Hidden Cost Recovery
-              </h2>
-              <p className="text-center text-emerald-300 mb-8">
-                Get a personalized EBITDA impact analysis and free contract health check. See exactly what you're losing to PBM fees.
-              </p>
+            <Card className="relative bg-gradient-to-br from-emerald-900/80 to-green-900/80 border-4 border-emerald-400 p-12 shadow-[0_0_60px_rgba(16,185,129,0.6),0_0_100px_rgba(16,185,129,0.4),0_0_140px_rgba(16,185,129,0.2)] animate-pulse">
+              <div className="absolute inset-0 bg-gradient-to-r from-emerald-500/20 via-green-500/20 to-teal-500/20 animate-pulse rounded-lg" />
+              <div className="absolute -inset-1 bg-gradient-to-r from-emerald-600 via-green-600 to-teal-600 rounded-lg blur-xl opacity-75 animate-pulse" />
               
-              <form className="max-w-2xl mx-auto space-y-6">
-                <div className="grid md:grid-cols-2 gap-6">
-                  <div>
-                    <label className="block text-sm font-semibold text-emerald-200 mb-2">Full Name</label>
-                    <input
-                      type="text"
-                      required
-                      className="w-full px-4 py-3 bg-black/30 border border-emerald-500/30 rounded-lg text-white placeholder-emerald-400/50 focus:outline-none focus:border-emerald-400 transition-colors"
-                      placeholder="John Smith"
-                    />
+              <div className="relative">
+                <div className="text-center mb-8">
+                  <div className="inline-block px-6 py-2 bg-gradient-to-r from-emerald-500 to-green-500 rounded-full mb-4 shadow-[0_0_30px_rgba(16,185,129,0.8)] animate-pulse">
+                    <span className="text-sm font-black text-white uppercase tracking-wider">💵 Free Cost Recovery Analysis 💵</span>
                   </div>
-                  <div>
-                    <label className="block text-sm font-semibold text-emerald-200 mb-2">Email</label>
-                    <input
-                      type="email"
-                      required
-                      className="w-full px-4 py-3 bg-black/30 border border-emerald-500/30 rounded-lg text-white placeholder-emerald-400/50 focus:outline-none focus:border-emerald-400 transition-colors"
-                      placeholder="john@company.com"
-                    />
-                  </div>
+                  <h2 className="text-5xl font-black mb-4 bg-gradient-to-r from-emerald-200 via-white to-green-200 bg-clip-text text-transparent drop-shadow-[0_0_25px_rgba(16,185,129,0.8)]">
+                    Calculate Your Hidden Cost Recovery
+                  </h2>
+                  <p className="text-xl text-emerald-100 drop-shadow-[0_0_15px_rgba(16,185,129,0.6)]">
+                    Get a personalized EBITDA impact analysis and free contract health check. See exactly what you're losing to PBM fees.
+                  </p>
                 </div>
                 
-                <div className="grid md:grid-cols-2 gap-6">
-                  <div>
-                    <label className="block text-sm font-semibold text-emerald-200 mb-2">Company</label>
-                    <input
-                      type="text"
-                      required
-                      className="w-full px-4 py-3 bg-black/30 border border-emerald-500/30 rounded-lg text-white placeholder-emerald-400/50 focus:outline-none focus:border-emerald-400 transition-colors"
-                      placeholder="Acme Corporation"
-                    />
+                <form className="max-w-2xl mx-auto space-y-6">
+                  <div className="grid md:grid-cols-2 gap-6">
+                    <div>
+                      <label className="block text-sm font-black text-emerald-100 mb-2 uppercase tracking-wide drop-shadow-[0_0_10px_rgba(16,185,129,0.8)]">Full Name</label>
+                      <input
+                        type="text"
+                        required
+                        className="w-full px-5 py-4 bg-black/60 border-3 border-emerald-400 rounded-xl text-white placeholder-emerald-300/70 focus:outline-none focus:border-emerald-300 focus:shadow-[0_0_30px_rgba(16,185,129,0.8)] transition-all font-semibold"
+                        placeholder="John Smith"
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-sm font-black text-emerald-100 mb-2 uppercase tracking-wide drop-shadow-[0_0_10px_rgba(16,185,129,0.8)]">Email</label>
+                      <input
+                        type="email"
+                        required
+                        className="w-full px-5 py-4 bg-black/60 border-3 border-emerald-400 rounded-xl text-white placeholder-emerald-300/70 focus:outline-none focus:border-emerald-300 focus:shadow-[0_0_30px_rgba(16,185,129,0.8)] transition-all font-semibold"
+                        placeholder="john@company.com"
+                      />
+                    </div>
                   </div>
-                  <div>
-                    <label className="block text-sm font-semibold text-emerald-200 mb-2">Annual Drug Spend</label>
-                    <select
-                      required
-                      className="w-full px-4 py-3 bg-black/30 border border-emerald-500/30 rounded-lg text-white focus:outline-none focus:border-emerald-400 transition-colors"
-                    >
-                      <option value="">Select range...</option>
-                      <option value="<1m">Under $1M</option>
-                      <option value="1-3m">$1M - $3M</option>
-                      <option value="3-5m">$3M - $5M</option>
-                      <option value="5-10m">$5M - $10M</option>
-                      <option value="10m+">Over $10M</option>
-                    </select>
+                  
+                  <div className="grid md:grid-cols-2 gap-6">
+                    <div>
+                      <label className="block text-sm font-black text-emerald-100 mb-2 uppercase tracking-wide drop-shadow-[0_0_10px_rgba(16,185,129,0.8)]">Company</label>
+                      <input
+                        type="text"
+                        required
+                        className="w-full px-5 py-4 bg-black/60 border-3 border-emerald-400 rounded-xl text-white placeholder-emerald-300/70 focus:outline-none focus:border-emerald-300 focus:shadow-[0_0_30px_rgba(16,185,129,0.8)] transition-all font-semibold"
+                        placeholder="Acme Corporation"
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-sm font-black text-emerald-100 mb-2 uppercase tracking-wide drop-shadow-[0_0_10px_rgba(16,185,129,0.8)]">Annual Drug Spend</label>
+                      <select
+                        required
+                        className="w-full px-5 py-4 bg-black/60 border-3 border-emerald-400 rounded-xl text-white focus:outline-none focus:border-emerald-300 focus:shadow-[0_0_30px_rgba(16,185,129,0.8)] transition-all font-semibold"
+                      >
+                        <option value="">Select range...</option>
+                        <option value="<1m">Under $1M</option>
+                        <option value="1-3m">$1M - $3M</option>
+                        <option value="3-5m">$3M - $5M</option>
+                        <option value="5-10m">$5M - $10M</option>
+                        <option value="10m+">Over $10M</option>
+                      </select>
+                    </div>
                   </div>
-                </div>
 
-                <Button
-                  type="submit"
-                  size="lg"
-                  className="w-full bg-gradient-to-r from-emerald-600 to-green-600 hover:from-emerald-700 hover:to-green-700 text-white text-lg py-6 shadow-xl shadow-emerald-500/30"
-                >
-                  Calculate My Savings
-                  <ArrowRight className="w-5 h-5 ml-2" />
-                </Button>
-                
-                <p className="text-xs text-center text-emerald-400">
-                  By submitting, you agree to receive communications about SiriusB iQ cost optimization solutions. Unsubscribe anytime.
-                </p>
-              </form>
+                  <Button
+                    type="submit"
+                    size="lg"
+                    className="w-full bg-gradient-to-r from-emerald-500 via-green-500 to-teal-500 hover:from-emerald-400 hover:via-green-400 hover:to-teal-400 text-white text-2xl font-black py-8 shadow-[0_0_40px_rgba(16,185,129,0.9),0_0_60px_rgba(16,185,129,0.6),0_0_80px_rgba(16,185,129,0.4)] hover:shadow-[0_0_50px_rgba(16,185,129,1),0_0_80px_rgba(16,185,129,0.8),0_0_120px_rgba(16,185,129,0.6)] animate-pulse uppercase tracking-wider border-2 border-white/50"
+                  >
+                    💰 Calculate My Savings 💰
+                    <ArrowRight className="w-6 h-6 ml-3" />
+                  </Button>
+                  
+                  <p className="text-xs text-center text-emerald-200 drop-shadow-[0_0_8px_rgba(16,185,129,0.6)]">
+                    By submitting, you agree to receive communications about SiriusB iQ cost optimization solutions. Unsubscribe anytime.
+                  </p>
+                </form>
+              </div>
             </Card>
           </div>
         </section>

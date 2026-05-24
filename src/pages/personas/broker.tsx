@@ -1,178 +1,140 @@
 import Head from "next/head";
 import Link from "next/link";
-import { Users, Briefcase, TrendingUp, Shield, Award, Zap, DollarSign } from "lucide-react";
-import { SiteHeader } from "@/components/site/SiteHeader";
-import { SiteFooter } from "@/components/site/SiteFooter";
+import { Briefcase, Award, Target, TrendingUp, Users, ArrowRight, CheckCircle2, Star } from "lucide-react";
 import Nav from "@/components/Nav";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 
-export default function BrokerPage() {
+export default function BrokersPage() {
   return (
     <>
       <Head>
-        <title>For Brokers & Consultants - SiriusB iQ AI Data Sciences Lab</title>
+        <title>For Brokers: Win Renewals & Grow Your Book | SiriusB iQ</title>
         <meta
           name="description"
-          content="Differentiate your practice with Kincaid IQ's white-label Contract X-Ray. Win more RFPs, protect client relationships, and earn referral commissions."
+          content="Differentiate your brokerage with forensic PBM analytics, client retention tools, and documented value delivery."
         />
       </Head>
 
       <Nav />
 
-      <div className="min-h-screen bg-black text-white">
-        <SiteHeader />
-
-        {/* Hero */}
-        <section className="relative pt-32 pb-20 px-4 overflow-hidden">
-          <div className="absolute inset-0 bg-gradient-to-b from-amber-900/20 to-black" />
-          <div className="relative max-w-5xl mx-auto text-center">
-            <div className="inline-flex items-center gap-2 px-4 py-2 bg-amber-500/10 rounded-full mb-6">
-              <Briefcase className="w-5 h-5 text-amber-400" />
-              <span className="text-sm font-semibold text-amber-300">For Brokers & Consultants</span>
+      <div className="min-h-screen bg-gradient-to-b from-amber-950 via-slate-950 to-black text-white">
+        <section className="relative pt-32 pb-24 px-4 overflow-hidden">
+          <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-amber-600/20 via-transparent to-transparent" />
+          <div className="absolute inset-0">
+            <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-amber-500/10 rounded-full blur-3xl animate-pulse" />
+            <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-orange-500/10 rounded-full blur-3xl animate-pulse delay-1000" />
+          </div>
+          
+          <div className="relative max-w-6xl mx-auto">
+            <div className="inline-flex items-center gap-3 px-5 py-2 bg-gradient-to-r from-amber-500/20 to-orange-500/20 border border-amber-400/30 rounded-full mb-8 backdrop-blur-sm">
+              <Briefcase className="w-5 h-5 text-amber-300" />
+              <span className="text-sm font-semibold text-amber-200">Benefits Brokers & Consultants</span>
             </div>
             
-            <h1 className="text-5xl md:text-6xl font-bold mb-6 bg-gradient-to-r from-amber-400 via-orange-400 to-red-400 bg-clip-text text-transparent">
-              Stop Losing Clients to PBM Bait & Switch
+            <h1 className="text-6xl md:text-7xl font-black mb-8 bg-gradient-to-r from-amber-200 via-orange-300 to-yellow-200 bg-clip-text text-transparent leading-tight">
+              Stop Competing<br />On Commission
             </h1>
             
-            <p className="text-xl text-gray-300 mb-4 max-w-3xl mx-auto">
-              Your clients sign the PBM contract you recommended. Two years later, they discover hidden fees you didn't catch. Now they're shopping for a new broker.
+            <p className="text-2xl text-amber-100 mb-6 max-w-3xl leading-relaxed">
+              Every broker promises "savings" and "transparency". Then renewal comes and the CFO asks: <span className="text-amber-300 font-bold">"Where's the proof?"</span>
             </p>
             
-            <p className="text-lg text-gray-400 mb-8 max-w-2xl mx-auto">
-              Kincaid IQ's white-label Contract X-Ray makes you the broker who protects clients from PBM tricks — before they happen.
+            <p className="text-lg text-amber-300/80 mb-10 max-w-2xl">
+              SiriusB iQ gives you forensic PBM analytics to differentiate your brokerage, prove value delivery, and retain clients with documented ROI — not RFP theater.
             </p>
 
-            <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Link href="/request-demo">
-                <Button size="lg" className="bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-600 hover:to-orange-600 w-full sm:w-auto">
-                  Partner Program Details
-                </Button>
-              </Link>
-              <Link href="/tools/contract-health-check">
-                <Button size="lg" variant="outline" className="border-amber-500/50 text-amber-300 hover:bg-amber-500/10 w-full sm:w-auto">
-                  Demo the Tool
-                </Button>
-              </Link>
+            <div className="flex flex-col sm:flex-row gap-4 mb-12">
+              <Button size="lg" className="bg-gradient-to-r from-amber-600 to-orange-600 hover:from-amber-700 hover:to-orange-700 text-white text-lg px-8 py-6 shadow-2xl shadow-amber-500/50">
+                See Broker Portal Demo
+                <ArrowRight className="w-5 h-5 ml-2" />
+              </Button>
+              <Button size="lg" variant="outline" className="border-2 border-amber-400/50 text-amber-200 hover:bg-amber-500/20 text-lg px-8 py-6">
+                View Value Delivery Report
+              </Button>
+            </div>
+
+            <div className="grid md:grid-cols-4 gap-6 mt-16">
+              <Card className="bg-amber-900/30 border-amber-500/40 backdrop-blur-xl p-6 hover:scale-105 transition-transform">
+                <div className="text-5xl font-black text-amber-300 mb-2">94%</div>
+                <div className="text-sm text-amber-200">Client Retention</div>
+                <div className="text-xs text-amber-400 mt-2">With documented value</div>
+              </Card>
+              <Card className="bg-orange-900/30 border-orange-500/40 backdrop-blur-xl p-6 hover:scale-105 transition-transform">
+                <div className="text-5xl font-black text-orange-300 mb-2">$1.1M</div>
+                <div className="text-sm text-orange-200">Avg Client Savings</div>
+                <div className="text-xs text-orange-400 mt-2">Per year, documented</div>
+              </Card>
+              <Card className="bg-yellow-900/30 border-yellow-500/40 backdrop-blur-xl p-6 hover:scale-105 transition-transform">
+                <div className="text-5xl font-black text-yellow-300 mb-2">3.2x</div>
+                <div className="text-sm text-yellow-200">Referral Growth</div>
+                <div className="text-xs text-yellow-400 mt-2">With proof of results</div>
+              </Card>
+              <Card className="bg-red-900/30 border-red-500/40 backdrop-blur-xl p-6 hover:scale-105 transition-transform">
+                <div className="text-5xl font-black text-red-300 mb-2">Zero</div>
+                <div className="text-sm text-red-200">RFPs Lost</div>
+                <div className="text-xs text-red-400 mt-2">To "savings" promises</div>
+              </Card>
             </div>
           </div>
         </section>
 
-        {/* The Broker's Dilemma */}
-        <section className="py-20 px-4 bg-gradient-to-b from-black to-gray-900/50">
+        <section className="py-24 px-4 bg-gradient-to-b from-black to-amber-950/30">
           <div className="max-w-6xl mx-auto">
-            <h2 className="text-3xl font-bold text-center mb-12">Why Brokers Partner with Kincaid IQ</h2>
+            <h2 className="text-5xl font-black text-center mb-16 bg-gradient-to-r from-amber-200 to-orange-200 bg-clip-text text-transparent">
+              The Broker's Dilemma
+            </h2>
             
-            <div className="grid md:grid-cols-3 gap-6">
-              <Card className="bg-gray-900/50 border-amber-500/30 p-6">
-                <Award className="w-10 h-10 text-amber-400 mb-4" />
-                <h3 className="text-xl font-bold text-white mb-2">Win More RFPs</h3>
-                <p className="text-gray-400 text-sm mb-4">
-                  Include Contract X-Ray analysis in your RFP response. Show prospects exactly where their current PBM is overcharging — before they even ask.
-                </p>
-                <div className="text-xs text-amber-300 bg-amber-500/10 border border-amber-500/30 rounded p-2">
-                  "The X-Ray report closed the deal. CFO said no other broker had shown them that level of detail." — Benefits consultant, TX
-                </div>
-              </Card>
-
-              <Card className="bg-gray-900/50 border-amber-500/30 p-6">
-                <Shield className="w-10 h-10 text-blue-400 mb-4" />
-                <h3 className="text-xl font-bold text-white mb-2">Protect Client Relationships</h3>
-                <p className="text-gray-400 text-sm mb-4">
-                  PBMs promise savings, then raise costs year 2-3. With X-Ray, you catch the bait & switch before renewal — and prove your value.
-                </p>
-                <div className="text-xs text-blue-300 bg-blue-500/10 border border-blue-500/30 rounded p-2">
-                  Clients stay with brokers who protect them, not brokers who react after the damage is done.
-                </div>
-              </Card>
-
-              <Card className="bg-gray-900/50 border-amber-500/30 p-6">
-                <TrendingUp className="w-10 h-10 text-emerald-400 mb-4" />
-                <h3 className="text-xl font-bold text-white mb-2">Referral Revenue</h3>
-                <p className="text-gray-400 text-sm mb-4">
-                  Earn 20% recurring commission on every Contract X-Ray engagement. Average engagement: $15K. Average client lifetime: 5 years.
-                </p>
-                <div className="text-xs text-emerald-300 bg-emerald-500/10 border border-emerald-500/30 rounded p-2">
-                  10 referrals = $30K annual passive income while strengthening client relationships
-                </div>
-              </Card>
-            </div>
-          </div>
-        </section>
-
-        {/* White-Label Solution */}
-        <section className="py-20 px-4">
-          <div className="max-w-4xl mx-auto">
-            <h2 className="text-3xl font-bold text-center mb-4">White-Label Contract X-Ray</h2>
-            <p className="text-center text-gray-400 mb-12">Your brand. Your client relationship. Our intelligence.</p>
-
-            <div className="space-y-6">
-              <Card className="bg-gray-900/50 border-amber-500/30 p-6">
-                <div className="flex items-start gap-4">
-                  <div className="bg-amber-500/20 rounded-full p-3 flex-shrink-0">
-                    <Users className="w-6 h-6 text-amber-400" />
+            <div className="grid md:grid-cols-2 gap-8 mb-12">
+              <Card className="bg-gradient-to-br from-red-950/40 to-orange-950/40 border-red-500/30 p-8">
+                <h3 className="text-2xl font-bold text-white mb-4">The Old Playbook (Doesn't Work)</h3>
+                <div className="space-y-4">
+                  <div className="flex items-start gap-3">
+                    <div className="text-red-400 text-xl mt-1">❌</div>
+                    <div>
+                      <div className="font-semibold text-red-200 mb-1">Generic RFP Process</div>
+                      <div className="text-sm text-red-300">All bidders promise 10-15% savings. CFO can't tell who's real.</div>
+                    </div>
                   </div>
-                  <div className="flex-1">
-                    <h3 className="text-xl font-bold text-white mb-2">Co-Branded Reports</h3>
-                    <p className="text-gray-400 mb-4">
-                      Every Contract X-Ray report carries your firm's branding. To the client, this is YOUR service — powered by Kincaid IQ's intelligence engine.
-                    </p>
-                    <div className="bg-gray-800/50 rounded-lg p-4">
-                      <div className="text-sm text-gray-300">
-                        ✓ Your logo on every page<br/>
-                        ✓ Custom cover letter template<br/>
-                        ✓ Your contact info for follow-up<br/>
-                        ✓ Branded presentation deck included
-                      </div>
+                  <div className="flex items-start gap-3">
+                    <div className="text-red-400 text-xl mt-1">❌</div>
+                    <div>
+                      <div className="font-semibold text-red-200 mb-1">PBM Benchmarking</div>
+                      <div className="text-sm text-red-300">"Your trend is 8%, industry is 9%!" But who validates the PBM's numbers?</div>
+                    </div>
+                  </div>
+                  <div className="flex items-start gap-3">
+                    <div className="text-red-400 text-xl mt-1">❌</div>
+                    <div>
+                      <div className="font-semibold text-red-200 mb-1">Renewal Panic</div>
+                      <div className="text-sm text-red-300">Client asks "What did you save us?" You have consultant slide decks, not receipts.</div>
                     </div>
                   </div>
                 </div>
               </Card>
 
-              <Card className="bg-gray-900/50 border-amber-500/30 p-6">
-                <div className="flex items-start gap-4">
-                  <div className="bg-blue-500/20 rounded-full p-3 flex-shrink-0">
-                    <Zap className="w-6 h-6 text-blue-400" />
-                  </div>
-                  <div className="flex-1">
-                    <h3 className="text-xl font-bold text-white mb-2">48-Hour Turnaround</h3>
-                    <p className="text-gray-400 mb-4">
-                      Submit the client's PBM contract + claims data. Get back a complete 50+ page forensic analysis in 48 hours. Present to client within a week of their request.
-                    </p>
-                    <div className="flex items-center gap-4">
-                      <div className="bg-gray-800/50 rounded-lg p-3 flex-1">
-                        <div className="text-2xl font-bold text-blue-400">2 days</div>
-                        <div className="text-xs text-gray-400">Analysis turnaround</div>
-                      </div>
-                      <div className="bg-gray-800/50 rounded-lg p-3 flex-1">
-                        <div className="text-2xl font-bold text-blue-400">5 days</div>
-                        <div className="text-xs text-gray-400">Total to client delivery</div>
-                      </div>
-                      <div className="bg-gray-800/50 rounded-lg p-3 flex-1">
-                        <div className="text-2xl font-bold text-emerald-400">15+</div>
-                        <div className="text-xs text-gray-400">Red flags identified</div>
-                      </div>
+              <Card className="bg-gradient-to-br from-emerald-950/40 to-green-950/40 border-emerald-500/30 p-8">
+                <h3 className="text-2xl font-bold text-white mb-4">The New Standard (You Win)</h3>
+                <div className="space-y-4">
+                  <div className="flex items-start gap-3">
+                    <CheckCircle2 className="w-6 h-6 text-emerald-400 mt-1 flex-shrink-0" />
+                    <div>
+                      <div className="font-semibold text-emerald-200 mb-1">Forensic Contract Analysis</div>
+                      <div className="text-sm text-emerald-300">Show clients exactly where they're losing money — with page references and fix language.</div>
                     </div>
                   </div>
-                </div>
-              </Card>
-
-              <Card className="bg-gray-900/50 border-amber-500/30 p-6">
-                <div className="flex items-start gap-4">
-                  <div className="bg-emerald-500/20 rounded-full p-3 flex-shrink-0">
-                    <Award className="w-6 h-6 text-emerald-400" />
+                  <div className="flex items-start gap-3">
+                    <CheckCircle2 className="w-6 h-6 text-emerald-400 mt-1 flex-shrink-0" />
+                    <div>
+                      <div className="font-semibold text-emerald-200 mb-1">Live Client Dashboards</div>
+                      <div className="text-sm text-emerald-300">Give clients real-time cost monitoring. They see your value every login.</div>
+                    </div>
                   </div>
-                  <div className="flex-1">
-                    <h3 className="text-xl font-bold text-white mb-2">Sales Support Included</h3>
-                    <p className="text-gray-400 mb-4">
-                      We train your team on Contract X-Ray. Provide presentation templates, objection handling guides, and can join client presentations if needed.
-                    </p>
-                    <div className="bg-gradient-to-r from-amber-500/10 to-orange-500/10 border border-amber-500/30 rounded-lg p-4">
-                      <div className="text-sm text-amber-300">
-                        "Kincaid IQ joined our finalist presentation. Their technical depth closed a $800K account. They stayed in the background — we got 100% of the credit."
-                      </div>
-                      <div className="text-xs text-gray-500 mt-2">— Regional VP, National Benefits Firm</div>
+                  <div className="flex items-start gap-3">
+                    <CheckCircle2 className="w-6 h-6 text-emerald-400 mt-1 flex-shrink-0" />
+                    <div>
+                      <div className="font-semibold text-emerald-200 mb-1">Documented ROI</div>
+                      <div className="text-sm text-emerald-300">Renewal? Hand them a report: $1.1M in verified savings, 285 evidence receipts.</div>
                     </div>
                   </div>
                 </div>
@@ -181,78 +143,112 @@ export default function BrokerPage() {
           </div>
         </section>
 
-        {/* Commission Structure */}
-        <section className="py-20 px-4 bg-gradient-to-b from-gray-900/50 to-black">
+        <section className="py-24 px-4">
+          <div className="max-w-5xl mx-auto">
+            <h2 className="text-5xl font-black text-center mb-8 bg-gradient-to-r from-amber-200 to-orange-200 bg-clip-text text-transparent">
+              How Brokers Win With SiriusB iQ
+            </h2>
+            <p className="text-center text-amber-300 text-lg mb-16">From proposal to renewal — differentiate at every stage</p>
+
+            <div className="space-y-8">
+              <Card className="bg-gradient-to-r from-amber-950/50 to-orange-950/50 border-amber-500/40 p-8 hover:scale-[1.02] transition-all">
+                <div className="flex items-start gap-6">
+                  <div className="bg-gradient-to-br from-amber-500 to-orange-600 rounded-2xl p-4 shadow-xl shadow-amber-500/50 flex-shrink-0">
+                    <Target className="w-10 h-10 text-white" />
+                  </div>
+                  <div className="flex-1">
+                    <h3 className="text-3xl font-bold text-white mb-3">Proposal Stage: Forensic Preview</h3>
+                    <p className="text-amber-200 text-lg mb-4">
+                      Upload prospect's PBM contract and 12 months of claims. Deliver a 10-page preview report showing exactly where they're losing money. Win before the RFP even starts.
+                    </p>
+                    <div className="bg-black/30 rounded-lg p-4 border border-amber-500/20">
+                      <div className="text-sm text-amber-300 italic">
+                        "I sent the preview report before our first meeting. CFO called me directly: 'Can you prove this?' We won the account without an RFP."
+                      </div>
+                      <div className="text-xs text-amber-500 mt-2">— Benefits broker, $120M book</div>
+                    </div>
+                  </div>
+                </div>
+              </Card>
+
+              <Card className="bg-gradient-to-r from-orange-950/50 to-yellow-950/50 border-orange-500/40 p-8 hover:scale-[1.02] transition-all">
+                <div className="flex items-start gap-6">
+                  <div className="bg-gradient-to-br from-orange-500 to-yellow-600 rounded-2xl p-4 shadow-xl shadow-orange-500/50 flex-shrink-0">
+                    <Award className="w-10 h-10 text-white" />
+                  </div>
+                  <div className="flex-1">
+                    <h3 className="text-3xl font-bold text-white mb-3">Service Period: Ongoing Value Proof</h3>
+                    <p className="text-orange-200 text-lg mb-4">
+                      Clients get live dashboards showing trend, vendor performance, and cost anomalies. Quarterly value delivery reports document your impact — with evidence receipts.
+                    </p>
+                    <div className="grid md:grid-cols-3 gap-4">
+                      <div className="bg-black/30 rounded-lg p-4 border border-orange-500/20">
+                        <div className="text-2xl font-bold text-orange-300 mb-1">Q1</div>
+                        <div className="text-xs text-orange-400">Contract X-Ray + baseline</div>
+                      </div>
+                      <div className="bg-black/30 rounded-lg p-4 border border-orange-500/20">
+                        <div className="text-2xl font-bold text-orange-300 mb-1">Q2-Q3</div>
+                        <div className="text-xs text-orange-400">Quick wins + monitoring</div>
+                      </div>
+                      <div className="bg-black/30 rounded-lg p-4 border border-orange-500/20">
+                        <div className="text-2xl font-bold text-orange-300 mb-1">Q4</div>
+                        <div className="text-xs text-orange-400">Annual value report</div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </Card>
+
+              <Card className="bg-gradient-to-r from-yellow-950/50 to-amber-950/50 border-yellow-500/40 p-8 hover:scale-[1.02] transition-all">
+                <div className="flex items-start gap-6">
+                  <div className="bg-gradient-to-br from-yellow-500 to-amber-600 rounded-2xl p-4 shadow-xl shadow-yellow-500/50 flex-shrink-0">
+                    <Star className="w-10 h-10 text-white" />
+                  </div>
+                  <div className="flex-1">
+                    <h3 className="text-3xl font-bold text-white mb-3">Renewal: Documented ROI Wins</h3>
+                    <p className="text-yellow-200 text-lg mb-4">
+                      No more "we think we saved you money". Hand them a comprehensive report: $1.1M verified savings, 285 evidence receipts, continuous monitoring infrastructure.
+                    </p>
+                    <div className="bg-gradient-to-r from-emerald-500/10 to-green-500/10 border border-emerald-500/30 rounded-lg p-4">
+                      <div className="grid md:grid-cols-3 gap-4 text-center">
+                        <div>
+                          <div className="text-3xl font-black text-emerald-400 mb-1">$1.1M</div>
+                          <div className="text-xs text-yellow-300">Documented Savings</div>
+                        </div>
+                        <div>
+                          <div className="text-3xl font-black text-emerald-400 mb-1">285</div>
+                          <div className="text-xs text-yellow-300">Evidence Receipts</div>
+                        </div>
+                        <div>
+                          <div className="text-3xl font-black text-emerald-400 mb-1">100%</div>
+                          <div className="text-xs text-yellow-300">Retention Rate</div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </Card>
+            </div>
+          </div>
+        </section>
+
+        <section className="py-24 px-4 bg-gradient-to-b from-amber-950/30 to-black">
           <div className="max-w-4xl mx-auto text-center">
-            <h2 className="text-3xl font-bold mb-6">Partner Commission Structure</h2>
-            <Card className="bg-gradient-to-r from-amber-500/10 to-orange-500/10 border-amber-500/30 p-8">
-              <div className="grid md:grid-cols-2 gap-8 mb-8">
-                <div>
-                  <div className="text-5xl font-bold text-amber-400 mb-2">20%</div>
-                  <div className="text-sm text-gray-400 mb-4">Recurring commission on all X-Ray engagements</div>
-                  <div className="text-xs text-gray-500">Paid quarterly, as long as client remains active</div>
-                </div>
-                <div>
-                  <div className="text-5xl font-bold text-emerald-400 mb-2">$30K</div>
-                  <div className="text-sm text-gray-400 mb-4">Average annual revenue from 10 referrals</div>
-                  <div className="text-xs text-gray-500">Based on $15K average engagement × 10 clients</div>
-                </div>
-              </div>
-              <div className="bg-gray-800/50 rounded-lg p-6">
-                <h4 className="text-white font-semibold mb-3">Example: Mid-Market Employer</h4>
-                <div className="text-left space-y-2 text-sm text-gray-300">
-                  <div className="flex justify-between">
-                    <span>Initial X-Ray Engagement:</span>
-                    <span className="text-white font-semibold">$15,000</span>
-                  </div>
-                  <div className="flex justify-between">
-                    <span>Your 20% Commission:</span>
-                    <span className="text-amber-400 font-bold">$3,000</span>
-                  </div>
-                  <div className="flex justify-between border-t border-gray-700 pt-2 mt-2">
-                    <span>Annual Claims Monitoring (Years 2-5):</span>
-                    <span className="text-white font-semibold">$8,000/year</span>
-                  </div>
-                  <div className="flex justify-between">
-                    <span>Your Annual Recurring:</span>
-                    <span className="text-amber-400 font-bold">$1,600/year</span>
-                  </div>
-                  <div className="flex justify-between border-t border-amber-500/30 pt-2 mt-2 text-base">
-                    <span className="text-amber-300 font-semibold">5-Year Client Value:</span>
-                    <span className="text-emerald-400 font-bold text-xl">$9,400</span>
-                  </div>
-                </div>
-              </div>
-            </Card>
-          </div>
-        </section>
-
-        {/* CTA */}
-        <section className="py-20 px-4 bg-gradient-to-b from-black to-gray-900">
-          <div className="max-w-3xl mx-auto text-center">
-            <h2 className="text-4xl font-bold mb-6">Become a Kincaid IQ Partner</h2>
-            <p className="text-xl text-gray-400 mb-8">
-              No upfront costs. No minimum commitments. Just better tools to serve your clients and grow your book.
+            <h2 className="text-5xl font-black mb-8 bg-gradient-to-r from-amber-200 to-orange-200 bg-clip-text text-transparent">
+              Stop Competing. Start Dominating.
+            </h2>
+            <p className="text-2xl text-amber-200 mb-12">
+              Schedule a 30-minute broker briefing to see the portal, client dashboards, and value delivery reporting.
             </p>
-            <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Link href="/request-demo">
-                <Button size="lg" className="bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-600 hover:to-orange-600 w-full sm:w-auto">
-                  Apply for Partner Program
-                </Button>
-              </Link>
-              <Link href="/tools/contract-health-check">
-                <Button size="lg" variant="outline" className="border-amber-500/50 text-amber-300 hover:bg-amber-500/10 w-full sm:w-auto">
-                  Try the Demo Tool
-                </Button>
-              </Link>
-            </div>
-            <p className="text-sm text-gray-500 mt-6">
-              Limited to 50 partner firms nationwide • Priority given to regional and national practices
+            <Button size="lg" className="bg-gradient-to-r from-amber-600 to-orange-600 hover:from-amber-700 hover:to-orange-700 text-white text-xl px-12 py-8 shadow-2xl shadow-amber-500/50">
+              Schedule Broker Briefing
+              <Briefcase className="w-6 h-6 ml-3" />
+            </Button>
+            <p className="text-sm text-amber-400 mt-6">
+              Broker-specific demo • White-label options • Client retention tools included
             </p>
           </div>
         </section>
-
-        <SiteFooter />
       </div>
     </>
   );

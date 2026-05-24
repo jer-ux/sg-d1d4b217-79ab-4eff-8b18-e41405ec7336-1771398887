@@ -21,10 +21,10 @@ User wants brand new colorful pages for all 7 Focus Areas personas. Each page ne
 - [x] Create colorful Board Members page with purple/shield theme
 - [x] Create colorful Capital Markets page with indigo/chart theme
 - [x] Create colorful PE Operators page with violet/building theme
-- [ ] Create colorful CFOs page with emerald/trending theme
-- [ ] Create colorful HR Directors page with blue/people theme
-- [ ] Create colorful Brokers page with amber/briefcase theme
-- [ ] Create colorful Actuaries page with cyan/analytics theme
+- [x] Create colorful CFOs page with emerald/trending theme
+- [x] Create colorful HR Directors page with blue/people theme
+- [x] Create colorful Brokers page with amber/briefcase theme
+- [x] Create colorful Actuaries page with cyan/analytics theme
 
 ## Acceptance
 - Each page has a unique color scheme and visual identity

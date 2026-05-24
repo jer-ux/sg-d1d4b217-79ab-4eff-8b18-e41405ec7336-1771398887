@@ -55,36 +55,36 @@ const Card3D = ({
       style={{ transformStyle: "preserve-3d" }}>
       
       <div className="absolute -inset-px rounded-xl sm:rounded-2xl bg-gradient-to-r from-purple-600/0 via-purple-500/40 to-blue-600/20 opacity-0 blur-xl transition-opacity duration-500 group-hover:opacity-100" />
-      <div className="absolute -inset-px rounded-xl sm:rounded-2xl bg-gradient-to-br from-purple-500/10 via-transparent to-blue-500/10 opacity-60" />
-      <motion.div
-        className="absolute inset-0 rounded-xl sm:rounded-2xl opacity-0 group-hover:opacity-100"
-        animate={{
-          background: [
-          "radial-gradient(circle at 0% 0%, rgba(168, 85, 247, 0.3) 0%, transparent 50%)",
-          "radial-gradient(circle at 100% 100%, rgba(168, 85, 247, 0.3) 0%, transparent 50%)",
-          "radial-gradient(circle at 0% 0%, rgba(168, 85, 247, 0.3) 0%, transparent 50%)"]
-
-        }}
-        transition={{ duration: 3, repeat: Infinity, ease: "linear" }} />
       
-      <div className="relative" style={{ transform: "translateZ(50px)" }}>
-        {Icon &&
-        <motion.div
-          className="mb-3 sm:mb-4 inline-flex h-10 w-10 sm:h-14 sm:w-14 items-center justify-center rounded-lg sm:rounded-xl bg-gradient-to-br from-purple-500/30 to-blue-500/30 text-purple-400 shadow-lg shadow-purple-500/40"
-          whileHover={{ rotate: 360, scale: 1.15 }}
-          transition={{ duration: 0.8, type: "spring", stiffness: 200 }}>
-          
-            <Icon className="h-5 w-5 sm:h-7 sm:w-7" />
-          </motion.div>
-        }
-        <div className="mb-2 sm:mb-3">
-          <div className="text-lg sm:text-xl font-bold bg-gradient-to-r from-white via-purple-100 to-white bg-clip-text text-transparent">
-            {title}
-          </div>
-          {subtitle && <div className="mt-1 text-xs sm:text-sm text-purple-300/70 font-medium">{subtitle}</div>}
-        </div>
-        <div className="text-xs sm:text-sm leading-relaxed text-zinc-300">{children}</div>
-      </div>
+      
+
+
+
+
+
+
+
+
+      
+      
+      
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+      
     </motion.div>);
 
 };

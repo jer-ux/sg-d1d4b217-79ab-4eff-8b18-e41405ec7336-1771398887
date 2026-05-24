@@ -55,7 +55,6 @@ export default function handler(req: NextApiRequest, res: NextApiResponse) {
     { loc: `${baseUrl}/contract-intelligence`, lastmod: currentDate, changefreq: 'weekly', priority: 0.8 },
     { loc: `${baseUrl}/contract-xray-offering`, lastmod: currentDate, changefreq: 'weekly', priority: 0.8 },
     { loc: `${baseUrl}/verified-savings-ledger`, lastmod: currentDate, changefreq: 'weekly', priority: 0.8 },
-    { loc: `${baseUrl}/actuarial-benefits`, lastmod: currentDate, changefreq: 'weekly', priority: 0.7 },
     { loc: `${baseUrl}/ebitda-governance`, lastmod: currentDate, changefreq: 'weekly', priority: 0.7 },
     { loc: `${baseUrl}/evidence-receipts`, lastmod: currentDate, changefreq: 'weekly', priority: 0.7 },
     

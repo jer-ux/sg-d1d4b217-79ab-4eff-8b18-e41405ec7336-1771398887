@@ -41,6 +41,7 @@ export default function handler(req: NextApiRequest, res: NextApiResponse) {
     { loc: `${baseUrl}/solutions/policy-compliance`, lastmod: currentDate, changefreq: 'weekly', priority: 0.7 },
     { loc: `${baseUrl}/solutions/premium-calculation`, lastmod: currentDate, changefreq: 'weekly', priority: 0.7 },
     { loc: `${baseUrl}/solutions/risk-assessment`, lastmod: currentDate, changefreq: 'weekly', priority: 0.7 },
+    { loc: `${baseUrl}/solutions/actuarial-benefits`, lastmod: currentDate, changefreq: 'weekly', priority: 0.7 },
     { loc: `${baseUrl}/solutions/ai-automation`, lastmod: currentDate, changefreq: 'weekly', priority: 0.7 },
     { loc: `${baseUrl}/solutions/cost-optimization`, lastmod: currentDate, changefreq: 'weekly', priority: 0.7 },
     { loc: `${baseUrl}/solutions/erisa-compliance`, lastmod: currentDate, changefreq: 'weekly', priority: 0.7 },

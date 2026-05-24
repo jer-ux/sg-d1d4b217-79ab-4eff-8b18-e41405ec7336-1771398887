@@ -43,50 +43,28 @@ const Card3D = ({
     cardRef.current.style.transform = "perspective(1000px) rotateX(0deg) rotateY(0deg) scale3d(1, 1, 1)";
   };
 
-  return;
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+  return (
+    <motion.div
+      ref={cardRef}
+      className="relative rounded-2xl border border-purple-500/20 bg-gradient-to-br from-purple-950/10 to-black/40 p-6 sm:p-8 backdrop-blur-sm"
+      initial={{ opacity: 0, y: 30 }}
+      animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 }}
+      transition={{ duration: 0.6, delay }}
+      onMouseMove={handleMouseMove}
+      onMouseLeave={handleMouseLeave}
+      style={{ perspective: "1000px", transformStyle: "preserve-3d" }}
+    >
+      <div className="absolute -inset-0.5 rounded-2xl bg-gradient-to-br from-purple-500/10 to-transparent opacity-0 blur transition-opacity group-hover:opacity-100" />
+      {Icon && (
+        <div className="mb-4 inline-flex rounded-lg bg-purple-500/10 p-3">
+          <Icon className="h-6 w-6 text-purple-400" />
+        </div>
+      )}
+      <h3 className="mb-2 text-xl sm:text-2xl font-bold text-white">{title}</h3>
+      {subtitle && <div className="mb-4 text-sm font-semibold text-purple-400">{subtitle}</div>}
+      <div className="text-sm sm:text-base text-zinc-400 leading-relaxed">{children}</div>
+    </motion.div>
+  );
 };
 
 const Pill = ({ k, v }: {k: string;v: string;}) =>

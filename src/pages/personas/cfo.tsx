@@ -79,147 +79,78 @@ export default function CFOPage() {
           </div>
         </section>
 
-        <section className="py-24 px-4 bg-gradient-to-b from-black to-emerald-950/30">
-          <div className="max-w-6xl mx-auto">
-            <h2 className="text-5xl font-black text-center mb-16 bg-gradient-to-r from-emerald-200 to-green-200 bg-clip-text text-transparent">
-              The Numbers That Keep You Up
-            </h2>
-            
-            <div className="grid md:grid-cols-3 gap-8">
-              <Card className="bg-gradient-to-br from-red-950/40 to-orange-950/40 border-red-500/30 p-8 group hover:scale-105 transition-all">
-                <AlertTriangle className="w-12 h-12 text-red-400 mb-6 group-hover:animate-pulse" />
-                <h3 className="text-2xl font-bold text-white mb-4">Rebate Retention</h3>
-                <p className="text-red-100 mb-4">
-                  <span className="text-4xl font-black text-red-400 block mb-2">$627K</span>
-                  Average annual rebate revenue retained by PBM — hidden in "administrative fees" and undisclosed manufacturer payments.
-                </p>
-                <div className="bg-red-950/50 rounded-lg p-4 border border-red-500/30">
-                  <div className="text-sm text-red-300">
-                    Without audit rights, you'll never see these payments. They're contractually yours — the PBM just keeps them.
-                  </div>
-                </div>
-              </Card>
-
-              <Card className="bg-gradient-to-br from-orange-950/40 to-yellow-950/40 border-orange-500/30 p-8 group hover:scale-105 transition-all">
-                <TrendingDown className="w-12 h-12 text-orange-400 mb-6 group-hover:scale-110 transition-transform" />
-                <h3 className="text-2xl font-bold text-white mb-4">Hidden Inflation</h3>
-                <p className="text-orange-100 mb-4">
-                  <span className="text-4xl font-black text-orange-400 block mb-2">23%</span>
-                  Average total cost inflation vs. transparent pricing — spread, DIR fees, specialty pharmacy margins, formulary bias.
-                </p>
-                <div className="bg-orange-950/50 rounded-lg p-4 border border-orange-500/30">
-                  <div className="text-sm text-orange-300">
-                    Your CFO dashboard shows "pharmacy trend +8%". The real number is +31%. Contract loopholes hide the rest.
-                  </div>
-                </div>
-              </Card>
-
-              <Card className="bg-gradient-to-br from-yellow-950/40 to-amber-950/40 border-yellow-500/30 p-8 group hover:scale-105 transition-all">
-                <Target className="w-12 h-12 text-yellow-400 mb-6 group-hover:rotate-12 transition-transform" />
-                <h3 className="text-2xl font-bold text-white mb-4">Personal Liability</h3>
-                <p className="text-yellow-100 mb-4">
-                  <span className="text-4xl font-black text-yellow-400 block mb-2">100%</span>
-                  CFOs are personally liable under ERISA §404. DOL increasing scrutiny of PBM contracts — no oversight documentation = personal exposure.
-                </p>
-                <div className="bg-yellow-950/50 rounded-lg p-4 border border-yellow-500/30">
-                  <div className="text-sm text-yellow-300">
-                    "Did you monitor the PBM?" If the answer is consultant slide decks, not evidence receipts, you're exposed.
-                  </div>
-                </div>
-              </Card>
-            </div>
-          </div>
-        </section>
-
         <section className="py-24 px-4">
-          <div className="max-w-5xl mx-auto">
-            <h2 className="text-5xl font-black text-center mb-8 bg-gradient-to-r from-emerald-200 to-green-200 bg-clip-text text-transparent">
-              How We Protect Your Bottom Line
-            </h2>
-            <p className="text-center text-emerald-300 text-lg mb-16">3-step forensic process: hidden costs → documented savings</p>
-
-            <div className="space-y-8">
-              <Card className="bg-gradient-to-r from-emerald-950/50 to-green-950/50 border-emerald-500/40 p-8 hover:scale-[1.02] transition-all">
-                <div className="flex items-start gap-6">
-                  <div className="bg-gradient-to-br from-emerald-500 to-green-600 rounded-2xl p-4 shadow-xl shadow-emerald-500/50 flex-shrink-0">
-                    <Target className="w-10 h-10 text-white" />
+          <div className="max-w-4xl mx-auto">
+            <Card className="bg-gradient-to-br from-emerald-950/50 to-green-950/50 border-emerald-500/40 p-10">
+              <h2 className="text-4xl font-black text-center mb-4 bg-gradient-to-r from-emerald-200 to-green-200 bg-clip-text text-transparent">
+                Calculate Your Hidden Cost Recovery
+              </h2>
+              <p className="text-center text-emerald-300 mb-8">
+                Get a personalized EBITDA impact analysis and free contract health check. See exactly what you're losing to PBM fees.
+              </p>
+              
+              <form className="max-w-2xl mx-auto space-y-6">
+                <div className="grid md:grid-cols-2 gap-6">
+                  <div>
+                    <label className="block text-sm font-semibold text-emerald-200 mb-2">Full Name</label>
+                    <input
+                      type="text"
+                      required
+                      className="w-full px-4 py-3 bg-black/30 border border-emerald-500/30 rounded-lg text-white placeholder-emerald-400/50 focus:outline-none focus:border-emerald-400 transition-colors"
+                      placeholder="John Smith"
+                    />
                   </div>
-                  <div className="flex-1">
-                    <h3 className="text-3xl font-bold text-white mb-3">Contract X-Ray Analysis</h3>
-                    <p className="text-emerald-200 text-lg mb-4">
-                      We audit all 15 critical provisions in your PBM contract against industry best practices. Every loophole, every retention clause, every hidden fee — documented with page references and fix language.
-                    </p>
-                    <div className="grid md:grid-cols-3 gap-4">
-                      <div className="bg-black/30 rounded-lg p-4 border border-emerald-500/20">
-                        <div className="text-2xl font-bold text-emerald-300 mb-1">$627K</div>
-                        <div className="text-xs text-emerald-400">Rebate Revenue</div>
-                      </div>
-                      <div className="bg-black/30 rounded-lg p-4 border border-emerald-500/20">
-                        <div className="text-2xl font-bold text-emerald-300 mb-1">$410K</div>
-                        <div className="text-xs text-emerald-400">DIR Fees</div>
-                      </div>
-                      <div className="bg-black/30 rounded-lg p-4 border border-emerald-500/20">
-                        <div className="text-2xl font-bold text-emerald-300 mb-1">$380K</div>
-                        <div className="text-xs text-emerald-400">Spread Pricing</div>
-                      </div>
-                    </div>
+                  <div>
+                    <label className="block text-sm font-semibold text-emerald-200 mb-2">Email</label>
+                    <input
+                      type="email"
+                      required
+                      className="w-full px-4 py-3 bg-black/30 border border-emerald-500/30 rounded-lg text-white placeholder-emerald-400/50 focus:outline-none focus:border-emerald-400 transition-colors"
+                      placeholder="john@company.com"
+                    />
                   </div>
                 </div>
-              </Card>
-
-              <Card className="bg-gradient-to-r from-green-950/50 to-teal-950/50 border-green-500/40 p-8 hover:scale-[1.02] transition-all">
-                <div className="flex items-start gap-6">
-                  <div className="bg-gradient-to-br from-green-500 to-teal-600 rounded-2xl p-4 shadow-xl shadow-green-500/50 flex-shrink-0">
-                    <BarChart3 className="w-10 h-10 text-white" />
+                
+                <div className="grid md:grid-cols-2 gap-6">
+                  <div>
+                    <label className="block text-sm font-semibold text-emerald-200 mb-2">Company</label>
+                    <input
+                      type="text"
+                      required
+                      className="w-full px-4 py-3 bg-black/30 border border-emerald-500/30 rounded-lg text-white placeholder-emerald-400/50 focus:outline-none focus:border-emerald-400 transition-colors"
+                      placeholder="Acme Corporation"
+                    />
                   </div>
-                  <div className="flex-1">
-                    <h3 className="text-3xl font-bold text-white mb-3">Claims Data Forensics</h3>
-                    <p className="text-green-200 text-lg mb-4">
-                      We connect your claims data to the contract gaps. Show exactly how much each loophole cost you — by provision, by drug class, by pharmacy. Turn "potential issues" into "here are the invoices."
-                    </p>
-                    <div className="bg-gradient-to-r from-emerald-500/10 to-green-500/10 border border-emerald-500/30 rounded-lg p-4">
-                      <div className="text-sm text-emerald-200 font-semibold mb-2">Real CFO Result:</div>
-                      <div className="text-sm text-emerald-300">
-                        "The X-Ray identified $1.1M in annual overpayments. We presented it to the PBM with claims evidence. They fought for 6 months, but we had the data. Contract amended. Full pass-through now."
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </Card>
-
-              <Card className="bg-gradient-to-r from-teal-950/50 to-cyan-950/50 border-teal-500/40 p-8 hover:scale-[1.02] transition-all">
-                <div className="flex items-start gap-6">
-                  <div className="bg-gradient-to-br from-teal-500 to-cyan-600 rounded-2xl p-4 shadow-xl shadow-teal-500/50 flex-shrink-0">
-                    <CheckCircle2 className="w-10 h-10 text-white" />
-                  </div>
-                  <div className="flex-1">
-                    <h3 className="text-3xl font-bold text-white mb-3">Board-Ready Documentation</h3>
-                    <p className="text-teal-200 text-lg mb-4">
-                      Executive summary for the Board, detailed technical report for internal review, and specific fix language for your next RFP or amendment negotiation.
-                    </p>
-                    <div className="bg-black/30 rounded-lg p-4 border border-teal-500/20">
-                      <div className="grid md:grid-cols-2 gap-4">
-                        <div>
-                          <div className="text-sm text-teal-300 font-semibold mb-2">Deliverables:</div>
-                          <div className="space-y-1 text-sm text-teal-200">
-                            <div>• Executive summary (5 pages)</div>
-                            <div>• Technical report (40 pages)</div>
-                            <div>• Fix language for contract</div>
-                            <div>• Evidence receipts for DOL</div>
-                          </div>
-                        </div>
-                        <div>
-                          <div className="text-3xl font-bold text-emerald-400 mb-2">$15K</div>
-                          <div className="text-sm text-teal-300">X-Ray engagement cost</div>
-                          <div className="text-3xl font-bold text-emerald-400 mt-4 mb-2">$150K</div>
-                          <div className="text-sm text-teal-300">Minimum identified savings</div>
-                        </div>
-                      </div>
-                    </div>
+                  <div>
+                    <label className="block text-sm font-semibold text-emerald-200 mb-2">Annual Drug Spend</label>
+                    <select
+                      required
+                      className="w-full px-4 py-3 bg-black/30 border border-emerald-500/30 rounded-lg text-white focus:outline-none focus:border-emerald-400 transition-colors"
+                    >
+                      <option value="">Select range...</option>
+                      <option value="<1m">Under $1M</option>
+                      <option value="1-3m">$1M - $3M</option>
+                      <option value="3-5m">$3M - $5M</option>
+                      <option value="5-10m">$5M - $10M</option>
+                      <option value="10m+">Over $10M</option>
+                    </select>
                   </div>
                 </div>
-              </Card>
-            </div>
+
+                <Button
+                  type="submit"
+                  size="lg"
+                  className="w-full bg-gradient-to-r from-emerald-600 to-green-600 hover:from-emerald-700 hover:to-green-700 text-white text-lg py-6 shadow-xl shadow-emerald-500/30"
+                >
+                  Calculate My Savings
+                  <ArrowRight className="w-5 h-5 ml-2" />
+                </Button>
+                
+                <p className="text-xs text-center text-emerald-400">
+                  By submitting, you agree to receive communications about SiriusB iQ cost optimization solutions. Unsubscribe anytime.
+                </p>
+              </form>
+            </Card>
           </div>
         </section>
 

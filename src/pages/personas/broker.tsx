@@ -232,6 +232,81 @@ export default function BrokersPage() {
           </div>
         </section>
 
+        <section className="py-24 px-4">
+          <div className="max-w-4xl mx-auto">
+            <Card className="bg-gradient-to-br from-amber-950/50 to-orange-950/50 border-amber-500/40 p-10">
+              <h2 className="text-4xl font-black text-center mb-4 bg-gradient-to-r from-amber-200 to-orange-200 bg-clip-text text-transparent">
+                Get the Broker Value Toolkit
+              </h2>
+              <p className="text-center text-amber-300 mb-8">
+                Client RFP templates, benchmark comparison tools, and value-add service guides to differentiate your practice.
+              </p>
+              
+              <form className="max-w-2xl mx-auto space-y-6">
+                <div className="grid md:grid-cols-2 gap-6">
+                  <div>
+                    <label className="block text-sm font-semibold text-amber-200 mb-2">Full Name</label>
+                    <input
+                      type="text"
+                      required
+                      className="w-full px-4 py-3 bg-black/30 border border-amber-500/30 rounded-lg text-white placeholder-amber-400/50 focus:outline-none focus:border-amber-400 transition-colors"
+                      placeholder="John Smith"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-sm font-semibold text-amber-200 mb-2">Email</label>
+                    <input
+                      type="email"
+                      required
+                      className="w-full px-4 py-3 bg-black/30 border border-amber-500/30 rounded-lg text-white placeholder-amber-400/50 focus:outline-none focus:border-amber-400 transition-colors"
+                      placeholder="john@brokeragefirm.com"
+                    />
+                  </div>
+                </div>
+                
+                <div className="grid md:grid-cols-2 gap-6">
+                  <div>
+                    <label className="block text-sm font-semibold text-amber-200 mb-2">Brokerage Firm</label>
+                    <input
+                      type="text"
+                      required
+                      className="w-full px-4 py-3 bg-black/30 border border-amber-500/30 rounded-lg text-white placeholder-amber-400/50 focus:outline-none focus:border-amber-400 transition-colors"
+                      placeholder="Benefits Group"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-sm font-semibold text-amber-200 mb-2">Role</label>
+                    <select
+                      required
+                      className="w-full px-4 py-3 bg-black/30 border border-amber-500/30 rounded-lg text-white focus:outline-none focus:border-amber-400 transition-colors"
+                    >
+                      <option value="">Select role...</option>
+                      <option value="producer">Producer / Agent</option>
+                      <option value="account-manager">Account Manager</option>
+                      <option value="consultant">Consultant</option>
+                      <option value="principal">Principal / Owner</option>
+                      <option value="other">Other</option>
+                    </select>
+                  </div>
+                </div>
+
+                <Button
+                  type="submit"
+                  size="lg"
+                  className="w-full bg-gradient-to-r from-amber-600 to-orange-600 hover:from-amber-700 hover:to-orange-700 text-white text-lg py-6 shadow-xl shadow-amber-500/30"
+                >
+                  Download Broker Toolkit
+                  <ArrowRight className="w-5 h-5 ml-2" />
+                </Button>
+                
+                <p className="text-xs text-center text-amber-400">
+                  By submitting, you agree to receive communications about SiriusB iQ broker partnership opportunities. Unsubscribe anytime.
+                </p>
+              </form>
+            </Card>
+          </div>
+        </section>
+
         <section className="py-24 px-4 bg-gradient-to-b from-amber-950/30 to-black">
           <div className="max-w-4xl mx-auto text-center">
             <h2 className="text-5xl font-black mb-8 bg-gradient-to-r from-amber-200 to-orange-200 bg-clip-text text-transparent">

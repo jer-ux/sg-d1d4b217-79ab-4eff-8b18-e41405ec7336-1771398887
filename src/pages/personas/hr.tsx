@@ -217,6 +217,81 @@ export default function HRDirectorsPage() {
           </div>
         </section>
 
+        <section className="py-24 px-4">
+          <div className="max-w-4xl mx-auto">
+            <Card className="bg-gradient-to-br from-blue-950/50 to-sky-950/50 border-blue-500/40 p-10">
+              <h2 className="text-4xl font-black text-center mb-4 bg-gradient-to-r from-blue-200 to-sky-200 bg-clip-text text-transparent">
+                Get the HR Benefits Toolkit
+              </h2>
+              <p className="text-center text-blue-300 mb-8">
+                Employee communication templates, benefits comparison guides, and satisfaction survey frameworks.
+              </p>
+              
+              <form className="max-w-2xl mx-auto space-y-6">
+                <div className="grid md:grid-cols-2 gap-6">
+                  <div>
+                    <label className="block text-sm font-semibold text-blue-200 mb-2">Full Name</label>
+                    <input
+                      type="text"
+                      required
+                      className="w-full px-4 py-3 bg-black/30 border border-blue-500/30 rounded-lg text-white placeholder-blue-400/50 focus:outline-none focus:border-blue-400 transition-colors"
+                      placeholder="John Smith"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-sm font-semibold text-blue-200 mb-2">Email</label>
+                    <input
+                      type="email"
+                      required
+                      className="w-full px-4 py-3 bg-black/30 border border-blue-500/30 rounded-lg text-white placeholder-blue-400/50 focus:outline-none focus:border-blue-400 transition-colors"
+                      placeholder="john@company.com"
+                    />
+                  </div>
+                </div>
+                
+                <div className="grid md:grid-cols-2 gap-6">
+                  <div>
+                    <label className="block text-sm font-semibold text-blue-200 mb-2">Company</label>
+                    <input
+                      type="text"
+                      required
+                      className="w-full px-4 py-3 bg-black/30 border border-blue-500/30 rounded-lg text-white placeholder-blue-400/50 focus:outline-none focus:border-blue-400 transition-colors"
+                      placeholder="Acme Corporation"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-sm font-semibold text-blue-200 mb-2">Role</label>
+                    <select
+                      required
+                      className="w-full px-4 py-3 bg-black/30 border border-blue-500/30 rounded-lg text-white focus:outline-none focus:border-blue-400 transition-colors"
+                    >
+                      <option value="">Select role...</option>
+                      <option value="chro">CHRO / VP HR</option>
+                      <option value="benefits">Benefits Director</option>
+                      <option value="manager">HR Manager</option>
+                      <option value="specialist">Benefits Specialist</option>
+                      <option value="other">Other</option>
+                    </select>
+                  </div>
+                </div>
+
+                <Button
+                  type="submit"
+                  size="lg"
+                  className="w-full bg-gradient-to-r from-blue-600 to-sky-600 hover:from-blue-700 hover:to-sky-700 text-white text-lg py-6 shadow-xl shadow-blue-500/30"
+                >
+                  Download HR Toolkit
+                  <ArrowRight className="w-5 h-5 ml-2" />
+                </Button>
+                
+                <p className="text-xs text-center text-blue-400">
+                  By submitting, you agree to receive communications about SiriusB iQ benefits solutions. Unsubscribe anytime.
+                </p>
+              </form>
+            </Card>
+          </div>
+        </section>
+
         <section className="py-24 px-4 bg-gradient-to-b from-blue-950/30 to-black">
           <div className="max-w-4xl mx-auto text-center">
             <h2 className="text-5xl font-black mb-8 bg-gradient-to-r from-blue-200 to-sky-200 bg-clip-text text-transparent">

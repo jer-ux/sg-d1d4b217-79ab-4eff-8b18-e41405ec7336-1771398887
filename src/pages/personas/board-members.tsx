@@ -201,6 +201,81 @@ export default function BoardMembersPage() {
           </div>
         </section>
 
+        <section className="py-24 px-4">
+          <div className="max-w-4xl mx-auto">
+            <Card className="bg-gradient-to-br from-purple-950/50 to-violet-950/50 border-purple-500/40 p-10">
+              <h2 className="text-4xl font-black text-center mb-4 bg-gradient-to-r from-purple-200 to-violet-200 bg-clip-text text-transparent">
+                Request Your Board Briefing Package
+              </h2>
+              <p className="text-center text-purple-300 mb-8">
+                Get the governance framework document, DOL compliance checklist, and fiduciary risk assessment guide.
+              </p>
+              
+              <form className="max-w-2xl mx-auto space-y-6">
+                <div className="grid md:grid-cols-2 gap-6">
+                  <div>
+                    <label className="block text-sm font-semibold text-purple-200 mb-2">Full Name</label>
+                    <input
+                      type="text"
+                      required
+                      className="w-full px-4 py-3 bg-black/30 border border-purple-500/30 rounded-lg text-white placeholder-purple-400/50 focus:outline-none focus:border-purple-400 transition-colors"
+                      placeholder="John Smith"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-sm font-semibold text-purple-200 mb-2">Email</label>
+                    <input
+                      type="email"
+                      required
+                      className="w-full px-4 py-3 bg-black/30 border border-purple-500/30 rounded-lg text-white placeholder-purple-400/50 focus:outline-none focus:border-purple-400 transition-colors"
+                      placeholder="john@company.com"
+                    />
+                  </div>
+                </div>
+                
+                <div className="grid md:grid-cols-2 gap-6">
+                  <div>
+                    <label className="block text-sm font-semibold text-purple-200 mb-2">Company</label>
+                    <input
+                      type="text"
+                      required
+                      className="w-full px-4 py-3 bg-black/30 border border-purple-500/30 rounded-lg text-white placeholder-purple-400/50 focus:outline-none focus:border-purple-400 transition-colors"
+                      placeholder="Acme Corporation"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-sm font-semibold text-purple-200 mb-2">Board Role</label>
+                    <select
+                      required
+                      className="w-full px-4 py-3 bg-black/30 border border-purple-500/30 rounded-lg text-white focus:outline-none focus:border-purple-400 transition-colors"
+                    >
+                      <option value="">Select role...</option>
+                      <option value="chair">Board Chair</option>
+                      <option value="member">Board Member</option>
+                      <option value="audit">Audit Committee</option>
+                      <option value="compensation">Compensation Committee</option>
+                      <option value="other">Other</option>
+                    </select>
+                  </div>
+                </div>
+
+                <Button
+                  type="submit"
+                  size="lg"
+                  className="w-full bg-gradient-to-r from-purple-600 to-violet-600 hover:from-purple-700 hover:to-violet-700 text-white text-lg py-6 shadow-xl shadow-purple-500/30"
+                >
+                  Download Board Package
+                  <ArrowRight className="w-5 h-5 ml-2" />
+                </Button>
+                
+                <p className="text-xs text-center text-purple-400">
+                  By submitting, you agree to receive communications about SiriusB iQ governance solutions. Unsubscribe anytime.
+                </p>
+              </form>
+            </Card>
+          </div>
+        </section>
+
         <section className="py-24 px-4 bg-gradient-to-b from-purple-950/30 to-black">
           <div className="max-w-4xl mx-auto text-center">
             <h2 className="text-5xl font-black mb-8 bg-gradient-to-r from-purple-200 to-violet-200 bg-clip-text text-transparent">

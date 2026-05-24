@@ -218,6 +218,81 @@ export default function ActuariesPage() {
           </div>
         </section>
 
+        <section className="py-24 px-4">
+          <div className="max-w-4xl mx-auto">
+            <Card className="bg-gradient-to-br from-cyan-950/50 to-teal-950/50 border-cyan-500/40 p-10">
+              <h2 className="text-4xl font-black text-center mb-4 bg-gradient-to-r from-cyan-200 to-teal-200 bg-clip-text text-transparent">
+                Access the Actuarial Sandbox
+              </h2>
+              <p className="text-center text-cyan-300 mb-8">
+                Get demo access to live claims data modeling, Monte Carlo simulation tools, and risk adjustment frameworks.
+              </p>
+              
+              <form className="max-w-2xl mx-auto space-y-6">
+                <div className="grid md:grid-cols-2 gap-6">
+                  <div>
+                    <label className="block text-sm font-semibold text-cyan-200 mb-2">Full Name</label>
+                    <input
+                      type="text"
+                      required
+                      className="w-full px-4 py-3 bg-black/30 border border-cyan-500/30 rounded-lg text-white placeholder-cyan-400/50 focus:outline-none focus:border-cyan-400 transition-colors"
+                      placeholder="John Smith"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-sm font-semibold text-cyan-200 mb-2">Email</label>
+                    <input
+                      type="email"
+                      required
+                      className="w-full px-4 py-3 bg-black/30 border border-cyan-500/30 rounded-lg text-white placeholder-cyan-400/50 focus:outline-none focus:border-cyan-400 transition-colors"
+                      placeholder="john@company.com"
+                    />
+                  </div>
+                </div>
+                
+                <div className="grid md:grid-cols-2 gap-6">
+                  <div>
+                    <label className="block text-sm font-semibold text-cyan-200 mb-2">Organization</label>
+                    <input
+                      type="text"
+                      required
+                      className="w-full px-4 py-3 bg-black/30 border border-cyan-500/30 rounded-lg text-white placeholder-cyan-400/50 focus:outline-none focus:border-cyan-400 transition-colors"
+                      placeholder="Analytics Firm"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-sm font-semibold text-cyan-200 mb-2">Role</label>
+                    <select
+                      required
+                      className="w-full px-4 py-3 bg-black/30 border border-cyan-500/30 rounded-lg text-white focus:outline-none focus:border-cyan-400 transition-colors"
+                    >
+                      <option value="">Select role...</option>
+                      <option value="fsa">FSA / Actuary</option>
+                      <option value="asa">ASA / Associate Actuary</option>
+                      <option value="analyst">Healthcare Analyst</option>
+                      <option value="data-scientist">Data Scientist</option>
+                      <option value="other">Other</option>
+                    </select>
+                  </div>
+                </div>
+
+                <Button
+                  type="submit"
+                  size="lg"
+                  className="w-full bg-gradient-to-r from-cyan-600 to-teal-600 hover:from-cyan-700 hover:to-teal-700 text-white text-lg py-6 shadow-xl shadow-cyan-500/30"
+                >
+                  Request Sandbox Access
+                  <ArrowRight className="w-5 h-5 ml-2" />
+                </Button>
+                
+                <p className="text-xs text-center text-cyan-400">
+                  By submitting, you agree to receive communications about SiriusB iQ actuarial tools. Unsubscribe anytime.
+                </p>
+              </form>
+            </Card>
+          </div>
+        </section>
+
         <section className="py-24 px-4 bg-gradient-to-b from-cyan-950/30 to-black">
           <div className="max-w-4xl mx-auto text-center">
             <h2 className="text-5xl font-black mb-8 bg-gradient-to-r from-cyan-200 to-teal-200 bg-clip-text text-transparent">

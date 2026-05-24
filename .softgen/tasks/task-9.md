@@ -1,6 +1,6 @@
 ---
 title: Add lead capture forms to Focus Areas pages
-status: in_progress
+status: done
 priority: high
 type: feature
 tags: [forms, personas, conversion]
@@ -26,13 +26,13 @@ Forms should:
 - Have clear value proposition for submitting
 
 ## Checklist
-- [ ] Add form to Board Members page
-- [ ] Add form to Capital Markets page
-- [ ] Add form to PE Operators page
-- [ ] Add form to CFO page
-- [ ] Add form to HR page
-- [ ] Add form to Broker page
-- [ ] Add form to Actuarial page
+- [x] Add form to Board Members page
+- [x] Add form to Capital Markets page
+- [x] Add form to PE Operators page
+- [x] Add form to CFO page
+- [x] Add form to HR page
+- [x] Add form to Broker page
+- [x] Add form to Actuarial page
 
 ## Acceptance
 - All 7 pages have functional lead capture forms

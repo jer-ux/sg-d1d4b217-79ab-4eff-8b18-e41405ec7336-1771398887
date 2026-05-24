@@ -260,6 +260,81 @@ export default function PEOperatorsPage() {
           </div>
         </section>
 
+        <section className="py-24 px-4">
+          <div className="max-w-4xl mx-auto">
+            <Card className="bg-gradient-to-br from-violet-950/50 to-fuchsia-950/50 border-violet-500/40 p-10">
+              <h2 className="text-4xl font-black text-center mb-4 bg-gradient-to-r from-violet-200 to-fuchsia-200 bg-clip-text text-transparent">
+                Get the Value Creation Playbook
+              </h2>
+              <p className="text-center text-violet-300 mb-8">
+                90-day deployment roadmap, exit documentation templates, and portfolio monitoring dashboard guide.
+              </p>
+              
+              <form className="max-w-2xl mx-auto space-y-6">
+                <div className="grid md:grid-cols-2 gap-6">
+                  <div>
+                    <label className="block text-sm font-semibold text-violet-200 mb-2">Full Name</label>
+                    <input
+                      type="text"
+                      required
+                      className="w-full px-4 py-3 bg-black/30 border border-violet-500/30 rounded-lg text-white placeholder-violet-400/50 focus:outline-none focus:border-violet-400 transition-colors"
+                      placeholder="John Smith"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-sm font-semibold text-violet-200 mb-2">Email</label>
+                    <input
+                      type="email"
+                      required
+                      className="w-full px-4 py-3 bg-black/30 border border-violet-500/30 rounded-lg text-white placeholder-violet-400/50 focus:outline-none focus:border-violet-400 transition-colors"
+                      placeholder="john@pefirm.com"
+                    />
+                  </div>
+                </div>
+                
+                <div className="grid md:grid-cols-2 gap-6">
+                  <div>
+                    <label className="block text-sm font-semibold text-violet-200 mb-2">PE Firm</label>
+                    <input
+                      type="text"
+                      required
+                      className="w-full px-4 py-3 bg-black/30 border border-violet-500/30 rounded-lg text-white placeholder-violet-400/50 focus:outline-none focus:border-violet-400 transition-colors"
+                      placeholder="Equity Partners"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-sm font-semibold text-violet-200 mb-2">Role</label>
+                    <select
+                      required
+                      className="w-full px-4 py-3 bg-black/30 border border-violet-500/30 rounded-lg text-white focus:outline-none focus:border-violet-400 transition-colors"
+                    >
+                      <option value="">Select role...</option>
+                      <option value="operating-partner">Operating Partner</option>
+                      <option value="portfolio-ops">Portfolio Operations</option>
+                      <option value="value-creation">Value Creation</option>
+                      <option value="deal-team">Deal Team</option>
+                      <option value="other">Other</option>
+                    </select>
+                  </div>
+                </div>
+
+                <Button
+                  type="submit"
+                  size="lg"
+                  className="w-full bg-gradient-to-r from-violet-600 to-fuchsia-600 hover:from-violet-700 hover:to-fuchsia-700 text-white text-lg py-6 shadow-xl shadow-violet-500/30"
+                >
+                  Download Playbook
+                  <ArrowRight className="w-5 h-5 ml-2" />
+                </Button>
+                
+                <p className="text-xs text-center text-violet-400">
+                  By submitting, you agree to receive communications about SiriusB iQ value creation solutions. Unsubscribe anytime.
+                </p>
+              </form>
+            </Card>
+          </div>
+        </section>
+
         <section className="py-24 px-4 bg-gradient-to-b from-violet-950/30 to-black">
           <div className="max-w-4xl mx-auto text-center">
             <h2 className="text-5xl font-black mb-8 bg-gradient-to-r from-violet-200 to-fuchsia-200 bg-clip-text text-transparent">

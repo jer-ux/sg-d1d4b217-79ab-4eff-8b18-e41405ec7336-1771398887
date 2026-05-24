@@ -54,24 +54,24 @@ const boardMembers = [
     }
   },
   {
-    name: "Kyle Riddle",
-    title: "Board Director and Chief of Insurance",
-    image: "/1759522317489.png",
-    linkedin: "https://www.linkedin.com/in/kyle-riddle-47581946/",
-    bio: "Certified Employee Benefits Manager (University of Pennsylvania) and Certified Financial Planner who brings MIT engineering rigor and Stanford MBA strategic thinking to insurance and benefits management. Father of four, dedicated to ensuring people live lives better than they could have ever dreamed of.",
+    name: "Catherine Farley",
+    title: "Executive Chair, Committee on Algorithmic Governance & Fiduciary Risk",
+    image: "/catherine-farley.jpg",
+    linkedin: "https://www.linkedin.com/in/catherine-farley-233b28/",
+    bio: "Catherine Farley is a seasoned financial services executive with deep expertise in operational excellence, wealth management, and strategic transformation. Her career spans leadership roles at major financial institutions where she drove innovation and operational efficiency at scale.",
     fullBio: {
-      introduction: "Kyle Riddle is a distinguished insurance executive whose career exemplifies the convergence of academic excellence and practical wisdom in the employee benefits landscape. As a Certified Employee Benefits Manager from the University of Pennsylvania and a Certified Financial Planner, Kyle has built a reputation for bringing uncompromising analytical rigor to complex insurance and risk management challenges. His unique educational foundation—combining MIT's engineering discipline with Stanford's MBA strategic frameworks—enables him to approach benefits design and insurance governance with a level of precision rarely seen in the industry.",
-      platform: "Kyle's approach to insurance and benefits consulting is rooted in the belief that technical complexity should never obscure human outcomes. He systematically deconstructs insurance products, regulatory frameworks, and actuarial models to identify inefficiencies, hidden costs, and structural risks that erode employer value and member experience. By applying engineering-level rigor to financial planning, Kyle transforms insurance from an opaque compliance exercise into a strategic lever for organizational performance and employee wellbeing. His methodology emphasizes transparency, quantifiable results, and alignment between fiduciary duty and operational reality.",
-      philosophy: "Kyle's guiding philosophy is profoundly simple yet radically ambitious: 'People deserve to live lives better than they could have ever dreamed of.' This conviction drives every actuarial model, every risk assessment, and every benefits recommendation he produces. As a father of four, Kyle approaches his work with the understanding that insurance and benefits are not abstract financial instruments—they are the safety nets that protect families, enable dreams, and provide dignity in moments of crisis. He believes that when fiduciary responsibility is executed with precision and empathy, employers can deliver benefits programs that don't just meet regulatory standards—they transform lives.",
+      introduction: "Catherine Farley brings over two decades of financial services leadership to SiriusB iQ's board, with a proven track record of driving operational excellence and strategic transformation at major institutions. Her expertise spans wealth management, fiduciary governance, and large-scale operational optimization, making her uniquely qualified to guide algorithmic governance frameworks in the emerging AI-driven benefits landscape.",
+      platform: "Throughout her career, Catherine has led initiatives that balance innovation with rigorous risk management, ensuring that technological advancement serves fiduciary duty rather than compromising it. Her approach to governance emphasizes transparency, accountability, and measurable outcomes—principles that align perfectly with SiriusB iQ's mission to bring algorithmic precision to benefits management.",
+      philosophy: "Catherine believes that the intersection of AI and fiduciary duty requires a new governance framework—one that treats algorithmic decision-making with the same rigor as human fiduciary responsibility. She advocates for transparent AI systems that can be audited, explained, and held accountable to the same standards as human decision-makers in positions of trust.",
       expertise: [
-        "Regulatory Compliance & Fiduciary Governance",
-        "Insurance Risk Management & Actuarial Analysis",
-        "Employee Benefits Strategy & Plan Design",
-        "Certified Financial Planning & Wealth Management",
-        "MIT Engineering Rigor Applied to Benefits Architecture",
-        "Stanford MBA Strategic Frameworks for Insurance Operations"
+        "Operational Excellence & Process Optimization",
+        "Wealth Management & Fiduciary Governance",
+        "Strategic Transformation & Change Management",
+        "Risk Management & Compliance Frameworks",
+        "Financial Services Leadership",
+        "Board Governance & Oversight"
       ],
-      vision: "At SiriusB iQ, Kyle's vision is to establish a new standard for insurance and benefits intelligence—one where actuarial precision, regulatory mastery, and human-centered design converge to deliver measurable improvements in both employer outcomes and member experiences. He is committed to leveraging algorithmic fiduciary platforms to expose inefficiencies, eliminate waste, and redirect savings toward benefits that genuinely enhance quality of life. Under his leadership, SiriusB iQ's insurance practice will serve as the bridge between technical excellence and the deeply human aspiration that every individual deserves access to benefits that enable them to live beyond their expectations."
+      vision: "As Executive Chair of the Committee on Algorithmic Governance & Fiduciary Risk, Catherine's vision is to establish SiriusB iQ AI Data Sciences Lab as the gold standard for ethical AI deployment in benefits management. She is committed to ensuring that every algorithmic decision made by the platform can withstand the scrutiny of fiduciary duty, regulatory review, and client trust."
     }
   },
   {
@@ -96,24 +96,24 @@ const boardMembers = [
     }
   },
   {
-    name: "Catherine Farley",
-    title: "Executive Chair, Committee on Algorithmic Governance & Fiduciary Risk",
-    image: "/catherine-farley.jpg",
-    linkedin: "https://www.linkedin.com/in/catherine-farley-233b28/",
-    bio: "Catherine Farley is a seasoned financial services executive with deep expertise in operational excellence, wealth management, and strategic transformation. Her career spans leadership roles at major financial institutions where she drove innovation and operational efficiency at scale.",
+    name: "Kyle Riddle",
+    title: "Board Director and Chief of Insurance",
+    image: "/1759522317489.png",
+    linkedin: "https://www.linkedin.com/in/kyle-riddle-47581946/",
+    bio: "Certified Employee Benefits Manager (University of Pennsylvania) and Certified Financial Planner who brings MIT engineering rigor and Stanford MBA strategic thinking to insurance and benefits management. Father of four, dedicated to ensuring people live lives better than they could have ever dreamed of.",
     fullBio: {
-      introduction: "Catherine Farley brings over two decades of financial services leadership to SiriusB iQ's board, with a proven track record of driving operational excellence and strategic transformation at major institutions. Her expertise spans wealth management, fiduciary governance, and large-scale operational optimization, making her uniquely qualified to guide algorithmic governance frameworks in the emerging AI-driven benefits landscape.",
-      platform: "Throughout her career, Catherine has led initiatives that balance innovation with rigorous risk management, ensuring that technological advancement serves fiduciary duty rather than compromising it. Her approach to governance emphasizes transparency, accountability, and measurable outcomes—principles that align perfectly with SiriusB iQ's mission to bring algorithmic precision to benefits management.",
-      philosophy: "Catherine believes that the intersection of AI and fiduciary duty requires a new governance framework—one that treats algorithmic decision-making with the same rigor as human fiduciary responsibility. She advocates for transparent AI systems that can be audited, explained, and held accountable to the same standards as human decision-makers in positions of trust.",
+      introduction: "Kyle Riddle is a distinguished insurance executive whose career exemplifies the convergence of academic excellence and practical wisdom in the employee benefits landscape. As a Certified Employee Benefits Manager from the University of Pennsylvania and a Certified Financial Planner, Kyle has built a reputation for bringing uncompromising analytical rigor to complex insurance and risk management challenges. His unique educational foundation—combining MIT's engineering discipline with Stanford's MBA strategic frameworks—enables him to approach benefits design and insurance governance with a level of precision rarely seen in the industry.",
+      platform: "Kyle's approach to insurance and benefits consulting is rooted in the belief that technical complexity should never obscure human outcomes. He systematically deconstructs insurance products, regulatory frameworks, and actuarial models to identify inefficiencies, hidden costs, and structural risks that erode employer value and member experience. By applying engineering-level rigor to financial planning, Kyle transforms insurance from an opaque compliance exercise into a strategic lever for organizational performance and employee wellbeing. His methodology emphasizes transparency, quantifiable results, and alignment between fiduciary duty and operational reality.",
+      philosophy: "Kyle's guiding philosophy is profoundly simple yet radically ambitious: 'People deserve to live lives better than they could have ever dreamed of.' This conviction drives every actuarial model, every risk assessment, and every benefits recommendation he produces. As a father of four, Kyle approaches his work with the understanding that insurance and benefits are not abstract financial instruments—they are the safety nets that protect families, enable dreams, and provide dignity in moments of crisis. He believes that when fiduciary responsibility is executed with precision and empathy, employers can deliver benefits programs that don't just meet regulatory standards—they transform lives.",
       expertise: [
-        "Operational Excellence & Process Optimization",
-        "Wealth Management & Fiduciary Governance",
-        "Strategic Transformation & Change Management",
-        "Risk Management & Compliance Frameworks",
-        "Financial Services Leadership",
-        "Board Governance & Oversight"
+        "Regulatory Compliance & Fiduciary Governance",
+        "Insurance Risk Management & Actuarial Analysis",
+        "Employee Benefits Strategy & Plan Design",
+        "Certified Financial Planning & Wealth Management",
+        "MIT Engineering Rigor Applied to Benefits Architecture",
+        "Stanford MBA Strategic Frameworks for Insurance Operations"
       ],
-      vision: "As Executive Chair of the Committee on Algorithmic Governance & Fiduciary Risk, Catherine's vision is to establish SiriusB iQ AI Data Sciences Lab as the gold standard for ethical AI deployment in benefits management. She is committed to ensuring that every algorithmic decision made by the platform can withstand the scrutiny of fiduciary duty, regulatory review, and client trust."
+      vision: "At SiriusB iQ, Kyle's vision is to establish a new standard for insurance and benefits intelligence—one where actuarial precision, regulatory mastery, and human-centered design converge to deliver measurable improvements in both employer outcomes and member experiences. He is committed to leveraging algorithmic fiduciary platforms to expose inefficiencies, eliminate waste, and redirect savings toward benefits that genuinely enhance quality of life. Under his leadership, SiriusB iQ's insurance practice will serve as the bridge between technical excellence and the deeply human aspiration that every individual deserves access to benefits that enable them to live beyond their expectations."
     }
   },
   {

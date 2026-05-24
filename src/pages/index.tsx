@@ -704,25 +704,6 @@ export default function HomePage() {
               </div>
             </motion.div>
           </div>
-
-          {/* Timeline Summary */}
-          <motion.div
-            className="mt-16 text-center"
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6, delay: 0.4 }}>
-            
-            
-
-
-
-
-
-
-
-            
-          </motion.div>
         </section>
 
         {/* Proof Section with Enhanced 3D Cards */}

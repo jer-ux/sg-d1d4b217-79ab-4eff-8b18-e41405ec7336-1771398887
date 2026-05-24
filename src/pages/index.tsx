@@ -43,31 +43,7 @@ const Card3D = ({
     cardRef.current.style.transform = "perspective(1000px) rotateX(0deg) rotateY(0deg) scale3d(1, 1, 1)";
   };
 
-  return (
-    <motion.div
-      ref={cardRef}
-      className="group relative rounded-xl sm:rounded-2xl border border-purple-500/30 bg-gradient-to-br from-zinc-950/95 via-purple-950/20 to-zinc-900/90 p-4 sm:p-6 shadow-2xl backdrop-blur-sm transition-all duration-300"
-      initial={{ opacity: 0, y: 30 }}
-      animate={isInView ? { opacity: 1, y: 0 } : {}}
-      transition={{ duration: 0.6, delay, ease: [0.22, 1, 0.36, 1] }}
-      onMouseMove={handleMouseMove}
-      onMouseLeave={handleMouseLeave}
-      style={{ transformStyle: "preserve-3d" }}>
-      
-      <div className="absolute -inset-px rounded-xl sm:rounded-2xl bg-gradient-to-r from-purple-600/0 via-purple-500/40 to-blue-600/20 opacity-0 blur-xl transition-opacity duration-500 group-hover:opacity-100" />
-      
-      
-
-
-
-
-
-
-
-
-      
-      
-      
+  return;
 
 
 
@@ -84,8 +60,32 @@ const Card3D = ({
 
 
 
-      
-    </motion.div>);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 };
 
@@ -713,15 +713,15 @@ export default function HomePage() {
             viewport={{ once: true }}
             transition={{ duration: 0.6, delay: 0.4 }}>
             
-            <div className="inline-flex items-center gap-4 rounded-2xl border border-purple-500/40 bg-gradient-to-r from-purple-950/40 via-black/80 to-blue-950/40 px-8 py-6 backdrop-blur-sm">
-              <Clock className="h-8 w-8 text-purple-400" />
-              <div className="text-left">
-                <div className="text-2xl font-black bg-gradient-to-r from-purple-300 to-white bg-clip-text text-transparent">
-                  14 Days
-                </div>
-                <div className="text-sm text-zinc-400">From upload to documented findings</div>
-              </div>
-            </div>
+            
+
+
+
+
+
+
+
+            
           </motion.div>
         </section>
 

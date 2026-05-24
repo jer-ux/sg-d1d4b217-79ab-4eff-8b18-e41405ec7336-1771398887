@@ -142,6 +142,36 @@ export default function ContractXRayPage() {
       description: "Fair arbitration processes with balanced terms and reasonable timelines",
       risk: "Low",
       impact: "$95K"
+    },
+    {
+      title: "Formulary Management",
+      description: "Control over drug tier placement, utilization management, and step therapy protocols",
+      risk: "High",
+      impact: "$720K"
+    },
+    {
+      title: "DIR Fees",
+      description: "Full disclosure of Direct and Indirect Remuneration fees charged to pharmacies",
+      risk: "Critical",
+      impact: "$980K"
+    },
+    {
+      title: "Claims Processing Standards",
+      description: "Defined timelines for adjudication, payment accuracy guarantees, and error resolution",
+      risk: "Medium",
+      impact: "$240K"
+    },
+    {
+      title: "Accumulator Program Restrictions",
+      description: "Clear rules on manufacturer copay assistance and patient benefit accumulation",
+      risk: "High",
+      impact: "$560K"
+    },
+    {
+      title: "Network Steering Protections",
+      description: "Safeguards against forced pharmacy network changes without member notification",
+      risk: "Medium",
+      impact: "$380K"
     }
   ];
 

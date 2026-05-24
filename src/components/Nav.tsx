@@ -121,7 +121,7 @@ export default function Nav() {
                     onClick={() => setSolutionsDropdownOpen(false)}
                     className="block px-4 py-3 text-gray-300 hover:text-white hover:bg-purple-500/10 rounded-lg transition-colors duration-150">
                     
-                      <div className="font-medium">Kincaid IQ</div>
+                      <div className="font-medium">Rx PBM Defense Contract X-Ray</div>
                       <div className="text-xs text-gray-400">Real-time healthcare intelligence</div>
                     </Link>
                   </div>

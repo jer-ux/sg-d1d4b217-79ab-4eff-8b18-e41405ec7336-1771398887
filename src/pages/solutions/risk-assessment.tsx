@@ -26,6 +26,10 @@ import {
 import { SEO } from "@/components/SEO";
 import Footer from "@/components/Footer";
 import { useState } from "react";
+import { RiskDistribution3D } from "@/components/risk/RiskDistribution3D";
+import { PortfolioRisk3D } from "@/components/risk/PortfolioRisk3D";
+import { MonteCarloSimulation3D } from "@/components/risk/MonteCarloSimulation3D";
+import { PredictiveAccuracy3D } from "@/components/risk/PredictiveAccuracy3D";
 
 export default function RiskAssessmentPage() {
   const [activeTab, setActiveTab] = useState("modeling");
@@ -354,6 +358,86 @@ export default function RiskAssessmentPage() {
                   );
                 })}
               </div>
+            </div>
+          </section>
+
+          {/* 3D Visualizations Section */}
+          <section className="px-4 mb-20">
+            <div className="max-w-7xl mx-auto">
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                className="text-center mb-12"
+              >
+                <h2 className="text-3xl md:text-4xl font-bold mb-4">
+                  Interactive Risk Analytics
+                </h2>
+                <p className="text-xl text-gray-400 max-w-3xl mx-auto">
+                  Explore your risk profile through interactive 3D visualizations powered by advanced predictive models
+                </p>
+              </motion.div>
+
+              <div className="grid lg:grid-cols-2 gap-8 mb-8">
+                <motion.div
+                  initial={{ opacity: 0, x: -20 }}
+                  whileInView={{ opacity: 1, x: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: 0.1 }}
+                >
+                  <RiskDistribution3D />
+                </motion.div>
+
+                <motion.div
+                  initial={{ opacity: 0, x: 20 }}
+                  whileInView={{ opacity: 1, x: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: 0.2 }}
+                >
+                  <PortfolioRisk3D />
+                </motion.div>
+              </div>
+
+              <div className="grid lg:grid-cols-2 gap-8">
+                <motion.div
+                  initial={{ opacity: 0, x: -20 }}
+                  whileInView={{ opacity: 1, x: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: 0.3 }}
+                >
+                  <MonteCarloSimulation3D />
+                </motion.div>
+
+                <motion.div
+                  initial={{ opacity: 0, x: 20 }}
+                  whileInView={{ opacity: 1, x: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: 0.4 }}
+                >
+                  <PredictiveAccuracy3D />
+                </motion.div>
+              </div>
+
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                className="mt-12 p-6 rounded-xl bg-gradient-to-br from-purple-500/10 to-pink-500/10 border border-purple-500/30"
+              >
+                <div className="flex items-start gap-4">
+                  <div className="p-3 rounded-lg bg-purple-500/20">
+                    <Activity className="w-6 h-6 text-purple-400" />
+                  </div>
+                  <div>
+                    <h3 className="text-lg font-bold mb-2">Real-Time 3D Analytics</h3>
+                    <p className="text-gray-300">
+                      All visualizations update in real-time as new claims data arrives. Interact with the 3D models using your mouse or touch - 
+                      rotate, zoom, and hover over data points to explore detailed metrics. Our predictive models achieve 99.2% accuracy by 
+                      combining machine learning with actuarial expertise.
+                    </p>
+                  </div>
+                </div>
+              </motion.div>
             </div>
           </section>
 

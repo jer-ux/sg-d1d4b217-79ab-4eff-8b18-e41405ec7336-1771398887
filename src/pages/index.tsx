@@ -182,7 +182,7 @@ export default function HomePage() {
                       className="bg-gradient-to-r from-white via-purple-100 to-blue-100 bg-clip-text text-transparent"
                       style={{ display: "block", transform: "translateZ(20px)" }}
                     >
-                      in your best interest, or there's?
+                      in your best interest, or their's?
                     </motion.span>
                   </motion.h1>
 

@@ -1,5 +1,4 @@
 import { useMemo, useState } from "react";
-import { useRouter } from "next/router";
 import type { Filters, TileData, TileKey } from "./executiveTypes";
 import { ExecutiveTicker } from "./widgets/ExecutiveTicker";
 import { ExecutiveFiltersBar } from "./widgets/ExecutiveFiltersBar";
@@ -7,13 +6,6 @@ import { KPITile } from "./tiles/KPITile";
 import { ExecutiveEventStream } from "./ExecutiveEventStream";
 import { useExecutiveStream } from "./useExecutiveStream";
 import { ExecutiveKPIDrawer } from "./ExecutiveKPIDrawer";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue } from
-"@/components/ui/select";
 
 const DEFAULT_FILTERS: Filters = {
   org: "Portfolio",
@@ -23,9 +15,7 @@ const DEFAULT_FILTERS: Filters = {
 };
 
 export function ExecutiveWarRoom() {
-  const router = useRouter();
   const [filters, setFilters] = useState<Filters>(DEFAULT_FILTERS);
-  const [selectedDashboard, setSelectedDashboard] = useState<string>("executive-war-room");
   const [selectedTile, setSelectedTile] = useState<TileData | null>(null);
   const [drawerOpen, setDrawerOpen] = useState(false);
 
@@ -45,13 +35,6 @@ export function ExecutiveWarRoom() {
     tiles.forEach((t) => m.set(t.key, t));
     return m;
   }, [tiles]);
-
-  const handleDashboardChange = (value: string) => {
-    setSelectedDashboard(value);
-    if (value === "kincaid-iq") {
-      router.push("/#dashboard");
-    }
-  };
 
   const handleTileClick = (tile: TileData) => {
     console.log("Tile clicked:", tile.title);
@@ -74,19 +57,6 @@ export function ExecutiveWarRoom() {
             <div className="flex-1">
               <div className="flex items-center gap-3">
                 <div className="text-xs tracking-wide text-purple-400 font-semibold uppercase">Kincaid IQ</div>
-                <Select value={selectedDashboard} onValueChange={handleDashboardChange}>
-                  <SelectTrigger className="w-[280px] border-purple-500/30 bg-zinc-900/60 text-zinc-100 focus:ring-purple-500/50">
-                    <SelectValue />
-                  </SelectTrigger>
-                  <SelectContent className="border-purple-500/30 bg-zinc-950/95 backdrop-blur-xl">
-                    <SelectItem value="kincaid-iq" className="text-zinc-100 focus:bg-purple-900/30 focus:text-purple-200">
-                      Kincaid IQ War Room
-                    </SelectItem>
-                    <SelectItem value="executive-war-room" className="text-zinc-100 focus:bg-purple-900/30 focus:text-purple-200">
-                      Kincaid IQ Rx X-Ray
-                    </SelectItem>
-                  </SelectContent>
-                </Select>
               </div>
               <h1 className="mt-3 text-2xl font-bold tracking-tight bg-gradient-to-r from-white via-purple-100 to-blue-100 bg-clip-text text-transparent">Kincaid IQ</h1>
               <div className="mt-1 text-sm text-zinc-400">

@@ -83,12 +83,12 @@ export function ExecutiveWarRoom() {
                       Kincaid IQ War Room
                     </SelectItem>
                     <SelectItem value="executive-war-room" className="text-zinc-100 focus:bg-purple-900/30 focus:text-purple-200">
-                      Executive War Room (CFO Dashboard)
+                      Kincaid IQ Rx X-Ray
                     </SelectItem>
                   </SelectContent>
                 </Select>
               </div>
-              <h1 className="mt-3 text-2xl font-bold tracking-tight bg-gradient-to-r from-white via-purple-100 to-blue-100 bg-clip-text text-transparent">CFO Healthcare Dashboard</h1>
+              <h1 className="mt-3 text-2xl font-bold tracking-tight bg-gradient-to-r from-white via-purple-100 to-blue-100 bg-clip-text text-transparent">Kincaid IQ Rx X-Ray</h1>
               <div className="mt-1 text-sm text-zinc-400">
                 McKinsey + Bain KPIs with Evidence Receipts. <span className="text-purple-300 font-medium">Verified</span> or it&apos;s not real.
               </div>

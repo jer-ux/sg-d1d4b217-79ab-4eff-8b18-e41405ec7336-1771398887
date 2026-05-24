@@ -5,8 +5,8 @@ export default function ExecutiveWarRoomPage() {
   return (
     <>
       <SEO
-        title="CFO Healthcare Dashboard | Kincaid IQ"
-        description="Real-time CFO dashboard with McKinsey and Bain KPIs for healthcare cost management, contract compliance, and experience metrics"
+        title="Kincaid IQ Rx X-Ray | SiriusB iQ"
+        description="Real-time pharmacy benefit management dashboard with McKinsey and Bain KPIs for healthcare cost management, contract compliance, and experience metrics"
       />
       <ExecutiveWarRoom />
     </>

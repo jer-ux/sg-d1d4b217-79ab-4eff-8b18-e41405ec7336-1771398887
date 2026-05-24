@@ -19,14 +19,14 @@ const Card3D = ({
   subtitle,
   children,
   icon: Icon,
-  delay = 0,
-}: {
-  title: string;
-  subtitle?: string;
-  children: React.ReactNode;
-  icon?: React.ComponentType<{ className?: string }>;
-  delay?: number;
-}) => {
+  delay = 0
+
+
+
+
+
+
+}: {title: string;subtitle?: string;children: React.ReactNode;icon?: React.ComponentType<{className?: string;}>;delay?: number;}) => {
   const cardRef = useRef<HTMLDivElement>(null);
   const isInView = useInView(cardRef, { once: true, amount: 0.3 });
 
@@ -52,31 +52,31 @@ const Card3D = ({
       transition={{ duration: 0.6, delay, ease: [0.22, 1, 0.36, 1] }}
       onMouseMove={handleMouseMove}
       onMouseLeave={handleMouseLeave}
-      style={{ transformStyle: "preserve-3d" }}
-    >
+      style={{ transformStyle: "preserve-3d" }}>
+      
       <div className="absolute -inset-px rounded-xl sm:rounded-2xl bg-gradient-to-r from-purple-600/0 via-purple-500/40 to-blue-600/20 opacity-0 blur-xl transition-opacity duration-500 group-hover:opacity-100" />
       <div className="absolute -inset-px rounded-xl sm:rounded-2xl bg-gradient-to-br from-purple-500/10 via-transparent to-blue-500/10 opacity-60" />
       <motion.div
         className="absolute inset-0 rounded-xl sm:rounded-2xl opacity-0 group-hover:opacity-100"
         animate={{
           background: [
-            "radial-gradient(circle at 0% 0%, rgba(168, 85, 247, 0.3) 0%, transparent 50%)",
-            "radial-gradient(circle at 100% 100%, rgba(168, 85, 247, 0.3) 0%, transparent 50%)",
-            "radial-gradient(circle at 0% 0%, rgba(168, 85, 247, 0.3) 0%, transparent 50%)",
-          ],
+          "radial-gradient(circle at 0% 0%, rgba(168, 85, 247, 0.3) 0%, transparent 50%)",
+          "radial-gradient(circle at 100% 100%, rgba(168, 85, 247, 0.3) 0%, transparent 50%)",
+          "radial-gradient(circle at 0% 0%, rgba(168, 85, 247, 0.3) 0%, transparent 50%)"]
+
         }}
-        transition={{ duration: 3, repeat: Infinity, ease: "linear" }}
-      />
+        transition={{ duration: 3, repeat: Infinity, ease: "linear" }} />
+      
       <div className="relative" style={{ transform: "translateZ(50px)" }}>
-        {Icon && (
-          <motion.div
-            className="mb-3 sm:mb-4 inline-flex h-10 w-10 sm:h-14 sm:w-14 items-center justify-center rounded-lg sm:rounded-xl bg-gradient-to-br from-purple-500/30 to-blue-500/30 text-purple-400 shadow-lg shadow-purple-500/40"
-            whileHover={{ rotate: 360, scale: 1.15 }}
-            transition={{ duration: 0.8, type: "spring", stiffness: 200 }}
-          >
+        {Icon &&
+        <motion.div
+          className="mb-3 sm:mb-4 inline-flex h-10 w-10 sm:h-14 sm:w-14 items-center justify-center rounded-lg sm:rounded-xl bg-gradient-to-br from-purple-500/30 to-blue-500/30 text-purple-400 shadow-lg shadow-purple-500/40"
+          whileHover={{ rotate: 360, scale: 1.15 }}
+          transition={{ duration: 0.8, type: "spring", stiffness: 200 }}>
+          
             <Icon className="h-5 w-5 sm:h-7 sm:w-7" />
           </motion.div>
-        )}
+        }
         <div className="mb-2 sm:mb-3">
           <div className="text-lg sm:text-xl font-bold bg-gradient-to-r from-white via-purple-100 to-white bg-clip-text text-transparent">
             {title}
@@ -85,21 +85,21 @@ const Card3D = ({
         </div>
         <div className="text-xs sm:text-sm leading-relaxed text-zinc-300">{children}</div>
       </div>
-    </motion.div>
-  );
+    </motion.div>);
+
 };
 
-const Pill = ({ k, v }: { k: string; v: string }) => (
-  <motion.div
-    className="rounded-lg sm:rounded-xl border border-purple-500/40 bg-gradient-to-br from-black/80 via-purple-950/40 to-black/80 px-3 sm:px-5 py-2 sm:py-3 backdrop-blur-sm shadow-lg shadow-purple-500/20"
-    whileHover={{ scale: 1.08, y: -3, boxShadow: "0 0 30px rgba(168, 85, 247, 0.4)", rotateY: 5, z: 30 }}
-    transition={{ type: "spring", stiffness: 400, damping: 10 }}
-    style={{ perspective: "1000px", transformStyle: "preserve-3d" }}
-  >
+const Pill = ({ k, v }: {k: string;v: string;}) =>
+<motion.div
+  className="rounded-lg sm:rounded-xl border border-purple-500/40 bg-gradient-to-br from-black/80 via-purple-950/40 to-black/80 px-3 sm:px-5 py-2 sm:py-3 backdrop-blur-sm shadow-lg shadow-purple-500/20"
+  whileHover={{ scale: 1.08, y: -3, boxShadow: "0 0 30px rgba(168, 85, 247, 0.4)", rotateY: 5, z: 30 }}
+  transition={{ type: "spring", stiffness: 400, damping: 10 }}
+  style={{ perspective: "1000px", transformStyle: "preserve-3d" }}>
+  
     <div className="text-[10px] sm:text-xs text-purple-400/90 font-semibold uppercase tracking-wide">{k}</div>
     <div className="mt-1 sm:mt-1.5 text-sm sm:text-base font-bold bg-gradient-to-r from-white to-purple-100 bg-clip-text text-transparent">{v}</div>
-  </motion.div>
-);
+  </motion.div>;
+
 
 export default function HomePage() {
   const [mounted, setMounted] = useState(false);
@@ -111,7 +111,7 @@ export default function HomePage() {
 
   const { scrollYProgress } = useScroll({
     target: heroRef,
-    offset: ["start start", "end start"],
+    offset: ["start start", "end start"]
   });
 
   const heroOpacity = useTransform(scrollYProgress, [0, 0.5], [1, 0]);
@@ -126,7 +126,7 @@ export default function HomePage() {
   };
 
   const handleNextLevel = () => {
-    setBadgeLevel(prev => prev + 1);
+    setBadgeLevel((prev) => prev + 1);
   };
 
   const handleBadgeClose = () => {
@@ -140,8 +140,8 @@ export default function HomePage() {
         <title>Kincaid IQ - Stop Overpaying for Healthcare</title>
         <meta
           name="description"
-          content="Find hidden overcharges in your benefits contracts. Reduce costs by 20-35% while improving employee coverage."
-        />
+          content="Find hidden overcharges in your benefits contracts. Reduce costs by 20-35% while improving employee coverage." />
+        
       </Head>
       
       <Nav />
@@ -155,46 +155,46 @@ export default function HomePage() {
             <Hero3D />
           </div>
           <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
-            {mounted ? (
-              <motion.div 
-                style={{ opacity: heroOpacity, scale: heroScale }}
-                className="grid lg:grid-cols-2 gap-12 items-center"
-              >
+            {mounted ?
+            <motion.div
+              style={{ opacity: heroOpacity, scale: heroScale }}
+              className="grid lg:grid-cols-2 gap-12 items-center">
+              
                 {/* Left Column - Text Content with 3D */}
                 <motion.div
-                  initial={{ opacity: 0, x: -50 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  transition={{ duration: 0.8 }}
-                  className="space-y-8"
-                  style={{ perspective: "1500px", transformStyle: "preserve-3d" }}
-                >
-                  <motion.h1 
-                    className="text-3xl sm:text-4xl md:text-5xl lg:text-[58px] leading-tight font-bold"
-                    style={{ transformStyle: "preserve-3d" }}
-                  >
-                    <motion.span 
-                      className="bg-gradient-to-r from-amber-300 via-amber-100 to-white bg-clip-text text-transparent"
-                      style={{ display: "block", transform: "translateZ(30px)" }}
-                    >
+                initial={{ opacity: 0, x: -50 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ duration: 0.8 }}
+                className="space-y-8"
+                style={{ perspective: "1500px", transformStyle: "preserve-3d" }}>
+                
+                  <motion.h1
+                  className="text-3xl sm:text-4xl md:text-5xl lg:text-[58px] leading-tight font-bold"
+                  style={{ transformStyle: "preserve-3d" }}>
+                  
+                    <motion.span
+                    className="bg-gradient-to-r from-amber-300 via-amber-100 to-white bg-clip-text text-transparent"
+                    style={{ display: "block", transform: "translateZ(30px)" }}>
+                    
                       Is your PBM expert providing advice
                     </motion.span>
-                    <motion.span 
-                      className="bg-gradient-to-r from-white via-purple-100 to-blue-100 bg-clip-text text-transparent"
-                      style={{ display: "block", transform: "translateZ(20px)" }}
-                    >
+                    <motion.span
+                    className="bg-gradient-to-r from-white via-purple-100 to-blue-100 bg-clip-text text-transparent"
+                    style={{ display: "block", transform: "translateZ(20px)" }}>
+                    
                       in your best interest, or their's?
                     </motion.span>
                   </motion.h1>
 
                   {/* Fiduciary Callout */}
                   <motion.div
-                    className="rounded-xl sm:rounded-2xl border border-amber-500/40 bg-gradient-to-br from-amber-950/40 via-black/90 to-amber-900/20 px-4 sm:px-6 py-4 sm:py-5 backdrop-blur-sm shadow-lg shadow-amber-500/20"
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.6, delay: 0.3 }}
-                    whileHover={{ scale: 1.02, boxShadow: "0 0 40px rgba(251, 191, 36, 0.3)" }}
-                    style={{ transform: "translateZ(25px)" }}
-                  >
+                  className="rounded-xl sm:rounded-2xl border border-amber-500/40 bg-gradient-to-br from-amber-950/40 via-black/90 to-amber-900/20 px-4 sm:px-6 py-4 sm:py-5 backdrop-blur-sm shadow-lg shadow-amber-500/20"
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.6, delay: 0.3 }}
+                  whileHover={{ scale: 1.02, boxShadow: "0 0 40px rgba(251, 191, 36, 0.3)" }}
+                  style={{ transform: "translateZ(25px)" }}>
+                  
                     <div className="flex items-start gap-3">
                       <div className="mt-0.5 flex h-8 w-8 sm:h-10 sm:w-10 shrink-0 items-center justify-center rounded-lg bg-amber-500/20">
                         <Shield className="h-4 w-4 sm:h-5 sm:w-5 text-amber-400" />
@@ -205,30 +205,30 @@ export default function HomePage() {
                     </div>
                   </motion.div>
 
-                  <motion.p 
-                    className="text-base sm:text-lg md:text-xl text-gray-300 mb-6 sm:mb-8 leading-relaxed"
-                    style={{ transform: "translateZ(20px)" }}
-                  >
+                  <motion.p
+                  className="text-base sm:text-lg md:text-xl text-gray-300 mb-6 sm:mb-8 leading-relaxed"
+                  style={{ transform: "translateZ(20px)" }}>
+                  
                     Find hidden overcharges in PBM contracts. Eliminate wasteful spending. Save 20-35% while improving coverage. Every dollar verified with proof.
                   </motion.p>
 
                   {/* CTA Buttons with 3D */}
-                  <motion.div 
-                    className="flex flex-col sm:flex-row gap-3 sm:gap-4 mb-6 sm:mb-8"
-                    style={{ transform: "translateZ(30px)" }}
-                  >
+                  <motion.div
+                  className="flex flex-col sm:flex-row gap-3 sm:gap-4 mb-6 sm:mb-8"
+                  style={{ transform: "translateZ(30px)" }}>
+                  
                     <motion.div
-                      whileHover={{ scale: 1.05, z: 50, rotateY: -5 }}
-                      whileTap={{ scale: 0.95 }}
-                      style={{ perspective: "1000px", transformStyle: "preserve-3d" }}
-                      className="w-full sm:w-auto"
-                    >
+                    whileHover={{ scale: 1.05, z: 50, rotateY: -5 }}
+                    whileTap={{ scale: 0.95 }}
+                    style={{ perspective: "1000px", transformStyle: "preserve-3d" }}
+                    className="w-full sm:w-auto">
+                    
                       <a
-                        href="https://calendly.com/jer-kincaidrmc/30min"
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="inline-flex items-center justify-center w-full sm:w-auto px-6 sm:px-8 py-3 sm:py-4 text-base sm:text-lg font-semibold text-white bg-gradient-to-r from-blue-600 to-purple-600 rounded-lg hover:from-blue-700 hover:to-purple-700 transition-all duration-200 shadow-lg hover:shadow-xl"
-                      >
+                      href="https://calendly.com/jer-kincaidrmc/30min"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center justify-center w-full sm:w-auto px-6 sm:px-8 py-3 sm:py-4 text-base sm:text-lg font-semibold text-white bg-gradient-to-r from-blue-600 to-purple-600 rounded-lg hover:from-blue-700 hover:to-purple-700 transition-all duration-200 shadow-lg hover:shadow-xl">
+                      
                         <Clock className="mr-2 h-4 w-4 sm:h-5 sm:w-5" />
                         <span>Book Your PBM Consultation</span>
                         <ArrowRight className="ml-2 h-4 w-4 sm:h-5 sm:w-5" />
@@ -236,49 +236,49 @@ export default function HomePage() {
                     </motion.div>
                   </motion.div>
 
-                  <motion.p 
-                    className="text-xs sm:text-sm text-gray-400"
-                    style={{ transform: "translateZ(20px)" }}
-                  >
+                  <motion.p
+                  className="text-xs sm:text-sm text-gray-400"
+                  style={{ transform: "translateZ(20px)" }}>
+                  
                     Free contract analysis • No implementation required • Results in 14 days
                   </motion.p>
                 </motion.div>
 
                 {/* Right Column - Image with 3D Transform */}
                 <motion.div
-                  initial={{ opacity: 0, x: 50 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  transition={{ duration: 0.8, delay: 0.2 }}
-                  className="relative"
-                  style={{ perspective: "1500px", transformStyle: "preserve-3d" }}
-                >
-                  <motion.div 
-                    className="relative rounded-2xl overflow-hidden border border-amber-500/20 shadow-2xl shadow-amber-500/10"
-                    whileHover={{ scale: 1.02, rotateY: 5, z: 50 }}
-                    transition={{ type: "spring", stiffness: 300, damping: 20 }}
-                    style={{ transformStyle: "preserve-3d" }}
-                  >
+                initial={{ opacity: 0, x: 50 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ duration: 0.8, delay: 0.2 }}
+                className="relative"
+                style={{ perspective: "1500px", transformStyle: "preserve-3d" }}>
+                
+                  <motion.div
+                  className="relative rounded-2xl overflow-hidden border border-amber-500/20 shadow-2xl shadow-amber-500/10"
+                  whileHover={{ scale: 1.02, rotateY: 5, z: 50 }}
+                  transition={{ type: "spring", stiffness: 300, damping: 20 }}
+                  style={{ transformStyle: "preserve-3d" }}>
+                  
                     <img
-                      src="/e36f3ab62edc9c2fba9186685bb06e694fd8e78149112009407488c8477129df.png"
-                      alt="Benefits Cost Analysis Dashboard"
-                      className="w-full h-auto"
-                    />
-                    <motion.div 
-                      className="absolute inset-0 bg-gradient-to-t from-amber-500/20 via-transparent to-transparent pointer-events-none"
-                      animate={{
-                        opacity: [0.3, 0.6, 0.3],
-                      }}
-                      transition={{
-                        duration: 3,
-                        repeat: Infinity,
-                        ease: "easeInOut",
-                      }}
-                    />
+                    src="/e36f3ab62edc9c2fba9186685bb06e694fd8e78149112009407488c8477129df.png"
+                    alt="Benefits Cost Analysis Dashboard"
+                    className="w-full h-auto" />
+                  
+                    <motion.div
+                    className="absolute inset-0 bg-gradient-to-t from-amber-500/20 via-transparent to-transparent pointer-events-none"
+                    animate={{
+                      opacity: [0.3, 0.6, 0.3]
+                    }}
+                    transition={{
+                      duration: 3,
+                      repeat: Infinity,
+                      ease: "easeInOut"
+                    }} />
+                  
                   </motion.div>
                 </motion.div>
-              </motion.div>
-            ) : (
-              <div className="grid lg:grid-cols-2 gap-12 items-center">
+              </motion.div> :
+
+            <div className="grid lg:grid-cols-2 gap-12 items-center">
                 <div className="space-y-8">
                   <h1 className="text-4xl md:text-[58px] font-bold leading-tight">
                     <span className="bg-gradient-to-r from-amber-300 via-amber-100 to-white bg-clip-text text-transparent">
@@ -288,7 +288,7 @@ export default function HomePage() {
                   </h1>
                 </div>
               </div>
-            )}
+            }
           </div>
         </section>
 
@@ -299,8 +299,8 @@ export default function HomePage() {
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
-          >
+            transition={{ duration: 0.6 }}>
+            
             <div className="absolute -inset-1 rounded-3xl bg-gradient-to-r from-amber-600/20 via-amber-500/30 to-amber-600/20 opacity-60 blur-xl" />
             
             <div className="relative grid lg:grid-cols-2 gap-8 lg:gap-12">
@@ -310,8 +310,8 @@ export default function HomePage() {
                 whileInView={{ opacity: 1, x: 0 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.6, delay: 0.2 }}
-                className="flex flex-col justify-center"
-              >
+                className="flex flex-col justify-center">
+                
                 <div className="inline-flex items-center gap-2 rounded-full border border-amber-500/40 bg-amber-950/40 px-4 py-2 text-sm font-semibold text-amber-300 mb-6 w-fit">
                   <Shield className="h-4 w-4" />
                   Free Contract Analysis
@@ -367,20 +367,20 @@ export default function HomePage() {
                 initial={{ opacity: 0, x: 20 }}
                 whileInView={{ opacity: 1, x: 0 }}
                 viewport={{ once: true }}
-                transition={{ duration: 0.6, delay: 0.3 }}
-              >
+                transition={{ duration: 0.6, delay: 0.3 }}>
+                
                 {/* Calendly Booking Button */}
                 <motion.div
                   className="mb-6"
                   whileHover={{ scale: 1.02 }}
-                  whileTap={{ scale: 0.98 }}
-                >
+                  whileTap={{ scale: 0.98 }}>
+                  
                   <a
                     href="https://calendly.com/jer-kincaidrmc/30min"
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="flex items-center justify-center gap-3 w-full rounded-2xl bg-gradient-to-r from-amber-500 via-amber-600 to-amber-700 px-8 py-5 text-lg font-bold text-white shadow-2xl hover:from-amber-400 hover:via-amber-500 hover:to-amber-600 transition-all duration-200 hover:shadow-amber-500/50"
-                  >
+                    className="flex items-center justify-center gap-3 w-full rounded-2xl bg-gradient-to-r from-amber-500 via-amber-600 to-amber-700 px-8 py-5 text-lg font-bold text-white shadow-2xl hover:from-amber-400 hover:via-amber-500 hover:to-amber-600 transition-all duration-200 hover:shadow-amber-500/50">
+                    
                     <Clock className="h-6 w-6" />
                     <span>Book Your Consultation Now</span>
                     <ArrowRight className="h-5 w-5" />
@@ -412,8 +412,8 @@ export default function HomePage() {
                         name="name"
                         required
                         className="w-full rounded-lg border border-amber-500/30 bg-black/40 px-4 py-3 text-white placeholder-zinc-500 focus:border-amber-400 focus:outline-none focus:ring-2 focus:ring-amber-500/20 transition-all"
-                        placeholder="John Smith"
-                      />
+                        placeholder="John Smith" />
+                      
                     </div>
 
                     <div>
@@ -426,8 +426,8 @@ export default function HomePage() {
                         name="email"
                         required
                         className="w-full rounded-lg border border-amber-500/30 bg-black/40 px-4 py-3 text-white placeholder-zinc-500 focus:border-amber-400 focus:outline-none focus:ring-2 focus:ring-amber-500/20 transition-all"
-                        placeholder="john.smith@company.com"
-                      />
+                        placeholder="john.smith@company.com" />
+                      
                     </div>
 
                     <div>
@@ -440,8 +440,8 @@ export default function HomePage() {
                         name="company"
                         required
                         className="w-full rounded-lg border border-amber-500/30 bg-black/40 px-4 py-3 text-white placeholder-zinc-500 focus:border-amber-400 focus:outline-none focus:ring-2 focus:ring-amber-500/20 transition-all"
-                        placeholder="Acme Corporation"
-                      />
+                        placeholder="Acme Corporation" />
+                      
                     </div>
 
                     <div>
@@ -453,8 +453,8 @@ export default function HomePage() {
                         id="phone"
                         name="phone"
                         className="w-full rounded-lg border border-amber-500/30 bg-black/40 px-4 py-3 text-white placeholder-zinc-500 focus:border-amber-400 focus:outline-none focus:ring-2 focus:ring-amber-500/20 transition-all"
-                        placeholder="(555) 123-4567"
-                      />
+                        placeholder="(555) 123-4567" />
+                      
                     </div>
 
                     <div>
@@ -464,8 +464,8 @@ export default function HomePage() {
                       <select
                         id="employees"
                         name="employees"
-                        className="w-full rounded-lg border border-amber-500/30 bg-black/40 px-4 py-3 text-white focus:border-amber-400 focus:outline-none focus:ring-2 focus:ring-amber-500/20 transition-all"
-                      >
+                        className="w-full rounded-lg border border-amber-500/30 bg-black/40 px-4 py-3 text-white focus:border-amber-400 focus:outline-none focus:ring-2 focus:ring-amber-500/20 transition-all">
+                        
                         <option value="">Select range</option>
                         <option value="1-50">1-50</option>
                         <option value="51-200">51-200</option>
@@ -484,16 +484,16 @@ export default function HomePage() {
                         name="message"
                         rows={4}
                         className="w-full rounded-lg border border-amber-500/30 bg-black/40 px-4 py-3 text-white placeholder-zinc-500 focus:border-amber-400 focus:outline-none focus:ring-2 focus:ring-amber-500/20 transition-all resize-none"
-                        placeholder="e.g., Rising costs, lack of transparency, hidden fees..."
-                      />
+                        placeholder="e.g., Rising costs, lack of transparency, hidden fees..." />
+                      
                     </div>
 
                     <motion.button
                       type="submit"
                       whileHover={{ scale: 1.02 }}
                       whileTap={{ scale: 0.98 }}
-                      className="w-full rounded-xl bg-gradient-to-r from-amber-600 to-amber-700 px-8 py-4 text-lg font-bold text-white shadow-lg hover:from-amber-500 hover:to-amber-600 transition-all duration-200 hover:shadow-amber-500/25"
-                    >
+                      className="w-full rounded-xl bg-gradient-to-r from-amber-600 to-amber-700 px-8 py-4 text-lg font-bold text-white shadow-lg hover:from-amber-500 hover:to-amber-600 transition-all duration-200 hover:shadow-amber-500/25">
+                      
                       Apply for PBM Consultation
                     </motion.button>
 
@@ -514,8 +514,8 @@ export default function HomePage() {
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
-          >
+            transition={{ duration: 0.6 }}>
+            
             <h2 className="text-3xl sm:text-4xl lg:text-5xl font-black mb-4">
               <span className="bg-gradient-to-r from-purple-300 via-purple-100 to-white bg-clip-text text-transparent">
                 How It Works
@@ -534,8 +534,8 @@ export default function HomePage() {
               initial={{ opacity: 0, x: -30 }}
               whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true }}
-              transition={{ duration: 0.6 }}
-            >
+              transition={{ duration: 0.6 }}>
+              
               <div className="lg:order-1">
                 <div className="inline-flex items-center gap-3 mb-4">
                   <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-gradient-to-br from-blue-500/30 to-purple-500/30 text-2xl font-black text-blue-400">
@@ -564,8 +564,8 @@ export default function HomePage() {
               <motion.div
                 className="lg:order-2 rounded-2xl border border-blue-500/30 bg-gradient-to-br from-blue-950/40 to-black/60 p-8 backdrop-blur-sm"
                 whileHover={{ scale: 1.02, rotateY: 2 }}
-                transition={{ type: "spring", stiffness: 300 }}
-              >
+                transition={{ type: "spring", stiffness: 300 }}>
+                
                 <div className="flex items-center justify-center h-48 sm:h-64">
                   <FileText className="h-24 w-24 sm:h-32 sm:w-32 text-blue-400/60" />
                 </div>
@@ -578,13 +578,13 @@ export default function HomePage() {
               initial={{ opacity: 0, x: 30 }}
               whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true }}
-              transition={{ duration: 0.6, delay: 0.1 }}
-            >
+              transition={{ duration: 0.6, delay: 0.1 }}>
+              
               <motion.div
                 className="lg:order-1 rounded-2xl border border-purple-500/30 bg-gradient-to-br from-purple-950/40 to-black/60 p-8 backdrop-blur-sm"
                 whileHover={{ scale: 1.02, rotateY: -2 }}
-                transition={{ type: "spring", stiffness: 300 }}
-              >
+                transition={{ type: "spring", stiffness: 300 }}>
+                
                 <div className="flex items-center justify-center h-48 sm:h-64">
                   <Search className="h-24 w-24 sm:h-32 sm:w-32 text-purple-400/60" />
                 </div>
@@ -622,8 +622,8 @@ export default function HomePage() {
               initial={{ opacity: 0, x: -30 }}
               whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true }}
-              transition={{ duration: 0.6, delay: 0.2 }}
-            >
+              transition={{ duration: 0.6, delay: 0.2 }}>
+              
               <div className="lg:order-1">
                 <div className="inline-flex items-center gap-3 mb-4">
                   <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-gradient-to-br from-amber-500/30 to-orange-500/30 text-2xl font-black text-amber-400">
@@ -652,8 +652,8 @@ export default function HomePage() {
               <motion.div
                 className="lg:order-2 rounded-2xl border border-amber-500/30 bg-gradient-to-br from-amber-950/40 to-black/60 p-8 backdrop-blur-sm"
                 whileHover={{ scale: 1.02, rotateY: 2 }}
-                transition={{ type: "spring", stiffness: 300 }}
-              >
+                transition={{ type: "spring", stiffness: 300 }}>
+                
                 <div className="flex items-center justify-center h-48 sm:h-64">
                   <Shield className="h-24 w-24 sm:h-32 sm:w-32 text-amber-400/60" />
                 </div>
@@ -666,13 +666,13 @@ export default function HomePage() {
               initial={{ opacity: 0, x: 30 }}
               whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true }}
-              transition={{ duration: 0.6, delay: 0.3 }}
-            >
+              transition={{ duration: 0.6, delay: 0.3 }}>
+              
               <motion.div
                 className="lg:order-1 rounded-2xl border border-green-500/30 bg-gradient-to-br from-green-950/40 to-black/60 p-8 backdrop-blur-sm"
                 whileHover={{ scale: 1.02, rotateY: -2 }}
-                transition={{ type: "spring", stiffness: 300 }}
-              >
+                transition={{ type: "spring", stiffness: 300 }}>
+                
                 <div className="flex items-center justify-center h-48 sm:h-64">
                   <TrendingUp className="h-24 w-24 sm:h-32 sm:w-32 text-green-400/60" />
                 </div>
@@ -711,8 +711,8 @@ export default function HomePage() {
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            transition={{ duration: 0.6, delay: 0.4 }}
-          >
+            transition={{ duration: 0.6, delay: 0.4 }}>
+            
             <div className="inline-flex items-center gap-4 rounded-2xl border border-purple-500/40 bg-gradient-to-r from-purple-950/40 via-black/80 to-blue-950/40 px-8 py-6 backdrop-blur-sm">
               <Clock className="h-8 w-8 text-purple-400" />
               <div className="text-left">
@@ -732,32 +732,32 @@ export default function HomePage() {
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
-          >
+            transition={{ duration: 0.6 }}>
+            
           </motion.div>
           <div className="grid gap-8 md:grid-cols-3">
             <Card3D
               title="Lineage-backed KPIs"
               subtitle="Cryptographic proof chains"
               icon={TrendingUp}
-              delay={0.1}
-            >
+              delay={0.1}>
+              
               Every KPI carries SHA-256 hashed citations to source documents. Full provenance tracking from raw data ingestion through transformation to final metrics with timestamped audit trails.
             </Card3D>
             <Card3D
               title="Deterministic diffs"
               subtitle="Immutable change history"
               icon={FileText}
-              delay={0.2}
-            >
+              delay={0.2}>
+              
               Contract versions, invoices, and plan changes tracked with git-like versioning. Complete change-log with who approved what, when, and why—immutable and tamper-evident.
             </Card3D>
             <Card3D
               title="Enterprise audit exports"
               subtitle="Compliance-ready evidence bundles"
               icon={CheckCircle2}
-              delay={0.3}
-            >
+              delay={0.3}>
+              
               Generate cryptographically signed audit packages: hashed files, extraction outputs, approval workflows, and audit trails. Your evidence survives the most rigorous scrutiny.
             </Card3D>
           </div>
@@ -770,14 +770,14 @@ export default function HomePage() {
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
-          >
+            transition={{ duration: 0.6 }}>
+            
             <div className="flex items-center gap-3 text-base sm:text-lg font-black bg-gradient-to-r from-red-400 to-red-200 bg-clip-text text-transparent mb-3 sm:mb-4">
               <AlertTriangle className="h-5 w-5 sm:h-6 sm:w-6 text-red-500 drop-shadow-[0_0_12px_rgba(239,68,68,0.6)]" />
               Contract Forensics Engine
             </div>
             <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-black text-white leading-tight">
-              Your PBM contract is a crime scene.<br className="hidden sm:block"/>
+              Your PBM contract is a crime scene.<br className="hidden sm:block" />
               <span className="bg-gradient-to-br from-red-400 via-red-500 to-red-700 bg-clip-text text-transparent">We have the forensics.</span>
             </h2>
             <p className="mt-4 sm:mt-6 text-base sm:text-lg md:text-xl text-zinc-300 max-w-3xl leading-relaxed">
@@ -791,37 +791,37 @@ export default function HomePage() {
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            transition={{ duration: 0.6, delay: 0.1 }}
-          >
+            transition={{ duration: 0.6, delay: 0.1 }}>
+            
             <motion.div
               className="rounded-lg sm:rounded-xl border border-red-500/30 bg-gradient-to-br from-red-950/40 to-black/80 p-4 sm:p-6 backdrop-blur-sm shadow-lg"
               whileHover={{ scale: 1.05, y: -3, boxShadow: "0 0 30px rgba(239, 68, 68, 0.3)" }}
-              transition={{ type: "spring", stiffness: 400, damping: 10 }}
-            >
+              transition={{ type: "spring", stiffness: 400, damping: 10 }}>
+              
               <div className="text-2xl sm:text-3xl font-black bg-gradient-to-r from-red-400 to-red-200 bg-clip-text text-transparent">47</div>
               <div className="mt-1 text-[10px] sm:text-xs text-red-300/70 font-medium uppercase tracking-wide">Avg Issues/Contract</div>
             </motion.div>
             <motion.div
               className="rounded-lg sm:rounded-xl border border-red-500/30 bg-gradient-to-br from-red-950/40 to-black/80 p-4 sm:p-6 backdrop-blur-sm shadow-lg"
               whileHover={{ scale: 1.05, y: -3, boxShadow: "0 0 30px rgba(239, 68, 68, 0.3)" }}
-              transition={{ type: "spring", stiffness: 400, damping: 10 }}
-            >
+              transition={{ type: "spring", stiffness: 400, damping: 10 }}>
+              
               <div className="text-2xl sm:text-3xl font-black bg-gradient-to-r from-red-400 to-red-200 bg-clip-text text-transparent">$2.4M</div>
               <div className="mt-1 text-[10px] sm:text-xs text-red-300/70 font-medium uppercase tracking-wide">Annual Recovery</div>
             </motion.div>
             <motion.div
               className="rounded-lg sm:rounded-xl border border-red-500/30 bg-gradient-to-br from-red-950/40 to-black/80 p-4 sm:p-6 backdrop-blur-sm shadow-lg"
               whileHover={{ scale: 1.05, y: -3, boxShadow: "0 0 30px rgba(239, 68, 68, 0.3)" }}
-              transition={{ type: "spring", stiffness: 400, damping: 10 }}
-            >
+              transition={{ type: "spring", stiffness: 400, damping: 10 }}>
+              
               <div className="text-2xl sm:text-3xl font-black bg-gradient-to-r from-red-400 to-red-200 bg-clip-text text-transparent">87%</div>
               <div className="mt-1 text-[10px] sm:text-xs text-red-300/70 font-medium uppercase tracking-wide">Recovery Success Rate</div>
             </motion.div>
             <motion.div
               className="rounded-lg sm:rounded-xl border border-red-500/30 bg-gradient-to-br from-red-950/40 to-black/80 p-4 sm:p-6 backdrop-blur-sm shadow-lg"
               whileHover={{ scale: 1.05, y: -3, boxShadow: "0 0 30px rgba(239, 68, 68, 0.3)" }}
-              transition={{ type: "spring", stiffness: 400, damping: 10 }}
-            >
+              transition={{ type: "spring", stiffness: 400, damping: 10 }}>
+              
               <div className="text-2xl sm:text-3xl font-black bg-gradient-to-r from-red-400 to-red-200 bg-clip-text text-transparent">14</div>
               <div className="mt-1 text-[10px] sm:text-xs text-red-300/70 font-medium uppercase tracking-wide">Days to Evidence</div>
             </motion.div>
@@ -833,8 +833,8 @@ export default function HomePage() {
               title="Spread Analysis"
               subtitle="AWP vs NADAC forensics"
               icon={BarChart3}
-              delay={0.1}
-            >
+              delay={0.1}>
+              
               Deep analysis of Average Wholesale Price vs NADAC benchmark spreads. Identify overcharging on generic drugs where PBMs exploit spread pricing to inflate costs by 200-400%.
             </Card3D>
 
@@ -842,8 +842,8 @@ export default function HomePage() {
               title="Rebate Leakage Detection"
               subtitle="Follow the money trail"
               icon={TrendingUp}
-              delay={0.2}
-            >
+              delay={0.2}>
+              
               Track manufacturer rebates through every layer. Identify retained rebates, delayed pass-throughs, and contractual violations. Average finding: $847K in unreturned rebates per audit.
             </Card3D>
 
@@ -851,8 +851,8 @@ export default function HomePage() {
               title="MAC List Manipulation"
               subtitle="Maximum Allowable Cost gaming"
               icon={AlertTriangle}
-              delay={0.3}
-            >
+              delay={0.3}>
+              
               Forensic analysis of MAC list updates and pricing changes. Detect when PBMs manipulate pricing lists to capture spread on high-volume generics. Typical recovery: $1.2M annually.
             </Card3D>
 
@@ -860,8 +860,8 @@ export default function HomePage() {
               title="Specialty Drug Markups"
               subtitle="High-cost medication forensics"
               icon={Activity}
-              delay={0.4}
-            >
+              delay={0.4}>
+              
               Deep dive into specialty pharmacy markups and adherence to contracted discount guarantees. Uncover hidden fees, inflated dispensing charges, and violated rebate terms.
             </Card3D>
 
@@ -869,8 +869,8 @@ export default function HomePage() {
               title="Dir Fee Clawbacks"
               subtitle="Point-of-sale vs post-adjudication"
               icon={Shield}
-              delay={0.5}
-            >
+              delay={0.5}>
+              
               Track Direct and Indirect Remuneration fees that appear after claims are paid. Identify retroactive clawbacks that violate transparency requirements. Average recovery: $340K/year.
             </Card3D>
 
@@ -878,8 +878,8 @@ export default function HomePage() {
               title="Formulary Manipulation"
               subtitle="Therapeutic class switching"
               icon={Search}
-              delay={0.6}
-            >
+              delay={0.6}>
+              
               Detect non-clinical formulary changes that drive members to higher-cost alternatives. Identify PBM conflicts of interest and recovered spread opportunities.
             </Card3D>
           </div>
@@ -890,8 +890,8 @@ export default function HomePage() {
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            transition={{ duration: 0.6, delay: 0.2 }}
-          >
+            transition={{ duration: 0.6, delay: 0.2 }}>
+            
             <div className="mb-6">
               <h3 className="text-2xl font-black bg-gradient-to-r from-red-300 to-white bg-clip-text text-transparent mb-3">
                 Court-Grade Evidence Standards
@@ -947,8 +947,8 @@ export default function HomePage() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.6, delay: 0.3 }}
-            whileHover={{ scale: 1.01, boxShadow: "0 0 40px rgba(239, 68, 68, 0.2)" }}
-          >
+            whileHover={{ scale: 1.01, boxShadow: "0 0 40px rgba(239, 68, 68, 0.2)" }}>
+            
             <div className="mb-4 flex items-center gap-2">
               <div className="h-1 w-12 bg-gradient-to-r from-red-500 to-red-700 rounded-full" />
             </div>
@@ -966,8 +966,8 @@ export default function HomePage() {
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            transition={{ duration: 0.6, delay: 0.4 }}
-          >
+            transition={{ duration: 0.6, delay: 0.4 }}>
+            
             <h3 className="text-2xl font-black text-white mb-6">What We Prosecute</h3>
             <div className="grid gap-4 md:grid-cols-2">
               <div className="rounded-xl border border-red-500/20 bg-black/40 p-5 backdrop-blur-sm">
@@ -1033,8 +1033,8 @@ export default function HomePage() {
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            transition={{ duration: 0.6, delay: 0.5 }}
-          >
+            transition={{ duration: 0.6, delay: 0.5 }}>
+            
             <div className="text-center max-w-2xl">
               <p className="text-base sm:text-lg text-zinc-300 mb-4 sm:mb-6">
                 Ready to discover what your PBM isn't telling you? Launch a forensic investigation and get documented proof of every overcharge.
@@ -1044,12 +1044,12 @@ export default function HomePage() {
               <motion.div
                 whileHover={{ scale: 1.05, y: -2 }}
                 whileTap={{ scale: 0.95 }}
-                className="w-full sm:w-auto"
-              >
+                className="w-full sm:w-auto">
+                
                 <Link
                   href="/solutions/contract-xray"
-                  className="inline-flex items-center justify-center w-full sm:w-auto px-6 sm:px-8 py-3 sm:py-4 text-base sm:text-lg font-bold text-white bg-gradient-to-r from-red-600 to-red-800 rounded-xl hover:from-red-500 hover:to-red-700 transition-all duration-200 shadow-lg hover:shadow-red-500/25"
-                >
+                  className="inline-flex items-center justify-center w-full sm:w-auto px-6 sm:px-8 py-3 sm:py-4 text-base sm:text-lg font-bold text-white bg-gradient-to-r from-red-600 to-red-800 rounded-xl hover:from-red-500 hover:to-red-700 transition-all duration-200 shadow-lg hover:shadow-red-500/25">
+                  
                   <Search className="mr-2 h-4 w-4 sm:h-5 sm:w-5" />
                   Launch Forensic Investigation
                 </Link>
@@ -1057,12 +1057,12 @@ export default function HomePage() {
               <motion.div
                 whileHover={{ scale: 1.05, y: -2 }}
                 whileTap={{ scale: 0.95 }}
-                className="w-full sm:w-auto"
-              >
+                className="w-full sm:w-auto">
+                
                 <Link
                   href="/solutions/rx-defense"
-                  className="inline-flex items-center justify-center w-full sm:w-auto px-6 sm:px-8 py-3 sm:py-4 text-base sm:text-lg font-bold text-red-300 border-2 border-red-500/50 rounded-xl hover:bg-red-950/30 hover:border-red-400 transition-all duration-200"
-                >
+                  className="inline-flex items-center justify-center w-full sm:w-auto px-6 sm:px-8 py-3 sm:py-4 text-base sm:text-lg font-bold text-red-300 border-2 border-red-500/50 rounded-xl hover:bg-red-950/30 hover:border-red-400 transition-all duration-200">
+                  
                   <FileText className="mr-2 h-4 w-4 sm:h-5 sm:w-5" />
                   View Sample Audit Report
                 </Link>
@@ -1081,22 +1081,22 @@ export default function HomePage() {
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
-          >
+            transition={{ duration: 0.6 }}>
+            
             <div className="flex items-center justify-end gap-3 mb-4">
               <div className="text-right">
-                <h2 className="text-4xl font-black bg-gradient-to-br from-white via-purple-200 to-blue-200 bg-clip-text text-transparent">
-                  Kincaid IQ RX X-Ray
+                <h2 className="text-4xl font-black bg-gradient-to-br from-white via-purple-200 to-blue-200 bg-clip-text text-transparent">Kincaid IQ Platform
+
                 </h2>
                 <p className="text-sm text-zinc-400 mt-1">
                   Real-time metrics, evidence-backed KPIs, and algorithmic insights for C-suite decision making
                 </p>
               </div>
-              <motion.div 
+              <motion.div
                 className="h-12 w-12 rounded-xl bg-gradient-to-br from-purple-500/30 to-blue-500/30 flex items-center justify-center shadow-lg shadow-purple-500/30"
                 whileHover={{ rotate: 360, scale: 1.15 }}
-                transition={{ duration: 0.8, type: "spring" }}
-              >
+                transition={{ duration: 0.8, type: "spring" }}>
+                
                 <TrendingUp className="h-6 w-6 text-purple-400 drop-shadow-[0_0_12px_rgba(168,85,247,0.6)]" />
               </motion.div>
             </div>
@@ -1105,8 +1105,8 @@ export default function HomePage() {
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            transition={{ duration: 0.6, delay: 0.2 }}
-          >
+            transition={{ duration: 0.6, delay: 0.2 }}>
+            
             <ExecutiveWarRoom />
           </motion.div>
         </section>
@@ -1118,14 +1118,14 @@ export default function HomePage() {
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
-          >
+            transition={{ duration: 0.6 }}>
+            
             <div className="flex items-center gap-3 mb-4">
-              <motion.div 
+              <motion.div
                 className="h-12 w-12 rounded-xl bg-gradient-to-br from-emerald-500/30 to-teal-500/30 flex items-center justify-center shadow-lg shadow-emerald-500/30"
                 whileHover={{ rotate: 360, scale: 1.15 }}
-                transition={{ duration: 0.8, type: "spring" }}
-              >
+                transition={{ duration: 0.8, type: "spring" }}>
+                
                 <Users className="h-6 w-6 text-emerald-400 drop-shadow-[0_0_12px_rgba(16,185,129,0.6)]" />
               </motion.div>
               <div>
@@ -1149,8 +1149,8 @@ export default function HomePage() {
             viewport={{ once: true }}
             transition={{ duration: 0.6, delay: 0.2 }}
             whileHover={{ scale: 1.01 }}
-            style={{ perspective: "1500px", transformStyle: "preserve-3d" }}
-          >
+            style={{ perspective: "1500px", transformStyle: "preserve-3d" }}>
+            
             <div className="absolute -inset-1 rounded-3xl bg-gradient-to-r from-emerald-600/20 via-teal-500/20 to-emerald-600/20 opacity-50 blur-xl" />
             <div className="relative">
               <CHROWarRoom />
@@ -1162,17 +1162,17 @@ export default function HomePage() {
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            transition={{ duration: 0.6, delay: 0.6 }}
-          >
+            transition={{ duration: 0.6, delay: 0.6 }}>
+            
             <motion.div
               whileHover={{ scale: 1.05, z: 30 }}
               whileTap={{ scale: 0.95 }}
-              style={{ perspective: "1000px", transformStyle: "preserve-3d" }}
-            >
+              style={{ perspective: "1000px", transformStyle: "preserve-3d" }}>
+              
               <Link
                 href="/enterprise/dashboard"
-                className="inline-flex items-center gap-2 rounded-xl border border-emerald-500/50 bg-zinc-950/80 px-8 py-4 text-base font-bold text-white backdrop-blur-sm transition-all hover:border-emerald-400/70 hover:bg-emerald-950/40"
-              >
+                className="inline-flex items-center gap-2 rounded-xl border border-emerald-500/50 bg-zinc-950/80 px-8 py-4 text-base font-bold text-white backdrop-blur-sm transition-all hover:border-emerald-400/70 hover:bg-emerald-950/40">
+                
                 <Building2 className="h-5 w-5 text-emerald-400" />
                 <span>Enterprise Portal</span>
               </Link>
@@ -1183,17 +1183,17 @@ export default function HomePage() {
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            transition={{ duration: 0.6, delay: 0.6 }}
-          >
+            transition={{ duration: 0.6, delay: 0.6 }}>
+            
             <motion.div
               whileHover={{ scale: 1.05, z: 30 }}
               whileTap={{ scale: 0.95 }}
-              style={{ perspective: "1000px", transformStyle: "preserve-3d" }}
-            >
+              style={{ perspective: "1000px", transformStyle: "preserve-3d" }}>
+              
               <Link
                 href="/request-demo"
-                className="inline-flex items-center gap-2 rounded-xl border border-emerald-500/50 bg-zinc-950/80 px-8 py-4 text-base font-bold text-white backdrop-blur-sm transition-all hover:border-emerald-400/70 hover:bg-emerald-950/40"
-              >
+                className="inline-flex items-center gap-2 rounded-xl border border-emerald-500/50 bg-zinc-950/80 px-8 py-4 text-base font-bold text-white backdrop-blur-sm transition-all hover:border-emerald-400/70 hover:bg-emerald-950/40">
+                
                 <Users className="h-5 w-5 text-emerald-400" />
                 <span>Schedule HR Analytics Demo</span>
               </Link>
@@ -1208,8 +1208,8 @@ export default function HomePage() {
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
-          >
+            transition={{ duration: 0.6 }}>
+            
             <div className="flex items-center gap-3 text-lg font-black bg-gradient-to-r from-purple-300 to-white bg-clip-text text-transparent">
               <Shield className="h-6 w-6 text-purple-400 drop-shadow-[0_0_12px_rgba(168,85,247,0.6)]" />
               Enterprise Security & Compliance
@@ -1236,8 +1236,8 @@ export default function HomePage() {
             viewport={{ once: true }}
             transition={{ duration: 0.6 }}
             whileHover={{ scale: 1.01, rotateY: 1 }}
-            style={{ perspective: "1500px", transformStyle: "preserve-3d" }}
-          >
+            style={{ perspective: "1500px", transformStyle: "preserve-3d" }}>
+            
             <div className="absolute -inset-1 rounded-3xl bg-gradient-to-r from-purple-600/30 via-purple-500/30 to-blue-600/30 opacity-70 blur-xl" />
             <div className="relative flex flex-col gap-6 lg:flex-row lg:items-center lg:justify-between">
               <div>
@@ -1249,28 +1249,28 @@ export default function HomePage() {
                 </div>
               </div>
               <div className="flex gap-4">
-                <motion.div 
-                  whileHover={{ scale: 1.05, z: 30 }} 
+                <motion.div
+                  whileHover={{ scale: 1.05, z: 30 }}
                   whileTap={{ scale: 0.95 }}
-                  style={{ perspective: "1000px", transformStyle: "preserve-3d" }}
-                >
+                  style={{ perspective: "1000px", transformStyle: "preserve-3d" }}>
+                  
                   <Link
                     href="/enterprise/dashboard"
-                    className="inline-flex items-center gap-2 rounded-2xl border border-purple-500/40 bg-gradient-to-r from-purple-600/30 to-blue-600/30 px-6 py-3 text-base font-bold backdrop-blur-xl transition-all hover:border-purple-400/60 hover:shadow-lg hover:shadow-purple-500/30"
-                  >
+                    className="inline-flex items-center gap-2 rounded-2xl border border-purple-500/40 bg-gradient-to-r from-purple-600/30 to-blue-600/30 px-6 py-3 text-base font-bold backdrop-blur-xl transition-all hover:border-purple-400/60 hover:shadow-lg hover:shadow-purple-500/30">
+                    
                     <Building2 className="h-5 w-5 relative" />
                     <span className="relative">Contact Sales →</span>
                   </Link>
                 </motion.div>
-                <motion.div 
-                  whileHover={{ scale: 1.05, y: -2, z: 30 }} 
+                <motion.div
+                  whileHover={{ scale: 1.05, y: -2, z: 30 }}
                   whileTap={{ scale: 0.95 }}
-                  style={{ perspective: "1000px", transformStyle: "preserve-3d" }}
-                >
+                  style={{ perspective: "1000px", transformStyle: "preserve-3d" }}>
+                  
                   <Link
                     href="/request-demo"
-                    className="inline-flex items-center gap-2 rounded-xl border border-purple-500/50 bg-zinc-950/80 px-5 py-3 text-base font-bold text-white backdrop-blur-sm transition-all hover:border-purple-400/70 hover:bg-purple-950/40"
-                  >
+                    className="inline-flex items-center gap-2 rounded-xl border border-purple-500/50 bg-zinc-950/80 px-5 py-3 text-base font-bold text-white backdrop-blur-sm transition-all hover:border-purple-400/70 hover:bg-purple-950/40">
+                    
                     <Lock className="h-5 w-5 text-purple-400" />
                     Request Demo
                   </Link>
@@ -1286,8 +1286,8 @@ export default function HomePage() {
           initial={{ opacity: 0 }}
           whileInView={{ opacity: 1 }}
           viewport={{ once: true }}
-          transition={{ duration: 0.6 }}
-        >
+          transition={{ duration: 0.6 }}>
+          
           <div className="text-center py-8 border-t border-white/10">
             <span>© {new Date().getFullYear()} Kincaid IQ</span>
           </div>
@@ -1307,8 +1307,8 @@ export default function HomePage() {
         badgeType={selectedBadge}
         level={badgeLevel}
         onClose={handleBadgeClose}
-        onNextLevel={handleNextLevel}
-      />
-    </>
-  );
+        onNextLevel={handleNextLevel} />
+      
+    </>);
+
 }

@@ -12,14 +12,14 @@ import {
   SelectContent,
   SelectItem,
   SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
+  SelectValue } from
+"@/components/ui/select";
 
 const DEFAULT_FILTERS: Filters = {
   org: "Portfolio",
   period: "MTD",
   currency: "USD",
-  businessUnit: "All",
+  businessUnit: "All"
 };
 
 export function ExecutiveWarRoom() {
@@ -88,7 +88,7 @@ export function ExecutiveWarRoom() {
                   </SelectContent>
                 </Select>
               </div>
-              <h1 className="mt-3 text-2xl font-bold tracking-tight bg-gradient-to-r from-white via-purple-100 to-blue-100 bg-clip-text text-transparent">Kincaid IQ Rx X-Ray</h1>
+              <h1 className="mt-3 text-2xl font-bold tracking-tight bg-gradient-to-r from-white via-purple-100 to-blue-100 bg-clip-text text-transparent">Kincaid IQ</h1>
               <div className="mt-1 text-sm text-zinc-400">
                 McKinsey + Bain KPIs with Evidence Receipts. <span className="text-purple-300 font-medium">Verified</span> or it&apos;s not real.
               </div>
@@ -166,13 +166,13 @@ export function ExecutiveWarRoom() {
         </section>
       </main>
 
-      {selectedTile && (
-        <ExecutiveKPIDrawer
-          tile={selectedTile}
-          isOpen={drawerOpen}
-          onClose={handleCloseDrawer}
-        />
-      )}
-    </div>
-  );
+      {selectedTile &&
+      <ExecutiveKPIDrawer
+        tile={selectedTile}
+        isOpen={drawerOpen}
+        onClose={handleCloseDrawer} />
+
+      }
+    </div>);
+
 }

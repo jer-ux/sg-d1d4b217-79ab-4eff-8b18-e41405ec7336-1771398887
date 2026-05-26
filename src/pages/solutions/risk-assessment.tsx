@@ -26,10 +26,12 @@ import {
 import { SEO } from "@/components/SEO";
 import Footer from "@/components/Footer";
 import { useState } from "react";
-import { RiskDistribution3D } from "@/components/risk/RiskDistribution3D";
-import { PortfolioRisk3D } from "@/components/risk/PortfolioRisk3D";
-import { MonteCarloSimulation3D } from "@/components/risk/MonteCarloSimulation3D";
-import { PredictiveAccuracy3D } from "@/components/risk/PredictiveAccuracy3D";
+import dynamic from "next/dynamic";
+
+const RiskDistribution3D = dynamic(() => import("@/components/risk/RiskDistribution3D").then(mod => mod.RiskDistribution3D), { ssr: false });
+const PortfolioRisk3D = dynamic(() => import("@/components/risk/PortfolioRisk3D").then(mod => mod.PortfolioRisk3D), { ssr: false });
+const MonteCarloSimulation3D = dynamic(() => import("@/components/risk/MonteCarloSimulation3D").then(mod => mod.MonteCarloSimulation3D), { ssr: false });
+const PredictiveAccuracy3D = dynamic(() => import("@/components/risk/PredictiveAccuracy3D").then(mod => mod.PredictiveAccuracy3D), { ssr: false });
 
 export default function RiskAssessmentPage() {
   const [activeTab, setActiveTab] = useState("modeling");

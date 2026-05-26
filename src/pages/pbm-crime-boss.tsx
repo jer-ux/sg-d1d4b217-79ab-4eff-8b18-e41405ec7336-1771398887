@@ -68,7 +68,8 @@ export default function PBMCrimeBossPage() {
     "/Gemini_Generated_Image_h7g1smh7g1smh7g1.png",
     "/IMG_0078.jpeg",
     "/Gemini_Generated_Image_gj2y6vgj2y6vgj2y.png",
-    "/Gemini_Generated_Image_o22qego22qego22q.png"
+    "/Gemini_Generated_Image_o22qego22qego22q.png",
+    "/Gemini_Generated_Image_qm0m5kqm0m5kqm0m.png"
   ];
 
   const openLightbox = (imageSrc: string) => {
@@ -415,6 +416,77 @@ export default function PBMCrimeBossPage() {
                       >
                         <Shield className="h-5 w-5" />
                         Get the Proof You Need
+                      </motion.a>
+                    </div>
+                  </motion.div>
+                </div>
+              </div>
+            </motion.div>
+          </div>
+        </section>
+
+        {/* Crime Boss Investigation Banner */}
+        <section className="py-20">
+          <div className="max-w-7xl mx-auto px-6">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6 }}
+              className="relative rounded-3xl overflow-hidden border-2 border-amber-500/40 shadow-2xl shadow-amber-500/20 hover:shadow-amber-500/40 transition-shadow duration-500 group cursor-pointer"
+              onClick={() => openLightbox("/Gemini_Generated_Image_qm0m5kqm0m5kqm0m.png")}
+            >
+              <div className="absolute inset-0">
+                <img
+                  src="/Gemini_Generated_Image_qm0m5kqm0m5kqm0m.png"
+                  alt="PBM Crime Boss Investigation"
+                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
+                />
+                <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity bg-black/40">
+                  <Eye className="w-12 h-12 text-white" />
+                </div>
+                <div className="absolute inset-0 bg-gradient-to-r from-black/95 via-black/75 to-transparent" />
+              </div>
+
+              <div className="relative p-12 md:p-16 flex items-center min-h-[500px]">
+                <div className="max-w-2xl">
+                  <motion.div
+                    initial={{ opacity: 0, x: -20 }}
+                    whileInView={{ opacity: 1, x: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ duration: 0.8, delay: 0.2 }}
+                  >
+                    <div className="inline-flex items-center gap-2 px-4 py-2 bg-amber-500/20 border border-amber-400/40 rounded-full text-amber-300 text-sm font-bold mb-6">
+                      <AlertTriangle className="h-4 w-4" />
+                      INSIDER EXPOSÉ
+                    </div>
+                    <h2 className="text-5xl md:text-6xl font-black text-white mb-6 leading-tight">
+                      Former PBM Crime Boss<br />Speaks Out
+                    </h2>
+                    <p className="text-xl text-gray-300 mb-8 leading-relaxed">
+                      An unprecedented insider account of the systematic exploitation tactics used to extract billions from employer health plans. From pricing manipulation to contractual deception—the complete playbook exposed.
+                    </p>
+                    <div className="flex flex-wrap gap-4">
+                      <motion.a
+                        href="https://www.linkedin.com/newsletters/former-pbm-crime-boss-speaks-7447883910010535936/"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="inline-flex items-center gap-3 px-8 py-4 bg-gradient-to-r from-amber-600 to-orange-600 hover:from-amber-700 hover:to-orange-700 rounded-xl text-white font-bold text-lg transition-all shadow-lg"
+                        whileHover={{ scale: 1.05 }}
+                        whileTap={{ scale: 0.95 }}
+                      >
+                        <FileText className="h-5 w-5" />
+                        Read the Exposé
+                        <ExternalLink className="h-4 w-4" />
+                      </motion.a>
+                      <motion.a
+                        href="/solutions/rx-defense"
+                        className="inline-flex items-center gap-3 px-8 py-4 border-2 border-amber-500/50 hover:border-amber-400 rounded-xl text-amber-300 hover:text-white font-bold text-lg transition-all"
+                        whileHover={{ scale: 1.05 }}
+                        whileTap={{ scale: 0.95 }}
+                      >
+                        <Shield className="h-5 w-5" />
+                        Protect Your Plan
                       </motion.a>
                     </div>
                   </motion.div>

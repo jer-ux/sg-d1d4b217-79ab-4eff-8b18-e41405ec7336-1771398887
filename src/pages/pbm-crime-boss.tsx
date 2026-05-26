@@ -67,7 +67,8 @@ export default function PBMCrimeBossPage() {
     "/Gemini_Generated_Image_6m5eog6m5eog6m5e.png",
     "/Gemini_Generated_Image_h7g1smh7g1smh7g1.png",
     "/IMG_0078.jpeg",
-    "/Gemini_Generated_Image_gj2y6vgj2y6vgj2y.png"
+    "/Gemini_Generated_Image_gj2y6vgj2y6vgj2y.png",
+    "/Gemini_Generated_Image_o22qego22qego22q.png"
   ];
 
   const openLightbox = (imageSrc: string) => {
@@ -806,6 +807,74 @@ export default function PBMCrimeBossPage() {
         {/* Split Banner Section */}
         <section className="py-20">
           <div className="max-w-7xl mx-auto px-6">
+
+            {/* New Featured Investigation Banner */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6 }}
+              className="relative rounded-3xl overflow-hidden border-2 border-cyan-500/40 shadow-2xl shadow-cyan-500/20 hover:shadow-cyan-500/40 transition-shadow duration-500 mb-6 group cursor-pointer"
+              onClick={() => openLightbox("/Gemini_Generated_Image_o22qego22qego22q.png")}
+            >
+              <div className="absolute inset-0">
+                <img
+                  src="/Gemini_Generated_Image_o22qego22qego22q.png"
+                  alt="PBM Contract Deep Dive"
+                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
+                />
+                <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity bg-black/40">
+                  <Eye className="w-12 h-12 text-white" />
+                </div>
+                <div className="absolute inset-0 bg-gradient-to-r from-black/95 via-black/75 to-transparent" />
+              </div>
+
+              <div className="relative p-12 md:p-16 flex items-center min-h-[500px]">
+                <div className="max-w-2xl">
+                  <motion.div
+                    initial={{ opacity: 0, x: -20 }}
+                    whileInView={{ opacity: 1, x: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ duration: 0.8, delay: 0.2 }}
+                  >
+                    <div className="inline-flex items-center gap-2 px-4 py-2 bg-cyan-500/20 border border-cyan-400/40 rounded-full text-cyan-300 text-sm font-bold mb-6">
+                      <BarChart3 className="h-4 w-4" />
+                      DEEP ANALYSIS
+                    </div>
+                    <h2 className="text-5xl md:text-6xl font-black text-white mb-6 leading-tight">
+                      The Hidden Cost Structure
+                    </h2>
+                    <p className="text-xl text-gray-300 mb-8 leading-relaxed">
+                      A visual breakdown of the systematic cost inflation embedded in standard PBM contracts. Every layer of markup, every hidden fee, every contractual loophole—exposed and quantified.
+                    </p>
+                    <div className="flex flex-wrap gap-4">
+                      <motion.a
+                        href="https://www.linkedin.com/newsletters/former-pbm-crime-boss-speaks-7447883910010535936/"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="inline-flex items-center gap-3 px-8 py-4 bg-gradient-to-r from-cyan-600 to-blue-600 hover:from-cyan-700 hover:to-blue-700 rounded-xl text-white font-bold text-lg transition-all shadow-lg"
+                        whileHover={{ scale: 1.05 }}
+                        whileTap={{ scale: 0.95 }}
+                      >
+                        <FileText className="h-5 w-5" />
+                        Read Analysis
+                        <ExternalLink className="h-4 w-4" />
+                      </motion.a>
+                      <motion.a
+                        href="/solutions/rx-defense"
+                        className="inline-flex items-center gap-3 px-8 py-4 border-2 border-cyan-500/50 hover:border-cyan-400 rounded-xl text-cyan-300 hover:text-white font-bold text-lg transition-all"
+                        whileHover={{ scale: 1.05 }}
+                        whileTap={{ scale: 0.95 }}
+                      >
+                        <Calculator className="h-5 w-5" />
+                        Calculate Your Loss
+                      </motion.a>
+                    </div>
+                  </motion.div>
+                </div>
+              </div>
+            </motion.div>
+
             <div className="grid md:grid-cols-2 gap-6">
               <motion.div
                 initial={{ opacity: 0, x: -20 }}

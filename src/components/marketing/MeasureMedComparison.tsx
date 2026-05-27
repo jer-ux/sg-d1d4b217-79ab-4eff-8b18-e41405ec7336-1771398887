@@ -3,6 +3,7 @@
 import { Check, X, ArrowRight, Shield, Scale, FileSearch, Brain } from "lucide-react";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
+import Link from "next/link";
 
 interface ComparisonRow {
   category: string;
@@ -310,19 +311,19 @@ export function MeasureMedComparison() {
           If you're facing ERISA audits, M&A due diligence, or suspect contractual abuse in your PBM/TPA relationships, we provide the evidence infrastructure you need.
         </p>
         <div className="flex gap-4 justify-center">
-          <a
+          <Link
             href="/request-demo"
             className="inline-flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-lg font-semibold transition-colors"
           >
             Request Forensic Audit
             <ArrowRight className="w-4 h-4" />
-          </a>
-          <a
+          </Link>
+          <Link
             href="/contract-intelligence"
             className="inline-flex items-center gap-2 bg-slate-800 hover:bg-slate-700 text-white px-6 py-3 rounded-lg font-semibold transition-colors border border-slate-700"
           >
             See Platform Demo
-          </a>
+          </Link>
         </div>
       </div>
     </div>

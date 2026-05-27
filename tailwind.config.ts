@@ -9,6 +9,11 @@ const config: Config = {
   ],
   theme: {
     extend: {
+      fontFamily: {
+        sans: ['Inter', 'system-ui', 'sans-serif'],
+        serif: ['Source Serif Pro', 'Georgia', 'serif'],
+        mono: ['JetBrains Mono', 'Courier New', 'monospace']
+      },
       colors: {
         background: "hsl(var(--background))",
         foreground: "hsl(var(--foreground))",

@@ -2,6 +2,7 @@ import { useState } from "react";
 import { motion } from "framer-motion";
 import { Check, FileText, Shield, TrendingDown, Users, Building2, AlertCircle, Download, ChevronRight, Clock, DollarSign, ExternalLink } from "lucide-react";
 import Link from "next/link";
+import Head from "next/head";
 import { Button } from "@/components/ui/button";
 import { SEO } from "@/components/SEO";
 import Nav from "@/components/Nav";
@@ -18,13 +19,24 @@ export default function ShadyBrokerReport() {
 
   return (
     <>
+      <Head>
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
+        <link href="https://fonts.googleapis.com/css2?family=Source+Serif+Pro:wght@400;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+        <style>{`
+          .shady-broker-page { font-family: 'Inter', system-ui, sans-serif; }
+          .shady-broker-page .font-serif { font-family: 'Source Serif Pro', Georgia, serif; }
+          .shady-broker-page .font-mono { font-family: 'JetBrains Mono', 'Courier New', monospace; }
+        `}</style>
+      </Head>
+      
       <SEO 
         title="The Shady Broker Report | Kincaid Risk Management Co."
         description="A 24-page forensic dossier on what your broker is not telling you. Anchored to a 757,294-row benchmark index. Delivered in 10 business days."
         image="/og-shady-broker-report.png"
       />
       
-      <div className="min-h-screen bg-[#FAF8F5]">
+      <div className="min-h-screen bg-[#FAF8F5] shady-broker-page">
         <Nav />
         
         {/* Hero Section */}

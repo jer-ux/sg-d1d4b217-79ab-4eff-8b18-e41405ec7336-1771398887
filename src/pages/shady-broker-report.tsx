@@ -13,7 +13,7 @@ export default function ShadyBrokerReport() {
     initial: { opacity: 0, y: 20 },
     whileInView: { opacity: 1, y: 0 },
     viewport: { once: true },
-    transition: { duration: 0.2, ease: "easeOut" }
+    transition: { duration: 0.2 }
   };
 
   return (
@@ -72,7 +72,7 @@ export default function ShadyBrokerReport() {
                 <motion.div
                   initial={{ opacity: 0, scale: 0.95 }}
                   animate={{ opacity: 1, scale: 1 }}
-                  transition={{ duration: 0.4, ease: "easeOut" }}
+                  transition={{ duration: 0.4 }}
                   className="relative aspect-[4/3] rounded-lg overflow-hidden"
                 >
                   <img

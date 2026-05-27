@@ -1,6 +1,6 @@
 import { useState } from "react";
 import Link from "next/link";
-import { Menu, X, ChevronDown, Sparkles, Search, Users, Building2, AlertTriangle, Calculator, FileText, TrendingUp, Briefcase, BarChart3, Shield, LineChart, Cpu } from "lucide-react";
+import { Menu, X, ChevronDown, Sparkles, Search, Users, Building2, AlertTriangle, Calculator, FileText, TrendingUp, Briefcase, BarChart3, Shield, LineChart } from "lucide-react";
 import { useRouter } from "next/router";
 import { Button } from "@/components/ui/button";
 import { DropdownMenu, DropdownMenuTrigger, DropdownMenuContent, DropdownMenuItem } from "@/components/ui/dropdown-menu";
@@ -12,7 +12,6 @@ export default function Nav() {
   const [actuarialDropdownOpen, setActuarialDropdownOpen] = useState(false);
   const [agenticDropdownOpen, setAgenticDropdownOpen] = useState(false);
   const [focusAreasDropdownOpen, setFocusAreasDropdownOpen] = useState(false);
-  const [aiAppsDropdownOpen, setAiAppsDropdownOpen] = useState(false);
 
   return (
     <nav className="fixed top-0 z-[200] w-full border-b border-white/10 bg-black/80 backdrop-blur-xl">
@@ -238,33 +237,11 @@ export default function Nav() {
               }
             </div>
 
-            {/* AI Applications Menu - NEW */}
-            <div className="relative">
-              <button
-                onClick={() => setAiAppsDropdownOpen(!aiAppsDropdownOpen)}
-                className="flex items-center gap-2 px-4 py-2 text-gray-300 hover:text-white transition-colors rounded-lg hover:bg-white/5">
-                
-                AI Applications
-                <ChevronDown className={`w-3 h-3 transition-transform ${aiAppsDropdownOpen ? "rotate-180" : ""}`} />
-              </button>
-              {aiAppsDropdownOpen && (
-                <div className="absolute top-full left-0 mt-2 w-64 bg-gray-900/95 backdrop-blur-xl rounded-xl border border-gray-700/50 shadow-xl overflow-hidden z-[210]">
-                  <div className="p-2">
-                    <Link
-                      href="/kincaid-iq"
-                      onClick={() => setAiAppsDropdownOpen(false)}
-                      className="block px-4 py-3 text-gray-300 hover:text-white hover:bg-purple-500/10 rounded-lg transition-colors duration-150">
-                      
-                      <div className="font-medium flex items-center gap-2">
-                        <Cpu className="w-4 h-4 text-purple-400" />
-                        Sales OS Console
-                      </div>
-                      <div className="text-xs text-gray-400">DOL Form 5500 prospecting intelligence</div>
-                    </Link>
-                  </div>
-                </div>
-              )}
-            </div>
+            <Link href="/request-demo">
+              <Button className="bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600">
+                Contact Sales
+              </Button>
+            </Link>
           </div>
 
           {/* Mobile menu button */}
@@ -378,24 +355,6 @@ export default function Nav() {
                   </Link>
                 </div>
             }
-            </div>
-
-            {/* AI Applications Dropdown - Mobile */}
-            <div>
-              <button
-                onClick={() => setAiAppsDropdownOpen(!aiAppsDropdownOpen)}
-                className="flex items-center justify-between w-full px-4 py-3 text-gray-300 hover:text-white hover:bg-white/5 rounded-lg transition-colors">
-                
-                <span className="font-medium">AI Applications</span>
-                <ChevronDown className={`w-4 h-4 transition-transform ${aiAppsDropdownOpen ? "rotate-180" : ""}`} />
-              </button>
-              {aiAppsDropdownOpen && (
-                <div className="ml-4 mt-2 space-y-1">
-                  <Link href="/kincaid-iq" className="block px-4 py-2 text-sm text-gray-400 hover:text-white hover:bg-purple-500/10 rounded-lg transition-colors">
-                    Sales OS Console
-                  </Link>
-                </div>
-              )}
             </div>
 
             {/* Agentic Workflows Dropdown - Mobile */}

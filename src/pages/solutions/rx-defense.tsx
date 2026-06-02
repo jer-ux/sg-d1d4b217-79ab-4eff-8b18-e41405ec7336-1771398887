@@ -11,7 +11,8 @@ import {
   CheckCircle2,
   Home,
   Menu,
-  X
+  X,
+  Upload
 } from "lucide-react";
 import { SiteFooter } from "@/components/site/SiteFooter";
 import { Button } from "@/components/ui/button";
@@ -809,12 +810,20 @@ export default function RxDefensePresentation() {
                   <p className="text-lg text-slate-300 mb-6">
                     Click any provision above to view detailed analysis, or use the navigation controls to browse page by page.
                   </p>
-                  <Button
-                    onClick={() => goToPage(1)}
-                    className="bg-cyan-600 hover:bg-cyan-700 text-white px-8 py-3 text-lg"
-                  >
-                    Start Presentation <ArrowRight className="w-5 h-5 ml-2" />
-                  </Button>
+                  <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
+                    <Button
+                      onClick={() => goToPage(1)}
+                      className="bg-cyan-600 hover:bg-cyan-700 text-white px-8 py-3 text-lg"
+                    >
+                      Start Presentation <ArrowRight className="w-5 h-5 ml-2" />
+                    </Button>
+                    <Link href="/upload-pbm-contract">
+                      <Button className="bg-emerald-600 hover:bg-emerald-700 text-white px-8 py-3 text-lg">
+                        <Upload className="w-5 h-5 mr-2" />
+                        Upload Your Contract
+                      </Button>
+                    </Link>
+                  </div>
                 </div>
               </div>
 

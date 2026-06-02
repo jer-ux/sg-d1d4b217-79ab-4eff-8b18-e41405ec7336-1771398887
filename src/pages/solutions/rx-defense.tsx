@@ -946,28 +946,6 @@ export default function RxDefensePresentation() {
                       </div>
 
                       <div className="bg-emerald-950/30 border border-emerald-500/30 rounded-xl p-4 mb-6">
-                        <div className="text-xs text-emerald-400 uppercase tracking-widest font-bold mb-2">Example Economics</div>
-                        <div className="text-sm text-slate-300 space-y-2">
-                          <div className="flex justify-between">
-                            <span>Upfront engagement:</span>
-                            <span className="font-mono font-semibold">$35,000</span>
-                          </div>
-                          <div className="flex justify-between">
-                            <span>Year 1 verified savings:</span>
-                            <span className="font-mono font-semibold text-emerald-400">$2,400,000</span>
-                          </div>
-                          <div className="flex justify-between">
-                            <span>Performance fee (20%):</span>
-                            <span className="font-mono font-semibold">$480,000</span>
-                          </div>
-                          <div className="border-t border-emerald-500/30 pt-2 mt-2 flex justify-between text-white font-bold">
-                            <span>Your net savings:</span>
-                            <span className="font-mono text-lg text-emerald-400">$1,885,000</span>
-                          </div>
-                        </div>
-                      </div>
-
-                      <div className="bg-emerald-950/30 border border-emerald-500/30 rounded-xl p-4 mb-6">
                         <div className="text-xs text-emerald-400 uppercase tracking-widest font-bold mb-2">Best For</div>
                         <div className="text-sm text-slate-300">
                           Organizations that want aligned incentives and prefer to pay based on actual results delivered

@@ -817,6 +817,179 @@ export default function RxDefensePresentation() {
                   </Button>
                 </div>
               </div>
+
+              {/* Pricing Models Section */}
+              <div className="space-y-8 mt-16">
+                <div className="text-center mb-12">
+                  <h2 className="text-4xl font-bold text-white mb-4">Choose Your Engagement Model</h2>
+                  <p className="text-lg text-slate-400 max-w-3xl mx-auto">
+                    Two proven approaches to unlock your $3.6M in annual savings opportunities
+                  </p>
+                </div>
+
+                <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                  {/* Model 1: Fixed Fee */}
+                  <div className="bg-gradient-to-br from-[#0a0a0a] to-[#111] border border-white/10 rounded-2xl p-8 hover:border-cyan-500/50 transition-all relative overflow-hidden group">
+                    <div className="absolute inset-0 bg-gradient-to-br from-cyan-500/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
+                    <div className="relative z-10">
+                      <div className="flex items-center justify-between mb-6">
+                        <h3 className="text-2xl font-bold text-white">Fixed Fee Model</h3>
+                        <div className="text-xs font-bold px-3 py-1 rounded bg-slate-700 text-slate-300 uppercase tracking-widest">
+                          Predictable
+                        </div>
+                      </div>
+                      
+                      <div className="mb-8">
+                        <div className="text-sm text-slate-500 uppercase tracking-widest mb-2">Investment Range</div>
+                        <div className="text-4xl font-black text-white mb-2">
+                          $50K–$100K
+                        </div>
+                        <div className="text-sm text-slate-400">Based on plan size and complexity</div>
+                      </div>
+
+                      <div className="space-y-4 mb-8">
+                        <div className="flex items-start gap-3">
+                          <CheckCircle2 className="w-5 h-5 text-cyan-500 shrink-0 mt-0.5" />
+                          <div>
+                            <div className="text-white font-semibold">Complete Contract Analysis</div>
+                            <div className="text-sm text-slate-400">Full 15-provision forensic review with detailed findings</div>
+                          </div>
+                        </div>
+                        <div className="flex items-start gap-3">
+                          <CheckCircle2 className="w-5 h-5 text-cyan-500 shrink-0 mt-0.5" />
+                          <div>
+                            <div className="text-white font-semibold">No Performance Risk</div>
+                            <div className="text-sm text-slate-400">Fixed fee regardless of savings achieved</div>
+                          </div>
+                        </div>
+                        <div className="flex items-start gap-3">
+                          <CheckCircle2 className="w-5 h-5 text-cyan-500 shrink-0 mt-0.5" />
+                          <div>
+                            <div className="text-white font-semibold">Negotiation Support</div>
+                            <div className="text-sm text-slate-400">Expert guidance through PBM contract renegotiation</div>
+                          </div>
+                        </div>
+                        <div className="flex items-start gap-3">
+                          <CheckCircle2 className="w-5 h-5 text-cyan-500 shrink-0 mt-0.5" />
+                          <div>
+                            <div className="text-white font-semibold">Audit Rights Documentation</div>
+                            <div className="text-sm text-slate-400">Prepared enforcement framework for contract terms</div>
+                          </div>
+                        </div>
+                      </div>
+
+                      <div className="bg-cyan-950/30 border border-cyan-500/30 rounded-xl p-4 mb-6">
+                        <div className="text-xs text-cyan-400 uppercase tracking-widest font-bold mb-2">Best For</div>
+                        <div className="text-sm text-slate-300">
+                          Organizations that prefer predictable budgeting and want comprehensive analysis without performance-based payments
+                        </div>
+                      </div>
+
+                      <Button className="w-full bg-cyan-600 hover:bg-cyan-700 text-white">
+                        Request Fixed Fee Proposal
+                      </Button>
+                    </div>
+                  </div>
+
+                  {/* Model 2: Performance-Based */}
+                  <div className="bg-gradient-to-br from-[#0a0a0a] to-[#111] border-2 border-emerald-500/50 rounded-2xl p-8 hover:border-emerald-500 transition-all relative overflow-hidden group">
+                    <div className="absolute top-4 right-4 text-xs font-bold px-3 py-1 rounded bg-emerald-500 text-black uppercase tracking-widest">
+                      Recommended
+                    </div>
+                    <div className="absolute inset-0 bg-gradient-to-br from-emerald-500/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
+                    <div className="relative z-10">
+                      <div className="flex items-center justify-between mb-6">
+                        <h3 className="text-2xl font-bold text-white">Performance-Based Model</h3>
+                        <div className="text-xs font-bold px-3 py-1 rounded bg-emerald-700 text-emerald-100 uppercase tracking-widest">
+                          Aligned
+                        </div>
+                      </div>
+                      
+                      <div className="mb-8">
+                        <div className="text-sm text-slate-500 uppercase tracking-widest mb-2">Upfront Investment</div>
+                        <div className="text-4xl font-black text-white mb-2">
+                          $25K–$50K
+                        </div>
+                        <div className="text-sm text-emerald-400 font-semibold">+ 20% of verified savings</div>
+                        <div className="text-xs text-slate-500 mt-1">50% of fixed fee model</div>
+                      </div>
+
+                      <div className="space-y-4 mb-8">
+                        <div className="flex items-start gap-3">
+                          <CheckCircle2 className="w-5 h-5 text-emerald-500 shrink-0 mt-0.5" />
+                          <div>
+                            <div className="text-white font-semibold">Lower Upfront Cost</div>
+                            <div className="text-sm text-slate-400">Half the upfront investment of fixed fee model</div>
+                          </div>
+                        </div>
+                        <div className="flex items-start gap-3">
+                          <CheckCircle2 className="w-5 h-5 text-emerald-500 shrink-0 mt-0.5" />
+                          <div>
+                            <div className="text-white font-semibold">Shared Success</div>
+                            <div className="text-sm text-slate-400">We only win when you achieve verified savings</div>
+                          </div>
+                        </div>
+                        <div className="flex items-start gap-3">
+                          <CheckCircle2 className="w-5 h-5 text-emerald-500 shrink-0 mt-0.5" />
+                          <div>
+                            <div className="text-white font-semibold">Ongoing Validation</div>
+                            <div className="text-sm text-slate-400">Quarterly savings verification and reconciliation</div>
+                          </div>
+                        </div>
+                        <div className="flex items-start gap-3">
+                          <CheckCircle2 className="w-5 h-5 text-emerald-500 shrink-0 mt-0.5" />
+                          <div>
+                            <div className="text-white font-semibold">Maximum Accountability</div>
+                            <div className="text-sm text-slate-400">Payment tied directly to measurable results</div>
+                          </div>
+                        </div>
+                      </div>
+
+                      <div className="bg-emerald-950/30 border border-emerald-500/30 rounded-xl p-4 mb-6">
+                        <div className="text-xs text-emerald-400 uppercase tracking-widest font-bold mb-2">Example Economics</div>
+                        <div className="text-sm text-slate-300 space-y-2">
+                          <div className="flex justify-between">
+                            <span>Upfront engagement:</span>
+                            <span className="font-mono font-semibold">$35,000</span>
+                          </div>
+                          <div className="flex justify-between">
+                            <span>Year 1 verified savings:</span>
+                            <span className="font-mono font-semibold text-emerald-400">$2,400,000</span>
+                          </div>
+                          <div className="flex justify-between">
+                            <span>Performance fee (20%):</span>
+                            <span className="font-mono font-semibold">$480,000</span>
+                          </div>
+                          <div className="border-t border-emerald-500/30 pt-2 mt-2 flex justify-between text-white font-bold">
+                            <span>Your net savings:</span>
+                            <span className="font-mono text-lg text-emerald-400">$1,885,000</span>
+                          </div>
+                        </div>
+                      </div>
+
+                      <div className="bg-emerald-950/30 border border-emerald-500/30 rounded-xl p-4 mb-6">
+                        <div className="text-xs text-emerald-400 uppercase tracking-widest font-bold mb-2">Best For</div>
+                        <div className="text-sm text-slate-300">
+                          Organizations that want aligned incentives and prefer to pay based on actual results delivered
+                        </div>
+                      </div>
+
+                      <Button className="w-full bg-emerald-600 hover:bg-emerald-700 text-white">
+                        Request Performance-Based Proposal
+                      </Button>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="bg-[#111] border border-white/5 rounded-2xl p-8 text-center">
+                  <p className="text-slate-400 text-sm mb-4">
+                    Both models include the complete 15-provision analysis, negotiation strategy documentation, and 12 months of implementation support
+                  </p>
+                  <p className="text-xs text-slate-500">
+                    Pricing based on plan size, complexity, and current contract structure. Contact us for a customized proposal.
+                  </p>
+                </div>
+              </div>
             </div>
           ) : (
             // Individual Provision Page

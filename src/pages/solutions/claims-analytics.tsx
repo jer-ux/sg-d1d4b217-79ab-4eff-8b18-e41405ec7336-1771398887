@@ -5,6 +5,7 @@ import { Activity, TrendingDown, AlertTriangle, Target, ArrowRight, CheckCircle2
 import { SEO } from "@/components/SEO";
 import Nav from "@/components/Nav";
 import Footer from "@/components/Footer";
+import { ExpertConsultationScheduler } from "@/components/ExpertConsultationScheduler";
 import { useState } from "react";
 
 export default function ClaimsAnalytics() {
@@ -426,6 +427,13 @@ export default function ClaimsAnalytics() {
                   </div>
                 </div>
               </div>
+            </div>
+          </section>
+
+          {/* Expert Consultation Scheduler */}
+          <section className="px-4 mb-20">
+            <div className="max-w-7xl mx-auto">
+              <ExpertConsultationScheduler solutionArea="Claims Analytics" variant="full" />
             </div>
           </section>
 

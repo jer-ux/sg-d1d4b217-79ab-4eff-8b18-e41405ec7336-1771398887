@@ -32,6 +32,26 @@ export type FanChartDataPoint = {
 };
 
 /**
+ * Generate fan chart data for visualization
+ */
+export function generateFanChartData(
+  baseCost: number,
+  trendRate: number,
+  volatilityProfile: { trend_uncertainty: number; catastrophic_load_variance: number; lives_fluctuation: number },
+  years: number = 5
+): FanChartDataPoint[] {
+  return runMultiYearMonteCarlo(
+    baseCost,
+    trendRate,
+    {
+      base_volatility: volatilityProfile.trend_uncertainty * 2,
+      ...volatilityProfile,
+    },
+    years
+  );
+}
+
+/**
  * Generate random samples from log-normal distribution
  * Standard for healthcare claims modeling
  */

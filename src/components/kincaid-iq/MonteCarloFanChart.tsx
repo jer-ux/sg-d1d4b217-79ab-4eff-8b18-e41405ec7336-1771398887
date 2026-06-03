@@ -48,7 +48,7 @@ export function MonteCarloFanChart({ baselineTrend, volatility, years }: Props) 
     <Card className="border-purple-500/20 bg-gradient-to-br from-slate-900 via-slate-900 to-purple-950/30 p-6">
       <div className="mb-6 flex items-start justify-between">
         <div>
-          <h3 className="text-xl font-bold text-white">{title}</h3>
+          <h3 className="text-xl font-bold text-white">Cost Projection Fan Chart</h3>
           <p className="mt-1 text-sm text-slate-400">
             5,000 Monte Carlo simulations | Log-normal distribution
           </p>

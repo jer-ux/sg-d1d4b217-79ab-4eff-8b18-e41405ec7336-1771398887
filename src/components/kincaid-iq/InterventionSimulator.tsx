@@ -87,18 +87,12 @@ export function InterventionSimulator({ censusData, claimsData }: Props) {
     const newInterventions = [...selectedInterventions, intervention];
     setSelectedInterventions(newInterventions);
     
-    const totalSavings = calculateInterventionSavings(currentAnnualCost, newInterventions);
-    onInterventionsChange(newInterventions, totalSavings);
-    
     setSelectedType(null);
   };
 
   const removeIntervention = (index: number) => {
     const newInterventions = selectedInterventions.filter((_, i) => i !== index);
     setSelectedInterventions(newInterventions);
-    
-    const totalSavings = calculateInterventionSavings(currentAnnualCost, newInterventions);
-    onInterventionsChange(newInterventions, totalSavings);
   };
 
   const totalSavingsPercent = selectedInterventions.reduce((acc, int) => {

@@ -17,7 +17,14 @@ export function VolatilityDashboard({ censusData, claimsData }: Props) {
     lives_fluctuation: 0.02,
   };
   
-  const result = runMonteCarloSimulation(baseCost, 0.08, volatilityProfile, 5000);
+  // Combined volatility for single-year simulation
+  const combinedVolatility = Math.sqrt(
+    Math.pow(volatilityProfile.trend_uncertainty, 2) +
+    Math.pow(volatilityProfile.catastrophic_load_variance, 2) +
+    Math.pow(volatilityProfile.lives_fluctuation, 2)
+  );
+  
+  const result = runMonteCarloSimulation(baseCost, 0.08, combinedVolatility, 5000);
   
   const downside50 = result.median - baseCost;
   const downside90 = result.p90 - baseCost;

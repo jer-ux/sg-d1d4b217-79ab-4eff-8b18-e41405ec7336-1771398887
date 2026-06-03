@@ -1,15 +1,24 @@
 import { Activity, TrendingUp, Shield, AlertCircle } from "lucide-react";
 import { Card } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
-import type { MonteCarloResult, VolatilityProfile } from "@/lib/kincaid-iq/monteCarlo";
+import type { CensusUpload, ClaimsUpload } from "@/lib/kincaid-iq/types";
+import { runMonteCarloSimulation } from "@/lib/kincaid-iq/monteCarlo";
 
 type Props = {
-  result: MonteCarloResult;
-  volatilityProfile: VolatilityProfile;
-  baseCost: number;
+  censusData: CensusUpload;
+  claimsData: ClaimsUpload;
 };
 
-export function VolatilityDashboard({ result, volatilityProfile, baseCost }: Props) {
+export function VolatilityDashboard({ censusData, claimsData }: Props) {
+  const baseCost = claimsData.medical_total + claimsData.rx_total;
+  const volatilityProfile = {
+    trend_uncertainty: 0.03,
+    catastrophic_load_variance: 0.05,
+    lives_fluctuation: 0.02,
+  };
+  
+  const result = runMonteCarloSimulation(baseCost, 0.08, volatilityProfile, 5000);
+  
   const downside50 = result.median - baseCost;
   const downside90 = result.p90 - baseCost;
   const downside95 = result.p95 - baseCost;

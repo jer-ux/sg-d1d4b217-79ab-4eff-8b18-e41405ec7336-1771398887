@@ -14,15 +14,25 @@ import {
   ComposedChart,
 } from "recharts";
 import { useState } from "react";
-import type { FanChartDataPoint } from "@/lib/kincaid-iq/monteCarlo";
+import { generateFanChartData } from "@/lib/kincaid-iq/monteCarlo";
 
 type Props = {
-  data: FanChartDataPoint[];
-  title?: string;
+  baselineTrend: number;
+  volatility: number;
+  years: number;
 };
 
-export function MonteCarloFanChart({ data, title = "Probabilistic Cost Projections" }: Props) {
+export function MonteCarloFanChart({ baselineTrend, volatility, years }: Props) {
   const [showMethodology, setShowMethodology] = useState(false);
+  
+  const baseCost = 10000000;
+  const volatilityProfile = {
+    trend_uncertainty: volatility,
+    catastrophic_load_variance: 0.05,
+    lives_fluctuation: 0.02,
+  };
+  
+  const data = generateFanChartData(baseCost, baselineTrend, volatilityProfile, years);
 
   // Format data for Recharts
   const chartData = data.map(point => ({

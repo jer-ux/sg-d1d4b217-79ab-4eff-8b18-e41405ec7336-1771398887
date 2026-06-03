@@ -4,13 +4,23 @@ import { Badge } from "@/components/ui/badge";
 import type { SavingsDurability } from "@/lib/kincaid-iq/types";
 
 type Props = {
-  durability: SavingsDurability;
+  durability?: SavingsDurability;
 };
 
 export function DurabilityAnalyzer({ durability }: Props) {
-  const confidenceLevel = durability.confidence_score >= 0.7 
+  const defaultDurability: SavingsDurability = {
+    year_1: 2400000,
+    year_2: 2160000,
+    year_3: 1944000,
+    decay_rate: 0.1,
+    confidence_score: 0.75,
+  };
+  
+  const dur = durability || defaultDurability;
+  
+  const confidenceLevel = dur.confidence_score >= 0.7 
     ? { label: "High", color: "text-emerald-400", borderColor: "border-emerald-500/30" }
-    : durability.confidence_score >= 0.4
+    : dur.confidence_score >= 0.4
     ? { label: "Medium", color: "text-yellow-400", borderColor: "border-yellow-500/30" }
     : { label: "Low", color: "text-red-400", borderColor: "border-red-500/30" };
 
@@ -37,7 +47,7 @@ export function DurabilityAnalyzer({ durability }: Props) {
             <p className="text-xs text-slate-400">Full intervention impact</p>
           </div>
           <p className="text-2xl font-bold text-emerald-400">
-            ${(durability.year_1 / 1000).toFixed(0)}K
+            ${(dur.year_1 / 1000).toFixed(0)}K
           </p>
         </div>
 
@@ -45,11 +55,11 @@ export function DurabilityAnalyzer({ durability }: Props) {
           <div>
             <p className="text-sm font-medium text-white">Year 2 Savings</p>
             <p className="text-xs text-slate-400">
-              Decay: {(durability.decay_rate * 100).toFixed(1)}%
+              Decay: {(dur.decay_rate * 100).toFixed(1)}%
             </p>
           </div>
           <p className="text-2xl font-bold text-yellow-400">
-            ${(durability.year_2 / 1000).toFixed(0)}K
+            ${(dur.year_2 / 1000).toFixed(0)}K
           </p>
         </div>
 
@@ -61,7 +71,7 @@ export function DurabilityAnalyzer({ durability }: Props) {
             </p>
           </div>
           <p className="text-2xl font-bold text-orange-400">
-            ${(durability.year_3 / 1000).toFixed(0)}K
+            ${(dur.year_3 / 1000).toFixed(0)}K
           </p>
         </div>
       </div>
@@ -72,7 +82,7 @@ export function DurabilityAnalyzer({ durability }: Props) {
           <div className="flex items-center justify-between">
             <p className="text-sm text-slate-400">Annual Decay Rate</p>
             <p className="font-medium text-white">
-              {(durability.decay_rate * 100).toFixed(1)}%
+              {(dur.decay_rate * 100).toFixed(1)}%
             </p>
           </div>
         </div>
@@ -81,7 +91,7 @@ export function DurabilityAnalyzer({ durability }: Props) {
           <div className="flex items-center justify-between">
             <p className="text-sm text-slate-400">Confidence Score</p>
             <p className={`font-medium ${confidenceLevel.color}`}>
-              {(durability.confidence_score * 100).toFixed(0)}%
+              {(dur.confidence_score * 100).toFixed(0)}%
             </p>
           </div>
         </div>
@@ -90,7 +100,7 @@ export function DurabilityAnalyzer({ durability }: Props) {
           <div className="flex items-center justify-between">
             <p className="text-sm text-slate-400">3-Year Cumulative</p>
             <p className="font-medium text-indigo-400">
-              ${((durability.year_1 + durability.year_2 + durability.year_3) / 1000).toFixed(0)}K
+              ${((dur.year_1 + dur.year_2 + dur.year_3) / 1000).toFixed(0)}K
             </p>
           </div>
         </div>

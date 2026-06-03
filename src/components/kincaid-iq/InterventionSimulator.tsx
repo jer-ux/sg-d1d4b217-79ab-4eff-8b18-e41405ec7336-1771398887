@@ -6,6 +6,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Badge } from "@/components/ui/badge";
 import type { Intervention, InterventionType } from "@/lib/kincaid-iq/types";
 import { calculateInterventionSavings } from "@/lib/kincaid-iq/actuarial";
+import type { CensusUpload, ClaimsUpload } from "@/lib/kincaid-iq/types";
 
 const AVAILABLE_INTERVENTIONS: Record<InterventionType, Omit<Intervention, "type">> = {
   vendor_switch: {
@@ -65,13 +66,15 @@ const AVAILABLE_INTERVENTIONS: Record<InterventionType, Omit<Intervention, "type
 };
 
 type Props = {
-  currentAnnualCost: number;
-  onInterventionsChange: (interventions: Intervention[], totalSavings: number) => void;
+  censusData: CensusUpload;
+  claimsData: ClaimsUpload;
 };
 
-export function InterventionSimulator({ currentAnnualCost, onInterventionsChange }: Props) {
+export function InterventionSimulator({ censusData, claimsData }: Props) {
   const [selectedInterventions, setSelectedInterventions] = useState<Intervention[]>([]);
   const [selectedType, setSelectedType] = useState<InterventionType | null>(null);
+  
+  const currentAnnualCost = claimsData.medical_total + claimsData.rx_total;
 
   const addIntervention = () => {
     if (!selectedType) return;

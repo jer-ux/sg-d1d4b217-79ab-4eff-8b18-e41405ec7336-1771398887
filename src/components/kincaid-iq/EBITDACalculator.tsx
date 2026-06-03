@@ -4,16 +4,19 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useState } from "react";
 import { calculateEBITDAImpact } from "@/lib/kincaid-iq/actuarial";
+import type { CensusUpload, ClaimsUpload } from "@/lib/kincaid-iq/types";
 
 type Props = {
-  netSavings: number;
-  revenue: number;
-  onRevenueChange: (val: number) => void;
+  censusData: CensusUpload;
+  claimsData: ClaimsUpload;
 };
 
-export function EBITDACalculator({ netSavings, revenue, onRevenueChange }: Props) {
+export function EBITDACalculator({ censusData, claimsData }: Props) {
+  const [revenue, setRevenue] = useState(50000000);
   const [currentEBITDAMargin, setCurrentEBITDAMargin] = useState(12); // 12% default
   const years = 3;
+  
+  const netSavings = (claimsData.medical_total + claimsData.rx_total) * 0.15 * years;
 
   const currentEBITDA = revenue * (currentEBITDAMargin / 100);
   const ebitdaImpact = calculateEBITDAImpact(netSavings, revenue);
@@ -42,7 +45,7 @@ export function EBITDACalculator({ netSavings, revenue, onRevenueChange }: Props
             <Input
               type="number"
               value={revenue}
-              onChange={(e) => onRevenueChange(Number(e.target.value))}
+              onChange={(e) => setRevenue(Number(e.target.value))}
               className="border-slate-700 bg-slate-900 pl-9 text-white"
               placeholder="50000000"
             />

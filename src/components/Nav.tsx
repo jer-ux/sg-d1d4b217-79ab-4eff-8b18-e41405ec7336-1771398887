@@ -131,12 +131,6 @@ export default function Nav() {
                       Contract X-Ray
                     </Link>
                     <Link
-                      href="/solutions/cost-optimization"
-                      onClick={() => setSolutionsDropdownOpen(false)}
-                      className="block px-4 py-2 text-sm text-gray-300 hover:text-white hover:bg-purple-500/10 rounded-lg transition-colors duration-150">
-                      Cost Optimization
-                    </Link>
-                    <Link
                       href="/solutions/ebitda-defense"
                       onClick={() => setSolutionsDropdownOpen(false)}
                       className="block px-4 py-2 text-sm text-gray-300 hover:text-white hover:bg-purple-500/10 rounded-lg transition-colors duration-150">
@@ -147,18 +141,6 @@ export default function Nav() {
                       onClick={() => setSolutionsDropdownOpen(false)}
                       className="block px-4 py-2 text-sm text-gray-300 hover:text-white hover:bg-purple-500/10 rounded-lg transition-colors duration-150">
                       ERISA Compliance
-                    </Link>
-                    <Link
-                      href="/solutions/fiduciary-governance"
-                      onClick={() => setSolutionsDropdownOpen(false)}
-                      className="block px-4 py-2 text-sm text-gray-300 hover:text-white hover:bg-purple-500/10 rounded-lg transition-colors duration-150">
-                      Fiduciary Governance
-                    </Link>
-                    <Link
-                      href="/solutions/health-benefits"
-                      onClick={() => setSolutionsDropdownOpen(false)}
-                      className="block px-4 py-2 text-sm text-gray-300 hover:text-white hover:bg-purple-500/10 rounded-lg transition-colors duration-150">
-                      Health Benefits
                     </Link>
                     <Link
                       href="/solutions/hipaa-compliance"
@@ -179,12 +161,6 @@ export default function Nav() {
                       Loss Ratio Analysis
                     </Link>
                     <Link
-                      href="/solutions/member-management"
-                      onClick={() => setSolutionsDropdownOpen(false)}
-                      className="block px-4 py-2 text-sm text-gray-300 hover:text-white hover:bg-purple-500/10 rounded-lg transition-colors duration-150">
-                      Member Management
-                    </Link>
-                    <Link
                       href="/solutions/nadac-benchmarking"
                       onClick={() => setSolutionsDropdownOpen(false)}
                       className="block px-4 py-2 text-sm text-gray-300 hover:text-white hover:bg-purple-500/10 rounded-lg transition-colors duration-150">
@@ -201,18 +177,6 @@ export default function Nav() {
                       onClick={() => setSolutionsDropdownOpen(false)}
                       className="block px-4 py-2 text-sm text-gray-300 hover:text-white hover:bg-purple-500/10 rounded-lg transition-colors duration-150">
                       Plan Design
-                    </Link>
-                    <Link
-                      href="/solutions/policy-compliance"
-                      onClick={() => setSolutionsDropdownOpen(false)}
-                      className="block px-4 py-2 text-sm text-gray-300 hover:text-white hover:bg-purple-500/10 rounded-lg transition-colors duration-150">
-                      Policy Compliance
-                    </Link>
-                    <Link
-                      href="/solutions/premium-calculation"
-                      onClick={() => setSolutionsDropdownOpen(false)}
-                      className="block px-4 py-2 text-sm text-gray-300 hover:text-white hover:bg-purple-500/10 rounded-lg transition-colors duration-150">
-                      Premium Calculation
                     </Link>
                     <Link
                       href="/solutions/quality-assurance"
@@ -403,20 +367,11 @@ export default function Nav() {
                   <Link href="/solutions/contract-xray" className="block px-4 py-2 text-sm text-gray-400 hover:text-white hover:bg-purple-500/10 rounded-lg transition-colors">
                     Contract X-Ray
                   </Link>
-                  <Link href="/solutions/cost-optimization" className="block px-4 py-2 text-sm text-gray-400 hover:text-white hover:bg-purple-500/10 rounded-lg transition-colors">
-                    Cost Optimization
-                  </Link>
                   <Link href="/solutions/ebitda-defense" className="block px-4 py-2 text-sm text-gray-400 hover:text-white hover:bg-purple-500/10 rounded-lg transition-colors">
                     EBITDA Defense
                   </Link>
                   <Link href="/solutions/erisa-compliance" className="block px-4 py-2 text-sm text-gray-400 hover:text-white hover:bg-purple-500/10 rounded-lg transition-colors">
                     ERISA Compliance
-                  </Link>
-                  <Link href="/solutions/fiduciary-governance" className="block px-4 py-2 text-sm text-gray-400 hover:text-white hover:bg-purple-500/10 rounded-lg transition-colors">
-                    Fiduciary Governance
-                  </Link>
-                  <Link href="/solutions/health-benefits" className="block px-4 py-2 text-sm text-gray-400 hover:text-white hover:bg-purple-500/10 rounded-lg transition-colors">
-                    Health Benefits
                   </Link>
                   <Link href="/solutions/hipaa-compliance" className="block px-4 py-2 text-sm text-gray-400 hover:text-white hover:bg-purple-500/10 rounded-lg transition-colors">
                     HIPAA Compliance
@@ -427,9 +382,6 @@ export default function Nav() {
                   <Link href="/solutions/loss-ratio-analysis" className="block px-4 py-2 text-sm text-gray-400 hover:text-white hover:bg-purple-500/10 rounded-lg transition-colors">
                     Loss Ratio Analysis
                   </Link>
-                  <Link href="/solutions/member-management" className="block px-4 py-2 text-sm text-gray-400 hover:text-white hover:bg-purple-500/10 rounded-lg transition-colors">
-                    Member Management
-                  </Link>
                   <Link href="/solutions/nadac-benchmarking" className="block px-4 py-2 text-sm text-gray-400 hover:text-white hover:bg-purple-500/10 rounded-lg transition-colors">
                     NADAC Benchmarking
                   </Link>
@@ -438,12 +390,6 @@ export default function Nav() {
                   </Link>
                   <Link href="/solutions/plan-design" className="block px-4 py-2 text-sm text-gray-400 hover:text-white hover:bg-purple-500/10 rounded-lg transition-colors">
                     Plan Design
-                  </Link>
-                  <Link href="/solutions/policy-compliance" className="block px-4 py-2 text-sm text-gray-400 hover:text-white hover:bg-purple-500/10 rounded-lg transition-colors">
-                    Policy Compliance
-                  </Link>
-                  <Link href="/solutions/premium-calculation" className="block px-4 py-2 text-sm text-gray-400 hover:text-white hover:bg-purple-500/10 rounded-lg transition-colors">
-                    Premium Calculation
                   </Link>
                   <Link href="/solutions/quality-assurance" className="block px-4 py-2 text-sm text-gray-400 hover:text-white hover:bg-purple-500/10 rounded-lg transition-colors">
                     Quality Assurance

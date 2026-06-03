@@ -21,8 +21,8 @@ export default function Nav() {
           <Link href="/" className="flex items-center space-x-2">
             <Sparkles className="h-6 w-6 text-purple-400 flex-shrink-0" />
             <span className="text-xl font-bold bg-gradient-to-r from-purple-400 to-pink-400 bg-clip-text text-transparent">
-              <span className="hidden sm:inline">Kincaid IQ</span>
-              <span className="sm:hidden">Kincaid IQ</span>
+              <span className="hidden sm:inline">Kincaid IQ Intelligence Series</span>
+              <span className="sm:hidden">Kincaid IQ Intelligence Series</span>
             </span>
           </Link>
 
@@ -32,7 +32,7 @@ export default function Nav() {
             <Link 
               href="/kincaid-iq-intelligence-series"
               className="px-4 py-2 text-gray-300 hover:text-white transition-colors rounded-lg hover:bg-white/5">
-              Kincaid IQ
+              Kincaid IQ Intelligence Series
             </Link>
 
             {/* Company Menu */}

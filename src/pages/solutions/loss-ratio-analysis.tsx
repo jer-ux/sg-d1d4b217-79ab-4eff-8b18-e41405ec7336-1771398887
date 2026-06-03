@@ -316,7 +316,7 @@ export default function LossRatioAnalysis() {
                     </div>
                   </div>
                   <p className="text-xl md:text-2xl text-gray-300 max-w-4xl">
-                    Real-time monitoring, predictive modeling, and strategic interventions to optimize medical loss ratios and ensure sustainable benefit program performance.
+                    Real-time monitoring, predictive modeling, and strategic interventions to optimize medical loss ratios and ensure sustainable benefit program performance. We partner with the most qualified actuaries and consultants to deliver precise financial analysis.
                   </p>
                 </div>
               </motion.div>

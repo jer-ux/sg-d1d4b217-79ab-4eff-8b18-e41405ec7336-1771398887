@@ -189,7 +189,7 @@ export default function ClaimsAnalytics() {
                     </div>
                   </div>
                   <p className="text-xl md:text-2xl text-gray-300 max-w-4xl">
-                    Transform claims data into actionable insights with AI-powered analytics, predictive modeling, and real-time cost optimization—delivering measurable savings while improving member experiences.
+                    Transform claims data into actionable insights with AI-powered analytics, predictive modeling, and real-time cost optimization—delivering measurable savings while improving member experiences. We partner with the most qualified actuaries and consultants to ensure precision and strategic value.
                   </p>
                 </div>
               </motion.div>

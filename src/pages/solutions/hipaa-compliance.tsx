@@ -49,7 +49,7 @@ export default function HIPAACompliancePage() {
 
               <p className="text-xl text-gray-300 max-w-3xl mx-auto mb-8 leading-relaxed">
                 Comprehensive Protected Health Information (PHI) security, privacy controls, breach notification, 
-                and continuous HIPAA compliance monitoring for healthcare organizations.
+                and continuous HIPAA compliance monitoring for healthcare organizations. We partner with the most qualified actuaries and consultants to ensure regulatory excellence.
               </p>
 
               <div className="flex flex-col sm:flex-row gap-4 justify-center">

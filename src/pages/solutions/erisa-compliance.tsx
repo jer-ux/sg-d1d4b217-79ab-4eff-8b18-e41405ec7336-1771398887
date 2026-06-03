@@ -49,7 +49,7 @@ export default function ERISACompliancePage() {
 
               <p className="text-xl text-gray-300 max-w-3xl mx-auto mb-8 leading-relaxed">
                 Comprehensive Employee Retirement Income Security Act monitoring, DOL audit readiness, 
-                fiduciary duty tracking, and automated Form 5500 filing compliance.
+                fiduciary duty tracking, and automated Form 5500 filing compliance. We partner with the most qualified actuaries and consultants to deliver expert compliance guidance.
               </p>
 
               <div className="flex flex-col sm:flex-row gap-4 justify-center">

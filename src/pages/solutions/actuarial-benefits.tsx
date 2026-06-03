@@ -1234,7 +1234,7 @@ export default function ActuarialBenefitsPage() {
                   
                   <div className="bg-gradient-to-r from-violet-950/40 to-purple-950/40 border border-violet-500/30 rounded-xl p-6 mb-8">
                     <p className="text-lg text-slate-200 leading-relaxed">
-                      We partner with leading actuaries and consultants to deliver enterprise-grade risk modeling, credibility-weighted trend analysis, and Monte Carlo simulations that meet SOA and AAA professional standards.
+                      We partner with the most qualified actuaries and consultants to deliver enterprise-grade risk modeling, credibility-weighted trend analysis, and Monte Carlo simulations that meet SOA and AAA professional standards.
                     </p>
                   </div>
                 </div>

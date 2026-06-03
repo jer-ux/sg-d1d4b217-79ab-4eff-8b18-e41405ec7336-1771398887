@@ -28,6 +28,13 @@ export default function Nav() {
 
           {/* Desktop Navigation */}
           <div className="hidden md:flex md:items-center md:space-x-1">
+            {/* Kincaid IQ Intelligence Series - Top Level Link */}
+            <Link 
+              href="/kincaid-iq-intelligence-series"
+              className="px-4 py-2 text-gray-300 hover:text-white transition-colors rounded-lg hover:bg-white/5">
+              Kincaid IQ
+            </Link>
+
             {/* Company Menu */}
             <div className="relative">
               <button
@@ -194,13 +201,6 @@ export default function Nav() {
                 </div>
               )}
             </div>
-
-            {/* Kincaid IQ Intelligence Series - Top Level Link */}
-            <Link 
-              href="/kincaid-iq-intelligence-series"
-              className="px-4 py-2 text-gray-300 hover:text-white transition-colors rounded-lg hover:bg-white/5">
-              Kincaid IQ
-            </Link>
 
             {/* Focus Areas Menu */}
             <div className="relative">
@@ -401,13 +401,6 @@ export default function Nav() {
                 </div>
               )}
             </div>
-
-            {/* Kincaid IQ Intelligence Series - Mobile */}
-            <Link
-              href="/kincaid-iq-intelligence-series"
-              className="block px-4 py-3 text-gray-300 hover:text-white hover:bg-white/5 rounded-lg transition-colors font-medium">
-              Kincaid IQ
-            </Link>
 
             {/* Focus Areas Dropdown - Mobile */}
             <div>

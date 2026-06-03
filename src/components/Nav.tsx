@@ -189,18 +189,6 @@ export default function Nav() {
                       EBITDA Defense
                     </Link>
                     <Link
-                      href="/solutions/erisa-compliance"
-                      onClick={() => setSolutionsDropdownOpen(false)}
-                      className="block px-4 py-2 text-sm text-gray-300 hover:text-white hover:bg-purple-500/10 rounded-lg transition-colors duration-150">
-                      ERISA Compliance
-                    </Link>
-                    <Link
-                      href="/solutions/hipaa-compliance"
-                      onClick={() => setSolutionsDropdownOpen(false)}
-                      className="block px-4 py-2 text-sm text-gray-300 hover:text-white hover:bg-purple-500/10 rounded-lg transition-colors duration-150">
-                      HIPAA Compliance
-                    </Link>
-                    <Link
                       href="/solutions/loss-ratio-analysis"
                       onClick={() => setSolutionsDropdownOpen(false)}
                       className="block px-4 py-2 text-sm text-gray-300 hover:text-white hover:bg-purple-500/10 rounded-lg transition-colors duration-150">
@@ -217,12 +205,6 @@ export default function Nav() {
                       onClick={() => setSolutionsDropdownOpen(false)}
                       className="block px-4 py-2 text-sm text-gray-300 hover:text-white hover:bg-purple-500/10 rounded-lg transition-colors duration-150">
                       Performance Metrics
-                    </Link>
-                    <Link
-                      href="/solutions/plan-design"
-                      onClick={() => setSolutionsDropdownOpen(false)}
-                      className="block px-4 py-2 text-sm text-gray-300 hover:text-white hover:bg-purple-500/10 rounded-lg transition-colors duration-150">
-                      Plan Design
                     </Link>
                     <Link
                       href="/solutions/quality-assurance"
@@ -445,12 +427,6 @@ export default function Nav() {
                   <Link href="/solutions/ebitda-defense" className="block px-4 py-2 text-sm text-gray-400 hover:text-white hover:bg-purple-500/10 rounded-lg transition-colors">
                     EBITDA Defense
                   </Link>
-                  <Link href="/solutions/erisa-compliance" className="block px-4 py-2 text-sm text-gray-400 hover:text-white hover:bg-purple-500/10 rounded-lg transition-colors">
-                    ERISA Compliance
-                  </Link>
-                  <Link href="/solutions/hipaa-compliance" className="block px-4 py-2 text-sm text-gray-400 hover:text-white hover:bg-purple-500/10 rounded-lg transition-colors">
-                    HIPAA Compliance
-                  </Link>
                   <Link href="/solutions/loss-ratio-analysis" className="block px-4 py-2 text-sm text-gray-400 hover:text-white hover:bg-purple-500/10 rounded-lg transition-colors">
                     Loss Ratio Analysis
                   </Link>
@@ -459,9 +435,6 @@ export default function Nav() {
                   </Link>
                   <Link href="/solutions/performance-metrics" className="block px-4 py-2 text-sm text-gray-400 hover:text-white hover:bg-purple-500/10 rounded-lg transition-colors">
                     Performance Metrics
-                  </Link>
-                  <Link href="/solutions/plan-design" className="block px-4 py-2 text-sm text-gray-400 hover:text-white hover:bg-purple-500/10 rounded-lg transition-colors">
-                    Plan Design
                   </Link>
                   <Link href="/solutions/quality-assurance" className="block px-4 py-2 text-sm text-gray-400 hover:text-white hover:bg-purple-500/10 rounded-lg transition-colors">
                     Quality Assurance

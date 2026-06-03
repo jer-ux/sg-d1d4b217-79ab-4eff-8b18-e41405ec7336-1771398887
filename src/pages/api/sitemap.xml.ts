@@ -44,10 +44,7 @@ export default function handler(req: NextApiRequest, res: NextApiResponse) {
     { loc: `${baseUrl}/solutions/actuarial-benefits`, lastmod: currentDate, changefreq: 'weekly', priority: 0.7 },
     { loc: `${baseUrl}/solutions/ai-automation`, lastmod: currentDate, changefreq: 'weekly', priority: 0.7 },
     { loc: `${baseUrl}/solutions/cost-optimization`, lastmod: currentDate, changefreq: 'weekly', priority: 0.7 },
-    { loc: `${baseUrl}/solutions/erisa-compliance`, lastmod: currentDate, changefreq: 'weekly', priority: 0.7 },
     { loc: `${baseUrl}/solutions/fiduciary-governance`, lastmod: currentDate, changefreq: 'weekly', priority: 0.7 },
-    { loc: `${baseUrl}/solutions/hipaa-compliance`, lastmod: currentDate, changefreq: 'weekly', priority: 0.7 },
-    { loc: `${baseUrl}/solutions/plan-design`, lastmod: currentDate, changefreq: 'weekly', priority: 0.7 },
     { loc: `${baseUrl}/solutions/quality-assurance`, lastmod: currentDate, changefreq: 'weekly', priority: 0.7 },
     { loc: `${baseUrl}/solutions/soc2-certification`, lastmod: currentDate, changefreq: 'weekly', priority: 0.7 },
     

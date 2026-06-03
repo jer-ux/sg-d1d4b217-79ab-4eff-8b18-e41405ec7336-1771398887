@@ -14,9 +14,6 @@ const complianceCategories = [
     icon: Shield,
     color: "from-blue-500 to-cyan-500",
     solutions: [
-      { name: "ERISA Compliance", href: "/solutions/erisa-compliance", description: "Employee benefit plan monitoring and DOL compliance" },
-      { name: "HIPAA Compliance", href: "/solutions/hipaa-compliance", description: "Protected health information security and privacy" },
-      { name: "ACA Compliance", href: "/solutions/aca-compliance", description: "Affordable Care Act reporting and plan design" },
       { name: "Form 5500 Management", href: "/solutions/form-5500", description: "Automated annual plan filing and analysis" },
       { name: "Mental Health Parity", href: "/solutions/mental-health-parity", description: "MHPAEA compliance tracking and reporting" },
       { name: "COBRA Administration", href: "/solutions/cobra-compliance", description: "Continuation coverage compliance and notifications" },

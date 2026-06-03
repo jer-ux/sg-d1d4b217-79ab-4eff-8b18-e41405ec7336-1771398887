@@ -47,16 +47,6 @@ export default function Footer() {
                   </Link>
                 </li>
                 <li>
-                  <Link href="/solutions/erisa-compliance" className="text-gray-400 hover:text-white transition-colors">
-                    ERISA
-                  </Link>
-                </li>
-                <li>
-                  <Link href="/solutions/hipaa-compliance" className="text-gray-400 hover:text-white transition-colors">
-                    HIPAA
-                  </Link>
-                </li>
-                <li>
                   <Link href="/solutions/soc2-certification" className="text-gray-400 hover:text-white transition-colors">
                     SOC 2 Type II
                   </Link>

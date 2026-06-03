@@ -377,8 +377,8 @@ export default function KincaidIQIntelligenceSeries() {
                       </h3>
                       <div className="space-y-3">
                         {persona.recommendedModules.map(moduleId => {
-                          const module = intelligenceModules.find(m => m.id === moduleId);
-                          if (!module) return null;
+                          const intelligenceModule = intelligenceModules.find(m => m.id === moduleId);
+                          if (!intelligenceModule) return null;
                           return (
                             <div 
                               key={moduleId} 
@@ -389,16 +389,16 @@ export default function KincaidIQIntelligenceSeries() {
                               }}
                             >
                               <div className="flex items-center gap-3">
-                                <div className={`${module.color}`}>
-                                  {module.icon}
+                                <div className={`${intelligenceModule.color}`}>
+                                  {intelligenceModule.icon}
                                 </div>
                                 <div>
-                                  <p className="font-semibold text-white">{module.title}</p>
-                                  <p className="text-xs text-slate-400">{module.turnaround}</p>
+                                  <p className="font-semibold text-white">{intelligenceModule.title}</p>
+                                  <p className="text-xs text-slate-400">{intelligenceModule.turnaround}</p>
                                 </div>
                               </div>
                               <div className="text-right">
-                                <p className={`font-bold ${module.color}`}>{module.price}</p>
+                                <p className={`font-bold ${intelligenceModule.color}`}>{intelligenceModule.price}</p>
                               </div>
                             </div>
                           );
@@ -408,8 +408,8 @@ export default function KincaidIQIntelligenceSeries() {
                         <p className="text-sm text-slate-400 mb-3">Total Investment:</p>
                         <p className="text-2xl font-bold text-emerald-400">
                           ${persona.recommendedModules.reduce((total, id) => {
-                            const module = intelligenceModules.find(m => m.id === id);
-                            return total + (module ? parseInt(module.price.replace(/[$,]/g, '')) : 0);
+                            const intelligenceModule = intelligenceModules.find(m => m.id === id);
+                            return total + (intelligenceModule ? parseInt(intelligenceModule.price.replace(/[$,]/g, '')) : 0);
                           }, 0).toLocaleString()}
                         </p>
                       </div>

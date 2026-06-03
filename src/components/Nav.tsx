@@ -149,12 +149,6 @@ export default function Nav() {
                       HIPAA Compliance
                     </Link>
                     <Link
-                      href="/kincaid-iq-intelligence-series"
-                      onClick={() => setSolutionsDropdownOpen(false)}
-                      className="block px-4 py-2 text-sm text-gray-300 hover:text-white hover:bg-emerald-500/10 rounded-lg transition-colors duration-150 border border-emerald-500/20">
-                      Kincaid IQ Intelligence Series
-                    </Link>
-                    <Link
                       href="/solutions/loss-ratio-analysis"
                       onClick={() => setSolutionsDropdownOpen(false)}
                       className="block px-4 py-2 text-sm text-gray-300 hover:text-white hover:bg-purple-500/10 rounded-lg transition-colors duration-150">

@@ -2,16 +2,18 @@ import { Calculator, TrendingUp, AlertCircle } from "lucide-react";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
-import { calculateCredibilityFactor, applyCredibilityWeighting } from "@/lib/kincaid-iq/actuarial";
+import { calculateCredibilityFactor, applyCredibilityWeighting, calculateAverageLives } from "@/lib/kincaid-iq/actuarial";
+import type { CensusUpload } from "@/lib/kincaid-iq/types";
 
 type Props = {
-  actualLives: number;
-  groupSpecificTrend: number;
-  industryBenchmark: number;
+  censusData: CensusUpload;
+  baselineTrend: number;
+  benchmarkTrend: number;
 };
 
-export function CredibilityDashboard({ actualLives, groupSpecificTrend, industryBenchmark }: Props) {
-  const credibility = applyCredibilityWeighting(groupSpecificTrend, industryBenchmark, actualLives);
+export function CredibilityDashboard({ censusData, baselineTrend, benchmarkTrend }: Props) {
+  const actualLives = calculateAverageLives(censusData);
+  const credibility = applyCredibilityWeighting(baselineTrend, benchmarkTrend, actualLives);
   const zFactor = credibility.z_factor;
   
   // Credibility interpretation
@@ -58,7 +60,7 @@ export function CredibilityDashboard({ actualLives, groupSpecificTrend, industry
             <p className="text-xs text-slate-400">Historical experience</p>
           </div>
           <div className="text-right">
-            <p className="text-lg font-bold text-blue-400">{(groupSpecificTrend * 100).toFixed(1)}%</p>
+            <p className="text-lg font-bold text-blue-400">{(baselineTrend * 100).toFixed(1)}%</p>
             <p className="text-xs text-slate-500">Weight: {(credibility.group_specific_weight * 100).toFixed(0)}%</p>
           </div>
         </div>
@@ -69,7 +71,7 @@ export function CredibilityDashboard({ actualLives, groupSpecificTrend, industry
             <p className="text-xs text-slate-400">Market average</p>
           </div>
           <div className="text-right">
-            <p className="text-lg font-bold text-amber-400">{(industryBenchmark * 100).toFixed(1)}%</p>
+            <p className="text-lg font-bold text-amber-400">{(benchmarkTrend * 100).toFixed(1)}%</p>
             <p className="text-xs text-slate-500">Weight: {(credibility.industry_benchmark_weight * 100).toFixed(0)}%</p>
           </div>
         </div>

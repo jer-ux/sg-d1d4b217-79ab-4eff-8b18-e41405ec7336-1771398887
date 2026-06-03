@@ -8,11 +8,10 @@ import type { RxClaim } from "@/lib/kincaid-iq/types";
 type UploadStatus = "idle" | "processing" | "success" | "error";
 
 type RxClaimsUploaderProps = {
-  onClaimsProcessed: (claims: RxClaim[]) => void;
-  onUseMockData: () => void;
+  onUploadComplete: (claims: RxClaim[]) => void;
 };
 
-export function RxClaimsUploader({ onClaimsProcessed, onUseMockData }: RxClaimsUploaderProps) {
+export function RxClaimsUploader({ onUploadComplete }: RxClaimsUploaderProps) {
   const [uploadStatus, setUploadStatus] = useState<UploadStatus>("idle");
   const [fileName, setFileName] = useState<string>("");
   const [errorMessage, setErrorMessage] = useState<string>("");
@@ -38,7 +37,7 @@ export function RxClaimsUploader({ onClaimsProcessed, onUseMockData }: RxClaimsU
 
         setClaimsCount(claims.length);
         setUploadStatus("success");
-        onClaimsProcessed(claims);
+        onUploadComplete(claims);
       } catch (error) {
         setUploadStatus("error");
         setErrorMessage(error instanceof Error ? error.message : "Failed to parse claims file");
@@ -51,7 +50,7 @@ export function RxClaimsUploader({ onClaimsProcessed, onUseMockData }: RxClaimsU
     };
 
     reader.readAsText(file);
-  }, [onClaimsProcessed]);
+  }, [onUploadComplete]);
 
   return (
     <div className="space-y-4">
@@ -114,14 +113,7 @@ export function RxClaimsUploader({ onClaimsProcessed, onUseMockData }: RxClaimsU
           )}
 
           <div className="pt-4 border-t border-slate-800">
-            <Button
-              onClick={onUseMockData}
-              variant="outline"
-              className="w-full border-blue-500/30 hover:border-blue-500 hover:bg-blue-950/20"
-            >
-              <TrendingDown className="h-4 w-4 mr-2" />
-              Use Demo Data (500 Claims)
-            </Button>
+            <p className="text-xs text-slate-500 mb-2">No claims data to demo. Upload a file above.</p>
           </div>
 
           <div className="text-xs text-slate-500 space-y-1">

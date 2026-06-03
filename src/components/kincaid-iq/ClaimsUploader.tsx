@@ -7,7 +7,7 @@ import { Label } from "@/components/ui/label";
 import type { ClaimsUpload } from "@/lib/kincaid-iq/types";
 
 type Props = {
-  onUpload: (data: ClaimsUpload) => void;
+  onUploadComplete: (data: ClaimsUpload) => void;
 };
 
 type ClaimsData = {
@@ -19,7 +19,7 @@ type ClaimsData = {
   period_end: string;
 };
 
-export function ClaimsUploader({ onUpload }: Props) {
+export function ClaimsUploader({ onUploadComplete }: Props) {
   const [isDragging, setIsDragging] = useState(false);
   const [file, setFile] = useState<File | null>(null);
   const [status, setStatus] = useState<"idle" | "processing" | "success" | "error">("idle");
@@ -103,7 +103,7 @@ export function ClaimsUploader({ onUpload }: Props) {
           org_id: "demo-org",
         };
         
-        onUpload(uploadData);
+        onUploadComplete(uploadData);
       });
     }
   };

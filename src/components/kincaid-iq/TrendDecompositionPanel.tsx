@@ -1,14 +1,16 @@
 import { Activity, Pill, AlertTriangle, Info } from "lucide-react";
 import { Card } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
-import type { TrendComponents } from "@/lib/kincaid-iq/types";
+import type { ClaimsUpload } from "@/lib/kincaid-iq/types";
+import { decomposeTrend } from "@/lib/kincaid-iq/actuarial";
 
 type Props = {
-  components: TrendComponents;
+  claimsData: ClaimsUpload;
   showFormulas?: boolean;
 };
 
-export function TrendDecompositionPanel({ components, showFormulas = true }: Props) {
+export function TrendDecompositionPanel({ claimsData, showFormulas = true }: Props) {
+  const components = decomposeTrend(claimsData);
   const medicalPercent = (components.medical_core / components.total_trend) * 100;
   const rxPercent = (components.rx_core / components.total_trend) * 100;
   const catastrophicPercent = (components.catastrophic_load / components.total_trend) * 100;

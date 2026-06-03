@@ -7,7 +7,7 @@ import { Label } from "@/components/ui/label";
 import type { CensusUpload } from "@/lib/kincaid-iq/types";
 
 type Props = {
-  onUpload: (data: CensusUpload) => void;
+  onUploadComplete: (data: CensusUpload) => void;
 };
 
 type CensusData = {
@@ -16,7 +16,7 @@ type CensusData = {
   avg_salary: number;
 };
 
-export function CensusUploader({ onUpload }: Props) {
+export function CensusUploader({ onUploadComplete }: Props) {
   const [isDragging, setIsDragging] = useState(false);
   const [file, setFile] = useState<File | null>(null);
   const [status, setStatus] = useState<"idle" | "processing" | "success" | "error">("idle");
@@ -98,7 +98,7 @@ export function CensusUploader({ onUpload }: Props) {
           timestamp: new Date().toISOString(),
         };
         
-        onUpload(uploadData);
+        onUploadComplete(uploadData);
       });
     }
   };

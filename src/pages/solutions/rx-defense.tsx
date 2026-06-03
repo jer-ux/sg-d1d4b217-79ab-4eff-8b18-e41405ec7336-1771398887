@@ -625,7 +625,7 @@ export default function RxDefensePresentation() {
   return (
     <div className="min-h-screen bg-[#050505] text-slate-300 font-sans selection:bg-rose-500/30 relative">
       <Head>
-        <title>RX Defense IQ | 15 Critical PBM Contract Provisions</title>
+        <title>RX Defense | PBM Contract X-Ray Forensic Analysis</title>
       </Head>
 
       <Nav />
@@ -736,16 +736,126 @@ export default function RxDefensePresentation() {
           {currentPage === 0 ? (
             // Overview Page
             <div className="space-y-12">
+              {/* Hero Section - Updated with forensic positioning */}
               <div className="text-center mb-16">
-                <h1 className="text-6xl md:text-7xl font-black text-white mb-6 tracking-tight">
-                  RX Defense IQ™
+                <div className="inline-flex items-center gap-2 bg-rose-500/10 border border-rose-500/30 rounded-full px-4 py-2 mb-6">
+                  <ShieldAlert className="w-4 h-4 text-rose-400" />
+                  <span className="text-sm font-bold text-rose-400 uppercase tracking-widest">PBM Contract X-Ray</span>
+                </div>
+                <h1 className="text-5xl md:text-7xl font-black text-white mb-6 tracking-tight">
+                  RX Defense™
                 </h1>
-                <p className="text-2xl text-slate-400 mb-8">
-                  15 Critical PBM Contract Provisions
+                <p className="text-2xl md:text-3xl text-slate-300 mb-6 font-bold">
+                  The Forensic Infrastructure That Turns<br />
+                  Pharmacy Spend Opacity Into Fiduciary-Grade Transparency
                 </p>
-                <p className="text-lg text-slate-500 max-w-3xl mx-auto leading-relaxed">
-                  A comprehensive analysis of your PBM contract identifying $3.6M in annual savings opportunities across 15 structural provisions.
+                <p className="text-lg text-slate-400 max-w-3xl mx-auto leading-relaxed mb-8">
+                  A comprehensive forensic analysis of your PBM contract identifying $3.6M in annual savings opportunities across 15 structural provisions. 
+                  We expose hidden margin sources, validate pricing mechanisms, and provide Board-ready documentation for contract renegotiation.
                 </p>
+                <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
+                  <Link href="/upload-pbm-contract">
+                    <Button className="bg-rose-600 hover:bg-rose-700 text-white px-8 py-4 text-lg">
+                      <Upload className="w-5 h-5 mr-2" />
+                      Upload Your Contract
+                    </Button>
+                  </Link>
+                  <Button 
+                    onClick={() => goToPage(1)}
+                    variant="outline" 
+                    className="border-white/20 hover:border-white/40 px-8 py-4 text-lg"
+                  >
+                    View Sample Analysis
+                    <ArrowRight className="w-5 h-5 ml-2" />
+                  </Button>
+                </div>
+              </div>
+
+              {/* What Is PBM Contract X-Ray */}
+              <div className="bg-gradient-to-br from-slate-950 via-[#0a0a0a] to-slate-950 border border-rose-500/20 rounded-2xl p-12 mb-16 relative overflow-hidden">
+                <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_0%,rgba(244,63,94,0.1),transparent_70%)]" />
+                <div className="relative z-10">
+                  <div className="flex items-center gap-3 mb-6">
+                    <div className="bg-rose-500/20 p-3 rounded-xl border border-rose-500/30">
+                      <ShieldAlert className="w-6 h-6 text-rose-500" />
+                    </div>
+                    <h2 className="text-3xl font-bold text-white">What Is PBM Contract X-Ray?</h2>
+                  </div>
+                  
+                  <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                    <div>
+                      <p className="text-lg text-slate-300 leading-relaxed mb-6">
+                        PBMs structure contracts to hide margin sources from buyers. Spread pricing, DIR fees, rebate retention, 
+                        specialty pharmacy steering, and formulary manipulation are all designed to be invisible at contract signing 
+                        and impossible to detect during contract execution.
+                      </p>
+                      <p className="text-lg text-slate-300 leading-relaxed mb-6">
+                        <span className="font-bold text-white">RX Defense™</span> is forensic contract analysis that forces transparency. 
+                        We map every revenue stream, validate every pricing mechanism, and document every conflict of interest — 
+                        then translate findings into Board-ready reports and enforceable contract language.
+                      </p>
+                    </div>
+                    
+                    <div className="bg-[#0a0a0a]/50 border border-rose-500/20 rounded-xl p-6">
+                      <h3 className="text-white font-bold mb-4">The X-Ray Process</h3>
+                      <div className="space-y-4">
+                        <div className="flex items-start gap-3">
+                          <div className="bg-rose-500/20 w-8 h-8 rounded-lg flex items-center justify-center shrink-0 mt-0.5">
+                            <span className="text-rose-400 font-bold text-sm">1</span>
+                          </div>
+                          <div>
+                            <div className="text-white font-semibold">Contract Ingestion</div>
+                            <div className="text-sm text-slate-400">Upload your PBM contract, all amendments, pricing schedules, and side letters</div>
+                          </div>
+                        </div>
+                        <div className="flex items-start gap-3">
+                          <div className="bg-rose-500/20 w-8 h-8 rounded-lg flex items-center justify-center shrink-0 mt-0.5">
+                            <span className="text-rose-400 font-bold text-sm">2</span>
+                          </div>
+                          <div>
+                            <div className="text-white font-semibold">Forensic Clause Analysis</div>
+                            <div className="text-sm text-slate-400">15-provision structural review identifying gaps, conflicts, and exposure points</div>
+                          </div>
+                        </div>
+                        <div className="flex items-start gap-3">
+                          <div className="bg-rose-500/20 w-8 h-8 rounded-lg flex items-center justify-center shrink-0 mt-0.5">
+                            <span className="text-rose-400 font-bold text-sm">3</span>
+                          </div>
+                          <div>
+                            <div className="text-white font-semibold">Financial Impact Modeling</div>
+                            <div className="text-sm text-slate-400">Quantify hidden costs and savings opportunities with P&L-ready estimates</div>
+                          </div>
+                        </div>
+                        <div className="flex items-start gap-3">
+                          <div className="bg-rose-500/20 w-8 h-8 rounded-lg flex items-center justify-center shrink-0 mt-0.5">
+                            <span className="text-rose-400 font-bold text-sm">4</span>
+                          </div>
+                          <div>
+                            <div className="text-white font-semibold">Renegotiation Strategy</div>
+                            <div className="text-sm text-slate-400">Board presentation deck + revised contract language + enforcement framework</div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="mt-8 pt-8 border-t border-rose-500/20">
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                      <div className="text-center">
+                        <div className="text-4xl font-black text-rose-400 mb-2">15</div>
+                        <div className="text-sm text-slate-400">Critical Provisions Analyzed</div>
+                      </div>
+                      <div className="text-center">
+                        <div className="text-4xl font-black text-rose-400 mb-2">7-10</div>
+                        <div className="text-sm text-slate-400">Business Days Turnaround</div>
+                      </div>
+                      <div className="text-center">
+                        <div className="text-4xl font-black text-rose-400 mb-2">$3.6M</div>
+                        <div className="text-sm text-slate-400">Avg. Annual Savings Identified</div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
               </div>
 
               <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">

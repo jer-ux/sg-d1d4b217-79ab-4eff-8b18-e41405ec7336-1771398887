@@ -7,6 +7,7 @@ import Nav from "@/components/Nav";
 import Footer from "@/components/Footer";
 import { SEO } from "@/components/SEO";
 import { Hero3D } from "@/components/Hero3D";
+import { ExpertConsultationScheduler } from "@/components/ExpertConsultationScheduler";
 
 export default function HIPAACompliancePage() {
   return (
@@ -224,6 +225,13 @@ export default function HIPAACompliancePage() {
                 </ul>
               </motion.div>
             </div>
+          </div>
+        </section>
+
+        {/* Expert Consultation Scheduler */}
+        <section className="py-24">
+          <div className="max-w-7xl mx-auto px-6">
+            <ExpertConsultationScheduler solutionArea="HIPAA Compliance" variant="full" />
           </div>
         </section>
 

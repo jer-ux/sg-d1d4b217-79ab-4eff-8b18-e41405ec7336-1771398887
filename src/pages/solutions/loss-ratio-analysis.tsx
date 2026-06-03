@@ -6,6 +6,7 @@ import { SEO } from "@/components/SEO";
 import Nav from "@/components/Nav";
 import Footer from "@/components/Footer";
 import { SiteFooter } from "@/components/site/SiteFooter";
+import { ExpertConsultationScheduler } from "@/components/ExpertConsultationScheduler";
 import { useState } from "react";
 
 export default function LossRatioAnalysis() {
@@ -579,6 +580,13 @@ export default function LossRatioAnalysis() {
                   </div>
                 </div>
               </div>
+            </div>
+          </section>
+
+          {/* Expert Consultation Scheduler */}
+          <section className="px-4 mb-20">
+            <div className="max-w-7xl mx-auto">
+              <ExpertConsultationScheduler solutionArea="Loss Ratio Analysis" variant="full" />
             </div>
           </section>
 

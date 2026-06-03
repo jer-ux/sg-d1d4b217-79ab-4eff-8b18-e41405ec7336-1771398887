@@ -1225,12 +1225,18 @@ export default function ActuarialBenefitsPage() {
                   <div className="inline-block px-4 py-2 bg-purple-500/10 border border-purple-500/20 rounded-full mb-6">
                     <span className="text-purple-300 font-semibold">Actuarial Intelligence Platform</span>
                   </div>
-                  <h1 className="text-5xl lg:text-6xl font-bold mb-6 bg-gradient-to-r from-purple-400 via-blue-400 to-indigo-400 bg-clip-text text-transparent">
-                    Transform Actuarial Benefits Management
+                  <h1 className="mb-6 text-4xl font-black leading-tight text-white sm:text-5xl lg:text-6xl">
+                    Actuarial Benefits Intelligence
                   </h1>
-                  <p className="text-xl text-gray-300 mb-8">
-                    Leverage AI-powered analytics to optimize plan design, manage risk, and ensure regulatory compliance across your entire benefits portfolio.
+                  <p className="mb-8 text-xl text-slate-300 sm:text-2xl">
+                    AI-powered actuarial analysis that reveals hidden healthcare costs and validates savings opportunities with mathematical precision
                   </p>
+                  
+                  <div className="bg-gradient-to-r from-violet-950/40 to-purple-950/40 border border-violet-500/30 rounded-xl p-6 mb-8">
+                    <p className="text-lg text-slate-200 leading-relaxed">
+                      We partner with leading actuaries and consultants to deliver enterprise-grade risk modeling, credibility-weighted trend analysis, and Monte Carlo simulations that meet SOA and AAA professional standards.
+                    </p>
+                  </div>
                 </div>
                 <div className="relative">
                   <div className="relative rounded-2xl overflow-hidden border border-purple-500/20 shadow-2xl">

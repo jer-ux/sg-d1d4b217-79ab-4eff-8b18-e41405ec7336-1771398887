@@ -195,6 +195,13 @@ export default function Nav() {
               )}
             </div>
 
+            {/* Kincaid IQ Intelligence Series - Top Level Link */}
+            <Link 
+              href="/kincaid-iq-intelligence-series"
+              className="px-4 py-2 text-gray-300 hover:text-white transition-colors rounded-lg hover:bg-white/5">
+              Kincaid IQ
+            </Link>
+
             {/* Focus Areas Menu */}
             <div className="relative">
               <button
@@ -370,9 +377,6 @@ export default function Nav() {
                   <Link href="/solutions/hipaa-compliance" className="block px-4 py-2 text-sm text-gray-400 hover:text-white hover:bg-purple-500/10 rounded-lg transition-colors">
                     HIPAA Compliance
                   </Link>
-                  <Link href="/kincaid-iq-intelligence-series" className="block px-4 py-2 text-sm text-emerald-400 hover:text-emerald-300 hover:bg-emerald-500/10 rounded-lg transition-colors border border-emerald-500/20">
-                    Kincaid IQ Intelligence Series
-                  </Link>
                   <Link href="/solutions/loss-ratio-analysis" className="block px-4 py-2 text-sm text-gray-400 hover:text-white hover:bg-purple-500/10 rounded-lg transition-colors">
                     Loss Ratio Analysis
                   </Link>
@@ -397,6 +401,13 @@ export default function Nav() {
                 </div>
               )}
             </div>
+
+            {/* Kincaid IQ Intelligence Series - Mobile */}
+            <Link
+              href="/kincaid-iq-intelligence-series"
+              className="block px-4 py-3 text-gray-300 hover:text-white hover:bg-white/5 rounded-lg transition-colors font-medium">
+              Kincaid IQ
+            </Link>
 
             {/* Focus Areas Dropdown - Mobile */}
             <div>

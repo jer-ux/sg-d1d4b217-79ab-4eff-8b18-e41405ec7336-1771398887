@@ -12,6 +12,7 @@ export default function Nav() {
   const [actuarialDropdownOpen, setActuarialDropdownOpen] = useState(false);
   const [agenticDropdownOpen, setAgenticDropdownOpen] = useState(false);
   const [focusAreasDropdownOpen, setFocusAreasDropdownOpen] = useState(false);
+  const [kincaidIqDropdownOpen, setKincaidIqDropdownOpen] = useState(false);
 
   return (
     <nav className="fixed top-0 z-[200] w-full border-b border-white/10 bg-black/80 backdrop-blur-xl">
@@ -28,12 +29,56 @@ export default function Nav() {
 
           {/* Desktop Navigation */}
           <div className="hidden md:flex md:items-center md:space-x-1">
-            {/* Kincaid IQ Intelligence Series - Top Level Link */}
-            <Link 
-              href="/kincaid-iq-intelligence-series"
-              className="px-4 py-2 text-gray-300 hover:text-white transition-colors rounded-lg hover:bg-white/5">
-              Kincaid IQ Intelligence Series
-            </Link>
+            {/* Kincaid IQ Intelligence Series - Dropdown */}
+            <div className="relative">
+              <button
+                onClick={() => setKincaidIqDropdownOpen(!kincaidIqDropdownOpen)}
+                className="flex items-center gap-2 px-4 py-2 text-gray-300 hover:text-white transition-colors rounded-lg hover:bg-white/5">
+                Kincaid IQ Intelligence Series
+                <ChevronDown className={`w-3 h-3 transition-transform ${kincaidIqDropdownOpen ? "rotate-180" : ""}`} />
+              </button>
+              {kincaidIqDropdownOpen && (
+                <div className="absolute top-full left-0 mt-2 w-72 bg-gray-900/95 backdrop-blur-xl rounded-xl border border-gray-700/50 shadow-xl overflow-hidden z-[210]">
+                  <div className="p-2">
+                    <Link
+                      href="/kincaid-iq-intelligence-series"
+                      onClick={() => setKincaidIqDropdownOpen(false)}
+                      className="block px-4 py-3 text-gray-300 hover:text-white hover:bg-purple-500/10 rounded-lg transition-colors duration-150">
+                      <div className="font-medium">Intelligence Overview</div>
+                      <div className="text-xs text-gray-400">Main dashboard and analytics</div>
+                    </Link>
+                    <Link
+                      href="/solutions/rx-defense"
+                      onClick={() => setKincaidIqDropdownOpen(false)}
+                      className="block px-4 py-3 text-gray-300 hover:text-white hover:bg-rose-500/10 rounded-lg transition-colors duration-150">
+                      <div className="font-medium">Rx Defense</div>
+                      <div className="text-xs text-gray-400">PBM contract forensics</div>
+                    </Link>
+                    <Link
+                      href="/solutions/nadac-benchmarking"
+                      onClick={() => setKincaidIqDropdownOpen(false)}
+                      className="block px-4 py-3 text-gray-300 hover:text-white hover:bg-purple-500/10 rounded-lg transition-colors duration-150">
+                      <div className="font-medium">NADAC Benchmarking</div>
+                      <div className="text-xs text-gray-400">Drug pricing analysis</div>
+                    </Link>
+                    <Link
+                      href="/solutions/actuarial-benefits"
+                      onClick={() => setKincaidIqDropdownOpen(false)}
+                      className="block px-4 py-3 text-gray-300 hover:text-white hover:bg-cyan-500/10 rounded-lg transition-colors duration-150">
+                      <div className="font-medium">Actuarial Analysis</div>
+                      <div className="text-xs text-gray-400">Risk modeling & projections</div>
+                    </Link>
+                    <Link
+                      href="/solutions/ebitda-defense"
+                      onClick={() => setKincaidIqDropdownOpen(false)}
+                      className="block px-4 py-3 text-gray-300 hover:text-white hover:bg-emerald-500/10 rounded-lg transition-colors duration-150">
+                      <div className="font-medium">EBITDA Defense</div>
+                      <div className="text-xs text-gray-400">Financial impact protection</div>
+                    </Link>
+                  </div>
+                </div>
+              )}
+            </div>
 
             {/* Company Menu */}
             <div className="relative">
@@ -308,6 +353,35 @@ export default function Nav() {
       {isOpen && (
         <div className="md:hidden border-t border-white/10 bg-black/95 backdrop-blur-xl">
           <div className="space-y-1 px-4 py-3">
+            {/* Kincaid IQ Intelligence Series Dropdown - Mobile */}
+            <div>
+              <button
+                onClick={() => setKincaidIqDropdownOpen(!kincaidIqDropdownOpen)}
+                className="flex items-center justify-between w-full px-4 py-3 text-gray-300 hover:text-white hover:bg-white/5 rounded-lg transition-colors">
+                <span className="font-medium">Kincaid IQ Intelligence Series</span>
+                <ChevronDown className={`w-4 h-4 transition-transform ${kincaidIqDropdownOpen ? "rotate-180" : ""}`} />
+              </button>
+              {kincaidIqDropdownOpen && (
+                <div className="ml-4 mt-2 space-y-1">
+                  <Link href="/kincaid-iq-intelligence-series" className="block px-4 py-2 text-sm text-gray-400 hover:text-white hover:bg-purple-500/10 rounded-lg transition-colors">
+                    Intelligence Overview
+                  </Link>
+                  <Link href="/solutions/rx-defense" className="block px-4 py-2 text-sm text-gray-400 hover:text-white hover:bg-rose-500/10 rounded-lg transition-colors">
+                    Rx Defense
+                  </Link>
+                  <Link href="/solutions/nadac-benchmarking" className="block px-4 py-2 text-sm text-gray-400 hover:text-white hover:bg-purple-500/10 rounded-lg transition-colors">
+                    NADAC Benchmarking
+                  </Link>
+                  <Link href="/solutions/actuarial-benefits" className="block px-4 py-2 text-sm text-gray-400 hover:text-white hover:bg-cyan-500/10 rounded-lg transition-colors">
+                    Actuarial Analysis
+                  </Link>
+                  <Link href="/solutions/ebitda-defense" className="block px-4 py-2 text-sm text-gray-400 hover:text-white hover:bg-emerald-500/10 rounded-lg transition-colors">
+                    EBITDA Defense
+                  </Link>
+                </div>
+              )}
+            </div>
+
             {/* Company Dropdown - Mobile */}
             <div>
               <button

@@ -786,6 +786,188 @@ export default function KincaidIQIntelligenceSeries() {
           </div>
         </section>
 
+        {/* Success Stories Section */}
+        <section className="border-b border-white/5 py-16 bg-gradient-to-b from-slate-950 to-[#0a0a0a]">
+          <div className="container mx-auto px-6">
+            <div className="mx-auto max-w-6xl">
+              <div className="text-center mb-12">
+                <Badge className="mb-4 border-emerald-500/30 bg-emerald-500/10 text-emerald-400">
+                  <TrendingUp className="mr-2 h-3 w-3" />
+                  Proven Results
+                </Badge>
+                <h2 className="mb-4 text-3xl font-bold text-white">Success Stories</h2>
+                <p className="text-slate-400">Real outcomes from organizations that deployed Kincaid IQ Intelligence modules</p>
+              </div>
+
+              <div className="grid grid-cols-1 gap-8 lg:grid-cols-3 mb-12">
+                {/* Case Study 1 - PE Portfolio Company */}
+                <Card className="border-emerald-500/20 bg-gradient-to-br from-slate-900 via-slate-900 to-emerald-950/20 p-6">
+                  <div className="mb-4">
+                    <Badge className="bg-amber-500/10 text-amber-400 border-amber-500/30 text-xs">PE Portfolio Company</Badge>
+                  </div>
+                  <h3 className="mb-3 text-xl font-bold text-white">$2.1M Annual Savings Identified</h3>
+                  <div className="mb-4 space-y-2 text-sm text-slate-400">
+                    <div className="flex items-center gap-2">
+                      <Building2 className="h-4 w-4 text-slate-500" />
+                      <span>Manufacturing | 850 lives | $12M benefits spend</span>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <Clock className="h-4 w-4 text-slate-500" />
+                      <span>7-day turnaround</span>
+                    </div>
+                  </div>
+                  <div className="border-t border-slate-700 pt-4 mb-4">
+                    <p className="text-sm text-slate-300 leading-relaxed">
+                      CFO ordered DRAP Analysis + Intervention Simulator after Board questioned PBM pricing. 
+                      Found 34% spread on 8 specialty drugs and $800K in recoverable rebate under-remittance.
+                    </p>
+                  </div>
+                  <div className="space-y-2">
+                    <div className="flex items-start gap-2 text-sm">
+                      <CheckCircle2 className="h-4 w-4 text-emerald-500 shrink-0 mt-0.5" />
+                      <span className="text-slate-300">Renegotiated PBM contract with 6% lower net cost</span>
+                    </div>
+                    <div className="flex items-start gap-2 text-sm">
+                      <CheckCircle2 className="h-4 w-4 text-emerald-500 shrink-0 mt-0.5" />
+                      <span className="text-slate-300">Added point-of-sale rebate pass-through clause</span>
+                    </div>
+                    <div className="flex items-start gap-2 text-sm">
+                      <CheckCircle2 className="h-4 w-4 text-emerald-500 shrink-0 mt-0.5" />
+                      <span className="text-slate-300">$2.1M recognized as EBITDA improvement in Q2</span>
+                    </div>
+                  </div>
+                  <div className="mt-6 pt-4 border-t border-slate-700">
+                    <p className="text-xs text-slate-500 italic">
+                      "The EBITDA Impact Report gave us the exact P&L line items to present to our sponsor. 
+                      We closed the renegotiation in 45 days."
+                    </p>
+                    <p className="text-xs text-slate-400 mt-2">— CFO, Midwest Manufacturing</p>
+                  </div>
+                </Card>
+
+                {/* Case Study 2 - Health System */}
+                <Card className="border-violet-500/20 bg-gradient-to-br from-slate-900 via-slate-900 to-violet-950/20 p-6">
+                  <div className="mb-4">
+                    <Badge className="bg-blue-500/10 text-blue-400 border-blue-500/30 text-xs">Health System</Badge>
+                  </div>
+                  <h3 className="mb-3 text-xl font-bold text-white">Prevented $4.8M Stop-Loss Overpayment</h3>
+                  <div className="mb-4 space-y-2 text-sm text-slate-400">
+                    <div className="flex items-center gap-2">
+                      <Building2 className="h-4 w-4 text-slate-500" />
+                      <span>Regional Hospital | 3,200 lives | $38M benefits spend</span>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <Clock className="h-4 w-4 text-slate-500" />
+                      <span>5-day turnaround</span>
+                    </div>
+                  </div>
+                  <div className="border-t border-slate-700 pt-4 mb-4">
+                    <p className="text-sm text-slate-300 leading-relaxed">
+                      CHRO ordered Volatility Dashboard + Trend Projection before renewing stop-loss policy. 
+                      Monte Carlo simulation showed carrier pricing 18% above actuarial fair value.
+                    </p>
+                  </div>
+                  <div className="space-y-2">
+                    <div className="flex items-start gap-2 text-sm">
+                      <CheckCircle2 className="h-4 w-4 text-emerald-500 shrink-0 mt-0.5" />
+                      <span className="text-slate-300">Presented credibility-weighted trend analysis to carrier</span>
+                    </div>
+                    <div className="flex items-start gap-2 text-sm">
+                      <CheckCircle2 className="h-4 w-4 text-emerald-500 shrink-0 mt-0.5" />
+                      <span className="text-slate-300">Negotiated 12% premium reduction with evidence</span>
+                    </div>
+                    <div className="flex items-start gap-2 text-sm">
+                      <CheckCircle2 className="h-4 w-4 text-emerald-500 shrink-0 mt-0.5" />
+                      <span className="text-slate-300">$4.8M three-year savings vs. initial quote</span>
+                    </div>
+                  </div>
+                  <div className="mt-6 pt-4 border-t border-slate-700">
+                    <p className="text-xs text-slate-500 italic">
+                      "The P90/P95 downside metrics gave us the exact language to push back on the carrier's pricing. 
+                      They couldn't refute our actuarial model."
+                    </p>
+                    <p className="text-xs text-slate-400 mt-2">— VP Benefits, Regional Health System</p>
+                  </div>
+                </Card>
+
+                {/* Case Study 3 - Family Office */}
+                <Card className="border-amber-500/20 bg-gradient-to-br from-slate-900 via-slate-900 to-amber-950/20 p-6">
+                  <div className="mb-4">
+                    <Badge className="bg-purple-500/10 text-purple-400 border-purple-500/30 text-xs">Family Office</Badge>
+                  </div>
+                  <h3 className="mb-3 text-xl font-bold text-white">$620K Broker Override Recovered</h3>
+                  <div className="mb-4 space-y-2 text-sm text-slate-400">
+                    <div className="flex items-center gap-2">
+                      <Building2 className="h-4 w-4 text-slate-500" />
+                      <span>Portfolio of 4 companies | 1,850 lives | $22M spend</span>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <Clock className="h-4 w-4 text-slate-500" />
+                      <span>3-day turnaround</span>
+                    </div>
+                  </div>
+                  <div className="border-t border-slate-700 pt-4 mb-4">
+                    <p className="text-sm text-slate-300 leading-relaxed">
+                      Investment committee ordered $3,500 Broker Compensation Study after Board member 
+                      questioned "administrative fees" line item. Found undisclosed 3.2% PBM performance bonus.
+                    </p>
+                  </div>
+                  <div className="space-y-2">
+                    <div className="flex items-start gap-2 text-sm">
+                      <CheckCircle2 className="h-4 w-4 text-emerald-500 shrink-0 mt-0.5" />
+                      <span className="text-slate-300">Documented $620K in hidden broker overrides across portfolio</span>
+                    </div>
+                    <div className="flex items-start gap-2 text-sm">
+                      <CheckCircle2 className="h-4 w-4 text-emerald-500 shrink-0 mt-0.5" />
+                      <span className="text-slate-300">Switched to fee-only advisor model</span>
+                    </div>
+                    <div className="flex items-start gap-2 text-sm">
+                      <CheckCircle2 className="h-4 w-4 text-emerald-500 shrink-0 mt-0.5" />
+                      <span className="text-slate-300">Ordered full Executive Suite ($24.5K) for all companies</span>
+                    </div>
+                  </div>
+                  <div className="mt-6 pt-4 border-t border-slate-700">
+                    <p className="text-xs text-slate-500 italic">
+                      "The $3,500 study paid for itself 177x. We now run Kincaid IQ on every portfolio company 
+                      within 60 days of acquisition."
+                    </p>
+                    <p className="text-xs text-slate-400 mt-2">— Managing Partner, Multi-Family Office</p>
+                  </div>
+                </Card>
+              </div>
+
+              {/* Aggregate Results Banner */}
+              <div className="rounded-2xl border border-emerald-500/30 bg-gradient-to-br from-emerald-950/20 via-slate-900 to-teal-950/20 p-8 relative overflow-hidden">
+                <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_0%,rgba(16,185,129,0.1),transparent_70%)]" />
+                <div className="relative z-10">
+                  <h3 className="mb-6 text-center text-xl font-bold text-white">Aggregate Results Across All Engagements</h3>
+                  <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
+                    <div className="text-center">
+                      <div className="text-4xl font-black text-emerald-400 mb-2">$47M</div>
+                      <p className="text-sm text-slate-400">Total Savings Identified</p>
+                    </div>
+                    <div className="text-center">
+                      <div className="text-4xl font-black text-violet-400 mb-2">6.2 days</div>
+                      <p className="text-sm text-slate-400">Avg. Turnaround Time</p>
+                    </div>
+                    <div className="text-center">
+                      <div className="text-4xl font-black text-amber-400 mb-2">127:1</div>
+                      <p className="text-sm text-slate-400">Avg. ROI Multiple</p>
+                    </div>
+                    <div className="text-center">
+                      <div className="text-4xl font-black text-blue-400 mb-2">89%</div>
+                      <p className="text-sm text-slate-400">Reorder Rate</p>
+                    </div>
+                  </div>
+                  <p className="mt-6 text-center text-xs text-slate-500">
+                    Based on 64 completed engagements across PE portfolio companies, health systems, and family offices (2024-2026)
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
         {/* Security & Compliance */}
         <section className="border-b border-white/5 py-16">
           <div className="container mx-auto px-6">

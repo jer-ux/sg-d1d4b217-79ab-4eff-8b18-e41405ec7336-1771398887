@@ -130,14 +130,6 @@ export default function Nav() {
                       <div className="font-medium">Actuarial Benefits</div>
                       <div className="text-xs text-gray-400">Benefits modeling & analysis</div>
                     </Link>
-                    <Link
-                    href="/solutions/risk-assessment"
-                    onClick={() => setSolutionsDropdownOpen(false)}
-                    className="block px-4 py-3 text-gray-300 hover:text-white hover:bg-purple-500/10 rounded-lg transition-colors duration-150">
-                    
-                      <div className="font-medium">Risk Assessment</div>
-                      <div className="text-xs text-gray-400">Predictive risk modeling</div>
-                    </Link>
                   </div>
                 </div>
               }
@@ -313,9 +305,6 @@ export default function Nav() {
                   </Link>
                   <Link href="/solutions/actuarial-benefits" className="block px-4 py-2 text-sm text-gray-400 hover:text-white hover:bg-purple-500/10 rounded-lg transition-colors">
                     Actuarial Benefits
-                  </Link>
-                  <Link href="/solutions/risk-assessment" className="block px-4 py-2 text-sm text-gray-400 hover:text-white hover:bg-purple-500/10 rounded-lg transition-colors">
-                    Risk Assessment
                   </Link>
                 </div>
             }

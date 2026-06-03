@@ -295,7 +295,7 @@ export default function PerformanceMetrics() {
                     </div>
                   </div>
                   <p className="text-xl md:text-2xl text-gray-300 max-w-4xl">
-                    Transform data into actionable insights with comprehensive performance tracking, real-time dashboards, and predictive analytics that drive better benefit program decisions.
+                    Transform data into actionable insights with comprehensive performance tracking, real-time dashboards, and predictive analytics that drive better benefit program decisions. We partner with the most qualified actuaries and consultants to ensure strategic value.
                   </p>
                 </div>
               </motion.div>

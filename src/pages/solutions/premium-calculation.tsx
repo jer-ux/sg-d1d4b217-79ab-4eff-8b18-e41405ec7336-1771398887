@@ -148,7 +148,7 @@ export default function PremiumCalculationPage() {
                     </div>
                   </div>
                   <p className="text-xl md:text-2xl text-gray-300 max-w-4xl">
-                    Sophisticated premium pricing algorithms that balance competitiveness, profitability, and risk with 98.7% accuracy, powered by actuarial science and machine learning.
+                    Sophisticated premium pricing algorithms that balance competitiveness, profitability, and risk with 98.7% accuracy, powered by actuarial science and machine learning. We partner with the most qualified actuaries and consultants to deliver precise financial analysis.
                   </p>
                 </div>
               </motion.div>

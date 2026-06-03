@@ -38,7 +38,7 @@ export default function EBITDADefensePage() {
             
             <p className="text-xl md:text-2xl text-slate-300 mb-8 max-w-3xl">
               Enterprise-grade financial defense system that protects margins, eliminates cost leakage, 
-              and safeguards EBITDA from hidden inefficiencies and contractual erosion.
+              and safeguards EBITDA from hidden inefficiencies and contractual erosion. We partner with the most qualified actuaries and consultants to deliver comprehensive financial protection.
             </p>
             
             <div className="flex flex-wrap gap-4">

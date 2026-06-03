@@ -49,7 +49,7 @@ export default function FiduciaryGovernancePage() {
 
               <p className="text-xl text-gray-300 max-w-3xl mx-auto mb-8 leading-relaxed">
                 Comprehensive fiduciary duty monitoring, fee disclosure compliance, investment policy adherence, 
-                and prohibited transaction detection for ERISA plan fiduciaries.
+                and prohibited transaction detection for ERISA plan fiduciaries. We partner with the most qualified actuaries and consultants to deliver expert compliance guidance.
               </p>
 
               <div className="flex flex-col sm:flex-row gap-4 justify-center">

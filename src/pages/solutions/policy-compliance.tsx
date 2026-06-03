@@ -350,7 +350,7 @@ export default function PolicyCompliance() {
                     </div>
                   </div>
                   <p className="text-xl md:text-2xl text-gray-300 max-w-4xl">
-                    Comprehensive compliance management platform ensuring adherence to federal, state, and industry regulations—protecting your organization from penalties while maintaining audit readiness.
+                    Comprehensive compliance management platform ensuring adherence to federal, state, and industry regulations—protecting your organization from penalties while maintaining audit readiness. We partner with the most qualified actuaries and consultants to ensure regulatory excellence.
                   </p>
                 </div>
               </motion.div>

@@ -827,6 +827,40 @@ export default function RxDefensePresentation() {
                 </div>
               </div>
 
+              {/* Negotiation Reset Section */}
+              <div className="bg-gradient-to-br from-red-950/20 via-orange-950/20 to-yellow-950/20 border border-orange-500/30 rounded-2xl p-8 my-16 relative overflow-hidden">
+                <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_120%,rgba(251,146,60,0.1),transparent_50%)]" />
+                <div className="relative z-10">
+                  <div className="flex items-start gap-4 mb-6">
+                    <div className="bg-orange-500/20 p-3 rounded-xl border border-orange-500/30">
+                      <AlertTriangle className="w-6 h-6 text-orange-500" />
+                    </div>
+                    <div className="flex-1">
+                      <h3 className="text-xs font-bold uppercase tracking-widest text-orange-500 mb-3">The Strategic Reality</h3>
+                      <blockquote className="text-2xl md:text-3xl font-bold text-white leading-tight mb-6">
+                        "PBMs structure contracts to hide margin sources from buyers. A tool that forces clarity shifts all the leverage. That's not neutral analysis, it's a negotiation reset."
+                      </blockquote>
+                      <div className="bg-[#0a0a0a]/50 border border-orange-500/20 rounded-xl p-6">
+                        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                          <div>
+                            <div className="text-xs text-orange-400 uppercase tracking-widest font-bold mb-2">Contract Opacity</div>
+                            <div className="text-sm text-slate-300">Deliberately obscured pricing mechanisms protect PBM margins at your expense</div>
+                          </div>
+                          <div>
+                            <div className="text-xs text-orange-400 uppercase tracking-widest font-bold mb-2">Forced Transparency</div>
+                            <div className="text-sm text-slate-300">Forensic analysis exposes hidden revenue streams and pricing manipulation</div>
+                          </div>
+                          <div>
+                            <div className="text-xs text-orange-400 uppercase tracking-widest font-bold mb-2">Power Shift</div>
+                            <div className="text-sm text-slate-300">Armed with evidence, you renegotiate from strength, not hope</div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
               {/* Pricing Models Section */}
               <div className="space-y-8 mt-16">
                 <div className="text-center mb-12">

@@ -130,6 +130,14 @@ export default function Nav() {
                       <div className="font-medium">Actuarial Benefits</div>
                       <div className="text-xs text-gray-400">Benefits modeling & analysis</div>
                     </Link>
+                    <Link
+                    href="/kincaid-iq-intelligence-series"
+                    onClick={() => setSolutionsDropdownOpen(false)}
+                    className="block px-4 py-3 text-gray-300 hover:text-white hover:bg-purple-500/10 rounded-lg transition-colors duration-150">
+                    
+                      <div className="font-medium">Kincaid IQ Intelligence Series</div>
+                      <div className="text-xs text-gray-400">Real-time healthcare intelligence</div>
+                    </Link>
                   </div>
                 </div>
               }

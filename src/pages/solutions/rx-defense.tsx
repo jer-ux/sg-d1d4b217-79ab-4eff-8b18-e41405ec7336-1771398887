@@ -12,7 +12,8 @@ import {
   Home,
   Menu,
   X,
-  Upload
+  Upload,
+  FileText
 } from "lucide-react";
 import { SiteFooter } from "@/components/site/SiteFooter";
 import { Button } from "@/components/ui/button";
@@ -855,6 +856,113 @@ export default function RxDefensePresentation() {
                             <div className="text-sm text-slate-300">Armed with evidence, you renegotiate from strength, not hope</div>
                           </div>
                         </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              {/* CFO Entry Point - Broker Compensation Study */}
+              <div className="bg-gradient-to-br from-emerald-950/20 via-teal-950/20 to-cyan-950/20 border-2 border-emerald-500/30 rounded-2xl p-8 my-16 relative overflow-hidden">
+                <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_0%,rgba(16,185,129,0.1),transparent_70%)]" />
+                <div className="relative z-10">
+                  <div className="flex flex-col lg:flex-row items-start gap-8">
+                    {/* Left Column - Offer */}
+                    <div className="flex-1">
+                      <div className="inline-flex items-center gap-2 bg-emerald-500/10 border border-emerald-500/30 rounded-full px-4 py-2 mb-4">
+                        <DollarSign className="w-4 h-4 text-emerald-400" />
+                        <span className="text-sm font-bold text-emerald-400 uppercase tracking-widest">CFO Entry Point</span>
+                      </div>
+                      
+                      <h3 className="text-3xl md:text-4xl font-black text-white mb-4">
+                        Not Ready for the Full Analysis?<br />
+                        <span className="text-emerald-400">Start With Your Broker.</span>
+                      </h3>
+                      
+                      <p className="text-lg text-slate-300 mb-6 leading-relaxed">
+                        Most CFOs don't know what their broker is actually being paid by the PBM. 
+                        The compensation structure is deliberately obscured in addendums, side letters, and "administrative fees."
+                      </p>
+
+                      <div className="bg-[#0a0a0a]/50 border border-emerald-500/20 rounded-xl p-6 mb-6">
+                        <div className="flex items-baseline gap-2 mb-4">
+                          <span className="text-5xl font-black text-emerald-400">$3,500</span>
+                          <span className="text-slate-400">one-time fee</span>
+                        </div>
+                        <h4 className="text-xl font-bold text-white mb-3">Broker Compensation Study</h4>
+                        <p className="text-sm text-slate-400 mb-4">
+                          We'll forensically map every dollar flowing from your PBM to your broker — 
+                          administrative fees, performance bonuses, volume incentives, and undisclosed overrides.
+                        </p>
+                        
+                        <div className="space-y-2">
+                          <div className="flex items-start gap-2 text-sm">
+                            <CheckCircle2 className="w-4 h-4 text-emerald-500 shrink-0 mt-0.5" />
+                            <span className="text-slate-300">Complete compensation mapping across all contract documents</span>
+                          </div>
+                          <div className="flex items-start gap-2 text-sm">
+                            <CheckCircle2 className="w-4 h-4 text-emerald-500 shrink-0 mt-0.5" />
+                            <span className="text-slate-300">Benchmark against industry standards and fiduciary best practices</span>
+                          </div>
+                          <div className="flex items-start gap-2 text-sm">
+                            <CheckCircle2 className="w-4 h-4 text-emerald-500 shrink-0 mt-0.5" />
+                            <span className="text-slate-300">Plain-English summary for Board presentation</span>
+                          </div>
+                          <div className="flex items-start gap-2 text-sm">
+                            <CheckCircle2 className="w-4 h-4 text-emerald-500 shrink-0 mt-0.5" />
+                            <span className="text-slate-300">Delivered in 5 business days</span>
+                          </div>
+                        </div>
+                      </div>
+
+                      <Link href="/upload-pbm-contract">
+                        <Button className="bg-emerald-600 hover:bg-emerald-700 text-white px-8 py-4 text-lg">
+                          <FileText className="w-5 h-5 mr-2" />
+                          Upload Contract for Broker Study
+                        </Button>
+                      </Link>
+                    </div>
+
+                    {/* Right Column - Why This Matters */}
+                    <div className="flex-1 lg:pl-8 lg:border-l lg:border-emerald-500/20">
+                      <h4 className="text-xs font-bold uppercase tracking-widest text-emerald-400 mb-4">Why This Matters</h4>
+                      
+                      <div className="space-y-4">
+                        <div className="bg-[#0a0a0a]/30 border border-slate-700 rounded-lg p-4">
+                          <h5 className="text-white font-semibold mb-2">Misaligned Incentives</h5>
+                          <p className="text-sm text-slate-400">
+                            When your broker gets paid more for higher PBM costs, they're not incentivized to negotiate aggressively on your behalf.
+                          </p>
+                        </div>
+
+                        <div className="bg-[#0a0a0a]/30 border border-slate-700 rounded-lg p-4">
+                          <h5 className="text-white font-semibold mb-2">Hidden Overrides</h5>
+                          <p className="text-sm text-slate-400">
+                            PBMs pay brokers performance bonuses and volume incentives that aren't disclosed to you — often 3-8% of your total spend.
+                          </p>
+                        </div>
+
+                        <div className="bg-[#0a0a0a]/30 border border-slate-700 rounded-lg p-4">
+                          <h5 className="text-white font-semibold mb-2">Fiduciary Risk</h5>
+                          <p className="text-sm text-slate-400">
+                            If your broker's compensation creates conflicts of interest and the DOL audits your plan, you need documentation showing you knew and addressed it.
+                          </p>
+                        </div>
+
+                        <div className="bg-[#0a0a0a]/30 border border-slate-700 rounded-lg p-4">
+                          <h5 className="text-white font-semibold mb-2">Board Liability</h5>
+                          <p className="text-sm text-slate-400">
+                            Your Board is asking "Are we getting ripped off?" Start with the broker study — it's the fastest way to answer that question with evidence.
+                          </p>
+                        </div>
+                      </div>
+
+                      <div className="mt-6 bg-emerald-950/30 border border-emerald-500/30 rounded-lg p-4">
+                        <p className="text-xs text-emerald-400 font-bold uppercase tracking-widest mb-2">Next Step</p>
+                        <p className="text-sm text-slate-300">
+                          If the broker study reveals concerning conflicts, we'll recommend proceeding to the full 15-provision Contract X-Ray. 
+                          The $3,500 study fee applies toward either engagement model.
+                        </p>
                       </div>
                     </div>
                   </div>

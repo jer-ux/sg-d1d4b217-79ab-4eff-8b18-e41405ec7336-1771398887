@@ -328,6 +328,183 @@ export default function KincaidIQIntelligenceSeries() {
           </div>
         </section>
 
+        {/* Market Validation Section */}
+        <section className="border-b border-white/5 py-16 bg-gradient-to-b from-[#0a0a0a] to-slate-950">
+          <div className="container mx-auto px-6">
+            <div className="mx-auto max-w-6xl">
+              <div className="text-center mb-12">
+                <Badge className="mb-4 border-emerald-500/30 bg-emerald-500/10 text-emerald-400">
+                  <BarChart3 className="mr-2 h-3 w-3" />
+                  Market Validation
+                </Badge>
+                <h2 className="mb-4 text-3xl font-bold text-white">Why This Model Works</h2>
+                <p className="text-slate-400">Validated pricing, proven demand, and clear competitive differentiation</p>
+              </div>
+
+              <div className="grid grid-cols-1 gap-8 lg:grid-cols-3 mb-12">
+                {/* Pricing Validation */}
+                <Card className="border-emerald-500/20 bg-gradient-to-br from-slate-900 to-emerald-950/10 p-6">
+                  <div className="mb-4">
+                    <DollarSign className="h-8 w-8 text-emerald-400" />
+                  </div>
+                  <h3 className="mb-3 text-xl font-bold text-white">Pricing Validated</h3>
+                  <div className="space-y-3 mb-4">
+                    <div className="flex items-baseline gap-2">
+                      <span className="text-3xl font-black text-emerald-400">$3.5K-$9.5K</span>
+                    </div>
+                    <p className="text-sm text-slate-400">per module</p>
+                  </div>
+                  <ul className="space-y-2 text-sm text-slate-300">
+                    <li className="flex items-start gap-2">
+                      <CheckCircle2 className="h-4 w-4 text-emerald-500 shrink-0 mt-0.5" />
+                      <span>80% cheaper than Big 4 consulting ($150K+ engagements)</span>
+                    </li>
+                    <li className="flex items-start gap-2">
+                      <CheckCircle2 className="h-4 w-4 text-emerald-500 shrink-0 mt-0.5" />
+                      <span>95% faster turnaround (days vs. months)</span>
+                    </li>
+                    <li className="flex items-start gap-2">
+                      <CheckCircle2 className="h-4 w-4 text-emerald-500 shrink-0 mt-0.5" />
+                      <span>Pay-per-report model eliminates seat license bloat</span>
+                    </li>
+                  </ul>
+                </Card>
+
+                {/* Competitive Position */}
+                <Card className="border-violet-500/20 bg-gradient-to-br from-slate-900 to-violet-950/10 p-6">
+                  <div className="mb-4">
+                    <Target className="h-8 w-8 text-violet-400" />
+                  </div>
+                  <h3 className="mb-3 text-xl font-bold text-white">Competitive Moat</h3>
+                  <ul className="space-y-3 text-sm text-slate-300">
+                    <li className="flex items-start gap-2">
+                      <Zap className="h-4 w-4 text-violet-500 shrink-0 mt-0.5" />
+                      <div>
+                        <p className="font-semibold text-white">Actuarial AI Hybrid</p>
+                        <p className="text-xs text-slate-400">Combine LLM automation with actuarial validation — neither pure consulting nor pure software</p>
+                      </div>
+                    </li>
+                    <li className="flex items-start gap-2">
+                      <Zap className="h-4 w-4 text-violet-500 shrink-0 mt-0.5" />
+                      <div>
+                        <p className="font-semibold text-white">Modular Economics</p>
+                        <p className="text-xs text-slate-400">CFOs buy what they need, when they need it — no 6-month commitments</p>
+                      </div>
+                    </li>
+                    <li className="flex items-start gap-2">
+                      <Zap className="h-4 w-4 text-violet-500 shrink-0 mt-0.5" />
+                      <div>
+                        <p className="font-semibold text-white">Board-Ready Output</p>
+                        <p className="text-xs text-slate-400">Executive summaries written for fiduciary review, not actuarial peers</p>
+                      </div>
+                    </li>
+                  </ul>
+                </Card>
+
+                {/* Market Timing */}
+                <Card className="border-amber-500/20 bg-gradient-to-br from-slate-900 to-amber-950/10 p-6">
+                  <div className="mb-4">
+                    <TrendingUp className="h-8 w-8 text-amber-400" />
+                  </div>
+                  <h3 className="mb-3 text-xl font-bold text-white">Market Timing</h3>
+                  <ul className="space-y-3 text-sm text-slate-300">
+                    <li className="flex items-start gap-2">
+                      <CheckCircle2 className="h-4 w-4 text-amber-500 shrink-0 mt-0.5" />
+                      <div>
+                        <p className="font-semibold text-white">FTC PBM Scrutiny</p>
+                        <p className="text-xs text-slate-400">Boards demanding evidence that PBM pricing is defensible under regulatory pressure</p>
+                      </div>
+                    </li>
+                    <li className="flex items-start gap-2">
+                      <CheckCircle2 className="h-4 w-4 text-amber-500 shrink-0 mt-0.5" />
+                      <div>
+                        <p className="font-semibold text-white">EBITDA Compression</p>
+                        <p className="text-xs text-slate-400">PE portfolio companies need immediate cost containment, not 2025 RFPs</p>
+                      </div>
+                    </li>
+                    <li className="flex items-start gap-2">
+                      <CheckCircle2 className="h-4 w-4 text-amber-500 shrink-0 mt-0.5" />
+                      <div>
+                        <p className="font-semibold text-white">CAA Transparency Rules</p>
+                        <p className="text-xs text-slate-400">New disclosure requirements create demand for forensic contract analysis</p>
+                      </div>
+                    </li>
+                  </ul>
+                </Card>
+              </div>
+
+              {/* Competitive Comparison Table */}
+              <div className="rounded-2xl border border-slate-700 bg-slate-900/50 p-8">
+                <h3 className="mb-6 text-xl font-bold text-white text-center">How We Stack Up</h3>
+                <div className="overflow-x-auto">
+                  <table className="w-full text-sm">
+                    <thead>
+                      <tr className="border-b border-slate-700">
+                        <th className="pb-4 text-left text-slate-400 font-medium">Feature</th>
+                        <th className="pb-4 text-center text-violet-400 font-bold">Kincaid IQ</th>
+                        <th className="pb-4 text-center text-slate-400 font-medium">Big 4 Consulting</th>
+                        <th className="pb-4 text-center text-slate-400 font-medium">Benefits Consultants</th>
+                        <th className="pb-4 text-center text-slate-400 font-medium">Analytics Software</th>
+                      </tr>
+                    </thead>
+                    <tbody className="divide-y divide-slate-700">
+                      <tr>
+                        <td className="py-4 text-slate-300">Turnaround Time</td>
+                        <td className="py-4 text-center">
+                          <Badge className="bg-emerald-500/10 text-emerald-400 border-emerald-500/30">3-10 days</Badge>
+                        </td>
+                        <td className="py-4 text-center text-slate-500">3-6 months</td>
+                        <td className="py-4 text-center text-slate-500">4-8 weeks</td>
+                        <td className="py-4 text-center text-slate-500">Real-time*</td>
+                      </tr>
+                      <tr>
+                        <td className="py-4 text-slate-300">Price Range</td>
+                        <td className="py-4 text-center">
+                          <Badge className="bg-emerald-500/10 text-emerald-400 border-emerald-500/30">$3.5K-$35K</Badge>
+                        </td>
+                        <td className="py-4 text-center text-slate-500">$150K-$500K+</td>
+                        <td className="py-4 text-center text-slate-500">$25K-$100K</td>
+                        <td className="py-4 text-center text-slate-500">$50K-$200K/yr</td>
+                      </tr>
+                      <tr>
+                        <td className="py-4 text-slate-300">Actuarial Validation</td>
+                        <td className="py-4 text-center text-emerald-400">✓</td>
+                        <td className="py-4 text-center text-emerald-400">✓</td>
+                        <td className="py-4 text-center text-slate-500">Limited</td>
+                        <td className="py-4 text-center text-slate-500">—</td>
+                      </tr>
+                      <tr>
+                        <td className="py-4 text-slate-300">Board-Ready Output</td>
+                        <td className="py-4 text-center text-emerald-400">✓</td>
+                        <td className="py-4 text-center text-emerald-400">✓</td>
+                        <td className="py-4 text-center text-slate-500">Limited</td>
+                        <td className="py-4 text-center text-slate-500">—</td>
+                      </tr>
+                      <tr>
+                        <td className="py-4 text-slate-300">Modular Pricing</td>
+                        <td className="py-4 text-center text-emerald-400">✓</td>
+                        <td className="py-4 text-center text-slate-500">—</td>
+                        <td className="py-4 text-center text-slate-500">—</td>
+                        <td className="py-4 text-center text-slate-500">—</td>
+                      </tr>
+                      <tr>
+                        <td className="py-4 text-slate-300">Implementation Required</td>
+                        <td className="py-4 text-center">
+                          <Badge variant="outline" className="border-emerald-500/30 text-emerald-400">None</Badge>
+                        </td>
+                        <td className="py-4 text-center text-slate-500">None</td>
+                        <td className="py-4 text-center text-slate-500">None</td>
+                        <td className="py-4 text-center text-slate-500">6-12 months</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+                <p className="mt-4 text-xs text-slate-500 text-center">*Software requires manual actuarial interpretation</p>
+              </div>
+            </div>
+          </div>
+        </section>
+
         {/* Persona Selector */}
         <section className="border-b border-white/5 py-16">
           <div className="container mx-auto px-6">

@@ -22,8 +22,8 @@ export default function Nav() {
           <Link href="/" className="flex items-center space-x-2">
             <Sparkles className="h-6 w-6 text-purple-400 flex-shrink-0" />
             <span className="text-xl font-bold bg-gradient-to-r from-purple-400 to-pink-400 bg-clip-text text-transparent">
-              <span className="hidden sm:inline">Kincaid IQ Intelligence Series</span>
-              <span className="sm:hidden">Kincaid IQ Intelligence Series</span>
+              <span className="hidden sm:inline">Kincaid IQ</span>
+              <span className="sm:hidden">Kincaid IQ</span>
             </span>
           </Link>
 

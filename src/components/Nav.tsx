@@ -29,12 +29,12 @@ export default function Nav() {
 
           {/* Desktop Navigation */}
           <div className="hidden md:flex md:items-center md:space-x-1">
-            {/* Kincaid IQ Intelligence Series - Dropdown */}
+            {/* Intelligence Series - Dropdown */}
             <div className="relative">
               <button
                 onClick={() => setKincaidIqDropdownOpen(!kincaidIqDropdownOpen)}
                 className="flex items-center gap-2 px-4 py-2 text-gray-300 hover:text-white transition-colors rounded-lg hover:bg-white/5">
-                Kincaid IQ Intelligence Series
+                Intelligence Series
                 <ChevronDown className={`w-3 h-3 transition-transform ${kincaidIqDropdownOpen ? "rotate-180" : ""}`} />
               </button>
               {kincaidIqDropdownOpen && (
@@ -322,12 +322,12 @@ export default function Nav() {
       {isOpen && (
         <div className="md:hidden border-t border-white/10 bg-black/95 backdrop-blur-xl">
           <div className="space-y-1 px-4 py-3">
-            {/* Kincaid IQ Intelligence Series Dropdown - Mobile */}
+            {/* Intelligence Series Dropdown - Mobile */}
             <div>
               <button
                 onClick={() => setKincaidIqDropdownOpen(!kincaidIqDropdownOpen)}
                 className="flex items-center justify-between w-full px-4 py-3 text-gray-300 hover:text-white hover:bg-white/5 rounded-lg transition-colors">
-                <span className="font-medium">Kincaid IQ Intelligence Series</span>
+                <span className="font-medium">Intelligence Series</span>
                 <ChevronDown className={`w-4 h-4 transition-transform ${kincaidIqDropdownOpen ? "rotate-180" : ""}`} />
               </button>
               {kincaidIqDropdownOpen && (

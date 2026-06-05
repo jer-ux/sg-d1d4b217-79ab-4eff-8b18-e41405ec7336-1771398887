@@ -68,6 +68,13 @@ export default function Nav() {
                       <div className="font-medium">Actuarial Analysis</div>
                       <div className="text-xs text-gray-400">Risk modeling & projections</div>
                     </Link>
+                    <Link
+                      href="/solutions/mark-cuban-cost-drugs"
+                      onClick={() => setKincaidIqDropdownOpen(false)}
+                      className="block px-4 py-3 text-gray-300 hover:text-white hover:bg-blue-500/10 rounded-lg transition-colors duration-150">
+                      <div className="font-medium">Mark Cuban Cost Drugs</div>
+                      <div className="text-xs text-gray-400">Drug cost benchmarking</div>
+                    </Link>
                   </div>
                 </div>
               )}
@@ -343,6 +350,9 @@ export default function Nav() {
                   </Link>
                   <Link href="/solutions/actuarial-benefits" className="block px-4 py-2 text-sm text-gray-400 hover:text-white hover:bg-cyan-500/10 rounded-lg transition-colors">
                     Actuarial Analysis
+                  </Link>
+                  <Link href="/solutions/mark-cuban-cost-drugs" className="block px-4 py-2 text-sm text-gray-400 hover:text-white hover:bg-blue-500/10 rounded-lg transition-colors">
+                    Mark Cuban Cost Drugs
                   </Link>
                 </div>
               )}

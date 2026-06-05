@@ -1,6 +1,7 @@
 import type { AppProps } from "next/app";
 import { ThemeProvider } from "@/contexts/ThemeProvider";
 import { Toaster } from "@/components/ui/toaster";
+import Nav from "@/components/Nav";
 import "@/styles/globals.css";
 import Head from "next/head";
 import Script from "next/script";
@@ -26,6 +27,7 @@ export default function App({ Component, pageProps }: AppProps) {
       </Script>
 
       <ThemeProvider>
+        <Nav />
         <Component {...pageProps} />
         <Toaster />
       </ThemeProvider>

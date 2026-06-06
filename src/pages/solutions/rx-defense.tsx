@@ -22,7 +22,8 @@ import {
   Play,
   Star,
   Building2,
-  Check } from
+  Check,
+  FileCheck } from
 "lucide-react";
 import { SiteFooter } from "@/components/site/SiteFooter";
 import { Button } from "@/components/ui/button";
@@ -609,36 +610,6 @@ const provisions = [
 }];
 
 
-const testimonials = [
-{
-  name: "Michael R. Hamann",
-  title: "Chief Financial Officer",
-  company: "Rimes Technologies",
-  image: "/Hamann_Michael.jpg",
-  quote: "The Contract X-Ray exposed $2.4M in annual leakage we had no visibility into. Within 90 days of receiving their analysis, we renegotiated our PBM contract and implemented direct manufacturer programs. Best $75K we've ever spent on benefits consulting.",
-  savings: "$2.4M",
-  timeline: "90 days"
-},
-{
-  name: "Ann Lewandowski",
-  title: "VP Human Resources",
-  company: "Schwarz Partners",
-  image: "/ann-lewandowski.jpg",
-  quote: "We thought our broker was protecting us. The forensic analysis showed our broker was receiving $180K/year in undisclosed PBM payments — more than we were paying them directly. That misalignment explained everything about our rising costs.",
-  savings: "$1.8M",
-  timeline: "6 months"
-},
-{
-  name: "Melissa Colpitts",
-  title: "Director of Benefits",
-  company: "Inotiv",
-  image: "/melissa-colpitts.jpg",
-  quote: "The 15-provision scorecard made it impossible for our PBM to dodge accountability. Every question we asked in renewal negotiations was backed by contract language and financial modeling from the X-Ray report. We got everything we asked for.",
-  savings: "$890K",
-  timeline: "Contract renewal"
-}];
-
-
 const comparisonData = [
 {
   provision: "Fiduciary Status",
@@ -698,6 +669,8 @@ export default function RxDefensePresentation() {
   const [members, setMembers] = useState("500");
   const [drugSpend, setDrugSpend] = useState("3000000");
   const [calcResults, setCalcResults] = useState<any>(null);
+  const [exitIntentShown, setExitIntentShown] = useState(false);
+  const [showExitPopup, setShowExitPopup] = useState(false);
 
   const totalPages = provisions.length + 1;
 
@@ -961,49 +934,41 @@ export default function RxDefensePresentation() {
               </div>
 
               {/* Trust Indicators */}
-              <div className="bg-[#0a0a0a] border border-white/5 rounded-2xl p-8">
-                <div className="flex flex-wrap items-center justify-center gap-8">
-                  <div className="flex items-center gap-3">
-                    <div className="bg-emerald-500/20 p-2 rounded-lg">
-                      <Shield className="w-6 h-6 text-emerald-400" />
-                    </div>
+              <div className="border-t border-gray-800 pt-12">
+                <div className="flex flex-wrap justify-center gap-8 md:gap-12">
+                  <div className="flex items-center gap-3 text-gray-400">
+                    <Shield className="w-6 h-6 text-cyan-400" />
                     <div>
-                      <div className="text-sm font-bold text-white">SOC 2 Type II</div>
-                      <div className="text-xs text-slate-500">Certified Secure</div>
+                      <div className="text-sm font-semibold text-white">SOC 2 Type II</div>
+                      <div className="text-xs">Certified</div>
                     </div>
                   </div>
-                  <div className="flex items-center gap-3">
-                    <div className="bg-cyan-500/20 p-2 rounded-lg">
-                      <Lock className="w-6 h-6 text-cyan-400" />
-                    </div>
+                  <div className="flex items-center gap-3 text-gray-400">
+                    <Lock className="w-6 h-6 text-cyan-400" />
                     <div>
-                      <div className="text-sm font-bold text-white">HIPAA Compliant</div>
-                      <div className="text-xs text-slate-500">Protected Health Data</div>
+                      <div className="text-sm font-semibold text-white">HIPAA</div>
+                      <div className="text-xs">Compliant</div>
                     </div>
                   </div>
-                  <div className="flex items-center gap-3">
-                    <div className="bg-purple-500/20 p-2 rounded-lg">
-                      <Award className="w-6 h-6 text-purple-400" />
-                    </div>
+                  <div className="flex items-center gap-3 text-gray-400">
+                    <Award className="w-6 h-6 text-cyan-400" />
                     <div>
-                      <div className="text-sm font-bold text-white">ERISA Specialist</div>
-                      <div className="text-xs text-slate-500">Fiduciary Counsel</div>
+                      <div className="text-sm font-semibold text-white">ERISA</div>
+                      <div className="text-xs">Specialist</div>
                     </div>
                   </div>
-                  <div className="flex items-center gap-3">
-                    <div className="bg-orange-500/20 p-2 rounded-lg">
-                      <Users className="w-6 h-6 text-orange-400" />
-                    </div>
+                  <div className="flex items-center gap-3 text-gray-400">
+                    <FileCheck className="w-6 h-6 text-cyan-400" />
                     <div>
-                      <div className="text-sm font-bold text-white">500+ Plans</div>
-                      <div className="text-xs text-slate-500">Analyzed</div>
+                      <div className="text-sm font-semibold text-white">500+ Plans</div>
+                      <div className="text-xs">Analyzed</div>
                     </div>
                   </div>
                 </div>
               </div>
 
               {/* What Is PBM Contract X-Ray */}
-              <div className="bg-gradient-to-br from-slate-950 via-[#0a0a0a] to-slate-950 border border-rose-500/20 rounded-2xl p-12 mb-16 relative overflow-hidden">
+              <section className="py-20 bg-gradient-to-b from-black to-gray-900">
                 <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_0%,rgba(244,63,94,0.1),transparent_70%)]" />
                 <div className="relative z-10">
                   <div className="flex items-center gap-3 mb-6">
@@ -1066,7 +1031,7 @@ export default function RxDefensePresentation() {
                     </div>
                   </div>
                 </div>
-              </div>
+              </section>
 
               {/* Video Explainer Section */}
               <div className="bg-gradient-to-r from-cyan-950/40 to-blue-950/40 border border-cyan-500/30 rounded-2xl p-12 text-center relative overflow-hidden">
@@ -1135,60 +1100,6 @@ export default function RxDefensePresentation() {
                       Upload Your Contract for Full Analysis
                     </Button>
                   </Link>
-                </div>
-              </div>
-
-              {/* Social Proof */}
-              <div className="space-y-8">
-                <div className="text-center mb-12">
-                  <h2 className="text-4xl font-bold text-white mb-4">Proven Results</h2>
-                  <p className="text-lg text-slate-400 max-w-3xl mx-auto">
-                    CFOs, HR Directors, and Benefits Leaders trust Contract X-Ray to expose hidden PBM costs
-                  </p>
-                </div>
-
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                  {testimonials.map((testimonial, idx) =>
-                <motion.div
-                  key={idx}
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ delay: idx * 0.1 }}
-                  className="bg-[#0a0a0a] border border-white/10 rounded-xl p-6 hover:border-emerald-500/30 transition-colors">
-                  
-                      <div className="flex items-center gap-4 mb-4">
-                        <img
-                      src={testimonial.image}
-                      alt={testimonial.name}
-                      className="w-16 h-16 rounded-full object-cover border-2 border-emerald-500/30" />
-                    
-                        <div>
-                          <div className="font-bold text-white">{testimonial.name}</div>
-                          <div className="text-sm text-slate-400">{testimonial.title}</div>
-                          <div className="text-xs text-slate-500">{testimonial.company}</div>
-                        </div>
-                      </div>
-                      <div className="flex gap-1 mb-4">
-                        {[...Array(5)].map((_, i) =>
-                    <Star key={i} className="w-4 h-4 fill-emerald-400 text-emerald-400" />
-                    )}
-                      </div>
-                      <p className="text-slate-300 text-sm leading-relaxed mb-4">
-                        "{testimonial.quote}"
-                      </p>
-                      <div className="flex items-center justify-between pt-4 border-t border-white/5">
-                        <div>
-                          <div className="text-xs text-slate-500">Annual Savings</div>
-                          <div className="text-lg font-bold text-emerald-400">{testimonial.savings}</div>
-                        </div>
-                        <div className="text-right">
-                          <div className="text-xs text-slate-500">Timeline</div>
-                          <div className="text-sm font-semibold text-white">{testimonial.timeline}</div>
-                        </div>
-                      </div>
-                    </motion.div>
-                )}
                 </div>
               </div>
 

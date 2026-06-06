@@ -235,7 +235,7 @@ export default function Nav() {
                 <div className="absolute top-full left-0 mt-2 w-72 bg-gray-900/95 backdrop-blur-xl rounded-xl border border-gray-700/50 shadow-xl overflow-hidden z-[210]">
                   <div className="p-2">
                     <Link
-                      href="/board-of-directors"
+                      href="/personas/board-members"
                       onClick={() => setFocusAreasDropdownOpen(false)}
                       className="block px-4 py-3 text-gray-300 hover:text-white hover:bg-purple-500/10 rounded-lg transition-colors duration-150">
                       <div className="font-medium flex items-center gap-2">
@@ -450,7 +450,7 @@ export default function Nav() {
               </button>
               {focusAreasDropdownOpen && (
                 <div className="ml-4 mt-2 space-y-1">
-                  <Link href="/board-of-directors" className="block px-4 py-2 text-sm text-gray-400 hover:text-white hover:bg-purple-500/10 rounded-lg transition-colors">
+                  <Link href="/personas/board-members" className="block px-4 py-2 text-sm text-gray-400 hover:text-white hover:bg-purple-500/10 rounded-lg transition-colors">
                     For Board Members
                   </Link>
                   <Link href="/capital-markets" className="block px-4 py-2 text-sm text-gray-400 hover:text-white hover:bg-indigo-500/10 rounded-lg transition-colors">

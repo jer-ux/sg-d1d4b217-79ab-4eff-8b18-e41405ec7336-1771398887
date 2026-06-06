@@ -1304,8 +1304,6 @@ export default function PBMCrimeBossPage() {
         isOpen={lightboxOpen}
         imageSrc={currentImage}
         onClose={closeLightbox}
-        allImages={allImages}
-        currentIndex={allImages.indexOf(currentImage)}
       />
 
       {/* Newsletter Signup Modal */}

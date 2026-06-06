@@ -1,18 +1,10 @@
 import type { NextApiRequest, NextApiResponse } from "next";
-import formidable from "formidable";
-import fs from "fs";
 import { createClient } from "@supabase/supabase-js";
 
 const supabase = createClient(
   process.env.NEXT_PUBLIC_SUPABASE_URL!,
   process.env.SUPABASE_SERVICE_ROLE_KEY!
 );
-
-export const config = {
-  api: {
-    bodyParser: false,
-  },
-};
 
 export default async function handler(
   req: NextApiRequest,
@@ -22,118 +14,59 @@ export default async function handler(
     return res.status(405).json({ error: "Method not allowed" });
   }
 
+  const {
+    visitor_email,
+    company_name,
+    plan_ein,
+    plan_name,
+    broker_name,
+    preliminary_grade,
+    preliminary_score,
+    red_flags,
+    ip_address,
+    user_agent
+  } = req.body;
+
+  if (!visitor_email || !company_name || !broker_name) {
+    return res.status(400).json({ error: "Missing required fields" });
+  }
+
   try {
-    const form = formidable({ multiples: true, maxFileSize: 50 * 1024 * 1024 });
-
-    const [fields, files] = await form.parse(req);
-
-    const companyLegalName = fields.companyLegalName?.[0];
-    const ein = fields.ein?.[0];
-    const planName = fields.planName?.[0];
-    const planYears = fields.planYears ? JSON.parse(fields.planYears[0]) : ["2024"];
-    const livesCovered = parseInt(fields.livesCovered?.[0] || "0");
-    const planType = fields.planType?.[0];
-    const currentBroker = fields.currentBroker?.[0];
-    const currentPBM = fields.currentPBM?.[0];
-    const contactName = fields.contactName?.[0];
-    const contactTitle = fields.contactTitle?.[0];
-    const contactEmail = fields.contactEmail?.[0];
-    const contactMobile = fields.contactMobile?.[0];
-    const stripeSessionId = fields.stripe_session_id?.[0];
-
-    const fileUrls: Record<string, string[]> = {
-      form5500: [],
-      scheduleA: [],
-      brokerDisclosure: [],
-      pbmContract: []
-    };
-
-    for (const [fieldName, fileArray] of Object.entries(files)) {
-      if (!Array.isArray(fileArray)) continue;
-      
-      for (const file of fileArray) {
-        const fileBuffer = fs.readFileSync(file.filepath);
-        const fileName = `${Date.now()}-${file.originalFilename}`;
-        const filePath = `engagements/${stripeSessionId}/${fileName}`;
-
-        const { data, error } = await supabase.storage
-          .from("shady-broker-reports")
-          .upload(filePath, fileBuffer, {
-            contentType: file.mimetype || "application/pdf",
-          });
-
-        if (error) {
-          console.error("Upload error:", error);
-          continue;
-        }
-
-        const { data: { publicUrl } } = supabase.storage
-          .from("shady-broker-reports")
-          .getPublicUrl(filePath);
-
-        if (fieldName.startsWith("form5500")) {
-          fileUrls.form5500.push(publicUrl);
-        } else if (fieldName.startsWith("scheduleA")) {
-          fileUrls.scheduleA.push(publicUrl);
-        } else if (fieldName === "brokerDisclosure") {
-          fileUrls.brokerDisclosure.push(publicUrl);
-        } else if (fieldName === "pbmContract") {
-          fileUrls.pbmContract.push(publicUrl);
-        }
-      }
-    }
-
-    const { data: engagement, error: dbError } = await supabase
-      .from("shady_broker_engagements")
+    // Insert lookup record
+    const { data: lookup, error: lookupError } = await supabase
+      .from("lookups")
       .insert({
-        company_legal_name: companyLegalName,
-        ein,
-        plan_name: planName,
-        plan_years: planYears,
-        lives_covered: livesCovered,
-        plan_type: planType,
-        current_broker: currentBroker,
-        current_pbm: currentPBM,
-        contact_name: contactName,
-        contact_title: contactTitle,
-        contact_email: contactEmail,
-        contact_mobile: contactMobile,
-        stripe_session_id: stripeSessionId,
-        form_5500_urls: fileUrls.form5500,
-        schedule_a_urls: fileUrls.scheduleA,
-        broker_disclosure_url: fileUrls.brokerDisclosure[0] || null,
-        pbm_contract_url: fileUrls.pbmContract[0] || null,
-        engagement_state: "intake",
-        payment_status: "paid"
+        visitor_email,
+        company_name,
+        plan_ein,
+        plan_name,
+        broker_name,
+        preliminary_grade,
+        preliminary_score,
+        red_flags,
+        ip_address: ip_address || req.headers["x-forwarded-for"] || req.socket.remoteAddress,
+        user_agent: user_agent || req.headers["user-agent"]
       })
       .select()
       .single();
 
-    if (dbError) {
-      console.error("Database error:", dbError);
-      return res.status(500).json({ error: "Failed to create engagement record" });
+    if (lookupError) {
+      console.error("Lookup insert error:", lookupError);
+      return res.status(500).json({ error: "Failed to record lookup" });
     }
 
-    await sendConfirmationEmail(contactEmail, contactName, engagement.id);
-    await sendInternalNotification(engagement);
+    // TODO: Send email with preliminary grade and red flags
+    // TODO: Trigger lead notification to Kincaid team
 
-    res.status(200).json({ 
-      success: true, 
-      engagementId: engagement.id 
+    return res.status(200).json({
+      success: true,
+      lookup_id: lookup.id,
+      preliminary_grade,
+      preliminary_score,
+      red_flags
     });
-  } catch (error: any) {
-    console.error("Intake submission error:", error);
-    res.status(500).json({ error: "Failed to process intake submission" });
+  } catch (error) {
+    console.error("Shady broker lookup error:", error);
+    return res.status(500).json({ error: "Internal server error" });
   }
-}
-
-async function sendConfirmationEmail(email: string, name: string, engagementId: string) {
-  console.log(`[EMAIL] Would send confirmation to ${email}`);
-  console.log(`[EMAIL] Name: ${name}, Engagement ID: ${engagementId}`);
-}
-
-async function sendInternalNotification(engagement: any) {
-  console.log(`[EMAIL] Would send internal notification to jer@kincaidrmc.com`);
-  console.log(`[SLACK] Would send alert to #engagements channel`);
-  console.log(`[DATA]`, JSON.stringify(engagement, null, 2));
 }

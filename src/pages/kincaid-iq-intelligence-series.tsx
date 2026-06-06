@@ -282,25 +282,22 @@ export default function KincaidIQIntelligenceSeries() {
                 className="relative hidden lg:block"
               >
                 <div className="absolute inset-0 bg-gradient-to-r from-violet-500 to-fuchsia-500 rounded-2xl blur-3xl opacity-20 animate-pulse" />
-                <Card className="relative bg-black/40 border-2 border-violet-500/30 p-2 shadow-2xl shadow-violet-500/20 backdrop-blur-xl overflow-hidden rounded-2xl">
+                <Card className="relative bg-black/40 border-2 border-violet-500/30 p-2 shadow-2xl shadow-violet-500/20 backdrop-blur-xl overflow-hidden rounded-2xl max-w-md mx-auto">
                   <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-violet-500 via-fuchsia-500 to-pink-500" />
-                  <Image
-                    src="/Kincaid_IQ_WP_2026_06_Evidence_First_Transformation.pdf"
-                    alt="Intelligence Report Example"
-                    width={800}
-                    height={1000}
-                    className="rounded-xl w-full object-cover"
-                    onError={(e) => {
-                      // Fallback if PDF thumbnail fails
-                      e.currentTarget.src = "https://images.unsplash.com/photo-1551288049-bebda4e38f71?q=80&w=2070&auto=format&fit=crop";
-                    }}
-                  />
-                  <div className="absolute bottom-4 left-4 right-4 bg-slate-900/90 backdrop-blur-md border border-violet-500/30 rounded-xl p-4 flex items-center justify-between">
+                  <div className="relative aspect-[4/5] w-full overflow-hidden rounded-xl">
+                    <Image
+                      src="/jeremiah-shrack-corporate.png"
+                      alt="Jeremiah Shrack"
+                      fill
+                      className="object-cover object-top grayscale hover:grayscale-0 transition-all duration-500"
+                    />
+                  </div>
+                  <div className="absolute bottom-4 left-4 right-4 bg-slate-900/95 backdrop-blur-md border border-violet-500/30 rounded-xl p-4 flex items-center justify-between">
                     <div>
-                      <p className="text-sm font-bold text-white">EBITDA Impact Report</p>
-                      <p className="text-xs text-emerald-400 font-mono">Status: Delivered (4 days)</p>
+                      <p className="text-sm font-bold text-white">Jeremiah Shrack</p>
+                      <p className="text-xs text-violet-400 font-mono">Chief Actuary & Founder</p>
                     </div>
-                    <Badge className="bg-violet-500/20 text-violet-300 border-violet-500/30">Board Ready</Badge>
+                    <Badge className="bg-violet-500/20 text-violet-300 border-violet-500/30">Fiduciary Lead</Badge>
                   </div>
                 </Card>
               </motion.div>

@@ -1,31 +1,25 @@
 "use client";
 
-import React, { useState } from "react";
 import Head from "next/head";
+import Link from "next/link";
+import { useState } from "react";
 import { motion } from "framer-motion";
 import { SiteFooter } from "@/components/site/SiteFooter";
 import Nav from "@/components/Nav";
 import Footer from "@/components/Footer";
 import { SEO } from "@/components/SEO";
-import Link from "next/link";
-import {
-  AlertTriangle,
-  DollarSign,
-  TrendingDown,
-  Shield,
-  Eye,
-  FileText,
-  Users,
-  Target,
-  BarChart3,
-  Zap,
-  ExternalLink,
-  Linkedin,
+import { 
+  Shield, 
+  TrendingUp, 
+  AlertTriangle, 
+  Users, 
+  DollarSign, 
+  FileText, 
+  ExternalLink, 
+  Eye, 
   X,
-  ChevronLeft,
-  ChevronRight,
-  Calculator,
-  TrendingUp
+  Bell,
+  CheckCircle2
 } from "lucide-react";
 
 const publications = [
@@ -53,6 +47,14 @@ const publications = [
 ];
 
 export default function PBMCrimeBossPage() {
+  const [lightboxOpen, setLightboxOpen] = useState(false);
+  const [currentImage, setCurrentImage] = useState("");
+  const [newsletterModalOpen, setNewsletterModalOpen] = useState(false);
+  const [newsletterEmail, setNewsletterEmail] = useState("");
+  const [newsletterName, setNewsletterName] = useState("");
+  const [newsletterSubmitting, setNewsletterSubmitting] = useState(false);
+  const [newsletterSuccess, setNewsletterSuccess] = useState(false);
+
   // Lightbox state
   const [lightboxImage, setLightboxImage] = useState<string | null>(null);
   const [lightboxIndex, setLightboxIndex] = useState<number>(0);
@@ -74,13 +76,44 @@ export default function PBMCrimeBossPage() {
   ];
 
   const openLightbox = (imageSrc: string) => {
-    const index = allImages.indexOf(imageSrc);
-    setLightboxIndex(index >= 0 ? index : 0);
-    setLightboxImage(imageSrc);
+    setCurrentImage(imageSrc);
+    setLightboxOpen(true);
   };
 
   const closeLightbox = () => {
-    setLightboxImage(null);
+    setLightboxOpen(false);
+  };
+
+  const handleNewsletterSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setNewsletterSubmitting(true);
+
+    try {
+      const response = await fetch("/api/contact/submit", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          name: newsletterName,
+          email: newsletterEmail,
+          message: "PBM Crime Boss Newsletter Signup",
+          source: "pbm_crime_boss_newsletter"
+        })
+      });
+
+      if (response.ok) {
+        setNewsletterSuccess(true);
+        setTimeout(() => {
+          setNewsletterModalOpen(false);
+          setNewsletterSuccess(false);
+          setNewsletterEmail("");
+          setNewsletterName("");
+        }, 2000);
+      }
+    } catch (error) {
+      console.error("Newsletter signup error:", error);
+    } finally {
+      setNewsletterSubmitting(false);
+    }
   };
 
   const nextImage = () => {
@@ -630,6 +663,16 @@ export default function PBMCrimeBossPage() {
                         <ExternalLink className="w-4 h-4" />
                       </a>
                     </div>
+
+                    <motion.button
+                      onClick={() => setNewsletterModalOpen(true)}
+                      className="mt-6 w-full inline-flex items-center justify-center gap-2 bg-gradient-to-r from-rose-600 to-orange-600 hover:from-rose-700 hover:to-orange-700 text-white px-8 py-4 rounded-xl font-bold text-lg shadow-xl shadow-rose-500/30 transition-all hover:scale-105"
+                      whileHover={{ scale: 1.02 }}
+                      whileTap={{ scale: 0.98 }}
+                    >
+                      <Bell className="w-5 h-5" />
+                      Subscribe to PBM Crime Boss Newsletter
+                    </motion.button>
                   </div>
 
                   <div className="space-y-6">
@@ -1251,6 +1294,142 @@ export default function PBMCrimeBossPage() {
 
         <Footer />
       </div>
+      <ImageLightbox
+        isOpen={lightboxOpen}
+        imageSrc={currentImage}
+        onClose={closeLightbox}
+        allImages={allImages}
+        currentIndex={allImages.indexOf(currentImage)}
+      />
+
+      {/* Newsletter Signup Modal */}
+      {newsletterModalOpen && (
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm"
+          onClick={() => setNewsletterModalOpen(false)}
+        >
+          <motion.div
+            initial={{ scale: 0.9, y: 20 }}
+            animate={{ scale: 1, y: 0 }}
+            exit={{ scale: 0.9, y: 20 }}
+            className="relative bg-gradient-to-br from-gray-900 via-black to-gray-900 border-2 border-rose-500/40 rounded-3xl p-8 md:p-12 max-w-2xl w-full shadow-2xl shadow-rose-500/20"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <button
+              onClick={() => setNewsletterModalOpen(false)}
+              className="absolute top-4 right-4 text-gray-400 hover:text-white transition-colors"
+            >
+              <X className="w-6 h-6" />
+            </button>
+
+            {!newsletterSuccess ? (
+              <>
+                <div className="text-center mb-8">
+                  <div className="inline-flex items-center justify-center w-16 h-16 bg-rose-500/20 border border-rose-500/40 rounded-full mb-4">
+                    <Bell className="w-8 h-8 text-rose-400" />
+                  </div>
+                  <h3 className="text-3xl md:text-4xl font-black text-white mb-4">
+                    Former PBM Crime Boss Speaks
+                  </h3>
+                  <p className="text-lg text-gray-400 leading-relaxed">
+                    Get weekly forensic breakdowns of PBM exploitation tactics, real contract leakage case studies, and evidence-based defense strategies.
+                  </p>
+                </div>
+
+                <form onSubmit={handleNewsletterSubmit} className="space-y-6">
+                  <div>
+                    <label htmlFor="newsletter-name" className="block text-sm font-medium text-gray-300 mb-2">
+                      Name
+                    </label>
+                    <input
+                      id="newsletter-name"
+                      type="text"
+                      value={newsletterName}
+                      onChange={(e) => setNewsletterName(e.target.value)}
+                      required
+                      className="w-full px-4 py-3 bg-black/50 border border-gray-700 focus:border-rose-500 rounded-xl text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-rose-500/20 transition-all"
+                      placeholder="Your name"
+                    />
+                  </div>
+
+                  <div>
+                    <label htmlFor="newsletter-email" className="block text-sm font-medium text-gray-300 mb-2">
+                      Email Address
+                    </label>
+                    <input
+                      id="newsletter-email"
+                      type="email"
+                      value={newsletterEmail}
+                      onChange={(e) => setNewsletterEmail(e.target.value)}
+                      required
+                      className="w-full px-4 py-3 bg-black/50 border border-gray-700 focus:border-rose-500 rounded-xl text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-rose-500/20 transition-all"
+                      placeholder="your.email@company.com"
+                    />
+                  </div>
+
+                  <div className="bg-rose-500/10 border border-rose-500/30 rounded-xl p-4">
+                    <div className="flex items-start gap-3">
+                      <Shield className="w-5 h-5 text-rose-400 flex-shrink-0 mt-0.5" />
+                      <div className="text-sm text-gray-300">
+                        <div className="font-semibold text-white mb-1">What you'll receive:</div>
+                        <ul className="space-y-1 text-gray-400">
+                          <li>• Weekly PBM forensic investigations</li>
+                          <li>• Real contract leakage breakdowns</li>
+                          <li>• Evidence-based defense strategies</li>
+                          <li>• Exclusive case studies</li>
+                        </ul>
+                      </div>
+                    </div>
+                  </div>
+
+                  <button
+                    type="submit"
+                    disabled={newsletterSubmitting}
+                    className="w-full bg-gradient-to-r from-rose-600 to-orange-600 hover:from-rose-700 hover:to-orange-700 disabled:from-gray-600 disabled:to-gray-700 text-white px-8 py-4 rounded-xl font-bold text-lg shadow-xl transition-all hover:scale-105 disabled:scale-100 disabled:cursor-not-allowed"
+                  >
+                    {newsletterSubmitting ? (
+                      <span className="flex items-center justify-center gap-2">
+                        <motion.div
+                          animate={{ rotate: 360 }}
+                          transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
+                          className="w-5 h-5 border-2 border-white border-t-transparent rounded-full"
+                        />
+                        Subscribing...
+                      </span>
+                    ) : (
+                      "Subscribe to Newsletter"
+                    )}
+                  </button>
+
+                  <p className="text-xs text-gray-500 text-center">
+                    By subscribing, you agree to receive marketing emails from Kincaid Risk Management Co. 
+                    You can unsubscribe at any time.
+                  </p>
+                </form>
+              </>
+            ) : (
+              <motion.div
+                initial={{ opacity: 0, scale: 0.9 }}
+                animate={{ opacity: 1, scale: 1 }}
+                className="text-center py-8"
+              >
+                <div className="inline-flex items-center justify-center w-16 h-16 bg-emerald-500/20 border border-emerald-500/40 rounded-full mb-4">
+                  <CheckCircle2 className="w-8 h-8 text-emerald-400" />
+                </div>
+                <h3 className="text-3xl font-black text-white mb-4">
+                  You're Subscribed!
+                </h3>
+                <p className="text-lg text-gray-400">
+                  Check your inbox for the welcome email and your first forensic investigation.
+                </p>
+              </motion.div>
+            )}
+          </motion.div>
+        </motion.div>
+      )}
     </>
   );
 }

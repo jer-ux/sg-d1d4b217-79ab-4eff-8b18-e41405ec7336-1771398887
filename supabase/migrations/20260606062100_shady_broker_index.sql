@@ -68,44 +68,35 @@ CREATE TABLE scoring_components (
 
 CREATE INDEX idx_components_broker ON scoring_components(broker_id);
 
--- Lookups (visitor searches / lead capture)
+-- Lookups (lead capture from Score My Broker flow)
 CREATE TABLE lookups (
   id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-  visitor_email TEXT,
+  visitor_email TEXT NOT NULL,
   company_name TEXT NOT NULL,
-  plan_ein TEXT,
-  plan_name TEXT,
+  ein TEXT,
   broker_name TEXT NOT NULL,
-  preliminary_grade grade_tier,
-  preliminary_score INTEGER,
-  red_flags TEXT[],
-  converted_to_report BOOLEAN DEFAULT FALSE,
-  ip_address TEXT,
-  user_agent TEXT,
-  created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
+  plan_name TEXT,
+  broker_id UUID REFERENCES brokers(id),
+  preliminary_grade TEXT,
+  created_at TIMESTAMPTZ DEFAULT NOW()
+);
+
+-- Orders (report purchases and consult bookings)
+CREATE TABLE orders (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  lookup_id UUID REFERENCES lookups(id),
+  email TEXT NOT NULL,
+  product TEXT DEFAULT 'forensic_report',
+  amount NUMERIC DEFAULT 4500,
+  status TEXT DEFAULT 'pending' CHECK (status IN ('pending', 'paid', 'consult_booked')),
+  stripe_session_id TEXT,
+  created_at TIMESTAMPTZ DEFAULT NOW()
 );
 
 CREATE INDEX idx_lookups_email ON lookups(visitor_email);
-CREATE INDEX idx_lookups_created ON lookups(created_at DESC);
-
--- Reports (purchased forensic reports)
-CREATE TABLE reports (
-  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-  lookup_id UUID REFERENCES lookups(id),
-  buyer_email TEXT NOT NULL,
-  buyer_name TEXT,
-  company_name TEXT NOT NULL,
-  broker_name TEXT NOT NULL,
-  stripe_payment_id TEXT,
-  stripe_session_id TEXT,
-  amount_paid INTEGER NOT NULL,
-  report_status TEXT DEFAULT 'pending',
-  delivered_at TIMESTAMP WITH TIME ZONE,
-  created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
-);
-
-CREATE INDEX idx_reports_email ON reports(buyer_email);
-CREATE INDEX idx_reports_status ON reports(report_status);
+CREATE INDEX idx_lookups_broker ON lookups(broker_id);
+CREATE INDEX idx_orders_lookup ON orders(lookup_id);
+CREATE INDEX idx_orders_status ON orders(status);
 
 -- Consultations (booked instead of paid report)
 CREATE TABLE consultations (
@@ -127,7 +118,7 @@ ALTER TABLE brokers ENABLE ROW LEVEL SECURITY;
 ALTER TABLE filings ENABLE ROW LEVEL SECURITY;
 ALTER TABLE scoring_components ENABLE ROW LEVEL SECURITY;
 ALTER TABLE lookups ENABLE ROW LEVEL SECURITY;
-ALTER TABLE reports ENABLE ROW LEVEL SECURITY;
+ALTER TABLE orders ENABLE ROW LEVEL SECURITY;
 ALTER TABLE consultations ENABLE ROW LEVEL SECURITY;
 
 -- Public read on brokers, filings, scoring_components (for SEO and Index)
@@ -139,9 +130,9 @@ CREATE POLICY "public_read_components" ON scoring_components FOR SELECT USING (t
 CREATE POLICY "anon_insert_lookups" ON lookups FOR INSERT WITH CHECK (true);
 CREATE POLICY "select_own_lookups" ON lookups FOR SELECT USING (auth.uid() IS NOT NULL);
 
--- Reports: insert for anyone, select only own
-CREATE POLICY "anon_insert_reports" ON reports FOR INSERT WITH CHECK (true);
-CREATE POLICY "select_own_reports" ON reports FOR SELECT USING (buyer_email = auth.email());
+-- Orders: insert for anyone, select only own
+CREATE POLICY "anon_insert_orders" ON orders FOR INSERT WITH CHECK (true);
+CREATE POLICY "select_own_orders" ON orders FOR SELECT USING (email = auth.email());
 
 -- Consultations: insert for anyone, select only own
 CREATE POLICY "anon_insert_consultations" ON consultations FOR INSERT WITH CHECK (true);

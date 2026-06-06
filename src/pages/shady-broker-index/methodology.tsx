@@ -256,6 +256,27 @@ export default function ShadyBrokerMethodology() {
                 </Button>
               </Link>
             </div>
+
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.5 }}
+              className="bg-gradient-to-br from-rose-500/10 to-purple-500/10 border border-rose-500/30 rounded-2xl p-12">
+              <h2 className="text-3xl font-bold text-white mb-6 text-center">
+                Why This Exists
+              </h2>
+              <div className="prose prose-invert max-w-none">
+                <p className="text-gray-300 leading-relaxed mb-4">
+                  A health plan is not a spreadsheet. Behind every plan are the people who depend on it: the family covering a child's therapy, the worker one diagnosis away from a hard year.
+                </p>
+                <p className="text-gray-300 leading-relaxed mb-4">
+                  When a broker hides a basis point, that money does not disappear. It comes out of those plans, and out of those lives.
+                </p>
+                <p className="text-gray-300 leading-relaxed">
+                  The Index exists to put the hidden number back in the light, and to put the receipts in a fiduciary's hands.
+                </p>
+              </div>
+            </motion.div>
           </div>
         </section>
 

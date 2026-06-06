@@ -275,8 +275,8 @@ export default function ShadyBrokerReport() {
                 You Already Know Something's Wrong
               </h2>
               <p className="text-xl text-gray-400 mb-8">
-                You've seen the bills. You've sat through the renewal meetings. You've asked for transparency and gotten charts. <br/>
-                <span className="text-white font-medium">Now get the forensic breakdown.</span>
+                You've seen the bills. You've sat through the renewal meetings. You've asked for transparency and gotten charts.
+                <br/><span className="text-white font-medium">Now get the forensic breakdown.</span>
               </p>
               <Link href="/shady-broker-index">
                 <Button size="lg" className="bg-gradient-to-r from-rose-500 to-purple-500 hover:from-rose-600 hover:to-purple-600 text-lg px-12">

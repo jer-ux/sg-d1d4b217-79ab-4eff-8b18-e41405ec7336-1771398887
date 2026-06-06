@@ -55,22 +55,20 @@ export default async function handler(
       }
     });
 
-    // Create report record in pending state
-    const { error: reportError } = await supabase
-      .from("reports")
+    // Create order record in pending state
+    const { error: orderError } = await supabase
+      .from("orders")
       .insert({
         lookup_id,
-        buyer_email,
-        buyer_name,
-        company_name,
-        broker_name,
-        stripe_session_id: session.id,
-        amount_paid: 450000,
-        report_status: "pending"
+        email: buyer_email,
+        product: "forensic_report",
+        amount: 4500,
+        status: "pending",
+        stripe_session_id: session.id
       });
 
-    if (reportError) {
-      console.error("Report insert error:", reportError);
+    if (orderError) {
+      console.error("Order insert error:", orderError);
     }
 
     return res.status(200).json({

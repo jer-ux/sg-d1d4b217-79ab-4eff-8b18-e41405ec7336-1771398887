@@ -44,37 +44,14 @@ export default function ShadyBrokerIndex() {
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8 }}
-              className="text-center mb-16">
-              <div className="inline-block mb-4">
-                <span className="px-4 py-1.5 bg-rose-500/10 border border-rose-500/20 rounded-full text-rose-300 text-sm font-medium">
-                  Public Transparency Index
-                </span>
-              </div>
-              <h1 className="text-5xl md:text-7xl font-bold mb-6 bg-gradient-to-r from-rose-200 via-amber-200 to-rose-200 bg-clip-text text-transparent">
-                The Shady Broker Index
+              className="mb-8">
+              <div className="text-sm font-medium text-rose-400 mb-4 tracking-wider">THE SHADY BROKER INDEX</div>
+              <h1 className="text-5xl md:text-7xl font-bold text-white mb-6 leading-tight">
+                Every basis point<br/>has a name.
               </h1>
-              <p className="text-xl md:text-2xl text-gray-300 mb-4 max-w-4xl mx-auto">
-                The first public leaderboard scoring brokers, consultants, and PBM intermediaries on transparency
+              <p className="text-xl md:text-2xl text-gray-400 max-w-3xl mx-auto leading-relaxed">
+                The transparency score for the brokers, consultants, and PBMs running America's self-insured health plans. Built on public DOL filings. Scored by honest math.
               </p>
-              <p className="text-lg text-gray-400 mb-12 max-w-3xl mx-auto">
-                Every score anchored to public DOL Form 5500 Schedule A compensation disclosures
-              </p>
-
-              <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                <Link href="#score-my-broker">
-                  <Button size="lg" className="bg-gradient-to-r from-rose-500 to-amber-500 hover:from-rose-600 hover:to-amber-600 text-white text-lg px-8 py-6 shadow-xl shadow-rose-500/20">
-                    <Search className="w-5 h-5 mr-2" />
-                    Score My Broker
-                  </Button>
-                </Link>
-                <Link href="#index">
-                  <Button size="lg" variant="outline" className="border-gray-700 text-gray-300 hover:bg-white/5 text-lg px-8 py-6">
-                    <TrendingUp className="w-5 h-5 mr-2" />
-                    See the Index
-                  </Button>
-                </Link>
-              </div>
             </motion.div>
 
             {/* Live "Shadiest Entities" Strip */}
@@ -139,6 +116,45 @@ export default function ShadyBrokerIndex() {
                 </Link>
               </div>
             </motion.div>
+          </div>
+        </section>
+
+        {/* Live Strip - Shadiest Entities */}
+        <section className="border-y border-rose-500/20 bg-gray-950/50 backdrop-blur-xl py-8">
+          <div className="max-w-7xl mx-auto px-6">
+            <div className="text-sm text-gray-400 mb-4 text-center">
+              Live from the Index: Current F-grade entities
+            </div>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+              {[
+                { name: "Acme Benefits Group", grade: "F", score: 94, finding: "87% indirect compensation undisclosed in 2023 filings" },
+                { name: "Premier Healthcare Advisors", grade: "F", score: 89, finding: "Schedule A fields incomplete across 14 client plans" },
+                { name: "National Benefit Consultants", grade: "F", score: 86, finding: "Affiliate override arrangements not disclosed to plan sponsors" }
+              ].map((entity, idx) => (
+                <motion.div
+                  key={idx}
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.5 + idx * 0.1 }}
+                  className="bg-gray-900/50 border border-rose-500/30 rounded-xl p-4 hover:border-rose-500/50 transition-colors">
+                  <div className="flex items-start justify-between mb-2">
+                    <div className="font-medium text-white text-sm">{entity.name}</div>
+                    <Badge className="bg-rose-500/10 text-rose-400 border-rose-500/30 font-mono">
+                      {entity.grade}
+                    </Badge>
+                  </div>
+                  <div className="text-3xl font-bold text-rose-400 mb-2">{entity.score}</div>
+                  <p className="text-xs text-gray-400 leading-relaxed">{entity.finding}</p>
+                </motion.div>
+              ))}
+            </div>
+            <div className="text-center mt-6">
+              <Link href="/shady-broker-index/index-table">
+                <Button variant="outline" className="border-rose-500/30 text-rose-400 hover:bg-rose-500/10">
+                  View Full Index
+                </Button>
+              </Link>
+            </div>
           </div>
         </section>
 

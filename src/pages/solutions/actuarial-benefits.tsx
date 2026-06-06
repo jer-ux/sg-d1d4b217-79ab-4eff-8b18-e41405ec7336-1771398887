@@ -335,7 +335,7 @@ const strategicSolutions = [
     consultingFramework: "McKinsey RGM Framework + Bain Pricing Excellence",
     metrics: [
       {
-        icon: DollarSignIcon,
+        icon: DollarSign,
         value: "$6.2M",
         title: "Revenue Optimization",
         analysis: [

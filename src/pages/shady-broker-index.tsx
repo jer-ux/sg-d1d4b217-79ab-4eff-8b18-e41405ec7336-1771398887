@@ -3,6 +3,7 @@ import Link from "next/link";
 import { motion } from "framer-motion";
 import { Shield, TrendingUp, AlertTriangle, Search, Star, Award, ExternalLink, ChevronRight, Building2, Users, DollarSign, FileText } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
 import Footer from "@/components/Footer";
 import { useState, useEffect } from "react";
 

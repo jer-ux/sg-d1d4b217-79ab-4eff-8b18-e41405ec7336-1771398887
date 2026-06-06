@@ -1,102 +1,83 @@
-"use client";
 import Head from "next/head";
 import { useRef, useState, useEffect } from "react";
 import Link from "next/link";
-import { motion, useScroll, useTransform, useInView } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import { SEO } from "@/components/SEO";
-import { FileText, Shield, TrendingUp, CheckCircle2, Sparkles, Zap, Crown, Star, Activity, ArrowRight, Lock, Building2, Users, Database, BarChart3, Globe, Award, AlertTriangle, Search, Clock } from "lucide-react";
+import {
+  FileText, Shield, TrendingUp, CheckCircle2, Sparkles, Zap, Activity, ArrowRight,
+  Lock, Building2, Users, Database, BarChart3, Award, AlertTriangle, Search, Clock,
+  DollarSign, Percent, ChevronRight, Check, X, Info, Layers, Eye
+} from "lucide-react";
 import { ExecutiveWarRoom } from "@/components/warroom/ExecutiveWarRoom";
 import { CHROWarRoom } from "@/components/warroom/CHROWarRoom";
 import { BadgeDetailSystem } from "@/components/home/BadgeDetailSystem";
 import { Hero3D } from "@/components/Hero3D";
-import { ExecutiveKPITile } from "@/components/warroom/tiles/ExecutiveKPITile";
-import { SiteFooter } from "@/components/site/SiteFooter";
-import { FreeContractReviewCTA } from "@/components/marketing/FreeContractReviewCTA";
 import Nav from "@/components/Nav";
+import Footer from "@/components/Footer";
 
-const Card3D = ({
-  title,
-  subtitle,
-  children,
-  icon: Icon,
-  delay = 0
-
-
-
-
-
-
-}: {title: string;subtitle?: string;children: React.ReactNode;icon?: React.ComponentType<{className?: string;}>;delay?: number;}) => {
-  const cardRef = useRef<HTMLDivElement>(null);
-  const isInView = useInView(cardRef, { once: true, amount: 0.3 });
-
-  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
-    if (!cardRef.current) return;
-    const rect = cardRef.current.getBoundingClientRect();
-    const x = ((e.clientX - rect.left) / rect.width - 0.5) * 20;
-    const y = ((e.clientY - rect.top) / rect.height - 0.5) * 20;
-    cardRef.current.style.transform = `perspective(1000px) rotateX(${-y}deg) rotateY(${x}deg) scale3d(1.02, 1.02, 1.02)`;
-  };
-
-  const handleMouseLeave = () => {
-    if (!cardRef.current) return;
-    cardRef.current.style.transform = "perspective(1000px) rotateX(0deg) rotateY(0deg) scale3d(1, 1, 1)";
-  };
-
-  return (
-    <motion.div
-      ref={cardRef}
-      className="relative rounded-2xl border border-purple-500/20 bg-gradient-to-br from-purple-950/10 to-black/40 p-6 sm:p-8 backdrop-blur-sm"
-      initial={{ opacity: 0, y: 30 }}
-      animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 }}
-      transition={{ duration: 0.6, delay }}
-      onMouseMove={handleMouseMove}
-      onMouseLeave={handleMouseLeave}
-      style={{ perspective: "1000px", transformStyle: "preserve-3d" }}>
-      
-      <div className="absolute -inset-0.5 rounded-2xl bg-gradient-to-br from-purple-500/10 to-transparent opacity-0 blur transition-opacity group-hover:opacity-100" />
-      {Icon &&
-      <div className="mb-4 inline-flex rounded-lg bg-purple-500/10 p-3">
-          <Icon className="h-6 w-6 text-purple-400" />
-        </div>
-      }
-      <h3 className="mb-2 text-xl sm:text-2xl font-bold text-white">{title}</h3>
-      {subtitle && <div className="mb-4 text-sm font-semibold text-purple-400">{subtitle}</div>}
-      <div className="text-sm sm:text-base text-zinc-400 leading-relaxed">{children}</div>
-    </motion.div>);
-
-};
-
-const Pill = ({ k, v }: {k: string;v: string;}) =>
-<motion.div
-  className="rounded-lg sm:rounded-xl border border-purple-500/40 bg-gradient-to-br from-black/80 via-purple-950/40 to-black/80 px-3 sm:px-5 py-2 sm:py-3 backdrop-blur-sm shadow-lg shadow-purple-500/20"
-  whileHover={{ scale: 1.08, y: -3, boxShadow: "0 0 30px rgba(168, 85, 247, 0.4)", rotateY: 5, z: 30 }}
-  transition={{ type: "spring", stiffness: 400, damping: 10 }}
-  style={{ perspective: "1000px", transformStyle: "preserve-3d" }}>
-  
-    <div className="text-[10px] sm:text-xs text-purple-400/90 font-semibold uppercase tracking-wide">{k}</div>
-    <div className="mt-1 sm:mt-1.5 text-sm sm:text-base font-bold bg-gradient-to-r from-white to-purple-100 bg-clip-text text-transparent">{v}</div>
-  </motion.div>;
-
+// Overcharge feed mock events
+const mockAudits = [
+  { company: "Midwest Logistics", lives: 420, issue: "Generic Spread Markup", savings: "$142,500", severity: "high" },
+  { company: "Apparel Retailer", lives: 1250, issue: "Rebate GPO Retained", savings: "$684,000", severity: "critical" },
+  { company: "Tech Solutions", lives: 310, issue: "Specialty Coupon Exclusion", savings: "$94,200", severity: "medium" },
+  { company: "Northeast Manufacturing", lives: 2800, issue: "MAC List Overcharges", savings: "$1,120,400", severity: "critical" },
+  { company: "Southwest Healthcare", lives: 850, issue: "Non-Fid Commission Skimming", savings: "$322,000", severity: "high" }
+];
 
 export default function HomePage() {
   const [mounted, setMounted] = useState(false);
-  const heroRef = useRef<HTMLDivElement>(null);
+  const [auditIndex, setAuditIndex] = useState(0);
+  const [activePlaygroundTab, setActivePlaygroundTab] = useState<"calculator" | "costplus" | "risk">("calculator");
+  
+  // Tab 1: PBM Calculator state
+  const [calcLives, setCalcLives] = useState(500);
+  const [calcSpend, setCalcSpend] = useState(3000000);
+  const [calcSpread, setCalcSpread] = useState(25); // percentage PBM markups/spread
+
+  // Tab 2: Specialty Cost Plus state
+  const [selectedSpecialtyDrug, setSelectedSpecialtyDrug] = useState("Imatinib");
+  const specialtyDrugs: Record<string, { brand: string; pbm: number; costplus: number; indication: string }> = {
+    "Imatinib": { brand: "Gleevec (Cancer)", pbm: 8200, costplus: 140, indication: "Oncology" },
+    "Abiraterone": { brand: "Zytiga (Prostate)", pbm: 6400, costplus: 185, indication: "Oncology" },
+    "Emtricitabine": { brand: "Truvada (HIV)", pbm: 1800, costplus: 45, indication: "Specialty" },
+    "Teriflunomide": { brand: "Aubagio (MS)", pbm: 7100, costplus: 90, indication: "Neurology" }
+  };
+
+  // Tab 3: Actuarial Risk state
+  const [riskLives, setRiskRiskLives] = useState(1200);
+  const [riskTrend, setRiskTrend] = useState(14); // current YoY cost trend percentage
+
+  // Heatmap interactive state
+  const [hoveredLeakage, setHoveredLeakage] = useState<string | null>(null);
+
+  // Badge interaction states
+  const [selectedBadge, setSelectedBadge] = useState<"receipts" | "ebitda" | "verification" | "trust" | "immutable" | null>(null);
+  const [badgeLevel, setBadgeLevel] = useState(1);
 
   useEffect(() => {
     setMounted(true);
+    // Cycle mock audit feed ticker
+    const interval = setInterval(() => {
+      setAuditIndex((prev) => (prev + 1) % mockAudits.length);
+    }, 4000);
+    return () => clearInterval(interval);
   }, []);
 
-  const { scrollYProgress } = useScroll({
-    target: heroRef,
-    offset: ["start start", "end start"]
-  });
+  // Live ROI Math for PBM Calculator
+  const estimatedSpreadLeakage = (calcSpend * (calcSpread / 100));
+  const estimatedPbmSavings = estimatedSpreadLeakage * 0.85; // 85% recovery rate
+  const pmpmSavings = (estimatedPbmSavings / calcLives) / 12;
 
-  const heroOpacity = useTransform(scrollYProgress, [0, 0.5], [1, 0]);
-  const heroScale = useTransform(scrollYProgress, [0, 0.5], [1, 0.95]);
+  // Live Specialty calculation
+  const currentDrugData = specialtyDrugs[selectedSpecialtyDrug];
+  const drugSavings = currentDrugData.pbm - currentDrugData.costplus;
+  const drugSavingsPercent = ((drugSavings / currentDrugData.pbm) * 100).toFixed(0);
 
-  const [selectedBadge, setSelectedBadge] = useState<"receipts" | "ebitda" | "verification" | "trust" | "immutable" | null>(null);
-  const [badgeLevel, setBadgeLevel] = useState(1);
+  // Live Actuarial Risk calculation
+  const totalCost = riskLives * 11500; // Estimated baseline average cost per employee per year
+  const rawTrendCost = totalCost * (riskTrend / 100);
+  const optimizedTrendCost = totalCost * 0.035; // Target optimized trend
+  const actuarialSavings = rawTrendCost - optimizedTrendCost;
 
   const handleBadgeClick = (badgeType: "receipts" | "ebitda" | "verification" | "trust" | "immutable") => {
     setSelectedBadge(badgeType);
@@ -114,1122 +95,805 @@ export default function HomePage() {
 
   return (
     <>
-      <Head>
-        <title>Kincaid IQ - Stop Overpaying for Healthcare</title>
-        <meta
-          name="description"
-          content="Find hidden overcharges in your benefits contracts. Reduce costs by 20-35% while improving employee coverage." />
-        
-      </Head>
+      <SEO 
+        title="Kincaid IQ - Fiduciary Healthcare Intelligence & PBM Overcharge Forensics"
+        description="Eliminate PBM spread pricing, hidden commissions, and rebate leakage. Recover 20-35% of your annual prescription benefit spend with certified fiduciary proof."
+      />
       
       <Nav />
       
-      <main className="relative min-h-screen bg-black text-zinc-100 overflow-hidden">
-        <div className="fixed inset-0 bg-gradient-to-br from-purple-950/20 via-black to-blue-950/10 pointer-events-none" style={{ zIndex: 0 }} />
+      <div className="min-h-screen bg-neutral-950 text-white selection:bg-amber-500/30 overflow-x-hidden relative font-sans">
+        
+        {/* Glow Effects backdrop */}
+        <div className="absolute top-0 left-1/4 w-96 h-96 bg-purple-500/10 rounded-full blur-3xl pointer-events-none" />
+        <div className="absolute top-1/3 right-1/4 w-96 h-96 bg-amber-500/5 rounded-full blur-3xl pointer-events-none" />
+        <div className="absolute top-2/3 left-1/3 w-96 h-96 bg-blue-500/10 rounded-full blur-3xl pointer-events-none" />
 
-        {/* Hero Section with 3D Effects */}
-        <section className="relative min-h-screen flex items-center justify-center overflow-hidden z-0" ref={heroRef}>
-          <div className="absolute inset-0 z-0">
-            <Hero3D />
-          </div>
-          <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
-            {mounted ?
-            <motion.div
-              style={{ opacity: heroOpacity, scale: heroScale }}
-              className="grid lg:grid-cols-2 gap-12 items-center">
+        {/* HERO SECTION */}
+        <section className="relative min-h-screen pt-32 pb-20 px-4 md:px-8 max-w-7xl mx-auto flex items-center">
+          <div className="grid lg:grid-cols-12 gap-12 items-center w-full z-10">
+            
+            {/* Left Content */}
+            <div className="lg:col-span-7 space-y-8">
               
-                {/* Left Column - Text Content with 3D */}
-                <motion.div
-                initial={{ opacity: 0, x: -50 }}
-                animate={{ opacity: 1, x: 0 }}
-                transition={{ duration: 0.8 }}
-                className="space-y-8"
-                style={{ perspective: "1500px", transformStyle: "preserve-3d" }}>
-                
-                  <motion.h1
-                  className="text-3xl sm:text-4xl md:text-5xl lg:text-[58px] leading-tight font-bold"
-                  style={{ transformStyle: "preserve-3d" }}>
-                  
-                    <motion.span
-                    className="bg-gradient-to-r from-amber-300 via-amber-100 to-white bg-clip-text text-transparent"
-                    style={{ display: "block", transform: "translateZ(30px)" }}>
-                    
-                      Is your PBM expert providing advice
-                    </motion.span>
-                    <motion.span
-                    className="bg-gradient-to-r from-white via-purple-100 to-blue-100 bg-clip-text text-transparent"
-                    style={{ display: "block", transform: "translateZ(20px)" }}>
-                    
-                      in your best interest, or their's?
-                    </motion.span>
-                  </motion.h1>
+              <div className="inline-flex items-center gap-2 bg-amber-500/10 border border-amber-500/30 rounded-full px-4 py-1.5 text-xs font-mono text-amber-300">
+                <Shield className="h-4.5 w-4.5 text-amber-400 animate-pulse" />
+                ERISA FIDUCIARY STANDARD GOVERNED
+              </div>
 
-                  {/* Fiduciary Callout */}
+              <h1 className="text-4xl md:text-5xl lg:text-6xl font-black tracking-tight leading-none text-transparent bg-clip-text bg-gradient-to-r from-white via-neutral-100 to-amber-200">
+                Is your PBM expert serving <br />
+                <span className="text-transparent bg-clip-text bg-gradient-to-r from-amber-400 via-amber-300 to-white">your best interest, or theirs?</span>
+              </h1>
+
+              <p className="text-lg text-neutral-300 max-w-2xl leading-relaxed">
+                You are legally required to have a strict fiduciary for your 401(k) retirement plan. Why should your multi-million dollar pharmacy benefit plan be any different? We forensic audit PBM contracts, uncover hidden spreads, and guarantee results.
+              </p>
+
+              {/* Live Audit Ticker Feed */}
+              <div className="border border-neutral-800 bg-neutral-900/60 backdrop-blur-md rounded-2xl p-4 flex items-center justify-between gap-4 max-w-2xl shadow-xl">
+                <div className="flex items-center gap-3">
+                  <div className="relative flex h-3 w-3">
+                    <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75"></span>
+                    <span className="relative inline-flex rounded-full h-3 w-3 bg-red-500"></span>
+                  </div>
+                  <div>
+                    <div className="text-[10px] font-mono tracking-widest text-neutral-400 uppercase">Live Audit Detection Feed</div>
+                    <AnimatePresence mode="wait">
+                      <motion.div
+                        key={auditIndex}
+                        initial={{ opacity: 0, y: 10 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        exit={{ opacity: 0, y: -10 }}
+                        transition={{ duration: 0.4 }}
+                        className="text-sm font-semibold text-neutral-200 mt-0.5"
+                      >
+                        {mockAudits[auditIndex].company} ({mockAudits[auditIndex].lives} lives):{" "}
+                        <span className="text-red-400">{mockAudits[auditIndex].issue}</span>
+                      </motion.div>
+                    </AnimatePresence>
+                  </div>
+                </div>
+
+                <AnimatePresence mode="wait">
                   <motion.div
-                  className="rounded-xl sm:rounded-2xl border border-amber-500/40 bg-gradient-to-br from-amber-950/40 via-black/90 to-amber-900/20 px-4 sm:px-6 py-4 sm:py-5 backdrop-blur-sm shadow-lg shadow-amber-500/20"
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.6, delay: 0.3 }}
-                  whileHover={{ scale: 1.02, boxShadow: "0 0 40px rgba(251, 191, 36, 0.3)" }}
-                  style={{ transform: "translateZ(25px)" }}>
-                  
-                    <div className="flex items-start gap-3">
-                      <div className="mt-0.5 flex h-8 w-8 sm:h-10 sm:w-10 shrink-0 items-center justify-center rounded-lg bg-amber-500/20">
-                        <Shield className="h-4 w-4 sm:h-5 sm:w-5 text-amber-400" />
-                      </div>
-                      <p className="text-sm sm:text-base md:text-lg text-amber-100 leading-relaxed font-medium">
-                        You are legally required to have a fiduciary for your 401(k) plan. <span className="font-bold bg-gradient-to-r from-amber-300 to-white bg-clip-text text-transparent">Why would your PBM be any different?</span>
+                    key={auditIndex}
+                    initial={{ scale: 0.9, opacity: 0 }}
+                    animate={{ scale: 1, opacity: 1 }}
+                    exit={{ scale: 0.9, opacity: 0 }}
+                    className="bg-red-950/40 border border-red-500/30 rounded-xl px-3 py-1.5 text-right font-mono"
+                  >
+                    <div className="text-[9px] text-red-400 font-bold uppercase">Estimated Waste</div>
+                    <div className="text-sm font-bold text-red-300">{mockAudits[auditIndex].savings}</div>
+                  </motion.div>
+                </AnimatePresence>
+              </div>
+
+              {/* Action Buttons */}
+              <div className="flex flex-col sm:flex-row items-center gap-4">
+                <a
+                  href="https://calendly.com/jer-kincaidrmc/30min"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-center justify-center gap-2 bg-gradient-to-r from-amber-500 via-amber-600 to-amber-700 hover:from-amber-400 hover:to-amber-600 text-white font-bold text-base px-8 py-4 rounded-xl shadow-lg shadow-amber-500/20 transition-all duration-200 w-full sm:w-auto"
+                >
+                  <Clock className="h-5 w-5" />
+                  Book PBM Contract Audit
+                  <ArrowRight className="h-5 w-5" />
+                </a>
+
+                <Link
+                  href="/solutions/pbm-vs-cost-plus"
+                  className="flex items-center justify-center gap-2 border border-neutral-800 bg-neutral-900/40 hover:bg-neutral-900/80 text-neutral-200 hover:text-white font-bold text-base px-8 py-4 rounded-xl transition-all duration-200 w-full sm:w-auto"
+                >
+                  <Eye className="h-5 w-5 text-amber-400" />
+                  Compare PBM vs Cost Plus
+                </Link>
+              </div>
+
+              <div className="text-sm text-neutral-500 font-mono flex items-center gap-4 flex-wrap">
+                <span>✓ SSAE-18 SOC 2 certified</span>
+                <span>✓ HIPAA-compliant</span>
+                <span>✓ Credentialed Actuarial team</span>
+              </div>
+            </div>
+
+            {/* Right Interactive Dashboard Hero Preview */}
+            <div className="lg:col-span-5 relative">
+              <div className="absolute inset-0 bg-amber-500/10 rounded-3xl blur-2xl transform rotate-3 scale-95 opacity-50 z-0" />
+              <div className="relative z-10 border border-neutral-800 bg-black/40 rounded-3xl p-1 shadow-2xl backdrop-blur-md overflow-hidden">
+                <div className="bg-neutral-900/80 px-4 py-2 border-b border-neutral-800 flex items-center justify-between text-xs font-mono text-neutral-400">
+                  <div className="flex items-center gap-1.5">
+                    <span className="w-2 h-2 rounded-full bg-red-500" />
+                    <span className="w-2 h-2 rounded-full bg-yellow-500" />
+                    <span className="w-2 h-2 rounded-full bg-green-500" />
+                    <span className="ml-2">kincaid-audit-engine-v4.2</span>
+                  </div>
+                  <Badge className="bg-red-500/20 text-red-400 border border-red-500/30 px-2 py-0.5 text-[10px]">RISK DETECTED</Badge>
+                </div>
+                <div className="p-4 sm:p-6 space-y-6">
+                  <div className="space-y-1.5">
+                    <div className="text-xs font-mono text-neutral-400">Active Audit Focus</div>
+                    <div className="text-lg font-bold">Prescription Formulary Analysis</div>
+                  </div>
+
+                  <div className="grid grid-cols-2 gap-4">
+                    <div className="bg-neutral-900/60 border border-neutral-800/80 rounded-xl p-3">
+                      <div className="text-[10px] font-mono text-neutral-400">Claims Analyzed</div>
+                      <div className="text-base font-black text-white mt-1">42,854</div>
+                    </div>
+                    <div className="bg-neutral-900/60 border border-neutral-800/80 rounded-xl p-3">
+                      <div className="text-[10px] font-mono text-neutral-400">Flagged Non-Compliance</div>
+                      <div className="text-base font-black text-red-400 mt-1">1,489</div>
+                    </div>
+                  </div>
+
+                  <div className="space-y-2">
+                    <div className="flex justify-between text-xs font-mono">
+                      <span className="text-neutral-400">Traditional PBM Profit Margin (Opaque)</span>
+                      <span className="text-red-400 font-bold">34.8%</span>
+                    </div>
+                    <div className="h-2 bg-neutral-900 rounded-full overflow-hidden">
+                      <div className="h-full bg-red-500" style={{ width: "34.8%" }} />
+                    </div>
+                  </div>
+
+                  <div className="space-y-2">
+                    <div className="flex justify-between text-xs font-mono">
+                      <span className="text-neutral-400">Kincaid Fiduciary Target Fee</span>
+                      <span className="text-emerald-400 font-bold">2.5%</span>
+                    </div>
+                    <div className="h-2 bg-neutral-900 rounded-full overflow-hidden">
+                      <div className="h-full bg-emerald-500" style={{ width: "2.5%" }} />
+                    </div>
+                  </div>
+
+                  <div className="bg-amber-500/10 border border-amber-500/30 rounded-xl p-4">
+                    <div className="flex items-center gap-2 text-xs font-mono text-amber-300 font-bold mb-1">
+                      <Shield className="h-4 w-4" />
+                      Fiduciary Contract Fix Recommended
+                    </div>
+                    <p className="text-xs text-amber-100/90 leading-normal">
+                      Carve out specialty pharmacy benefits from your main carrier contract immediately to halt undisclosed drug coupon markup harvesting.
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </section>
+
+        {/* FIDUCIARY PLAYGROUND / LAB HUB */}
+        <section className="py-24 border-t border-neutral-900 bg-neutral-900/30">
+          <div className="max-w-7xl mx-auto px-4 md:px-8">
+            
+            <div className="mb-12 text-center max-w-3xl mx-auto space-y-4">
+              <span className="text-xs font-mono text-amber-400 uppercase tracking-widest">Interactive Audit Playground</span>
+              <h2 className="text-3xl md:text-5xl font-black">The Fiduciary Lab Hub</h2>
+              <p className="text-neutral-400 text-lg">
+                Instantly simulate contract pricing leakage, transparent specialty drug margins, and risk-optimized trend profiles using real actuarial data.
+              </p>
+            </div>
+
+            {/* Playground Tabs */}
+            <div className="flex justify-center mb-8 border-b border-neutral-800">
+              <div className="flex gap-2 p-1 bg-neutral-900/80 rounded-xl">
+                <button
+                  onClick={() => setActivePlaygroundTab("calculator")}
+                  className={`px-4 sm:px-6 py-3 rounded-lg text-sm font-bold transition-all ${
+                    activePlaygroundTab === "calculator"
+                      ? "bg-amber-500 text-neutral-950 shadow-md shadow-amber-500/10"
+                      : "text-neutral-400 hover:text-white"
+                  }`}
+                >
+                  PBM Cost Modeler
+                </button>
+                <button
+                  onClick={() => setActivePlaygroundTab("costplus")}
+                  className={`px-4 sm:px-6 py-3 rounded-lg text-sm font-bold transition-all ${
+                    activePlaygroundTab === "costplus"
+                      ? "bg-amber-500 text-neutral-950 shadow-md shadow-amber-500/10"
+                      : "text-neutral-400 hover:text-white"
+                  }`}
+                >
+                  Cost-Plus specialty
+                </button>
+                <button
+                  onClick={() => setActivePlaygroundTab("risk")}
+                  className={`px-4 sm:px-6 py-3 rounded-lg text-sm font-bold transition-all ${
+                    activePlaygroundTab === "risk"
+                      ? "bg-amber-500 text-neutral-950 shadow-md shadow-amber-500/10"
+                      : "text-neutral-400 hover:text-white"
+                  }`}
+                >
+                  Actuarial Risk Simulator
+                </button>
+              </div>
+            </div>
+
+            {/* Dynamic playground tab renderer */}
+            <div className="grid lg:grid-cols-12 gap-8 items-center bg-neutral-900/40 border border-neutral-800/80 rounded-3xl p-6 sm:p-10 backdrop-blur-sm shadow-xl">
+              
+              <div className="lg:col-span-5 space-y-6">
+                
+                {activePlaygroundTab === "calculator" && (
+                  <>
+                    <div className="space-y-2">
+                      <div className="text-xs font-mono text-amber-400 uppercase font-bold">Interactive Tool 1</div>
+                      <h3 className="text-2xl font-black text-white">Traditional PBM Cost Modeler</h3>
+                      <p className="text-neutral-400 text-sm">
+                        Traditional PBM pricing models capture significant margin inside spread pricing, retained rebates, and specialized fees. Adjust the parameters to calculate your leakage.
                       </p>
                     </div>
-                  </motion.div>
 
-                  <motion.p
-                  className="text-base sm:text-lg md:text-xl text-gray-300 mb-6 sm:mb-8 leading-relaxed"
-                  style={{ transform: "translateZ(20px)" }}>
-                  
-                    Find hidden overcharges in PBM contracts. Eliminate wasteful spending. Save 20-35% while improving coverage. Every dollar verified with proof.
-                  </motion.p>
+                    <div className="space-y-4 pt-4">
+                      {/* Parameter inputs */}
+                      <div className="space-y-2">
+                        <div className="flex justify-between text-xs font-mono text-neutral-300">
+                          <span>Covered Employee Lives</span>
+                          <span className="text-white font-bold">{calcLives} lives</span>
+                        </div>
+                        <input
+                          type="range"
+                          min="100"
+                          max="5000"
+                          step="50"
+                          value={calcLives}
+                          onChange={(e) => setCalcLives(Number(e.target.value))}
+                          className="w-full h-1.5 bg-neutral-800 rounded-lg appearance-none cursor-pointer accent-amber-500"
+                        />
+                      </div>
 
-                  {/* CTA Buttons with 3D */}
-                  <motion.div
-                  className="flex flex-col sm:flex-row gap-3 sm:gap-4 mb-6 sm:mb-8"
-                  style={{ transform: "translateZ(30px)" }}>
-                  
+                      <div className="space-y-2">
+                        <div className="flex justify-between text-xs font-mono text-neutral-300">
+                          <span>Annual Rx Spend</span>
+                          <span className="text-white font-bold">${(calcSpend / 1000000).toFixed(1)}M</span>
+                        </div>
+                        <input
+                          type="range"
+                          min="500000"
+                          max="20000000"
+                          step="500000"
+                          value={calcSpend}
+                          onChange={(e) => setCalcSpend(Number(e.target.value))}
+                          className="w-full h-1.5 bg-neutral-800 rounded-lg appearance-none cursor-pointer accent-amber-500"
+                        />
+                      </div>
+
+                      <div className="space-y-2">
+                        <div className="flex justify-between text-xs font-mono text-neutral-300">
+                          <span>Estimated PBM Overcharge/Spread %</span>
+                          <span className="text-white font-bold">{calcSpread}%</span>
+                        </div>
+                        <input
+                          type="range"
+                          min="10"
+                          max="45"
+                          step="5"
+                          value={calcSpread}
+                          onChange={(e) => setCalcSpread(Number(e.target.value))}
+                          className="w-full h-1.5 bg-neutral-800 rounded-lg appearance-none cursor-pointer accent-amber-500"
+                        />
+                      </div>
+                    </div>
+                  </>
+                )}
+
+                {activePlaygroundTab === "costplus" && (
+                  <>
+                    <div className="space-y-2">
+                      <div className="text-xs font-mono text-amber-400 uppercase font-bold">Interactive Tool 2</div>
+                      <h3 className="text-2xl font-black text-white">Specialty Specialty Cost-Plus Dissector</h3>
+                      <p className="text-neutral-400 text-sm">
+                        Specialty drug margins are the most opaque category in employer healthcare plans. Under a true cost-plus framework, you only pay raw drug ingredient cost plus a flat 15% transparent markup and fulfillment fee.
+                      </p>
+                    </div>
+
+                    <div className="space-y-4 pt-4">
+                      <div className="text-xs font-mono text-neutral-400">Select Specialty Drug to Dissect</div>
+                      <div className="grid grid-cols-2 gap-2">
+                        {Object.keys(specialtyDrugs).map((drugName) => (
+                          <button
+                            key={drugName}
+                            onClick={() => setSelectedSpecialtyDrug(drugName)}
+                            className={`px-3 py-2.5 rounded-lg border text-left text-xs font-bold transition-all ${
+                              selectedSpecialtyDrug === drugName
+                                ? "bg-amber-500/10 border-amber-500 text-amber-300"
+                                : "bg-neutral-900 border-neutral-800 text-neutral-400 hover:border-neutral-700"
+                            }`}
+                          >
+                            <div className="font-bold">{drugName}</div>
+                            <div className="text-[10px] opacity-60 mt-0.5">{specialtyDrugs[drugName].indication}</div>
+                          </button>
+                        ))}
+                      </div>
+                    </div>
+                  </>
+                )}
+
+                {activePlaygroundTab === "risk" && (
+                  <>
+                    <div className="space-y-2">
+                      <div className="text-xs font-mono text-amber-400 uppercase font-bold">Interactive Tool 3</div>
+                      <h3 className="text-2xl font-black text-white">Actuarial Risk Simulator</h3>
+                      <p className="text-neutral-400 text-sm">
+                        Traditional carriers accept high-risk, compound double-digit YoY increases by defaulting to basic reinsurance pools. Kincaid iQ stabilizes drug cost trends to less than 4% through advanced predictive stratification.
+                      </p>
+                    </div>
+
+                    <div className="space-y-4 pt-4">
+                      <div className="space-y-2">
+                        <div className="flex justify-between text-xs font-mono text-neutral-300">
+                          <span>Portfolio size (Covered Lives)</span>
+                          <span className="text-white font-bold">{riskLives} lives</span>
+                        </div>
+                        <input
+                          type="range"
+                          min="100"
+                          max="10000"
+                          step="100"
+                          value={riskLives}
+                          onChange={(e) => setRiskRiskLives(Number(e.target.value))}
+                          className="w-full h-1.5 bg-neutral-800 rounded-lg appearance-none cursor-pointer accent-amber-500"
+                        />
+                      </div>
+
+                      <div className="space-y-2">
+                        <div className="flex justify-between text-xs font-mono text-neutral-300">
+                          <span>Current Pharmacy Cost Trend (YoY %)</span>
+                          <span className="text-white font-bold">{riskTrend}% increase</span>
+                        </div>
+                        <input
+                          type="range"
+                          min="6"
+                          max="25"
+                          step="1"
+                          value={riskTrend}
+                          onChange={(e) => setRiskTrend(Number(e.target.value))}
+                          className="w-full h-1.5 bg-neutral-800 rounded-lg appearance-none cursor-pointer accent-amber-500"
+                        />
+                      </div>
+                    </div>
+                  </>
+                )}
+
+              </div>
+
+              {/* Right Output Dashboard */}
+              <div className="lg:col-span-7 bg-neutral-950/80 border border-neutral-800 rounded-2xl p-6 sm:p-8 space-y-6">
+                
+                {activePlaygroundTab === "calculator" && (
+                  <div className="space-y-6">
+                    <div className="flex items-center justify-between border-b border-neutral-900 pb-4">
+                      <div className="text-sm font-bold text-neutral-300">Audited Projection</div>
+                      <Badge className="bg-amber-500/10 text-amber-300 border border-amber-500/30">PBM Optimization</Badge>
+                    </div>
+
+                    <div className="grid grid-cols-2 gap-4">
+                      <div className="bg-neutral-900/60 border border-neutral-800/60 rounded-xl p-4">
+                        <div className="text-xs font-mono text-neutral-400 mb-1">Identified Annual Leakage</div>
+                        <div className="text-2xl font-black text-red-400">${estimatedSpreadLeakage.toLocaleString(undefined, { maximumFractionDigits: 0 })}</div>
+                      </div>
+                      <div className="bg-neutral-900/60 border border-neutral-800/60 rounded-xl p-4">
+                        <div className="text-xs font-mono text-neutral-400 mb-1">Projected Annual Savings</div>
+                        <div className="text-2xl font-black text-emerald-400">${estimatedPbmSavings.toLocaleString(undefined, { maximumFractionDigits: 0 })}</div>
+                      </div>
+                    </div>
+
+                    <div className="bg-amber-500/5 border border-amber-500/20 rounded-xl p-4 flex items-center justify-between">
+                      <div>
+                        <div className="text-xs font-mono text-amber-300 font-semibold uppercase">Est. Cost reduction per member per month (PMPM)</div>
+                        <p className="text-neutral-400 text-xs mt-1">Direct savings reflected on pharmacy invoices.</p>
+                      </div>
+                      <div className="text-xl font-black text-amber-300 text-right">
+                        -${pmpmSavings.toFixed(2)} <span className="text-xs font-normal">PMPM</span>
+                      </div>
+                    </div>
+
+                    <div className="text-center pt-2">
+                      <Link
+                        href="/solutions/pbm-vs-cost-plus"
+                        className="inline-flex items-center text-xs font-bold text-amber-400 hover:text-amber-300 gap-1"
+                      >
+                        Detailed comparative calculations <ChevronRight className="h-4 w-4" />
+                      </Link>
+                    </div>
+                  </div>
+                )}
+
+                {activePlaygroundTab === "costplus" && (
+                  <div className="space-y-6">
+                    <div className="flex items-center justify-between border-b border-neutral-900 pb-4">
+                      <div className="text-sm font-bold text-neutral-300">Markup &amp; Fulfillment Breakdown</div>
+                      <span className="text-xs font-mono text-amber-400 font-bold">{currentDrugData.brand}</span>
+                    </div>
+
+                    <div className="grid grid-cols-3 gap-3">
+                      <div className="bg-neutral-900/60 border border-neutral-800/60 rounded-xl p-3 text-center">
+                        <div className="text-[10px] font-mono text-neutral-400">PBM Contract cost</div>
+                        <div className="text-lg font-black text-red-400 mt-1">${currentDrugData.pbm}</div>
+                      </div>
+                      <div className="bg-neutral-900/60 border border-neutral-800/60 rounded-xl p-3 text-center">
+                        <div className="text-[10px] font-mono text-neutral-400">Cost Plus cost</div>
+                        <div className="text-lg font-black text-emerald-400 mt-1">${currentDrugData.costplus}</div>
+                      </div>
+                      <div className="bg-neutral-900/60 border border-neutral-800/60 rounded-xl p-3 text-center">
+                        <div className="text-[10px] font-mono text-neutral-400">Instant Savings</div>
+                        <div className="text-lg font-black text-amber-300 mt-1">-{drugSavingsPercent}%</div>
+                      </div>
+                    </div>
+
+                    {/* Cost dissection illustration */}
+                    <div className="space-y-3 pt-2">
+                      <div className="text-xs font-mono text-neutral-300">Cost-Plus Transparent Breakdown:</div>
+                      <div className="flex items-center h-4 bg-neutral-900 rounded-full overflow-hidden text-[9px] font-mono text-neutral-950 font-black">
+                        <div className="bg-emerald-500 h-full flex items-center justify-center" style={{ width: "70%" }}>Active Ingredient (85%)</div>
+                        <div className="bg-amber-400 h-full flex items-center justify-center" style={{ width: "15%" }}>15% Markup</div>
+                        <div className="bg-blue-400 h-full flex items-center justify-center" style={{ width: "15%" }}>Flat Fee</div>
+                      </div>
+                      <div className="flex justify-between text-[10px] text-neutral-400 font-mono">
+                        <span>✓ Raw ingredient cost is fixed directly with manufacturer</span>
+                        <span>✓ No hidden rebates, no spread</span>
+                      </div>
+                    </div>
+                  </div>
+                )}
+
+                {activePlaygroundTab === "risk" && (
+                  <div className="space-y-6">
+                    <div className="flex items-center justify-between border-b border-neutral-900 pb-4">
+                      <div className="text-sm font-bold text-neutral-300">Actuarial Risk Reduction Profile</div>
+                      <Badge className="bg-emerald-500/10 text-emerald-300 border border-emerald-500/30">Stable Trend Projections</Badge>
+                    </div>
+
+                    <div className="grid grid-cols-2 gap-4">
+                      <div className="bg-neutral-900/60 border border-neutral-800/60 rounded-xl p-4">
+                        <div className="text-xs font-mono text-neutral-400 mb-1">Estimated Raw Trend (YoY)</div>
+                        <div className="text-2xl font-black text-red-400">${rawTrendCost.toLocaleString(undefined, { maximumFractionDigits: 0 })}</div>
+                      </div>
+                      <div className="bg-neutral-900/60 border border-neutral-800/60 rounded-xl p-4">
+                        <div className="text-xs font-mono text-neutral-400 mb-1">Optimized Fiduciary Trend</div>
+                        <div className="text-2xl font-black text-emerald-400">${optimizedTrendCost.toLocaleString(undefined, { maximumFractionDigits: 0 })}</div>
+                      </div>
+                    </div>
+
+                    <div className="bg-emerald-500/5 border border-emerald-500/20 rounded-xl p-4 flex items-center justify-between">
+                      <div>
+                        <div className="text-xs font-mono text-emerald-300 font-semibold uppercase">Cumulative annual loss prevention</div>
+                        <p className="text-neutral-400 text-xs mt-1">Achieved via predictive stratification &amp; clinical programs.</p>
+                      </div>
+                      <div className="text-xl font-black text-emerald-300 text-right">
+                        +${actuarialSavings.toLocaleString(undefined, { maximumFractionDigits: 0 })}
+                      </div>
+                    </div>
+                  </div>
+                )}
+
+              </div>
+
+            </div>
+
+          </div>
+        </section>
+
+        {/* INTERACTIVE COST LEAKAGE HEATMAP */}
+        <section className="py-24 max-w-7xl mx-auto px-4 md:px-8">
+          <div className="grid lg:grid-cols-12 gap-12 items-center">
+            
+            <div className="lg:col-span-5 space-y-6">
+              <span className="text-xs font-mono text-red-400 uppercase tracking-widest">Plan Vulnerability Diagnosis</span>
+              <h2 className="text-3xl md:text-5xl font-black">Plan Cost Leakage Heatmap</h2>
+              <p className="text-neutral-300 text-lg">
+                Pharmacy benefit costs are heavily inflated inside traditional PBM frameworks. Hover over each sector to inspect exactly how PBMs extract margins and see Kincaid IQ's contract solution.
+              </p>
+              
+              <div className="bg-neutral-900/40 border border-neutral-800 rounded-2xl p-6 min-h-[160px] flex flex-col justify-between">
+                <AnimatePresence mode="wait">
+                  {hoveredLeakage ? (
                     <motion.div
-                    whileHover={{ scale: 1.05, z: 50, rotateY: -5 }}
-                    whileTap={{ scale: 0.95 }}
-                    style={{ perspective: "1000px", transformStyle: "preserve-3d" }}
-                    className="w-full sm:w-auto">
-                    
-                      <a
-                      href="https://calendly.com/jer-kincaidrmc/30min"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="inline-flex items-center justify-center w-full sm:w-auto px-6 sm:px-8 py-3 sm:py-4 text-base sm:text-lg font-semibold text-white bg-gradient-to-r from-blue-600 to-purple-600 rounded-lg hover:from-blue-700 hover:to-purple-700 transition-all duration-200 shadow-lg hover:shadow-xl">
-                      
-                        <Clock className="mr-2 h-4 w-4 sm:h-5 sm:w-5" />
-                        <span>Book Your PBM Consultation</span>
-                        <ArrowRight className="ml-2 h-4 w-4 sm:h-5 sm:w-5" />
-                      </a>
+                      key={hoveredLeakage}
+                      initial={{ opacity: 0, y: 10 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      exit={{ opacity: 0, y: -10 }}
+                      className="space-y-3"
+                    >
+                      <div className="text-sm font-bold text-amber-400 uppercase font-mono tracking-wider">{hoveredLeakage} Analysis:</div>
+                      <p className="text-sm text-neutral-200">
+                        {hoveredLeakage === "Formulary" && "PBMs frequently manipulate formularies, favoring high-rebate specialty drugs even when cheaper, therapeutically equivalent generics are available."}
+                        {hoveredLeakage === "Specialty" && "Specialty medications represent only 2% of prescriptions but over 50% of total spend. Opaque billing spreads can add thousands of dollars to single scripts."}
+                        {hoveredLeakage === "Rebates" && "GPOs (Group Purchasing Organizations) are created by PBMs to harvest and retain pharmaceutical manufacturer rebates away from plan sponsors."}
+                        {hoveredLeakage === "Spread Pricing" && "PBMs bill the employer far more than they actually pay the dispensing pharmacy, harvesting the silent spread pricing margin."}
+                      </p>
+                      <div className="text-xs font-semibold text-emerald-400 flex items-center gap-1.5 mt-2">
+                        <Check className="h-4.5 w-4.5" />
+                        Kincaid Solution: Complete contract carve-out &amp; direct transparent pricing models.
+                      </div>
                     </motion.div>
-                  </motion.div>
-
-                  <motion.p
-                  className="text-xs sm:text-sm text-gray-400"
-                  style={{ transform: "translateZ(20px)" }}>
-                  
-                    Free contract analysis • No implementation required • Results in 14 days
-                  </motion.p>
-                </motion.div>
-
-                {/* Right Column - Image with 3D Transform */}
-                <motion.div
-                initial={{ opacity: 0, x: 50 }}
-                animate={{ opacity: 1, x: 0 }}
-                transition={{ duration: 0.8, delay: 0.2 }}
-                className="relative"
-                style={{ perspective: "1500px", transformStyle: "preserve-3d" }}>
-                
-                  <motion.div
-                  className="relative rounded-2xl overflow-hidden border border-amber-500/20 shadow-2xl shadow-amber-500/10"
-                  whileHover={{ scale: 1.02, rotateY: 5, z: 50 }}
-                  transition={{ type: "spring", stiffness: 300, damping: 20 }}
-                  style={{ transformStyle: "preserve-3d" }}>
-                  
-                    <img
-                    src="/e36f3ab62edc9c2fba9186685bb06e694fd8e78149112009407488c8477129df.png"
-                    alt="Benefits Cost Analysis Dashboard"
-                    className="w-full h-auto" />
-                  
-                    <motion.div
-                    className="absolute inset-0 bg-gradient-to-t from-amber-500/20 via-transparent to-transparent pointer-events-none"
-                    animate={{
-                      opacity: [0.3, 0.6, 0.3]
-                    }}
-                    transition={{
-                      duration: 3,
-                      repeat: Infinity,
-                      ease: "easeInOut"
-                    }} />
-                  
-                  </motion.div>
-                </motion.div>
-              </motion.div> :
-
-            <div className="grid lg:grid-cols-2 gap-12 items-center">
-                <div className="space-y-8">
-                  <h1 className="text-4xl md:text-[58px] font-bold leading-tight">
-                    <span className="bg-gradient-to-r from-amber-300 via-amber-100 to-white bg-clip-text text-transparent">
-                      Stop overpaying
-                    </span>
-                    <span className="text-white">for employee benefits</span>
-                  </h1>
-                </div>
+                  ) : (
+                    <div className="flex items-center justify-center h-28 text-neutral-500 text-sm font-mono italic">
+                      Hover over different sectors on the heatmap blueprint to diagnose cost vulnerabilities...
+                    </div>
+                  )}
+                </AnimatePresence>
               </div>
-            }
-          </div>
-        </section>
-
-        {/* Schedule a Consultation Section */}
-        <section id="consultation" className="relative z-10 mx-auto w-full max-w-7xl px-4 sm:px-6 py-16 sm:py-24">
-          <motion.div
-            className="rounded-3xl border border-amber-500/40 bg-gradient-to-br from-amber-950/30 via-black/95 to-amber-900/20 p-8 sm:p-12 shadow-2xl backdrop-blur-sm"
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6 }}>
-            
-            <div className="absolute -inset-1 rounded-3xl bg-gradient-to-r from-amber-600/20 via-amber-500/30 to-amber-600/20 opacity-60 blur-xl" />
-            
-            <div className="relative grid lg:grid-cols-2 gap-8 lg:gap-12">
-              {/* Left Column - Messaging */}
-              <motion.div
-                initial={{ opacity: 0, x: -20 }}
-                whileInView={{ opacity: 1, x: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.6, delay: 0.2 }}
-                className="flex flex-col justify-center">
-                
-                <div className="inline-flex items-center gap-2 rounded-full border border-amber-500/40 bg-amber-950/40 px-4 py-2 text-sm font-semibold text-amber-300 mb-6 w-fit">
-                  <Shield className="h-4 w-4" />
-                  Free Contract Analysis
-                </div>
-
-                <h2 className="text-3xl sm:text-4xl lg:text-5xl font-black mb-4">
-                  <span className="bg-gradient-to-r from-amber-300 via-amber-100 to-white bg-clip-text text-transparent">
-                    Apply for your
-                  </span>
-                  <br />
-                  <span className="text-white">PBM Consultation</span>
-                </h2>
-
-                <p className="text-base sm:text-lg text-zinc-300 leading-relaxed mb-6">
-                  Discover the hidden overcharges in your PBM contract. Our team will conduct a preliminary analysis and show you exactly where your money is going.
-                </p>
-
-                <div className="space-y-4">
-                  <div className="flex items-start gap-3">
-                    <div className="mt-1 flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-amber-500/20">
-                      <CheckCircle2 className="h-4 w-4 text-amber-400" />
-                    </div>
-                    <div>
-                      <div className="font-bold text-white">30-Minute Discovery Call</div>
-                      <div className="text-sm text-zinc-400">Review your contract structure and identify immediate red flags</div>
-                    </div>
-                  </div>
-
-                  <div className="flex items-start gap-3">
-                    <div className="mt-1 flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-amber-500/20">
-                      <CheckCircle2 className="h-4 w-4 text-amber-400" />
-                    </div>
-                    <div>
-                      <div className="font-bold text-white">Preliminary Findings Report</div>
-                      <div className="text-sm text-zinc-400">Documented evidence of potential overcharges within 48 hours</div>
-                    </div>
-                  </div>
-
-                  <div className="flex items-start gap-3">
-                    <div className="mt-1 flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-amber-500/20">
-                      <CheckCircle2 className="h-4 w-4 text-amber-400" />
-                    </div>
-                    <div>
-                      <div className="font-bold text-white">No Obligation</div>
-                      <div className="text-sm text-zinc-400">Free analysis with no commitment required</div>
-                    </div>
-                  </div>
-                </div>
-              </motion.div>
-
-              {/* Right Column - Form */}
-              <motion.div
-                initial={{ opacity: 0, x: 20 }}
-                whileInView={{ opacity: 1, x: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.6, delay: 0.3 }}>
-                
-                {/* Calendly Booking Button */}
-                <motion.div
-                  className="mb-6"
-                  whileHover={{ scale: 1.02 }}
-                  whileTap={{ scale: 0.98 }}>
-                  
-                  <a
-                    href="https://calendly.com/jer-kincaidrmc/30min"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="flex items-center justify-center gap-3 w-full rounded-2xl bg-gradient-to-r from-amber-500 via-amber-600 to-amber-700 px-8 py-5 text-lg font-bold text-white shadow-2xl hover:from-amber-400 hover:via-amber-500 hover:to-amber-600 transition-all duration-200 hover:shadow-amber-500/50">
-                    
-                    <Clock className="h-6 w-6" />
-                    <span>Book Your Consultation Now</span>
-                    <ArrowRight className="h-5 w-5" />
-                  </a>
-                  <p className="text-center text-sm text-amber-300/70 mt-3">
-                    Schedule directly • 30-minute call • No forms required
-                  </p>
-                </motion.div>
-
-                {/* Divider */}
-                <div className="relative mb-6">
-                  <div className="absolute inset-0 flex items-center">
-                    <div className="w-full border-t border-amber-500/20"></div>
-                  </div>
-                  <div className="relative flex justify-center text-sm">
-                    <span className="px-4 bg-black/60 text-zinc-400">or fill out the form below</span>
-                  </div>
-                </div>
-
-                <div className="rounded-2xl border border-amber-500/30 bg-black/60 p-6 sm:p-8 backdrop-blur-sm">
-                  <form className="space-y-5">
-                    <div>
-                      <label htmlFor="name" className="block text-sm font-semibold text-amber-100 mb-2">
-                        Full Name *
-                      </label>
-                      <input
-                        type="text"
-                        id="name"
-                        name="name"
-                        required
-                        className="w-full rounded-lg border border-amber-500/30 bg-black/40 px-4 py-3 text-white placeholder-zinc-500 focus:border-amber-400 focus:outline-none focus:ring-2 focus:ring-amber-500/20 transition-all"
-                        placeholder="John Smith" />
-                      
-                    </div>
-
-                    <div>
-                      <label htmlFor="email" className="block text-sm font-semibold text-amber-100 mb-2">
-                        Work Email *
-                      </label>
-                      <input
-                        type="email"
-                        id="email"
-                        name="email"
-                        required
-                        className="w-full rounded-lg border border-amber-500/30 bg-black/40 px-4 py-3 text-white placeholder-zinc-500 focus:border-amber-400 focus:outline-none focus:ring-2 focus:ring-amber-500/20 transition-all"
-                        placeholder="john.smith@company.com" />
-                      
-                    </div>
-
-                    <div>
-                      <label htmlFor="company" className="block text-sm font-semibold text-amber-100 mb-2">
-                        Company Name *
-                      </label>
-                      <input
-                        type="text"
-                        id="company"
-                        name="company"
-                        required
-                        className="w-full rounded-lg border border-amber-500/30 bg-black/40 px-4 py-3 text-white placeholder-zinc-500 focus:border-amber-400 focus:outline-none focus:ring-2 focus:ring-amber-500/20 transition-all"
-                        placeholder="Acme Corporation" />
-                      
-                    </div>
-
-                    <div>
-                      <label htmlFor="phone" className="block text-sm font-semibold text-amber-100 mb-2">
-                        Phone Number
-                      </label>
-                      <input
-                        type="tel"
-                        id="phone"
-                        name="phone"
-                        className="w-full rounded-lg border border-amber-500/30 bg-black/40 px-4 py-3 text-white placeholder-zinc-500 focus:border-amber-400 focus:outline-none focus:ring-2 focus:ring-amber-500/20 transition-all"
-                        placeholder="(555) 123-4567" />
-                      
-                    </div>
-
-                    <div>
-                      <label htmlFor="employees" className="block text-sm font-semibold text-amber-100 mb-2">
-                        Number of Employees
-                      </label>
-                      <select
-                        id="employees"
-                        name="employees"
-                        className="w-full rounded-lg border border-amber-500/30 bg-black/40 px-4 py-3 text-white focus:border-amber-400 focus:outline-none focus:ring-2 focus:ring-amber-500/20 transition-all">
-                        
-                        <option value="">Select range</option>
-                        <option value="1-50">1-50</option>
-                        <option value="51-200">51-200</option>
-                        <option value="201-500">201-500</option>
-                        <option value="501-1000">501-1,000</option>
-                        <option value="1001+">1,001+</option>
-                      </select>
-                    </div>
-
-                    <div>
-                      <label htmlFor="message" className="block text-sm font-semibold text-amber-100 mb-2">
-                        What's your biggest concern with your current PBM?
-                      </label>
-                      <textarea
-                        id="message"
-                        name="message"
-                        rows={4}
-                        className="w-full rounded-lg border border-amber-500/30 bg-black/40 px-4 py-3 text-white placeholder-zinc-500 focus:border-amber-400 focus:outline-none focus:ring-2 focus:ring-amber-500/20 transition-all resize-none"
-                        placeholder="e.g., Rising costs, lack of transparency, hidden fees..." />
-                      
-                    </div>
-
-                    <motion.button
-                      type="submit"
-                      whileHover={{ scale: 1.02 }}
-                      whileTap={{ scale: 0.98 }}
-                      className="w-full rounded-xl bg-gradient-to-r from-amber-600 to-amber-700 px-8 py-4 text-lg font-bold text-white shadow-lg hover:from-amber-500 hover:to-amber-600 transition-all duration-200 hover:shadow-amber-500/25">
-                      
-                      Apply for PBM Consultation
-                    </motion.button>
-
-                    <p className="text-xs text-center text-zinc-500">
-                      By submitting, you agree to receive communications from Kincaid IQ. We respect your privacy.
-                    </p>
-                  </form>
-                </div>
-              </motion.div>
             </div>
-          </motion.div>
-        </section>
 
-        {/* How It Works Section */}
-        <section id="how-it-works" className="relative z-10 mx-auto w-full max-w-7xl px-4 sm:px-6 py-16 sm:py-24">
-          <motion.div
-            className="mb-12 text-center"
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6 }}>
-            
-            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-black mb-4">
-              <span className="bg-gradient-to-r from-purple-300 via-purple-100 to-white bg-clip-text text-transparent">
-                How It Works
-              </span>
-            </h2>
-
-            <p className="text-base sm:text-lg text-zinc-300 max-w-3xl mx-auto leading-relaxed">
-              From contract upload to verified savings in 14 days. Every step documented, every finding backed by evidence.
-            </p>
-          </motion.div>
-
-          <div className="grid gap-8 lg:gap-12">
-            {/* Step 1 */}
-            <motion.div
-              className="grid lg:grid-cols-2 gap-8 items-center"
-              initial={{ opacity: 0, x: -30 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.6 }}>
+            {/* Visual Heatmap Grid */}
+            <div className="lg:col-span-7 grid grid-cols-2 gap-4">
               
-              <div className="lg:order-1">
-                <div className="inline-flex items-center gap-3 mb-4">
-                  <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-gradient-to-br from-blue-500/30 to-purple-500/30 text-2xl font-black text-blue-400">
-                    1
-                  </div>
-                  <h3 className="text-2xl sm:text-3xl font-bold text-white">Upload Your Contract</h3>
-                </div>
-                <p className="text-base text-zinc-300 leading-relaxed mb-6">
-                  Securely upload your PBM contract through our encrypted portal. We accept PDFs, scanned documents, and digital contracts. Your data is encrypted end-to-end with SOC2 compliance.
-                </p>
-                <div className="space-y-3">
-                  <div className="flex items-center gap-3">
-                    <CheckCircle2 className="h-5 w-5 text-blue-400 shrink-0" />
-                    <span className="text-sm text-zinc-400">256-bit AES encryption</span>
-                  </div>
-                  <div className="flex items-center gap-3">
-                    <CheckCircle2 className="h-5 w-5 text-blue-400 shrink-0" />
-                    <span className="text-sm text-zinc-400">SOC2 Type II certified infrastructure</span>
-                  </div>
-                  <div className="flex items-center gap-3">
-                    <CheckCircle2 className="h-5 w-5 text-blue-400 shrink-0" />
-                    <span className="text-sm text-zinc-400">HIPAA-compliant data handling</span>
-                  </div>
-                </div>
-              </div>
-              <motion.div
-                className="lg:order-2 rounded-2xl border border-blue-500/30 bg-gradient-to-br from-blue-950/40 to-black/60 p-8 backdrop-blur-sm"
-                whileHover={{ scale: 1.02, rotateY: 2 }}
-                transition={{ type: "spring", stiffness: 300 }}>
-                
-                <div className="flex items-center justify-center h-48 sm:h-64">
-                  <FileText className="h-24 w-24 sm:h-32 sm:w-32 text-blue-400/60" />
-                </div>
-              </motion.div>
-            </motion.div>
+              <button
+                onMouseEnter={() => setHoveredLeakage("Formulary")}
+                onMouseLeave={() => setHoveredLeakage(null)}
+                className={`relative rounded-3xl p-6 text-left border transition-all duration-300 ${
+                  hoveredLeakage === "Formulary"
+                    ? "bg-red-500/10 border-red-500 shadow-xl shadow-red-500/5 scale-102"
+                    : "bg-neutral-900/60 border-neutral-800 hover:border-neutral-700"
+                }`}
+              >
+                <div className="absolute top-4 right-4 h-2.5 w-2.5 rounded-full bg-red-400" />
+                <Layers className="h-8 w-8 text-neutral-400 mb-4" />
+                <h4 className="text-lg font-bold text-white">Formulary Manipulation</h4>
+                <p className="text-neutral-400 text-xs mt-2">Therapeutic substitutions favoring higher rebated brands over generic alternatives.</p>
+                <div className="mt-4 text-xs font-bold text-red-300">Severe Waste: ~12%</div>
+              </button>
 
-            {/* Step 2 */}
-            <motion.div
-              className="grid lg:grid-cols-2 gap-8 items-center"
-              initial={{ opacity: 0, x: 30 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.6, delay: 0.1 }}>
-              
-              <motion.div
-                className="lg:order-1 rounded-2xl border border-purple-500/30 bg-gradient-to-br from-purple-950/40 to-black/60 p-8 backdrop-blur-sm"
-                whileHover={{ scale: 1.02, rotateY: -2 }}
-                transition={{ type: "spring", stiffness: 300 }}>
-                
-                <div className="flex items-center justify-center h-48 sm:h-64">
-                  <Search className="h-24 w-24 sm:h-32 sm:w-32 text-purple-400/60" />
-                </div>
-              </motion.div>
-              <div className="lg:order-2">
-                <div className="inline-flex items-center gap-3 mb-4">
-                  <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-gradient-to-br from-purple-500/30 to-pink-500/30 text-2xl font-black text-purple-400">
-                    2
-                  </div>
-                  <h3 className="text-2xl sm:text-3xl font-bold text-white">Forensic Analysis</h3>
-                </div>
-                <p className="text-base text-zinc-300 leading-relaxed mb-6">
-                  Our AI-powered Contract X-Ray engine performs a comprehensive forensic analysis. We examine every clause, pricing term, rebate structure, and hidden fee against actuarial benchmarks.
-                </p>
-                <div className="space-y-3">
-                  <div className="flex items-center gap-3">
-                    <CheckCircle2 className="h-5 w-5 text-purple-400 shrink-0" />
-                    <span className="text-sm text-zinc-400">47 common overcharge patterns identified</span>
-                  </div>
-                  <div className="flex items-center gap-3">
-                    <CheckCircle2 className="h-5 w-5 text-purple-400 shrink-0" />
-                    <span className="text-sm text-zinc-400">NADAC benchmark comparison</span>
-                  </div>
-                  <div className="flex items-center gap-3">
-                    <CheckCircle2 className="h-5 w-5 text-purple-400 shrink-0" />
-                    <span className="text-sm text-zinc-400">Actuarial validation of findings</span>
-                  </div>
-                </div>
-              </div>
-            </motion.div>
+              <button
+                onMouseEnter={() => setHoveredLeakage("Specialty")}
+                onMouseLeave={() => setHoveredLeakage(null)}
+                className={`relative rounded-3xl p-6 text-left border transition-all duration-300 ${
+                  hoveredLeakage === "Specialty"
+                    ? "bg-red-500/10 border-red-500 shadow-xl shadow-red-500/5 scale-102"
+                    : "bg-neutral-900/60 border-neutral-800 hover:border-neutral-700"
+                }`}
+              >
+                <div className="absolute top-4 right-4 h-2.5 w-2.5 rounded-full bg-red-500" />
+                <Activity className="h-8 w-8 text-neutral-400 mb-4" />
+                <h4 className="text-lg font-bold text-white">Specialty Markups</h4>
+                <p className="text-neutral-400 text-xs mt-2">Aggressive compound markups on oncology and specialty medications.</p>
+                <div className="mt-4 text-xs font-bold text-red-500">Critical Waste: ~32%</div>
+              </button>
 
-            {/* Step 3 */}
-            <motion.div
-              className="grid lg:grid-cols-2 gap-8 items-center"
-              initial={{ opacity: 0, x: -30 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.6, delay: 0.2 }}>
-              
-              <div className="lg:order-1">
-                <div className="inline-flex items-center gap-3 mb-4">
-                  <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-gradient-to-br from-amber-500/30 to-orange-500/30 text-2xl font-black text-amber-400">
-                    3
-                  </div>
-                  <h3 className="text-2xl sm:text-3xl font-bold text-white">Evidence Package</h3>
-                </div>
-                <p className="text-base text-zinc-300 leading-relaxed mb-6">
-                  Receive a comprehensive audit report with every finding documented and timestamped. Every overcharge is backed by cryptographic proof, ready for negotiation or litigation.
-                </p>
-                <div className="space-y-3">
-                  <div className="flex items-center gap-3">
-                    <CheckCircle2 className="h-5 w-5 text-amber-400 shrink-0" />
-                    <span className="text-sm text-zinc-400">SHA-256 timestamped evidence</span>
-                  </div>
-                  <div className="flex items-center gap-3">
-                    <CheckCircle2 className="h-5 w-5 text-amber-400 shrink-0" />
-                    <span className="text-sm text-zinc-400">Court-grade documentation</span>
-                  </div>
-                  <div className="flex items-center gap-3">
-                    <CheckCircle2 className="h-5 w-5 text-amber-400 shrink-0" />
-                    <span className="text-sm text-zinc-400">Audit-ready compliance reports</span>
-                  </div>
-                </div>
-              </div>
-              <motion.div
-                className="lg:order-2 rounded-2xl border border-amber-500/30 bg-gradient-to-br from-amber-950/40 to-black/60 p-8 backdrop-blur-sm"
-                whileHover={{ scale: 1.02, rotateY: 2 }}
-                transition={{ type: "spring", stiffness: 300 }}>
-                
-                <div className="flex items-center justify-center h-48 sm:h-64">
-                  <Shield className="h-24 w-24 sm:h-32 sm:w-32 text-amber-400/60" />
-                </div>
-              </motion.div>
-            </motion.div>
+              <button
+                onMouseEnter={() => setHoveredLeakage("Rebates")}
+                onMouseLeave={() => setHoveredLeakage(null)}
+                className={`relative rounded-3xl p-6 text-left border transition-all duration-300 ${
+                  hoveredLeakage === "Rebates"
+                    ? "bg-red-500/10 border-red-500 shadow-xl shadow-red-500/5 scale-102"
+                    : "bg-neutral-900/60 border-neutral-800 hover:border-neutral-700"
+                }`}
+              >
+                <div className="absolute top-4 right-4 h-2.5 w-2.5 rounded-full bg-red-400" />
+                <DollarSign className="h-8 w-8 text-neutral-400 mb-4" />
+                <h4 className="text-lg font-bold text-white">Rebate Retaining</h4>
+                <p className="text-neutral-400 text-xs mt-2">Hidden Group Purchasing Organizations collecting and retaining manufacturer rebates.</p>
+                <div className="mt-4 text-xs font-bold text-red-300">Moderate Waste: ~15%</div>
+              </button>
 
-            {/* Step 4 */}
-            <motion.div
-              className="grid lg:grid-cols-2 gap-8 items-center"
-              initial={{ opacity: 0, x: 30 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.6, delay: 0.3 }}>
-              
-              <motion.div
-                className="lg:order-1 rounded-2xl border border-green-500/30 bg-gradient-to-br from-green-950/40 to-black/60 p-8 backdrop-blur-sm"
-                whileHover={{ scale: 1.02, rotateY: -2 }}
-                transition={{ type: "spring", stiffness: 300 }}>
-                
-                <div className="flex items-center justify-center h-48 sm:h-64">
-                  <TrendingUp className="h-24 w-24 sm:h-32 sm:w-32 text-green-400/60" />
-                </div>
-              </motion.div>
-              <div className="lg:order-2">
-                <div className="inline-flex items-center gap-3 mb-4">
-                  <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-gradient-to-br from-green-500/30 to-emerald-500/30 text-2xl font-black text-green-400">
-                    4
-                  </div>
-                  <h3 className="text-2xl sm:text-3xl font-bold text-white">Recover Your Savings</h3>
-                </div>
-                <p className="text-base text-zinc-300 leading-relaxed mb-6">
-                  Armed with documented proof, negotiate with your PBM from a position of strength. Our clients recover an average of 87% of identified overcharges. Typical recovery: $2.4M annually.
-                </p>
-                <div className="space-y-3">
-                  <div className="flex items-center gap-3">
-                    <CheckCircle2 className="h-5 w-5 text-green-400 shrink-0" />
-                    <span className="text-sm text-zinc-400">Evidence-backed negotiations</span>
-                  </div>
-                  <div className="flex items-center gap-3">
-                    <CheckCircle2 className="h-5 w-5 text-green-400 shrink-0" />
-                    <span className="text-sm text-zinc-400">87% average recovery rate</span>
-                  </div>
-                  <div className="flex items-center gap-3">
-                    <CheckCircle2 className="h-5 w-5 text-green-400 shrink-0" />
-                    <span className="text-sm text-zinc-400">Ongoing monitoring included</span>
-                  </div>
-                </div>
-              </div>
-            </motion.div>
-          </div>
-        </section>
+              <button
+                onMouseEnter={() => setHoveredLeakage("Spread Pricing")}
+                onMouseLeave={() => setHoveredLeakage(null)}
+                className={`relative rounded-3xl p-6 text-left border transition-all duration-300 ${
+                  hoveredLeakage === "Spread Pricing"
+                    ? "bg-red-500/10 border-red-500 shadow-xl shadow-red-500/5 scale-102"
+                    : "bg-neutral-900/60 border-neutral-800 hover:border-neutral-700"
+                }`}
+              >
+                <div className="absolute top-4 right-4 h-2.5 w-2.5 rounded-full bg-red-400" />
+                <Percent className="h-8 w-8 text-neutral-400 mb-4" />
+                <h4 className="text-lg font-bold text-white">Spread Pricing</h4>
+                <p className="text-neutral-400 text-xs mt-2">Over-billing the employer compared to direct pharmacy acquisition cost.</p>
+                <div className="mt-4 text-xs font-bold text-red-300">Severe Waste: ~18%</div>
+              </button>
 
-        {/* Forensics Section */}
-        <section id="forensics" className="relative z-10 mx-auto w-full max-w-7xl px-4 sm:px-6 py-12 sm:py-16">
-          <motion.div
-            className="mb-8 sm:mb-12"
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6 }}>
-            
-            <div className="flex items-center gap-3 text-base sm:text-lg font-black bg-gradient-to-r from-red-400 to-red-200 bg-clip-text text-transparent mb-3 sm:mb-4">
-              <AlertTriangle className="h-5 w-5 sm:h-6 sm:w-6 text-red-500 drop-shadow-[0_0_12px_rgba(239,68,68,0.6)]" />
-              Contract Forensics Engine
             </div>
-            <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-black text-white leading-tight">
-              Your PBM contract is a crime scene.<br className="hidden sm:block" />
-              <span className="bg-gradient-to-br from-red-400 via-red-500 to-red-700 bg-clip-text text-transparent">We have the forensics.</span>
-            </h2>
-            <p className="mt-4 sm:mt-6 text-base sm:text-lg md:text-xl text-zinc-300 max-w-3xl leading-relaxed">
-              Rx Defense IQ Contract X-Ray is the only actuarially-anchored, evidence-spine-governed PBM contract forensic engine built for ERISA fiduciaries who refuse to lose.
-            </p>
-          </motion.div>
 
-          {/* Forensic Statistics Grid */}
-          <motion.div
-            className="grid grid-cols-2 md:grid-cols-4 gap-3 sm:gap-4 mb-8 sm:mb-12"
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6, delay: 0.1 }}>
-            
-            <motion.div
-              className="rounded-lg sm:rounded-xl border border-red-500/30 bg-gradient-to-br from-red-950/40 to-black/80 p-4 sm:p-6 backdrop-blur-sm shadow-lg"
-              whileHover={{ scale: 1.05, y: -3, boxShadow: "0 0 30px rgba(239, 68, 68, 0.3)" }}
-              transition={{ type: "spring", stiffness: 400, damping: 10 }}>
-              
-              <div className="text-2xl sm:text-3xl font-black bg-gradient-to-r from-red-400 to-red-200 bg-clip-text text-transparent">47</div>
-              <div className="mt-1 text-[10px] sm:text-xs text-red-300/70 font-medium uppercase tracking-wide">Avg Issues/Contract</div>
-            </motion.div>
-            <motion.div
-              className="rounded-lg sm:rounded-xl border border-red-500/30 bg-gradient-to-br from-red-950/40 to-black/80 p-4 sm:p-6 backdrop-blur-sm shadow-lg"
-              whileHover={{ scale: 1.05, y: -3, boxShadow: "0 0 30px rgba(239, 68, 68, 0.3)" }}
-              transition={{ type: "spring", stiffness: 400, damping: 10 }}>
-              
-              <div className="text-2xl sm:text-3xl font-black bg-gradient-to-r from-red-400 to-red-200 bg-clip-text text-transparent">$2.4M</div>
-              <div className="mt-1 text-[10px] sm:text-xs text-red-300/70 font-medium uppercase tracking-wide">Annual Recovery</div>
-            </motion.div>
-            <motion.div
-              className="rounded-lg sm:rounded-xl border border-red-500/30 bg-gradient-to-br from-red-950/40 to-black/80 p-4 sm:p-6 backdrop-blur-sm shadow-lg"
-              whileHover={{ scale: 1.05, y: -3, boxShadow: "0 0 30px rgba(239, 68, 68, 0.3)" }}
-              transition={{ type: "spring", stiffness: 400, damping: 10 }}>
-              
-              <div className="text-2xl sm:text-3xl font-black bg-gradient-to-r from-red-400 to-red-200 bg-clip-text text-transparent">87%</div>
-              <div className="mt-1 text-[10px] sm:text-xs text-red-300/70 font-medium uppercase tracking-wide">Recovery Success Rate</div>
-            </motion.div>
-            <motion.div
-              className="rounded-lg sm:rounded-xl border border-red-500/30 bg-gradient-to-br from-red-950/40 to-black/80 p-4 sm:p-6 backdrop-blur-sm shadow-lg"
-              whileHover={{ scale: 1.05, y: -3, boxShadow: "0 0 30px rgba(239, 68, 68, 0.3)" }}
-              transition={{ type: "spring", stiffness: 400, damping: 10 }}>
-              
-              <div className="text-2xl sm:text-3xl font-black bg-gradient-to-r from-red-400 to-red-200 bg-clip-text text-transparent">14</div>
-              <div className="mt-1 text-[10px] sm:text-xs text-red-300/70 font-medium uppercase tracking-wide">Days to Evidence</div>
-            </motion.div>
-          </motion.div>
-
-          {/* Forensic Capabilities Grid */}
-          <div className="grid gap-5 sm:gap-6 md:grid-cols-2 lg:grid-cols-3 mb-8 sm:mb-12">
-            <Card3D
-              title="Spread Analysis"
-              subtitle="AWP vs NADAC forensics"
-              icon={BarChart3}
-              delay={0.1}>
-              
-              Deep analysis of Average Wholesale Price vs NADAC benchmark spreads. Identify overcharging on generic drugs where PBMs exploit spread pricing to inflate costs by 200-400%.
-            </Card3D>
-
-            <Card3D
-              title="Rebate Leakage Detection"
-              subtitle="Follow the money trail"
-              icon={TrendingUp}
-              delay={0.2}>
-              
-              Track manufacturer rebates through every layer. Identify retained rebates, delayed pass-throughs, and contractual violations. Average finding: $847K in unreturned rebates per audit.
-            </Card3D>
-
-            <Card3D
-              title="MAC List Manipulation"
-              subtitle="Maximum Allowable Cost gaming"
-              icon={AlertTriangle}
-              delay={0.3}>
-              
-              Forensic analysis of MAC list updates and pricing changes. Detect when PBMs manipulate pricing lists to capture spread on high-volume generics. Typical recovery: $1.2M annually.
-            </Card3D>
-
-            <Card3D
-              title="Specialty Drug Markups"
-              subtitle="High-cost medication forensics"
-              icon={Activity}
-              delay={0.4}>
-              
-              Deep dive into specialty pharmacy markups and adherence to contracted discount guarantees. Uncover hidden fees, inflated dispensing charges, and violated rebate terms.
-            </Card3D>
-
-            <Card3D
-              title="Dir Fee Clawbacks"
-              subtitle="Point-of-sale vs post-adjudication"
-              icon={Shield}
-              delay={0.5}>
-              
-              Track Direct and Indirect Remuneration fees that appear after claims are paid. Identify retroactive clawbacks that violate transparency requirements. Average recovery: $340K/year.
-            </Card3D>
-
-            <Card3D
-              title="Formulary Manipulation"
-              subtitle="Therapeutic class switching"
-              icon={Search}
-              delay={0.6}>
-              
-              Detect non-clinical formulary changes that drive members to higher-cost alternatives. Identify PBM conflicts of interest and recovered spread opportunities.
-            </Card3D>
           </div>
+        </section>
 
-          {/* Evidence Standards */}
-          <motion.div
-            className="mb-12 rounded-2xl border border-red-500/30 bg-gradient-to-br from-red-950/20 via-black/90 to-zinc-900/90 p-8 backdrop-blur-sm"
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6, delay: 0.2 }}>
+        {/* THE FIDUCIARY OATH SCORECARD */}
+        <section className="py-24 border-t border-neutral-900 bg-neutral-900/20">
+          <div className="max-w-5xl mx-auto px-4 md:px-8">
             
-            <div className="mb-6">
-              <h3 className="text-2xl font-black bg-gradient-to-r from-red-300 to-white bg-clip-text text-transparent mb-3">
-                Court-Grade Evidence Standards
-              </h3>
-              <p className="text-base text-zinc-300 leading-relaxed">
-                Every finding must survive hostile cross-examination. Every number must be reproducible by opposing counsel.
+            <div className="mb-12 text-center space-y-4">
+              <span className="text-xs font-mono text-amber-400 uppercase tracking-widest font-bold">Absolute Transparency</span>
+              <h2 className="text-3xl md:text-5xl font-black">Traditional Broker vs. Fiduciary Standard</h2>
+              <p className="text-neutral-400 text-lg max-w-2xl mx-auto">
+                Compare the legal obligations, audit capabilities, and aligned incentives under our strict fiduciary healthcare model.
               </p>
             </div>
-            <div className="grid gap-4 md:grid-cols-2">
-              <div className="flex items-start gap-3">
-                <div className="mt-1 flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-red-500/20">
-                  <CheckCircle2 className="h-4 w-4 text-red-400" />
-                </div>
-                <div>
-                  <div className="font-bold text-white">SHA-256 Timestamped Evidence</div>
-                  <div className="mt-1 text-sm text-zinc-400">Every contract clause, claim record, and invoice cryptographically hashed with RFC 3161 timestamps</div>
-                </div>
-              </div>
-              <div className="flex items-start gap-3">
-                <div className="mt-1 flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-red-500/20">
-                  <CheckCircle2 className="h-4 w-4 text-red-400" />
-                </div>
-                <div>
-                  <div className="font-bold text-white">Chain of Custody Tracking</div>
-                  <div className="mt-1 text-sm text-zinc-400">Complete audit trail from data ingestion through analysis to final report with signed attestations</div>
-                </div>
-              </div>
-              <div className="flex items-start gap-3">
-                <div className="mt-1 flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-red-500/20">
-                  <CheckCircle2 className="h-4 w-4 text-red-400" />
-                </div>
-                <div>
-                  <div className="font-bold text-white">Actuarial Validation</div>
-                  <div className="mt-1 text-sm text-zinc-400">Every statistical claim reviewed by credentialed actuaries; ASA/FSA certified methodologies</div>
-                </div>
-              </div>
-              <div className="flex items-start gap-3">
-                <div className="mt-1 flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-red-500/20">
-                  <CheckCircle2 className="h-4 w-4 text-red-400" />
-                </div>
-                <div>
-                  <div className="font-bold text-white">Reproducible Calculations</div>
-                  <div className="mt-1 text-sm text-zinc-400">Open calculation methodologies; opposing experts can verify every number using same inputs</div>
-                </div>
-              </div>
-            </div>
-          </motion.div>
 
-          {/* Quote Box */}
-          <motion.div
-            className="mb-12 bg-gradient-to-br from-red-950/40 via-black/80 to-red-900/20 border border-red-500/30 rounded-2xl p-8 backdrop-blur-sm"
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6, delay: 0.3 }}
-            whileHover={{ scale: 1.01, boxShadow: "0 0 40px rgba(239, 68, 68, 0.2)" }}>
-            
-            <div className="mb-4 flex items-center gap-2">
-              <div className="h-1 w-12 bg-gradient-to-r from-red-500 to-red-700 rounded-full" />
-            </div>
-            <blockquote className="text-2xl font-bold text-red-100 leading-relaxed">
-              "Most PBM contracts are written to be misunderstood. <span className="bg-gradient-to-r from-red-400 to-red-200 bg-clip-text text-transparent">Ours are written to be prosecuted.</span>"
-            </blockquote>
-            <div className="mt-6 text-sm text-red-300/60">
-              — Contract Forensics Methodology, Rx Defense IQ
-            </div>
-          </motion.div>
+            {/* Scorecard table layout */}
+            <div className="border border-neutral-800 bg-neutral-900/50 rounded-3xl overflow-hidden shadow-2xl backdrop-blur-sm">
+              <div className="grid grid-cols-12 bg-neutral-900 p-4 font-mono text-xs font-bold text-neutral-400 tracking-wider uppercase border-b border-neutral-800">
+                <div className="col-span-6 md:col-span-5">Audit &amp; Contract Parameter</div>
+                <div className="col-span-3 text-center text-red-400">Traditional Broker</div>
+                <div className="col-span-3 text-center text-emerald-400 md:col-span-4">Fiduciary Standard</div>
+              </div>
 
-          {/* What We Prosecute */}
-          <motion.div
-            className="mb-12"
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6, delay: 0.4 }}>
-            
-            <h3 className="text-2xl font-black text-white mb-6">What We Prosecute</h3>
-            <div className="grid gap-4 md:grid-cols-2">
-              <div className="rounded-xl border border-red-500/20 bg-black/40 p-5 backdrop-blur-sm">
-                <div className="flex items-start gap-3">
-                  <AlertTriangle className="mt-1 h-5 w-5 shrink-0 text-red-500" />
-                  <div>
-                    <div className="font-bold text-red-200">Spread Pricing Violations</div>
-                    <div className="mt-1 text-sm text-zinc-400">AWP-based pricing where NADAC benchmarks are contractually required. Average overcharge: $340/claim.</div>
-                  </div>
-                </div>
-              </div>
-              <div className="rounded-xl border border-red-500/20 bg-black/40 p-5 backdrop-blur-sm">
-                <div className="flex items-start gap-3">
-                  <AlertTriangle className="mt-1 h-5 w-5 shrink-0 text-red-500" />
-                  <div>
-                    <div className="font-bold text-red-200">Undisclosed Rebate Retention</div>
-                    <div className="mt-1 text-sm text-zinc-400">Manufacturer rebates kept by PBM despite contractual pass-through obligations. Average finding: $847K/year.</div>
-                  </div>
-                </div>
-              </div>
-              <div className="rounded-xl border border-red-500/20 bg-black/40 p-5 backdrop-blur-sm">
-                <div className="flex items-start gap-3">
-                  <AlertTriangle className="mt-1 h-5 w-5 shrink-0 text-red-500" />
-                  <div>
-                    <div className="font-bold text-red-200">MAC List Gaming</div>
-                    <div className="mt-1 text-sm text-zinc-400">Manipulated Maximum Allowable Cost lists to capture spread on high-volume generics. Recovery: $1.2M annually.</div>
-                  </div>
-                </div>
-              </div>
-              <div className="rounded-xl border border-red-500/20 bg-black/40 p-5 backdrop-blur-sm">
-                <div className="flex items-start gap-3">
-                  <AlertTriangle className="mt-1 h-5 w-5 shrink-0 text-red-500" />
-                  <div>
-                    <div className="font-bold text-red-200">DIR Fee Clawbacks</div>
-                    <div className="mt-1 text-sm text-zinc-400">Retroactive Direct/Indirect Remuneration fees that violate transparency requirements. Average recovery: $340K/year.</div>
-                  </div>
-                </div>
-              </div>
-              <div className="rounded-xl border border-red-500/20 bg-black/40 p-5 backdrop-blur-sm">
-                <div className="flex items-start gap-3">
-                  <AlertTriangle className="mt-1 h-5 w-5 shrink-0 text-red-500" />
-                  <div>
-                    <div className="font-bold text-red-200">Formulary Conflicts</div>
-                    <div className="mt-1 text-sm text-zinc-400">Non-clinical formulary changes driving members to PBM-owned pharmacies or higher-cost alternatives.</div>
-                  </div>
-                </div>
-              </div>
-              <div className="rounded-xl border border-red-500/20 bg-black/40 p-5 backdrop-blur-sm">
-                <div className="flex items-start gap-3">
-                  <AlertTriangle className="mt-1 h-5 w-5 shrink-0 text-red-500" />
-                  <div>
-                    <div className="font-bold text-red-200">Specialty Pharmacy Markups</div>
-                    <div className="mt-1 text-sm text-zinc-400">Violated discount guarantees, hidden fees, and inflated dispensing charges on high-cost medications.</div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </motion.div>
-
-          {/* CTA Section */}
-          <motion.div
-            className="flex flex-col items-center gap-4 sm:gap-6"
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6, delay: 0.5 }}>
-            
-            <div className="text-center max-w-2xl">
-              <p className="text-base sm:text-lg text-zinc-300 mb-4 sm:mb-6">
-                Ready to discover what your PBM isn't telling you? Launch a forensic investigation and get documented proof of every overcharge.
-              </p>
-            </div>
-            <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 w-full sm:w-auto">
-              <motion.div
-                whileHover={{ scale: 1.05, y: -2 }}
-                whileTap={{ scale: 0.95 }}
-                className="w-full sm:w-auto">
+              <div className="divide-y divide-neutral-900">
                 
-                <Link
-                  href="/solutions/contract-xray"
-                  className="inline-flex items-center justify-center w-full sm:w-auto px-6 sm:px-8 py-3 sm:py-4 text-base sm:text-lg font-bold text-white bg-gradient-to-r from-red-600 to-red-800 rounded-xl hover:from-red-500 hover:to-red-700 transition-all duration-200 shadow-lg hover:shadow-red-500/25">
-                  
-                  <Search className="mr-2 h-4 w-4 sm:h-5 sm:w-5" />
-                  Launch Forensic Investigation
-                </Link>
-              </motion.div>
-              <motion.div
-                whileHover={{ scale: 1.05, y: -2 }}
-                whileTap={{ scale: 0.95 }}
-                className="w-full sm:w-auto">
-                
-                <Link
-                  href="/solutions/rx-defense"
-                  className="inline-flex items-center justify-center w-full sm:w-auto px-6 sm:px-8 py-3 sm:py-4 text-base sm:text-lg font-bold text-red-300 border-2 border-red-500/50 rounded-xl hover:bg-red-950/30 hover:border-red-400 transition-all duration-200">
-                  
-                  <FileText className="mr-2 h-4 w-4 sm:h-5 sm:w-5" />
-                  View Sample Audit Report
-                </Link>
-              </motion.div>
+                <div className="grid grid-cols-12 p-5 items-center">
+                  <div className="col-span-6 md:col-span-5 space-y-1">
+                    <div className="font-bold text-sm text-white">Legal Fiduciary Liability</div>
+                    <p className="text-xs text-neutral-400 leading-normal hidden md:block">Who bears legal responsibility for plan asset management under ERISA?</p>
+                  </div>
+                  <div className="col-span-3 flex justify-center text-red-500 font-bold text-xs gap-1.5 items-center">
+                    <X className="h-4.5 w-4.5 text-red-500 shrink-0" />
+                    <span>None (Disclaimed)</span>
+                  </div>
+                  <div className="col-span-3 flex justify-center text-emerald-400 font-bold text-xs gap-1.5 items-center md:col-span-4">
+                    <Check className="h-4.5 w-4.5 text-emerald-400 shrink-0" />
+                    <span>Contractually Assumed</span>
+                  </div>
+                </div>
+
+                <div className="grid grid-cols-12 p-5 items-center">
+                  <div className="col-span-6 md:col-span-5 space-y-1">
+                    <div className="font-bold text-sm text-white">Full Contract &amp; MAC Audit Rights</div>
+                    <p className="text-xs text-neutral-400 leading-normal hidden md:block">Do you have unlimited legal rights to audit invoice line items and MAC pricing lists?</p>
+                  </div>
+                  <div className="col-span-3 flex justify-center text-red-500 font-bold text-xs gap-1.5 items-center">
+                    <X className="h-4.5 w-4.5 text-red-500 shrink-0" />
+                    <span>Heavily Restricted</span>
+                  </div>
+                  <div className="col-span-3 flex justify-center text-emerald-400 font-bold text-xs gap-1.5 items-center md:col-span-4">
+                    <Check className="h-4.5 w-4.5 text-emerald-400 shrink-0" />
+                    <span>Unlimited / 100% Uncapped</span>
+                  </div>
+                </div>
+
+                <div className="grid grid-cols-12 p-5 items-center">
+                  <div className="col-span-6 md:col-span-5 space-y-1">
+                    <div className="font-bold text-sm text-white">Compensation Alignment</div>
+                    <p className="text-xs text-neutral-400 leading-normal hidden md:block">How are compensation fees and commissions collected and structured?</p>
+                  </div>
+                  <div className="col-span-3 flex justify-center text-red-500 font-bold text-xs gap-1.5 items-center">
+                    <X className="h-4.5 w-4.5 text-red-500 shrink-0" />
+                    <span>Opaque Commission/Bonus</span>
+                  </div>
+                  <div className="col-span-3 flex justify-center text-emerald-400 font-bold text-xs gap-1.5 items-center md:col-span-4">
+                    <Check className="h-4.5 w-4.5 text-emerald-400 shrink-0" />
+                    <span>Flat Retainer (Aligned Fee)</span>
+                  </div>
+                </div>
+
+                <div className="grid grid-cols-12 p-5 items-center">
+                  <div className="col-span-6 md:col-span-5 space-y-1">
+                    <div className="font-bold text-sm text-white">Rebate Optimization Flow</div>
+                    <p className="text-xs text-neutral-400 leading-normal hidden md:block">Are pharmaceutical manufacturer rebates shared fully with the plan sponsor?</p>
+                  </div>
+                  <div className="col-span-3 flex justify-center text-red-500 font-bold text-xs gap-1.5 items-center">
+                    <X className="h-4.5 w-4.5 text-red-500 shrink-0" />
+                    <span>Retained by PBM / GPO</span>
+                  </div>
+                  <div className="col-span-3 flex justify-center text-emerald-400 font-bold text-xs gap-1.5 items-center md:col-span-4">
+                    <Check className="h-4.5 w-4.5 text-emerald-400 shrink-0" />
+                    <span>100% Shared / Pass-Through</span>
+                  </div>
+                </div>
+
+              </div>
             </div>
-            <div className="text-xs sm:text-sm text-zinc-500 text-center px-4">
-              Free contract analysis • Documented findings in 14 days • No commitment required
-            </div>
-          </motion.div>
+
+          </div>
         </section>
 
-        {/* Dashboard Section with 3D Effects */}
-        <section id="dashboard" className="relative z-10 mx-auto w-full max-w-7xl px-4 sm:px-6 py-8 sm:py-12">
-          <motion.div
-            className="mb-8"
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6 }}>
-            
-            <div className="flex items-center justify-end gap-3 mb-4">
-              <div className="text-right">
-                <h2 className="text-4xl font-black bg-gradient-to-br from-white via-purple-200 to-blue-200 bg-clip-text text-transparent">Kincaid IQ Platform
-
-                </h2>
-                <p className="text-sm text-zinc-400 mt-1">
-                  Real-time metrics, evidence-backed KPIs, and algorithmic insights for C-suite decision making
-                </p>
-              </div>
-              <motion.div
-                className="h-12 w-12 rounded-xl bg-gradient-to-br from-purple-500/30 to-blue-500/30 flex items-center justify-center shadow-lg shadow-purple-500/30"
-                whileHover={{ rotate: 360, scale: 1.15 }}
-                transition={{ duration: 0.8, type: "spring" }}>
-                
-                <TrendingUp className="h-6 w-6 text-purple-400 drop-shadow-[0_0_12px_rgba(168,85,247,0.6)]" />
-              </motion.div>
-            </div>
-          </motion.div>
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6, delay: 0.2 }}>
-            
-            <ExecutiveWarRoom />
-          </motion.div>
-        </section>
-
-        {/* CHRO War Room Section */}
-        <section id="war-room" className="relative z-10 mx-auto w-full max-w-7xl px-6 py-12">
-          <motion.div
-            className="mb-12"
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6 }}>
-            
-            <div className="flex items-center gap-3 mb-4">
-              <motion.div
-                className="h-12 w-12 rounded-xl bg-gradient-to-br from-emerald-500/30 to-teal-500/30 flex items-center justify-center shadow-lg shadow-emerald-500/30"
-                whileHover={{ rotate: 360, scale: 1.15 }}
-                transition={{ duration: 0.8, type: "spring" }}>
-                
-                <Users className="h-6 w-6 text-emerald-400 drop-shadow-[0_0_12px_rgba(16,185,129,0.6)]" />
-              </motion.div>
-              <div>
-                <h2 className="text-4xl font-black bg-gradient-to-br from-white via-emerald-200 to-teal-200 bg-clip-text text-transparent">
-                  CHRO Intelligence Center
-                </h2>
-                <p className="text-sm text-zinc-400 mt-1">
-                  Human capital analytics and workforce intelligence for strategic talent decisions
-                </p>
-              </div>
-            </div>
-            <p className="text-base text-zinc-300 leading-relaxed max-w-3xl">
-              Real-time workforce analytics, benefits utilization tracking, and retention forecasting. Every HR metric backed by evidence, every decision supported by data.
+        {/* CAPABILITIES GRIDS (PRE-EXISTING) */}
+        <section className="py-24 max-w-7xl mx-auto px-4 md:px-8">
+          <div className="mb-12 text-center max-w-3xl mx-auto space-y-4">
+            <span className="text-xs font-mono text-purple-400 uppercase tracking-widest">Platform Core Architecture</span>
+            <h2 className="text-3xl md:text-5xl font-black">Platform Capabilities</h2>
+            <p className="text-neutral-400 text-lg">
+              Explore the core analytical modules driving the Fiduciary command center.
             </p>
-          </motion.div>
-
-          <motion.div
-            className="rounded-3xl border border-emerald-500/40 bg-gradient-to-br from-zinc-950/95 via-emerald-950/10 to-zinc-900/90 p-8 shadow-2xl backdrop-blur-sm"
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6, delay: 0.2 }}
-            whileHover={{ scale: 1.01 }}
-            style={{ perspective: "1500px", transformStyle: "preserve-3d" }}>
-            
-            <div className="absolute -inset-1 rounded-3xl bg-gradient-to-r from-emerald-600/20 via-teal-500/20 to-emerald-600/20 opacity-50 blur-xl" />
-            <div className="relative">
-              <CHROWarRoom />
-            </div>
-          </motion.div>
-
-          <motion.div
-            className="mt-10 flex flex-col sm:flex-row gap-4 justify-center"
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6, delay: 0.6 }}>
-            
-            <motion.div
-              whileHover={{ scale: 1.05, z: 30 }}
-              whileTap={{ scale: 0.95 }}
-              style={{ perspective: "1000px", transformStyle: "preserve-3d" }}>
-              
-              <Link
-                href="/enterprise/dashboard"
-                className="inline-flex items-center gap-2 rounded-xl border border-emerald-500/50 bg-zinc-950/80 px-8 py-4 text-base font-bold text-white backdrop-blur-sm transition-all hover:border-emerald-400/70 hover:bg-emerald-950/40">
-                
-                <Building2 className="h-5 w-5 text-emerald-400" />
-                <span>Enterprise Portal</span>
-              </Link>
-            </motion.div>
-          </motion.div>
-          <motion.div
-            className="mt-10 flex justify-center"
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6, delay: 0.6 }}>
-            
-            <motion.div
-              whileHover={{ scale: 1.05, z: 30 }}
-              whileTap={{ scale: 0.95 }}
-              style={{ perspective: "1000px", transformStyle: "preserve-3d" }}>
-              
-              <Link
-                href="/request-demo"
-                className="inline-flex items-center gap-2 rounded-xl border border-emerald-500/50 bg-zinc-950/80 px-8 py-4 text-base font-bold text-white backdrop-blur-sm transition-all hover:border-emerald-400/70 hover:bg-emerald-950/40">
-                
-                <Users className="h-5 w-5 text-emerald-400" />
-                <span>Schedule HR Analytics Demo</span>
-              </Link>
-            </motion.div>
-          </motion.div>
-        </section>
-
-        {/* Enterprise Trust Section */}
-        <section id="trust" className="relative z-10 mx-auto w-full max-w-7xl px-6 py-12">
-          <motion.div
-            className="mb-12"
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6 }}>
-            
-            <div className="flex items-center gap-3 text-lg font-black bg-gradient-to-r from-purple-300 to-white bg-clip-text text-transparent">
-              <Shield className="h-6 w-6 text-purple-400 drop-shadow-[0_0_12px_rgba(168,85,247,0.6)]" />
-              Enterprise Security & Compliance
-            </div>
-            <div className="mt-3 text-base text-zinc-400">
-              Security-first architecture. Compliance-ready controls. Audit-proof documentation.
-            </div>
-          </motion.div>
-          <div className="grid gap-8 md:grid-cols-3">
-            <Card3D title="Zero Trust Architecture" subtitle="Least privilege + continuous verification" icon={Shield} delay={0.1}>
-              Role-based access control with just-in-time elevation. Tamper-evident activity logs, network segmentation, and encrypted data at rest and in transit.
-            </Card3D>
-            <Card3D title="Compliance Automation" subtitle="SOC2, HIPAA, ISO27001 ready" icon={Award} delay={0.2}>
-              Automated policy enforcement, continuous compliance monitoring, and one-click audit report generation. Every control mapped to frameworks.
-            </Card3D>
-            <Card3D title="Enterprise SLAs" subtitle="99.99% uptime guarantee" icon={CheckCircle2} delay={0.3}>
-              Multi-region redundancy, automated failover, disaster recovery tested quarterly. 24/7 enterprise support with dedicated account management.
-            </Card3D>
           </div>
-          <motion.div
-            className="mt-12 rounded-3xl border border-purple-500/40 bg-gradient-to-br from-zinc-950/95 via-purple-950/20 to-zinc-900/90 p-8 shadow-2xl backdrop-blur-sm"
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
-            whileHover={{ scale: 1.01, rotateY: 1 }}
-            style={{ perspective: "1500px", transformStyle: "preserve-3d" }}>
+
+          <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
             
-            <div className="absolute -inset-1 rounded-3xl bg-gradient-to-r from-purple-600/30 via-purple-500/30 to-blue-600/30 opacity-70 blur-xl" />
-            <div className="relative flex flex-col gap-6 lg:flex-row lg:items-center lg:justify-between">
-              <div>
-                <div className="text-xl font-black bg-gradient-to-r from-purple-300 to-white bg-clip-text text-transparent">
-                  Enterprise transformation starts here
-                </div>
-                <div className="mt-2 text-sm text-zinc-400">
-                  Schedule a consultation with our enterprise team to discuss your governance requirements.
-                </div>
+            <div
+              onClick={() => handleBadgeClick("receipts")}
+              className="group relative rounded-3xl border border-purple-500/20 bg-gradient-to-br from-purple-950/10 to-black/40 p-6 sm:p-8 backdrop-blur-sm hover:border-purple-500/40 cursor-pointer transition-all duration-300 hover:scale-102"
+            >
+              <div className="mb-4 inline-flex rounded-xl bg-purple-500/10 p-3">
+                <FileText className="h-6 w-6 text-purple-400" />
               </div>
-              <div className="flex gap-4">
-                <motion.div
-                  whileHover={{ scale: 1.05, z: 30 }}
-                  whileTap={{ scale: 0.95 }}
-                  style={{ perspective: "1000px", transformStyle: "preserve-3d" }}>
-                  
-                  <Link
-                    href="/enterprise/dashboard"
-                    className="inline-flex items-center gap-2 rounded-2xl border border-purple-500/40 bg-gradient-to-r from-purple-600/30 to-blue-600/30 px-6 py-3 text-base font-bold backdrop-blur-xl transition-all hover:border-purple-400/60 hover:shadow-lg hover:shadow-purple-500/30">
-                    
-                    <Building2 className="h-5 w-5 relative" />
-                    <span className="relative">Contact Sales →</span>
-                  </Link>
-                </motion.div>
-                <motion.div
-                  whileHover={{ scale: 1.05, y: -2, z: 30 }}
-                  whileTap={{ scale: 0.95 }}
-                  style={{ perspective: "1000px", transformStyle: "preserve-3d" }}>
-                  
-                  <Link
-                    href="/request-demo"
-                    className="inline-flex items-center gap-2 rounded-xl border border-purple-500/50 bg-zinc-950/80 px-5 py-3 text-base font-bold text-white backdrop-blur-sm transition-all hover:border-purple-400/70 hover:bg-purple-950/40">
-                    
-                    <Lock className="h-5 w-5 text-purple-400" />
-                    Request Demo
-                  </Link>
-                </motion.div>
+              <h3 className="mb-2 text-xl sm:text-2xl font-bold text-white">Immutable Evidence Ledger</h3>
+              <p className="text-sm text-neutral-400 leading-relaxed">
+                Cryptographic timestamped tracking of healthcare contract compliance, overcharge recovery events, and verification receipts.
+              </p>
+              <div className="mt-4 flex items-center gap-1 text-xs font-bold text-purple-400 group-hover:text-purple-300">
+                Explore ledger forensics <ChevronRight className="h-4 w-4" />
               </div>
             </div>
-          </motion.div>
+
+            <div
+              onClick={() => handleBadgeClick("ebitda")}
+              className="group relative rounded-3xl border border-amber-500/20 bg-gradient-to-br from-amber-950/10 to-black/40 p-6 sm:p-8 backdrop-blur-sm hover:border-amber-500/40 cursor-pointer transition-all duration-300 hover:scale-102"
+            >
+              <div className="mb-4 inline-flex rounded-xl bg-amber-500/10 p-3">
+                <Shield className="h-6 w-6 text-amber-400" />
+              </div>
+              <h3 className="mb-2 text-xl sm:text-2xl font-bold text-white">EBITDA Defense Engine</h3>
+              <p className="text-sm text-neutral-400 leading-relaxed">
+                Unlock direct enterprise margin defenses. Re-route prescription benefit waste into verified, audited corporate profitability gains.
+              </p>
+              <div className="mt-4 flex items-center gap-1 text-xs font-bold text-amber-400 group-hover:text-amber-300">
+                Evaluate financial models <ChevronRight className="h-4 w-4" />
+              </div>
+            </div>
+
+            <div
+              onClick={() => handleBadgeClick("verification")}
+              className="group relative rounded-3xl border border-blue-500/20 bg-gradient-to-br from-blue-950/10 to-black/40 p-6 sm:p-8 backdrop-blur-sm hover:border-blue-500/40 cursor-pointer transition-all duration-300 hover:scale-102"
+            >
+              <div className="mb-4 inline-flex rounded-xl bg-blue-500/10 p-3">
+                <Database className="h-6 w-6 text-blue-400" />
+              </div>
+              <h3 className="mb-2 text-xl sm:text-2xl font-bold text-white">Forensic Database Audit</h3>
+              <p className="text-sm text-neutral-400 leading-relaxed">
+                Connect and sync multi-source claims and healthcare contract formularies across massive transparent actuarial databases.
+              </p>
+              <div className="mt-4 flex items-center gap-1 text-xs font-bold text-blue-400 group-hover:text-blue-300">
+                Inspect compliance pipelines <ChevronRight className="h-4 w-4" />
+              </div>
+            </div>
+
+          </div>
         </section>
 
-        {/* Footer */}
-        <motion.footer
-          className="relative z-10 mx-auto w-full max-w-7xl px-6 py-12"
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6 }}>
-          
-          <div className="text-center py-8 border-t border-white/10">
-            <span>© {new Date().getFullYear()} Kincaid IQ</span>
-          </div>
-        </motion.footer>
+        {/* Real-time war room preview section (Pre-existing) */}
+        <section className="py-24 border-t border-neutral-900 bg-black/40 relative">
+          <div className="max-w-7xl mx-auto px-4 md:px-8">
+            <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 mb-12">
+              <div className="space-y-2">
+                <span className="text-xs font-mono text-emerald-400 uppercase tracking-widest">Unified Enterprise Command</span>
+                <h2 className="text-3xl md:text-5xl font-black">Live Fiduciary Intelligence Portal</h2>
+                <p className="text-neutral-400 text-lg">
+                  Real-time overcharge tracking feeds and analytical dashboards optimized for corporate benefits management.
+                </p>
+              </div>
+              <Link
+                href="/ soluções"
+                className="inline-flex items-center gap-2 border border-neutral-800 hover:border-neutral-700 bg-neutral-900/60 px-6 py-3 rounded-xl text-sm font-bold text-neutral-200 hover:text-white"
+              >
+                <span>View Full Command Center</span>
+                <ChevronRight className="h-4.5 w-4.5" />
+              </Link>
+            </div>
 
-        {/* Free Contract Review CTA */}
-        <section className="py-20 px-4 bg-gradient-to-b from-black to-gray-900">
-          <div className="max-w-5xl mx-auto">
-            <FreeContractReviewCTA />
+            <div className="rounded-3xl border border-neutral-800 bg-neutral-950 p-6 sm:p-10 shadow-2xl relative">
+              <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-purple-500 via-amber-500 to-blue-500" />
+              <ExecutiveWarRoom />
+            </div>
           </div>
         </section>
 
-        <SiteFooter />
-      </main>
+        {/* COMPLIANCE STANDARDS SLIDER / RIBBON */}
+        <section className="py-12 border-t border-b border-neutral-900 bg-neutral-950 overflow-hidden">
+          <div className="max-w-7xl mx-auto px-4 md:px-8 flex flex-col md:flex-row items-center justify-between gap-8">
+            <div className="text-center md:text-left space-y-1">
+              <div className="text-xs font-mono text-neutral-500 uppercase">Fiduciary Assurance Standards</div>
+              <div className="text-sm font-bold text-neutral-300">Adhering to strict national operational healthcare and cybersecurity frameworks.</div>
+            </div>
+            <div className="flex flex-wrap items-center justify-center gap-6 text-xs font-mono font-bold text-neutral-400">
+              <span className="border border-neutral-800 bg-neutral-900/40 px-3 py-1.5 rounded-lg">SSAE-18 SOC 2 TYPE II</span>
+              <span className="border border-neutral-800 bg-neutral-900/40 px-3 py-1.5 rounded-lg">HIPAA ENCRYPTED</span>
+              <span className="border border-neutral-800 bg-neutral-900/40 px-3 py-1.5 rounded-lg">ERISA FIDUCIARY</span>
+              <span className="border border-neutral-800 bg-neutral-900/40 px-3 py-1.5 rounded-lg">AAA STANDARDS</span>
+            </div>
+          </div>
+        </section>
+
+        <Footer />
+      </div>
 
       <BadgeDetailSystem
         badgeType={selectedBadge}
         level={badgeLevel}
         onClose={handleBadgeClose}
-        onNextLevel={handleNextLevel} />
-      
-    </>);
-
+        onNextLevel={handleNextLevel}
+      />
+    </>
+  );
 }

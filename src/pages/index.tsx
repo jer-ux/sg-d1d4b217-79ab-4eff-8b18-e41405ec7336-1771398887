@@ -14,6 +14,7 @@ import { BadgeDetailSystem } from "@/components/home/BadgeDetailSystem";
 import { Hero3D } from "@/components/Hero3D";
 import Nav from "@/components/Nav";
 import Footer from "@/components/Footer";
+import { Badge } from "@/components/ui/badge";
 
 // Overcharge feed mock events
 const mockAudits = [

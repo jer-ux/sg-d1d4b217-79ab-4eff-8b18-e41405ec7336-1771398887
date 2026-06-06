@@ -8,7 +8,7 @@ import { SiteFooter } from "@/components/site/SiteFooter";
 import Nav from "@/components/Nav";
 import Footer from "@/components/Footer";
 import { SEO } from "@/components/SEO";
-import ImageLightbox from "@/components/ImageLightbox";
+import { ImageLightbox } from "@/components/ImageLightbox";
 import { 
   Shield, 
   TrendingUp, 

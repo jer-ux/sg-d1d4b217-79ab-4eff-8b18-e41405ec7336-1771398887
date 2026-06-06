@@ -8,6 +8,7 @@ import { SiteFooter } from "@/components/site/SiteFooter";
 import Nav from "@/components/Nav";
 import Footer from "@/components/Footer";
 import { SEO } from "@/components/SEO";
+import ImageLightbox from "@/components/ImageLightbox";
 import { 
   Shield, 
   TrendingUp, 
@@ -19,7 +20,12 @@ import {
   Eye, 
   X,
   Bell,
-  CheckCircle2
+  CheckCircle2,
+  ChevronLeft,
+  ChevronRight,
+  BarChart3,
+  Calculator,
+  Linkedin
 } from "lucide-react";
 
 const publications = [

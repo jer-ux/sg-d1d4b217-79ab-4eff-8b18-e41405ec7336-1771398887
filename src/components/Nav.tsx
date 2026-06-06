@@ -51,7 +51,7 @@ export default function Nav() {
                       href="/solutions/rx-defense"
                       onClick={() => setKincaidIqDropdownOpen(false)}
                       className="block px-4 py-3 text-gray-300 hover:text-white hover:bg-rose-500/10 rounded-lg transition-colors duration-150">
-                      <div className="font-medium">Rx Defense</div>
+                      <div className="font-medium">Rx PBM Defense Contract x-Ray</div>
                       <div className="text-xs text-gray-400">PBM contract forensics</div>
                     </Link>
                     <Link
@@ -256,7 +256,7 @@ export default function Nav() {
                     Intelligence Overview
                   </Link>
                   <Link href="/solutions/rx-defense" className="block px-4 py-2 text-sm text-gray-400 hover:text-white hover:bg-rose-500/10 rounded-lg transition-colors">
-                    Rx Defense
+                    Rx PBM Defense Contract x-Ray
                   </Link>
                   <Link href="/solutions/actuarial-benefits" className="block px-4 py-2 text-sm text-gray-400 hover:text-white hover:bg-cyan-500/10 rounded-lg transition-colors">
                     Actuarial Analysis

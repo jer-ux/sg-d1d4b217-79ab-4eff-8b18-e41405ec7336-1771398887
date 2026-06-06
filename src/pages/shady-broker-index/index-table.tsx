@@ -3,8 +3,8 @@ import Link from "next/link";
 import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { Search, Filter, ChevronDown, ChevronUp, AlertTriangle, Shield, TrendingUp, Building2, ExternalLink } from "lucide-react";
-import { Footer } from "@/components/Footer";
-import { createClient } from "@/integrations/supabase/client";
+import Footer from "@/components/Footer";
+import { supabase } from "@/integrations/supabase/client";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -51,7 +51,6 @@ export default function ShadyBrokerIndexTable() {
 
   const fetchBrokers = async () => {
     try {
-      const supabase = createClient();
       const { data, error } = await supabase
         .from("brokers")
         .select("*")

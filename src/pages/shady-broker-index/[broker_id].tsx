@@ -4,8 +4,8 @@ import { useRouter } from "next/router";
 import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { Shield, AlertTriangle, FileText, ExternalLink, ChevronRight, CheckCircle2, XCircle, AlertCircle } from "lucide-react";
-import { Footer } from "@/components/Footer";
-import { createClient } from "@/integrations/supabase/client";
+import Footer from "@/components/Footer";
+import { supabase } from "@/integrations/supabase/client";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 
@@ -68,8 +68,6 @@ export default function BrokerDetailPage() {
 
   const fetchBrokerData = async () => {
     try {
-      const supabase = createClient();
-      
       const { data: brokerData, error: brokerError } = await supabase
         .from("brokers")
         .select("*")

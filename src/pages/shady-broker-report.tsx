@@ -2,7 +2,7 @@ import Head from "next/head";
 import Link from "next/link";
 import { motion } from "framer-motion";
 import { FileText, CheckCircle2, Shield, TrendingUp, AlertTriangle, Users, DollarSign, Scale, Eye, Clock } from "lucide-react";
-import { Footer } from "@/components/Footer";
+import Footer from "@/components/Footer";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 

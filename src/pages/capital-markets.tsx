@@ -561,10 +561,10 @@ export default function CapitalMarketsPage() {
                   </select>
                   <select className="px-6 py-4 rounded-xl bg-black/50 border border-indigo-500/20 text-white focus:outline-none focus:border-indigo-500/40 transition-colors">
                     <option value="">AUM Range</option>
-                    <option value="sub500">< $500M</option>
+                    <option value="sub500">Under $500M</option>
                     <option value="500to2b">$500M - $2B</option>
                     <option value="2to10b">$2B - $10B</option>
-                    <option value="over10b">> $10B</option>
+                    <option value="over10b">Over $10B</option>
                   </select>
                 </div>
 

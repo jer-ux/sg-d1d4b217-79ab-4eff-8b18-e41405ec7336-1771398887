@@ -141,9 +141,86 @@ export default function Nav() {
               )}
             </div>
 
-            <Link href="/platform" className="px-4 py-2 text-gray-300 hover:text-white transition-colors rounded-lg hover:bg-white/5">
-              Platform
-            </Link>
+            {/* Areas of Focus - Dropdown */}
+            <div className="relative">
+              <button
+                onClick={() => setFocusAreasDropdownOpen(!focusAreasDropdownOpen)}
+                className="flex items-center gap-2 px-4 py-2 text-gray-300 hover:text-white transition-colors rounded-lg hover:bg-white/5">
+                Areas of Focus
+                <ChevronDown className={`w-3 h-3 transition-transform ${focusAreasDropdownOpen ? "rotate-180" : ""}`} />
+              </button>
+              {focusAreasDropdownOpen && (
+                <div className="absolute top-full left-0 mt-2 w-72 bg-gray-900/95 backdrop-blur-xl rounded-xl border border-gray-700/50 shadow-xl overflow-hidden z-[210]">
+                  <div className="p-2">
+                    <Link
+                      href="/personas/board-members"
+                      onClick={() => setFocusAreasDropdownOpen(false)}
+                      className="block px-4 py-3 text-gray-300 hover:text-white hover:bg-purple-500/10 rounded-lg transition-colors duration-150">
+                      <div className="font-medium flex items-center gap-2">
+                        <Shield className="w-4 h-4 text-purple-400" />
+                        For Board Members
+                      </div>
+                      <div className="text-xs text-gray-400">Strategic governance & value creation oversight</div>
+                    </Link>
+
+                    <Link
+                      href="/capital-markets"
+                      onClick={() => setFocusAreasDropdownOpen(false)}
+                      className="block px-4 py-3 text-gray-300 hover:text-white hover:bg-indigo-500/10 rounded-lg transition-colors duration-150">
+                      <div className="font-medium flex items-center gap-2">
+                        <TrendingUp className="w-4 h-4 text-indigo-400" />
+                        For Capital Markets
+                      </div>
+                      <div className="text-xs text-gray-400">PE/VC/M&A deal diligence & portfolio optimization</div>
+                    </Link>
+
+                    <Link
+                      href="/personas/actuarial"
+                      onClick={() => setFocusAreasDropdownOpen(false)}
+                      className="block px-4 py-3 text-gray-300 hover:text-white hover:bg-cyan-500/10 rounded-lg transition-colors duration-150">
+                      <div className="font-medium flex items-center gap-2">
+                        <BarChart3 className="w-4 h-4 text-cyan-400" />
+                        For Actuaries
+                      </div>
+                      <div className="text-xs text-gray-400">Actuarial modeling & risk quantification tools</div>
+                    </Link>
+
+                    <Link
+                      href="/personas/broker"
+                      onClick={() => setFocusAreasDropdownOpen(false)}
+                      className="block px-4 py-3 text-gray-300 hover:text-white hover:bg-amber-500/10 rounded-lg transition-colors duration-150">
+                      <div className="font-medium flex items-center gap-2">
+                        <Users className="w-4 h-4 text-amber-400" />
+                        For Brokers
+                      </div>
+                      <div className="text-xs text-gray-400">Client retention & value demonstration platform</div>
+                    </Link>
+
+                    <Link
+                      href="/personas/cfo"
+                      onClick={() => setFocusAreasDropdownOpen(false)}
+                      className="block px-4 py-3 text-gray-300 hover:text-white hover:bg-emerald-500/10 rounded-lg transition-colors duration-150">
+                      <div className="font-medium flex items-center gap-2">
+                        <DollarSign className="w-4 h-4 text-emerald-400" />
+                        For CFOs
+                      </div>
+                      <div className="text-xs text-gray-400">EBITDA defense & financial governance</div>
+                    </Link>
+
+                    <Link
+                      href="/personas/hr"
+                      onClick={() => setFocusAreasDropdownOpen(false)}
+                      className="block px-4 py-3 text-gray-300 hover:text-white hover:bg-rose-500/10 rounded-lg transition-colors duration-150">
+                      <div className="font-medium flex items-center gap-2">
+                        <Heart className="w-4 h-4 text-rose-400" />
+                        For HR Leaders
+                      </div>
+                      <div className="text-xs text-gray-400">Benefits strategy & employee value optimization</div>
+                    </Link>
+                  </div>
+                </div>
+              )}
+            </div>
 
             <Link href="/request-demo">
               <Button className="bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600">
@@ -229,12 +306,12 @@ export default function Nav() {
               )}
             </div>
 
-            {/* Focus Areas Dropdown - Mobile */}
+            {/* Areas of Focus Dropdown - Mobile */}
             <div>
               <button
                 onClick={() => setFocusAreasDropdownOpen(!focusAreasDropdownOpen)}
                 className="flex items-center justify-between w-full px-4 py-3 text-gray-300 hover:text-white hover:bg-white/5 rounded-lg transition-colors">
-                <span className="font-medium">Focus Areas</span>
+                <span className="font-medium">Areas of Focus</span>
                 <ChevronDown className={`w-4 h-4 transition-transform ${focusAreasDropdownOpen ? "rotate-180" : ""}`} />
               </button>
               {focusAreasDropdownOpen && (

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Head from "next/head";
 import { 
   ShieldAlert, 
@@ -13,12 +13,23 @@ import {
   Menu,
   X,
   Upload,
-  FileText
+  FileText,
+  TrendingUp,
+  Users,
+  Award,
+  Shield,
+  Clock,
+  Play,
+  Star,
+  Building2,
+  Check
 } from "lucide-react";
 import { SiteFooter } from "@/components/site/SiteFooter";
 import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
 import Link from "next/link";
 import Nav from "@/components/Nav";
+import { motion, AnimatePresence } from "framer-motion";
 
 const provisions = [
   {
@@ -598,11 +609,137 @@ const provisions = [
   }
 ];
 
-export default function RxDefensePresentation() {
-  const [currentPage, setCurrentPage] = useState(0); // 0 = overview, 1-15 = provisions
-  const [tocOpen, setTocOpen] = useState(false);
+const testimonials = [
+  {
+    name: "Michael R. Hamann",
+    title: "Chief Financial Officer",
+    company: "Rimes Technologies",
+    image: "/Hamann_Michael.jpg",
+    quote: "The Contract X-Ray exposed $2.4M in annual leakage we had no visibility into. Within 90 days of receiving their analysis, we renegotiated our PBM contract and implemented direct manufacturer programs. Best $75K we've ever spent on benefits consulting.",
+    savings: "$2.4M",
+    timeline: "90 days"
+  },
+  {
+    name: "Ann Lewandowski",
+    title: "VP Human Resources",
+    company: "Schwarz Partners",
+    image: "/ann-lewandowski.jpg",
+    quote: "We thought our broker was protecting us. The forensic analysis showed our broker was receiving $180K/year in undisclosed PBM payments — more than we were paying them directly. That misalignment explained everything about our rising costs.",
+    savings: "$1.8M",
+    timeline: "6 months"
+  },
+  {
+    name: "Melissa Colpitts",
+    title: "Director of Benefits",
+    company: "Inotiv",
+    image: "/melissa-colpitts.jpg",
+    quote: "The 15-provision scorecard made it impossible for our PBM to dodge accountability. Every question we asked in renewal negotiations was backed by contract language and financial modeling from the X-Ray report. We got everything we asked for.",
+    savings: "$890K",
+    timeline: "Contract renewal"
+  }
+];
 
-  const totalPages = provisions.length + 1; // Overview + 15 provisions
+const comparisonData = [
+  {
+    provision: "Fiduciary Status",
+    typical: "Explicitly disclaimed",
+    bestPractice: "Contractual acceptance",
+    yourContract: "Not mentioned"
+  },
+  {
+    provision: "Spread Pricing",
+    typical: "Allowed, undisclosed",
+    bestPractice: "100% pass-through required",
+    yourContract: "No prohibition"
+  },
+  {
+    provision: "Rebate Pass-Through",
+    typical: "Pooled at 60-75%",
+    bestPractice: "100% client-specific",
+    yourContract: "Pooled methodology"
+  },
+  {
+    provision: "Audit Rights",
+    typical: "12-month lookback",
+    bestPractice: "36-month + extrapolation",
+    yourContract: "18-month, no extrapolation"
+  },
+  {
+    provision: "Specialty Carve-Out",
+    typical: "Prohibited or penalized",
+    bestPractice: "Unconditional, 30-day notice",
+    yourContract: "180-day notice + rebate reduction"
+  },
+  {
+    provision: "Data Ownership",
+    typical: "PBM retains rights",
+    bestPractice: "Plan owns all data",
+    yourContract: "Shared rights"
+  },
+  {
+    provision: "DIR Fees",
+    typical: "Unlimited retroactive",
+    bestPractice: "Prohibited",
+    yourContract: "No restrictions"
+  },
+  {
+    provision: "Termination",
+    typical: "180 days + penalties",
+    bestPractice: "30 days, no penalties",
+    yourContract: "90 days + wind-down fees"
+  }
+];
+
+export default function RxDefensePresentation() {
+  const [currentPage, setCurrentPage] = useState(0);
+  const [tocOpen, setTocOpen] = useState(false);
+  const [showROICalc, setShowROICalc] = useState(false);
+  const [showExitIntent, setShowExitIntent] = useState(false);
+  const [members, setMembers] = useState("500");
+  const [drugSpend, setDrugSpend] = useState("3000000");
+  const [calcResults, setCalcResults] = useState<any>(null);
+
+  const totalPages = provisions.length + 1;
+
+  // Exit intent detection
+  useEffect(() => {
+    const handleMouseLeave = (e: MouseEvent) => {
+      if (e.clientY <= 0 && currentPage > 0) {
+        setShowExitIntent(true);
+      }
+    };
+
+    document.addEventListener('mouseleave', handleMouseLeave);
+    return () => document.removeEventListener('mouseleave', handleMouseLeave);
+  }, [currentPage]);
+
+  const calculateROI = () => {
+    const memberCount = parseInt(members) || 0;
+    const annualSpend = parseInt(drugSpend) || 0;
+    
+    const spreadPricingSavings = annualSpend * 0.10;
+    const rebateGap = annualSpend * 0.08;
+    const dirFeesElimination = annualSpend * 0.12;
+    const specialtyOptimization = annualSpend * 0.05;
+    const adminFeeReduction = memberCount * 36;
+    
+    const totalSavings = spreadPricingSavings + rebateGap + dirFeesElimination + specialtyOptimization + adminFeeReduction;
+    const fixedFeeInvestment = 75000;
+    const performanceBasedUpfront = 40000;
+    
+    setCalcResults({
+      totalSavings: totalSavings.toLocaleString('en-US', { style: 'currency', currency: 'USD', maximumFractionDigits: 0 }),
+      spreadPricing: spreadPricingSavings.toLocaleString('en-US', { style: 'currency', currency: 'USD', maximumFractionDigits: 0 }),
+      rebate: rebateGap.toLocaleString('en-US', { style: 'currency', currency: 'USD', maximumFractionDigits: 0 }),
+      dirFees: dirFeesElimination.toLocaleString('en-US', { style: 'currency', currency: 'USD', maximumFractionDigits: 0 }),
+      specialty: specialtyOptimization.toLocaleString('en-US', { style: 'currency', currency: 'USD', maximumFractionDigits: 0 }),
+      admin: adminFeeReduction.toLocaleString('en-US', { style: 'currency', currency: 'USD', maximumFractionDigits: 0 }),
+      fixedFeeROI: ((totalSavings / fixedFeeInvestment) * 100).toFixed(0),
+      performanceROI: ((totalSavings / performanceBasedUpfront) * 100).toFixed(0),
+      fixedPayback: (fixedFeeInvestment / (totalSavings / 12)).toFixed(1),
+      performancePayback: (performanceBasedUpfront / (totalSavings / 12)).toFixed(1)
+    });
+  };
 
   const goToPage = (page: number) => {
     setCurrentPage(page);
@@ -629,6 +766,22 @@ export default function RxDefensePresentation() {
       </Head>
 
       <Nav />
+
+      {/* Sticky Upload CTA */}
+      {currentPage > 0 && (
+        <motion.div
+          initial={{ y: -100 }}
+          animate={{ y: 0 }}
+          className="fixed top-20 right-6 z-50"
+        >
+          <Link href="/upload-pbm-contract">
+            <Button className="bg-rose-600 hover:bg-rose-700 text-white shadow-2xl shadow-rose-500/30">
+              <Upload className="w-4 h-4 mr-2" />
+              Upload Your Contract
+            </Button>
+          </Link>
+        </motion.div>
+      )}
 
       {/* Table of Contents Sidebar */}
       <div className={`fixed top-0 left-0 h-full w-80 bg-[#0a0a0a] border-r border-white/10 z-50 transform transition-transform duration-300 ${tocOpen ? 'translate-x-0' : '-translate-x-full'} overflow-y-auto`}>
@@ -690,7 +843,7 @@ export default function RxDefensePresentation() {
                 variant="ghost"
                 size="sm"
                 onClick={() => setTocOpen(!tocOpen)}
-                className="text-slate-400 hover:text-white"
+                className="text-slate-400 hover:text-white lg:hidden"
               >
                 <Menu className="w-5 h-5" />
               </Button>
@@ -698,13 +851,13 @@ export default function RxDefensePresentation() {
                 <div className="text-xs text-slate-500 uppercase tracking-widest font-bold">
                   Rx Defense IQ™ Presentation
                 </div>
-                <div className="text-sm text-white font-semibold">
+                <div className="text-sm text-white font-semibold hidden md:block">
                   {currentPage === 0 ? 'Overview' : `Provision ${currentPage}: ${provisions[currentPage - 1].title}`}
                 </div>
               </div>
             </div>
             <div className="flex items-center gap-4">
-              <span className="text-sm text-slate-400 font-mono">
+              <span className="text-sm text-slate-400 font-mono hidden sm:block">
                 Page {currentPage + 1} of {totalPages}
               </span>
               <div className="flex gap-2">
@@ -736,38 +889,116 @@ export default function RxDefensePresentation() {
           {currentPage === 0 ? (
             // Overview Page
             <div className="space-y-12">
-              {/* Hero Section - Updated with forensic positioning */}
-              <div className="text-center mb-16">
-                <div className="inline-flex items-center gap-2 bg-rose-500/10 border border-rose-500/30 rounded-full px-4 py-2 mb-6">
-                  <ShieldAlert className="w-4 h-4 text-rose-400" />
-                  <span className="text-sm font-bold text-rose-400 uppercase tracking-widest">PBM Contract X-Ray</span>
-                </div>
-                <h1 className="text-5xl md:text-7xl font-black text-white mb-6 tracking-tight">
-                  RX Defense™
-                </h1>
-                <p className="text-2xl md:text-3xl text-slate-300 mb-6 font-bold">
-                  The Forensic Infrastructure That Turns<br />
-                  Pharmacy Spend Opacity Into Fiduciary-Grade Transparency
-                </p>
-                <p className="text-lg text-slate-400 max-w-3xl mx-auto leading-relaxed mb-8">
-                  A comprehensive forensic analysis of your PBM contract identifying $3.6M in annual savings opportunities across 15 structural provisions. 
-                  We expose hidden margin sources, validate pricing mechanisms, and provide Board-ready documentation for contract renegotiation.
-                </p>
-                <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
-                  <Link href="/upload-pbm-contract">
-                    <Button className="bg-rose-600 hover:bg-rose-700 text-white px-8 py-4 text-lg">
-                      <Upload className="w-5 h-5 mr-2" />
-                      Upload Your Contract
+              {/* Enhanced Hero Section */}
+              <div className="text-center mb-16 relative">
+                <motion.div
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.6 }}
+                >
+                  <div className="inline-flex items-center gap-2 bg-rose-500/10 border border-rose-500/30 rounded-full px-4 py-2 mb-6">
+                    <ShieldAlert className="w-4 h-4 text-rose-400" />
+                    <span className="text-sm font-bold text-rose-400 uppercase tracking-widest">PBM Contract X-Ray</span>
+                  </div>
+                  <h1 className="text-5xl md:text-7xl font-black text-white mb-6 tracking-tight">
+                    RX Defense™
+                  </h1>
+                  <p className="text-2xl md:text-3xl text-slate-300 mb-6 font-bold">
+                    The Forensic Infrastructure That Turns<br />
+                    Pharmacy Spend Opacity Into Fiduciary-Grade Transparency
+                  </p>
+                  <p className="text-lg text-slate-400 max-w-3xl mx-auto leading-relaxed mb-8">
+                    A comprehensive forensic analysis of your PBM contract identifying <span className="text-emerald-400 font-bold">$3.6M in annual savings opportunities</span> across 15 structural provisions. 
+                    We expose hidden margin sources, validate pricing mechanisms, and provide Board-ready documentation for contract renegotiation.
+                  </p>
+                  
+                  {/* Animated Stats */}
+                  <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8 max-w-4xl mx-auto">
+                    {[
+                      { icon: DollarSign, value: "$3.6M", label: "Avg. Annual Savings", color: "emerald" },
+                      { icon: Clock, value: "7-10", label: "Business Days", color: "cyan" },
+                      { icon: Shield, value: "15", label: "Critical Provisions", color: "rose" }
+                    ].map((stat, idx) => (
+                      <motion.div
+                        key={idx}
+                        initial={{ opacity: 0, scale: 0.9 }}
+                        animate={{ opacity: 1, scale: 1 }}
+                        transition={{ delay: 0.2 + idx * 0.1 }}
+                        className={`bg-${stat.color}-950/30 border border-${stat.color}-500/30 rounded-xl p-6`}
+                      >
+                        <stat.icon className={`w-8 h-8 text-${stat.color}-400 mx-auto mb-3`} />
+                        <div className={`text-4xl font-black text-${stat.color}-400 mb-2`}>{stat.value}</div>
+                        <div className="text-sm text-slate-400">{stat.label}</div>
+                      </motion.div>
+                    ))}
+                  </div>
+
+                  <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
+                    <Link href="/upload-pbm-contract">
+                      <Button className="bg-rose-600 hover:bg-rose-700 text-white px-8 py-4 text-lg">
+                        <Upload className="w-5 h-5 mr-2" />
+                        Upload Your Contract
+                      </Button>
+                    </Link>
+                    <Button 
+                      onClick={() => setShowROICalc(true)}
+                      variant="outline" 
+                      className="border-emerald-500/50 text-emerald-400 hover:bg-emerald-500/10 px-8 py-4 text-lg"
+                    >
+                      <TrendingUp className="w-5 h-5 mr-2" />
+                      Calculate Your Savings
                     </Button>
-                  </Link>
-                  <Button 
-                    onClick={() => goToPage(1)}
-                    variant="outline" 
-                    className="border-white/20 hover:border-white/40 px-8 py-4 text-lg"
-                  >
-                    View Sample Analysis
-                    <ArrowRight className="w-5 h-5 ml-2" />
-                  </Button>
+                    <Button 
+                      onClick={() => goToPage(1)}
+                      variant="outline" 
+                      className="border-white/20 hover:border-white/40 px-8 py-4 text-lg"
+                    >
+                      View Sample Analysis
+                      <ArrowRight className="w-5 h-5 ml-2" />
+                    </Button>
+                  </div>
+                </motion.div>
+              </div>
+
+              {/* Trust Indicators */}
+              <div className="bg-[#0a0a0a] border border-white/5 rounded-2xl p-8">
+                <div className="flex flex-wrap items-center justify-center gap-8">
+                  <div className="flex items-center gap-3">
+                    <div className="bg-emerald-500/20 p-2 rounded-lg">
+                      <Shield className="w-6 h-6 text-emerald-400" />
+                    </div>
+                    <div>
+                      <div className="text-sm font-bold text-white">SOC 2 Type II</div>
+                      <div className="text-xs text-slate-500">Certified Secure</div>
+                    </div>
+                  </div>
+                  <div className="flex items-center gap-3">
+                    <div className="bg-cyan-500/20 p-2 rounded-lg">
+                      <Lock className="w-6 h-6 text-cyan-400" />
+                    </div>
+                    <div>
+                      <div className="text-sm font-bold text-white">HIPAA Compliant</div>
+                      <div className="text-xs text-slate-500">Protected Health Data</div>
+                    </div>
+                  </div>
+                  <div className="flex items-center gap-3">
+                    <div className="bg-purple-500/20 p-2 rounded-lg">
+                      <Award className="w-6 h-6 text-purple-400" />
+                    </div>
+                    <div>
+                      <div className="text-sm font-bold text-white">ERISA Specialist</div>
+                      <div className="text-xs text-slate-500">Fiduciary Counsel</div>
+                    </div>
+                  </div>
+                  <div className="flex items-center gap-3">
+                    <div className="bg-orange-500/20 p-2 rounded-lg">
+                      <Users className="w-6 h-6 text-orange-400" />
+                    </div>
+                    <div>
+                      <div className="text-sm font-bold text-white">500+ Plans</div>
+                      <div className="text-xs text-slate-500">Analyzed</div>
+                    </div>
+                  </div>
                 </div>
               </div>
 
@@ -791,50 +1022,29 @@ export default function RxDefensePresentation() {
                       </p>
                       <p className="text-lg text-slate-300 leading-relaxed mb-6">
                         <span className="font-bold text-white">RX Defense™</span> is forensic contract analysis that forces transparency. 
-                        We map every revenue stream, validate every pricing mechanism, and document every conflict of interest — 
-                        then translate findings into Board-ready reports and enforceable contract language.
+                        We map every revenue stream, validate every pricing mechanism, and document every conflict of interest, then translate findings into Board-ready reports and enforceable contract language.
                       </p>
                     </div>
                     
                     <div className="bg-[#0a0a0a]/50 border border-rose-500/20 rounded-xl p-6">
                       <h3 className="text-white font-bold mb-4">The X-Ray Process</h3>
                       <div className="space-y-4">
-                        <div className="flex items-start gap-3">
-                          <div className="bg-rose-500/20 w-8 h-8 rounded-lg flex items-center justify-center shrink-0 mt-0.5">
-                            <span className="text-rose-400 font-bold text-sm">1</span>
+                        {[
+                          { num: 1, title: "Contract Ingestion", desc: "Upload your PBM contract, all amendments, pricing schedules, and side letters" },
+                          { num: 2, title: "Forensic Clause Analysis", desc: "15-provision structural review identifying gaps, conflicts, and exposure points" },
+                          { num: 3, title: "Financial Impact Modeling", desc: "Quantify hidden costs and savings opportunities with P&L-ready estimates" },
+                          { num: 4, title: "Renegotiation Strategy", desc: "Board presentation deck + revised contract language + enforcement framework" }
+                        ].map((step) => (
+                          <div key={step.num} className="flex items-start gap-3">
+                            <div className="bg-rose-500/20 w-8 h-8 rounded-lg flex items-center justify-center shrink-0 mt-0.5">
+                              <span className="text-rose-400 font-bold text-sm">{step.num}</span>
+                            </div>
+                            <div>
+                              <div className="text-white font-semibold">{step.title}</div>
+                              <div className="text-sm text-slate-400">{step.desc}</div>
+                            </div>
                           </div>
-                          <div>
-                            <div className="text-white font-semibold">Contract Ingestion</div>
-                            <div className="text-sm text-slate-400">Upload your PBM contract, all amendments, pricing schedules, and side letters</div>
-                          </div>
-                        </div>
-                        <div className="flex items-start gap-3">
-                          <div className="bg-rose-500/20 w-8 h-8 rounded-lg flex items-center justify-center shrink-0 mt-0.5">
-                            <span className="text-rose-400 font-bold text-sm">2</span>
-                          </div>
-                          <div>
-                            <div className="text-white font-semibold">Forensic Clause Analysis</div>
-                            <div className="text-sm text-slate-400">15-provision structural review identifying gaps, conflicts, and exposure points</div>
-                          </div>
-                        </div>
-                        <div className="flex items-start gap-3">
-                          <div className="bg-rose-500/20 w-8 h-8 rounded-lg flex items-center justify-center shrink-0 mt-0.5">
-                            <span className="text-rose-400 font-bold text-sm">3</span>
-                          </div>
-                          <div>
-                            <div className="text-white font-semibold">Financial Impact Modeling</div>
-                            <div className="text-sm text-slate-400">Quantify hidden costs and savings opportunities with P&L-ready estimates</div>
-                          </div>
-                        </div>
-                        <div className="flex items-start gap-3">
-                          <div className="bg-rose-500/20 w-8 h-8 rounded-lg flex items-center justify-center shrink-0 mt-0.5">
-                            <span className="text-rose-400 font-bold text-sm">4</span>
-                          </div>
-                          <div>
-                            <div className="text-white font-semibold">Renegotiation Strategy</div>
-                            <div className="text-sm text-slate-400">Board presentation deck + revised contract language + enforcement framework</div>
-                          </div>
-                        </div>
+                        ))}
                       </div>
                     </div>
                   </div>
@@ -858,6 +1068,131 @@ export default function RxDefensePresentation() {
                 </div>
               </div>
 
+              {/* Video Explainer Section */}
+              <div className="bg-gradient-to-r from-cyan-950/40 to-blue-950/40 border border-cyan-500/30 rounded-2xl p-12 text-center relative overflow-hidden">
+                <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,rgba(6,182,212,0.1),transparent_70%)]" />
+                <div className="relative z-10">
+                  <div className="inline-flex items-center gap-2 bg-cyan-500/10 border border-cyan-500/30 rounded-full px-4 py-2 mb-6">
+                    <Play className="w-4 h-4 text-cyan-400" />
+                    <span className="text-sm font-bold text-cyan-400 uppercase tracking-widest">Video Walkthrough</span>
+                  </div>
+                  <h2 className="text-3xl font-bold text-white mb-4">
+                    See How Contract X-Ray Works
+                  </h2>
+                  <p className="text-lg text-slate-300 mb-8 max-w-2xl mx-auto">
+                    Watch a 5-minute walkthrough of the complete analysis process, from contract upload to Board presentation
+                  </p>
+                  <div className="aspect-video max-w-4xl mx-auto bg-[#111] border border-cyan-500/30 rounded-xl flex items-center justify-center">
+                    <div className="text-center">
+                      <div className="bg-cyan-500/20 w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <Play className="w-10 h-10 text-cyan-400" />
+                      </div>
+                      <p className="text-slate-400">Video coming soon</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              {/* Comparison Table */}
+              <div className="space-y-6">
+                <div className="text-center mb-8">
+                  <h2 className="text-4xl font-bold text-white mb-4">How Your Contract Compares</h2>
+                  <p className="text-lg text-slate-400 max-w-3xl mx-auto">
+                    See where your PBM contract stands against typical contracts and best-in-class provisions
+                  </p>
+                </div>
+
+                <div className="overflow-x-auto">
+                  <table className="w-full border-collapse">
+                    <thead>
+                      <tr className="border-b border-white/10">
+                        <th className="text-left py-4 px-6 text-sm font-bold text-slate-400 uppercase tracking-widest">Provision</th>
+                        <th className="text-left py-4 px-6 text-sm font-bold text-slate-400 uppercase tracking-widest">Typical Contract</th>
+                        <th className="text-left py-4 px-6 text-sm font-bold text-slate-400 uppercase tracking-widest">Best Practice</th>
+                        <th className="text-left py-4 px-6 text-sm font-bold text-rose-400 uppercase tracking-widest">Your Contract</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {comparisonData.map((row, idx) => (
+                        <tr key={idx} className="border-b border-white/5 hover:bg-white/5 transition-colors">
+                          <td className="py-4 px-6 font-semibold text-white">{row.provision}</td>
+                          <td className="py-4 px-6 text-slate-400">{row.typical}</td>
+                          <td className="py-4 px-6 text-emerald-400 font-medium">{row.bestPractice}</td>
+                          <td className="py-4 px-6 text-rose-400 font-medium">{row.yourContract}</td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+
+                <div className="bg-rose-950/30 border border-rose-500/30 rounded-xl p-6 text-center">
+                  <p className="text-rose-300 mb-4">
+                    Your contract scores <span className="font-black text-2xl text-rose-400">38/100</span> overall, 
+                    placing it in the <span className="font-bold">bottom 12th percentile</span> of contracts we've analyzed.
+                  </p>
+                  <Link href="/upload-pbm-contract">
+                    <Button className="bg-rose-600 hover:bg-rose-700 text-white">
+                      Upload Your Contract for Full Analysis
+                    </Button>
+                  </Link>
+                </div>
+              </div>
+
+              {/* Social Proof */}
+              <div className="space-y-8">
+                <div className="text-center mb-12">
+                  <h2 className="text-4xl font-bold text-white mb-4">Proven Results</h2>
+                  <p className="text-lg text-slate-400 max-w-3xl mx-auto">
+                    CFOs, HR Directors, and Benefits Leaders trust Contract X-Ray to expose hidden PBM costs
+                  </p>
+                </div>
+
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                  {testimonials.map((testimonial, idx) => (
+                    <motion.div
+                      key={idx}
+                      initial={{ opacity: 0, y: 20 }}
+                      whileInView={{ opacity: 1, y: 0 }}
+                      viewport={{ once: true }}
+                      transition={{ delay: idx * 0.1 }}
+                      className="bg-[#0a0a0a] border border-white/10 rounded-xl p-6 hover:border-emerald-500/30 transition-colors"
+                    >
+                      <div className="flex items-center gap-4 mb-4">
+                        <img 
+                          src={testimonial.image} 
+                          alt={testimonial.name}
+                          className="w-16 h-16 rounded-full object-cover border-2 border-emerald-500/30"
+                        />
+                        <div>
+                          <div className="font-bold text-white">{testimonial.name}</div>
+                          <div className="text-sm text-slate-400">{testimonial.title}</div>
+                          <div className="text-xs text-slate-500">{testimonial.company}</div>
+                        </div>
+                      </div>
+                      <div className="flex gap-1 mb-4">
+                        {[...Array(5)].map((_, i) => (
+                          <Star key={i} className="w-4 h-4 fill-emerald-400 text-emerald-400" />
+                        ))}
+                      </div>
+                      <p className="text-slate-300 text-sm leading-relaxed mb-4">
+                        "{testimonial.quote}"
+                      </p>
+                      <div className="flex items-center justify-between pt-4 border-t border-white/5">
+                        <div>
+                          <div className="text-xs text-slate-500">Annual Savings</div>
+                          <div className="text-lg font-bold text-emerald-400">{testimonial.savings}</div>
+                        </div>
+                        <div className="text-right">
+                          <div className="text-xs text-slate-500">Timeline</div>
+                          <div className="text-sm font-semibold text-white">{testimonial.timeline}</div>
+                        </div>
+                      </div>
+                    </motion.div>
+                  ))}
+                </div>
+              </div>
+
+              {/* Sample Scorecard */}
               <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
                 <div className="bg-gradient-to-br from-rose-950/40 to-rose-900/20 border border-rose-500/30 rounded-2xl p-8 text-center">
                   <div className="text-7xl font-black text-rose-500 mb-2">38</div>
@@ -876,12 +1211,17 @@ export default function RxDefensePresentation() {
                 </div>
               </div>
 
+              {/* Provisions Overview */}
               <div className="space-y-4">
                 <h2 className="text-3xl font-bold text-white mb-6">Provisions Overview</h2>
                 {provisions.map((prov, idx) => (
-                  <button
+                  <motion.button
                     key={prov.id}
                     onClick={() => goToPage(idx + 1)}
+                    initial={{ opacity: 0, x: -20 }}
+                    whileInView={{ opacity: 1, x: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ delay: idx * 0.05 }}
                     className="w-full bg-[#0a0a0a] border border-white/10 hover:border-white/20 transition-all rounded-xl p-6 text-left group"
                   >
                     <div className="flex items-center justify-between mb-4">
@@ -912,10 +1252,11 @@ export default function RxDefensePresentation() {
                         {prov.score.toFixed(1)}/10
                       </span>
                     </div>
-                  </button>
+                  </motion.button>
                 ))}
               </div>
 
+              {/* CTA Section */}
               <div className="bg-gradient-to-r from-cyan-950/40 to-blue-950/40 border border-cyan-500/30 rounded-2xl p-8 mt-12">
                 <div className="text-center">
                   <p className="text-lg text-slate-300 mb-6">
@@ -972,12 +1313,11 @@ export default function RxDefensePresentation() {
                 </div>
               </div>
 
-              {/* CFO Entry Point - Broker Compensation Study */}
+              {/* CFO Entry Point */}
               <div className="bg-gradient-to-br from-emerald-950/20 via-teal-950/20 to-cyan-950/20 border-2 border-emerald-500/30 rounded-2xl p-8 my-16 relative overflow-hidden">
                 <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_0%,rgba(16,185,129,0.1),transparent_70%)]" />
                 <div className="relative z-10">
                   <div className="flex flex-col lg:flex-row items-start gap-8">
-                    {/* Left Column - Offer */}
                     <div className="flex-1">
                       <div className="inline-flex items-center gap-2 bg-emerald-500/10 border border-emerald-500/30 rounded-full px-4 py-2 mb-4">
                         <DollarSign className="w-4 h-4 text-emerald-400" />
@@ -1001,27 +1341,22 @@ export default function RxDefensePresentation() {
                         </div>
                         <h4 className="text-xl font-bold text-white mb-3">Broker Compensation Study</h4>
                         <p className="text-sm text-slate-400 mb-4">
-                          We'll forensically map every dollar flowing from your PBM to your broker — 
+                          We'll forensically map every dollar flowing from your PBM to your broker —  
                           administrative fees, performance bonuses, volume incentives, and undisclosed overrides.
                         </p>
                         
                         <div className="space-y-2">
-                          <div className="flex items-start gap-2 text-sm">
-                            <CheckCircle2 className="w-4 h-4 text-emerald-500 shrink-0 mt-0.5" />
-                            <span className="text-slate-300">Complete compensation mapping across all contract documents</span>
-                          </div>
-                          <div className="flex items-start gap-2 text-sm">
-                            <CheckCircle2 className="w-4 h-4 text-emerald-500 shrink-0 mt-0.5" />
-                            <span className="text-slate-300">Benchmark against industry standards and fiduciary best practices</span>
-                          </div>
-                          <div className="flex items-start gap-2 text-sm">
-                            <CheckCircle2 className="w-4 h-4 text-emerald-500 shrink-0 mt-0.5" />
-                            <span className="text-slate-300">Plain-English summary for Board presentation</span>
-                          </div>
-                          <div className="flex items-start gap-2 text-sm">
-                            <CheckCircle2 className="w-4 h-4 text-emerald-500 shrink-0 mt-0.5" />
-                            <span className="text-slate-300">Delivered in 5 business days</span>
-                          </div>
+                          {[
+                            "Complete compensation mapping across all contract documents",
+                            "Benchmark against industry standards and fiduciary best practices",
+                            "Plain-English summary for Board presentation",
+                            "Delivered in 5 business days"
+                          ].map((item, idx) => (
+                            <div key={idx} className="flex items-start gap-2 text-sm">
+                              <CheckCircle2 className="w-4 h-4 text-emerald-500 shrink-0 mt-0.5" />
+                              <span className="text-slate-300">{item}</span>
+                            </div>
+                          ))}
                         </div>
                       </div>
 
@@ -1033,38 +1368,21 @@ export default function RxDefensePresentation() {
                       </Link>
                     </div>
 
-                    {/* Right Column - Why This Matters */}
                     <div className="flex-1 lg:pl-8 lg:border-l lg:border-emerald-500/20">
                       <h4 className="text-xs font-bold uppercase tracking-widest text-emerald-400 mb-4">Why This Matters</h4>
                       
                       <div className="space-y-4">
-                        <div className="bg-[#0a0a0a]/30 border border-slate-700 rounded-lg p-4">
-                          <h5 className="text-white font-semibold mb-2">Misaligned Incentives</h5>
-                          <p className="text-sm text-slate-400">
-                            When your broker gets paid more for higher PBM costs, they're not incentivized to negotiate aggressively on your behalf.
-                          </p>
-                        </div>
-
-                        <div className="bg-[#0a0a0a]/30 border border-slate-700 rounded-lg p-4">
-                          <h5 className="text-white font-semibold mb-2">Hidden Overrides</h5>
-                          <p className="text-sm text-slate-400">
-                            PBMs pay brokers performance bonuses and volume incentives that aren't disclosed to you — often 3-8% of your total spend.
-                          </p>
-                        </div>
-
-                        <div className="bg-[#0a0a0a]/30 border border-slate-700 rounded-lg p-4">
-                          <h5 className="text-white font-semibold mb-2">Fiduciary Risk</h5>
-                          <p className="text-sm text-slate-400">
-                            If your broker's compensation creates conflicts of interest and the DOL audits your plan, you need documentation showing you knew and addressed it.
-                          </p>
-                        </div>
-
-                        <div className="bg-[#0a0a0a]/30 border border-slate-700 rounded-lg p-4">
-                          <h5 className="text-white font-semibold mb-2">Board Liability</h5>
-                          <p className="text-sm text-slate-400">
-                            Your Board is asking "Are we getting ripped off?" Start with the broker study — it's the fastest way to answer that question with evidence.
-                          </p>
-                        </div>
+                        {[
+                          { title: "Misaligned Incentives", desc: "When your broker gets paid more for higher PBM costs, they're not incentivized to negotiate aggressively on your behalf." },
+                          { title: "Hidden Overrides", desc: "PBMs pay brokers performance bonuses and volume incentives that aren't disclosed to you — often 3-8% of your total spend." },
+                          { title: "Fiduciary Risk", desc: "If your broker's compensation creates conflicts of interest and the DOL audits your plan, you need documentation showing you knew and addressed it." },
+                          { title: "Board Liability", desc: "Your Board is asking \"Are we getting ripped off?\" Start with the broker study — it's the fastest way to answer that question with evidence." }
+                        ].map((item, idx) => (
+                          <div key={idx} className="bg-[#0a0a0a]/30 border border-slate-700 rounded-lg p-4">
+                            <h5 className="text-white font-semibold mb-2">{item.title}</h5>
+                            <p className="text-sm text-slate-400">{item.desc}</p>
+                          </div>
+                        ))}
                       </div>
 
                       <div className="mt-6 bg-emerald-950/30 border border-emerald-500/30 rounded-lg p-4">
@@ -1079,7 +1397,7 @@ export default function RxDefensePresentation() {
                 </div>
               </div>
 
-              {/* Pricing Models Section */}
+              {/* Pricing Models */}
               <div className="space-y-8 mt-16">
                 <div className="text-center mb-12">
                   <h2 className="text-4xl font-bold text-white mb-4">Choose Your Engagement Model</h2>
@@ -1089,7 +1407,7 @@ export default function RxDefensePresentation() {
                 </div>
 
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-                  {/* Model 1: Fixed Fee */}
+                  {/* Fixed Fee Model */}
                   <div className="bg-gradient-to-br from-[#0a0a0a] to-[#111] border border-white/10 rounded-2xl p-8 hover:border-cyan-500/50 transition-all relative overflow-hidden group">
                     <div className="absolute inset-0 bg-gradient-to-br from-cyan-500/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
                     <div className="relative z-10">
@@ -1109,34 +1427,20 @@ export default function RxDefensePresentation() {
                       </div>
 
                       <div className="space-y-4 mb-8">
-                        <div className="flex items-start gap-3">
-                          <CheckCircle2 className="w-5 h-5 text-cyan-500 shrink-0 mt-0.5" />
-                          <div>
-                            <div className="text-white font-semibold">Complete Contract Analysis</div>
-                            <div className="text-sm text-slate-400">Full 15-provision forensic review with detailed findings</div>
+                        {[
+                          { title: "Complete Contract Analysis", desc: "Full 15-provision forensic review with detailed findings" },
+                          { title: "No Performance Risk", desc: "Fixed fee regardless of savings achieved" },
+                          { title: "Negotiation Support", desc: "Expert guidance through PBM contract renegotiation" },
+                          { title: "Audit Rights Documentation", desc: "Prepared enforcement framework for contract terms" }
+                        ].map((item, idx) => (
+                          <div key={idx} className="flex items-start gap-3">
+                            <CheckCircle2 className="w-5 h-5 text-cyan-500 shrink-0 mt-0.5" />
+                            <div>
+                              <div className="text-white font-semibold">{item.title}</div>
+                              <div className="text-sm text-slate-400">{item.desc}</div>
+                            </div>
                           </div>
-                        </div>
-                        <div className="flex items-start gap-3">
-                          <CheckCircle2 className="w-5 h-5 text-cyan-500 shrink-0 mt-0.5" />
-                          <div>
-                            <div className="text-white font-semibold">No Performance Risk</div>
-                            <div className="text-sm text-slate-400">Fixed fee regardless of savings achieved</div>
-                          </div>
-                        </div>
-                        <div className="flex items-start gap-3">
-                          <CheckCircle2 className="w-5 h-5 text-cyan-500 shrink-0 mt-0.5" />
-                          <div>
-                            <div className="text-white font-semibold">Negotiation Support</div>
-                            <div className="text-sm text-slate-400">Expert guidance through PBM contract renegotiation</div>
-                          </div>
-                        </div>
-                        <div className="flex items-start gap-3">
-                          <CheckCircle2 className="w-5 h-5 text-cyan-500 shrink-0 mt-0.5" />
-                          <div>
-                            <div className="text-white font-semibold">Audit Rights Documentation</div>
-                            <div className="text-sm text-slate-400">Prepared enforcement framework for contract terms</div>
-                          </div>
-                        </div>
+                        ))}
                       </div>
 
                       <div className="bg-cyan-950/30 border border-cyan-500/30 rounded-xl p-4 mb-6">
@@ -1152,7 +1456,7 @@ export default function RxDefensePresentation() {
                     </div>
                   </div>
 
-                  {/* Model 2: Performance-Based */}
+                  {/* Performance-Based Model */}
                   <div className="bg-gradient-to-br from-[#0a0a0a] to-[#111] border-2 border-emerald-500/50 rounded-2xl p-8 hover:border-emerald-500 transition-all relative overflow-hidden group">
                     <div className="absolute top-4 right-4 text-xs font-bold px-3 py-1 rounded bg-emerald-500 text-black uppercase tracking-widest">
                       Recommended
@@ -1176,34 +1480,20 @@ export default function RxDefensePresentation() {
                       </div>
 
                       <div className="space-y-4 mb-8">
-                        <div className="flex items-start gap-3">
-                          <CheckCircle2 className="w-5 h-5 text-emerald-500 shrink-0 mt-0.5" />
-                          <div>
-                            <div className="text-white font-semibold">Lower Upfront Cost</div>
-                            <div className="text-sm text-slate-400">Half the upfront investment of fixed fee model</div>
+                        {[
+                          { title: "Lower Upfront Cost", desc: "Half the upfront investment of fixed fee model" },
+                          { title: "Shared Success", desc: "We only win when you achieve verified savings" },
+                          { title: "Ongoing Validation", desc: "Quarterly savings verification and reconciliation" },
+                          { title: "Maximum Accountability", desc: "Payment tied directly to measurable results" }
+                        ].map((item, idx) => (
+                          <div key={idx} className="flex items-start gap-3">
+                            <CheckCircle2 className="w-5 h-5 text-emerald-500 shrink-0 mt-0.5" />
+                            <div>
+                              <div className="text-white font-semibold">{item.title}</div>
+                              <div className="text-sm text-slate-400">{item.desc}</div>
+                            </div>
                           </div>
-                        </div>
-                        <div className="flex items-start gap-3">
-                          <CheckCircle2 className="w-5 h-5 text-emerald-500 shrink-0 mt-0.5" />
-                          <div>
-                            <div className="text-white font-semibold">Shared Success</div>
-                            <div className="text-sm text-slate-400">We only win when you achieve verified savings</div>
-                          </div>
-                        </div>
-                        <div className="flex items-start gap-3">
-                          <CheckCircle2 className="w-5 h-5 text-emerald-500 shrink-0 mt-0.5" />
-                          <div>
-                            <div className="text-white font-semibold">Ongoing Validation</div>
-                            <div className="text-sm text-slate-400">Quarterly savings verification and reconciliation</div>
-                          </div>
-                        </div>
-                        <div className="flex items-start gap-3">
-                          <CheckCircle2 className="w-5 h-5 text-emerald-500 shrink-0 mt-0.5" />
-                          <div>
-                            <div className="text-white font-semibold">Maximum Accountability</div>
-                            <div className="text-sm text-slate-400">Payment tied directly to measurable results</div>
-                          </div>
-                        </div>
+                        ))}
                       </div>
 
                       <div className="bg-emerald-950/30 border border-emerald-500/30 rounded-xl p-4 mb-6">
@@ -1249,7 +1539,7 @@ export default function RxDefensePresentation() {
                     <h1 className="text-5xl md:text-6xl font-black text-white mb-6 tracking-tight">
                       {prov.title}
                     </h1>
-                    <div className="flex items-center gap-8">
+                    <div className="flex items-center gap-8 flex-wrap">
                       <div>
                         <div className="text-sm text-slate-500 uppercase tracking-widest mb-1">Score</div>
                         <div className={`text-4xl font-black ${prov.statusColor}`}>
@@ -1402,10 +1692,10 @@ export default function RxDefensePresentation() {
             className="border-white/10"
           >
             <ArrowLeft className="w-5 h-5 mr-2" />
-            Previous
+            <span className="hidden sm:inline">Previous</span>
           </Button>
           
-          <div className="flex items-center gap-2">
+          <div className="hidden md:flex items-center gap-2">
             {Array.from({ length: Math.min(totalPages, 10) }, (_, i) => {
               let pageNum;
               if (totalPages <= 10) {
@@ -1438,11 +1728,241 @@ export default function RxDefensePresentation() {
             size="lg"
             className="bg-cyan-600 hover:bg-cyan-700"
           >
-            {currentPage === totalPages - 1 ? 'Request Analysis' : 'Next'}
-            <ArrowRight className="w-5 h-5 ml-2" />
+            <span className="hidden sm:inline">{currentPage === totalPages - 1 ? 'Request Analysis' : 'Next'}</span>
+            <span className="sm:hidden">→</span>
+            <ArrowRight className="w-5 h-5 ml-2 hidden sm:inline" />
           </Button>
         </div>
       </div>
+
+      {/* ROI Calculator Modal */}
+      <AnimatePresence>
+        {showROICalc && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm"
+            onClick={() => setShowROICalc(false)}
+          >
+            <motion.div
+              initial={{ scale: 0.9, y: 20 }}
+              animate={{ scale: 1, y: 0 }}
+              exit={{ scale: 0.9, y: 20 }}
+              className="relative bg-gradient-to-br from-gray-900 via-black to-gray-900 border-2 border-emerald-500/40 rounded-3xl p-8 md:p-12 max-w-4xl w-full shadow-2xl shadow-emerald-500/20"
+              onClick={(e) => e.stopPropagation()}
+            >
+              <button
+                onClick={() => setShowROICalc(false)}
+                className="absolute top-4 right-4 text-gray-400 hover:text-white transition-colors"
+              >
+                <X className="w-6 h-6" />
+              </button>
+
+              <div className="text-center mb-8">
+                <div className="inline-flex items-center justify-center w-16 h-16 bg-emerald-500/20 border border-emerald-500/40 rounded-full mb-4">
+                  <TrendingUp className="w-8 h-8 text-emerald-400" />
+                </div>
+                <h3 className="text-3xl md:text-4xl font-black text-white mb-4">
+                  Calculate Your Savings
+                </h3>
+                <p className="text-lg text-gray-400">
+                  Enter your plan details to estimate potential annual savings
+                </p>
+              </div>
+
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+                <div>
+                  <label htmlFor="members" className="block text-sm font-medium text-gray-300 mb-2">
+                    Number of Covered Members
+                  </label>
+                  <Input
+                    id="members"
+                    type="number"
+                    value={members}
+                    onChange={(e) => setMembers(e.target.value)}
+                    className="bg-black/50 border-gray-700 focus:border-emerald-500 text-white"
+                    placeholder="500"
+                  />
+                </div>
+
+                <div>
+                  <label htmlFor="drugSpend" className="block text-sm font-medium text-gray-300 mb-2">
+                    Annual Drug Spend ($)
+                  </label>
+                  <Input
+                    id="drugSpend"
+                    type="number"
+                    value={drugSpend}
+                    onChange={(e) => setDrugSpend(e.target.value)}
+                    className="bg-black/50 border-gray-700 focus:border-emerald-500 text-white"
+                    placeholder="3000000"
+                  />
+                </div>
+              </div>
+
+              <Button
+                onClick={calculateROI}
+                className="w-full bg-emerald-600 hover:bg-emerald-700 text-white py-4 text-lg mb-8"
+              >
+                Calculate Savings
+              </Button>
+
+              {calcResults && (
+                <motion.div
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  className="space-y-6"
+                >
+                  <div className="bg-emerald-950/30 border border-emerald-500/30 rounded-2xl p-8 text-center">
+                    <div className="text-sm text-emerald-400 uppercase tracking-widest font-bold mb-2">
+                      Estimated Annual Savings
+                    </div>
+                    <div className="text-5xl md:text-6xl font-black text-emerald-400 mb-4">
+                      {calcResults.totalSavings}
+                    </div>
+                    <div className="text-sm text-gray-400">
+                      Based on 15-provision contract optimization
+                    </div>
+                  </div>
+
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    {[
+                      { label: "Spread Pricing Elimination", value: calcResults.spreadPricing },
+                      { label: "Rebate Gap Recovery", value: calcResults.rebate },
+                      { label: "DIR Fees Removed", value: calcResults.dirFees },
+                      { label: "Specialty Optimization", value: calcResults.specialty },
+                      { label: "Admin Fee Reduction", value: calcResults.admin }
+                    ].map((item, idx) => (
+                      <div key={idx} className="bg-black/30 border border-gray-700 rounded-xl p-4">
+                        <div className="text-xs text-gray-400 uppercase tracking-widest mb-1">
+                          {item.label}
+                        </div>
+                        <div className="text-2xl font-bold text-white">{item.value}</div>
+                      </div>
+                    ))}
+                  </div>
+
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div className="bg-cyan-950/30 border border-cyan-500/30 rounded-xl p-6">
+                      <div className="text-xs text-cyan-400 uppercase tracking-widest font-bold mb-3">
+                        Fixed Fee Model
+                      </div>
+                      <div className="space-y-2 text-sm">
+                        <div className="flex justify-between">
+                          <span className="text-gray-400">ROI:</span>
+                          <span className="text-white font-bold">{calcResults.fixedFeeROI}x</span>
+                        </div>
+                        <div className="flex justify-between">
+                          <span className="text-gray-400">Payback:</span>
+                          <span className="text-white font-bold">{calcResults.fixedPayback} months</span>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div className="bg-emerald-950/30 border border-emerald-500/30 rounded-xl p-6">
+                      <div className="text-xs text-emerald-400 uppercase tracking-widest font-bold mb-3">
+                        Performance-Based Model
+                      </div>
+                      <div className="space-y-2 text-sm">
+                        <div className="flex justify-between">
+                          <span className="text-gray-400">ROI:</span>
+                          <span className="text-white font-bold">{calcResults.performanceROI}x</span>
+                        </div>
+                        <div className="flex justify-between">
+                          <span className="text-gray-400">Payback:</span>
+                          <span className="text-white font-bold">{calcResults.performancePayback} months</span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <Link href="/upload-pbm-contract">
+                    <Button className="w-full bg-rose-600 hover:bg-rose-700 text-white py-4 text-lg">
+                      <Upload className="w-5 h-5 mr-2" />
+                      Get Your Actual Analysis
+                    </Button>
+                  </Link>
+                </motion.div>
+              )}
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      {/* Exit Intent Modal */}
+      <AnimatePresence>
+        {showExitIntent && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm"
+            onClick={() => setShowExitIntent(false)}
+          >
+            <motion.div
+              initial={{ scale: 0.9, y: 20 }}
+              animate={{ scale: 1, y: 0 }}
+              exit={{ scale: 0.9, y: 20 }}
+              className="relative bg-gradient-to-br from-gray-900 via-black to-gray-900 border-2 border-rose-500/40 rounded-3xl p-8 md:p-12 max-w-2xl w-full shadow-2xl shadow-rose-500/20"
+              onClick={(e) => e.stopPropagation()}
+            >
+              <button
+                onClick={() => setShowExitIntent(false)}
+                className="absolute top-4 right-4 text-gray-400 hover:text-white transition-colors"
+              >
+                <X className="w-6 h-6" />
+              </button>
+
+              <div className="text-center mb-8">
+                <div className="inline-flex items-center justify-center w-16 h-16 bg-rose-500/20 border border-rose-500/40 rounded-full mb-4">
+                  <AlertTriangle className="w-8 h-8 text-rose-400" />
+                </div>
+                <h3 className="text-3xl md:text-4xl font-black text-white mb-4">
+                  Wait! Before You Go...
+                </h3>
+                <p className="text-lg text-gray-400 mb-6">
+                  Don't leave money on the table. Get a free preliminary assessment of your PBM contract.
+                </p>
+              </div>
+
+              <div className="bg-rose-950/30 border border-rose-500/30 rounded-xl p-6 mb-6">
+                <h4 className="text-white font-bold mb-4">Free Preliminary Assessment Includes:</h4>
+                <div className="space-y-3">
+                  {[
+                    "Quick score of your current contract (0-100)",
+                    "Top 3 red flag provisions identified",
+                    "Estimated annual savings opportunity",
+                    "15-minute expert consultation call",
+                    "No obligation, no credit card required"
+                  ].map((item, idx) => (
+                    <div key={idx} className="flex items-start gap-3">
+                      <Check className="w-5 h-5 text-rose-400 shrink-0 mt-0.5" />
+                      <span className="text-sm text-gray-300">{item}</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              <div className="flex flex-col gap-4">
+                <Link href="/upload-pbm-contract">
+                  <Button className="w-full bg-rose-600 hover:bg-rose-700 text-white py-4 text-lg">
+                    <Upload className="w-5 h-5 mr-2" />
+                    Get Free Assessment
+                  </Button>
+                </Link>
+                <Button
+                  onClick={() => setShowExitIntent(false)}
+                  variant="outline"
+                  className="w-full border-gray-700 text-gray-400 hover:text-white py-4 text-lg"
+                >
+                  Continue Browsing
+                </Button>
+              </div>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
 
       <SiteFooter />
     </div>

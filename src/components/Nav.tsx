@@ -55,13 +55,6 @@ export default function Nav() {
                       <div className="text-xs text-gray-400">PBM contract forensics</div>
                     </Link>
                     <Link
-                      href="/solutions/nadac-benchmarking"
-                      onClick={() => setKincaidIqDropdownOpen(false)}
-                      className="block px-4 py-3 text-gray-300 hover:text-white hover:bg-purple-500/10 rounded-lg transition-colors duration-150">
-                      <div className="font-medium">NADAC Benchmarking</div>
-                      <div className="text-xs text-gray-400">Drug pricing analysis</div>
-                    </Link>
-                    <Link
                       href="/solutions/actuarial-benefits"
                       onClick={() => setKincaidIqDropdownOpen(false)}
                       className="block px-4 py-3 text-gray-300 hover:text-white hover:bg-cyan-500/10 rounded-lg transition-colors duration-150">
@@ -257,9 +250,6 @@ export default function Nav() {
                   </Link>
                   <Link href="/solutions/rx-defense" className="block px-4 py-2 text-sm text-gray-400 hover:text-white hover:bg-rose-500/10 rounded-lg transition-colors">
                     Rx Defense
-                  </Link>
-                  <Link href="/solutions/nadac-benchmarking" className="block px-4 py-2 text-sm text-gray-400 hover:text-white hover:bg-purple-500/10 rounded-lg transition-colors">
-                    NADAC Benchmarking
                   </Link>
                   <Link href="/solutions/actuarial-benefits" className="block px-4 py-2 text-sm text-gray-400 hover:text-white hover:bg-cyan-500/10 rounded-lg transition-colors">
                     Actuarial Analysis

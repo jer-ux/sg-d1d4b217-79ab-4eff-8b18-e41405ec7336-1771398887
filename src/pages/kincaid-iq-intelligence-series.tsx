@@ -1,6 +1,7 @@
 import { useState } from "react";
 import Head from "next/head";
 import Link from "next/link";
+import Image from "next/image";
 import { motion } from "framer-motion";
 import { 
   Brain, 
@@ -13,48 +14,39 @@ import {
   CheckCircle2,
   ArrowRight,
   DollarSign,
-  BarChart3,
   Activity,
   Users,
   Building2,
   Briefcase,
-  Download,
   Upload,
   Clock,
-  Lock
+  Lock,
+  Eye,
+  AlertTriangle,
+  Search,
+  CheckCircle
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import Nav from "@/components/Nav";
+import Footer from "@/components/Footer";
 
-type IntelligenceModule = {
-  id: string;
-  title: string;
-  subtitle: string;
-  description: string;
-  deliverables: string[];
-  turnaround: string;
-  price: string;
-  icon: React.ReactNode;
-  color: string;
-  borderColor: string;
-  bgGradient: string;
-};
-
-const intelligenceModules: IntelligenceModule[] = [
+// Data Models
+const intelligenceModules = [
   {
     id: "drap",
     title: "DRAP Analysis",
     subtitle: "Drug Rebate Analysis Panel",
     description: "Forensic decomposition of pharmacy spread and rebate economics. Uncovers hidden margin layers between AWP, WAC, MAC, and NADAC benchmarks.",
     deliverables: [
-      "Spread decomposition by drug class (Brand, Generic, Specialty)",
+      "Spread decomposition by drug class",
       "MAC list arbitrage quantification",
-      "Rebate guarantee validation vs. actual performance",
-      "Benchmark comparison against NADAC floor pricing"
+      "Rebate guarantee validation",
+      "Benchmark comparison against NADAC"
     ],
-    turnaround: "3-5 business days",
+    turnaround: "3-5 days",
     price: "$4,500",
     icon: <Activity className="w-6 h-6" />,
     color: "text-cyan-400",
@@ -63,16 +55,16 @@ const intelligenceModules: IntelligenceModule[] = [
   },
   {
     id: "trend",
-    title: "Trend Projection Report",
+    title: "Trend Projection",
     subtitle: "Multi-Year Cost Modeling",
-    description: "Actuarial-grade trend forecasting using credibility-weighted analysis. Models medical and pharmacy cost trajectories with Monte Carlo uncertainty bands.",
+    description: "Actuarial-grade trend forecasting using credibility-weighted analysis. Models medical and pharmacy cost trajectories with Monte Carlo bands.",
     deliverables: [
-      "5-year trend projections with P50/P90 confidence intervals",
-      "Credibility weighting based on group size and loss history",
-      "Intervention scenario modeling (utilization management, formulary changes)",
-      "Budget impact analysis for CFO planning"
+      "5-year trend projections with P50/P90",
+      "Credibility weighting analysis",
+      "Intervention scenario modeling",
+      "Budget impact analysis"
     ],
-    turnaround: "5-7 business days",
+    turnaround: "5-7 days",
     price: "$6,500",
     icon: <TrendingUp className="w-6 h-6" />,
     color: "text-violet-400",
@@ -82,15 +74,15 @@ const intelligenceModules: IntelligenceModule[] = [
   {
     id: "volatility",
     title: "Volatility Dashboard",
-    subtitle: "Risk Quantification & Stop-Loss Optimization",
-    description: "Stochastic modeling of claims volatility. Identifies catastrophic risk exposure and optimal stop-loss attachment points using actuarial loss distributions.",
+    subtitle: "Risk Quantification",
+    description: "Stochastic modeling of claims volatility. Identifies catastrophic risk exposure and optimal stop-loss attachment points.",
     deliverables: [
-      "Monte Carlo simulation (5,000+ iterations) of annual cost variance",
-      "Catastrophic claim probability modeling",
-      "Stop-loss attachment point recommendations",
-      "Risk transfer vs. self-insurance financial analysis"
+      "Monte Carlo simulation (5,000+ iterations)",
+      "Catastrophic claim probability",
+      "Stop-loss attachment recommendations",
+      "Risk transfer financial analysis"
     ],
-    turnaround: "5-7 business days",
+    turnaround: "5-7 days",
     price: "$7,500",
     icon: <Shield className="w-6 h-6" />,
     color: "text-emerald-400",
@@ -100,15 +92,15 @@ const intelligenceModules: IntelligenceModule[] = [
   {
     id: "intervention",
     title: "Intervention Simulator",
-    subtitle: "Cost Compression Strategy Modeling",
-    description: "Quantifies financial impact of 12+ cost containment strategies. Models savings durability and ROI across 3-year implementation horizon.",
+    subtitle: "Cost Compression Modeling",
+    description: "Quantifies financial impact of 12+ cost containment strategies. Models savings durability and ROI across 3-year horizon.",
     deliverables: [
-      "Savings projections for PBM formulary optimization, network steerage, UM programs",
-      "Durability analysis (Year 1/2/3 savings persistence)",
-      "Implementation cost vs. net savings ROI modeling",
-      "Prioritized intervention roadmap based on impact and feasibility"
+      "Savings projections for PBM optimization",
+      "Durability analysis (Year 1-3)",
+      "Implementation cost vs. net ROI",
+      "Prioritized intervention roadmap"
     ],
-    turnaround: "7-10 business days",
+    turnaround: "7-10 days",
     price: "$8,500",
     icon: <Target className="w-6 h-6" />,
     color: "text-orange-400",
@@ -117,16 +109,16 @@ const intelligenceModules: IntelligenceModule[] = [
   },
   {
     id: "ebitda",
-    title: "EBITDA Impact Report",
-    subtitle: "P&L Translation for PE/Board",
-    description: "Translates healthcare savings into earnings impact. Models margin expansion scenarios for private equity operators and Board presentations.",
+    title: "EBITDA Impact",
+    subtitle: "P&L Translation for Board",
+    description: "Translates healthcare savings into earnings impact. Models margin expansion scenarios for private equity and Board presentations.",
     deliverables: [
-      "3-year cumulative savings projection with present value calculation",
+      "3-year cumulative savings projection",
       "EBITDA margin expansion modeling",
-      "Enterprise value impact (savings × industry EBITDA multiple)",
-      "Board-ready executive summary and presentation deck"
+      "Enterprise value impact",
+      "Board-ready executive summary"
     ],
-    turnaround: "5-7 business days",
+    turnaround: "5-7 days",
     price: "$9,500",
     icon: <DollarSign className="w-6 h-6" />,
     color: "text-amber-400",
@@ -135,910 +127,540 @@ const intelligenceModules: IntelligenceModule[] = [
   },
   {
     id: "broker-comp",
-    title: "Broker Compensation Study",
-    subtitle: "Conflict-of-Interest Mapping",
-    description: "Forensic analysis of broker compensation structures. Maps PBM-to-broker payment flows including hidden overrides, volume bonuses, and undisclosed administrative fees.",
+    title: "Broker Comp Study",
+    subtitle: "Conflict Mapping",
+    description: "Forensic analysis of broker compensation structures. Maps PBM-to-broker payment flows including hidden overrides.",
     deliverables: [
-      "Complete compensation mapping across all contract documents",
+      "Complete compensation mapping",
       "Benchmark vs. fiduciary best practices",
-      "Conflict-of-interest exposure assessment",
-      "Plain-English summary for Board fiduciary review"
+      "Conflict-of-interest assessment",
+      "Plain-English fiduciary summary"
     ],
-    turnaround: "3-5 business days",
+    turnaround: "3-5 days",
     price: "$3,500",
-    icon: <Users className="w-6 h-6" />,
+    icon: <Search className="w-6 h-6" />,
     color: "text-rose-400",
     borderColor: "border-rose-500/30",
     bgGradient: "from-rose-950/40 to-pink-950/40"
   }
 ];
 
-type Persona = {
-  id: string;
-  title: string;
-  icon: React.ReactNode;
-  painPoints: string[];
-  recommendedModules: string[];
-  color: string;
-};
+const intelligenceChallenges = [
+  {
+    icon: AlertTriangle,
+    title: "The CFO's Dilemma",
+    reality: "Healthcare costs are rising 8-12%, destroying EBITDA. Consultants say 'it's just the market'.",
+    impact: "You're forced to cut benefits or absorb margin compression without knowing if you're actually overpaying.",
+    solution: "DRAP Analysis + Trend Projection quantifies exact leakage and models recovery."
+  },
+  {
+    icon: Shield,
+    title: "The Fiduciary Risk",
+    reality: "Board asks if PBM pricing is defensible. You only have vendor-provided reporting to show them.",
+    impact: "Regulatory exposure under CAA, potential class action risk for imprudent plan management.",
+    solution: "Broker Comp Study + Contract X-Ray provides independent, auditable oversight."
+  },
+  {
+    icon: Target,
+    title: "The Implementation Trap",
+    reality: "You're pitched 20 different point solutions, each promising 3:1 ROI.",
+    impact: "Vendor fatigue, overlapping fees, and promised savings never hit the bottom line.",
+    solution: "Intervention Simulator models realistic net ROI before you buy any solution."
+  },
+  {
+    icon: Zap,
+    title: "The Time Constraint",
+    reality: "Traditional actuarial studies take 3-6 months and cost $150K+.",
+    impact: "By the time you get the data, the renewal window is closed and leverage is gone.",
+    solution: "Modular intelligence delivered in 3-10 days for $3K-$9K per report."
+  }
+];
 
-const personas: Persona[] = [
+const implementationFramework = [
   {
-    id: "cfo",
-    title: "CFO / Finance",
-    icon: <Building2 className="w-5 h-5" />,
-    painPoints: [
-      "Healthcare costs growing 8-12% annually, destroying margin",
-      "Board asking if we're getting ripped off by our PBM",
-      "Need hard numbers for budget planning, not consultant hand-waving"
-    ],
-    recommendedModules: ["broker-comp", "trend", "ebitda"],
-    color: "text-blue-400"
+    phase: "Data Ingestion (Days 1-2)",
+    objective: "Secure transfer and normalization",
+    deliverables: [
+      "Upload PBM contract and amendments via secure portal",
+      "Submit de-identified claims data & census",
+      "Automated NDA/BAA execution",
+      "Data quality validation"
+    ]
   },
   {
-    id: "pe",
-    title: "PE Operators",
-    icon: <Briefcase className="w-5 h-5" />,
-    painPoints: [
-      "Platform company EBITDA eroding from unmanaged healthcare spend",
-      "Need quantified savings to justify add-on acquisitions",
-      "Portfolio company CFOs don't have actuarial sophistication"
-    ],
-    recommendedModules: ["ebitda", "intervention", "volatility"],
-    color: "text-violet-400"
+    phase: "Actuarial Modeling (Days 3-7)",
+    objective: "Forensic analysis and scenario testing",
+    deliverables: [
+      "NADAC benchmark comparison executed",
+      "Spread and rebate economics decomposed",
+      "Monte Carlo simulations run (if ordered)",
+      "Intervention ROI modeled"
+    ]
   },
   {
-    id: "board",
-    title: "Board Members",
-    icon: <Users className="w-5 h-5" />,
-    painPoints: [
-      "Fiduciary duty to ensure healthcare costs are reasonable",
-      "No visibility into whether PBM pricing is competitive",
-      "Risk of DOL audit finding breach of prudence"
-    ],
-    recommendedModules: ["broker-comp", "drap", "ebitda"],
-    color: "text-emerald-400"
-  },
-  {
-    id: "hr",
-    title: "CHRO / Benefits",
-    icon: <Users className="w-5 h-5" />,
-    painPoints: [
-      "Renewal shock forcing plan design cuts that hurt employee morale",
-      "Broker says 'market conditions,' but is that actually true?",
-      "Need evidence-based intervention strategies, not vendor sales pitches"
-    ],
-    recommendedModules: ["trend", "intervention", "drap"],
-    color: "text-amber-400"
+    phase: "Executive Synthesis (Days 8-10)",
+    objective: "Translation to Board-ready formats",
+    deliverables: [
+      "Actuary peer review of findings",
+      "EBITDA translation applied",
+      "Executive summary drafted",
+      "Final reports delivered via secure vault"
+    ]
   }
 ];
 
 export default function KincaidIQIntelligenceSeries() {
+  const [selectedChallenge, setSelectedChallenge] = useState<number | null>(null);
   const [selectedModule, setSelectedModule] = useState<string | null>(null);
-  const [selectedPersona, setSelectedPersona] = useState<string>("cfo");
-
-  const currentPersona = personas.find(p => p.id === selectedPersona);
 
   return (
     <>
       <Head>
         <title>Kincaid IQ Intelligence Series | SiriusB iQ</title>
-        <meta name="description" content="Modular actuarial intelligence reports for CFOs, PE operators, and Board members. DRAP analysis, trend projections, volatility modeling, and EBITDA impact studies delivered in 3-10 days." />
+        <meta name="description" content="Modular actuarial intelligence reports for CFOs, PE operators, and Board members. Delivered in 3-10 days." />
       </Head>
 
-      <div className="min-h-screen bg-gradient-to-b from-[#0a0a0a] via-[#111] to-[#0a0a0a]">
-        {/* Hero Section */}
-        <section className="relative overflow-hidden border-b border-white/5 py-24">
-          <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,rgba(139,92,246,0.1),transparent_50%)]" />
+      <Nav />
+
+      <div className="min-h-screen bg-gradient-to-b from-slate-950 via-violet-950/20 to-black text-white pt-24">
+        
+        {/* Dramatic Hero Section */}
+        <section className="relative pt-20 pb-32 px-4 overflow-hidden">
+          <div className="absolute inset-0">
+            <div className="absolute top-1/3 left-1/4 w-96 h-96 bg-violet-600/10 rounded-full blur-3xl animate-pulse" />
+            <div className="absolute bottom-1/3 right-1/4 w-96 h-96 bg-fuchsia-600/10 rounded-full blur-3xl animate-pulse delay-1000" />
+            <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1639322537228-f710d846310a?q=80&w=2832&auto=format&fit=crop')] bg-cover bg-center opacity-10 mix-blend-overlay" />
+          </div>
           
-          <div className="container relative z-10 mx-auto px-6">
-            <div className="mx-auto max-w-4xl text-center">
-              <Badge className="mb-6 border-violet-500/30 bg-violet-500/10 text-violet-400">
-                <Brain className="mr-2 h-3 w-3" />
-                Modular Actuarial Intelligence
-              </Badge>
-              
-              <h1 className="mb-6 text-5xl font-black leading-tight text-white lg:text-7xl">
-                Kincaid IQ<br />
-                <span className="bg-gradient-to-r from-violet-400 via-purple-400 to-pink-400 bg-clip-text text-transparent">
-                  Intelligence Series
-                </span>
-              </h1>
-              
-              <p className="mb-8 text-xl text-slate-300 lg:text-2xl">
-                Forensic actuarial reports that quantify hidden healthcare costs, model savings scenarios, and translate findings into EBITDA impact for Board presentations.
-              </p>
-
-              <div className="bg-gradient-to-r from-violet-950/40 to-purple-950/40 border border-violet-500/30 rounded-xl p-6 mb-8">
-                <p className="text-lg text-slate-200 leading-relaxed">
-                  We partner with leading actuaries and consultants to deliver SOA/AAA-compliant analysis without the 6-month engagement. 
-                  Pick the modules you need. Get results in 3-10 days. Pay per report, not per seat.
-                </p>
-              </div>
-
-              <div className="flex flex-wrap items-center justify-center gap-4">
-                <Link href="/upload-pbm-contract">
-                  <Button size="lg" className="bg-violet-600 hover:bg-violet-700 text-white">
-                    <Upload className="mr-2 h-5 w-5" />
-                    Upload Contract to Start
-                  </Button>
-                </Link>
-                <Link href="#modules">
-                  <Button size="lg" variant="outline" className="border-violet-500/30 bg-violet-950/20 text-violet-400 hover:bg-violet-950/40">
-                    Browse Modules
-                    <ChevronRight className="ml-2 h-5 w-5" />
-                  </Button>
-                </Link>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        {/* How It Works */}
-        <section className="border-b border-white/5 py-16">
-          <div className="container mx-auto px-6">
-            <div className="mx-auto max-w-3xl text-center mb-12">
-              <h2 className="mb-4 text-3xl font-bold text-white">How It Works</h2>
-              <p className="text-slate-400">Simple, fast, and modular — not a 6-month consulting engagement</p>
-            </div>
-
-            <div className="mx-auto max-w-5xl">
-              <div className="grid grid-cols-1 gap-6 md:grid-cols-4">
-                <Card className="border-violet-500/20 bg-gradient-to-br from-slate-900 to-violet-950/20 p-6">
-                  <div className="mb-4 inline-flex h-12 w-12 items-center justify-center rounded-lg bg-violet-500/10 text-violet-400">
-                    <Upload className="h-6 w-6" />
-                  </div>
-                  <h3 className="mb-2 font-bold text-white">1. Upload</h3>
-                  <p className="text-sm text-slate-400">
-                    Send us your PBM contract, census file, and claims data via secure portal
-                  </p>
-                </Card>
-
-                <Card className="border-violet-500/20 bg-gradient-to-br from-slate-900 to-violet-950/20 p-6">
-                  <div className="mb-4 inline-flex h-12 w-12 items-center justify-center rounded-lg bg-violet-500/10 text-violet-400">
-                    <Target className="h-6 w-6" />
-                  </div>
-                  <h3 className="mb-2 font-bold text-white">2. Select Modules</h3>
-                  <p className="text-sm text-slate-400">
-                    Pick 1-6 intelligence reports based on your immediate priorities
-                  </p>
-                </Card>
-
-                <Card className="border-violet-500/20 bg-gradient-to-br from-slate-900 to-violet-950/20 p-6">
-                  <div className="mb-4 inline-flex h-12 w-12 items-center justify-center rounded-lg bg-violet-500/10 text-violet-400">
-                    <Brain className="h-6 w-6" />
-                  </div>
-                  <h3 className="mb-2 font-bold text-white">3. We Analyze</h3>
-                  <p className="text-sm text-slate-400">
-                    Our actuarial team runs the models and validates findings with consultants
-                  </p>
-                </Card>
-
-                <Card className="border-violet-500/20 bg-gradient-to-br from-slate-900 to-violet-950/20 p-6">
-                  <div className="mb-4 inline-flex h-12 w-12 items-center justify-center rounded-lg bg-violet-500/10 text-violet-400">
-                    <FileText className="h-6 w-6" />
-                  </div>
-                  <h3 className="mb-2 font-bold text-white">4. Get Results</h3>
-                  <p className="text-sm text-slate-400">
-                    Receive Board-ready reports with executive summaries in 3-10 days
-                  </p>
-                </Card>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        {/* Market Validation Section */}
-        <section className="border-b border-white/5 py-16 bg-gradient-to-b from-[#0a0a0a] to-slate-950">
-          <div className="container mx-auto px-6">
-            <div className="mx-auto max-w-6xl">
-              <div className="text-center mb-12">
-                <Badge className="mb-4 border-emerald-500/30 bg-emerald-500/10 text-emerald-400">
-                  <BarChart3 className="mr-2 h-3 w-3" />
-                  Market Validation
-                </Badge>
-                <h2 className="mb-4 text-3xl font-bold text-white">Why This Model Works</h2>
-                <p className="text-slate-400">Validated pricing, proven demand, and clear competitive differentiation</p>
-              </div>
-
-              <div className="grid grid-cols-1 gap-8 lg:grid-cols-3 mb-12">
-                {/* Pricing Validation */}
-                <Card className="border-emerald-500/20 bg-gradient-to-br from-slate-900 to-emerald-950/10 p-6">
-                  <div className="mb-4">
-                    <DollarSign className="h-8 w-8 text-emerald-400" />
-                  </div>
-                  <h3 className="mb-3 text-xl font-bold text-white">Pricing Validated</h3>
-                  <div className="space-y-3 mb-4">
-                    <div className="flex items-baseline gap-2">
-                      <span className="text-3xl font-black text-emerald-400">$3.5K-$9.5K</span>
-                    </div>
-                    <p className="text-sm text-slate-400">per module</p>
-                  </div>
-                  <ul className="space-y-2 text-sm text-slate-300">
-                    <li className="flex items-start gap-2">
-                      <CheckCircle2 className="h-4 w-4 text-emerald-500 shrink-0 mt-0.5" />
-                      <span>80% cheaper than Big 4 consulting ($150K+ engagements)</span>
-                    </li>
-                    <li className="flex items-start gap-2">
-                      <CheckCircle2 className="h-4 w-4 text-emerald-500 shrink-0 mt-0.5" />
-                      <span>95% faster turnaround (days vs. months)</span>
-                    </li>
-                    <li className="flex items-start gap-2">
-                      <CheckCircle2 className="h-4 w-4 text-emerald-500 shrink-0 mt-0.5" />
-                      <span>Pay-per-report model eliminates seat license bloat</span>
-                    </li>
-                  </ul>
-                </Card>
-
-                {/* Competitive Position */}
-                <Card className="border-violet-500/20 bg-gradient-to-br from-slate-900 to-violet-950/10 p-6">
-                  <div className="mb-4">
-                    <Target className="h-8 w-8 text-violet-400" />
-                  </div>
-                  <h3 className="mb-3 text-xl font-bold text-white">Competitive Moat</h3>
-                  <ul className="space-y-3 text-sm text-slate-300">
-                    <li className="flex items-start gap-2">
-                      <Zap className="h-4 w-4 text-violet-500 shrink-0 mt-0.5" />
-                      <div>
-                        <p className="font-semibold text-white">Actuarial AI Hybrid</p>
-                        <p className="text-xs text-slate-400">Combine LLM automation with actuarial validation — neither pure consulting nor pure software</p>
-                      </div>
-                    </li>
-                    <li className="flex items-start gap-2">
-                      <Zap className="h-4 w-4 text-violet-500 shrink-0 mt-0.5" />
-                      <div>
-                        <p className="font-semibold text-white">Modular Economics</p>
-                        <p className="text-xs text-slate-400">CFOs buy what they need, when they need it — no 6-month commitments</p>
-                      </div>
-                    </li>
-                    <li className="flex items-start gap-2">
-                      <Zap className="h-4 w-4 text-violet-500 shrink-0 mt-0.5" />
-                      <div>
-                        <p className="font-semibold text-white">Board-Ready Output</p>
-                        <p className="text-xs text-slate-400">Executive summaries written for fiduciary review, not actuarial peers</p>
-                      </div>
-                    </li>
-                  </ul>
-                </Card>
-
-                {/* Market Timing */}
-                <Card className="border-amber-500/20 bg-gradient-to-br from-slate-900 to-amber-950/10 p-6">
-                  <div className="mb-4">
-                    <TrendingUp className="h-8 w-8 text-amber-400" />
-                  </div>
-                  <h3 className="mb-3 text-xl font-bold text-white">Market Timing</h3>
-                  <ul className="space-y-3 text-sm text-slate-300">
-                    <li className="flex items-start gap-2">
-                      <CheckCircle2 className="h-4 w-4 text-amber-500 shrink-0 mt-0.5" />
-                      <div>
-                        <p className="font-semibold text-white">FTC PBM Scrutiny</p>
-                        <p className="text-xs text-slate-400">Boards demanding evidence that PBM pricing is defensible under regulatory pressure</p>
-                      </div>
-                    </li>
-                    <li className="flex items-start gap-2">
-                      <CheckCircle2 className="h-4 w-4 text-amber-500 shrink-0 mt-0.5" />
-                      <div>
-                        <p className="font-semibold text-white">EBITDA Compression</p>
-                        <p className="text-xs text-slate-400">PE portfolio companies need immediate cost containment, not 2025 RFPs</p>
-                      </div>
-                    </li>
-                    <li className="flex items-start gap-2">
-                      <CheckCircle2 className="h-4 w-4 text-amber-500 shrink-0 mt-0.5" />
-                      <div>
-                        <p className="font-semibold text-white">CAA Transparency Rules</p>
-                        <p className="text-xs text-slate-400">New disclosure requirements create demand for forensic contract analysis</p>
-                      </div>
-                    </li>
-                  </ul>
-                </Card>
-              </div>
-
-              {/* Competitive Comparison Table */}
-              <div className="rounded-2xl border border-slate-700 bg-slate-900/50 p-8">
-                <h3 className="mb-6 text-xl font-bold text-white text-center">How We Stack Up</h3>
-                <div className="overflow-x-auto">
-                  <table className="w-full text-sm">
-                    <thead>
-                      <tr className="border-b border-slate-700">
-                        <th className="pb-4 text-left text-slate-400 font-medium">Feature</th>
-                        <th className="pb-4 text-center text-violet-400 font-bold">Kincaid IQ</th>
-                        <th className="pb-4 text-center text-slate-400 font-medium">Big 4 Consulting</th>
-                        <th className="pb-4 text-center text-slate-400 font-medium">Benefits Consultants</th>
-                        <th className="pb-4 text-center text-slate-400 font-medium">Analytics Software</th>
-                      </tr>
-                    </thead>
-                    <tbody className="divide-y divide-slate-700">
-                      <tr>
-                        <td className="py-4 text-slate-300">Turnaround Time</td>
-                        <td className="py-4 text-center">
-                          <Badge className="bg-emerald-500/10 text-emerald-400 border-emerald-500/30">3-10 days</Badge>
-                        </td>
-                        <td className="py-4 text-center text-slate-500">3-6 months</td>
-                        <td className="py-4 text-center text-slate-500">4-8 weeks</td>
-                        <td className="py-4 text-center text-slate-500">Real-time*</td>
-                      </tr>
-                      <tr>
-                        <td className="py-4 text-slate-300">Price Range</td>
-                        <td className="py-4 text-center">
-                          <Badge className="bg-emerald-500/10 text-emerald-400 border-emerald-500/30">$3.5K-$35K</Badge>
-                        </td>
-                        <td className="py-4 text-center text-slate-500">$150K-$500K+</td>
-                        <td className="py-4 text-center text-slate-500">$25K-$100K</td>
-                        <td className="py-4 text-center text-slate-500">$50K-$200K/yr</td>
-                      </tr>
-                      <tr>
-                        <td className="py-4 text-slate-300">Actuarial Validation</td>
-                        <td className="py-4 text-center text-emerald-400">✓</td>
-                        <td className="py-4 text-center text-emerald-400">✓</td>
-                        <td className="py-4 text-center text-slate-500">Limited</td>
-                        <td className="py-4 text-center text-slate-500">—</td>
-                      </tr>
-                      <tr>
-                        <td className="py-4 text-slate-300">Board-Ready Output</td>
-                        <td className="py-4 text-center text-emerald-400">✓</td>
-                        <td className="py-4 text-center text-emerald-400">✓</td>
-                        <td className="py-4 text-center text-slate-500">Limited</td>
-                        <td className="py-4 text-center text-slate-500">—</td>
-                      </tr>
-                      <tr>
-                        <td className="py-4 text-slate-300">Modular Pricing</td>
-                        <td className="py-4 text-center text-emerald-400">✓</td>
-                        <td className="py-4 text-center text-slate-500">—</td>
-                        <td className="py-4 text-center text-slate-500">—</td>
-                        <td className="py-4 text-center text-slate-500">—</td>
-                      </tr>
-                      <tr>
-                        <td className="py-4 text-slate-300">Implementation Required</td>
-                        <td className="py-4 text-center">
-                          <Badge variant="outline" className="border-emerald-500/30 text-emerald-400">None</Badge>
-                        </td>
-                        <td className="py-4 text-center text-slate-500">None</td>
-                        <td className="py-4 text-center text-slate-500">None</td>
-                        <td className="py-4 text-center text-slate-500">6-12 months</td>
-                      </tr>
-                    </tbody>
-                  </table>
+          <div className="relative max-w-7xl mx-auto">
+            <div className="grid lg:grid-cols-2 gap-16 items-center">
+              <motion.div
+                initial={{ opacity: 0, x: -20 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ duration: 0.6 }}
+              >
+                <div className="inline-flex items-center gap-3 px-5 py-2 bg-gradient-to-r from-violet-500/20 to-fuchsia-500/20 border border-violet-400/30 rounded-full mb-8 backdrop-blur-sm">
+                  <Brain className="w-5 h-5 text-violet-300" />
+                  <span className="text-sm font-semibold text-violet-200">Modular Actuarial Intelligence</span>
                 </div>
-                <p className="mt-4 text-xs text-slate-500 text-center">*Software requires manual actuarial interpretation</p>
-              </div>
-            </div>
-          </div>
-        </section>
+                
+                <h1 className="text-5xl md:text-7xl font-black mb-8 leading-tight">
+                  Stop Guessing.<br />
+                  <span className="bg-gradient-to-r from-violet-400 via-fuchsia-300 to-pink-400 bg-clip-text text-transparent">
+                    Start Quantifying.
+                  </span>
+                </h1>
+                
+                <p className="text-2xl text-slate-300 mb-8 leading-relaxed">
+                  Forensic actuarial reports that uncover hidden healthcare costs, model intervention scenarios, and translate findings into EBITDA impact.
+                </p>
+                
+                <p className="text-lg text-violet-200/80 mb-10 border-l-4 border-violet-500 pl-4 py-2">
+                  No 6-month consulting engagements. Pick the modules you need. Get Board-ready results in 3-10 days.
+                </p>
 
-        {/* Persona Selector */}
-        <section className="border-b border-white/5 py-16">
-          <div className="container mx-auto px-6">
-            <div className="mx-auto max-w-3xl text-center mb-12">
-              <h2 className="mb-4 text-3xl font-bold text-white">Choose Your Path</h2>
-              <p className="text-slate-400">Different roles need different intelligence — we've mapped the recommended modules for your situation</p>
-            </div>
+                <div className="flex flex-col sm:flex-row gap-4">
+                  <Link href="#modules">
+                    <Button size="lg" className="w-full sm:w-auto bg-gradient-to-r from-violet-600 to-fuchsia-600 hover:from-violet-700 hover:to-fuchsia-700 text-white text-lg px-8 py-6 shadow-2xl shadow-violet-500/30">
+                      Explore Modules
+                      <ChevronRight className="w-5 h-5 ml-2" />
+                    </Button>
+                  </Link>
+                  <Link href="/upload-pbm-contract">
+                    <Button size="lg" variant="outline" className="w-full sm:w-auto border-2 border-violet-500/50 text-violet-200 hover:bg-violet-500/20 text-lg px-8 py-6">
+                      Upload Contract Securely
+                      <Upload className="w-5 h-5 ml-2" />
+                    </Button>
+                  </Link>
+                </div>
+              </motion.div>
 
-            <Tabs value={selectedPersona} onValueChange={setSelectedPersona} className="mx-auto max-w-6xl">
-              <TabsList className="grid w-full grid-cols-2 lg:grid-cols-4 bg-slate-900/50 border border-white/5">
-                {personas.map(persona => (
-                  <TabsTrigger 
-                    key={persona.id} 
-                    value={persona.id}
-                    className="data-[state=active]:bg-violet-600 data-[state=active]:text-white"
-                  >
-                    <span className="mr-2">{persona.icon}</span>
-                    {persona.title}
-                  </TabsTrigger>
-                ))}
-              </TabsList>
-
-              {personas.map(persona => (
-                <TabsContent key={persona.id} value={persona.id} className="mt-8">
-                  <div className="grid grid-cols-1 gap-8 lg:grid-cols-2">
-                    {/* Pain Points */}
-                    <Card className="border-red-500/20 bg-gradient-to-br from-slate-900 to-red-950/10 p-6">
-                      <h3 className="mb-4 flex items-center gap-2 text-lg font-bold text-white">
-                        <span className={persona.color}>{persona.icon}</span>
-                        Your Challenges
-                      </h3>
-                      <ul className="space-y-3">
-                        {persona.painPoints.map((point, idx) => (
-                          <li key={idx} className="flex items-start gap-2 text-sm text-slate-300">
-                            <span className="text-red-400 shrink-0">•</span>
-                            {point}
-                          </li>
-                        ))}
-                      </ul>
-                    </Card>
-
-                    {/* Recommended Modules */}
-                    <Card className="border-emerald-500/20 bg-gradient-to-br from-slate-900 to-emerald-950/10 p-6">
-                      <h3 className="mb-4 flex items-center gap-2 text-lg font-bold text-white">
-                        <CheckCircle2 className="h-5 w-5 text-emerald-400" />
-                        Recommended Modules
-                      </h3>
-                      <div className="space-y-3">
-                        {persona.recommendedModules.map(moduleId => {
-                          const intelligenceModule = intelligenceModules.find(m => m.id === moduleId);
-                          if (!intelligenceModule) return null;
-                          return (
-                            <div 
-                              key={moduleId} 
-                              className="flex items-center justify-between rounded-lg border border-slate-700 bg-slate-800/30 p-3 cursor-pointer hover:border-emerald-500/30 transition-colors"
-                              onClick={() => {
-                                setSelectedModule(moduleId);
-                                document.getElementById('modules')?.scrollIntoView({ behavior: 'smooth' });
-                              }}
-                            >
-                              <div className="flex items-center gap-3">
-                                <div className={`${intelligenceModule.color}`}>
-                                  {intelligenceModule.icon}
-                                </div>
-                                <div>
-                                  <p className="font-semibold text-white">{intelligenceModule.title}</p>
-                                  <p className="text-xs text-slate-400">{intelligenceModule.turnaround}</p>
-                                </div>
-                              </div>
-                              <div className="text-right">
-                                <p className={`font-bold ${intelligenceModule.color}`}>{intelligenceModule.price}</p>
-                              </div>
-                            </div>
-                          );
-                        })}
-                      </div>
-                      <div className="mt-6 pt-6 border-t border-slate-700">
-                        <p className="text-sm text-slate-400 mb-3">Total Investment:</p>
-                        <p className="text-2xl font-bold text-emerald-400">
-                          ${persona.recommendedModules.reduce((total, id) => {
-                            const intelligenceModule = intelligenceModules.find(m => m.id === id);
-                            return total + (intelligenceModule ? parseInt(intelligenceModule.price.replace(/[$,]/g, '')) : 0);
-                          }, 0).toLocaleString()}
-                        </p>
-                      </div>
-                    </Card>
+              <motion.div
+                initial={{ opacity: 0, scale: 0.95 }}
+                animate={{ opacity: 1, scale: 1 }}
+                transition={{ delay: 0.2, duration: 0.6 }}
+                className="relative hidden lg:block"
+              >
+                <div className="absolute inset-0 bg-gradient-to-r from-violet-500 to-fuchsia-500 rounded-2xl blur-3xl opacity-20 animate-pulse" />
+                <Card className="relative bg-black/40 border-2 border-violet-500/30 p-2 shadow-2xl shadow-violet-500/20 backdrop-blur-xl overflow-hidden rounded-2xl">
+                  <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-violet-500 via-fuchsia-500 to-pink-500" />
+                  <Image
+                    src="/Kincaid_IQ_WP_2026_06_Evidence_First_Transformation.pdf"
+                    alt="Intelligence Report Example"
+                    width={800}
+                    height={1000}
+                    className="rounded-xl w-full object-cover"
+                    onError={(e) => {
+                      // Fallback if PDF thumbnail fails
+                      e.currentTarget.src = "https://images.unsplash.com/photo-1551288049-bebda4e38f71?q=80&w=2070&auto=format&fit=crop";
+                    }}
+                  />
+                  <div className="absolute bottom-4 left-4 right-4 bg-slate-900/90 backdrop-blur-md border border-violet-500/30 rounded-xl p-4 flex items-center justify-between">
+                    <div>
+                      <p className="text-sm font-bold text-white">EBITDA Impact Report</p>
+                      <p className="text-xs text-emerald-400 font-mono">Status: Delivered (4 days)</p>
+                    </div>
+                    <Badge className="bg-violet-500/20 text-violet-300 border-violet-500/30">Board Ready</Badge>
                   </div>
-                </TabsContent>
-              ))}
-            </Tabs>
+                </Card>
+              </motion.div>
+            </div>
           </div>
         </section>
 
-        {/* Intelligence Modules */}
-        <section id="modules" className="border-b border-white/5 py-16">
-          <div className="container mx-auto px-6">
-            <div className="mx-auto max-w-3xl text-center mb-12">
-              <h2 className="mb-4 text-3xl font-bold text-white">Intelligence Modules</h2>
-              <p className="text-slate-400">Each module is a standalone forensic report. Order individually or bundle for comprehensive analysis.</p>
-            </div>
+        {/* Interactive Challenges Section */}
+        <section className="py-24 px-4 bg-slate-950 border-y border-white/5 relative">
+          <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_0%,rgba(139,92,246,0.05),transparent_70%)]" />
+          <div className="max-w-7xl mx-auto relative z-10">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              className="text-center mb-16"
+            >
+              <h2 className="text-4xl md:text-5xl font-black mb-6 bg-gradient-to-r from-white to-slate-400 bg-clip-text text-transparent">
+                The Executive Intelligence Gap
+              </h2>
+              <p className="text-xl text-slate-400 max-w-3xl mx-auto">
+                Why traditional consulting fails the modern C-Suite
+              </p>
+            </motion.div>
 
-            <div className="mx-auto max-w-6xl">
-              <div className="grid grid-cols-1 gap-8 lg:grid-cols-2">
-                {intelligenceModules.map((module) => (
-                  <motion.div
-                    key={module.id}
-                    initial={{ opacity: 0, y: 20 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    viewport={{ once: true }}
-                    transition={{ duration: 0.5 }}
+            <div className="grid md:grid-cols-2 gap-8">
+              {intelligenceChallenges.map((challenge, index) => (
+                <motion.div
+                  key={index}
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: index * 0.1 }}
+                >
+                  <Card
+                    className="bg-slate-900/50 border-slate-700/50 p-8 h-full cursor-pointer hover:border-violet-500/50 hover:bg-slate-800/50 transition-all group"
+                    onClick={() => setSelectedChallenge(selectedChallenge === index ? null : index)}
                   >
-                    <Card className={`border ${module.borderColor} bg-gradient-to-br ${module.bgGradient} p-6 h-full flex flex-col ${selectedModule === module.id ? 'ring-2 ring-violet-500' : ''}`}>
-                      <div className="mb-4 flex items-start justify-between">
-                        <div className={`inline-flex h-12 w-12 items-center justify-center rounded-lg bg-slate-900/50 ${module.color}`}>
+                    <div className="flex items-start gap-4 mb-6">
+                      <div className="bg-slate-800 rounded-xl p-4 group-hover:bg-violet-900/50 transition-colors flex-shrink-0">
+                        <challenge.icon className="w-8 h-8 text-violet-400" />
+                      </div>
+                      <div className="flex-1">
+                        <h3 className="text-2xl font-bold text-white mb-3">{challenge.title}</h3>
+                        <div className="space-y-4">
+                          <div>
+                            <div className="text-xs font-bold uppercase tracking-wider text-slate-500 mb-1">The Reality</div>
+                            <p className="text-slate-300 text-sm">{challenge.reality}</p>
+                          </div>
+                          <div>
+                            <div className="text-xs font-bold uppercase tracking-wider text-rose-500 mb-1">The Impact</div>
+                            <p className="text-rose-200/80 text-sm">{challenge.impact}</p>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    {selectedChallenge === index && (
+                      <motion.div
+                        initial={{ opacity: 0, height: 0 }}
+                        animate={{ opacity: 1, height: "auto" }}
+                        className="bg-gradient-to-r from-violet-900/30 to-fuchsia-900/30 rounded-xl p-5 border border-violet-500/30 mt-6"
+                      >
+                        <div className="flex items-start gap-3">
+                          <CheckCircle className="w-5 h-5 text-violet-400 flex-shrink-0 mt-0.5" />
+                          <div>
+                            <div className="text-sm font-bold text-violet-300 mb-1">The Intelligence Module Fix:</div>
+                            <p className="text-violet-100/90 text-sm leading-relaxed">{challenge.solution}</p>
+                          </div>
+                        </div>
+                      </motion.div>
+                    )}
+                  </Card>
+                </motion.div>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        {/* Intelligence Modules Grid */}
+        <section id="modules" className="py-24 px-4 relative">
+          <div className="max-w-7xl mx-auto">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              className="text-center mb-16"
+            >
+              <Badge className="bg-violet-500/10 text-violet-400 border-violet-500/30 mb-6">À La Carte Intelligence</Badge>
+              <h2 className="text-4xl md:text-5xl font-black mb-6 text-white">
+                The Intelligence Modules
+              </h2>
+              <p className="text-xl text-slate-400 max-w-3xl mx-auto">
+                Order individually or bundle. No retainers. No scope creep.
+              </p>
+            </motion.div>
+
+            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {intelligenceModules.map((module, index) => (
+                <motion.div
+                  key={module.id}
+                  initial={{ opacity: 0, scale: 0.95 }}
+                  whileInView={{ opacity: 1, scale: 1 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: index * 0.05 }}
+                  className="flex flex-col"
+                >
+                  <Card className={`relative flex flex-col h-full bg-slate-900 border ${module.borderColor} hover:shadow-[0_0_30px_rgba(139,92,246,0.15)] transition-all overflow-hidden group`}>
+                    {/* Header Accent */}
+                    <div className={`h-2 w-full bg-gradient-to-r ${module.bgGradient} opacity-50`} />
+                    
+                    <div className="p-6 flex-1 flex flex-col">
+                      <div className="flex justify-between items-start mb-6">
+                        <div className={`p-3 rounded-xl bg-slate-800 ${module.color}`}>
                           {module.icon}
                         </div>
-                        <div className="text-right">
-                          <Badge className="border-current text-current" variant="outline">
-                            {module.turnaround}
-                          </Badge>
-                        </div>
+                        <Badge variant="outline" className="border-slate-700 text-slate-400 bg-slate-900">
+                          <Clock className="w-3 h-3 mr-1" />
+                          {module.turnaround}
+                        </Badge>
                       </div>
 
-                      <h3 className="mb-2 text-xl font-bold text-white">{module.title}</h3>
-                      <p className={`mb-4 text-sm font-medium ${module.color}`}>{module.subtitle}</p>
-                      <p className="mb-6 text-sm text-slate-300 flex-1">{module.description}</p>
+                      <h3 className="text-xl font-bold text-white mb-1">{module.title}</h3>
+                      <p className={`text-sm font-medium ${module.color} mb-4`}>{module.subtitle}</p>
+                      
+                      <p className="text-slate-400 text-sm mb-6 flex-1">
+                        {module.description}
+                      </p>
 
-                      <div className="mb-6 rounded-lg border border-slate-700 bg-slate-900/50 p-4">
-                        <p className="mb-3 text-xs font-bold uppercase tracking-widest text-slate-400">Deliverables</p>
-                        <ul className="space-y-2">
-                          {module.deliverables.map((item, idx) => (
-                            <li key={idx} className="flex items-start gap-2 text-xs text-slate-300">
-                              <CheckCircle2 className="mt-0.5 h-3 w-3 shrink-0 text-emerald-500" />
-                              {item}
-                            </li>
-                          ))}
-                        </ul>
+                      <div className="space-y-2 border-t border-slate-800 pt-6 mt-auto">
+                        <div className="text-xs font-bold uppercase tracking-wider text-slate-500 mb-3">Included Deliverables:</div>
+                        {module.deliverables.map((item, idx) => (
+                          <div key={idx} className="flex items-start gap-2">
+                            <CheckCircle2 className="w-3.5 h-3.5 text-emerald-500 mt-0.5 flex-shrink-0" />
+                            <span className="text-xs text-slate-300">{item}</span>
+                          </div>
+                        ))}
                       </div>
+                    </div>
 
-                      <div className="flex items-center justify-between">
-                        <div>
-                          <p className="text-xs text-slate-400">Price</p>
-                          <p className={`text-2xl font-bold ${module.color}`}>{module.price}</p>
-                        </div>
-                        <Button className={`bg-violet-600 hover:bg-violet-700 text-white`}>
-                          Order Module
-                          <ArrowRight className="ml-2 h-4 w-4" />
-                        </Button>
-                      </div>
-                    </Card>
-                  </motion.div>
-                ))}
-              </div>
+                    <div className="p-6 bg-slate-950/50 border-t border-slate-800 flex items-center justify-between mt-auto">
+                      <div className={`text-2xl font-black ${module.color}`}>{module.price}</div>
+                      <Button variant="ghost" className={`hover:bg-slate-800 ${module.color}`}>
+                        Details <ArrowRight className="w-4 h-4 ml-1" />
+                      </Button>
+                    </div>
+                  </Card>
+                </motion.div>
+              ))}
             </div>
           </div>
         </section>
 
-        {/* Bundle Pricing */}
-        <section className="border-b border-white/5 py-16">
-          <div className="container mx-auto px-6">
-            <div className="mx-auto max-w-3xl text-center mb-12">
-              <h2 className="mb-4 text-3xl font-bold text-white">Bundle & Save</h2>
-              <p className="text-slate-400">Order multiple modules together for comprehensive intelligence at a discounted rate</p>
-            </div>
+        {/* Detailed Implementation Framework */}
+        <section className="py-24 px-4 bg-slate-950 border-y border-white/5">
+          <div className="max-w-6xl mx-auto">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              className="text-center mb-16"
+            >
+              <h2 className="text-4xl md:text-5xl font-black mb-6 text-white">
+                How It Actually Works
+              </h2>
+              <p className="text-xl text-slate-400 max-w-3xl mx-auto">
+                No 6-month discovery phases. We move from data ingestion to Board presentation in days.
+              </p>
+            </motion.div>
 
-            <div className="mx-auto max-w-5xl">
-              <div className="grid grid-cols-1 gap-8 lg:grid-cols-3">
-                {/* Starter Bundle */}
-                <Card className="border-cyan-500/30 bg-gradient-to-br from-slate-900 to-cyan-950/20 p-6">
-                  <Badge className="mb-4 border-cyan-500/30 bg-cyan-500/10 text-cyan-400">Starter</Badge>
-                  <h3 className="mb-2 text-2xl font-bold text-white">CFO Quick-Start</h3>
-                  <p className="mb-6 text-sm text-slate-400">Answer the Board's top 3 questions</p>
+            <div className="space-y-6 relative before:absolute before:inset-0 before:ml-8 before:-translate-x-px md:before:mx-auto md:before:translate-x-0 before:h-full before:w-0.5 before:bg-gradient-to-b before:from-transparent before:via-slate-700 before:to-transparent">
+              {implementationFramework.map((phase, index) => (
+                <motion.div
+                  key={index}
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: index * 0.1 }}
+                  className="relative flex items-center justify-between md:justify-normal md:odd:flex-row-reverse group is-active"
+                >
+                  <div className="flex items-center justify-center w-16 h-16 rounded-full border-4 border-slate-950 bg-slate-800 text-violet-400 shadow shrink-0 md:order-1 md:group-odd:-translate-x-1/2 md:group-even:translate-x-1/2 relative z-10">
+                    <span className="font-bold text-xl">{index + 1}</span>
+                  </div>
                   
-                  <div className="mb-6">
-                    <div className="flex items-baseline gap-2 mb-1">
-                      <span className="text-4xl font-black text-cyan-400">$12,500</span>
-                      <span className="text-slate-500 line-through">$14,500</span>
-                    </div>
-                    <p className="text-xs text-emerald-400">Save $2,000</p>
+                  <div className="w-[calc(100%-5rem)] md:w-[calc(50%-3rem)] p-6 rounded-2xl bg-slate-900 border border-slate-800 hover:border-violet-500/30 transition-colors">
+                    <h3 className="font-bold text-xl text-white mb-1">{phase.phase}</h3>
+                    <p className="text-violet-400 text-sm font-medium mb-4">{phase.objective}</p>
+                    <ul className="space-y-2">
+                      {phase.deliverables.map((item, idx) => (
+                        <li key={idx} className="flex items-start gap-2 text-sm text-slate-300">
+                          <CheckCircle2 className="w-4 h-4 text-emerald-500 mt-0.5 flex-shrink-0" />
+                          <span>{item}</span>
+                        </li>
+                      ))}
+                    </ul>
                   </div>
-
-                  <div className="space-y-2 mb-6">
-                    <div className="flex items-center gap-2 text-sm text-slate-300">
-                      <CheckCircle2 className="h-4 w-4 text-cyan-500" />
-                      Broker Compensation Study
-                    </div>
-                    <div className="flex items-center gap-2 text-sm text-slate-300">
-                      <CheckCircle2 className="h-4 w-4 text-cyan-500" />
-                      DRAP Analysis
-                    </div>
-                    <div className="flex items-center gap-2 text-sm text-slate-300">
-                      <CheckCircle2 className="h-4 w-4 text-cyan-500" />
-                      Trend Projection Report
-                    </div>
-                  </div>
-
-                  <Button className="w-full bg-cyan-600 hover:bg-cyan-700 text-white">
-                    Order Bundle
-                  </Button>
-                </Card>
-
-                {/* Professional Bundle */}
-                <Card className="border-violet-500/30 bg-gradient-to-br from-slate-900 to-violet-950/20 p-6 ring-2 ring-violet-500/50">
-                  <Badge className="mb-4 border-violet-500/30 bg-violet-500/10 text-violet-400">Most Popular</Badge>
-                  <h3 className="mb-2 text-2xl font-bold text-white">Executive Suite</h3>
-                  <p className="mb-6 text-sm text-slate-400">Full actuarial intelligence + Board presentation</p>
-                  
-                  <div className="mb-6">
-                    <div className="flex items-baseline gap-2 mb-1">
-                      <span className="text-4xl font-black text-violet-400">$24,500</span>
-                      <span className="text-slate-500 line-through">$30,500</span>
-                    </div>
-                    <p className="text-xs text-emerald-400">Save $6,000</p>
-                  </div>
-
-                  <div className="space-y-2 mb-6">
-                    <div className="flex items-center gap-2 text-sm text-slate-300">
-                      <CheckCircle2 className="h-4 w-4 text-violet-500" />
-                      All Starter modules
-                    </div>
-                    <div className="flex items-center gap-2 text-sm text-slate-300">
-                      <CheckCircle2 className="h-4 w-4 text-violet-500" />
-                      Volatility Dashboard
-                    </div>
-                    <div className="flex items-center gap-2 text-sm text-slate-300">
-                      <CheckCircle2 className="h-4 w-4 text-violet-500" />
-                      Intervention Simulator
-                    </div>
-                    <div className="flex items-center gap-2 text-sm text-slate-300">
-                      <CheckCircle2 className="h-4 w-4 text-violet-500" />
-                      EBITDA Impact Report
-                    </div>
-                  </div>
-
-                  <Button className="w-full bg-violet-600 hover:bg-violet-700 text-white">
-                    Order Bundle
-                  </Button>
-                </Card>
-
-                {/* Enterprise Bundle */}
-                <Card className="border-amber-500/30 bg-gradient-to-br from-slate-900 to-amber-950/20 p-6">
-                  <Badge className="mb-4 border-amber-500/30 bg-amber-500/10 text-amber-400">Enterprise</Badge>
-                  <h3 className="mb-2 text-2xl font-bold text-white">Complete Intelligence</h3>
-                  <p className="mb-6 text-sm text-slate-400">All 6 modules + quarterly updates</p>
-                  
-                  <div className="mb-6">
-                    <div className="flex items-baseline gap-2 mb-1">
-                      <span className="text-4xl font-black text-amber-400">$35,000</span>
-                      <span className="text-slate-500 line-through">$40,000</span>
-                    </div>
-                    <p className="text-xs text-emerald-400">Save $5,000</p>
-                  </div>
-
-                  <div className="space-y-2 mb-6">
-                    <div className="flex items-center gap-2 text-sm text-slate-300">
-                      <CheckCircle2 className="h-4 w-4 text-amber-500" />
-                      All 6 intelligence modules
-                    </div>
-                    <div className="flex items-center gap-2 text-sm text-slate-300">
-                      <CheckCircle2 className="h-4 w-4 text-amber-500" />
-                      Quarterly trend updates (Year 1)
-                    </div>
-                    <div className="flex items-center gap-2 text-sm text-slate-300">
-                      <CheckCircle2 className="h-4 w-4 text-amber-500" />
-                      Priority turnaround (3-5 days)
-                    </div>
-                    <div className="flex items-center gap-2 text-sm text-slate-300">
-                      <CheckCircle2 className="h-4 w-4 text-amber-500" />
-                      Board presentation support
-                    </div>
-                  </div>
-
-                  <Button className="w-full bg-amber-600 hover:bg-amber-700 text-white">
-                    Order Bundle
-                  </Button>
-                </Card>
-              </div>
+                </motion.div>
+              ))}
             </div>
           </div>
         </section>
 
-        {/* Success Stories Section */}
-        <section className="border-b border-white/5 py-16 bg-gradient-to-b from-slate-950 to-[#0a0a0a]">
-          <div className="container mx-auto px-6">
-            <div className="mx-auto max-w-6xl">
-              <div className="text-center mb-12">
-                <Badge className="mb-4 border-emerald-500/30 bg-emerald-500/10 text-emerald-400">
-                  <TrendingUp className="mr-2 h-3 w-3" />
-                  Proven Results
-                </Badge>
-                <h2 className="mb-4 text-3xl font-bold text-white">Success Stories</h2>
-                <p className="text-slate-400">Real outcomes from organizations that deployed Kincaid IQ Intelligence modules</p>
-              </div>
+        {/* High-Impact Success Stories */}
+        <section className="py-24 px-4 bg-black">
+          <div className="max-w-7xl mx-auto">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              className="text-center mb-16"
+            >
+              <h2 className="text-4xl md:text-5xl font-black mb-6 bg-gradient-to-r from-emerald-200 to-teal-200 bg-clip-text text-transparent">
+                Verifiable Results
+              </h2>
+              <p className="text-xl text-emerald-100/70 max-w-3xl mx-auto">
+                What happens when you deploy forensic intelligence against PBM contracts
+              </p>
+            </motion.div>
 
-              <div className="grid grid-cols-1 gap-8 lg:grid-cols-3 mb-12">
-                {/* Case Study 1 - PE Portfolio Company */}
-                <Card className="border-emerald-500/20 bg-gradient-to-br from-slate-900 via-slate-900 to-emerald-950/20 p-6">
-                  <div className="mb-4">
-                    <Badge className="bg-amber-500/10 text-amber-400 border-amber-500/30 text-xs">PE Portfolio Company</Badge>
+            <div className="grid lg:grid-cols-2 gap-8">
+              {/* Detailed Case Study 1 */}
+              <Card className="bg-gradient-to-br from-slate-900 to-emerald-950/20 border-emerald-500/30 p-8">
+                <div className="flex justify-between items-start mb-6">
+                  <Badge className="bg-emerald-500/10 text-emerald-400 border-emerald-500/30">PE Portfolio Company</Badge>
+                  <div className="text-right">
+                    <div className="text-sm text-slate-400">Time to Insights</div>
+                    <div className="text-lg font-bold text-emerald-400">7 Days</div>
                   </div>
-                  <h3 className="mb-3 text-xl font-bold text-white">$2.1M Annual Savings Identified</h3>
-                  <div className="mb-4 space-y-2 text-sm text-slate-400">
-                    <div className="flex items-center gap-2">
-                      <Building2 className="h-4 w-4 text-slate-500" />
-                      <span>Manufacturing | 850 lives | $12M benefits spend</span>
-                    </div>
-                    <div className="flex items-center gap-2">
-                      <Clock className="h-4 w-4 text-slate-500" />
-                      <span>7-day turnaround</span>
-                    </div>
-                  </div>
-                  <div className="border-t border-slate-700 pt-4 mb-4">
-                    <p className="text-sm text-slate-300 leading-relaxed">
-                      CFO ordered DRAP Analysis + Intervention Simulator after Board questioned PBM pricing. 
-                      Found 34% spread on 8 specialty drugs and $800K in recoverable rebate under-remittance.
-                    </p>
-                  </div>
-                  <div className="space-y-2">
-                    <div className="flex items-start gap-2 text-sm">
-                      <CheckCircle2 className="h-4 w-4 text-emerald-500 shrink-0 mt-0.5" />
-                      <span className="text-slate-300">Renegotiated PBM contract with 6% lower net cost</span>
-                    </div>
-                    <div className="flex items-start gap-2 text-sm">
-                      <CheckCircle2 className="h-4 w-4 text-emerald-500 shrink-0 mt-0.5" />
-                      <span className="text-slate-300">Added point-of-sale rebate pass-through clause</span>
-                    </div>
-                    <div className="flex items-start gap-2 text-sm">
-                      <CheckCircle2 className="h-4 w-4 text-emerald-500 shrink-0 mt-0.5" />
-                      <span className="text-slate-300">$2.1M recognized as EBITDA improvement in Q2</span>
-                    </div>
-                  </div>
-                  <div className="mt-6 pt-4 border-t border-slate-700">
-                    <p className="text-xs text-slate-500 italic">
-                      "The EBITDA Impact Report gave us the exact P&L line items to present to our sponsor. 
-                      We closed the renegotiation in 45 days."
-                    </p>
-                    <p className="text-xs text-slate-400 mt-2">— CFO, Midwest Manufacturing</p>
-                  </div>
-                </Card>
-
-                {/* Case Study 2 - Health System */}
-                <Card className="border-violet-500/20 bg-gradient-to-br from-slate-900 via-slate-900 to-violet-950/20 p-6">
-                  <div className="mb-4">
-                    <Badge className="bg-blue-500/10 text-blue-400 border-blue-500/30 text-xs">Health System</Badge>
-                  </div>
-                  <h3 className="mb-3 text-xl font-bold text-white">Prevented $4.8M Stop-Loss Overpayment</h3>
-                  <div className="mb-4 space-y-2 text-sm text-slate-400">
-                    <div className="flex items-center gap-2">
-                      <Building2 className="h-4 w-4 text-slate-500" />
-                      <span>Regional Hospital | 3,200 lives | $38M benefits spend</span>
-                    </div>
-                    <div className="flex items-center gap-2">
-                      <Clock className="h-4 w-4 text-slate-500" />
-                      <span>5-day turnaround</span>
-                    </div>
-                  </div>
-                  <div className="border-t border-slate-700 pt-4 mb-4">
-                    <p className="text-sm text-slate-300 leading-relaxed">
-                      CHRO ordered Volatility Dashboard + Trend Projection before renewing stop-loss policy. 
-                      Monte Carlo simulation showed carrier pricing 18% above actuarial fair value.
-                    </p>
-                  </div>
-                  <div className="space-y-2">
-                    <div className="flex items-start gap-2 text-sm">
-                      <CheckCircle2 className="h-4 w-4 text-emerald-500 shrink-0 mt-0.5" />
-                      <span className="text-slate-300">Presented credibility-weighted trend analysis to carrier</span>
-                    </div>
-                    <div className="flex items-start gap-2 text-sm">
-                      <CheckCircle2 className="h-4 w-4 text-emerald-500 shrink-0 mt-0.5" />
-                      <span className="text-slate-300">Negotiated 12% premium reduction with evidence</span>
-                    </div>
-                    <div className="flex items-start gap-2 text-sm">
-                      <CheckCircle2 className="h-4 w-4 text-emerald-500 shrink-0 mt-0.5" />
-                      <span className="text-slate-300">$4.8M three-year savings vs. initial quote</span>
-                    </div>
-                  </div>
-                  <div className="mt-6 pt-4 border-t border-slate-700">
-                    <p className="text-xs text-slate-500 italic">
-                      "The P90/P95 downside metrics gave us the exact language to push back on the carrier's pricing. 
-                      They couldn't refute our actuarial model."
-                    </p>
-                    <p className="text-xs text-slate-400 mt-2">— VP Benefits, Regional Health System</p>
-                  </div>
-                </Card>
-
-                {/* Case Study 3 - Family Office */}
-                <Card className="border-amber-500/20 bg-gradient-to-br from-slate-900 via-slate-900 to-amber-950/20 p-6">
-                  <div className="mb-4">
-                    <Badge className="bg-purple-500/10 text-purple-400 border-purple-500/30 text-xs">Family Office</Badge>
-                  </div>
-                  <h3 className="mb-3 text-xl font-bold text-white">$620K Broker Override Recovered</h3>
-                  <div className="mb-4 space-y-2 text-sm text-slate-400">
-                    <div className="flex items-center gap-2">
-                      <Building2 className="h-4 w-4 text-slate-500" />
-                      <span>Portfolio of 4 companies | 1,850 lives | $22M spend</span>
-                    </div>
-                    <div className="flex items-center gap-2">
-                      <Clock className="h-4 w-4 text-slate-500" />
-                      <span>3-day turnaround</span>
-                    </div>
-                  </div>
-                  <div className="border-t border-slate-700 pt-4 mb-4">
-                    <p className="text-sm text-slate-300 leading-relaxed">
-                      Investment committee ordered $3,500 Broker Compensation Study after Board member 
-                      questioned "administrative fees" line item. Found undisclosed 3.2% PBM performance bonus.
-                    </p>
-                  </div>
-                  <div className="space-y-2">
-                    <div className="flex items-start gap-2 text-sm">
-                      <CheckCircle2 className="h-4 w-4 text-emerald-500 shrink-0 mt-0.5" />
-                      <span className="text-slate-300">Documented $620K in hidden broker overrides across portfolio</span>
-                    </div>
-                    <div className="flex items-start gap-2 text-sm">
-                      <CheckCircle2 className="h-4 w-4 text-emerald-500 shrink-0 mt-0.5" />
-                      <span className="text-slate-300">Switched to fee-only advisor model</span>
-                    </div>
-                    <div className="flex items-start gap-2 text-sm">
-                      <CheckCircle2 className="h-4 w-4 text-emerald-500 shrink-0 mt-0.5" />
-                      <span className="text-slate-300">Ordered full Executive Suite ($24.5K) for all companies</span>
-                    </div>
-                  </div>
-                  <div className="mt-6 pt-4 border-t border-slate-700">
-                    <p className="text-xs text-slate-500 italic">
-                      "The $3,500 study paid for itself 177x. We now run Kincaid IQ on every portfolio company 
-                      within 60 days of acquisition."
-                    </p>
-                    <p className="text-xs text-slate-400 mt-2">— Managing Partner, Multi-Family Office</p>
-                  </div>
-                </Card>
-              </div>
-
-              {/* Aggregate Results Banner */}
-              <div className="rounded-2xl border border-emerald-500/30 bg-gradient-to-br from-emerald-950/20 via-slate-900 to-teal-950/20 p-8 relative overflow-hidden">
-                <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_0%,rgba(16,185,129,0.1),transparent_70%)]" />
-                <div className="relative z-10">
-                  <h3 className="mb-6 text-center text-xl font-bold text-white">Aggregate Results Across All Engagements</h3>
-                  <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
-                    <div className="text-center">
-                      <div className="text-4xl font-black text-emerald-400 mb-2">$47M</div>
-                      <p className="text-sm text-slate-400">Total Savings Identified</p>
-                    </div>
-                    <div className="text-center">
-                      <div className="text-4xl font-black text-violet-400 mb-2">6.2 days</div>
-                      <p className="text-sm text-slate-400">Avg. Turnaround Time</p>
-                    </div>
-                    <div className="text-center">
-                      <div className="text-4xl font-black text-amber-400 mb-2">127:1</div>
-                      <p className="text-sm text-slate-400">Avg. ROI Multiple</p>
-                    </div>
-                    <div className="text-center">
-                      <div className="text-4xl font-black text-blue-400 mb-2">89%</div>
-                      <p className="text-sm text-slate-400">Reorder Rate</p>
-                    </div>
-                  </div>
-                  <p className="mt-6 text-center text-xs text-slate-500">
-                    Based on 64 completed engagements across PE portfolio companies, health systems, and family offices (2024-2026)
-                  </p>
                 </div>
-              </div>
-            </div>
-          </div>
-        </section>
+                
+                <h3 className="text-3xl font-black text-white mb-2">$2.1M Annual Savings Identified</h3>
+                <p className="text-slate-400 mb-6">Manufacturing | 850 lives | $12M spend</p>
+                
+                <div className="bg-slate-950/50 rounded-xl p-5 border border-slate-800 mb-6">
+                  <div className="text-sm font-bold text-slate-300 mb-2">The Catalyst:</div>
+                  <p className="text-slate-400 text-sm">CFO ordered DRAP Analysis + Intervention Simulator after Board questioned PBM pricing. Found 34% spread on 8 specialty drugs.</p>
+                </div>
+                
+                <div className="space-y-3 mb-8">
+                  <div className="flex items-start gap-3">
+                    <CheckCircle2 className="w-5 h-5 text-emerald-500 flex-shrink-0" />
+                    <span className="text-slate-200 font-medium">Renegotiated PBM contract with 6% lower net cost</span>
+                  </div>
+                  <div className="flex items-start gap-3">
+                    <CheckCircle2 className="w-5 h-5 text-emerald-500 flex-shrink-0" />
+                    <span className="text-slate-200 font-medium">$800K in recoverable rebate under-remittance identified</span>
+                  </div>
+                  <div className="flex items-start gap-3">
+                    <CheckCircle2 className="w-5 h-5 text-emerald-500 flex-shrink-0" />
+                    <span className="text-slate-200 font-medium">$2.1M recognized as EBITDA improvement in Q2</span>
+                  </div>
+                </div>
+                
+                <div className="border-l-4 border-emerald-500 pl-4 py-2">
+                  <p className="text-slate-300 italic">"The EBITDA Impact Report gave us the exact P&L line items to present to our sponsor. We closed the renegotiation in 45 days."</p>
+                  <p className="text-emerald-400 text-sm font-bold mt-2">— CFO, Midwest Manufacturing</p>
+                </div>
+              </Card>
 
-        {/* Security & Compliance */}
-        <section className="border-b border-white/5 py-16">
-          <div className="container mx-auto px-6">
-            <div className="mx-auto max-w-4xl">
-              <Card className="border-slate-700 bg-slate-900/50 p-8">
-                <div className="flex items-start gap-4">
-                  <div className="rounded-lg bg-emerald-500/10 p-3">
-                    <Lock className="h-6 w-6 text-emerald-400" />
+              {/* Detailed Case Study 2 */}
+              <Card className="bg-gradient-to-br from-slate-900 to-violet-950/20 border-violet-500/30 p-8">
+                <div className="flex justify-between items-start mb-6">
+                  <Badge className="bg-violet-500/10 text-violet-400 border-violet-500/30">Health System</Badge>
+                  <div className="text-right">
+                    <div className="text-sm text-slate-400">Time to Insights</div>
+                    <div className="text-lg font-bold text-violet-400">5 Days</div>
                   </div>
-                  <div>
-                    <h3 className="mb-2 text-lg font-bold text-white">Enterprise-Grade Security</h3>
-                    <p className="mb-4 text-sm text-slate-400">
-                      All data transfers use 256-bit encryption. Files are processed in isolated environments and deleted after report delivery. 
-                      We're HIPAA-compliant and SOC 2 Type II certified.
-                    </p>
-                    <div className="grid grid-cols-2 gap-4 md:grid-cols-4">
-                      <div className="rounded-lg border border-slate-700 bg-slate-800/30 p-3 text-center">
-                        <Shield className="mx-auto mb-1 h-5 w-5 text-emerald-400" />
-                        <p className="text-xs text-slate-300">HIPAA Compliant</p>
-                      </div>
-                      <div className="rounded-lg border border-slate-700 bg-slate-800/30 p-3 text-center">
-                        <Lock className="mx-auto mb-1 h-5 w-5 text-emerald-400" />
-                        <p className="text-xs text-slate-300">SOC 2 Type II</p>
-                      </div>
-                      <div className="rounded-lg border border-slate-700 bg-slate-800/30 p-3 text-center">
-                        <Shield className="mx-auto mb-1 h-5 w-5 text-emerald-400" />
-                        <p className="text-xs text-slate-300">256-bit Encryption</p>
-                      </div>
-                      <div className="rounded-lg border border-slate-700 bg-slate-800/30 p-3 text-center">
-                        <Clock className="mx-auto mb-1 h-5 w-5 text-emerald-400" />
-                        <p className="text-xs text-slate-300">Auto-Delete After 30 Days</p>
-                      </div>
-                    </div>
+                </div>
+                
+                <h3 className="text-3xl font-black text-white mb-2">Prevented $4.8M Overpayment</h3>
+                <p className="text-slate-400 mb-6">Regional Hospital | 3,200 lives | $38M spend</p>
+                
+                <div className="bg-slate-950/50 rounded-xl p-5 border border-slate-800 mb-6">
+                  <div className="text-sm font-bold text-slate-300 mb-2">The Catalyst:</div>
+                  <p className="text-slate-400 text-sm">Ordered Volatility Dashboard + Trend Projection before renewing stop-loss policy. Monte Carlo simulation showed carrier pricing 18% above fair value.</p>
+                </div>
+                
+                <div className="space-y-3 mb-8">
+                  <div className="flex items-start gap-3">
+                    <CheckCircle2 className="w-5 h-5 text-violet-500 flex-shrink-0" />
+                    <span className="text-slate-200 font-medium">Presented credibility-weighted trend analysis to carrier</span>
                   </div>
+                  <div className="flex items-start gap-3">
+                    <CheckCircle2 className="w-5 h-5 text-violet-500 flex-shrink-0" />
+                    <span className="text-slate-200 font-medium">Negotiated 12% premium reduction with hard evidence</span>
+                  </div>
+                  <div className="flex items-start gap-3">
+                    <CheckCircle2 className="w-5 h-5 text-violet-500 flex-shrink-0" />
+                    <span className="text-slate-200 font-medium">$4.8M three-year savings vs. initial quote</span>
+                  </div>
+                </div>
+                
+                <div className="border-l-4 border-violet-500 pl-4 py-2">
+                  <p className="text-slate-300 italic">"The P90/P95 downside metrics gave us the exact language to push back on the carrier's pricing. They couldn't refute our actuarial model."</p>
+                  <p className="text-violet-400 text-sm font-bold mt-2">— VP Benefits, Regional Health System</p>
                 </div>
               </Card>
             </div>
           </div>
         </section>
 
-        {/* CTA Section */}
-        <section className="py-24">
-          <div className="container mx-auto px-6">
-            <div className="mx-auto max-w-4xl text-center">
-              <h2 className="mb-6 text-4xl font-black text-white lg:text-5xl">
-                Stop Guessing.<br />
-                <span className="bg-gradient-to-r from-violet-400 to-pink-400 bg-clip-text text-transparent">
-                  Start Quantifying.
-                </span>
-              </h2>
-              <p className="mb-8 text-xl text-slate-300">
-                Upload your contract and census data. Pick your modules. Get actuarial-grade intelligence in 3-10 days.
-              </p>
-              <div className="flex flex-wrap items-center justify-center gap-4">
-                <Link href="/upload-pbm-contract">
-                  <Button size="lg" className="bg-violet-600 hover:bg-violet-700 text-white">
-                    <Upload className="mr-2 h-5 w-5" />
-                    Upload Contract to Start
-                  </Button>
-                </Link>
-                <Link href="/contact">
-                  <Button size="lg" variant="outline" className="border-violet-500/30 bg-violet-950/20 text-violet-400 hover:bg-violet-950/40">
-                    Talk to an Actuary
-                    <ArrowRight className="ml-2 h-5 w-5" />
-                  </Button>
-                </Link>
+        {/* Lead Capture / Toolkit CTA */}
+        <section className="py-24 px-4 border-t border-white/5 relative overflow-hidden">
+          <div className="absolute inset-0 bg-gradient-to-b from-violet-950/30 to-black" />
+          <div className="max-w-4xl mx-auto relative z-10">
+            <Card className="bg-black/60 border-2 border-violet-500/50 p-8 md:p-12 shadow-[0_0_50px_rgba(139,92,246,0.3)] backdrop-blur-xl">
+              <div className="text-center mb-10">
+                <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-violet-500/20 mb-6">
+                  <Lock className="w-8 h-8 text-violet-400" />
+                </div>
+                <h2 className="text-4xl font-black mb-4 text-white">
+                  Get the Sample Report Vault
+                </h2>
+                <p className="text-xl text-slate-300">
+                  Download redacted examples of actual DRAP, Trend, and EBITDA impact reports delivered to clients.
+                </p>
               </div>
-            </div>
+
+              <form className="space-y-6">
+                <div className="grid md:grid-cols-2 gap-6">
+                  <div>
+                    <label className="block text-sm font-bold text-slate-300 mb-2">Work Email</label>
+                    <input
+                      type="email"
+                      required
+                      className="w-full px-4 py-3 bg-slate-900 border border-slate-700 rounded-lg text-white focus:outline-none focus:border-violet-500 focus:ring-1 focus:ring-violet-500 transition-all"
+                      placeholder="name@company.com"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-sm font-bold text-slate-300 mb-2">Company Name</label>
+                    <input
+                      type="text"
+                      required
+                      className="w-full px-4 py-3 bg-slate-900 border border-slate-700 rounded-lg text-white focus:outline-none focus:border-violet-500 focus:ring-1 focus:ring-violet-500 transition-all"
+                      placeholder="Acme Corp"
+                    />
+                  </div>
+                </div>
+
+                <div className="pt-4">
+                  <Button
+                    type="submit"
+                    size="lg"
+                    className="w-full bg-violet-600 hover:bg-violet-700 text-white text-xl py-6 shadow-lg shadow-violet-600/25"
+                  >
+                    Access Sample Reports Now
+                    <ArrowRight className="w-5 h-5 ml-2" />
+                  </Button>
+                </div>
+                <p className="text-center text-xs text-slate-500 flex items-center justify-center gap-2 mt-4">
+                  <Shield className="w-3 h-3" /> Secure process. We never share your information.
+                </p>
+              </form>
+            </Card>
           </div>
         </section>
+
       </div>
+      <Footer />
     </>
   );
 }

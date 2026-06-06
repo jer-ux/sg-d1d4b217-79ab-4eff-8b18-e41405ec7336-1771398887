@@ -59,6 +59,7 @@ export default function PBMCrimeBossPage() {
   
   // All images for lightbox navigation
   const allImages = [
+    "/Firefly_Gemini_Flash_Your_PBM_Met_Every_Guarantee._You_Still_Lost_the_Money._Written_by_Jeremiah_Franklin_465075.png",
     "/Gemini_Generated_Image_9vb8yz9vb8yz9vb8_1_.png",
     "/Firefly_Gemini_Flash_A_Fortune_100_CIO_Made_A_Confession_To_Me_Last_Month._Written_by_Jeremiah_Franklin_Sh_28516.png",
     "/Firefly_Gemini_Flash_The_7.3_Billion_Question-_What_the_Big_Three_PBMs_Have_Cost_Your_Plan_Your_People_981473.png",
@@ -547,7 +548,7 @@ export default function PBMCrimeBossPage() {
           </div>
         </section>
 
-        {/* Featured Article Banner */}
+        {/* Featured Article: Your PBM Met Every Guarantee */}
         <section className="py-20">
           <div className="max-w-7xl mx-auto px-6">
             <motion.div
@@ -555,56 +556,79 @@ export default function PBMCrimeBossPage() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.6 }}
-              className="relative rounded-3xl overflow-hidden border-2 border-rose-500/40 shadow-2xl shadow-rose-500/20 hover:shadow-rose-500/40 transition-shadow duration-500 group"
+              className="relative rounded-3xl overflow-hidden border-2 border-amber-500/40 shadow-2xl shadow-amber-500/20 hover:shadow-amber-500/40 transition-shadow duration-500 group"
             >
-              <div className="absolute inset-0">
+              <div 
+                className="absolute inset-0 cursor-pointer"
+                onClick={() => openLightbox("/Firefly_Gemini_Flash_Your_PBM_Met_Every_Guarantee._You_Still_Lost_the_Money._Written_by_Jeremiah_Franklin_465075.png")}
+              >
                 <img
-                  src="/Gemini_Generated_Image_rzwmsjrzwmsjrzwm.png"
-                  alt="Featured Investigation"
+                  src="/Firefly_Gemini_Flash_Your_PBM_Met_Every_Guarantee._You_Still_Lost_the_Money._Written_by_Jeremiah_Franklin_465075.png"
+                  alt="Your PBM Met Every Guarantee. You Still Lost the Money."
                   className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
                 />
-                <div className="absolute inset-0 bg-gradient-to-r from-black/95 via-black/80 to-transparent" />
+                <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity bg-black/40">
+                  <Eye className="w-12 h-12 text-white" />
+                </div>
+                <div className="absolute inset-0 bg-gradient-to-r from-black/95 via-black/70 to-transparent" />
               </div>
 
-              <div className="relative p-12 md:p-16 flex items-center min-h-[500px]">
-                <div className="max-w-2xl">
+              <div className="relative p-12 md:p-20 flex items-center min-h-[600px]">
+                <div className="max-w-3xl">
                   <motion.div
                     initial={{ opacity: 0, x: -20 }}
                     whileInView={{ opacity: 1, x: 0 }}
                     viewport={{ once: true }}
                     transition={{ duration: 0.8, delay: 0.2 }}
                   >
-                    <div className="inline-flex items-center gap-2 px-4 py-2 bg-rose-500/20 border border-rose-400/40 rounded-full text-rose-300 text-sm font-bold mb-6">
-                      <Target className="h-4 w-4" />
+                    <div className="inline-flex items-center gap-2 px-4 py-2 bg-amber-500/20 border border-amber-400/40 rounded-full text-amber-300 text-sm font-bold mb-6">
+                      <FileText className="h-4 w-4" />
                       FEATURED INVESTIGATION
                     </div>
-                    <h2 className="text-5xl md:text-6xl font-black text-white mb-6 leading-tight">
-                      The $20 Billion<br />PBM Spread Scandal
+                    <h2 className="text-5xl md:text-7xl font-black text-white mb-6 leading-tight">
+                      Your PBM Met<br />Every Guarantee.<br />
+                      <span className="text-amber-400">You Still Lost the Money.</span>
                     </h2>
-                    <p className="text-xl text-gray-300 mb-8 leading-relaxed">
-                      A forensic analysis revealing how pharmacy benefit managers systematically extract billions through hidden spreads, undisclosed rebates, and contract manipulation—costing American employers an estimated $20B annually.
+                    <p className="text-xl md:text-2xl text-gray-300 mb-8 leading-relaxed">
+                      A forensic breakdown of how pharmacy benefit managers meet every contractual performance guarantee while systematically extracting millions through loopholes your legal team never saw coming.
                     </p>
+                    <div className="bg-black/60 backdrop-blur-sm border border-amber-500/30 rounded-xl p-6 mb-8">
+                      <div className="grid grid-cols-3 gap-6">
+                        <div>
+                          <div className="text-3xl font-black text-amber-400 mb-1">100%</div>
+                          <div className="text-sm text-gray-400">Guarantees met</div>
+                        </div>
+                        <div>
+                          <div className="text-3xl font-black text-rose-400 mb-1">$2.8M</div>
+                          <div className="text-sm text-gray-400">Still lost</div>
+                        </div>
+                        <div>
+                          <div className="text-3xl font-black text-orange-400 mb-1">14</div>
+                          <div className="text-sm text-gray-400">Hidden leakage points</div>
+                        </div>
+                      </div>
+                    </div>
                     <div className="flex flex-wrap gap-4">
                       <motion.a
                         href="https://www.linkedin.com/newsletters/former-pbm-crime-boss-speaks-7447883910010535936/"
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="inline-flex items-center gap-3 px-8 py-4 bg-gradient-to-r from-rose-600 to-red-600 hover:from-rose-700 hover:to-red-700 rounded-xl text-white font-bold text-lg transition-all shadow-lg"
+                        className="inline-flex items-center gap-3 px-8 py-4 bg-gradient-to-r from-amber-600 to-orange-600 hover:from-amber-700 hover:to-orange-700 rounded-xl text-white font-bold text-lg transition-all shadow-lg"
                         whileHover={{ scale: 1.05 }}
                         whileTap={{ scale: 0.95 }}
                       >
                         <FileText className="h-5 w-5" />
-                        Read Full Series
+                        Read the Investigation
                         <ExternalLink className="h-4 w-4" />
                       </motion.a>
                       <motion.a
                         href="/solutions/rx-defense"
-                        className="inline-flex items-center gap-3 px-8 py-4 border-2 border-rose-500/50 hover:border-rose-400 rounded-xl text-rose-300 hover:text-white font-bold text-lg transition-all"
+                        className="inline-flex items-center gap-3 px-8 py-4 border-2 border-amber-500/50 hover:border-amber-400 rounded-xl text-amber-300 hover:text-white font-bold text-lg transition-all"
                         whileHover={{ scale: 1.05 }}
                         whileTap={{ scale: 0.95 }}
                       >
-                        <Eye className="h-5 w-5" />
-                        Analyze Your Contract
+                        <Shield className="h-5 w-5" />
+                        Audit My Contract
                       </motion.a>
                     </div>
                   </motion.div>

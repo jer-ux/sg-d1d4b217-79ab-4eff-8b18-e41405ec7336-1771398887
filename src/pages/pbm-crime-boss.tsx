@@ -548,6 +548,156 @@ export default function PBMCrimeBossPage() {
           </div>
         </section>
 
+        {/* Mark Cuban Cost Plus Drug Company - The Alternative */}
+        <section className="py-20 bg-gradient-to-b from-black via-emerald-950/10 to-black">
+          <div className="max-w-7xl mx-auto px-6">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6 }}
+              className="text-center mb-12"
+            >
+              <div className="inline-flex items-center gap-2 px-4 py-2 bg-emerald-500/20 border border-emerald-400/40 rounded-full text-emerald-300 text-sm font-bold mb-6">
+                <DollarSign className="h-4 w-4" />
+                THE ALTERNATIVE
+              </div>
+              <h2 className="text-4xl md:text-5xl font-black text-white mb-4">
+                Radical Transparency Exists
+              </h2>
+              <p className="text-xl text-gray-400 max-w-3xl mx-auto">
+                Mark Cuban Cost Plus Drug Company proves PBM exploitation isn't inevitable. 
+                See what transparent pharmacy pricing actually looks like.
+              </p>
+            </motion.div>
+
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6, delay: 0.2 }}
+              className="relative rounded-3xl overflow-hidden border-2 border-emerald-500/40 shadow-2xl shadow-emerald-500/20"
+            >
+              <div className="absolute inset-0 bg-gradient-to-br from-emerald-950/90 via-black/95 to-green-950/90" />
+              
+              <div className="relative p-12 md:p-16">
+                <div className="grid md:grid-cols-2 gap-12 items-center">
+                  <div>
+                    <h3 className="text-4xl md:text-5xl font-black text-white mb-6 leading-tight">
+                      Cost Plus Drug Company
+                    </h3>
+                    <p className="text-xl text-gray-300 mb-8 leading-relaxed">
+                      A revolutionary model that prices drugs at manufacturer cost plus a flat 15% markup, 
+                      $3 pharmacy fee, and $5 shipping. No hidden spreads. No rebate games. No MAC list manipulation.
+                    </p>
+                    
+                    <div className="space-y-4 mb-8">
+                      {[
+                        { label: "Manufacturer Cost", value: "100% Transparent" },
+                        { label: "Markup", value: "Flat 15%" },
+                        { label: "Pharmacy Fee", value: "$3.00" },
+                        { label: "Shipping", value: "$5.00" }
+                      ].map((item, idx) => (
+                        <motion.div
+                          key={idx}
+                          initial={{ opacity: 0, x: -20 }}
+                          whileInView={{ opacity: 1, x: 0 }}
+                          viewport={{ once: true }}
+                          transition={{ delay: 0.3 + idx * 0.1 }}
+                          className="flex items-center justify-between p-4 bg-emerald-500/10 border border-emerald-500/30 rounded-xl"
+                        >
+                          <span className="text-gray-300 font-semibold">{item.label}</span>
+                          <span className="text-emerald-400 font-black text-lg">{item.value}</span>
+                        </motion.div>
+                      ))}
+                    </div>
+
+                    <div className="flex flex-wrap gap-4">
+                      <Link
+                        href="/solutions/mark-cuban-cost-drugs"
+                        className="inline-flex items-center gap-2 bg-gradient-to-r from-emerald-600 to-green-600 hover:from-emerald-700 hover:to-green-700 text-white px-8 py-4 rounded-xl font-bold text-lg shadow-xl shadow-emerald-500/30 transition-all hover:scale-105"
+                      >
+                        <TrendingUp className="w-5 h-5" />
+                        See Cost Comparisons
+                      </Link>
+                      <a
+                        href="https://costplusdrugs.com/"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="inline-flex items-center gap-2 border-2 border-emerald-500/50 hover:border-emerald-400 text-emerald-300 hover:text-white px-8 py-4 rounded-xl font-bold text-lg transition-all hover:scale-105"
+                      >
+                        Visit CostPlusDrugs.com
+                        <ExternalLink className="w-4 h-4" />
+                      </a>
+                    </div>
+                  </div>
+
+                  <div className="space-y-6">
+                    <motion.div
+                      initial={{ opacity: 0, scale: 0.9 }}
+                      whileInView={{ opacity: 1, scale: 1 }}
+                      viewport={{ once: true }}
+                      transition={{ delay: 0.4 }}
+                      className="bg-black/60 backdrop-blur-sm border border-emerald-500/30 rounded-2xl p-8"
+                    >
+                      <div className="text-center mb-6">
+                        <div className="text-sm text-emerald-400 font-bold uppercase tracking-wider mb-2">
+                          Typical PBM Markup
+                        </div>
+                        <div className="text-5xl font-black text-rose-400">
+                          240%
+                        </div>
+                      </div>
+                      <div className="h-px bg-gradient-to-r from-transparent via-gray-600 to-transparent mb-6" />
+                      <div className="text-center">
+                        <div className="text-sm text-emerald-400 font-bold uppercase tracking-wider mb-2">
+                          Cost Plus Markup
+                        </div>
+                        <div className="text-5xl font-black text-emerald-400">
+                          15%
+                        </div>
+                      </div>
+                    </motion.div>
+
+                    <motion.div
+                      initial={{ opacity: 0, y: 20 }}
+                      whileInView={{ opacity: 1, y: 0 }}
+                      viewport={{ once: true }}
+                      transition={{ delay: 0.5 }}
+                      className="bg-gradient-to-br from-emerald-500/20 to-green-500/20 border border-emerald-400/40 rounded-2xl p-6"
+                    >
+                      <div className="flex items-start gap-4">
+                        <Shield className="h-8 w-8 text-emerald-400 flex-shrink-0 mt-1" />
+                        <div>
+                          <h4 className="text-white font-bold text-lg mb-2">
+                            Example: Imatinib (Gleevec Generic)
+                          </h4>
+                          <div className="space-y-2 text-sm">
+                            <div className="flex justify-between">
+                              <span className="text-gray-400">Typical PBM Price:</span>
+                              <span className="text-rose-400 font-bold">$9,657/mo</span>
+                            </div>
+                            <div className="flex justify-between">
+                              <span className="text-gray-400">Cost Plus Price:</span>
+                              <span className="text-emerald-400 font-bold">$17.10/mo</span>
+                            </div>
+                            <div className="pt-2 border-t border-emerald-500/30">
+                              <div className="flex justify-between">
+                                <span className="text-white font-semibold">Annual Savings:</span>
+                                <span className="text-emerald-300 font-black text-lg">$115,760</span>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </motion.div>
+                  </div>
+                </div>
+              </div>
+            </motion.div>
+          </div>
+        </section>
+
         {/* Featured Article: Your PBM Met Every Guarantee */}
         <section className="py-20">
           <div className="max-w-7xl mx-auto px-6">

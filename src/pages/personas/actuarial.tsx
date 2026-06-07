@@ -59,6 +59,21 @@ const checklistItems = [
   { id: 5, text: "We adjust IBNR and reserves using credibility-weighted industry and plan experience." }
 ];
 
+const useCases = [
+  {
+    icon: LineChart,
+    title: "Rate Filings & Trend Projections",
+    scenario: "Consultants project a flat 12% pharmacy trend based on national averages, leading to overstated premium rates.",
+    solution: "We isolate unit cost, utilization, and drug mix, revealing a true plan trend of 6.4% and saving $280K in renewal padding."
+  },
+  {
+    icon: Shield,
+    title: "Fiduciary Reserve Audits",
+    scenario: "PBM contract guarantees are verified through standard annual CPA audits, which overlook line-item rebate leakage.",
+    solution: "Our Continuous Monitoring Suite runs line-by-line validation, uncovering $180K in unmet specialty drug discounts."
+  }
+];
+
 export default function ActuariesPage() {
   const [selectedTool, setSelectedTool] = useState<number | null>(null);
   

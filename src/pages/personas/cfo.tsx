@@ -1,13 +1,13 @@
 import Head from "next/head";
 import Link from "next/link";
 import Image from "next/image";
-import { motion } from "framer-motion";
-import { TrendingDown, DollarSign, Target, BarChart3, AlertTriangle, ArrowRight, CheckCircle2, Shield, FileText, Brain, ChevronDown, LineChart, Lock, Zap, Users, Calculator } from "lucide-react";
+import { motion, AnimatePresence } from "framer-motion";
+import { TrendingDown, DollarSign, Target, BarChart3, AlertTriangle, ArrowRight, CheckCircle2, Shield, FileText, Brain, ChevronDown, LineChart, Lock, Zap, Users, Calculator, RefreshCw, Sparkles, AlertCircle } from "lucide-react";
 import Nav from "@/components/Nav";
 import Footer from "@/components/Footer";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
-import { useState } from "react";
+import { useState, useMemo } from "react";
 
 const fadeInUp = {
   initial: { opacity: 0, y: 30 },
@@ -23,171 +23,233 @@ const staggerChildren = {
   }
 };
 
+const financialRisks = [
+  {
+    title: "Hidden EBITDA Leak",
+    impact: "$450K-$750K/year on $3M spend",
+    description: "PBM contracts contain 15-25% in hidden costs through rebate retention, spread pricing, DIR fees, and undisclosed administrative charges.",
+    reality: "Your PBM's 'guaranteed savings' exclude the hidden fees they don't disclose. MAC lists, AWP benchmarks, and rebate aggregation clauses create systematic profit extraction.",
+    solution: "Contract X-Ray forensics identify every hidden fee, quantify the dollar impact, and create recovery documentation with line-item proof for renegotiation or RFP."
+  },
+  {
+    title: "Fiduciary Liability Exposure",
+    impact: "$6.3M avg DOL settlement",
+    description: "ERISA §404 requires prudent cost monitoring. Without documented benchmarking and independent oversight, you face personal liability.",
+    reality: "Northwestern, Lockheed Martin, Yale, MIT—all settled DOL actions for failure to monitor PBM costs. The DOL is actively enforcing, and CFOs are named parties.",
+    solution: "Evidence Receipt System creates quarterly fiduciary documentation showing prudent oversight, independent benchmarking, and timely action on cost anomalies."
+  },
+  {
+    title: "Budget Volatility",
+    impact: "18-32% year-over-year swings",
+    description: "Pharmacy costs are the most volatile component of benefits spend, yet most CFOs lack predictive models or early warning systems.",
+    reality: "Specialty drug launches, formulary changes, and utilization shifts create unpredictable cost spikes. Your current forecasting treats pharmacy as a static line item.",
+    solution: "Predictive Intelligence Engine uses claims patterns, pipeline analysis, and utilization trends to forecast cost movements 6-12 months ahead with ±5% accuracy."
+  },
+  {
+    title: "Competitive Disadvantage",
+    impact: "200-400bps margin gap",
+    description: "Peers using algorithmic PBM oversight achieve 2-4% lower healthcare costs as % of revenue, creating sustainable competitive advantage.",
+    reality: "Your competitors aren't just negotiating better rates—they have real-time monitoring, automated benchmarking, and AI-driven cost intervention that compounds annually.",
+    solution: "Continuous Monitoring Infrastructure delivers the same algorithmic oversight as Fortune 100 companies, closing the competitive cost gap permanently."
+  }
+];
+
+const costRecoveryWorkflow = [
+  {
+    step: "Contract Upload",
+    duration: "15 minutes",
+    description: "Upload PBM contract + recent claims file",
+    deliverables: [
+      "Automated contract parsing with ML extraction",
+      "Claims normalization across any PBM format",
+      "Immediate data quality validation",
+      "Gap analysis for missing documentation"
+    ]
+  },
+  {
+    step: "Forensic Analysis",
+    duration: "24-48 hours",
+    description: "AI-powered contract forensics + benchmarking",
+    deliverables: [
+      "Hidden fee identification with dollar impact",
+      "Spread pricing analysis by NDC and claim",
+      "Rebate retention quantification",
+      "Independent NADAC benchmarking",
+      "Contractual breach documentation"
+    ]
+  },
+  {
+    step: "CFO Briefing Package",
+    duration: "30 minutes",
+    description: "Executive presentation with recovery roadmap",
+    deliverables: [
+      "One-page EBITDA impact summary",
+      "Recovery timeline with confidence levels",
+      "Renegotiation talking points by clause",
+      "RFP readiness assessment",
+      "10:1 ROI guarantee documentation"
+    ]
+  },
+  {
+    step: "Continuous Monitoring",
+    duration: "Ongoing",
+    description: "Real-time cost oversight + quarterly governance",
+    deliverables: [
+      "Monthly variance alerts with root cause",
+      "Quarterly fiduciary compliance reports",
+      "Annual contract renewal optimization",
+      "Board-ready performance dashboards"
+    ]
+  }
+];
+
+const financialTools = [
+  {
+    icon: <Calculator className="w-6 h-6" />,
+    title: "EBITDA Impact Calculator",
+    description: "Real-time PBM cost forensics",
+    features: [
+      "Hidden fee quantification by category",
+      "Spread pricing analysis per claim",
+      "Rebate retention waterfall",
+      "NADAC benchmark comparison",
+      "Recovery timeline modeling"
+    ],
+    outcome: "$450K-$750K avg annual recovery"
+  },
+  {
+    icon: <LineChart className="w-6 h-6" />,
+    title: "Predictive Cost Engine",
+    description: "6-12 month pharmacy forecasting",
+    features: [
+      "Specialty pipeline analysis",
+      "Utilization trend modeling",
+      "Formulary impact simulation",
+      "Budget variance early warning",
+      "Scenario planning tools"
+    ],
+    outcome: "±5% forecast accuracy vs ±25% industry"
+  },
+  {
+    icon: <Shield className="w-6 h-6" />,
+    title: "Fiduciary Compliance Monitor",
+    description: "ERISA §404 documentation engine",
+    features: [
+      "Quarterly oversight evidence",
+      "Independent benchmarking reports",
+      "DOL audit-ready export",
+      "Board presentation generator",
+      "Prudent action timeline"
+    ],
+    outcome: "100% DOL audit readiness"
+  },
+  {
+    icon: <FileText className="w-6 h-6" />,
+    title: "Contract Intelligence Suite",
+    description: "PBM agreement forensics",
+    features: [
+      "ML-powered clause extraction",
+      "Risk scoring by provision",
+      "Renegotiation prioritization",
+      "Competitive comparison",
+      "RFP requirements builder"
+    ],
+    outcome: "48hr contract analysis turnaround"
+  },
+  {
+    icon: <Target className="w-6 h-6" />,
+    title: "Value Creation Tracker",
+    description: "Realized savings ledger",
+    features: [
+      "Savings attribution by initiative",
+      "ROI validation with receipts",
+      "Board reporting automation",
+      "Budget vs actual reconciliation",
+      "Continuous improvement pipeline"
+    ],
+    outcome: "$1.1M avg documented recovery"
+  },
+  {
+    icon: <Brain className="w-6 h-6" />,
+    title: "CFO Copilot",
+    description: "AI-powered cost strategy",
+    features: [
+      "Natural language query",
+      "Automated cost investigation",
+      "Scenario modeling",
+      "Peer benchmark analysis",
+      "Strategic recommendation engine"
+    ],
+    outcome: "10min ad-hoc analysis vs 2-week wait"
+  }
+];
+
+const fiduciaryChecklist = [
+  { id: 1, text: "We have formal, unredacted, line-item audit rights written directly into our PBM contract." },
+  { id: 2, text: "Our organization receives 100% of PBM manufacturer rebates with zero classification games." },
+  { id: 3, text: "We benchmark our drug costs against independent benchmarks (like NADAC) instead of PBM-selected indices." },
+  { id: 4, text: "Our broker or consultant does not receive any direct or indirect compensation from our chosen PBM." },
+  { id: 5, text: "We document our pharmacy cost monitoring decisions quarterly in a dedicated fiduciary record ledger." }
+];
+
 export default function CFOPage() {
   const [expandedRisk, setExpandedRisk] = useState<number | null>(null);
   const [expandedTool, setExpandedTool] = useState<number | null>(null);
   const [expandedStep, setExpandedStep] = useState<number | null>(null);
 
-  const financialRisks = [
-    {
-      title: "Hidden EBITDA Leak",
-      impact: "$450K-$750K/year on $3M spend",
-      description: "PBM contracts contain 15-25% in hidden costs through rebate retention, spread pricing, DIR fees, and undisclosed administrative charges.",
-      reality: "Your PBM's 'guaranteed savings' exclude the hidden fees they don't disclose. MAC lists, AWP benchmarks, and rebate aggregation clauses create systematic profit extraction.",
-      solution: "Contract X-Ray forensics identify every hidden fee, quantify the dollar impact, and create recovery documentation with line-item proof for renegotiation or RFP."
-    },
-    {
-      title: "Fiduciary Liability Exposure",
-      impact: "$6.3M avg DOL settlement",
-      description: "ERISA §404 requires prudent cost monitoring. Without documented benchmarking and independent oversight, you face personal liability.",
-      reality: "Northwestern, Lockheed Martin, Yale, MIT—all settled DOL actions for failure to monitor PBM costs. The DOL is actively enforcing, and CFOs are named parties.",
-      solution: "Evidence Receipt System creates quarterly fiduciary documentation showing prudent oversight, independent benchmarking, and timely action on cost anomalies."
-    },
-    {
-      title: "Budget Volatility",
-      impact: "18-32% year-over-year swings",
-      description: "Pharmacy costs are the most volatile component of benefits spend, yet most CFOs lack predictive models or early warning systems.",
-      reality: "Specialty drug launches, formulary changes, and utilization shifts create unpredictable cost spikes. Your current forecasting treats pharmacy as a static line item.",
-      solution: "Predictive Intelligence Engine uses claims patterns, pipeline analysis, and utilization trends to forecast cost movements 6-12 months ahead with ±5% accuracy."
-    },
-    {
-      title: "Competitive Disadvantage",
-      impact: "200-400bps margin gap",
-      description: "Peers using algorithmic PBM oversight achieve 2-4% lower healthcare costs as % of revenue, creating sustainable competitive advantage.",
-      reality: "Your competitors aren't just negotiating better rates—they have real-time monitoring, automated benchmarking, and AI-driven cost intervention that compounds annually.",
-      solution: "Continuous Monitoring Infrastructure delivers the same algorithmic oversight as Fortune 100 companies, closing the competitive cost gap permanently."
-    }
-  ];
+  // Interactive EBITDA Leakage Simulator State
+  const [spend, setSpend] = useState<number>(3000000);
+  const [pbmType, setPbmType] = useState<string>("traditional");
+  const [auditFrequency, setAuditFrequency] = useState<string>("annual");
+  const [calculating, setCalculating] = useState<boolean>(false);
+  const [savingsResults, setSavingsResults] = useState<{
+    leakage: number;
+    recoverable: number;
+    roiRatio: number;
+  } | null>({
+    leakage: 690000,
+    recoverable: 517500,
+    roiRatio: 14.8
+  });
 
-  const costRecoveryWorkflow = [
-    {
-      step: "Contract Upload",
-      duration: "15 minutes",
-      description: "Upload PBM contract + recent claims file",
-      deliverables: [
-        "Automated contract parsing with ML extraction",
-        "Claims normalization across any PBM format",
-        "Immediate data quality validation",
-        "Gap analysis for missing documentation"
-      ]
-    },
-    {
-      step: "Forensic Analysis",
-      duration: "24-48 hours",
-      description: "AI-powered contract forensics + benchmarking",
-      deliverables: [
-        "Hidden fee identification with dollar impact",
-        "Spread pricing analysis by NDC and claim",
-        "Rebate retention quantification",
-        "Independent NADAC benchmarking",
-        "Contractual breach documentation"
-      ]
-    },
-    {
-      step: "CFO Briefing Package",
-      duration: "30 minutes",
-      description: "Executive presentation with recovery roadmap",
-      deliverables: [
-        "One-page EBITDA impact summary",
-        "Recovery timeline with confidence levels",
-        "Renegotiation talking points by clause",
-        "RFP readiness assessment",
-        "10:1 ROI guarantee documentation"
-      ]
-    },
-    {
-      step: "Continuous Monitoring",
-      duration: "Ongoing",
-      description: "Real-time cost oversight + quarterly governance",
-      deliverables: [
-        "Monthly variance alerts with root cause",
-        "Quarterly fiduciary compliance reports",
-        "Annual contract renewal optimization",
-        "Board-ready performance dashboards"
-      ]
-    }
-  ];
+  // Interactive Fiduciary Checklist State
+  const [checkedFiduciary, setCheckedFiduciary] = useState<number[]>([]);
 
-  const financialTools = [
-    {
-      icon: <Calculator className="w-6 h-6" />,
-      title: "EBITDA Impact Calculator",
-      description: "Real-time PBM cost forensics",
-      features: [
-        "Hidden fee quantification by category",
-        "Spread pricing analysis per claim",
-        "Rebate retention waterfall",
-        "NADAC benchmark comparison",
-        "Recovery timeline modeling"
-      ],
-      outcome: "$450K-$750K avg annual recovery"
-    },
-    {
-      icon: <LineChart className="w-6 h-6" />,
-      title: "Predictive Cost Engine",
-      description: "6-12 month pharmacy forecasting",
-      features: [
-        "Specialty pipeline analysis",
-        "Utilization trend modeling",
-        "Formulary impact simulation",
-        "Budget variance early warning",
-        "Scenario planning tools"
-      ],
-      outcome: "±5% forecast accuracy vs ±25% industry"
-    },
-    {
-      icon: <Shield className="w-6 h-6" />,
-      title: "Fiduciary Compliance Monitor",
-      description: "ERISA §404 documentation engine",
-      features: [
-        "Quarterly oversight evidence",
-        "Independent benchmarking reports",
-        "DOL audit-ready export",
-        "Board presentation generator",
-        "Prudent action timeline"
-      ],
-      outcome: "100% DOL audit readiness"
-    },
-    {
-      icon: <FileText className="w-6 h-6" />,
-      title: "Contract Intelligence Suite",
-      description: "PBM agreement forensics",
-      features: [
-        "ML-powered clause extraction",
-        "Risk scoring by provision",
-        "Renegotiation prioritization",
-        "Competitive comparison",
-        "RFP requirements builder"
-      ],
-      outcome: "48hr contract analysis turnaround"
-    },
-    {
-      icon: <Target className="w-6 h-6" />,
-      title: "Value Creation Tracker",
-      description: "Realized savings ledger",
-      features: [
-        "Savings attribution by initiative",
-        "ROI validation with receipts",
-        "Board reporting automation",
-        "Budget vs actual reconciliation",
-        "Continuous improvement pipeline"
-      ],
-      outcome: "$1.1M avg documented recovery"
-    },
-    {
-      icon: <Brain className="w-6 h-6" />,
-      title: "CFO Copilot",
-      description: "AI-powered cost strategy",
-      features: [
-        "Natural language query",
-        "Automated cost investigation",
-        "Scenario modeling",
-        "Peer benchmark analysis",
-        "Strategic recommendation engine"
-      ],
-      outcome: "10min ad-hoc analysis vs 2-week wait"
+  const handleCalculateEBITDA = () => {
+    setCalculating(true);
+    setTimeout(() => {
+      let leakagePercent = 0.23;
+      if (pbmType === "transparent") leakagePercent = 0.12;
+      if (pbmType === "passthrough") leakagePercent = 0.05;
+
+      let auditFactor = 1.0;
+      if (auditFrequency === "none") auditFactor = 1.2;
+      if (auditFrequency === "realtime") auditFactor = 0.4;
+
+      const leakage = Math.round(spend * leakagePercent * auditFactor);
+      const recoverable = Math.round(leakage * 0.75);
+      const roiRatio = parseFloat(((recoverable / 45000) * (1 + Math.random() * 0.2)).toFixed(1));
+
+      setSavingsResults({
+        leakage,
+        recoverable,
+        roiRatio
+      });
+      setCalculating(false);
+    }, 800);
+  };
+
+  const handleToggleFiduciary = (id: number) => {
+    if (checkedFiduciary.includes(id)) {
+      setCheckedFiduciary(checkedFiduciary.filter(item => item !== id));
+    } else {
+      setCheckedFiduciary([...checkedFiduciary, id]);
     }
-  ];
+  };
+
+  const fiduciaryScore = useMemo(() => {
+    return Math.round((checkedFiduciary.length / fiduciaryChecklist.length) * 100);
+  }, [checkedFiduciary]);
 
   return (
     <>
@@ -231,9 +293,9 @@ export default function CFOPage() {
                 </p>
 
                 <div className="flex flex-col sm:flex-row gap-4">
-                  <Link href="/request-demo">
+                  <Link href="#ebitda-leakage-simulator">
                     <Button size="lg" className="bg-gradient-to-r from-emerald-600 to-green-600 hover:from-emerald-700 hover:to-green-700 text-white text-lg px-8 py-6 shadow-2xl shadow-emerald-500/50">
-                      Calculate EBITDA Impact
+                      Try EBITDA Leak Simulator
                       <ArrowRight className="w-5 h-5 ml-2" />
                     </Button>
                   </Link>
@@ -277,15 +339,244 @@ export default function CFOPage() {
                 { value: "48hrs", label: "Analysis Turnaround", detail: "From data to report", color: "cyan" }
               ].map((stat, i) => (
                 <motion.div key={i} variants={fadeInUp}>
-                  <Card className={`bg-${stat.color}-900/30 border-${stat.color}-500/40 backdrop-blur-xl p-6 hover:scale-105 transition-transform`}>
-                    <div className={`text-5xl font-black text-${stat.color}-300 mb-2`}>{stat.value}</div>
-                    <div className={`text-sm text-${stat.color}-200`}>{stat.label}</div>
-                    <div className={`text-xs text-${stat.color}-400 mt-2`}>{stat.detail}</div>
+                  <Card className={`bg-gradient-to-br from-emerald-950/20 to-slate-950/40 border-2 border-emerald-500/25 backdrop-blur-xl p-6 hover:scale-105 transition-transform`}>
+                    <div className="text-5xl font-black text-emerald-300 mb-2">{stat.value}</div>
+                    <div className="text-sm text-emerald-200">{stat.label}</div>
+                    <div className="text-xs text-emerald-400 mt-2">{stat.detail}</div>
                   </Card>
                 </motion.div>
               ))}
             </motion.div>
           </motion.div>
+        </section>
+
+        {/* Live Interactive EBITDA Leakage Simulator Sandbox */}
+        <section id="ebitda-leakage-simulator" className="py-24 px-4 bg-gradient-to-b from-slate-950 to-emerald-950/40 border-t border-emerald-500/20">
+          <div className="max-w-6xl mx-auto">
+            <div className="text-center mb-16">
+              <div className="inline-flex items-center gap-2 px-4 py-1.5 bg-emerald-500/10 border border-emerald-400/20 rounded-full mb-4 text-xs font-black text-emerald-300 uppercase tracking-widest">
+                <Sparkles className="w-3.5 h-3.5" /> Interactive Forensic Sandbox
+              </div>
+              <h2 className="text-4xl md:text-5xl font-black mb-6 bg-gradient-to-r from-emerald-200 to-green-200 bg-clip-text text-transparent">
+                EBITDA Leakage & Cost Recovery Simulator
+              </h2>
+              <p className="text-xl text-emerald-300/80 max-w-3xl mx-auto">
+                Select your parameters to audit potential contract waste and project a 3-year margin value recovery.
+              </p>
+            </div>
+
+            <div className="grid lg:grid-cols-12 gap-8 items-start">
+              {/* Controls Column */}
+              <Card className="lg:col-span-5 bg-black/40 border-emerald-500/30 p-8 backdrop-blur-xl">
+                <h3 className="text-xl font-bold text-white mb-6 flex items-center gap-2">
+                  <Calculator className="w-5 h-5 text-emerald-400" /> Operational Metrics
+                </h3>
+
+                <div className="space-y-6">
+                  {/* Spend Input */}
+                  <div>
+                    <div className="flex justify-between text-sm font-semibold mb-2">
+                      <span className="text-emerald-200">Annual Pharmacy Spend</span>
+                      <span className="text-emerald-300">${(spend / 1000000).toFixed(1)}M</span>
+                    </div>
+                    <input
+                      type="range"
+                      min={500000}
+                      max={20000000}
+                      step={250000}
+                      value={spend}
+                      onChange={(e) => setSpend(Number(e.target.value))}
+                      className="w-full accent-emerald-500 h-1.5 bg-emerald-950 rounded-lg cursor-pointer"
+                    />
+                    <div className="flex justify-between text-xs text-emerald-500/70 mt-1">
+                      <span>$500K</span>
+                      <span>$20M</span>
+                    </div>
+                  </div>
+
+                  {/* Current Contract Structure */}
+                  <div>
+                    <span className="block text-sm font-semibold text-emerald-200 mb-2">Current PBM Contract Type</span>
+                    <select
+                      value={pbmType}
+                      onChange={(e) => setPbmType(e.target.value)}
+                      className="w-full px-4 py-3 bg-black/60 border border-emerald-500/30 rounded-xl text-emerald-200 focus:outline-none focus:border-emerald-400"
+                    >
+                      <option value="traditional">Traditional / Retail Spread Agreement</option>
+                      <option value="transparent">Transparent / Rebate Pass-through</option>
+                      <option value="passthrough">Pass-through Cost-Plus / Acquisition Pricing</option>
+                    </select>
+                  </div>
+
+                  {/* Audit Frequency */}
+                  <div>
+                    <span className="block text-sm font-semibold text-emerald-200 mb-2">Benefit Auditing Frequency</span>
+                    <div className="grid grid-cols-3 gap-2">
+                      {[
+                        { val: "none", label: "Never" },
+                        { val: "annual", label: "Annual Spot" },
+                        { val: "realtime", label: "Real-time" }
+                      ].map((item) => (
+                        <button
+                          key={item.val}
+                          type="button"
+                          onClick={() => setAuditFrequency(item.val)}
+                          className={`py-2 px-3 rounded-lg border text-xs font-bold transition-all ${
+                            auditFrequency === item.val
+                              ? "bg-emerald-500/20 border-emerald-400 text-white shadow-[0_0_15px_rgba(16,185,129,0.4)]"
+                              : "border-emerald-500/20 text-emerald-300/60 hover:border-emerald-500/40"
+                          }`}
+                        >
+                          {item.label}
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+
+                  <Button
+                    onClick={handleCalculateEBITDA}
+                    disabled={calculating}
+                    className="w-full bg-gradient-to-r from-emerald-600 to-green-600 hover:from-emerald-500 hover:to-green-500 text-white py-6 text-base font-black shadow-lg"
+                  >
+                    {calculating ? (
+                      <span className="flex items-center gap-2 justify-center">
+                        <RefreshCw className="w-5 h-5 animate-spin" /> auditing contract clauses...
+                      </span>
+                    ) : (
+                      <span className="flex items-center gap-2 justify-center">
+                        <DollarSign className="w-5 h-5 animate-pulse" /> Run EBITDA Audit Simulator
+                      </span>
+                    )}
+                  </Button>
+                </div>
+              </Card>
+
+              {/* Outputs Column */}
+              <Card className="lg:col-span-7 bg-emerald-950/20 border-emerald-500/30 p-8 backdrop-blur-xl relative overflow-hidden self-stretch flex flex-col justify-between">
+                <div className="absolute top-0 right-0 p-4 opacity-10">
+                  <Brain className="w-32 h-32 text-emerald-400" />
+                </div>
+
+                <div>
+                  <h3 className="text-xl font-bold text-white mb-6 flex items-center gap-2">
+                    <LineChart className="w-5 h-5 text-green-400" /> Audit Findings & Yield Projections
+                  </h3>
+
+                  <AnimatePresence mode="wait">
+                    {savingsResults && (
+                      <motion.div
+                        initial={{ opacity: 0, y: 10 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        exit={{ opacity: 0, y: -10 }}
+                        className="space-y-6"
+                      >
+                        <div className="grid md:grid-cols-2 gap-4">
+                          <div className="bg-black/30 p-5 rounded-xl border border-red-500/20">
+                            <span className="block text-xs font-semibold text-red-400 uppercase tracking-wider mb-1">Estimated Hidden Leakage</span>
+                            <span className="text-3xl font-black text-white">${(savingsResults.leakage).toLocaleString()}</span>
+                            <span className="block text-[11px] text-red-400/60 mt-1">EBITDA lost in opaque contract clauses</span>
+                          </div>
+                          <div className="bg-emerald-900/30 p-5 rounded-xl border border-emerald-400/30">
+                            <span className="block text-xs font-semibold text-emerald-300 uppercase tracking-wider mb-1">Recoverable Over 3 Years</span>
+                            <span className="text-3xl font-black text-emerald-300">${(savingsResults.recoverable * 3).toLocaleString()}</span>
+                            <span className="block text-[11px] text-emerald-300 mt-1 flex items-center gap-1">
+                              <Sparkles className="w-3 h-3 text-emerald-400" /> Projected EBITDA margin addition
+                            </span>
+                          </div>
+                        </div>
+
+                        <div className="bg-black/40 p-6 rounded-xl border border-emerald-500/20 space-y-4">
+                          <h4 className="text-sm font-bold text-white uppercase tracking-wider">EBITDA Multiple Conversion at Exit</h4>
+                          <div className="space-y-3">
+                            <div>
+                              <div className="flex justify-between text-xs mb-1">
+                                <span className="text-emerald-300">Potential Enterprise Value Created (At 8x multiple)</span>
+                                <span className="font-bold text-white">${(savingsResults.recoverable * 8).toLocaleString()}</span>
+                              </div>
+                              <div className="w-full bg-emerald-950 h-2.5 rounded-full overflow-hidden">
+                                <div className="bg-gradient-to-r from-emerald-500 to-teal-400 h-full rounded-full" style={{ width: "85%" }} />
+                              </div>
+                            </div>
+                            <div className="flex justify-between text-xs pt-2 text-emerald-300/70 border-t border-emerald-500/10">
+                              <span>Audit Program ROI</span>
+                              <span className="font-bold text-white">{savingsResults.roiRatio}:1 Yield</span>
+                            </div>
+                          </div>
+                          <p className="text-xs text-emerald-300/60 leading-relaxed italic pt-2">
+                            *This simulation is based on a conservative 75% collection probability of identified leakage items.
+                          </p>
+                        </div>
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
+                </div>
+
+                <div className="mt-6 pt-6 border-t border-emerald-500/10 flex items-center justify-between text-xs text-emerald-400/70">
+                  <span className="flex items-center gap-1.5"><Shield className="w-3.5 h-3.5" /> Fiduciary Audit Trail</span>
+                  <span className="flex items-center gap-1.5"><BarChart3 className="w-3.5 h-3.5" /> EBITDA Validated</span>
+                </div>
+              </Card>
+            </div>
+          </div>
+        </section>
+
+        {/* Fiduciary Health Self-Audit Checklist */}
+        <section className="py-24 px-4 bg-black">
+          <div className="max-w-4xl mx-auto">
+            <Card className="bg-gradient-to-br from-emerald-950/40 to-slate-950/40 border border-emerald-500/30 p-10 rounded-2xl relative overflow-hidden">
+              <div className="absolute top-0 right-0 w-64 h-64 bg-emerald-500/5 rounded-full blur-3xl" />
+
+              <div className="relative">
+                <div className="flex items-center gap-3 mb-6">
+                  <div className="p-3 bg-emerald-500/10 border border-emerald-400/30 rounded-xl">
+                    <Shield className="w-6 h-6 text-emerald-400" />
+                  </div>
+                  <div>
+                    <h3 className="text-2xl font-black text-white">ERISA & Fiduciary Risk Self-Audit</h3>
+                    <p className="text-sm text-emerald-300 font-semibold">Test your plan design against DOL fiduciary standards.</p>
+                  </div>
+                </div>
+
+                <div className="space-y-4 mb-8">
+                  {fiduciaryChecklist.map((item) => (
+                    <div
+                      key={item.id}
+                      onClick={() => handleToggleFiduciary(item.id)}
+                      className="flex items-start gap-4 p-4 rounded-xl border border-emerald-500/10 bg-emerald-950/10 hover:bg-emerald-950/20 cursor-pointer transition-all"
+                    >
+                      <div className={`w-5 h-5 rounded border flex items-center justify-center mt-0.5 transition-all ${
+                        checkedFiduciary.includes(item.id)
+                          ? "bg-emerald-500 border-emerald-400 text-white"
+                          : "border-emerald-500/30 text-transparent"
+                      }`}>
+                        <CheckCircle2 className="w-3.5 h-3.5" />
+                      </div>
+                      <span className="text-emerald-100 text-sm leading-relaxed">{item.text}</span>
+                    </div>
+                  ))}
+                </div>
+
+                <div className="bg-emerald-950/30 rounded-xl p-6 border border-emerald-500/20 flex flex-col md:flex-row items-center justify-between gap-6">
+                  <div>
+                    <span className="block text-xs font-semibold text-emerald-400 uppercase tracking-wider mb-1">Your Fiduciary Score</span>
+                    <span className="text-4xl font-black text-white">{fiduciaryScore}%</span>
+                    <span className="block text-xs text-emerald-300/60 mt-1">Audit rating based on DOL guidelines</span>
+                  </div>
+
+                  <div className="text-right">
+                    {fiduciaryScore === 100 ? (
+                      <span className="text-emerald-400 font-bold flex items-center gap-1.5"><CheckCircle2 className="w-4 h-4" /> Prudent Fiduciary Status</span>
+                    ) : fiduciaryScore >= 60 ? (
+                      <span className="text-yellow-400 font-bold flex items-center gap-1.5"><AlertCircle className="w-4 h-4" /> Compliance Vulnerabilities</span>
+                    ) : (
+                      <span className="text-red-400 font-bold flex items-center gap-1.5"><AlertTriangle className="w-4 h-4" /> Critical Liability Risk</span>
+                    )}
+                    <span className="block text-[11px] text-emerald-300/50 mt-1">ERISA litigation exposure is high below 80%</span>
+                  </div>
+                </div>
+              </div>
+            </Card>
+          </div>
         </section>
 
         {/* Financial Risks Section */}

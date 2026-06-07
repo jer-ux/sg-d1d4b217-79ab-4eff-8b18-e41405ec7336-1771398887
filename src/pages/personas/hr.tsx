@@ -1,5 +1,6 @@
 import Head from "next/head";
 import Link from "next/link";
+import Image from "next/image";
 import { Users, Heart, Shield, TrendingUp, CheckCircle2, ArrowRight, Smile, AlertTriangle, DollarSign, FileText, Eye, Clock, Zap, BarChart3, Target, UserCheck, AlertCircle, ThumbsUp, TrendingDown, XCircle, Award, Calendar, MessageSquare, Bell } from "lucide-react";
 import { motion } from "framer-motion";
 import Nav from "@/components/Nav";
@@ -108,7 +109,6 @@ const hrTools = [
       "90-day savings opportunities (no plan changes)",
       "Generic conversion timing and member outreach",
       "Specialty utilization management gaps",
-      "Mail order adoption opportunity quantification",
       "Member cost-sharing optimization",
       "Implementation roadmap with timelines"
     ],
@@ -305,31 +305,58 @@ export default function HRLeadersPage() {
                 <span className="text-sm font-semibold text-rose-200">HR Directors & Benefits Leaders</span>
               </div>
               
-              <h1 className="text-6xl md:text-7xl font-black mb-8 bg-gradient-to-r from-rose-200 via-pink-300 to-fuchsia-200 bg-clip-text text-transparent leading-tight">
-                Your Employees<br />Are Confused.<br />
-                <span className="text-red-400">Your CFO Is Angry.</span>
-              </h1>
-              
-              <p className="text-2xl text-rose-100 mb-6 leading-relaxed max-w-3xl">
-                Healthcare costs up 12%. Employee complaints up 23%. CFO asks <span className="text-rose-300 font-bold">"what are we paying for?"</span> — and you have consultant decks, not answers.
-              </p>
-              
-              <p className="text-lg text-rose-300/80 mb-10 max-w-2xl">
-                SiriusB iQ gives you real-time cost analytics, employee transparency portals, vendor accountability tracking, and executive-ready reporting — so you deliver documented savings while improving employee satisfaction.
-              </p>
+              <div className="grid lg:grid-cols-2 gap-12 items-center mb-12">
+                <div>
+                  <h1 className="text-6xl md:text-7xl font-black mb-8 bg-gradient-to-r from-rose-200 via-pink-300 to-fuchsia-200 bg-clip-text text-transparent leading-tight font-serif">
+                    Your Employees<br />Are Confused.<br />
+                    <span className="text-red-400">Your CFO Is Angry.</span>
+                  </h1>
+                  
+                  <p className="text-2xl text-rose-100 mb-6 leading-relaxed">
+                    Healthcare costs up 12%. Employee complaints up 23%. CFO asks <span className="text-rose-300 font-bold">"what are we paying for?"</span> — and you have consultant decks, not answers.
+                  </p>
+                  
+                  <p className="text-lg text-rose-300/80 mb-10">
+                    SiriusB iQ gives you real-time cost analytics, employee transparency portals, vendor accountability tracking, and executive-ready reporting — so you deliver documented savings while improving employee satisfaction.
+                  </p>
 
-              <div className="flex flex-col sm:flex-row gap-4 mb-12">
-                <Link href="/request-demo">
-                  <Button size="lg" className="bg-gradient-to-r from-rose-600 to-pink-600 hover:from-rose-700 hover:to-pink-700 text-white text-lg px-8 py-6 shadow-2xl shadow-rose-500/50">
-                    See HR Dashboard Demo
-                    <ArrowRight className="w-5 h-5 ml-2" />
-                  </Button>
-                </Link>
-                <Link href="#hr-toolkit">
-                  <Button size="lg" variant="outline" className="border-2 border-rose-400/50 text-rose-200 hover:bg-rose-500/20 text-lg px-8 py-6">
-                    Get HR Toolkit
-                  </Button>
-                </Link>
+                  <div className="flex flex-col sm:flex-row gap-4">
+                    <Link href="/request-demo">
+                      <Button size="lg" className="bg-gradient-to-r from-rose-600 to-pink-600 hover:from-rose-700 hover:to-pink-700 text-white text-lg px-8 py-6 shadow-2xl shadow-rose-500/50">
+                        See HR Dashboard Demo
+                        <ArrowRight className="w-5 h-5 ml-2" />
+                      </Button>
+                    </Link>
+                    <Link href="#hr-toolkit">
+                      <Button size="lg" variant="outline" className="border-2 border-rose-400/50 text-rose-200 hover:bg-rose-500/20 text-lg px-8 py-6">
+                        Get HR Toolkit
+                      </Button>
+                    </Link>
+                  </div>
+                </div>
+
+                <motion.div
+                  initial={{ opacity: 0, scale: 0.95 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  transition={{ delay: 0.2, duration: 0.6 }}
+                  className="relative"
+                >
+                  <div className="absolute inset-0 bg-gradient-to-r from-rose-500 to-pink-500 rounded-2xl blur-3xl opacity-30 animate-pulse" />
+                  <Card className="relative bg-gradient-to-br from-rose-950/80 to-pink-950/80 border-2 border-rose-400/50 p-4 shadow-2xl shadow-rose-500/50 backdrop-blur-xl">
+                    <Image
+                      src="/Firefly_Gemini_Flash_Introducing_Rx_Defense_PBM_Contract_x-Ray-_The_Forensic_Infrastructure_That_Turns_Pha_743383.png"
+                      alt="Introducing Rx Defense PBM Contract X-Ray - by Jeremiah Franklin"
+                      width={800}
+                      height={800}
+                      className="rounded-xl w-full h-auto"
+                      priority
+                    />
+                    <div className="mt-4 text-center">
+                      <p className="text-sm text-rose-200 font-semibold">Written by Jeremiah Franklin, Founder</p>
+                      <p className="text-xs text-rose-400 italic mt-1">Rx Defense & contract forensics for plan sponsors</p>
+                    </div>
+                  </Card>
+                </motion.div>
               </div>
 
               <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">

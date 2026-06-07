@@ -1,9 +1,12 @@
 import Head from "next/head";
 import Link from "next/link";
-import { Building2, Rocket, DollarSign, Target, TrendingUp, Zap, ArrowRight, CheckCircle2 } from "lucide-react";
+import Image from "next/image";
+import { Building2, Rocket, DollarSign, Target, TrendingUp, Zap, ArrowRight, CheckCircle2, Shield, FileText } from "lucide-react";
 import Nav from "@/components/Nav";
+import Footer from "@/components/Footer";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
+import { motion } from "framer-motion";
 
 export default function PEOperatorsPage() {
   return (
@@ -26,32 +29,63 @@ export default function PEOperatorsPage() {
             <div className="absolute bottom-1/3 right-1/3 w-96 h-96 bg-fuchsia-500/10 rounded-full blur-3xl animate-pulse delay-1000" />
           </div>
           
-          <div className="relative max-w-6xl mx-auto">
+          <div className="relative max-w-7xl mx-auto">
             <div className="inline-flex items-center gap-3 px-5 py-2 bg-gradient-to-r from-violet-500/20 to-fuchsia-500/20 border border-violet-400/30 rounded-full mb-8 backdrop-blur-sm">
               <Building2 className="w-5 h-5 text-violet-300" />
               <span className="text-sm font-semibold text-violet-200">PE Operating Partners</span>
             </div>
             
-            <h1 className="text-6xl md:text-7xl font-black mb-8 bg-gradient-to-r from-violet-200 via-fuchsia-300 to-pink-200 bg-clip-text text-transparent leading-tight">
-              Value Creation<br />In 90 Days
-            </h1>
-            
-            <p className="text-2xl text-violet-100 mb-6 max-w-3xl leading-relaxed">
-              Healthcare benefits are <span className="text-violet-300 font-bold">the fastest EBITDA improvement lever</span> you're not pulling. Most portcos are bleeding $500K-$2M annually to PBM contract gaps.
-            </p>
-            
-            <p className="text-lg text-violet-300/80 mb-10 max-w-2xl">
-              SiriusB iQ delivers forensic PBM contract analysis and claims optimization. Install the monitoring infrastructure in 30 days, realize savings in 90, and show documented value creation at exit.
-            </p>
+            <div className="grid lg:grid-cols-2 gap-12 items-center mb-12">
+              <div>
+                <h1 className="text-6xl md:text-7xl font-black mb-8 bg-gradient-to-r from-violet-200 via-fuchsia-300 to-pink-200 bg-clip-text text-transparent leading-tight font-serif">
+                  Value Creation<br />In 90 Days
+                </h1>
+                
+                <p className="text-2xl text-violet-100 mb-6 leading-relaxed">
+                  Healthcare benefits are <span className="text-violet-300 font-bold">the fastest EBITDA improvement lever</span> you're not pulling. Most portcos are bleeding $500K-$2M annually to PBM contract gaps.
+                </p>
+                
+                <p className="text-lg text-violet-300/80 mb-10">
+                  SiriusB iQ delivers forensic PBM contract analysis and claims optimization. Install the monitoring infrastructure in 30 days, realize savings in 90, and show documented value creation at exit.
+                </p>
 
-            <div className="flex flex-col sm:flex-row gap-4 mb-12">
-              <Button size="lg" className="bg-gradient-to-r from-violet-600 to-fuchsia-600 hover:from-violet-700 hover:to-fuchsia-700 text-white text-lg px-8 py-6 shadow-2xl shadow-violet-500/50">
-                Schedule Operator Briefing
-                <ArrowRight className="w-5 h-5 ml-2" />
-              </Button>
-              <Button size="lg" variant="outline" className="border-2 border-violet-400/50 text-violet-200 hover:bg-violet-500/20 text-lg px-8 py-6">
-                View Value Creation Playbook
-              </Button>
+                <div className="flex flex-col sm:flex-row gap-4">
+                  <Link href="/request-demo">
+                    <Button size="lg" className="bg-gradient-to-r from-violet-600 to-fuchsia-600 hover:from-violet-700 hover:to-fuchsia-700 text-white text-lg px-8 py-6 shadow-2xl shadow-violet-500/50">
+                      Schedule Operator Briefing
+                      <ArrowRight className="w-5 h-5 ml-2" />
+                    </Button>
+                  </Link>
+                  <Link href="/request-demo">
+                    <Button size="lg" variant="outline" className="border-2 border-violet-400/50 text-violet-200 hover:bg-violet-500/20 text-lg px-8 py-6">
+                      View Value Creation Playbook
+                    </Button>
+                  </Link>
+                </div>
+              </div>
+
+              <motion.div
+                initial={{ opacity: 0, scale: 0.95 }}
+                animate={{ opacity: 1, scale: 1 }}
+                transition={{ delay: 0.2, duration: 0.6 }}
+                className="relative"
+              >
+                <div className="absolute inset-0 bg-gradient-to-r from-violet-500 to-fuchsia-500 rounded-2xl blur-3xl opacity-30 animate-pulse" />
+                <Card className="relative bg-gradient-to-br from-violet-950/80 to-fuchsia-950/80 border-2 border-violet-400/50 p-4 shadow-2xl shadow-violet-500/50 backdrop-blur-xl">
+                  <Image
+                    src="/Firefly_Gemini_Flash_Your_PBM_Met_Every_Guarantee._You_Still_Lost_the_Money._Written_by_Jeremiah_Franklin_465075.png"
+                    alt="Your PBM Met Every Guarantee. You Still Lost the Money - by Jeremiah Franklin"
+                    width={800}
+                    height={800}
+                    className="rounded-xl w-full h-auto"
+                    priority
+                  />
+                  <div className="mt-4 text-center">
+                    <p className="text-sm text-violet-200 font-semibold">Written by Jeremiah Franklin, Founder</p>
+                    <p className="text-xs text-violet-400 italic mt-1">EBITDA recovery and portfolio cost control</p>
+                  </div>
+                </Card>
+              </motion.div>
             </div>
 
             <div className="grid md:grid-cols-4 gap-6 mt-16">
@@ -81,7 +115,7 @@ export default function PEOperatorsPage() {
 
         <section className="py-24 px-4 bg-gradient-to-b from-black to-violet-950/30">
           <div className="max-w-6xl mx-auto">
-            <h2 className="text-5xl font-black text-center mb-16 bg-gradient-to-r from-violet-200 to-fuchsia-200 bg-clip-text text-transparent">
+            <h2 className="text-5xl font-black text-center mb-16 bg-gradient-to-r from-violet-200 to-fuchsia-200 bg-clip-text text-transparent animate-pulse">
               The Value Creation Playbook
             </h2>
             
@@ -262,13 +296,13 @@ export default function PEOperatorsPage() {
 
         <section className="py-24 px-4">
           <div className="max-w-4xl mx-auto">
-            <Card className="relative bg-gradient-to-br from-violet-900/80 to-fuchsia-900/80 border-4 border-violet-400 p-12 shadow-[0_0_60px_rgba(139,92,246,0.6),0_0_100px_rgba(139,92,246,0.4),0_0_140px_rgba(139,92,246,0.2)] animate-pulse">
-              <div className="absolute inset-0 bg-gradient-to-r from-violet-500/20 via-fuchsia-500/20 to-pink-500/20 animate-pulse rounded-lg" />
-              <div className="absolute -inset-1 bg-gradient-to-r from-violet-600 via-fuchsia-600 to-pink-600 rounded-lg blur-xl opacity-75 animate-pulse" />
+            <Card className="relative bg-gradient-to-br from-violet-900/80 to-fuchsia-900/80 border-4 border-violet-400 p-12 shadow-[0_0_60px_rgba(139,92,246,0.6),0_0_100px_rgba(139,92,246,0.4),0_0_140px_rgba(139,92,246,0.2)]">
+              <div className="absolute inset-0 bg-gradient-to-r from-violet-500/20 via-fuchsia-500/20 to-pink-500/20 rounded-lg" />
+              <div className="absolute -inset-1 bg-gradient-to-r from-violet-600 via-fuchsia-600 to-pink-600 rounded-lg blur-xl opacity-75" />
               
               <div className="relative">
                 <div className="text-center mb-8">
-                  <div className="inline-block px-6 py-2 bg-gradient-to-r from-violet-500 to-fuchsia-500 rounded-full mb-4 shadow-[0_0_30px_rgba(139,92,246,0.8)] animate-pulse">
+                  <div className="inline-block px-6 py-2 bg-gradient-to-r from-violet-500 to-fuchsia-500 rounded-full mb-4 shadow-[0_0_30px_rgba(139,92,246,0.8)]">
                     <span className="text-sm font-black text-white uppercase tracking-wider">🚀 Value Creation Playbook 🚀</span>
                   </div>
                   <h2 className="text-5xl font-black mb-4 bg-gradient-to-r from-violet-200 via-white to-fuchsia-200 bg-clip-text text-transparent drop-shadow-[0_0_25px_rgba(139,92,246,0.8)]">
@@ -327,14 +361,16 @@ export default function PEOperatorsPage() {
                     </div>
                   </div>
 
-                  <Button
-                    type="submit"
-                    size="lg"
-                    className="w-full bg-gradient-to-r from-violet-500 via-fuchsia-500 to-pink-500 hover:from-violet-400 hover:via-fuchsia-400 hover:to-pink-400 text-white text-2xl font-black py-8 shadow-[0_0_40px_rgba(139,92,246,0.9),0_0_60px_rgba(139,92,246,0.6),0_0_80px_rgba(139,92,246,0.4)] hover:shadow-[0_0_50px_rgba(139,92,246,1),0_0_80px_rgba(139,92,246,0.8),0_0_120px_rgba(139,92,246,0.6)] animate-pulse uppercase tracking-wider border-2 border-white/50"
-                  >
-                    📈 Download Playbook 📈
-                    <ArrowRight className="w-6 h-6 ml-3" />
-                  </Button>
+                  <Link href="/request-demo">
+                    <Button
+                      type="submit"
+                      size="lg"
+                      className="w-full bg-gradient-to-r from-violet-500 via-fuchsia-500 to-pink-500 hover:from-violet-400 hover:via-fuchsia-400 hover:to-pink-400 text-white text-2xl font-black py-8 shadow-[0_0_40px_rgba(139,92,246,0.9),0_0_60px_rgba(139,92,246,0.6),0_0_80px_rgba(139,92,246,0.4)] hover:shadow-[0_0_50px_rgba(139,92,246,1),0_0_80px_rgba(139,92,246,0.8),0_0_120px_rgba(139,92,246,0.6)] uppercase tracking-wider border-2 border-white/50"
+                    >
+                      📈 Download Playbook 📈
+                      <ArrowRight className="w-6 h-6 ml-3" />
+                    </Button>
+                  </Link>
                   
                   <p className="text-xs text-center text-violet-200 drop-shadow-[0_0_8px_rgba(139,92,246,0.6)]">
                     By submitting, you agree to receive communications about SiriusB iQ value creation solutions. Unsubscribe anytime.
@@ -353,16 +389,20 @@ export default function PEOperatorsPage() {
             <p className="text-2xl text-violet-200 mb-12">
               Schedule a 30-minute operator briefing to see the value creation playbook and 90-day deployment timeline.
             </p>
-            <Button size="lg" className="bg-gradient-to-r from-violet-600 to-fuchsia-600 hover:from-violet-700 hover:to-fuchsia-700 text-white text-xl px-12 py-8 shadow-2xl shadow-violet-500/50">
-              Schedule Operator Briefing
-              <Rocket className="w-6 h-6 ml-3" />
-            </Button>
+            <Link href="/request-demo">
+              <Button size="lg" className="bg-gradient-to-r from-violet-600 to-fuchsia-600 hover:from-violet-700 hover:to-fuchsia-700 text-white text-xl px-12 py-8 shadow-2xl shadow-violet-500/50">
+                Schedule Operator Briefing
+                <Rocket className="w-6 h-6 ml-3" />
+              </Button>
+            </Link>
             <p className="text-sm text-violet-400 mt-6">
               PE-specific demo • 90-day deployment roadmap • Exit documentation included
             </p>
           </div>
         </section>
       </div>
+
+      <Footer />
     </>
   );
 }

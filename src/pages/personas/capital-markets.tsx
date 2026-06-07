@@ -1,5 +1,6 @@
 import Head from "next/head";
 import Link from "next/link";
+import Image from "next/image";
 import { TrendingUp, PieChart, BarChart3, DollarSign, Target, Zap, ArrowRight, LineChart, Shield, AlertTriangle, CheckCircle2, Eye, Clock, Users, FileText, Award, Briefcase, Search, Database, Lock, Activity } from "lucide-react";
 import { motion } from "framer-motion";
 import Nav from "@/components/Nav";
@@ -293,31 +294,58 @@ export default function CapitalMarketsPage() {
                 <span className="text-sm font-semibold text-indigo-200">Private Equity · Venture Capital · M&A</span>
               </div>
               
-              <h1 className="text-6xl md:text-7xl font-black mb-8 bg-gradient-to-r from-indigo-200 via-blue-300 to-cyan-200 bg-clip-text text-transparent leading-tight">
-                The Hidden<br />
-                <span className="text-emerald-400">EBITDA Story</span>
-              </h1>
-              
-              <p className="text-2xl text-indigo-100 mb-6 max-w-3xl leading-relaxed">
-                Healthcare benefits are <span className="text-indigo-300 font-bold">18-25% of operating expenses</span> for mid-market companies — and most are bleeding <span className="text-red-400 font-bold">$500K-$2M annually</span> to PBM contract gaps.
-              </p>
-              
-              <p className="text-lg text-indigo-300/80 mb-10 max-w-3xl">
-                SiriusB iQ delivers forensic healthcare analytics for deal diligence, portfolio monitoring, and exit positioning. See the cost structure your competitors can't — and turn healthcare into measurable alpha.
-              </p>
+              <div className="grid lg:grid-cols-2 gap-12 items-center mb-12">
+                <div>
+                  <h1 className="text-6xl md:text-7xl font-black mb-8 bg-gradient-to-r from-indigo-200 via-blue-300 to-cyan-200 bg-clip-text text-transparent leading-tight font-serif">
+                    The Hidden<br />
+                    <span className="text-emerald-400">EBITDA Story</span>
+                  </h1>
+                  
+                  <p className="text-2xl text-indigo-100 mb-6 leading-relaxed">
+                    Healthcare benefits are <span className="text-indigo-300 font-bold">18-25% of operating expenses</span> for mid-market companies — and most are bleeding <span className="text-red-400 font-bold">$500K-$2M annually</span> to PBM contract gaps.
+                  </p>
+                  
+                  <p className="text-lg text-indigo-300/80 mb-10">
+                    SiriusB iQ delivers forensic healthcare analytics for deal diligence, portfolio monitoring, and exit positioning. See the cost structure your competitors can't — and turn healthcare into measurable alpha.
+                  </p>
 
-              <div className="flex flex-col sm:flex-row gap-4 mb-12">
-                <Link href="/request-demo">
-                  <Button size="lg" className="bg-gradient-to-r from-indigo-600 to-blue-600 hover:from-indigo-700 hover:to-blue-700 text-white text-lg px-8 py-6 shadow-2xl shadow-indigo-500/50">
-                    Schedule DD Briefing
-                    <ArrowRight className="w-5 h-5 ml-2" />
-                  </Button>
-                </Link>
-                <Link href="#portfolio-tools">
-                  <Button size="lg" variant="outline" className="border-2 border-indigo-400/50 text-indigo-200 hover:bg-indigo-500/20 text-lg px-8 py-6">
-                    View Portfolio Dashboard
-                  </Button>
-                </Link>
+                  <div className="flex flex-col sm:flex-row gap-4">
+                    <Link href="/request-demo">
+                      <Button size="lg" className="bg-gradient-to-r from-indigo-600 to-blue-600 hover:from-indigo-700 hover:to-blue-700 text-white text-lg px-8 py-6 shadow-2xl shadow-indigo-500/50">
+                        Schedule DD Briefing
+                        <ArrowRight className="w-5 h-5 ml-2" />
+                      </Button>
+                    </Link>
+                    <Link href="#portfolio-tools">
+                      <Button size="lg" variant="outline" className="border-2 border-indigo-400/50 text-indigo-200 hover:bg-indigo-500/20 text-lg px-8 py-6">
+                        View Portfolio Dashboard
+                      </Button>
+                    </Link>
+                  </div>
+                </div>
+
+                <motion.div
+                  initial={{ opacity: 0, scale: 0.95 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  transition={{ delay: 0.2, duration: 0.6 }}
+                  className="relative"
+                >
+                  <div className="absolute inset-0 bg-gradient-to-r from-indigo-500 to-blue-500 rounded-2xl blur-3xl opacity-30 animate-pulse" />
+                  <Card className="relative bg-gradient-to-br from-indigo-950/80 to-blue-950/80 border-2 border-indigo-400/50 p-4 shadow-2xl shadow-indigo-500/50 backdrop-blur-xl">
+                    <Image
+                      src="/Firefly_Gemini_Flash_A_Fortune_100_CIO_Made_A_Confession_To_Me_Last_Month._Written_by_Jeremiah_Franklin_Sh_28516.png"
+                      alt="A Fortune 100 CIO Made A Confession To Me Last Month - by Jeremiah Franklin"
+                      width={800}
+                      height={800}
+                      className="rounded-xl w-full h-auto"
+                      priority
+                    />
+                    <div className="mt-4 text-center">
+                      <p className="text-sm text-indigo-200 font-semibold">Written by Jeremiah Franklin, Founder</p>
+                      <p className="text-xs text-indigo-400 italic mt-1">Fiduciary confidentiality and deal diligence</p>
+                    </div>
+                  </Card>
+                </motion.div>
               </div>
 
               <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
@@ -671,7 +699,7 @@ export default function CapitalMarketsPage() {
                   <Card className="bg-gradient-to-br from-indigo-900/40 to-blue-900/40 border-indigo-500/30 p-8 text-center hover:scale-105 transition-transform">
                     <metric.icon className="w-12 h-12 text-indigo-400 mx-auto mb-4" />
                     <div className="text-6xl font-black text-indigo-300 mb-3">{metric.metric}</div>
-                    <div className="text-lg text-indigo-200 font-semibold mb-2">{metric.label}</div>
+                    <div className="text-lg text-emerald-200 font-semibold mb-2">{metric.label}</div>
                     <div className="text-sm text-indigo-400">{metric.context}</div>
                   </Card>
                 </motion.div>

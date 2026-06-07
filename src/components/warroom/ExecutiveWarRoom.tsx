@@ -104,34 +104,6 @@ export function ExecutiveWarRoom() {
         </section>
 
         <section className="mb-6">
-          <div className="mb-4 flex items-baseline gap-3">
-            <h2 className="text-lg font-bold text-zinc-100 flex items-center gap-2">
-              <span className="h-1.5 w-1.5 rounded-full bg-blue-500" />
-              Strategic Plan Design & Risk Mitigation
-            </h2>
-            <div className="text-xs text-blue-400/80 font-medium px-2 py-0.5 rounded-full bg-blue-900/30 border border-blue-500/20">McKinsey Framework</div>
-          </div>
-          <div className="grid grid-cols-1 gap-4 lg:grid-cols-2">
-            <KPITile data={tileMap.get("planDesignAdoption")} onClick={handleTileClick} />
-            <KPITile data={tileMap.get("pharmacyExposure")} onClick={handleTileClick} />
-          </div>
-        </section>
-
-        <section className="mb-6">
-          <div className="mb-4 flex items-baseline gap-3">
-            <h2 className="text-lg font-bold text-zinc-100 flex items-center gap-2">
-              <span className="h-1.5 w-1.5 rounded-full bg-emerald-500" />
-              Experience & Loyalty Metrics
-            </h2>
-            <div className="text-xs text-emerald-400/80 font-medium px-2 py-0.5 rounded-full bg-emerald-900/30 border border-emerald-500/20">Bain Net Promoter System</div>
-          </div>
-          <div className="grid grid-cols-1 gap-4 lg:grid-cols-2">
-            <KPITile data={tileMap.get("benefitsNPS")} onClick={handleTileClick} />
-            <KPITile data={tileMap.get("employeeNPS")} onClick={handleTileClick} />
-          </div>
-        </section>
-
-        <section className="mb-6">
           <ExecutiveEventStream events={events} />
         </section>
       </main>

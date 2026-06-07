@@ -1,5 +1,6 @@
 import type { AppProps } from "next/app";
 import { ThemeProvider } from "@/contexts/ThemeProvider";
+import { AuditStateProvider } from "@/contexts/AuditStateContext";
 import { Toaster } from "@/components/ui/toaster";
 import Nav from "@/components/Nav";
 import "@/styles/globals.css";
@@ -27,9 +28,11 @@ export default function App({ Component, pageProps }: AppProps) {
       </Script>
 
       <ThemeProvider>
-        <Nav />
-        <Component {...pageProps} />
-        <Toaster />
+        <AuditStateProvider>
+          <Nav />
+          <Component {...pageProps} />
+          <Toaster />
+        </AuditStateProvider>
       </ThemeProvider>
     </>
   );

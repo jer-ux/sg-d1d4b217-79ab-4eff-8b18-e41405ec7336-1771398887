@@ -24,7 +24,8 @@ import {
   Eye,
   AlertTriangle,
   Search,
-  CheckCircle
+  CheckCircle,
+  TrendingDown
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
@@ -33,61 +34,79 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import Nav from "@/components/Nav";
 import Footer from "@/components/Footer";
 
-// Data Models
+// Data Models spanning from $1,200 up to $67,000
 const intelligenceModules = [
   {
-    id: "drap",
-    title: "DRAP Analysis",
-    subtitle: "Drug Rebate Analysis Panel",
-    description: "Forensic decomposition of pharmacy spread and rebate economics. Uncovers hidden margin layers between AWP, WAC, MAC, and NADAC benchmarks.",
+    id: "class-action-forensic",
+    title: "Class Action Litigation Prep Audit",
+    subtitle: "Full-Plan Forensic Discovery Sweep",
+    description: "The ultimate risk-mitigation audit designed for multi-facility, enterprise plan sponsors. Fully parses 3 to 5 years of historical claims database to document historical PBM breach of fiduciary duty, ready for Class Action or CAA defense.",
     deliverables: [
-      "Spread decomposition by drug class",
-      "MAC list arbitrage quantification",
-      "Rebate guarantee validation",
-      "Benchmark comparison against NADAC"
+      "5-year exhaustive retrospective claims reconciliation",
+      "Certified actuarial expert witness affidavit package",
+      "Complete GPO offshore extraction documentation",
+      "Full ERISA / CAA compliance defense & gap index"
     ],
-    turnaround: "3-5 days",
-    price: "$4,500",
-    icon: <Activity className="w-6 h-6" />,
+    turnaround: "21-30 days",
+    price: "$67,000",
+    icon: <Lock className="w-6 h-6" />,
+    color: "text-red-400 animate-pulse",
+    borderColor: "border-red-500/50 shadow-[0_0_25px_rgba(239,68,68,0.2)]",
+    bgGradient: "from-red-950/60 to-slate-950/60"
+  },
+  {
+    id: "historical-sweep",
+    title: "Retrospective Claim Sweep",
+    subtitle: "Enterprise Fraud & Recovery Model",
+    description: "Full-scale auditing of historic transactions comparing every retail, mail, and specialty claim against actual manufacturer discount agreements and state MAC list pricing sheets to uncover overcharges.",
+    deliverables: [
+      "Line-item billing error extraction",
+      "Unjustified brand markup recovery roadmap",
+      "Contractual guarantee shortfall calculation",
+      "Reconciliation audit ready for legal filing"
+    ],
+    turnaround: "14-21 days",
+    price: "$45,000",
+    icon: <Search className="w-6 h-6" />,
+    color: "text-amber-400",
+    borderColor: "border-amber-500/40",
+    bgGradient: "from-amber-950/40 to-slate-950/40"
+  },
+  {
+    id: "gpo-arbitrage-premium",
+    title: "Offshore GPO Extraction Audit",
+    subtitle: "Ascent, Emprise & Zinc Forensic Reconciler",
+    description: "Comprehensive parsing of offshore rebate aggregators to trace and measure exact margin layers pocketed in Switzerland or Ireland before reaching domestic corporate ledgers.",
+    deliverables: [
+      "Manufacturer supplemental rebate mapping",
+      "Rebate retention percentage certification",
+      "Offshore value leakage report",
+      "Direct domestic GPO routing transition playbook"
+    ],
+    turnaround: "10-14 days",
+    price: "$28,500",
+    icon: <Briefcase className="w-6 h-6" />,
+    color: "text-purple-400",
+    borderColor: "border-purple-500/40",
+    bgGradient: "from-purple-950/40 to-slate-950/40"
+  },
+  {
+    id: "ebitda",
+    title: "EBITDA Impact",
+    subtitle: "P&L Translation for Board",
+    description: "Translates healthcare savings into earnings impact. Models margin expansion scenarios for private equity and Board presentations.",
+    deliverables: [
+      "3-year cumulative savings projection",
+      "EBITDA margin expansion modeling",
+      "Enterprise value impact",
+      "Board-ready executive summary"
+    ],
+    turnaround: "5-7 days",
+    price: "$9,500",
+    icon: <DollarSign className="w-6 h-6" />,
     color: "text-cyan-400",
     borderColor: "border-cyan-500/30",
     bgGradient: "from-cyan-950/40 to-blue-950/40"
-  },
-  {
-    id: "trend",
-    title: "Trend Projection",
-    subtitle: "Multi-Year Cost Modeling",
-    description: "Actuarial-grade trend forecasting using credibility-weighted analysis. Models medical and pharmacy cost trajectories with Monte Carlo bands.",
-    deliverables: [
-      "5-year trend projections with P50/P90",
-      "Credibility weighting analysis",
-      "Intervention scenario modeling",
-      "Budget impact analysis"
-    ],
-    turnaround: "5-7 days",
-    price: "$6,500",
-    icon: <TrendingUp className="w-6 h-6" />,
-    color: "text-violet-400",
-    borderColor: "border-violet-500/30",
-    bgGradient: "from-violet-950/40 to-purple-950/40"
-  },
-  {
-    id: "volatility",
-    title: "Volatility Dashboard",
-    subtitle: "Risk Quantification",
-    description: "Stochastic modeling of claims volatility. Identifies catastrophic risk exposure and optimal stop-loss attachment points.",
-    deliverables: [
-      "Monte Carlo simulation (5,000+ iterations)",
-      "Catastrophic claim probability",
-      "Stop-loss attachment recommendations",
-      "Risk transfer financial analysis"
-    ],
-    turnaround: "5-7 days",
-    price: "$7,500",
-    icon: <Shield className="w-6 h-6" />,
-    color: "text-emerald-400",
-    borderColor: "border-emerald-500/30",
-    bgGradient: "from-emerald-950/40 to-teal-950/40"
   },
   {
     id: "intervention",
@@ -108,22 +127,58 @@ const intelligenceModules = [
     bgGradient: "from-orange-950/40 to-red-950/40"
   },
   {
-    id: "ebitda",
-    title: "EBITDA Impact",
-    subtitle: "P&L Translation for Board",
-    description: "Translates healthcare savings into earnings impact. Models margin expansion scenarios for private equity and Board presentations.",
+    id: "volatility",
+    title: "Volatility Dashboard",
+    subtitle: "Risk Quantification",
+    description: "Stochastic modeling of claims volatility. Identifies catastrophic risk exposure and optimal stop-loss attachment points.",
     deliverables: [
-      "3-year cumulative savings projection",
-      "EBITDA margin expansion modeling",
-      "Enterprise value impact",
-      "Board-ready executive summary"
+      "Monte Carlo simulation (5,000+ iterations)",
+      "Catastrophic claim probability",
+      "Stop-loss attachment recommendations",
+      "Risk transfer financial analysis"
     ],
     turnaround: "5-7 days",
-    price: "$9,500",
-    icon: <DollarSign className="w-6 h-6" />,
-    color: "text-amber-400",
-    borderColor: "border-amber-500/30",
-    bgGradient: "from-amber-950/40 to-yellow-950/40"
+    price: "$7,500",
+    icon: <Shield className="w-6 h-6" />,
+    color: "text-emerald-400",
+    borderColor: "border-emerald-500/30",
+    bgGradient: "from-emerald-950/40 to-teal-950/40"
+  },
+  {
+    id: "trend",
+    title: "Trend Projection",
+    subtitle: "Multi-Year Cost Modeling",
+    description: "Actuarial-grade trend forecasting using credibility-weighted analysis. Models medical and pharmacy cost trajectories with Monte Carlo bands.",
+    deliverables: [
+      "5-year trend projections with P50/P90",
+      "Credibility weighting analysis",
+      "Intervention scenario modeling",
+      "Budget impact analysis"
+    ],
+    turnaround: "5-7 days",
+    price: "$6,500",
+    icon: <TrendingUp className="w-6 h-6" />,
+    color: "text-violet-400",
+    borderColor: "border-violet-500/30",
+    bgGradient: "from-violet-950/40 to-purple-950/40"
+  },
+  {
+    id: "drap",
+    title: "DRAP Analysis",
+    subtitle: "Drug Rebate Analysis Panel",
+    description: "Forensic decomposition of pharmacy spread and rebate economics. Uncovers hidden margin layers between AWP, WAC, MAC, and NADAC benchmarks.",
+    deliverables: [
+      "Spread decomposition by drug class",
+      "MAC list arbitrage quantification",
+      "Rebate guarantee validation",
+      "Benchmark comparison against NADAC"
+    ],
+    turnaround: "3-5 days",
+    price: "$4,500",
+    icon: <Activity className="w-6 h-6" />,
+    color: "text-pink-400",
+    borderColor: "border-pink-500/30",
+    bgGradient: "from-pink-950/40 to-rose-950/40"
   },
   {
     id: "broker-comp",
@@ -144,166 +199,22 @@ const intelligenceModules = [
     bgGradient: "from-rose-950/40 to-pink-950/40"
   },
   {
-    id: "nadac-benchmark",
-    title: "NADAC Pricing Audit",
-    subtitle: "True Acquisition Costing",
-    description: "Uncover the gap between PBM AWP pricing and direct independent pharmacy purchase index (NADAC). Highlights local retail markup arbitrage.",
+    id: "reconciliation",
+    title: "Lilly/Edgar Reconciliation",
+    subtitle: "Manufacturer Invoice Audit",
+    description: "Reconcile claims against manufacturer invoices to uncover undisclosed discount programs, supplemental rebates, and direct program margins.",
     deliverables: [
-      "True acquisition cost comparison",
-      "Local pharmacy margin mapping",
-      "Unjustified AWP surcharge lists",
-      "Alternative MAC contract options"
+      "Manufacturer baseline price delta",
+      "Undisclosed supplemental rebates check",
+      "Direct program alignment map",
+      "Reconciliation variance summary"
     ],
-    turnaround: "2-3 days",
-    price: "$1,200",
-    icon: <TrendingUp className="w-6 h-6" />,
-    color: "text-emerald-400",
-    borderColor: "border-emerald-500/30",
-    bgGradient: "from-emerald-950/40 to-teal-950/40"
-  },
-  {
-    id: "hygiene-scan",
-    title: "Formulary Hygiene Scan",
-    subtitle: "Exclusion & Waste Audit",
-    description: "Automated scan of plan formulary to identify redundant clinical listings, multi-source brand name overrides, and waste in high-cost categories.",
-    deliverables: [
-      "Redundant drug alternative lists",
-      "Excluded generic options list",
-      "Multi-source brand markup count",
-      "Clinical substitution roadmap"
-    ],
-    turnaround: "2-3 days",
-    price: "$1,500",
-    icon: <FileText className="w-6 h-6" />,
-    color: "text-blue-400",
-    borderColor: "border-blue-500/30",
-    bgGradient: "from-blue-950/40 to-indigo-950/40"
-  },
-  {
-    id: "gatekeeper-audit",
-    title: "Prior-Auth Gatekeeper Scan",
-    subtitle: "Clinical Decision Audit",
-    description: "Audits current PBM prior-authorization approval and denial efficiency. Identifies auto-approval waste of specialty medications.",
-    deliverables: [
-      "Auto-approval waste projection",
-      "PA denial validity scorecards",
-      "Independent clinical review delta",
-      "Clinical protocol recommendations"
-    ],
-    turnaround: "3 days",
-    price: "$1,600",
-    icon: <Shield className="w-6 h-6" />,
-    color: "text-indigo-400",
-    borderColor: "border-indigo-500/30",
-    bgGradient: "from-indigo-950/40 to-violet-950/40"
-  },
-  {
-    id: "copay-audit",
-    title: "Co-pay Card Audit",
-    subtitle: "Accumulator/Maximizer Scan",
-    description: "Analyzes specialty drug spend to track co-pay cards and manufacturer copay assistance. Uncovers if PBM is pocketing copay assistance funds.",
-    deliverables: [
-      "Copay card margin analysis",
-      "Accumizer loophole identification",
-      "Member out-of-pocket tracking",
-      "Alternative copay handling plan"
-    ],
-    turnaround: "3 days",
-    price: "$1,800",
-    icon: <DollarSign className="w-6 h-6" />,
-    color: "text-purple-400",
-    borderColor: "border-purple-500/30",
-    bgGradient: "from-purple-950/40 to-fuchsia-950/40"
-  },
-  {
-    id: "daw1-arbitrage",
-    title: "DAW-1 Arbitrage Review",
-    subtitle: "Dispense-As-Written Profit Scans",
-    description: "Exposes manufacturer brand-push arbitrage. Identifies claims flagged as DAW-1 where cheaper generic options were bypassed to earn hidden brand rebates.",
-    deliverables: [
-      "DAW-1 brand margin extraction report",
-      "Physician steering profile mapping",
-      "Lost generic savings catalog",
-      "Formulary tier correction options"
-    ],
-    turnaround: "3 days",
-    price: "$1,900",
-    icon: <Activity className="w-6 h-6" />,
-    color: "text-pink-400",
-    borderColor: "border-pink-500/30",
-    bgGradient: "from-pink-950/40 to-rose-950/40"
-  },
-  {
-    id: "pipeline-monitor",
-    title: "Generic Pipeline Monitor",
-    subtitle: "Launch & Expiration Strategy",
-    description: "Aligns your formulary with upcoming generic and biosimilar launches, preventing PBMs from withholding cheaper alternatives to capture spread.",
-    deliverables: [
-      "12-month drug patent pipeline",
-      "PBM transition delay calculation",
-      "Biosimilar capture potential",
-      "Proactive tier replacement plan"
-    ],
-    turnaround: "2-3 days",
-    price: "$1,400",
-    icon: <Zap className="w-6 h-6" />,
-    color: "text-yellow-400",
-    borderColor: "border-yellow-500/30",
-    bgGradient: "from-yellow-950/40 to-amber-950/40"
-  },
-  {
-    id: "specialty-carveout",
-    title: "Specialty Carve-Out Study",
-    subtitle: "Independent Sourcing Analysis",
-    description: "Models the financial impact of carving out specialty medications to an independent fiduciary model vs. leaving them bundled within PBM mail-order.",
-    deliverables: [
-      "Specialty-only contract audit",
-      "International / direct sourcing savings",
-      "Implementation operational risk",
-      "Custom carve-out action list"
-    ],
-    turnaround: "4-5 days",
-    price: "$2,200",
-    icon: <Briefcase className="w-6 h-6" />,
-    color: "text-amber-400",
-    borderColor: "border-amber-500/30",
-    bgGradient: "from-amber-950/40 to-orange-950/40"
-  },
-  {
-    id: "compliance-exposure",
-    title: "RxDC Compliance Audit",
-    subtitle: "Regulatory Liability Scan",
-    description: "Audit RxDC reporting data to verify accuracy of files submitted on behalf of your plan. Identifies reporting errors and PBM classification risks.",
-    deliverables: [
-      "RxDC error rate scorecard",
-      "Reporting liability exposure metric",
-      "PBM data submission alignment",
-      "CAA compliance defense report"
-    ],
-    turnaround: "3 days",
-    price: "$2,400",
-    icon: <Users className="w-6 h-6" />,
-    color: "text-orange-400",
-    borderColor: "border-orange-500/30",
-    bgGradient: "from-orange-950/40 to-red-950/40"
-  },
-  {
-    id: "terminology-audit",
-    title: "Contract Terminology Scan",
-    subtitle: "Hidden Clause Analysis",
-    description: "Detailed legal/actuarial parsing of contract definitions. Identifies loose wording PBMs use to reclassify generic drugs as brand-name margins.",
-    deliverables: [
-      "Generic/Brand definition gap map",
-      "Rebate GPO exclusion clause risk",
-      "MAC update frequency obligations",
-      "Fiduciary contract terms scorecard"
-    ],
-    turnaround: "3-5 days",
-    price: "$2,500",
-    icon: <FileText className="w-6 h-6" />,
-    color: "text-red-400",
-    borderColor: "border-red-500/30",
-    bgGradient: "from-red-950/40 to-rose-950/40"
+    turnaround: "5 days",
+    price: "$3,200",
+    icon: <Search className="w-6 h-6" />,
+    color: "text-violet-400",
+    borderColor: "border-violet-500/30",
+    bgGradient: "from-violet-950/40 to-indigo-950/40"
   },
   {
     id: "erisa-gap",
@@ -324,40 +235,166 @@ const intelligenceModules = [
     bgGradient: "from-rose-950/40 to-fuchsia-950/40"
   },
   {
-    id: "reconciliation",
-    title: "Lilly/Edgar Reconciliation",
-    subtitle: "Manufacturer Invoice Audit",
-    description: "Reconcile claims against manufacturer invoices to uncover undisclosed discount programs, supplemental rebates, and direct program margins.",
+    id: "terminology-audit",
+    title: "Contract Terminology Scan",
+    subtitle: "Hidden Clause Analysis",
+    description: "Detailed legal/actuarial parsing of contract definitions. Identifies loose wording PBMs use to reclassify generic drugs as brand-name margins.",
     deliverables: [
-      "Manufacturer baseline price delta",
-      "Undisclosed supplemental rebates check",
-      "Direct program alignment map",
-      "Reconciliation variance summary"
+      "Generic/Brand definition gap map",
+      "Rebate GPO exclusion clause risk",
+      "MAC update frequency obligations",
+      "Fiduciary contract terms scorecard"
     ],
-    turnaround: "5 days",
-    price: "$3,200",
-    icon: <Search className="w-6 h-6" />,
-    color: "text-violet-400",
-    borderColor: "border-violet-500/30",
-    bgGradient: "from-violet-950/40 to-indigo-950/40"
+    turnaround: "3-5 days",
+    price: "$2,500",
+    icon: <FileText className="w-6 h-6" />,
+    color: "text-red-400",
+    borderColor: "border-red-500/30",
+    bgGradient: "from-red-950/40 to-rose-950/40"
   },
   {
-    id: "gpo-extraction",
-    title: "GPO Rebate Review",
-    subtitle: "Offshore Margins Analysis",
-    description: "Track and analyze GPO rebate capture. Exposes margin layers pocketed by offshore entities (Ascent, Emprise, Zinc) before reaching plan sponsors.",
+    id: "compliance-exposure",
+    title: "RxDC Compliance Audit",
+    subtitle: "Regulatory Liability Scan",
+    description: "Audit RxDC reporting data to verify accuracy of files submitted on behalf of your plan. Identifies reporting errors and PBM classification risks.",
     deliverables: [
-      "Offshore GPO extraction rate",
-      "Retained value percentage index",
-      "True vs. net rebate variance",
-      "Domestic GPO adjustment plan"
+      "RxDC error rate scorecard",
+      "Reporting liability exposure metric",
+      "PBM data submission alignment",
+      "CAA compliance defense report"
     ],
-    turnaround: "5 days",
-    price: "$3,500",
-    icon: <Target className="w-6 h-6" />,
-    color: "text-cyan-400",
-    borderColor: "border-cyan-500/30",
-    bgGradient: "from-cyan-950/40 to-blue-950/40"
+    turnaround: "3 days",
+    price: "$2,400",
+    icon: <Users className="w-6 h-6" />,
+    color: "text-orange-400",
+    borderColor: "border-orange-500/30",
+    bgGradient: "from-orange-950/40 to-red-950/40"
+  },
+  {
+    id: "specialty-carveout",
+    title: "Specialty Carve-Out Study",
+    subtitle: "Independent Sourcing Analysis",
+    description: "Models the financial impact of carving out specialty medications to an independent fiduciary model vs. leaving them bundled within PBM mail-order.",
+    deliverables: [
+      "Specialty-only contract audit",
+      "International / direct sourcing savings",
+      "Implementation operational risk",
+      "Custom carve-out action list"
+    ],
+    turnaround: "4-5 days",
+    price: "$2,200",
+    icon: <Briefcase className="w-6 h-6" />,
+    color: "text-amber-400",
+    borderColor: "border-amber-500/30",
+    bgGradient: "from-amber-950/40 to-orange-950/40"
+  },
+  {
+    id: "daw1-arbitrage",
+    title: "DAW-1 Arbitrage Review",
+    subtitle: "Dispense-As-Written Profit Scans",
+    description: "Exposes manufacturer brand-push arbitrage. Identifies claims flagged as DAW-1 where cheaper generic options were bypassed to earn hidden brand rebates.",
+    deliverables: [
+      "DAW-1 brand margin extraction report",
+      "Physician steering profile mapping",
+      "Lost generic savings catalog",
+      "Formulary tier correction options"
+    ],
+    turnaround: "3 days",
+    price: "$1,900",
+    icon: <Activity className="w-6 h-6" />,
+    color: "text-pink-400",
+    borderColor: "border-pink-500/30",
+    bgGradient: "from-pink-950/40 to-rose-950/40"
+  },
+  {
+    id: "copay-audit",
+    title: "Co-pay Card Audit",
+    subtitle: "Accumulator/Maximizer Scan",
+    description: "Analyzes specialty drug spend to track co-pay cards and manufacturer copay assistance. Uncovers if PBM is pocketing copay assistance funds.",
+    deliverables: [
+      "Copay card margin analysis",
+      "Accumizer loophole identification",
+      "Member out-of-pocket tracking",
+      "Alternative copay handling plan"
+    ],
+    turnaround: "3 days",
+    price: "$1,800",
+    icon: <DollarSign className="w-6 h-6" />,
+    color: "text-purple-400",
+    borderColor: "border-purple-500/30",
+    bgGradient: "from-purple-950/40 to-fuchsia-950/40"
+  },
+  {
+    id: "gatekeeper-audit",
+    title: "Prior-Auth Gatekeeper Scan",
+    subtitle: "Clinical Decision Audit",
+    description: "Audits current PBM prior-authorization approval and denial efficiency. Identifies auto-approval waste of specialty medications.",
+    deliverables: [
+      "Auto-approval waste projection",
+      "PA denial validity scorecards",
+      "Independent clinical review delta",
+      "Clinical protocol recommendations"
+    ],
+    turnaround: "3 days",
+    price: "$1,600",
+    icon: <Shield className="w-6 h-6" />,
+    color: "text-indigo-400",
+    borderColor: "border-indigo-500/30",
+    bgGradient: "from-indigo-950/40 to-violet-950/40"
+  },
+  {
+    id: "hygiene-scan",
+    title: "Formulary Hygiene Scan",
+    subtitle: "Exclusion & Waste Audit",
+    description: "Automated scan of plan formulary to identify redundant clinical listings, multi-source brand name overrides, and waste in high-cost categories.",
+    deliverables: [
+      "Redundant drug alternative lists",
+      "Excluded generic options list",
+      "Multi-source brand markup count",
+      "Clinical substitution roadmap"
+    ],
+    turnaround: "2-3 days",
+    price: "$1,500",
+    icon: <FileText className="w-6 h-6" />,
+    color: "text-blue-400",
+    borderColor: "border-blue-500/30",
+    bgGradient: "from-blue-950/40 to-indigo-950/40"
+  },
+  {
+    id: "pipeline-monitor",
+    title: "Generic Pipeline Monitor",
+    subtitle: "Launch & Expiration Strategy",
+    description: "Aligns your formulary with upcoming generic and biosimilar launches, preventing PBMs from withholding cheaper alternatives to capture spread.",
+    deliverables: [
+      "12-month drug patent pipeline",
+      "PBM transition delay calculation",
+      "Biosimilar capture potential",
+      "Proactive tier replacement plan"
+    ],
+    turnaround: "2-3 days",
+    price: "$1,400",
+    icon: <Zap className="w-6 h-6" />,
+    color: "text-yellow-400",
+    borderColor: "border-yellow-500/30",
+    bgGradient: "from-yellow-950/40 to-amber-950/40"
+  },
+  {
+    id: "nadac-benchmark",
+    title: "NADAC Pricing Audit",
+    subtitle: "True Acquisition Costing",
+    description: "Uncover the gap between PBM AWP pricing and direct independent pharmacy purchase index (NADAC). Highlights local retail markup arbitrage.",
+    deliverables: [
+      "True acquisition cost comparison",
+      "Local pharmacy margin mapping",
+      "Unjustified AWP surcharge lists",
+      "Alternative MAC contract options"
+    ],
+    turnaround: "2-3 days",
+    price: "$1,200",
+    icon: <TrendingUp className="w-6 h-6" />,
+    color: "text-emerald-400",
+    borderColor: "border-emerald-500/30",
+    bgGradient: "from-emerald-950/40 to-teal-950/40"
   }
 ];
 
@@ -607,7 +644,7 @@ export default function KincaidIQIntelligenceSeries() {
                 The Intelligence Modules
               </h2>
               <p className="text-xl text-slate-400 max-w-3xl mx-auto">
-                Order individually or bundle. No retainers. No scope creep.
+                Order individually or bundle. Custom litigation preparation packages available up to $67,000.
               </p>
             </motion.div>
 

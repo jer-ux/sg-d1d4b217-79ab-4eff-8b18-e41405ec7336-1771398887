@@ -333,8 +333,8 @@ export default function CapitalMarketsPage() {
                   <div className="absolute inset-0 bg-gradient-to-r from-indigo-500 to-blue-500 rounded-2xl blur-3xl opacity-30 animate-pulse" />
                   <Card className="relative bg-gradient-to-br from-indigo-950/80 to-blue-950/80 border-2 border-indigo-400/50 p-4 shadow-2xl shadow-indigo-500/50 backdrop-blur-xl">
                     <Image
-                      src="/Firefly_Gemini_Flash_A_Fortune_100_CIO_Made_A_Confession_To_Me_Last_Month._Written_by_Jeremiah_Franklin_Sh_28516.png"
-                      alt="A Fortune 100 CIO Made A Confession To Me Last Month - by Jeremiah Franklin"
+                      src="/Firefly_Your_auditor_issued_a_clean_opinion_on_the_financials._547556.png"
+                      alt="Your auditor issued a clean opinion on the financials - by Jeremiah Franklin"
                       width={800}
                       height={800}
                       className="rounded-xl w-full h-auto"
@@ -342,7 +342,7 @@ export default function CapitalMarketsPage() {
                     />
                     <div className="mt-4 text-center">
                       <p className="text-sm text-indigo-200 font-semibold">Written by Jeremiah Franklin, Founder</p>
-                      <p className="text-xs text-indigo-400 italic mt-1">Fiduciary confidentiality and deal diligence</p>
+                      <p className="text-xs text-indigo-400 italic mt-1">Audit opinion forensics and investment risk</p>
                     </div>
                   </Card>
                 </motion.div>

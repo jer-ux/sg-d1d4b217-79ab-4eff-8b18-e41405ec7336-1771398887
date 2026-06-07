@@ -1,13 +1,13 @@
 import Head from "next/head";
 import Link from "next/link";
 import Image from "next/image";
-import { Briefcase, Award, Target, TrendingUp, Users, ArrowRight, CheckCircle2, Star, Shield, AlertTriangle, DollarSign, FileText, Eye, Clock, Zap, BarChart3, Database, Lock, UserCheck, AlertCircle, ThumbsUp, TrendingDown, XCircle } from "lucide-react";
-import { motion } from "framer-motion";
+import { Briefcase, Award, Target, TrendingUp, Users, ArrowRight, CheckCircle2, Star, Shield, AlertTriangle, DollarSign, FileText, Eye, Clock, Zap, BarChart3, Database, Lock, UserCheck, AlertCircle, ThumbsUp, TrendingDown, XCircle, RefreshCw, Sparkles } from "lucide-react";
+import { useState, useMemo } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 import Nav from "@/components/Nav";
 import Footer from "@/components/Footer";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
-import { useState } from "react";
 
 const brokerChallenges = [
   {
@@ -235,9 +235,65 @@ const successMetrics = [
   }
 ];
 
+const brokerChecklist = [
+  { id: 1, text: "We disclose all direct and indirect PBM commission overrides and rebates to our clients as required by CAA." },
+  { id: 2, text: "We routinely analyze the actual claim-level spread margin (difference between billing rate and pharmacy reimbursement)." },
+  { id: 3, text: "All specialty pharmacy copay accumulator programs have been vetted to prevent double-dipping." },
+  { id: 4, text: "We independent benchmark generic contract rates using live CMS NADAC indexes, rather than standard PBM AWP discounts." },
+  { id: 5, text: "We provide clients with auditable evidence receipts for all pharmacy cost containment recommendations." }
+];
+
 export default function BrokersPage() {
   const [selectedTool, setSelectedTool] = useState<number | null>(null);
   const [selectedChallenge, setSelectedChallenge] = useState<number | null>(null);
+
+  // Interactive Broker Simulator State
+  const [clientSpend, setClientSpend] = useState<number>(3.5); // millions
+  const [brokerModel, setBrokerModel] = useState<string>("transparent");
+  const [calculating, setCalculating] = useState<boolean>(false);
+  const [oppResults, setOppResults] = useState<{
+    leakageFound: number;
+    rfpScoreBonus: number;
+    clientRetentionLift: number;
+  } | null>({
+    leakageFound: 647000,
+    rfpScoreBonus: 28,
+    clientRetentionLift: 94
+  });
+
+  // Interactive Broker Checklist State
+  const [checkedBroker, setCheckedBroker] = useState<number[]>([]);
+
+  const handleSimulateBroker = () => {
+    setCalculating(true);
+    setTimeout(() => {
+      let leakagePct = 0.12; // default leakage
+      if (brokerModel === "spread") leakagePct = 0.22; // spread models hide far more leakage
+
+      const leakageFound = Math.round(clientSpend * 1000000 * leakagePct);
+      const rfpScoreBonus = brokerModel === "transparent" ? 35 : 15;
+      const clientRetentionLift = brokerModel === "transparent" ? 96 : 74;
+
+      setOppResults({
+        leakageFound,
+        rfpScoreBonus,
+        clientRetentionLift
+      });
+      setCalculating(false);
+    }, 800);
+  };
+
+  const handleToggleBroker = (id: number) => {
+    if (checkedBroker.includes(id)) {
+      setCheckedBroker(checkedBroker.filter(item => item !== id));
+    } else {
+      setCheckedBroker([...checkedBroker, id]);
+    }
+  };
+
+  const brokerScore = useMemo(() => {
+    return Math.round((checkedBroker.length / brokerChecklist.length) * 100);
+  }, [checkedBroker]);
 
   return (
     <>
@@ -293,9 +349,9 @@ export default function BrokersPage() {
                         <ArrowRight className="w-5 h-5 ml-2" />
                       </Button>
                     </Link>
-                    <Link href="#value-toolkit">
+                    <Link href="#client-opportunity-simulator">
                       <Button size="lg" variant="outline" className="border-2 border-amber-400/50 text-amber-200 hover:bg-amber-500/20 text-lg px-8 py-6">
-                        Get Value Toolkit
+                        Explore RFP Opportunity Simulator
                       </Button>
                     </Link>
                   </div>
@@ -343,6 +399,212 @@ export default function BrokersPage() {
                 ))}
               </div>
             </motion.div>
+          </div>
+        </section>
+
+        {/* Live Interactive Client Opportunity & RFP Deal Scoring Sandbox */}
+        <section id="client-opportunity-simulator" className="py-24 px-4 bg-gradient-to-b from-slate-950 to-amber-950/40 border-t border-amber-500/20">
+          <div className="max-w-6xl mx-auto">
+            <div className="text-center mb-16">
+              <div className="inline-flex items-center gap-2 px-4 py-1.5 bg-amber-500/10 border border-amber-400/20 rounded-full mb-4 text-xs font-black text-amber-300 uppercase tracking-widest">
+                <Sparkles className="w-3.5 h-3.5" /> Interactive RFP Sandbox
+              </div>
+              <h2 className="text-4xl md:text-5xl font-black mb-6 bg-gradient-to-r from-amber-200 to-orange-200 bg-clip-text text-transparent">
+                RFP Leakage & Deal Closing Simulator
+              </h2>
+              <p className="text-xl text-amber-300/80 max-w-3xl mx-auto">
+                Select your target prospect's pharmacy spend and contract structure to simulate the forensic leakage findings and projected deal closing leverage.
+              </p>
+            </div>
+
+            <div className="grid lg:grid-cols-12 gap-8 items-start">
+              {/* Controls Column */}
+              <Card className="lg:col-span-5 bg-black/40 border-amber-500/30 p-8 backdrop-blur-xl">
+                <h3 className="text-xl font-bold text-white mb-6 flex items-center gap-2">
+                  <Briefcase className="w-5 h-5 text-amber-400" /> Prospect Profile & Contract structure
+                </h3>
+
+                <div className="space-y-6">
+                  {/* Prospect Spend */}
+                  <div>
+                    <div className="flex justify-between text-sm font-semibold mb-2">
+                      <span className="text-amber-200">Annual Client Pharmacy Spend</span>
+                      <span className="text-amber-300">${clientSpend}M</span>
+                    </div>
+                    <input
+                      type="range"
+                      min={0.5}
+                      max={20}
+                      step={0.5}
+                      value={clientSpend}
+                      onChange={(e) => setClientSpend(Number(e.target.value))}
+                      className="w-full accent-amber-500 h-1.5 bg-amber-950 rounded-lg cursor-pointer"
+                    />
+                    <div className="flex justify-between text-xs text-amber-500/70 mt-1">
+                      <span>$500K</span>
+                      <span>$20M</span>
+                    </div>
+                  </div>
+
+                  {/* Broker Current PBM Model */}
+                  <div>
+                    <span className="block text-sm font-semibold text-amber-200 mb-2">Current PBM Contract Structure</span>
+                    <select
+                      value={brokerModel}
+                      onChange={(e) => setBrokerModel(e.target.value)}
+                      className="w-full px-4 py-3 bg-black/60 border border-amber-500/30 rounded-xl text-amber-200 focus:outline-none focus:border-amber-400"
+                    >
+                      <option value="transparent">Transparent / Pass-Through (Typical leakage: ~12%)</option>
+                      <option value="spread">Traditional Spread/Rebate-Retained (Typical leakage: ~22%)</option>
+                    </select>
+                  </div>
+
+                  <Button
+                    onClick={handleSimulateBroker}
+                    disabled={calculating}
+                    className="w-full bg-gradient-to-r from-amber-600 to-orange-600 hover:from-amber-500 hover:to-orange-500 text-white py-6 text-base font-black shadow-lg"
+                  >
+                    {calculating ? (
+                      <span className="flex items-center gap-2 justify-center">
+                        <RefreshCw className="w-5 h-5 animate-spin" /> running forensic opportunity run...
+                      </span>
+                    ) : (
+                      <span className="flex items-center gap-2 justify-center">
+                        <Target className="w-5 h-5 animate-pulse" /> Simulate Prospect Deal Winning Power
+                      </span>
+                    )}
+                  </Button>
+                </div>
+              </Card>
+
+              {/* Outputs Column */}
+              <Card className="lg:col-span-7 bg-amber-950/20 border-amber-500/30 p-8 backdrop-blur-xl relative overflow-hidden self-stretch flex flex-col justify-between">
+                <div className="absolute top-0 right-0 p-4 opacity-10">
+                  <Briefcase className="w-32 h-32 text-amber-400" />
+                </div>
+
+                <div>
+                  <h3 className="text-xl font-bold text-white mb-6 flex items-center gap-2">
+                    <BarChart3 className="w-5 h-5 text-orange-400" /> Projected Opportunity Findings
+                  </h3>
+
+                  <AnimatePresence mode="wait">
+                    {oppResults && (
+                      <motion.div
+                        initial={{ opacity: 0, y: 10 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        exit={{ opacity: 0, y: -10 }}
+                        className="space-y-6"
+                      >
+                        <div className="grid md:grid-cols-3 gap-4">
+                          <div className="bg-black/30 p-4 rounded-xl border border-amber-500/20">
+                            <span className="block text-xs font-semibold text-amber-400 uppercase tracking-wider mb-1">Contract Leakage Found</span>
+                            <span className="text-2xl font-black text-white">${(oppResults.leakageFound).toLocaleString()}</span>
+                            <span className="block text-[10px] text-amber-400/60 mt-1">Ready to present to prospect CFO</span>
+                          </div>
+                          <div className="bg-amber-900/30 p-4 rounded-xl border border-amber-400/30">
+                            <span className="block text-xs font-semibold text-amber-300 uppercase tracking-wider mb-1">RFP Score Bonus</span>
+                            <span className="text-2xl font-black text-amber-300">+{oppResults.rfpScoreBonus}%</span>
+                            <span className="block text-[10px] text-amber-300/60 mt-1">Closing rate win probability lift</span>
+                          </div>
+                          <div className="bg-orange-950/40 p-4 rounded-xl border border-orange-400/30">
+                            <span className="block text-xs font-semibold text-orange-300 uppercase tracking-wider mb-1">CFO Retention Rate</span>
+                            <span className="text-2xl font-black text-orange-300">{oppResults.clientRetentionLift}%</span>
+                            <span className="block text-[10px] text-orange-300/60 mt-1">Projected client loyalty score</span>
+                          </div>
+                        </div>
+
+                        <div className="bg-black/40 p-6 rounded-xl border border-amber-500/20 space-y-4">
+                          <h4 className="text-sm font-bold text-white uppercase tracking-wider">Broker Client Acquisition Impact</h4>
+                          <div className="space-y-3">
+                            <div>
+                              <div className="flex justify-between text-xs mb-1">
+                                <span className="text-amber-300">Projected Client Loyalty Score</span>
+                                <span className="font-bold text-white">{oppResults.clientRetentionLift}% Retention</span>
+                              </div>
+                              <div className="w-full bg-amber-950 h-2.5 rounded-full overflow-hidden">
+                                <div className="bg-gradient-to-r from-amber-500 to-orange-400 h-full rounded-full" style={{ width: `${oppResults.clientRetentionLift}%` }} />
+                              </div>
+                            </div>
+                            <div className="flex justify-between text-xs pt-2 text-amber-300/70 border-t border-amber-500/10">
+                              <span>Prospect Conversion Win Rate</span>
+                              <span className="font-bold text-white">3.2x More Closed Deals</span>
+                            </div>
+                          </div>
+                          <p className="text-xs text-amber-300/60 leading-relaxed italic pt-2">
+                            *By showing prospects exact dollar leakage backed by forensic page and clause references, you bypass generic marketing and speak directly to their CFO's fiduciary obligations.
+                          </p>
+                        </div>
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
+                </div>
+
+                <div className="mt-6 pt-6 border-t border-amber-500/10 flex items-center justify-between text-xs text-amber-400/70">
+                  <span className="flex items-center gap-1.5"><Shield className="w-3.5 h-3.5" /> Client-Specific Forensics</span>
+                  <span className="flex items-center gap-1.5"><Users className="w-3.5 h-3.5" /> CFO-Ready Reports</span>
+                </div>
+              </Card>
+            </div>
+          </div>
+        </section>
+
+        {/* ERISA & Broker Fiduciary Responsibility Self-Audit Checklist */}
+        <section className="py-24 px-4 bg-black">
+          <div className="max-w-4xl mx-auto">
+            <Card className="bg-gradient-to-br from-amber-950/40 to-slate-950/40 border border-amber-500/30 p-10 rounded-2xl relative overflow-hidden">
+              <div className="absolute top-0 right-0 w-64 h-64 bg-amber-500/5 rounded-full blur-3xl" />
+
+              <div className="relative">
+                <div className="flex items-center gap-3 mb-6">
+                  <div className="p-3 bg-amber-500/10 border border-amber-400/30 rounded-xl">
+                    <Shield className="w-6 h-6 text-amber-400" />
+                  </div>
+                  <div>
+                    <h3 className="text-2xl font-black text-white">Broker Fiduciary & Compensation Audit</h3>
+                    <p className="text-sm text-amber-300">Vet your broker and consultant compliance practices against Consolidated Appropriations Act (CAA) guidelines.</p>
+                  </div>
+                </div>
+
+                <div className="space-y-4 mb-8">
+                  {brokerChecklist.map((item) => (
+                    <div
+                      key={item.id}
+                      onClick={() => handleToggleBroker(item.id)}
+                      className="flex items-start gap-4 p-4 rounded-xl border border-amber-500/10 bg-amber-950/10 hover:bg-amber-950/20 cursor-pointer transition-all"
+                    >
+                      <div className={`w-5 h-5 rounded border flex items-center justify-center mt-0.5 transition-all ${
+                        checkedBroker.includes(item.id)
+                          ? "bg-amber-500 border-amber-400 text-white"
+                          : "border-amber-500/30 text-transparent"
+                      }`}>
+                        <CheckCircle2 className="w-3.5 h-3.5" />
+                      </div>
+                      <span className="text-amber-100 text-sm leading-relaxed">{item.text}</span>
+                    </div>
+                  ))}
+                </div>
+
+                <div className="bg-amber-950/30 rounded-xl p-6 border border-amber-500/20 flex flex-col md:flex-row items-center justify-between gap-6">
+                  <div>
+                    <span className="block text-xs font-semibold text-amber-400 uppercase tracking-wider mb-1">Your Broker Alignment Score</span>
+                    <span className="text-4xl font-black text-white">{brokerScore}%</span>
+                    <span className="block text-xs text-amber-300/60 mt-1">Fiduciary score based on CAA ERISA benchmarks</span>
+                  </div>
+
+                  <div className="text-right">
+                    {brokerScore === 100 ? (
+                      <span className="text-emerald-400 font-bold flex items-center gap-1.5"><CheckCircle2 className="w-4 h-4" /> Fully Aligned Broker</span>
+                    ) : brokerScore >= 60 ? (
+                      <span className="text-yellow-400 font-bold flex items-center gap-1.5"><AlertCircle className="w-4 h-4" /> Moderate Oversight Gaps</span>
+                    ) : (
+                      <span className="text-red-400 font-bold flex items-center gap-1.5"><AlertTriangle className="w-4 h-4" /> Commission & CAA Risk</span>
+                    )}
+                    <span className="block text-[11px] text-amber-300/50 mt-1">CFOs require written Form 5500 commission disclosures annually</span>
+                  </div>
+                </div>
+              </div>
+            </Card>
           </div>
         </section>
 

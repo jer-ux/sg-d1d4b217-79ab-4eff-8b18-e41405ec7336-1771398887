@@ -1,13 +1,27 @@
 import Head from "next/head";
 import Link from "next/link";
 import Image from "next/image";
-import { Users, Heart, Shield, TrendingUp, CheckCircle2, ArrowRight, Smile, AlertTriangle, DollarSign, FileText, Eye, Clock, Zap, BarChart3, Target, UserCheck, AlertCircle, ThumbsUp, TrendingDown, XCircle, Award, Calendar, MessageSquare, Bell } from "lucide-react";
-import { motion } from "framer-motion";
+import { Users, Heart, Shield, TrendingUp, CheckCircle2, ArrowRight, Smile, AlertTriangle, DollarSign, FileText, Eye, Clock, Zap, BarChart3, Target, UserCheck, AlertCircle, ThumbsUp, TrendingDown, XCircle, Award, Calendar, MessageSquare, Bell, ChevronDown, RefreshCw, Sparkles } from "lucide-react";
+import { motion, AnimatePresence } from "framer-motion";
 import Nav from "@/components/Nav";
 import Footer from "@/components/Footer";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
-import { useState } from "react";
+import { useState, useMemo } from "react";
+
+const fadeInUp = {
+  initial: { opacity: 0, y: 30 },
+  animate: { opacity: 1, y: 0 },
+  transition: { duration: 0.6 }
+};
+
+const staggerChildren = {
+  animate: {
+    transition: {
+      staggerChildren: 0.1
+    }
+  }
+};
 
 const hrChallenges = [
   {
@@ -109,6 +123,7 @@ const hrTools = [
       "90-day savings opportunities (no plan changes)",
       "Generic conversion timing and member outreach",
       "Specialty utilization management gaps",
+      "Mail order adoption opportunity quantification",
       "Member cost-sharing optimization",
       "Implementation roadmap with timelines"
     ],
@@ -269,9 +284,72 @@ const employeeImpactStory = {
   impact: "$285 avg annual savings per employee + 27pt satisfaction increase"
 };
 
+const erisaChecklist = [
+  { id: 1, text: "Our benefits team documents all broker and PBM compensation disclosures (Form 5500 & CAA Section 202) annually." },
+  { id: 2, text: "We verify that employees have an accessible, independent mechanism to compare prescription costs before purchasing." },
+  { id: 3, text: "Our organization runs quarterly data validations on plan pharmacy claims to catch hidden copay-assistance maximization." },
+  { id: 4, text: "We independent audit all PBM manufacturer rebates to ensure they are fully returned or credited to the plan." },
+  { id: 5, text: "We hold formal benefits committee meetings with written records showing diligent cost containment efforts." }
+];
+
 export default function HRLeadersPage() {
   const [selectedTool, setSelectedTool] = useState<number | null>(null);
   const [selectedChallenge, setSelectedChallenge] = useState<number | null>(null);
+
+  // Interactive HR Simulator State
+  const [employees, setEmployees] = useState<number>(850);
+  const [transparencyPortal, setTransparencyPortal] = useState<boolean>(true);
+  const [copayMaximization, setCopayMaximizer] = useState<string>("yes");
+  const [calculating, setCalculating] = useState<boolean>(false);
+  const [hrResults, setHrResults] = useState<{
+    employerSavings: number;
+    employeeSavings: number;
+    satisfactionScore: number;
+  } | null>({
+    employerSavings: 384000,
+    employeeSavings: 112000,
+    satisfactionScore: 89
+  });
+
+  // Interactive Fiduciary Compliance Checklist State
+  const [checkedErisa, setCheckedErisa] = useState<number[]>([]);
+
+  const handleSimulateHR = () => {
+    setCalculating(true);
+    setTimeout(() => {
+      let baselineEmployerPerHead = 850; // avg pharmacy spend waste per employee
+      if (copayMaximization === "yes") baselineEmployerPerHead += 350;
+
+      let savingsMultiplier = 0.35;
+      if (!transparencyPortal) savingsMultiplier = 0.12;
+
+      const employerSavings = Math.round(employees * baselineEmployerPerHead * savingsMultiplier);
+      const employeeSavings = Math.round(employees * 140 * (transparencyPortal ? 1.6 : 0.4));
+      
+      let baseSat = 65;
+      if (transparencyPortal) baseSat += 18;
+      if (copayMaximization === "no") baseSat += 6;
+
+      setHrResults({
+        employerSavings,
+        employeeSavings,
+        satisfactionScore: Math.min(baseSat, 98)
+      });
+      setCalculating(false);
+    }, 800);
+  };
+
+  const handleToggleErisa = (id: number) => {
+    if (checkedErisa.includes(id)) {
+      setCheckedErisa(checkedErisa.filter(item => item !== id));
+    } else {
+      setCheckedErisa([...checkedErisa, id]);
+    }
+  };
+
+  const erisaScore = useMemo(() => {
+    return Math.round((checkedErisa.length / erisaChecklist.length) * 100);
+  }, [checkedErisa]);
 
   return (
     <>
@@ -327,9 +405,9 @@ export default function HRLeadersPage() {
                         <ArrowRight className="w-5 h-5 ml-2" />
                       </Button>
                     </Link>
-                    <Link href="#hr-toolkit">
+                    <Link href="#benefits-satisfaction-simulator">
                       <Button size="lg" variant="outline" className="border-2 border-rose-400/50 text-rose-200 hover:bg-rose-500/20 text-lg px-8 py-6">
-                        Get HR Toolkit
+                        Try Satisfaction Simulator
                       </Button>
                     </Link>
                   </div>
@@ -377,6 +455,231 @@ export default function HRLeadersPage() {
                 ))}
               </div>
             </motion.div>
+          </div>
+        </section>
+
+        {/* Live Interactive Benefits & Satisfaction Simulator Sandbox */}
+        <section id="benefits-satisfaction-simulator" className="py-24 px-4 bg-gradient-to-b from-slate-950 to-rose-950/40 border-t border-rose-500/20">
+          <div className="max-w-6xl mx-auto">
+            <div className="text-center mb-16">
+              <div className="inline-flex items-center gap-2 px-4 py-1.5 bg-rose-500/10 border border-rose-400/20 rounded-full mb-4 text-xs font-black text-rose-300 uppercase tracking-widest">
+                <Sparkles className="w-3.5 h-3.5" /> Interactive Sandbox
+              </div>
+              <h2 className="text-4xl md:text-5xl font-black mb-6 bg-gradient-to-r from-rose-200 to-pink-200 bg-clip-text text-transparent">
+                Benefits & Employee Satisfaction Simulator
+              </h2>
+              <p className="text-xl text-rose-300/80 max-w-3xl mx-auto">
+                Model employee count and program elements to calculate projected plan savings and member satisfaction lift.
+              </p>
+            </div>
+
+            <div className="grid lg:grid-cols-12 gap-8 items-start">
+              {/* Controls Column */}
+              <Card className="lg:col-span-5 bg-black/40 border-rose-500/30 p-8 backdrop-blur-xl">
+                <h3 className="text-xl font-bold text-white mb-6 flex items-center gap-2">
+                  <Users className="w-5 h-5 text-rose-400" /> Census & Program Inputs
+                </h3>
+
+                <div className="space-y-6">
+                  {/* Employee Count */}
+                  <div>
+                    <div className="flex justify-between text-sm font-semibold mb-2">
+                      <span className="text-rose-200">Enrolled Employee Lives</span>
+                      <span className="text-rose-300">{employees.toLocaleString()} lives</span>
+                    </div>
+                    <input
+                      type="range"
+                      min={100}
+                      max={10000}
+                      step={100}
+                      value={employees}
+                      onChange={(e) => setEmployees(Number(e.target.value))}
+                      className="w-full accent-rose-500 h-1.5 bg-rose-950 rounded-lg cursor-pointer"
+                    />
+                    <div className="flex justify-between text-xs text-rose-500/70 mt-1">
+                      <span>100</span>
+                      <span>10,000</span>
+                    </div>
+                  </div>
+
+                  {/* Transparency Portal Toggle */}
+                  <div className="flex items-center justify-between p-4 bg-rose-950/20 rounded-xl border border-rose-500/20">
+                    <div>
+                      <span className="block text-sm font-semibold text-rose-200">Employee Cost Portal</span>
+                      <span className="text-xs text-rose-400">Give members direct cost-saving insights</span>
+                    </div>
+                    <button
+                      type="button"
+                      onClick={() => setTransparencyPortal(!transparencyPortal)}
+                      className={`w-12 h-6 rounded-full transition-colors relative focus:outline-none ${
+                        transparencyPortal ? "bg-rose-500" : "bg-rose-950"
+                      }`}
+                    >
+                      <span className={`w-4 h-4 rounded-full bg-white absolute top-1 transition-transform ${
+                        transparencyPortal ? "left-7" : "left-1"
+                      }`} />
+                    </button>
+                  </div>
+
+                  {/* Copay Maximization */}
+                  <div>
+                    <span className="block text-sm font-semibold text-rose-200 mb-2">Active Specialty Copay Maximization?</span>
+                    <select
+                      value={copayMaximization}
+                      onChange={(e) => setCopayMaximizer(e.target.value)}
+                      className="w-full px-4 py-3 bg-black/60 border border-rose-500/30 rounded-xl text-rose-200 focus:outline-none focus:border-rose-400"
+                    >
+                      <option value="yes">Yes - Specialty manufacturer copay helper program is active</option>
+                      <option value="no">No - Standard direct PBM specialty pricing applies</option>
+                    </select>
+                  </div>
+
+                  <Button
+                    onClick={handleSimulateHR}
+                    disabled={calculating}
+                    className="w-full bg-gradient-to-r from-rose-600 to-pink-600 hover:from-rose-500 hover:to-pink-500 text-white py-6 text-base font-black shadow-lg"
+                  >
+                    {calculating ? (
+                      <span className="flex items-center gap-2 justify-center">
+                        <RefreshCw className="w-5 h-5 animate-spin" /> modeling census metrics...
+                      </span>
+                    ) : (
+                      <span className="flex items-center gap-2 justify-center">
+                        <Smile className="w-5 h-5 animate-pulse" /> Project Savings & Satisfaction
+                      </span>
+                    )}
+                  </Button>
+                </div>
+              </Card>
+
+              {/* Outputs Column */}
+              <Card className="lg:col-span-7 bg-rose-950/20 border-rose-500/30 p-8 backdrop-blur-xl relative overflow-hidden self-stretch flex flex-col justify-between">
+                <div className="absolute top-0 right-0 p-4 opacity-10">
+                  <Heart className="w-32 h-32 text-rose-400" />
+                </div>
+
+                <div>
+                  <h3 className="text-xl font-bold text-white mb-6 flex items-center gap-2">
+                    <BarChart3 className="w-5 h-5 text-pink-400" /> Projected Member & Plan Impact
+                  </h3>
+
+                  <AnimatePresence mode="wait">
+                    {hrResults && (
+                      <motion.div
+                        initial={{ opacity: 0, y: 10 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        exit={{ opacity: 0, y: -10 }}
+                        className="space-y-6"
+                      >
+                        <div className="grid md:grid-cols-3 gap-4">
+                          <div className="bg-black/30 p-4 rounded-xl border border-rose-500/20">
+                            <span className="block text-xs font-semibold text-rose-400 uppercase tracking-wider mb-1">Employer Plan Savings</span>
+                            <span className="text-2xl font-black text-white">${(hrResults.employerSavings).toLocaleString()}</span>
+                            <span className="block text-[10px] text-rose-400/60 mt-1">Annual cost-containment yield</span>
+                          </div>
+                          <div className="bg-rose-900/30 p-4 rounded-xl border border-rose-400/30">
+                            <span className="block text-xs font-semibold text-rose-300 uppercase tracking-wider mb-1">Member OOP Savings</span>
+                            <span className="text-2xl font-black text-rose-300">${(hrResults.employeeSavings).toLocaleString()}</span>
+                            <span className="block text-[10px] text-rose-300/60 mt-1">Cash/GoodRx transparency savings</span>
+                          </div>
+                          <div className="bg-pink-950/40 p-4 rounded-xl border border-pink-400/30">
+                            <span className="block text-xs font-semibold text-pink-300 uppercase tracking-wider mb-1">Member Satisfaction</span>
+                            <span className="text-2xl font-black text-pink-300">{hrResults.satisfactionScore}%</span>
+                            <span className="block text-[10px] text-pink-300/60 mt-1">Projected benefits rating</span>
+                          </div>
+                        </div>
+
+                        <div className="bg-black/40 p-6 rounded-xl border border-rose-500/20 space-y-4">
+                          <h4 className="text-sm font-bold text-white uppercase tracking-wider">Benefits Enrollment Experience Lift</h4>
+                          <div className="space-y-3">
+                            <div>
+                              <div className="flex justify-between text-xs mb-1">
+                                <span className="text-rose-300">Projected Member Benefits Satisfaction</span>
+                                <span className="font-bold text-white">{hrResults.satisfactionScore}% Rating</span>
+                              </div>
+                              <div className="w-full bg-rose-950 h-2.5 rounded-full overflow-hidden">
+                                <div className="bg-gradient-to-r from-rose-500 to-pink-400 h-full rounded-full" style={{ width: `${hrResults.satisfactionScore}%` }} />
+                              </div>
+                            </div>
+                            <div className="flex justify-between text-xs pt-2 text-rose-300/70 border-t border-rose-500/10">
+                              <span>Plan Administration Efficiency</span>
+                              <span className="font-bold text-white">75% Fewer Admin Queries</span>
+                            </div>
+                          </div>
+                          <p className="text-xs text-rose-300/60 leading-relaxed italic pt-2">
+                            *Giving employees cost-saving transparency at point-of-care drastically reduces surprise pricing friction and manual HR query handling.
+                          </p>
+                        </div>
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
+                </div>
+
+                <div className="mt-6 pt-6 border-t border-rose-500/10 flex items-center justify-between text-xs text-rose-400/70">
+                  <span className="flex items-center gap-1.5"><Shield className="w-3.5 h-3.5" /> HIPAA Compliant</span>
+                  <span className="flex items-center gap-1.5"><Users className="w-3.5 h-3.5" /> Member Empowered</span>
+                </div>
+              </Card>
+            </div>
+          </div>
+        </section>
+
+        {/* ERISA & DOL Fiduciary Compliance Checklist */}
+        <section className="py-24 px-4 bg-black">
+          <div className="max-w-4xl mx-auto">
+            <Card className="bg-gradient-to-br from-rose-950/40 to-slate-950/40 border border-rose-500/30 p-10 rounded-2xl relative overflow-hidden">
+              <div className="absolute top-0 right-0 w-64 h-64 bg-rose-500/5 rounded-full blur-3xl" />
+
+              <div className="relative">
+                <div className="flex items-center gap-3 mb-6">
+                  <div className="p-3 bg-rose-500/10 border border-rose-400/30 rounded-xl">
+                    <Shield className="w-6 h-6 text-rose-400" />
+                  </div>
+                  <div>
+                    <h3 className="text-2xl font-black text-white">ERISA & Fiduciary Risk Self-Audit</h3>
+                    <p className="text-sm text-rose-300">Validate your plan administration policies against CAA/ERISA regulations.</p>
+                  </div>
+                </div>
+
+                <div className="space-y-4 mb-8">
+                  {erisaChecklist.map((item) => (
+                    <div
+                      key={item.id}
+                      onClick={() => handleToggleErisa(item.id)}
+                      className="flex items-start gap-4 p-4 rounded-xl border border-rose-500/10 bg-rose-950/10 hover:bg-rose-950/20 cursor-pointer transition-all"
+                    >
+                      <div className={`w-5 h-5 rounded border flex items-center justify-center mt-0.5 transition-all ${
+                        checkedErisa.includes(item.id)
+                          ? "bg-rose-500 border-rose-400 text-white"
+                          : "border-rose-500/30 text-transparent"
+                      }`}>
+                        <CheckCircle2 className="w-3.5 h-3.5" />
+                      </div>
+                      <span className="text-rose-100 text-sm leading-relaxed">{item.text}</span>
+                    </div>
+                  ))}
+                </div>
+
+                <div className="bg-rose-950/30 rounded-xl p-6 border border-rose-500/20 flex flex-col md:flex-row items-center justify-between gap-6">
+                  <div>
+                    <span className="block text-xs font-semibold text-rose-400 uppercase tracking-wider mb-1">Your Fiduciary Score</span>
+                    <span className="text-4xl font-black text-white">{erisaScore}%</span>
+                    <span className="block text-xs text-rose-300/60 mt-1">Audit rating based on DOL guidelines</span>
+                  </div>
+
+                  <div className="text-right">
+                    {erisaScore === 100 ? (
+                      <span className="text-emerald-400 font-bold flex items-center gap-1.5"><CheckCircle2 className="w-4 h-4" /> Compliant Fiduciary</span>
+                    ) : erisaScore >= 60 ? (
+                      <span className="text-yellow-400 font-bold flex items-center gap-1.5"><AlertCircle className="w-4 h-4" /> Moderately Exposed</span>
+                    ) : (
+                      <span className="text-red-400 font-bold flex items-center gap-1.5"><AlertTriangle className="w-4 h-4" /> Fiduciary Liability Risk</span>
+                    )}
+                    <span className="block text-[11px] text-rose-300/50 mt-1">DOL audits target organizations below 80%</span>
+                  </div>
+                </div>
+              </div>
+            </Card>
           </div>
         </section>
 

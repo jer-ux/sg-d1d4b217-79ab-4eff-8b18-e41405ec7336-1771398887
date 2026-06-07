@@ -1,5 +1,6 @@
 import Head from "next/head";
 import Link from "next/link";
+import Image from "next/image";
 import { BarChart3, Calculator, TrendingUp, Target, Database, ArrowRight, CheckCircle2, Activity, Brain, LineChart, PieChart, Zap, Award, FileText, Users, Shield, AlertTriangle, DollarSign, Layers, Eye, Lock, GitBranch, Workflow } from "lucide-react";
 import { motion } from "framer-motion";
 import Nav from "@/components/Nav";
@@ -245,7 +246,7 @@ export default function ActuariesPage() {
             <div className="absolute bottom-1/3 right-1/4 w-96 h-96 bg-teal-500/10 rounded-full blur-3xl animate-pulse delay-1000" />
           </div>
           
-          <div className="relative max-w-6xl mx-auto">
+          <div className="relative max-w-7xl mx-auto">
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
@@ -256,30 +257,57 @@ export default function ActuariesPage() {
                 <span className="text-sm font-semibold text-cyan-200">Actuaries & Risk Analysts</span>
               </div>
               
-              <h1 className="text-6xl md:text-7xl font-black mb-8 bg-gradient-to-r from-cyan-200 via-teal-300 to-blue-200 bg-clip-text text-transparent leading-tight">
-                Build Models<br />That Hold Up<br />Under Scrutiny
-              </h1>
-              
-              <p className="text-2xl text-cyan-100 mb-6 max-w-3xl leading-relaxed">
-                PBM trend reports are <span className="text-cyan-300 font-bold">marketing documents, not actuarial work</span>. They smooth over claim-level volatility, mix utilization with unit cost, and hide contract-driven inflation.
-              </p>
-              
-              <p className="text-lg text-cyan-300/80 mb-10 max-w-2xl">
-                SiriusB iQ delivers actuarial-grade pharmacy benefit analytics: raw claims data, trend decomposition, Monte Carlo simulations, and NADAC benchmarking — built for risk assessment, not sales pitches.
-              </p>
+              <div className="grid lg:grid-cols-2 gap-12 items-center mb-12">
+                <div>
+                  <h1 className="text-6xl md:text-7xl font-black mb-8 bg-gradient-to-r from-cyan-200 via-teal-300 to-blue-200 bg-clip-text text-transparent leading-tight font-serif">
+                    Build Models<br />That Hold Up<br />Under Scrutiny
+                  </h1>
+                  
+                  <p className="text-2xl text-cyan-100 mb-6 leading-relaxed">
+                    PBM trend reports are <span className="text-cyan-300 font-bold">marketing documents, not actuarial work</span>. They smooth over claim-level volatility, mix utilization with unit cost, and hide contract-driven inflation.
+                  </p>
+                  
+                  <p className="text-lg text-cyan-300/80 mb-10">
+                    SiriusB iQ delivers actuarial-grade pharmacy benefit analytics: raw claims data, trend decomposition, Monte Carlo simulations, and NADAC benchmarking — built for risk assessment, not sales pitches.
+                  </p>
 
-              <div className="flex flex-col sm:flex-row gap-4 mb-12">
-                <Link href="/request-demo">
-                  <Button size="lg" className="bg-gradient-to-r from-cyan-600 to-teal-600 hover:from-cyan-700 hover:to-teal-700 text-white text-lg px-8 py-6 shadow-2xl shadow-cyan-500/50">
-                    See Actuarial Toolkit
-                    <ArrowRight className="w-5 h-5 ml-2" />
-                  </Button>
-                </Link>
-                <Link href="/solutions/actuarial-benefits">
-                  <Button size="lg" variant="outline" className="border-2 border-cyan-400/50 text-cyan-200 hover:bg-cyan-500/20 text-lg px-8 py-6">
-                    View Solutions & Case Studies
-                  </Button>
-                </Link>
+                  <div className="flex flex-col sm:flex-row gap-4">
+                    <Link href="/request-demo">
+                      <Button size="lg" className="bg-gradient-to-r from-cyan-600 to-teal-600 hover:from-cyan-700 hover:to-teal-700 text-white text-lg px-8 py-6 shadow-2xl shadow-cyan-500/50">
+                        See Actuarial Toolkit
+                        <ArrowRight className="w-5 h-5 ml-2" />
+                      </Button>
+                    </Link>
+                    <Link href="/solutions/actuarial-benefits">
+                      <Button size="lg" variant="outline" className="border-2 border-cyan-400/50 text-cyan-200 hover:bg-cyan-500/20 text-lg px-8 py-6">
+                        View Solutions & Case Studies
+                      </Button>
+                    </Link>
+                  </div>
+                </div>
+
+                <motion.div
+                  initial={{ opacity: 0, scale: 0.95 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  transition={{ delay: 0.2, duration: 0.6 }}
+                  className="relative"
+                >
+                  <div className="absolute inset-0 bg-gradient-to-r from-cyan-500 to-teal-500 rounded-2xl blur-3xl opacity-30 animate-pulse" />
+                  <Card className="relative bg-gradient-to-br from-cyan-950/80 to-teal-950/80 border-2 border-cyan-400/50 p-4 shadow-2xl shadow-cyan-500/50 backdrop-blur-xl">
+                    <Image
+                      src="/Firefly_Gemini_Flash_The_7.3_Billion_Question-_What_the_Big_Three_PBMs_Have_Cost_Your_Plan_Your_People_981473.png"
+                      alt="The 7.3 Billion Dollar Question - What PBMs Have Cost Your Plan - by Jeremiah Franklin"
+                      width={800}
+                      height={800}
+                      className="rounded-xl w-full h-auto"
+                      priority
+                    />
+                    <div className="mt-4 text-center">
+                      <p className="text-sm text-cyan-200 font-semibold">Written by Jeremiah Franklin, Founder</p>
+                      <p className="text-xs text-cyan-400 italic mt-1">Actuarial truth in benefits auditing</p>
+                    </div>
+                  </Card>
+                </motion.div>
               </div>
 
               <div className="grid md:grid-cols-4 gap-6">

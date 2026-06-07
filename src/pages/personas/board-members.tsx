@@ -1,5 +1,6 @@
 import Head from "next/head";
 import Link from "next/link";
+import Image from "next/image";
 import { Shield, AlertTriangle, TrendingUp, Users, FileCheck, Award, ArrowRight, CheckCircle2, Eye, Lock, Database, BarChart3, FileText, Clock, Target, DollarSign, AlertCircle, Scale, Gavel, TrendingDown, XCircle, Search, Building2, Briefcase, UserCheck, BookOpen, Zap, Activity } from "lucide-react";
 import { motion } from "framer-motion";
 import Nav from "@/components/Nav";
@@ -426,31 +427,58 @@ export default function BoardMembersPage() {
                 <span className="text-sm font-semibold text-purple-200">Board of Directors & Plan Fiduciaries</span>
               </div>
               
-              <h1 className="text-6xl md:text-7xl font-black mb-8 bg-gradient-to-r from-purple-200 via-violet-300 to-fuchsia-200 bg-clip-text text-transparent leading-tight">
-                The DOL Is Watching.<br />
-                <span className="text-red-400">Are You Ready?</span>
-              </h1>
-              
-              <p className="text-2xl text-purple-100 mb-6 max-w-3xl leading-relaxed">
-                ERISA §404 makes you <span className="text-purple-300 font-bold">personally liable</span> for benefits oversight failures. The DOL recovered <span className="text-red-400 font-bold">$3.1B</span> in fiduciary breach settlements since 2020 — Northwestern ($6.3M), Lockheed Martin ($62M), Yale ($3.5M), MIT ($1.52M).
-              </p>
-              
-              <p className="text-lg text-purple-300/80 mb-10 max-w-2xl">
-                SiriusB iQ provides board-ready governance infrastructure: real-time algorithmic monitoring, immutable evidence receipts, and pre-assembled DOL audit packages — so you fulfill your fiduciary duty with documented precision, not consultant promises and hope.
-              </p>
+              <div className="grid lg:grid-cols-2 gap-12 items-center mb-12">
+                <div>
+                  <h1 className="text-6xl md:text-7xl font-black mb-8 bg-gradient-to-r from-purple-200 via-violet-300 to-fuchsia-200 bg-clip-text text-transparent leading-tight font-serif">
+                    The DOL Is Watching.<br />
+                    <span className="text-red-400">Are You Ready?</span>
+                  </h1>
+                  
+                  <p className="text-2xl text-purple-100 mb-6 leading-relaxed">
+                    ERISA §404 makes you <span className="text-purple-300 font-bold">personally liable</span> for benefits oversight failures. The DOL recovered <span className="text-red-400 font-bold">$3.1B</span> in fiduciary breach settlements since 2020 — Northwestern ($6.3M), Lockheed Martin ($62M), Yale ($3.5M), MIT ($1.52M).
+                  </p>
+                  
+                  <p className="text-lg text-purple-300/80 mb-10">
+                    SiriusB iQ provides board-ready governance infrastructure: real-time algorithmic monitoring, immutable evidence receipts, and pre-assembled DOL audit packages — so you fulfill your fiduciary duty with documented precision, not consultant promises and hope.
+                  </p>
 
-              <div className="flex flex-col sm:flex-row gap-4 mb-12">
-                <Link href="/request-demo">
-                  <Button size="lg" className="bg-gradient-to-r from-purple-600 to-violet-600 hover:from-purple-700 hover:to-violet-700 text-white text-lg px-8 py-6 shadow-2xl shadow-purple-500/50">
-                    Request Board Briefing
-                    <ArrowRight className="w-5 h-5 ml-2" />
-                  </Button>
-                </Link>
-                <Link href="#governance-tools">
-                  <Button size="lg" variant="outline" className="border-2 border-purple-400/50 text-purple-200 hover:bg-purple-500/20 text-lg px-8 py-6">
-                    View Governance Framework
-                  </Button>
-                </Link>
+                  <div className="flex flex-col sm:flex-row gap-4">
+                    <Link href="/request-demo">
+                      <Button size="lg" className="bg-gradient-to-r from-purple-600 to-violet-600 hover:from-purple-700 hover:to-violet-700 text-white text-lg px-8 py-6 shadow-2xl shadow-purple-500/50">
+                        Request Board Briefing
+                        <ArrowRight className="w-5 h-5 ml-2" />
+                      </Button>
+                    </Link>
+                    <Link href="#governance-tools">
+                      <Button size="lg" variant="outline" className="border-2 border-purple-400/50 text-purple-200 hover:bg-purple-500/20 text-lg px-8 py-6">
+                        View Governance Framework
+                      </Button>
+                    </Link>
+                  </div>
+                </div>
+
+                <motion.div
+                  initial={{ opacity: 0, scale: 0.95 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  transition={{ delay: 0.2, duration: 0.6 }}
+                  className="relative"
+                >
+                  <div className="absolute inset-0 bg-gradient-to-r from-purple-500 to-violet-500 rounded-2xl blur-3xl opacity-30 animate-pulse" />
+                  <Card className="relative bg-gradient-to-br from-purple-950/80 to-violet-950/80 border-2 border-purple-400/50 p-4 shadow-2xl shadow-purple-500/50 backdrop-blur-xl">
+                    <Image
+                      src="/Firefly_Gemini_Flash_A_Fortune_100_CIO_Made_A_Confession_To_Me_Last_Month._Written_by_Jeremiah_Franklin_Sh_28516.png"
+                      alt="A Fortune 100 CIO Made A Confession To Me Last Month - by Jeremiah Franklin"
+                      width={800}
+                      height={800}
+                      className="rounded-xl w-full h-auto"
+                      priority
+                    />
+                    <div className="mt-4 text-center">
+                      <p className="text-sm text-purple-200 font-semibold">Written by Jeremiah Franklin, Founder</p>
+                      <p className="text-xs text-purple-400 italic mt-1">Fiduciary liability & CIO oversight confessions</p>
+                    </div>
+                  </Card>
+                </motion.div>
               </div>
 
               <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">

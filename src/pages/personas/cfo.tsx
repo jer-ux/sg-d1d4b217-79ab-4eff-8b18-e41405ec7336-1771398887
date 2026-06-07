@@ -1,5 +1,6 @@
 import Head from "next/head";
 import Link from "next/link";
+import Image from "next/image";
 import { motion } from "framer-motion";
 import { TrendingDown, DollarSign, Target, BarChart3, AlertTriangle, ArrowRight, CheckCircle2, Shield, FileText, Brain, ChevronDown, LineChart, Lock, Zap, Users, Calculator } from "lucide-react";
 import Nav from "@/components/Nav";
@@ -209,36 +210,63 @@ export default function CFOPage() {
             <div className="absolute bottom-1/4 left-1/4 w-96 h-96 bg-green-500/10 rounded-full blur-3xl animate-pulse delay-1000" />
           </div>
           
-          <motion.div className="relative max-w-6xl mx-auto" {...fadeInUp}>
+          <motion.div className="relative max-w-7xl mx-auto" {...fadeInUp}>
             <div className="inline-flex items-center gap-3 px-5 py-2 bg-gradient-to-r from-emerald-500/20 to-green-500/20 border border-emerald-400/30 rounded-full mb-8 backdrop-blur-sm">
               <DollarSign className="w-5 h-5 text-emerald-300" />
               <span className="text-sm font-semibold text-emerald-200">Chief Financial Officers</span>
             </div>
             
-            <h1 className="text-6xl md:text-7xl font-black mb-8 bg-gradient-to-r from-emerald-200 via-green-300 to-teal-200 bg-clip-text text-transparent leading-tight">
-              Your PBM Contract<br />Is Bleeding EBITDA
-            </h1>
-            
-            <p className="text-2xl text-emerald-100 mb-6 max-w-3xl leading-relaxed">
-              <span className="text-emerald-300 font-bold">15-25% of pharmacy spend</span> is lost to hidden PBM fees, rebate retention, and contract loopholes. That's $450K-$750K per year on a $3M drug spend.
-            </p>
-            
-            <p className="text-lg text-emerald-300/80 mb-10 max-w-2xl">
-              SiriusB iQ's Contract X-Ray identifies every dollar and creates the documentation you need to defend your fiduciary decisions to the board and DOL.
-            </p>
+            <div className="grid lg:grid-cols-2 gap-12 items-center mb-12">
+              <div>
+                <h1 className="text-6xl md:text-7xl font-black mb-8 bg-gradient-to-r from-emerald-200 via-green-300 to-teal-200 bg-clip-text text-transparent leading-tight font-serif">
+                  Your PBM Contract<br />Is Bleeding EBITDA
+                </h1>
+                
+                <p className="text-2xl text-emerald-100 mb-6 leading-relaxed">
+                  <span className="text-emerald-300 font-bold">15-25% of pharmacy spend</span> is lost to hidden PBM fees, rebate retention, and contract loopholes. That's $450K-$750K per year on a $3M drug spend.
+                </p>
+                
+                <p className="text-lg text-emerald-300/80 mb-10">
+                  SiriusB iQ's Contract X-Ray identifies every dollar and creates the documentation you need to defend your fiduciary decisions to the board and DOL.
+                </p>
 
-            <div className="flex flex-col sm:flex-row gap-4 mb-12">
-              <Link href="/request-demo">
-                <Button size="lg" className="bg-gradient-to-r from-emerald-600 to-green-600 hover:from-emerald-700 hover:to-green-700 text-white text-lg px-8 py-6 shadow-2xl shadow-emerald-500/50">
-                  Calculate My EBITDA Impact
-                  <ArrowRight className="w-5 h-5 ml-2" />
-                </Button>
-              </Link>
-              <Link href="/request-demo">
-                <Button size="lg" variant="outline" className="border-2 border-emerald-400/50 text-emerald-200 hover:bg-emerald-500/20 text-lg px-8 py-6">
-                  Free Contract Health Check
-                </Button>
-              </Link>
+                <div className="flex flex-col sm:flex-row gap-4">
+                  <Link href="/request-demo">
+                    <Button size="lg" className="bg-gradient-to-r from-emerald-600 to-green-600 hover:from-emerald-700 hover:to-green-700 text-white text-lg px-8 py-6 shadow-2xl shadow-emerald-500/50">
+                      Calculate EBITDA Impact
+                      <ArrowRight className="w-5 h-5 ml-2" />
+                    </Button>
+                  </Link>
+                  <Link href="/request-demo">
+                    <Button size="lg" variant="outline" className="border-2 border-emerald-400/50 text-emerald-200 hover:bg-emerald-500/20 text-lg px-8 py-6">
+                      Free Contract Health Check
+                    </Button>
+                  </Link>
+                </div>
+              </div>
+
+              <motion.div
+                initial={{ opacity: 0, scale: 0.95 }}
+                animate={{ opacity: 1, scale: 1 }}
+                transition={{ delay: 0.2, duration: 0.6 }}
+                className="relative"
+              >
+                <div className="absolute inset-0 bg-gradient-to-r from-emerald-500 to-green-500 rounded-2xl blur-3xl opacity-30 animate-pulse" />
+                <Card className="relative bg-gradient-to-br from-emerald-950/80 to-green-950/80 border-2 border-emerald-400/50 p-4 shadow-2xl shadow-emerald-500/50 backdrop-blur-xl">
+                  <Image
+                    src="/Firefly_Gemini_Flash_Your_PBM_Met_Every_Guarantee._You_Still_Lost_the_Money._Written_by_Jeremiah_Franklin_465075.png"
+                    alt="Your PBM Met Every Guarantee. You Still Lost the Money - by Jeremiah Franklin"
+                    width={800}
+                    height={800}
+                    className="rounded-xl w-full h-auto"
+                    priority
+                  />
+                  <div className="mt-4 text-center">
+                    <p className="text-sm text-emerald-200 font-semibold">Written by Jeremiah Franklin, Founder</p>
+                    <p className="text-xs text-emerald-400 italic mt-1">Direct EBITDA leakage & margin recovery</p>
+                  </div>
+                </Card>
+              </motion.div>
             </div>
 
             <motion.div className="grid md:grid-cols-4 gap-6 mt-16" variants={staggerChildren} initial="initial" animate="animate">

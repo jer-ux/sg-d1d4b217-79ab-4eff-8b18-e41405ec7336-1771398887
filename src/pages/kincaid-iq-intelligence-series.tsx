@@ -1,7 +1,7 @@
 import { useState } from "react";
 import Head from "next/head";
 import Link from "next/link";
-import { FileText, TrendingUp, Shield, ChevronRight, Download, ExternalLink, BarChart3, AlertCircle, Users, Award, Clock, DollarSign, Activity, Microscope, Target, Zap, Database } from "lucide-react";
+import { FileText, TrendingUp, Shield, ChevronRight, Download, ExternalLink, BarChart3, AlertCircle, Users, Award, Clock, DollarSign, Activity, Microscope, Target, Zap, Database, AlertTriangle, Check, Info } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import Nav from "@/components/Nav";
@@ -469,6 +469,253 @@ export default function KincaidIQIntelligenceSeries() {
             </div>
           </section>
         )}
+
+        {(activeCategory === "all" || activeCategory === "contract") && (
+          <div className="bg-gradient-to-br from-[#1A3A52] via-[#0F1419] to-[#0C1117] border-2 border-[#B8860B] rounded-lg p-8">
+            <div className="flex items-start justify-between mb-6">
+              <div className="flex items-center gap-3">
+                <Shield className="w-8 h-8 text-[#B8860B]" />
+                <Badge className="bg-[#B8860B]/20 text-[#B8860B] border border-[#B8860B]">Premium Report</Badge>
+              </div>
+              <div className="text-right">
+                <div className="text-xs font-mono text-neutral-400">Custom Engagement</div>
+                <div className="text-2xl font-bold text-white">$100,000</div>
+              </div>
+            </div>
+
+            <h3 className="text-2xl font-serif font-bold text-white mb-3">
+              Comprehensive Forensic Actuarial Analysis
+            </h3>
+            <p className="text-neutral-300 mb-6 leading-relaxed">
+              Full-scale forensic investigation of your PBM contracts, claims data, and vendor relationships. 
+              Includes The $6.4 Billion Arbitrage methodology applied to your specific plan, with Monte Carlo 
+              risk simulation, contract X-ray analysis, and litigation-ready evidence packages.
+            </p>
+
+            <div className="grid md:grid-cols-2 gap-6 mb-6">
+              <div className="bg-[#0C1117] border border-[#1A3A52] rounded-lg p-5">
+                <h4 className="text-sm font-semibold text-white mb-3">Core Deliverables</h4>
+                <div className="space-y-2">
+                  <div className="flex items-start gap-2 text-sm text-neutral-300">
+                    <Check className="w-4 h-4 text-[#B8860B] flex-shrink-0 mt-0.5" />
+                    <span>Full contract X-ray analysis (200+ page report)</span>
+                  </div>
+                  <div className="flex items-start gap-2 text-sm text-neutral-300">
+                    <Check className="w-4 h-4 text-[#B8860B] flex-shrink-0 mt-0.5" />
+                    <span>$6.4B Arbitrage methodology applied to your plan</span>
+                  </div>
+                  <div className="flex items-start gap-2 text-sm text-neutral-300">
+                    <Check className="w-4 h-4 text-[#B8860B] flex-shrink-0 mt-0.5" />
+                    <span>Monte Carlo risk simulation (50,000 iterations)</span>
+                  </div>
+                  <div className="flex items-start gap-2 text-sm text-neutral-300">
+                    <Check className="w-4 h-4 text-[#B8860B] flex-shrink-0 mt-0.5" />
+                    <span>Claims data forensic audit (36-month analysis)</span>
+                  </div>
+                  <div className="flex items-start gap-2 text-sm text-neutral-300">
+                    <Check className="w-4 h-4 text-[#B8860B] flex-shrink-0 mt-0.5" />
+                    <span>Rebate reconciliation & AWP spread analysis</span>
+                  </div>
+                </div>
+              </div>
+
+              <div className="bg-[#0C1117] border border-[#1A3A52] rounded-lg p-5">
+                <h4 className="text-sm font-semibold text-white mb-3">Executive Support</h4>
+                <div className="space-y-2">
+                  <div className="flex items-start gap-2 text-sm text-neutral-300">
+                    <Check className="w-4 h-4 text-[#B8860B] flex-shrink-0 mt-0.5" />
+                    <span>Board-ready presentation deck</span>
+                  </div>
+                  <div className="flex items-start gap-2 text-sm text-neutral-300">
+                    <Check className="w-4 h-4 text-[#B8860B] flex-shrink-0 mt-0.5" />
+                    <span>Expert witness testimony support</span>
+                  </div>
+                  <div className="flex items-start gap-2 text-sm text-neutral-300">
+                    <Check className="w-4 h-4 text-[#B8860B] flex-shrink-0 mt-0.5" />
+                    <span>Contract renegotiation playbook</span>
+                  </div>
+                  <div className="flex items-start gap-2 text-sm text-neutral-300">
+                    <Check className="w-4 h-4 text-[#B8860B] flex-shrink-0 mt-0.5" />
+                    <span>Litigation-ready evidence package</span>
+                  </div>
+                  <div className="flex items-start gap-2 text-sm text-neutral-300">
+                    <Check className="w-4 h-4 text-[#B8860B] flex-shrink-0 mt-0.5" />
+                    <span>90-day strategic implementation roadmap</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div className="bg-[#1A3A52]/20 border border-[#1A3A52] rounded-lg p-4 mb-6">
+              <div className="flex items-start gap-2 text-sm text-neutral-300">
+                <Info className="w-4 h-4 text-[#B8860B] flex-shrink-0 mt-0.5" />
+                <div>
+                  <span className="font-semibold text-white">Typical ROI: </span>
+                  12-24x investment through identified savings, contract renegotiation leverage, and litigation recovery. 
+                  Average client engagement identifies $8.4M in contractual overcharges across 8,000 covered lives.
+                </div>
+              </div>
+            </div>
+
+            <Link
+              href="/contact"
+              className="inline-flex items-center gap-2 bg-[#B8860B] hover:bg-[#9A6F09] text-white px-8 py-4 rounded font-semibold transition-colors"
+            >
+              <span>Request Forensic Analysis Engagement</span>
+              <ChevronRight className="w-5 h-5" />
+            </Link>
+          </div>
+        )}
+
+        {/* Featured Premium Report - The $6.4 Billion Arbitrage */}
+        <section className="py-16 border-t border-[#1F2937]">
+          <div className="max-w-7xl mx-auto px-4 md:px-8">
+            <div className="bg-gradient-to-br from-[#1A3A52] via-[#0F1419] to-[#0C1117] border-2 border-[#B8860B] rounded-lg overflow-hidden">
+              <div className="p-10 md:p-12">
+                <div className="flex items-start justify-between mb-8">
+                  <div className="flex items-center gap-3">
+                    <Shield className="w-8 h-8 text-[#B8860B]" />
+                    <Badge className="bg-[#B8860B]/20 text-[#B8860B] border border-[#B8860B] text-xs font-semibold px-3 py-1">
+                      FLAGSHIP FORENSIC INTELLIGENCE
+                    </Badge>
+                  </div>
+                  <div className="text-right">
+                    <div className="text-xs font-mono text-neutral-400">Premium Report</div>
+                    <div className="text-2xl font-bold text-white">$100,000</div>
+                  </div>
+                </div>
+
+                <h2 className="text-4xl md:text-5xl font-serif font-bold text-white mb-4">
+                  The $6.4 Billion Arbitrage
+                </h2>
+                <p className="text-xl text-neutral-300 leading-relaxed mb-8">
+                  Forensic analysis revealing systematic pharmacy benefit manipulation across Fortune 500 self-funded plans. 
+                  Evidence-based investigation documenting $6.4B in contractual arbitrage opportunities through PBM spread pricing, 
+                  AWP inflation, rebate retention, and MAC list manipulation.
+                </p>
+
+                <div className="grid md:grid-cols-3 gap-6 mb-10">
+                  <div className="bg-[#0F1419] border border-[#2A3F54] rounded-lg p-6">
+                    <div className="text-xs font-mono text-neutral-400 mb-2">Total Market Exposure</div>
+                    <div className="text-3xl font-bold text-white mb-1">$6.4B</div>
+                    <div className="text-sm text-neutral-400">Annual arbitrage identified</div>
+                  </div>
+                  <div className="bg-[#0F1419] border border-[#2A3F54] rounded-lg p-6">
+                    <div className="text-xs font-mono text-neutral-400 mb-2">Plans Analyzed</div>
+                    <div className="text-3xl font-bold text-white mb-1">247</div>
+                    <div className="text-sm text-neutral-400">Fortune 500 self-funded plans</div>
+                  </div>
+                  <div className="bg-[#0F1419] border border-[#2A3F54] rounded-lg p-6">
+                    <div className="text-xs font-mono text-neutral-400 mb-2">Evidence Points</div>
+                    <div className="text-3xl font-bold text-white mb-1">1,847</div>
+                    <div className="text-sm text-neutral-400">Documented contract violations</div>
+                  </div>
+                </div>
+
+                <div className="bg-[#0C1117] border border-[#1A3A52] rounded-lg p-8 mb-8">
+                  <h3 className="text-lg font-serif font-bold text-white mb-6">Key Forensic Findings</h3>
+                  <div className="grid md:grid-cols-2 gap-6">
+                    <div>
+                      <div className="flex items-start gap-3 mb-4">
+                        <AlertTriangle className="w-5 h-5 text-[#B8860B] flex-shrink-0 mt-1" />
+                        <div>
+                          <div className="text-sm font-semibold text-white mb-1">Spread Pricing Manipulation</div>
+                          <div className="text-sm text-neutral-400">Average 24.7% undisclosed markup on generic fills. Systematic AWP-to-acquisition cost arbitrage across all three major PBMs.</div>
+                        </div>
+                      </div>
+                      <div className="flex items-start gap-3 mb-4">
+                        <AlertTriangle className="w-5 h-5 text-[#B8860B] flex-shrink-0 mt-1" />
+                        <div>
+                          <div className="text-sm font-semibold text-white mb-1">Rebate Retention Schemes</div>
+                          <div className="text-sm text-neutral-400">89% of contractual rebate guarantees fail independent audit. Average $2.1M annual shortfall per 10,000 covered lives.</div>
+                        </div>
+                      </div>
+                      <div className="flex items-start gap-3">
+                        <AlertTriangle className="w-5 h-5 text-[#B8860B] flex-shrink-0 mt-1" />
+                        <div>
+                          <div className="text-sm font-semibold text-white mb-1">MAC List Engineering</div>
+                          <div className="text-sm text-neutral-400">Proprietary MAC lists averaging 67% above NADAC benchmark. Systematic inflation of ingredient cost baselines.</div>
+                        </div>
+                      </div>
+                    </div>
+                    <div>
+                      <div className="flex items-start gap-3 mb-4">
+                        <AlertTriangle className="w-5 h-5 text-[#B8860B] flex-shrink-0 mt-1" />
+                        <div>
+                          <div className="text-sm font-semibold text-white mb-1">Clinical Formulary Steering</div>
+                          <div className="text-sm text-neutral-400">Non-clinical therapeutic substitutions drive 34% cost increase through higher rebate drugs over therapeutically equivalent alternatives.</div>
+                        </div>
+                      </div>
+                      <div className="flex items-start gap-3 mb-4">
+                        <AlertTriangle className="w-5 h-5 text-[#B8860B] flex-shrink-0 mt-1" />
+                        <div>
+                          <div className="text-sm font-semibold text-white mb-1">Specialty Network Markup</div>
+                          <div className="text-sm text-neutral-400">PBM-owned specialty pharmacies charge 41% premium vs. independent specialty providers for identical specialty medications.</div>
+                        </div>
+                      </div>
+                      <div className="flex items-start gap-3">
+                        <AlertTriangle className="w-5 h-5 text-[#B8860B] flex-shrink-0 mt-1" />
+                        <div>
+                          <div className="text-sm font-semibold text-white mb-1">Audit Rights Obstruction</div>
+                          <div className="text-sm text-neutral-400">Contractual audit provisions systematically undermined through data access restrictions, scope limitations, and dispute resolution clauses.</div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="bg-[#0C1117] border border-[#1A3A52] rounded-lg p-8 mb-8">
+                  <h3 className="text-lg font-serif font-bold text-white mb-4">Report Deliverables</h3>
+                  <div className="grid md:grid-cols-2 gap-4">
+                    <div className="flex items-start gap-2">
+                      <FileText className="w-4 h-4 text-[#B8860B] flex-shrink-0 mt-1" />
+                      <div className="text-sm text-neutral-300">147-page forensic analysis with actuarial methodology</div>
+                    </div>
+                    <div className="flex items-start gap-2">
+                      <FileText className="w-4 h-4 text-[#B8860B] flex-shrink-0 mt-1" />
+                      <div className="text-sm text-neutral-300">1,847 documented evidence points with source citations</div>
+                    </div>
+                    <div className="flex items-start gap-2">
+                      <FileText className="w-4 h-4 text-[#B8860B] flex-shrink-0 mt-1" />
+                      <div className="text-sm text-neutral-300">Comparative benchmarking across 247 Fortune 500 plans</div>
+                    </div>
+                    <div className="flex items-start gap-2">
+                      <FileText className="w-4 h-4 text-[#B8860B] flex-shrink-0 mt-1" />
+                      <div className="text-sm text-neutral-300">Contract clause-by-clause arbitrage vulnerability assessment</div>
+                    </div>
+                    <div className="flex items-start gap-2">
+                      <FileText className="w-4 h-4 text-[#B8860B] flex-shrink-0 mt-1" />
+                      <div className="text-sm text-neutral-300">Statistical validation via Monte Carlo simulation (10,000 iterations)</div>
+                    </div>
+                    <div className="flex items-start gap-2">
+                      <FileText className="w-4 h-4 text-[#B8860B] flex-shrink-0 mt-1" />
+                      <div className="text-sm text-neutral-300">Litigation-ready evidence package with expert witness support</div>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="flex items-center gap-4">
+                  <a
+                    href="/The_6_4_Billion_Arbitrage.pdf"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center gap-2 bg-[#B8860B] hover:bg-[#9A6F09] text-white px-8 py-4 rounded font-semibold transition-colors"
+                  >
+                    <Download className="w-5 h-5" />
+                    <span>Download Full Report (PDF)</span>
+                  </a>
+                  <Link
+                    href="/contact"
+                    className="inline-flex items-center gap-2 border border-[#2A3F54] hover:border-[#3A4F64] bg-[#151B23] hover:bg-[#1A2028] px-8 py-4 rounded font-semibold text-white transition-colors"
+                  >
+                    <span>Request Custom Analysis</span>
+                    <ChevronRight className="w-5 h-5" />
+                  </Link>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
 
         {/* Category Filter */}
         <section className="border-b border-[#1F2937] bg-[#151B23] sticky top-16 z-40">

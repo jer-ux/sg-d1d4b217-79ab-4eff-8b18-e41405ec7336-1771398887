@@ -30,7 +30,7 @@ export default function Nav() {
             <div className="relative">
               <button
                 onClick={() => setKincaidIqDropdownOpen(!kincaidIqDropdownOpen)}
-                className="flex items-center gap-2 px-4 py-2 text-navy-700 hover:text-navy-900 transition-colors rounded-lg hover:bg-slate-50">
+                className="flex items-center gap-2 px-4 py-2 text-black hover:text-black/80 transition-colors rounded-lg hover:bg-slate-50">
                 Intelligence Series
                 <ChevronDown className={`w-3 h-3 transition-transform ${kincaidIqDropdownOpen ? "rotate-180" : ""}`} />
               </button>
@@ -81,7 +81,7 @@ export default function Nav() {
             <div className="relative">
               <button
                 onClick={() => setCompanyDropdownOpen(!companyDropdownOpen)}
-                className="flex items-center gap-2 px-4 py-2 text-navy-700 hover:text-navy-900 transition-colors rounded-lg hover:bg-slate-50">
+                className="flex items-center gap-2 px-4 py-2 text-black hover:text-black/80 transition-colors rounded-lg hover:bg-slate-50">
                 Company
                 <ChevronDown className={`w-3 h-3 transition-transform ${companyDropdownOpen ? "rotate-180" : ""}`} />
               </button>
@@ -132,7 +132,7 @@ export default function Nav() {
             <div className="relative">
               <button
                 onClick={() => setFocusAreasDropdownOpen(!focusAreasDropdownOpen)}
-                className="flex items-center gap-2 px-4 py-2 text-navy-700 hover:text-navy-900 transition-colors rounded-lg hover:bg-slate-50">
+                className="flex items-center gap-2 px-4 py-2 text-black hover:text-black/80 transition-colors rounded-lg hover:bg-slate-50">
                 Areas of Focus
                 <ChevronDown className={`w-3 h-3 transition-transform ${focusAreasDropdownOpen ? "rotate-180" : ""}`} />
               </button>
@@ -219,7 +219,7 @@ export default function Nav() {
           {/* Mobile menu button */}
           <button
             onClick={() => setIsOpen(!isOpen)}
-            className="md:hidden rounded-lg p-2 text-navy-700 hover:bg-slate-50 hover:text-navy-900">
+            className="md:hidden rounded-lg p-2 text-black hover:bg-slate-50 hover:text-black/80">
             {isOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
           </button>
         </div>

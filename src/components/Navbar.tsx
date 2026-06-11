@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { useRouter } from "next/router";
+import { KincaidIQLogo } from "@/components/KincaidIQLogo";
 
 const navItems = [
   { label: "Platform", href: "/platform" },
@@ -12,10 +13,10 @@ export default function Navbar() {
   const router = useRouter();
 
   return (
-    <header className="sticky top-0 z-50 border-b border-white/10 bg-black/60 backdrop-blur">
+    <header className="sticky top-0 z-50 border-b border-slate-200/20 bg-white/95 backdrop-blur">
       <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-4">
-        <Link href="/" className="text-sm font-semibold tracking-wide text-white/90">
-          Kincaid IQ
+        <Link href="/" className="flex items-center">
+          <KincaidIQLogo variant="full" size="sm" />
         </Link>
 
         <nav className="flex items-center gap-2">

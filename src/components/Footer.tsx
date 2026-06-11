@@ -1,25 +1,26 @@
 import Link from "next/link";
 import { Shield, CheckCircle, Lock, Award } from "lucide-react";
+import { KincaidIQLogo } from "@/components/KincaidIQLogo";
 
 export default function Footer() {
   return (
-    <footer className="bg-black border-t border-gray-800">
+    <footer className="bg-slate-50 border-t border-slate-200">
       {/* Compliance Badges Section */}
-      <div className="max-w-7xl mx-auto px-6 py-8 border-b border-gray-800">
+      <div className="max-w-7xl mx-auto px-6 py-8 border-b border-slate-200">
         <div className="flex flex-wrap justify-center items-center gap-8">
-          <div className="flex items-center gap-2 text-gray-400 hover:text-amber-400 transition-colors">
+          <div className="flex items-center gap-2 text-slate-600 hover:text-navy-700 transition-colors">
             <Shield className="w-5 h-5" />
             <span className="text-sm font-medium">SOC 2 Type II Certified</span>
           </div>
-          <div className="flex items-center gap-2 text-gray-400 hover:text-amber-400 transition-colors">
+          <div className="flex items-center gap-2 text-slate-600 hover:text-navy-700 transition-colors">
             <Lock className="w-5 h-5" />
             <span className="text-sm font-medium">HIPAA Compliant</span>
           </div>
-          <div className="flex items-center gap-2 text-gray-400 hover:text-amber-400 transition-colors">
+          <div className="flex items-center gap-2 text-slate-600 hover:text-navy-700 transition-colors">
             <CheckCircle className="w-5 h-5" />
             <span className="text-sm font-medium">ERISA Certified</span>
           </div>
-          <div className="flex items-center gap-2 text-gray-400 hover:text-amber-400 transition-colors">
+          <div className="flex items-center gap-2 text-slate-600 hover:text-navy-700 transition-colors">
             <Award className="w-5 h-5" />
             <span className="text-sm font-medium">ISO 27001</span>
           </div>
@@ -27,6 +28,10 @@ export default function Footer() {
       </div>
 
       <div className="max-w-7xl mx-auto px-6 py-12">
+        <div className="mb-12">
+          <KincaidIQLogo variant="full" size="lg" />
+        </div>
+        
         <div className="grid grid-cols-2 md:grid-cols-4 gap-8 mb-12">
           <div>
             <h3 className="text-white font-semibold mb-4">Product</h3>
@@ -81,9 +86,9 @@ export default function Footer() {
           </div>
         </div>
         
-        <div className="pt-8 border-t border-white/10 flex flex-col md:flex-row justify-between items-center gap-4">
-          <p className="text-sm text-gray-500">
-            © 2026 Kincaid IQ. All rights reserved.
+        <div className="pt-8 border-t border-slate-200 flex flex-col md:flex-row justify-between items-center gap-4">
+          <p className="text-sm text-slate-600">
+            © 2026 Kincaid IQ Data Sciences Lab. All rights reserved.
           </p>
           <div className="flex gap-6">
             <Link href="#" className="text-gray-500 hover:text-white transition-colors text-sm">

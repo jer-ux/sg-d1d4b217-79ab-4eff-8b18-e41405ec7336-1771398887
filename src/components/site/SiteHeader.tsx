@@ -1,12 +1,13 @@
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
+import { KincaidIQLogo } from "@/components/KincaidIQLogo";
 
 export function SiteHeader({ active }: { active?: string }) {
   return (
-    <header className="sticky top-0 z-50 border-b border-white/10 bg-black/80 backdrop-blur-sm">
+    <header className="sticky top-0 z-50 border-b border-slate-200/20 bg-white/95 backdrop-blur-sm">
       <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-6">
-        <Link href="/" className="text-lg font-semibold text-white">
-          Kincaid IQ
+        <Link href="/" className="flex items-center">
+          <KincaidIQLogo variant="full" size="sm" />
         </Link>
 
         <nav className="hidden items-center gap-6 md:flex">

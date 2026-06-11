@@ -1,9 +1,10 @@
 import { useState } from "react";
 import Link from "next/link";
-import { Menu, X, ChevronDown, Sparkles, Search, Users, Building2, AlertTriangle, Calculator, FileText, TrendingUp, Briefcase, BarChart3, Shield, LineChart, DollarSign, Heart } from "lucide-react";
+import { Menu, X, ChevronDown, Search, Users, Building2, AlertTriangle, Calculator, FileText, TrendingUp, Briefcase, BarChart3, Shield, LineChart, DollarSign, Heart } from "lucide-react";
 import { useRouter } from "next/router";
 import { Button } from "@/components/ui/button";
 import { DropdownMenu, DropdownMenuTrigger, DropdownMenuContent, DropdownMenuItem } from "@/components/ui/dropdown-menu";
+import { KincaidIQLogo } from "@/components/KincaidIQLogo";
 
 export default function Nav() {
   const [isOpen, setIsOpen] = useState(false);
@@ -15,16 +16,12 @@ export default function Nav() {
   const [kincaidIqDropdownOpen, setKincaidIqDropdownOpen] = useState(false);
 
   return (
-    <nav className="fixed top-0 z-[200] w-full border-b border-white/10 bg-black/80 backdrop-blur-xl">
+    <nav className="fixed top-0 z-[200] w-full border-b border-slate-200/20 bg-white/95 backdrop-blur-xl">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="flex h-16 items-center justify-between">
           {/* Logo */}
-          <Link href="/" className="flex items-center space-x-2">
-            <Sparkles className="h-6 w-6 text-purple-400 flex-shrink-0" />
-            <span className="text-xl font-bold bg-gradient-to-r from-purple-400 to-pink-400 bg-clip-text text-transparent">
-              <span className="hidden sm:inline">Kincaid IQ</span>
-              <span className="sm:hidden">Kincaid IQ</span>
-            </span>
+          <Link href="/" className="flex items-center">
+            <KincaidIQLogo variant="full" size="md" />
           </Link>
 
           {/* Desktop Navigation */}

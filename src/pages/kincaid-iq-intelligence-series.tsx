@@ -3,6 +3,7 @@ import Head from "next/head";
 import Link from "next/link";
 import { FileText, TrendingUp, Shield, ChevronRight, Download, ExternalLink, BarChart3, AlertCircle, Users, Award, Clock, DollarSign, Activity, Microscope, Target, Zap, Database, AlertTriangle, Check, Info } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
 import { Card } from "@/components/ui/card";
 import Nav from "@/components/Nav";
 import Footer from "@/components/Footer";
@@ -470,7 +471,7 @@ export default function KincaidIQIntelligenceSeries() {
           </section>
         )}
 
-        {(activeCategory === "all" || activeCategory === "contract") && (
+        {(selectedCategory === "all" || selectedCategory === "contract") && (
           <div className="bg-gradient-to-br from-[#1A3A52] via-[#0F1419] to-[#0C1117] border-2 border-[#B8860B] rounded-lg p-8">
             <div className="flex items-start justify-between mb-6">
               <div className="flex items-center gap-3">
@@ -738,6 +739,104 @@ export default function KincaidIQIntelligenceSeries() {
             </div>
           </div>
         </section>
+
+        {/* Intelligence Reports Grid */}
+        {(selectedCategory === "all" || selectedCategory === "contract") && (
+          <div className="bg-gradient-to-br from-[#1A3A52] via-[#0F1419] to-[#0C1117] border-2 border-[#B8860B] rounded-lg p-8">
+            <div className="flex items-start justify-between mb-6">
+              <div className="flex items-center gap-3">
+                <Shield className="w-8 h-8 text-[#B8860B]" />
+                <Badge className="bg-[#B8860B]/20 text-[#B8860B] border border-[#B8860B]">Premium Report</Badge>
+              </div>
+              <div className="text-right">
+                <div className="text-xs font-mono text-neutral-400">Custom Engagement</div>
+                <div className="text-2xl font-bold text-white">$100,000</div>
+              </div>
+            </div>
+
+            <h3 className="text-2xl font-serif font-bold text-white mb-3">
+              Comprehensive Forensic Actuarial Analysis
+            </h3>
+            <p className="text-neutral-300 mb-6 leading-relaxed">
+              Full-scale forensic investigation of your PBM contracts, claims data, and vendor relationships. 
+              Includes The $6.4 Billion Arbitrage methodology applied to your specific plan, with Monte Carlo 
+              risk simulation, contract X-ray analysis, and litigation-ready evidence packages.
+            </p>
+
+            <div className="grid md:grid-cols-2 gap-6 mb-6">
+              <div className="bg-[#0C1117] border border-[#1A3A52] rounded-lg p-5">
+                <h4 className="text-sm font-semibold text-white mb-3">Core Deliverables</h4>
+                <div className="space-y-2">
+                  <div className="flex items-start gap-2 text-sm text-neutral-300">
+                    <Check className="w-4 h-4 text-[#B8860B] flex-shrink-0 mt-0.5" />
+                    <span>Full contract X-ray analysis (200+ page report)</span>
+                  </div>
+                  <div className="flex items-start gap-2 text-sm text-neutral-300">
+                    <Check className="w-4 h-4 text-[#B8860B] flex-shrink-0 mt-0.5" />
+                    <span>$6.4B Arbitrage methodology applied to your plan</span>
+                  </div>
+                  <div className="flex items-start gap-2 text-sm text-neutral-300">
+                    <Check className="w-4 h-4 text-[#B8860B] flex-shrink-0 mt-0.5" />
+                    <span>Monte Carlo risk simulation (50,000 iterations)</span>
+                  </div>
+                  <div className="flex items-start gap-2 text-sm text-neutral-300">
+                    <Check className="w-4 h-4 text-[#B8860B] flex-shrink-0 mt-0.5" />
+                    <span>Claims data forensic audit (36-month analysis)</span>
+                  </div>
+                  <div className="flex items-start gap-2 text-sm text-neutral-300">
+                    <Check className="w-4 h-4 text-[#B8860B] flex-shrink-0 mt-0.5" />
+                    <span>Rebate reconciliation & AWP spread analysis</span>
+                  </div>
+                </div>
+              </div>
+
+              <div className="bg-[#0C1117] border border-[#1A3A52] rounded-lg p-5">
+                <h4 className="text-sm font-semibold text-white mb-3">Executive Support</h4>
+                <div className="space-y-2">
+                  <div className="flex items-start gap-2 text-sm text-neutral-300">
+                    <Check className="w-4 h-4 text-[#B8860B] flex-shrink-0 mt-0.5" />
+                    <span>Board-ready presentation deck</span>
+                  </div>
+                  <div className="flex items-start gap-2 text-sm text-neutral-300">
+                    <Check className="w-4 h-4 text-[#B8860B] flex-shrink-0 mt-0.5" />
+                    <span>Expert witness testimony support</span>
+                  </div>
+                  <div className="flex items-start gap-2 text-sm text-neutral-300">
+                    <Check className="w-4 h-4 text-[#B8860B] flex-shrink-0 mt-0.5" />
+                    <span>Contract renegotiation playbook</span>
+                  </div>
+                  <div className="flex items-start gap-2 text-sm text-neutral-300">
+                    <Check className="w-4 h-4 text-[#B8860B] flex-shrink-0 mt-0.5" />
+                    <span>Litigation-ready evidence package</span>
+                  </div>
+                  <div className="flex items-start gap-2 text-sm text-neutral-300">
+                    <Check className="w-4 h-4 text-[#B8860B] flex-shrink-0 mt-0.5" />
+                    <span>90-day strategic implementation roadmap</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div className="bg-[#1A3A52]/20 border border-[#1A3A52] rounded-lg p-4 mb-6">
+              <div className="flex items-start gap-2 text-sm text-neutral-300">
+                <Info className="w-4 h-4 text-[#B8860B] flex-shrink-0 mt-0.5" />
+                <div>
+                  <span className="font-semibold text-white">Typical ROI: </span>
+                  12-24x investment through identified savings, contract renegotiation leverage, and litigation recovery. 
+                  Average client engagement identifies $8.4M in contractual overcharges across 8,000 covered lives.
+                </div>
+              </div>
+            </div>
+
+            <Link
+              href="/contact"
+              className="inline-flex items-center gap-2 bg-[#B8860B] hover:bg-[#9A6F09] text-white px-8 py-4 rounded font-semibold transition-colors"
+            >
+              <span>Request Forensic Analysis Engagement</span>
+              <ChevronRight className="w-5 h-5" />
+            </Link>
+          </div>
+        )}
 
         {/* Reports Grid */}
         <section className="py-16">

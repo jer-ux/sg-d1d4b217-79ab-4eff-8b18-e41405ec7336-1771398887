@@ -48,7 +48,7 @@ const intelligenceModules = [
       "Full ERISA / CAA compliance defense & gap index"
     ],
     turnaround: "21-30 days",
-    price: "$67,000",
+    price: "$167,000",
     icon: <Lock className="w-6 h-6" />,
     color: "text-red-400 animate-pulse",
     borderColor: "border-red-500/50 shadow-[0_0_25px_rgba(239,68,68,0.2)]",

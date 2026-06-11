@@ -1,7 +1,7 @@
 import { useState } from "react";
 import Head from "next/head";
 import Link from "next/link";
-import { FileText, TrendingUp, Shield, ChevronRight, Download, ExternalLink, BarChart3, AlertCircle } from "lucide-react";
+import { FileText, TrendingUp, Shield, ChevronRight, Download, ExternalLink, BarChart3, AlertCircle, Users, Award, Clock } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import Nav from "@/components/Nav";
@@ -16,6 +16,7 @@ const reports = [
     href: "/solutions/rx-defense",
     category: "Contract Intelligence",
     readTime: "12 min read",
+    featured: true,
     keyFindings: [
       "Average 23% contractual leakage across analyzed plans",
       "Spread pricing mechanisms averaging $47 per prescription",
@@ -75,6 +76,8 @@ export default function KincaidIQIntelligenceSeries() {
     ? reports 
     : reports.filter(r => r.category === selectedCategory);
 
+  const featuredReport = reports.find(r => r.featured);
+
   return (
     <>
       <Head>
@@ -120,11 +123,103 @@ export default function KincaidIQIntelligenceSeries() {
           </div>
         </section>
 
+        {/* Impact Metrics */}
+        <section className="py-12 bg-white border-b border-slate-200">
+          <div className="max-w-7xl mx-auto px-6">
+            <div className="grid md:grid-cols-4 gap-8">
+              <div className="text-center">
+                <div className="text-4xl font-serif font-bold text-navy-900 mb-2">$127M</div>
+                <div className="text-sm text-slate-600">Identified Contractual Leakage</div>
+              </div>
+              <div className="text-center">
+                <div className="text-4xl font-serif font-bold text-navy-900 mb-2">4</div>
+                <div className="text-sm text-slate-600">Published Intelligence Reports</div>
+              </div>
+              <div className="text-center">
+                <div className="text-4xl font-serif font-bold text-navy-900 mb-2">23%</div>
+                <div className="text-sm text-slate-600">Average Cost Reduction</div>
+              </div>
+              <div className="text-center">
+                <div className="text-4xl font-serif font-bold text-navy-900 mb-2">89</div>
+                <div className="text-sm text-slate-600">Organizations Served</div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* Featured Report */}
+        {featuredReport && (
+          <section className="py-16 bg-slate-50 border-b border-slate-200">
+            <div className="max-w-7xl mx-auto px-6">
+              <div className="flex items-center gap-2 mb-8">
+                <Award className="w-5 h-5 text-gold-600" />
+                <h2 className="text-2xl font-serif font-bold text-navy-900">Featured Intelligence Report</h2>
+              </div>
+
+              <Card className="border-2 border-burgundy-200 bg-white overflow-hidden">
+                <div className="p-10">
+                  <div className="grid md:grid-cols-3 gap-8">
+                    <div className="md:col-span-2">
+                      <div className="flex items-center gap-3 mb-4">
+                        <span className="px-3 py-1 text-xs font-medium text-burgundy-900 bg-burgundy-50 border border-burgundy-200 rounded">
+                          {featuredReport.category}
+                        </span>
+                        <span className="text-sm text-slate-500">{featuredReport.readTime}</span>
+                      </div>
+                      
+                      <h3 className="text-3xl font-serif font-bold text-navy-900 mb-3">
+                        {featuredReport.title}
+                      </h3>
+                      
+                      <p className="text-base font-medium text-burgundy-700 mb-6">
+                        {featuredReport.subtitle}
+                      </p>
+                      
+                      <p className="text-slate-600 leading-relaxed mb-8 text-lg">
+                        {featuredReport.description}
+                      </p>
+
+                      <div className="flex items-center gap-4">
+                        <Link href={featuredReport.href}>
+                          <Button className="bg-burgundy-700 hover:bg-burgundy-800 text-white">
+                            Read Full Report
+                            <ChevronRight className="w-4 h-4 ml-2" />
+                          </Button>
+                        </Link>
+                        <Link href={featuredReport.href}>
+                          <Button variant="outline" className="border-slate-300 text-slate-700 hover:bg-slate-50">
+                            <Download className="w-4 h-4 mr-2" />
+                            Download PDF
+                          </Button>
+                        </Link>
+                      </div>
+                    </div>
+
+                    <div>
+                      <div className="bg-slate-50 border border-slate-200 rounded-lg p-6">
+                        <h4 className="text-sm font-semibold text-slate-900 mb-4">Key Findings</h4>
+                        <ul className="space-y-3">
+                          {featuredReport.keyFindings.map((finding, idx) => (
+                            <li key={idx} className="flex items-start gap-2 text-sm text-slate-600">
+                              <ChevronRight className="w-4 h-4 mt-0.5 text-burgundy-600 flex-shrink-0" />
+                              <span>{finding}</span>
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </Card>
+            </div>
+          </section>
+        )}
+
         {/* Category Filter */}
         <section className="border-b border-slate-200 bg-white sticky top-16 z-40">
           <div className="max-w-7xl mx-auto px-6 py-4">
             <div className="flex items-center gap-3 overflow-x-auto">
-              <span className="text-sm font-medium text-slate-600 whitespace-nowrap">Filter by:</span>
+              <span className="text-sm font-medium text-slate-600 whitespace-nowrap">Filter by Category:</span>
               {categories.map((category) => (
                 <button
                   key={category}
@@ -132,7 +227,7 @@ export default function KincaidIQIntelligenceSeries() {
                   className={`px-4 py-2 rounded border text-sm font-medium whitespace-nowrap transition-colors ${
                     selectedCategory === category
                       ? "bg-navy-700 text-white border-navy-700"
-                      : "bg-white text-slate-700 border-slate-300 hover:border-slate-400"
+                      : "bg-white text-slate-700 border-slate-300 hover:border-slate-400 hover:bg-slate-50"
                   }`}
                 >
                   {category === "all" ? "All Reports" : category}
@@ -143,19 +238,24 @@ export default function KincaidIQIntelligenceSeries() {
         </section>
 
         {/* Reports Grid */}
-        <section className="py-16">
+        <section className="py-16 bg-white">
           <div className="max-w-7xl mx-auto px-6">
-            <div className="grid gap-8">
-              {filteredReports.map((report) => (
-                <Card key={report.id} className="border border-slate-200 hover:border-slate-300 transition-colors">
+            <h2 className="text-2xl font-serif font-bold text-navy-900 mb-8">All Intelligence Reports</h2>
+            
+            <div className="grid gap-6">
+              {filteredReports.filter(r => !r.featured).map((report) => (
+                <Card key={report.id} className="border border-slate-200 hover:border-slate-300 hover:shadow-md transition-all">
                   <div className="p-8">
-                    <div className="flex items-start justify-between mb-4">
-                      <div className="flex-1">
+                    <div className="grid md:grid-cols-5 gap-6">
+                      <div className="md:col-span-4">
                         <div className="flex items-center gap-3 mb-3">
                           <span className="px-3 py-1 text-xs font-medium text-burgundy-900 bg-burgundy-50 border border-burgundy-200 rounded">
                             {report.category}
                           </span>
-                          <span className="text-sm text-slate-500">{report.readTime}</span>
+                          <span className="flex items-center gap-1 text-sm text-slate-500">
+                            <Clock className="w-3.5 h-3.5" />
+                            {report.readTime}
+                          </span>
                         </div>
                         
                         <h3 className="text-2xl font-serif font-bold text-navy-900 mb-2">
@@ -171,7 +271,7 @@ export default function KincaidIQIntelligenceSeries() {
                         </p>
 
                         {/* Key Findings */}
-                        <div className="border-l-4 border-gold-500 pl-4 mb-6">
+                        <div className="border-l-4 border-gold-500 pl-4 mb-6 bg-gold-50/30 py-3">
                           <h4 className="text-sm font-semibold text-slate-900 mb-3">Key Findings</h4>
                           <ul className="space-y-2">
                             {report.keyFindings.map((finding, idx) => (
@@ -183,7 +283,7 @@ export default function KincaidIQIntelligenceSeries() {
                           </ul>
                         </div>
 
-                        <div className="flex items-center gap-4">
+                        <div className="flex items-center gap-3">
                           <Link href={report.href}>
                             <Button className="bg-navy-700 hover:bg-navy-800 text-white">
                               Read Full Report
@@ -199,12 +299,12 @@ export default function KincaidIQIntelligenceSeries() {
                         </div>
                       </div>
 
-                      <div className="ml-6 flex-shrink-0">
-                        <div className="w-16 h-16 rounded-lg border-2 border-slate-200 bg-slate-50 flex items-center justify-center">
-                          {report.category === "Contract Intelligence" && <Shield className="w-8 h-8 text-burgundy-600" />}
-                          {report.category === "Risk Analytics" && <BarChart3 className="w-8 h-8 text-navy-600" />}
-                          {report.category === "Pricing Intelligence" && <TrendingUp className="w-8 h-8 text-gold-600" />}
-                          {report.category === "Benchmarking" && <AlertCircle className="w-8 h-8 text-slate-600" />}
+                      <div className="flex justify-center items-start">
+                        <div className="w-20 h-20 rounded-lg border-2 border-slate-200 bg-slate-50 flex items-center justify-center">
+                          {report.category === "Contract Intelligence" && <Shield className="w-10 h-10 text-burgundy-600" />}
+                          {report.category === "Risk Analytics" && <BarChart3 className="w-10 h-10 text-navy-600" />}
+                          {report.category === "Pricing Intelligence" && <TrendingUp className="w-10 h-10 text-gold-600" />}
+                          {report.category === "Benchmarking" && <AlertCircle className="w-10 h-10 text-slate-600" />}
                         </div>
                       </div>
                     </div>
@@ -215,56 +315,99 @@ export default function KincaidIQIntelligenceSeries() {
           </div>
         </section>
 
-        {/* Methodology Section */}
-        <section className="py-16 bg-slate-50 border-t border-slate-200">
+        {/* Trust Indicators */}
+        <section className="py-12 bg-slate-50 border-t border-slate-200">
           <div className="max-w-7xl mx-auto px-6">
-            <div className="max-w-3xl">
+            <div className="grid md:grid-cols-3 gap-8">
+              <div className="flex items-start gap-4">
+                <div className="w-12 h-12 rounded-lg bg-burgundy-100 border border-burgundy-200 flex items-center justify-center flex-shrink-0">
+                  <Users className="w-6 h-6 text-burgundy-700" />
+                </div>
+                <div>
+                  <h3 className="font-semibold text-navy-900 mb-2">Actuarial Reviewed</h3>
+                  <p className="text-sm text-slate-600 leading-relaxed">
+                    All reports undergo peer review by credentialed actuaries and comply with Actuarial Standards of Practice.
+                  </p>
+                </div>
+              </div>
+              
+              <div className="flex items-start gap-4">
+                <div className="w-12 h-12 rounded-lg bg-navy-100 border border-navy-200 flex items-center justify-center flex-shrink-0">
+                  <Shield className="w-6 h-6 text-navy-700" />
+                </div>
+                <div>
+                  <h3 className="font-semibold text-navy-900 mb-2">ERISA Compliant</h3>
+                  <p className="text-sm text-slate-600 leading-relaxed">
+                    Analysis frameworks align with ERISA fiduciary standards and DOL guidance on prudent benefit administration.
+                  </p>
+                </div>
+              </div>
+              
+              <div className="flex items-start gap-4">
+                <div className="w-12 h-12 rounded-lg bg-gold-100 border border-gold-200 flex items-center justify-center flex-shrink-0">
+                  <FileText className="w-6 h-6 text-gold-700" />
+                </div>
+                <div>
+                  <h3 className="font-semibold text-navy-900 mb-2">Evidence-Based</h3>
+                  <p className="text-sm text-slate-600 leading-relaxed">
+                    Every claim is substantiated with primary source documentation, regulatory citations, or quantitative analysis.
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* Methodology Section */}
+        <section className="py-16 bg-white border-t border-slate-200">
+          <div className="max-w-7xl mx-auto px-6">
+            <div className="max-w-3xl mx-auto">
               <h2 className="text-3xl font-serif font-bold text-navy-900 mb-6">
                 Analytical Methodology
               </h2>
               
               <div className="prose prose-slate max-w-none">
-                <p className="text-slate-600 leading-relaxed mb-4">
+                <p className="text-slate-600 leading-relaxed mb-6">
                   Each intelligence report in the Kincaid IQ series undergoes rigorous forensic analysis using proprietary actuarial modeling, contract intelligence frameworks, and evidence-based validation protocols.
                 </p>
                 
-                <p className="text-slate-600 leading-relaxed mb-4">
-                  Our methodology integrates:
-                </p>
+                <h3 className="text-xl font-serif font-semibold text-navy-900 mb-4">Core Analytical Components</h3>
                 
-                <ul className="space-y-2 text-slate-600 mb-6">
-                  <li className="flex items-start gap-2">
+                <ul className="space-y-3 text-slate-600 mb-8">
+                  <li className="flex items-start gap-3">
                     <ChevronRight className="w-5 h-5 mt-0.5 text-burgundy-600 flex-shrink-0" />
-                    <span>Monte Carlo simulation frameworks for risk quantification</span>
+                    <span><strong>Monte Carlo Simulation Frameworks:</strong> Stochastic modeling for risk quantification and trend volatility analysis</span>
                   </li>
-                  <li className="flex items-start gap-2">
+                  <li className="flex items-start gap-3">
                     <ChevronRight className="w-5 h-5 mt-0.5 text-burgundy-600 flex-shrink-0" />
-                    <span>Contract clause extraction and semantic analysis</span>
+                    <span><strong>Contract Clause Extraction:</strong> Semantic analysis of PBM agreements to identify material terms and financial obligations</span>
                   </li>
-                  <li className="flex items-start gap-2">
+                  <li className="flex items-start gap-3">
                     <ChevronRight className="w-5 h-5 mt-0.5 text-burgundy-600 flex-shrink-0" />
-                    <span>Federal pricing benchmark validation (NADAC, WAC, AWP)</span>
+                    <span><strong>Federal Pricing Benchmarks:</strong> Validation against NADAC, WAC, and AWP reference standards</span>
                   </li>
-                  <li className="flex items-start gap-2">
+                  <li className="flex items-start gap-3">
                     <ChevronRight className="w-5 h-5 mt-0.5 text-burgundy-600 flex-shrink-0" />
-                    <span>Actuarial trend decomposition and persistence modeling</span>
+                    <span><strong>Actuarial Trend Decomposition:</strong> Time-series analysis of cost drivers and persistence modeling</span>
                   </li>
-                  <li className="flex items-start gap-2">
+                  <li className="flex items-start gap-3">
                     <ChevronRight className="w-5 h-5 mt-0.5 text-burgundy-600 flex-shrink-0" />
-                    <span>Retrospective claims data analysis and pattern recognition</span>
+                    <span><strong>Retrospective Claims Analysis:</strong> Pattern recognition and anomaly detection across historical utilization data</span>
                   </li>
                 </ul>
 
-                <p className="text-slate-600 leading-relaxed">
-                  All findings are validated against industry benchmarks, regulatory guidance, and peer-reviewed actuarial standards to ensure analytical rigor and professional defensibility.
-                </p>
+                <div className="border-l-4 border-navy-700 pl-6 py-4 bg-slate-50 rounded-r-lg">
+                  <p className="text-slate-600 leading-relaxed">
+                    All findings are validated against industry benchmarks, regulatory guidance, and peer-reviewed actuarial standards to ensure analytical rigor and professional defensibility in fiduciary contexts.
+                  </p>
+                </div>
               </div>
             </div>
           </div>
         </section>
 
         {/* CTA Section */}
-        <section className="py-16 border-t border-slate-200">
+        <section className="py-16 bg-slate-50 border-t border-slate-200">
           <div className="max-w-7xl mx-auto px-6">
             <div className="max-w-3xl mx-auto text-center">
               <h2 className="text-3xl font-serif font-bold text-navy-900 mb-6">
@@ -272,7 +415,7 @@ export default function KincaidIQIntelligenceSeries() {
               </h2>
               
               <p className="text-lg text-slate-600 mb-8 leading-relaxed">
-                Our forensic analysis team can produce customized intelligence reports tailored to your organization's specific PBM contracts, claims data, and risk profile.
+                Our forensic analysis team can produce customized intelligence reports tailored to your organization's specific PBM contracts, claims data, and risk profile. Each brief undergoes the same rigorous methodology as our published series.
               </p>
 
               <div className="flex flex-wrap gap-4 justify-center">

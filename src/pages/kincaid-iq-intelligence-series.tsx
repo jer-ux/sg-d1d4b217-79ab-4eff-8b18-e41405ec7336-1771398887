@@ -25,7 +25,9 @@ import {
   AlertTriangle,
   Search,
   CheckCircle,
-  TrendingDown
+  TrendingDown,
+  Sparkles,
+  BarChart3
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
@@ -477,83 +479,38 @@ export default function KincaidIQIntelligenceSeries() {
 
       <div className="min-h-screen bg-gradient-to-b from-slate-950 via-violet-950/20 to-black text-white pt-24">
         
-        {/* Dramatic Hero Section */}
-        <section className="relative pt-20 pb-32 px-4 overflow-hidden">
-          <div className="absolute inset-0">
-            <div className="absolute top-1/3 left-1/4 w-96 h-96 bg-violet-600/10 rounded-full blur-3xl animate-pulse" />
-            <div className="absolute bottom-1/3 right-1/4 w-96 h-96 bg-fuchsia-600/10 rounded-full blur-3xl animate-pulse delay-1000" />
-            <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1639322537228-f710d846310a?q=80&w=2832&auto=format&fit=crop')] bg-cover bg-center opacity-10 mix-blend-overlay" />
-          </div>
+        {/* Hero Section */}
+        <section className="relative pt-24 pb-16 overflow-hidden bg-gradient-to-br from-slate-950 via-purple-950/30 to-slate-950">
+          <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_120%,rgba(139,92,246,0.1),transparent_50%)]" />
           
-          <div className="relative max-w-7xl mx-auto">
-            <div className="grid lg:grid-cols-2 gap-16 items-center">
-              <motion.div
-                initial={{ opacity: 0, x: -20 }}
-                animate={{ opacity: 1, x: 0 }}
-                transition={{ duration: 0.6 }}
-              >
-                <div className="inline-flex items-center gap-3 px-5 py-2 bg-gradient-to-r from-violet-500/20 to-fuchsia-500/20 border border-violet-400/30 rounded-full mb-8 backdrop-blur-sm">
-                  <Brain className="w-5 h-5 text-violet-300" />
-                  <span className="text-sm font-semibold text-violet-200">Modular Actuarial Intelligence</span>
+          <div className="max-w-7xl mx-auto px-6 relative z-10">
+            <div className="grid lg:grid-cols-2 gap-12 items-center">
+              <div>
+                <div className="inline-flex items-center gap-2 px-4 py-2 bg-purple-500/10 border border-purple-500/20 rounded-full mb-6">
+                  <Sparkles className="w-4 h-4 text-purple-400" />
+                  <span className="text-sm text-purple-300">Forensic PBM Intelligence Reports</span>
                 </div>
                 
-                <h1 className="text-5xl md:text-7xl font-black mb-8 leading-tight">
-                  Stop Guessing.<br />
-                  <span className="bg-gradient-to-r from-violet-400 via-fuchsia-300 to-pink-400 bg-clip-text text-transparent">
-                    Start Quantifying.
+                <h1 className="text-5xl font-bold text-white mb-6">
+                  Kincaid IQ
+                  <span className="block text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-pink-400">
+                    Intelligence Series
                   </span>
                 </h1>
                 
-                <p className="text-2xl text-slate-300 mb-8 leading-relaxed">
-                  Forensic actuarial reports that uncover hidden healthcare costs, model intervention scenarios, and translate findings into EBITDA impact.
+                <p className="text-xl text-gray-300 mb-8">
+                  Evidence-based forensic audits that transform PBM contract opacity into actionable intelligence. Built for fiduciaries, actuaries, and capital markets.
                 </p>
-                
-                <p className="text-lg text-violet-200/80 mb-10 border-l-4 border-violet-500 pl-4 py-2">
-                  No 6-month consulting engagements. Pick the modules you need. Get Board-ready results in 3-10 days.
-                </p>
+              </div>
 
-                <div className="flex flex-col sm:flex-row gap-4">
-                  <Link href="#modules">
-                    <Button size="lg" className="w-full sm:w-auto bg-gradient-to-r from-violet-600 to-fuchsia-600 hover:from-violet-700 hover:to-fuchsia-700 text-white text-lg px-8 py-6 shadow-2xl shadow-violet-500/30">
-                      Explore Modules
-                      <ChevronRight className="w-5 h-5 ml-2" />
-                    </Button>
-                  </Link>
-                  <Link href="/upload-pbm-contract">
-                    <Button size="lg" variant="outline" className="w-full sm:w-auto border-2 border-violet-500/50 text-violet-200 hover:bg-violet-500/20 text-lg px-8 py-6">
-                      Upload Contract Securely
-                      <Upload className="w-5 h-5 ml-2" />
-                    </Button>
-                  </Link>
+              <div className="relative">
+                <div className="relative h-64 rounded-2xl overflow-hidden border border-purple-500/20 bg-gradient-to-br from-purple-900/20 to-pink-900/20 backdrop-blur-xl">
+                  <div className="absolute inset-0 flex items-center justify-center">
+                    <BarChart3 className="w-32 h-32 text-purple-400/30" />
+                  </div>
+                  <div className="absolute inset-0 bg-gradient-to-t from-slate-950/80 to-transparent" />
                 </div>
-              </motion.div>
-
-              <motion.div
-                initial={{ opacity: 0, scale: 0.95 }}
-                animate={{ opacity: 1, scale: 1 }}
-                transition={{ delay: 0.2, duration: 0.6 }}
-                className="relative hidden lg:block"
-              >
-                <div className="absolute inset-0 bg-gradient-to-r from-violet-500 to-fuchsia-500 rounded-2xl blur-3xl opacity-20 animate-pulse" />
-                <Card className="relative bg-black/40 border-2 border-violet-500/30 p-2 shadow-2xl shadow-violet-500/20 backdrop-blur-xl overflow-hidden rounded-2xl max-w-md mx-auto">
-                  <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-violet-500 via-fuchsia-500 to-pink-500" />
-                  <div className="relative aspect-[4/5] w-full overflow-hidden rounded-xl">
-                    <Image
-                      src="/jeremiah-shrack-corporate.png"
-                      alt="Jeremiah Shrack"
-                      fill
-                      className="object-cover object-top grayscale hover:grayscale-0 transition-all duration-500"
-                    />
-                  </div>
-                  <div className="absolute bottom-4 left-4 right-4 bg-slate-900/95 backdrop-blur-md border border-violet-500/30 rounded-xl p-4 flex items-center justify-between">
-                    <div>
-                      <p className="text-sm font-bold text-white">Jeremiah Shrack</p>
-                      <p className="text-xs text-violet-400 font-mono">Chief Actuary & Founder</p>
-                    </div>
-                    <Badge className="bg-violet-500/20 text-violet-300 border-violet-500/30">Fiduciary Lead</Badge>
-                  </div>
-                </Card>
-              </motion.div>
+              </div>
             </div>
           </div>
         </section>

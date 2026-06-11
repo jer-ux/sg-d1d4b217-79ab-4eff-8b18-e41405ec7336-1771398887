@@ -59,10 +59,11 @@ export function KincaidIQLogo({
         </div>
       </div>
       <div className="flex flex-col">
-        <div className={`font-serif font-bold ${s.text} text-navy tracking-tight leading-none`}>
-          KINCAID <span className="text-burgundy">IQ</span>
+        <div className="flex items-baseline gap-2">
+          <span className="text-navy-800 font-bold tracking-tight">Kincaid</span>
+          <span className="text-burgundy-700 font-bold tracking-tight">IQ</span>
         </div>
-        <div className={`font-sans ${s.subtext} text-slate-400 tracking-[0.2em] uppercase mt-0.5`}>
+        <div className={`text-black font-serif text-[0.65em] uppercase mt-0.5`}>
           Data Sciences Lab
         </div>
       </div>

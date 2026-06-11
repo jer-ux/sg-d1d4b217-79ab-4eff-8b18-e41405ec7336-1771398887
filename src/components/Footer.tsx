@@ -1,6 +1,6 @@
 import Link from "next/link";
+import Image from "next/image";
 import { Shield, CheckCircle, Lock, Award } from "lucide-react";
-import { KincaidIQLogo } from "@/components/KincaidIQLogo";
 
 export default function Footer() {
   return (
@@ -29,7 +29,13 @@ export default function Footer() {
 
       <div className="max-w-7xl mx-auto px-6 py-12">
         <div className="mb-12">
-          <KincaidIQLogo variant="full" size="lg" />
+          <Image 
+            src="/1772951240194-20bfeb68-285b-4423-9485-b2585796d66a.jpeg"
+            alt="Kincaid IQ Data Sciences Lab"
+            width={240}
+            height={60}
+            className="h-14 w-auto"
+          />
         </div>
         
         <div className="grid grid-cols-2 md:grid-cols-4 gap-8 mb-12">

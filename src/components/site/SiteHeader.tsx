@@ -1,13 +1,20 @@
 import Link from "next/link";
+import Image from "next/image";
 import { Button } from "@/components/ui/button";
-import { KincaidIQLogo } from "@/components/KincaidIQLogo";
 
 export function SiteHeader({ active }: { active?: string }) {
   return (
     <header className="sticky top-0 z-50 border-b border-slate-200/20 bg-white/95 backdrop-blur-sm">
       <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-6">
         <Link href="/" className="flex items-center">
-          <KincaidIQLogo variant="full" size="sm" />
+          <Image 
+            src="/1772951240194-20bfeb68-285b-4423-9485-b2585796d66a.jpeg"
+            alt="Kincaid IQ Data Sciences Lab"
+            width={150}
+            height={38}
+            className="h-9 w-auto"
+            priority
+          />
         </Link>
 
         <nav className="hidden items-center gap-6 md:flex">

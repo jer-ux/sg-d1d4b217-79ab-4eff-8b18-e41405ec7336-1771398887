@@ -1,10 +1,10 @@
 import { useState } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { Menu, X, ChevronDown, Search, Users, Building2, AlertTriangle, Calculator, FileText, TrendingUp, Briefcase, BarChart3, Shield, LineChart, DollarSign, Heart } from "lucide-react";
 import { useRouter } from "next/router";
 import { Button } from "@/components/ui/button";
 import { DropdownMenu, DropdownMenuTrigger, DropdownMenuContent, DropdownMenuItem } from "@/components/ui/dropdown-menu";
-import { KincaidIQLogo } from "@/components/KincaidIQLogo";
 
 export default function Nav() {
   const [isOpen, setIsOpen] = useState(false);
@@ -21,7 +21,14 @@ export default function Nav() {
         <div className="flex h-16 items-center justify-between">
           {/* Logo */}
           <Link href="/" className="flex items-center">
-            <KincaidIQLogo variant="full" size="md" />
+            <Image 
+              src="/1772951240194-20bfeb68-285b-4423-9485-b2585796d66a.jpeg"
+              alt="Kincaid IQ Data Sciences Lab"
+              width={180}
+              height={45}
+              className="h-10 w-auto"
+              priority
+            />
           </Link>
 
           {/* Desktop Navigation */}

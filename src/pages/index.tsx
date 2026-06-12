@@ -1,7 +1,7 @@
 import Head from "next/head";
 import { useRef, useState, useEffect } from "react";
 import Link from "next/link";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion, AnimatePresence, useInView } from "framer-motion";
 import { SEO } from "@/components/SEO";
 import {
   FileText, Shield, TrendingUp, CheckCircle2, Activity, ArrowRight,
@@ -26,6 +26,38 @@ const mockAudits = [
   { company: "Northeast Manufacturing", lives: 2800, issue: "MAC List Overcharges", savings: "$1,120,400", severity: "critical" },
   { company: "Southwest Healthcare", lives: 850, issue: "Non-Fid Commission Skimming", savings: "$322,000", severity: "high" }
 ];
+
+const fadeInUpVariants = {
+  hidden: { opacity: 0, y: 30 },
+  visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: "easeOut" } }
+};
+
+const staggerContainer = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: {
+      staggerChildren: 0.12
+    }
+  }
+};
+
+const AnimatedSection = ({ children, className = "" }: { children: React.ReactNode; className?: string }) => {
+  const ref = useRef(null);
+  const isInView = useInView(ref, { once: true, margin: "-100px" });
+
+  return (
+    <motion.div
+      ref={ref}
+      initial="hidden"
+      animate={isInView ? "visible" : "hidden"}
+      variants={fadeInUpVariants}
+      className={className}
+    >
+      {children}
+    </motion.div>
+  );
+};
 
 export default function HomePage() {
   const [mounted, setMounted] = useState(false);
@@ -100,7 +132,6 @@ export default function HomePage() {
       <div className="min-h-screen bg-[#0F1419] text-neutral-100 selection:bg-[#B8860B]/20 overflow-x-hidden font-sans">
 
         <section className="relative min-h-screen pt-32 pb-20 px-4 md:px-8 max-w-7xl mx-auto flex items-center">
-          {/* Background Graphics */}
           <div className="absolute inset-0 overflow-hidden pointer-events-none">
             <div className="absolute inset-0 opacity-30">
               <Hero3D />
@@ -112,7 +143,12 @@ export default function HomePage() {
 
           <div className="grid lg:grid-cols-12 gap-16 items-center w-full relative z-10">
             
-            <div className="lg:col-span-7 space-y-8">
+            <motion.div 
+              className="lg:col-span-7 space-y-8"
+              initial={{ opacity: 0, x: -30 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.8, ease: "easeOut" }}
+            >
               
               <div className="inline-flex items-center gap-2 bg-[#1A3A52]/20 border border-[#1A3A52] rounded px-4 py-2 text-xs font-mono text-[#B8860B] uppercase tracking-wider">
                 <Shield className="h-4 w-4" />
@@ -190,9 +226,14 @@ export default function HomePage() {
                 <span>✓ HIPAA-compliant</span>
                 <span>✓ Credentialed Actuarial team</span>
               </div>
-            </div>
+            </motion.div>
 
-            <div className="lg:col-span-5 relative">
+            <motion.div 
+              className="lg:col-span-5 relative"
+              initial={{ opacity: 0, x: 30 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.8, delay: 0.2, ease: "easeOut" }}
+            >
               <div className="border border-[#2A3F54] bg-[#0C1117] rounded-lg p-1 shadow-xl">
                 <div className="bg-[#151B23] px-4 py-2 border-b border-[#2A3F54] flex items-center justify-between text-xs font-mono text-neutral-400">
                   <div className="flex items-center gap-2">
@@ -226,7 +267,12 @@ export default function HomePage() {
                       <span className="text-red-400 font-semibold">34.8%</span>
                     </div>
                     <div className="h-2 bg-[#151B23] rounded-sm overflow-hidden">
-                      <div className="h-full bg-red-500" style={{ width: "34.8%" }} />
+                      <motion.div 
+                        className="h-full bg-red-500" 
+                        initial={{ width: 0 }}
+                        animate={{ width: "34.8%" }}
+                        transition={{ duration: 1.2, delay: 0.5, ease: "easeOut" }}
+                      />
                     </div>
                   </div>
 
@@ -236,7 +282,12 @@ export default function HomePage() {
                       <span className="text-emerald-400 font-semibold">2.5%</span>
                     </div>
                     <div className="h-2 bg-[#151B23] rounded-sm overflow-hidden">
-                      <div className="h-full bg-emerald-500" style={{ width: "2.5%" }} />
+                      <motion.div 
+                        className="h-full bg-emerald-500" 
+                        initial={{ width: 0 }}
+                        animate={{ width: "2.5%" }}
+                        transition={{ duration: 1.2, delay: 0.7, ease: "easeOut" }}
+                      />
                     </div>
                   </div>
 
@@ -251,23 +302,27 @@ export default function HomePage() {
                   </div>
                 </div>
               </div>
-            </div>
+            </motion.div>
 
           </div>
         </section>
 
-        <section className="py-24 border-t border-[#1F2937]">
-          <div className="max-w-7xl mx-auto px-4 md:px-8">
+        <section className="relative py-24 border-t border-[#1F2937] overflow-hidden">
+          <div className="absolute inset-0 pointer-events-none opacity-10">
+            <TechBackdrop intensity={0.3} density={0.6} />
+          </div>
+
+          <div className="max-w-7xl mx-auto px-4 md:px-8 relative z-10">
             
-            <div className="mb-12 text-center max-w-3xl mx-auto space-y-4">
+            <AnimatedSection className="mb-12 text-center max-w-3xl mx-auto space-y-4">
               <span className="text-xs font-mono text-[#B8860B] uppercase tracking-widest">Interactive Audit Playground</span>
               <h2 className="text-4xl md:text-5xl font-serif font-bold">The Fiduciary Lab Hub</h2>
               <p className="text-neutral-400 text-lg leading-relaxed">
                 Instantly simulate contract pricing leakage, transparent specialty drug margins, and risk-optimized trend profiles using real actuarial data.
               </p>
-            </div>
+            </AnimatedSection>
 
-            <div className="flex justify-center mb-8">
+            <AnimatedSection className="flex justify-center mb-8">
               <div className="inline-flex gap-1 bg-[#151B23] rounded p-1 border border-[#2A3F54]">
                 <button
                   onClick={() => setActivePlaygroundTab("calculator")}
@@ -300,9 +355,9 @@ export default function HomePage() {
                   Actuarial Risk Simulator
                 </button>
               </div>
-            </div>
+            </AnimatedSection>
 
-            <div className="grid lg:grid-cols-12 gap-8 items-center bg-[#151B23] border border-[#2A3F54] rounded-lg p-10">
+            <AnimatedSection className="grid lg:grid-cols-12 gap-8 items-center bg-[#151B23] border border-[#2A3F54] rounded-lg p-10">
               
               <div className="lg:col-span-5 space-y-6">
                 
@@ -457,16 +512,21 @@ export default function HomePage() {
                       <Badge className="bg-[#1A3A52]/20 text-[#B8860B] border border-[#1A3A52]">PBM Optimization</Badge>
                     </div>
 
-                    <div className="grid grid-cols-2 gap-4">
-                      <div className="bg-[#0F1419] border border-[#2A3F54] rounded p-4">
+                    <motion.div 
+                      className="grid grid-cols-2 gap-4"
+                      variants={staggerContainer}
+                      initial="hidden"
+                      animate="visible"
+                    >
+                      <motion.div variants={fadeInUpVariants} className="bg-[#0F1419] border border-[#2A3F54] rounded p-4">
                         <div className="text-xs font-mono text-neutral-400 mb-1">Identified Annual Leakage</div>
                         <div className="text-2xl font-bold text-red-400">${estimatedSpreadLeakage.toLocaleString(undefined, { maximumFractionDigits: 0 })}</div>
-                      </div>
-                      <div className="bg-[#0F1419] border border-[#2A3F54] rounded p-4">
+                      </motion.div>
+                      <motion.div variants={fadeInUpVariants} className="bg-[#0F1419] border border-[#2A3F54] rounded p-4">
                         <div className="text-xs font-mono text-neutral-400 mb-1">Projected Annual Savings</div>
                         <div className="text-2xl font-bold text-emerald-400">${estimatedPbmSavings.toLocaleString(undefined, { maximumFractionDigits: 0 })}</div>
-                      </div>
-                    </div>
+                      </motion.div>
+                    </motion.div>
 
                     <div className="bg-[#1A3A52]/10 border border-[#1A3A52] rounded p-4 flex items-center justify-between">
                       <div>
@@ -496,27 +556,53 @@ export default function HomePage() {
                       <span className="text-xs font-mono text-[#B8860B] font-semibold">{currentDrugData.brand}</span>
                     </div>
 
-                    <div className="grid grid-cols-3 gap-3">
-                      <div className="bg-[#0F1419] border border-[#2A3F54] rounded p-3 text-center">
+                    <motion.div 
+                      className="grid grid-cols-3 gap-3"
+                      variants={staggerContainer}
+                      initial="hidden"
+                      animate="visible"
+                    >
+                      <motion.div variants={fadeInUpVariants} className="bg-[#0F1419] border border-[#2A3F54] rounded p-3 text-center">
                         <div className="text-[10px] font-mono text-neutral-400">PBM Contract cost</div>
                         <div className="text-lg font-bold text-red-400 mt-1">${currentDrugData.pbm}</div>
-                      </div>
-                      <div className="bg-[#0F1419] border border-[#2A3F54] rounded p-3 text-center">
+                      </motion.div>
+                      <motion.div variants={fadeInUpVariants} className="bg-[#0F1419] border border-[#2A3F54] rounded p-3 text-center">
                         <div className="text-[10px] font-mono text-neutral-400">Cost Plus cost</div>
                         <div className="text-lg font-bold text-emerald-400 mt-1">${currentDrugData.costplus}</div>
-                      </div>
-                      <div className="bg-[#0F1419] border border-[#2A3F54] rounded p-3 text-center">
+                      </motion.div>
+                      <motion.div variants={fadeInUpVariants} className="bg-[#0F1419] border border-[#2A3F54] rounded p-3 text-center">
                         <div className="text-[10px] font-mono text-neutral-400">Instant Savings</div>
                         <div className="text-lg font-bold text-[#B8860B] mt-1">-{drugSavingsPercent}%</div>
-                      </div>
-                    </div>
+                      </motion.div>
+                    </motion.div>
 
                     <div className="space-y-3 pt-2">
                       <div className="text-xs font-mono text-neutral-300">Cost-Plus Transparent Breakdown:</div>
                       <div className="flex items-center h-4 bg-[#0F1419] rounded overflow-hidden text-[9px] font-mono text-white font-semibold">
-                        <div className="bg-emerald-600 h-full flex items-center justify-center px-2" style={{ width: "70%" }}>Active Ingredient 85%</div>
-                        <div className="bg-[#B8860B] h-full flex items-center justify-center px-2" style={{ width: "15%" }}>15% Markup</div>
-                        <div className="bg-blue-600 h-full flex items-center justify-center px-2" style={{ width: "15%" }}>Flat Fee</div>
+                        <motion.div 
+                          className="bg-emerald-600 h-full flex items-center justify-center px-2" 
+                          initial={{ width: 0 }}
+                          animate={{ width: "70%" }}
+                          transition={{ duration: 0.8, ease: "easeOut" }}
+                        >
+                          Active Ingredient 85%
+                        </motion.div>
+                        <motion.div 
+                          className="bg-[#B8860B] h-full flex items-center justify-center px-2" 
+                          initial={{ width: 0 }}
+                          animate={{ width: "15%" }}
+                          transition={{ duration: 0.8, delay: 0.2, ease: "easeOut" }}
+                        >
+                          15% Markup
+                        </motion.div>
+                        <motion.div 
+                          className="bg-blue-600 h-full flex items-center justify-center px-2" 
+                          initial={{ width: 0 }}
+                          animate={{ width: "15%" }}
+                          transition={{ duration: 0.8, delay: 0.4, ease: "easeOut" }}
+                        >
+                          Flat Fee
+                        </motion.div>
                       </div>
                       <div className="flex justify-between text-[10px] text-neutral-400 font-mono">
                         <span>✓ Raw ingredient cost fixed with manufacturer</span>
@@ -533,16 +619,21 @@ export default function HomePage() {
                       <Badge className="bg-emerald-900/20 text-emerald-400 border border-emerald-900/40">Stable Trend Projections</Badge>
                     </div>
 
-                    <div className="grid grid-cols-2 gap-4">
-                      <div className="bg-[#0F1419] border border-[#2A3F54] rounded p-4">
+                    <motion.div 
+                      className="grid grid-cols-2 gap-4"
+                      variants={staggerContainer}
+                      initial="hidden"
+                      animate="visible"
+                    >
+                      <motion.div variants={fadeInUpVariants} className="bg-[#0F1419] border border-[#2A3F54] rounded p-4">
                         <div className="text-xs font-mono text-neutral-400 mb-1">Estimated Raw Trend (YoY)</div>
                         <div className="text-2xl font-bold text-red-400">${rawTrendCost.toLocaleString(undefined, { maximumFractionDigits: 0 })}</div>
-                      </div>
-                      <div className="bg-[#0F1419] border border-[#2A3F54] rounded p-4">
+                      </motion.div>
+                      <motion.div variants={fadeInUpVariants} className="bg-[#0F1419] border border-[#2A3F54] rounded p-4">
                         <div className="text-xs font-mono text-neutral-400 mb-1">Optimized Fiduciary Trend</div>
                         <div className="text-2xl font-bold text-emerald-400">${optimizedTrendCost.toLocaleString(undefined, { maximumFractionDigits: 0 })}</div>
-                      </div>
-                    </div>
+                      </motion.div>
+                    </motion.div>
 
                     <div className="bg-emerald-900/10 border border-emerald-900/40 rounded p-4 flex items-center justify-between">
                       <div>
@@ -558,15 +649,19 @@ export default function HomePage() {
 
               </div>
 
-            </div>
+            </AnimatedSection>
 
           </div>
         </section>
 
-        <section className="py-24 max-w-7xl mx-auto px-4 md:px-8">
-          <div className="grid lg:grid-cols-12 gap-12 items-center">
+        <section className="relative py-24 max-w-7xl mx-auto px-4 md:px-8 overflow-hidden">
+          <div className="absolute inset-0 pointer-events-none opacity-10">
+            <TechBackdrop intensity={0.3} density={0.6} />
+          </div>
+
+          <div className="grid lg:grid-cols-12 gap-12 items-center relative z-10">
             
-            <div className="lg:col-span-5 space-y-6">
+            <AnimatedSection className="lg:col-span-5 space-y-6">
               <span className="text-xs font-mono text-red-400 uppercase tracking-widest">Plan Vulnerability Diagnosis</span>
               <h2 className="text-4xl md:text-5xl font-serif font-bold">Plan Cost Leakage Heatmap</h2>
               <p className="text-neutral-300 text-lg leading-relaxed">
@@ -602,16 +697,24 @@ export default function HomePage() {
                   )}
                 </AnimatePresence>
               </div>
-            </div>
+            </AnimatedSection>
 
-            <div className="lg:col-span-7 grid grid-cols-2 gap-4">
+            <motion.div 
+              className="lg:col-span-7 grid grid-cols-2 gap-4"
+              variants={staggerContainer}
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true, margin: "-100px" }}
+            >
               
-              <button
+              <motion.button
+                variants={fadeInUpVariants}
                 onMouseEnter={() => setHoveredLeakage("Formulary")}
                 onMouseLeave={() => setHoveredLeakage(null)}
+                whileHover={{ scale: 1.02 }}
                 className={`relative rounded-lg p-6 text-left border transition-all duration-200 ${
                   hoveredLeakage === "Formulary"
-                    ? "bg-red-950/20 border-red-900/50 scale-[1.02]"
+                    ? "bg-red-950/20 border-red-900/50"
                     : "bg-[#151B23] border-[#2A3F54] hover:border-[#3A4F64]"
                 }`}
               >
@@ -620,14 +723,16 @@ export default function HomePage() {
                 <h4 className="text-lg font-semibold text-white">Formulary Manipulation</h4>
                 <p className="text-neutral-400 text-xs mt-2 leading-relaxed">Therapeutic substitutions favoring higher rebated brands over generic alternatives.</p>
                 <div className="mt-4 text-xs font-semibold text-red-300">Severe Waste: ~12%</div>
-              </button>
+              </motion.button>
 
-              <button
+              <motion.button
+                variants={fadeInUpVariants}
                 onMouseEnter={() => setHoveredLeakage("Specialty")}
                 onMouseLeave={() => setHoveredLeakage(null)}
+                whileHover={{ scale: 1.02 }}
                 className={`relative rounded-lg p-6 text-left border transition-all duration-200 ${
                   hoveredLeakage === "Specialty"
-                    ? "bg-red-950/20 border-red-900/50 scale-[1.02]"
+                    ? "bg-red-950/20 border-red-900/50"
                     : "bg-[#151B23] border-[#2A3F54] hover:border-[#3A4F64]"
                 }`}
               >
@@ -636,14 +741,16 @@ export default function HomePage() {
                 <h4 className="text-lg font-semibold text-white">Specialty Markups</h4>
                 <p className="text-neutral-400 text-xs mt-2 leading-relaxed">Aggressive compound markups on oncology and specialty medications.</p>
                 <div className="mt-4 text-xs font-semibold text-red-500">Critical Waste: ~32%</div>
-              </button>
+              </motion.button>
 
-              <button
+              <motion.button
+                variants={fadeInUpVariants}
                 onMouseEnter={() => setHoveredLeakage("Rebates")}
                 onMouseLeave={() => setHoveredLeakage(null)}
+                whileHover={{ scale: 1.02 }}
                 className={`relative rounded-lg p-6 text-left border transition-all duration-200 ${
                   hoveredLeakage === "Rebates"
-                    ? "bg-red-950/20 border-red-900/50 scale-[1.02]"
+                    ? "bg-red-950/20 border-red-900/50"
                     : "bg-[#151B23] border-[#2A3F54] hover:border-[#3A4F64]"
                 }`}
               >
@@ -652,14 +759,16 @@ export default function HomePage() {
                 <h4 className="text-lg font-semibold text-white">Rebate Retaining</h4>
                 <p className="text-neutral-400 text-xs mt-2 leading-relaxed">Hidden Group Purchasing Organizations collecting and retaining manufacturer rebates.</p>
                 <div className="mt-4 text-xs font-semibold text-red-300">Moderate Waste: ~15%</div>
-              </button>
+              </motion.button>
 
-              <button
+              <motion.button
+                variants={fadeInUpVariants}
                 onMouseEnter={() => setHoveredLeakage("Spread Pricing")}
                 onMouseLeave={() => setHoveredLeakage(null)}
+                whileHover={{ scale: 1.02 }}
                 className={`relative rounded-lg p-6 text-left border transition-all duration-200 ${
                   hoveredLeakage === "Spread Pricing"
-                    ? "bg-red-950/20 border-red-900/50 scale-[1.02]"
+                    ? "bg-red-950/20 border-red-900/50"
                     : "bg-[#151B23] border-[#2A3F54] hover:border-[#3A4F64]"
                 }`}
               >
@@ -668,25 +777,29 @@ export default function HomePage() {
                 <h4 className="text-lg font-semibold text-white">Spread Pricing</h4>
                 <p className="text-neutral-400 text-xs mt-2 leading-relaxed">Over-billing the employer compared to direct pharmacy acquisition cost.</p>
                 <div className="mt-4 text-xs font-semibold text-red-300">Severe Waste: ~18%</div>
-              </button>
+              </motion.button>
 
-            </div>
+            </motion.div>
 
           </div>
         </section>
 
-        <section className="py-24 border-t border-[#1F2937]">
-          <div className="max-w-5xl mx-auto px-4 md:px-8">
+        <section className="relative py-24 border-t border-[#1F2937] overflow-hidden">
+          <div className="absolute inset-0 pointer-events-none opacity-10">
+            <TechBackdrop intensity={0.3} density={0.6} />
+          </div>
+
+          <div className="max-w-5xl mx-auto px-4 md:px-8 relative z-10">
             
-            <div className="mb-12 text-center space-y-4">
+            <AnimatedSection className="mb-12 text-center space-y-4">
               <span className="text-xs font-mono text-[#B8860B] uppercase tracking-widest font-semibold">Absolute Transparency</span>
               <h2 className="text-4xl md:text-5xl font-serif font-bold">Traditional Broker vs. Fiduciary Standard</h2>
               <p className="text-neutral-400 text-lg max-w-2xl mx-auto leading-relaxed">
                 Compare the legal obligations, audit capabilities, and aligned incentives under our strict fiduciary healthcare model.
               </p>
-            </div>
+            </AnimatedSection>
 
-            <div className="border border-[#2A3F54] bg-[#151B23] rounded-lg overflow-hidden">
+            <AnimatedSection className="border border-[#2A3F54] bg-[#151B23] rounded-lg overflow-hidden">
               <div className="grid grid-cols-12 bg-[#0F1419] p-4 font-mono text-xs font-semibold text-neutral-400 tracking-wider uppercase border-b border-[#2A3F54]">
                 <div className="col-span-6 md:col-span-5">Audit & Contract Parameter</div>
                 <div className="col-span-3 text-center text-red-400">Traditional Broker</div>
@@ -756,24 +869,36 @@ export default function HomePage() {
                 </div>
 
               </div>
-            </div>
+            </AnimatedSection>
 
           </div>
         </section>
 
-        <section className="py-24 max-w-7xl mx-auto px-4 md:px-8">
-          <div className="mb-12 text-center max-w-3xl mx-auto space-y-4">
+        <section className="relative py-24 max-w-7xl mx-auto px-4 md:px-8 overflow-hidden">
+          <div className="absolute inset-0 pointer-events-none opacity-10">
+            <TechBackdrop intensity={0.3} density={0.6} />
+          </div>
+
+          <AnimatedSection className="mb-12 text-center max-w-3xl mx-auto space-y-4">
             <span className="text-xs font-mono text-[#B8860B] uppercase tracking-widest">Platform Core Architecture</span>
             <h2 className="text-4xl md:text-5xl font-serif font-bold">Core Analytical Capabilities</h2>
             <p className="text-neutral-400 text-lg leading-relaxed">
               Three foundational analytical modules supporting fiduciary healthcare governance.
             </p>
-          </div>
+          </AnimatedSection>
 
-          <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+          <motion.div 
+            className="grid gap-6 md:grid-cols-2 lg:grid-cols-3 relative z-10"
+            variants={staggerContainer}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, margin: "-100px" }}
+          >
             
-            <div
+            <motion.div
+              variants={fadeInUpVariants}
               onClick={() => handleBadgeClick("receipts")}
+              whileHover={{ y: -4 }}
               className="group relative rounded-lg border border-[#2A3F54] bg-[#151B23] p-8 hover:border-[#3A4F64] cursor-pointer transition-all duration-200"
             >
               <div className="mb-4 inline-flex rounded bg-[#1A3A52]/20 p-3">
@@ -786,10 +911,12 @@ export default function HomePage() {
               <div className="mt-4 flex items-center gap-1 text-xs font-semibold text-[#B8860B] group-hover:text-[#D4AF37]">
                 Review documentation standards <ChevronRight className="h-4 w-4" />
               </div>
-            </div>
+            </motion.div>
 
-            <div
+            <motion.div
+              variants={fadeInUpVariants}
               onClick={() => handleBadgeClick("ebitda")}
+              whileHover={{ y: -4 }}
               className="group relative rounded-lg border border-[#2A3F54] bg-[#151B23] p-8 hover:border-[#3A4F64] cursor-pointer transition-all duration-200"
             >
               <div className="mb-4 inline-flex rounded bg-[#1A3A52]/20 p-3">
@@ -802,10 +929,12 @@ export default function HomePage() {
               <div className="mt-4 flex items-center gap-1 text-xs font-semibold text-[#B8860B] group-hover:text-[#D4AF37]">
                 Review financial methodology <ChevronRight className="h-4 w-4" />
               </div>
-            </div>
+            </motion.div>
 
-            <div
+            <motion.div
+              variants={fadeInUpVariants}
               onClick={() => handleBadgeClick("verification")}
+              whileHover={{ y: -4 }}
               className="group relative rounded-lg border border-[#2A3F54] bg-[#151B23] p-8 hover:border-[#3A4F64] cursor-pointer transition-all duration-200"
             >
               <div className="mb-4 inline-flex rounded bg-[#1A3A52]/20 p-3">
@@ -818,14 +947,18 @@ export default function HomePage() {
               <div className="mt-4 flex items-center gap-1 text-xs font-semibold text-[#B8860B] group-hover:text-[#D4AF37]">
                 Review integration protocols <ChevronRight className="h-4 w-4" />
               </div>
-            </div>
+            </motion.div>
 
-          </div>
+          </motion.div>
         </section>
 
-        <section className="py-24 border-t border-[#1F2937]">
-          <div className="max-w-7xl mx-auto px-4 md:px-8">
-            <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 mb-12">
+        <section className="relative py-24 border-t border-[#1F2937] overflow-hidden">
+          <div className="absolute inset-0 pointer-events-none opacity-10">
+            <TechBackdrop intensity={0.3} density={0.6} />
+          </div>
+
+          <div className="max-w-7xl mx-auto px-4 md:px-8 relative z-10">
+            <AnimatedSection className="flex flex-col md:flex-row md:items-center justify-between gap-6 mb-12">
               <div className="space-y-2">
                 <span className="text-xs font-mono text-[#B8860B] uppercase tracking-widest">Unified Enterprise Command</span>
                 <h2 className="text-4xl md:text-5xl font-serif font-bold">Live Fiduciary Intelligence Portal</h2>
@@ -840,10 +973,9 @@ export default function HomePage() {
                 <span>View Full Command Center</span>
                 <ChevronRight className="h-4 w-4" />
               </Link>
-            </div>
+            </AnimatedSection>
 
-            {/* Role Selector Tabs */}
-            <div className="flex justify-center mb-8">
+            <AnimatedSection className="flex justify-center mb-8">
               <div className="inline-flex gap-1 bg-[#151B23] rounded p-1 border border-[#2A3F54]">
                 <button
                   onClick={() => setActiveWarRoomRole("cfo")}
@@ -886,12 +1018,11 @@ export default function HomePage() {
                   PE Operator View
                 </button>
               </div>
-            </div>
+            </AnimatedSection>
 
-            <div className="rounded-lg border border-[#2A3F54] bg-[#0C1117] p-10 relative">
+            <AnimatedSection className="rounded-lg border border-[#2A3F54] bg-[#0C1117] p-10 relative">
               <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-[#1A3A52] via-[#B8860B] to-[#1A3A52]" />
               
-              {/* CFO Dashboard */}
               {activeWarRoomRole === "cfo" && (
                 <div className="space-y-6">
                   <div className="flex items-center justify-between mb-8">
@@ -902,53 +1033,47 @@ export default function HomePage() {
                     <Badge className="bg-[#1A3A52]/20 text-[#B8860B] border border-[#1A3A52]">Live Financial Data</Badge>
                   </div>
 
-                  <div className="grid grid-cols-4 gap-4">
-                    <div className="bg-[#151B23] border border-[#2A3F54] rounded-lg p-5">
+                  <motion.div 
+                    className="grid grid-cols-4 gap-4"
+                    variants={staggerContainer}
+                    initial="hidden"
+                    animate="visible"
+                  >
+                    <motion.div variants={fadeInUpVariants} className="bg-[#151B23] border border-[#2A3F54] rounded-lg p-5">
                       <div className="text-xs font-mono text-neutral-400 mb-1">Total Identified Savings</div>
                       <div className="text-2xl font-bold text-emerald-400">$3.2M</div>
                       <div className="text-xs text-emerald-400 mt-1 flex items-center gap-1">
                         <TrendingUp className="w-3 h-3" /> +18% vs Q3
                       </div>
-                    </div>
-                    <div className="bg-[#151B23] border border-[#2A3F54] rounded-lg p-5">
+                    </motion.div>
+                    <motion.div variants={fadeInUpVariants} className="bg-[#151B23] border border-[#2A3F54] rounded-lg p-5">
                       <div className="text-xs font-mono text-neutral-400 mb-1">EBITDA Impact</div>
                       <div className="text-2xl font-bold text-white">+2.4%</div>
                       <div className="text-xs text-neutral-400 mt-1">Margin improvement</div>
-                    </div>
-                    <div className="bg-[#151B23] border border-[#2A3F54] rounded-lg p-5">
+                    </motion.div>
+                    <motion.div variants={fadeInUpVariants} className="bg-[#151B23] border border-[#2A3F54] rounded-lg p-5">
                       <div className="text-xs font-mono text-neutral-400 mb-1">Cash Flow Improvement</div>
                       <div className="text-2xl font-bold text-white">$847K</div>
                       <div className="text-xs text-neutral-400 mt-1">Annualized Q4</div>
-                    </div>
-                    <div className="bg-[#151B23] border border-[#2A3F54] rounded-lg p-5">
+                    </motion.div>
+                    <motion.div variants={fadeInUpVariants} className="bg-[#151B23] border border-[#2A3F54] rounded-lg p-5">
                       <div className="text-xs font-mono text-neutral-400 mb-1">Contract Compliance</div>
                       <div className="text-2xl font-bold text-[#B8860B]">94%</div>
                       <div className="text-xs text-red-400 mt-1 flex items-center gap-1">
                         <AlertTriangle className="w-3 h-3" /> 6% at risk
                       </div>
-                    </div>
-                  </div>
+                    </motion.div>
+                  </motion.div>
 
                   <ExecutiveWarRoom />
                 </div>
               )}
 
-              {/* CHRO Dashboard */}
-              {activeWarRoomRole === "chro" && (
-                <CHROWarRoom />
-              )}
-
-              {/* Board Dashboard */}
-              {activeWarRoomRole === "board" && (
-                <BoardWarRoom />
-              )}
-
-              {/* PE Operator Dashboard */}
-              {activeWarRoomRole === "pe" && (
-                <PEOperatorWarRoom />
-              )}
+              {activeWarRoomRole === "chro" && <CHROWarRoom />}
+              {activeWarRoomRole === "board" && <BoardWarRoom />}
+              {activeWarRoomRole === "pe" && <PEOperatorWarRoom />}
               
-            </div>
+            </AnimatedSection>
           </div>
         </section>
 
@@ -958,12 +1083,18 @@ export default function HomePage() {
               <div className="text-xs font-mono text-neutral-500 uppercase tracking-wide">Fiduciary Assurance Standards</div>
               <div className="text-sm font-semibold text-neutral-300">Adhering to strict national operational healthcare and cybersecurity frameworks.</div>
             </div>
-            <div className="flex flex-wrap items-center justify-center gap-4 text-xs font-mono font-semibold text-neutral-400">
-              <span className="border border-[#2A3F54] bg-[#151B23] px-3 py-1.5 rounded">SSAE-18 SOC 2 TYPE II</span>
-              <span className="border border-[#2A3F54] bg-[#151B23] px-3 py-1.5 rounded">HIPAA ENCRYPTED</span>
-              <span className="border border-[#2A3F54] bg-[#151B23] px-3 py-1.5 rounded">ERISA FIDUCIARY</span>
-              <span className="border border-[#2A3F54] bg-[#151B23] px-3 py-1.5 rounded">AAA STANDARDS</span>
-            </div>
+            <motion.div 
+              className="flex flex-wrap items-center justify-center gap-4 text-xs font-mono font-semibold text-neutral-400"
+              variants={staggerContainer}
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true }}
+            >
+              <motion.span variants={fadeInUpVariants} className="border border-[#2A3F54] bg-[#151B23] px-3 py-1.5 rounded">SSAE-18 SOC 2 TYPE II</motion.span>
+              <motion.span variants={fadeInUpVariants} className="border border-[#2A3F54] bg-[#151B23] px-3 py-1.5 rounded">HIPAA ENCRYPTED</motion.span>
+              <motion.span variants={fadeInUpVariants} className="border border-[#2A3F54] bg-[#151B23] px-3 py-1.5 rounded">ERISA FIDUCIARY</motion.span>
+              <motion.span variants={fadeInUpVariants} className="border border-[#2A3F54] bg-[#151B23] px-3 py-1.5 rounded">AAA STANDARDS</motion.span>
+            </motion.div>
           </div>
         </section>
 

@@ -1,394 +1,317 @@
-import { useState } from "react";
-import { Shield, Award, AlertTriangle, ChevronRight, TrendingUp, TrendingDown, Info, FileText, Users, DollarSign, Calendar, CheckCircle2 } from "lucide-react";
+import { useMemo, useState } from "react";
+import { Shield, Award, AlertTriangle, FileText, Calendar, CheckCircle2, TrendingUp, TrendingDown, RefreshCw } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
-import { Card } from "@/components/ui/card";
+import type { TileData, Filters } from "./executiveTypes";
+import { ExecutiveTicker } from "./widgets/ExecutiveTicker";
+import { ExecutiveFiltersBar } from "./widgets/ExecutiveFiltersBar";
+import { BoardDrillDownDrawer } from "./BoardDrillDownDrawer";
+import { ResponsiveContainer, AreaChart, Area } from "recharts";
+
+const DEFAULT_FILTERS: Filters = {
+  org: "Portfolio",
+  period: "MTD",
+  currency: "USD",
+  businessUnit: "All",
+};
+
+function getBoardTiles(): TileData[] {
+  return [
+    {
+      key: "fiduciary",
+      title: "Fiduciary Compliance",
+      value: "98%",
+      delta: "+2.1pp YoY",
+      trend: "up",
+      subtitle: "ERISA Section 404 Standards",
+      framework: "Bain",
+      chartData: [
+        { period: "Q1", value: 95 },
+        { period: "Q2", value: 96 },
+        { period: "Q3", value: 97 },
+        { period: "Q4", value: 98 },
+      ]
+    },
+    {
+      key: "risk",
+      title: "Enterprise Risk Index",
+      value: "Low",
+      delta: "-4% Exposure",
+      trend: "down",
+      subtitle: "Vendor Concentration & Specialty Volatility",
+      framework: "McKinsey",
+      chartData: [
+        { period: "Q1", value: 24 },
+        { period: "Q2", value: 18 },
+        { period: "Q3", value: 15 },
+        { period: "Q4", value: 12 },
+      ]
+    },
+    {
+      key: "renewals",
+      title: "PBM Contract Renewals",
+      value: "Q2 2027",
+      delta: "70% RFP Complete",
+      trend: "up",
+      subtitle: "Renegotiation Strategy Roadmap",
+      framework: "McKinsey",
+      chartData: [
+        { period: "Q1", value: 40 },
+        { period: "Q2", value: 55 },
+        { period: "Q3", value: 62 },
+        { period: "Q4", value: 70 },
+      ]
+    },
+    {
+      key: "governance",
+      title: "Audit Committee Cadence",
+      value: "Approved",
+      delta: "100% Verified",
+      trend: "up",
+      subtitle: "Last audit: Oct 15, 2026",
+      framework: "Bain",
+      chartData: [
+        { period: "Q1", value: 85 },
+        { period: "Q2", value: 90 },
+        { period: "Q3", value: 94 },
+        { period: "Q4", value: 100 },
+      ]
+    }
+  ];
+}
+
+function getBoardTickerItems(): string[] {
+  return [
+    "Board Alert: ERISA Fiduciary Compliance validated at 98% for plan year 2026",
+    "Contract Watch: PBM RFP preparation reaches 70% milestone | Draft review set for Q1 2027 meeting",
+    "Risk Mitigation: Specialty drug volatility exposure reduced by 14% via new carve-out policies",
+    "Governance Audit: Cryptographic signature validated for all active healthcare contracts"
+  ];
+}
 
 export function BoardWarRoom() {
-  const [selectedMetric, setSelectedMetric] = useState<"compliance" | "risk" | "initiatives" | "governance" | null>(null);
+  const [filters, setFilters] = useState<Filters>(DEFAULT_FILTERS);
+  const [selectedTile, setSelectedTile] = useState<TileData | null>(null);
+  const [drawerOpen, setDrawerOpen] = useState(false);
+
+  const tiles = useMemo(() => getBoardTiles(), []);
+  const tickerItems = useMemo(() => getBoardTickerItems(), []);
+
+  const handleTileClick = (tile: TileData) => {
+    setSelectedTile(tile);
+    setDrawerOpen(true);
+  };
+
+  const handleCloseDrawer = () => {
+    setDrawerOpen(false);
+    setTimeout(() => {
+      setSelectedTile(null);
+    }, 300);
+  };
 
   return (
-    <div className="space-y-6">
-      <div className="flex items-center justify-between mb-8">
-        <div>
-          <h3 className="text-2xl font-serif font-bold text-white">Board of Directors Command Center</h3>
-          <p className="text-sm text-neutral-400 mt-1">Governance, compliance & fiduciary oversight metrics</p>
+    <div className="min-h-screen bg-transparent text-zinc-100">
+      {/* Dynamic Header */}
+      <header className="border-b border-amber-500/20 bg-zinc-950/60 backdrop-blur-md sticky top-0 z-40">
+        <div className="mx-auto max-w-[1600px] px-6 py-5">
+          <div className="flex items-start justify-between gap-4">
+            <div className="flex-1">
+              <div className="flex items-center gap-3 mb-2">
+                <div className="text-2xl font-black bg-gradient-to-r from-amber-400 via-yellow-300 to-amber-600 bg-clip-text text-transparent">SiriusB iQ</div>
+                <div className="text-xs tracking-wide text-amber-400/80 font-mono font-bold uppercase border-l border-amber-500/30 pl-3">Boardroom Edition</div>
+              </div>
+              <h1 className="text-xl font-bold font-serif tracking-tight text-white">Board of Directors Command Center</h1>
+              <div className="mt-1 text-sm text-zinc-400">
+                Governance, compliance, and fiduciary oversight metrics. Powered by <span className="text-amber-400 font-medium">Evidence-First™ Data Science</span>.
+              </div>
+              <div className="mt-2 text-xs text-zinc-500 flex items-center gap-2">
+                <span className="flex h-2 w-2 rounded-full bg-amber-500 shadow-[0_0_8px_rgba(245,158,11,0.5)] animate-pulse" />
+                System Oversight: <span className="text-amber-400 font-semibold font-mono">SECURE / ACTIVE</span>
+              </div>
+            </div>
+
+            <div className="hidden md:block">
+              <ExecutiveFiltersBar value={filters} onChange={setFilters} />
+            </div>
+          </div>
+
+          <div className="mt-4 md:hidden">
+            <ExecutiveFiltersBar value={filters} onChange={setFilters} />
+          </div>
         </div>
-        <Badge className="bg-[#1A3A52]/20 text-[#B8860B] border border-[#1A3A52]">Executive Summary</Badge>
-      </div>
+      </header>
 
-      {/* Top-Level KPIs */}
-      <div className="grid grid-cols-4 gap-4">
-        <button
-          onClick={() => setSelectedMetric("compliance")}
-          className={`bg-[#151B23] border rounded-lg p-5 text-left transition-all ${
-            selectedMetric === "compliance" 
-              ? "border-emerald-500 ring-2 ring-emerald-500/20" 
-              : "border-[#2A3F54] hover:border-[#3A4F64]"
-          }`}
-        >
-          <div className="text-xs font-mono text-neutral-400 mb-1">Fiduciary Compliance</div>
-          <div className="text-2xl font-bold text-emerald-400">98%</div>
-          <div className="text-xs text-emerald-400 mt-1">ERISA standards met</div>
-        </button>
-        
-        <button
-          onClick={() => setSelectedMetric("risk")}
-          className={`bg-[#151B23] border rounded-lg p-5 text-left transition-all ${
-            selectedMetric === "risk" 
-              ? "border-yellow-500 ring-2 ring-yellow-500/20" 
-              : "border-[#2A3F54] hover:border-[#3A4F64]"
-          }`}
-        >
-          <div className="text-xs font-mono text-neutral-400 mb-1">Risk Exposure</div>
-          <div className="text-2xl font-bold text-yellow-400">Low</div>
-          <div className="text-xs text-neutral-400 mt-1">2 items flagged</div>
-        </button>
-        
-        <button
-          onClick={() => setSelectedMetric("initiatives")}
-          className={`bg-[#151B23] border rounded-lg p-5 text-left transition-all ${
-            selectedMetric === "initiatives" 
-              ? "border-blue-500 ring-2 ring-blue-500/20" 
-              : "border-[#2A3F54] hover:border-[#3A4F64]"
-          }`}
-        >
-          <div className="text-xs font-mono text-neutral-400 mb-1">Contract Renewals</div>
-          <div className="text-2xl font-bold text-white">Q2 2027</div>
-          <div className="text-xs text-neutral-400 mt-1">Next major decision</div>
-        </button>
-        
-        <button
-          onClick={() => setSelectedMetric("governance")}
-          className={`bg-[#151B23] border rounded-lg p-5 text-left transition-all ${
-            selectedMetric === "governance" 
-              ? "border-emerald-500 ring-2 ring-emerald-500/20" 
-              : "border-[#2A3F54] hover:border-[#3A4F64]"
-          }`}
-        >
-          <div className="text-xs font-mono text-neutral-400 mb-1">Audit Status</div>
-          <div className="text-2xl font-bold text-emerald-400">Current</div>
-          <div className="text-xs text-neutral-400 mt-1">Last audit: Oct 2026</div>
-        </button>
-      </div>
+      {/* Marquee Ticker */}
+      <ExecutiveTicker items={tickerItems} />
 
-      {/* Drill-Down Panel */}
-      {selectedMetric && (
-        <div className="bg-[#0C1117] border border-[#1A3A52] rounded-lg p-8">
-          {selectedMetric === "compliance" && (
-            <div className="space-y-6">
-              <div className="flex items-center gap-2 mb-4">
-                <Shield className="w-5 h-5 text-emerald-400" />
-                <h4 className="text-lg font-semibold text-white">Fiduciary Compliance Breakdown</h4>
-              </div>
-              
-              <div className="grid md:grid-cols-2 gap-6">
-                <div className="space-y-4">
-                  <div>
-                    <div className="flex items-center justify-between mb-2">
-                      <span className="text-sm text-neutral-300">ERISA Section 404 Adherence</span>
-                      <span className="text-sm font-semibold text-emerald-400">100%</span>
-                    </div>
-                    <div className="h-2 bg-[#0F1419] rounded overflow-hidden">
-                      <div className="h-full bg-emerald-500" style={{ width: "100%" }} />
-                    </div>
+      {/* Main Panel Content */}
+      <main className="mx-auto max-w-[1600px] px-6 py-8">
+        <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-4 mb-8">
+          {tiles.map((tile) => {
+            const Icon = tile.key === "fiduciary" ? Shield :
+                         tile.key === "risk" ? AlertTriangle :
+                         tile.key === "renewals" ? Calendar : FileText;
+
+            const isGold = tile.key === "fiduciary" || tile.key === "governance";
+
+            return (
+              <button
+                key={tile.key}
+                onClick={() => handleTileClick(tile)}
+                className="group relative rounded-xl border border-zinc-800/80 bg-zinc-900/30 p-5 text-left transition-all duration-300 hover:border-amber-500/50 hover:bg-zinc-800/40 hover:shadow-xl hover:shadow-amber-500/5"
+              >
+                {/* Visual Accent Layer */}
+                <div className="absolute top-0 left-0 h-[2px] w-0 bg-gradient-to-r from-amber-500 to-yellow-400 transition-all duration-300 group-hover:w-full" />
+                
+                <div className="flex items-start justify-between mb-4">
+                  <div className="rounded-lg bg-zinc-850 p-2.5 border border-zinc-800 transition-colors group-hover:border-amber-500/20 group-hover:bg-amber-500/5">
+                    <Icon className="h-5 w-5 text-amber-400" />
                   </div>
-                  <div>
-                    <div className="flex items-center justify-between mb-2">
-                      <span className="text-sm text-neutral-300">DOL Reporting Standards</span>
-                      <span className="text-sm font-semibold text-emerald-400">98%</span>
-                    </div>
-                    <div className="h-2 bg-[#0F1419] rounded overflow-hidden">
-                      <div className="h-full bg-emerald-500" style={{ width: "98%" }} />
-                    </div>
-                  </div>
-                  <div>
-                    <div className="flex items-center justify-between mb-2">
-                      <span className="text-sm text-neutral-300">Plan Document Accuracy</span>
-                      <span className="text-sm font-semibold text-emerald-400">96%</span>
-                    </div>
-                    <div className="h-2 bg-[#0F1419] rounded overflow-hidden">
-                      <div className="h-full bg-emerald-500" style={{ width: "96%" }} />
-                    </div>
-                  </div>
+                  {tile.delta && (
+                    <span className="text-xs font-mono font-medium text-amber-500 bg-amber-500/5 px-2.5 py-0.5 rounded-full border border-amber-500/10">
+                      {tile.delta}
+                    </span>
+                  )}
                 </div>
 
-                <div className="bg-[#151B23] border border-[#2A3F54] rounded p-4">
-                  <div className="text-xs font-mono text-neutral-400 mb-3">Compliance Audit Trail</div>
-                  <div className="space-y-2 text-xs">
-                    <div className="flex items-center justify-between">
-                      <span className="text-neutral-300">Form 5500 Filed</span>
-                      <CheckCircle2 className="w-4 h-4 text-emerald-400" />
-                    </div>
-                    <div className="flex items-center justify-between">
-                      <span className="text-neutral-300">SPD Distribution Complete</span>
-                      <CheckCircle2 className="w-4 h-4 text-emerald-400" />
-                    </div>
-                    <div className="flex items-center justify-between">
-                      <span className="text-neutral-300">Fidelity Bond Updated</span>
-                      <CheckCircle2 className="w-4 h-4 text-emerald-400" />
-                    </div>
-                    <div className="flex items-center justify-between">
-                      <span className="text-neutral-300">Prohibited Transactions Review</span>
-                      <Badge className="bg-yellow-900/20 text-yellow-400 border-0 text-[10px] px-2 py-0.5">In Progress</Badge>
-                    </div>
+                <div className="space-y-1">
+                  <div className="text-xs font-mono text-zinc-400 uppercase tracking-wider">{tile.title}</div>
+                  <div className="text-3xl font-bold font-serif text-white tracking-tight">{tile.value}</div>
+                  <p className="text-xs text-zinc-400 line-clamp-1 group-hover:text-zinc-300 transition-colors">{tile.subtitle}</p>
+                </div>
+
+                {/* Micro Sparkline Chart */}
+                {tile.chartData && (
+                  <div className="mt-5 h-10 w-full opacity-60 group-hover:opacity-100 transition-opacity">
+                    <ResponsiveContainer width="100%" height="100%">
+                      <AreaChart data={tile.chartData}>
+                        <defs>
+                          <linearGradient id={`gradient-${tile.key}`} x1="0" y1="0" x2="0" y2="1">
+                            <stop offset="5%" stopColor="#d97706" stopOpacity={0.25}/>
+                            <stop offset="95%" stopColor="#d97706" stopOpacity={0}/>
+                          </linearGradient>
+                        </defs>
+                        <Area 
+                          type="monotone" 
+                          dataKey="value" 
+                          stroke="#f59e0b" 
+                          fill={`url(#gradient-${tile.key})`} 
+                          strokeWidth={1.5} 
+                        />
+                      </AreaChart>
+                    </ResponsiveContainer>
                   </div>
+                )}
+              </button>
+            );
+          })}
+        </div>
+
+        {/* Action Items Overview */}
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+          <div className="lg:col-span-2 rounded-xl border border-zinc-800/80 bg-zinc-900/30 p-6">
+            <div className="flex items-center gap-2.5 mb-5 border-b border-zinc-800 pb-4">
+              <Award className="h-5 w-5 text-amber-500" />
+              <div>
+                <h3 className="text-lg font-serif font-semibold text-zinc-100">Board Fiduciary Objectives</h3>
+                <p className="text-xs text-zinc-400">Critical roadmap steps and active priorities</p>
+              </div>
+            </div>
+
+            <div className="space-y-4">
+              <div className="rounded-lg border border-zinc-800 bg-zinc-950/40 p-4 flex items-start gap-4">
+                <div className="rounded-full bg-emerald-500/10 border border-emerald-500/20 p-1 mt-0.5">
+                  <CheckCircle2 className="h-4 w-4 text-emerald-400" />
+                </div>
+                <div className="flex-1">
+                  <div className="flex items-center justify-between">
+                    <span className="text-sm font-medium text-zinc-200">Q4 Pharmacy Benefit Audit</span>
+                    <span className="text-[10px] font-mono text-emerald-400 bg-emerald-500/10 px-2 py-0.5 rounded">Verified</span>
+                  </div>
+                  <p className="text-xs text-zinc-400 mt-1">Forensic analysis successfully verified 100% of plan rebate credits and recovered contract leakage.</p>
                 </div>
               </div>
 
-              <div className="bg-emerald-900/10 border border-emerald-900/40 rounded p-4">
-                <div className="flex items-start gap-2">
-                  <Info className="w-4 h-4 text-emerald-400 flex-shrink-0 mt-0.5" />
-                  <div className="text-sm text-neutral-300">
-                    <span className="font-semibold text-emerald-400">Compliance Score: Excellent.</span> All ERISA fiduciary standards met. Minor documentation updates scheduled for Q1 2027.
+              <div className="rounded-lg border border-zinc-800 bg-zinc-950/40 p-4 flex items-start gap-4">
+                <div className="rounded-full bg-amber-500/10 border border-amber-500/20 p-1 mt-0.5">
+                  <RefreshCw className="h-4 w-4 text-amber-400 animate-spin-slow" />
+                </div>
+                <div className="flex-1">
+                  <div className="flex items-center justify-between">
+                    <span className="text-sm font-medium text-zinc-200">Specialty Drug Carve-Out Strategy</span>
+                    <span className="text-[10px] font-mono text-amber-400 bg-amber-500/10 px-2 py-0.5 rounded">Active</span>
                   </div>
+                  <p className="text-xs text-zinc-400 mt-1">Evaluating standalone specialty program designs to control clinical exposure and lower high-cost drug liability.</p>
+                </div>
+              </div>
+
+              <div className="rounded-lg border border-zinc-800 bg-zinc-950/40 p-4 flex items-start gap-4 opacity-75">
+                <div className="rounded-full bg-zinc-800 border border-zinc-700 p-1 mt-0.5">
+                  <div className="h-4 w-4 rounded-full border-2 border-zinc-600" />
+                </div>
+                <div className="flex-1">
+                  <div className="flex items-center justify-between">
+                    <span className="text-sm font-medium text-zinc-300">2027 Plan Year Benefit Validation</span>
+                    <span className="text-[10px] font-mono text-zinc-500 bg-zinc-800 px-2 py-0.5 rounded">Scheduled</span>
+                  </div>
+                  <p className="text-xs text-zinc-400 mt-1">Mandatory statutory validation against latest Consolidated Appropriations Act transparency models.</p>
                 </div>
               </div>
             </div>
-          )}
+          </div>
 
-          {selectedMetric === "risk" && (
-            <div className="space-y-6">
-              <div className="flex items-center gap-2 mb-4">
-                <AlertTriangle className="w-5 h-5 text-yellow-400" />
-                <h4 className="text-lg font-semibold text-white">Enterprise Risk Assessment</h4>
-              </div>
-
-              <div className="grid md:grid-cols-2 gap-4">
-                <div className="bg-[#151B23] border border-[#2A3F54] rounded p-5">
-                  <div className="flex items-center justify-between mb-3">
-                    <span className="text-sm font-semibold text-white">Vendor Concentration Risk</span>
-                    <Badge className="bg-yellow-900/20 text-yellow-400 border-0 text-xs">Medium</Badge>
-                  </div>
-                  <p className="text-xs text-neutral-400 leading-relaxed mb-3">
-                    78% of pharmacy spend concentrated with single PBM. Recommend diversification strategy for 2027 renewal.
-                  </p>
-                  <div className="flex items-center gap-2 text-xs text-[#B8860B]">
-                    <ChevronRight className="w-3 h-3" />
-                    <span>Review mitigation plan</span>
-                  </div>
+          {/* Committee Breakdown */}
+          <div className="rounded-xl border border-zinc-800/80 bg-zinc-900/30 p-6 flex flex-col justify-between">
+            <div>
+              <div className="flex items-center gap-2.5 mb-5 border-b border-zinc-800 pb-4">
+                <Shield className="h-5 w-5 text-amber-500" />
+                <div>
+                  <h3 className="text-lg font-serif font-semibold text-zinc-100">Committee Structures</h3>
+                  <p className="text-xs text-zinc-400">Governance divisions & oversight sessions</p>
                 </div>
-
-                <div className="bg-[#151B23] border border-[#2A3F54] rounded p-5">
-                  <div className="flex items-center justify-between mb-3">
-                    <span className="text-sm font-semibold text-white">Specialty Drug Volatility</span>
-                    <Badge className="bg-yellow-900/20 text-yellow-400 border-0 text-xs">Medium</Badge>
-                  </div>
-                  <p className="text-xs text-neutral-400 leading-relaxed mb-3">
-                    Specialty trend increased 18% YoY. Exposure to high-cost oncology and rare disease therapies rising.
-                  </p>
-                  <div className="flex items-center gap-2 text-xs text-[#B8860B]">
-                    <ChevronRight className="w-3 h-3" />
-                    <span>View specialty carve-out analysis</span>
-                  </div>
-                </div>
-              </div>
-
-              <div className="bg-[#151B23] border border-[#2A3F54] rounded p-5">
-                <div className="text-sm font-semibold text-white mb-4">Risk Mitigation Roadmap</div>
-                <div className="space-y-3">
-                  <div className="flex items-start gap-3">
-                    <div className="w-2 h-2 rounded-full bg-emerald-500 mt-1.5" />
-                    <div className="flex-1">
-                      <div className="text-sm text-neutral-300">Q4 2026: Complete PBM contract audit</div>
-                      <div className="text-xs text-emerald-400 mt-1">Completed</div>
-                    </div>
-                  </div>
-                  <div className="flex items-start gap-3">
-                    <div className="w-2 h-2 rounded-full bg-blue-500 mt-1.5" />
-                    <div className="flex-1">
-                      <div className="text-sm text-neutral-300">Q1 2027: Evaluate specialty carve-out options</div>
-                      <div className="text-xs text-blue-400 mt-1">In Progress - 40% complete</div>
-                    </div>
-                  </div>
-                  <div className="flex items-start gap-3">
-                    <div className="w-2 h-2 rounded-full bg-neutral-600 mt-1.5" />
-                    <div className="flex-1">
-                      <div className="text-sm text-neutral-300">Q2 2027: Contract renegotiation & diversification</div>
-                      <div className="text-xs text-neutral-400 mt-1">Scheduled</div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          )}
-
-          {selectedMetric === "initiatives" && (
-            <div className="space-y-6">
-              <div className="flex items-center gap-2 mb-4">
-                <Award className="w-5 h-5 text-[#B8860B]" />
-                <h4 className="text-lg font-semibold text-white">Strategic Initiatives Portfolio</h4>
               </div>
 
               <div className="space-y-4">
-                <div className="bg-[#151B23] border border-emerald-900/40 rounded p-5">
-                  <div className="flex items-center justify-between mb-3">
-                    <div>
-                      <h5 className="text-sm font-semibold text-white mb-1">PBM Contract Renegotiation</h5>
-                      <p className="text-xs text-neutral-400">Target completion: Q1 2027</p>
-                    </div>
-                    <Badge className="bg-emerald-900/20 text-emerald-400 border-0">On Track</Badge>
+                <div className="flex justify-between items-center bg-zinc-950/40 border border-zinc-800 p-3 rounded-lg">
+                  <div>
+                    <span className="text-xs font-mono text-zinc-400">Benefits Committee</span>
+                    <p className="text-xs text-zinc-300">4 Active members</p>
                   </div>
-                  <div className="space-y-2">
-                    <div className="flex items-center justify-between text-xs">
-                      <span className="text-neutral-400">Phase 1: Market analysis</span>
-                      <span className="text-emerald-400 font-semibold">Complete</span>
-                    </div>
-                    <div className="flex items-center justify-between text-xs">
-                      <span className="text-neutral-400">Phase 2: RFP preparation</span>
-                      <span className="text-blue-400 font-semibold">70% complete</span>
-                    </div>
-                    <div className="flex items-center justify-between text-xs">
-                      <span className="text-neutral-400">Phase 3: Vendor selection</span>
-                      <span className="text-neutral-500 font-semibold">Not started</span>
-                    </div>
-                  </div>
-                  <div className="mt-4 pt-4 border-t border-[#2A3F54]">
-                    <div className="text-xs text-neutral-400">Projected Annual Impact</div>
-                    <div className="text-lg font-bold text-emerald-400 mt-1">$2.4M - $3.1M savings</div>
-                  </div>
+                  <Badge className="bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 text-[10px] font-mono">Jan 15, 2027</Badge>
                 </div>
 
-                <div className="bg-[#151B23] border border-[#2A3F54] rounded p-5">
-                  <div className="flex items-center justify-between mb-3">
-                    <div>
-                      <h5 className="text-sm font-semibold text-white mb-1">Cost-Plus Migration Analysis</h5>
-                      <p className="text-xs text-neutral-400">Phase 1 of 3 complete</p>
-                    </div>
-                    <Badge className="bg-blue-900/20 text-blue-400 border-0">In Progress</Badge>
+                <div className="flex justify-between items-center bg-zinc-950/40 border border-zinc-800 p-3 rounded-lg">
+                  <div>
+                    <span className="text-xs font-mono text-zinc-400">Audit Committee</span>
+                    <p className="text-xs text-zinc-300">3 Active members</p>
                   </div>
-                  <div className="space-y-2 text-xs">
-                    <div className="flex items-center gap-2 text-neutral-300">
-                      <CheckCircle2 className="w-3 h-3 text-emerald-400" />
-                      <span>Benchmark analysis complete</span>
-                    </div>
-                    <div className="flex items-center gap-2 text-neutral-300">
-                      <div className="w-3 h-3 rounded-full border-2 border-blue-400 flex items-center justify-center">
-                        <div className="w-1.5 h-1.5 rounded-full bg-blue-400" />
-                      </div>
-                      <span>Vendor due diligence in progress</span>
-                    </div>
-                    <div className="flex items-center gap-2 text-neutral-500">
-                      <div className="w-3 h-3 rounded-full border-2 border-neutral-600" />
-                      <span>Implementation roadmap pending</span>
-                    </div>
-                  </div>
+                  <Badge className="bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 text-[10px] font-mono">Jan 22, 2027</Badge>
                 </div>
 
-                <div className="bg-[#151B23] border border-[#2A3F54] rounded p-5">
-                  <div className="flex items-center justify-between mb-3">
-                    <div>
-                      <h5 className="text-sm font-semibold text-white mb-1">Enhanced Fiduciary Controls</h5>
-                      <p className="text-xs text-neutral-400">Ongoing optimization</p>
-                    </div>
-                    <Badge className="bg-emerald-900/20 text-emerald-400 border-0">Active</Badge>
+                <div className="flex justify-between items-center bg-zinc-950/40 border border-zinc-800 p-3 rounded-lg">
+                  <div>
+                    <span className="text-xs font-mono text-zinc-400">Compliance Oversight</span>
+                    <p className="text-xs text-zinc-300">5 Active members</p>
                   </div>
-                  <div className="text-xs text-neutral-400 leading-relaxed">
-                    Implementing enhanced audit rights, transparent fee disclosure requirements, and quarterly compliance reporting for all healthcare vendors.
-                  </div>
+                  <Badge className="bg-amber-500/10 text-amber-400 border border-amber-500/20 text-[10px] font-mono">Feb 05, 2027</Badge>
                 </div>
               </div>
             </div>
-          )}
 
-          {selectedMetric === "governance" && (
-            <div className="space-y-6">
-              <div className="flex items-center gap-2 mb-4">
-                <FileText className="w-5 h-5 text-[#B8860B]" />
-                <h4 className="text-lg font-semibold text-white">Governance & Oversight</h4>
-              </div>
-
-              <div className="grid md:grid-cols-2 gap-6">
-                <div className="bg-[#151B23] border border-[#2A3F54] rounded p-5">
-                  <div className="text-sm font-semibold text-white mb-4">Recent Board Actions</div>
-                  <div className="space-y-3">
-                    <div className="pb-3 border-b border-[#1F2937]">
-                      <div className="text-xs text-neutral-400 mb-1">October 15, 2026</div>
-                      <div className="text-sm text-neutral-200">Approved Q4 pharmacy benefit cost containment strategy</div>
-                    </div>
-                    <div className="pb-3 border-b border-[#1F2937]">
-                      <div className="text-xs text-neutral-400 mb-1">September 22, 2026</div>
-                      <div className="text-sm text-neutral-200">Authorized specialty drug carve-out feasibility study</div>
-                    </div>
-                    <div>
-                      <div className="text-xs text-neutral-400 mb-1">August 18, 2026</div>
-                      <div className="text-sm text-neutral-200">Enhanced fiduciary liability coverage approved</div>
-                    </div>
-                  </div>
-                </div>
-
-                <div className="bg-[#151B23] border border-[#2A3F54] rounded p-5">
-                  <div className="text-sm font-semibold text-white mb-4">Upcoming Decisions</div>
-                  <div className="space-y-3">
-                    <div className="bg-[#1A3A52]/20 border border-[#1A3A52] rounded p-3">
-                      <div className="flex items-center gap-2 mb-2">
-                        <Calendar className="w-4 h-4 text-[#B8860B]" />
-                        <span className="text-xs font-semibold text-[#B8860B]">Q1 2027 Board Meeting</span>
-                      </div>
-                      <ul className="space-y-1 text-xs text-neutral-300">
-                        <li className="flex items-start gap-2">
-                          <ChevronRight className="w-3 h-3 mt-0.5 flex-shrink-0" />
-                          <span>2027 Plan Year benefit design approval</span>
-                        </li>
-                        <li className="flex items-start gap-2">
-                          <ChevronRight className="w-3 h-3 mt-0.5 flex-shrink-0" />
-                          <span>PBM contract renewal decision</span>
-                        </li>
-                        <li className="flex items-start gap-2">
-                          <ChevronRight className="w-3 h-3 mt-0.5 flex-shrink-0" />
-                          <span>Fiduciary audit findings review</span>
-                        </li>
-                      </ul>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              <div className="bg-[#0F1419] border border-[#2A3F54] rounded p-5">
-                <div className="text-sm font-semibold text-white mb-4">Committee Structure</div>
-                <div className="grid md:grid-cols-3 gap-4">
-                  <div>
-                    <div className="text-xs font-mono text-neutral-400 mb-2">Benefits Committee</div>
-                    <div className="text-xs text-neutral-300">4 members</div>
-                    <div className="text-xs text-emerald-400 mt-1">Next meeting: Jan 15</div>
-                  </div>
-                  <div>
-                    <div className="text-xs font-mono text-neutral-400 mb-2">Audit Committee</div>
-                    <div className="text-xs text-neutral-300">3 members</div>
-                    <div className="text-xs text-emerald-400 mt-1">Next meeting: Jan 22</div>
-                  </div>
-                  <div>
-                    <div className="text-xs font-mono text-neutral-400 mb-2">Compliance Oversight</div>
-                    <div className="text-xs text-neutral-300">5 members</div>
-                    <div className="text-xs text-emerald-400 mt-1">Next meeting: Feb 5</div>
-                  </div>
-                </div>
-              </div>
+            <div className="mt-6 pt-4 border-t border-zinc-800 text-xs text-zinc-400">
+              Select any of the top-level KPIs above to launch the <span className="text-amber-400 font-semibold font-serif">Governance Deep-Dive Analyzer</span> for advanced level-1 to level-7 trace validation.
             </div>
-          )}
+          </div>
         </div>
+      </main>
+
+      {/* Drill-down Drawer Integration */}
+      {selectedTile && (
+        <BoardDrillDownDrawer
+          tile={selectedTile}
+          isOpen={drawerOpen}
+          onClose={handleCloseDrawer}
+        />
       )}
-
-      {/* Action Items Summary */}
-      <div className="bg-[#1A3A52]/10 border border-[#1A3A52] rounded-lg p-6">
-        <h4 className="text-sm font-semibold text-white mb-3 flex items-center gap-2">
-          <Info className="w-4 h-4 text-[#B8860B]" />
-          Board Action Items
-        </h4>
-        <div className="space-y-2 text-sm text-neutral-300">
-          <div className="flex items-start gap-2">
-            <ChevronRight className="w-4 h-4 mt-0.5 text-[#B8860B] flex-shrink-0" />
-            <span>Review and approve Q4 pharmacy benefit cost containment strategy</span>
-          </div>
-          <div className="flex items-start gap-2">
-            <ChevronRight className="w-4 h-4 mt-0.5 text-[#B8860B] flex-shrink-0" />
-            <span>Evaluate specialty drug carve-out proposal for 2027 plan year</span>
-          </div>
-          <div className="flex items-start gap-2">
-            <ChevronRight className="w-4 h-4 mt-0.5 text-[#B8860B] flex-shrink-0" />
-            <span>Approve enhanced fiduciary liability coverage recommendations</span>
-          </div>
-        </div>
-      </div>
     </div>
   );
 }

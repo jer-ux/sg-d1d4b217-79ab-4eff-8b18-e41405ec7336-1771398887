@@ -8,6 +8,11 @@ export type Filters = {
 };
 
 export type TileKey = 
+  // Board Room Keys
+  | "fiduciary"
+  | "risk"
+  | "renewals"
+  | "governance"
   // New Healthcare CFO Keys
   | "costTrendStress" 
   | "planDesignAdoption" 

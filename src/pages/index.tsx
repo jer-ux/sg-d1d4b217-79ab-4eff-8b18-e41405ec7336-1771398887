@@ -13,6 +13,8 @@ import { CHROWarRoom } from "@/components/warroom/CHROWarRoom";
 import { BoardWarRoom } from "@/components/warroom/BoardWarRoom";
 import { PEOperatorWarRoom } from "@/components/warroom/PEOperatorWarRoom";
 import { BadgeDetailSystem } from "@/components/home/BadgeDetailSystem";
+import { Hero3D } from "@/components/Hero3D";
+import { TechBackdrop } from "@/components/TechBackdrop";
 import Nav from "@/components/Nav";
 import Footer from "@/components/Footer";
 import { Badge } from "@/components/ui/badge";
@@ -98,7 +100,17 @@ export default function HomePage() {
       <div className="min-h-screen bg-[#0F1419] text-neutral-100 selection:bg-[#B8860B]/20 overflow-x-hidden font-sans">
 
         <section className="relative min-h-screen pt-32 pb-20 px-4 md:px-8 max-w-7xl mx-auto flex items-center">
-          <div className="grid lg:grid-cols-12 gap-16 items-center w-full">
+          {/* Background Graphics */}
+          <div className="absolute inset-0 overflow-hidden pointer-events-none">
+            <div className="absolute inset-0 opacity-30">
+              <Hero3D />
+            </div>
+            <div className="absolute inset-0 opacity-20">
+              <TechBackdrop intensity={0.5} density={0.8} />
+            </div>
+          </div>
+
+          <div className="grid lg:grid-cols-12 gap-16 items-center w-full relative z-10">
             
             <div className="lg:col-span-7 space-y-8">
               

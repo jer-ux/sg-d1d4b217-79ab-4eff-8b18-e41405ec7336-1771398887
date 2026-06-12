@@ -953,84 +953,116 @@ export default function HomePage() {
         </section>
 
         <section className="relative py-24 border-t border-[#1F2937] overflow-hidden">
-          <div className="absolute inset-0 pointer-events-none opacity-10">
-            <TechBackdrop intensity={0.3} density={0.6} />
+          {/* Enhanced Multi-layer Background System */}
+          <div className="absolute inset-0 pointer-events-none">
+            <div className="absolute inset-0 opacity-40">
+              <TechBackdrop intensity={0.8} density={1.0} />
+            </div>
+            <div className="absolute inset-0 bg-gradient-to-b from-transparent via-[#1A3A52]/10 to-transparent" />
+            <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-[#B8860B]/5 via-transparent to-transparent" />
           </div>
 
           <div className="max-w-7xl mx-auto px-4 md:px-8 relative z-10">
             <AnimatedSection className="flex flex-col md:flex-row md:items-center justify-between gap-6 mb-12">
-              <div className="space-y-2">
-                <span className="text-xs font-mono text-[#B8860B] uppercase tracking-widest">Unified Enterprise Command</span>
-                <h2 className="text-4xl md:text-5xl font-serif font-bold">Live Fiduciary Intelligence Portal</h2>
+              <div className="space-y-3">
+                <motion.span 
+                  className="inline-block text-xs font-mono text-[#B8860B] uppercase tracking-widest font-semibold"
+                  animate={{ 
+                    textShadow: [
+                      "0 0 10px rgba(184, 134, 11, 0.3)",
+                      "0 0 20px rgba(184, 134, 11, 0.5)",
+                      "0 0 10px rgba(184, 134, 11, 0.3)"
+                    ]
+                  }}
+                  transition={{ duration: 2, repeat: Infinity }}
+                >
+                  Unified Enterprise Command
+                </motion.span>
+                <h2 className="text-4xl md:text-5xl font-serif font-bold bg-gradient-to-r from-white via-neutral-100 to-neutral-300 bg-clip-text text-transparent">
+                  Live Fiduciary Intelligence Portal
+                </h2>
                 <p className="text-neutral-400 text-lg leading-relaxed">
                   Real-time overcharge tracking feeds and analytical dashboards optimized for each executive role.
                 </p>
               </div>
               <Link
                 href="/solutions"
-                className="inline-flex items-center gap-2 border border-[#2A3F54] hover:border-[#3A4F64] bg-[#151B23] px-6 py-3 rounded text-sm font-semibold text-neutral-200 hover:text-white transition-colors"
+                className="group inline-flex items-center gap-2 border border-[#2A3F54] hover:border-[#B8860B] bg-gradient-to-br from-[#151B23] to-[#0F1419] px-6 py-3 rounded text-sm font-semibold text-neutral-200 hover:text-white transition-all duration-300 shadow-lg hover:shadow-[#B8860B]/20"
               >
                 <span>View Full Command Center</span>
-                <ChevronRight className="h-4 w-4" />
+                <ChevronRight className="h-4 w-4 group-hover:translate-x-1 transition-transform" />
               </Link>
             </AnimatedSection>
 
             <AnimatedSection className="flex justify-center mb-8">
-              <div className="inline-flex gap-1 bg-[#151B23] rounded p-1 border border-[#2A3F54]">
-                <button
-                  onClick={() => setActiveWarRoomRole("cfo")}
-                  className={`px-6 py-3 rounded text-sm font-semibold transition-colors ${
-                    activeWarRoomRole === "cfo"
-                      ? "bg-[#1A3A52] text-white"
-                      : "text-neutral-400 hover:text-white"
-                  }`}
-                >
-                  CFO View
-                </button>
-                <button
-                  onClick={() => setActiveWarRoomRole("chro")}
-                  className={`px-6 py-3 rounded text-sm font-semibold transition-colors ${
-                    activeWarRoomRole === "chro"
-                      ? "bg-[#1A3A52] text-white"
-                      : "text-neutral-400 hover:text-white"
-                  }`}
-                >
-                  CHRO View
-                </button>
-                <button
-                  onClick={() => setActiveWarRoomRole("board")}
-                  className={`px-6 py-3 rounded text-sm font-semibold transition-colors ${
-                    activeWarRoomRole === "board"
-                      ? "bg-[#1A3A52] text-white"
-                      : "text-neutral-400 hover:text-white"
-                  }`}
-                >
-                  Board View
-                </button>
-                <button
-                  onClick={() => setActiveWarRoomRole("pe")}
-                  className={`px-6 py-3 rounded text-sm font-semibold transition-colors ${
-                    activeWarRoomRole === "pe"
-                      ? "bg-[#1A3A52] text-white"
-                      : "text-neutral-400 hover:text-white"
-                  }`}
-                >
-                  PE Operator View
-                </button>
+              <div className="inline-flex gap-1.5 bg-gradient-to-br from-[#151B23] via-[#1A2A3A] to-[#151B23] rounded-lg p-1.5 border border-[#2A3F54] shadow-2xl">
+                {[
+                  { key: "cfo", label: "CFO View" },
+                  { key: "chro", label: "CHRO View" },
+                  { key: "board", label: "Board View" },
+                  { key: "pe", label: "PE Operator View" }
+                ].map((role) => (
+                  <button
+                    key={role.key}
+                    onClick={() => setActiveWarRoomRole(role.key as any)}
+                    className={`relative px-6 py-3 rounded-md text-sm font-semibold transition-all duration-300 ${
+                      activeWarRoomRole === role.key
+                        ? "bg-gradient-to-br from-[#1A3A52] to-[#234766] text-white shadow-lg shadow-[#1A3A52]/50"
+                        : "text-neutral-400 hover:text-white hover:bg-[#151B23]/50"
+                    }`}
+                  >
+                    {activeWarRoomRole === role.key && (
+                      <motion.div
+                        layoutId="activeTab"
+                        className="absolute inset-0 bg-gradient-to-br from-[#1A3A52] to-[#234766] rounded-md"
+                        style={{ zIndex: -1 }}
+                        transition={{ type: "spring", bounce: 0.2, duration: 0.6 }}
+                      />
+                    )}
+                    <span className="relative z-10">{role.label}</span>
+                  </button>
+                ))}
               </div>
             </AnimatedSection>
 
-            <AnimatedSection className="rounded-lg border border-[#2A3F54] bg-[#0C1117] p-10 relative">
-              <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-[#1A3A52] via-[#B8860B] to-[#1A3A52]" />
+            <AnimatedSection className="rounded-xl border border-[#2A3F54] bg-gradient-to-br from-[#0C1117] via-[#0F1419] to-[#0C1117] p-10 relative overflow-hidden shadow-2xl">
+              {/* Animated Top Border Glow */}
+              <motion.div 
+                className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-[#B8860B] to-transparent"
+                animate={{
+                  opacity: [0.5, 1, 0.5],
+                  scaleX: [0.8, 1, 0.8]
+                }}
+                transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
+              />
+              
+              {/* Corner Accent Glows */}
+              <div className="absolute top-0 left-0 w-32 h-32 bg-[#1A3A52] opacity-20 blur-3xl" />
+              <div className="absolute bottom-0 right-0 w-32 h-32 bg-[#B8860B] opacity-10 blur-3xl" />
               
               {activeWarRoomRole === "cfo" && (
-                <div className="space-y-6">
+                <div className="space-y-8 relative z-10">
                   <div className="flex items-center justify-between mb-8">
                     <div>
-                      <h3 className="text-2xl font-serif font-bold text-white">CFO Command Center</h3>
-                      <p className="text-sm text-neutral-400 mt-1">Financial impact & EBITDA defense metrics</p>
+                      <h3 className="text-3xl font-serif font-bold bg-gradient-to-r from-white to-neutral-300 bg-clip-text text-transparent">
+                        CFO Command Center
+                      </h3>
+                      <p className="text-sm text-neutral-400 mt-2">Financial impact & EBITDA defense metrics</p>
                     </div>
-                    <Badge className="bg-[#1A3A52]/20 text-[#B8860B] border border-[#1A3A52]">Live Financial Data</Badge>
+                    <motion.div
+                      animate={{
+                        boxShadow: [
+                          "0 0 20px rgba(184, 134, 11, 0.2)",
+                          "0 0 30px rgba(184, 134, 11, 0.4)",
+                          "0 0 20px rgba(184, 134, 11, 0.2)"
+                        ]
+                      }}
+                      transition={{ duration: 2, repeat: Infinity }}
+                    >
+                      <Badge className="bg-gradient-to-r from-[#1A3A52] to-[#234766] text-[#B8860B] border border-[#B8860B]/30 px-4 py-1.5 text-xs font-bold shadow-lg">
+                        LIVE FINANCIAL DATA
+                      </Badge>
+                    </motion.div>
                   </div>
 
                   <motion.div 
@@ -1039,39 +1071,138 @@ export default function HomePage() {
                     initial="hidden"
                     animate="visible"
                   >
-                    <motion.div variants={fadeInUpVariants} className="bg-[#151B23] border border-[#2A3F54] rounded-lg p-5">
-                      <div className="text-xs font-mono text-neutral-400 mb-1">Total Identified Savings</div>
-                      <div className="text-2xl font-bold text-emerald-400">$3.2M</div>
-                      <div className="text-xs text-emerald-400 mt-1 flex items-center gap-1">
-                        <TrendingUp className="w-3 h-3" /> +18% vs Q3
+                    <motion.div 
+                      variants={fadeInUpVariants} 
+                      className="group relative bg-gradient-to-br from-[#151B23] to-[#0F1419] border border-[#2A3F54] hover:border-emerald-500/50 rounded-xl p-6 transition-all duration-300 overflow-hidden"
+                      whileHover={{ y: -4, scale: 1.02 }}
+                    >
+                      <motion.div 
+                        className="absolute inset-0 bg-gradient-to-br from-emerald-500/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+                      />
+                      <div className="relative z-10">
+                        <div className="text-xs font-mono text-neutral-400 mb-2 flex items-center gap-2">
+                          <div className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
+                          Total Identified Savings
+                        </div>
+                        <motion.div 
+                          className="text-3xl font-bold bg-gradient-to-r from-emerald-400 to-emerald-300 bg-clip-text text-transparent"
+                          animate={{ scale: [1, 1.02, 1] }}
+                          transition={{ duration: 2, repeat: Infinity }}
+                        >
+                          $3.2M
+                        </motion.div>
+                        <div className="text-xs text-emerald-400 mt-2 flex items-center gap-1 font-semibold">
+                          <TrendingUp className="w-3 h-3" /> +18% vs Q3
+                        </div>
                       </div>
+                      <div className="absolute -right-4 -bottom-4 w-24 h-24 bg-emerald-500/10 rounded-full blur-2xl" />
                     </motion.div>
-                    <motion.div variants={fadeInUpVariants} className="bg-[#151B23] border border-[#2A3F54] rounded-lg p-5">
-                      <div className="text-xs font-mono text-neutral-400 mb-1">EBITDA Impact</div>
-                      <div className="text-2xl font-bold text-white">+2.4%</div>
-                      <div className="text-xs text-neutral-400 mt-1">Margin improvement</div>
-                    </motion.div>
-                    <motion.div variants={fadeInUpVariants} className="bg-[#151B23] border border-[#2A3F54] rounded-lg p-5">
-                      <div className="text-xs font-mono text-neutral-400 mb-1">Cash Flow Improvement</div>
-                      <div className="text-2xl font-bold text-white">$847K</div>
-                      <div className="text-xs text-neutral-400 mt-1">Annualized Q4</div>
-                    </motion.div>
-                    <motion.div variants={fadeInUpVariants} className="bg-[#151B23] border border-[#2A3F54] rounded-lg p-5">
-                      <div className="text-xs font-mono text-neutral-400 mb-1">Contract Compliance</div>
-                      <div className="text-2xl font-bold text-[#B8860B]">94%</div>
-                      <div className="text-xs text-red-400 mt-1 flex items-center gap-1">
-                        <AlertTriangle className="w-3 h-3" /> 6% at risk
+
+                    <motion.div 
+                      variants={fadeInUpVariants} 
+                      className="group relative bg-gradient-to-br from-[#151B23] to-[#0F1419] border border-[#2A3F54] hover:border-[#B8860B]/50 rounded-xl p-6 transition-all duration-300 overflow-hidden"
+                      whileHover={{ y: -4, scale: 1.02 }}
+                    >
+                      <motion.div 
+                        className="absolute inset-0 bg-gradient-to-br from-[#B8860B]/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+                      />
+                      <div className="relative z-10">
+                        <div className="text-xs font-mono text-neutral-400 mb-2 flex items-center gap-2">
+                          <div className="w-1.5 h-1.5 rounded-full bg-[#B8860B] animate-pulse" />
+                          EBITDA Impact
+                        </div>
+                        <motion.div 
+                          className="text-3xl font-bold bg-gradient-to-r from-white to-neutral-300 bg-clip-text text-transparent"
+                          animate={{ scale: [1, 1.02, 1] }}
+                          transition={{ duration: 2, repeat: Infinity, delay: 0.2 }}
+                        >
+                          +2.4%
+                        </motion.div>
+                        <div className="text-xs text-neutral-400 mt-2 font-semibold">Margin improvement</div>
                       </div>
+                      <div className="absolute -right-4 -bottom-4 w-24 h-24 bg-[#B8860B]/10 rounded-full blur-2xl" />
+                    </motion.div>
+
+                    <motion.div 
+                      variants={fadeInUpVariants} 
+                      className="group relative bg-gradient-to-br from-[#151B23] to-[#0F1419] border border-[#2A3F54] hover:border-blue-500/50 rounded-xl p-6 transition-all duration-300 overflow-hidden"
+                      whileHover={{ y: -4, scale: 1.02 }}
+                    >
+                      <motion.div 
+                        className="absolute inset-0 bg-gradient-to-br from-blue-500/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+                      />
+                      <div className="relative z-10">
+                        <div className="text-xs font-mono text-neutral-400 mb-2 flex items-center gap-2">
+                          <div className="w-1.5 h-1.5 rounded-full bg-blue-400 animate-pulse" />
+                          Cash Flow Improvement
+                        </div>
+                        <motion.div 
+                          className="text-3xl font-bold bg-gradient-to-r from-white to-neutral-300 bg-clip-text text-transparent"
+                          animate={{ scale: [1, 1.02, 1] }}
+                          transition={{ duration: 2, repeat: Infinity, delay: 0.4 }}
+                        >
+                          $847K
+                        </motion.div>
+                        <div className="text-xs text-neutral-400 mt-2 font-semibold">Annualized Q4</div>
+                      </div>
+                      <div className="absolute -right-4 -bottom-4 w-24 h-24 bg-blue-500/10 rounded-full blur-2xl" />
+                    </motion.div>
+
+                    <motion.div 
+                      variants={fadeInUpVariants} 
+                      className="group relative bg-gradient-to-br from-[#151B23] to-[#0F1419] border border-[#2A3F54] hover:border-red-500/50 rounded-xl p-6 transition-all duration-300 overflow-hidden"
+                      whileHover={{ y: -4, scale: 1.02 }}
+                    >
+                      <motion.div 
+                        className="absolute inset-0 bg-gradient-to-br from-red-500/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+                      />
+                      <div className="relative z-10">
+                        <div className="text-xs font-mono text-neutral-400 mb-2 flex items-center gap-2">
+                          <div className="w-1.5 h-1.5 rounded-full bg-red-400 animate-pulse" />
+                          Contract Compliance
+                        </div>
+                        <motion.div 
+                          className="text-3xl font-bold bg-gradient-to-r from-[#B8860B] to-[#D4AF37] bg-clip-text text-transparent"
+                          animate={{ scale: [1, 1.02, 1] }}
+                          transition={{ duration: 2, repeat: Infinity, delay: 0.6 }}
+                        >
+                          94%
+                        </motion.div>
+                        <div className="text-xs text-red-400 mt-2 flex items-center gap-1 font-semibold">
+                          <AlertTriangle className="w-3 h-3" /> 6% at risk
+                        </div>
+                      </div>
+                      <div className="absolute -right-4 -bottom-4 w-24 h-24 bg-red-500/10 rounded-full blur-2xl" />
                     </motion.div>
                   </motion.div>
 
-                  <ExecutiveWarRoom />
+                  <div className="relative">
+                    <div className="absolute inset-0 bg-gradient-to-r from-[#1A3A52]/20 via-transparent to-[#B8860B]/20 rounded-xl blur-xl" />
+                    <ExecutiveWarRoom />
+                  </div>
                 </div>
               )}
 
-              {activeWarRoomRole === "chro" && <CHROWarRoom />}
-              {activeWarRoomRole === "board" && <BoardWarRoom />}
-              {activeWarRoomRole === "pe" && <PEOperatorWarRoom />}
+              {activeWarRoomRole === "chro" && (
+                <div className="relative">
+                  <div className="absolute inset-0 bg-gradient-to-r from-[#1A3A52]/20 via-transparent to-[#B8860B]/20 rounded-xl blur-xl" />
+                  <CHROWarRoom />
+                </div>
+              )}
+
+              {activeWarRoomRole === "board" && (
+                <div className="relative">
+                  <div className="absolute inset-0 bg-gradient-to-r from-[#1A3A52]/20 via-transparent to-[#B8860B]/20 rounded-xl blur-xl" />
+                  <BoardWarRoom />
+                </div>
+              )}
+
+              {activeWarRoomRole === "pe" && (
+                <div className="relative">
+                  <div className="absolute inset-0 bg-gradient-to-r from-[#1A3A52]/20 via-transparent to-[#B8860B]/20 rounded-xl blur-xl" />
+                  <PEOperatorWarRoom />
+                </div>
+              )}
               
             </AnimatedSection>
           </div>

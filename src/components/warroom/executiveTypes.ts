@@ -8,6 +8,11 @@ export type Filters = {
 };
 
 export type TileKey = 
+  // PE Operator Keys
+  | "ebitdaLift"
+  | "valueCreation"
+  | "exitReadiness"
+  | "rollupSynergies"
   // Board Room Keys
   | "fiduciary"
   | "risk"

@@ -1,9 +1,94 @@
-import { useState } from "react";
-import { BarChart3, TrendingUp, Target, Users, DollarSign, Award, Zap, ChevronRight, Info } from "lucide-react";
+import { useState, useMemo } from "react";
+import { 
+  BarChart3, TrendingUp, Target, Users, DollarSign, Award, Zap, 
+  ChevronRight, Info, Shield, RefreshCw, Briefcase, Play, ArrowRight,
+  TrendingDown, CheckCircle2, AlertTriangle, Activity
+} from "lucide-react";
 import { Badge } from "@/components/ui/badge";
+import { PEOperatorDrillDownDrawer } from "./PEOperatorDrillDownDrawer";
+import type { TileData, TileKey } from "./executiveTypes";
 
 export function PEOperatorWarRoom() {
-  const [selectedPortCo, setSelectedPortCo] = useState<"alpha" | "bravo" | "charlie" | null>(null);
+  const [selectedPortCo, setSelectedPortCo] = useState<"alpha" | "bravo" | "charlie" | null>("alpha");
+  const [activeTile, setActiveTile] = useState<TileData | null>(null);
+  const [drawerOpen, setDrawerOpen] = useState(false);
+  const [isRefreshing, setIsRefreshing] = useState(false);
+
+  const handleRefresh = () => {
+    setIsRefreshing(true);
+    setTimeout(() => setIsRefreshing(false), 1000);
+  };
+
+  const handleTileClick = (tile: TileData) => {
+    setActiveTile(tile);
+    setDrawerOpen(true);
+  };
+
+  const handleCloseDrawer = () => {
+    setDrawerOpen(false);
+    setActiveTile(null);
+  };
+
+  // Mock Sparkline Data
+  const sparklineData1 = [
+    { period: "M1", value: 3.8 }, { period: "M2", value: 4.1 }, { period: "M3", value: 4.3 },
+    { period: "M4", value: 4.0 }, { period: "M5", value: 4.5 }, { period: "M6", value: 4.8 }
+  ];
+  const sparklineData2 = [
+    { period: "M1", value: 1.2 }, { period: "M2", value: 1.4 }, { period: "M3", value: 1.5 },
+    { period: "M4", value: 1.6 }, { period: "M5", value: 1.7 }, { period: "M6", value: 1.8 }
+  ];
+  const sparklineData3 = [
+    { period: "M1", value: 72 }, { period: "M2", value: 75 }, { period: "M3", value: 80 },
+    { period: "M4", value: 83 }, { period: "M5", value: 85 }, { period: "M6", value: 87 }
+  ];
+  const sparklineData4 = [
+    { period: "M1", value: 1.4 }, { period: "M2", value: 1.6 }, { period: "M3", value: 1.8 },
+    { period: "M4", value: 1.9 }, { period: "M5", value: 2.0 }, { period: "M6", value: 2.1 }
+  ];
+
+  const portfolioTiles: TileData[] = [
+    {
+      key: "ebitdaLift" as TileKey,
+      title: "Portfolio EBITDA Lift",
+      value: "+$4.8M",
+      delta: "+12.4% vs underwritten",
+      subtitle: "Across 3 fully optimized portcos",
+      trend: "up",
+      chartData: sparklineData1,
+      framework: "Bain"
+    },
+    {
+      key: "valueCreation" as TileKey,
+      title: "Value Creation Multiple",
+      value: "1.8x",
+      delta: "EBITDA margin expansion",
+      subtitle: "Pharmacy benefit optimization multiplier",
+      trend: "up",
+      chartData: sparklineData2,
+      framework: "McKinsey"
+    },
+    {
+      key: "exitReadiness" as TileKey,
+      title: "Exit Readiness Score",
+      value: "87/100",
+      delta: "+14 pts from acquisition",
+      subtitle: "Fiduciary & compliance audit verified",
+      trend: "up",
+      chartData: sparklineData3,
+      framework: "Bain"
+    },
+    {
+      key: "rollupSynergies" as TileKey,
+      title: "Rollup Synergies Realized",
+      value: "$2.1M",
+      delta: "96% of maximum target",
+      subtitle: "Consolidated volume procurement discount",
+      trend: "up",
+      chartData: sparklineData4,
+      framework: "McKinsey"
+    }
+  ];
 
   const portCoData = {
     alpha: {
@@ -12,11 +97,11 @@ export function PEOperatorWarRoom() {
       rxSpend: 4200000,
       savings: 1200000,
       status: "Contract negotiation phase",
-      statusColor: "text-[#B8860B]",
+      statusColor: "text-amber-400 border-amber-500/30 bg-amber-500/10",
       trend: 14,
       implementationProgress: 65,
       details: {
-        currentPBM: "Big Three PBM",
+        currentPBM: "Big Three legacy TPA",
         contractEnd: "Q2 2027",
         avgMemberAge: 42,
         chronicConditions: 28,
@@ -29,11 +114,11 @@ export function PEOperatorWarRoom() {
       rxSpend: 6800000,
       savings: 2100000,
       status: "Implementation complete",
-      statusColor: "text-emerald-400",
+      statusColor: "text-emerald-400 border-emerald-500/30 bg-emerald-500/10",
       trend: 3.2,
       implementationProgress: 100,
       details: {
-        currentPBM: "Transparent Cost-Plus",
+        currentPBM: "Transparent Cost-Plus model",
         contractEnd: "Q4 2028",
         avgMemberAge: 38,
         chronicConditions: 22,
@@ -46,11 +131,11 @@ export function PEOperatorWarRoom() {
       rxSpend: 2900000,
       savings: 847000,
       status: "Due diligence phase",
-      statusColor: "text-blue-400",
+      statusColor: "text-blue-400 border-blue-500/30 bg-blue-500/10",
       trend: 12,
       implementationProgress: 25,
       details: {
-        currentPBM: "Regional PBM",
+        currentPBM: "Regional legacy PBM",
         contractEnd: "Q1 2027",
         avgMemberAge: 45,
         chronicConditions: 31,
@@ -59,239 +144,313 @@ export function PEOperatorWarRoom() {
     }
   };
 
+  const tickerItems = [
+    "EBITDA SWAP: PortCo Bravo transparent transition adds $2.1M realized run-rate value",
+    "DEAL ROOM UPDATE: PortCo Charlie due diligence uncovers 31% legacy contract overspend leakage",
+    "VALUATION TRACKER: Aggregate rollup synergy exceeds initial Bain underwriting metrics by 12.4%",
+    "AUDIT ALERTER: DOL compliance trail verified 100% risk-clean for PortCo Alpha portfolio transfer"
+  ];
+
   return (
     <div className="space-y-6">
-      <div className="flex items-center justify-between mb-8">
-        <div>
-          <h3 className="text-2xl font-serif font-bold text-white">PE Operator Command Center</h3>
-          <p className="text-sm text-neutral-400 mt-1">Portfolio value creation & operational efficiency metrics</p>
-        </div>
-        <Badge className="bg-[#1A3A52]/20 text-[#B8860B] border border-[#1A3A52]">Portfolio Analytics</Badge>
-      </div>
-
-      {/* Portfolio-Level KPIs */}
-      <div className="grid grid-cols-4 gap-4">
-        <div className="bg-[#151B23] border border-[#2A3F54] rounded-lg p-5">
-          <div className="text-xs font-mono text-neutral-400 mb-1">Portfolio EBITDA Lift</div>
-          <div className="text-2xl font-bold text-emerald-400">+$4.8M</div>
-          <div className="text-xs text-emerald-400 mt-1 flex items-center gap-1">
-            <TrendingUp className="w-3 h-3" /> Across 3 portcos
+      {/* Header section with live feed ticker */}
+      <div className="rounded-xl border border-zinc-800 bg-zinc-950/40 p-6 shadow-2xl">
+        <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-6">
+          <div>
+            <div className="flex items-center gap-2 mb-1.5">
+              <span className="flex h-2 w-2 rounded-full bg-emerald-500 animate-pulse" />
+              <span className="text-xs font-bold bg-gradient-to-r from-emerald-400 to-teal-300 bg-clip-text text-transparent uppercase tracking-wider">REALTIME UNDERWRITING INTELLIGENCE</span>
+            </div>
+            <h3 className="text-2xl font-serif font-bold text-zinc-100 flex items-center gap-2">
+              <Briefcase className="h-6 w-6 text-emerald-400" />
+              PE Operator Command Center
+            </h3>
+            <p className="text-xs text-zinc-400 mt-1">Portfolio value creation, EBITDA margin multipliers & exit-readiness compliance</p>
           </div>
-        </div>
-        <div className="bg-[#151B23] border border-[#2A3F54] rounded-lg p-5">
-          <div className="text-xs font-mono text-neutral-400 mb-1">Value Creation Multiple</div>
-          <div className="text-2xl font-bold text-white">1.8x</div>
-          <div className="text-xs text-neutral-400 mt-1">Pharmacy optimization</div>
-        </div>
-        <div className="bg-[#151B23] border border-[#2A3F54] rounded-lg p-5">
-          <div className="text-xs font-mono text-neutral-400 mb-1">Exit Readiness Score</div>
-          <div className="text-2xl font-bold text-[#B8860B]">87/100</div>
-          <div className="text-xs text-neutral-400 mt-1">Benefits optimization</div>
-        </div>
-        <div className="bg-[#151B23] border border-[#2A3F54] rounded-lg p-5">
-          <div className="text-xs font-mono text-neutral-400 mb-1">Rollup Synergies</div>
-          <div className="text-2xl font-bold text-white">$2.1M</div>
-          <div className="text-xs text-neutral-400 mt-1">Identified opportunities</div>
-        </div>
-      </div>
-
-      {/* PortCo Selector Cards */}
-      <div className="grid md:grid-cols-3 gap-6">
-        <button
-          onClick={() => setSelectedPortCo("alpha")}
-          className={`bg-[#151B23] border rounded-lg p-6 text-left transition-all ${
-            selectedPortCo === "alpha" 
-              ? "border-[#B8860B] ring-2 ring-[#B8860B]/20" 
-              : "border-[#2A3F54] hover:border-[#3A4F64]"
-          }`}
-        >
-          <h4 className="text-sm font-semibold text-white mb-4">PortCo Alpha</h4>
-          <div className="space-y-3">
-            <div className="flex items-center justify-between">
-              <span className="text-xs text-neutral-400">Employees</span>
-              <span className="text-sm font-semibold text-white">847</span>
-            </div>
-            <div className="flex items-center justify-between">
-              <span className="text-xs text-neutral-400">Rx Spend</span>
-              <span className="text-sm font-semibold text-white">$4.2M</span>
-            </div>
-            <div className="flex items-center justify-between">
-              <span className="text-xs text-neutral-400">Savings Identified</span>
-              <span className="text-sm font-semibold text-emerald-400">$1.2M</span>
-            </div>
-            <div className="pt-2 border-t border-[#2A3F54]">
-              <div className="text-xs text-[#B8860B] font-semibold">Status: Contract negotiation phase</div>
-            </div>
-          </div>
-        </button>
-
-        <button
-          onClick={() => setSelectedPortCo("bravo")}
-          className={`bg-[#151B23] border rounded-lg p-6 text-left transition-all ${
-            selectedPortCo === "bravo" 
-              ? "border-emerald-500 ring-2 ring-emerald-500/20" 
-              : "border-[#2A3F54] hover:border-[#3A4F64]"
-          }`}
-        >
-          <h4 className="text-sm font-semibold text-white mb-4">PortCo Bravo</h4>
-          <div className="space-y-3">
-            <div className="flex items-center justify-between">
-              <span className="text-xs text-neutral-400">Employees</span>
-              <span className="text-sm font-semibold text-white">1,243</span>
-            </div>
-            <div className="flex items-center justify-between">
-              <span className="text-xs text-neutral-400">Rx Spend</span>
-              <span className="text-sm font-semibold text-white">$6.8M</span>
-            </div>
-            <div className="flex items-center justify-between">
-              <span className="text-xs text-neutral-400">Savings Identified</span>
-              <span className="text-sm font-semibold text-emerald-400">$2.1M</span>
-            </div>
-            <div className="pt-2 border-t border-[#2A3F54]">
-              <div className="text-xs text-emerald-400 font-semibold">Status: Implementation complete</div>
-            </div>
-          </div>
-        </button>
-
-        <button
-          onClick={() => setSelectedPortCo("charlie")}
-          className={`bg-[#151B23] border rounded-lg p-6 text-left transition-all ${
-            selectedPortCo === "charlie" 
-              ? "border-blue-500 ring-2 ring-blue-500/20" 
-              : "border-[#2A3F54] hover:border-[#3A4F64]"
-          }`}
-        >
-          <h4 className="text-sm font-semibold text-white mb-4">PortCo Charlie</h4>
-          <div className="space-y-3">
-            <div className="flex items-center justify-between">
-              <span className="text-xs text-neutral-400">Employees</span>
-              <span className="text-sm font-semibold text-white">562</span>
-            </div>
-            <div className="flex items-center justify-between">
-              <span className="text-xs text-neutral-400">Rx Spend</span>
-              <span className="text-sm font-semibold text-white">$2.9M</span>
-            </div>
-            <div className="flex items-center justify-between">
-              <span className="text-xs text-neutral-400">Savings Identified</span>
-              <span className="text-sm font-semibold text-emerald-400">$847K</span>
-            </div>
-            <div className="pt-2 border-t border-[#2A3F54]">
-              <div className="text-xs text-blue-400 font-semibold">Status: Due diligence phase</div>
-            </div>
-          </div>
-        </button>
-      </div>
-
-      {/* PortCo Drill-Down */}
-      {selectedPortCo && (
-        <div className="bg-[#0C1117] border border-[#1A3A52] rounded-lg p-8">
-          <div className="flex items-center justify-between mb-6">
-            <h4 className="text-lg font-semibold text-white">{portCoData[selectedPortCo].name} Deep Dive</h4>
-            <Badge className={`border-0 ${
-              selectedPortCo === "alpha" ? "bg-[#B8860B]/20 text-[#B8860B]" :
-              selectedPortCo === "bravo" ? "bg-emerald-900/20 text-emerald-400" :
-              "bg-blue-900/20 text-blue-400"
-            }`}>
-              {portCoData[selectedPortCo].status}
+          
+          <div className="flex items-center gap-3">
+            <button 
+              onClick={handleRefresh}
+              className="rounded-lg border border-zinc-800 bg-zinc-900 p-2 text-zinc-400 transition-colors hover:bg-zinc-850 hover:text-zinc-100"
+            >
+              <RefreshCw className={`h-4 w-4 ${isRefreshing ? "animate-spin" : ""}`} />
+            </button>
+            <Badge className="bg-emerald-950/40 text-emerald-400 border border-emerald-500/30 font-mono text-xs px-2.5 py-1">
+              Active Underwriting
             </Badge>
+          </div>
+        </div>
+
+        {/* Live Ticker Marquee */}
+        <div className="relative flex items-center h-9 overflow-hidden rounded-lg bg-zinc-900/60 border border-zinc-800/80 px-4">
+          <div className="flex items-center gap-2 text-xs font-bold text-emerald-400 uppercase tracking-widest border-r border-zinc-800 pr-3 mr-3 shrink-0">
+            <Activity className="h-3 w-3 animate-pulse" /> LIVE DEALS
+          </div>
+          <div className="relative flex-1 overflow-hidden">
+            <div className="flex gap-12 whitespace-nowrap animate-marquee">
+              {tickerItems.concat(tickerItems).map((item, idx) => (
+                <div key={idx} className="flex items-center gap-2 text-xs text-zinc-300 font-mono">
+                  <span className="text-emerald-500">•</span>
+                  {item}
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Portfolio-Level KPIs Tiles Grid */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+        {portfolioTiles.map((tile) => (
+          <button
+            key={tile.key}
+            onClick={() => handleTileClick(tile)}
+            className="group relative overflow-hidden rounded-xl border border-zinc-800 bg-zinc-900/20 p-5 text-left transition-all hover:border-emerald-500/40 hover:bg-zinc-900/40 hover:shadow-lg hover:shadow-emerald-500/5"
+          >
+            {/* Hover top highlight */}
+            <div className="absolute top-0 left-0 w-full h-0.5 bg-gradient-to-r from-emerald-500 to-teal-500 opacity-0 group-hover:opacity-100 transition-opacity" />
+            
+            <div className="flex justify-between items-start mb-3">
+              <span className="text-[10px] font-mono font-semibold text-zinc-500 group-hover:text-emerald-400 transition-colors uppercase tracking-wider">
+                {tile.title}
+              </span>
+              <span className="rounded-full bg-zinc-800 px-1.5 py-0.5 text-[9px] font-mono text-zinc-400 border border-zinc-700">
+                {tile.framework}
+              </span>
+            </div>
+
+            <div className="flex items-baseline gap-2">
+              <span className="text-3xl font-bold text-zinc-100 font-serif tracking-tight">{tile.value}</span>
+              {tile.trend === "up" && (
+                <span className="flex items-center text-emerald-400 text-xs font-mono">
+                  <TrendingUp className="h-3.5 w-3.5 mr-0.5" />
+                </span>
+              )}
+            </div>
+
+            <div className="mt-2 text-[10px] text-emerald-400 font-mono flex items-center gap-1">
+              <span className="h-1 w-1 rounded-full bg-emerald-500 animate-pulse" />
+              {tile.delta}
+            </div>
+            
+            <div className="mt-1 text-[11px] text-zinc-500 line-clamp-1">{tile.subtitle}</div>
+
+            {/* Sparkline Canvas rendering simulation via clean border details */}
+            <div className="mt-4 flex items-end gap-1 h-6 w-full opacity-60 group-hover:opacity-100 transition-opacity">
+              {tile.chartData?.map((pt, index) => (
+                <div 
+                  key={index} 
+                  className="flex-1 bg-gradient-to-t from-emerald-500/30 to-emerald-500 rounded-t-sm"
+                  style={{ height: `${(pt.value / 6) * 100}%` }}
+                />
+              ))}
+            </div>
+          </button>
+        ))}
+      </div>
+
+      {/* PortCo Portfolio Selector Tab Layout */}
+      <div className="space-y-4">
+        <div className="flex items-center justify-between border-b border-zinc-800 pb-2">
+          <h4 className="text-xs font-bold text-zinc-400 uppercase tracking-widest flex items-center gap-2">
+            <Target className="h-4 w-4 text-emerald-500" />
+            PORTFOLIO COMPANY PERFORMANCE
+          </h4>
+          <span className="text-[10px] font-mono text-zinc-500">Click asset to activate drill-down workspace</span>
+        </div>
+
+        <div className="grid md:grid-cols-3 gap-4">
+          {(Object.keys(portCoData) as Array<keyof typeof portCoData>).map((key) => {
+            const isSelected = selectedPortCo === key;
+            const item = portCoData[key];
+            return (
+              <button
+                key={key}
+                onClick={() => setSelectedPortCo(key)}
+                className={`group relative overflow-hidden rounded-xl border p-5 text-left transition-all ${
+                  isSelected 
+                    ? "border-emerald-500 bg-zinc-900/60 ring-2 ring-emerald-500/15" 
+                    : "border-zinc-800 bg-zinc-950/20 hover:border-zinc-700 hover:bg-zinc-900/30"
+                }`}
+              >
+                {/* Visual Accent */}
+                <div className={`absolute left-0 top-0 h-full w-1 ${
+                  key === "alpha" ? "bg-amber-500" :
+                  key === "bravo" ? "bg-emerald-500" :
+                  "bg-blue-500"
+                }`} />
+
+                <div className="flex items-center justify-between mb-3">
+                  <span className="text-sm font-semibold text-zinc-200">{item.name}</span>
+                  <span className={`rounded-full px-2.5 py-0.5 text-[9px] font-mono border ${item.statusColor}`}>
+                    {key === "alpha" ? "Negotiation" : key === "bravo" ? "Complete" : "Diligence"}
+                  </span>
+                </div>
+
+                <div className="space-y-2 mt-4 text-xs">
+                  <div className="flex justify-between border-b border-zinc-900 pb-1.5">
+                    <span className="text-zinc-500">Asset Headcount</span>
+                    <span className="font-semibold text-zinc-300 font-mono">{item.employees.toLocaleString()}</span>
+                  </div>
+                  <div className="flex justify-between border-b border-zinc-900 pb-1.5">
+                    <span className="text-zinc-500">Pharmacy Spend (Underwritten)</span>
+                    <span className="font-semibold text-zinc-300 font-mono">${(item.rxSpend / 1000000).toFixed(1)}M</span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span className="text-zinc-500">EBITDA Lift Identified</span>
+                    <span className="font-bold text-emerald-400 font-mono">${(item.savings / 1000).toFixed(0)}K</span>
+                  </div>
+                </div>
+
+                <div className="mt-4 flex items-center justify-between text-[11px] text-zinc-500 border-t border-zinc-900 pt-2.5">
+                  <span>Progress to Target</span>
+                  <span className="font-bold text-zinc-300">{item.implementationProgress}%</span>
+                </div>
+                <div className="mt-1.5 h-1.5 bg-zinc-900 rounded overflow-hidden">
+                  <div 
+                    className={`h-full rounded-full ${
+                      key === "alpha" ? "bg-amber-500" :
+                      key === "bravo" ? "bg-emerald-500" :
+                      "bg-blue-500"
+                    }`}
+                    style={{ width: `${item.implementationProgress}%` }}
+                  />
+                </div>
+              </button>
+            );
+          })}
+        </div>
+      </div>
+
+      {/* Selected PortCo Workspace / Deep Dive Panel */}
+      {selectedPortCo && (
+        <div className="rounded-xl border border-zinc-800 bg-gradient-to-br from-zinc-950 to-zinc-900/80 p-6 md:p-8 shadow-2xl relative overflow-hidden">
+          {/* Neon background lighting glow effect */}
+          <div className="absolute top-0 right-0 w-80 h-80 bg-emerald-500/5 rounded-full blur-3xl pointer-events-none" />
+          
+          <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-6 pb-4 border-b border-zinc-800">
+            <div>
+              <div className="text-[10px] text-emerald-400 font-mono mb-1 tracking-wider uppercase">PORTFOLIO DEEP DIVE</div>
+              <h4 className="text-xl font-serif font-bold text-zinc-100 flex items-center gap-2">
+                {portCoData[selectedPortCo].name} Analysis Suite
+              </h4>
+            </div>
+            
+            <div className="flex items-center gap-2">
+              <span className="text-xs text-zinc-400 font-mono">Status:</span>
+              <span className={`rounded-full border px-3 py-1 text-xs font-mono ${portCoData[selectedPortCo].statusColor}`}>
+                {portCoData[selectedPortCo].status}
+              </span>
+            </div>
           </div>
 
           <div className="grid md:grid-cols-2 gap-6 mb-6">
-            <div className="bg-[#151B23] border border-[#2A3F54] rounded p-5">
-              <div className="text-sm font-semibold text-white mb-4">Contract Details</div>
-              <div className="space-y-2 text-sm">
-                <div className="flex items-center justify-between">
-                  <span className="text-neutral-400">Current PBM</span>
-                  <span className="text-white">{portCoData[selectedPortCo].details.currentPBM}</span>
+            {/* Left box: Underwriting and Contracts */}
+            <div className="rounded-xl border border-zinc-800/80 bg-zinc-900/20 p-5">
+              <div className="text-sm font-semibold text-zinc-300 mb-4 flex items-center gap-1.5">
+                <Shield className="h-4 w-4 text-emerald-400" />
+                Underwriting & Benefit Boundaries
+              </div>
+              <div className="space-y-3 text-xs text-zinc-300 font-mono">
+                <div className="flex justify-between pb-2 border-b border-zinc-900">
+                  <span className="text-zinc-500">Underwritten TPA/PBM</span>
+                  <span className="text-zinc-200">{portCoData[selectedPortCo].details.currentPBM}</span>
                 </div>
-                <div className="flex items-center justify-between">
-                  <span className="text-neutral-400">Contract Expiration</span>
-                  <span className="text-white">{portCoData[selectedPortCo].details.contractEnd}</span>
+                <div className="flex justify-between pb-2 border-b border-zinc-900">
+                  <span className="text-zinc-500">Agreement Terminus</span>
+                  <span className="text-zinc-200">{portCoData[selectedPortCo].details.contractEnd}</span>
                 </div>
-                <div className="flex items-center justify-between">
-                  <span className="text-neutral-400">Avg Member Age</span>
-                  <span className="text-white">{portCoData[selectedPortCo].details.avgMemberAge} years</span>
+                <div className="flex justify-between pb-2 border-b border-zinc-900">
+                  <span className="text-zinc-500">Median Cohort Age</span>
+                  <span className="text-zinc-200">{portCoData[selectedPortCo].details.avgMemberAge} yrs</span>
                 </div>
-                <div className="flex items-center justify-between">
-                  <span className="text-neutral-400">Chronic Conditions</span>
-                  <span className="text-white">{portCoData[selectedPortCo].details.chronicConditions}%</span>
+                <div className="flex justify-between">
+                  <span className="text-zinc-500">Chronic Care Footprint</span>
+                  <span className="text-zinc-200">{portCoData[selectedPortCo].details.chronicConditions}%</span>
                 </div>
               </div>
             </div>
 
-            <div className="bg-[#151B23] border border-[#2A3F54] rounded p-5">
-              <div className="text-sm font-semibold text-white mb-4">Value Creation Metrics</div>
+            {/* Right box: Realized EBITDA Yield */}
+            <div className="rounded-xl border border-zinc-800/80 bg-zinc-900/20 p-5">
+              <div className="text-sm font-semibold text-zinc-300 mb-4 flex items-center gap-1.5">
+                <DollarSign className="h-4 w-4 text-emerald-400" />
+                Realized EBITDA Overhang
+              </div>
               <div className="space-y-4">
                 <div>
-                  <div className="flex items-center justify-between text-sm mb-2">
-                    <span className="text-neutral-400">Annual Savings</span>
-                    <span className="text-emerald-400 font-semibold">
-                      ${(portCoData[selectedPortCo].savings / 1000000).toFixed(1)}M
+                  <div className="flex items-center justify-between text-xs mb-1.5">
+                    <span className="text-zinc-400">Locked Valuation Improvement</span>
+                    <span className="text-emerald-400 font-bold font-mono">
+                      +${(portCoData[selectedPortCo].savings / 1000000).toFixed(1)}M Run Rate
                     </span>
                   </div>
-                  <div className="text-xs text-neutral-500">
-                    {((portCoData[selectedPortCo].savings / portCoData[selectedPortCo].rxSpend) * 100).toFixed(0)}% reduction in pharmacy spend
+                  <div className="h-1.5 bg-zinc-900 rounded overflow-hidden">
+                    <div className="h-full bg-emerald-500" style={{ width: `${(portCoData[selectedPortCo].savings / portCoData[selectedPortCo].rxSpend) * 100 * 3}%` }} />
                   </div>
+                  <p className="text-[10px] text-zinc-500 mt-2 font-mono">
+                    Equivalent to {((portCoData[selectedPortCo].savings / portCoData[selectedPortCo].rxSpend) * 100).toFixed(0)}% reduction in baseline corporate cost centers.
+                  </p>
                 </div>
-                <div>
-                  <div className="flex items-center justify-between text-sm mb-2">
-                    <span className="text-neutral-400">Trend Improvement</span>
-                    <span className="text-white font-semibold">
-                      {portCoData[selectedPortCo].trend}% → 3.5%
+                
+                <div className="pt-2 border-t border-zinc-900">
+                  <div className="flex justify-between items-center text-xs">
+                    <span className="text-zinc-400">Aggregate Multiple Drag</span>
+                    <span className="text-rose-400 font-mono font-semibold">
+                      {portCoData[selectedPortCo].trend}% down to 3.5% Target
                     </span>
-                  </div>
-                  <div className="text-xs text-neutral-500">
-                    Predictive stabilization vs industry benchmark
                   </div>
                 </div>
               </div>
             </div>
           </div>
 
-          <div className="bg-[#151B23] border border-[#2A3F54] rounded p-5 mb-6">
-            <div className="flex items-center justify-between mb-4">
-              <div className="text-sm font-semibold text-white">Implementation Progress</div>
-              <span className="text-sm font-semibold text-white">
-                {portCoData[selectedPortCo].implementationProgress}%
-              </span>
-            </div>
-            <div className="h-3 bg-[#0F1419] rounded overflow-hidden">
-              <div 
-                className={`h-full ${
-                  selectedPortCo === "bravo" ? "bg-emerald-500" :
-                  selectedPortCo === "alpha" ? "bg-[#B8860B]" :
-                  "bg-blue-500"
-                }`}
-                style={{ width: `${portCoData[selectedPortCo].implementationProgress}%` }}
-              />
-            </div>
-            <div className="grid md:grid-cols-3 gap-4 mt-4">
-              <div className="text-xs">
-                <div className="text-neutral-400 mb-1">Phase 1: Analysis</div>
-                <div className={selectedPortCo === "charlie" ? "text-blue-400" : "text-emerald-400"}>
-                  {selectedPortCo === "charlie" ? "In Progress" : "Complete"}
+          {/* Underwriting Milestones Timeline */}
+          <div className="rounded-xl border border-zinc-800/80 bg-zinc-900/20 p-5 mb-6">
+            <h5 className="text-xs font-bold text-zinc-400 uppercase tracking-widest mb-4">
+              Underwriting Integration Milestones
+            </h5>
+            
+            <div className="grid md:grid-cols-3 gap-4">
+              <div className="relative rounded-lg bg-zinc-950 p-4 border border-zinc-900">
+                <div className="flex items-center justify-between mb-2">
+                  <span className="text-xs text-zinc-400 font-mono">Phase 1: Deep Forensic Audit</span>
+                  <CheckCircle2 className="h-4 w-4 text-emerald-400" />
                 </div>
+                <div className="text-[11px] text-zinc-500">Uncovered contract spread leakage of 31% vs NADAC benchmarks. Complete.</div>
               </div>
-              <div className="text-xs">
-                <div className="text-neutral-400 mb-1">Phase 2: Contracting</div>
-                <div className={selectedPortCo === "bravo" ? "text-emerald-400" : selectedPortCo === "alpha" ? "text-[#B8860B]" : "text-neutral-500"}>
-                  {selectedPortCo === "bravo" ? "Complete" : selectedPortCo === "alpha" ? "In Progress" : "Pending"}
+              
+              <div className="relative rounded-lg bg-zinc-950 p-4 border border-zinc-900">
+                <div className="flex items-center justify-between mb-2">
+                  <span className="text-xs text-zinc-400 font-mono">Phase 2: RFP Carve-Out swap</span>
+                  {selectedPortCo === "bravo" ? (
+                    <CheckCircle2 className="h-4 w-4 text-emerald-400" />
+                  ) : (
+                    <span className="flex h-2 w-2 rounded-full bg-amber-500 animate-pulse" />
+                  )}
                 </div>
+                <div className="text-[11px] text-zinc-500">Executing strategic PBM renegotiation. {selectedPortCo === "bravo" ? "Complete." : "In final negotiation phase."}</div>
               </div>
-              <div className="text-xs">
-                <div className="text-neutral-400 mb-1">Phase 3: Optimization</div>
-                <div className={selectedPortCo === "bravo" ? "text-emerald-400" : "text-neutral-500"}>
-                  {selectedPortCo === "bravo" ? "Complete" : "Pending"}
+              
+              <div className="relative rounded-lg bg-zinc-950 p-4 border border-zinc-900">
+                <div className="flex items-center justify-between mb-2">
+                  <span className="text-xs text-zinc-400 font-mono">Phase 3: Margin Optimization</span>
+                  {selectedPortCo === "bravo" ? (
+                    <CheckCircle2 className="h-4 w-4 text-emerald-400" />
+                  ) : (
+                    <span className="h-2 w-2 rounded-full bg-zinc-700" />
+                  )}
                 </div>
+                <div className="text-[11px] text-zinc-500">Deploying real-time governance, metabolic clinical programs & contract lockouts.</div>
               </div>
             </div>
           </div>
 
-          <div className="bg-[#151B23] border border-[#2A3F54] rounded p-5">
-            <div className="text-sm font-semibold text-white mb-3">Top Drug Classes</div>
+          <div className="rounded-xl border border-zinc-800/80 bg-zinc-900/20 p-5">
+            <div className="text-xs font-bold text-zinc-400 uppercase tracking-widest mb-3">Vetted Portco Therapeutic Overhangs</div>
             <div className="flex flex-wrap gap-2">
               {portCoData[selectedPortCo].details.topDrugClasses.map((drugClass, index) => (
-                <Badge key={index} className="bg-[#1A3A52]/20 text-neutral-300 border border-[#1A3A52]">
+                <Badge key={index} className="bg-emerald-950/20 text-emerald-400 border border-emerald-500/20 font-mono text-xs px-2.5 py-1">
                   {drugClass}
                 </Badge>
               ))}
@@ -300,88 +459,109 @@ export function PEOperatorWarRoom() {
         </div>
       )}
 
-      {/* Value Creation Playbook */}
-      <div className="bg-[#1A3A52]/10 border border-[#1A3A52] rounded-lg p-6">
-        <h4 className="text-sm font-semibold text-white mb-3 flex items-center gap-2">
-          <BarChart3 className="w-4 h-4 text-[#B8860B]" />
+      {/* Value Creation Playbook Section */}
+      <div className="rounded-xl border border-zinc-800 bg-zinc-950/40 p-6">
+        <h4 className="text-sm font-semibold text-zinc-200 mb-4 flex items-center gap-2">
+          <Award className="w-5 h-5 text-emerald-400" />
           Value Creation Playbook Execution
         </h4>
-        <div className="grid md:grid-cols-2 gap-4 mt-4">
-          <div>
-            <div className="text-xs text-neutral-400 mb-2">Operational Excellence</div>
-            <div className="flex items-center gap-3">
-              <div className="flex-1 h-2 bg-[#0F1419] rounded overflow-hidden">
+        <div className="grid md:grid-cols-2 gap-6 mt-4">
+          <div className="space-y-4">
+            <div>
+              <div className="flex items-center justify-between text-xs text-zinc-400 mb-2">
+                <span>Operational Excellence Audits</span>
+                <span className="font-semibold text-zinc-200">82%</span>
+              </div>
+              <div className="h-1.5 bg-zinc-900 rounded overflow-hidden">
                 <div className="h-full bg-emerald-500" style={{ width: "82%" }} />
               </div>
-              <span className="text-xs font-semibold text-white">82%</span>
             </div>
-          </div>
-          <div>
-            <div className="text-xs text-neutral-400 mb-2">Cost Optimization</div>
-            <div className="flex items-center gap-3">
-              <div className="flex-1 h-2 bg-[#0F1419] rounded overflow-hidden">
+            <div>
+              <div className="flex items-center justify-between text-xs text-zinc-400 mb-2">
+                <span>TPA Cost Overhang Containment</span>
+                <span className="font-semibold text-zinc-200">91%</span>
+              </div>
+              <div className="h-1.5 bg-zinc-900 rounded overflow-hidden">
                 <div className="h-full bg-emerald-500" style={{ width: "91%" }} />
               </div>
-              <span className="text-xs font-semibold text-white">91%</span>
             </div>
           </div>
-          <div>
-            <div className="text-xs text-neutral-400 mb-2">Revenue Enhancement</div>
-            <div className="flex items-center gap-3">
-              <div className="flex-1 h-2 bg-[#0F1419] rounded overflow-hidden">
-                <div className="h-full bg-yellow-500" style={{ width: "67%" }} />
+          <div className="space-y-4">
+            <div>
+              <div className="flex items-center justify-between text-xs text-zinc-400 mb-2">
+                <span>Fiduciary Fee Benchmarking</span>
+                <span className="font-semibold text-zinc-200">67%</span>
               </div>
-              <span className="text-xs font-semibold text-white">67%</span>
+              <div className="h-1.5 bg-zinc-900 rounded overflow-hidden">
+                <div className="h-full bg-amber-500" style={{ width: "67%" }} />
+              </div>
             </div>
-          </div>
-          <div>
-            <div className="text-xs text-neutral-400 mb-2">Market Positioning</div>
-            <div className="flex items-center gap-3">
-              <div className="flex-1 h-2 bg-[#0F1419] rounded overflow-hidden">
+            <div>
+              <div className="flex items-center justify-between text-xs text-zinc-400 mb-2">
+                <span>Exit Readiness Valuation Compliance</span>
+                <span className="font-semibold text-zinc-200">88%</span>
+              </div>
+              <div className="h-1.5 bg-zinc-900 rounded overflow-hidden">
                 <div className="h-full bg-emerald-500" style={{ width: "88%" }} />
               </div>
-              <span className="text-xs font-semibold text-white">88%</span>
             </div>
           </div>
         </div>
       </div>
 
-      {/* Portfolio Synergies */}
-      <div className="bg-[#0C1117] border border-[#2A3F54] rounded-lg p-6">
-        <h4 className="text-sm font-semibold text-white mb-4 flex items-center gap-2">
-          <Zap className="w-4 h-4 text-[#B8860B]" />
+      {/* Cross Portfolio Synergy Potential */}
+      <div className="rounded-xl border border-zinc-800 bg-zinc-950/40 p-6">
+        <h4 className="text-sm font-semibold text-zinc-200 mb-4 flex items-center gap-2">
+          <Zap className="w-5 h-5 text-emerald-400 animate-pulse" />
           Cross-Portfolio Synergy Opportunities
         </h4>
-        <div className="space-y-3">
-          <div className="bg-[#151B23] border border-[#1A3A52] rounded p-4">
-            <div className="flex items-center justify-between mb-2">
-              <span className="text-sm text-neutral-300">Consolidated PBM Contracting</span>
-              <span className="text-sm font-semibold text-emerald-400">$1.2M potential</span>
+        <div className="grid md:grid-cols-3 gap-4">
+          <div className="rounded-xl border border-zinc-800/80 bg-zinc-900/10 p-5 hover:border-emerald-500/20 hover:bg-zinc-900/20 transition-all">
+            <div className="flex justify-between items-start mb-2">
+              <span className="text-xs font-bold text-zinc-300">Consolidated Rx RFP</span>
+              <span className="rounded-full bg-emerald-500/10 border border-emerald-500/30 px-2 py-0.5 text-[10px] font-mono text-emerald-400">
+                $1.2M potential
+              </span>
             </div>
-            <p className="text-xs text-neutral-400">
-              Aggregate purchasing power across all three portcos for improved rebates and fee structures
+            <p className="text-xs text-zinc-500 leading-relaxed">
+              Consolidating PBM agreements into a single risk-pool leverage mechanism.
             </p>
           </div>
-          <div className="bg-[#151B23] border border-[#1A3A52] rounded p-4">
-            <div className="flex items-center justify-between mb-2">
-              <span className="text-sm text-neutral-300">Shared Specialty Carve-Out</span>
-              <span className="text-sm font-semibold text-emerald-400">$640K potential</span>
+
+          <div className="rounded-xl border border-zinc-800/80 bg-zinc-900/10 p-5 hover:border-emerald-500/20 hover:bg-zinc-900/20 transition-all">
+            <div className="flex justify-between items-start mb-2">
+              <span className="text-xs font-bold text-zinc-300">Platform Clinical Union</span>
+              <span className="rounded-full bg-emerald-500/10 border border-emerald-500/30 px-2 py-0.5 text-[10px] font-mono text-emerald-400">
+                $640K potential
+              </span>
             </div>
-            <p className="text-xs text-neutral-400">
-              Joint specialty pharmacy network access and therapeutic management programs
+            <p className="text-xs text-zinc-500 leading-relaxed">
+              Shared specialty pharmacy exclusion networks & formulary containment suites.
             </p>
           </div>
-          <div className="bg-[#151B23] border border-[#1A3A52] rounded p-4">
-            <div className="flex items-center justify-between mb-2">
-              <span className="text-sm text-neutral-300">Platform Benefits Administration</span>
-              <span className="text-sm font-semibold text-emerald-400">$280K potential</span>
+
+          <div className="rounded-xl border border-zinc-800/80 bg-zinc-900/10 p-5 hover:border-emerald-500/20 hover:bg-zinc-900/20 transition-all">
+            <div className="flex justify-between items-start mb-2">
+              <span className="text-xs font-bold text-zinc-300">Benefits Broker Fee Cap</span>
+              <span className="rounded-full bg-emerald-500/10 border border-emerald-500/30 px-2 py-0.5 text-[10px] font-mono text-emerald-400">
+                $280K potential
+              </span>
             </div>
-            <p className="text-xs text-neutral-400">
-              Unified technology platform for member services and clinical program management
+            <p className="text-xs text-zinc-500 leading-relaxed">
+              Underwriting single brokerage platform standards with transparent fee-caps.
             </p>
           </div>
         </div>
       </div>
+
+      {/* Drill-down drawer */}
+      {activeTile && (
+        <PEOperatorDrillDownDrawer
+          tile={activeTile}
+          isOpen={drawerOpen}
+          onClose={handleCloseDrawer}
+        />
+      )}
     </div>
   );
 }

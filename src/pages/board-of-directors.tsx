@@ -8,6 +8,7 @@ import Nav from "@/components/Nav";
 import Footer from "@/components/Footer";
 import { SEO } from "@/components/SEO";
 import { ImageLightbox } from "@/components/ImageLightbox";
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import Head from "next/head";
 
 const boardMembers = [
@@ -601,134 +602,148 @@ export default function BoardOfDirectorsPage() {
             </div>
 
             {/* Detailed Profile Modal */}
-            {selectedMember && selectedMember.fullBio && (
-              <motion.div
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                exit={{ opacity: 0 }}
-                className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm"
-                onClick={() => setSelectedMember(null)}
-              >
-                <motion.div
-                  initial={{ scale: 0.9, opacity: 0 }}
-                  animate={{ scale: 1, opacity: 1 }}
-                  exit={{ scale: 0.9, opacity: 0 }}
-                  className="relative max-w-4xl w-full max-h-[90vh] overflow-y-auto bg-gradient-to-br from-zinc-900 via-black to-zinc-900 border border-amber-500/30 rounded-2xl p-8"
-                  onClick={(e) => e.stopPropagation()}
-                >
-                  {/* Close Button */}
-                  <button
-                    onClick={() => setSelectedMember(null)}
-                    className="absolute top-6 right-6 p-2 rounded-full bg-amber-500/10 hover:bg-amber-500/20 transition-colors"
-                  >
-                    <X className="h-6 w-6 text-amber-400" />
-                  </button>
-
-                  {/* Profile Header */}
-                  <div className="flex flex-col md:flex-row gap-8 mb-8 pb-8 border-b border-amber-500/20">
-                    <div
-                      className="relative w-40 h-40 rounded-full overflow-hidden border-4 border-amber-500/30 flex-shrink-0 cursor-pointer hover:border-amber-400/60 transition-all"
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        setLightboxImage(selectedMember.image);
-                      }}
-                    >
-                      <img
-                        src={selectedMember.image}
-                        alt={selectedMember.name}
-                        className="w-full h-full object-cover"
-                      />
-                    </div>
-                    <div className="flex-1">
-                      <h2 className="text-4xl font-bold text-amber-100 mb-2">
-                        {selectedMember.name}
-                      </h2>
-                      <p className="text-xl text-amber-400 font-semibold mb-4">
-                        {selectedMember.title}
-                      </p>
-                      <a
-                        href={selectedMember.linkedin}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="inline-flex items-center gap-2 px-4 py-2 mb-4 rounded-lg bg-amber-500/10 hover:bg-amber-500/20 border border-amber-500/30 hover:border-amber-400/60 text-amber-400 hover:text-amber-300 text-sm font-semibold transition-all duration-300"
-                        onClick={(e) => e.stopPropagation()}
-                      >
-                        <Linkedin className="h-4 w-4" />
-                        <span>View LinkedIn Profile</span>
-                      </a>
-                      <p className="text-gray-300 leading-relaxed">
-                        {selectedMember.bio}
-                      </p>
-                    </div>
-                  </div>
-
-                  {/* Full Biography Sections */}
-                  <div className="space-y-8">
-                    {/* Introduction */}
-                    <div>
-                      <h3 className="text-2xl font-bold text-amber-100 mb-4 flex items-center gap-3">
-                        <Shield className="h-6 w-6 text-amber-400" />
-                        Leadership & Experience
-                      </h3>
-                      <p className="text-gray-300 leading-relaxed">
-                        {selectedMember.fullBio.introduction}
-                      </p>
-                    </div>
-
-                    {/* Platform */}
-                    <div>
-                      <h3 className="text-2xl font-bold text-amber-100 mb-4 flex items-center gap-3">
-                        <TrendingUp className="h-6 w-6 text-amber-400" />
-                        Platform & Approach
-                      </h3>
-                      <p className="text-gray-300 leading-relaxed">
-                        {selectedMember.fullBio.platform}
-                      </p>
-                    </div>
-
-                    {/* Philosophy */}
-                    <div>
-                      <h3 className="text-2xl font-bold text-amber-100 mb-4 flex items-center gap-3">
-                        <Users className="h-6 w-6 text-amber-400" />
-                        Philosophy & Values
-                      </h3>
-                      <p className="text-gray-300 leading-relaxed">
-                        {selectedMember.fullBio.philosophy}
-                      </p>
-                    </div>
-
-                    {/* Areas of Expertise */}
-                    <div>
-                      <h3 className="text-2xl font-bold text-amber-100 mb-4 flex items-center gap-3">
-                        <Award className="h-6 w-6 text-amber-400" />
-                        Areas of Expertise
-                      </h3>
-                      <div className="grid md:grid-cols-2 gap-3">
-                        {selectedMember.fullBio.expertise.map((area, idx) => (
-                          <div
-                            key={idx}
-                            className="flex items-start gap-3 p-3 rounded-lg bg-amber-500/5 border border-amber-500/10"
+            <Dialog open={!!selectedMember} onOpenChange={(open) => !open && setSelectedMember(null)}>
+              <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto bg-gradient-to-br from-zinc-900 via-black to-zinc-900 border border-amber-500/30">
+                {selectedMember && selectedMember.fullBio && (
+                  <>
+                    <DialogHeader className="border-b border-amber-500/20 pb-6">
+                      <div className="flex flex-col md:flex-row gap-6 items-start">
+                        <motion.div
+                          initial={{ scale: 0.8, opacity: 0 }}
+                          animate={{ scale: 1, opacity: 1 }}
+                          transition={{ duration: 0.4 }}
+                          className="relative w-32 h-32 rounded-full overflow-hidden border-4 border-amber-500/40 flex-shrink-0 cursor-pointer hover:border-amber-400/70 transition-all shadow-lg shadow-amber-500/20"
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            setLightboxImage(selectedMember.image);
+                          }}
+                        >
+                          <img
+                            src={selectedMember.image}
+                            alt={selectedMember.name}
+                            className="w-full h-full object-cover"
+                          />
+                          <div className="absolute inset-0 bg-gradient-to-t from-amber-500/20 to-transparent" />
+                        </motion.div>
+                        <div className="flex-1 space-y-3">
+                          <DialogTitle className="text-3xl md:text-4xl font-bold text-amber-100">
+                            {selectedMember.name}
+                          </DialogTitle>
+                          <p className="text-lg md:text-xl text-amber-400 font-semibold">
+                            {selectedMember.title}
+                          </p>
+                          <a
+                            href={selectedMember.linkedin}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-amber-500/10 hover:bg-amber-500/20 border border-amber-500/30 hover:border-amber-400/60 text-amber-400 hover:text-amber-300 text-sm font-semibold transition-all duration-300"
+                            onClick={(e) => e.stopPropagation()}
                           >
-                            <ChevronRight className="h-5 w-5 text-amber-400 flex-shrink-0 mt-0.5" />
-                            <span className="text-gray-300">{area}</span>
-                          </div>
-                        ))}
+                            <Linkedin className="h-4 w-4" />
+                            <span>View LinkedIn Profile</span>
+                          </a>
+                        </div>
                       </div>
-                    </div>
+                    </DialogHeader>
 
-                    {/* Vision & Ethos */}
-                    <div className="p-6 rounded-xl bg-gradient-to-br from-amber-950/30 to-transparent border border-amber-500/20">
-                      <h3 className="text-2xl font-bold text-amber-100 mb-4">
-                        Vision & Ethos
-                      </h3>
-                      <p className="text-gray-300 leading-relaxed">
-                        {selectedMember.fullBio.vision}
-                      </p>
-                    </div>
-                  </div>
-                </motion.div>
-              </motion.div>
-            )}
+                    {/* Full Biography Sections */}
+                    <motion.div 
+                      className="space-y-8 pt-6"
+                      initial={{ opacity: 0, y: 20 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ duration: 0.5, delay: 0.2 }}
+                    >
+                      {/* Introduction */}
+                      <motion.div
+                        initial={{ opacity: 0, x: -20 }}
+                        animate={{ opacity: 1, x: 0 }}
+                        transition={{ duration: 0.4, delay: 0.3 }}
+                      >
+                        <h3 className="text-2xl font-bold text-amber-100 mb-4 flex items-center gap-3">
+                          <Shield className="h-6 w-6 text-amber-400" />
+                          Leadership & Experience
+                        </h3>
+                        <p className="text-gray-300 leading-relaxed text-[15px]">
+                          {selectedMember.fullBio.introduction}
+                        </p>
+                      </motion.div>
+
+                      {/* Platform */}
+                      <motion.div
+                        initial={{ opacity: 0, x: -20 }}
+                        animate={{ opacity: 1, x: 0 }}
+                        transition={{ duration: 0.4, delay: 0.4 }}
+                      >
+                        <h3 className="text-2xl font-bold text-amber-100 mb-4 flex items-center gap-3">
+                          <TrendingUp className="h-6 w-6 text-amber-400" />
+                          Platform & Approach
+                        </h3>
+                        <p className="text-gray-300 leading-relaxed text-[15px]">
+                          {selectedMember.fullBio.platform}
+                        </p>
+                      </motion.div>
+
+                      {/* Philosophy */}
+                      <motion.div
+                        initial={{ opacity: 0, x: -20 }}
+                        animate={{ opacity: 1, x: 0 }}
+                        transition={{ duration: 0.4, delay: 0.5 }}
+                      >
+                        <h3 className="text-2xl font-bold text-amber-100 mb-4 flex items-center gap-3">
+                          <Users className="h-6 w-6 text-amber-400" />
+                          Philosophy & Values
+                        </h3>
+                        <p className="text-gray-300 leading-relaxed text-[15px]">
+                          {selectedMember.fullBio.philosophy}
+                        </p>
+                      </motion.div>
+
+                      {/* Areas of Expertise */}
+                      <motion.div
+                        initial={{ opacity: 0, x: -20 }}
+                        animate={{ opacity: 1, x: 0 }}
+                        transition={{ duration: 0.4, delay: 0.6 }}
+                      >
+                        <h3 className="text-2xl font-bold text-amber-100 mb-4 flex items-center gap-3">
+                          <Award className="h-6 w-6 text-amber-400" />
+                          Areas of Expertise
+                        </h3>
+                        <div className="grid md:grid-cols-2 gap-3">
+                          {selectedMember.fullBio.expertise.map((area, idx) => (
+                            <motion.div
+                              key={idx}
+                              initial={{ opacity: 0, scale: 0.95 }}
+                              animate={{ opacity: 1, scale: 1 }}
+                              transition={{ duration: 0.3, delay: 0.7 + (idx * 0.05) }}
+                              className="flex items-start gap-3 p-3 rounded-lg bg-amber-500/5 border border-amber-500/10 hover:border-amber-500/30 hover:bg-amber-500/10 transition-all duration-300"
+                            >
+                              <ChevronRight className="h-5 w-5 text-amber-400 flex-shrink-0 mt-0.5" />
+                              <span className="text-gray-300 text-sm">{area}</span>
+                            </motion.div>
+                          ))}
+                        </div>
+                      </motion.div>
+
+                      {/* Vision & Ethos */}
+                      <motion.div
+                        initial={{ opacity: 0, y: 20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ duration: 0.4, delay: 0.8 }}
+                        className="p-6 rounded-xl bg-gradient-to-br from-amber-950/30 to-transparent border border-amber-500/20"
+                      >
+                        <h3 className="text-2xl font-bold text-amber-100 mb-4 flex items-center gap-2">
+                          <Sparkles className="h-6 w-6 text-amber-400" />
+                          Vision & Ethos
+                        </h3>
+                        <p className="text-gray-300 leading-relaxed text-[15px]">
+                          {selectedMember.fullBio.vision}
+                        </p>
+                      </motion.div>
+                    </motion.div>
+                  </>
+                )}
+              </DialogContent>
+            </Dialog>
           </div>
         </section>
 

@@ -9,6 +9,7 @@ import {
   DollarSign, Percent, ChevronRight, Check, X, Layers, Eye, Info
 } from "lucide-react";
 import { ExecutiveWarRoom } from "@/components/warroom/ExecutiveWarRoom";
+import { CHROWarRoom } from "@/components/warroom/CHROWarRoom";
 import { BadgeDetailSystem } from "@/components/home/BadgeDetailSystem";
 import Nav from "@/components/Nav";
 import Footer from "@/components/Footer";
@@ -920,76 +921,7 @@ export default function HomePage() {
 
               {/* CHRO Dashboard */}
               {activeWarRoomRole === "chro" && (
-                <div className="space-y-6">
-                  <div className="flex items-center justify-between mb-8">
-                    <div>
-                      <h3 className="text-2xl font-serif font-bold text-white">CHRO Command Center</h3>
-                      <p className="text-sm text-neutral-400 mt-1">Employee benefits optimization & plan design metrics</p>
-                    </div>
-                    <Badge className="bg-[#1A3A52]/20 text-[#B8860B] border border-[#1A3A52]">Live HR Analytics</Badge>
-                  </div>
-
-                  <div className="grid grid-cols-4 gap-4">
-                    <div className="bg-[#151B23] border border-[#2A3F54] rounded-lg p-5">
-                      <div className="text-xs font-mono text-neutral-400 mb-1">Member Satisfaction</div>
-                      <div className="text-2xl font-bold text-emerald-400">87%</div>
-                      <div className="text-xs text-emerald-400 mt-1 flex items-center gap-1">
-                        <TrendingUp className="w-3 h-3" /> +12 pts YoY
-                      </div>
-                    </div>
-                    <div className="bg-[#151B23] border border-[#2A3F54] rounded-lg p-5">
-                      <div className="text-xs font-mono text-neutral-400 mb-1">Plan Utilization Rate</div>
-                      <div className="text-2xl font-bold text-white">73%</div>
-                      <div className="text-xs text-neutral-400 mt-1">Active enrollment</div>
-                    </div>
-                    <div className="bg-[#151B23] border border-[#2A3F54] rounded-lg p-5">
-                      <div className="text-xs font-mono text-neutral-400 mb-1">Pharmacy Access Score</div>
-                      <div className="text-2xl font-bold text-white">92%</div>
-                      <div className="text-xs text-neutral-400 mt-1">Network adequacy</div>
-                    </div>
-                    <div className="bg-[#151B23] border border-[#2A3F54] rounded-lg p-5">
-                      <div className="text-xs font-mono text-neutral-400 mb-1">Cost Per Employee</div>
-                      <div className="text-2xl font-bold text-emerald-400">-$428</div>
-                      <div className="text-xs text-emerald-400 mt-1">Savings PMPY</div>
-                    </div>
-                  </div>
-
-                  <div className="grid md:grid-cols-2 gap-6 mt-6">
-                    <div className="bg-[#151B23] border border-[#2A3F54] rounded-lg p-6">
-                      <h4 className="text-sm font-semibold text-white mb-4">Top Member Concerns</h4>
-                      <div className="space-y-3">
-                        <div className="flex items-center justify-between">
-                          <span className="text-sm text-neutral-300">Specialty drug copays</span>
-                          <span className="text-xs font-mono text-red-400">47 tickets</span>
-                        </div>
-                        <div className="flex items-center justify-between">
-                          <span className="text-sm text-neutral-300">Prior authorization delays</span>
-                          <span className="text-xs font-mono text-yellow-400">32 tickets</span>
-                        </div>
-                        <div className="flex items-center justify-between">
-                          <span className="text-sm text-neutral-300">Pharmacy network access</span>
-                          <span className="text-xs font-mono text-neutral-400">18 tickets</span>
-                        </div>
-                      </div>
-                    </div>
-
-                    <div className="bg-[#151B23] border border-[#2A3F54] rounded-lg p-6">
-                      <h4 className="text-sm font-semibold text-white mb-4">Benefits Optimization Opportunities</h4>
-                      <div className="space-y-3">
-                        <div className="bg-[#0F1419] border border-[#1A3A52] rounded p-3">
-                          <div className="text-xs font-semibold text-[#B8860B] mb-1">High-Priority</div>
-                          <div className="text-sm text-neutral-300">Expand specialty pharmacy network</div>
-                          <div className="text-xs text-neutral-400 mt-1">Est. 14% satisfaction increase</div>
-                        </div>
-                        <div className="bg-[#0F1419] border border-[#2A3F54] rounded p-3">
-                          <div className="text-xs font-semibold text-neutral-400 mb-1">Medium-Priority</div>
-                          <div className="text-sm text-neutral-300">Implement mail-order incentives</div>
-                          <div className="text-xs text-neutral-400 mt-1">Est. $84K annual savings</div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
+                <CHROWarRoom />
               )}
 
               {/* Board Dashboard */}

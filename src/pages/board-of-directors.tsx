@@ -3,12 +3,16 @@
 import type React from "react";
 import { motion } from "framer-motion";
 import { useState } from "react";
-import { Shield, Users, TrendingUp, Award, X, ChevronRight, Sparkles, Linkedin } from "lucide-react";
+import { Shield, Users, TrendingUp, Award, X, ChevronRight, Sparkles, Linkedin, Mail, Send } from "lucide-react";
 import Nav from "@/components/Nav";
 import Footer from "@/components/Footer";
 import { SEO } from "@/components/SEO";
 import { ImageLightbox } from "@/components/ImageLightbox";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
+import { Button } from "@/components/ui/button";
+import { useToast } from "@/hooks/use-toast";
 import Head from "next/head";
 
 const boardMembers = [
@@ -167,6 +171,14 @@ export default function BoardOfDirectorsPage() {
   const [lightboxImage, setLightboxImage] = useState<string | null>(null);
   const [hoveredCard, setHoveredCard] = useState<number | null>(null);
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
+  const [formData, setFormData] = useState({
+    name: "",
+    email: "",
+    subject: "",
+    message: ""
+  });
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const { toast } = useToast();
 
   const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>, index: number) => {
     if (hoveredCard !== index) return;
@@ -175,6 +187,48 @@ export default function BoardOfDirectorsPage() {
     const x = (e.clientX - rect.left) / rect.width;
     const y = (e.clientY - rect.top) / rect.height;
     setMousePosition({ x, y });
+  };
+
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    setFormData(prev => ({
+      ...prev,
+      [e.target.name]: e.target.value
+    }));
+  };
+
+  const handleFormSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setIsSubmitting(true);
+
+    try {
+      const response = await fetch("/api/contact/submit", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          ...formData,
+          recipient: selectedMember?.name,
+          recipientEmail: selectedMember?.linkedin
+        })
+      });
+
+      if (response.ok) {
+        toast({
+          title: "Message Sent Successfully",
+          description: `Your message to ${selectedMember?.name} has been delivered. They will respond directly to your email.`,
+        });
+        setFormData({ name: "", email: "", subject: "", message: "" });
+      } else {
+        throw new Error("Failed to send message");
+      }
+    } catch (error) {
+      toast({
+        title: "Message Delivery Failed",
+        description: "Unable to send your message. Please try again or contact us directly.",
+        variant: "destructive",
+      });
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
@@ -738,6 +792,101 @@ export default function BoardOfDirectorsPage() {
                         <p className="text-gray-300 leading-relaxed text-[15px]">
                           {selectedMember.fullBio.vision}
                         </p>
+                      </motion.div>
+
+                      {/* Professional Contact Form */}
+                      <motion.div
+                        initial={{ opacity: 0, y: 20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ duration: 0.4, delay: 0.9 }}
+                        className="p-6 rounded-xl bg-gradient-to-br from-amber-950/20 to-zinc-900/30 border border-amber-500/30"
+                      >
+                        <h3 className="text-2xl font-bold text-amber-100 mb-2 flex items-center gap-2">
+                          <Mail className="h-6 w-6 text-amber-400" />
+                          Professional Outreach
+                        </h3>
+                        <p className="text-gray-400 text-sm mb-6">
+                          Contact {selectedMember.name} directly for consulting inquiries, partnership opportunities, or strategic guidance.
+                        </p>
+                        
+                        <form onSubmit={handleFormSubmit} className="space-y-4">
+                          <div className="grid md:grid-cols-2 gap-4">
+                            <div className="space-y-2">
+                              <label className="text-sm font-semibold text-amber-300">Your Name *</label>
+                              <Input
+                                name="name"
+                                value={formData.name}
+                                onChange={handleInputChange}
+                                placeholder="John Smith"
+                                required
+                                className="bg-zinc-900/50 border-amber-500/30 focus:border-amber-400 text-gray-200 placeholder:text-gray-500"
+                              />
+                            </div>
+                            <div className="space-y-2">
+                              <label className="text-sm font-semibold text-amber-300">Your Email *</label>
+                              <Input
+                                name="email"
+                                type="email"
+                                value={formData.email}
+                                onChange={handleInputChange}
+                                placeholder="john@company.com"
+                                required
+                                className="bg-zinc-900/50 border-amber-500/30 focus:border-amber-400 text-gray-200 placeholder:text-gray-500"
+                              />
+                            </div>
+                          </div>
+                          
+                          <div className="space-y-2">
+                            <label className="text-sm font-semibold text-amber-300">Subject *</label>
+                            <Input
+                              name="subject"
+                              value={formData.subject}
+                              onChange={handleInputChange}
+                              placeholder="Strategic partnership opportunity"
+                              required
+                              className="bg-zinc-900/50 border-amber-500/30 focus:border-amber-400 text-gray-200 placeholder:text-gray-500"
+                            />
+                          </div>
+                          
+                          <div className="space-y-2">
+                            <label className="text-sm font-semibold text-amber-300">Message *</label>
+                            <Textarea
+                              name="message"
+                              value={formData.message}
+                              onChange={handleInputChange}
+                              placeholder="I would like to discuss..."
+                              required
+                              rows={5}
+                              className="bg-zinc-900/50 border-amber-500/30 focus:border-amber-400 text-gray-200 placeholder:text-gray-500 resize-none"
+                            />
+                          </div>
+
+                          <Button
+                            type="submit"
+                            disabled={isSubmitting}
+                            className="w-full bg-gradient-to-r from-amber-600 to-amber-500 hover:from-amber-500 hover:to-amber-400 text-white font-semibold py-3 rounded-lg transition-all duration-300 shadow-lg shadow-amber-500/25 hover:shadow-amber-500/40 disabled:opacity-50 disabled:cursor-not-allowed"
+                          >
+                            {isSubmitting ? (
+                              <span className="flex items-center gap-2">
+                                <motion.div
+                                  animate={{ rotate: 360 }}
+                                  transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
+                                  className="w-4 h-4 border-2 border-white border-t-transparent rounded-full"
+                                />
+                                Sending Message...
+                              </span>
+                            ) : (
+                              <span className="flex items-center gap-2">
+                                <Send className="h-4 w-4" />
+                                Send Message to {selectedMember.name.split(" ")[0]}
+                              </span>
+                            )}
+                          </Button>
+
+                          <p className="text-xs text-gray-500 text-center">
+                            Your message will be sent directly to {selectedMember.name}&apos;s professional email. Response time typically within 48 hours.
+                          </p>
+                        </form>
                       </motion.div>
                     </motion.div>
                   </>

@@ -29,7 +29,7 @@ const mockAudits = [
 
 const fadeInUpVariants = {
   hidden: { opacity: 0, y: 30 },
-  visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: "easeOut" } }
+  visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: [0.0, 0.0, 0.2, 1] } }
 };
 
 const staggerContainer = {
@@ -147,7 +147,7 @@ export default function HomePage() {
               className="lg:col-span-7 space-y-8"
               initial={{ opacity: 0, x: -30 }}
               animate={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.8, ease: "easeOut" }}
+              transition={{ duration: 0.8, ease: [0.0, 0.0, 0.2, 1] }}
             >
               
               <div className="inline-flex items-center gap-2 bg-[#1A3A52]/20 border border-[#1A3A52] rounded px-4 py-2 text-xs font-mono text-[#B8860B] uppercase tracking-wider">
@@ -232,7 +232,7 @@ export default function HomePage() {
               className="lg:col-span-5 relative"
               initial={{ opacity: 0, x: 30 }}
               animate={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.8, delay: 0.2, ease: "easeOut" }}
+              transition={{ duration: 0.8, delay: 0.2, ease: [0.0, 0.0, 0.2, 1] }}
             >
               <div className="border border-[#2A3F54] bg-[#0C1117] rounded-lg p-1 shadow-xl">
                 <div className="bg-[#151B23] px-4 py-2 border-b border-[#2A3F54] flex items-center justify-between text-xs font-mono text-neutral-400">
@@ -271,7 +271,7 @@ export default function HomePage() {
                         className="h-full bg-red-500" 
                         initial={{ width: 0 }}
                         animate={{ width: "34.8%" }}
-                        transition={{ duration: 1.2, delay: 0.5, ease: "easeOut" }}
+                        transition={{ duration: 1.2, delay: 0.5, ease: [0.0, 0.0, 0.2, 1] }}
                       />
                     </div>
                   </div>
@@ -286,7 +286,7 @@ export default function HomePage() {
                         className="h-full bg-emerald-500" 
                         initial={{ width: 0 }}
                         animate={{ width: "2.5%" }}
-                        transition={{ duration: 1.2, delay: 0.7, ease: "easeOut" }}
+                        transition={{ duration: 1.2, delay: 0.7, ease: [0.0, 0.0, 0.2, 1] }}
                       />
                     </div>
                   </div>
@@ -583,7 +583,7 @@ export default function HomePage() {
                           className="bg-emerald-600 h-full flex items-center justify-center px-2" 
                           initial={{ width: 0 }}
                           animate={{ width: "70%" }}
-                          transition={{ duration: 0.8, ease: "easeOut" }}
+                          transition={{ duration: 0.8, ease: [0.0, 0.0, 0.2, 1] }}
                         >
                           Active Ingredient 85%
                         </motion.div>
@@ -591,7 +591,7 @@ export default function HomePage() {
                           className="bg-[#B8860B] h-full flex items-center justify-center px-2" 
                           initial={{ width: 0 }}
                           animate={{ width: "15%" }}
-                          transition={{ duration: 0.8, delay: 0.2, ease: "easeOut" }}
+                          transition={{ duration: 0.8, delay: 0.2, ease: [0.0, 0.0, 0.2, 1] }}
                         >
                           15% Markup
                         </motion.div>
@@ -599,7 +599,7 @@ export default function HomePage() {
                           className="bg-blue-600 h-full flex items-center justify-center px-2" 
                           initial={{ width: 0 }}
                           animate={{ width: "15%" }}
-                          transition={{ duration: 0.8, delay: 0.4, ease: "easeOut" }}
+                          transition={{ duration: 0.8, delay: 0.4, ease: [0.0, 0.0, 0.2, 1] }}
                         >
                           Flat Fee
                         </motion.div>

@@ -752,9 +752,9 @@ export default function HomePage() {
         <section className="py-24 max-w-7xl mx-auto px-4 md:px-8">
           <div className="mb-12 text-center max-w-3xl mx-auto space-y-4">
             <span className="text-xs font-mono text-[#B8860B] uppercase tracking-widest">Platform Core Architecture</span>
-            <h2 className="text-4xl md:text-5xl font-serif font-bold">Platform Capabilities</h2>
+            <h2 className="text-4xl md:text-5xl font-serif font-bold">Core Analytical Capabilities</h2>
             <p className="text-neutral-400 text-lg leading-relaxed">
-              Explore the core analytical modules driving the Fiduciary command center.
+              Three foundational analytical modules supporting fiduciary healthcare governance.
             </p>
           </div>
 
@@ -767,12 +767,12 @@ export default function HomePage() {
               <div className="mb-4 inline-flex rounded bg-[#1A3A52]/20 p-3">
                 <FileText className="h-6 w-6 text-[#B8860B]" />
               </div>
-              <h3 className="mb-2 text-xl font-serif font-bold text-white">Immutable Evidence Ledger</h3>
+              <h3 className="mb-2 text-xl font-serif font-bold text-white">Verified Savings Documentation</h3>
               <p className="text-sm text-neutral-400 leading-relaxed">
-                Cryptographic timestamped tracking of healthcare contract compliance, overcharge recovery events, and verification receipts.
+                Timestamped audit trail documenting contract compliance events, overcharge recoveries, and third-party verification records with complete chain of custody.
               </p>
               <div className="mt-4 flex items-center gap-1 text-xs font-semibold text-[#B8860B] group-hover:text-[#D4AF37]">
-                Explore ledger forensics <ChevronRight className="h-4 w-4" />
+                Review documentation standards <ChevronRight className="h-4 w-4" />
               </div>
             </div>
 
@@ -783,12 +783,12 @@ export default function HomePage() {
               <div className="mb-4 inline-flex rounded bg-[#1A3A52]/20 p-3">
                 <Shield className="h-6 w-6 text-[#B8860B]" />
               </div>
-              <h3 className="mb-2 text-xl font-serif font-bold text-white">EBITDA Defense Engine</h3>
+              <h3 className="mb-2 text-xl font-serif font-bold text-white">Financial Impact Analysis</h3>
               <p className="text-sm text-neutral-400 leading-relaxed">
-                Unlock direct enterprise margin defenses. Re-route prescription benefit waste into verified, audited corporate profitability gains.
+                Quantitative assessment of pharmacy benefit optimization on enterprise profitability. Direct measurement of prescription cost containment effects on operating margins.
               </p>
               <div className="mt-4 flex items-center gap-1 text-xs font-semibold text-[#B8860B] group-hover:text-[#D4AF37]">
-                Evaluate financial models <ChevronRight className="h-4 w-4" />
+                Review financial methodology <ChevronRight className="h-4 w-4" />
               </div>
             </div>
 
@@ -799,12 +799,12 @@ export default function HomePage() {
               <div className="mb-4 inline-flex rounded bg-[#1A3A52]/20 p-3">
                 <Database className="h-6 w-6 text-[#B8860B]" />
               </div>
-              <h3 className="mb-2 text-xl font-serif font-bold text-white">Forensic Database Audit</h3>
+              <h3 className="mb-2 text-xl font-serif font-bold text-white">Multi-Source Data Reconciliation</h3>
               <p className="text-sm text-neutral-400 leading-relaxed">
-                Connect and sync multi-source claims and healthcare contract formularies across massive transparent actuarial databases.
+                Integration and normalization of claims data, contract formularies, and pricing benchmarks across disparate healthcare data sources for actuarial analysis.
               </p>
               <div className="mt-4 flex items-center gap-1 text-xs font-semibold text-[#B8860B] group-hover:text-[#D4AF37]">
-                Inspect compliance pipelines <ChevronRight className="h-4 w-4" />
+                Review integration protocols <ChevronRight className="h-4 w-4" />
               </div>
             </div>
 

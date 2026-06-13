@@ -1,58 +1,103 @@
+import React, { useState } from "react";
 import { SEO } from "@/components/SEO";
 import Nav from "@/components/Nav";
 import Footer from "@/components/Footer";
-import { FileText, Download, ExternalLink, TrendingUp, Shield, DollarSign, Building2, AlertTriangle } from "lucide-react";
+import { 
+  FileText, 
+  Download, 
+  ExternalLink, 
+  TrendingUp, 
+  Shield, 
+  DollarSign, 
+  Building2, 
+  AlertTriangle, 
+  Eye, 
+  Layers, 
+  Presentation,
+  BookOpen,
+  Image as ImageIcon
+} from "lucide-react";
 import { Card, CardHeader, CardTitle, CardDescription, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
+import ImageLightbox from "@/components/ImageLightbox";
 import Link from "next/link";
 
 const reports = [
   {
-    category: "Forensic Audits & Fiduciary Intelligence",
-    icon: AlertTriangle,
+    category: "Fiduciary Platforms & Monographs",
+    icon: BookOpen,
     color: "amber",
     reports: [
+      {
+        title: "AccessIQ MVP Monograph (88pp)",
+        description: "An intensive 88-page deep-dive monograph outlining the core AccessIQ MVP design, operational structures, and technical blueprints.",
+        file: "/AccessIQ_MVP_Monograph_88pp.pdf",
+        size: "88 Pages",
+        type: "Monograph",
+        isImage: false,
+      },
+      {
+        title: "Kincaid IQ: The Ultimate Fiduciary Platform",
+        description: "The premier handbook on our algorithmic fiduciary ecosystem, defining how autonomous intelligence shields employers from CAA liability.",
+        file: "/Kincaid_IQ_The_Ultimate_Fiduciary_Platform.pdf",
+        size: "Platform Manual",
+        type: "Fiduciary Tech",
+        isImage: false,
+      },
+      {
+        title: "SiriusB iQ Chairman Board Briefing",
+        description: "Official strategic briefing document for corporate Board of Directors and executive leadership committees.",
+        file: "/SiriusB_iQ_Chairman_Board_Briefing_1_.pdf",
+        size: "Executive Briefing",
+        type: "Board Governance",
+        isImage: false,
+      },
       {
         title: "SiriusB IQ Fiduciary Grade AI (Glass Edition)",
         description: "Elite advisory briefing on glassmorphic AI-driven benefits governance and decision engines.",
         file: "/SiriusB_IQ_Fiduciary_Grade_AI_Glass.pdf",
         size: "Premium Guide",
         type: "Fiduciary AI",
+        isImage: false,
+      },
+    ],
+  },
+  {
+    category: "Forensic Case Studies & Arbitrage Papers",
+    icon: AlertTriangle,
+    color: "rose",
+    reports: [
+      {
+        title: "TrueScripts LLC Rx Defense IQ",
+        description: "Forensic contract performance analysis, detailing hidden margins and PBM spread manipulation within TrueScripts LLC.",
+        file: "/Rx_Defense_IQ_TrueScripts_Management_Services_LLC.pdf",
+        size: "Forensic Audit",
+        type: "Contract Discrepancy",
+        isImage: false,
       },
       {
-        title: "SiriusB IQ Fiduciary Grade AI",
-        description: "Strategic playbook on institutional grade benefit plans, fiduciary shield protocols, and compliance guardrails.",
-        file: "/SiriusB_IQ_Fiduciary_Grade_AI.pdf",
-        size: "Core Briefing",
-        type: "Fiduciary AI",
+        title: "The $6.4 Billion Arbitrage",
+        description: "Actuarial whitepaper exposing the hidden transactional spread arbitrage mechanisms within major PBM networks.",
+        file: "/The_6_4_Billion_Arbitrage.pdf",
+        size: "Strategic Brief",
+        type: "Arbitrage Analysis",
+        isImage: false,
       },
       {
-        title: "Global Corporate Contract (GCC) Audit Report",
-        description: "Forensic evaluation of contract leakages and PBM discrepancies within global benefits agreements.",
-        file: "/gcc_report.pdf",
-        size: "Forensic Analysis",
-        type: "Audit Report",
+        title: "Metal Sales Manufacturing $44.8M Defense",
+        description: "The complete case study detailing a multi-million-dollar EBITDA defense and plan design optimization for Metal Sales Manufacturing.",
+        file: "/Kincaid_iQ_Metal_Sales_Manufacturing_44_8M_Defense.pdf",
+        size: "Case Study",
+        type: "EBITDA Shield",
+        isImage: false,
       },
       {
-        title: "National Health Service (NHS) Leakage Audit (Part I)",
-        description: "First-stage clinical & financial forensic review of pharmacy benefit leakage and margin retention.",
-        file: "/nhs_leakage_report_1_.pdf",
-        size: "Technical Audit",
-        type: "Leakage Forensic",
-      },
-      {
-        title: "NHS Comprehensive Leakage Report",
-        description: "Complete, deep-dive forensic audit of multi-billion health plan drug spend spreads and structural margins.",
-        file: "/nhs_leakage_report.pdf",
-        size: "Full Forensic",
-        type: "Leakage Forensic",
-      },
-      {
-        title: "Medical Claims Spread Research Paper",
-        description: "Academic and actuarial-grade research paper exposing pharmacy benefit manager claims spreads.",
-        file: "/Kincaid_iQ_Medical_Claims_Spread_Research_Paper.pdf",
-        size: "Research Paper",
-        type: "Actuarial Science",
+        title: "The Engine & The Instrument (Kincaid IQ vs Rebel IQ)",
+        description: "Comparative operational analysis detailing Kincaid IQ's mathematical optimization superiority over Rebel IQ.",
+        file: "/The-Engine-and-the-Instrument-Kincaid-IQ-vs-Rebel-IQ.pdf",
+        size: "Platform Comparison",
+        type: "Strategy Whitepaper",
+        isImage: false,
       },
       {
         title: "Roche Pension Forensic Assessment",
@@ -60,41 +105,7 @@ const reports = [
         file: "/Kincaid_iQ_Roche_Pension_Forensic_Assessment.pdf",
         size: "Forensic Audit",
         type: "Pension Forensic",
-      },
-      {
-        title: "JB Hunt EBITDA Defense",
-        description: "Actuarial strategy and cost optimization briefing protecting enterprise EBITDA margins.",
-        file: "/Kincaid_iQ_JBHunt_EBITDA_Defense.pdf",
-        size: "Case Study",
-        type: "EBITDA Shield",
-      },
-    ],
-  },
-  {
-    category: "Case Studies",
-    icon: TrendingUp,
-    color: "emerald",
-    reports: [
-      {
-        title: "Hopebridge Case Study",
-        description: "4-page executive brief on benefits optimization and cost reduction strategies",
-        file: "/Kincaid_IQ_Hopebridge_4pg_Brief_1_.pdf",
-        size: "Brief",
-        type: "Case Study",
-      },
-      {
-        title: "Hopebridge Form 5500 Analysis",
-        description: "Comprehensive 44-page actuarial analysis and compliance review",
-        file: "/Kincaid_IQ_Hopebridge_501_44pg_1_.pdf",
-        size: "Full Report",
-        type: "Case Study",
-      },
-      {
-        title: "Inotiv Form 5500 Analysis",
-        description: "44-page deep-dive into plan performance and optimization opportunities",
-        file: "/Kincaid_IQ_Inotiv_501_44pg_1_.pdf",
-        size: "Full Report",
-        type: "Case Study",
+        isImage: false,
       },
       {
         title: "Schwarz Partners MEWA Defense",
@@ -102,118 +113,116 @@ const reports = [
         file: "/Kincaid_iQ_Schwarz_Partners_MEWA_14_2M_Defense.pdf",
         size: "Full Report",
         type: "Case Study",
+        isImage: false,
       },
     ],
   },
   {
-    category: "White Papers & Research",
-    icon: FileText,
-    color: "purple",
+    category: "Actuarial Science & Math Frameworks",
+    icon: TrendingUp,
+    color: "emerald",
     reports: [
+      {
+        title: "Sovereign by Math",
+        description: "Our definitive treatise on using rigorous actuarial math, probability bounds, and algorithmics to assert absolute plan control.",
+        file: "/Kincaid_iQ_Sovereign_by_Math.pdf",
+        size: "Technical Treatise",
+        type: "Actuarial Math",
+        isImage: false,
+      },
+      {
+        title: "The Mirror Ledger (Research Paper WP05)",
+        description: "Academic-grade research paper outlining the distributed ledger architecture that logs real-time claims and balances.",
+        file: "/Kincaid_CEI_WP05_The_Mirror_Ledger_Research_Paper_1_.pdf",
+        size: "Research Paper",
+        type: "Ledger Technology",
+        isImage: false,
+      },
+      {
+        title: "Medical Claims Spread Research Paper",
+        description: "Academic and actuarial-grade research paper exposing pharmacy benefit manager claims spreads.",
+        file: "/Kincaid_iQ_Medical_Claims_Spread_Research_Paper.pdf",
+        size: "Research Paper",
+        type: "Actuarial Science",
+        isImage: false,
+      },
       {
         title: "Evidence-First Transformation",
         description: "Strategic white paper on data-driven benefits management",
         file: "/Kincaid_IQ_WP_2026_06_Evidence_First_Transformation.pdf",
         size: "White Paper",
         type: "Research",
-      },
-      {
-        title: "Predictive Intelligence Report",
-        description: "Advanced analytics and forecasting methodologies",
-        file: "/kincaid-iq-predictive-intelligence-report_3_.pdf",
-        size: "Technical Report",
-        type: "Research",
-      },
-      {
-        title: "Rx Defense Intelligence",
-        description: "PBM contract forensics and pharmaceutical cost optimization",
-        file: "/Kincaid-IQ-Rx-Defense-IQ-2026-06-03_1_.pdf",
-        size: "Technical Report",
-        type: "Research",
+        isImage: false,
       },
     ],
   },
   {
-    category: "Platform Documentation",
-    icon: Building2,
-    color: "cyan",
+    category: "Strategic Briefings & Carousels",
+    icon: Presentation,
+    color: "purple",
     reports: [
+      {
+        title: "Designed to Replace Consultants",
+        description: "Our core philosophical playbook detailing how automated algorithms render classic manual human consultancy obsolete.",
+        file: "/Kincaid_iQ_Designed_to_Replace_Consultants.pdf",
+        size: "Strategic Deck",
+        type: "Consulting Disruption",
+        isImage: false,
+      },
+      {
+        title: "Frame - Google Docs Executive Briefing",
+        description: "Fiduciary framework and contract intelligence executive briefing document.",
+        file: "/Frame_-_Google_Docs.pdf",
+        size: "Executive Brief",
+        type: "Fiduciary Framework",
+        isImage: false,
+      },
+      {
+        title: "Metal Sales Manufacturing LinkedIn Carousel",
+        description: "High-impact visual slide deck detailing the Metal Sales optimization journey for public LinkedIn dissemination.",
+        file: "/Kincaid_iQ_Metal_Sales_LinkedIn_Carousel.pdf",
+        size: "LinkedIn Deck",
+        type: "Visual Carousel",
+        isImage: false,
+      },
       {
         title: "Kincaid IQ Executive Deployment",
         description: "Platform overview and implementation guide",
         file: "/SiriusB_iQ_Glassmorphic_v1_Kincaid_IQ_Executive_Deployment_1_.pdf",
         size: "Guide",
         type: "Platform",
-      },
-      {
-        title: "Market Validation Brief",
-        description: "Rimes partnership and market positioning analysis",
-        file: "/SiriusB_iQ_Glassmorphic_v1_Rimes_Market_Validation_Brief.pdf",
-        size: "Brief",
-        type: "Platform",
-      },
-      {
-        title: "Nautilus Contract X-Ray Overview (Feb 14)",
-        description: "Executive overview of contract intelligence capabilities",
-        file: "/Nautilus_Contract_X-Ray_Executive_Overview_v1_02-14-26_2_.pdf",
-        size: "Overview",
-        type: "Platform",
-      },
-      {
-        title: "Nautilus Contract X-Ray Overview (Feb 24)",
-        description: "Updated executive overview with enhanced features",
-        file: "/Nautilus_Contract_X-Ray_Executive_Overview_v1_02-24-26_2_.pdf",
-        size: "Overview",
-        type: "Platform",
-      },
-      {
-        title: "Fiduciary Cloud Connect",
-        description: "Integration and connectivity framework documentation",
-        file: "/Fiduciary_Cloud_Connect_-_Replit_2_1_.pdf",
-        size: "Technical",
-        type: "Platform",
+        isImage: false,
       },
     ],
   },
   {
-    category: "Form 5500 Filings",
-    icon: Shield,
-    color: "rose",
+    category: "Visual Evidence & Graphics Gallery",
+    icon: ImageIcon,
+    color: "cyan",
     reports: [
       {
-        title: "Form 5500 - 2020 Filing",
-        description: "Annual return/report (NAL0012876257001)",
-        file: "/20200707143005NAL0012876257001.pdf",
-        size: "Official Filing",
-        type: "Compliance",
+        title: "Kincaid Rx Defense Full Dashboard Report",
+        description: "High-resolution forensic dashboard screenshot showing claims leakage, PBM spreads, and savings ledger overlays.",
+        file: "/kincaid-rx-defense-full-report-1781294040203.png",
+        size: "Infographic",
+        type: "Forensic UI",
+        isImage: true,
       },
       {
-        title: "Form 5500 - 2021 Filing",
-        description: "Annual return/report (NAL0001127809001)",
-        file: "/20210817094911NAL0001127809001.pdf",
-        size: "Official Filing",
-        type: "Compliance",
+        title: "Fiduciary Grade Intelligence Visualizer",
+        description: "Gemini-generated high-fidelity system graphic showcasing the algorithmic decision engine layers.",
+        file: "/Gemini_Generated_Image_39vvue39vvue39vv.png",
+        size: "Schematic",
+        type: "System Layout",
+        isImage: true,
       },
       {
-        title: "Form 5500 - 2020 Additional",
-        description: "Annual return/report (NAL0015835632001)",
-        file: "/20200706151135NAL0015835632001.pdf",
-        size: "Official Filing",
-        type: "Compliance",
-      },
-      {
-        title: "Form 5500 - 2022 Filing",
-        description: "Annual return/report (NAL0011609331001)",
-        file: "/20220707135857NAL0011609331001.pdf",
-        size: "Official Filing",
-        type: "Compliance",
-      },
-      {
-        title: "Form 5500 - 2023 Filing",
-        description: "Annual return/report (NAL0018610066001)",
-        file: "/20230824174425NAL0018610066001.pdf",
-        size: "Official Filing",
-        type: "Compliance",
+        title: "EBITDA Defense Audit Metric Snapshot",
+        description: "Actuarial chart detailing specific stop-loss corridors, aggregate claims limits, and reinsurance thresholds.",
+        file: "/be9ff172-1ce2-48b6-80e7-8cb824b75316.jpeg",
+        size: "Actuarial Chart",
+        type: "Risk Graphic",
+        isImage: true,
       },
     ],
   },
@@ -236,6 +245,8 @@ const badgeColors = {
 };
 
 export default function ReportsLibrary() {
+  const [activeImage, setActiveImage] = useState<string | null>(null);
+
   return (
     <>
       <SEO
@@ -244,16 +255,16 @@ export default function ReportsLibrary() {
       />
       <Nav />
       
-      <main className="min-h-screen bg-gradient-to-br from-gray-950 via-purple-950/20 to-gray-950 pt-24 pb-16">
+      <main className="min-h-screen bg-gradient-to-br from-gray-950 via-amber-950/10 to-gray-950 pt-24 pb-16">
         {/* Hero Section */}
         <section className="container mx-auto px-4 mb-16">
           <div className="max-w-4xl mx-auto text-center space-y-6">
-            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-purple-500/10 border border-purple-500/20 mb-4">
-              <FileText className="w-4 h-4 text-purple-400" />
-              <span className="text-sm text-purple-300">Kincaid IQ Intelligence Series</span>
+            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-amber-500/10 border border-amber-500/20 mb-4">
+              <FileText className="w-4 h-4 text-amber-400" />
+              <span className="text-sm text-amber-300">Kincaid IQ Intelligence Series</span>
             </div>
             
-            <h1 className="text-4xl md:text-6xl font-bold bg-gradient-to-r from-purple-400 via-pink-400 to-purple-400 bg-clip-text text-transparent leading-tight">
+            <h1 className="text-4xl md:text-6xl font-bold bg-gradient-to-r from-amber-400 via-amber-100 to-amber-500 bg-clip-text text-transparent leading-tight">
               Reports & Research Library
             </h1>
             
@@ -288,10 +299,10 @@ export default function ReportsLibrary() {
                   {/* Reports Grid */}
                   <div className="grid md:grid-cols-2 gap-6">
                     {category.reports.map((report, reportIndex) => (
-                      <Card key={reportIndex} className="bg-gray-900/50 border-gray-800 hover:border-gray-700 transition-all duration-300 hover:shadow-lg hover:shadow-purple-500/10 group">
+                      <Card key={reportIndex} className="bg-gray-900/50 border-gray-800 hover:border-gray-700 transition-all duration-300 hover:shadow-lg hover:shadow-amber-500/10 group flex flex-col justify-between">
                         <CardHeader>
                           <div className="flex items-start justify-between mb-2">
-                            <CardTitle className="text-lg text-white group-hover:text-purple-400 transition-colors">
+                            <CardTitle className="text-lg text-white group-hover:text-amber-400 transition-colors">
                               {report.title}
                             </CardTitle>
                             <Badge variant="outline" className={badgeClass}>
@@ -303,17 +314,28 @@ export default function ReportsLibrary() {
                           </CardDescription>
                         </CardHeader>
                         <CardContent>
-                          <div className="flex items-center justify-between">
+                          <div className="flex items-center justify-between mt-auto pt-4 border-t border-gray-800/50">
                             <span className="text-xs text-gray-500">{report.type}</span>
-                            <a
-                              href={report.file}
-                              target="_blank"
-                              rel="noopener noreferrer"
-                              className="inline-flex items-center gap-2 px-4 py-2 bg-purple-500/10 hover:bg-purple-500/20 text-purple-300 rounded-lg transition-colors text-sm font-medium">
-                              <Download className="w-4 h-4" />
-                              View PDF
-                              <ExternalLink className="w-3 h-3" />
-                            </a>
+                            {report.isImage ? (
+                              <button
+                                onClick={() => setActiveImage(report.file)}
+                                className="inline-flex items-center gap-2 px-4 py-2 bg-amber-500/10 hover:bg-amber-500/20 text-amber-300 rounded-lg transition-colors text-sm font-medium cursor-pointer"
+                              >
+                                <Eye className="w-4 h-4" />
+                                View Image
+                              </button>
+                            ) : (
+                              <a
+                                href={report.file}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="inline-flex items-center gap-2 px-4 py-2 bg-amber-500/10 hover:bg-amber-500/20 text-amber-300 rounded-lg transition-colors text-sm font-medium"
+                              >
+                                <Download className="w-4 h-4" />
+                                View PDF
+                                <ExternalLink className="w-3 h-3" />
+                              </a>
+                            )}
                           </div>
                         </CardContent>
                       </Card>
@@ -328,7 +350,7 @@ export default function ReportsLibrary() {
         {/* CTA Section */}
         <section className="container mx-auto px-4 mt-20">
           <div className="max-w-4xl mx-auto">
-            <Card className="bg-gradient-to-br from-purple-900/20 to-pink-900/20 border-purple-500/30">
+            <Card className="bg-gradient-to-br from-amber-900/20 to-neutral-900/20 border-amber-500/30">
               <CardContent className="p-8 text-center space-y-6">
                 <h2 className="text-3xl font-bold text-white">
                   Request Custom Analysis
@@ -340,13 +362,15 @@ export default function ReportsLibrary() {
                 <div className="flex flex-col sm:flex-row gap-4 justify-center">
                   <Link 
                     href="/contact"
-                    className="inline-flex items-center justify-center gap-2 px-6 py-3 bg-purple-500 hover:bg-purple-600 text-white rounded-lg transition-colors font-medium">
+                    className="inline-flex items-center justify-center gap-2 px-6 py-3 bg-amber-500 hover:bg-amber-600 text-black rounded-lg transition-colors font-semibold"
+                  >
                     Contact Our Team
                     <ExternalLink className="w-4 h-4" />
                   </Link>
                   <Link 
                     href="/kincaid-iq-intelligence-series"
-                    className="inline-flex items-center justify-center gap-2 px-6 py-3 bg-white/10 hover:bg-white/20 text-white rounded-lg transition-colors font-medium border border-white/20">
+                    className="inline-flex items-center justify-center gap-2 px-6 py-3 bg-white/10 hover:bg-white/20 text-white rounded-lg transition-colors font-medium border border-white/20"
+                  >
                     Explore Intelligence Series
                     <TrendingUp className="w-4 h-4" />
                   </Link>
@@ -358,6 +382,15 @@ export default function ReportsLibrary() {
       </main>
 
       <Footer />
+
+      {activeImage && (
+        <ImageLightbox
+          isOpen={true}
+          imageSrc={activeImage}
+          imageAlt="Visual Evidence Preview"
+          onClose={() => setActiveImage(null)}
+        />
+      )}
     </>
   );
 }

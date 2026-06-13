@@ -1,9 +1,27 @@
 "use client";
 
 import type React from "react";
-import { motion } from "framer-motion";
-import { useState } from "react";
-import { Shield, Users, TrendingUp, Award, X, ChevronRight, Sparkles, Linkedin, Mail, Send } from "lucide-react";
+import { motion, AnimatePresence } from "framer-motion";
+import { useState, useMemo, useEffect } from "react";
+import { 
+  Shield, 
+  Users, 
+  TrendingUp, 
+  Award, 
+  X, 
+  ChevronRight, 
+  Sparkles, 
+  Linkedin, 
+  Mail, 
+  Send,
+  AlertTriangle,
+  CheckCircle,
+  Percent,
+  DollarSign,
+  Activity,
+  FileText,
+  Settings
+} from "lucide-react";
 import Nav from "@/components/Nav";
 import Footer from "@/components/Footer";
 import { SEO } from "@/components/SEO";
@@ -621,7 +639,7 @@ export default function BoardOfDirectorsPage() {
                     {hoveredCard === index && (
                       <>
                         <motion.div
-                          className="absolute w-3 h-3 bg-amber-400/60 rounded-full blur-sm pointer-events-none"
+                          className="absolute w-3.5 h-3.5 bg-amber-400/60 rounded-full blur-sm pointer-events-none"
                           animate={{
                             x: [20, 80, 20],
                             y: [30, 60, 30],
@@ -654,6 +672,172 @@ export default function BoardOfDirectorsPage() {
                 </motion.div>
               ))}
             </div>
+
+            {/* Strategic Focus & Board Risk Oversight Simulator */}
+            <motion.div
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.8 }}
+              className="mt-32 rounded-3xl bg-gradient-to-br from-zinc-950 via-neutral-900 to-amber-950/20 border border-amber-500/20 p-8 md:p-12 relative overflow-hidden shadow-2xl"
+            >
+              {/* Abstract decorative background */}
+              <div className="absolute top-0 right-0 w-96 h-96 bg-amber-500/5 rounded-full blur-3xl pointer-events-none" />
+              <div className="absolute -bottom-10 -left-10 w-80 h-80 bg-slate-500/5 rounded-full blur-3xl pointer-events-none" />
+
+              <div className="relative z-10 grid lg:grid-cols-12 gap-12">
+                {/* Left Column: Board Focus Areas & Scenario Configurator */}
+                <div className="lg:col-span-7 space-y-8">
+                  <div>
+                    <span className="text-xs uppercase tracking-widest text-amber-400 font-semibold px-3 py-1 rounded-full bg-amber-500/10 border border-amber-500/20 inline-block mb-3">
+                      Governance & Risk Hub
+                    </span>
+                    <h2 className="text-3xl md:text-4xl font-bold bg-gradient-to-r from-amber-300 via-amber-100 to-white bg-clip-text text-transparent">
+                      Strategic Focus & Fiduciary Simulator
+                    </h2>
+                    <p className="text-gray-400 mt-2 text-sm md:text-base">
+                      Board of Directors' real-time oversight console. Simulate fiduciary risks, estimate bottom-line leakage, and configure optimal operational controls.
+                    </p>
+                  </div>
+
+                  {/* Simulator Controls */}
+                  <div className="bg-zinc-900/50 border border-amber-500/10 rounded-2xl p-6 space-y-6">
+                    <h3 className="text-lg font-bold text-amber-100 flex items-center gap-2">
+                      <Settings className="h-5 w-5 text-amber-400" />
+                      Configure Corporate Plan Profile
+                    </h3>
+
+                    {/* Param 1: Covered Lives */}
+                    <div className="space-y-2">
+                      <div className="flex justify-between text-sm">
+                        <label className="text-gray-300 font-medium">Covered Lives (Employees & Dependents)</label>
+                        <span className="text-amber-400 font-bold">
+                          {new Intl.NumberFormat().format(15000)}
+                        </span>
+                      </div>
+                      <input
+                        type="range"
+                        min="1000"
+                        max="100000"
+                        step="1000"
+                        defaultValue="15000"
+                        id="board-lives-slider"
+                        className="w-full accent-amber-500 bg-zinc-800 rounded-lg appearance-none h-2 cursor-pointer"
+                        onChange={() => {
+                          // Force state update to recompute
+                          const slider = document.getElementById("board-lives-slider") as HTMLInputElement;
+                          const span = slider?.previousElementSibling?.querySelector("span");
+                          if (span) span.textContent = new Intl.NumberFormat().format(Number(slider.value));
+                          // Dispatch local event to force recalculate
+                          window.dispatchEvent(new CustomEvent("board-simulator-update"));
+                        }}
+                      />
+                    </div>
+
+                    <div className="grid md:grid-cols-2 gap-6">
+                      {/* Param 2: Rebate Pass-Through */}
+                      <div className="space-y-2">
+                        <div className="flex justify-between text-sm">
+                          <label className="text-gray-300 font-medium flex items-center gap-1">
+                            <Percent className="h-4 w-4 text-amber-400" /> Rebate Return %
+                          </label>
+                          <span className="text-amber-400 font-bold" id="board-rebate-label">80%</span>
+                        </div>
+                        <input
+                          type="range"
+                          min="0"
+                          max="100"
+                          step="5"
+                          defaultValue="80"
+                          id="board-rebate-slider"
+                          className="w-full accent-amber-500 bg-zinc-800 rounded-lg appearance-none h-2 cursor-pointer"
+                          onChange={() => {
+                            const slider = document.getElementById("board-rebate-slider") as HTMLInputElement;
+                            const label = document.getElementById("board-rebate-label");
+                            if (label) label.textContent = `${slider.value}%`;
+                            window.dispatchEvent(new CustomEvent("board-simulator-update"));
+                          }}
+                        />
+                      </div>
+
+                      {/* Param 3: Contract Model */}
+                      <div className="space-y-2">
+                        <label className="text-sm text-gray-300 font-medium block">PBM Pricing Structure</label>
+                        <select
+                          id="board-pricing-select"
+                          className="w-full bg-zinc-950 border border-amber-500/20 text-gray-300 rounded-lg px-3 py-2 text-sm focus:border-amber-400 focus:outline-none"
+                          defaultValue="spread"
+                          onChange={() => window.dispatchEvent(new CustomEvent("board-simulator-update"))}
+                        >
+                          <option value="spread" className="bg-zinc-950">Traditional Spread (Non-Pass-Through)</option>
+                          <option value="hybrid" className="bg-zinc-950">Hybrid Custom Model</option>
+                          <option value="transparent" className="bg-zinc-950">100% Fully Transparent / Cost-Plus</option>
+                        </select>
+                      </div>
+                    </div>
+
+                    <div className="grid md:grid-cols-2 gap-6">
+                      {/* Param 4: Broker Alignment */}
+                      <div className="space-y-2">
+                        <label className="text-sm text-gray-300 font-medium block">Broker Compensation Disclosure</label>
+                        <select
+                          id="board-broker-select"
+                          className="w-full bg-zinc-950 border border-amber-500/20 text-gray-300 rounded-lg px-3 py-2 text-sm focus:border-amber-400 focus:outline-none"
+                          defaultValue="concealed"
+                          onChange={() => window.dispatchEvent(new CustomEvent("board-simulator-update"))}
+                        >
+                          <option value="concealed" className="bg-zinc-950">Hidden Commissions & PEPM Overrides</option>
+                          <option value="partially" className="bg-zinc-950">Partially Disclosed Fee Schedule</option>
+                          <option value="fiduciary" className="bg-zinc-950">100% Direct Fiduciary Retainer (Fee-Only)</option>
+                        </select>
+                      </div>
+
+                      {/* Param 5: Audit & Oversight Frequency */}
+                      <div className="space-y-2">
+                        <label className="text-sm text-gray-300 font-medium block">Claims Audit Protocol</label>
+                        <select
+                          id="board-audit-select"
+                          className="w-full bg-zinc-950 border border-amber-500/20 text-gray-300 rounded-lg px-3 py-2 text-sm focus:border-amber-400 focus:outline-none"
+                          defaultValue="never"
+                          onChange={() => window.dispatchEvent(new CustomEvent("board-simulator-update"))}
+                        >
+                          <option value="never" className="bg-zinc-950">No independent audit (PBM self-reports)</option>
+                          <option value="retrospective" className="bg-zinc-950">Retrospective (Every 3 Years)</option>
+                          <option value="realtime" className="bg-zinc-950">Real-Time Daily Algorithmic Auditing</option>
+                        </select>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Focus Area Details */}
+                  <div className="space-y-4">
+                    <h4 className="text-sm font-semibold text-amber-300 uppercase tracking-wider">Board Strategic Objectives</h4>
+                    <div className="grid sm:grid-cols-2 gap-4">
+                      <div className="p-4 rounded-xl bg-zinc-950/60 border border-zinc-800 hover:border-amber-500/30 transition-all duration-300">
+                        <div className="text-amber-400 font-semibold text-sm mb-1">ERISA Compliance Guardrails</div>
+                        <p className="text-xs text-gray-400">Enforcing transparent broker disclosures to completely shield Board members from personal CAA litigation liabilities.</p>
+                      </div>
+                      <div className="p-4 rounded-xl bg-zinc-950/60 border border-zinc-800 hover:border-amber-500/30 transition-all duration-300">
+                        <div className="text-amber-400 font-semibold text-sm mb-1">Reinsurance & Capital Security</div>
+                        <p className="text-xs text-gray-400">Optimizing aggregate corridors and specific deductibles to prevent unexpected specialty drug claims from breaching cash-flow limits.</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Right Column: Real-Time Dynamic Fiduciary Insights Dashboard */}
+                <div className="lg:col-span-5 flex flex-col justify-between bg-zinc-950/80 border border-amber-500/20 rounded-2xl p-6 md:p-8 space-y-8 relative">
+                  {/* Subtle pulsing live banner */}
+                  <div className="absolute top-4 right-4 flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 text-[10px] font-bold uppercase tracking-wider">
+                    <span className="w-1.5 h-1.5 bg-emerald-400 rounded-full animate-ping" />
+                    Live Sim Engine
+                  </div>
+
+                  {/* Simulator Internal Dynamic Calculations */}
+                  <SimulatorDisplay />
+                </div>
+              </div>
+            </motion.div>
 
             {/* Detailed Profile Modal */}
             <Dialog open={!!selectedMember} onOpenChange={(open) => !open && setSelectedMember(null)}>
@@ -964,6 +1148,200 @@ export default function BoardOfDirectorsPage() {
           onClose={() => setLightboxImage(null)}
         />
       )}
+    </>
+  );
+}
+
+// Interactive Real-time Calculator Helper Component for SSR Safety and Modular State
+function SimulatorDisplay() {
+  const [params, setParams] = useState({
+    lives: 15000,
+    rebate: 80,
+    pricing: "spread",
+    broker: "concealed",
+    audit: "never"
+  });
+
+  useEffect(() => {
+    const handleUpdate = () => {
+      const livesSlider = document.getElementById("board-lives-slider") as HTMLInputElement;
+      const rebateSlider = document.getElementById("board-rebate-slider") as HTMLInputElement;
+      const pricingSelect = document.getElementById("board-pricing-select") as HTMLSelectElement;
+      const brokerSelect = document.getElementById("board-broker-select") as HTMLSelectElement;
+      const auditSelect = document.getElementById("board-audit-select") as HTMLSelectElement;
+
+      setParams({
+        lives: livesSlider ? Number(livesSlider.value) : 15000,
+        rebate: rebateSlider ? Number(rebateSlider.value) : 80,
+        pricing: pricingSelect ? pricingSelect.value : "spread",
+        broker: brokerSelect ? brokerSelect.value : "concealed",
+        audit: auditSelect ? auditSelect.value : "never"
+      });
+    };
+
+    window.addEventListener("board-simulator-update", handleUpdate);
+    return () => window.removeEventListener("board-simulator-update", handleUpdate);
+  }, []);
+
+  // Compute Actuarial Risk Metrics
+  const calculatedOutputs = useMemo(() => {
+    const lives = params.lives;
+    const rebate = params.rebate;
+    const pricing = params.pricing;
+    const broker = params.broker;
+    const audit = params.audit;
+
+    // Standard annual prescription costs per life = $1400 (traditional baseline)
+    const baselineSpend = lives * 1400;
+
+    // Calculate Leakage Multipliers based on selections
+    let pricingMultiplier = 0.22; // Traditional spread wastes 22% of total spend
+    if (pricing === "hybrid") pricingMultiplier = 0.12;
+    if (pricing === "transparent") pricingMultiplier = 0.02; // Minor operational overhead only
+
+    // Broker commissions & PEPM overrides leakage
+    let brokerMultiplier = 0.04; 
+    if (broker === "partially") brokerMultiplier = 0.015;
+    if (broker === "fiduciary") brokerMultiplier = 0.002;
+
+    // Claims Audit Leakage (lack of auditing results in billing errors / duplicate fills / non-covered drug fills)
+    let auditMultiplier = 0.06;
+    if (audit === "retrospective") auditMultiplier = 0.03;
+    if (audit === "realtime") auditMultiplier = 0.001; // Blocked instantly at Point of Sale
+
+    // Unreturned Rebate Leakage
+    const unreturnedRebatePercent = (100 - rebate) / 100;
+    const averageRebateValuePerLife = 280; // $280 average manufacturer rebate per life
+    const rebateLeakage = lives * averageRebateValuePerLife * unreturnedRebatePercent;
+
+    // Sum Total Leakage
+    const standardLeakage = baselineSpend * (pricingMultiplier + brokerMultiplier + auditMultiplier);
+    const totalEbitdaLeakage = Math.round(standardLeakage + rebateLeakage);
+
+    // Calculate Fiduciary Risk Score (0 - 100)
+    let score = 100;
+    if (pricing === "spread") score -= 25;
+    if (pricing === "hybrid") score -= 10;
+    if (broker === "concealed") score -= 30;
+    if (broker === "partially") score -= 15;
+    if (audit === "never") score -= 25;
+    if (audit === "retrospective") score -= 10;
+    if (rebate < 90) score -= Math.round((100 - rebate) * 0.2);
+
+    const fiduciaryScore = Math.max(10, Math.min(100, score));
+
+    // Map Fiduciary Posture & Risk Level
+    let posture = "Secure & Shielded";
+    let riskLevel = "Low Risk";
+    let borderClass = "border-emerald-500/30";
+    let textClass = "text-emerald-400";
+    let bgClass = "bg-emerald-500/10";
+
+    if (fiduciaryScore < 85) {
+      posture = "Standard Corporate Vulnerability";
+      riskLevel = "Moderate Exposure";
+      borderClass = "border-amber-500/30";
+      textClass = "text-amber-400";
+      bgClass = "bg-amber-500/10";
+    }
+    if (fiduciaryScore < 60) {
+      posture = "Severe Fiduciary Default (CAA Liability)";
+      riskLevel = "Critical Breach Hazard";
+      borderClass = "border-red-500/30";
+      textClass = "text-red-400";
+      bgClass = "bg-red-500/10";
+    }
+
+    return {
+      spend: baselineSpend,
+      leakage: totalEbitdaLeakage,
+      fiduciaryScore,
+      riskLevel,
+      posture,
+      borderClass,
+      textClass,
+      bgClass
+    };
+  }, [params]);
+
+  return (
+    <>
+      <div className="space-y-6">
+        <div>
+          <span className="text-gray-400 text-xs font-semibold uppercase tracking-wider block">Fiduciary Status</span>
+          <div className="text-2xl font-bold text-amber-100 mt-1">Oversight Scorecard</div>
+        </div>
+
+        {/* Large Score Indicator */}
+        <div className="grid grid-cols-2 gap-4">
+          <div className="p-4 rounded-xl bg-zinc-900/40 border border-zinc-800 flex flex-col justify-between">
+            <span className="text-xs text-gray-400 font-semibold uppercase">Fiduciary Health</span>
+            <div className="flex items-baseline gap-2 mt-2">
+              <span className={`text-4xl font-extrabold tracking-tight ${calculatedOutputs.textClass}`}>
+                {calculatedOutputs.fiduciaryScore}
+              </span>
+              <span className="text-gray-500 text-sm">/100</span>
+            </div>
+          </div>
+
+          <div className="p-4 rounded-xl bg-zinc-900/40 border border-zinc-800 flex flex-col justify-between">
+            <span className="text-xs text-gray-400 font-semibold uppercase">Estimated Bottom-Line Leakage</span>
+            <div className="text-2xl font-bold text-red-400 mt-2">
+              ${new Intl.NumberFormat().format(calculatedOutputs.leakage)}
+            </div>
+            <span className="text-[10px] text-gray-500 mt-0.5">Annual EBITDA erosion</span>
+          </div>
+        </div>
+
+        {/* Posture & Advisory Panel */}
+        <div className={`p-4 rounded-xl border ${calculatedOutputs.borderClass} ${calculatedOutputs.bgClass} space-y-2`}>
+          <div className="flex items-center gap-2">
+            <AlertTriangle className={`h-5 w-5 ${calculatedOutputs.textClass}`} />
+            <span className={`font-bold text-sm uppercase tracking-wide ${calculatedOutputs.textClass}`}>
+              {calculatedOutputs.riskLevel}
+            </span>
+          </div>
+          <div className="text-xs font-semibold text-gray-200">
+            {calculatedOutputs.posture}
+          </div>
+          <p className="text-[11px] text-gray-400 leading-relaxed">
+            {calculatedOutputs.fiduciaryScore < 60 
+              ? "ERISA liability is critical. Trustees may be personally cited for failure to request, audit, and analyze detailed Rx claims contracts under the Consolidated Appropriations Act."
+              : calculatedOutputs.fiduciaryScore < 85
+              ? "Standard corporate risks identified. Spreads or partially disclosed broker fees can generate hidden conflicts of interest. Consider transitioning to fee-only models."
+              : "Exemplary fiduciary status. Direct fee agreements combined with transparent pass-through contracts and daily auditing protect against standard litigation triggers."
+            }
+          </p>
+        </div>
+
+        {/* Key Governance Recommendations */}
+        <div className="space-y-3">
+          <div className="text-xs font-bold text-gray-300 uppercase tracking-widest">Recommended Corrective Actions</div>
+          <div className="space-y-2 text-xs">
+            <div className="flex items-center gap-2 text-gray-300">
+              <CheckCircle className={`h-4 w-4 ${params.pricing === "transparent" ? "text-emerald-400" : "text-gray-600"}`} />
+              <span>Eliminate all hidden spreads (Est. 12-15% immediate savings)</span>
+            </div>
+            <div className="flex items-center gap-2 text-gray-300">
+              <CheckCircle className={`h-4 w-4 ${params.broker === "fiduciary" ? "text-emerald-400" : "text-gray-600"}`} />
+              <span>Convert broker compensation to Fee-Only Fiduciary model</span>
+            </div>
+            <div className="flex items-center gap-2 text-gray-300">
+              <CheckCircle className={`h-4 w-4 ${params.audit === "realtime" ? "text-emerald-400" : "text-gray-600"}`} />
+              <span>Enable real-time daily algorithmic pricing validation</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div className="pt-6 border-t border-zinc-900 mt-6 text-center">
+        <a 
+          href="/request-demo"
+          className="inline-flex items-center justify-center gap-2 w-full py-2.5 rounded-lg bg-amber-500/10 hover:bg-amber-500 border border-amber-500/20 hover:border-amber-400 hover:text-black text-amber-400 text-xs font-bold transition-all duration-300 uppercase tracking-widest"
+        >
+          <Activity className="h-4 w-4" /> Export Board Audit Report
+        </a>
+      </div>
     </>
   );
 }

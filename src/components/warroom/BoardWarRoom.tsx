@@ -14,6 +14,13 @@ const DEFAULT_FILTERS: Filters = {
   businessUnit: "All",
 };
 
+const ANIMATION_DELAYS: Record<string, string> = {
+  fiduciary: "0s",
+  risk: "1.5s",
+  renewals: "3s",
+  governance: "4.5s",
+};
+
 function getBoardTiles(): TileData[] {
   return [
     {
@@ -110,6 +117,40 @@ export function BoardWarRoom() {
 
   return (
     <div className="min-h-screen bg-transparent text-zinc-100">
+      {/* Dynamic Keyframes injected safely for premium aesthetic */}
+      <style jsx global>{`
+        @keyframes boardColorShift {
+          0% {
+            border-color: rgba(245, 158, 11, 0.2);
+            box-shadow: 0 0 15px rgba(245, 158, 11, 0.02);
+            background-color: rgba(24, 24, 27, 0.4);
+          }
+          25% {
+            border-color: rgba(184, 134, 11, 0.35);
+            box-shadow: 0 0 25px rgba(184, 134, 11, 0.05);
+            background-color: rgba(30, 27, 20, 0.3);
+          }
+          50% {
+            border-color: rgba(212, 175, 55, 0.25);
+            box-shadow: 0 0 15px rgba(212, 175, 55, 0.02);
+            background-color: rgba(24, 24, 27, 0.4);
+          }
+          75% {
+            border-color: rgba(197, 160, 89, 0.4);
+            box-shadow: 0 0 30px rgba(197, 160, 89, 0.06);
+            background-color: rgba(20, 24, 30, 0.3);
+          }
+          100% {
+            border-color: rgba(245, 158, 11, 0.2);
+            box-shadow: 0 0 15px rgba(245, 158, 11, 0.02);
+            background-color: rgba(24, 24, 27, 0.4);
+          }
+        }
+        .board-tile-animated {
+          animation: boardColorShift 8s infinite ease-in-out;
+        }
+      `}</style>
+
       {/* Dynamic Header */}
       <header className="border-b border-amber-500/20 bg-zinc-950/60 backdrop-blur-md sticky top-0 z-40">
         <div className="mx-auto max-w-[1600px] px-6 py-5">
@@ -151,19 +192,20 @@ export function BoardWarRoom() {
                          tile.key === "risk" ? AlertTriangle :
                          tile.key === "renewals" ? Calendar : FileText;
 
-            const isGold = tile.key === "fiduciary" || tile.key === "governance";
-
             return (
               <button
                 key={tile.key}
                 onClick={() => handleTileClick(tile)}
-                className="group relative rounded-xl border border-zinc-800/80 bg-zinc-900/30 p-5 text-left transition-all duration-300 hover:border-amber-500/50 hover:bg-zinc-800/40 hover:shadow-xl hover:shadow-amber-500/5"
+                className="group board-tile-animated relative rounded-xl border p-5 text-left transition-all duration-300 hover:scale-[1.01] hover:border-amber-400/80 hover:shadow-2xl hover:shadow-amber-500/10 active:scale-[0.99]"
+                style={{
+                  animationDelay: ANIMATION_DELAYS[tile.key] || "0s",
+                }}
               >
                 {/* Visual Accent Layer */}
                 <div className="absolute top-0 left-0 h-[2px] w-0 bg-gradient-to-r from-amber-500 to-yellow-400 transition-all duration-300 group-hover:w-full" />
                 
                 <div className="flex items-start justify-between mb-4">
-                  <div className="rounded-lg bg-zinc-850 p-2.5 border border-zinc-800 transition-colors group-hover:border-amber-500/20 group-hover:bg-amber-500/5">
+                  <div className="rounded-lg bg-zinc-850 p-2.5 border border-zinc-850 transition-colors group-hover:border-amber-500/20 group-hover:bg-amber-500/5">
                     <Icon className="h-5 w-5 text-amber-400" />
                   </div>
                   {tile.delta && (

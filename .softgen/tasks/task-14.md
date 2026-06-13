@@ -1,6 +1,6 @@
 ---
 title: Integrate Premium Landing Page Fiduciary Action Hub
-status: in_progress
+status: done
 priority: urgent
 type: feature
 tags: [landing-page, tools, interactive]
@@ -16,8 +16,8 @@ Deliver an outstanding, highly interactive "Fiduciary Lab Hub" featuring all thr
 3. **LandingActuarialReport**: An advanced interactive cost modeler with live slider adjustments, dynamic savings charts, and a mock PDF generation with automated downloads.
 
 ## Checklist:
-- [ ] Create `LandingUploader.tsx` for secure contract forensic scanning simulation
-- [ ] Create `LandingBrokerLookup.tsx` for benefits broker transparency directory lookup
-- [ ] Create `LandingActuarialReport.tsx` for cost modeling and automated PDF report generation
-- [ ] Update `src/pages/index.tsx` to import and render the new Fiduciary Lab Hub suite
-- [ ] Run error checks and verify TypeScript builds
+- [x] Create `LandingUploader.tsx` for secure contract forensic scanning simulation
+- [x] Create `LandingBrokerLookup.tsx` for benefits broker transparency directory lookup
+- [x] Create `LandingActuarialReport.tsx` for cost modeling and automated PDF report generation
+- [x] Update `src/pages/index.tsx` to import and render the new Fiduciary Lab Hub suite
+- [x] Run error checks and verify TypeScript builds

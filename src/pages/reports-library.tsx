@@ -15,7 +15,8 @@ import {
   Layers, 
   Presentation,
   BookOpen,
-  Image as ImageIcon
+  Image as ImageIcon,
+  Scale
 } from "lucide-react";
 import { Card, CardHeader, CardTitle, CardDescription, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -26,7 +27,7 @@ const reports = [
   {
     category: "Fiduciary Platforms & Monographs",
     icon: BookOpen,
-    color: "amber",
+    color: "cyan",
     reports: [
       {
         title: "AccessIQ MVP Monograph (88pp)",
@@ -58,6 +59,45 @@ const reports = [
         file: "/SiriusB_IQ_Fiduciary_Grade_AI_Glass.pdf",
         size: "Premium Guide",
         type: "Fiduciary AI",
+        isImage: false,
+      },
+    ],
+  },
+  {
+    category: "Fiduciary Litigation & Clinical Rationing",
+    icon: Scale,
+    color: "amber",
+    reports: [
+      {
+        title: "Kimball v. Stanford (Fiduciary Duty Precedent)",
+        description: "Seminal fiduciary lawsuit filing detailing excessive fee tolerance, lack of oversight, and plan sponsor personal liability triggers.",
+        file: "/Kimball_v11_Stanford_1_1_.pdf",
+        size: "Legal Case",
+        type: "ERISA Precedent",
+        isImage: false,
+      },
+      {
+        title: "Refill Was Rationed: PBM Barriers Exposed",
+        description: "Explosive diagnostic brief proving PBM clinical rationing models, prior-authorization blocks, and deliberate refill delays.",
+        file: "/Kincaid_IQ_Refill_Was_Rationed.pdf",
+        size: "Critical Paper",
+        type: "Clinical Audit",
+        isImage: false,
+      },
+      {
+        title: "Hopebridge 501 44-Page Forensic Audit",
+        description: "Comprehensive 44-page forensic health benefits audit uncovering hidden billing spreads and claims overcharges.",
+        file: "/Kincaid_IQ_Hopebridge_501_44pg.pdf",
+        size: "44 Pages",
+        type: "Forensic Audit",
+        isImage: false,
+      },
+      {
+        title: "Kincaid IQ Predictive Intelligence Report",
+        description: "High-level risk analytics projection, utilizing machine learning algorithms to model future cost-mitigation curves.",
+        file: "/kincaid-iq-predictive-intelligence-report_3_.pdf",
+        size: "Intelligence",
+        type: "Predictive Analytics",
         isImage: false,
       },
     ],
@@ -100,19 +140,19 @@ const reports = [
         isImage: false,
       },
       {
+        title: "Schwarz Partners MEWA $14.2M Defense",
+        description: "A complete $14.2M defense and contract shielding blueprint engineered for Multiple Employer Welfare Arrangements.",
+        file: "/Kincaid_iQ_Schwarz_Partners_MEWA_14_2M_Defense.pdf",
+        size: "Full Report",
+        type: "MEWA Fiduciary",
+        isImage: false,
+      },
+      {
         title: "Roche Pension Forensic Assessment",
         description: "Fiduciary-grade forensic pension audit, assessing plan governance, cost models, and leakage defense.",
         file: "/Kincaid_iQ_Roche_Pension_Forensic_Assessment.pdf",
         size: "Forensic Audit",
         type: "Pension Forensic",
-        isImage: false,
-      },
-      {
-        title: "Schwarz Partners MEWA Defense",
-        description: "$14.2M defense strategy for Multiple Employer Welfare Arrangement",
-        file: "/Kincaid_iQ_Schwarz_Partners_MEWA_14_2M_Defense.pdf",
-        size: "Full Report",
-        type: "Case Study",
         isImage: false,
       },
     ],
@@ -163,7 +203,7 @@ const reports = [
     reports: [
       {
         title: "Designed to Replace Consultants",
-        description: "Our core philosophical playbook detailing how automated algorithms render classic manual human consultancy obsolete.",
+        description: "Our philosophical playbook detailing how automated algorithms render manual human consultancy obsolete.",
         file: "/Kincaid_iQ_Designed_to_Replace_Consultants.pdf",
         size: "Strategic Deck",
         type: "Consulting Disruption",

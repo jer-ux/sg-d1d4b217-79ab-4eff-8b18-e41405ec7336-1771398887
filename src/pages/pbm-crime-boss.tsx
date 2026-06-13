@@ -165,10 +165,10 @@ export default function PBMCrimeBossPage() {
     else perClaimLeakage = 12;
 
     // Modifiers based on custom selected suspected practices
-    let spreadLeak = suspectedExploitation.includes("spread") ? rxClaims * perClaimLeakage : rxClaims * (perClaimLeakage * 0.3);
-    let rebateSkim = suspectedExploitation.includes("rebates") ? rxClaims * 35 : rxClaims * 5;
-    let macManip = suspectedExploitation.includes("mac") ? rxClaims * 18 : rxClaims * 2;
-    let specialtySteering = suspectedExploitation.includes("specialty") ? rxClaims * 55 : rxClaims * 10;
+    const spreadLeak = suspectedExploitation.includes("spread") ? rxClaims * perClaimLeakage : rxClaims * (perClaimLeakage * 0.3);
+    const rebateSkim = suspectedExploitation.includes("rebates") ? rxClaims * 35 : rxClaims * 5;
+    const macManip = suspectedExploitation.includes("mac") ? rxClaims * 18 : rxClaims * 2;
+    const specialtySteering = suspectedExploitation.includes("specialty") ? rxClaims * 55 : rxClaims * 10;
 
     const total = spreadLeak + rebateSkim + macManip + specialtySteering;
     return {

@@ -79,6 +79,21 @@ export default function Nav() {
                       <div className="font-medium">PBM Crime Boss</div>
                       <div className="text-xs text-gray-400">Insider newsletter & investigations</div>
                     </Link>
+
+                    {/* Premium PDF Case Study Showcase */}
+                    <a
+                      href="/Kincaid_iQ_JBHunt_EBITDA_Defense.pdf"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      onClick={() => setKincaidIqDropdownOpen(false)}
+                      className="block mx-1 mt-2 px-4 py-3 bg-gradient-to-r from-amber-500/10 to-amber-600/5 hover:from-amber-500/20 hover:to-amber-600/10 text-amber-300 hover:text-amber-100 rounded-lg border border-amber-500/30 transition-all duration-150">
+                      <div className="flex items-center justify-between">
+                        <span className="font-semibold text-xs uppercase tracking-wider text-amber-400">Featured Audit Report</span>
+                        <span className="text-[9px] bg-amber-500/20 border border-amber-500/30 text-amber-300 px-1.5 py-0.5 rounded font-bold uppercase">PDF</span>
+                      </div>
+                      <div className="font-bold text-sm mt-1">JB Hunt EBITDA Defense</div>
+                      <div className="text-[11px] text-amber-300/70 mt-0.5 leading-snug">Forensic actuarial intelligence and EBITDA shielding</div>
+                    </a>
                   </div>
                 </div>
               )}
@@ -261,6 +276,15 @@ export default function Nav() {
                   <Link href="/pbm-crime-boss" className="block px-4 py-2 text-sm text-gray-400 hover:text-white hover:bg-orange-500/10 rounded-lg transition-colors">
                     PBM Crime Boss
                   </Link>
+                  <a 
+                    href="/Kincaid_iQ_JBHunt_EBITDA_Defense.pdf" 
+                    target="_blank" 
+                    rel="noopener noreferrer"
+                    className="block mx-4 my-2 px-4 py-2 text-xs bg-amber-500/10 border border-amber-500/20 text-amber-300 hover:text-white rounded-lg transition-colors font-bold flex items-center justify-between"
+                  >
+                    <span>⭐ JB Hunt EBITDA Defense (PDF)</span>
+                    <span className="text-[9px] bg-amber-500/20 text-amber-400 px-1 rounded">Forensic</span>
+                  </a>
                 </div>
               )}
             </div>

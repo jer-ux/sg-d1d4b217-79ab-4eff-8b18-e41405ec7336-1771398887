@@ -32,6 +32,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/hooks/use-toast";
 import Head from "next/head";
+import Link from "next/link";
 
 const boardMembers = [
   {
@@ -1335,12 +1336,12 @@ function SimulatorDisplay() {
       </div>
 
       <div className="pt-6 border-t border-zinc-900 mt-6 text-center">
-        <a 
+        <Link 
           href="/request-demo"
           className="inline-flex items-center justify-center gap-2 w-full py-2.5 rounded-lg bg-amber-500/10 hover:bg-amber-500 border border-amber-500/20 hover:border-amber-400 hover:text-black text-amber-400 text-xs font-bold transition-all duration-300 uppercase tracking-widest"
         >
           <Activity className="h-4 w-4" /> Export Board Audit Report
-        </a>
+        </Link>
       </div>
     </>
   );

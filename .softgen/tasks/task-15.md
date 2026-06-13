@@ -1,6 +1,6 @@
 ---
 title: Gate Landing Page Tools with Contact Info Capture
-status: in_progress
+status: done
 priority: urgent
 type: feature
 tags: [auth, gate, lead-gen]
@@ -18,8 +18,8 @@ Integrate a premium lead capture overlay/gate across all three active Fiduciary 
 We will use a shared/reusable state or single elegant pattern to capture the user's name, company, business email, and head count, storing it locally (or mock submitting) so the tools seamlessly unlock once completed.
 
 ## Checklist:
-- [ ] Open and update `LandingUploader.tsx` to require contact submission before file drop
-- [ ] Open and update `LandingBrokerLookup.tsx` to require contact submission before directory search
-- [ ] Open and update `LandingActuarialReport.tsx` to require contact submission before interactive calculations
-- [ ] Implement a beautiful, unified glassmorphic lead capture form component or inline overlay
-- [ ] Run compile checks and confirm zero TypeScript warnings
+- [x] Open and update `LandingUploader.tsx` to require contact submission before file drop
+- [x] Open and update `LandingBrokerLookup.tsx` to require contact submission before directory search
+- [x] Open and update `LandingActuarialReport.tsx` to require contact submission before interactive calculations
+- [x] Implement a beautiful, unified glassmorphic lead capture form component or inline overlay
+- [x] Run compile checks and confirm zero TypeScript warnings

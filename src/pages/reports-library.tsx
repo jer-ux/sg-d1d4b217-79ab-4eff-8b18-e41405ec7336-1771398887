@@ -1,12 +1,75 @@
 import { SEO } from "@/components/SEO";
 import Nav from "@/components/Nav";
 import Footer from "@/components/Footer";
-import { FileText, Download, ExternalLink, TrendingUp, Shield, DollarSign, Building2 } from "lucide-react";
+import { FileText, Download, ExternalLink, TrendingUp, Shield, DollarSign, Building2, AlertTriangle } from "lucide-react";
 import { Card, CardHeader, CardTitle, CardDescription, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import Link from "next/link";
 
 const reports = [
+  {
+    category: "Forensic Audits & Fiduciary Intelligence",
+    icon: AlertTriangle,
+    color: "amber",
+    reports: [
+      {
+        title: "SiriusB IQ Fiduciary Grade AI (Glass Edition)",
+        description: "Elite advisory briefing on glassmorphic AI-driven benefits governance and decision engines.",
+        file: "/SiriusB_IQ_Fiduciary_Grade_AI_Glass.pdf",
+        size: "Premium Guide",
+        type: "Fiduciary AI",
+      },
+      {
+        title: "SiriusB IQ Fiduciary Grade AI",
+        description: "Strategic playbook on institutional grade benefit plans, fiduciary shield protocols, and compliance guardrails.",
+        file: "/SiriusB_IQ_Fiduciary_Grade_AI.pdf",
+        size: "Core Briefing",
+        type: "Fiduciary AI",
+      },
+      {
+        title: "Global Corporate Contract (GCC) Audit Report",
+        description: "Forensic evaluation of contract leakages and PBM discrepancies within global benefits agreements.",
+        file: "/gcc_report.pdf",
+        size: "Forensic Analysis",
+        type: "Audit Report",
+      },
+      {
+        title: "National Health Service (NHS) Leakage Audit (Part I)",
+        description: "First-stage clinical & financial forensic review of pharmacy benefit leakage and margin retention.",
+        file: "/nhs_leakage_report_1_.pdf",
+        size: "Technical Audit",
+        type: "Leakage Forensic",
+      },
+      {
+        title: "NHS Comprehensive Leakage Report",
+        description: "Complete, deep-dive forensic audit of multi-billion health plan drug spend spreads and structural margins.",
+        file: "/nhs_leakage_report.pdf",
+        size: "Full Forensic",
+        type: "Leakage Forensic",
+      },
+      {
+        title: "Medical Claims Spread Research Paper",
+        description: "Academic and actuarial-grade research paper exposing pharmacy benefit manager claims spreads.",
+        file: "/Kincaid_iQ_Medical_Claims_Spread_Research_Paper.pdf",
+        size: "Research Paper",
+        type: "Actuarial Science",
+      },
+      {
+        title: "Roche Pension Forensic Assessment",
+        description: "Fiduciary-grade forensic pension audit, assessing plan governance, cost models, and leakage defense.",
+        file: "/Kincaid_iQ_Roche_Pension_Forensic_Assessment.pdf",
+        size: "Forensic Audit",
+        type: "Pension Forensic",
+      },
+      {
+        title: "JB Hunt EBITDA Defense",
+        description: "Actuarial strategy and cost optimization briefing protecting enterprise EBITDA margins.",
+        file: "/Kincaid_iQ_JBHunt_EBITDA_Defense.pdf",
+        size: "Case Study",
+        type: "EBITDA Shield",
+      },
+    ],
+  },
   {
     category: "Case Studies",
     icon: TrendingUp,
@@ -161,6 +224,7 @@ const categoryColors = {
   purple: "border-purple-500/30 bg-purple-500/5",
   cyan: "border-cyan-500/30 bg-cyan-500/5",
   rose: "border-rose-500/30 bg-rose-500/5",
+  amber: "border-amber-500/30 bg-amber-500/5",
 };
 
 const badgeColors = {
@@ -168,6 +232,7 @@ const badgeColors = {
   purple: "bg-purple-500/20 text-purple-300 border-purple-500/30",
   cyan: "bg-cyan-500/20 text-cyan-300 border-cyan-500/30",
   rose: "bg-rose-500/20 text-rose-300 border-rose-500/30",
+  amber: "bg-amber-500/20 text-amber-300 border-amber-500/30",
 };
 
 export default function ReportsLibrary() {

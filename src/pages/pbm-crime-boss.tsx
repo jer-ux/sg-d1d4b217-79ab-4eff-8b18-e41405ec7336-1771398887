@@ -2,8 +2,8 @@
 
 import Head from "next/head";
 import Link from "next/link";
-import { useState } from "react";
-import { motion } from "framer-motion";
+import { useState, useEffect } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 import { SiteFooter } from "@/components/site/SiteFooter";
 import Nav from "@/components/Nav";
 import Footer from "@/components/Footer";
@@ -25,7 +25,11 @@ import {
   ChevronRight,
   BarChart3,
   Calculator,
-  Linkedin
+  Linkedin,
+  ArrowRight,
+  Sparkles,
+  Search,
+  BookOpen
 } from "lucide-react";
 
 const publications = [
@@ -53,6 +57,7 @@ const publications = [
 ];
 
 export default function PBMCrimeBossPage() {
+  const [mounted, setMounted] = useState(false);
   const [lightboxOpen, setLightboxOpen] = useState(false);
   const [currentImage, setCurrentImage] = useState("");
   const [newsletterModalOpen, setNewsletterModalOpen] = useState(false);
@@ -60,6 +65,14 @@ export default function PBMCrimeBossPage() {
   const [newsletterName, setNewsletterName] = useState("");
   const [newsletterSubmitting, setNewsletterSubmitting] = useState(false);
   const [newsletterSuccess, setNewsletterSuccess] = useState(false);
+
+  // Gated or interactive state
+  const [selectedEpisode, setSelectedEpisode] = useState<number | null>(null);
+  
+  // Simulator State
+  const [rxClaims, setRxClaims] = useState<number>(25000);
+  const [pbmModel, setPbmModel] = useState<"spread" | "traditional" | "pass_through">("spread");
+  const [suspectedExploitation, setSuspectedExploitation] = useState<string[]>(["spread", "rebates"]);
 
   // Lightbox state
   const [lightboxImage, setLightboxImage] = useState<string | null>(null);
@@ -80,6 +93,10 @@ export default function PBMCrimeBossPage() {
     "/Gemini_Generated_Image_o22qego22qego22q.png",
     "/Gemini_Generated_Image_qm0m5kqm0m5kqm0m.png"
   ];
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   const openLightbox = (imageSrc: string) => {
     setCurrentImage(imageSrc);
@@ -133,6 +150,35 @@ export default function PBMCrimeBossPage() {
     setLightboxIndex(newIndex);
     setLightboxImage(allImages[newIndex]);
   };
+
+  const toggleSuspected = (key: string) => {
+    setSuspectedExploitation(prev => 
+      prev.includes(key) ? prev.filter(k => k !== key) : [...prev, key]
+    );
+  };
+
+  // Live Forensic Calculations
+  const calculatedLeakage = (() => {
+    let perClaimLeakage = 0;
+    if (pbmModel === "spread") perClaimLeakage = 45;
+    else if (pbmModel === "traditional") perClaimLeakage = 30;
+    else perClaimLeakage = 12;
+
+    // Modifiers based on custom selected suspected practices
+    let spreadLeak = suspectedExploitation.includes("spread") ? rxClaims * perClaimLeakage : rxClaims * (perClaimLeakage * 0.3);
+    let rebateSkim = suspectedExploitation.includes("rebates") ? rxClaims * 35 : rxClaims * 5;
+    let macManip = suspectedExploitation.includes("mac") ? rxClaims * 18 : rxClaims * 2;
+    let specialtySteering = suspectedExploitation.includes("specialty") ? rxClaims * 55 : rxClaims * 10;
+
+    const total = spreadLeak + rebateSkim + macManip + specialtySteering;
+    return {
+      spreadLeak,
+      rebateSkim,
+      macManip,
+      specialtySteering,
+      total
+    };
+  })();
 
   return (
     <>
@@ -192,7 +238,7 @@ export default function PBMCrimeBossPage() {
         )}
 
         {/* Hero Banner with Image */}
-        <section className="relative h-[70vh] min-h-[600px] overflow-hidden">
+        <section className="relative h-[75vh] min-h-[650px] overflow-hidden">
           {/* Background Image */}
           <div 
             className="absolute inset-0 cursor-pointer group"
@@ -207,7 +253,7 @@ export default function PBMCrimeBossPage() {
               <Eye className="w-12 h-12 text-white" />
             </div>
             {/* Dark overlay for text readability */}
-            <div className="absolute inset-0 bg-gradient-to-b from-black/70 via-black/50 to-[#050505]" />
+            <div className="absolute inset-0 bg-gradient-to-b from-black/80 via-black/60 to-[#050505]" />
           </div>
 
           {/* Hero Content */}
@@ -274,6 +320,167 @@ export default function PBMCrimeBossPage() {
             </motion.div>
           </div>
         </section>
+
+        {/* INTERACTIVE PBM EXPLOITATION PLAYBOOK SIMULATOR */}
+        {mounted && (
+          <section className="relative py-24 max-w-7xl mx-auto px-6 overflow-hidden">
+            <div className="absolute inset-0 bg-gradient-to-r from-rose-950/10 via-transparent to-red-950/10 opacity-30 pointer-events-none" />
+            
+            <div className="relative border border-rose-500/30 rounded-3xl bg-zinc-950/80 p-8 md:p-12 shadow-2xl overflow-hidden">
+              <div className="absolute top-0 right-0 w-96 h-96 bg-rose-500/5 rounded-full blur-3xl pointer-events-none" />
+              
+              <div className="grid lg:grid-cols-12 gap-12 items-start relative z-10">
+                
+                {/* Left controls panel */}
+                <div className="lg:col-span-7 space-y-8">
+                  <div>
+                    <span className="text-xs font-mono text-rose-400 uppercase tracking-widest block mb-2">Forensic Modeling Tool</span>
+                    <h2 className="text-4xl md:text-5xl font-black text-white leading-tight">PBM Exploitation Playbook Simulator</h2>
+                    <p className="text-slate-400 mt-4 leading-relaxed">
+                      Select your current contractual structure, annual prescription volume, and suspected leakage schemes below to calculate your estimated annual overcharge exposure.
+                    </p>
+                  </div>
+
+                  {/* Sourcing Input Selector */}
+                  <div className="space-y-4">
+                    <div className="flex justify-between items-center">
+                      <label className="text-sm font-bold text-slate-300 uppercase tracking-wider">Annual Rx Claims Count</label>
+                      <span className="text-2xl font-black text-rose-400 font-mono">{rxClaims.toLocaleString()}</span>
+                    </div>
+                    <input 
+                      type="range" 
+                      min="5000" 
+                      max="150000" 
+                      step="5000"
+                      value={rxClaims}
+                      onChange={(e) => setRxClaims(Number(e.target.value))}
+                      className="w-full h-2 bg-zinc-800 rounded-lg appearance-none cursor-pointer accent-rose-500"
+                    />
+                    <div className="flex justify-between text-xs text-slate-500 font-mono">
+                      <span>5,000 Claims (Mid-Market)</span>
+                      <span>150,000 Claims (Enterprise)</span>
+                    </div>
+                  </div>
+
+                  {/* PBM Sourcing Style */}
+                  <div className="space-y-4">
+                    <label className="text-sm font-bold text-slate-300 uppercase tracking-wider block">Contract Sourcing Model</label>
+                    <div className="grid sm:grid-cols-3 gap-4">
+                      {[
+                        { key: "spread", label: "Traditional Spread", desc: "AWP spread pricing retained by PBM" },
+                        { key: "traditional", label: "Hybrid Model", desc: "Limited pass-through, administrative fee" },
+                        { key: "pass_through", label: "Pass-Through", desc: "Low markup, but rebates frequently retained" }
+                      ].map((item) => (
+                        <button
+                          key={item.key}
+                          type="button"
+                          onClick={() => setPbmModel(item.key as any)}
+                          className={`p-4 rounded-xl border text-left transition-all ${
+                            pbmModel === item.key 
+                              ? "border-rose-500 bg-rose-500/10 shadow-lg shadow-rose-500/5" 
+                              : "border-zinc-800 bg-zinc-900/40 hover:border-zinc-700"
+                          }`}
+                        >
+                          <div className={`text-base font-bold ${pbmModel === item.key ? "text-rose-400" : "text-white"}`}>{item.label}</div>
+                          <div className="text-xs text-slate-400 mt-1">{item.desc}</div>
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+
+                  {/* Suspected Exploitations */}
+                  <div className="space-y-4">
+                    <label className="text-sm font-bold text-slate-300 uppercase tracking-wider block">Active Exploitation Playbooks</label>
+                    <div className="grid sm:grid-cols-2 gap-4">
+                      {[
+                        { key: "spread", label: "Undisclosed Spread Pricing", desc: "AWP markup gaming on generics" },
+                        { key: "rebates", label: "Rebate Skimming & Retentions", desc: "Capture of manufacturer formulary payments" },
+                        { key: "mac", label: "MAC List Manipulation", desc: "Discriminatory pricing lists for pharmacies vs plan" },
+                        { key: "specialty", label: "Specialty Drug Steering", desc: "Forced channel alignment to high-margin mail-order" }
+                      ].map((item) => (
+                        <button
+                          key={item.key}
+                          type="button"
+                          onClick={() => toggleSuspected(item.key)}
+                          className={`p-4 rounded-xl border text-left flex items-start gap-3 transition-all ${
+                            suspectedExploitation.includes(item.key) 
+                              ? "border-amber-500/60 bg-amber-500/5" 
+                              : "border-zinc-800 bg-zinc-900/20 hover:border-zinc-700"
+                          }`}
+                        >
+                          <input 
+                            type="checkbox"
+                            checked={suspectedExploitation.includes(item.key)}
+                            readOnly
+                            className="mt-1 h-4 w-4 rounded border-zinc-700 text-amber-500 focus:ring-amber-500 accent-amber-500"
+                          />
+                          <div>
+                            <div className={`text-sm font-bold ${suspectedExploitation.includes(item.key) ? "text-amber-400" : "text-white"}`}>{item.label}</div>
+                            <div className="text-xs text-slate-400 mt-0.5">{item.desc}</div>
+                          </div>
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+
+                {/* Right Results Panel */}
+                <div className="lg:col-span-5 space-y-6 bg-zinc-900/80 border border-zinc-800 p-8 rounded-2xl relative">
+                  <div className="absolute top-4 right-4 animate-pulse">
+                    <span className="h-2 w-2 rounded-full bg-rose-500 inline-block" />
+                    <span className="text-xs text-rose-500 ml-2 font-mono font-bold">LIVE FORENSIC AUDIT</span>
+                  </div>
+
+                  <div>
+                    <span className="text-xs font-mono text-slate-500 uppercase tracking-widest block mb-1">Estimated Annual Cost Leakage</span>
+                    <div className="text-5xl font-black text-rose-400 font-mono tracking-tight">
+                      ${calculatedLeakage.total.toLocaleString()}
+                    </div>
+                    <div className="text-xs text-amber-400 font-mono mt-2 bg-amber-500/10 border border-amber-500/20 px-3 py-1.5 rounded-md inline-flex items-center gap-1.5">
+                      <AlertTriangle className="w-3.5 h-3.5" />
+                      Fiduciary Prudence Risk: CRITICAL OVERPAYMENT
+                    </div>
+                  </div>
+
+                  <div className="space-y-4 pt-6 border-t border-zinc-800">
+                    <div className="flex justify-between items-center text-sm">
+                      <span className="text-slate-400 font-medium">Spread Pricing Overcharge</span>
+                      <span className="font-bold text-white font-mono">${calculatedLeakage.spreadLeak.toLocaleString()}</span>
+                    </div>
+                    <div className="flex justify-between items-center text-sm">
+                      <span className="text-slate-400 font-medium">Rebate Retention Skimming</span>
+                      <span className="font-bold text-white font-mono">${calculatedLeakage.rebateSkim.toLocaleString()}</span>
+                    </div>
+                    <div className="flex justify-between items-center text-sm">
+                      <span className="text-slate-400 font-medium">MAC List Arbitrage</span>
+                      <span className="font-bold text-white font-mono">${calculatedLeakage.macManip.toLocaleString()}</span>
+                    </div>
+                    <div className="flex justify-between items-center text-sm">
+                      <span className="text-slate-400 font-medium">Specialty Drug Leakage</span>
+                      <span className="font-bold text-white font-mono">${calculatedLeakage.specialtySteering.toLocaleString()}</span>
+                    </div>
+                  </div>
+
+                  <div className="pt-6 border-t border-zinc-800 space-y-4">
+                    <div className="bg-rose-500/10 p-4 rounded-xl border border-rose-500/20 text-xs leading-relaxed text-slate-300">
+                      <span className="font-bold text-rose-400 block mb-1">Did you know?</span>
+                      The Average Wholesale Price (AWP) benchmark can easily be inflated by up to 240% across basic generic drug formulas, allowing PBMs to achieve massive spreads while showing "perfect" guarantees.
+                    </div>
+
+                    <Link 
+                      href="/solutions/rx-defense"
+                      className="w-full inline-flex items-center justify-center gap-2 bg-gradient-to-r from-rose-600 to-rose-700 hover:from-rose-700 hover:to-rose-800 text-white px-6 py-4 rounded-xl font-bold transition-all hover:scale-[1.02]"
+                    >
+                      <Shield className="w-4 h-4" />
+                      Run Real Forensic Contract X-Ray
+                    </Link>
+                  </div>
+                </div>
+
+              </div>
+            </div>
+          </section>
+        )}
 
         {/* Secondary Hero Banner - New Image */}
         <section className="relative h-[500px] overflow-hidden my-20">
@@ -848,78 +1055,129 @@ export default function PBMCrimeBossPage() {
           >
             <h2 className="text-4xl md:text-5xl font-black text-white mb-4">Investigation Episodes</h2>
             <p className="text-xl text-slate-400 max-w-3xl mx-auto">
-              Deep dives into the most egregious PBM contract provisions that systematically overcharge employer plans
+              Deep dives into the most egregious PBM contract provisions that systematically overcharge employer plans. Click an episode below to inspect the forensic case file.
             </p>
           </motion.div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-20">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-12">
             {[
               {
                 episode: 1,
-                title: "The Spread Pricing Scam",
-                description: "How PBMs pocket the difference between what they charge you and what they pay pharmacies",
+                title: "Spread Pricing Game",
+                description: "How PBMs pocket the difference between what they charge you and what they pay pharmacies.",
                 impact: "$1.2M average annual impact",
                 readTime: "8 min read",
-                image: "/Gemini_Generated_Image_6m5eog6m5eog6m5e.png"
+                image: "/Gemini_Generated_Image_6m5eog6m5eog6m5e.png",
+                forensicFile: {
+                  code: "EXHIBIT_Spread_01-A",
+                  findings: "AWP benchmark manipulation occurs at the NDC therapeutic grouping stage. Generics are grouped under 'Maximum Allowable Cost' listings that change daily, allowing PBMs to extract up to $45.00 of pure margin per local fill.",
+                  recommendation: "Strike all 'AWP minus' generic guarantees. Enforce dynamic Cost-Plus benchmark matching (NADAC + administrative fulfillment fee)."
+                }
               },
               {
                 episode: 2,
-                title: "Rebate Retention Schemes",
-                description: "The manufacturer payments that never make it to your bottom line",
+                title: "Rebate Skimming Schemes",
+                description: "The manufacturer payments that never make it to your bottom line.",
                 impact: "$840K average annual impact",
                 readTime: "10 min read",
-                image: "/Gemini_Generated_Image_h7g1smh7g1smh7g1.png"
+                image: "/Gemini_Generated_Image_h7g1smh7g1smh7g1.png",
+                forensicFile: {
+                  code: "EXHIBIT_Rebate_02-B",
+                  findings: "PBMs route formulary manufacturer payments through offshore aggregators, labeling them as 'administrative service fees' rather than rebates to legally bypass contractual rebate-sharing clauses.",
+                  recommendation: "Adopt an absolute, fully encompassing definition of 'Manufacturer Revenue' that captures all fees, offsets, and clinical trial grants."
+                }
               },
               {
                 episode: 3,
-                title: "Data Monetization",
-                description: "Your prescription data sold without permission or profit sharing",
+                title: "Data Monetization Abuse",
+                description: "Your prescription data sold without permission or profit sharing.",
                 impact: "$320K average annual impact",
                 readTime: "7 min read",
-                image: "/IMG_0078.jpeg"
+                image: "/IMG_0078.jpeg",
+                forensicFile: {
+                  code: "EXHIBIT_Data_03-C",
+                  findings: "De-identified claims matrices are structured into commercial datasets and sold directly to clinical researchers and competing health brokers, allowing external monetization of your employee clinical metrics.",
+                  recommendation: "Enforce complete proprietary ownership of plan analytics and claims feeds with strict third-party disclosure blocks."
+                }
               }
-            ].map((item, idx) => (
-              <motion.div
-                key={idx}
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: idx * 0.1, duration: 0.6 }}
-                className="group relative overflow-hidden rounded-2xl bg-gradient-to-br from-zinc-900 to-zinc-950 border border-white/10 hover:border-rose-500/50 transition-all duration-300 hover:scale-105 cursor-pointer"
-                onClick={() => openLightbox(item.image)}
-              >
-                {/* Background Image */}
-                <div className="absolute inset-0 opacity-20 group-hover:opacity-30 transition-opacity">
-                  <img 
-                    src={item.image}
-                    alt={item.title}
-                    className="w-full h-full object-cover"
-                  />
-                  <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
-                    <Eye className="w-8 h-8 text-white" />
-                  </div>
-                </div>
+            ].map((item, idx) => {
+              const isSelected = selectedEpisode === item.episode;
+              return (
+                <div key={idx} className="flex flex-col">
+                  <motion.div
+                    initial={{ opacity: 0, y: 30 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ delay: idx * 0.1, duration: 0.6 }}
+                    className={`group relative overflow-hidden rounded-2xl bg-gradient-to-br from-zinc-900 to-zinc-950 border transition-all duration-300 cursor-pointer ${
+                      isSelected ? "border-rose-500 shadow-xl shadow-rose-500/10" : "border-white/10 hover:border-rose-500/50"
+                    }`}
+                    onClick={() => setSelectedEpisode(isSelected ? null : item.episode)}
+                  >
+                    {/* Background Image */}
+                    <div className="absolute inset-0 opacity-20 group-hover:opacity-30 transition-opacity">
+                      <img 
+                        src={item.image}
+                        alt={item.title}
+                        className="w-full h-full object-cover"
+                      />
+                    </div>
 
-                <div className="relative p-8">
-                  <div className="inline-flex items-center gap-2 bg-rose-500/20 text-rose-400 px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider mb-4">
-                    Episode {item.episode}
-                  </div>
-                  
-                  <h3 className="text-2xl font-bold text-white mb-3 group-hover:text-rose-400 transition-colors">
-                    {item.title}
-                  </h3>
-                  
-                  <p className="text-slate-400 mb-6 leading-relaxed">
-                    {item.description}
-                  </p>
-                  
-                  <div className="flex items-center justify-between pt-4 border-t border-white/10">
-                    <span className="text-rose-400 font-bold">{item.impact}</span>
-                    <span className="text-slate-500 text-sm">{item.readTime}</span>
-                  </div>
+                    <div className="relative p-8">
+                      <div className="flex justify-between items-center mb-4">
+                        <div className="inline-flex items-center gap-2 bg-rose-500/20 text-rose-400 px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider">
+                          Episode {item.episode}
+                        </div>
+                        <span className="text-xs text-rose-400 font-mono flex items-center gap-1">
+                          <BookOpen className="w-3 h-3" />
+                          {isSelected ? "CLOSE MEMO" : "VIEW FILE"}
+                        </span>
+                      </div>
+                      
+                      <h3 className="text-2xl font-bold text-white mb-3 group-hover:text-rose-400 transition-colors">
+                        {item.title}
+                      </h3>
+                      
+                      <p className="text-slate-400 mb-6 leading-relaxed text-sm">
+                        {item.description}
+                      </p>
+                      
+                      <div className="flex items-center justify-between pt-4 border-t border-white/10">
+                        <span className="text-rose-400 font-bold text-xs">{item.impact}</span>
+                        <span className="text-slate-500 text-xs">{item.readTime}</span>
+                      </div>
+                    </div>
+                  </motion.div>
+
+                  {/* Inline Expanded Forensic Details */}
+                  <AnimatePresence>
+                    {isSelected && (
+                      <motion.div
+                        initial={{ opacity: 0, height: 0 }}
+                        animate={{ opacity: 1, height: "auto" }}
+                        exit={{ opacity: 0, height: 0 }}
+                        className="overflow-hidden"
+                      >
+                        <div className="mt-4 p-6 bg-zinc-950 border border-rose-500/30 rounded-xl space-y-4 text-xs">
+                          <div className="flex justify-between items-center pb-2 border-b border-rose-500/20">
+                            <span className="font-mono text-rose-400 font-bold">{item.forensicFile.code}</span>
+                            <span className="text-slate-500 font-mono">STATUS: VERIFIED BREACH</span>
+                          </div>
+                          <div>
+                            <span className="font-bold text-slate-300 block mb-1">Audit Findings:</span>
+                            <p className="text-slate-400 leading-relaxed">{item.forensicFile.findings}</p>
+                          </div>
+                          <div>
+                            <span className="font-bold text-emerald-400 block mb-1">Fiduciary Defense Remedy:</span>
+                            <p className="text-slate-400 leading-relaxed">{item.forensicFile.recommendation}</p>
+                          </div>
+                        </div>
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
                 </div>
-              </motion.div>
-            ))}
+              );
+            })}
           </div>
 
           {/* Additional Investigation Cards */}
@@ -956,6 +1214,7 @@ export default function PBMCrimeBossPage() {
                   transition={{ duration: 0.6, delay: idx * 0.1 }}
                   className="group relative overflow-hidden rounded-2xl border border-white/10 hover:border-orange-500/50 transition-all duration-300 cursor-pointer"
                   whileHover={{ scale: 1.03 }}
+                  onClick={() => openLightbox(item.image)}
                 >
                   <div className="absolute inset-0">
                     <img
@@ -973,11 +1232,11 @@ export default function PBMCrimeBossPage() {
                     <h4 className="text-3xl font-bold text-white mb-2 group-hover:text-orange-400 transition-colors">
                       {item.title}
                     </h4>
-                    <p className="text-slate-300 mb-4">
+                    <p className="text-slate-300 mb-4 text-sm">
                       {item.subtitle}
                     </p>
                     <div className="flex items-center justify-between pt-4 border-t border-white/10">
-                      <span className="text-orange-400 font-bold text-lg">{item.impact} Annual Impact</span>
+                      <span className="text-orange-400 font-bold text-sm">{item.impact} Annual Impact</span>
                       <ExternalLink className="w-5 h-5 text-slate-500 group-hover:text-orange-400 transition-colors" />
                     </div>
                   </div>
@@ -998,7 +1257,7 @@ export default function PBMCrimeBossPage() {
               <img 
                 src="/Gemini_Generated_Image_9vb8yz9vb8yz9vb8_1_.png" 
                 alt="Contract Analysis" 
-                className="w-full h-full object-cover"
+                className="w-full h-full object-cover opacity-35"
               />
               <div className="absolute inset-0 bg-gradient-to-t from-black via-black/70 to-black/40" />
             </div>
@@ -1116,7 +1375,7 @@ export default function PBMCrimeBossPage() {
                 <img
                   src="/Gemini_Generated_Image_o22qego22qego22q.png"
                   alt="PBM Contract Deep Dive"
-                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
+                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 opacity-40"
                 />
                 <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity bg-black/40">
                   <Eye className="w-12 h-12 text-white" />
@@ -1183,7 +1442,7 @@ export default function PBMCrimeBossPage() {
                   <img
                     src="/Firefly_Gemini_Flash_Introducing_Rx_Defense_PBM_Contract_x-Ray-_The_Forensic_Infrastructure_That_Turns_Pha_743383.png"
                     alt="Contract Analysis"
-                    className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
+                    className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700 opacity-40"
                   />
                   <div className="absolute inset-0 bg-gradient-to-br from-rose-950/90 via-black/80 to-transparent" />
                 </div>
@@ -1214,7 +1473,7 @@ export default function PBMCrimeBossPage() {
                   <img
                     src="/Firefly_Gemini_Flash_The_7.3_Billion_Question-_What_the_Big_Three_PBMs_Have_Cost_Your_Plan_Your_People_981473.png"
                     alt="LinkedIn Follow"
-                    className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
+                    className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700 opacity-40"
                   />
                   <div className="absolute inset-0 bg-gradient-to-bl from-red-950/90 via-black/80 to-transparent" />
                 </div>

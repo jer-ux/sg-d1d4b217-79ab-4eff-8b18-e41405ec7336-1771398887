@@ -1,6 +1,6 @@
 ---
 title: Showcase JB Hunt EBITDA Defense Report in Main Menu
-status: in_progress
+status: done
 priority: high
 type: feature
 tags: [navigation, pdf, forensic-report]
@@ -13,6 +13,6 @@ position: 22
 Showcase Kincaid_iQ_JBHunt_EBITDA_Defense.pdf directly in the main navigation menu/dropdown to make this elite forensic actuarial report easily accessible to users and directors.
 
 ## Checklist:
-- [ ] Open and inspect src/components/Nav.tsx.
-- [ ] Add a prominent, styled callout or menu item linking directly to `/Kincaid_iQ_JBHunt_EBITDA_Defense.pdf` with premium badging (e.g. "Featured Case Study" or "EBITDA Defense Audit").
-- [ ] Verify build compiles flawlessly.
+- [x] Open and inspect src/components/Nav.tsx.
+- [x] Add a prominent, styled callout or menu item linking directly to `/Kincaid_iQ_JBHunt_EBITDA_Defense.pdf` with premium badging (e.g. "Featured Case Study" or "EBITDA Defense Audit").
+- [x] Verify build compiles flawlessly.

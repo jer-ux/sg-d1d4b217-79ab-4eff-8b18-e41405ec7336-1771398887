@@ -38,6 +38,28 @@ const reportsData = [
     ]
   },
   {
+    id: "refill-rationed",
+    title: "Refill Was Rationed Audit",
+    subtitle: "Specialty Clinical Rationing & Access Investigation",
+    description: "A forensic clinical audit detailing systemic refill rationing, specialty pharmacy delays, and prior authorization bottlenecks. Analyzes member disruption and clinical consequences of cost-shifting strategies.",
+    href: "/Kincaid_IQ_Refill_Was_Rationed.pdf",
+    category: "Clinical Intelligence",
+    readTime: "9 min read",
+    price: 11000,
+    priceLabel: "$11,000",
+    deliverables: [
+      "Specialty refill delay analysis",
+      "Prior authorization rationing audit",
+      "Member disruption and abandonment metrics",
+      "Clinical risk exposure scorecard"
+    ],
+    keyFindings: [
+      "Average 14-day delay on critical specialty medications",
+      "18% of prior authorizations rejected on initial submission without clinical grounds",
+      "Member abandonment rate rose by 11% under high-copay tiers"
+    ]
+  },
+  {
     id: "mark-cuban",
     title: "Cost Plus Drug Pricing Analysis",
     subtitle: "Alternative Distribution Model Validation",
@@ -86,6 +108,26 @@ const reportsData = [
     ]
   },
   {
+    id: "predictive-intelligence",
+    title: "Predictive Health Risk & Volatility Report",
+    subtitle: "Advanced Forecasting and Trend Projections",
+    description: "Multi-layered actuarial analysis projecting healthcare plan cost trajectories and claim anomalies using machine learning engines. Models trend persistence and high-cost claimant spikes.",
+    href: "/kincaid-iq-predictive-intelligence-report_3_.pdf",
+    category: "Risk Analytics",
+    readTime: "12 min read",
+    price: 18500,
+    priceLabel: "$18,500",
+    deliverables: [
+      "Claim volatility and coefficient of variation forecasts",
+      "Predictive high-cost claimant identifiers",
+      "Actuarial trend decomposition mapping"
+    ],
+    keyFindings: [
+      "91% accuracy in projecting top 1% high-cost claimants for the upcoming year",
+      "Predictive models identify a 14.2% structural trend variance across multi-state plans"
+    ]
+  },
+  {
     id: "rx-defense",
     title: "Rx Defense: PBM Contract X-Ray",
     subtitle: "Forensic PBM Contract Analysis",
@@ -110,6 +152,26 @@ const reportsData = [
     ]
   },
   {
+    id: "hopebridge-501",
+    title: "Hopebridge 501 Actuarial & Contract Evaluation",
+    subtitle: "Forensic Health Plan Assessment",
+    description: "A comprehensive 44-page deep dive into Hopebridge plan benefits structure, analyzing reinsurance corridors, administrative fee leakage, and generic utilization incentives.",
+    href: "/Kincaid_IQ_Hopebridge_501_44pg.pdf",
+    category: "Benchmarking",
+    readTime: "14 min read",
+    price: 29000,
+    priceLabel: "$29,000",
+    deliverables: [
+      "44-page custom benefits and plan design evaluation",
+      "Reinsurance corridor optimization analysis",
+      "Generic substitution incentive mapping"
+    ],
+    keyFindings: [
+      "Identified $1.4M in potential reinsurance premium savings",
+      "Administrative fee misalignment represented 8.2% of core plan costs"
+    ]
+  },
+  {
     id: "actuarial",
     title: "Actuarial Benefits Intelligence",
     subtitle: "Stochastic Risk Modeling & Trend Projections",
@@ -131,6 +193,26 @@ const reportsData = [
       "Trend decomposition reveals 12% administrative cost component",
       "Stop-loss optimization yields 8-14% premium reduction potential",
       "Projections achieve R² = 0.87 against actual experience"
+    ]
+  },
+  {
+    id: "kimball-stanford",
+    title: "Kimball v. Stanford: Fiduciary Litigation Briefing",
+    subtitle: "ERISA Compliance & Legal Precedents Audit",
+    description: "Strategic litigation briefing on fiduciary requirements under the Consolidated Appropriations Act. Outlines trustee liabilities regarding transparent broker disclosures and claims reporting.",
+    href: "/Kimball_v11_Stanford_1_1_.pdf",
+    category: "Contract Intelligence",
+    readTime: "13 min read",
+    price: 40000,
+    priceLabel: "$40,000",
+    deliverables: [
+      "Detailed legal risk and litigation precedent briefing",
+      "CAA compliance scorecard template",
+      "Trustee liability mitigation guidelines"
+    ],
+    keyFindings: [
+      "Fiduciaries can be held personally liable for failure to audit PBM claims",
+      "Requires fee-only broker compensation to completely shield trustees"
     ]
   },
   {
@@ -179,6 +261,26 @@ const reportsData = [
       "Prior authorization criteria deviate from guidelines in 28% of oncology cases",
       "Step therapy protocols reduce adherence 11-16% for chronic conditions",
       "Therapeutic interchange programs achieve 89% clinical equivalence"
+    ]
+  },
+  {
+    id: "schwarz-partners",
+    title: "Schwarz Partners MEWA $14.2M Defense Audit",
+    subtitle: "Bespoke Forensic Employer Defense Case Study",
+    description: "An in-depth retrospective claims audit and contract leakage study uncovering massive multi-million dollar spread markups and hidden GPO fees in multi-employer welfare associations.",
+    href: "/Kincaid_iQ_Schwarz_Partners_MEWA_14_2M_Defense.pdf",
+    category: "Premium Forensic Intelligence",
+    readTime: "18 min read",
+    price: 75000,
+    priceLabel: "$75,000",
+    deliverables: [
+      "Full retrospective claims audit report",
+      "Hidden markup and manufacturer rebate analysis",
+      "Fiduciary compliance remediation strategy"
+    ],
+    keyFindings: [
+      "Uncovered $14.2M in recoverable contract spreads",
+      "Disclosed fees represented less than 15% of actual PBM retention"
     ]
   },
   {
@@ -660,7 +762,7 @@ export default function KincaidIQIntelligenceSeries() {
                 <div className="text-sm text-neutral-400">Identified Contractual Leakage</div>
               </div>
               <div className="text-center">
-                <div className="text-4xl font-serif font-bold text-white mb-2">12</div>
+                <div className="text-4xl font-serif font-bold text-white mb-2">13</div>
                 <div className="text-sm text-neutral-400">Published Intelligence Reports</div>
               </div>
               <div className="text-center">
@@ -814,7 +916,7 @@ export default function KincaidIQIntelligenceSeries() {
                             </div>
 
                             <div className="space-y-3 pt-4 border-t border-[#2A3F54]/40">
-                              <Link href={report.href} className="w-full block">
+                              <Link href={report.href} className="w-full block" target={report.href.endsWith(".pdf") ? "_blank" : undefined}>
                                 <Button className={`w-full font-bold uppercase tracking-wider text-xs py-5 ${
                                   report.featured 
                                     ? "bg-[#B8860B] hover:bg-[#9A7209] text-[#0F1419]" 
@@ -832,12 +934,12 @@ export default function KincaidIQIntelligenceSeries() {
                                   </Button>
                                 </Link>
                               ) : (
-                                <Link href={report.href} className="w-full block">
+                                <a href={report.href} target="_blank" rel="noopener noreferrer" className="w-full block">
                                   <Button variant="outline" className="w-full border-[#2A3F54] text-neutral-300 text-xs uppercase tracking-wider hover:bg-[#0C1117]">
                                     <Download className="w-3.5 h-3.5 mr-1.5" />
-                                    Download Sample PDF
+                                    View Report PDF
                                   </Button>
-                                </Link>
+                                </a>
                               )}
                             </div>
 

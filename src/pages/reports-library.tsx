@@ -16,53 +16,17 @@ import {
   Presentation,
   BookOpen,
   Image as ImageIcon,
-  Scale
+  Scale,
+  Sparkles,
+  Search
 } from "lucide-react";
 import { Card, CardHeader, CardTitle, CardDescription, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
+import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import ImageLightbox from "@/components/ImageLightbox";
 import Link from "next/link";
 
-const reports = [
-  {
-    category: "Fiduciary Platforms & Monographs",
-    icon: BookOpen,
-    color: "cyan",
-    reports: [
-      {
-        title: "AccessIQ MVP Monograph (88pp)",
-        description: "An intensive 88-page deep-dive monograph outlining the core AccessIQ MVP design, operational structures, and technical blueprints.",
-        file: "/AccessIQ_MVP_Monograph_88pp.pdf",
-        size: "88 Pages",
-        type: "Monograph",
-        isImage: false,
-      },
-      {
-        title: "Kincaid IQ: The Ultimate Fiduciary Platform",
-        description: "The premier handbook on our algorithmic fiduciary ecosystem, defining how autonomous intelligence shields employers from CAA liability.",
-        file: "/Kincaid_IQ_The_Ultimate_Fiduciary_Platform.pdf",
-        size: "Platform Manual",
-        type: "Fiduciary Tech",
-        isImage: false,
-      },
-      {
-        title: "SiriusB iQ Chairman Board Briefing",
-        description: "Official strategic briefing document for corporate Board of Directors and executive leadership committees.",
-        file: "/SiriusB_iQ_Chairman_Board_Briefing_1_.pdf",
-        size: "Executive Briefing",
-        type: "Board Governance",
-        isImage: false,
-      },
-      {
-        title: "SiriusB IQ Fiduciary Grade AI (Glass Edition)",
-        description: "Elite advisory briefing on glassmorphic AI-driven benefits governance and decision engines.",
-        file: "/SiriusB_IQ_Fiduciary_Grade_AI_Glass.pdf",
-        size: "Premium Guide",
-        type: "Fiduciary AI",
-        isImage: false,
-      },
-    ],
-  },
+const tab1Categories = [
   {
     category: "Fiduciary Litigation & Clinical Rationing",
     icon: Scale,
@@ -196,6 +160,48 @@ const reports = [
       },
     ],
   },
+];
+
+const tab2Categories = [
+  {
+    category: "Fiduciary Platforms & Monographs",
+    icon: BookOpen,
+    color: "cyan",
+    reports: [
+      {
+        title: "AccessIQ MVP Monograph (88pp)",
+        description: "An intensive 88-page deep-dive monograph outlining the core AccessIQ MVP design, operational structures, and technical blueprints.",
+        file: "/AccessIQ_MVP_Monograph_88pp.pdf",
+        size: "88 Pages",
+        type: "Monograph",
+        isImage: false,
+      },
+      {
+        title: "Kincaid IQ: The Ultimate Fiduciary Platform",
+        description: "The premier handbook on our algorithmic fiduciary ecosystem, defining how autonomous intelligence shields employers from CAA liability.",
+        file: "/Kincaid_IQ_The_Ultimate_Fiduciary_Platform.pdf",
+        size: "Platform Manual",
+        type: "Fiduciary Tech",
+        isImage: false,
+      },
+      {
+        title: "SiriusB iQ Chairman Board Briefing",
+        description: "Official strategic briefing document for corporate Board of Directors and executive leadership committees.",
+        file: "/SiriusB_iQ_Chairman_Board_Briefing_1_.pdf",
+        size: "Executive Briefing",
+        type: "Board Governance",
+        isImage: false,
+      },
+      {
+        title: "SiriusB IQ Fiduciary Grade AI (Glass Edition)",
+        description: "Elite advisory briefing on glassmorphic AI-driven benefits governance and decision engines.",
+        file: "/SiriusB_IQ_Fiduciary_Grade_AI_Glass.pdf",
+        size: "Premium Guide",
+        type: "Fiduciary AI",
+        isImage: false,
+      },
+    ],
+  },
   {
     category: "Strategic Briefings & Carousels",
     icon: Presentation,
@@ -286,6 +292,25 @@ const badgeColors = {
 
 export default function ReportsLibrary() {
   const [activeImage, setActiveImage] = useState<string | null>(null);
+  const [searchQuery, setSearchQuery] = useState("");
+
+  const filterReports = (categories: typeof tab1Categories) => {
+    if (!searchQuery) return categories;
+    return categories.map(cat => ({
+      ...category,
+      category: cat.category,
+      icon: cat.icon,
+      color: cat.color,
+      reports: cat.reports.filter(rep => 
+        rep.title.toLowerCase().includes(searchQuery.toLowerCase()) || 
+        rep.description.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        rep.type.toLowerCase().includes(searchQuery.toLowerCase())
+      )
+    })).filter(cat => cat.reports.length > 0);
+  };
+
+  const filteredTab1 = filterReports(tab1Categories);
+  const filteredTab2 = filterReports(tab2Categories);
 
   return (
     <>
@@ -297,93 +322,190 @@ export default function ReportsLibrary() {
       
       <main className="min-h-screen bg-gradient-to-br from-gray-950 via-amber-950/10 to-gray-950 pt-24 pb-16">
         {/* Hero Section */}
-        <section className="container mx-auto px-4 mb-16">
+        <section className="container mx-auto px-4 mb-10">
           <div className="max-w-4xl mx-auto text-center space-y-6">
-            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-amber-500/10 border border-amber-500/20 mb-4">
-              <FileText className="w-4 h-4 text-amber-400" />
-              <span className="text-sm text-amber-300">Kincaid IQ Intelligence Series</span>
+            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-amber-500/10 border border-amber-500/20 mb-2">
+              <Sparkles className="w-4 h-4 text-amber-400 animate-pulse" />
+              <span className="text-sm text-amber-300 font-semibold">Kincaid IQ Intelligence Series</span>
             </div>
             
             <h1 className="text-4xl md:text-6xl font-bold bg-gradient-to-r from-amber-400 via-amber-100 to-amber-500 bg-clip-text text-transparent leading-tight">
               Reports & Research Library
             </h1>
             
-            <p className="text-xl text-gray-300 max-w-3xl mx-auto leading-relaxed">
-              Comprehensive collection of case studies, actuarial analyses, white papers, and platform documentation 
-              demonstrating measurable results and thought leadership in benefits intelligence.
+            <p className="text-lg text-gray-300 max-w-3xl mx-auto">
+              Access case studies, forensic actuarial analyses, white papers, and corporate defense frameworks.
             </p>
+
+            {/* Premium Search Filter */}
+            <div className="max-w-md mx-auto relative mt-4">
+              <Search className="absolute left-3 top-3.5 h-4 w-4 text-amber-500/60" />
+              <input 
+                type="text"
+                placeholder="Search dossiers, audits, or legal files..."
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                className="w-full pl-10 pr-4 py-3 bg-zinc-950/60 border border-amber-500/20 rounded-xl text-sm text-white placeholder-gray-500 focus:outline-none focus:border-amber-400 focus:ring-1 focus:ring-amber-400 transition-all"
+              />
+            </div>
           </div>
         </section>
 
-        {/* Reports by Category */}
+        {/* Tabbed Reports Showcase */}
         <section className="container mx-auto px-4">
-          <div className="max-w-7xl mx-auto space-y-16">
-            {reports.map((category, categoryIndex) => {
-              const Icon = category.icon;
-              const colorClass = categoryColors[category.color as keyof typeof categoryColors];
-              const badgeClass = badgeColors[category.color as keyof typeof badgeColors];
-              
-              return (
-                <div key={categoryIndex} className="space-y-6">
-                  {/* Category Header */}
-                  <div className="flex items-center gap-4 pb-4 border-b border-gray-800">
-                    <div className={`p-3 rounded-lg ${colorClass} border`}>
-                      <Icon className="w-6 h-6 text-white" />
-                    </div>
-                    <div>
-                      <h2 className="text-2xl font-bold text-white">{category.category}</h2>
-                      <p className="text-gray-400">{category.reports.length} documents</p>
-                    </div>
-                  </div>
+          <div className="max-w-7xl mx-auto">
+            <Tabs defaultValue="forensic" className="w-full space-y-8">
+              <div className="flex justify-center">
+                <TabsList className="bg-zinc-950 border border-amber-500/20 p-1.5 rounded-xl h-auto">
+                  <TabsTrigger 
+                    value="forensic" 
+                    className="data-[state=active]:bg-amber-500 data-[state=active]:text-black text-gray-400 px-6 py-2.5 rounded-lg text-sm font-bold tracking-wide transition-all uppercase"
+                  >
+                    ⚖️ Litigation & Forensic Audits
+                  </TabsTrigger>
+                  <TabsTrigger 
+                    value="platform" 
+                    className="data-[state=active]:bg-amber-500 data-[state=active]:text-black text-gray-400 px-6 py-2.5 rounded-lg text-sm font-bold tracking-wide transition-all uppercase"
+                  >
+                    🛠️ Blueprints, Briefings & Media
+                  </TabsTrigger>
+                </TabsList>
+              </div>
 
-                  {/* Reports Grid */}
-                  <div className="grid md:grid-cols-2 gap-6">
-                    {category.reports.map((report, reportIndex) => (
-                      <Card key={reportIndex} className="bg-gray-900/50 border-gray-800 hover:border-gray-700 transition-all duration-300 hover:shadow-lg hover:shadow-amber-500/10 group flex flex-col justify-between">
-                        <CardHeader>
-                          <div className="flex items-start justify-between mb-2">
-                            <CardTitle className="text-lg text-white group-hover:text-amber-400 transition-colors">
-                              {report.title}
-                            </CardTitle>
-                            <Badge variant="outline" className={badgeClass}>
-                              {report.size}
-                            </Badge>
+              {/* Tab 1 Content: Forensic & Litigation */}
+              <TabsContent value="forensic" className="space-y-12 outline-none">
+                {filteredTab1.length === 0 ? (
+                  <div className="text-center py-20 text-gray-400">No forensic reports match your search query.</div>
+                ) : (
+                  filteredTab1.map((category, categoryIndex) => {
+                    const Icon = category.icon;
+                    const colorClass = categoryColors[category.color as keyof typeof categoryColors];
+                    const badgeClass = badgeColors[category.color as keyof typeof badgeColors];
+                    
+                    return (
+                      <div key={categoryIndex} className="space-y-6">
+                        <div className="flex items-center gap-4 pb-4 border-b border-zinc-800/80">
+                          <div className={`p-2.5 rounded-lg ${colorClass} border`}>
+                            <Icon className="w-5.5 h-5.5 text-white" />
                           </div>
-                          <CardDescription className="text-gray-400">
-                            {report.description}
-                          </CardDescription>
-                        </CardHeader>
-                        <CardContent>
-                          <div className="flex items-center justify-between mt-auto pt-4 border-t border-gray-800/50">
-                            <span className="text-xs text-gray-500">{report.type}</span>
-                            {report.isImage ? (
-                              <button
-                                onClick={() => setActiveImage(report.file)}
-                                className="inline-flex items-center gap-2 px-4 py-2 bg-amber-500/10 hover:bg-amber-500/20 text-amber-300 rounded-lg transition-colors text-sm font-medium cursor-pointer"
-                              >
-                                <Eye className="w-4 h-4" />
-                                View Image
-                              </button>
-                            ) : (
-                              <a
-                                href={report.file}
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                className="inline-flex items-center gap-2 px-4 py-2 bg-amber-500/10 hover:bg-amber-500/20 text-amber-300 rounded-lg transition-colors text-sm font-medium"
-                              >
-                                <Download className="w-4 h-4" />
-                                View PDF
-                                <ExternalLink className="w-3 h-3" />
-                              </a>
-                            )}
+                          <div>
+                            <h2 className="text-xl font-bold text-white tracking-wide">{category.category}</h2>
+                            <p className="text-xs text-gray-500">{category.reports.length} critical assets</p>
                           </div>
-                        </CardContent>
-                      </Card>
-                    ))}
-                  </div>
-                </div>
-              );
-            })}
+                        </div>
+
+                        <div className="grid md:grid-cols-2 gap-6">
+                          {category.reports.map((report, reportIndex) => (
+                            <Card key={reportIndex} className="bg-zinc-950/40 border-zinc-900 hover:border-amber-500/30 transition-all duration-300 hover:shadow-lg hover:shadow-amber-500/5 group flex flex-col justify-between rounded-xl">
+                              <CardHeader>
+                                <div className="flex items-start justify-between gap-4 mb-2">
+                                  <CardTitle className="text-md font-bold text-gray-100 group-hover:text-amber-400 transition-colors leading-snug">
+                                    {report.title}
+                                  </CardTitle>
+                                  <Badge variant="outline" className={`${badgeClass} shrink-0 text-[10px] font-bold uppercase`}>
+                                    {report.size}
+                                  </Badge>
+                                </div>
+                                <CardDescription className="text-xs text-gray-400 leading-relaxed">
+                                  {report.description}
+                                </CardDescription>
+                              </CardHeader>
+                              <CardContent>
+                                <div className="flex items-center justify-between mt-auto pt-4 border-t border-zinc-900/60">
+                                  <span className="text-[10px] uppercase tracking-wider font-semibold text-gray-500">{report.type}</span>
+                                  <a
+                                    href={report.file}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    className="inline-flex items-center gap-2 px-3.5 py-1.5 bg-amber-500/10 hover:bg-amber-500 hover:text-black border border-amber-500/20 hover:border-amber-400 text-amber-300 rounded-lg transition-all text-xs font-bold uppercase tracking-wider"
+                                  >
+                                    <Download className="w-3.5 h-3.5" />
+                                    View PDF
+                                    <ExternalLink className="w-3 h-3" />
+                                  </a>
+                                </div>
+                              </CardContent>
+                            </Card>
+                          ))}
+                        </div>
+                      </div>
+                    );
+                  })
+                )}
+              </TabsContent>
+
+              {/* Tab 2 Content: Platform Manuals & Visuals */}
+              <TabsContent value="platform" className="space-y-12 outline-none">
+                {filteredTab2.length === 0 ? (
+                  <div className="text-center py-20 text-gray-400">No blueprints or media files match your search query.</div>
+                ) : (
+                  filteredTab2.map((category, categoryIndex) => {
+                    const Icon = category.icon;
+                    const colorClass = categoryColors[category.color as keyof typeof categoryColors];
+                    const badgeClass = badgeColors[category.color as keyof typeof badgeColors];
+                    
+                    return (
+                      <div key={categoryIndex} className="space-y-6">
+                        <div className="flex items-center gap-4 pb-4 border-b border-zinc-800/80">
+                          <div className={`p-2.5 rounded-lg ${colorClass} border`}>
+                            <Icon className="w-5.5 h-5.5 text-white" />
+                          </div>
+                          <div>
+                            <h2 className="text-xl font-bold text-white tracking-wide">{category.category}</h2>
+                            <p className="text-xs text-gray-500">{category.reports.length} premium blueprints</p>
+                          </div>
+                        </div>
+
+                        <div className="grid md:grid-cols-2 gap-6">
+                          {category.reports.map((report, reportIndex) => (
+                            <Card key={reportIndex} className="bg-zinc-950/40 border-zinc-900 hover:border-amber-500/30 transition-all duration-300 hover:shadow-lg hover:shadow-amber-500/5 group flex flex-col justify-between rounded-xl">
+                              <CardHeader>
+                                <div className="flex items-start justify-between gap-4 mb-2">
+                                  <CardTitle className="text-md font-bold text-gray-100 group-hover:text-amber-400 transition-colors leading-snug">
+                                    {report.title}
+                                  </CardTitle>
+                                  <Badge variant="outline" className={`${badgeClass} shrink-0 text-[10px] font-bold uppercase`}>
+                                    {report.size}
+                                  </Badge>
+                                </div>
+                                <CardDescription className="text-xs text-gray-400 leading-relaxed">
+                                  {report.description}
+                                </CardDescription>
+                              </CardHeader>
+                              <CardContent>
+                                <div className="flex items-center justify-between mt-auto pt-4 border-t border-zinc-900/60">
+                                  <span className="text-[10px] uppercase tracking-wider font-semibold text-gray-500">{report.type}</span>
+                                  {report.isImage ? (
+                                    <button
+                                      onClick={() => setActiveImage(report.file)}
+                                      className="inline-flex items-center gap-2 px-3.5 py-1.5 bg-amber-500/10 hover:bg-amber-500 hover:text-black border border-amber-500/20 hover:border-amber-400 text-amber-300 rounded-lg transition-all text-xs font-bold uppercase tracking-wider cursor-pointer"
+                                    >
+                                      <Eye className="w-3.5 h-3.5" />
+                                      View Image
+                                    </button>
+                                  ) : (
+                                    <a
+                                      href={report.file}
+                                      target="_blank"
+                                      rel="noopener noreferrer"
+                                      className="inline-flex items-center gap-2 px-3.5 py-1.5 bg-amber-500/10 hover:bg-amber-500 hover:text-black border border-amber-500/20 hover:border-amber-400 text-amber-300 rounded-lg transition-all text-xs font-bold uppercase tracking-wider"
+                                    >
+                                      <Download className="w-3.5 h-3.5" />
+                                      View PDF
+                                      <ExternalLink className="w-3 h-3" />
+                                    </a>
+                                  )}
+                                </div>
+                              </CardContent>
+                            </Card>
+                          ))}
+                        </div>
+                      </div>
+                    );
+                  })
+                )}
+              </TabsContent>
+            </Tabs>
           </div>
         </section>
 

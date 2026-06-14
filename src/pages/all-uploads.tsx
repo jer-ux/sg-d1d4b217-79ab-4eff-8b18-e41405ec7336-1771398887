@@ -7,7 +7,10 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Search, Download, FileText, Image as ImageIcon, ExternalLink, Library, ShieldAlert, Award, FileSpreadsheet, Eye, Sparkles } from "lucide-react";
+import { 
+  Search, Download, FileText, Image as ImageIcon, ExternalLink, Library, 
+  ShieldAlert, Award, FileSpreadsheet, Eye, Sparkles, Scale, Cpu, Terminal, TrendingUp, HelpCircle
+} from "lucide-react";
 
 interface UploadedAsset {
   title: string;
@@ -19,6 +22,9 @@ interface UploadedAsset {
   date: string;
   isImage?: boolean;
   stanfordDesign?: boolean;
+  docId: string;
+  author?: string;
+  subType?: string;
 }
 
 const ALL_ASSETS: UploadedAsset[] = [
@@ -31,7 +37,10 @@ const ALL_ASSETS: UploadedAsset[] = [
     description: "The authoritative Stanford PHS Plan design audit and Kimball litigation briefing, analyzing ERISA fiduciary duty obligations and high-contrast healthcare plan cost structures.",
     size: "27.4 MB",
     date: "2026-04",
-    stanfordDesign: true
+    stanfordDesign: true,
+    docId: "STF-ERISA-2026",
+    author: "Stanford Health Fiduciary Council",
+    subType: "Class-I ERISA Litigation"
   },
   // 1. Litigation & Forensic Audits
   {
@@ -41,7 +50,10 @@ const ALL_ASSETS: UploadedAsset[] = [
     type: "PDF Document",
     description: "Comprehensive 43-page forensic assessment analyzing plan leakage, clinical management, and drug rebate auditing for Indiana Health Centers.",
     size: "11.5 MB",
-    date: "2026-06"
+    date: "2026-06",
+    docId: "IND-IHC-43P",
+    author: "Kincaid IQ Actuarial Dept",
+    subType: "Forensic Plan Audit"
   },
   {
     title: "FCC North America Forensic Report (Release v1)",
@@ -50,7 +62,10 @@ const ALL_ASSETS: UploadedAsset[] = [
     type: "PDF Document",
     description: "Technical forensic report dissecting copay maximization structures and spread pricing under FCC North America plans.",
     size: "53.2 MB",
-    date: "2026-06"
+    date: "2026-06",
+    docId: "FCC-NA-REV1",
+    author: "Fiduciary Systems Laboratory",
+    subType: "Spread Pricing Audit"
   },
   {
     title: "FCC North America Forensic Report (Primary Copy)",
@@ -59,7 +74,10 @@ const ALL_ASSETS: UploadedAsset[] = [
     type: "PDF Document",
     description: "Authorized audit investigating formulary modeling anomalies and high-cost specialty drug retention strategies.",
     size: "40.0 MB",
-    date: "2026-06"
+    date: "2026-06",
+    docId: "FCC-NA-CORE",
+    author: "Fiduciary Systems Laboratory",
+    subType: "Formulary Anomaly Audit"
   },
   {
     title: "Fight Your PBM: Tactical Field Manual",
@@ -68,7 +86,10 @@ const ALL_ASSETS: UploadedAsset[] = [
     type: "PDF Document",
     description: "Actionable field manual empowering plan sponsors to challenge standard PBM contracts and claim audit rights.",
     size: "3.6 MB",
-    date: "2026-06"
+    date: "2026-06",
+    docId: "PBM-FIGHT-M",
+    author: "Jeremiah Franklin Shrack",
+    subType: "Tactical Field Manual"
   },
   {
     title: "Four Firm Synthesis Editorial Study",
@@ -77,7 +98,10 @@ const ALL_ASSETS: UploadedAsset[] = [
     type: "PDF Document",
     description: "Critical synthesis comparing auditing methods across major consulting conglomerates and presenting automated software solutions.",
     size: "33.6 MB",
-    date: "2026-06"
+    date: "2026-06",
+    docId: "4FM-SYNTH-E",
+    author: "Sovereign Consulting Group",
+    subType: "Conglomerate Critique"
   },
   {
     title: "Glassmorphic Report Registry (30-Day Launch Brief v1)",
@@ -86,7 +110,10 @@ const ALL_ASSETS: UploadedAsset[] = [
     type: "PDF Document",
     description: "Advisory brief evaluating real-time report delivery interfaces and system transparency statistics.",
     size: "9.1 MB",
-    date: "2026-06"
+    date: "2026-06",
+    docId: "GLM-REG-R1",
+    author: "UI/UX Engineering Lab",
+    subType: "Advisory Brief"
   },
   {
     title: "Glassmorphic Report Registry (Primary Core Brief)",
@@ -95,7 +122,10 @@ const ALL_ASSETS: UploadedAsset[] = [
     type: "PDF Document",
     description: "Strategic plan describing interactive reports distribution models and real-time visualization frameworks.",
     size: "9.1 MB",
-    date: "2026-06"
+    date: "2026-06",
+    docId: "GLM-REG-CORE",
+    author: "UI/UX Engineering Lab",
+    subType: "Strategic Framework"
   },
   {
     title: "Gunite Corporation EBITDA Protection Audit",
@@ -104,7 +134,10 @@ const ALL_ASSETS: UploadedAsset[] = [
     type: "PDF Document",
     description: "Unabridged EBITDA protection audit investigating plan asset leakage and high-cost clinical claim spreads for Gunite Corporation.",
     size: "144.3 MB",
-    date: "2026-06"
+    date: "2026-06",
+    docId: "GUN-EBIT-DF",
+    author: "SiriusB iQ Audits Division",
+    subType: "EBITDA Defense Audit"
   },
   {
     title: "Heritage Group HCP Forensic Assessment (v1)",
@@ -113,7 +146,10 @@ const ALL_ASSETS: UploadedAsset[] = [
     type: "PDF Document",
     description: "Forensic audit details mapping contract guarantee shortfalls and pharmacy benefit leakages for Heritage Group.",
     size: "23.8 MB",
-    date: "2026-06"
+    date: "2026-06",
+    docId: "HER-HCP-V1",
+    author: "Kincaid IQ Actuarial Dept",
+    subType: "Forensic Plan Audit"
   },
   {
     title: "Heritage Group HCP Forensic Assessment (Compressed)",
@@ -122,7 +158,10 @@ const ALL_ASSETS: UploadedAsset[] = [
     type: "PDF Document",
     description: "Comprehensive financial assessment defending Heritage Group HCP plans against opaque spread-billing models.",
     size: "23.8 MB",
-    date: "2026-06"
+    date: "2026-06",
+    docId: "HER-HCP-COMP",
+    author: "Kincaid IQ Actuarial Dept",
+    subType: "Financial Plan Audit"
   },
   {
     title: "Hoosier Investments $241M Fiduciary Defense Case",
@@ -131,7 +170,10 @@ const ALL_ASSETS: UploadedAsset[] = [
     type: "PDF Document",
     description: "Large-scale fiduciary defense advisory case safeguarding $241M in corporate assets from systematic plan overcharging.",
     size: "74.8 MB",
-    date: "2026-06"
+    date: "2026-06",
+    docId: "HOS-INV-241M",
+    author: "SiriusB iQ Legal Division",
+    subType: "Fiduciary Defense Brief"
   },
   {
     title: "Hopebridge Forensic Brief (4-Page Release v1)",
@@ -140,7 +182,10 @@ const ALL_ASSETS: UploadedAsset[] = [
     type: "PDF Document",
     description: "Briefing summary illustrating key copay leakage and formulary spread findings at Hopebridge.",
     size: "2.2 MB",
-    date: "2026-06"
+    date: "2026-06",
+    docId: "HPB-4PG-V1",
+    author: "Kincaid IQ Forensic Labs",
+    subType: "Plan Leakage Brief"
   },
   {
     title: "Hopebridge Forensic Brief (Core 4-Pages)",
@@ -149,7 +194,10 @@ const ALL_ASSETS: UploadedAsset[] = [
     type: "PDF Document",
     description: "Executive brief outlining actionable steps to recover drug rebate retentions and specialty drug spreads.",
     size: "2.2 MB",
-    date: "2026-06"
+    date: "2026-06",
+    docId: "HPB-4PG-CORE",
+    author: "Kincaid IQ Forensic Labs",
+    subType: "Actionable Recoveries"
   },
   {
     title: "Hopebridge 501 Forensic Audit (44-Page Release v1)",
@@ -158,7 +206,10 @@ const ALL_ASSETS: UploadedAsset[] = [
     type: "PDF Document",
     description: "The complete 44-page forensic audit checking copay maximizer structures and pharmacy pricing formulas.",
     size: "11.7 MB",
-    date: "2026-06"
+    date: "2026-06",
+    docId: "HPB-501-44V1",
+    author: "Kincaid IQ Forensic Labs",
+    subType: "Complete Plan Audit"
   },
   {
     title: "Hopebridge 501 Forensic Audit (Core 44-Pages)",
@@ -167,7 +218,10 @@ const ALL_ASSETS: UploadedAsset[] = [
     type: "PDF Document",
     description: "The master 44-page forensic audit checking drug billing spreads, specialty rebates, and plan asset guarantees.",
     size: "11.7 MB",
-    date: "2026-06"
+    date: "2026-06",
+    docId: "HPB-501-44CR",
+    author: "Kincaid IQ Forensic Labs",
+    subType: "Complete Plan Audit"
   },
   {
     title: "TrueScripts LLC Rx Defense Forensic Audit",
@@ -176,7 +230,10 @@ const ALL_ASSETS: UploadedAsset[] = [
     type: "PDF Document",
     description: "Detailed pharmacy benefit forensic audit examining guarantee enforcement and contract leakages under TrueScripts LLC.",
     size: "4.4 MB",
-    date: "2026-06"
+    date: "2026-06",
+    docId: "TSC-RXD-FORE",
+    author: "Rx Defense Systems Group",
+    subType: "Guarantee Audit"
   },
   {
     title: "The $6.4 Billion Arbitrage",
@@ -185,7 +242,10 @@ const ALL_ASSETS: UploadedAsset[] = [
     type: "PDF Document",
     description: "Monograph exposing hidden arbitrage margins, multi-layered spreads, and spread-pricing models used by Big Three PBMs.",
     size: "7.8 MB",
-    date: "2026-05"
+    date: "2026-05",
+    docId: "ARB-6B-MONO",
+    author: "Jeremiah Franklin Shrack",
+    subType: "Fiduciary Monograph"
   },
   {
     title: "Metal Sales Manufacturing $44.8M Defense Case Study",
@@ -194,7 +254,10 @@ const ALL_ASSETS: UploadedAsset[] = [
     type: "PDF Document",
     description: "EBITDA protection audit and financial risk mitigation playbook for Metal Sales Manufacturing corporate plans.",
     size: "79.6 MB",
-    date: "2026-06"
+    date: "2026-06",
+    docId: "MTL-SLS-44M",
+    author: "SiriusB iQ Audits Division",
+    subType: "EBITDA protection case"
   },
   {
     title: "Schwarz Partners MEWA $14.2M Defense Brief",
@@ -203,7 +266,10 @@ const ALL_ASSETS: UploadedAsset[] = [
     type: "PDF Document",
     description: "Forensic claims assessment defending the Schwarz Partners MEWA plan from excessive contract fees and billing spreads.",
     size: "61.5 MB",
-    date: "2026-06"
+    date: "2026-06",
+    docId: "SP-MEWA-14M",
+    author: "SiriusB iQ Legal Division",
+    subType: "MEWA Fiduciary Brief"
   },
   {
     title: "Inotiv 501 Forensic Audit Report (44 Pages)",
@@ -212,7 +278,10 @@ const ALL_ASSETS: UploadedAsset[] = [
     type: "PDF Document",
     description: "Forensic audit for Inotiv plans uncovering drug billing spread structures and contract guarantees.",
     size: "11.8 MB",
-    date: "2026-06"
+    date: "2026-06",
+    docId: "INO-501-44P",
+    author: "Kincaid IQ Forensic Labs",
+    subType: "Complete Plan Audit"
   },
   {
     title: "Roche Pension Forensic Assessment",
@@ -221,7 +290,10 @@ const ALL_ASSETS: UploadedAsset[] = [
     type: "PDF Document",
     description: "Pension fund advisory report analyzing employer-sponsored health coverage compliance under fiduciary law.",
     size: "27.4 MB",
-    date: "2026-05"
+    date: "2026-05",
+    docId: "ROC-PEN-FNS",
+    author: "SiriusB iQ Fiduciary Division",
+    subType: "Fiduciary Assessment"
   },
   {
     title: "Refill Rationing & Patient Clinical Interference Assessment",
@@ -230,7 +302,10 @@ const ALL_ASSETS: UploadedAsset[] = [
     type: "PDF Document",
     description: "Forensic review showing how generic and specialized refill rationing practices artificially inflate drug margin profits.",
     size: "2.2 MB",
-    date: "2026-06"
+    date: "2026-06",
+    docId: "RFL-RATN-CLN",
+    author: "Kincaid IQ Clinical Dept",
+    subType: "Clinical Interference Review"
   },
   {
     title: "Global Claims Compliance Audit (gcc_report)",
@@ -239,7 +314,10 @@ const ALL_ASSETS: UploadedAsset[] = [
     type: "PDF Document",
     description: "Comprehensive industry benchmark auditing PBM claims compliance, billing practices, and financial leakage paths.",
     size: "45.1 MB",
-    date: "2026-05"
+    date: "2026-05",
+    docId: "GCC-GLB-RPT",
+    author: "Global Compliance Council",
+    subType: "Compliance Benchmark"
   },
   {
     title: "National Health Claims Leakage Forensic Report",
@@ -248,7 +326,10 @@ const ALL_ASSETS: UploadedAsset[] = [
     type: "PDF Document",
     description: "Clinical and operational assessment tracking plan assets leakage across major national self-insured plans.",
     size: "86.6 MB",
-    date: "2026-06"
+    date: "2026-06",
+    docId: "NHS-LEAK-CORE",
+    author: "Kincaid IQ Forensic Labs",
+    subType: "National Leakage Audit"
   },
   {
     title: "National Health Claims Leakage Briefing (Duplicate)",
@@ -257,7 +338,10 @@ const ALL_ASSETS: UploadedAsset[] = [
     type: "PDF Document",
     description: "Technical audit outlining National Health Claims leakage pipelines, rebate retention, and contract loopholes.",
     size: "34.8 MB",
-    date: "2026-06"
+    date: "2026-06",
+    docId: "NHS-LEAK-V1",
+    author: "Kincaid IQ Forensic Labs",
+    subType: "National Leakage Brief"
   },
   {
     title: "Fiduciary Cloud Connect - Plan Review (IPS)",
@@ -266,7 +350,10 @@ const ALL_ASSETS: UploadedAsset[] = [
     type: "PDF Document",
     description: "Full fiduciary governance review focusing on IPS investment advisor regulations and health plan fees disclosure obligations.",
     size: "67.2 MB",
-    date: "2026-05"
+    date: "2026-05",
+    docId: "FCC-IPS-PLAN",
+    author: "Fiduciary Cloud Connect",
+    subType: "IPS Plan Review"
   },
   {
     title: "Fiduciary Cloud Connect - Replit Integration",
@@ -275,7 +362,10 @@ const ALL_ASSETS: UploadedAsset[] = [
     type: "PDF Document",
     description: "Detailed system integration blueprint tracing cloud data pipelines, token authorizations, and platform setups.",
     size: "48.2 MB",
-    date: "2026-05"
+    date: "2026-05",
+    docId: "FCC-REP-INTG",
+    author: "Fiduciary Cloud Connect",
+    subType: "Integration Blueprint"
   },
   {
     title: "Kincaid IQ Rx Defense Strategy Dossier",
@@ -284,7 +374,10 @@ const ALL_ASSETS: UploadedAsset[] = [
     type: "PDF Document",
     description: "Rx Defense system capability document auditing plan designs, generic pricing structures, and financial guarantees.",
     size: "8.2 MB",
-    date: "2026-06"
+    date: "2026-06",
+    docId: "KNC-RXD-2026",
+    author: "Kincaid IQ Actuarial Dept",
+    subType: "Capabilities Dossier"
   },
   {
     title: "SiriusB iQ Fiduciary Grade AI Blueprint",
@@ -293,7 +386,10 @@ const ALL_ASSETS: UploadedAsset[] = [
     type: "PDF Document",
     description: "Official technical architecture specification of the SiriusB iQ algorithmic engine and real-time ledger auditing.",
     size: "9.8 MB",
-    date: "2026-06"
+    date: "2026-06",
+    docId: "SRB-FID-AI",
+    author: "SiriusB iQ AI Labs",
+    subType: "Architecture Specs"
   },
   {
     title: "SiriusB iQ Fiduciary Grade AI - Glass Edition",
@@ -302,7 +398,10 @@ const ALL_ASSETS: UploadedAsset[] = [
     type: "PDF Document",
     description: "Highly interactive glassmorphic blueprint deck tracking deep clinical algorithms and real-time execution layers.",
     size: "13.7 MB",
-    date: "2026-06"
+    date: "2026-06",
+    docId: "SRB-FID-GLASS",
+    author: "SiriusB iQ AI Labs",
+    subType: "Interactive Design Deck"
   },
   {
     title: "SiriusB iQ Chairman & Board Briefing Document",
@@ -311,7 +410,10 @@ const ALL_ASSETS: UploadedAsset[] = [
     type: "PDF Document",
     description: "High-level board advisory paper detailing corporate litigation risk exposure and algorithmic solutions.",
     size: "6.6 MB",
-    date: "2026-06"
+    date: "2026-06",
+    docId: "SRB-CHR-BOARD",
+    author: "SiriusB Executive Committee",
+    subType: "Executive Advisory Paper"
   },
   {
     title: "Kincaid iQ Ultimate Fiduciary Platform Guide",
@@ -320,7 +422,10 @@ const ALL_ASSETS: UploadedAsset[] = [
     type: "PDF Document",
     description: "Complete capabilities brief detailing Kincaid iQ platform modules, data integrations, and audit pipelines.",
     size: "15.4 MB",
-    date: "2026-06"
+    date: "2026-06",
+    docId: "KNC-ULT-PLAT",
+    author: "Kincaid IQ Marketing",
+    subType: "Platform Capability Guide"
   },
   {
     title: "AccessIQ MVP Monograph - 88 Pages",
@@ -329,7 +434,10 @@ const ALL_ASSETS: UploadedAsset[] = [
     type: "PDF Document",
     description: "Unabridged technical monograph analyzing real-time cloud data connectivity, database schemas, and data pipelines.",
     size: "8.0 MB",
-    date: "2026-06"
+    date: "2026-06",
+    docId: "ACQ-MVP-88P",
+    author: "AccessIQ Systems Group",
+    subType: "Technical Monograph"
   },
   {
     title: "Designed to Replace Consultants Whitepaper",
@@ -338,7 +446,10 @@ const ALL_ASSETS: UploadedAsset[] = [
     type: "PDF Document",
     description: "Exposes the conflict of interest in corporate healthcare consulting and presents automated software auditing alternatives.",
     size: "13.3 MB",
-    date: "2026-05"
+    date: "2026-05",
+    docId: "KNC-DTR-CONS",
+    author: "Jeremiah Franklin Shrack",
+    subType: "Strategic Whitepaper"
   },
   {
     title: "Designed to Replace Consultants Whitepaper (Duplicate)",
@@ -347,7 +458,10 @@ const ALL_ASSETS: UploadedAsset[] = [
     type: "PDF Document",
     description: "Strategic whitepaper introducing automated fiduciary grading technology built to make manual consultants obsolete.",
     size: "13.3 MB",
-    date: "2026-05"
+    date: "2026-05",
+    docId: "KNC-DTR-CONS1",
+    author: "Jeremiah Franklin Shrack",
+    subType: "Strategic Whitepaper"
   },
   {
     title: "Frame - Executive Outline Briefing Doc",
@@ -356,7 +470,10 @@ const ALL_ASSETS: UploadedAsset[] = [
     type: "PDF Document",
     description: "Google Docs framework brief outlining integration protocols, API keys, and deployment requirements.",
     size: "30.4 MB",
-    date: "2026-05"
+    date: "2026-05",
+    docId: "FRM-GDC-OUT",
+    author: "Fiduciary Integration Team",
+    subType: "Framework Outlines"
   },
   {
     title: "Metal Sales Manufacturing LinkedIn Carousel",
@@ -365,7 +482,10 @@ const ALL_ASSETS: UploadedAsset[] = [
     type: "LinkedIn Carousel",
     description: "Visual slide deck highlighting fiduciary defense frameworks, spread-risk structures, and EBITDA protection.",
     size: "10.7 MB",
-    date: "2026-06"
+    date: "2026-06",
+    docId: "MTL-SLS-CAR",
+    author: "SiriusB Creative Team",
+    subType: "Visual Slide Deck"
   },
   {
     title: "Metal Sales Manufacturing LinkedIn Carousel (Duplicate)",
@@ -374,7 +494,10 @@ const ALL_ASSETS: UploadedAsset[] = [
     type: "LinkedIn Carousel",
     description: "Promotional deck illustrating how raw math-driven auditing models outperform traditional PBM broker consultations.",
     size: "10.7 MB",
-    date: "2026-06"
+    date: "2026-06",
+    docId: "MTL-SLS-CAR1",
+    author: "SiriusB Creative Team",
+    subType: "Visual Slide Deck"
   },
   {
     title: "Nautilus Contract X-Ray Executive Overview v1.02",
@@ -383,7 +506,10 @@ const ALL_ASSETS: UploadedAsset[] = [
     type: "PDF Document",
     description: "Executive contract audit report detailing real-time modeling, discount guarantees, and contract optimization metrics.",
     size: "4.0 MB",
-    date: "2026-02"
+    date: "2026-02",
+    docId: "NTL-XR-V102",
+    author: "Nautilus Systems Group",
+    subType: "Contract Audit Report"
   },
   {
     title: "Nautilus Contract X-Ray Executive Overview v1.02 (Duplicate)",
@@ -392,7 +518,10 @@ const ALL_ASSETS: UploadedAsset[] = [
     type: "PDF Document",
     description: "Contract x-ray report modeling pricing terms, specialty drug guarantees, and contract transparency.",
     size: "3.9 MB",
-    date: "2026-02"
+    date: "2026-02",
+    docId: "NTL-XR-V102D",
+    author: "Nautilus Systems Group",
+    subType: "Contract Audit Report"
   },
   {
     title: "SiriusB iQ Glassmorphic Executive Deployment Brief",
@@ -401,7 +530,10 @@ const ALL_ASSETS: UploadedAsset[] = [
     type: "PDF Document",
     description: "Detailed system deployment protocol explaining the implementation timeline of Kincaid IQ's glassmorphic user dashboard.",
     size: "10.0 MB",
-    date: "2026-06"
+    date: "2026-06",
+    docId: "SRB-GLM-DEP",
+    author: "Deployment Taskforce",
+    subType: "System Deployment Brief"
   },
   {
     title: "SiriusB iQ Rimes Market Validation Brief",
@@ -410,7 +542,10 @@ const ALL_ASSETS: UploadedAsset[] = [
     type: "PDF Document",
     description: "Market feasibility brief exploring the compliance validation metrics of the algorithmic Rimes model integration.",
     size: "16.5 MB",
-    date: "2026-06"
+    date: "2026-06",
+    docId: "SRB-RMS-VAL",
+    author: "Fiduciary Compliance Board",
+    subType: "Market Feasibility Brief"
   },
   {
     title: "Sovereign by Math: Actuarial Certainty Guide",
@@ -419,7 +554,10 @@ const ALL_ASSETS: UploadedAsset[] = [
     type: "PDF Document",
     description: "Technical mathematical treatise showcasing how algorithmic auditing delivers absolute financial sovereignty to sponsors.",
     size: "11.3 MB",
-    date: "2026-06"
+    date: "2026-06",
+    docId: "KNC-SOV-MTH",
+    author: "Jeremiah Franklin Shrack",
+    subType: "Mathematical Treatise"
   },
   {
     title: "The Mirror Ledger Research Paper (WP05)",
@@ -428,7 +566,10 @@ const ALL_ASSETS: UploadedAsset[] = [
     type: "PDF Document",
     description: "Whitepaper modeling the mirror-ledger pipeline to expose and correct pharmacy claim billing spreads.",
     size: "39.5 MB",
-    date: "2026-06"
+    date: "2026-06",
+    docId: "KNC-WP05-ML",
+    author: "Center for Evidence Initiative",
+    subType: "Technical Research Paper"
   },
   {
     title: "Evidence-First Transformation Whitepaper",
@@ -437,7 +578,10 @@ const ALL_ASSETS: UploadedAsset[] = [
     type: "PDF Document",
     description: "Explores the transition of corporate plans from 'trust-based relationship' audits to raw 'evidence-first' database pipelines.",
     size: "39.6 MB",
-    date: "2026-06"
+    date: "2026-06",
+    docId: "KNC-WP-EV1",
+    author: "Center for Evidence Initiative",
+    subType: "Strategic Whitepaper"
   },
   {
     title: "Medical Claims Spread Research Paper",
@@ -446,7 +590,10 @@ const ALL_ASSETS: UploadedAsset[] = [
     type: "PDF Document",
     description: "Scholarly research paper describing spread mathematics, drug rebate pass-through models, and leakage risks.",
     size: "13.1 MB",
-    date: "2026-05"
+    date: "2026-05",
+    docId: "KNC-MED-SPD",
+    author: "Actuarial Research Council",
+    subType: "Scholarly Research Paper"
   },
   {
     title: "Predictive Intelligence Report",
@@ -455,7 +602,10 @@ const ALL_ASSETS: UploadedAsset[] = [
     type: "PDF Document",
     description: "Predictive modeling dossier charting Monte Carlo risk spreads across claims histories.",
     size: "6.5 MB",
-    date: "2026-06"
+    date: "2026-06",
+    docId: "KNC-PDC-INTL",
+    author: "Predictive Intelligence Group",
+    subType: "Predictive Risk Dossier"
   },
   {
     title: "J.B. Hunt EBITDA Defense Case Study",
@@ -464,7 +614,10 @@ const ALL_ASSETS: UploadedAsset[] = [
     type: "PDF Document",
     description: "Complex actuarial case study demonstrating a multi-million dollar EBITDA defense strategy executed for the J.B. Hunt plan.",
     size: "21.3 MB",
-    date: "2026-06"
+    date: "2026-06",
+    docId: "JBH-EBT-DEF",
+    author: "SiriusB iQ Audits Division",
+    subType: "Actuarial Case Study"
   },
 
   // 4. Visual Evidence & Graphics
@@ -475,7 +628,8 @@ const ALL_ASSETS: UploadedAsset[] = [
     type: "Image Asset",
     description: "Comprehensive screenshot of Kincaid Rx Defense interface displaying real-time financial savings, leakage alerts, and audited margins.",
     date: "2026-06",
-    isImage: true
+    isImage: true,
+    docId: "IMG-RXD-FULL"
   },
   {
     title: "Fiduciary Grade Intelligence Visualizer",
@@ -484,7 +638,8 @@ const ALL_ASSETS: UploadedAsset[] = [
     type: "Image Asset",
     description: "Interactive visual matrix showing clean mathematical auditing pathways and real-time database query integrations.",
     date: "2026-06",
-    isImage: true
+    isImage: true,
+    docId: "IMG-FID-INTL"
   },
   {
     title: "PBM Loss Analysis Infographic",
@@ -493,7 +648,8 @@ const ALL_ASSETS: UploadedAsset[] = [
     type: "Image Asset",
     description: "High-impact analytical graphic tracing how PBMs meet legal contract guarantees while still losing client plan assets.",
     date: "2026-06",
-    isImage: true
+    isImage: true,
+    docId: "IMG-PBM-LOSS"
   },
   {
     title: "The $7.3 Billion Corporate Question Graphic",
@@ -502,7 +658,8 @@ const ALL_ASSETS: UploadedAsset[] = [
     type: "Image Asset",
     description: "Visual infographic detailing excessive pharmacy spend across major self-insured employer health plans.",
     date: "2026-06",
-    isImage: true
+    isImage: true,
+    docId: "IMG-7B-CORP"
   },
   {
     title: "Clean Opinion Fallacy Illustration",
@@ -511,7 +668,8 @@ const ALL_ASSETS: UploadedAsset[] = [
     type: "Image Asset",
     description: "Editorial graphic exploring how audits can receive a clean opinion while suffering massive structural financial leakage.",
     date: "2026-05",
-    isImage: true
+    isImage: true,
+    docId: "IMG-CLN-OPN"
   },
   {
     title: "Rx Defense Forensic Infrastructure Blueprint",
@@ -520,7 +678,8 @@ const ALL_ASSETS: UploadedAsset[] = [
     type: "Image Asset",
     description: "Technical illustration showcasing the automated forensic analysis engine that decomposes complex contract guarantees.",
     date: "2026-06",
-    isImage: true
+    isImage: true,
+    docId: "IMG-RXD-INF"
   },
   {
     title: "Fortune 100 CIO Confession Illustration",
@@ -529,7 +688,8 @@ const ALL_ASSETS: UploadedAsset[] = [
     type: "Image Asset",
     description: "Custom editorial rendering capturing a corporate technology officer discussing opaque healthcare data pipelines.",
     date: "2026-06",
-    isImage: true
+    isImage: true,
+    docId: "IMG-CIO-CONF"
   },
   {
     title: "PBM Financial Guarantees Met Fallacy Illustration",
@@ -538,7 +698,8 @@ const ALL_ASSETS: UploadedAsset[] = [
     type: "Image Asset",
     description: "Graphic illustrating the severe discrepancy between contractual metric validation and actual cash savings loss.",
     date: "2026-06",
-    isImage: true
+    isImage: true,
+    docId: "IMG-PBM-FAL"
   },
   {
     title: "Dynamic Abstract Quantum Network Visual",
@@ -547,7 +708,8 @@ const ALL_ASSETS: UploadedAsset[] = [
     type: "Image Asset",
     description: "Visual abstraction charting real-time database syncing, Snowflake nodes, and client-server state transitions.",
     date: "2026-06",
-    isImage: true
+    isImage: true,
+    docId: "IMG-QTM-NET"
   },
   {
     title: "Cloud Data Connect Vector Visualization",
@@ -556,7 +718,8 @@ const ALL_ASSETS: UploadedAsset[] = [
     type: "Image Asset",
     description: "High-tech abstract visual outlining database ledger replication networks and algorithmic verification nodes.",
     date: "2026-06",
-    isImage: true
+    isImage: true,
+    docId: "IMG-CLD-VEC"
   },
   {
     title: "Algorithmic Fiduciary Infrastructure Hero Banner",
@@ -565,9 +728,124 @@ const ALL_ASSETS: UploadedAsset[] = [
     type: "Image Asset",
     description: "High-end visual showcase banner highlighting the fusion of raw math-driven auditing tools with corporate fiduciaries.",
     date: "2026-06",
-    isImage: true
+    isImage: true,
+    docId: "IMG-FID-HERO"
   }
 ];
+
+// High-fidelity cover preview generator component
+const DocumentCoverPreview: React.FC<{ asset: UploadedAsset }> = ({ asset }) => {
+  if (asset.stanfordDesign) {
+    return (
+      <div className="w-full h-full bg-[#1A0303] text-stone-200 p-4 border-b border-[#8C1515]/30 relative flex flex-col justify-between font-serif">
+        <div className="absolute top-0 right-0 w-24 h-24 bg-[#8C1515]/10 rounded-full blur-xl pointer-events-none" />
+        <div className="flex justify-between items-center text-[9px] border-b border-[#8C1515]/30 pb-2 text-stone-400 tracking-wider">
+          <span>STANFORD PHS DOCKET</span>
+          <span>ERISA #PHS-101</span>
+        </div>
+        <div className="my-auto space-y-2 py-2">
+          <div className="w-8 h-8 rounded-full border border-[#8C1515] flex items-center justify-center text-[#E37A7A] text-xs font-bold font-sans mx-auto mb-1">
+            S
+          </div>
+          <h4 className="text-sm font-bold text-stone-100 text-center tracking-tight leading-snug line-clamp-3">
+            {asset.title}
+          </h4>
+          <p className="text-[10px] text-stone-400 text-center font-sans">
+            Plan Code: Stanford Fiduciary PHS-v11
+          </p>
+        </div>
+        <div className="border-t border-[#8C1515]/30 pt-2 flex justify-between items-center text-[9px] font-sans text-stone-500">
+          <span>{asset.author || "Stanford Health"}</span>
+          <span>{asset.date}</span>
+        </div>
+      </div>
+    );
+  }
+
+  // Classify standard cover type by category
+  if (asset.category === "Litigation & Forensic Audits") {
+    return (
+      <div className="w-full h-full bg-slate-950 p-4 border-b border-indigo-500/20 relative flex flex-col justify-between font-sans">
+        <div className="absolute top-0 right-0 w-24 h-24 bg-indigo-500/10 rounded-full blur-xl pointer-events-none" />
+        <div className="flex justify-between items-center text-[9px] border-b border-slate-800 pb-2 text-indigo-400 font-mono tracking-widest uppercase">
+          <span>COURT DOCKET EVIDENCE</span>
+          <span className="text-emerald-400 font-bold">SECURED</span>
+        </div>
+        <div className="my-auto py-2 space-y-2 text-center">
+          <div className="inline-flex p-1.5 bg-indigo-500/15 rounded-lg border border-indigo-500/30 text-indigo-400 mb-1">
+            <Scale className="w-4 h-4" />
+          </div>
+          <h4 className="text-xs font-extrabold text-white tracking-tight leading-snug line-clamp-3 uppercase font-mono">
+            {asset.title}
+          </h4>
+          <div className="inline-block bg-slate-900 border border-slate-800 text-slate-400 text-[8px] px-2 py-0.5 rounded uppercase tracking-wider font-mono">
+            Doc Ref: {asset.docId}
+          </div>
+        </div>
+        <div className="border-t border-slate-900 pt-2 flex justify-between items-center text-[9px] text-slate-500 font-mono">
+          <span>{asset.author || "SiriusB Legal"}</span>
+          <span>{asset.date}</span>
+        </div>
+      </div>
+    );
+  }
+
+  if (asset.category === "Platform Blueprints & Briefings") {
+    return (
+      <div className="w-full h-full bg-slate-950 p-4 border-b border-indigo-500/20 relative flex flex-col justify-between font-mono">
+        <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-purple-500 via-indigo-500 to-pink-500" />
+        <div className="flex justify-between items-center text-[8px] text-indigo-400 border-b border-slate-900 pb-2">
+          <span>SYSTEM SCHEMATIC // v{asset.docId.split("-")[2] || "1.0"}</span>
+          <span className="flex items-center gap-1">
+            <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" /> LIVE
+          </span>
+        </div>
+        <div className="my-auto py-2 space-y-1">
+          <div className="flex items-center gap-1.5 text-slate-500 text-[9px] mb-1">
+            <Terminal className="w-3.5 h-3.5 text-purple-400" />
+            <span>SIRIUSB_IQ_INFRASTRUCTURE</span>
+          </div>
+          <h4 className="text-[11px] font-bold text-indigo-300 leading-snug line-clamp-3">
+            {asset.title}
+          </h4>
+          <div className="text-[9px] text-slate-400">
+            Author: {asset.author || "Systems Architect"}
+          </div>
+        </div>
+        <div className="border-t border-slate-900 pt-2 flex justify-between items-center text-[8px] text-slate-600">
+          <span>HASH: SHA-256</span>
+          <span>{asset.date}</span>
+        </div>
+      </div>
+    );
+  }
+
+  // Actuarial Science & Math Cover
+  return (
+    <div className="w-full h-full bg-slate-950 p-4 border-b border-indigo-500/20 relative flex flex-col justify-between font-sans">
+      <div className="absolute inset-0 bg-[linear-gradient(to_right,#1e293b_1px,transparent_1px),linear-gradient(to_bottom,#1e293b_1px,transparent_1px)] bg-[size:14px_14px] opacity-10 pointer-events-none" />
+      <div className="flex justify-between items-center text-[9px] border-b border-slate-800 pb-2 text-emerald-400 font-mono tracking-wider">
+        <span>ACTUARIAL CALCULUS</span>
+        <span>Σ CERTIFIED</span>
+      </div>
+      <div className="my-auto py-2 text-center space-y-2">
+        <div className="inline-flex p-1.5 bg-emerald-500/10 rounded-lg border border-emerald-500/20 text-emerald-400 mb-1">
+          <TrendingUp className="w-4 h-4" />
+        </div>
+        <h4 className="text-xs font-bold text-emerald-300 tracking-tight leading-snug line-clamp-3">
+          {asset.title}
+        </h4>
+        <p className="text-[8px] text-slate-500 font-mono">
+          EBITDA PROTECTION PROTOCOL: {asset.docId}
+        </p>
+      </div>
+      <div className="border-t border-slate-900 pt-2 flex justify-between items-center text-[9px] text-slate-500 font-mono">
+        <span>{asset.author || "Kincaid Actuarial"}</span>
+        <span>{asset.date}</span>
+      </div>
+    </div>
+  );
+};
 
 export default function AllUploads() {
   const [activeImage, setActiveImage] = useState<string | null>(null);
@@ -674,17 +952,13 @@ export default function AllUploads() {
                       <div className="absolute top-0 right-0 w-32 h-32 bg-[#8C1515]/20 rounded-full blur-2xl pointer-events-none" />
                       
                       <div>
-                        {/* Interactive Page 1 PDF Embedded Preview */}
-                        <div className="relative aspect-[4/3] w-full overflow-hidden bg-black/60 border-b border-[#8C1515]/20">
-                          <iframe 
-                            src={`/${asset.filename}#page=1&toolbar=0&navpanes=0&scrollbar=0`}
-                            className="w-full h-full border-0 pointer-events-none select-none filter contrast-[0.9] brightness-[0.85] sepia-[0.1]"
-                            title={asset.title}
-                          />
+                        {/* Interactive Page 1 PDF Cover Preview Simulation */}
+                        <div className="relative aspect-[4/3] w-full overflow-hidden border-b border-[#8C1515]/20">
+                          <DocumentCoverPreview asset={asset} />
                           {/* Premium Overlay Guard */}
-                          <div className="absolute inset-0 bg-gradient-to-t from-[#0A0202] via-transparent to-[#1C0505]/40 pointer-events-none" />
-                          <div className="absolute top-3 left-3 bg-red-950/80 backdrop-blur-md border border-[#8C1515]/30 text-red-200 text-[10px] px-2.5 py-0.5 rounded-md font-mono">
-                            Plan Page 1 Preview
+                          <div className="absolute inset-0 bg-gradient-to-t from-[#0A0202] via-transparent to-transparent pointer-events-none" />
+                          <div className="absolute top-3 right-3 bg-red-950/90 backdrop-blur-md border border-[#8C1515]/30 text-red-200 text-[10px] px-2.5 py-0.5 rounded-md font-mono flex items-center gap-1 shadow-lg">
+                            <span className="w-1.5 h-1.5 rounded-full bg-red-500 animate-pulse" /> Custom Cover Preview
                           </div>
                         </div>
 
@@ -782,19 +1056,15 @@ export default function AllUploads() {
                           </div>
                         </div>
                       ) : (
-                        <div className="relative aspect-[4/3] w-full overflow-hidden bg-black/50 border-b border-white/5">
-                          {/* Real-time PDF embedding showing page 1 exclusively */}
-                          <iframe 
-                            src={`/${asset.filename}#page=1&toolbar=0&navpanes=0&scrollbar=0`}
-                            className="w-full h-full border-0 pointer-events-none select-none filter contrast-[0.85] brightness-[0.85]"
-                            title={asset.title}
-                          />
+                        <div className="relative aspect-[4/3] w-full overflow-hidden border-b border-white/5">
+                          {/* Real-time Document Cover Preview */}
+                          <DocumentCoverPreview asset={asset} />
                           {/* Overlay guard prevent direct interaction but keep hover glows active */}
-                          <div className="absolute inset-0 bg-gradient-to-t from-[#07070F] via-slate-950/10 to-transparent pointer-events-none" />
+                          <div className="absolute inset-0 bg-gradient-to-t from-[#07070F] via-transparent to-transparent pointer-events-none" />
                           <div className="absolute inset-0 bg-indigo-500/5 opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none" />
                           
-                          <div className="absolute top-3 left-3 bg-slate-950/80 backdrop-blur-md border border-white/10 text-indigo-300 text-[10px] px-2 py-0.5 rounded-md font-mono">
-                            Page 1 Preview
+                          <div className="absolute top-3 right-3 bg-slate-950/90 backdrop-blur-md border border-white/10 text-indigo-300 text-[10px] px-2.5 py-0.5 rounded-md font-mono flex items-center gap-1 shadow-lg">
+                            <span className="w-1.5 h-1.5 rounded-full bg-indigo-500 animate-pulse" /> Document Cover Preview
                           </div>
                         </div>
                       )}

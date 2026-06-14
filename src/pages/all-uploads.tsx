@@ -2,26 +2,37 @@ import React, { useState, useMemo } from "react";
 import { SEO } from "@/components/SEO";
 import { ImageLightbox } from "@/components/ImageLightbox";
 import Nav from "@/components/Nav";
-import { SiriusBNav } from "@/components/siriusb/SiriusBNav";
 import { Footer } from "@/components/Footer";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Search, Download, FileText, Image as ImageIcon, ExternalLink, Library, ShieldAlert, Award, FileSpreadsheet, Eye } from "lucide-react";
+import { Search, Download, FileText, Image as ImageIcon, ExternalLink, Library, ShieldAlert, Award, FileSpreadsheet, Eye, Sparkles } from "lucide-react";
 
 interface UploadedAsset {
   title: string;
   filename: string;
   category: "Litigation & Forensic Audits" | "Platform Blueprints & Briefings" | "Actuarial Science & Math" | "Visual Evidence & Graphics";
-  type: "PDF Document" | "Interactive Map" | "Image Asset" | "LinkedIn Carousel";
+  type: "PDF Document" | "Interactive Map" | "Image Asset" | "LinkedIn Carousel" | "Stanford PHS Dossier";
   description: string;
   size?: string;
   date: string;
   isImage?: boolean;
+  stanfordDesign?: boolean;
 }
 
 const ALL_ASSETS: UploadedAsset[] = [
+  // Stanford PHS Case & Kimball Precedent (Custom Cardinal Red Sandstone Setup)
+  {
+    title: "Kimball v. Stanford University (Fiduciary Duty Precedent Brief)",
+    filename: "Kimball_v11_Stanford_1_1_.pdf",
+    category: "Litigation & Forensic Audits",
+    type: "Stanford PHS Dossier",
+    description: "The authoritative Stanford PHS Plan design audit and Kimball litigation briefing, analyzing ERISA fiduciary duty obligations and high-contrast healthcare plan cost structures.",
+    size: "27.4 MB",
+    date: "2026-04",
+    stanfordDesign: true
+  },
   // 1. Litigation & Forensic Audits
   {
     title: "TrueScripts LLC Rx Defense Forensic Audit",
@@ -69,6 +80,15 @@ const ALL_ASSETS: UploadedAsset[] = [
     date: "2026-06"
   },
   {
+    title: "Hopebridge 501 Forensic Audit (Alternate Copy)",
+    filename: "Kincaid_IQ_Hopebridge_501_44pg_1_.pdf",
+    category: "Litigation & Forensic Audits",
+    type: "PDF Document",
+    description: "Comprehensive 44-page forensic audit analyzing specialty drug rebate structures and patient copay assistance maximize strategies.",
+    size: "11.8 MB",
+    date: "2026-06"
+  },
+  {
     title: "Inotiv 501 Forensic Audit Report (44 Pages)",
     filename: "Kincaid_IQ_Inotiv_501_44pg_1_.pdf",
     category: "Litigation & Forensic Audits",
@@ -87,8 +107,17 @@ const ALL_ASSETS: UploadedAsset[] = [
     date: "2026-06"
   },
   {
+    title: "Hopebridge Brief (Duplicate Release)",
+    filename: "Kincaid_IQ_Hopebridge_4pg_Brief_1_.pdf",
+    category: "Litigation & Forensic Audits",
+    type: "PDF Document",
+    description: "Brief summarizing the primary findings on copay assistance leakages and drug spreads at Hopebridge.",
+    size: "2.2 MB",
+    date: "2026-06"
+  },
+  {
     title: "Roche Pension Forensic Assessment",
-    filename: "Kincaid_iQ_Roche_Roche_Pension_Forensic_Assessment.pdf",
+    filename: "Kincaid_iQ_Roche_Pension_Forensic_Assessment.pdf",
     category: "Litigation & Forensic Audits",
     type: "PDF Document",
     description: "Pension fund advisory report analyzing employer-sponsored health coverage compliance under fiduciary law.",
@@ -103,15 +132,6 @@ const ALL_ASSETS: UploadedAsset[] = [
     description: "Forensic review showing how generic and specialized refill rationing practices artificially inflate drug margin profits.",
     size: "2.2 MB",
     date: "2026-06"
-  },
-  {
-    title: "Kimball v. Stanford University Precedent Brief",
-    filename: "Kimball_v11_Stanford_1_1_.pdf",
-    category: "Litigation & Forensic Audits",
-    type: "PDF Document",
-    description: "Litigation brief studying ERISA fiduciary duty precedents under the Stanford Kimball v11 healthcare plan dispute.",
-    size: "27.4 MB",
-    date: "2026-04"
   },
   {
     title: "Global Claims Compliance Audit (gcc_report)",
@@ -129,6 +149,42 @@ const ALL_ASSETS: UploadedAsset[] = [
     type: "PDF Document",
     description: "Clinical and operational assessment tracking plan assets leakage across major national self-insured plans.",
     size: "86.6 MB",
+    date: "2026-06"
+  },
+  {
+    title: "National Health Claims Leakage Briefing (Duplicate)",
+    filename: "nhs_leakage_report_1_.pdf",
+    category: "Litigation & Forensic Audits",
+    type: "PDF Document",
+    description: "Technical audit outlining National Health Claims leakage pipelines, rebate retention, and contract loopholes.",
+    size: "34.8 MB",
+    date: "2026-06"
+  },
+  {
+    title: "Fiduciary Cloud Connect - Plan Review (IPS)",
+    filename: "Fiduciary_Cloud_Connect_1_-IPS.pdf",
+    category: "Litigation & Forensic Audits",
+    type: "PDF Document",
+    description: "Full fiduciary governance review focusing on IPS investment advisor regulations and health plan fees disclosure obligations.",
+    size: "67.2 MB",
+    date: "2026-05"
+  },
+  {
+    title: "Fiduciary Cloud Connect - Replit Integration",
+    filename: "Fiduciary_Cloud_Connect_-_Replit_2_1_.pdf",
+    category: "Litigation & Forensic Audits",
+    type: "PDF Document",
+    description: "Detailed system integration blueprint tracing cloud data pipelines, token authorizations, and platform setups.",
+    size: "48.2 MB",
+    date: "2026-05"
+  },
+  {
+    title: "Kincaid IQ Rx Defense Strategy Dossier",
+    filename: "Kincaid-IQ-Rx-Defense-IQ-2026-06-03_1_.pdf",
+    category: "Litigation & Forensic Audits",
+    type: "PDF Document",
+    description: "Rx Defense system capability document auditing plan designs, generic pricing structures, and financial guarantees.",
+    size: "8.2 MB",
     date: "2026-06"
   },
 
@@ -188,6 +244,15 @@ const ALL_ASSETS: UploadedAsset[] = [
     date: "2026-05"
   },
   {
+    title: "Designed to Replace Consultants Whitepaper (Duplicate)",
+    filename: "Kincaid_iQ_Designed_to_Replace_Consultants_1_.pdf",
+    category: "Platform Blueprints & Briefings",
+    type: "PDF Document",
+    description: "Strategic whitepaper introducing automated fiduciary grading technology built to make manual consultants obsolete.",
+    size: "13.3 MB",
+    date: "2026-05"
+  },
+  {
     title: "Frame - Executive Outline Briefing Doc",
     filename: "Frame_-_Google_Docs.pdf",
     category: "Platform Blueprints & Briefings",
@@ -206,6 +271,15 @@ const ALL_ASSETS: UploadedAsset[] = [
     date: "2026-06"
   },
   {
+    title: "Metal Sales Manufacturing LinkedIn Carousel (Duplicate)",
+    filename: "Kincaid_iQ_Metal_Sales_LinkedIn_Carousel_1_.pdf",
+    category: "Platform Blueprints & Briefings",
+    type: "LinkedIn Carousel",
+    description: "Promotional deck illustrating how raw math-driven auditing models outperform traditional PBM broker consultations.",
+    size: "10.7 MB",
+    date: "2026-06"
+  },
+  {
     title: "Nautilus Contract X-Ray Executive Overview v1.02",
     filename: "Nautilus_Contract_X-Ray_Executive_Overview_v1_02-24-26_2_.pdf",
     category: "Platform Blueprints & Briefings",
@@ -213,6 +287,33 @@ const ALL_ASSETS: UploadedAsset[] = [
     description: "Executive contract audit report detailing real-time modeling, discount guarantees, and contract optimization metrics.",
     size: "4.0 MB",
     date: "2026-02"
+  },
+  {
+    title: "Nautilus Contract X-Ray Executive Overview v1.02 (Duplicate)",
+    filename: "Nautilus_Contract_X-Ray_Executive_Overview_v1_02-14-26_2_.pdf",
+    category: "Platform Blueprints & Briefings",
+    type: "PDF Document",
+    description: "Contract x-ray report modeling pricing terms, specialty drug guarantees, and contract transparency.",
+    size: "3.9 MB",
+    date: "2026-02"
+  },
+  {
+    title: "SiriusB iQ Glassmorphic Executive Deployment Brief",
+    filename: "SiriusB_iQ_Glassmorphic_v1_Kincaid_IQ_Executive_Deployment_1_.pdf",
+    category: "Platform Blueprints & Briefings",
+    type: "PDF Document",
+    description: "Detailed system deployment protocol explaining the implementation timeline of Kincaid IQ's glassmorphic user dashboard.",
+    size: "10.0 MB",
+    date: "2026-06"
+  },
+  {
+    title: "SiriusB iQ Rimes Market Validation Brief",
+    filename: "SiriusB_iQ_Glassmorphic_v1_Rimes_Market_Validation_Brief.pdf",
+    category: "Platform Blueprints & Briefings",
+    type: "PDF Document",
+    description: "Market feasibility brief exploring the compliance validation metrics of the algorithmic Rimes model integration.",
+    size: "16.5 MB",
+    date: "2026-06"
   },
 
   // 3. Actuarial Science & Math
@@ -259,6 +360,15 @@ const ALL_ASSETS: UploadedAsset[] = [
     type: "PDF Document",
     description: "Predictive modeling dossier charting Monte Carlo risk spreads across claims histories.",
     size: "6.5 MB",
+    date: "2026-06"
+  },
+  {
+    title: "J.B. Hunt EBITDA Defense Case Study",
+    filename: "Kincaid_iQ_JBHunt_EBITDA_Defense.pdf",
+    category: "Actuarial Science & Math",
+    type: "PDF Document",
+    description: "Complex actuarial case study demonstrating a multi-million dollar EBITDA defense strategy executed for the J.B. Hunt plan.",
+    size: "21.3 MB",
     date: "2026-06"
   },
 
@@ -316,6 +426,51 @@ const ALL_ASSETS: UploadedAsset[] = [
     description: "Technical illustration showcasing the automated forensic analysis engine that decomposes complex contract guarantees.",
     date: "2026-06",
     isImage: true
+  },
+  {
+    title: "Fortune 100 CIO Confession Illustration",
+    filename: "Firefly_Gemini_Flash_A_Fortune_100_CIO_Made_A_Confession_To_Me_Last_Month._Written_by_Jeremiah_Franklin_Sh_28516.png",
+    category: "Visual Evidence & Graphics",
+    type: "Image Asset",
+    description: "Custom editorial rendering capturing a corporate technology officer discussing opaque healthcare data pipelines.",
+    date: "2026-06",
+    isImage: true
+  },
+  {
+    title: "PBM Financial Guarantees Met Fallacy Illustration",
+    filename: "Firefly_Gemini_Flash_Your_PBM_Met_Every_Guarantee._You_Still_Lost_the_Money._Written_by_Jeremiah_Franklin_465075.png",
+    category: "Visual Evidence & Graphics",
+    type: "Image Asset",
+    description: "Graphic illustrating the severe discrepancy between contractual metric validation and actual cash savings loss.",
+    date: "2026-06",
+    isImage: true
+  },
+  {
+    title: "Dynamic Abstract Quantum Network Visual",
+    filename: "Gemini_Generated_Image_o22qego22qego22q.png",
+    category: "Visual Evidence & Graphics",
+    type: "Image Asset",
+    description: "Visual abstraction charting real-time database syncing, Snowflake nodes, and client-server state transitions.",
+    date: "2026-06",
+    isImage: true
+  },
+  {
+    title: "Cloud Data Connect Vector Visualization",
+    filename: "Gemini_Generated_Image_qm0m5kqm0m5kqm0m.png",
+    category: "Visual Evidence & Graphics",
+    type: "Image Asset",
+    description: "High-tech abstract visual outlining database ledger replication networks and algorithmic verification nodes.",
+    date: "2026-06",
+    isImage: true
+  },
+  {
+    title: "Algorithmic Fiduciary Infrastructure Hero Banner",
+    filename: "algorithmic-fiduciary-hero.png",
+    category: "Visual Evidence & Graphics",
+    type: "Image Asset",
+    description: "High-end visual showcase banner highlighting the fusion of raw math-driven auditing tools with corporate fiduciaries.",
+    date: "2026-06",
+    isImage: true
   }
 ];
 
@@ -342,7 +497,7 @@ export default function AllUploads() {
   return (
     <>
       <SEO 
-        title="Fiduciary Assets & Uploads Library" 
+        title="Fiduciary Assets & Comprehensive Uploads Library" 
         description="Access and download our comprehensive repository of forensic audits, litigation briefs, whitepapers, carousels, and visual evidence." 
       />
 
@@ -411,102 +566,187 @@ export default function AllUploads() {
           {/* Assets Grid */}
           {filteredAssets.length > 0 ? (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {filteredAssets.map((asset, idx) => (
-                <Card 
-                  key={idx} 
-                  className="bg-slate-950/40 border border-white/5 rounded-2xl overflow-hidden hover:border-indigo-500/40 hover:shadow-2xl hover:shadow-indigo-500/5 transition-all group flex flex-col justify-between"
-                >
-                  <div>
-                    {/* Visual Preview for Images */}
-                    {asset.isImage ? (
-                      <div className="relative aspect-video w-full overflow-hidden bg-slate-900 border-b border-white/5">
-                        <img 
-                          src={`/${asset.filename}`}
-                          alt={asset.title}
-                          className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
-                          loading="lazy"
-                        />
-                        <div className="absolute inset-0 bg-slate-950/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center pointer-events-none">
-                          <Button size="sm" className="bg-indigo-600/90 pointer-events-auto rounded-xl">
-                            <Eye className="w-4 h-4 mr-2" /> Click to Expand
+              {filteredAssets.map((asset, idx) => {
+                // Determine if this is the Stanford Custom Styled Card
+                if (asset.stanfordDesign) {
+                  return (
+                    <Card 
+                      key={idx} 
+                      className="bg-gradient-to-br from-[#1C0505] to-[#0A0202] border border-[#8C1515]/30 rounded-2xl overflow-hidden hover:border-[#8C1515] hover:shadow-2xl hover:shadow-[#8C1515]/10 transition-all group flex flex-col justify-between relative"
+                    >
+                      {/* Decorative Stanford Border Glow */}
+                      <div className="absolute top-0 right-0 w-32 h-32 bg-[#8C1515]/20 rounded-full blur-2xl pointer-events-none" />
+                      
+                      <div>
+                        <div className="p-6 pb-0 flex justify-between items-start">
+                          <div className="p-3 bg-[#8C1515]/15 rounded-xl border border-[#8C1515]/30 group-hover:bg-[#8C1515]/25 transition-all">
+                            <ShieldAlert className="w-5 h-5 text-[#E37A7A]" />
+                          </div>
+                          <Badge className="bg-[#8C1515]/10 text-[#E37A7A] border border-[#8C1515]/30 rounded-lg text-[10px] font-semibold flex items-center gap-1">
+                            <Sparkles className="w-3 h-3 text-[#E37A7A]" /> Stanford PHS Case
+                          </Badge>
+                        </div>
+
+                        <CardHeader className="p-6">
+                          <div className="flex items-center gap-2 mb-2">
+                            <span className="text-[10px] font-bold text-[#E37A7A] uppercase tracking-wider font-serif">
+                              STANFORD UNIVERSITY PHS DESIGN
+                            </span>
+                            <span className="text-white/20 text-[10px]">•</span>
+                            <span className="text-slate-400 text-[10px]">
+                              ERISA Precedent
+                            </span>
+                          </div>
+                          <CardTitle className="text-lg font-serif font-bold text-slate-100 leading-snug group-hover:text-[#F3B0B0] transition-colors">
+                            {asset.title}
+                          </CardTitle>
+                          <CardDescription className="text-slate-300 text-sm mt-3 leading-relaxed">
+                            {asset.description}
+                          </CardDescription>
+
+                          {/* Extra Custom PHS Metadata */}
+                          <div className="mt-4 p-3 bg-black/40 border border-[#8C1515]/20 rounded-xl space-y-1 text-[11px] text-slate-400">
+                            <div className="flex justify-between">
+                              <span>Fiduciary Grade:</span>
+                              <span className="text-emerald-400 font-bold">Class-I Precedent</span>
+                            </div>
+                            <div className="flex justify-between">
+                              <span>Plan Focus:</span>
+                              <span className="text-slate-300">Public Health Service (PHS)</span>
+                            </div>
+                          </div>
+                        </CardHeader>
+                      </div>
+
+                      <CardContent className="p-6 pt-0 border-t border-white/5 mt-auto flex items-center justify-between gap-4">
+                        <span className="text-xs text-[#E37A7A] font-medium font-serif">
+                          Precedent ID: #101-PHS
+                        </span>
+                        <div className="flex gap-2">
+                          <Button 
+                            asChild
+                            size="sm" 
+                            variant="outline" 
+                            className="bg-black hover:bg-slate-950 border-[#8C1515]/30 hover:border-[#8C1515] rounded-xl text-xs h-9 text-[#E37A7A]"
+                          >
+                            <a href={`/${asset.filename}`} target="_blank" rel="noopener noreferrer">
+                              <Eye className="w-3.5 h-3.5 mr-1.5" /> Open
+                            </a>
+                          </Button>
+
+                          <Button 
+                            asChild
+                            size="sm" 
+                            className="bg-[#8C1515] hover:bg-[#A31F1F] text-white rounded-xl text-xs h-9 shadow-lg shadow-[#8C1515]/20"
+                          >
+                            <a href={`/${asset.filename}`} download={asset.filename}>
+                              <Download className="w-3.5 h-3.5" />
+                            </a>
                           </Button>
                         </div>
-                      </div>
-                    ) : (
-                      <div className="p-6 pb-0 flex justify-between items-start">
-                        <div className="p-3 bg-indigo-500/10 rounded-xl border border-indigo-500/20 group-hover:bg-indigo-500/20 transition-all">
-                          {asset.type === "LinkedIn Carousel" ? (
-                            <Library className="w-5 h-5 text-indigo-400" />
-                          ) : (
-                            <FileText className="w-5 h-5 text-indigo-400" />
-                          )}
-                        </div>
-                        <Badge className="bg-slate-900 text-slate-400 border border-white/5 rounded-lg text-[10px]">
-                          {asset.size || "Image"}
-                        </Badge>
-                      </div>
-                    )}
+                      </CardContent>
+                    </Card>
+                  );
+                }
 
-                    <CardHeader className="p-6">
-                      <div className="flex items-center gap-2 mb-2">
-                        <span className="text-[10px] font-bold text-indigo-400 uppercase tracking-wider">
-                          {asset.category}
-                        </span>
-                        <span className="text-white/20 text-[10px]">•</span>
-                        <span className="text-slate-500 text-[10px]">
-                          {asset.type}
-                        </span>
-                      </div>
-                      <CardTitle className="text-lg font-bold text-white leading-snug group-hover:text-indigo-300 transition-colors">
-                        {asset.title}
-                      </CardTitle>
-                      <CardDescription className="text-slate-400 text-sm mt-3 line-clamp-3 leading-relaxed">
-                        {asset.description}
-                      </CardDescription>
-                    </CardHeader>
-                  </div>
-
-                  <CardContent className="p-6 pt-0 border-t border-white/5 mt-auto flex items-center justify-between gap-4">
-                    <span className="text-xs text-slate-500 font-medium">
-                      Vault ID: #{idx + 101}
-                    </span>
-                    <div className="flex gap-2">
+                // Standard Rendering
+                return (
+                  <Card 
+                    key={idx} 
+                    className="bg-slate-950/40 border border-white/5 rounded-2xl overflow-hidden hover:border-indigo-500/40 hover:shadow-2xl hover:shadow-indigo-500/5 transition-all group flex flex-col justify-between"
+                  >
+                    <div>
+                      {/* Visual Preview for Images */}
                       {asset.isImage ? (
-                        <Button 
-                          onClick={() => setActiveImage(`/${asset.filename}`)}
-                          size="sm" 
-                          variant="outline" 
-                          className="bg-slate-950 hover:bg-slate-900 border-white/10 rounded-xl text-xs h-9"
-                        >
-                          <Eye className="w-3.5 h-3.5 mr-1.5" /> Preview
-                        </Button>
+                        <div className="relative aspect-video w-full overflow-hidden bg-slate-900 border-b border-white/5">
+                          <img 
+                            src={`/${asset.filename}`}
+                            alt={asset.title}
+                            className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                            loading="lazy"
+                          />
+                          <div className="absolute inset-0 bg-slate-950/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center pointer-events-none">
+                            <Button size="sm" className="bg-indigo-600/90 pointer-events-auto rounded-xl">
+                              <Eye className="w-4 h-4 mr-2" /> Click to Expand
+                            </Button>
+                          </div>
+                        </div>
                       ) : (
+                        <div className="p-6 pb-0 flex justify-between items-start">
+                          <div className="p-3 bg-indigo-500/10 rounded-xl border border-indigo-500/20 group-hover:bg-indigo-500/20 transition-all">
+                            {asset.type === "LinkedIn Carousel" ? (
+                              <Library className="w-5 h-5 text-indigo-400" />
+                            ) : (
+                              <FileText className="w-5 h-5 text-indigo-400" />
+                            )}
+                          </div>
+                          <Badge className="bg-slate-900 text-slate-400 border border-white/5 rounded-lg text-[10px]">
+                            {asset.size || "Image"}
+                          </Badge>
+                        </div>
+                      )}
+
+                      <CardHeader className="p-6">
+                        <div className="flex items-center gap-2 mb-2">
+                          <span className="text-[10px] font-bold text-indigo-400 uppercase tracking-wider">
+                            {asset.category}
+                          </span>
+                          <span className="text-white/20 text-[10px]">•</span>
+                          <span className="text-slate-500 text-[10px]">
+                            {asset.type}
+                          </span>
+                        </div>
+                        <CardTitle className="text-lg font-bold text-white leading-snug group-hover:text-indigo-300 transition-colors">
+                          {asset.title}
+                        </CardTitle>
+                        <CardDescription className="text-slate-400 text-sm mt-3 line-clamp-3 leading-relaxed">
+                          {asset.description}
+                        </CardDescription>
+                      </CardHeader>
+                    </div>
+
+                    <CardContent className="p-6 pt-0 border-t border-white/5 mt-auto flex items-center justify-between gap-4">
+                      <span className="text-xs text-slate-500 font-medium">
+                        Vault ID: #{idx + 101}
+                      </span>
+                      <div className="flex gap-2">
+                        {asset.isImage ? (
+                          <Button 
+                            onClick={() => setActiveImage(`/${asset.filename}`)}
+                            size="sm" 
+                            variant="outline" 
+                            className="bg-slate-950 hover:bg-slate-900 border-white/10 rounded-xl text-xs h-9"
+                          >
+                            <Eye className="w-3.5 h-3.5 mr-1.5" /> Preview
+                          </Button>
+                        ) : (
+                          <Button 
+                            asChild
+                            size="sm" 
+                            variant="outline" 
+                            className="bg-slate-950 hover:bg-slate-900 border-white/10 rounded-xl text-xs h-9"
+                          >
+                            <a href={`/${asset.filename}`} target="_blank" rel="noopener noreferrer">
+                              <Eye className="w-3.5 h-3.5 mr-1.5" /> Preview
+                            </a>
+                          </Button>
+                        )}
+
                         <Button 
                           asChild
                           size="sm" 
-                          variant="outline" 
-                          className="bg-slate-950 hover:bg-slate-900 border-white/10 rounded-xl text-xs h-9"
+                          className="bg-indigo-600 hover:bg-indigo-500 rounded-xl text-xs h-9 shadow-lg shadow-indigo-600/10"
                         >
-                          <a href={`/${asset.filename}`} target="_blank" rel="noopener noreferrer">
-                            <Eye className="w-3.5 h-3.5 mr-1.5" /> Preview
+                          <a href={`/${asset.filename}`} download={asset.filename}>
+                            <Download className="w-3.5 h-3.5" />
                           </a>
                         </Button>
-                      )}
+                      </div>
+                    </CardContent>
 
-                      <Button 
-                        asChild
-                        size="sm" 
-                        className="bg-indigo-600 hover:bg-indigo-500 rounded-xl text-xs h-9 shadow-lg shadow-indigo-600/10"
-                      >
-                        <a href={`/${asset.filename}`} download={asset.filename}>
-                          <Download className="w-3.5 h-3.5" />
-                        </a>
-                      </Button>
-                    </div>
-                  </CardContent>
-
-                </Card>
-              ))}
+                  </Card>
+                );
+              })}
             </div>
           ) : (
             <div className="text-center py-20 bg-slate-950/20 border border-white/5 rounded-3xl backdrop-blur-md">

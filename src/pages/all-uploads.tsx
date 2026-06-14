@@ -500,6 +500,7 @@ export default function AllUploads() {
         title="Fiduciary Assets & Comprehensive Uploads Library" 
         description="Access and download our comprehensive repository of forensic audits, litigation briefs, whitepapers, carousels, and visual evidence." 
       />
+      <Nav />
 
       <main className="min-h-screen bg-[#07070F] text-white pt-24 pb-20 relative overflow-hidden font-sans">
         {/* Neon Background Accents */}

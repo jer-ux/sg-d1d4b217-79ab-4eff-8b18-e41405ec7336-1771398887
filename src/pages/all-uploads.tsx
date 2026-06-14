@@ -2,7 +2,7 @@ import React, { useState, useMemo } from "react";
 import { SEO } from "@/components/SEO";
 import { ImageLightbox } from "@/components/ImageLightbox";
 import Nav from "@/components/Nav";
-import { Footer } from "@/components/Footer";
+import Footer from "@/components/Footer";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";

@@ -35,6 +35,141 @@ const ALL_ASSETS: UploadedAsset[] = [
   },
   // 1. Litigation & Forensic Audits
   {
+    title: "Indiana Health Centers Forensic Audit (43 Pages)",
+    filename: "Kincaid_IQ_Indiana_Health_Centers_43pg.pdf",
+    category: "Litigation & Forensic Audits",
+    type: "PDF Document",
+    description: "Comprehensive 43-page forensic assessment analyzing plan leakage, clinical management, and drug rebate auditing for Indiana Health Centers.",
+    size: "11.5 MB",
+    date: "2026-06"
+  },
+  {
+    title: "FCC North America Forensic Report (Release v1)",
+    filename: "Kincaid_IQ_FCC_North_America_Forensic_Report_1_.pdf",
+    category: "Litigation & Forensic Audits",
+    type: "PDF Document",
+    description: "Technical forensic report dissecting copay maximization structures and spread pricing under FCC North America plans.",
+    size: "53.2 MB",
+    date: "2026-06"
+  },
+  {
+    title: "FCC North America Forensic Report (Primary Copy)",
+    filename: "Kincaid_IQ_FCC_North_America_Forensic_Report.pdf",
+    category: "Litigation & Forensic Audits",
+    type: "PDF Document",
+    description: "Authorized audit investigating formulary modeling anomalies and high-cost specialty drug retention strategies.",
+    size: "40.0 MB",
+    date: "2026-06"
+  },
+  {
+    title: "Fight Your PBM: Tactical Field Manual",
+    filename: "Kincaid_IQ_Fight_Your_PBM_Field_Manual.pdf",
+    category: "Platform Blueprints & Briefings",
+    type: "PDF Document",
+    description: "Actionable field manual empowering plan sponsors to challenge standard PBM contracts and claim audit rights.",
+    size: "3.6 MB",
+    date: "2026-06"
+  },
+  {
+    title: "Four Firm Synthesis Editorial Study",
+    filename: "Kincaid_IQ_Four_Firm_Synthesis_Editorial.pdf",
+    category: "Platform Blueprints & Briefings",
+    type: "PDF Document",
+    description: "Critical synthesis comparing auditing methods across major consulting conglomerates and presenting automated software solutions.",
+    size: "33.6 MB",
+    date: "2026-06"
+  },
+  {
+    title: "Glassmorphic Report Registry (30-Day Launch Brief v1)",
+    filename: "Kincaid_iQ_Glassmorphic_Report_Registry_30_Day_1_.pdf",
+    category: "Platform Blueprints & Briefings",
+    type: "PDF Document",
+    description: "Advisory brief evaluating real-time report delivery interfaces and system transparency statistics.",
+    size: "9.1 MB",
+    date: "2026-06"
+  },
+  {
+    title: "Glassmorphic Report Registry (Primary Core Brief)",
+    filename: "Kincaid_iQ_Glassmorphic_Report_Registry_30_Day.pdf",
+    category: "Platform Blueprints & Briefings",
+    type: "PDF Document",
+    description: "Strategic plan describing interactive reports distribution models and real-time visualization frameworks.",
+    size: "9.1 MB",
+    date: "2026-06"
+  },
+  {
+    title: "Gunite Corporation EBITDA Protection Audit",
+    filename: "Kincaid_iQ_Gunite_Corporation_EBITDA_Defense.pdf",
+    category: "Litigation & Forensic Audits",
+    type: "PDF Document",
+    description: "Unabridged EBITDA protection audit investigating plan asset leakage and high-cost clinical claim spreads for Gunite Corporation.",
+    size: "144.3 MB",
+    date: "2026-06"
+  },
+  {
+    title: "Heritage Group HCP Forensic Assessment (v1)",
+    filename: "Kincaid_iQ_Heritage_Group_HCP_Forensic_Report_Compressed_1_.pdf",
+    category: "Litigation & Forensic Audits",
+    type: "PDF Document",
+    description: "Forensic audit details mapping contract guarantee shortfalls and pharmacy benefit leakages for Heritage Group.",
+    size: "23.8 MB",
+    date: "2026-06"
+  },
+  {
+    title: "Heritage Group HCP Forensic Assessment (Compressed)",
+    filename: "Kincaid_iQ_Heritage_Group_HCP_Forensic_Report_Compressed.pdf",
+    category: "Litigation & Forensic Audits",
+    type: "PDF Document",
+    description: "Comprehensive financial assessment defending Heritage Group HCP plans against opaque spread-billing models.",
+    size: "23.8 MB",
+    date: "2026-06"
+  },
+  {
+    title: "Hoosier Investments $241M Fiduciary Defense Case",
+    filename: "Kincaid_iQ_Hoosier_Investments_241M_Defense.pdf",
+    category: "Litigation & Forensic Audits",
+    type: "PDF Document",
+    description: "Large-scale fiduciary defense advisory case safeguarding $241M in corporate assets from systematic plan overcharging.",
+    size: "74.8 MB",
+    date: "2026-06"
+  },
+  {
+    title: "Hopebridge Forensic Brief (4-Page Release v1)",
+    filename: "Kincaid_IQ_Hopebridge_4pg_Brief_1_.pdf",
+    category: "Litigation & Forensic Audits",
+    type: "PDF Document",
+    description: "Briefing summary illustrating key copay leakage and formulary spread findings at Hopebridge.",
+    size: "2.2 MB",
+    date: "2026-06"
+  },
+  {
+    title: "Hopebridge Forensic Brief (Core 4-Pages)",
+    filename: "Kincaid_IQ_Hopebridge_4pg_Brief.pdf",
+    category: "Litigation & Forensic Audits",
+    type: "PDF Document",
+    description: "Executive brief outlining actionable steps to recover drug rebate retentions and specialty drug spreads.",
+    size: "2.2 MB",
+    date: "2026-06"
+  },
+  {
+    title: "Hopebridge 501 Forensic Audit (44-Page Release v1)",
+    filename: "Kincaid_IQ_Hopebridge_501_44pg_1_.pdf",
+    category: "Litigation & Forensic Audits",
+    type: "PDF Document",
+    description: "The complete 44-page forensic audit checking copay maximizer structures and pharmacy pricing formulas.",
+    size: "11.7 MB",
+    date: "2026-06"
+  },
+  {
+    title: "Hopebridge 501 Forensic Audit (Core 44-Pages)",
+    filename: "Kincaid_IQ_Hopebridge_501_44pg.pdf",
+    category: "Litigation & Forensic Audits",
+    type: "PDF Document",
+    description: "The master 44-page forensic audit checking drug billing spreads, specialty rebates, and plan asset guarantees.",
+    size: "11.7 MB",
+    date: "2026-06"
+  },
+  {
     title: "TrueScripts LLC Rx Defense Forensic Audit",
     filename: "Rx_Defense_IQ_TrueScripts_Management_Services_LLC.pdf",
     category: "Litigation & Forensic Audits",
@@ -71,48 +206,12 @@ const ALL_ASSETS: UploadedAsset[] = [
     date: "2026-06"
   },
   {
-    title: "Hopebridge 501 Forensic Audit (44 Pages)",
-    filename: "Kincaid_IQ_Hopebridge_501_44pg.pdf",
-    category: "Litigation & Forensic Audits",
-    type: "PDF Document",
-    description: "The complete, unabridged 44-page forensic investigation of Hopebridge plan audits, co-pay maximizers, and drug spreads.",
-    size: "11.7 MB",
-    date: "2026-06"
-  },
-  {
-    title: "Hopebridge 501 Forensic Audit (Alternate Copy)",
-    filename: "Kincaid_IQ_Hopebridge_501_44pg_1_.pdf",
-    category: "Litigation & Forensic Audits",
-    type: "PDF Document",
-    description: "Comprehensive 44-page forensic audit analyzing specialty drug rebate structures and patient copay assistance maximize strategies.",
-    size: "11.8 MB",
-    date: "2026-06"
-  },
-  {
     title: "Inotiv 501 Forensic Audit Report (44 Pages)",
     filename: "Kincaid_IQ_Inotiv_501_44pg_1_.pdf",
     category: "Litigation & Forensic Audits",
     type: "PDF Document",
     description: "Forensic audit for Inotiv plans uncovering drug billing spread structures and contract guarantees.",
     size: "11.8 MB",
-    date: "2026-06"
-  },
-  {
-    title: "Hopebridge Forensic Brief (4 Pages)",
-    filename: "Kincaid_IQ_Hopebridge_4pg_Brief.pdf",
-    category: "Litigation & Forensic Audits",
-    type: "PDF Document",
-    description: "Executive brief summarizing key findings of the Hopebridge forensic audit including actionable recovery recommendations.",
-    size: "2.2 MB",
-    date: "2026-06"
-  },
-  {
-    title: "Hopebridge Brief (Duplicate Release)",
-    filename: "Kincaid_IQ_Hopebridge_4pg_Brief_1_.pdf",
-    category: "Litigation & Forensic Audits",
-    type: "PDF Document",
-    description: "Brief summarizing the primary findings on copay assistance leakages and drug spreads at Hopebridge.",
-    size: "2.2 MB",
     date: "2026-06"
   },
   {
@@ -187,8 +286,6 @@ const ALL_ASSETS: UploadedAsset[] = [
     size: "8.2 MB",
     date: "2026-06"
   },
-
-  // 2. Platform Blueprints & Briefings
   {
     title: "SiriusB iQ Fiduciary Grade AI Blueprint",
     filename: "SiriusB_IQ_Fiduciary_Grade_AI.pdf",
@@ -315,8 +412,6 @@ const ALL_ASSETS: UploadedAsset[] = [
     size: "16.5 MB",
     date: "2026-06"
   },
-
-  // 3. Actuarial Science & Math
   {
     title: "Sovereign by Math: Actuarial Certainty Guide",
     filename: "Kincaid_iQ_Sovereign_by_Math.pdf",
@@ -579,6 +674,20 @@ export default function AllUploads() {
                       <div className="absolute top-0 right-0 w-32 h-32 bg-[#8C1515]/20 rounded-full blur-2xl pointer-events-none" />
                       
                       <div>
+                        {/* Interactive Page 1 PDF Embedded Preview */}
+                        <div className="relative aspect-[4/3] w-full overflow-hidden bg-black/60 border-b border-[#8C1515]/20">
+                          <iframe 
+                            src={`/${asset.filename}#page=1&toolbar=0&navpanes=0&scrollbar=0`}
+                            className="w-full h-full border-0 pointer-events-none select-none filter contrast-[0.9] brightness-[0.85] sepia-[0.1]"
+                            title={asset.title}
+                          />
+                          {/* Premium Overlay Guard */}
+                          <div className="absolute inset-0 bg-gradient-to-t from-[#0A0202] via-transparent to-[#1C0505]/40 pointer-events-none" />
+                          <div className="absolute top-3 left-3 bg-red-950/80 backdrop-blur-md border border-[#8C1515]/30 text-red-200 text-[10px] px-2.5 py-0.5 rounded-md font-mono">
+                            Plan Page 1 Preview
+                          </div>
+                        </div>
+
                         <div className="p-6 pb-0 flex justify-between items-start">
                           <div className="p-3 bg-[#8C1515]/15 rounded-xl border border-[#8C1515]/30 group-hover:bg-[#8C1515]/25 transition-all">
                             <ShieldAlert className="w-5 h-5 text-[#E37A7A]" />
@@ -631,7 +740,7 @@ export default function AllUploads() {
                             className="bg-black hover:bg-slate-950 border-[#8C1515]/30 hover:border-[#8C1515] rounded-xl text-xs h-9 text-[#E37A7A]"
                           >
                             <a href={`/${asset.filename}`} target="_blank" rel="noopener noreferrer">
-                              <Eye className="w-3.5 h-3.5 mr-1.5" /> Open
+                              <Eye className="w-3.5 h-3.5 mr-1.5" /> Open Full
                             </a>
                           </Button>
 
@@ -657,7 +766,7 @@ export default function AllUploads() {
                     className="bg-slate-950/40 border border-white/5 rounded-2xl overflow-hidden hover:border-indigo-500/40 hover:shadow-2xl hover:shadow-indigo-500/5 transition-all group flex flex-col justify-between"
                   >
                     <div>
-                      {/* Visual Preview for Images */}
+                      {/* Visual Preview for Images or Native PDF Embedding */}
                       {asset.isImage ? (
                         <div className="relative aspect-video w-full overflow-hidden bg-slate-900 border-b border-white/5">
                           <img 
@@ -673,6 +782,24 @@ export default function AllUploads() {
                           </div>
                         </div>
                       ) : (
+                        <div className="relative aspect-[4/3] w-full overflow-hidden bg-black/50 border-b border-white/5">
+                          {/* Real-time PDF embedding showing page 1 exclusively */}
+                          <iframe 
+                            src={`/${asset.filename}#page=1&toolbar=0&navpanes=0&scrollbar=0`}
+                            className="w-full h-full border-0 pointer-events-none select-none filter contrast-[0.85] brightness-[0.85]"
+                            title={asset.title}
+                          />
+                          {/* Overlay guard prevent direct interaction but keep hover glows active */}
+                          <div className="absolute inset-0 bg-gradient-to-t from-[#07070F] via-slate-950/10 to-transparent pointer-events-none" />
+                          <div className="absolute inset-0 bg-indigo-500/5 opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none" />
+                          
+                          <div className="absolute top-3 left-3 bg-slate-950/80 backdrop-blur-md border border-white/10 text-indigo-300 text-[10px] px-2 py-0.5 rounded-md font-mono">
+                            Page 1 Preview
+                          </div>
+                        </div>
+                      )}
+
+                      {!asset.isImage && (
                         <div className="p-6 pb-0 flex justify-between items-start">
                           <div className="p-3 bg-indigo-500/10 rounded-xl border border-indigo-500/20 group-hover:bg-indigo-500/20 transition-all">
                             {asset.type === "LinkedIn Carousel" ? (
@@ -682,7 +809,7 @@ export default function AllUploads() {
                             )}
                           </div>
                           <Badge className="bg-slate-900 text-slate-400 border border-white/5 rounded-lg text-[10px]">
-                            {asset.size || "Image"}
+                            {asset.size || "PDF File"}
                           </Badge>
                         </div>
                       )}
@@ -728,7 +855,7 @@ export default function AllUploads() {
                             className="bg-slate-950 hover:bg-slate-900 border-white/10 rounded-xl text-xs h-9"
                           >
                             <a href={`/${asset.filename}`} target="_blank" rel="noopener noreferrer">
-                              <Eye className="w-3.5 h-3.5 mr-1.5" /> Preview
+                              <Eye className="w-3.5 h-3.5 mr-1.5" /> Open Full
                             </a>
                           </Button>
                         )}

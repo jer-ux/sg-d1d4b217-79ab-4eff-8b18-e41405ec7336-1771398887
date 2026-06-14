@@ -1,8 +1,6 @@
-import { useState, useMemo } from "react";
+import { useState } from "react";
 import { 
-  BarChart3, TrendingUp, Target, Users, DollarSign, Award, Zap, 
-  ChevronRight, Info, Shield, RefreshCw, Briefcase, Play, ArrowRight,
-  TrendingDown, CheckCircle2, AlertTriangle, Activity
+  Shield, DollarSign, Award, Zap, Briefcase, RefreshCw, Activity, CheckCircle2, TrendingUp, Target
 } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { PEOperatorDrillDownDrawer } from "./PEOperatorDrillDownDrawer";
@@ -97,7 +95,7 @@ export function PEOperatorWarRoom() {
       rxSpend: 4200000,
       savings: 1200000,
       status: "Contract negotiation phase",
-      statusColor: "text-amber-400 border-amber-500/30 bg-amber-500/10",
+      statusColor: "text-purple-400 border-purple-500/30 bg-purple-500/10",
       trend: 14,
       implementationProgress: 65,
       details: {
@@ -154,15 +152,15 @@ export function PEOperatorWarRoom() {
   return (
     <div className="space-y-6">
       {/* Header section with live feed ticker */}
-      <div className="rounded-xl border border-zinc-800 bg-zinc-950/40 p-6 shadow-2xl">
+      <div className="rounded-xl border border-purple-500/30 bg-zinc-950/40 p-6 shadow-2xl">
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-6">
           <div>
             <div className="flex items-center gap-2 mb-1.5">
-              <span className="flex h-2 w-2 rounded-full bg-emerald-500 animate-pulse" />
-              <span className="text-xs font-bold bg-gradient-to-r from-emerald-400 to-teal-300 bg-clip-text text-transparent uppercase tracking-wider">REALTIME UNDERWRITING INTELLIGENCE</span>
+              <span className="flex h-2 w-2 rounded-full bg-purple-500 shadow-[0_0_8px_rgba(168,85,247,0.5)] animate-pulse" />
+              <span className="text-xs font-bold bg-gradient-to-r from-purple-400 via-purple-300 to-indigo-300 bg-clip-text text-transparent uppercase tracking-wider">REALTIME UNDERWRITING INTELLIGENCE</span>
             </div>
             <h3 className="text-2xl font-serif font-bold text-zinc-100 flex items-center gap-2">
-              <Briefcase className="h-6 w-6 text-emerald-400" />
+              <Briefcase className="h-6 w-6 text-purple-400" />
               PE Operator Command Center
             </h3>
             <p className="text-xs text-zinc-400 mt-1">Portfolio value creation, EBITDA margin multipliers & exit-readiness compliance</p>
@@ -171,11 +169,11 @@ export function PEOperatorWarRoom() {
           <div className="flex items-center gap-3">
             <button 
               onClick={handleRefresh}
-              className="rounded-lg border border-zinc-800 bg-zinc-900 p-2 text-zinc-400 transition-colors hover:bg-zinc-850 hover:text-zinc-100"
+              className="rounded-lg border border-zinc-850 bg-zinc-900 p-2 text-zinc-400 transition-colors hover:bg-zinc-800 hover:text-zinc-100"
             >
               <RefreshCw className={`h-4 w-4 ${isRefreshing ? "animate-spin" : ""}`} />
             </button>
-            <Badge className="bg-emerald-950/40 text-emerald-400 border border-emerald-500/30 font-mono text-xs px-2.5 py-1">
+            <Badge className="bg-purple-950/40 text-purple-400 border border-purple-500/30 font-mono text-xs px-2.5 py-1">
               Active Underwriting
             </Badge>
           </div>
@@ -183,14 +181,14 @@ export function PEOperatorWarRoom() {
 
         {/* Live Ticker Marquee */}
         <div className="relative flex items-center h-9 overflow-hidden rounded-lg bg-zinc-900/60 border border-zinc-800/80 px-4">
-          <div className="flex items-center gap-2 text-xs font-bold text-emerald-400 uppercase tracking-widest border-r border-zinc-800 pr-3 mr-3 shrink-0">
+          <div className="flex items-center gap-2 text-xs font-bold text-purple-400 uppercase tracking-widest border-r border-zinc-800 pr-3 mr-3 shrink-0">
             <Activity className="h-3 w-3 animate-pulse" /> LIVE DEALS
           </div>
           <div className="relative flex-1 overflow-hidden">
             <div className="flex gap-12 whitespace-nowrap animate-marquee">
               {tickerItems.concat(tickerItems).map((item, idx) => (
                 <div key={idx} className="flex items-center gap-2 text-xs text-zinc-300 font-mono">
-                  <span className="text-emerald-500">•</span>
+                  <span className="text-purple-500">•</span>
                   {item}
                 </div>
               ))}
@@ -199,19 +197,19 @@ export function PEOperatorWarRoom() {
         </div>
       </div>
 
-      {/* Portfolio-Level KPIs Tiles Grid */}
+      {/* Portfolio-Level KPIs Tiles Grid aligned to CHRO purple/indigo theme */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
         {portfolioTiles.map((tile) => (
           <button
             key={tile.key}
             onClick={() => handleTileClick(tile)}
-            className="group relative overflow-hidden rounded-xl border border-zinc-800 bg-zinc-900/20 p-5 text-left transition-all hover:border-emerald-500/40 hover:bg-zinc-900/40 hover:shadow-lg hover:shadow-emerald-500/5"
+            className="group relative overflow-hidden rounded-xl border border-zinc-800 bg-zinc-900/20 p-5 text-left transition-all hover:border-purple-500/40 hover:bg-zinc-900/40 hover:shadow-lg hover:shadow-purple-500/5"
           >
             {/* Hover top highlight */}
-            <div className="absolute top-0 left-0 w-full h-0.5 bg-gradient-to-r from-emerald-500 to-teal-500 opacity-0 group-hover:opacity-100 transition-opacity" />
+            <div className="absolute top-0 left-0 w-full h-0.5 bg-gradient-to-r from-purple-500 to-indigo-500 opacity-0 group-hover:opacity-100 transition-opacity" />
             
             <div className="flex justify-between items-start mb-3">
-              <span className="text-[10px] font-mono font-semibold text-zinc-500 group-hover:text-emerald-400 transition-colors uppercase tracking-wider">
+              <span className="text-[10px] font-mono font-semibold text-zinc-500 group-hover:text-purple-400 transition-colors uppercase tracking-wider">
                 {tile.title}
               </span>
               <span className="rounded-full bg-zinc-800 px-1.5 py-0.5 text-[9px] font-mono text-zinc-400 border border-zinc-700">
@@ -222,25 +220,25 @@ export function PEOperatorWarRoom() {
             <div className="flex items-baseline gap-2">
               <span className="text-3xl font-bold text-zinc-100 font-serif tracking-tight">{tile.value}</span>
               {tile.trend === "up" && (
-                <span className="flex items-center text-emerald-400 text-xs font-mono">
+                <span className="flex items-center text-purple-400 text-xs font-mono">
                   <TrendingUp className="h-3.5 w-3.5 mr-0.5" />
                 </span>
               )}
             </div>
 
-            <div className="mt-2 text-[10px] text-emerald-400 font-mono flex items-center gap-1">
-              <span className="h-1 w-1 rounded-full bg-emerald-500 animate-pulse" />
+            <div className="mt-2 text-[10px] text-purple-400 font-mono flex items-center gap-1">
+              <span className="h-1 w-1 rounded-full bg-purple-500 animate-pulse" />
               {tile.delta}
             </div>
             
             <div className="mt-1 text-[11px] text-zinc-500 line-clamp-1">{tile.subtitle}</div>
 
-            {/* Sparkline Canvas rendering simulation via clean border details */}
+            {/* Sparkline Canvas rendering simulation with Purple tint */}
             <div className="mt-4 flex items-end gap-1 h-6 w-full opacity-60 group-hover:opacity-100 transition-opacity">
               {tile.chartData?.map((pt, index) => (
                 <div 
                   key={index} 
-                  className="flex-1 bg-gradient-to-t from-emerald-500/30 to-emerald-500 rounded-t-sm"
+                  className="flex-1 bg-gradient-to-t from-purple-500/30 to-purple-500 rounded-t-sm"
                   style={{ height: `${(pt.value / 6) * 100}%` }}
                 />
               ))}
@@ -253,7 +251,7 @@ export function PEOperatorWarRoom() {
       <div className="space-y-4">
         <div className="flex items-center justify-between border-b border-zinc-800 pb-2">
           <h4 className="text-xs font-bold text-zinc-400 uppercase tracking-widest flex items-center gap-2">
-            <Target className="h-4 w-4 text-emerald-500" />
+            <Target className="h-4 w-4 text-purple-500" />
             PORTFOLIO COMPANY PERFORMANCE
           </h4>
           <span className="text-[10px] font-mono text-zinc-500">Click asset to activate drill-down workspace</span>
@@ -269,13 +267,13 @@ export function PEOperatorWarRoom() {
                 onClick={() => setSelectedPortCo(key)}
                 className={`group relative overflow-hidden rounded-xl border p-5 text-left transition-all ${
                   isSelected 
-                    ? "border-emerald-500 bg-zinc-900/60 ring-2 ring-emerald-500/15" 
+                    ? "border-purple-500 bg-zinc-900/60 ring-2 ring-purple-500/15" 
                     : "border-zinc-800 bg-zinc-950/20 hover:border-zinc-700 hover:bg-zinc-900/30"
                 }`}
               >
                 {/* Visual Accent */}
                 <div className={`absolute left-0 top-0 h-full w-1 ${
-                  key === "alpha" ? "bg-amber-500" :
+                  key === "alpha" ? "bg-purple-500" :
                   key === "bravo" ? "bg-emerald-500" :
                   "bg-blue-500"
                 }`} />
@@ -298,7 +296,7 @@ export function PEOperatorWarRoom() {
                   </div>
                   <div className="flex justify-between">
                     <span className="text-zinc-500">EBITDA Lift Identified</span>
-                    <span className="font-bold text-emerald-400 font-mono">${(item.savings / 1000).toFixed(0)}K</span>
+                    <span className="font-bold text-purple-400 font-mono">${(item.savings / 1000).toFixed(0)}K</span>
                   </div>
                 </div>
 
@@ -309,7 +307,7 @@ export function PEOperatorWarRoom() {
                 <div className="mt-1.5 h-1.5 bg-zinc-900 rounded overflow-hidden">
                   <div 
                     className={`h-full rounded-full ${
-                      key === "alpha" ? "bg-amber-500" :
+                      key === "alpha" ? "bg-purple-500" :
                       key === "bravo" ? "bg-emerald-500" :
                       "bg-blue-500"
                     }`}
@@ -324,13 +322,13 @@ export function PEOperatorWarRoom() {
 
       {/* Selected PortCo Workspace / Deep Dive Panel */}
       {selectedPortCo && (
-        <div className="rounded-xl border border-zinc-800 bg-gradient-to-br from-zinc-950 to-zinc-900/80 p-6 md:p-8 shadow-2xl relative overflow-hidden">
+        <div className="rounded-xl border border-purple-500/30 bg-gradient-to-br from-zinc-950 to-zinc-900/80 p-6 md:p-8 shadow-2xl relative overflow-hidden">
           {/* Neon background lighting glow effect */}
-          <div className="absolute top-0 right-0 w-80 h-80 bg-emerald-500/5 rounded-full blur-3xl pointer-events-none" />
+          <div className="absolute top-0 right-0 w-80 h-80 bg-purple-500/5 rounded-full blur-3xl pointer-events-none" />
           
-          <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-6 pb-4 border-b border-zinc-800">
+          <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-6 pb-4 border-b border-zinc-805">
             <div>
-              <div className="text-[10px] text-emerald-400 font-mono mb-1 tracking-wider uppercase">PORTFOLIO DEEP DIVE</div>
+              <div className="text-[10px] text-purple-400 font-mono mb-1 tracking-wider uppercase">PORTFOLIO DEEP DIVE</div>
               <h4 className="text-xl font-serif font-bold text-zinc-100 flex items-center gap-2">
                 {portCoData[selectedPortCo].name} Analysis Suite
               </h4>
@@ -348,7 +346,7 @@ export function PEOperatorWarRoom() {
             {/* Left box: Underwriting and Contracts */}
             <div className="rounded-xl border border-zinc-800/80 bg-zinc-900/20 p-5">
               <div className="text-sm font-semibold text-zinc-300 mb-4 flex items-center gap-1.5">
-                <Shield className="h-4 w-4 text-emerald-400" />
+                <Shield className="h-4 w-4 text-purple-400" />
                 Underwriting & Benefit Boundaries
               </div>
               <div className="space-y-3 text-xs text-zinc-300 font-mono">
@@ -374,19 +372,19 @@ export function PEOperatorWarRoom() {
             {/* Right box: Realized EBITDA Yield */}
             <div className="rounded-xl border border-zinc-800/80 bg-zinc-900/20 p-5">
               <div className="text-sm font-semibold text-zinc-300 mb-4 flex items-center gap-1.5">
-                <DollarSign className="h-4 w-4 text-emerald-400" />
+                <DollarSign className="h-4 w-4 text-purple-400" />
                 Realized EBITDA Overhang
               </div>
               <div className="space-y-4">
                 <div>
                   <div className="flex items-center justify-between text-xs mb-1.5">
                     <span className="text-zinc-400">Locked Valuation Improvement</span>
-                    <span className="text-emerald-400 font-bold font-mono">
+                    <span className="text-purple-400 font-bold font-mono">
                       +${(portCoData[selectedPortCo].savings / 1000000).toFixed(1)}M Run Rate
                     </span>
                   </div>
                   <div className="h-1.5 bg-zinc-900 rounded overflow-hidden">
-                    <div className="h-full bg-emerald-500" style={{ width: `${(portCoData[selectedPortCo].savings / portCoData[selectedPortCo].rxSpend) * 100 * 3}%` }} />
+                    <div className="h-full bg-purple-500" style={{ width: `${(portCoData[selectedPortCo].savings / portCoData[selectedPortCo].rxSpend) * 100 * 3}%` }} />
                   </div>
                   <p className="text-[10px] text-zinc-500 mt-2 font-mono">
                     Equivalent to {((portCoData[selectedPortCo].savings / portCoData[selectedPortCo].rxSpend) * 100).toFixed(0)}% reduction in baseline corporate cost centers.
@@ -426,7 +424,7 @@ export function PEOperatorWarRoom() {
                   {selectedPortCo === "bravo" ? (
                     <CheckCircle2 className="h-4 w-4 text-emerald-400" />
                   ) : (
-                    <span className="flex h-2 w-2 rounded-full bg-amber-500 animate-pulse" />
+                    <span className="flex h-2 w-2 rounded-full bg-purple-500 shadow-[0_0_8px_rgba(168,85,247,0.5)] animate-pulse" />
                   )}
                 </div>
                 <div className="text-[11px] text-zinc-500">Executing strategic PBM renegotiation. {selectedPortCo === "bravo" ? "Complete." : "In final negotiation phase."}</div>
@@ -450,7 +448,7 @@ export function PEOperatorWarRoom() {
             <div className="text-xs font-bold text-zinc-400 uppercase tracking-widest mb-3">Vetted Portco Therapeutic Overhangs</div>
             <div className="flex flex-wrap gap-2">
               {portCoData[selectedPortCo].details.topDrugClasses.map((drugClass, index) => (
-                <Badge key={index} className="bg-emerald-950/20 text-emerald-400 border border-emerald-500/20 font-mono text-xs px-2.5 py-1">
+                <Badge key={index} className="bg-purple-950/20 text-purple-400 border border-purple-500/20 font-mono text-xs px-2.5 py-1">
                   {drugClass}
                 </Badge>
               ))}
@@ -462,7 +460,7 @@ export function PEOperatorWarRoom() {
       {/* Value Creation Playbook Section */}
       <div className="rounded-xl border border-zinc-800 bg-zinc-950/40 p-6">
         <h4 className="text-sm font-semibold text-zinc-200 mb-4 flex items-center gap-2">
-          <Award className="w-5 h-5 text-emerald-400" />
+          <Award className="w-5 h-5 text-purple-400" />
           Value Creation Playbook Execution
         </h4>
         <div className="grid md:grid-cols-2 gap-6 mt-4">
@@ -473,7 +471,7 @@ export function PEOperatorWarRoom() {
                 <span className="font-semibold text-zinc-200">82%</span>
               </div>
               <div className="h-1.5 bg-zinc-900 rounded overflow-hidden">
-                <div className="h-full bg-emerald-500" style={{ width: "82%" }} />
+                <div className="h-full bg-purple-500" style={{ width: "82%" }} />
               </div>
             </div>
             <div>
@@ -482,7 +480,7 @@ export function PEOperatorWarRoom() {
                 <span className="font-semibold text-zinc-200">91%</span>
               </div>
               <div className="h-1.5 bg-zinc-900 rounded overflow-hidden">
-                <div className="h-full bg-emerald-500" style={{ width: "91%" }} />
+                <div className="h-full bg-purple-500" style={{ width: "91%" }} />
               </div>
             </div>
           </div>
@@ -493,7 +491,7 @@ export function PEOperatorWarRoom() {
                 <span className="font-semibold text-zinc-200">67%</span>
               </div>
               <div className="h-1.5 bg-zinc-900 rounded overflow-hidden">
-                <div className="h-full bg-amber-500" style={{ width: "67%" }} />
+                <div className="h-full bg-purple-500" style={{ width: "67%" }} />
               </div>
             </div>
             <div>
@@ -502,7 +500,7 @@ export function PEOperatorWarRoom() {
                 <span className="font-semibold text-zinc-200">88%</span>
               </div>
               <div className="h-1.5 bg-zinc-900 rounded overflow-hidden">
-                <div className="h-full bg-emerald-500" style={{ width: "88%" }} />
+                <div className="h-full bg-purple-500" style={{ width: "88%" }} />
               </div>
             </div>
           </div>
@@ -512,14 +510,14 @@ export function PEOperatorWarRoom() {
       {/* Cross Portfolio Synergy Potential */}
       <div className="rounded-xl border border-zinc-800 bg-zinc-950/40 p-6">
         <h4 className="text-sm font-semibold text-zinc-200 mb-4 flex items-center gap-2">
-          <Zap className="w-5 h-5 text-emerald-400 animate-pulse" />
+          <Zap className="w-5 h-5 text-purple-400 animate-pulse" />
           Cross-Portfolio Synergy Opportunities
         </h4>
         <div className="grid md:grid-cols-3 gap-4">
-          <div className="rounded-xl border border-zinc-800/80 bg-zinc-900/10 p-5 hover:border-emerald-500/20 hover:bg-zinc-900/20 transition-all">
+          <div className="rounded-xl border border-zinc-800/80 bg-zinc-900/10 p-5 hover:border-purple-500/20 hover:bg-zinc-900/20 transition-all">
             <div className="flex justify-between items-start mb-2">
               <span className="text-xs font-bold text-zinc-300">Consolidated Rx RFP</span>
-              <span className="rounded-full bg-emerald-500/10 border border-emerald-500/30 px-2 py-0.5 text-[10px] font-mono text-emerald-400">
+              <span className="rounded-full bg-purple-500/10 border border-purple-500/30 px-2 py-0.5 text-[10px] font-mono text-purple-400">
                 $1.2M potential
               </span>
             </div>
@@ -528,10 +526,10 @@ export function PEOperatorWarRoom() {
             </p>
           </div>
 
-          <div className="rounded-xl border border-zinc-800/80 bg-zinc-900/10 p-5 hover:border-emerald-500/20 hover:bg-zinc-900/20 transition-all">
+          <div className="rounded-xl border border-zinc-800/80 bg-zinc-900/10 p-5 hover:border-purple-500/20 hover:bg-zinc-900/20 transition-all">
             <div className="flex justify-between items-start mb-2">
               <span className="text-xs font-bold text-zinc-300">Platform Clinical Union</span>
-              <span className="rounded-full bg-emerald-500/10 border border-emerald-500/30 px-2 py-0.5 text-[10px] font-mono text-emerald-400">
+              <span className="rounded-full bg-purple-500/10 border border-purple-500/30 px-2 py-0.5 text-[10px] font-mono text-purple-400">
                 $640K potential
               </span>
             </div>
@@ -540,10 +538,10 @@ export function PEOperatorWarRoom() {
             </p>
           </div>
 
-          <div className="rounded-xl border border-zinc-800/80 bg-zinc-900/10 p-5 hover:border-emerald-500/20 hover:bg-zinc-900/20 transition-all">
+          <div className="rounded-xl border border-zinc-800/80 bg-zinc-900/10 p-5 hover:border-purple-500/20 hover:bg-zinc-900/20 transition-all">
             <div className="flex justify-between items-start mb-2">
               <span className="text-xs font-bold text-zinc-300">Benefits Broker Fee Cap</span>
-              <span className="rounded-full bg-emerald-500/10 border border-emerald-500/30 px-2 py-0.5 text-[10px] font-mono text-emerald-400">
+              <span className="rounded-full bg-purple-500/10 border border-purple-500/30 px-2 py-0.5 text-[10px] font-mono text-purple-400">
                 $280K potential
               </span>
             </div>

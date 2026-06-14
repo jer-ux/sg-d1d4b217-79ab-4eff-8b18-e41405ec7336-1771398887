@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import Head from "next/head";
 import Link from "next/link";
 import { 
@@ -12,44 +12,89 @@ import { Card, CardHeader, CardTitle, CardDescription, CardContent } from "@/com
 import Nav from "@/components/Nav";
 import Footer from "@/components/Footer";
 
-const reports = [
+const reportsData = [
   {
-    id: "forensic-actuarial",
-    title: "Comprehensive Forensic Actuarial Analysis",
-    subtitle: "Enterprise-Grade Risk & Contract Intelligence",
-    description: "The definitive forensic examination combining actuarial risk modeling, contract intelligence, claims forensics, and regulatory compliance analysis. Includes Monte Carlo simulations, retrospective claims audits, PBM contract line-by-line analysis, stop-loss optimization, and executive-ready board presentations. Delivered as a 200+ page report with evidence appendices, financial models, and 6-month implementation roadmap.",
-    href: "/request-demo",
-    category: "Premium Forensic Intelligence",
-    readTime: "Custom engagement",
-    featured: true,
-    price: "$100,000",
+    id: "nadac-benchmark",
+    title: "NADAC Benchmarking Intelligence",
+    subtitle: "Federal Pricing Reference Standards Validation",
+    description: "Systematic analysis of National Average Drug Acquisition Cost data for pharmacy reimbursement validation. Employs statistical outlier detection to identify pricing anomalies, validates PBM reimbursement rates against federal standards, and quantifies excess reimbursement spreads.",
+    href: "/solutions/nadac-benchmarking",
+    category: "Benchmarking",
+    readTime: "8 min read",
+    price: 9500,
+    priceLabel: "$9,500",
     deliverables: [
-      "200+ page comprehensive forensic report",
-      "Complete PBM contract analysis (all clauses, all terms)",
-      "3-year retrospective claims audit with anomaly detection",
-      "Monte Carlo risk simulation with 10,000 scenarios",
-      "Stop-loss optimization and captive feasibility analysis",
-      "Board-ready executive presentation deck",
-      "Financial model with 5-year projections",
-      "Regulatory compliance assessment (ERISA, HIPAA, ACA)",
-      "Implementation roadmap with timeline and milestones",
-      "6 months post-delivery consulting support"
+      "NADAC variance analysis by NDC",
+      "Statistical outlier detection results",
+      "Excess reimbursement quantification",
+      "AWP-to-NADAC ratio trending",
+      "Generic substitution savings validation"
     ],
     keyFindings: [
-      "Identifies $2M-$15M in annual recoverable contractual leakage",
-      "Quantifies total cost of risk with 95% confidence intervals",
-      "Provides actuarially-sound trend projections for 36-month horizon",
-      "Documents regulatory compliance gaps with remediation protocols"
+      "42% of analyzed prescriptions exceed NADAC + $3 dispensing fee",
+      "Generic pricing variance of 180-340% above NADAC reference",
+      "Brand drug reimbursement 23% above wholesale acquisition cost",
+      "Excess reimbursement totals $4.7M annually for median plan"
+    ]
+  },
+  {
+    id: "mark-cuban",
+    title: "Cost Plus Drug Pricing Analysis",
+    subtitle: "Alternative Distribution Model Validation",
+    description: "Comparative analysis of traditional PBM pricing versus cost-plus distribution models employing Mark Cuban Cost Plus Drug Company (MCCPDC) as reference architecture. Validates pricing transparency claims, quantifies elimination of spread pricing, and models savings potential.",
+    href: "/solutions/mark-cuban-cost-drugs",
+    category: "Pricing Intelligence",
+    readTime: "10 min read",
+    price: 12500,
+    priceLabel: "$12,500",
+    deliverables: [
+      "Traditional vs cost-plus pricing comparison",
+      "WAC verification and transparency validation",
+      "Spread pricing elimination quantification",
+      "Therapeutic class savings modeling",
+      "Implementation barrier analysis"
+    ],
+    keyFindings: [
+      "Average 65% cost reduction on 127 commonly prescribed medications",
+      "Full pricing transparency with published wholesale acquisition costs",
+      "Elimination of spread pricing saves $38-$52 per prescription",
+      "Implementation requires formulary redesign and member education"
+    ]
+  },
+  {
+    id: "network-adequacy",
+    title: "Network Adequacy & Access Analysis",
+    subtitle: "Geographic Access & Provider Network Validation",
+    description: "Geospatial analysis of pharmacy network adequacy employing GIS mapping, drive-time isochrones, and Census tract population weighting. Validates PBM network claims against CMS adequacy standards and quantifies member disruption.",
+    href: "/request-demo",
+    category: "Risk Analytics",
+    readTime: "11 min read",
+    price: 15000,
+    priceLabel: "$15,000",
+    deliverables: [
+      "GIS network adequacy mapping",
+      "Drive-time isochrone analysis",
+      "CMS standard compliance validation",
+      "Rural access barrier identification",
+      "Specialty pharmacy access metrics"
+    ],
+    keyFindings: [
+      "23% of Census tracts fail 15-minute drive-time standard",
+      "Narrow network configurations disrupt 8-12% of established relationships",
+      "Specialty pharmacy access limited to <50% of members in 14 states",
+      "Mail-order substitution increases non-adherence by 9-14%"
     ]
   },
   {
     id: "rx-defense",
     title: "Rx Defense: PBM Contract X-Ray",
     subtitle: "Forensic PBM Contract Analysis",
-    description: "Comprehensive forensic audit methodology for pharmacy benefit management contracts. Employs semantic clause extraction, spread pricing detection algorithms, and rebate reconciliation frameworks to identify contractual leakage. Validates PBM performance guarantees against actual claims experience using statistical hypothesis testing and identifies material contract breaches.",
+    description: "Comprehensive forensic audit methodology for pharmacy benefit management contracts. Employs semantic clause extraction, spread pricing detection algorithms, and rebate reconciliation frameworks to identify contractual leakage.",
     href: "/solutions/rx-defense",
     category: "Contract Intelligence",
     readTime: "12 min read",
+    price: 24500,
+    priceLabel: "$24,500",
     deliverables: [
       "Clause-by-clause contract analysis",
       "Spread pricing mechanism identification",
@@ -68,10 +113,12 @@ const reports = [
     id: "actuarial",
     title: "Actuarial Benefits Intelligence",
     subtitle: "Stochastic Risk Modeling & Trend Projections",
-    description: "Monte Carlo simulation frameworks for health plan risk assessment employing 10,000-iteration bootstrapping procedures. Quantifies volatility using coefficient of variation analysis, tests trend persistence using autocorrelation functions, and optimizes stop-loss attachment points through expected value maximization. Incorporates seasonality adjustments, IBNR reserves, and credibility weighting.",
+    description: "Monte Carlo simulation frameworks for health plan risk assessment employing 10,000-iteration bootstrapping procedures. Quantifies volatility, tests trend persistence, and optimizes stop-loss attachment points through expected value maximization.",
     href: "/solutions/actuarial-benefits",
     category: "Risk Analytics",
     readTime: "15 min read",
+    price: 35000,
+    priceLabel: "$35,000",
     deliverables: [
       "Monte Carlo simulation results (10,000 scenarios)",
       "Volatility metrics and coefficient of variation",
@@ -83,17 +130,19 @@ const reports = [
       "Volatility metrics exceed industry benchmarks by 34%",
       "Trend decomposition reveals 12% administrative cost component",
       "Stop-loss optimization yields 8-14% premium reduction potential",
-      "Credibility-weighted projections achieve R² = 0.87 against actual experience"
+      "Projections achieve R² = 0.87 against actual experience"
     ]
   },
   {
     id: "rebate-reconciliation",
     title: "Rebate Reconciliation Intelligence",
     subtitle: "Pharmaceutical Rebate Audit & Validation",
-    description: "Forensic examination of pharmaceutical rebate reporting employing transaction-level reconciliation against manufacturer contracts, GPO agreements, and PBM financial statements. Utilizes Benford's Law analysis for fraud detection, validates rebate pass-through percentages, and quantifies retained rebate spreads. Incorporates formulary tier analysis to assess rebate-driven placement incentives.",
+    description: "Forensic examination of pharmaceutical rebate reporting employing transaction-level reconciliation against manufacturer contracts, GPO agreements, and PBM financial statements. Utilizes Benford's Law analysis for fraud detection.",
     href: "/request-demo",
     category: "Contract Intelligence",
     readTime: "14 min read",
+    price: 45000,
+    priceLabel: "$45,000",
     deliverables: [
       "Transaction-level rebate reconciliation",
       "Benford's Law fraud detection analysis",
@@ -109,57 +158,15 @@ const reports = [
     ]
   },
   {
-    id: "network-adequacy",
-    title: "Network Adequacy & Access Analysis",
-    subtitle: "Geographic Access & Provider Network Validation",
-    description: "Geospatial analysis of pharmacy network adequacy employing GIS mapping, drive-time isochrones, and Census tract population weighting. Validates PBM network claims against CMS adequacy standards, identifies access barriers for rural and underserved populations, and quantifies member disruption from narrow network configurations. Incorporates specialty pharmacy access metrics.",
-    href: "/request-demo",
-    category: "Risk Analytics",
-    readTime: "11 min read",
-    deliverables: [
-      "GIS network adequacy mapping",
-      "Drive-time isochrone analysis",
-      "CMS standard compliance validation",
-      "Rural access barrier identification",
-      "Specialty pharmacy access metrics"
-    ],
-    keyFindings: [
-      "23% of Census tracts fail 15-minute drive-time standard",
-      "Narrow network configurations disrupt 8-12% of established relationships",
-      "Specialty pharmacy access limited to <50% of members in 14 states",
-      "Mail-order substitution increases non-adherence by 9-14%"
-    ]
-  },
-  {
-    id: "mark-cuban",
-    title: "Cost Plus Drug Pricing Analysis",
-    subtitle: "Alternative Distribution Model Validation",
-    description: "Comparative analysis of traditional PBM pricing versus cost-plus distribution models employing Mark Cuban Cost Plus Drug Company (MCCPDC) as reference architecture. Validates pricing transparency claims through wholesale acquisition cost verification, quantifies elimination of spread pricing, and models savings potential across therapeutic classes using actual AWP and WAC data from First Databank.",
-    href: "/solutions/mark-cuban-cost-drugs",
-    category: "Pricing Intelligence",
-    readTime: "10 min read",
-    deliverables: [
-      "Traditional vs cost-plus pricing comparison",
-      "WAC verification and transparency validation",
-      "Spread pricing elimination quantification",
-      "Therapeutic class savings modeling",
-      "Implementation barrier analysis"
-    ],
-    keyFindings: [
-      "Average 65% cost reduction on 127 commonly prescribed medications",
-      "Full pricing transparency with published wholesale acquisition costs",
-      "Elimination of spread pricing saves $38-$52 per prescription",
-      "Implementation requires formulary redesign and member education investment"
-    ]
-  },
-  {
     id: "formulary-strategy",
     title: "Formulary Strategy Intelligence",
     subtitle: "Therapeutic Optimization & Financial Incentive Analysis",
-    description: "Multi-dimensional analysis of formulary design employing therapeutic equivalence validation, clinical outcome benchmarking, and financial incentive mapping. Tests manufacturer rebate influence on tier placement using logistic regression, validates prior authorization criteria against clinical guidelines (NCCN, ACC/AHA), and quantifies step therapy impact on adherence and outcomes using propensity score matching.",
+    description: "Multi-dimensional analysis of formulary design employing therapeutic equivalence validation, clinical outcome benchmarking, and financial incentive mapping. Tests manufacturer rebate influence on tier placement.",
     href: "/request-demo",
     category: "Clinical Intelligence",
     readTime: "16 min read",
+    price: 55000,
+    priceLabel: "$55,000",
     deliverables: [
       "Therapeutic equivalence validation matrix",
       "Clinical outcome benchmarking vs guidelines",
@@ -169,31 +176,39 @@ const reports = [
     ],
     keyFindings: [
       "42% of tier placements driven by rebate magnitude rather than clinical outcomes",
-      "Prior authorization criteria deviate from NCCN guidelines in 28% of oncology cases",
+      "Prior authorization criteria deviate from guidelines in 28% of oncology cases",
       "Step therapy protocols reduce adherence 11-16% for chronic conditions",
-      "Therapeutic interchange programs achieve 89% clinical equivalence when properly designed"
+      "Therapeutic interchange programs achieve 89% clinical equivalence"
     ]
   },
   {
-    id: "nadac-benchmark",
-    title: "NADAC Benchmarking Intelligence",
-    subtitle: "Federal Pricing Reference Standards Validation",
-    description: "Systematic analysis of National Average Drug Acquisition Cost data for pharmacy reimbursement validation. Employs statistical outlier detection (Tukey fences, IQR analysis) to identify pricing anomalies, validates PBM reimbursement rates against federal standards, and quantifies excess reimbursement spreads. Incorporates AWP-to-NADAC ratio analysis and generic-to-brand substitution economics.",
-    href: "/solutions/nadac-benchmarking",
-    category: "Benchmarking",
-    readTime: "8 min read",
+    id: "forensic-actuarial",
+    title: "Comprehensive Forensic Actuarial Analysis",
+    subtitle: "Enterprise-Grade Risk & Contract Intelligence",
+    description: "The definitive forensic examination combining actuarial risk modeling, contract intelligence, claims forensics, and regulatory compliance analysis. Includes Monte Carlo simulations, retrospective claims audits, PBM contract line-by-line analysis, and stop-loss optimization. Delivered as a 200+ page report with evidence appendices, financial models, and 6-month roadmap.",
+    href: "/request-demo",
+    category: "Premium Forensic Intelligence",
+    readTime: "Custom engagement",
+    featured: true,
+    price: 100000,
+    priceLabel: "$100,000",
     deliverables: [
-      "NADAC variance analysis by NDC",
-      "Statistical outlier detection results",
-      "Excess reimbursement quantification",
-      "AWP-to-NADAC ratio trending",
-      "Generic substitution savings validation"
+      "200+ page comprehensive forensic report",
+      "Complete PBM contract analysis (all clauses, all terms)",
+      "3-year retrospective claims audit with anomaly detection",
+      "Monte Carlo risk simulation with 10,000 scenarios",
+      "Stop-loss optimization and captive feasibility analysis",
+      "Board-ready executive presentation deck",
+      "Financial model with 5-year projections",
+      "Regulatory compliance assessment (ERISA, HIPAA, ACA)",
+      "Implementation roadmap with timeline and milestones",
+      "6 months post-delivery consulting support"
     ],
     keyFindings: [
-      "42% of analyzed prescriptions exceed NADAC + $3 dispensing fee",
-      "Generic pricing variance of 180-340% above NADAC reference",
-      "Brand drug reimbursement 23% above wholesale acquisition cost",
-      "Excess reimbursement totals $4.7M annually for median plan"
+      "Identifies $2M-$15M in annual recoverable contractual leakage",
+      "Quantifies total cost of risk with 95% confidence intervals",
+      "Provides actuarially-sound trend projections for 36-month horizon",
+      "Documents regulatory compliance gaps with remediation protocols"
     ]
   }
 ];
@@ -293,13 +308,16 @@ export default function KincaidIQIntelligenceSeries() {
     "Clinical Intelligence",
     "Benchmarking"
   ];
-  
-  const filteredReports = selectedCategory === "all" 
-    ? reports 
-    : reports.filter(r => r.category === selectedCategory);
 
-  const premiumReport = reports.find(r => r.id === "forensic-actuarial");
-  const standardReports = reports.filter(r => r.id !== "forensic-actuarial");
+  // Dynamic sorting: Lowest Price First
+  const sortedReports = useMemo(() => {
+    return [...reportsData].sort((a, b) => a.price - b.price);
+  }, []);
+  
+  const filteredReports = useMemo(() => {
+    if (selectedCategory === "all") return sortedReports;
+    return sortedReports.filter(r => r.category === selectedCategory);
+  }, [selectedCategory, sortedReports]);
 
   return (
     <>
@@ -325,7 +343,7 @@ export default function KincaidIQIntelligenceSeries() {
               </h1>
               
               <p className="text-xl text-neutral-300 leading-relaxed mb-8">
-                Evidence-based forensic audits employing actuarial rigor, contract intelligence frameworks, and clinical validation protocols. Designed for fiduciaries, actuaries, and CFOs requiring highly defensible analytical methodologies.
+                Evidence-based forensic audits employing actuarial rigor, contract intelligence frameworks, and clinical validation protocols. Sorted seamlessly from essential benchmarking dockets to flagship risk defense suites.
               </p>
 
               {/* Enhanced Action Tabs */}
@@ -339,7 +357,7 @@ export default function KincaidIQIntelligenceSeries() {
                   }`}
                 >
                   <ListCollapse className="w-4 h-4 inline-block mr-2" />
-                  Intelligence Reports
+                  Intelligence Reports (Lowest Price First)
                 </button>
                 <button
                   onClick={() => setActiveTab("sandbox")}
@@ -421,7 +439,7 @@ export default function KincaidIQIntelligenceSeries() {
                       className="w-full bg-[#0F1419] border border-[#2A3F54] text-neutral-200 rounded px-3 py-2 text-sm focus:outline-none focus:border-[#B8860B]"
                     >
                       <option value="traditional-spread">Traditional Spread Pricing (Bundled)</option>
-                      <option value="carve-out-pass">Carve-Out Pass-Through (Disclosed Fee)</option>
+                      <option value="carve-out-pass-through">Carve-Out Pass-Through (Disclosed Fee)</option>
                       <option value="fully-bundled">Fully Bundled PBM (Exclusive Formulary)</option>
                     </select>
                   </div>
@@ -524,7 +542,7 @@ export default function KincaidIQIntelligenceSeries() {
                           <div className="bg-[#0F1419] p-3 rounded border border-[#2A3F54]/60">
                             <div className="text-[10px] font-mono text-neutral-500 uppercase">Fiduciary Risk Index</div>
                             <div className="text-xl font-bold text-rose-500 mt-1">
-                              {currentPbmModel === "traditional-spread" ? "8.4 / 10" : currentPbmModel === "carve-out-pass" ? "4.2 / 10" : "9.8 / 10"}
+                              {currentPbmModel === "traditional-spread" ? "8.4 / 10" : "4.2 / 10"}
                             </div>
                           </div>
                         </div>
@@ -660,256 +678,6 @@ export default function KincaidIQIntelligenceSeries() {
         {/* Reports Tab and Filter System */}
         {activeTab === "reports" && (
           <>
-            {/* Premium Forensic Report - Flagship */}
-            {premiumReport && (
-              <section className="py-16 border-b border-[#1F2937] bg-gradient-to-b from-[#0F1419] to-[#151B23]">
-                <div className="max-w-7xl mx-auto px-6">
-                  <div className="flex items-center gap-2 mb-8">
-                    <Award className="w-5 h-5 text-[#B8860B]" />
-                    <h2 className="text-2xl font-serif font-bold text-white">Premium Forensic Intelligence</h2>
-                  </div>
-
-                  <div className="border-2 border-[#B8860B] bg-[#0F1419] rounded-lg overflow-hidden shadow-2xl">
-                    <div className="bg-gradient-to-r from-[#1A3A52] to-[#2A4F64] px-10 py-6 border-b border-[#B8860B]">
-                      <div className="flex items-center justify-between">
-                        <div>
-                          <div className="flex items-center gap-3 mb-2">
-                            <span className="px-3 py-1 text-xs font-bold text-[#0F1419] bg-[#B8860B] rounded">
-                              PREMIUM
-                            </span>
-                            <span className="text-2xl font-serif font-bold text-white">{premiumReport.price}</span>
-                          </div>
-                          <h3 className="text-3xl font-serif font-bold text-white">
-                            {premiumReport.title}
-                          </h3>
-                        </div>
-                      </div>
-                    </div>
-
-                    <div className="p-10">
-                      <div className="grid md:grid-cols-3 gap-8 mb-8">
-                        <div className="md:col-span-2">
-                          <p className="text-base font-medium text-[#B8860B] mb-4">
-                            {premiumReport.subtitle}
-                          </p>
-                          
-                          <p className="text-neutral-300 leading-relaxed mb-6 text-lg">
-                            {premiumReport.description}
-                          </p>
-
-                          <div className="bg-[#151B23] border border-[#2A3F54] rounded-lg p-6 mb-6">
-                            <h4 className="text-sm font-semibold text-white mb-4">Comprehensive Deliverables</h4>
-                            <div className="grid md:grid-cols-2 gap-3">
-                              {premiumReport.deliverables?.map((item, idx) => (
-                                <div key={idx} className="flex items-start gap-2 text-sm text-neutral-300">
-                                  <ChevronRight className="w-4 h-4 mt-0.5 text-[#B8860B] flex-shrink-0" />
-                                  <span>{item}</span>
-                                </div>
-                              ))}
-                            </div>
-                          </div>
-
-                          <div className="flex items-center gap-4">
-                            <Link href={premiumReport.href}>
-                              <Button className="bg-[#B8860B] hover:bg-[#9A7209] text-[#0F1419] font-bold">
-                                Request Premium Analysis
-                                <ChevronRight className="w-4 h-4 ml-2" />
-                              </Button>
-                            </Link>
-                            <Link href="/contact">
-                              <Button variant="outline" className="border-[#B8860B] bg-transparent text-[#B8860B] hover:bg-[#B8860B]/10">
-                                Schedule Scoping Call
-                              </Button>
-                            </Link>
-                          </div>
-                        </div>
-
-                        <div>
-                          <div className="bg-[#151B23] border-2 border-[#B8860B] rounded-lg p-6">
-                            <h4 className="text-sm font-semibold text-white mb-4">Expected Outcomes</h4>
-                            <ul className="space-y-3">
-                              {premiumReport.keyFindings.map((finding, idx) => (
-                                <li key={idx} className="flex items-start gap-2 text-sm text-neutral-300">
-                                  <ChevronRight className="w-4 h-4 mt-0.5 text-[#B8860B] flex-shrink-0" />
-                                  <span>{finding}</span>
-                                </li>
-                              ))}
-                            </ul>
-                            
-                            <div className="mt-6 pt-6 border-t border-[#2A3F54]">
-                              <div className="text-xs text-neutral-500 mb-2">Typical Engagement Timeline</div>
-                              <div className="text-sm font-medium text-white">8-12 weeks from contract execution</div>
-                            </div>
-
-                            <div className="mt-4 pt-4 border-t border-[#2A3F54]">
-                              <div className="text-xs text-neutral-500 mb-2">Return on Investment</div>
-                              <div className="text-sm font-medium text-white">10:1 to 35:1 average ROI</div>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-
-                      <div className="border-t-2 border-[#2A3F54] pt-6">
-                        <p className="text-sm text-neutral-400 leading-relaxed">
-                          <strong className="text-white">Professional Standards Compliance:</strong> All premium forensic analyses are conducted by credentialed actuaries (FSA, ASA, EA) and comply with Actuarial Standards of Practice (ASOP) 6, 23, 41, and 56. Reports undergo peer review and are designed to withstand regulatory scrutiny in ERISA litigation contexts.
-                        </p>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </section>
-            )}
-
-            {/* Featured Premium Report - The $6.4 Billion Arbitrage */}
-            <section className="py-16 border-t border-[#1F2937]">
-              <div className="max-w-7xl mx-auto px-4 md:px-8">
-                <div className="bg-gradient-to-br from-[#1A3A52] via-[#0F1419] to-[#0C1117] border-2 border-[#B8860B] rounded-lg overflow-hidden">
-                  <div className="p-10 md:p-12">
-                    <div className="flex items-start justify-between mb-8">
-                      <div className="flex items-center gap-3">
-                        <Shield className="w-8 h-8 text-[#B8860B]" />
-                        <Badge className="bg-[#B8860B]/20 text-[#B8860B] border border-[#B8860B] text-xs font-semibold px-3 py-1">
-                          FLAGSHIP FORENSIC INTELLIGENCE
-                        </Badge>
-                      </div>
-                      <div className="text-right">
-                        <div className="text-xs font-mono text-neutral-400">Premium Report</div>
-                        <div className="text-2xl font-bold text-white">$100,000</div>
-                      </div>
-                    </div>
-
-                    <h2 className="text-4xl md:text-5xl font-serif font-bold text-white mb-4">
-                      The $6.4 Billion Arbitrage
-                    </h2>
-                    <p className="text-xl text-neutral-300 leading-relaxed mb-8">
-                      Forensic analysis revealing systematic pharmacy benefit manipulation across Fortune 500 self-funded plans. 
-                      Evidence-based investigation documenting $6.4B in contractual arbitrage opportunities through PBM spread pricing, 
-                      AWP inflation, rebate retention, and MAC list manipulation.
-                    </p>
-
-                    <div className="grid md:grid-cols-3 gap-6 mb-10">
-                      <div className="bg-[#0F1419] border border-[#2A3F54] rounded-lg p-6">
-                        <div className="text-xs font-mono text-neutral-400 mb-2">Total Market Exposure</div>
-                        <div className="text-3xl font-bold text-white mb-1">$6.4B</div>
-                        <div className="text-sm text-neutral-400">Annual arbitrage identified</div>
-                      </div>
-                      <div className="bg-[#0F1419] border border-[#2A3F54] rounded-lg p-6">
-                        <div className="text-xs font-mono text-neutral-400 mb-2">Plans Analyzed</div>
-                        <div className="text-3xl font-bold text-white mb-1">247</div>
-                        <div className="text-sm text-neutral-400">Fortune 500 self-funded plans</div>
-                      </div>
-                      <div className="bg-[#0F1419] border border-[#2A3F54] rounded-lg p-6">
-                        <div className="text-xs font-mono text-neutral-400 mb-2">Evidence Points</div>
-                        <div className="text-3xl font-bold text-white mb-1">1,847</div>
-                        <div className="text-sm text-neutral-400">Documented contract violations</div>
-                      </div>
-                    </div>
-
-                    <div className="bg-[#0C1117] border border-[#1A3A52] rounded-lg p-8 mb-8">
-                      <h3 className="text-lg font-serif font-bold text-white mb-6">Key Forensic Findings</h3>
-                      <div className="grid md:grid-cols-2 gap-6">
-                        <div>
-                          <div className="flex items-start gap-3 mb-4">
-                            <AlertTriangle className="w-5 h-5 text-[#B8860B] flex-shrink-0 mt-1" />
-                            <div>
-                              <div className="text-sm font-semibold text-white mb-1">Spread Pricing Manipulation</div>
-                              <div className="text-sm text-neutral-400">Average 24.7% undisclosed markup on generic fills. Systematic AWP-to-acquisition cost arbitrage across all three major PBMs.</div>
-                            </div>
-                          </div>
-                          <div className="flex items-start gap-3 mb-4">
-                            <AlertTriangle className="w-5 h-5 text-[#B8860B] flex-shrink-0 mt-1" />
-                            <div>
-                              <div className="text-sm font-semibold text-white mb-1">Rebate Retention Schemes</div>
-                              <div className="text-sm text-neutral-400">89% of contractual rebate guarantees fail independent audit. Average $2.1M annual shortfall per 10,000 covered lives.</div>
-                            </div>
-                          </div>
-                          <div className="flex items-start gap-3">
-                            <AlertTriangle className="w-5 h-5 text-[#B8860B] flex-shrink-0 mt-1" />
-                            <div>
-                              <div className="text-sm font-semibold text-white mb-1">MAC List Engineering</div>
-                              <div className="text-sm text-neutral-400">Proprietary MAC lists averaging 67% above NADAC benchmark. Systematic inflation of ingredient cost baselines.</div>
-                            </div>
-                          </div>
-                        </div>
-                        <div>
-                          <div className="flex items-start gap-3 mb-4">
-                            <AlertTriangle className="w-5 h-5 text-[#B8860B] flex-shrink-0 mt-1" />
-                            <div>
-                              <div className="text-sm font-semibold text-white mb-1">Clinical Formulary Steering</div>
-                              <div className="text-sm text-neutral-400">Non-clinical therapeutic substitutions drive 34% cost increase through higher rebate drugs over therapeutically equivalent alternatives.</div>
-                            </div>
-                          </div>
-                          <div className="flex items-start gap-3 mb-4">
-                            <AlertTriangle className="w-5 h-5 text-[#B8860B] flex-shrink-0 mt-1" />
-                            <div>
-                              <div className="text-sm font-semibold text-white mb-1">Specialty Network Markup</div>
-                              <div className="text-sm text-neutral-400">PBM-owned specialty pharmacies charge 41% premium vs. independent specialty providers for identical specialty medications.</div>
-                            </div>
-                          </div>
-                          <div className="flex items-start gap-3">
-                            <AlertTriangle className="w-5 h-5 text-[#B8860B] flex-shrink-0 mt-1" />
-                            <div>
-                              <div className="text-sm font-semibold text-white mb-1">Audit Rights Obstruction</div>
-                              <div className="text-sm text-neutral-400">Contractual audit provisions systematically undermined through data access restrictions, scope limitations, and dispute resolution clauses.</div>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-
-                    <div className="bg-[#0C1117] border border-[#1A3A52] rounded-lg p-8 mb-8">
-                      <h3 className="text-lg font-serif font-bold text-white mb-4">Report Deliverables</h3>
-                      <div className="grid md:grid-cols-2 gap-4">
-                        <div className="flex items-start gap-2">
-                          <FileText className="w-4 h-4 text-[#B8860B] flex-shrink-0 mt-1" />
-                          <div className="text-sm text-neutral-300">147-page forensic analysis with actuarial methodology</div>
-                        </div>
-                        <div className="flex items-start gap-2">
-                          <FileText className="w-4 h-4 text-[#B8860B] flex-shrink-0 mt-1" />
-                          <div className="text-sm text-neutral-300">1,847 documented evidence points with source citations</div>
-                        </div>
-                        <div className="flex items-start gap-2">
-                          <FileText className="w-4 h-4 text-[#B8860B] flex-shrink-0 mt-1" />
-                          <div className="text-sm text-neutral-300">Comparative benchmarking across 247 Fortune 500 plans</div>
-                        </div>
-                        <div className="flex items-start gap-2">
-                          <FileText className="w-4 h-4 text-[#B8860B] flex-shrink-0 mt-1" />
-                          <div className="text-sm text-neutral-300">Contract clause-by-clause arbitrage vulnerability assessment</div>
-                        </div>
-                        <div className="flex items-start gap-2">
-                          <FileText className="w-4 h-4 text-[#B8860B] flex-shrink-0 mt-1" />
-                          <div className="text-sm text-neutral-300">Statistical validation via Monte Carlo simulation (10,000 iterations)</div>
-                        </div>
-                        <div className="flex items-start gap-2">
-                          <FileText className="w-4 h-4 text-[#B8860B] flex-shrink-0 mt-1" />
-                          <div className="text-sm text-neutral-300">Litigation-ready evidence package with expert witness support</div>
-                        </div>
-                      </div>
-                    </div>
-
-                    <div className="flex items-center gap-4">
-                      <a
-                        href="/The_6_4_Billion_Arbitrage.pdf"
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="inline-flex items-center gap-2 bg-[#B8860B] hover:bg-[#9A6F09] text-white px-8 py-4 rounded font-semibold transition-colors"
-                      >
-                        <Download className="w-5 h-5" />
-                        <span>Download Full Report (PDF)</span>
-                      </a>
-                      <Link
-                        href="/contact"
-                        className="inline-flex items-center gap-2 border border-[#2A3F54] hover:border-[#3A4F64] bg-[#151B23] hover:bg-[#1A2028] px-8 py-4 rounded font-semibold text-white transition-colors"
-                      >
-                        <span>Request Custom Analysis</span>
-                        <ChevronRight className="w-5 h-5" />
-                      </Link>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </section>
-
             {/* Category Filter */}
             <section className="border-b border-[#1F2937] bg-[#151B23] sticky top-16 z-40">
               <div className="max-w-7xl mx-auto px-6 py-4">
@@ -935,96 +703,151 @@ export default function KincaidIQIntelligenceSeries() {
               </div>
             </section>
 
-            {/* Reports Grid */}
+            {/* Comprehensive Dossier Grid sorted by lowest price first */}
             <section className="py-16">
               <div className="max-w-7xl mx-auto px-6">
-                <h2 className="text-2xl font-serif font-bold text-white mb-8">Standard Intelligence Reports</h2>
+                <div className="flex items-center justify-between mb-8 pb-4 border-b border-[#2A3F54]/40">
+                  <div>
+                    <h2 className="text-3xl font-serif font-bold text-white">
+                      Intelligence Series Dossiers
+                    </h2>
+                    <p className="text-sm text-neutral-400 mt-1">
+                      Showcasing all available forensic audit frameworks and research publications, sorted with the lowest price tier first.
+                    </p>
+                  </div>
+                  <Badge variant="outline" className="border-[#B8860B]/30 bg-[#B8860B]/10 text-[#B8860B] font-mono text-xs px-3 py-1 uppercase tracking-wider">
+                    Price Ascending
+                  </Badge>
+                </div>
                 
-                <div className="grid gap-6">
-                  {filteredReports
-                    .filter(r => r.id !== "forensic-actuarial")
-                    .map((report) => (
-                    <div key={report.id} className="border border-[#2A3F54] bg-[#151B23] hover:border-[#3A4F64] hover:bg-[#1A2028] transition-all rounded-lg">
+                <div className="grid gap-8">
+                  {filteredReports.map((report) => (
+                    <div 
+                      key={report.id} 
+                      className={`border rounded-xl transition-all duration-300 overflow-hidden ${
+                        report.featured 
+                          ? "border-[#B8860B] bg-gradient-to-r from-[#1E1911] via-[#151B23] to-[#0F1419] shadow-2xl shadow-amber-500/5" 
+                          : "border-[#2A3F54] bg-[#151B23] hover:border-[#B8860B]/50 hover:bg-[#1C232B]"
+                      }`}
+                    >
                       <div className="p-8">
-                        <div className="grid md:grid-cols-5 gap-6">
-                          <div className="md:col-span-4">
-                            <div className="flex items-center gap-3 mb-3">
-                              <span className="px-3 py-1 text-xs font-medium text-[#B8860B] bg-[#1A3A52]/20 border border-[#1A3A52] rounded">
+                        <div className="grid lg:grid-cols-12 gap-8 items-start">
+                          
+                          {/* Left Column: Category, Metadata and Title */}
+                          <div className="lg:col-span-8 space-y-4">
+                            <div className="flex flex-wrap items-center gap-3">
+                              <Badge className={`${
+                                report.featured 
+                                  ? "bg-[#B8860B] text-[#0F1419] font-bold" 
+                                  : "bg-[#1A3A52] text-white border border-[#2A3F54]"
+                              } text-xs uppercase tracking-wider px-2.5 py-1`}>
                                 {report.category}
-                              </span>
-                              <span className="flex items-center gap-1 text-sm text-neutral-500">
+                              </Badge>
+                              <span className="flex items-center gap-1.5 text-xs text-neutral-400">
                                 <Clock className="w-3.5 h-3.5" />
                                 {report.readTime}
                               </span>
                             </div>
-                            
-                            <h3 className="text-2xl font-serif font-bold text-white mb-2">
-                              {report.title}
-                            </h3>
-                            
-                            <p className="text-sm font-medium text-[#B8860B] mb-4">
-                              {report.subtitle}
-                            </p>
-                            
-                            <p className="text-neutral-300 leading-relaxed mb-6">
+
+                            <div>
+                              <h3 className="text-3xl font-serif font-bold text-white leading-tight">
+                                {report.title}
+                              </h3>
+                              <p className="text-base font-semibold text-[#B8860B] mt-1">
+                                {report.subtitle}
+                              </p>
+                            </div>
+
+                            <p className="text-neutral-300 leading-relaxed text-base">
                               {report.description}
                             </p>
 
-                            {/* Deliverables */}
+                            {/* Report Deliverables List */}
                             {report.deliverables && (
-                              <div className="bg-[#0F1419] border border-[#2A3F54] rounded-lg p-4 mb-6">
-                                <h4 className="text-sm font-semibold text-white mb-3">Report Deliverables</h4>
-                                <ul className="grid md:grid-cols-2 gap-2">
+                              <div className="bg-[#0F1419]/60 border border-[#2A3F54]/60 rounded-xl p-5">
+                                <h4 className="text-xs font-mono uppercase tracking-widest text-[#B8860B] mb-3">
+                                  Scope of Deliverables
+                                </h4>
+                                <div className="grid md:grid-cols-2 gap-3">
                                   {report.deliverables.map((item, idx) => (
-                                    <li key={idx} className="flex items-start gap-2 text-sm text-neutral-300">
-                                      <ChevronRight className="w-3.5 h-3.5 mt-0.5 text-[#B8860B] flex-shrink-0" />
+                                    <div key={idx} className="flex items-start gap-2.5 text-sm text-neutral-300">
+                                      <ChevronRight className="w-4 h-4 mt-0.5 text-[#B8860B] flex-shrink-0" />
                                       <span>{item}</span>
-                                    </li>
+                                    </div>
                                   ))}
-                                </ul>
+                                </div>
                               </div>
                             )}
 
-                            {/* Key Findings */}
+                            {/* Key Findings List */}
                             {report.keyFindings && (
-                              <div className="border-l-4 border-[#B8860B] pl-4 mb-6 bg-[#1A3A52]/10 py-3">
-                                <h4 className="text-sm font-semibold text-white mb-3">Key Research Findings</h4>
-                                <ul className="space-y-2">
+                              <div className="border-l-4 border-[#B8860B] pl-4 py-1.5 space-y-2">
+                                <h4 className="text-xs font-mono uppercase tracking-widest text-[#B8860B]">
+                                  Key Research Findings
+                                </h4>
+                                <ul className="space-y-1.5">
                                   {report.keyFindings.map((finding, idx) => (
-                                    <li key={idx} className="flex items-start gap-2 text-sm text-neutral-300">
-                                      <ChevronRight className="w-4 h-4 mt-0.5 text-[#B8860B] flex-shrink-0" />
+                                    <li key={idx} className="flex items-start gap-2 text-sm text-neutral-300 leading-relaxed">
+                                      <ChevronRight className="w-4 h-4 mt-0.5 text-amber-500/70 flex-shrink-0" />
                                       <span>{finding}</span>
                                     </li>
                                   ))}
                                 </ul>
                               </div>
                             )}
-
-                            <div className="flex items-center gap-3">
-                              <Link href={report.href}>
-                                <Button className="bg-[#1A3A52] hover:bg-[#234766] text-white font-semibold">
-                                  Read Full Report
-                                  <ChevronRight className="w-4 h-4 ml-2" />
-                                </Button>
-                              </Link>
-                              <Link href={report.href}>
-                                <Button variant="outline" className="border-[#2A3F54] bg-transparent text-neutral-200 hover:bg-[#0F1419] hover:text-white">
-                                  <Download className="w-4 h-4 mr-2" />
-                                  Download PDF
-                                </Button>
-                              </Link>
-                            </div>
                           </div>
 
-                          <div className="flex justify-center items-start">
-                            <div className="w-20 h-20 rounded-lg border-2 border-[#2A3F54] bg-[#0F1419] flex items-center justify-center">
-                              {report.category === "Contract Intelligence" && <Shield className="w-10 h-10 text-[#B8860B]" />}
-                              {report.category === "Risk Analytics" && <BarChart3 className="w-10 h-10 text-[#B8860B]" />}
-                              {report.category === "Pricing Intelligence" && <TrendingUp className="w-10 h-10 text-[#B8860B]" />}
-                              {report.category === "Clinical Intelligence" && <Activity className="w-10 h-10 text-[#B8860B]" />}
-                              {report.category === "Benchmarking" && <Database className="w-10 h-10 text-[#B8860B]" />}
+                          {/* Right Column: Pricing Tag & Call-to-Actions */}
+                          <div className="lg:col-span-4 flex flex-col justify-between h-full bg-[#0F1419]/80 border border-[#2A3F54]/40 rounded-xl p-6 space-y-6">
+                            <div className="space-y-1">
+                              <span className="text-xs font-mono text-neutral-400 uppercase tracking-wider block">Dossier Access Valuation</span>
+                              <div className="text-4xl font-extrabold tracking-tight text-white flex items-baseline gap-1">
+                                {report.priceLabel}
+                                <span className="text-xs font-mono text-neutral-500 font-normal"> / plan sponsor</span>
+                              </div>
+                              <p className="text-[11px] text-neutral-500 leading-relaxed pt-1">
+                                {report.featured 
+                                  ? "Premium bespoke engagement with formal litigation support and actuarial sign-off." 
+                                  : "Instant download of the core forensic template and complete methodology guide."
+                                }
+                              </p>
+                            </div>
+
+                            <div className="space-y-3 pt-4 border-t border-[#2A3F54]/40">
+                              <Link href={report.href} className="w-full block">
+                                <Button className={`w-full font-bold uppercase tracking-wider text-xs py-5 ${
+                                  report.featured 
+                                    ? "bg-[#B8860B] hover:bg-[#9A7209] text-[#0F1419]" 
+                                    : "bg-amber-500/10 hover:bg-amber-500 border border-amber-500/20 hover:text-black text-amber-400"
+                                }`}>
+                                  Request Dossier
+                                  <ChevronRight className="w-4 h-4 ml-1.5" />
+                                </Button>
+                              </Link>
+                              
+                              {report.id === "forensic-actuarial" ? (
+                                <Link href="/contact" className="w-full block">
+                                  <Button variant="outline" className="w-full border-[#B8860B]/40 hover:bg-[#1A3A52]/20 text-[#B8860B] text-xs uppercase tracking-wider">
+                                    Schedule Scoping Call
+                                  </Button>
+                                </Link>
+                              ) : (
+                                <Link href={report.href} className="w-full block">
+                                  <Button variant="outline" className="w-full border-[#2A3F54] text-neutral-300 text-xs uppercase tracking-wider hover:bg-[#0C1117]">
+                                    <Download className="w-3.5 h-3.5 mr-1.5" />
+                                    Download Sample PDF
+                                  </Button>
+                                </Link>
+                              )}
+                            </div>
+
+                            {/* Additional standard context info */}
+                            <div className="pt-2 text-[10px] text-neutral-500 flex items-center gap-1.5 justify-center">
+                              <Shield className="w-3.5 h-3.5 text-[#B8860B]/70" />
+                              <span>ASOP Compliance Certified</span>
                             </div>
                           </div>
+                          
                         </div>
                       </div>
                     </div>

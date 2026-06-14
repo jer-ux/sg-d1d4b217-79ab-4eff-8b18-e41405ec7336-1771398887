@@ -6,6 +6,7 @@ const navItems = [
   { label: "Platform", href: "/platform" },
   { label: "Company", href: "/company" },
   { label: "Family Offices", href: "/family-offices" },
+  { label: "Uploads", href: "/all-uploads" },
   { label: "Request demo", href: "/request-demo", cta: true },
 ];
 

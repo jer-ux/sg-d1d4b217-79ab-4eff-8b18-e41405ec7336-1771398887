@@ -31,6 +31,12 @@ export function SiteHeader({ active }: { active?: string }) {
             War Room
           </Link>
           <Link
+            href="/all-uploads"
+            className={`text-sm ${active === "all-uploads" ? "text-white" : "text-white/60 hover:text-white"}`}
+          >
+            Uploads
+          </Link>
+          <Link
             href="/company"
             className={`text-sm ${active === "company" ? "text-white" : "text-white/60 hover:text-white"}`}
           >

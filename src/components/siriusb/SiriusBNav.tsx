@@ -25,6 +25,9 @@ export function SiriusBNav() {
             <Link href="/case-studies" className="text-sm font-medium hover:text-primary transition-colors">
               Case Studies
             </Link>
+            <Link href="/all-uploads" className="text-sm font-medium hover:text-primary transition-colors">
+              Uploads & Briefs
+            </Link>
             <Link href="/company" className="text-sm font-medium hover:text-primary transition-colors">
               Company
             </Link>
@@ -59,6 +62,13 @@ export function SiriusBNav() {
               onClick={() => setMobileMenuOpen(false)}
             >
               Case Studies
+            </Link>
+            <Link
+              href="/all-uploads"
+              className="block px-3 py-2 text-sm font-medium hover:bg-accent rounded-md transition-colors"
+              onClick={() => setMobileMenuOpen(false)}
+            >
+              Uploads & Briefs
             </Link>
             <Link
               href="/company"

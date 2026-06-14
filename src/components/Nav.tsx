@@ -231,6 +231,10 @@ export default function Nav() {
               )}
             </div>
 
+            <Link href="/all-uploads" className="px-4 py-2 text-black hover:text-black/80 transition-colors rounded-lg hover:bg-slate-50 font-medium">
+              Uploads & Briefs
+            </Link>
+
             <Link href="/request-demo">
               <Button className="bg-burgundy-700 hover:bg-burgundy-800 text-white">
                 Contact Sales
@@ -381,6 +385,10 @@ export default function Nav() {
                 </div>
               )}
             </div>
+
+            <Link href="/all-uploads" className="block px-4 py-3 text-gray-300 hover:text-white hover:bg-white/5 rounded-lg transition-colors font-medium">
+              Uploads & Briefs
+            </Link>
 
             <Link
               href="/request-demo"

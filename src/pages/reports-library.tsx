@@ -23,7 +23,7 @@ import {
 import { Card, CardHeader, CardTitle, CardDescription, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
-import ImageLightbox from "@/components/ImageLightbox";
+import { ImageLightbox } from "@/components/ImageLightbox";
 import Link from "next/link";
 
 const tab1Categories = [

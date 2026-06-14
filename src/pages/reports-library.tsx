@@ -297,7 +297,7 @@ export default function ReportsLibrary() {
   const filterReports = (categories: typeof tab1Categories) => {
     if (!searchQuery) return categories;
     return categories.map(cat => ({
-      ...category,
+      ...cat,
       category: cat.category,
       icon: cat.icon,
       color: cat.color,

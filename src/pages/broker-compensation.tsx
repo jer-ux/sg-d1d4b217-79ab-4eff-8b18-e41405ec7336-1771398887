@@ -19,7 +19,13 @@ import {
   Check, 
   AlertTriangle, 
   Users, 
-  FileSpreadsheet
+  FileSpreadsheet,
+  Download,
+  Lock,
+  Mail,
+  Building,
+  Phone,
+  UserCheck
 } from "lucide-react";
 
 // Mock database of major national and regional brokerage firms with typical override profiles
@@ -45,9 +51,19 @@ export default function BrokerCompensationPage() {
   const [employerName, setEmployerName] = useState<string>("Acme Enterprises");
   const [currentYearIndex, setCurrentYearIndex] = useState<number>(4); // Default to 2026
 
+  // Lead capture state for gated export
+  const [isExportModalOpen, setIsExportModalOpen] = useState<boolean>(false);
+  const [isSubmittingLead, setIsSubmittingLead] = useState<boolean>(false);
+  const [isExported, setIsExported] = useState<boolean>(false);
+  const [leadForm, setLeadForm] = useState({
+    name: "",
+    email: "",
+    company: "",
+    phone: ""
+  });
+
   // Calculation parameters based on inputs over 5 years
   const auditData = useMemo(() => {
-    // Overrides multiplier
     const multiplierMap: Record<string, number> = {
       "pe-backed": 1.45,
       "national": 1.25,
@@ -105,6 +121,48 @@ export default function BrokerCompensationPage() {
       firm.name.toLowerCase().includes(searchQuery.toLowerCase())
     );
   }, [searchQuery]);
+
+  // CSV Exporter
+  const handleExportCSV = () => {
+    // Generate CSV content from state
+    let csvContent = "data:text/csv;charset=utf-8,";
+    csvContent += "5-Year Fiduciary Broker Compensation Forensic Ledger\n";
+    csvContent += `Employer,${leadForm.company || employerName}\n`;
+    csvContent += `Fiduciary Auditor,${leadForm.name}\n`;
+    csvContent += `Contact Email,${leadForm.email}\n`;
+    csvContent += `Contact Phone,${leadForm.phone}\n`;
+    csvContent += `Broker Alignment Type,${brokerType.toUpperCase()}\n\n`;
+    csvContent += "Year,Lives,Premium / Plan Spend,Direct Disclosed,Indirect Overrides,Hidden PBM Spreads,Total Compensation\n";
+
+    auditData.forEach(item => {
+      csvContent += `${item.year},${item.lives},${item.premium},${item.direct},${item.indirect},${item.pbmSpreads},${item.total}\n`;
+    });
+
+    csvContent += `\nTOTALS,,,$${fiveYearDirect},,$${fiveYearIndirect},$${fiveYearTotal}\n`;
+
+    const encodedUri = encodeURI(csvContent);
+    const link = document.createElement("a");
+    link.setAttribute("href", encodedUri);
+    link.setAttribute("download", `${(leadForm.company || "fiduciary").toLowerCase().replace(/\s+/g, "_")}_broker_audit_ledger.csv`);
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  };
+
+  const handleLeadSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!leadForm.name || !leadForm.email || !leadForm.company) return;
+
+    setIsSubmittingLead(true);
+    // Simulate API save
+    setTimeout(() => {
+      setIsSubmittingLead(false);
+      setIsExported(true);
+      setIsExportModalOpen(false);
+      // Immediately download the generated file
+      handleExportCSV();
+    }, 1500);
+  };
 
   // CAA Request Letter Template
   const letterTemplate = `Date: June 15, 2026
@@ -332,15 +390,36 @@ For the ${employerName} Health & Welfare Plan`;
 
               {/* 5-Year Year-by-Year Auditor Table */}
               <Card className="bg-[#0D0D19]/80 border-slate-800/80 text-white">
-                <CardHeader>
-                  <CardTitle className="text-lg font-bold flex items-center gap-2">
-                    <FileSpreadsheet className="w-5 h-5 text-emerald-400" /> 5-Year Ledger Projection (2022 - 2026)
-                  </CardTitle>
-                  <CardDescription className="text-slate-400 text-xs">
-                    Yearly trace of direct disclosed consulting fees vs indirect carrier bonus programs.
-                  </CardDescription>
+                <CardHeader className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 pb-4 border-b border-slate-800/60">
+                  <div>
+                    <CardTitle className="text-lg font-bold flex items-center gap-2">
+                      <FileSpreadsheet className="w-5 h-5 text-emerald-400" /> 5-Year Ledger Projection (2022 - 2026)
+                    </CardTitle>
+                    <CardDescription className="text-slate-400 text-xs">
+                      Yearly trace of direct disclosed consulting fees vs indirect carrier bonus programs.
+                    </CardDescription>
+                  </div>
+
+                  {/* High-Fidelity Gated Export Action */}
+                  <div className="shrink-0">
+                    {isExported ? (
+                      <Button
+                        onClick={handleExportCSV}
+                        className="bg-emerald-600 hover:bg-emerald-700 text-white flex items-center gap-1.5 text-xs font-bold px-4 py-2 rounded-lg"
+                      >
+                        <Download className="w-3.5 h-3.5" /> Re-Download Audit (.CSV)
+                      </Button>
+                    ) : (
+                      <Button
+                        onClick={() => setIsExportModalOpen(true)}
+                        className="bg-[#8C1515] hover:bg-[#a61c1c] text-white flex items-center gap-1.5 text-xs font-bold px-4 py-2 rounded-lg border border-[#8C1515]/40"
+                      >
+                        <Lock className="w-3.5 h-3.5" /> Export Audit Ledger
+                      </Button>
+                    )}
+                  </div>
                 </CardHeader>
-                <CardContent className="pt-0">
+                <CardContent className="pt-6">
                   <div className="overflow-x-auto">
                     <table className="w-full text-left border-collapse text-xs">
                       <thead>
@@ -563,6 +642,113 @@ For the ${employerName} Health & Welfare Plan`;
 
         </div>
       </main>
+
+      {/* LEAD CAPTURE EXPORT DIALOG / MODAL OVERLAY */}
+      {isExportModalOpen && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-md transition-opacity">
+          <div className="relative w-full max-w-md p-6 sm:p-8 rounded-2xl bg-[#0D0D19] border border-slate-800 text-white shadow-2xl">
+            {/* Header */}
+            <div className="text-center mb-6">
+              <div className="inline-flex items-center justify-center w-12 h-12 rounded-full bg-[#8C1515]/10 border border-[#8C1515]/30 text-[#FF5D5D] mb-4">
+                <Lock className="w-5 h-5" />
+              </div>
+              <h3 className="text-xl font-bold text-white">Unlock Fiduciary Export</h3>
+              <p className="text-xs text-slate-400 mt-2">
+                Enter your professional credentials to generate and download the certified 5-Year Broker Compensation Audit.
+              </p>
+            </div>
+
+            {/* Form */}
+            <form onSubmit={handleLeadSubmit} className="space-y-4">
+              <div className="space-y-1.5">
+                <Label htmlFor="fiduciary-name" className="text-xs text-slate-300 flex items-center gap-1">
+                  <UserCheck className="w-3.5 h-3.5 text-indigo-400" /> Fiduciary Name
+                </Label>
+                <Input
+                  id="fiduciary-name"
+                  type="text"
+                  required
+                  placeholder="e.g., Sarah Jenkins, CFO"
+                  value={leadForm.name}
+                  onChange={(e) => setLeadForm({ ...leadForm, name: e.target.value })}
+                  className="bg-[#05050A]/80 border-slate-800 text-white text-xs rounded-lg"
+                />
+              </div>
+
+              <div className="space-y-1.5">
+                <Label htmlFor="fiduciary-email" className="text-xs text-slate-300 flex items-center gap-1">
+                  <Mail className="w-3.5 h-3.5 text-indigo-400" /> Corporate Email
+                </Label>
+                <Input
+                  id="fiduciary-email"
+                  type="email"
+                  required
+                  placeholder="e.g., sjenkins@company.com"
+                  value={leadForm.email}
+                  onChange={(e) => setLeadForm({ ...leadForm, email: e.target.value })}
+                  className="bg-[#05050A]/80 border-slate-800 text-white text-xs rounded-lg"
+                />
+              </div>
+
+              <div className="space-y-1.5">
+                <Label htmlFor="fiduciary-company" className="text-xs text-slate-300 flex items-center gap-1">
+                  <Building className="w-3.5 h-3.5 text-indigo-400" /> Company / Employer Name
+                </Label>
+                <Input
+                  id="fiduciary-company"
+                  type="text"
+                  required
+                  placeholder="e.g., Acme Corp"
+                  value={leadForm.company}
+                  onChange={(e) => setLeadForm({ ...leadForm, company: e.target.value })}
+                  className="bg-[#05050A]/80 border-slate-800 text-white text-xs rounded-lg"
+                />
+              </div>
+
+              <div className="space-y-1.5">
+                <Label htmlFor="fiduciary-phone" className="text-xs text-slate-300 flex items-center gap-1">
+                  <Phone className="w-3.5 h-3.5 text-indigo-400" /> Direct Phone Number
+                </Label>
+                <Input
+                  id="fiduciary-phone"
+                  type="tel"
+                  placeholder="e.g., (555) 019-2834"
+                  value={leadForm.phone}
+                  onChange={(e) => setLeadForm({ ...leadForm, phone: e.target.value })}
+                  className="bg-[#05050A]/80 border-slate-800 text-white text-xs rounded-lg"
+                />
+              </div>
+
+              <div className="pt-2 flex gap-3">
+                <Button
+                  type="button"
+                  variant="outline"
+                  onClick={() => setIsExportModalOpen(false)}
+                  className="w-1/3 border-slate-800 text-slate-400 hover:bg-slate-900 rounded-lg text-xs"
+                >
+                  Cancel
+                </Button>
+                <Button
+                  type="submit"
+                  disabled={isSubmittingLead}
+                  className="w-2/3 bg-indigo-600 hover:bg-indigo-700 disabled:bg-indigo-800/50 text-white font-bold rounded-lg text-xs flex items-center justify-center gap-1.5"
+                >
+                  {isSubmittingLead ? (
+                    <>
+                      <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+                      Auditing Ledger...
+                    </>
+                  ) : (
+                    <>
+                      <Download className="w-3.5 h-3.5" /> Generate & Download
+                    </>
+                  )}
+                </Button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
 
       <Footer />
     </>

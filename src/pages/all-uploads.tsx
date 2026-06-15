@@ -28,7 +28,7 @@ interface UploadedAsset {
 }
 
 const ALL_ASSETS: UploadedAsset[] = [
-  // Stanford PHS Case & Kimball Precedent (Custom Cardinal Red Sandstone Setup)
+  // Stanford PHS Case & Kimball Precedent
   {
     title: "Kimball v. Stanford University (Fiduciary Duty Precedent Brief)",
     filename: "Kimball_v11_Stanford_1_1_.pdf",
@@ -733,120 +733,6 @@ const ALL_ASSETS: UploadedAsset[] = [
   }
 ];
 
-// High-fidelity cover preview generator component
-const DocumentCoverPreview: React.FC<{ asset: UploadedAsset }> = ({ asset }) => {
-  if (asset.stanfordDesign) {
-    return (
-      <div className="w-full h-full bg-[#1A0303] text-stone-200 p-4 border-b border-[#8C1515]/30 relative flex flex-col justify-between font-serif">
-        <div className="absolute top-0 right-0 w-24 h-24 bg-[#8C1515]/10 rounded-full blur-xl pointer-events-none" />
-        <div className="flex justify-between items-center text-[9px] border-b border-[#8C1515]/30 pb-2 text-stone-400 tracking-wider">
-          <span>STANFORD PHS DOCKET</span>
-          <span>ERISA #PHS-101</span>
-        </div>
-        <div className="my-auto space-y-2 py-2">
-          <div className="w-8 h-8 rounded-full border border-[#8C1515] flex items-center justify-center text-[#E37A7A] text-xs font-bold font-sans mx-auto mb-1">
-            S
-          </div>
-          <h4 className="text-sm font-bold text-stone-100 text-center tracking-tight leading-snug line-clamp-3">
-            {asset.title}
-          </h4>
-          <p className="text-[10px] text-stone-400 text-center font-sans">
-            Plan Code: Stanford Fiduciary PHS-v11
-          </p>
-        </div>
-        <div className="border-t border-[#8C1515]/30 pt-2 flex justify-between items-center text-[9px] font-sans text-stone-500">
-          <span>{asset.author || "Stanford Health"}</span>
-          <span>{asset.date}</span>
-        </div>
-      </div>
-    );
-  }
-
-  // Classify standard cover type by category
-  if (asset.category === "Litigation & Forensic Audits") {
-    return (
-      <div className="w-full h-full bg-slate-950 p-4 border-b border-indigo-500/20 relative flex flex-col justify-between font-sans">
-        <div className="absolute top-0 right-0 w-24 h-24 bg-indigo-500/10 rounded-full blur-xl pointer-events-none" />
-        <div className="flex justify-between items-center text-[9px] border-b border-slate-800 pb-2 text-indigo-400 font-mono tracking-widest uppercase">
-          <span>COURT DOCKET EVIDENCE</span>
-          <span className="text-emerald-400 font-bold">SECURED</span>
-        </div>
-        <div className="my-auto py-2 space-y-2 text-center">
-          <div className="inline-flex p-1.5 bg-indigo-500/15 rounded-lg border border-indigo-500/30 text-indigo-400 mb-1">
-            <Scale className="w-4 h-4" />
-          </div>
-          <h4 className="text-xs font-extrabold text-white tracking-tight leading-snug line-clamp-3 uppercase font-mono">
-            {asset.title}
-          </h4>
-          <div className="inline-block bg-slate-900 border border-slate-800 text-slate-400 text-[8px] px-2 py-0.5 rounded uppercase tracking-wider font-mono">
-            Doc Ref: {asset.docId}
-          </div>
-        </div>
-        <div className="border-t border-slate-900 pt-2 flex justify-between items-center text-[9px] text-slate-500 font-mono">
-          <span>{asset.author || "SiriusB Legal"}</span>
-          <span>{asset.date}</span>
-        </div>
-      </div>
-    );
-  }
-
-  if (asset.category === "Platform Blueprints & Briefings") {
-    return (
-      <div className="w-full h-full bg-slate-950 p-4 border-b border-indigo-500/20 relative flex flex-col justify-between font-mono">
-        <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-purple-500 via-indigo-500 to-pink-500" />
-        <div className="flex justify-between items-center text-[8px] text-indigo-400 border-b border-slate-900 pb-2">
-          <span>SYSTEM SCHEMATIC // v{asset.docId.split("-")[2] || "1.0"}</span>
-          <span className="flex items-center gap-1">
-            <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" /> LIVE
-          </span>
-        </div>
-        <div className="my-auto py-2 space-y-1">
-          <div className="flex items-center gap-1.5 text-slate-500 text-[9px] mb-1">
-            <Terminal className="w-3.5 h-3.5 text-purple-400" />
-            <span>SIRIUSB_IQ_INFRASTRUCTURE</span>
-          </div>
-          <h4 className="text-[11px] font-bold text-indigo-300 leading-snug line-clamp-3">
-            {asset.title}
-          </h4>
-          <div className="text-[9px] text-slate-400">
-            Author: {asset.author || "Systems Architect"}
-          </div>
-        </div>
-        <div className="border-t border-slate-900 pt-2 flex justify-between items-center text-[8px] text-slate-600">
-          <span>HASH: SHA-256</span>
-          <span>{asset.date}</span>
-        </div>
-      </div>
-    );
-  }
-
-  // Actuarial Science & Math Cover
-  return (
-    <div className="w-full h-full bg-slate-950 p-4 border-b border-indigo-500/20 relative flex flex-col justify-between font-sans">
-      <div className="absolute inset-0 bg-[linear-gradient(to_right,#1e293b_1px,transparent_1px),linear-gradient(to_bottom,#1e293b_1px,transparent_1px)] bg-[size:14px_14px] opacity-10 pointer-events-none" />
-      <div className="flex justify-between items-center text-[9px] border-b border-slate-800 pb-2 text-emerald-400 font-mono tracking-wider">
-        <span>ACTUARIAL CALCULUS</span>
-        <span>Σ CERTIFIED</span>
-      </div>
-      <div className="my-auto py-2 text-center space-y-2">
-        <div className="inline-flex p-1.5 bg-emerald-500/10 rounded-lg border border-emerald-500/20 text-emerald-400 mb-1">
-          <TrendingUp className="w-4 h-4" />
-        </div>
-        <h4 className="text-xs font-bold text-emerald-300 tracking-tight leading-snug line-clamp-3">
-          {asset.title}
-        </h4>
-        <p className="text-[8px] text-slate-500 font-mono">
-          EBITDA PROTECTION PROTOCOL: {asset.docId}
-        </p>
-      </div>
-      <div className="border-t border-slate-900 pt-2 flex justify-between items-center text-[9px] text-slate-500 font-mono">
-        <span>{asset.author || "Kincaid Actuarial"}</span>
-        <span>{asset.date}</span>
-      </div>
-    </div>
-  );
-};
-
 export default function AllUploads() {
   const [activeImage, setActiveImage] = useState<string | null>(null);
   const [searchQuery, setSearchQuery] = useState("");
@@ -952,16 +838,6 @@ export default function AllUploads() {
                       <div className="absolute top-0 right-0 w-32 h-32 bg-[#8C1515]/20 rounded-full blur-2xl pointer-events-none" />
                       
                       <div>
-                        {/* Interactive Page 1 PDF Cover Preview Simulation */}
-                        <div className="relative aspect-[4/3] w-full overflow-hidden border-b border-[#8C1515]/20">
-                          <DocumentCoverPreview asset={asset} />
-                          {/* Premium Overlay Guard */}
-                          <div className="absolute inset-0 bg-gradient-to-t from-[#0A0202] via-transparent to-transparent pointer-events-none" />
-                          <div className="absolute top-3 right-3 bg-red-950/90 backdrop-blur-md border border-[#8C1515]/30 text-red-200 text-[10px] px-2.5 py-0.5 rounded-md font-mono flex items-center gap-1 shadow-lg">
-                            <span className="w-1.5 h-1.5 rounded-full bg-red-500 animate-pulse" /> Custom Cover Preview
-                          </div>
-                        </div>
-
                         <div className="p-6 pb-0 flex justify-between items-start">
                           <div className="p-3 bg-[#8C1515]/15 rounded-xl border border-[#8C1515]/30 group-hover:bg-[#8C1515]/25 transition-all">
                             <ShieldAlert className="w-5 h-5 text-[#E37A7A]" />
@@ -1040,7 +916,7 @@ export default function AllUploads() {
                     className="bg-slate-950/40 border border-white/5 rounded-2xl overflow-hidden hover:border-indigo-500/40 hover:shadow-2xl hover:shadow-indigo-500/5 transition-all group flex flex-col justify-between"
                   >
                     <div>
-                      {/* Visual Preview for Images or Native PDF Embedding */}
+                      {/* Visual Preview for Images */}
                       {asset.isImage ? (
                         <div className="relative aspect-video w-full overflow-hidden bg-slate-900 border-b border-white/5">
                           <img 
@@ -1056,20 +932,6 @@ export default function AllUploads() {
                           </div>
                         </div>
                       ) : (
-                        <div className="relative aspect-[4/3] w-full overflow-hidden border-b border-white/5">
-                          {/* Real-time Document Cover Preview */}
-                          <DocumentCoverPreview asset={asset} />
-                          {/* Overlay guard prevent direct interaction but keep hover glows active */}
-                          <div className="absolute inset-0 bg-gradient-to-t from-[#07070F] via-transparent to-transparent pointer-events-none" />
-                          <div className="absolute inset-0 bg-indigo-500/5 opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none" />
-                          
-                          <div className="absolute top-3 right-3 bg-slate-950/90 backdrop-blur-md border border-white/10 text-indigo-300 text-[10px] px-2.5 py-0.5 rounded-md font-mono flex items-center gap-1 shadow-lg">
-                            <span className="w-1.5 h-1.5 rounded-full bg-indigo-500 animate-pulse" /> Document Cover Preview
-                          </div>
-                        </div>
-                      )}
-
-                      {!asset.isImage && (
                         <div className="p-6 pb-0 flex justify-between items-start">
                           <div className="p-3 bg-indigo-500/10 rounded-xl border border-indigo-500/20 group-hover:bg-indigo-500/20 transition-all">
                             {asset.type === "LinkedIn Carousel" ? (

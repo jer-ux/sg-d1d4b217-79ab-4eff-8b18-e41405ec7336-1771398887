@@ -7,7 +7,6 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Slider } from "@/components/ui/slider";
-import { Tabs, TabsContent, ListSquare } from "@/components/ui/tabs";
 import { 
   Calculator, 
   Search, 
@@ -15,14 +14,10 @@ import {
   TrendingUp, 
   ShieldCheck, 
   ArrowRight, 
-  Download, 
   Copy, 
   Check, 
   AlertTriangle, 
-  Building2, 
-  DollarSign, 
   Users, 
-  HelpCircle,
   FileSpreadsheet
 } from "lucide-react";
 
@@ -58,9 +53,6 @@ export default function BrokerCompensationPage() {
       "regional": 1.05
     };
     const mult = multiplierMap[brokerType] || 1.1;
-
-    const basePeepYear = lives * 420; // Avg $35/peep/month broker direct value
-    const baseOverride = annualPremium * 0.045; // 4.5% avg override
 
     const years = [2022, 2023, 2024, 2025, 2026];
     

@@ -18,6 +18,10 @@ import { TechBackdrop } from "@/components/TechBackdrop";
 import { LandingUploader } from "@/components/home/LandingUploader";
 import { LandingBrokerLookup } from "@/components/home/LandingBrokerLookup";
 import { LandingActuarialReport } from "@/components/home/LandingActuarialReport";
+import { CalendlyWidget } from "@/components/CalendlyWidget";
+import { ROICalculator } from "@/components/ROICalculator";
+import { PBMSpreadCalculator } from "@/components/PBMSpreadCalculator";
+import { ExitIntentPopup } from "@/components/ExitIntentPopup";
 import Nav from "@/components/Nav";
 import Footer from "@/components/Footer";
 import { Badge } from "@/components/ui/badge";
@@ -204,23 +208,18 @@ export default function HomePage() {
               </div>
 
               <div className="flex flex-col sm:flex-row items-center gap-4">
-                <a
-                  href="https://calendly.com/jer-kincaidrmc/30min"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="flex items-center justify-center gap-2 bg-[#1A3A52] hover:bg-[#234766] text-white font-semibold text-base px-8 py-4 rounded transition-colors duration-200 w-full sm:w-auto"
-                >
-                  <Clock className="h-5 w-5" />
-                  Book PBM Contract Audit
-                  <ArrowRight className="h-5 w-5" />
-                </a>
+                <CalendlyWidget 
+                  url="https://calendly.com/jer-kincaidrmc/30min"
+                  buttonText="Book Your Free Fiduciary Audit"
+                  className="bg-[#1A3A52] hover:bg-[#234766] text-white font-semibold text-base px-8 py-4 rounded transition-colors duration-200 w-full sm:w-auto"
+                />
 
                 <Link
-                  href="/solutions/pbm-vs-cost-plus"
+                  href="#roi-calculator"
                   className="flex items-center justify-center gap-2 border border-[#2A3F54] bg-transparent hover:bg-[#151B23] text-neutral-200 hover:text-white font-semibold text-base px-8 py-4 rounded transition-colors duration-200 w-full sm:w-auto"
                 >
-                  <Eye className="h-5 w-5" />
-                  Compare PBM vs Cost Plus
+                  <DollarSign className="h-5 w-5" />
+                  Calculate Your Savings
                 </Link>
               </div>
 
@@ -331,6 +330,49 @@ export default function HomePage() {
               <LandingActuarialReport />
             </AnimatedSection>
 
+          </div>
+        </section>
+
+        <section id="roi-calculator" className="relative py-24 border-t border-[#1F2937] overflow-hidden">
+          <div className="absolute inset-0 pointer-events-none">
+            <div className="absolute inset-0 opacity-20">
+              <TechBackdrop intensity={0.6} density={0.8} />
+            </div>
+            <div className="absolute inset-0 bg-gradient-to-b from-transparent via-emerald-950/5 to-transparent" />
+          </div>
+
+          <div className="max-w-7xl mx-auto px-4 md:px-8 relative z-10">
+            <AnimatedSection className="mb-12 text-center max-w-3xl mx-auto space-y-4">
+              <span className="text-xs font-mono text-emerald-400 uppercase tracking-widest">Immediate Value Calculators</span>
+              <h2 className="text-4xl md:text-5xl font-serif font-bold">See Your Potential Savings in Real-Time</h2>
+              <p className="text-neutral-400 text-lg leading-relaxed">
+                Use our interactive calculators to quantify the hidden costs in your current PBM contract. Input your actual numbers and see immediate results.
+              </p>
+            </AnimatedSection>
+
+            <div className="grid lg:grid-cols-2 gap-8">
+              <AnimatedSection>
+                <ROICalculator />
+              </AnimatedSection>
+
+              <AnimatedSection>
+                <PBMSpreadCalculator />
+              </AnimatedSection>
+            </div>
+
+            <AnimatedSection className="mt-12 text-center">
+              <div className="inline-flex flex-col sm:flex-row items-center gap-4 bg-gradient-to-br from-[#1A3A52] to-[#234766] border border-[#B8860B]/30 rounded-2xl p-8">
+                <div className="text-left space-y-2">
+                  <h3 className="text-2xl font-serif font-bold text-white">Ready to recover these savings?</h3>
+                  <p className="text-neutral-300 text-sm">Book a 30-minute audit call to validate your numbers with our actuarial team.</p>
+                </div>
+                <CalendlyWidget 
+                  url="https://calendly.com/jer-kincaidrmc/30min"
+                  buttonText="Schedule Audit Call"
+                  className="bg-gradient-to-r from-emerald-600 to-emerald-500 hover:from-emerald-500 hover:to-emerald-400 text-white font-bold px-8 py-4 rounded-xl shadow-lg shadow-emerald-500/25 flex-shrink-0"
+                />
+              </div>
+            </AnimatedSection>
           </div>
         </section>
 
@@ -918,6 +960,8 @@ export default function HomePage() {
         onClose={handleBadgeClose}
         onNextLevel={handleNextLevel}
       />
+
+      <ExitIntentPopup />
     </>
   );
 }

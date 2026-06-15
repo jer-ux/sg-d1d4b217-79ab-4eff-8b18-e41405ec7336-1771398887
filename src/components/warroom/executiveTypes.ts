@@ -78,6 +78,13 @@ export interface TileData {
   receipt?: {
     id: string;
     status: "verified" | "unverified";
+    verified?: boolean;
+    confidence?: number;
+    dq_tests_passed?: number;
+    dq_tests_total?: number;
+    freshness_minutes?: number;
+    owner?: string;
+    notes?: string;
   };
 }
 

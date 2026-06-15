@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Slider } from "@/components/ui/slider";
+import Link from "next/link";
 import { 
   Calculator, 
   Search, 
@@ -552,10 +553,10 @@ For the ${employerName} Health & Welfare Plan`;
             </p>
             <div className="flex flex-col sm:flex-row justify-center gap-4">
               <Button asChild className="bg-[#8C1515] hover:bg-[#a61c1c] text-white rounded-lg px-6 py-2.5 font-bold">
-                <a href="/contact">Book Forensic Audit</a>
+                <Link href="/contact">Book Forensic Audit</Link>
               </Button>
               <Button asChild variant="outline" className="border-slate-800 text-white hover:bg-slate-900 rounded-lg px-6">
-                <a href="/all-uploads">Access Forensic Library</a>
+                <Link href="/all-uploads">Access Forensic Library</Link>
               </Button>
             </div>
           </div>

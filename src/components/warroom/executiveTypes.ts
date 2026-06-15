@@ -25,6 +25,7 @@ export type TileKey =
   | "contractLeakage" 
   | "contractAmbiguity" 
   | "contractCompliance" 
+  | "contractCompliance" 
   | "benefitsNPS" 
   | "employeeNPS"
   // CHRO Keys (Human Capital & Benefits)
@@ -60,18 +61,20 @@ export type ChartDataPoint = {
   value: number;
 };
 
-export type TileData = {
+export interface TileData {
   key: TileKey;
   title: string;
-  value: string;
-  delta?: string;
-  subtitle?: string;
-  trend?: "up" | "down" | "flat";
-  chartData?: Array<{ period: string; value: number }>;
-  receipt?: EvidenceReceipt;
-  framework?: "McKinsey" | "Bain";
-  updatedAt?: string;
-};
+  value: string | number;
+  delta: string;
+  trend: "up" | "down" | "flat";
+  subtitle: string;
+  framework?: string;
+  chartData?: ChartDataPoint[];
+  gradient?: string;
+  iconBg?: string;
+  iconBorder?: string;
+  iconColor?: string;
+}
 
 export type ExecutiveEvent = {
   id: string;

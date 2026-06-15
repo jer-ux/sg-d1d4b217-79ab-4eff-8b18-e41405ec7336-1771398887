@@ -70,10 +70,21 @@ const TILE_THEMES = {
   },
 };
 
-export function ExecutiveKPITile({ data }: { data?: TileData }) {
-  const tileKey = data?.key;
+interface ExecutiveKPITileProps {
+  tile: TileData;
+  Icon: React.ComponentType<{ className?: string }>;
+  onClick: () => void;
+}
 
-  if (!data) {
+export function ExecutiveKPITile({ tile, Icon, onClick }: ExecutiveKPITileProps) {
+  const gradient = tile.gradient || "from-[#1A3A52] to-[#234766]";
+  const iconBg = tile.iconBg || "bg-[#1A3A52]/20";
+  const iconBorder = tile.iconBorder || "border-[#1A3A52]/30";
+  const iconColor = tile.iconColor || "text-[#B8860B]";
+
+  const tileKey = tile?.key;
+
+  if (!tile) {
     return (
       <div className="rounded-2xl border border-zinc-800/60 bg-zinc-950/60 p-6">
         <div className="h-40 animate-pulse rounded-lg bg-zinc-900/50" />
@@ -81,7 +92,7 @@ export function ExecutiveKPITile({ data }: { data?: TileData }) {
     );
   }
 
-  const { title, value, delta, subtitle, updatedAt, receipt, chartData, trend, framework, key } = data;
+  const { title, value, delta, subtitle, updatedAt, receipt, chartData, trend, framework, key } = tile;
   const theme = TILE_THEMES[key as keyof typeof TILE_THEMES] || TILE_THEMES.costTrendStress;
 
   const getTrendIcon = () => {

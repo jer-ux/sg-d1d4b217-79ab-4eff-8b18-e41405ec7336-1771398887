@@ -101,7 +101,17 @@ export function buildStreamTiles(ctx: Ctx): TileData[] {
     framework: "McKinsey",
     updatedAt: nowIso(),
     chartData: costTrendChartData,
-    receipt: receipt("CFO Office", true, rand(0.92, 0.96), "YoY net PMPM trend exceeds McKinsey commercial baseline (9-10%). EBITDA at risk."),
+    receipt: {
+      id: "rcpt_fiduciary_001",
+      status: "verified",
+      verified: true,
+      confidence: 99,
+      dq_tests_passed: 12,
+      dq_tests_total: 12,
+      freshness_minutes: 5,
+      owner: "Legal Compliance Team",
+      notes: "Quarterly ERISA validation complete"
+    }
   };
 
   const leakageValue = rand(2.8, 3.5);
@@ -117,7 +127,17 @@ export function buildStreamTiles(ctx: Ctx): TileData[] {
     framework: "McKinsey",
     updatedAt: nowIso(),
     chartData: leakageChartData,
-    receipt: receipt("Procurement Ops", true, rand(0.94, 0.98), "Off-contract spend + pricing misses + missed rebates. Recoverable via enforcement."),
+    receipt: {
+      id: "rcpt_risk_002",
+      status: "verified",
+      verified: true,
+      confidence: 96,
+      dq_tests_passed: 11,
+      dq_tests_total: 12,
+      freshness_minutes: 120,
+      owner: "Risk Analytics",
+      notes: "Specialty drug exposure monitored continuously"
+    }
   };
 
   const complianceValue = rand(93, 96);
@@ -133,7 +153,17 @@ export function buildStreamTiles(ctx: Ctx): TileData[] {
     framework: "McKinsey",
     updatedAt: nowIso(),
     chartData: complianceChartData,
-    receipt: receipt("Compliance + Audit", true, rand(0.91, 0.95), "Compliant invoices/claims. Non-compliance spend reduced via enforcement automation."),
+    receipt: {
+      id: "rcpt_renewals_003",
+      status: "verified",
+      verified: true,
+      confidence: 94,
+      dq_tests_passed: 10,
+      dq_tests_total: 11,
+      freshness_minutes: 240,
+      owner: "Procurement",
+      notes: "RFP milestones tracked via contract management platform"
+    }
   };
 
   const ambiguityValue = rand(38, 45);
@@ -149,7 +179,17 @@ export function buildStreamTiles(ctx: Ctx): TileData[] {
     framework: "McKinsey",
     updatedAt: nowIso(),
     chartData: ambiguityChartData,
-    receipt: receipt("Legal + Procurement", true, rand(0.87, 0.92), "Clause-quality score (definitions, audit rights, pricing terms). High-spend contracts monitored."),
+    receipt: {
+      id: "rcpt_governance_004",
+      status: "verified",
+      verified: true,
+      confidence: 100,
+      dq_tests_passed: 15,
+      dq_tests_total: 15,
+      freshness_minutes: 360,
+      owner: "Board Secretary",
+      notes: "All committee signatures cryptographically validated"
+    }
   };
 
   const adoptionValue = rand(45, 49);
@@ -165,7 +205,17 @@ export function buildStreamTiles(ctx: Ctx): TileData[] {
     framework: "McKinsey",
     updatedAt: nowIso(),
     chartData: adoptionChartData,
-    receipt: receipt("Benefits Strategy", true, rand(0.89, 0.93), "Eligible population enrolled in innovative designs (HDHP/HSA steering, navigation, COE). Target: 60% by EOY."),
+    receipt: {
+      id: "rcpt_utilization_005",
+      status: "verified",
+      verified: true,
+      confidence: 97,
+      dq_tests_passed: 11,
+      dq_tests_total: 12,
+      freshness_minutes: 60,
+      owner: "HR Analytics",
+      notes: "Quarterly benefits enrollment audit"
+    }
   };
 
   const pharmacyValue = rand(7.5, 9.0);
@@ -181,7 +231,17 @@ export function buildStreamTiles(ctx: Ctx): TileData[] {
     framework: "McKinsey",
     updatedAt: nowIso(),
     chartData: pharmacyChartData,
-    receipt: receipt("Pharmacy Operations", true, rand(0.86, 0.91), "Rx spend under opaque reimbursement terms. Shifting to cost-based models; target <25% by Q2 2026."),
+    receipt: {
+      id: "rcpt_retention_006",
+      status: "verified",
+      verified: true,
+      confidence: 95,
+      dq_tests_passed: 10,
+      dq_tests_total: 11,
+      freshness_minutes: 180,
+      owner: "Talent Management",
+      notes: "Exit interview data correlated with benefits satisfaction"
+    }
   };
 
   const benefitsNPSValue = rand(36, 40);
@@ -197,7 +257,17 @@ export function buildStreamTiles(ctx: Ctx): TileData[] {
     framework: "Bain",
     updatedAt: nowIso(),
     chartData: benefitsNPSChartData,
-    receipt: receipt("Employee Experience", true, rand(0.85, 0.90), "Bain NPS for enrollment, claims, navigation, pharmacy experience. Correlation with plan adoption."),
+    receipt: {
+      id: "rcpt_roi_007",
+      status: "verified",
+      verified: true,
+      confidence: 93,
+      dq_tests_passed: 9,
+      dq_tests_total: 10,
+      freshness_minutes: 300,
+      owner: "Finance",
+      notes: "ROI calculated using McKinsey 3-horizon model"
+    }
   };
 
   const employeeNPSValue = rand(40, 44);
@@ -213,7 +283,17 @@ export function buildStreamTiles(ctx: Ctx): TileData[] {
     framework: "Bain",
     updatedAt: nowIso(),
     chartData: employeeNPSChartData,
-    receipt: receipt("People Ops", true, rand(0.88, 0.93), "eNPS for internal benefits ops + vendor service teams. Leading indicator of execution quality and retention."),
+    receipt: {
+      id: "rcpt_wellness_008",
+      status: "verified",
+      verified: true,
+      confidence: 91,
+      dq_tests_passed: 10,
+      dq_tests_total: 11,
+      freshness_minutes: 120,
+      owner: "Wellness Team",
+      notes: "Biometric screening completion tracked via vendor portal"
+    }
   };
 
   return [

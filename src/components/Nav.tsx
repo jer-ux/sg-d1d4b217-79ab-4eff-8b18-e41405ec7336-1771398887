@@ -24,9 +24,9 @@ export default function Nav() {
             <Image 
               src="/1772951240194-20bfeb68-285b-4423-9485-b2585796d66a.jpeg"
               alt="Kincaid IQ Data Sciences Lab"
-              width={180}
-              height={45}
-              className="h-10 w-auto"
+              width={40}
+              height={40}
+              className="h-10 w-10 rounded-full object-cover border-2 border-[#B8860B]/30"
               priority
             />
           </Link>

@@ -1,19 +1,16 @@
 import { useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
-import { Menu, X, ChevronDown, Search, Users, Building2, AlertTriangle, Calculator, FileText, TrendingUp, Briefcase, BarChart3, Shield, LineChart, DollarSign, Heart } from "lucide-react";
+import { Menu, X, ChevronDown, Search, Users, Building2, AlertTriangle, Calculator, FileText, TrendingUp, Briefcase, BarChart3, Shield, LineChart, DollarSign, Heart, FolderOpen } from "lucide-react";
 import { useRouter } from "next/router";
 import { Button } from "@/components/ui/button";
-import { DropdownMenu, DropdownMenuTrigger, DropdownMenuContent, DropdownMenuItem } from "@/components/ui/dropdown-menu";
 
 export default function Nav() {
   const [isOpen, setIsOpen] = useState(false);
   const [companyDropdownOpen, setCompanyDropdownOpen] = useState(false);
-  const [solutionsDropdownOpen, setSolutionsDropdownOpen] = useState(false);
-  const [actuarialDropdownOpen, setActuarialDropdownOpen] = useState(false);
-  const [agenticDropdownOpen, setAgenticDropdownOpen] = useState(false);
   const [focusAreasDropdownOpen, setFocusAreasDropdownOpen] = useState(false);
   const [kincaidIqDropdownOpen, setKincaidIqDropdownOpen] = useState(false);
+  const [auditsDropdownOpen, setAuditsDropdownOpen] = useState(false);
 
   return (
     <nav className="fixed top-0 z-[200] w-full border-b border-slate-200/20 bg-white/95 backdrop-blur-xl">
@@ -36,8 +33,13 @@ export default function Nav() {
             {/* Intelligence Series - Dropdown */}
             <div className="relative">
               <button
-                onClick={() => setKincaidIqDropdownOpen(!kincaidIqDropdownOpen)}
-                className="flex items-center gap-2 px-4 py-2 text-black hover:text-black/80 transition-colors rounded-lg hover:bg-slate-50">
+                onClick={() => {
+                  setKincaidIqDropdownOpen(!kincaidIqDropdownOpen);
+                  setCompanyDropdownOpen(false);
+                  setFocusAreasDropdownOpen(false);
+                  setAuditsDropdownOpen(false);
+                }}
+                className="flex items-center gap-2 px-4 py-2 text-black hover:text-black/80 transition-colors rounded-lg hover:bg-slate-50 font-medium">
                 Intelligence Series
                 <ChevronDown className={`w-3 h-3 transition-transform ${kincaidIqDropdownOpen ? "rotate-180" : ""}`} />
               </button>
@@ -102,8 +104,13 @@ export default function Nav() {
             {/* Company Menu */}
             <div className="relative">
               <button
-                onClick={() => setCompanyDropdownOpen(!companyDropdownOpen)}
-                className="flex items-center gap-2 px-4 py-2 text-black hover:text-black/80 transition-colors rounded-lg hover:bg-slate-50">
+                onClick={() => {
+                  setCompanyDropdownOpen(!companyDropdownOpen);
+                  setKincaidIqDropdownOpen(false);
+                  setFocusAreasDropdownOpen(false);
+                  setAuditsDropdownOpen(false);
+                }}
+                className="flex items-center gap-2 px-4 py-2 text-black hover:text-black/80 transition-colors rounded-lg hover:bg-slate-50 font-medium">
                 Company
                 <ChevronDown className={`w-3 h-3 transition-transform ${companyDropdownOpen ? "rotate-180" : ""}`} />
               </button>
@@ -153,8 +160,13 @@ export default function Nav() {
             {/* Areas of Focus - Dropdown */}
             <div className="relative">
               <button
-                onClick={() => setFocusAreasDropdownOpen(!focusAreasDropdownOpen)}
-                className="flex items-center gap-2 px-4 py-2 text-black hover:text-black/80 transition-colors rounded-lg hover:bg-slate-50">
+                onClick={() => {
+                  setFocusAreasDropdownOpen(!focusAreasDropdownOpen);
+                  setKincaidIqDropdownOpen(false);
+                  setCompanyDropdownOpen(false);
+                  setAuditsDropdownOpen(false);
+                }}
+                className="flex items-center gap-2 px-4 py-2 text-black hover:text-black/80 transition-colors rounded-lg hover:bg-slate-50 font-medium">
                 Areas of Focus
                 <ChevronDown className={`w-3 h-3 transition-transform ${focusAreasDropdownOpen ? "rotate-180" : ""}`} />
               </button>
@@ -231,12 +243,49 @@ export default function Nav() {
               )}
             </div>
 
-            <Link href="/all-uploads" className="px-4 py-2 text-black hover:text-black/80 transition-colors rounded-lg hover:bg-slate-50 font-medium">
-              Uploads & Briefs
-            </Link>
+            {/* Broker Audits & Vault Dropdown */}
+            <div className="relative">
+              <button
+                onClick={() => {
+                  setAuditsDropdownOpen(!auditsDropdownOpen);
+                  setKincaidIqDropdownOpen(false);
+                  setCompanyDropdownOpen(false);
+                  setFocusAreasDropdownOpen(false);
+                }}
+                className="flex items-center gap-2 px-4 py-2 text-black hover:text-black/80 transition-colors rounded-lg hover:bg-slate-50 font-medium">
+                Audits & Briefs
+                <ChevronDown className={`w-3 h-3 transition-transform ${auditsDropdownOpen ? "rotate-180" : ""}`} />
+              </button>
+              {auditsDropdownOpen && (
+                <div className="absolute top-full left-0 mt-2 w-72 bg-gray-900/95 backdrop-blur-xl rounded-xl border border-gray-700/50 shadow-xl overflow-hidden z-[210]">
+                  <div className="p-2">
+                    <Link
+                      href="/broker-compensation"
+                      onClick={() => setAuditsDropdownOpen(false)}
+                      className="block px-4 py-3 text-gray-300 hover:text-white hover:bg-[#8C1515]/20 rounded-lg transition-colors duration-150">
+                      <div className="font-medium flex items-center gap-2">
+                        <Calculator className="w-4 h-4 text-amber-500" />
+                        5-Year Broker Auditor
+                      </div>
+                      <div className="text-xs text-gray-400">Audit commissions & secret plan kickbacks</div>
+                    </Link>
+                    <Link
+                      href="/all-uploads"
+                      onClick={() => setAuditsDropdownOpen(false)}
+                      className="block px-4 py-3 text-gray-300 hover:text-white hover:bg-blue-500/10 rounded-lg transition-colors duration-150">
+                      <div className="font-medium flex items-center gap-2">
+                        <FolderOpen className="w-4 h-4 text-blue-400" />
+                        Uploads & Briefs
+                      </div>
+                      <div className="text-xs text-gray-400">Access full forensic PDF libraries</div>
+                    </Link>
+                  </div>
+                </div>
+              )}
+            </div>
 
             <Link href="/request-demo">
-              <Button className="bg-burgundy-700 hover:bg-burgundy-800 text-white">
+              <Button className="bg-[#8C1515] hover:bg-[#a61c1c] text-white">
                 Contact Sales
               </Button>
             </Link>
@@ -280,15 +329,6 @@ export default function Nav() {
                   <Link href="/pbm-crime-boss" className="block px-4 py-2 text-sm text-gray-400 hover:text-white hover:bg-orange-500/10 rounded-lg transition-colors">
                     PBM Crime Boss
                   </Link>
-                  <a 
-                    href="/Kincaid_iQ_JBHunt_EBITDA_Defense.pdf" 
-                    target="_blank" 
-                    rel="noopener noreferrer"
-                    className="block mx-4 my-2 px-4 py-2 text-xs bg-amber-500/10 border border-amber-500/20 text-amber-300 hover:text-white rounded-lg transition-colors font-bold flex items-center justify-between"
-                  >
-                    <span>⭐ JB Hunt EBITDA Defense (PDF)</span>
-                    <span className="text-[9px] bg-amber-500/20 text-amber-400 px-1 rounded">Forensic</span>
-                  </a>
                 </div>
               )}
             </div>
@@ -338,9 +378,6 @@ export default function Nav() {
                   <Link href="/capital-markets" className="block px-4 py-2 text-sm text-gray-400 hover:text-white hover:bg-indigo-500/10 rounded-lg transition-colors">
                     For Capital Markets
                   </Link>
-                  <Link href="/ma-vc-pe" className="block px-4 py-2 text-sm text-gray-400 hover:text-white hover:bg-violet-500/10 rounded-lg transition-colors">
-                    For PE Operators
-                  </Link>
                   <Link href="/personas/cfo" className="block px-4 py-2 text-sm text-gray-400 hover:text-white hover:bg-emerald-500/10 rounded-lg transition-colors">
                     For CFOs
                   </Link>
@@ -357,38 +394,25 @@ export default function Nav() {
               )}
             </div>
 
-            {/* Agentic Workflows Dropdown - Mobile */}
+            {/* Audits & Briefs Dropdown - Mobile */}
             <div>
               <button
-                onClick={() => setAgenticDropdownOpen(!agenticDropdownOpen)}
+                onClick={() => setAuditsDropdownOpen(!auditsDropdownOpen)}
                 className="flex items-center justify-between w-full px-4 py-3 text-gray-300 hover:text-white hover:bg-white/5 rounded-lg transition-colors">
-                <span className="font-medium">Agentic Workflows</span>
-                <ChevronDown className={`w-4 h-4 transition-transform ${agenticDropdownOpen ? "rotate-180" : ""}`} />
+                <span className="font-medium">Audits & Briefs</span>
+                <ChevronDown className={`w-4 h-4 transition-transform ${auditsDropdownOpen ? "rotate-180" : ""}`} />
               </button>
-              {agenticDropdownOpen && (
+              {auditsDropdownOpen && (
                 <div className="ml-4 mt-2 space-y-1">
-                  <Link href="/agentic-workflow" className="block px-4 py-2 text-sm text-gray-400 hover:text-white hover:bg-white/5 rounded-lg transition-colors">
-                    Agentic Workflows
+                  <Link href="/broker-compensation" className="block px-4 py-2 text-sm text-gray-400 hover:text-white hover:bg-[#8C1515]/20 rounded-lg transition-colors">
+                    5-Year Broker Auditor
                   </Link>
-                  <Link href="/gen-ai-agents" className="block px-4 py-2 text-sm text-gray-400 hover:text-white hover:bg-white/5 rounded-lg transition-colors">
-                    Gen AI Agents
-                  </Link>
-                  <Link href="/agentic-transformation" className="block px-4 py-2 text-sm text-gray-400 hover:text-white hover:bg-white/5 rounded-lg transition-colors">
-                    Agentic Transformation
-                  </Link>
-                  <Link href="/agentic-policy" className="block px-4 py-2 text-sm text-gray-400 hover:text-white hover:bg-white/5 rounded-lg transition-colors">
-                    Agentic Policy
-                  </Link>
-                  <Link href="/solutions/ai-automation" className="block px-4 py-2 text-sm text-gray-400 hover:text-white hover:bg-white/5 rounded-lg transition-colors">
-                    AI Automation
+                  <Link href="/all-uploads" className="block px-4 py-2 text-sm text-gray-400 hover:text-white hover:bg-blue-500/10 rounded-lg transition-colors">
+                    Uploads & Briefs Library
                   </Link>
                 </div>
               )}
             </div>
-
-            <Link href="/all-uploads" className="block px-4 py-3 text-gray-300 hover:text-white hover:bg-white/5 rounded-lg transition-colors font-medium">
-              Uploads & Briefs
-            </Link>
 
             <Link
               href="/request-demo"

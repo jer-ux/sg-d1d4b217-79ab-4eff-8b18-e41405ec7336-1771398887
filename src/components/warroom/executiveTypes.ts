@@ -74,6 +74,11 @@ export interface TileData {
   iconBg?: string;
   iconBorder?: string;
   iconColor?: string;
+  updatedAt?: string;
+  receipt?: {
+    id: string;
+    status: "verified" | "unverified";
+  };
 }
 
 export type ExecutiveEvent = {

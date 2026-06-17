@@ -864,7 +864,7 @@ export default function ActuarialBenefitsPage() {
                   className="relative z-10 rounded-3xl border border-slate-800 shadow-2xl object-cover"
                 />
                 <div className="absolute bottom-6 left-6 right-6 bg-slate-900/90 backdrop-blur-md border border-slate-700 p-4 rounded-2xl z-20">
-                  <div className="text-sm text-emerald-400 font-semibold mb-1">Chief Actuary & Founder</div>
+                  <div className="text-sm text-emerald-400 font-semibold mb-1">Founder</div>
                   <div className="text-white font-bold text-xl">Jeremiah Shrack</div>
                 </div>
               </div>

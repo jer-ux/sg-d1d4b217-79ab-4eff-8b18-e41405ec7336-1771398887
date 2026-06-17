@@ -243,6 +243,13 @@ export default function Nav() {
               )}
             </div>
 
+            {/* Direct Broker Auditor Link */}
+            <Link
+              href="/broker-compensation"
+              className="px-4 py-2 text-[#8C1515] hover:text-[#a61c1c] font-semibold transition-colors rounded-lg hover:bg-red-50/50">
+              Broker Auditor
+            </Link>
+
             {/* Broker Audits & Vault Dropdown */}
             <div className="relative">
               <button
@@ -304,6 +311,14 @@ export default function Nav() {
       {isOpen && (
         <div className="md:hidden border-t border-white/10 bg-black/95 backdrop-blur-xl">
           <div className="space-y-1 px-4 py-3">
+            {/* Direct Link on Mobile too */}
+            <Link
+              href="/broker-compensation"
+              onClick={() => setIsOpen(false)}
+              className="block px-4 py-3 text-[#fecaca] hover:bg-white/5 font-semibold rounded-lg transition-colors">
+              5-Year Broker Auditor
+            </Link>
+
             {/* Intelligence Series Dropdown - Mobile */}
             <div>
               <button

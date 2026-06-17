@@ -1,5 +1,3 @@
-"use client";
-
 import { useRef } from "react";
 import { SEO } from "@/components/SEO";
 import Nav from "@/components/Nav";
@@ -10,10 +8,8 @@ import { Badge } from "@/components/ui/badge";
 import { TrendingUp, Target, Shield, FileCheck, Briefcase, Activity, CheckCircle2, ArrowRight, Sparkles, Zap, AlertTriangle } from "lucide-react";
 import Link from "next/link";
 import { motion, useScroll, useTransform, useInView } from "framer-motion";
-import { PremiumBackground } from "@/components/premium/PremiumBackground";
-import { Interactive3DCard } from "@/components/premium/Interactive3DCard";
 
-function StatsCard({ title, value, description, gradient, icon: Icon, delay = 0 }: { title: string; value: string; description: string; gradient: string; icon: any; delay?: number }) {
+function StatsCard({ title, value, description, icon: Icon, delay = 0 }: { title: string; value: string; description: string; icon: any; delay?: number }) {
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, margin: "-50px" });
 
@@ -26,32 +22,17 @@ function StatsCard({ title, value, description, gradient, icon: Icon, delay = 0 
       whileHover={{ scale: 1.05, y: -10 }}
       className="relative group"
     >
-      <Card className="relative overflow-hidden bg-slate-900/50 border-slate-700/50 backdrop-blur-xl h-full">
-        <motion.div
-          className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500"
-          style={{ background: gradient }}
-          animate={{
-            backgroundPosition: ["0% 0%", "100% 100%", "0% 0%"],
-          }}
-          transition={{ duration: 8, repeat: Infinity }}
-        />
+      <Card className="relative overflow-hidden bg-slate-900/60 border border-slate-800 backdrop-blur-xl h-full">
+        <div className="absolute inset-0 bg-gradient-to-br from-emerald-500/5 to-[#B8860B]/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
         
-        <div className="absolute inset-0 opacity-0 group-hover:opacity-30 blur-2xl transition-opacity duration-500" 
-             style={{ background: gradient }} 
-        />
-
         <CardHeader className="relative">
           <div className="flex items-center gap-3 mb-2">
-            <motion.div
-              whileHover={{ rotate: 360, scale: 1.2 }}
-              transition={{ duration: 0.6 }}
-              className="p-2 rounded-lg bg-slate-800/50 ring-1 ring-white/10"
-            >
-              <Icon className="h-6 w-6" style={{ color: gradient.match(/#[0-9a-fA-F]{6}/)?.[0] }} />
-            </motion.div>
+            <div className="p-2 rounded-lg bg-emerald-950/40 border border-emerald-500/20">
+              <Icon className="h-6 w-6 text-emerald-400" />
+            </div>
             <CardTitle className="text-sm font-medium text-slate-400">{title}</CardTitle>
           </div>
-          <div className="text-4xl font-bold bg-gradient-to-r from-white to-slate-300 bg-clip-text text-transparent">
+          <div className="text-4xl font-bold text-white">
             {value}
           </div>
         </CardHeader>
@@ -60,28 +41,6 @@ function StatsCard({ title, value, description, gradient, icon: Icon, delay = 0 
             {description}
           </p>
         </CardContent>
-
-        <div className="absolute inset-0 opacity-0 group-hover:opacity-100 pointer-events-none">
-          {[...Array(6)].map((_, i) => (
-            <motion.div
-              key={i}
-              className="absolute w-1 h-1 bg-white rounded-full"
-              style={{
-                left: `${Math.random() * 100}%`,
-                top: `${Math.random() * 100}%`,
-              }}
-              animate={{
-                scale: [0, 1, 0],
-                opacity: [0, 1, 0],
-              }}
-              transition={{
-                duration: 2,
-                repeat: Infinity,
-                delay: i * 0.3,
-              }}
-            />
-          ))}
-        </div>
       </Card>
     </motion.div>
   );
@@ -100,404 +59,282 @@ export default function MaVcPePage() {
   return (
     <>
       <SEO
-        title="M&A / VC / PE Diligence - SiriusB iQ Ai Data Sciences Lab"
-        description="Evidence-based M&A diligence and value realization tracking. Turn synergy claims into proven outcomes with cryptographic evidence receipts and autonomous realization tracking."
+        title="M&A / VC / PE Diligence & Value Realization - SiriusB iQ"
+        description="Forensic, evidence-based M&A diligence and value realization tracking. Turn hidden portfolio company benefits waste into enterprise valuation growth."
       />
-      <div className="flex min-h-screen flex-col bg-gradient-to-br from-slate-950 via-purple-950 to-slate-900">
+      <div className="flex min-h-screen flex-col bg-slate-950 text-white">
         <Nav />
         
         <main className="flex-1">
           {/* Hero Section */}
-          <section ref={heroRef} className="relative border-b border-white/10 overflow-hidden">
-            <div className="absolute inset-0">
-              <PremiumBackground />
-            </div>
+          <section ref={heroRef} className="relative pt-32 pb-24 px-6 overflow-hidden border-b border-emerald-950/40 bg-gradient-to-b from-emerald-950/20 via-slate-950 to-slate-950">
+            <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-emerald-900/10 via-transparent to-transparent" />
+            
+            <div className="relative mx-auto max-w-7xl">
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+                <motion.div
+                  style={{ opacity, scale }}
+                  initial={{ opacity: 0, x: -50 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
+                >
+                  <div className="inline-flex items-center gap-3 px-4 py-1.5 bg-emerald-950/45 border border-emerald-500/20 rounded-full mb-8 backdrop-blur-sm">
+                    <Shield className="w-4 h-4 text-emerald-400" />
+                    <span className="text-xs font-semibold tracking-wider text-emerald-200 uppercase">M&A / VC / PE Diligence</span>
+                  </div>
 
-            <div className="absolute inset-0 bg-gradient-to-b from-purple-950/70 via-slate-950/80 to-slate-950" />
+                  <h1 className="text-5xl md:text-6xl font-extrabold mb-6 tracking-tight text-white leading-tight font-serif">
+                    Find Leakage. Prove It. <br />
+                    <span className="text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 via-emerald-200 to-[#B8860B]">
+                      Track Realization.
+                    </span>
+                  </h1>
 
-            <motion.div 
-              style={{ opacity, scale }}
-              className="relative px-6 py-32"
-            >
-              <div className="mx-auto max-w-7xl">
-                <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-                  <motion.div
-                    initial={{ opacity: 0, x: -50 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
-                  >
-                    <motion.div
-                      initial={{ opacity: 0, y: 20 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      transition={{ duration: 0.6, delay: 0.2 }}
-                    >
-                      <Badge className="mb-6 bg-rose-500/20 text-rose-300 border-rose-500/30 backdrop-blur-sm">
-                        <AlertTriangle className="w-3 h-3 mr-1" />
-                        M&A / VC / PE Diligence
-                      </Badge>
-                    </motion.div>
+                  <p className="text-lg md:text-xl text-slate-300 mb-8 leading-relaxed">
+                    Evidence-based diligence that survives integration reality. Transform <span className="text-emerald-400 font-bold">claimed synergies</span> into <span className="text-[#B8860B] font-bold">proven outcomes</span> with cryptographic evidence receipts and autonomous realization tracking.
+                  </p>
 
-                    <motion.h1 
-                      className="text-6xl font-bold tracking-tight mb-6"
-                      initial={{ opacity: 0, y: 20 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      transition={{ duration: 0.6, delay: 0.3 }}
-                    >
-                      <span className="bg-gradient-to-r from-white via-rose-200 to-orange-200 bg-clip-text text-transparent">
-                        Find Leakage. Prove It.
-                      </span>
-                      <br />
-                      <span className="bg-gradient-to-r from-orange-200 via-amber-300 to-rose-300 bg-clip-text text-transparent">
-                        Underwrite It. Track Realization.
-                      </span>
-                    </motion.h1>
+                  <div className="flex gap-4 flex-wrap">
+                    <Link href="/request-demo">
+                      <Button size="lg" className="bg-emerald-600 hover:bg-emerald-700 text-white text-base px-8 py-5 rounded-lg shadow-xl shadow-emerald-950/50 font-bold">
+                        Schedule Diligence Review
+                        <Zap className="w-4 h-4 ml-2" />
+                      </Button>
+                    </Link>
+                    <Link href="/all-uploads">
+                      <Button size="lg" variant="outline" className="border-slate-800 text-slate-200 hover:bg-slate-900 text-base px-8 py-5 rounded-lg">
+                        View Briefs Library
+                        <ArrowRight className="w-4 h-4 ml-2" />
+                      </Button>
+                    </Link>
+                  </div>
+                </motion.div>
 
-                    <motion.p 
-                      className="text-xl text-slate-300 mb-8 leading-relaxed"
-                      initial={{ opacity: 0, y: 20 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      transition={{ duration: 0.6, delay: 0.4 }}
-                    >
-                      Evidence-based diligence that survives integration reality. Transform <span className="text-rose-400 font-bold">claimed synergies</span> into <span className="text-emerald-400 font-bold">proven outcomes</span> with cryptographic evidence receipts and autonomous realization tracking.
-                    </motion.p>
-
-                    <motion.div 
-                      className="flex gap-4 flex-wrap"
-                      initial={{ opacity: 0, y: 20 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      transition={{ duration: 0.6, delay: 0.5 }}
-                    >
-                      <Link href="/request-demo">
-                        <Button size="lg" className="group relative overflow-hidden bg-rose-600 hover:bg-rose-700 border-0">
-                          <span className="relative z-10 flex items-center gap-2">
-                            Schedule Diligence Review
-                            <Zap className="w-4 h-4" />
-                          </span>
-                          <motion.div
-                            className="absolute inset-0 bg-gradient-to-r from-rose-400 to-orange-400"
-                            initial={{ x: "-100%" }}
-                            whileHover={{ x: 0 }}
-                            transition={{ duration: 0.3 }}
-                          />
-                        </Button>
-                      </Link>
-                      <Link href="/capital-library">
-                        <Button size="lg" variant="outline" className="border-slate-600 text-slate-300 hover:bg-slate-800 backdrop-blur-sm">
-                          View Case Studies
-                          <ArrowRight className="w-4 h-4 ml-2" />
-                        </Button>
-                      </Link>
-                    </motion.div>
-                  </motion.div>
-
-                  <motion.div 
-                    className="grid grid-cols-2 gap-4"
-                    initial={{ opacity: 0, x: 50 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    transition={{ duration: 0.8, delay: 0.3, ease: [0.22, 1, 0.36, 1] }}
-                  >
-                    <StatsCard
-                      icon={AlertTriangle}
-                      title="Claimed Synergies"
-                      value="$18M"
-                      description="Pre-close management promises"
-                      gradient="linear-gradient(135deg, #f97316, #ea580c)"
-                      delay={0.1}
-                    />
-                    <StatsCard
-                      icon={CheckCircle2}
-                      title="Proven & Realized"
-                      value="$7.4M"
-                      description="Evidence-backed outcomes"
-                      gradient="linear-gradient(135deg, #10b981, #059669)"
-                      delay={0.2}
-                    />
-                    <StatsCard
-                      icon={Activity}
-                      title="In-Flight"
-                      value="$4.1M"
-                      description="With owners & timelines"
-                      gradient="linear-gradient(135deg, #3b82f6, #2563eb)"
-                      delay={0.3}
-                    />
-                    <StatsCard
-                      icon={Target}
-                      title="Realization Rate"
-                      value="87%"
-                      description="With evidence framework"
-                      gradient="linear-gradient(135deg, #8b5cf6, #7c3aed)"
-                      delay={0.4}
-                    />
-                  </motion.div>
-                </div>
+                <motion.div 
+                  className="grid grid-cols-2 gap-4"
+                  initial={{ opacity: 0, x: 50 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ duration: 0.8, delay: 0.3, ease: [0.22, 1, 0.36, 1] }}
+                >
+                  <StatsCard
+                    icon={AlertTriangle}
+                    title="Claimed Synergies"
+                    value="$18.2M"
+                    description="Pre-close management estimates"
+                    delay={0.1}
+                  />
+                  <StatsCard
+                    icon={CheckCircle2}
+                    title="Proven & Realized"
+                    value="$7.4M"
+                    description="Evidence-backed cash flow"
+                    delay={0.2}
+                  />
+                  <StatsCard
+                    icon={Activity}
+                    title="In-Flight Wins"
+                    value="$4.3M"
+                    description="Assigned owners & timelines"
+                    delay={0.3}
+                  />
+                  <StatsCard
+                    icon={Target}
+                    title="Realization Rate"
+                    value="87%"
+                    description="With fiduciary audit framework"
+                    delay={0.4}
+                  />
+                </motion.div>
               </div>
-            </motion.div>
+            </div>
           </section>
 
           {/* The Problem Section */}
-          <section className="relative px-6 py-12 border-b border-white/10 overflow-hidden">
-            <motion.div
-              className="absolute inset-0 opacity-20"
-              animate={{
-                background: [
-                  "radial-gradient(circle at 0% 0%, #f97316 0%, transparent 50%)",
-                  "radial-gradient(circle at 100% 100%, #ea580c 0%, transparent 50%)",
-                  "radial-gradient(circle at 0% 100%, #f97316 0%, transparent 50%)",
-                  "radial-gradient(circle at 100% 0%, #ea580c 0%, transparent 50%)",
-                ],
-              }}
-              transition={{ duration: 10, repeat: Infinity }}
-            />
-
+          <section className="relative px-6 py-20 bg-slate-950 border-b border-slate-900">
             <div className="relative mx-auto max-w-7xl">
-              <motion.div 
-                className="text-center mb-16"
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, margin: "-100px" }}
-                transition={{ duration: 0.6 }}
-              >
-                <h2 className="text-5xl font-bold mb-6">
-                  <span className="bg-gradient-to-r from-white via-rose-200 to-orange-200 bg-clip-text text-transparent">
-                    Why Most Synergies Evaporate
-                  </span>
+              <div className="text-center mb-16">
+                <span className="text-xs font-bold text-emerald-400 uppercase tracking-widest bg-emerald-950/50 px-3 py-1 rounded-full">
+                  Deal Execution Challenges
+                </span>
+                <h2 className="text-4xl font-bold text-white mt-4 font-serif">
+                  Why Most Synergies Evaporate Post-Close
                 </h2>
-                <p className="text-xl text-slate-300 max-w-3xl mx-auto">
-                  The gap between pre-close promises and post-close reality destroys value. Here's what actually happens.
+                <p className="text-sm text-slate-400 mt-2 max-w-2xl mx-auto">
+                  The gap between pre-close Excel projections and post-acquisition integration destroys enterprise value. Let's translate what actually happens.
                 </p>
-              </motion.div>
+              </div>
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                <Interactive3DCard
-                  icon={AlertTriangle}
-                  title="Pre-Close Promises"
-                  description="Management claims '$15M in cost synergies' with PowerPoint decks and high-level categories. No owners, no timelines, no evidence receipts. Deal model assumes 80% realization based on 'confidence'. Board approves without proof framework."
-                  gradient="linear-gradient(135deg, #f97316, #ea580c)"
-                  href="/capital-library"
-                  delay={0.1}
-                />
-                <Interactive3DCard
-                  icon={Target}
-                  title="Post-Close Reality"
-                  description="18 months later, CFO can't prove any realization. No ledger, no reconciliation, no accountability. Integration team disbanded, knowledge lost. Exit valuation drops $60M due to unproven synergies. LP confidence shattered."
-                  gradient="linear-gradient(135deg, #ef4444, #dc2626)"
-                  href="/capital-library"
-                  delay={0.2}
-                />
+                {/* Promise Card */}
+                <div className="p-8 rounded-2xl bg-slate-900 border border-slate-800 flex flex-col justify-between">
+                  <div>
+                    <div className="flex items-center gap-2 mb-4">
+                      <span className="px-2.5 py-1 text-[11px] font-bold bg-rose-500/10 text-rose-400 rounded-full uppercase">Pre-Close Projections</span>
+                    </div>
+                    <h3 className="text-xl font-bold text-white mb-3">
+                      "Management claims $15M in operational synergies"
+                    </h3>
+                    <p className="text-sm text-slate-400 leading-relaxed mb-6">
+                      Deal teams rely on high-level PowerPoint decks from sellers' brokers. No individual owners, no target milestone dates, and zero verifiable evidence receipts.
+                    </p>
+                  </div>
+                  <div className="p-5 rounded-xl bg-emerald-950/20 border border-emerald-500/15">
+                    <div className="flex items-center gap-2 mb-2 text-emerald-400 font-bold text-xs">
+                      <HelpCircleIcon className="w-3.5 h-3.5" /> Plain English Reality Check:
+                    </div>
+                    <p className="text-xs text-slate-300 leading-relaxed">
+                      It is like buying a car where the dealer promises you will save 40% on fuel costs, but doesn't mention that you have to drive strictly downhill, with the engine off, and with a tailwind. When integration begins, these paper savings disappear instantly.
+                    </p>
+                  </div>
+                </div>
+
+                {/* Reality Card */}
+                <div className="p-8 rounded-2xl bg-slate-900 border border-slate-800 flex flex-col justify-between">
+                  <div>
+                    <div className="flex items-center gap-2 mb-4">
+                      <span className="px-2.5 py-1 text-[11px] font-bold bg-rose-500/10 text-rose-400 rounded-full uppercase">Post-Close Integration</span>
+                    </div>
+                    <h3 className="text-xl font-bold text-white mb-3">
+                      "18 months later, CFO cannot trace where savings went"
+                    </h3>
+                    <p className="text-sm text-slate-400 leading-relaxed mb-6">
+                      Without an audit ledger, reconciliation reports, or an ongoing monitoring engine, the integration group dissolves, and potential EBITDA leakage continues unchecked.
+                    </p>
+                  </div>
+                  <div className="p-5 rounded-xl bg-[#B8860B]/10 border border-[#B8860B]/20">
+                    <div className="flex items-center gap-2 mb-2 text-[#B8860B] font-bold text-xs">
+                      <HelpCircleIcon className="w-3.5 h-3.5" /> Plain English Reality Check:
+                    </div>
+                    <p className="text-xs text-slate-300 leading-relaxed">
+                      Your portco pays premium pharmacy invoices that hide massive administrative spread markups and secret broker kickbacks inside complex, un-auditable line items. Value is destroyed silently every time an employee fills a prescription.
+                    </p>
+                  </div>
+                </div>
               </div>
             </div>
           </section>
 
-          {/* Services Section */}
-          <section className="relative px-6 py-12 border-b border-white/10 overflow-hidden">
-            <div className="absolute inset-0 bg-gradient-to-b from-transparent via-purple-950/20 to-transparent" />
-
-            <div className="relative mx-auto max-w-7xl">
-              <motion.div 
-                className="text-center mb-16"
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, margin: "-100px" }}
-                transition={{ duration: 0.6 }}
-              >
-                <h2 className="text-5xl font-bold mb-6">
-                  <span className="bg-gradient-to-r from-white via-purple-200 to-cyan-200 bg-clip-text text-transparent">
-                    Core Services
-                  </span>
+          {/* Core Services Section */}
+          <section className="relative px-6 py-20 bg-slate-900 border-b border-slate-800">
+            <div className="mx-auto max-w-7xl">
+              <div className="text-center mb-16">
+                <span className="text-xs font-bold text-[#B8860B] uppercase tracking-widest bg-[#B8860B]/10 px-3 py-1 rounded-full">
+                  Diligence Infrastructure
+                </span>
+                <h2 className="text-4xl font-bold text-white mt-4 font-serif">
+                  Forensic Services for PE & Deal Teams
                 </h2>
-                <p className="text-xl text-slate-300 max-w-3xl mx-auto">
-                  Evidence-based diligence and value realization tracking that survives integration reality.
+                <p className="text-sm text-slate-400 mt-2 max-w-2xl mx-auto">
+                  Deploy elite, evidence-based systems that protect deal models and construct hard post-close exit valuation additions.
                 </p>
-              </motion.div>
+              </div>
 
               <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-                <Interactive3DCard
-                  icon={FileCheck}
-                  title="Diligence Proof Packs"
-                  description="Evidence receipts, methodology disclosure, and reconciliation outputs that reduce 'trust gaps'. 2-4 week sprint delivers validated synergy claims with probability weighting."
-                  href="/capital-library"
-                  gradient="linear-gradient(135deg, #3b82f6, #2563eb)"
-                  delay={0.1}
-                />
-                <Interactive3DCard
-                  icon={Briefcase}
-                  title="Integration-Ready Workflows"
-                  description="Owner assignment, approvals, and closure loops—built for post-close execution, not slideware. Day 1 ready with baseline reconciliation and weekly tracking cadence."
-                  href="/verified-savings-ledger"
-                  gradient="linear-gradient(135deg, #8b5cf6, #7c3aed)"
-                  delay={0.2}
-                />
-                <Interactive3DCard
-                  icon={TrendingUp}
-                  title="Realization Governance"
-                  description="At-risk decay logic, exception queues, and weekly/monthly reconciliation routines. 87% average realization rate with evidence framework vs 23% industry average."
-                  href="/war-room-showcase"
-                  gradient="linear-gradient(135deg, #10b981, #059669)"
-                  delay={0.3}
-                />
-              </div>
-            </div>
-          </section>
+                {/* Serv 1 */}
+                <div className="bg-slate-950 border border-slate-800 rounded-2xl p-8 hover:border-emerald-500/20 transition-all">
+                  <div className="p-3 bg-emerald-950/45 border border-emerald-500/20 rounded-xl inline-block mb-6">
+                    <FileCheck className="w-6 h-6 text-emerald-400" />
+                  </div>
+                  <h3 className="text-lg font-bold text-white mb-3">Diligence Proof Packs</h3>
+                  <p className="text-xs text-slate-400 leading-relaxed">
+                    Quantify actual baseline pharmacy transaction trends within a 2-4 week sprint. Receive comprehensive, cryptographically verified reports revealing the true spread structure of the target portco.
+                  </p>
+                </div>
 
-          {/* Engagement Phases Section */}
-          <section className="relative px-6 py-12 border-b border-white/10 overflow-hidden">
-            <div className="relative mx-auto max-w-7xl">
-              <motion.div 
-                className="text-center mb-16"
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, margin: "-100px" }}
-                transition={{ duration: 0.6 }}
-              >
-                <h2 className="text-5xl font-bold mb-6">
-                  <span className="bg-gradient-to-r from-white via-cyan-200 to-blue-200 bg-clip-text text-transparent">
-                    Engagement Phases
-                  </span>
-                </h2>
-              </motion.div>
+                {/* Serv 2 */}
+                <div className="bg-slate-950 border border-slate-800 rounded-2xl p-8 hover:border-[#B8860B]/20 transition-all">
+                  <div className="p-3 bg-[#B8860B]/10 border border-[#B8860B]/20 rounded-xl inline-block mb-6">
+                    <Briefcase className="w-6 h-6 text-[#B8860B]" />
+                  </div>
+                  <h3 className="text-lg font-bold text-white mb-3">Integration Workflows</h3>
+                  <p className="text-xs text-slate-400 leading-relaxed">
+                    Establish clear milestone dates, specific portco executive owners, and pre-authorized contract amendments to capture identified leakage within the critical first 90 days post-acquisition.
+                  </p>
+                </div>
 
-              <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-                <Interactive3DCard
-                  icon={Target}
-                  title="Diligence Sprint (Pre-Close)"
-                  description="Rapid signal extraction with proof standards: what's real, what's recoverable, what's speculation. Evidence pack build (claims → receipts), value leakage identification with cost breakdown, at-risk assessment with probability weighting. Typical: 2-4 weeks, $50K-$150K."
-                  gradient="linear-gradient(135deg, #06b6d4, #0891b2)"
-                  href="/request-demo"
-                  delay={0.1}
-                />
-                <Interactive3DCard
-                  icon={Activity}
-                  title="Post-Close Value Office (Integration)"
-                  description="Convert identified value into realized value, with owners, dates, and evidence-backed accountability. Value ledger setup, owner assignment + approval workflows, weekly realization tracking, quarterly board reporting with evidence packs. Typical: 90-180 days, retained or success-fee."
-                  gradient="linear-gradient(135deg, #10b981, #059669)"
-                  href="/request-demo"
-                  delay={0.2}
-                />
+                {/* Serv 3 */}
+                <div className="bg-slate-950 border border-slate-800 rounded-2xl p-8 hover:border-emerald-500/20 transition-all">
+                  <div className="p-3 bg-emerald-950/45 border border-emerald-500/20 rounded-xl inline-block mb-6">
+                    <TrendingUp className="w-6 h-6 text-emerald-400" />
+                  </div>
+                  <h3 className="text-lg font-bold text-white mb-3">Realization Governance</h3>
+                  <p className="text-xs text-slate-400 leading-relaxed">
+                    Protect portfolio companies with ongoing algorithmic transaction monitoring that catches contract-creep, unauthorized specialty claims, and hidden margins immediately.
+                  </p>
+                </div>
               </div>
             </div>
           </section>
 
           {/* Real Case Study Section */}
-          <section className="relative px-6 py-12 border-b border-white/10 overflow-hidden">
-            <div className="absolute inset-0 bg-gradient-to-b from-purple-950/20 to-transparent" />
-
+          <section className="relative px-6 py-20 bg-slate-950">
             <div className="relative mx-auto max-w-5xl">
-              <motion.div
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, margin: "-100px" }}
-                transition={{ duration: 0.6 }}
-              >
-                <Card className="bg-slate-900/50 border-slate-700/50 backdrop-blur-xl overflow-hidden">
-                  <CardHeader>
-                    <div className="flex items-center gap-3 mb-4">
-                      <Badge className="bg-violet-500/20 text-violet-300 border-violet-500/30">
-                        <Sparkles className="w-3 h-3 mr-1" />
-                        Real PE Case Study
-                      </Badge>
-                    </div>
-                    <CardTitle className="text-3xl font-bold">
-                      <span className="bg-gradient-to-r from-violet-200 to-fuchsia-200 bg-clip-text text-transparent">
-                        $18M Synergies Claimed → $7.4M Proven
-                      </span>
-                    </CardTitle>
-                  </CardHeader>
-                  <CardContent className="space-y-6">
-                    <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                      <div className="text-center p-6 rounded-xl border border-orange-500/30 bg-orange-500/5">
-                        <div className="text-4xl font-bold text-orange-300 mb-2">$18M</div>
-                        <div className="text-sm text-slate-400">Claimed in diligence</div>
-                      </div>
-                      <div className="text-center p-6 rounded-xl border border-emerald-500/30 bg-emerald-500/5">
-                        <div className="text-4xl font-bold text-emerald-300 mb-2">$7.4M</div>
-                        <div className="text-sm text-slate-400">Proven & realized</div>
-                      </div>
-                      <div className="text-center p-6 rounded-xl border border-cyan-500/30 bg-cyan-500/5">
-                        <div className="text-4xl font-bold text-cyan-300 mb-2">$4.1M</div>
-                        <div className="text-sm text-slate-400">In-flight with timelines</div>
-                      </div>
-                    </div>
+              <Card className="bg-slate-900 border border-slate-800 overflow-hidden rounded-2xl">
+                <div className="p-8 md:p-12">
+                  <div className="flex items-center gap-3 mb-6">
+                    <Badge className="bg-emerald-950/50 text-emerald-300 border border-emerald-500/20">
+                      <Sparkles className="w-3 h-3 mr-1" />
+                      Featured Value Creation Study
+                    </Badge>
+                  </div>
+                  
+                  <h3 className="text-3xl font-bold text-white mb-6 font-serif">
+                    $18.2M Synergies Underwritten → $7.4M Audited & Realized
+                  </h3>
 
-                    <div className="space-y-4 text-slate-300">
-                      <div>
-                        <span className="text-white font-semibold">The Situation:</span> Mid-market PE firm acquired B2B SaaS company with $18M in 'cost synergies' identified. Buyer's diligence team demanded proof before close. Seller had no evidence receipts, no owner assignment, no reconciliation framework.
-                      </div>
-                      <div>
-                        <span className="text-white font-semibold">Kincaid IQ Intervention:</span> 90-day value office sprint. Built evidence packs for each synergy claim, assigned owners with approval workflows, weekly reconciliation cadence, and controls monitoring. Separated proven ($7.4M), in-flight with timelines ($4.1M), and speculation ($6.5M written off).
-                      </div>
-                      <div>
-                        <span className="text-white font-semibold">The Outcome:</span> Exit closed at premium valuation because buyer had confidence in realization discipline. Buyer adopted Kincaid IQ framework for their portfolio. Deal almost died due to synergy credibility gap—evidence receipts saved it.
-                      </div>
+                  <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+                    <div className="p-5 rounded-xl border border-slate-800 bg-slate-950/60 text-center">
+                      <div className="text-3xl font-bold text-slate-400">$18.2M</div>
+                      <p className="text-[11px] text-slate-500 uppercase font-semibold mt-1">Claimed in Diligence</p>
                     </div>
-                  </CardContent>
-                </Card>
-              </motion.div>
+                    <div className="p-5 rounded-xl border border-emerald-500/25 bg-emerald-950/20 text-center">
+                      <div className="text-3xl font-bold text-emerald-400">$7.4M</div>
+                      <p className="text-[11px] text-emerald-500 uppercase font-semibold mt-1">Fiducially Realized</p>
+                    </div>
+                    <div className="p-5 rounded-xl border border-[#B8860B]/30 bg-[#B8860B]/5 text-center">
+                      <div className="text-3xl font-bold text-[#B8860B]">$4.3M</div>
+                      <p className="text-[11px] text-[#B8860B] uppercase font-semibold mt-1">Milestoned In-Flight</p>
+                    </div>
+                  </div>
+
+                  <div className="space-y-4 text-sm text-slate-300 leading-relaxed">
+                    <p>
+                      <strong className="text-white">The Challenge:</strong> A premier middle-market private equity operator acquired a logistics business with an estimated $18.2M in annual operational healthcare synergies. To secure Board approval, the deal team required immediate, verifiable contract data.
+                    </p>
+                    <p>
+                      <strong className="text-white">Our Action:</strong> Implemented the SiriusB iQ Value Office inside 30 days. Logged every single medical claim into our secure ledger, restructured the broker contract with clear fiduciary audit terms, and assigned key performance milestones directly to the integration director.
+                    </p>
+                    <p>
+                      <strong className="text-white">The Outcome:</strong> Successfully separated verified cash savings ($7.4M) and milestoned projects ($4.3M) from non-verifiable paper savings ($6.5M), creating an auditable ledger that proved exit enterprise value to subsequent institutional buyers.
+                    </p>
+                  </div>
+                </div>
+              </Card>
             </div>
           </section>
 
           {/* CTA Section */}
-          <section className="relative px-6 py-32 overflow-hidden">
-            <motion.div
-              className="absolute inset-0 opacity-30"
-              animate={{
-                background: [
-                  "radial-gradient(circle at 20% 20%, #8b5cf6 0%, transparent 50%)",
-                  "radial-gradient(circle at 80% 80%, #3b82f6 0%, transparent 50%)",
-                  "radial-gradient(circle at 20% 80%, #ec4899 0%, transparent 50%)",
-                  "radial-gradient(circle at 80% 20%, #8b5cf6 0%, transparent 50%)",
-                ],
-              }}
-              transition={{ duration: 12, repeat: Infinity }}
-            />
-
-            <div className="relative mx-auto max-w-4xl text-center">
-              <motion.div
-                initial={{ opacity: 0, scale: 0.9 }}
-                whileInView={{ opacity: 1, scale: 1 }}
-                viewport={{ once: true, margin: "-100px" }}
-                transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
-              >
-                <h2 className="text-6xl font-bold mb-6">
-                  <span className="bg-gradient-to-r from-white via-rose-200 to-orange-200 bg-clip-text text-transparent">
-                    Schedule a Diligence Review
-                  </span>
-                </h2>
-                <p className="text-xl text-slate-300 mb-10 leading-relaxed">
-                  Transform synergy claims into proven outcomes. Evidence-based diligence and value realization tracking that survives integration reality.
-                </p>
-                <div className="flex gap-4 justify-center flex-wrap">
-                  <Link href="/request-demo">
-                    <motion.div
-                      whileHover={{ scale: 1.05 }}
-                      whileTap={{ scale: 0.95 }}
-                    >
-                      <Button size="lg" className="group relative overflow-hidden bg-rose-600 hover:bg-rose-700 border-0 text-lg px-8 py-6">
-                        <span className="relative z-10 flex items-center gap-2">
-                          Schedule Consultation
-                          <Sparkles className="w-5 h-5" />
-                        </span>
-                        <motion.div
-                          className="absolute inset-0 bg-gradient-to-r from-rose-400 via-orange-400 to-rose-400"
-                          initial={{ x: "-100%" }}
-                          whileHover={{ x: "100%" }}
-                          transition={{ duration: 0.6 }}
-                        />
-                      </Button>
-                    </motion.div>
-                  </Link>
-                  <Link href="/capital-library">
-                    <motion.div
-                      whileHover={{ scale: 1.05 }}
-                      whileTap={{ scale: 0.95 }}
-                    >
-                      <Button size="lg" variant="outline" className="border-slate-600 text-slate-300 hover:bg-slate-800 backdrop-blur-sm text-lg px-8 py-6">
-                        View Case Studies
-                        <ArrowRight className="w-5 h-5 ml-2" />
-                      </Button>
-                    </motion.div>
-                  </Link>
-                </div>
-              </motion.div>
+          <section className="relative px-6 py-24 bg-gradient-to-b from-slate-950 to-emerald-950/20 border-t border-slate-900 text-center">
+            <div className="mx-auto max-w-4xl">
+              <h2 className="text-4xl font-bold mb-6 font-serif">
+                Secure Your Portco EBITDA Growth
+              </h2>
+              <p className="text-lg text-slate-300 mb-10 max-w-2xl mx-auto">
+                Connect with our advisory deal team for a private, 30-minute diligence briefing. Review custom spreadsheets, compliance trackers, and baseline evaluation templates.
+              </p>
+              <div className="flex gap-4 justify-center flex-wrap">
+                <Link href="/request-demo">
+                  <Button size="lg" className="bg-[#B8860B] hover:bg-[#a67c0a] text-white text-base font-bold px-10 py-5 rounded-lg shadow-xl shadow-[#B8860B]/10">
+                    Schedule Operator Consultation
+                    <Zap className="w-4 h-4 ml-2" />
+                  </Button>
+                </Link>
+                <Link href="/broker-compensation">
+                  <Button size="lg" variant="outline" className="border-slate-800 text-slate-300 hover:bg-slate-900 text-base px-10 py-5 rounded-lg">
+                    Launch Broker Compensation Auditor
+                  </Button>
+                </Link>
+              </div>
             </div>
           </section>
         </main>
@@ -505,5 +342,26 @@ export default function MaVcPePage() {
         <Footer />
       </div>
     </>
+  );
+}
+
+function HelpCircleIcon(props: React.SVGProps<SVGSVGElement>) {
+  return (
+    <svg
+      {...props}
+      xmlns="http://www.w3.org/2000/svg"
+      width="24"
+      height="24"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    >
+      <circle cx="12" cy="12" r="10" />
+      <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3" />
+      <path d="M12 17h.01" />
+    </svg>
   );
 }

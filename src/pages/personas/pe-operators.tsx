@@ -102,7 +102,7 @@ export default function PEOperatorsPage() {
           
           <div className="relative max-w-7xl mx-auto">
             {/* Pure Single-Color Glassmorphic Flat Badge (No icons, no gradients, no patterns) */}
-            <div className="inline-flex items-center justify-center px-4 py-1.5 bg-emerald-500/10 border border-emerald-500/20 rounded-full mb-8 backdrop-blur-xl">
+            <div className="inline-flex items-center justify-center px-4 py-1.5 bg-emerald-500/5 border border-emerald-500/20 rounded-full mb-8 backdrop-blur-xl">
               <span className="text-xs font-bold tracking-widest text-emerald-400 uppercase">PE OPERATING PARTNERS</span>
             </div>
             
@@ -150,7 +150,7 @@ export default function PEOperatorsPage() {
                   <div className="mt-4 flex justify-between items-center px-1">
                     <div>
                       {/* Pure Single-Color Glassmorphic Flat Badge */}
-                      <div className="inline-flex px-2.5 py-0.5 bg-emerald-500/10 border border-emerald-500/20 rounded-full mb-1">
+                      <div className="inline-flex px-2.5 py-0.5 bg-emerald-500/5 border border-emerald-500/20 rounded-full mb-1 backdrop-blur-md">
                         <span className="text-[10px] font-bold uppercase tracking-wider text-emerald-400">OPERATIONAL PLAYBOOK</span>
                       </div>
                       <p className="text-sm text-slate-200 font-bold">Fiduciary Risk & EBITDA Defense</p>
@@ -165,7 +165,7 @@ export default function PEOperatorsPage() {
               <div className="bg-slate-900/20 backdrop-blur-2xl border border-emerald-500/10 rounded-xl p-6 transition-all hover:border-emerald-500/25">
                 <div className="text-4xl font-extrabold text-white mb-1">90 Days</div>
                 {/* Pure Single-Color Glassmorphic Flat Badge */}
-                <div className="inline-flex px-2 py-0.5 bg-emerald-500/10 border border-emerald-500/20 rounded-full mb-2">
+                <div className="inline-flex px-2 py-0.5 bg-emerald-500/5 border border-emerald-500/20 rounded-full mb-2 backdrop-blur-md">
                   <span className="text-[10px] font-bold uppercase tracking-wider text-emerald-400">TIME-TO-SAVINGS</span>
                 </div>
                 <p className="text-xs text-slate-400">Immediate cash flow impact from PBM contract amendments.</p>
@@ -173,7 +173,7 @@ export default function PEOperatorsPage() {
               <div className="bg-slate-900/20 backdrop-blur-2xl border border-emerald-500/10 rounded-xl p-6 transition-all hover:border-emerald-500/25">
                 <div className="text-4xl font-extrabold text-emerald-400 mb-1">$780/yr</div>
                 {/* Pure Single-Color Glassmorphic Flat Badge */}
-                <div className="inline-flex px-2 py-0.5 bg-emerald-500/10 border border-emerald-500/20 rounded-full mb-2">
+                <div className="inline-flex px-2 py-0.5 bg-emerald-500/5 border border-emerald-500/20 rounded-full mb-2 backdrop-blur-md">
                   <span className="text-[10px] font-bold uppercase tracking-wider text-emerald-400">AVERAGE PORTCO WASTE</span>
                 </div>
                 <p className="text-xs text-slate-400">Hidden pharmacy arbitrage leakage per enrolled employee.</p>
@@ -181,7 +181,7 @@ export default function PEOperatorsPage() {
               <div className="bg-slate-900/20 backdrop-blur-2xl border border-emerald-500/10 rounded-xl p-6 transition-all hover:border-emerald-500/25">
                 <div className="text-4xl font-extrabold text-white mb-1">10x+</div>
                 {/* Pure Single-Color Glassmorphic Flat Badge */}
-                <div className="inline-flex px-2 py-0.5 bg-emerald-500/10 border border-emerald-500/20 rounded-full mb-2">
+                <div className="inline-flex px-2 py-0.5 bg-emerald-500/5 border border-emerald-500/20 rounded-full mb-2 backdrop-blur-md">
                   <span className="text-[10px] font-bold uppercase tracking-wider text-emerald-400">VALUATION LEVERAGE</span>
                 </div>
                 <p className="text-xs text-slate-400">Directly multiplies exit enterprise value based on portfolio exit multiples.</p>
@@ -189,7 +189,7 @@ export default function PEOperatorsPage() {
               <div className="bg-slate-900/20 backdrop-blur-2xl border border-emerald-500/10 rounded-xl p-6 transition-all hover:border-emerald-500/25">
                 <div className="text-4xl font-extrabold text-emerald-400 mb-1">100% Audit</div>
                 {/* Pure Single-Color Glassmorphic Flat Badge */}
-                <div className="inline-flex px-2 py-0.5 bg-emerald-500/10 border border-emerald-500/20 rounded-full mb-2">
+                <div className="inline-flex px-2 py-0.5 bg-emerald-500/5 border border-emerald-500/20 rounded-full mb-2 backdrop-blur-md">
                   <span className="text-[10px] font-bold uppercase tracking-wider text-emerald-400">DILIGENCE READY</span>
                 </div>
                 <p className="text-xs text-slate-400">Complete forensic lineage with cryptographic transaction receipts.</p>
@@ -203,7 +203,7 @@ export default function PEOperatorsPage() {
           <div className="max-w-5xl mx-auto">
             <div className="text-center mb-16">
               {/* Pure Single-Color Glassmorphic Flat Badge */}
-              <div className="inline-flex items-center justify-center px-4 py-1.5 bg-emerald-500/10 border border-emerald-500/20 rounded-full mb-4 backdrop-blur-xl">
+              <div className="inline-flex items-center justify-center px-4 py-1.5 bg-emerald-500/5 border border-emerald-500/20 rounded-full mb-4 backdrop-blur-xl">
                 <span className="text-xs font-bold text-emerald-400 uppercase tracking-widest">INVESTMENT PLAIN ENGLISH TRANSLATION</span>
               </div>
               <h2 className="text-3xl md:text-4xl font-bold text-white mt-4 font-serif">
@@ -220,7 +220,7 @@ export default function PEOperatorsPage() {
                 <div>
                   <div className="flex items-center gap-2 mb-4">
                     {/* Pure Single-Color Glassmorphic Flat Badge */}
-                    <div className="px-2.5 py-1 text-[11px] font-bold bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 rounded-full uppercase tracking-wider backdrop-blur-xl">
+                    <div className="px-2.5 py-1 text-[11px] font-bold bg-emerald-500/5 text-emerald-400 border border-emerald-500/20 rounded-full uppercase tracking-wider backdrop-blur-xl">
                       THE STANDARD PITCH
                     </div>
                   </div>
@@ -246,7 +246,7 @@ export default function PEOperatorsPage() {
                 <div>
                   <div className="flex items-center gap-2 mb-4">
                     {/* Pure Single-Color Glassmorphic Flat Badge */}
-                    <div className="px-2.5 py-1 text-[11px] font-bold bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 rounded-full uppercase tracking-wider backdrop-blur-xl">
+                    <div className="px-2.5 py-1 text-[11px] font-bold bg-emerald-500/5 text-emerald-400 border border-emerald-500/20 rounded-full uppercase tracking-wider backdrop-blur-xl">
                       THE BROKER SHIELD
                     </div>
                   </div>
@@ -275,7 +275,7 @@ export default function PEOperatorsPage() {
           <div className="max-w-6xl mx-auto">
             <div className="text-center mb-16">
               {/* Pure Single-Color Glassmorphic Flat Badge */}
-              <div className="inline-flex items-center justify-center px-4 py-1.5 bg-emerald-500/10 border border-emerald-500/20 rounded-full mb-4 text-xs font-bold text-emerald-400 uppercase tracking-widest backdrop-blur-xl">
+              <div className="inline-flex items-center justify-center px-4 py-1.5 bg-emerald-500/5 border border-emerald-500/20 rounded-full mb-4 text-xs font-bold text-emerald-400 uppercase tracking-widest backdrop-blur-xl">
                 VALUE CREATION CALCULATOR
               </div>
               <h2 className="text-3xl md:text-5xl font-bold mb-6 font-serif">
@@ -387,7 +387,7 @@ export default function PEOperatorsPage() {
                         <div className="grid md:grid-cols-3 gap-4">
                           <div className="bg-slate-950/40 p-4 rounded-xl border border-emerald-500/5">
                             {/* Pure Single-Color Glassmorphic Flat Badge */}
-                            <div className="inline-flex px-1.5 py-0.5 bg-emerald-500/10 border border-emerald-500/20 rounded-full mb-1">
+                            <div className="inline-flex px-1.5 py-0.5 bg-emerald-500/5 border border-emerald-500/20 rounded-full mb-1 backdrop-blur-md">
                               <span className="text-[9px] font-bold text-emerald-400 uppercase tracking-wider">ANNUAL SAVINGS</span>
                             </div>
                             <span className="block text-xl font-bold text-white">${calcResults.annualSavings.toLocaleString()}</span>
@@ -395,7 +395,7 @@ export default function PEOperatorsPage() {
                           </div>
                           <div className="bg-emerald-500/10 p-4 rounded-xl border border-emerald-500/20">
                             {/* Pure Single-Color Glassmorphic Flat Badge */}
-                            <div className="inline-flex px-1.5 py-0.5 bg-emerald-500/10 border border-emerald-500/20 rounded-full mb-1">
+                            <div className="inline-flex px-1.5 py-0.5 bg-emerald-500/5 border border-emerald-500/20 rounded-full mb-1 backdrop-blur-md">
                               <span className="text-[9px] font-bold text-emerald-400 uppercase tracking-wider">PORTCO EBITDA LIFT</span>
                             </div>
                             <span className="block text-xl font-bold text-emerald-400">+${calcResults.ebitdaIncrease.toLocaleString()}</span>
@@ -403,7 +403,7 @@ export default function PEOperatorsPage() {
                           </div>
                           <div className="bg-emerald-500/5 p-4 rounded-xl border border-emerald-500/25">
                             {/* Pure Single-Color Glassmorphic Flat Badge */}
-                            <div className="inline-flex px-1.5 py-0.5 bg-emerald-500/10 border border-emerald-500/20 rounded-full mb-1">
+                            <div className="inline-flex px-1.5 py-0.5 bg-emerald-500/5 border border-emerald-500/20 rounded-full mb-1 backdrop-blur-md">
                               <span className="text-[9px] font-bold text-emerald-400 uppercase tracking-wider">ADDED EXIT VALUE</span>
                             </div>
                             <span className="block text-xl font-bold text-white">${calcResults.exitValueAdded.toLocaleString()}</span>
@@ -413,7 +413,7 @@ export default function PEOperatorsPage() {
 
                         <div className="bg-slate-950/40 p-6 rounded-xl border border-emerald-500/10 space-y-4">
                           {/* Pure Single-Color Glassmorphic Flat Badge */}
-                          <div className="inline-flex px-2 py-0.5 bg-emerald-500/10 border border-emerald-500/20 rounded-full">
+                          <div className="inline-flex px-2 py-0.5 bg-emerald-500/5 border border-emerald-500/20 rounded-full backdrop-blur-md">
                             <span className="text-[10px] font-bold text-emerald-400 uppercase tracking-wider">ESTIMATED VALUATION EXPANSION</span>
                           </div>
                           <div className="space-y-3">
@@ -488,7 +488,7 @@ export default function PEOperatorsPage() {
                 <div className="bg-slate-950/60 rounded-xl p-6 border border-emerald-500/10 flex flex-col md:flex-row items-center justify-between gap-6">
                   <div>
                     {/* Pure Single-Color Glassmorphic Flat Badge */}
-                    <div className="inline-flex px-2 py-0.5 bg-emerald-500/10 border border-emerald-500/20 rounded-full mb-1">
+                    <div className="inline-flex px-2 py-0.5 bg-emerald-500/5 border border-emerald-500/20 rounded-full mb-1 backdrop-blur-md">
                       <span className="text-[10px] font-bold text-emerald-400 uppercase tracking-wider">PORTFOLIO COMPLIANCE</span>
                     </div>
                     <span className="block text-3xl font-extrabold text-white mt-1">{auditScore}%</span>
@@ -516,7 +516,7 @@ export default function PEOperatorsPage() {
           <div className="max-w-6xl mx-auto">
             <div className="text-center mb-16">
               {/* Pure Single-Color Glassmorphic Flat Badge */}
-              <div className="inline-flex items-center justify-center px-4 py-1.5 bg-emerald-500/10 border border-emerald-500/20 rounded-full mb-4 backdrop-blur-xl">
+              <div className="inline-flex items-center justify-center px-4 py-1.5 bg-emerald-500/5 border border-emerald-500/20 rounded-full mb-4 backdrop-blur-xl">
                 <span className="text-xs font-bold text-emerald-400 uppercase tracking-widest">VALUE CREATION PLAYBOOK</span>
               </div>
               <h2 className="text-3xl md:text-4xl font-bold mt-4 font-serif">
@@ -533,7 +533,7 @@ export default function PEOperatorsPage() {
                   <div className="flex-1">
                     <div className="flex items-center gap-3 mb-3">
                       {/* Pure Single-Color Glassmorphic Flat Badge */}
-                      <div className="px-3 py-1 text-xs font-bold bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 rounded-full uppercase tracking-widest backdrop-blur-xl">
+                      <div className="px-3 py-1 text-xs font-bold bg-emerald-500/5 text-emerald-400 border border-emerald-500/20 rounded-full uppercase tracking-widest backdrop-blur-xl">
                         DAY 1 - 30
                       </div>
                       <h3 className="text-2xl font-bold text-white font-serif">Contract X-Ray & Baseline Analysis</h3>
@@ -567,7 +567,7 @@ export default function PEOperatorsPage() {
                   <div className="flex-1">
                     <div className="flex items-center gap-3 mb-3">
                       {/* Pure Single-Color Glassmorphic Flat Badge */}
-                      <div className="px-3 py-1 text-xs font-bold bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 rounded-full uppercase tracking-widest backdrop-blur-xl">
+                      <div className="px-3 py-1 text-xs font-bold bg-emerald-500/5 text-emerald-400 border border-emerald-500/20 rounded-full uppercase tracking-widest backdrop-blur-xl">
                         DAY 31 - 90
                       </div>
                       <h3 className="text-2xl font-bold text-white font-serif">Contract Amendments & Live Execution</h3>
@@ -579,7 +579,7 @@ export default function PEOperatorsPage() {
                       <div className="grid md:grid-cols-2 gap-4">
                         <div>
                           {/* Pure Single-Color Glassmorphic Flat Badge */}
-                          <div className="inline-flex px-2 py-0.5 bg-emerald-500/10 border border-emerald-500/20 rounded-full mb-2">
+                          <div className="inline-flex px-2 py-0.5 bg-emerald-500/5 border border-emerald-500/20 rounded-full mb-2 backdrop-blur-md">
                             <span className="text-[10px] font-bold text-emerald-400 uppercase tracking-wider">90-DAY QUICK WINS</span>
                           </div>
                           <div className="space-y-2 text-xs text-slate-300">
@@ -615,7 +615,7 @@ export default function PEOperatorsPage() {
                   <div className="flex-1">
                     <div className="flex items-center gap-3 mb-3">
                       {/* Pure Single-Color Glassmorphic Flat Badge */}
-                      <div className="px-3 py-1 text-xs font-bold bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 rounded-full uppercase tracking-widest backdrop-blur-xl">
+                      <div className="px-3 py-1 text-xs font-bold bg-emerald-500/5 text-emerald-400 border border-emerald-500/20 rounded-full uppercase tracking-widest backdrop-blur-xl">
                         DAY 91+
                       </div>
                       <h3 className="text-2xl font-bold text-white font-serif">Fiduciary Tracking & Exit Readiness</h3>
@@ -649,7 +649,7 @@ export default function PEOperatorsPage() {
               <div className="relative">
                 <div className="text-center mb-8">
                   {/* Pure Single-Color Glassmorphic Flat Badge */}
-                  <div className="inline-flex px-4 py-1.5 bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 text-xs font-bold rounded-full uppercase tracking-widest mb-3 backdrop-blur-xl">
+                  <div className="inline-flex px-4 py-1.5 bg-emerald-500/5 border border-emerald-500/20 text-emerald-400 text-xs font-bold rounded-full uppercase tracking-widest mb-3 backdrop-blur-xl">
                     VALUE CREATION LIBRARY
                   </div>
                   <h2 className="text-3xl font-bold mb-2 font-serif text-white">

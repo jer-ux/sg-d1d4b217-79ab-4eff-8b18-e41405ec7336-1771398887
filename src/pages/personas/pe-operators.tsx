@@ -101,7 +101,7 @@ export default function PEOperatorsPage() {
           <div className="absolute top-1/4 left-10 w-72 h-72 bg-emerald-500/5 rounded-full blur-3xl" />
           
           <div className="relative max-w-7xl mx-auto">
-            {/* Pure Single-Color Glassmorphic Flat Badge (No icons, no gradients, no patterns) */}
+            {/* Pure Single-Color Glassmorphic Flat Badge */}
             <div className="inline-flex items-center justify-center px-4 py-1.5 bg-emerald-500/5 border border-emerald-500/20 rounded-full mb-8 backdrop-blur-xl">
               <span className="text-xs font-bold tracking-widest text-emerald-400 uppercase">PE OPERATING PARTNERS</span>
             </div>
@@ -365,7 +365,7 @@ export default function PEOperatorsPage() {
                 </div>
               </Card>
 
-              {/* Outputs Column */}
+              {/* Outputs Column - Typography Diligence Ledger (Absolutely no progress bars or visual gauges) */}
               <Card className="lg:col-span-7 bg-slate-900/20 backdrop-blur-2xl border border-emerald-500/10 p-8 rounded-2xl relative overflow-hidden self-stretch flex flex-col justify-between">
                 <div className="absolute top-0 right-0 p-4 opacity-5">
                   <Building2 className="w-32 h-32 text-emerald-400" />
@@ -373,7 +373,7 @@ export default function PEOperatorsPage() {
 
                 <div>
                   <h3 className="text-lg font-bold text-white mb-6 flex items-center gap-2 font-serif">
-                    <Target className="w-4 h-4 text-emerald-400" /> Valuation & Capital Creation
+                    <Target className="w-4 h-4 text-emerald-400" /> Valuation & Capital Creation Ledger
                   </h3>
 
                   <AnimatePresence mode="wait">
@@ -384,6 +384,7 @@ export default function PEOperatorsPage() {
                         exit={{ opacity: 0, y: -10 }}
                         className="space-y-6"
                       >
+                        {/* Top Line Summary Metrics */}
                         <div className="grid md:grid-cols-3 gap-4">
                           <div className="bg-slate-950/40 p-4 rounded-xl border border-emerald-500/5">
                             {/* Pure Single-Color Glassmorphic Flat Badge */}
@@ -411,27 +412,41 @@ export default function PEOperatorsPage() {
                           </div>
                         </div>
 
-                        <div className="bg-slate-950/40 p-6 rounded-xl border border-emerald-500/10 space-y-4">
-                          {/* Pure Single-Color Glassmorphic Flat Badge */}
-                          <div className="inline-flex px-2 py-0.5 bg-emerald-500/5 border border-emerald-500/20 rounded-full backdrop-blur-md">
-                            <span className="text-[10px] font-bold text-emerald-400 uppercase tracking-wider">ESTIMATED VALUATION EXPANSION</span>
+                        {/* Pure Typographic EBITDA Ledger Table */}
+                        <div className="bg-slate-950/50 rounded-xl border border-emerald-500/10 p-5 space-y-4">
+                          <div className="flex justify-between items-center pb-2 border-b border-emerald-500/10">
+                            <span className="text-xs font-bold text-emerald-400 uppercase tracking-wider">Diligence Calculation Line Items</span>
+                            <span className="text-[10px] text-slate-500">Methodology: ERISA Forensic-Grade</span>
                           </div>
-                          <div className="space-y-3">
-                            <div>
-                              <div className="flex justify-between text-xs mb-1">
-                                <span className="text-slate-400">Portco Value Realization Likelihood</span>
-                                <span className="font-bold text-emerald-400">95% (90-Day Execution)</span>
-                              </div>
-                              <div className="w-full bg-slate-950 h-2 rounded-full overflow-hidden">
-                                <div className="bg-emerald-500 h-full rounded-full" style={{ width: "95%" }} />
-                              </div>
+
+                          <div className="space-y-3 text-xs">
+                            <div className="flex justify-between py-1.5 border-b border-white/5">
+                              <span className="text-slate-400">Total Portco Enrolled Workforce</span>
+                              <span className="font-bold text-white font-mono">{employees.toLocaleString()} Lives</span>
                             </div>
-                            <div className="flex justify-between text-[11px] pt-2 text-slate-500 border-t border-emerald-500/5">
-                              <span>Applied Valuation leverage</span>
-                              <span className="font-bold text-white">{multiple}x Multiple Applied</span>
+                            <div className="flex justify-between py-1.5 border-b border-white/5">
+                              <span className="text-slate-400">Pre-Acquisition Pharmacy Arbitrage Waste</span>
+                              <span className="font-bold text-emerald-400 font-mono">$780 / employee / yr</span>
+                            </div>
+                            <div className="flex justify-between py-1.5 border-b border-white/5">
+                              <span className="text-slate-400">Contract Restructuring Optimization Yield</span>
+                              <span className="font-bold text-white font-mono">{customContract ? "40.0% Recovery" : "15.0% Recovery"}</span>
+                            </div>
+                            <div className="flex justify-between py-1.5 border-b border-white/5">
+                              <span className="text-slate-400">Post-Optimization Net Operating Cash Flow (EBITDA)</span>
+                              <span className="font-bold text-emerald-400 font-mono">+${calcResults.ebitdaIncrease.toLocaleString()} / yr</span>
+                            </div>
+                            <div className="flex justify-between py-1.5 border-b border-white/5">
+                              <span className="text-slate-400">Applied Enterprise Valuation Exit Multiple</span>
+                              <span className="font-bold text-white font-mono">{multiple.toFixed(1)}x Multiple</span>
+                            </div>
+                            <div className="flex justify-between pt-2 text-sm font-bold text-white">
+                              <span className="text-emerald-400">Total Valuation Added to Portco Exit</span>
+                              <span className="text-emerald-400 font-mono">${calcResults.exitValueAdded.toLocaleString()}</span>
                             </div>
                           </div>
-                          <p className="text-[10px] text-slate-500 leading-relaxed italic pt-1">
+
+                          <p className="text-[10px] text-slate-500 leading-relaxed italic pt-2 border-t border-emerald-500/5">
                             *Exit additions are calculated directly on audited pharmacy contract recovery rates. Realized portfolio averages from our database demonstrate an 18% cost-reduction average on self-funded portcos.
                           </p>
                         </div>

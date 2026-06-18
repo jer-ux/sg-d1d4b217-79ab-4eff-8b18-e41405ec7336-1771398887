@@ -19,12 +19,20 @@ export function CalendlyWidget({
 }: CalendlyWidgetProps) {
   
   useEffect(() => {
+    // Inject the Calendly CSS file to style the modal popup perfectly
+    const link = document.createElement("link");
+    link.href = "https://assets.calendly.com/assets/external/widget.css";
+    link.rel = "stylesheet";
+    document.head.appendChild(link);
+
+    // Inject the script
     const script = document.createElement("script");
     script.src = "https://assets.calendly.com/assets/external/widget.js";
     script.async = true;
     document.body.appendChild(script);
 
     return () => {
+      document.head.removeChild(link);
       document.body.removeChild(script);
     };
   }, []);

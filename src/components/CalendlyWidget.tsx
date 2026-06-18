@@ -3,12 +3,13 @@
 import { useEffect } from "react";
 import { Calendar } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { cn } from "@/lib/utils";
 
 interface CalendlyWidgetProps {
   url?: string;
   className?: string;
   buttonText?: string;
-  buttonVariant?: "default" | "outline" | "ghost";
+  buttonVariant?: "default" | "outline" | "ghost" | "secondary";
 }
 
 export function CalendlyWidget({ 
@@ -32,8 +33,12 @@ export function CalendlyWidget({
     document.body.appendChild(script);
 
     return () => {
-      document.head.removeChild(link);
-      document.body.removeChild(script);
+      if (document.head.contains(link)) {
+        document.head.removeChild(link);
+      }
+      if (document.body.contains(script)) {
+        document.body.removeChild(script);
+      }
     };
   }, []);
 
@@ -52,7 +57,7 @@ export function CalendlyWidget({
     <Button
       onClick={openCalendly}
       variant={buttonVariant}
-      className={className}
+      className={cn("cursor-pointer", className)}
     >
       <Calendar className="w-4 h-4 mr-2" />
       {buttonText}

@@ -38,8 +38,13 @@ export function CalendlyWidget({
   }, []);
 
   const openCalendly = () => {
-    if (typeof window !== "undefined" && (window as any).Calendly) {
-      (window as any).Calendly.initPopupWidget({ url });
+    if (typeof window !== "undefined") {
+      if ((window as any).Calendly) {
+        (window as any).Calendly.initPopupWidget({ url });
+      } else {
+        // Fallback: Open the scheduler in a new tab if the script is blocked or delayed
+        window.open(url, "_blank");
+      }
     }
   };
 

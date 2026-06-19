@@ -11,6 +11,7 @@ import { Badge } from "@/components/ui/badge";
 import { Card, CardHeader, CardTitle, CardDescription, CardContent } from "@/components/ui/card";
 import Nav from "@/components/Nav";
 import Footer from "@/components/Footer";
+import { IntelligenceSandbox } from "@/components/kincaid-iq/IntelligenceSandbox";
 
 const reportsData = [
   {
@@ -500,170 +501,10 @@ export default function KincaidIQIntelligenceSeries() {
                 </p>
               </div>
 
-              <div className="grid lg:grid-cols-3 gap-8">
-                {/* Inputs */}
-                <div className="lg:col-span-1 bg-[#151B23] border border-[#2A3F54] rounded-lg p-6 space-y-6 shadow-xl">
-                  <h3 className="text-lg font-serif font-bold text-white pb-3 border-b border-[#2A3F54] flex items-center gap-2">
-                    <Database className="w-5 h-5 text-[#B8860B]" />
-                    Model Parameters
-                  </h3>
-
-                  {/* Covered Lives */}
-                  <div>
-                    <label className="block text-xs font-mono text-neutral-400 uppercase tracking-wider mb-2 flex justify-between">
-                      <span>Covered Lives (Members)</span>
-                      <span className="text-white font-bold">{coveredLives.toLocaleString()}</span>
-                    </label>
-                    <input 
-                      type="range" 
-                      min="500" 
-                      max="100000" 
-                      step="500"
-                      value={coveredLives}
-                      onChange={(e) => setCoveredLives(Number(e.target.value))}
-                      className="w-full accent-[#B8860B] bg-[#0F1419]"
-                    />
-                    <div className="flex justify-between text-[10px] text-neutral-500 mt-1">
-                      <span>500</span>
-                      <span>50k</span>
-                      <span>100k</span>
-                    </div>
-                  </div>
-
-                  {/* PBM Structure */}
-                  <div>
-                    <label className="block text-xs font-mono text-neutral-400 uppercase tracking-wider mb-2">
-                      PBM Sourcing Structure
-                    </label>
-                    <select 
-                      value={currentPbmModel}
-                      onChange={(e) => setCurrentPbmModel(e.target.value as any)}
-                      className="w-full bg-[#0F1419] border border-[#2A3F54] text-neutral-200 rounded px-3 py-2 text-sm focus:outline-none focus:border-[#B8860B]"
-                    >
-                      <option value="traditional-spread">Traditional Spread Pricing (Bundled)</option>
-                      <option value="carve-out-pass-through">Carve-Out Pass-Through (Disclosed Fee)</option>
-                      <option value="fully-bundled">Fully Bundled PBM (Exclusive Formulary)</option>
-                    </select>
-                  </div>
-
-                  {/* Specialty Ratio */}
-                  <div>
-                    <label className="block text-xs font-mono text-neutral-400 uppercase tracking-wider mb-2 flex justify-between">
-                      <span>Specialty Rx Share of Spend</span>
-                      <span className="text-white font-bold">{specialtyRatio}%</span>
-                    </label>
-                    <input 
-                      type="range" 
-                      min="20" 
-                      max="70" 
-                      step="5"
-                      value={specialtyRatio}
-                      onChange={(e) => setSpecialtyRatio(Number(e.target.value))}
-                      className="w-full accent-[#B8860B] bg-[#0F1419]"
-                    />
-                    <p className="text-[10px] text-neutral-500 mt-1">
-                      Specialty drugs represent &lt;2% of claims volume but often drive over 50% of total financial leakage.
-                    </p>
-                  </div>
-
-                  <div className="bg-[#1A3A52]/20 border border-[#1A3A52] rounded p-4 text-xs text-neutral-300">
-                    <div className="flex gap-2">
-                      <Info className="w-4 h-4 text-[#B8860B] flex-shrink-0" />
-                      <span>This model utilizes retroactive audit datasets from 247 self-funded plans to extrapolate risk boundaries.</span>
-                    </div>
-                  </div>
-                </div>
-
-                {/* Outputs & Graphs */}
-                <div className="lg:col-span-2 space-y-6">
-                  <div className="bg-[#0F1419] border-2 border-[#B8860B] rounded-lg p-8 shadow-2xl relative overflow-hidden">
-                    <div className="absolute top-0 right-0 w-32 h-32 bg-[#B8860B]/5 rounded-full blur-3xl pointer-events-none" />
-
-                    <div className="grid md:grid-cols-2 gap-8 items-center">
-                      <div>
-                        <div className="text-xs font-mono text-[#B8860B] uppercase tracking-widest mb-1">
-                          Projected Annual Contractual Leakage
-                        </div>
-                        <div className="text-5xl font-serif font-bold text-white mb-2">
-                          ${simulatedLoss.total.toLocaleString()}
-                        </div>
-                        <p className="text-sm text-neutral-400 mb-6">
-                          Estimated avoidable expense hiding in undisclosed margins, administrative fee carve-outs, and rebate misclassifications.
-                        </p>
-
-                        <div className="space-y-4">
-                          {/* Progress Item 1 */}
-                          <div>
-                            <div className="flex justify-between text-xs font-mono mb-1">
-                              <span className="text-neutral-300">Spread Pricing Arbitrage</span>
-                              <span className="text-white font-bold">${simulatedLoss.spread.toLocaleString()}</span>
-                            </div>
-                            <div className="w-full bg-[#1A232D] h-2 rounded-full overflow-hidden">
-                              <div className="bg-[#B8860B] h-full rounded-full" style={{ width: `${(simulatedLoss.spread / simulatedLoss.total) * 100}%` }} />
-                            </div>
-                          </div>
-
-                          {/* Progress Item 2 */}
-                          <div>
-                            <div className="flex justify-between text-xs font-mono mb-1">
-                              <span className="text-neutral-300">Retained Manufacturer Rebates</span>
-                              <span className="text-white font-bold">${simulatedLoss.rebateLeakage.toLocaleString()}</span>
-                            </div>
-                            <div className="w-full bg-[#1A232D] h-2 rounded-full overflow-hidden">
-                              <div className="bg-amber-600 h-full rounded-full" style={{ width: `${(simulatedLoss.rebateLeakage / simulatedLoss.total) * 100}%` }} />
-                            </div>
-                          </div>
-
-                          {/* Progress Item 3 */}
-                          <div>
-                            <div className="flex justify-between text-xs font-mono mb-1">
-                              <span className="text-neutral-300">Compliance & Plan Administration Gaps</span>
-                              <span className="text-white font-bold">${simulatedLoss.complianceGap.toLocaleString()}</span>
-                            </div>
-                            <div className="w-full bg-[#1A232D] h-2 rounded-full overflow-hidden">
-                              <div className="bg-orange-700 h-full rounded-full" style={{ width: `${(simulatedLoss.complianceGap / simulatedLoss.total) * 100}%` }} />
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-
-                      {/* Visual Dashboard Panel */}
-                      <div className="bg-[#151B23] border border-[#2A3F54] rounded-lg p-6 space-y-4">
-                        <div className="flex items-center justify-between pb-3 border-b border-[#2A3F54]">
-                          <span className="text-xs font-mono text-neutral-400">BENCHMARK RATIOS</span>
-                          <span className="text-xs font-mono text-[#B8860B]">95% Confidence Interval</span>
-                        </div>
-
-                        <div className="grid grid-cols-2 gap-4">
-                          <div className="bg-[#0F1419] p-3 rounded border border-[#2A3F54]/60">
-                            <div className="text-[10px] font-mono text-neutral-500 uppercase">Loss per Covered Life</div>
-                            <div className="text-xl font-bold text-white mt-1">
-                              ${Math.round(simulatedLoss.total / coveredLives)}
-                            </div>
-                          </div>
-                          <div className="bg-[#0F1419] p-3 rounded border border-[#2A3F54]/60">
-                            <div className="text-[10px] font-mono text-neutral-500 uppercase">Fiduciary Risk Index</div>
-                            <div className="text-xl font-bold text-rose-500 mt-1">
-                              {currentPbmModel === "traditional-spread" ? "8.4 / 10" : "4.2 / 10"}
-                            </div>
-                          </div>
-                        </div>
-
-                        <div className="pt-4 border-t border-[#2A3F54] text-center">
-                          <p className="text-xs text-neutral-300 leading-relaxed mb-4">
-                            Based on your parameters, a complete Forensic Actuarial audit is highly recommended to formalize contractual evidence and reclaim leakages.
-                          </p>
-                          <Link href="/request-demo">
-                            <Button className="w-full bg-[#B8860B] hover:bg-[#9A7209] text-[#0F1419] font-bold">
-                              Download Detailed Projections
-                            </Button>
-                          </Link>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
+              <IntelligenceSandbox 
+                coveredLives={coveredLives} 
+                setCoveredLives={setCoveredLives} 
+              />
             </div>
           </section>
         )}

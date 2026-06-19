@@ -22,6 +22,9 @@ import { CalendlyWidget } from "@/components/CalendlyWidget";
 import { ROICalculator } from "@/components/ROICalculator";
 import { PBMSpreadCalculator } from "@/components/PBMSpreadCalculator";
 import { ExitIntentPopup } from "@/components/ExitIntentPopup";
+import { InteractiveHeroDashboard } from "@/components/home/InteractiveHeroDashboard";
+import { DocumentCarousel } from "@/components/home/DocumentCarousel";
+import { AuditJourneyTimeline } from "@/components/home/AuditJourneyTimeline";
 import Nav from "@/components/Nav";
 import Footer from "@/components/Footer";
 import { Badge } from "@/components/ui/badge";
@@ -236,74 +239,7 @@ export default function HomePage() {
               animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.8, delay: 0.2, ease: "easeOut" }}
             >
-              <div className="border border-[#2A3F54] bg-[#0C1117] rounded-lg p-1 shadow-xl">
-                <div className="bg-[#151B23] px-4 py-2 border-b border-[#2A3F54] flex items-center justify-between text-xs font-mono text-neutral-400">
-                  <div className="flex items-center gap-2">
-                    <span className="w-2 h-2 rounded-full bg-red-500" />
-                    <span className="w-2 h-2 rounded-full bg-yellow-500" />
-                    <span className="w-2 h-2 rounded-full bg-green-500" />
-                    <span className="ml-2">kincaid-audit-engine-v4.2</span>
-                  </div>
-                  <Badge className="bg-red-900/20 text-red-400 border border-red-900/40 px-2 py-0.5 text-[10px]">RISK DETECTED</Badge>
-                </div>
-                <div className="p-6 space-y-6">
-                  <div className="space-y-1.5">
-                    <div className="text-xs font-mono text-neutral-400">Active Audit Focus</div>
-                    <div className="text-lg font-semibold text-white">Prescription Formulary Analysis</div>
-                  </div>
-
-                  <div className="grid grid-cols-2 gap-4">
-                    <div className="bg-[#0F1419] border border-[#2A3F54] rounded p-3">
-                      <div className="text-[10px] font-mono text-neutral-400">Claims Analyzed</div>
-                      <div className="text-base font-bold text-white mt-1">42,854</div>
-                    </div>
-                    <div className="bg-[#0F1419] border border-[#2A3F54] rounded p-3">
-                      <div className="text-[10px] font-mono text-neutral-400">Flagged Non-Compliance</div>
-                      <div className="text-base font-bold text-red-400 mt-1">1,489</div>
-                    </div>
-                  </div>
-
-                  <div className="space-y-2">
-                    <div className="flex justify-between text-xs font-mono">
-                      <span className="text-neutral-400">Traditional PBM Profit Margin</span>
-                      <span className="text-red-400 font-semibold">34.8%</span>
-                    </div>
-                    <div className="h-2 bg-[#151B23] rounded-sm overflow-hidden">
-                      <motion.div 
-                        className="h-full bg-red-500" 
-                        initial={{ width: 0 }}
-                        animate={{ width: "34.8%" }}
-                        transition={{ duration: 1.2, delay: 0.5, ease: "easeOut" }}
-                      />
-                    </div>
-                  </div>
-
-                  <div className="space-y-2">
-                    <div className="flex justify-between text-xs font-mono">
-                      <span className="text-neutral-400">Kincaid Fiduciary Target Fee</span>
-                      <span className="text-emerald-400 font-semibold">2.5%</span>
-                    </div>
-                    <div className="h-2 bg-[#151B23] rounded-sm overflow-hidden">
-                      <motion.div 
-                        className="h-full bg-emerald-500" 
-                        initial={{ width: 0 }}
-                        animate={{ width: "2.5%" }}
-                        transition={{ duration: 1.2, delay: 0.7, ease: "easeOut" }}
-                      />
-                    </div>
-                  </div>
-
-                  <div className="bg-[#1A3A52]/10 border border-[#1A3A52] rounded p-4">
-                    <div className="flex items-center gap-2 text-xs font-mono text-[#B8860B] font-semibold mb-1 uppercase tracking-wide">
-                      <Shield className="h-4 w-4" />
-                      Fiduciary Contract Fix Recommended
-                    </div>
-                    <p className="text-xs text-neutral-300 leading-relaxed">
-                      Carve out specialty pharmacy benefits from your main carrier contract immediately to halt undisclosed drug coupon markup harvesting.
-                    </p>
-                  </div>
-                </div>
-              </div>
+              <InteractiveHeroDashboard />
             </motion.div>
 
           </div>
@@ -330,6 +266,23 @@ export default function HomePage() {
               <LandingActuarialReport />
             </AnimatedSection>
 
+          </div>
+        </section>
+
+        <section className="relative py-24 border-t border-[#1F2937] overflow-hidden">
+          <div className="absolute inset-0 pointer-events-none">
+            <div className="absolute inset-0 opacity-10 bg-gradient-to-b from-transparent via-[#B8860B]/5 to-transparent" />
+          </div>
+          <div className="max-w-7xl mx-auto px-4 md:px-8 relative z-10">
+            <AnimatedSection className="mb-12 text-center max-w-3xl mx-auto space-y-4">
+              <span className="text-xs font-mono text-[#B8860B] uppercase tracking-widest">Forensic Research & Analysis</span>
+              <h2 className="text-4xl md:text-5xl font-serif font-bold">Fiduciary Intelligence Library</h2>
+              <p className="text-neutral-400 text-lg leading-relaxed">
+                Unlock deep structural overcharge proof. Authenticate secure executive download access to our certified PBM generic pricing arbitrage, EBITDA defense audit, and sovereign actuarial research papers.
+              </p>
+            </AnimatedSection>
+
+            <DocumentCarousel />
           </div>
         </section>
 
@@ -596,7 +549,24 @@ export default function HomePage() {
           </div>
         </section>
 
-        <section className="relative py-24 max-w-7xl mx-auto px-4 md:px-8 overflow-hidden">
+        <section className="relative py-24 border-t border-[#1F2937] overflow-hidden">
+          <div className="absolute inset-0 pointer-events-none">
+            <div className="absolute inset-0 opacity-10 bg-gradient-to-b from-transparent via-[#B8860B]/5 to-transparent" />
+          </div>
+          <div className="max-w-7xl mx-auto px-4 md:px-8 relative z-10">
+            <AnimatedSection className="mb-16 text-center max-w-3xl mx-auto space-y-4">
+              <span className="text-xs font-mono text-[#B8860B] uppercase tracking-widest font-semibold">Operational Blueprint</span>
+              <h2 className="text-4xl md:text-5xl font-serif font-bold">The 30-Day Forensic Audit Journey</h2>
+              <p className="text-neutral-400 text-lg leading-relaxed">
+                Our standardized 30-day fiduciary audit pipeline processes raw claim lines securely under ERISA protection with zero operational friction.
+              </p>
+            </AnimatedSection>
+
+            <AuditJourneyTimeline />
+          </div>
+        </section>
+
+        <section className="relative py-24 max-w-7xl mx-auto px-4 md:px-8 overflow-hidden border-t border-[#1F2937]">
           <div className="absolute inset-0 pointer-events-none opacity-10">
             <TechBackdrop intensity={0.3} density={0.6} />
           </div>

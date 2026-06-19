@@ -71,7 +71,7 @@ export function InteractiveHeroDashboard() {
 
   const handleMitigate = (id: string) => {
     setEvents(prev => prev.map(evt => {
-      if (newEvent => evt.id === id) {
+      if (evt.id === id) {
         return { ...evt, status: "mitigated" };
       }
       return evt;

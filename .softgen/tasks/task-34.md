@@ -9,12 +9,13 @@ created_at: 2026-06-21T14:40:00Z
 position: 4
 ---
 ## Notes
-Enhance the Mark Cuban Cost Plus Drugs page with interactive economic calculators and real-world savings comparisons that demonstrate the financial superiority of transparent cost-plus pricing over opaque PBM spread pricing.
+Enhance the Mark Cuban Cost Plus Drugs page with four premium interactive economic calculators and comparison tools that demonstrate the financial superiority of transparent cost-plus pricing over opaque PBM spread pricing.
 
 ## Checklist
-- [ ] Inspect current page structure and content
-- [ ] Build interactive Cost-Plus vs PBM Spread Calculator component
-- [ ] Add real NDC drug price comparison table (Brand vs Generic vs Cost Plus)
-- [ ] Integrate live AWP-to-Cost-Plus savings visualizer
-- [ ] Add employer case study ROI calculator
-- [ ] Verify clean compilation
+- [x] Inspect current page structure and content
+- [ ] Build Instant ROI Calculator Widget component (prominent savings timeline)
+- [ ] Build Real Employer Case Studies Panel component (interactive success stories)
+- [ ] Build Hidden Fee Comparison Matrix component (PBM fees vs Cost Plus)
+- [ ] Build Formulary Optimization Engine component (drug swap suggestions)
+- [ ] Integrate all four components into the Mark Cuban page
+- [ ] Verify clean compilation with zero errors

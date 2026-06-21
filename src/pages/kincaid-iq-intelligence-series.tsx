@@ -327,7 +327,7 @@ const initialAuditEvents = [
 
 export default function KincaidIQIntelligenceSeries() {
   const [selectedCategory, setSelectedCategory] = useState<string>("all");
-  const [activeTab, setActiveTab] = useState<"reports" | "sandbox" | "live-stream">("reports");
+  const [activeTab, setActiveTab] = useState<"reports" | "live-stream">("reports");
   const [mounted, setMounted] = useState(false);
 
   // Sandbox state
@@ -448,49 +448,12 @@ export default function KincaidIQIntelligenceSeries() {
               <p className="text-xl text-neutral-300 leading-relaxed mb-8">
                 Evidence-based forensic audits employing actuarial rigor, contract intelligence frameworks, and clinical validation protocols. Sorted seamlessly from essential benchmarking dockets to flagship risk defense suites.
               </p>
-
-              {/* Enhanced Action Tabs */}
-              <div className="flex flex-wrap gap-2 border-b border-[#1F2937] pb-1 mb-8">
-                <button
-                  onClick={() => setActiveTab("reports")}
-                  className={`px-5 py-3 text-sm font-semibold border-b-2 transition-all ${
-                    activeTab === "reports" 
-                      ? "border-[#B8860B] text-[#B8860B] bg-[#151B23]/40" 
-                      : "border-transparent text-neutral-400 hover:text-white"
-                  }`}
-                >
-                  <ListCollapse className="w-4 h-4 inline-block mr-2" />
-                  Intelligence Reports (Lowest Price First)
-                </button>
-                <button
-                  onClick={() => setActiveTab("sandbox")}
-                  className={`px-5 py-3 text-sm font-semibold border-b-2 transition-all ${
-                    activeTab === "sandbox" 
-                      ? "border-[#B8860B] text-[#B8860B] bg-[#151B23]/40" 
-                      : "border-transparent text-neutral-400 hover:text-white"
-                  }`}
-                >
-                  <TrendingUp className="w-4 h-4 inline-block mr-2 text-amber-500" />
-                  Forensic Risk Sandbox
-                </button>
-                <button
-                  onClick={() => setActiveTab("live-stream")}
-                  className={`px-5 py-3 text-sm font-semibold border-b-2 transition-all ${
-                    activeTab === "live-stream" 
-                      ? "border-[#B8860B] text-[#B8860B] bg-[#151B23]/40" 
-                      : "border-transparent text-neutral-400 hover:text-white"
-                  }`}
-                >
-                  <Activity className="w-4 h-4 inline-block mr-2 text-rose-500 animate-pulse" />
-                  Live Forensic Audit Stream
-                </button>
-              </div>
             </div>
           </div>
         </section>
 
-        {/* Dynamic Sandbox Simulator View */}
-        {activeTab === "sandbox" && mounted && (
+        {/* Forensic Risk Sandbox - FIRST THING YOU SEE */}
+        {mounted && (
           <section className="py-16 bg-[#11161C] border-b border-[#1F2937]">
             <div className="max-w-7xl mx-auto px-6">
               <div className="max-w-3xl mb-12">
@@ -508,6 +471,60 @@ export default function KincaidIQIntelligenceSeries() {
             </div>
           </section>
         )}
+
+        {/* Impact Metrics Panel (Dynamic and Always Visible) */}
+        <section className="py-12 border-b border-[#1F2937]">
+          <div className="max-w-7xl mx-auto px-6">
+            <div className="grid md:grid-cols-4 gap-8">
+              <div className="text-center">
+                <div className="text-4xl font-serif font-bold text-white mb-2">$273M</div>
+                <div className="text-sm text-neutral-400">Identified Contractual Leakage</div>
+              </div>
+              <div className="text-center">
+                <div className="text-4xl font-serif font-bold text-white mb-2">13</div>
+                <div className="text-sm text-neutral-400">Published Intelligence Reports</div>
+              </div>
+              <div className="text-center">
+                <div className="text-4xl font-serif font-bold text-white mb-2">31%</div>
+                <div className="text-sm text-neutral-400">Average Cost Reduction</div>
+              </div>
+              <div className="text-center">
+                <div className="text-4xl font-serif font-bold text-white mb-2">247</div>
+                <div className="text-sm text-neutral-400">Organizations Served</div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* Secondary Navigation: Reports & Live Stream Tabs */}
+        <section className="border-b border-[#1F2937] bg-[#151B23] sticky top-16 z-40">
+          <div className="max-w-7xl mx-auto px-6 py-4">
+            <div className="flex flex-wrap gap-2">
+              <button
+                onClick={() => setActiveTab("reports")}
+                className={`px-5 py-3 text-sm font-semibold border-b-2 transition-all ${
+                  activeTab === "reports" 
+                    ? "border-[#B8860B] text-[#B8860B] bg-[#151B23]/40" 
+                    : "border-transparent text-neutral-400 hover:text-white"
+                }`}
+              >
+                <ListCollapse className="w-4 h-4 inline-block mr-2" />
+                Intelligence Reports (Lowest Price First)
+              </button>
+              <button
+                onClick={() => setActiveTab("live-stream")}
+                className={`px-5 py-3 text-sm font-semibold border-b-2 transition-all ${
+                  activeTab === "live-stream" 
+                    ? "border-[#B8860B] text-[#B8860B] bg-[#151B23]/40" 
+                    : "border-transparent text-neutral-400 hover:text-white"
+                }`}
+              >
+                <Activity className="w-4 h-4 inline-block mr-2 text-rose-500 animate-pulse" />
+                Live Forensic Audit Stream
+              </button>
+            </div>
+          </div>
+        </section>
 
         {/* Live Forensic Audit Stream View */}
         {activeTab === "live-stream" && mounted && (
@@ -593,30 +610,6 @@ export default function KincaidIQIntelligenceSeries() {
             </div>
           </section>
         )}
-
-        {/* Impact Metrics Panel (Dynamic and Always Visible) */}
-        <section className="py-12 border-b border-[#1F2937]">
-          <div className="max-w-7xl mx-auto px-6">
-            <div className="grid md:grid-cols-4 gap-8">
-              <div className="text-center">
-                <div className="text-4xl font-serif font-bold text-white mb-2">$273M</div>
-                <div className="text-sm text-neutral-400">Identified Contractual Leakage</div>
-              </div>
-              <div className="text-center">
-                <div className="text-4xl font-serif font-bold text-white mb-2">13</div>
-                <div className="text-sm text-neutral-400">Published Intelligence Reports</div>
-              </div>
-              <div className="text-center">
-                <div className="text-4xl font-serif font-bold text-white mb-2">31%</div>
-                <div className="text-sm text-neutral-400">Average Cost Reduction</div>
-              </div>
-              <div className="text-center">
-                <div className="text-4xl font-serif font-bold text-white mb-2">247</div>
-                <div className="text-sm text-neutral-400">Organizations Served</div>
-              </div>
-            </div>
-          </div>
-        </section>
 
         {/* Reports Tab and Filter System */}
         {activeTab === "reports" && (

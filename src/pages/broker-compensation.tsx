@@ -229,13 +229,24 @@ For the ${employerName} Health & Welfare Plan`;
             
             {/* Left Column: Interactive Inputs */}
             <div className="lg:col-span-4 space-y-8">
-              <Card className="bg-[#0D0D19]/80 border-slate-800/80 backdrop-blur-xl text-white">
+              <Card className="bg-[#0D0D19]/80 border-slate-800/80 backdrop-blur-xl text-white relative overflow-hidden ring-2 ring-[#8C1515]/30 shadow-lg shadow-[#8C1515]/20">
+                {/* START HERE Badge - Pulsing Animation */}
+                <div className="absolute -top-2 -right-2 z-10">
+                  <div className="relative">
+                    <div className="absolute inset-0 bg-[#8C1515] rounded-full blur-md opacity-60 animate-pulse" />
+                    <div className="relative px-3 py-1 rounded-full bg-[#8C1515] border border-[#FF5D5D] text-white text-[10px] font-extrabold tracking-wider uppercase shadow-lg flex items-center gap-1.5">
+                      <div className="w-1.5 h-1.5 rounded-full bg-white animate-pulse" />
+                      START HERE
+                    </div>
+                  </div>
+                </div>
+
                 <CardHeader className="border-b border-slate-800/60 pb-5">
                   <CardTitle className="text-lg font-bold flex items-center gap-2">
                     <Calculator className="w-5 h-5 text-indigo-400" /> Plan Parameters
                   </CardTitle>
                   <CardDescription className="text-slate-400 text-xs">
-                    Input your general plan specifications to estimate standard broker margins.
+                    <span className="font-semibold text-[#FF8585]">Step 1:</span> Input your general plan specifications to estimate standard broker margins and hidden override commissions.
                   </CardDescription>
                 </CardHeader>
                 <CardContent className="pt-6 space-y-6">

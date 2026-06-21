@@ -7,6 +7,9 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
 import { Slider } from "@/components/ui/slider";
+import { InstantROICalculator } from "@/components/tools/InstantROICalculator";
+import { MeasureMedComparison } from "@/components/marketing/MeasureMedComparison";
+import { FormularyOptimizationEngine } from "@/components/solutions/EconomicValueEnhancement";
 import { 
   TrendingDown, 
   DollarSign, 
@@ -904,6 +907,21 @@ export default function MarkCubanCostDrugs() {
             </div>
 
           </div>
+        </section>
+
+        {/* INSTANT ROI CALCULATOR - NEW ECONOMIC VALUE #1 */}
+        <section className="py-24 max-w-[1600px] mx-auto px-6 border-b border-zinc-900">
+          <InstantROICalculator />
+        </section>
+
+        {/* HIDDEN FEE COMPARISON MATRIX - NEW ECONOMIC VALUE #3 */}
+        <section className="py-24 max-w-[1600px] mx-auto px-6 border-b border-zinc-900 bg-zinc-950/20">
+          <MeasureMedComparison />
+        </section>
+
+        {/* FORMULARY OPTIMIZATION ENGINE - NEW ECONOMIC VALUE #4 */}
+        <section className="py-24 max-w-[1600px] mx-auto px-6 border-b border-zinc-900">
+          <FormularyOptimizationEngine />
         </section>
 
         {/* SECURE CLAIMS INTAKE AUDIT PORTAL */}

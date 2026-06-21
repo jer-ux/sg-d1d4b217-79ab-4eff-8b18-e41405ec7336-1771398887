@@ -13,9 +13,9 @@ Enhance the Mark Cuban Cost Plus Drugs page with four premium interactive econom
 
 ## Checklist
 - [x] Inspect current page structure and content
-- [ ] Build Instant ROI Calculator Widget component (prominent savings timeline)
+- [x] Build Instant ROI Calculator Widget component (prominent savings timeline)
 - [ ] Build Real Employer Case Studies Panel component (interactive success stories)
-- [ ] Build Hidden Fee Comparison Matrix component (PBM fees vs Cost Plus)
+- [x] Build Hidden Fee Comparison Matrix component (PBM fees vs Cost Plus)
 - [ ] Build Formulary Optimization Engine component (drug swap suggestions)
 - [ ] Integrate all four components into the Mark Cuban page
 - [ ] Verify clean compilation with zero errors

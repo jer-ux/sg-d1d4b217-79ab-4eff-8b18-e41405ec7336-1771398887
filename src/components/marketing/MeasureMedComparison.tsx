@@ -1,331 +1,259 @@
-"use client";
-
-import { Check, X, ArrowRight, Shield, Scale, FileSearch, Brain } from "lucide-react";
-import { Card } from "@/components/ui/card";
+import { motion } from "framer-motion";
+import { Check, X, AlertTriangle, DollarSign, Shield } from "lucide-react";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import Link from "next/link";
 
-interface ComparisonRow {
+interface FeeItem {
   category: string;
-  feature: string;
-  siriusb: boolean | string;
-  measuremed: boolean | string;
-  insight?: string;
+  pbmFee: string | null;
+  costPlusFee: string | null;
+  impact: "high" | "medium" | "low";
 }
 
-const comparisonData: ComparisonRow[] = [
+const hiddenFees: FeeItem[] = [
   {
-    category: "Approach",
-    feature: "Forensic Evidence Collection",
-    siriusb: "Chain-of-custody audit trails",
-    measuremed: false,
-    insight: "We investigate what happened; they predict what might happen"
+    category: "Rebate Retention",
+    pbmFee: "60-85% kept by PBM",
+    costPlusFee: null,
+    impact: "high"
   },
   {
-    category: "Approach",
-    feature: "Clinical Outcome Modeling",
-    siriusb: "Historical claims forensics",
-    measuremed: "Predictive QALY/hospitalization",
-    insight: "Both provide clinical insight, different methodologies"
+    category: "Spread Pricing Markup",
+    pbmFee: "15-300% per claim",
+    costPlusFee: null,
+    impact: "high"
   },
   {
-    category: "Scope",
-    feature: "PBM Contract Forensics",
-    siriusb: true,
-    measuremed: false,
-    insight: "We audit the contract itself for leakage"
+    category: "DIR Fees (Clawbacks)",
+    pbmFee: "$2-45 per Rx retroactive",
+    costPlusFee: null,
+    impact: "high"
   },
   {
-    category: "Scope",
-    feature: "Formulary Optimization",
-    siriusb: "Evidence-based analysis",
-    measuremed: "Primary focus",
-    insight: "Their core product; our component"
+    category: "Admin/PMPM Fees",
+    pbmFee: "$8-25 per member/month",
+    costPlusFee: null,
+    impact: "medium"
   },
   {
-    category: "Scope",
-    feature: "Broker Commission Tracking",
-    siriusb: true,
-    measuremed: false
+    category: "AWP Discount Games",
+    pbmFee: "Opaque floating benchmarks",
+    costPlusFee: null,
+    impact: "medium"
   },
   {
-    category: "Scope",
-    feature: "Stop-Loss Analysis",
-    siriusb: true,
-    measuremed: false
+    category: "Specialty Upcharges",
+    pbmFee: "$500-2000 per fill",
+    costPlusFee: null,
+    impact: "high"
   },
   {
-    category: "Scope",
-    feature: "Multi-Vendor Compliance",
-    siriusb: true,
-    measuremed: "PBM-focused only"
+    category: "Formulary Placement Fees",
+    pbmFee: "Pay-to-play tier positioning",
+    costPlusFee: null,
+    impact: "medium"
   },
   {
-    category: "Evidence",
-    feature: "Form 5500 Integration",
-    siriusb: true,
-    measuremed: false,
-    insight: "We connect DOL filings to claims reality"
-  },
-  {
-    category: "Evidence",
-    feature: "Receipt-Level Lineage",
-    siriusb: "Every assertion traced to source",
-    measuremed: false
-  },
-  {
-    category: "Evidence",
-    feature: "Third-Party Validation",
-    siriusb: "Actuarial + Legal",
-    measuremed: "Clinical consultants",
-    insight: "Different validation standards for different missions"
-  },
-  {
-    category: "Platform",
-    feature: "Executive War Room",
-    siriusb: true,
-    measuremed: false,
-    insight: "Real-time investigative dashboard for C-suite"
-  },
-  {
-    category: "Platform",
-    feature: "Verified Savings Ledger",
-    siriusb: "Double-entry accounting for all interventions",
-    measuremed: false
-  },
-  {
-    category: "Platform",
-    feature: "Agentic Automation",
-    siriusb: "Multi-agent orchestration",
-    measuremed: "Clinical automation pipeline"
-  },
-  {
-    category: "Platform",
-    feature: "Arbitrage Event Detection",
-    siriusb: true,
-    measuremed: false,
-    insight: "We identify contractual arbitrage opportunities in real-time"
-  },
-  {
-    category: "Integration",
-    feature: "Snowflake Native",
-    siriusb: true,
-    measuremed: "Unknown",
-    insight: "We operate in your data warehouse"
-  },
-  {
-    category: "Integration",
-    feature: "Claims Data Ingestion",
-    siriusb: true,
-    measuremed: true
-  },
-  {
-    category: "Use Case",
-    feature: "ERISA Fiduciary Defense",
-    siriusb: true,
-    measuremed: false,
-    insight: "Legal-grade evidence for DOL audits"
-  },
-  {
-    category: "Use Case",
-    feature: "M&A Due Diligence",
-    siriusb: true,
-    measuremed: false,
-    insight: "Forensic analysis for PE/VC transactions"
-  },
-  {
-    category: "Use Case",
-    feature: "Clinical Cost Optimization",
-    siriusb: true,
-    measuremed: true
-  },
-  {
-    category: "Use Case",
-    feature: "Board-Level Reporting",
-    siriusb: "Automated executive briefs",
-    measuremed: false
+    category: "Hidden Manufacturer Deals",
+    pbmFee: "Undisclosed pharma kickbacks",
+    costPlusFee: null,
+    impact: "high"
   }
 ];
 
-const categories = Array.from(new Set(comparisonData.map(row => row.category)));
+const transparentPricing = [
+  {
+    category: "Drug Sourcing Cost",
+    value: "Actual manufacturer price",
+    verified: true
+  },
+  {
+    category: "Transparent Markup",
+    value: "Flat 15% disclosed",
+    verified: true
+  },
+  {
+    category: "Dispensing Fee",
+    value: "$3.00 per Rx (fixed)",
+    verified: true
+  },
+  {
+    category: "Shipping Cost",
+    value: "$5.00 flat (actual)",
+    verified: true
+  },
+  {
+    category: "Rebate Pass-Through",
+    value: "100% to customer",
+    verified: true
+  }
+];
 
 export function MeasureMedComparison() {
   return (
-    <div className="w-full max-w-7xl mx-auto space-y-8">
+    <div className="space-y-8">
+      
       {/* Header */}
-      <div className="text-center space-y-4">
-        <Badge variant="outline" className="mb-2">
-          Competitive Intelligence
+      <div className="text-center space-y-3 max-w-3xl mx-auto">
+        <Badge className="bg-red-500/10 text-red-400 border-red-500/30 text-xs font-mono uppercase">
+          <AlertTriangle className="w-3 h-3 inline mr-1.5" />
+          Hidden Fee Exposure Analysis
         </Badge>
-        <h2 className="text-4xl font-bold tracking-tight">
-          Forensic Intelligence vs. Clinical Optimization
+        <h2 className="text-3xl md:text-4xl font-serif font-bold text-white">
+          What Traditional PBMs Hide vs. Cost Plus Transparency
         </h2>
-        <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
-          MeasureMed optimizes formularies for clinical outcomes. We investigate the entire benefits supply chain for fraud, waste, and contractual abuse.
+        <p className="text-zinc-400 text-sm">
+          Side-by-side breakdown of opaque PBM fee structures compared to Mark Cuban Cost Plus Drug Company's fully transparent pricing model.
         </p>
       </div>
 
-      {/* Positioning Cards */}
-      <div className="grid md:grid-cols-2 gap-6">
-        <Card className="p-6 bg-gradient-to-br from-blue-950 to-slate-900 border-blue-800">
-          <div className="flex items-start gap-4">
-            <div className="p-3 bg-blue-900/50 rounded-lg">
-              <FileSearch className="w-6 h-6 text-blue-400" />
+      {/* Comparison Grid */}
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        
+        {/* Traditional PBM Column (Red) */}
+        <Card className="bg-gradient-to-br from-red-950/20 via-zinc-950 to-red-950/10 border-red-500/20 relative overflow-hidden">
+          <div className="absolute top-0 right-0 w-64 h-64 bg-red-500/5 blur-[100px] rounded-full pointer-events-none" />
+          
+          <CardHeader className="border-b border-zinc-900 pb-4">
+            <div className="flex items-center justify-between">
+              <CardTitle className="text-xl font-serif font-bold text-red-400">
+                Traditional PBM Model
+              </CardTitle>
+              <X className="w-6 h-6 text-red-400" />
             </div>
-            <div className="space-y-2">
-              <h3 className="text-xl font-semibold">SiriusB iQ</h3>
-              <p className="text-sm text-blue-200">Forensic Intelligence Platform</p>
-              <p className="text-muted-foreground text-sm">
-                <strong>Mission:</strong> Investigate what actually happened. Build legal-grade evidence trails. Detect arbitrage. Defend fiduciary duty.
+            <p className="text-xs text-zinc-500 mt-2">
+              Opaque, multi-layered hidden fee structure
+            </p>
+          </CardHeader>
+
+          <CardContent className="p-6 space-y-3">
+            {hiddenFees.map((fee, idx) => (
+              <motion.div
+                key={idx}
+                initial={{ opacity: 0, x: -20 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ delay: idx * 0.05 }}
+                className={`p-4 rounded-xl border ${
+                  fee.impact === "high" 
+                    ? "bg-red-500/5 border-red-500/20" 
+                    : fee.impact === "medium"
+                    ? "bg-orange-500/5 border-orange-500/20"
+                    : "bg-yellow-500/5 border-yellow-500/20"
+                }`}
+              >
+                <div className="flex items-start justify-between gap-3">
+                  <div className="flex-1">
+                    <p className="text-sm font-bold text-white mb-1">{fee.category}</p>
+                    <p className="text-xs text-zinc-400 font-mono">{fee.pbmFee}</p>
+                  </div>
+                  <Badge 
+                    className={`text-[9px] font-bold ${
+                      fee.impact === "high"
+                        ? "bg-red-500/10 text-red-400 border-red-500/30"
+                        : fee.impact === "medium"
+                        ? "bg-orange-500/10 text-orange-400 border-orange-500/30"
+                        : "bg-yellow-500/10 text-yellow-400 border-yellow-500/30"
+                    }`}
+                  >
+                    {fee.impact.toUpperCase()}
+                  </Badge>
+                </div>
+              </motion.div>
+            ))}
+
+            {/* Bottom warning */}
+            <div className="bg-red-500/10 p-4 rounded-xl border border-red-500/20 flex items-start gap-3 mt-6">
+              <AlertTriangle className="w-5 h-5 text-red-400 shrink-0 mt-0.5" />
+              <p className="text-xs text-red-300 leading-relaxed">
+                These fees are rarely disclosed in contracts and stack multiplicatively. 
+                Total hidden costs can exceed 200% of actual drug acquisition costs.
               </p>
-              <div className="flex flex-wrap gap-2 mt-3">
-                <Badge variant="secondary" className="text-xs">Chain-of-Custody</Badge>
-                <Badge variant="secondary" className="text-xs">Multi-Vendor</Badge>
-                <Badge variant="secondary" className="text-xs">ERISA Defense</Badge>
-              </div>
             </div>
-          </div>
+          </CardContent>
         </Card>
 
-        <Card className="p-6 bg-gradient-to-br from-slate-900 to-slate-800 border-slate-700">
-          <div className="flex items-start gap-4">
-            <div className="p-3 bg-slate-800/50 rounded-lg">
-              <Brain className="w-6 h-6 text-slate-400" />
+        {/* Cost Plus Column (Green) */}
+        <Card className="bg-gradient-to-br from-cyan-950/20 via-zinc-950 to-green-950/10 border-cyan-500/30 relative overflow-hidden">
+          <div className="absolute top-0 right-0 w-64 h-64 bg-cyan-500/5 blur-[100px] rounded-full pointer-events-none" />
+          
+          <CardHeader className="border-b border-zinc-900 pb-4">
+            <div className="flex items-center justify-between">
+              <CardTitle className="text-xl font-serif font-bold text-cyan-400">
+                Cost Plus Transparent Model
+              </CardTitle>
+              <Shield className="w-6 h-6 text-cyan-400" />
             </div>
-            <div className="space-y-2">
-              <h3 className="text-xl font-semibold">MeasureMed</h3>
-              <p className="text-sm text-slate-400">Clinical-Financial Operating System</p>
-              <p className="text-muted-foreground text-sm">
-                <strong>Mission:</strong> Predict clinical outcomes. Optimize formularies. Model QALY and hospitalization risk.
-              </p>
-              <div className="flex flex-wrap gap-2 mt-3">
-                <Badge variant="outline" className="text-xs">Formulary Focus</Badge>
-                <Badge variant="outline" className="text-xs">Predictive</Badge>
-                <Badge variant="outline" className="text-xs">Clinical ROI</Badge>
+            <p className="text-xs text-zinc-500 mt-2">
+              Simple, transparent, auditable pricing
+            </p>
+          </CardHeader>
+
+          <CardContent className="p-6 space-y-3">
+            {transparentPricing.map((item, idx) => (
+              <motion.div
+                key={idx}
+                initial={{ opacity: 0, x: 20 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ delay: idx * 0.05 }}
+                className="p-4 rounded-xl border bg-cyan-500/5 border-cyan-500/20"
+              >
+                <div className="flex items-start justify-between gap-3">
+                  <div className="flex-1">
+                    <p className="text-sm font-bold text-white mb-1">{item.category}</p>
+                    <p className="text-xs text-cyan-300 font-mono">{item.value}</p>
+                  </div>
+                  {item.verified && (
+                    <Check className="w-5 h-5 text-green-400 shrink-0" />
+                  )}
+                </div>
+              </motion.div>
+            ))}
+
+            {/* Eliminated Fees List */}
+            <div className="pt-4 space-y-2">
+              <p className="text-xs font-mono font-bold text-zinc-400 uppercase tracking-wider">Eliminated Completely:</p>
+              <div className="grid grid-cols-1 gap-2">
+                {["Rebate Retention", "Spread Pricing", "DIR Fees", "Hidden Kickbacks"].map((item, idx) => (
+                  <div key={idx} className="flex items-center gap-2 text-xs text-zinc-500">
+                    <X className="w-3.5 h-3.5 text-red-400" />
+                    <span className="line-through">{item}</span>
+                  </div>
+                ))}
               </div>
             </div>
-          </div>
+
+            {/* Bottom success message */}
+            <div className="bg-cyan-500/10 p-4 rounded-xl border border-cyan-500/20 flex items-start gap-3 mt-6">
+              <DollarSign className="w-5 h-5 text-cyan-400 shrink-0 mt-0.5" />
+              <p className="text-xs text-cyan-300 leading-relaxed">
+                Every cost component is itemized, disclosed upfront, and auditable. 
+                Zero hidden fees, zero rebate games, zero surprises.
+              </p>
+            </div>
+          </CardContent>
         </Card>
+
       </div>
 
-      {/* Comparison Table */}
-      <Card className="overflow-hidden">
-        <div className="overflow-x-auto">
-          <table className="w-full">
-            <thead className="bg-muted/50">
-              <tr>
-                <th className="text-left p-4 font-semibold">Capability</th>
-                <th className="text-center p-4 font-semibold w-1/3">
-                  <div className="flex items-center justify-center gap-2">
-                    <Shield className="w-4 h-4 text-blue-400" />
-                    SiriusB iQ
-                  </div>
-                </th>
-                <th className="text-center p-4 font-semibold w-1/3">
-                  <div className="flex items-center justify-center gap-2">
-                    <Brain className="w-4 h-4 text-slate-400" />
-                    MeasureMed
-                  </div>
-                </th>
-              </tr>
-            </thead>
-            <tbody>
-              {categories.map((category) => (
-                <>
-                  <tr key={category} className="bg-muted/20">
-                    <td colSpan={3} className="p-3 font-semibold text-sm uppercase tracking-wide">
-                      {category}
-                    </td>
-                  </tr>
-                  {comparisonData
-                    .filter(row => row.category === category)
-                    .map((row, idx) => (
-                      <tr key={`${category}-${idx}`} className="border-t border-border/50 hover:bg-muted/10">
-                        <td className="p-4">
-                          <div>
-                            <div className="font-medium">{row.feature}</div>
-                            {row.insight && (
-                              <div className="text-xs text-muted-foreground mt-1 italic">
-                                {row.insight}
-                              </div>
-                            )}
-                          </div>
-                        </td>
-                        <td className="p-4 text-center">
-                          {typeof row.siriusb === "boolean" ? (
-                            row.siriusb ? (
-                              <Check className="w-5 h-5 text-green-400 mx-auto" />
-                            ) : (
-                              <X className="w-5 h-5 text-red-400/50 mx-auto" />
-                            )
-                          ) : (
-                            <div className="text-sm text-blue-300">{row.siriusb}</div>
-                          )}
-                        </td>
-                        <td className="p-4 text-center">
-                          {typeof row.measuremed === "boolean" ? (
-                            row.measuremed ? (
-                              <Check className="w-5 h-5 text-green-400 mx-auto" />
-                            ) : (
-                              <X className="w-5 h-5 text-red-400/50 mx-auto" />
-                            )
-                          ) : (
-                            <div className="text-sm text-slate-400">{row.measuremed}</div>
-                          )}
-                        </td>
-                      </tr>
-                    ))}
-                </>
-              ))}
-            </tbody>
-          </table>
+      {/* Bottom Summary Stats */}
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-6 pt-8">
+        <div className="bg-zinc-950/60 p-6 rounded-xl border border-zinc-900 text-center space-y-2">
+          <p className="text-xs font-mono text-zinc-500 uppercase">Traditional PBM</p>
+          <p className="text-4xl font-black text-red-400 font-mono">8-12</p>
+          <p className="text-xs text-zinc-400">Hidden fee layers</p>
         </div>
-      </Card>
-
-      {/* Bottom Insight */}
-      <Card className="p-6 bg-gradient-to-r from-slate-900 to-blue-950 border-blue-800/50">
-        <div className="flex items-start gap-4">
-          <Scale className="w-8 h-8 text-blue-400 flex-shrink-0 mt-1" />
-          <div className="space-y-2">
-            <h3 className="text-xl font-semibold">Different Problems, Different Solutions</h3>
-            <p className="text-muted-foreground">
-              <strong>MeasureMed</strong> solves clinical optimization — aligning formularies with patient outcomes. Valuable for HR/benefits teams focused on employee health.
-            </p>
-            <p className="text-muted-foreground">
-              <strong>SiriusB iQ</strong> solves forensic investigation — detecting PBM contract leakage, broker kickbacks, and vendor arbitrage. Essential for CFOs, general counsel, and boards defending fiduciary duty.
-            </p>
-            <p className="text-sm text-blue-300 font-medium mt-4">
-              <ArrowRight className="w-4 h-4 inline mr-2" />
-              Use both: MeasureMed for clinical strategy, SiriusB iQ for financial defense and legal compliance.
-            </p>
-          </div>
+        <div className="bg-zinc-950/60 p-6 rounded-xl border border-zinc-900 text-center space-y-2">
+          <p className="text-xs font-mono text-cyan-400 uppercase">Cost Plus Transparent</p>
+          <p className="text-4xl font-black text-cyan-400 font-mono">4</p>
+          <p className="text-xs text-zinc-400">Disclosed cost components</p>
         </div>
-      </Card>
-
-      {/* CTA */}
-      <div className="text-center space-y-4 pt-8">
-        <h3 className="text-2xl font-bold">
-          Need Forensic Intelligence for Your Benefits Program?
-        </h3>
-        <p className="text-muted-foreground max-w-2xl mx-auto">
-          If you're facing ERISA audits, M&A due diligence, or suspect contractual abuse in your PBM/TPA relationships, we provide the evidence infrastructure you need.
-        </p>
-        <div className="flex gap-4 justify-center">
-          <Link
-            href="/request-demo"
-            className="inline-flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-lg font-semibold transition-colors"
-          >
-            Request Forensic Audit
-            <ArrowRight className="w-4 h-4" />
-          </Link>
-          <Link
-            href="/contract-intelligence"
-            className="inline-flex items-center gap-2 bg-slate-800 hover:bg-slate-700 text-white px-6 py-3 rounded-lg font-semibold transition-colors border border-slate-700"
-          >
-            See Platform Demo
-          </Link>
+        <div className="bg-gradient-to-br from-green-950/40 to-cyan-950/40 p-6 rounded-xl border border-green-500/20 text-center space-y-2">
+          <p className="text-xs font-mono text-white uppercase">Average Savings</p>
+          <p className="text-4xl font-black text-white font-mono">87%</p>
+          <p className="text-xs text-green-400">On common medications</p>
         </div>
       </div>
+
     </div>
   );
 }

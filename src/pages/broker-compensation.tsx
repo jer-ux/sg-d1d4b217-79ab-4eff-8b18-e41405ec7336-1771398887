@@ -62,6 +62,35 @@ export default function BrokerCompensationPage() {
     phone: ""
   });
 
+  // Validation states for real-time feedback
+  const livesValidation = useMemo(() => {
+    if (lives >= 500 && lives <= 2000) {
+      return { status: "optimal", message: "Optimal range for forensic accuracy", color: "text-emerald-400", icon: Check };
+    } else if (lives > 2000 && lives <= 5000) {
+      return { status: "good", message: "Large group - high override exposure", color: "text-amber-400", icon: AlertTriangle };
+    } else {
+      return { status: "edge", message: "Small group - limited override data", color: "text-slate-400", icon: AlertTriangle };
+    }
+  }, [lives]);
+
+  const premiumValidation = useMemo(() => {
+    const perEmployeeCost = annualPremium / lives;
+    if (perEmployeeCost >= 8000 && perEmployeeCost <= 15000) {
+      return { status: "optimal", message: `$${Math.round(perEmployeeCost).toLocaleString()}/employee - Industry standard`, color: "text-emerald-400", icon: Check };
+    } else if (perEmployeeCost > 15000) {
+      return { status: "high", message: `$${Math.round(perEmployeeCost).toLocaleString()}/employee - Above market (investigate)`, color: "text-amber-400", icon: AlertTriangle };
+    } else {
+      return { status: "low", message: `$${Math.round(perEmployeeCost).toLocaleString()}/employee - Below typical range`, color: "text-slate-400", icon: AlertTriangle };
+    }
+  }, [annualPremium, lives]);
+
+  const employerNameValidation = useMemo(() => {
+    if (employerName.trim().length >= 3) {
+      return { status: "valid", message: "Ready for legal document generation", color: "text-emerald-400", icon: Check };
+    }
+    return { status: "incomplete", message: "Enter company name for CAA letter", color: "text-slate-400", icon: AlertTriangle };
+  }, [employerName]);
+
   // Calculation parameters based on inputs over 5 years
   const auditData = useMemo(() => {
     const multiplierMap: Record<string, number> = {
@@ -253,19 +282,35 @@ For the ${employerName} Health & Welfare Plan`;
                   {/* Employer Name */}
                   <div className="space-y-2">
                     <Label htmlFor="emp-name" className="text-xs text-slate-300">Employer Name (for legal draft)</Label>
-                    <Input 
-                      id="emp-name" 
-                      value={employerName}
-                      onChange={(e) => setEmployerName(e.target.value)}
-                      className="bg-[#05050A]/80 border-slate-800 text-white rounded-lg focus:ring-indigo-500" 
-                    />
+                    <div className="relative">
+                      <Input 
+                        id="emp-name" 
+                        value={employerName}
+                        onChange={(e) => setEmployerName(e.target.value)}
+                        className="bg-[#05050A]/80 border-slate-800 text-white rounded-lg focus:ring-indigo-500 pr-8" 
+                      />
+                      <div className="absolute right-2.5 top-2.5">
+                        {React.createElement(employerNameValidation.icon, {
+                          className: `w-4 h-4 ${employerNameValidation.color}`
+                        })}
+                      </div>
+                    </div>
+                    <div className={`flex items-center gap-1.5 text-[10px] ${employerNameValidation.color}`}>
+                      <div className="w-1 h-1 rounded-full bg-current" />
+                      {employerNameValidation.message}
+                    </div>
                   </div>
 
                   {/* Eligible Lives */}
                   <div className="space-y-3">
                     <div className="flex justify-between items-center text-xs">
                       <span className="text-slate-300">Covered Employees (Lives)</span>
-                      <span className="text-indigo-400 font-mono font-bold">{lives.toLocaleString()} lives</span>
+                      <div className="flex items-center gap-2">
+                        <span className="text-indigo-400 font-mono font-bold">{lives.toLocaleString()} lives</span>
+                        {React.createElement(livesValidation.icon, {
+                          className: `w-3.5 h-3.5 ${livesValidation.color}`
+                        })}
+                      </div>
                     </div>
                     <Slider 
                       min={50} 
@@ -275,13 +320,22 @@ For the ${employerName} Health & Welfare Plan`;
                       onValueChange={(val) => setLives(val[0])}
                       className="py-1 cursor-pointer"
                     />
+                    <div className={`flex items-center gap-1.5 text-[10px] ${livesValidation.color}`}>
+                      <div className="w-1 h-1 rounded-full bg-current" />
+                      {livesValidation.message}
+                    </div>
                   </div>
 
                   {/* Annual Premium / Spend */}
                   <div className="space-y-3">
                     <div className="flex justify-between items-center text-xs">
                       <span className="text-slate-300">Annual Premium/Spend</span>
-                      <span className="text-emerald-400 font-mono font-bold">${annualPremium.toLocaleString()}</span>
+                      <div className="flex items-center gap-2">
+                        <span className="text-emerald-400 font-mono font-bold">${annualPremium.toLocaleString()}</span>
+                        {React.createElement(premiumValidation.icon, {
+                          className: `w-3.5 h-3.5 ${premiumValidation.color}`
+                        })}
+                      </div>
                     </div>
                     <Slider 
                       min={500000} 
@@ -291,6 +345,10 @@ For the ${employerName} Health & Welfare Plan`;
                       onValueChange={(val) => setAnnualPremium(val[0])}
                       className="py-1 cursor-pointer"
                     />
+                    <div className={`flex items-center gap-1.5 text-[10px] ${premiumValidation.color}`}>
+                      <div className="w-1 h-1 rounded-full bg-current" />
+                      {premiumValidation.message}
+                    </div>
                   </div>
 
                   {/* Broker Business Profile */}

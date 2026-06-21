@@ -91,6 +91,40 @@ export default function BrokerCompensationPage() {
     return { status: "incomplete", message: "Enter company name for CAA letter", color: "text-slate-400", icon: AlertTriangle };
   }, [employerName]);
 
+  // Overall validation summary
+  const overallValidation = useMemo(() => {
+    const checks = [
+      employerNameValidation.status === "valid",
+      livesValidation.status === "optimal" || livesValidation.status === "good",
+      premiumValidation.status === "optimal" || premiumValidation.status === "high"
+    ];
+    const passedCount = checks.filter(Boolean).length;
+    const percentage = Math.round((passedCount / checks.length) * 100);
+    
+    let readinessStatus = "Incomplete";
+    let readinessColor = "text-slate-400";
+    let readinessIcon = AlertTriangle;
+    
+    if (percentage === 100) {
+      readinessStatus = "Ready for Audit";
+      readinessColor = "text-emerald-400";
+      readinessIcon = Check;
+    } else if (percentage >= 66) {
+      readinessStatus = "Nearly Complete";
+      readinessColor = "text-amber-400";
+      readinessIcon = AlertTriangle;
+    }
+    
+    return {
+      percentage,
+      passedCount,
+      totalChecks: checks.length,
+      status: readinessStatus,
+      color: readinessColor,
+      icon: readinessIcon
+    };
+  }, [employerNameValidation, livesValidation, premiumValidation]);
+
   // Calculation parameters based on inputs over 5 years
   const auditData = useMemo(() => {
     const multiplierMap: Record<string, number> = {
@@ -398,6 +432,110 @@ For the ${employerName} Health & Welfare Plan`;
                           Standard disclosed consulting agreements. Minor base overrides.
                         </span>
                       </button>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+
+              {/* SUMMARY FEEDBACK CARD */}
+              <Card className="bg-gradient-to-br from-indigo-950/30 via-[#0D0D19]/90 to-[#0D0D19]/90 border-indigo-900/40 text-white shadow-xl">
+                <CardHeader className="pb-4">
+                  <div className="flex items-center justify-between">
+                    <CardTitle className="text-base font-bold flex items-center gap-2">
+                      {React.createElement(overallValidation.icon, {
+                        className: `w-4 h-4 ${overallValidation.color}`
+                      })}
+                      Audit Readiness
+                    </CardTitle>
+                    <div className={`text-2xl font-extrabold font-mono ${overallValidation.color}`}>
+                      {overallValidation.percentage}%
+                    </div>
+                  </div>
+                  
+                  {/* Progress Bar */}
+                  <div className="mt-3 h-2 bg-slate-900/50 rounded-full overflow-hidden">
+                    <div 
+                      className={`h-full transition-all duration-500 ${
+                        overallValidation.percentage === 100 
+                          ? "bg-gradient-to-r from-emerald-500 to-emerald-400"
+                          : overallValidation.percentage >= 66
+                          ? "bg-gradient-to-r from-amber-500 to-amber-400"
+                          : "bg-gradient-to-r from-slate-600 to-slate-500"
+                      }`}
+                      style={{ width: `${overallValidation.percentage}%` }}
+                    />
+                  </div>
+                </CardHeader>
+                
+                <CardContent className="pt-0 space-y-3">
+                  {/* Status Checklist */}
+                  <div className="space-y-2 pb-3 border-b border-slate-800/60">
+                    <div className="flex items-center justify-between text-xs">
+                      <div className="flex items-center gap-2">
+                        {React.createElement(employerNameValidation.icon, {
+                          className: `w-3.5 h-3.5 ${employerNameValidation.color}`
+                        })}
+                        <span className="text-slate-300">Employer Name</span>
+                      </div>
+                      <span className={`font-mono text-[10px] ${employerNameValidation.color}`}>
+                        {employerNameValidation.status === "valid" ? "Ready" : "Required"}
+                      </span>
+                    </div>
+                    
+                    <div className="flex items-center justify-between text-xs">
+                      <div className="flex items-center gap-2">
+                        {React.createElement(livesValidation.icon, {
+                          className: `w-3.5 h-3.5 ${livesValidation.color}`
+                        })}
+                        <span className="text-slate-300">Covered Lives</span>
+                      </div>
+                      <span className={`font-mono text-[10px] ${livesValidation.color}`}>
+                        {livesValidation.status === "optimal" ? "Optimal" : 
+                         livesValidation.status === "good" ? "Good" : "Edge"}
+                      </span>
+                    </div>
+                    
+                    <div className="flex items-center justify-between text-xs">
+                      <div className="flex items-center gap-2">
+                        {React.createElement(premiumValidation.icon, {
+                          className: `w-3.5 h-3.5 ${premiumValidation.color}`
+                        })}
+                        <span className="text-slate-300">Annual Premium</span>
+                      </div>
+                      <span className={`font-mono text-[10px] ${premiumValidation.color}`}>
+                        {premiumValidation.status === "optimal" ? "Standard" :
+                         premiumValidation.status === "high" ? "High" : "Low"}
+                      </span>
+                    </div>
+                  </div>
+                  
+                  {/* Overall Status Message */}
+                  <div className={`p-3 rounded-lg ${
+                    overallValidation.percentage === 100
+                      ? "bg-emerald-950/30 border border-emerald-900/40"
+                      : overallValidation.percentage >= 66
+                      ? "bg-amber-950/30 border border-amber-900/40"
+                      : "bg-slate-900/30 border border-slate-800/40"
+                  }`}>
+                    <div className="flex items-start gap-2">
+                      {React.createElement(overallValidation.icon, {
+                        className: `w-4 h-4 ${overallValidation.color} shrink-0 mt-0.5`
+                      })}
+                      <div className="text-[11px] leading-relaxed">
+                        {overallValidation.percentage === 100 ? (
+                          <span className="text-emerald-300">
+                            <span className="font-bold">All parameters validated.</span> Ready to generate 5-year audit ledger and CAA disclosure request letter.
+                          </span>
+                        ) : overallValidation.percentage >= 66 ? (
+                          <span className="text-amber-300">
+                            <span className="font-bold">Nearly complete.</span> Adjust remaining parameters for optimal forensic accuracy.
+                          </span>
+                        ) : (
+                          <span className="text-slate-400">
+                            <span className="font-bold">Setup required.</span> Complete all plan parameters above to enable audit calculations.
+                          </span>
+                        )}
+                      </div>
                     </div>
                   </div>
                 </CardContent>

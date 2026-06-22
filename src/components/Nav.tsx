@@ -17,13 +17,13 @@ export default function Nav() {
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="flex h-16 items-center justify-between">
           {/* Logo */}
-          <Link href="/" className="flex items-center">
+          <Link href="/" className="flex items-center group">
             <Image 
               src="/1772951240194-20bfeb68-285b-4423-9485-b2585796d66a.jpeg"
               alt="Kincaid IQ Data Sciences Lab"
               width={57}
               height={57}
-              className="h-[57px] w-[57px] rounded-full object-cover border-2 border-[#B8860B]/30"
+              className="h-[57px] w-[57px] rounded-full object-cover border-2 border-[#B8860B]/30 transition-transform duration-300 ease-out group-hover:scale-110"
               priority
             />
           </Link>
@@ -320,132 +320,259 @@ export default function Nav() {
 
       {/* Mobile Navigation */}
       {isOpen && (
-        <div className="md:hidden border-t border-white/10 bg-black/95 backdrop-blur-xl">
-          <div className="space-y-1 px-4 py-3">
-            {/* Direct Link on Mobile too */}
+        <div className="md:hidden border-t border-white/10 bg-gradient-to-b from-black/98 to-black/95 backdrop-blur-xl shadow-2xl">
+          <div className="space-y-2 px-4 py-4 max-h-[calc(100vh-4rem)] overflow-y-auto">
+            {/* Direct Link on Mobile - Highlighted */}
             <Link
               href="/broker-compensation"
               onClick={() => setIsOpen(false)}
-              className="block px-4 py-3 text-[#fecaca] hover:bg-white/5 font-semibold rounded-lg transition-colors">
-              5-Year Broker Auditor
+              className="block px-4 py-3.5 text-white bg-gradient-to-r from-[#8C1515] to-[#a61c1c] hover:from-[#a61c1c] hover:to-[#8C1515] font-bold rounded-xl transition-all duration-300 shadow-lg shadow-[#8C1515]/20 transform hover:scale-[1.02]">
+              <div className="flex items-center justify-between">
+                <span>5-Year Broker Auditor</span>
+                <Calculator className="w-4 h-4" />
+              </div>
             </Link>
 
             {/* Intelligence Series Dropdown - Mobile */}
-            <div>
+            <div className="bg-white/5 rounded-xl overflow-hidden">
               <button
                 onClick={() => setKincaidIqDropdownOpen(!kincaidIqDropdownOpen)}
-                className="flex items-center justify-between w-full px-4 py-3 text-gray-300 hover:text-white hover:bg-white/5 rounded-lg transition-colors">
-                <span className="font-medium">Intelligence Series</span>
-                <ChevronDown className={`w-4 h-4 transition-transform ${kincaidIqDropdownOpen ? "rotate-180" : ""}`} />
+                className="flex items-center justify-between w-full px-4 py-3.5 text-gray-200 hover:text-white hover:bg-white/10 transition-all duration-200">
+                <span className="font-semibold">Intelligence Series</span>
+                <ChevronDown className={`w-4 h-4 transition-transform duration-300 ${kincaidIqDropdownOpen ? "rotate-180" : ""}`} />
               </button>
               {kincaidIqDropdownOpen && (
-                <div className="ml-4 mt-2 space-y-1">
-                  <Link href="/kincaid-iq-intelligence-series" className="block px-4 py-2 text-sm text-gray-400 hover:text-white hover:bg-purple-500/10 rounded-lg transition-colors">
-                    Intelligence Overview
-                  </Link>
-                  <Link href="/solutions/rx-defense" className="block px-4 py-2 text-sm text-gray-400 hover:text-white hover:bg-rose-500/10 rounded-lg transition-colors">
-                    Rx PBM Defense Contract x-Ray
-                  </Link>
-                  <Link href="/solutions/actuarial-benefits" className="block px-4 py-2 text-sm text-gray-400 hover:text-white hover:bg-cyan-500/10 rounded-lg transition-colors">
-                    Actuarial Analysis
-                  </Link>
-                  <Link href="/solutions/mark-cuban-cost-drugs" className="block px-4 py-2 text-sm text-gray-400 hover:text-white hover:bg-blue-500/10 rounded-lg transition-colors">
-                    Mark Cuban Cost Drugs
-                  </Link>
-                  <Link href="/pbm-crime-boss" className="block px-4 py-2 text-sm text-gray-400 hover:text-white hover:bg-orange-500/10 rounded-lg transition-colors">
-                    PBM Crime Boss
-                  </Link>
+                <div className="bg-black/40 border-t border-white/5 animate-in slide-in-from-top-2 duration-200">
+                  <div className="px-2 py-2 space-y-1">
+                    <Link 
+                      href="/kincaid-iq-intelligence-series" 
+                      onClick={() => setIsOpen(false)}
+                      className="block px-4 py-2.5 text-sm text-gray-300 hover:text-white hover:bg-purple-500/20 rounded-lg transition-all duration-150">
+                      <div className="flex items-center gap-2">
+                        <LineChart className="w-4 h-4 text-purple-400" />
+                        Intelligence Overview
+                      </div>
+                    </Link>
+                    <Link 
+                      href="/solutions/rx-defense" 
+                      onClick={() => setIsOpen(false)}
+                      className="block px-4 py-2.5 text-sm text-gray-300 hover:text-white hover:bg-rose-500/20 rounded-lg transition-all duration-150">
+                      <div className="flex items-center gap-2">
+                        <Shield className="w-4 h-4 text-rose-400" />
+                        Rx PBM Defense
+                      </div>
+                    </Link>
+                    <Link 
+                      href="/solutions/actuarial-benefits" 
+                      onClick={() => setIsOpen(false)}
+                      className="block px-4 py-2.5 text-sm text-gray-300 hover:text-white hover:bg-cyan-500/20 rounded-lg transition-all duration-150">
+                      <div className="flex items-center gap-2">
+                        <BarChart3 className="w-4 h-4 text-cyan-400" />
+                        Actuarial Analysis
+                      </div>
+                    </Link>
+                    <Link 
+                      href="/solutions/mark-cuban-cost-drugs" 
+                      onClick={() => setIsOpen(false)}
+                      className="block px-4 py-2.5 text-sm text-gray-300 hover:text-white hover:bg-blue-500/20 rounded-lg transition-all duration-150">
+                      <div className="flex items-center gap-2">
+                        <DollarSign className="w-4 h-4 text-blue-400" />
+                        Mark Cuban Cost Drugs
+                      </div>
+                    </Link>
+                    <Link 
+                      href="/pbm-crime-boss" 
+                      onClick={() => setIsOpen(false)}
+                      className="block px-4 py-2.5 text-sm text-gray-300 hover:text-white hover:bg-orange-500/20 rounded-lg transition-all duration-150">
+                      <div className="flex items-center gap-2">
+                        <AlertTriangle className="w-4 h-4 text-orange-400" />
+                        PBM Crime Boss
+                      </div>
+                    </Link>
+                  </div>
                 </div>
               )}
             </div>
 
             {/* Company Dropdown - Mobile */}
-            <div>
+            <div className="bg-white/5 rounded-xl overflow-hidden">
               <button
                 onClick={() => setCompanyDropdownOpen(!companyDropdownOpen)}
-                className="flex items-center justify-between w-full px-4 py-3 text-gray-300 hover:text-white hover:bg-white/5 rounded-lg transition-colors">
-                <span className="font-medium">Company</span>
-                <ChevronDown className={`w-4 h-4 transition-transform ${companyDropdownOpen ? "rotate-180" : ""}`} />
+                className="flex items-center justify-between w-full px-4 py-3.5 text-gray-200 hover:text-white hover:bg-white/10 transition-all duration-200">
+                <span className="font-semibold">Company</span>
+                <ChevronDown className={`w-4 h-4 transition-transform duration-300 ${companyDropdownOpen ? "rotate-180" : ""}`} />
               </button>
               {companyDropdownOpen && (
-                <div className="ml-4 mt-2 space-y-1">
-                  <Link href="/board-of-directors" className="block px-4 py-2 text-sm text-gray-400 hover:text-white hover:bg-white/5 rounded-lg transition-colors">
-                    Board of Directors
-                  </Link>
-                  <Link href="/investor" className="block px-4 py-2 text-sm text-gray-400 hover:text-white hover:bg-white/5 rounded-lg transition-colors">
-                    Investor Groups
-                  </Link>
-                  <Link href="/ma-vc-pe" className="block px-4 py-2 text-sm text-gray-400 hover:text-white hover:bg-white/5 rounded-lg transition-colors">
-                    M&A / VC / PE
-                  </Link>
-                  <Link href="/family-offices" className="block px-4 py-2 text-sm text-gray-400 hover:text-white hover:bg-white/5 rounded-lg transition-colors">
-                    Family Offices
-                  </Link>
-                  <Link href="/capital-markets" className="block px-4 py-2 text-sm text-gray-400 hover:text-white hover:bg-white/5 rounded-lg transition-colors">
-                    Capital Markets
-                  </Link>
+                <div className="bg-black/40 border-t border-white/5 animate-in slide-in-from-top-2 duration-200">
+                  <div className="px-2 py-2 space-y-1">
+                    <Link 
+                      href="/board-of-directors" 
+                      onClick={() => setIsOpen(false)}
+                      className="block px-4 py-2.5 text-sm text-gray-300 hover:text-white hover:bg-amber-500/20 rounded-lg transition-all duration-150">
+                      <div className="flex items-center gap-2">
+                        <Users className="w-4 h-4 text-amber-400" />
+                        Board of Directors
+                      </div>
+                    </Link>
+                    <Link 
+                      href="/investor" 
+                      onClick={() => setIsOpen(false)}
+                      className="block px-4 py-2.5 text-sm text-gray-300 hover:text-white hover:bg-amber-500/20 rounded-lg transition-all duration-150">
+                      <div className="flex items-center gap-2">
+                        <TrendingUp className="w-4 h-4 text-amber-400" />
+                        Investor Groups
+                      </div>
+                    </Link>
+                    <Link 
+                      href="/ma-vc-pe" 
+                      onClick={() => setIsOpen(false)}
+                      className="block px-4 py-2.5 text-sm text-gray-300 hover:text-white hover:bg-amber-500/20 rounded-lg transition-all duration-150">
+                      <div className="flex items-center gap-2">
+                        <Briefcase className="w-4 h-4 text-amber-400" />
+                        M&A / VC / PE
+                      </div>
+                    </Link>
+                    <Link 
+                      href="/family-offices" 
+                      onClick={() => setIsOpen(false)}
+                      className="block px-4 py-2.5 text-sm text-gray-300 hover:text-white hover:bg-amber-500/20 rounded-lg transition-all duration-150">
+                      <div className="flex items-center gap-2">
+                        <Building2 className="w-4 h-4 text-amber-400" />
+                        Family Offices
+                      </div>
+                    </Link>
+                    <Link 
+                      href="/capital-markets" 
+                      onClick={() => setIsOpen(false)}
+                      className="block px-4 py-2.5 text-sm text-gray-300 hover:text-white hover:bg-amber-500/20 rounded-lg transition-all duration-150">
+                      <div className="flex items-center gap-2">
+                        <LineChart className="w-4 h-4 text-amber-400" />
+                        Capital Markets
+                      </div>
+                    </Link>
+                  </div>
                 </div>
               )}
             </div>
 
             {/* Areas of Focus Dropdown - Mobile */}
-            <div>
+            <div className="bg-white/5 rounded-xl overflow-hidden">
               <button
                 onClick={() => setFocusAreasDropdownOpen(!focusAreasDropdownOpen)}
-                className="flex items-center justify-between w-full px-4 py-3 text-gray-300 hover:text-white hover:bg-white/5 rounded-lg transition-colors">
-                <span className="font-medium">Areas of Focus</span>
-                <ChevronDown className={`w-4 h-4 transition-transform ${focusAreasDropdownOpen ? "rotate-180" : ""}`} />
+                className="flex items-center justify-between w-full px-4 py-3.5 text-gray-200 hover:text-white hover:bg-white/10 transition-all duration-200">
+                <span className="font-semibold">Areas of Focus</span>
+                <ChevronDown className={`w-4 h-4 transition-transform duration-300 ${focusAreasDropdownOpen ? "rotate-180" : ""}`} />
               </button>
               {focusAreasDropdownOpen && (
-                <div className="ml-4 mt-2 space-y-1">
-                  <Link href="/personas/board-members" className="block px-4 py-2 text-sm text-gray-400 hover:text-white hover:bg-purple-500/10 rounded-lg transition-colors">
-                    For Board Members
-                  </Link>
-                  <Link href="/personas/pe-operators" className="block px-4 py-2 text-sm text-gray-400 hover:text-white hover:bg-emerald-500/10 rounded-lg transition-colors">
-                    For PE Operators
-                  </Link>
-                  <Link href="/capital-markets" className="block px-4 py-2 text-sm text-gray-400 hover:text-white hover:bg-indigo-500/10 rounded-lg transition-colors">
-                    For Capital Markets
-                  </Link>
-                  <Link href="/personas/cfo" className="block px-4 py-2 text-sm text-gray-400 hover:text-white hover:bg-emerald-500/10 rounded-lg transition-colors">
-                    For CFOs
-                  </Link>
-                  <Link href="/personas/hr" className="block px-4 py-2 text-sm text-gray-400 hover:text-white hover:bg-blue-500/10 rounded-lg transition-colors">
-                    For HR Directors
-                  </Link>
-                  <Link href="/personas/broker" className="block px-4 py-2 text-sm text-gray-400 hover:text-white hover:bg-amber-500/10 rounded-lg transition-colors">
-                    For Brokers
-                  </Link>
-                  <Link href="/personas/actuarial" className="block px-4 py-2 text-sm text-gray-400 hover:text-white hover:bg-cyan-500/10 rounded-lg transition-colors">
-                    For Actuaries
-                  </Link>
+                <div className="bg-black/40 border-t border-white/5 animate-in slide-in-from-top-2 duration-200">
+                  <div className="px-2 py-2 space-y-1">
+                    <Link 
+                      href="/personas/board-members" 
+                      onClick={() => setIsOpen(false)}
+                      className="block px-4 py-2.5 text-sm text-gray-300 hover:text-white hover:bg-purple-500/20 rounded-lg transition-all duration-150">
+                      <div className="flex items-center gap-2">
+                        <Shield className="w-4 h-4 text-purple-400" />
+                        For Board Members
+                      </div>
+                    </Link>
+                    <Link 
+                      href="/personas/pe-operators" 
+                      onClick={() => setIsOpen(false)}
+                      className="block px-4 py-2.5 text-sm text-gray-300 hover:text-white hover:bg-emerald-500/20 rounded-lg transition-all duration-150">
+                      <div className="flex items-center gap-2">
+                        <Building2 className="w-4 h-4 text-emerald-400" />
+                        For PE Operators
+                      </div>
+                    </Link>
+                    <Link 
+                      href="/capital-markets" 
+                      onClick={() => setIsOpen(false)}
+                      className="block px-4 py-2.5 text-sm text-gray-300 hover:text-white hover:bg-indigo-500/20 rounded-lg transition-all duration-150">
+                      <div className="flex items-center gap-2">
+                        <TrendingUp className="w-4 h-4 text-indigo-400" />
+                        For Capital Markets
+                      </div>
+                    </Link>
+                    <Link 
+                      href="/personas/cfo" 
+                      onClick={() => setIsOpen(false)}
+                      className="block px-4 py-2.5 text-sm text-gray-300 hover:text-white hover:bg-emerald-500/20 rounded-lg transition-all duration-150">
+                      <div className="flex items-center gap-2">
+                        <DollarSign className="w-4 h-4 text-emerald-400" />
+                        For CFOs
+                      </div>
+                    </Link>
+                    <Link 
+                      href="/personas/hr" 
+                      onClick={() => setIsOpen(false)}
+                      className="block px-4 py-2.5 text-sm text-gray-300 hover:text-white hover:bg-blue-500/20 rounded-lg transition-all duration-150">
+                      <div className="flex items-center gap-2">
+                        <Heart className="w-4 h-4 text-blue-400" />
+                        For HR Directors
+                      </div>
+                    </Link>
+                    <Link 
+                      href="/personas/broker" 
+                      onClick={() => setIsOpen(false)}
+                      className="block px-4 py-2.5 text-sm text-gray-300 hover:text-white hover:bg-amber-500/20 rounded-lg transition-all duration-150">
+                      <div className="flex items-center gap-2">
+                        <Users className="w-4 h-4 text-amber-400" />
+                        For Brokers
+                      </div>
+                    </Link>
+                    <Link 
+                      href="/personas/actuarial" 
+                      onClick={() => setIsOpen(false)}
+                      className="block px-4 py-2.5 text-sm text-gray-300 hover:text-white hover:bg-cyan-500/20 rounded-lg transition-all duration-150">
+                      <div className="flex items-center gap-2">
+                        <BarChart3 className="w-4 h-4 text-cyan-400" />
+                        For Actuaries
+                      </div>
+                    </Link>
+                  </div>
                 </div>
               )}
             </div>
 
             {/* Audits & Briefs Dropdown - Mobile */}
-            <div>
+            <div className="bg-white/5 rounded-xl overflow-hidden">
               <button
                 onClick={() => setAuditsDropdownOpen(!auditsDropdownOpen)}
-                className="flex items-center justify-between w-full px-4 py-3 text-gray-300 hover:text-white hover:bg-white/5 rounded-lg transition-colors">
-                <span className="font-medium">Audits & Briefs</span>
-                <ChevronDown className={`w-4 h-4 transition-transform ${auditsDropdownOpen ? "rotate-180" : ""}`} />
+                className="flex items-center justify-between w-full px-4 py-3.5 text-gray-200 hover:text-white hover:bg-white/10 transition-all duration-200">
+                <span className="font-semibold">Audits & Briefs</span>
+                <ChevronDown className={`w-4 h-4 transition-transform duration-300 ${auditsDropdownOpen ? "rotate-180" : ""}`} />
               </button>
               {auditsDropdownOpen && (
-                <div className="ml-4 mt-2 space-y-1">
-                  <Link href="/broker-compensation" className="block px-4 py-2 text-sm text-gray-400 hover:text-white hover:bg-[#8C1515]/20 rounded-lg transition-colors">
-                    5-Year Broker Auditor
-                  </Link>
-                  <Link href="/all-uploads" className="block px-4 py-2 text-sm text-gray-400 hover:text-white hover:bg-blue-500/10 rounded-lg transition-colors">
-                    Uploads & Briefs Library
-                  </Link>
+                <div className="bg-black/40 border-t border-white/5 animate-in slide-in-from-top-2 duration-200">
+                  <div className="px-2 py-2 space-y-1">
+                    <Link 
+                      href="/broker-compensation" 
+                      onClick={() => setIsOpen(false)}
+                      className="block px-4 py-2.5 text-sm text-gray-300 hover:text-white hover:bg-[#8C1515]/30 rounded-lg transition-all duration-150">
+                      <div className="flex items-center gap-2">
+                        <Calculator className="w-4 h-4 text-red-400" />
+                        5-Year Broker Auditor
+                      </div>
+                    </Link>
+                    <Link 
+                      href="/all-uploads" 
+                      onClick={() => setIsOpen(false)}
+                      className="block px-4 py-2.5 text-sm text-gray-300 hover:text-white hover:bg-blue-500/20 rounded-lg transition-all duration-150">
+                      <div className="flex items-center gap-2">
+                        <FolderOpen className="w-4 h-4 text-blue-400" />
+                        Uploads & Briefs Library
+                      </div>
+                    </Link>
+                  </div>
                 </div>
               )}
             </div>
 
+            {/* CTA Button */}
             <Link
               href="/request-demo"
-              className="block px-4 py-3 text-center bg-gradient-to-r from-purple-600 to-pink-600 text-white font-medium rounded-lg hover:from-purple-700 hover:to-pink-700 transition-all">
+              onClick={() => setIsOpen(false)}
+              className="block px-4 py-3.5 text-center bg-gradient-to-r from-purple-600 to-pink-600 text-white font-bold rounded-xl hover:from-purple-700 hover:to-pink-700 transition-all duration-300 shadow-lg shadow-purple-500/20 transform hover:scale-[1.02] mt-3">
               Request Demo
             </Link>
           </div>

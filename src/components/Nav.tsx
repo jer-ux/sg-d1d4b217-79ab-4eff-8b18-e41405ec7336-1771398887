@@ -276,7 +276,7 @@ export default function Nav() {
                 <div className="absolute top-full left-0 mt-2 w-80 bg-gray-900/95 backdrop-blur-xl rounded-xl border border-gray-700/50 shadow-xl overflow-hidden z-[210]">
                   <div className="p-2">
                     <Link
-                      href="/request-demo"
+                      href="/solutions/claims-recovery-iq"
                       onClick={() => setProductsDropdownOpen(false)}
                       className="block px-4 py-3 text-gray-300 hover:text-white hover:bg-emerald-500/10 rounded-lg transition-colors duration-150 border-b border-gray-700/30">
                       <div className="font-medium flex items-center gap-2">
@@ -296,7 +296,7 @@ export default function Nav() {
                       <div className="text-xs text-gray-400 mt-1">Audit commissions & secret plan kickbacks over 5 years</div>
                     </Link>
                     <Link
-                      href="/request-demo"
+                      href="/solutions/sales-iq"
                       onClick={() => setProductsDropdownOpen(false)}
                       className="block px-4 py-3 text-gray-300 hover:text-white hover:bg-blue-500/10 rounded-lg transition-colors duration-150 border-b border-gray-700/30">
                       <div className="font-medium flex items-center gap-2">
@@ -405,7 +405,7 @@ export default function Nav() {
                 <div className="bg-black/40 border-t border-white/5 animate-in slide-in-from-top-2 duration-200">
                   <div className="px-2 py-2 space-y-1">
                     <Link 
-                      href="/request-demo" 
+                      href="/solutions/claims-recovery-iq" 
                       onClick={() => setIsOpen(false)}
                       className="block px-4 py-2.5 text-sm text-gray-300 hover:text-white hover:bg-emerald-500/20 rounded-lg transition-all duration-150">
                       <div className="flex items-center gap-2">
@@ -425,7 +425,7 @@ export default function Nav() {
                       <div className="text-xs text-gray-400 mt-0.5">Commission audit tool</div>
                     </Link>
                     <Link 
-                      href="/request-demo" 
+                      href="/solutions/sales-iq" 
                       onClick={() => setIsOpen(false)}
                       className="block px-4 py-2.5 text-sm text-gray-300 hover:text-white hover:bg-blue-500/20 rounded-lg transition-all duration-150">
                       <div className="flex items-center gap-2">

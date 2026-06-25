@@ -288,12 +288,22 @@ export default function Nav() {
                     <Link
                       href="/broker-compensation"
                       onClick={() => setProductsDropdownOpen(false)}
-                      className="block px-4 py-3 text-gray-300 hover:text-white hover:bg-[#8C1515]/20 rounded-lg transition-colors duration-150">
+                      className="block px-4 py-3 text-gray-300 hover:text-white hover:bg-[#8C1515]/20 rounded-lg transition-colors duration-150 border-b border-gray-700/30">
                       <div className="font-medium flex items-center gap-2">
                         <Calculator className="w-4 h-4 text-amber-500" />
                         5-Year Broker Auditor
                       </div>
                       <div className="text-xs text-gray-400 mt-1">Audit commissions & secret plan kickbacks over 5 years</div>
+                    </Link>
+                    <Link
+                      href="/request-demo"
+                      onClick={() => setProductsDropdownOpen(false)}
+                      className="block px-4 py-3 text-gray-300 hover:text-white hover:bg-blue-500/10 rounded-lg transition-colors duration-150">
+                      <div className="font-medium flex items-center gap-2">
+                        <Search className="w-4 h-4 text-blue-400" />
+                        Sales IQ™
+                      </div>
+                      <div className="text-xs text-gray-400 mt-1">Sales intelligence platform for self-funded benefits market</div>
                     </Link>
                   </div>
                 </div>
@@ -403,6 +413,16 @@ export default function Nav() {
                         5-Year Broker Auditor
                       </div>
                       <div className="text-xs text-gray-400 mt-0.5">Commission audit tool</div>
+                    </Link>
+                    <Link 
+                      href="/request-demo" 
+                      onClick={() => setIsOpen(false)}
+                      className="block px-4 py-2.5 text-sm text-gray-300 hover:text-white hover:bg-blue-500/20 rounded-lg transition-all duration-150">
+                      <div className="flex items-center gap-2">
+                        <Search className="w-4 h-4 text-blue-400" />
+                        Sales IQ™
+                      </div>
+                      <div className="text-xs text-gray-400 mt-0.5">Sales intelligence platform</div>
                     </Link>
                   </div>
                 </div>

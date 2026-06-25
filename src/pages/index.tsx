@@ -644,7 +644,7 @@ export default function HomePage() {
           </motion.div>
         </section>
 
-        <section className="relative py-24 border-t border-[#1F2937] overflow-hidden">
+        <section id="dashboard" className="relative py-24 border-t border-[#1F2937] overflow-hidden">
           {/* Enhanced Multi-layer Background System */}
           <div className="absolute inset-0 pointer-events-none">
             <div className="absolute inset-0 opacity-40">

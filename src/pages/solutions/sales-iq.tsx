@@ -356,7 +356,7 @@ export default function SalesIQ() {
             <div className="text-center mb-16">
               <h2 className="text-4xl font-bold text-white mb-6">The Wedge: Broker Displacement</h2>
               <p className="text-xl text-gray-300 max-w-4xl mx-auto">
-                SBI™ identifies incumbents with high opacity (>70 "RED"), recoverable capital quantifies the prize, AI opener weaponizes their own filing
+                SBI™ identifies incumbents with high opacity ({'>'}70 "RED"), recoverable capital quantifies the prize, AI opener weaponizes their own filing
               </p>
             </div>
 
@@ -364,7 +364,7 @@ export default function SalesIQ() {
               <Card className="bg-slate-800/50 border-cyan-500/30 p-6">
                 <div className="text-3xl font-bold text-cyan-400 mb-2">1</div>
                 <h3 className="text-lg font-bold text-white mb-2">Identify</h3>
-                <p className="text-sm text-gray-300">Sales OS surfaces prospects with SBI™ > 70 (RED opacity)</p>
+                <p className="text-sm text-gray-300">Sales OS surfaces prospects with SBI™ {'>'}70 (RED opacity)</p>
               </Card>
 
               <Card className="bg-slate-800/50 border-purple-500/30 p-6">

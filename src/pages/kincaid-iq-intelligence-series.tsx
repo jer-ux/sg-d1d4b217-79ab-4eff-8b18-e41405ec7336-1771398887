@@ -351,14 +351,14 @@ export default function KincaidIQIntelligenceSeries() {
     let complianceRatio = 0.15;
 
     if (currentPbmModel === "traditional-spread") {
-      baseLossPerLife = 50;
+      baseLossPerLife = 20;
       rebateRatio = 0.42;
     } else if (currentPbmModel === "carve-out-pass") {
-      baseLossPerLife = 25;
+      baseLossPerLife = 10;
       rebateRatio = 0.18;
       complianceRatio = 0.25;
     } else {
-      baseLossPerLife = 70;
+      baseLossPerLife = 28;
       rebateRatio = 0.55;
     }
 

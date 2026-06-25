@@ -11,6 +11,7 @@ export default function Nav() {
   const [focusAreasDropdownOpen, setFocusAreasDropdownOpen] = useState(false);
   const [kincaidIqDropdownOpen, setKincaidIqDropdownOpen] = useState(false);
   const [auditsDropdownOpen, setAuditsDropdownOpen] = useState(false);
+  const [productsDropdownOpen, setProductsDropdownOpen] = useState(false);
 
   return (
     <nav className="fixed top-0 z-[200] w-full border-b border-slate-200/20 bg-white/95 backdrop-blur-xl">
@@ -38,6 +39,7 @@ export default function Nav() {
                   setCompanyDropdownOpen(false);
                   setFocusAreasDropdownOpen(false);
                   setAuditsDropdownOpen(false);
+                  setProductsDropdownOpen(false);
                 }}
                 className="flex items-center gap-2 px-4 py-2 text-black hover:text-black/80 transition-colors rounded-lg hover:bg-slate-50 font-medium">
                 Intelligence Series
@@ -109,6 +111,7 @@ export default function Nav() {
                   setKincaidIqDropdownOpen(false);
                   setFocusAreasDropdownOpen(false);
                   setAuditsDropdownOpen(false);
+                  setProductsDropdownOpen(false);
                 }}
                 className="flex items-center gap-2 px-4 py-2 text-black hover:text-black/80 transition-colors rounded-lg hover:bg-slate-50 font-medium">
                 Company
@@ -165,6 +168,7 @@ export default function Nav() {
                   setKincaidIqDropdownOpen(false);
                   setCompanyDropdownOpen(false);
                   setAuditsDropdownOpen(false);
+                  setProductsDropdownOpen(false);
                 }}
                 className="flex items-center gap-2 px-4 py-2 text-black hover:text-black/80 transition-colors rounded-lg hover:bg-slate-50 font-medium">
                 Areas of Focus
@@ -254,12 +258,47 @@ export default function Nav() {
               )}
             </div>
 
-            {/* Direct Broker Auditor Link */}
-            <Link
-              href="/broker-compensation"
-              className="px-4 py-2 text-[#8C1515] hover:text-[#a61c1c] font-semibold transition-colors rounded-lg hover:bg-red-50/50">
-              Broker Auditor
-            </Link>
+            {/* Products Dropdown */}
+            <div className="relative">
+              <button
+                onClick={() => {
+                  setProductsDropdownOpen(!productsDropdownOpen);
+                  setKincaidIqDropdownOpen(false);
+                  setCompanyDropdownOpen(false);
+                  setFocusAreasDropdownOpen(false);
+                  setAuditsDropdownOpen(false);
+                }}
+                className="flex items-center gap-2 px-4 py-2 text-[#8C1515] hover:text-[#a61c1c] font-semibold transition-colors rounded-lg hover:bg-red-50/50">
+                Products
+                <ChevronDown className={`w-3 h-3 transition-transform ${productsDropdownOpen ? "rotate-180" : ""}`} />
+              </button>
+              {productsDropdownOpen && (
+                <div className="absolute top-full left-0 mt-2 w-80 bg-gray-900/95 backdrop-blur-xl rounded-xl border border-gray-700/50 shadow-xl overflow-hidden z-[210]">
+                  <div className="p-2">
+                    <Link
+                      href="/request-demo"
+                      onClick={() => setProductsDropdownOpen(false)}
+                      className="block px-4 py-3 text-gray-300 hover:text-white hover:bg-emerald-500/10 rounded-lg transition-colors duration-150 border-b border-gray-700/30">
+                      <div className="font-medium flex items-center gap-2">
+                        <Shield className="w-4 h-4 text-emerald-400" />
+                        Claims Recovery IQ™
+                      </div>
+                      <div className="text-xs text-gray-400 mt-1">Forensic recovery engine for self-funded plans - 1.22% of spend recovered</div>
+                    </Link>
+                    <Link
+                      href="/broker-compensation"
+                      onClick={() => setProductsDropdownOpen(false)}
+                      className="block px-4 py-3 text-gray-300 hover:text-white hover:bg-[#8C1515]/20 rounded-lg transition-colors duration-150">
+                      <div className="font-medium flex items-center gap-2">
+                        <Calculator className="w-4 h-4 text-amber-500" />
+                        5-Year Broker Auditor
+                      </div>
+                      <div className="text-xs text-gray-400 mt-1">Audit commissions & secret plan kickbacks over 5 years</div>
+                    </Link>
+                  </div>
+                </div>
+              )}
+            </div>
 
             {/* Broker Audits & Vault Dropdown */}
             <div className="relative">
@@ -269,6 +308,7 @@ export default function Nav() {
                   setKincaidIqDropdownOpen(false);
                   setCompanyDropdownOpen(false);
                   setFocusAreasDropdownOpen(false);
+                  setProductsDropdownOpen(false);
                 }}
                 className="flex items-center gap-2 px-4 py-2 text-black hover:text-black/80 transition-colors rounded-lg hover:bg-slate-50 font-medium">
                 Audits & Briefs
@@ -332,6 +372,42 @@ export default function Nav() {
                 <Calculator className="w-4 h-4" />
               </div>
             </Link>
+
+            {/* Products Dropdown - Mobile */}
+            <div className="bg-white/5 rounded-xl overflow-hidden">
+              <button
+                onClick={() => setProductsDropdownOpen(!productsDropdownOpen)}
+                className="flex items-center justify-between w-full px-4 py-3.5 text-gray-200 hover:text-white hover:bg-white/10 transition-all duration-200">
+                <span className="font-semibold">Products</span>
+                <ChevronDown className={`w-4 h-4 transition-transform duration-300 ${productsDropdownOpen ? "rotate-180" : ""}`} />
+              </button>
+              {productsDropdownOpen && (
+                <div className="bg-black/40 border-t border-white/5 animate-in slide-in-from-top-2 duration-200">
+                  <div className="px-2 py-2 space-y-1">
+                    <Link 
+                      href="/request-demo" 
+                      onClick={() => setIsOpen(false)}
+                      className="block px-4 py-2.5 text-sm text-gray-300 hover:text-white hover:bg-emerald-500/20 rounded-lg transition-all duration-150">
+                      <div className="flex items-center gap-2">
+                        <Shield className="w-4 h-4 text-emerald-400" />
+                        Claims Recovery IQ™
+                      </div>
+                      <div className="text-xs text-gray-400 mt-0.5">Forensic recovery engine</div>
+                    </Link>
+                    <Link 
+                      href="/broker-compensation" 
+                      onClick={() => setIsOpen(false)}
+                      className="block px-4 py-2.5 text-sm text-gray-300 hover:text-white hover:bg-[#8C1515]/30 rounded-lg transition-all duration-150">
+                      <div className="flex items-center gap-2">
+                        <Calculator className="w-4 h-4 text-red-400" />
+                        5-Year Broker Auditor
+                      </div>
+                      <div className="text-xs text-gray-400 mt-0.5">Commission audit tool</div>
+                    </Link>
+                  </div>
+                </div>
+              )}
+            </div>
 
             {/* Intelligence Series Dropdown - Mobile */}
             <div className="bg-white/5 rounded-xl overflow-hidden">

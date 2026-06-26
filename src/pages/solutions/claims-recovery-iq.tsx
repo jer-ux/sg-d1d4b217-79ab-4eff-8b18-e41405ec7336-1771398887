@@ -461,6 +461,271 @@ export default function ClaimsRecoveryIQ() {
           </div>
         </section>
 
+        {/* Economic Value */}
+        <section className="py-20 px-4">
+          <div className="max-w-7xl mx-auto">
+            <div className="text-center mb-16">
+              <Badge className="mb-6 bg-emerald-500/20 text-emerald-300 border-emerald-500/30">
+                Economic Impact Analysis
+              </Badge>
+              <h2 className="text-4xl font-bold text-white mb-6">Economic Value Enhancement</h2>
+              <p className="text-xl text-gray-300 max-w-4xl mx-auto">
+                The forensic recovery engine delivers measurable economic value across five dimensions
+              </p>
+            </div>
+
+            {/* Primary Value Metrics */}
+            <div className="grid md:grid-cols-4 gap-6 mb-16">
+              <Card className="bg-gradient-to-br from-emerald-500/20 to-emerald-600/20 border-emerald-500/40 p-8">
+                <TrendingUp className="w-12 h-12 text-emerald-400 mb-4" />
+                <div className="text-4xl font-bold text-white mb-2">12.2x</div>
+                <div className="text-sm text-gray-300 mb-1">ROI multiple</div>
+                <div className="text-xs text-gray-400">On 1.22% recovery at 28% contingency</div>
+              </Card>
+
+              <Card className="bg-gradient-to-br from-blue-500/20 to-blue-600/20 border-blue-500/40 p-8">
+                <Clock className="w-12 h-12 text-blue-400 mb-4" />
+                <div className="text-4xl font-bold text-white mb-2">90</div>
+                <div className="text-sm text-gray-300 mb-1">days to recovery</div>
+                <div className="text-xs text-gray-400">Engagement to demand letter</div>
+              </Card>
+
+              <Card className="bg-gradient-to-br from-cyan-500/20 to-cyan-600/20 border-cyan-500/40 p-8">
+                <DollarSign className="w-12 h-12 text-cyan-400 mb-4" />
+                <div className="text-4xl font-bold text-white mb-2">0%</div>
+                <div className="text-sm text-gray-300 mb-1">upfront cost</div>
+                <div className="text-xs text-gray-400">Pure contingency, zero sponsor risk</div>
+              </Card>
+
+              <Card className="bg-gradient-to-br from-purple-500/20 to-purple-600/20 border-purple-500/40 p-8">
+                <BarChart3 className="w-12 h-12 text-purple-400 mb-4" />
+                <div className="text-4xl font-bold text-white mb-2">88bp</div>
+                <div className="text-sm text-gray-300 mb-1">net EBITDA lift</div>
+                <div className="text-xs text-gray-400">0.88% of claims as incremental margin</div>
+              </Card>
+            </div>
+
+            {/* Cost Comparison vs Traditional Audits */}
+            <div className="mb-16">
+              <h3 className="text-3xl font-bold text-white mb-8 text-center">Cost Structure: Recovery IQ™ vs Traditional Audit</h3>
+              <div className="grid md:grid-cols-2 gap-8 max-w-5xl mx-auto">
+                {/* Traditional Audit */}
+                <Card className="bg-slate-800/50 border-red-500/30 p-8">
+                  <div className="flex items-center gap-3 mb-6">
+                    <AlertTriangle className="w-10 h-10 text-red-400" />
+                    <h4 className="text-2xl font-bold text-white">Traditional Audit</h4>
+                  </div>
+                  <div className="space-y-4">
+                    <div className="flex justify-between py-2 border-b border-gray-700">
+                      <span className="text-gray-300">Upfront Fee</span>
+                      <span className="text-red-400 font-semibold">$75K-$250K</span>
+                    </div>
+                    <div className="flex justify-between py-2 border-b border-gray-700">
+                      <span className="text-gray-300">Sponsor Risk</span>
+                      <span className="text-red-400 font-semibold">100%</span>
+                    </div>
+                    <div className="flex justify-between py-2 border-b border-gray-700">
+                      <span className="text-gray-300">Recovery Threshold</span>
+                      <span className="text-red-400 font-semibold">Must cover fixed cost</span>
+                    </div>
+                    <div className="flex justify-between py-2 border-b border-gray-700">
+                      <span className="text-gray-300">Evidence Standard</span>
+                      <span className="text-red-400 font-semibold">Sampling only</span>
+                    </div>
+                    <div className="flex justify-between py-2 border-b border-gray-700">
+                      <span className="text-gray-300">Legal Pursuit</span>
+                      <span className="text-red-400 font-semibold">Separate engagement</span>
+                    </div>
+                    <div className="flex justify-between py-2">
+                      <span className="text-gray-300">Timeline</span>
+                      <span className="text-red-400 font-semibold">4-6 months</span>
+                    </div>
+                  </div>
+                </Card>
+
+                {/* Recovery IQ */}
+                <Card className="bg-emerald-500/10 border-emerald-500/40 p-8">
+                  <div className="flex items-center gap-3 mb-6">
+                    <CheckCircle2 className="w-10 h-10 text-emerald-400" />
+                    <h4 className="text-2xl font-bold text-white">Claims Recovery IQ™</h4>
+                  </div>
+                  <div className="space-y-4">
+                    <div className="flex justify-between py-2 border-b border-emerald-500/20">
+                      <span className="text-gray-300">Upfront Fee</span>
+                      <span className="text-emerald-400 font-semibold">$0</span>
+                    </div>
+                    <div className="flex justify-between py-2 border-b border-emerald-500/20">
+                      <span className="text-gray-300">Sponsor Risk</span>
+                      <span className="text-emerald-400 font-semibold">0%</span>
+                    </div>
+                    <div className="flex justify-between py-2 border-b border-emerald-500/20">
+                      <span className="text-gray-300">Recovery Threshold</span>
+                      <span className="text-emerald-400 font-semibold">Any amount</span>
+                    </div>
+                    <div className="flex justify-between py-2 border-b border-emerald-500/20">
+                      <span className="text-gray-300">Evidence Standard</span>
+                      <span className="text-emerald-400 font-semibold">100% line-level</span>
+                    </div>
+                    <div className="flex justify-between py-2 border-b border-emerald-500/20">
+                      <span className="text-gray-300">Legal Pursuit</span>
+                      <span className="text-emerald-400 font-semibold">Included</span>
+                    </div>
+                    <div className="flex justify-between py-2">
+                      <span className="text-gray-300">Timeline</span>
+                      <span className="text-emerald-400 font-semibold">90 days</span>
+                    </div>
+                  </div>
+                </Card>
+              </div>
+
+              <div className="mt-8 text-center">
+                <p className="text-lg text-gray-300 max-w-3xl mx-auto">
+                  <span className="text-emerald-400 font-semibold">Pure contingency alignment:</span> The sponsor only pays on successful recovery. If we find nothing, you pay nothing. This inverts the traditional audit cost structure and eliminates sponsor risk.
+                </p>
+              </div>
+            </div>
+
+            {/* EBITDA Multiplier Effect */}
+            <div className="mb-16">
+              <h3 className="text-3xl font-bold text-white mb-8 text-center">EBITDA Multiplier Effect</h3>
+              <div className="max-w-4xl mx-auto">
+                <Card className="bg-gradient-to-r from-purple-500/20 to-indigo-500/20 border-purple-500/40 p-8">
+                  <div className="grid md:grid-cols-2 gap-8 mb-6">
+                    <div>
+                      <h4 className="text-xl font-bold text-white mb-4">Cost Recovery as Margin</h4>
+                      <p className="text-gray-300 mb-4">
+                        Every dollar recovered flows directly to EBITDA. On a representative $1.2B annual spend:
+                      </p>
+                      <div className="space-y-3">
+                        <div className="flex items-center gap-2">
+                          <CheckCircle2 className="w-5 h-5 text-emerald-400 flex-shrink-0" />
+                          <span className="text-gray-300">Gross recovery: <span className="text-white font-semibold">$14.84M (1.22%)</span></span>
+                        </div>
+                        <div className="flex items-center gap-2">
+                          <CheckCircle2 className="w-5 h-5 text-emerald-400 flex-shrink-0" />
+                          <span className="text-gray-300">Contingency fee: <span className="text-white font-semibold">$4.16M (28%)</span></span>
+                        </div>
+                        <div className="flex items-center gap-2">
+                          <CheckCircle2 className="w-5 h-5 text-emerald-400 flex-shrink-0" />
+                          <span className="text-gray-300">Net EBITDA lift: <span className="text-emerald-400 font-bold">$10.68M (0.88%)</span></span>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div>
+                      <h4 className="text-xl font-bold text-white mb-4">Valuation Impact</h4>
+                      <p className="text-gray-300 mb-4">
+                        At a 12x EBITDA multiple (representative mid-market):
+                      </p>
+                      <div className="bg-slate-900/50 rounded-lg p-6 border border-purple-500/30">
+                        <div className="text-center mb-4">
+                          <div className="text-sm text-gray-400 mb-2">Enterprise Value Lift</div>
+                          <div className="text-4xl font-bold text-purple-400">$128.2M</div>
+                          <div className="text-sm text-gray-400 mt-1">$10.68M × 12x multiple</div>
+                        </div>
+                        <div className="pt-4 border-t border-purple-500/20">
+                          <p className="text-xs text-gray-400 text-center">
+                            Permanent balance-sheet improvement, not a one-time event
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="pt-6 border-t border-purple-500/30">
+                    <p className="text-sm text-gray-300 text-center">
+                      <span className="text-purple-400 font-semibold">Strategic insight:</span> The recovery isn't a windfall — it's the correction of a structural overcharge. Once identified and enforced, the correction persists, compounding future value.
+                    </p>
+                  </div>
+                </Card>
+              </div>
+            </div>
+
+            {/* Value Preservation */}
+            <div className="mb-16">
+              <h3 className="text-3xl font-bold text-white mb-8 text-center">Value Preservation: The Compounding Effect</h3>
+              <div className="grid md:grid-cols-3 gap-8">
+                <Card className="bg-slate-800/50 border-blue-500/30 p-6">
+                  <div className="text-center">
+                    <div className="text-sm text-gray-400 mb-2">Year 1 Recovery</div>
+                    <div className="text-3xl font-bold text-blue-400 mb-4">$10.68M</div>
+                    <p className="text-sm text-gray-300">Net benefit from forensic audit cycle</p>
+                  </div>
+                </Card>
+
+                <Card className="bg-slate-800/50 border-cyan-500/30 p-6">
+                  <div className="text-center">
+                    <div className="text-sm text-gray-400 mb-2">Years 2-5 Savings</div>
+                    <div className="text-3xl font-bold text-cyan-400 mb-4">$53.4M+</div>
+                    <p className="text-sm text-gray-300">Ongoing cost avoidance from structural correction (assumes 50% persistence)</p>
+                  </div>
+                </Card>
+
+                <Card className="bg-slate-800/50 border-emerald-500/30 p-6">
+                  <div className="text-center">
+                    <div className="text-sm text-gray-400 mb-2">5-Year Total Value</div>
+                    <div className="text-3xl font-bold text-emerald-400 mb-4">$64.1M</div>
+                    <p className="text-sm text-gray-300">Cumulative economic benefit over engagement period</p>
+                  </div>
+                </Card>
+              </div>
+
+              <div className="mt-8 text-center">
+                <p className="text-gray-300 max-w-3xl mx-auto">
+                  The forensic audit identifies structural overcharges. Once corrected through demand and settlement, many persist as avoided costs. The initial recovery is Year 1 — the corrected cost structure compounds thereafter.
+                </p>
+              </div>
+            </div>
+
+            {/* Strategic Moat */}
+            <div>
+              <h3 className="text-3xl font-bold text-white mb-8 text-center">The Strategic Moat: Why This Can't Be Replicated</h3>
+              <div className="grid md:grid-cols-2 gap-6">
+                <Card className="bg-slate-800/50 border-amber-500/30 p-6">
+                  <Award className="w-10 h-10 text-amber-400 mb-4" />
+                  <h4 className="text-lg font-bold text-white mb-3">Proprietary Evidence Taxonomy</h4>
+                  <p className="text-sm text-gray-300">
+                    The three-tier confidence standard (CERTIFIED/MODELED/INSUFFICIENT) is a litigation-tested framework refined over 400+ engagements. Generic auditors conflate tiers or omit evidence grading entirely, weakening enforceability.
+                  </p>
+                </Card>
+
+                <Card className="bg-slate-800/50 border-emerald-500/30 p-6">
+                  <Scale className="w-10 h-10 text-emerald-400 mb-4" />
+                  <h4 className="text-lg font-bold text-white mb-3">ERISA Statutory Demand Infrastructure</h4>
+                  <p className="text-sm text-gray-300">
+                    Our demand letters are respondent-specific statutory instruments citing federal preemption, agency authority, and ERISA §§502-504. Most auditors issue generic "findings" with no enforcement mechanism.
+                  </p>
+                </Card>
+
+                <Card className="bg-slate-800/50 border-cyan-500/30 p-6">
+                  <FileSearch className="w-10 h-10 text-cyan-400 mb-4" />
+                  <h4 className="text-lg font-bold text-white mb-3">100% Line-Level Reconciliation</h4>
+                  <p className="text-sm text-gray-300">
+                    We reconcile every claim against contract, not samples. Traditional audits test 200-500 claims and extrapolate — creating statistical risk and weakening negotiation leverage. Full-population analysis is computationally expensive and rarely attempted.
+                  </p>
+                </Card>
+
+                <Card className="bg-slate-800/50 border-purple-500/30 p-6">
+                  <Target className="w-10 h-10 text-purple-400 mb-4" />
+                  <h4 className="text-lg font-bold text-white mb-3">Multi-Vendor Recovery Coordination</h4>
+                  <p className="text-sm text-gray-300">
+                    We simultaneously pursue PBMs, TPAs, carriers, and stop-loss vendors. Most auditors specialize in one pathway and miss cross-vendor arbitrage (e.g., PBM spread + carrier COB error on the same member).
+                  </p>
+                </Card>
+              </div>
+
+              <div className="mt-8">
+                <Card className="bg-gradient-to-r from-amber-500/20 to-orange-500/20 border-amber-500/40 p-8">
+                  <h4 className="text-xl font-bold text-white mb-4 text-center">The Economic Moat</h4>
+                  <p className="text-gray-300 text-center leading-relaxed">
+                    This isn't software-as-a-service — it's a <span className="text-white font-semibold">litigation-backed forensic practice</span> requiring actuarial precision, ERISA expertise, and multi-vendor negotiation experience. The barrier to entry is operational complexity, not code. Generic auditors lack the statutory demand infrastructure, evidence taxonomy, and enforcement track record required to convert findings into recoveries.
+                  </p>
+                </Card>
+              </div>
+            </div>
+          </div>
+        </section>
+
         {/* CTA Section */}
         <section className="py-20 px-4">
           <div className="max-w-4xl mx-auto text-center">

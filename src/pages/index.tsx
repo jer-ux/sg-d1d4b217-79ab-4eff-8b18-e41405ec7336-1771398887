@@ -245,14 +245,14 @@ export default function HomePage() {
           </div>
         </section>
 
-        <section className="relative py-24 border-t border-[#1F2937] overflow-hidden">
+        <section className="relative py-16 border-t border-[#1F2937] overflow-hidden">
           <div className="absolute inset-0 pointer-events-none opacity-10">
             <TechBackdrop intensity={0.3} density={0.6} />
           </div>
 
           <div className="max-w-7xl mx-auto px-4 md:px-8 relative z-10">
             
-            <AnimatedSection className="mb-12 text-center max-w-3xl mx-auto space-y-4">
+            <AnimatedSection className="mb-10 text-center max-w-3xl mx-auto space-y-4">
               <span className="text-xs font-mono text-[#B8860B] uppercase tracking-widest">Interactive Audit Playground</span>
               <h2 className="text-4xl md:text-5xl font-serif font-bold">The Fiduciary Lab Hub</h2>
               <p className="text-neutral-400 text-lg leading-relaxed">
@@ -269,12 +269,12 @@ export default function HomePage() {
           </div>
         </section>
 
-        <section className="relative py-24 border-t border-[#1F2937] overflow-hidden">
+        <section className="relative py-16 border-t border-[#1F2937] overflow-hidden">
           <div className="absolute inset-0 pointer-events-none">
             <div className="absolute inset-0 opacity-10 bg-gradient-to-b from-transparent via-[#B8860B]/5 to-transparent" />
           </div>
           <div className="max-w-7xl mx-auto px-4 md:px-8 relative z-10">
-            <AnimatedSection className="mb-12 text-center max-w-3xl mx-auto space-y-4">
+            <AnimatedSection className="mb-10 text-center max-w-3xl mx-auto space-y-4">
               <span className="text-xs font-mono text-[#B8860B] uppercase tracking-widest">Forensic Research & Analysis</span>
               <h2 className="text-4xl md:text-5xl font-serif font-bold">Fiduciary Intelligence Library</h2>
               <p className="text-neutral-400 text-lg leading-relaxed">
@@ -286,7 +286,7 @@ export default function HomePage() {
           </div>
         </section>
 
-        <section id="roi-calculator" className="relative py-24 border-t border-[#1F2937] overflow-hidden">
+        <section id="roi-calculator" className="relative py-16 border-t border-[#1F2937] overflow-hidden">
           <div className="absolute inset-0 pointer-events-none">
             <div className="absolute inset-0 opacity-20">
               <TechBackdrop intensity={0.6} density={0.8} />
@@ -295,7 +295,7 @@ export default function HomePage() {
           </div>
 
           <div className="max-w-7xl mx-auto px-4 md:px-8 relative z-10">
-            <AnimatedSection className="mb-12 text-center max-w-3xl mx-auto space-y-4">
+            <AnimatedSection className="mb-10 text-center max-w-3xl mx-auto space-y-4">
               <span className="text-xs font-mono text-emerald-400 uppercase tracking-widest">Immediate Value Calculators</span>
               <h2 className="text-4xl md:text-5xl font-serif font-bold">See Your Potential Savings in Real-Time</h2>
               <p className="text-neutral-400 text-lg leading-relaxed">
@@ -313,7 +313,7 @@ export default function HomePage() {
               </AnimatedSection>
             </div>
 
-            <AnimatedSection className="mt-12 text-center">
+            <AnimatedSection className="mt-10 text-center">
               <div className="inline-flex flex-col sm:flex-row items-center gap-4 bg-gradient-to-br from-[#1A3A52] to-[#234766] border border-[#B8860B]/30 rounded-2xl p-8">
                 <div className="text-left space-y-2">
                   <h3 className="text-2xl font-serif font-bold text-white">Ready to recover these savings?</h3>
@@ -329,7 +329,7 @@ export default function HomePage() {
           </div>
         </section>
 
-        <section className="relative py-24 max-w-7xl mx-auto px-4 md:px-8 overflow-hidden">
+        <section className="relative py-16 max-w-7xl mx-auto px-4 md:px-8 overflow-hidden">
           <div className="absolute inset-0 pointer-events-none opacity-10">
             <TechBackdrop intensity={0.3} density={0.6} />
           </div>
@@ -459,14 +459,14 @@ export default function HomePage() {
           </div>
         </section>
 
-        <section className="relative py-24 border-t border-[#1F2937] overflow-hidden">
+        <section className="relative py-16 border-t border-[#1F2937] overflow-hidden">
           <div className="absolute inset-0 pointer-events-none opacity-10">
             <TechBackdrop intensity={0.3} density={0.6} />
           </div>
 
           <div className="max-w-5xl mx-auto px-4 md:px-8 relative z-10">
             
-            <AnimatedSection className="mb-12 text-center space-y-4">
+            <AnimatedSection className="mb-10 text-center space-y-4">
               <span className="text-xs font-mono text-[#B8860B] uppercase tracking-widest font-semibold">Absolute Transparency</span>
               <h2 className="text-4xl md:text-5xl font-serif font-bold">Traditional Broker vs. Fiduciary Standard</h2>
               <p className="text-neutral-400 text-lg max-w-2xl mx-auto leading-relaxed">
@@ -549,12 +549,12 @@ export default function HomePage() {
           </div>
         </section>
 
-        <section className="relative py-24 border-t border-[#1F2937] overflow-hidden">
+        <section className="relative py-16 border-t border-[#1F2937] overflow-hidden">
           <div className="absolute inset-0 pointer-events-none">
             <div className="absolute inset-0 opacity-10 bg-gradient-to-b from-transparent via-[#B8860B]/5 to-transparent" />
           </div>
           <div className="max-w-7xl mx-auto px-4 md:px-8 relative z-10">
-            <AnimatedSection className="mb-16 text-center max-w-3xl mx-auto space-y-4">
+            <AnimatedSection className="mb-12 text-center max-w-3xl mx-auto space-y-4">
               <span className="text-xs font-mono text-[#B8860B] uppercase tracking-widest font-semibold">Operational Blueprint</span>
               <h2 className="text-4xl md:text-5xl font-serif font-bold">The 30-Day Forensic Audit Journey</h2>
               <p className="text-neutral-400 text-lg leading-relaxed">
@@ -566,12 +566,12 @@ export default function HomePage() {
           </div>
         </section>
 
-        <section className="relative py-24 max-w-7xl mx-auto px-4 md:px-8 overflow-hidden border-t border-[#1F2937]">
+        <section className="relative py-16 max-w-7xl mx-auto px-4 md:px-8 overflow-hidden border-t border-[#1F2937]">
           <div className="absolute inset-0 pointer-events-none opacity-10">
             <TechBackdrop intensity={0.3} density={0.6} />
           </div>
 
-          <AnimatedSection className="mb-12 text-center max-w-3xl mx-auto space-y-4">
+          <AnimatedSection className="mb-10 text-center max-w-3xl mx-auto space-y-4">
             <span className="text-xs font-mono text-[#B8860B] uppercase tracking-widest">Platform Core Architecture</span>
             <h2 className="text-4xl md:text-5xl font-serif font-bold">Core Analytical Capabilities</h2>
             <p className="text-neutral-400 text-lg leading-relaxed">
@@ -644,7 +644,7 @@ export default function HomePage() {
           </motion.div>
         </section>
 
-        <section id="dashboard" className="relative py-24 border-t border-[#1F2937] overflow-hidden">
+        <section id="dashboard" className="relative py-16 border-t border-[#1F2937] overflow-hidden">
           {/* Enhanced Multi-layer Background System */}
           <div className="absolute inset-0 pointer-events-none">
             <div className="absolute inset-0 opacity-40">
@@ -655,7 +655,7 @@ export default function HomePage() {
           </div>
 
           <div className="max-w-7xl mx-auto px-4 md:px-8 relative z-10">
-            <AnimatedSection className="flex flex-col md:flex-row md:items-center justify-between gap-6 mb-12">
+            <AnimatedSection className="flex flex-col md:flex-row md:items-center justify-between gap-6 mb-10">
               <div className="space-y-3">
                 <motion.span 
                   className="inline-block text-xs font-mono text-[#B8860B] uppercase tracking-widest font-semibold"

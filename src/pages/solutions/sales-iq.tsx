@@ -35,12 +35,12 @@ export default function SalesIQ() {
         <Nav />
 
         {/* Hero Section */}
-        <section className="relative pt-32 pb-20 px-4 overflow-hidden">
+        <section className="relative pt-24 pb-12 px-4 overflow-hidden">
           <div className="absolute inset-0 bg-gradient-to-br from-blue-500/10 via-transparent to-purple-500/10" />
           <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-blue-900/20 via-transparent to-transparent" />
           
           <div className="max-w-7xl mx-auto relative">
-            <div className="text-center mb-12">
+            <div className="text-center mb-8">
               <Badge className="mb-6 bg-blue-500/20 text-blue-300 border-blue-500/30">
                 Sales Intelligence Platform
               </Badge>
@@ -93,9 +93,9 @@ export default function SalesIQ() {
         </section>
 
         {/* The Strategic Thesis */}
-        <section className="py-20 px-4 bg-slate-900/50">
+        <section className="py-12 px-4 bg-slate-900/50">
           <div className="max-w-7xl mx-auto">
-            <div className="text-center mb-16">
+            <div className="text-center mb-10">
               <h2 className="text-4xl font-bold text-white mb-6">The Strategic Thesis</h2>
               <p className="text-xl text-gray-300 max-w-4xl mx-auto">
                 The durable competitive advantage is proprietary intelligence about the buyer's own plan that the buyer doesn't have about itself
@@ -129,9 +129,9 @@ export default function SalesIQ() {
         </section>
 
         {/* The Three Modules */}
-        <section className="py-20 px-4">
+        <section className="py-12 px-4">
           <div className="max-w-7xl mx-auto">
-            <div className="text-center mb-16">
+            <div className="text-center mb-10">
               <h2 className="text-4xl font-bold text-white mb-6">Three Vertically Integrated Modules</h2>
               <p className="text-xl text-gray-300">
                 The complete go-to-market engine for self-funded benefits
@@ -251,9 +251,9 @@ export default function SalesIQ() {
         </section>
 
         {/* The Moat - What Others Don't Have */}
-        <section className="py-20 px-4 bg-slate-900/50">
+        <section className="py-12 px-4 bg-slate-900/50">
           <div className="max-w-7xl mx-auto">
-            <div className="text-center mb-16">
+            <div className="text-center mb-10">
               <h2 className="text-4xl font-bold text-white mb-6">The Strategic Moat</h2>
               <p className="text-xl text-gray-300 max-w-4xl mx-auto">
                 Five capabilities absent across the entire horizontal competitive set
@@ -313,9 +313,9 @@ export default function SalesIQ() {
         </section>
 
         {/* Data Providers */}
-        <section className="py-20 px-4">
+        <section className="py-12 px-4">
           <div className="max-w-7xl mx-auto">
-            <div className="text-center mb-16">
+            <div className="text-center mb-10">
               <h2 className="text-4xl font-bold text-white mb-6">14+ Data Provider Integrations</h2>
               <p className="text-xl text-gray-300">
                 Parallel enrichment with provider-quality meta-ranking
@@ -351,9 +351,9 @@ export default function SalesIQ() {
         </section>
 
         {/* Go-to-Market Positioning */}
-        <section className="py-20 px-4 bg-slate-900/50">
+        <section className="py-12 px-4 bg-slate-900/50">
           <div className="max-w-7xl mx-auto">
-            <div className="text-center mb-16">
+            <div className="text-center mb-10">
               <h2 className="text-4xl font-bold text-white mb-6">The Wedge: Broker Displacement</h2>
               <p className="text-xl text-gray-300 max-w-4xl mx-auto">
                 SBI™ identifies incumbents with high opacity ({'>'}70 "RED"), recoverable capital quantifies the prize, AI opener weaponizes their own filing
@@ -662,12 +662,12 @@ export default function SalesIQ() {
         </section>
 
         {/* CTA Section */}
-        <section className="py-20 px-4">
+        <section className="py-12 px-4">
           <div className="max-w-4xl mx-auto text-center">
             <h2 className="text-4xl font-bold text-white mb-6">
               Win on Intelligence, Not Volume
             </h2>
-            <p className="text-xl text-gray-300 mb-12 max-w-2xl mx-auto">
+            <p className="text-xl text-gray-300 mb-8 max-w-2xl mx-auto">
               Request a platform demo to see how Sales IQ™ arms your team with the asymmetric intelligence that closes deals
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">

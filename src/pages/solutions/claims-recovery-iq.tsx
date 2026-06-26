@@ -36,12 +36,12 @@ export default function ClaimsRecoveryIQ() {
         <Nav />
 
         {/* Hero Section */}
-        <section className="relative pt-32 pb-20 px-4 overflow-hidden">
+        <section className="relative pt-24 pb-12 px-4 overflow-hidden">
           <div className="absolute inset-0 bg-gradient-to-br from-emerald-500/10 via-transparent to-blue-500/10" />
           <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-emerald-900/20 via-transparent to-transparent" />
           
           <div className="max-w-7xl mx-auto relative">
-            <div className="text-center mb-12">
+            <div className="text-center mb-8">
               <Badge className="mb-6 bg-emerald-500/20 text-emerald-300 border-emerald-500/30">
                 Forensic Claims Intelligence
               </Badge>
@@ -94,16 +94,16 @@ export default function ClaimsRecoveryIQ() {
         </section>
 
         {/* The Problem Section */}
-        <section className="py-20 px-4 bg-slate-900/50">
+        <section className="py-12 px-4 bg-slate-900/50">
           <div className="max-w-7xl mx-auto">
-            <div className="text-center mb-16">
+            <div className="text-center mb-10">
               <h2 className="text-4xl font-bold text-white mb-6">The Structural Problem</h2>
               <p className="text-xl text-gray-300 max-w-4xl mx-auto">
                 Self-funded plans pay their own claims through intermediaries who aren't the risk-bearers
               </p>
             </div>
 
-            <div className="grid md:grid-cols-3 gap-8 mb-12">
+            <div className="grid md:grid-cols-3 gap-8 mb-8">
               <Card className="bg-slate-800/50 border-red-500/30 p-8">
                 <AlertTriangle className="w-12 h-12 text-red-400 mb-4" />
                 <h3 className="text-xl font-bold text-white mb-3">Principal-Agent Problem</h3>
@@ -135,9 +135,9 @@ export default function ClaimsRecoveryIQ() {
         </section>
 
         {/* The 90-Day Forensic Cycle */}
-        <section className="py-20 px-4">
+        <section className="py-12 px-4">
           <div className="max-w-7xl mx-auto">
-            <div className="text-center mb-16">
+            <div className="text-center mb-10">
               <h2 className="text-4xl font-bold text-white mb-6">The 90-Day Forensic Cycle</h2>
               <p className="text-xl text-gray-300 max-w-3xl mx-auto">
                 From engagement to statutory demand in five structured phases
@@ -197,9 +197,9 @@ export default function ClaimsRecoveryIQ() {
         </section>
 
         {/* Recovery Categories */}
-        <section className="py-20 px-4 bg-slate-900/50">
+        <section className="py-12 px-4 bg-slate-900/50">
           <div className="max-w-7xl mx-auto">
-            <div className="text-center mb-16">
+            <div className="text-center mb-10">
               <h2 className="text-4xl font-bold text-white mb-6">15+ Recovery Categories</h2>
               <p className="text-xl text-gray-300">
                 Line-level detection across pharmacy, facility, carrier, and risk-transfer pathways
@@ -240,16 +240,16 @@ export default function ClaimsRecoveryIQ() {
         </section>
 
         {/* Three-Tier Evidence Standard */}
-        <section className="py-20 px-4">
+        <section className="py-12 px-4">
           <div className="max-w-7xl mx-auto">
-            <div className="text-center mb-16">
+            <div className="text-center mb-10">
               <h2 className="text-4xl font-bold text-white mb-6">Three-Tier Evidence Standard</h2>
               <p className="text-xl text-gray-300 max-w-3xl mx-auto">
                 Every finding is assigned exactly one confidence tier — the discipline that keeps recovery defensible
               </p>
             </div>
 
-            <div className="flex justify-center gap-4 mb-12">
+            <div className="flex justify-center gap-4 mb-8">
               <Button
                 variant={selectedTier === "certified" ? "default" : "outline"}
                 onClick={() => setSelectedTier("certified")}
@@ -386,7 +386,7 @@ export default function ClaimsRecoveryIQ() {
               )}
             </div>
 
-            <div className="mt-12 text-center">
+            <div className="mt-6 text-center">
               <p className="text-lg text-gray-300 max-w-3xl mx-auto">
                 <span className="text-emerald-400 font-semibold">A demand is only as strong as the tier behind it.</span> We never inflate MODELED findings to CERTIFIED, and INSUFFICIENT findings never reach the demand letter.
               </p>
@@ -395,9 +395,9 @@ export default function ClaimsRecoveryIQ() {
         </section>
 
         {/* The Representative Result */}
-        <section className="py-20 px-4 bg-slate-900/50">
+        <section className="py-12 px-4 bg-slate-900/50">
           <div className="max-w-7xl mx-auto">
-            <div className="text-center mb-16">
+            <div className="text-center mb-10">
               <h2 className="text-4xl font-bold text-white mb-6">The Representative Result</h2>
               <p className="text-xl text-gray-300">
                 Fortune-20-scale validation engagement
@@ -450,7 +450,7 @@ export default function ClaimsRecoveryIQ() {
               </div>
             </div>
 
-            <div className="mt-12 max-w-4xl mx-auto">
+            <div className="mt-6 max-w-4xl mx-auto">
               <Card className="bg-gradient-to-r from-emerald-500/20 to-cyan-500/20 border-emerald-500/40 p-8">
                 <h3 className="text-xl font-bold text-white mb-4">Performance Summary</h3>
                 <p className="text-gray-300 leading-relaxed">
@@ -462,9 +462,9 @@ export default function ClaimsRecoveryIQ() {
         </section>
 
         {/* Economic Value */}
-        <section className="py-20 px-4">
+        <section className="py-12 px-4">
           <div className="max-w-7xl mx-auto">
-            <div className="text-center mb-16">
+            <div className="text-center mb-10">
               <Badge className="mb-6 bg-emerald-500/20 text-emerald-300 border-emerald-500/30">
                 Economic Impact Analysis
               </Badge>
@@ -475,7 +475,7 @@ export default function ClaimsRecoveryIQ() {
             </div>
 
             {/* Primary Value Metrics */}
-            <div className="grid md:grid-cols-4 gap-6 mb-16">
+            <div className="grid md:grid-cols-4 gap-6 mb-10">
               <Card className="bg-gradient-to-br from-emerald-500/20 to-emerald-600/20 border-emerald-500/40 p-8">
                 <TrendingUp className="w-12 h-12 text-emerald-400 mb-4" />
                 <div className="text-4xl font-bold text-white mb-2">12.2x</div>
@@ -506,7 +506,7 @@ export default function ClaimsRecoveryIQ() {
             </div>
 
             {/* Cost Comparison vs Traditional Audits */}
-            <div className="mb-16">
+            <div className="mb-10">
               <h3 className="text-3xl font-bold text-white mb-8 text-center">Cost Structure: Recovery IQ™ vs Traditional Audit</h3>
               <div className="grid md:grid-cols-2 gap-8 max-w-5xl mx-auto">
                 {/* Traditional Audit */}
@@ -578,7 +578,7 @@ export default function ClaimsRecoveryIQ() {
                 </Card>
               </div>
 
-              <div className="mt-8 text-center">
+              <div className="mt-6 text-center">
                 <p className="text-lg text-gray-300 max-w-3xl mx-auto">
                   <span className="text-emerald-400 font-semibold">Pure contingency alignment:</span> The sponsor only pays on successful recovery. If we find nothing, you pay nothing. This inverts the traditional audit cost structure and eliminates sponsor risk.
                 </p>
@@ -586,7 +586,7 @@ export default function ClaimsRecoveryIQ() {
             </div>
 
             {/* EBITDA Multiplier Effect */}
-            <div className="mb-16">
+            <div className="mb-10">
               <h3 className="text-3xl font-bold text-white mb-8 text-center">EBITDA Multiplier Effect</h3>
               <div className="max-w-4xl mx-auto">
                 <Card className="bg-gradient-to-r from-purple-500/20 to-indigo-500/20 border-purple-500/40 p-8">
@@ -642,7 +642,7 @@ export default function ClaimsRecoveryIQ() {
             </div>
 
             {/* Value Preservation */}
-            <div className="mb-16">
+            <div className="mb-10">
               <h3 className="text-3xl font-bold text-white mb-8 text-center">Value Preservation: The Compounding Effect</h3>
               <div className="grid md:grid-cols-3 gap-8">
                 <Card className="bg-slate-800/50 border-blue-500/30 p-6">
@@ -670,7 +670,7 @@ export default function ClaimsRecoveryIQ() {
                 </Card>
               </div>
 
-              <div className="mt-8 text-center">
+              <div className="mt-6 text-center">
                 <p className="text-gray-300 max-w-3xl mx-auto">
                   The forensic audit identifies structural overcharges. Once corrected through demand and settlement, many persist as avoided costs. The initial recovery is Year 1 — the corrected cost structure compounds thereafter.
                 </p>
@@ -714,7 +714,7 @@ export default function ClaimsRecoveryIQ() {
                 </Card>
               </div>
 
-              <div className="mt-8">
+              <div className="mt-6">
                 <Card className="bg-gradient-to-r from-amber-500/20 to-orange-500/20 border-amber-500/40 p-8">
                   <h4 className="text-xl font-bold text-white mb-4 text-center">The Economic Moat</h4>
                   <p className="text-gray-300 text-center leading-relaxed">
@@ -727,12 +727,12 @@ export default function ClaimsRecoveryIQ() {
         </section>
 
         {/* CTA Section */}
-        <section className="py-20 px-4">
+        <section className="py-12 px-4">
           <div className="max-w-4xl mx-auto text-center">
             <h2 className="text-4xl font-bold text-white mb-6">
               Start Your Forensic Recovery Assessment
             </h2>
-            <p className="text-xl text-gray-300 mb-12 max-w-2xl mx-auto">
+            <p className="text-xl text-gray-300 mb-8 max-w-2xl mx-auto">
               Contact our recovery team to initiate a 90-day forensic audit cycle for your self-funded health plan
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">

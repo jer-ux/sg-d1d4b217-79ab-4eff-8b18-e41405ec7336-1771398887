@@ -388,6 +388,279 @@ export default function SalesIQ() {
           </div>
         </section>
 
+        {/* Economic Value */}
+        <section className="py-12 px-4">
+          <div className="max-w-7xl mx-auto">
+            <div className="text-center mb-10">
+              <Badge className="mb-6 bg-blue-500/20 text-blue-300 border-blue-500/30">
+                Economic Impact Analysis
+              </Badge>
+              <h2 className="text-4xl font-bold text-white mb-6">Economic Value Enhancement</h2>
+              <p className="text-xl text-gray-300 max-w-4xl mx-auto">
+                Sales IQ™ delivers measurable economic value through efficiency gains, conversion improvement, and strategic positioning
+              </p>
+            </div>
+
+            {/* Primary Value Metrics */}
+            <div className="grid md:grid-cols-4 gap-6 mb-10">
+              <Card className="bg-gradient-to-br from-blue-500/20 to-blue-600/20 border-blue-500/40 p-8">
+                <TrendingUp className="w-12 h-12 text-blue-400 mb-4" />
+                <div className="text-4xl font-bold text-white mb-2">3.2x</div>
+                <div className="text-sm text-gray-300 mb-1">conversion lift</div>
+                <div className="text-xs text-gray-400">vs generic contact databases</div>
+              </Card>
+
+              <Card className="bg-gradient-to-br from-purple-500/20 to-purple-600/20 border-purple-500/40 p-8">
+                <Target className="w-12 h-12 text-purple-400 mb-4" />
+                <div className="text-4xl font-bold text-white mb-2">67%</div>
+                <div className="text-sm text-gray-300 mb-1">time saved</div>
+                <div className="text-xs text-gray-400">per qualified prospect identified</div>
+              </Card>
+
+              <Card className="bg-gradient-to-br from-cyan-500/20 to-cyan-600/20 border-cyan-500/40 p-8">
+                <BarChart3 className="w-12 h-12 text-cyan-400 mb-4" />
+                <div className="text-4xl font-bold text-white mb-2">$42</div>
+                <div className="text-sm text-gray-300 mb-1">cost per qualified lead</div>
+                <div className="text-xs text-gray-400">vs $180-320 industry average</div>
+              </Card>
+
+              <Card className="bg-gradient-to-br from-emerald-500/20 to-emerald-600/20 border-emerald-500/40 p-8">
+                <CheckCircle2 className="w-12 h-12 text-emerald-400 mb-4" />
+                <div className="text-4xl font-bold text-white mb-2">88%</div>
+                <div className="text-sm text-gray-300 mb-1">open rate</div>
+                <div className="text-xs text-gray-400">on evidence-anchored outreach</div>
+              </Card>
+            </div>
+
+            {/* Cost Structure Comparison */}
+            <div className="mb-10">
+              <h3 className="text-3xl font-bold text-white mb-8 text-center">Cost Structure: Sales IQ™ vs Traditional Stack</h3>
+              <div className="grid md:grid-cols-2 gap-8 max-w-5xl mx-auto">
+                {/* Traditional Sales Stack */}
+                <Card className="bg-slate-800/50 border-red-500/30 p-8">
+                  <div className="flex items-center gap-3 mb-6">
+                    <AlertCircle className="w-10 h-10 text-red-400" />
+                    <h4 className="text-2xl font-bold text-white">Traditional Sales Stack</h4>
+                  </div>
+                  <div className="space-y-4">
+                    <div className="flex justify-between py-2 border-b border-gray-700">
+                      <span className="text-gray-300">ZoomInfo / Apollo</span>
+                      <span className="text-red-400 font-semibold">$15K-25K/yr</span>
+                    </div>
+                    <div className="flex justify-between py-2 border-b border-gray-700">
+                      <span className="text-gray-300">LinkedIn Sales Nav</span>
+                      <span className="text-red-400 font-semibold">$10K-18K/yr</span>
+                    </div>
+                    <div className="flex justify-between py-2 border-b border-gray-700">
+                      <span className="text-gray-300">Clearbit / 6sense</span>
+                      <span className="text-red-400 font-semibold">$12K-30K/yr</span>
+                    </div>
+                    <div className="flex justify-between py-2 border-b border-gray-700">
+                      <span className="text-gray-300">Manual Research Time</span>
+                      <span className="text-red-400 font-semibold">40-60 hrs/mo</span>
+                    </div>
+                    <div className="flex justify-between py-2 border-b border-gray-700">
+                      <span className="text-gray-300">Form 5500 Access</span>
+                      <span className="text-red-400 font-semibold">None</span>
+                    </div>
+                    <div className="flex justify-between py-2 border-b border-gray-700">
+                      <span className="text-gray-300">Regulatory Intelligence</span>
+                      <span className="text-red-400 font-semibold">None</span>
+                    </div>
+                    <div className="flex justify-between py-2">
+                      <span className="text-gray-300 font-semibold">Total Annual Cost</span>
+                      <span className="text-red-400 font-bold">$37K-73K</span>
+                    </div>
+                  </div>
+                </Card>
+
+                {/* Sales IQ */}
+                <Card className="bg-blue-500/10 border-blue-500/40 p-8">
+                  <div className="flex items-center gap-3 mb-6">
+                    <CheckCircle2 className="w-10 h-10 text-blue-400" />
+                    <h4 className="text-2xl font-bold text-white">Sales IQ™ Platform</h4>
+                  </div>
+                  <div className="space-y-4">
+                    <div className="flex justify-between py-2 border-b border-blue-500/20">
+                      <span className="text-gray-300">14+ Data Providers</span>
+                      <span className="text-blue-400 font-semibold">Included</span>
+                    </div>
+                    <div className="flex justify-between py-2 border-b border-blue-500/20">
+                      <span className="text-gray-300">Form 5500 (191k+ employers)</span>
+                      <span className="text-blue-400 font-semibold">Included</span>
+                    </div>
+                    <div className="flex justify-between py-2 border-b border-blue-500/20">
+                      <span className="text-gray-300">50-State Regulatory Map</span>
+                      <span className="text-blue-400 font-semibold">Included</span>
+                    </div>
+                    <div className="flex justify-between py-2 border-b border-blue-500/20">
+                      <span className="text-gray-300">AI Call-Opener Generator</span>
+                      <span className="text-blue-400 font-semibold">Included</span>
+                    </div>
+                    <div className="flex justify-between py-2 border-b border-blue-500/20">
+                      <span className="text-gray-300">Recoverable Capital Model</span>
+                      <span className="text-blue-400 font-semibold">Included</span>
+                    </div>
+                    <div className="flex justify-between py-2 border-b border-blue-500/20">
+                      <span className="text-gray-300">Research Time Saved</span>
+                      <span className="text-blue-400 font-semibold">67% reduction</span>
+                    </div>
+                    <div className="flex justify-between py-2">
+                      <span className="text-gray-300 font-semibold">Platform Subscription</span>
+                      <span className="text-blue-400 font-bold">Contact Sales</span>
+                    </div>
+                  </div>
+                </Card>
+              </div>
+
+              <div className="mt-6 text-center">
+                <p className="text-lg text-gray-300 max-w-3xl mx-auto">
+                  <span className="text-blue-400 font-semibold">Unified intelligence platform:</span> Replace 3-5 disparate tools with one vertically integrated system that combines contact data, regulatory intelligence, and federal filings. Lower total cost, higher strategic value.
+                </p>
+              </div>
+            </div>
+
+            {/* Revenue Acceleration Multipliers */}
+            <div className="mb-10">
+              <h3 className="text-3xl font-bold text-white mb-8 text-center">Revenue Acceleration Multipliers</h3>
+              <div className="max-w-4xl mx-auto">
+                <Card className="bg-gradient-to-r from-purple-500/20 to-indigo-500/20 border-purple-500/40 p-8">
+                  <div className="grid md:grid-cols-2 gap-8 mb-6">
+                    <div>
+                      <h4 className="text-xl font-bold text-white mb-4">Conversion Impact</h4>
+                      <p className="text-gray-300 mb-4">
+                        Evidence-based openers convert at 3.2x the rate of generic cold outreach:
+                      </p>
+                      <div className="space-y-3">
+                        <div className="flex items-center gap-2">
+                          <CheckCircle2 className="w-5 h-5 text-blue-400 flex-shrink-0" />
+                          <span className="text-gray-300">Generic cold email: <span className="text-white font-semibold">2.1% response rate</span></span>
+                        </div>
+                        <div className="flex items-center gap-2">
+                          <CheckCircle2 className="w-5 h-5 text-blue-400 flex-shrink-0" />
+                          <span className="text-gray-300">Sales IQ opener: <span className="text-blue-400 font-bold">6.7% response rate</span></span>
+                        </div>
+                        <div className="flex items-center gap-2">
+                          <CheckCircle2 className="w-5 h-5 text-blue-400 flex-shrink-0" />
+                          <span className="text-gray-300">Demo-to-close: <span className="text-blue-400 font-bold">42% (vs 18% baseline)</span></span>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div>
+                      <h4 className="text-xl font-bold text-white mb-4">Deal Size Expansion</h4>
+                      <p className="text-gray-300 mb-4">
+                        Opening with recoverable capital quantification anchors higher ACV:
+                      </p>
+                      <div className="bg-slate-900/50 rounded-lg p-6 border border-purple-500/30">
+                        <div className="text-center mb-4">
+                          <div className="text-sm text-gray-400 mb-2">Average ACV Lift</div>
+                          <div className="text-4xl font-bold text-purple-400">+$47K</div>
+                          <div className="text-sm text-gray-400 mt-1">Per closed deal vs baseline</div>
+                        </div>
+                        <div className="pt-4 border-t border-purple-500/20">
+                          <p className="text-xs text-gray-400 text-center">
+                            Prospects presented with quantified overcharge data buy broader platform scope
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="pt-6 border-t border-purple-500/30">
+                    <p className="text-sm text-gray-300 text-center">
+                      <span className="text-purple-400 font-semibold">Strategic insight:</span> The intelligence asymmetry creates urgency. A prospect who learns they're overpaying $2.4M wants the full forensic audit immediately — they don't start with a pilot.
+                    </p>
+                  </div>
+                </Card>
+              </div>
+            </div>
+
+            {/* Sales Team Productivity */}
+            <div className="mb-10">
+              <h3 className="text-3xl font-bold text-white mb-8 text-center">Sales Team Productivity Gains</h3>
+              <div className="grid md:grid-cols-3 gap-8">
+                <Card className="bg-slate-800/50 border-cyan-500/30 p-6">
+                  <div className="text-center">
+                    <div className="text-sm text-gray-400 mb-2">Research Time Saved</div>
+                    <div className="text-3xl font-bold text-cyan-400 mb-4">27 hrs/mo</div>
+                    <p className="text-sm text-gray-300">Per rep, redirected to selling activity</p>
+                  </div>
+                </Card>
+
+                <Card className="bg-slate-800/50 border-blue-500/30 p-6">
+                  <div className="text-center">
+                    <div className="text-sm text-gray-400 mb-2">Qualified Leads/Month</div>
+                    <div className="text-3xl font-bold text-blue-400 mb-4">+140%</div>
+                    <p className="text-sm text-gray-300">Increase in high-fit prospects identified</p>
+                  </div>
+                </Card>
+
+                <Card className="bg-slate-800/50 border-purple-500/30 p-6">
+                  <div className="text-center">
+                    <div className="text-sm text-gray-400 mb-2">Time to First Meeting</div>
+                    <div className="text-3xl font-bold text-purple-400 mb-4">-58%</div>
+                    <p className="text-sm text-gray-300">From prospecting to booked demo</p>
+                  </div>
+                </Card>
+              </div>
+
+              <div className="mt-6 text-center">
+                <p className="text-gray-300 max-w-3xl mx-auto">
+                  Eliminating manual research, manual Form 5500 lookups, and trial-and-error messaging liberates reps to focus on high-value conversations. The platform does the forensic work; the rep weaponizes it.
+                </p>
+              </div>
+            </div>
+
+            {/* Strategic Positioning Value */}
+            <div>
+              <h3 className="text-3xl font-bold text-white mb-8 text-center">Strategic Positioning: The Wedge Effect</h3>
+              <div className="grid md:grid-cols-2 gap-6">
+                <Card className="bg-slate-800/50 border-amber-500/30 p-6">
+                  <Target className="w-10 h-10 text-amber-400 mb-4" />
+                  <h4 className="text-lg font-bold text-white mb-3">Regulatory Arbitrage</h4>
+                  <p className="text-sm text-gray-300">
+                    The 50-state map surfaces geographic arbitrage opportunities. Sell fiduciary governance to Ohio employers (PBM Transparency Act, strict broker disclosure) while traditional reps pitch "savings" generically nationwide.
+                  </p>
+                </Card>
+
+                <Card className="bg-slate-800/50 border-emerald-500/30 p-6">
+                  <Shield className="w-10 h-10 text-emerald-400 mb-4" />
+                  <h4 className="text-lg font-bold text-white mb-3">Incumbent Displacement</h4>
+                  <p className="text-sm text-gray-300">
+                    SBI™ {'>'}70 (RED opacity) identifies vulnerable incumbents. Opening with "your broker scored 83/100 on our opacity index" reframes the relationship from renewal to replacement in one sentence.
+                  </p>
+                </Card>
+
+                <Card className="bg-slate-800/50 border-cyan-500/30 p-6">
+                  <BarChart3 className="w-10 h-10 text-cyan-400 mb-4" />
+                  <h4 className="text-lg font-bold text-white mb-3">Recoverable Capital as ROI Proof</h4>
+                  <p className="text-sm text-gray-300">
+                    The MODELED low/high range ($1.8M-$4.2M on a $40M spend) becomes the economic justification for immediate engagement. No abstract "reduce costs" pitch — concrete dollar recovery tied to their own plan data.
+                  </p>
+                </Card>
+
+                <Card className="bg-slate-800/50 border-purple-500/30 p-6">
+                  <FileText className="w-10 h-10 text-purple-400 mb-4" />
+                  <h4 className="text-lg font-bold text-white mb-3">Evidence-First Credibility</h4>
+                  <p className="text-sm text-gray-300">
+                    AI call-opener cites their Form 5500 Schedule A, line 1(b) broker-comp rate. The prospect's first reaction: "How did you get that?" — instant credibility that generic contact databases can't manufacture.
+                  </p>
+                </Card>
+              </div>
+
+              <div className="mt-6">
+                <Card className="bg-gradient-to-r from-amber-500/20 to-orange-500/20 border-amber-500/40 p-8">
+                  <h4 className="text-xl font-bold text-white mb-4 text-center">The Durable Moat</h4>
+                  <p className="text-gray-300 text-center leading-relaxed">
+                    Sales IQ™ isn't a better ZoomInfo — it's a <span className="text-white font-semibold">regulatory intelligence layer</span> that surfaces Plan-level asymmetries the buyer doesn't know about their own arrangement. Form 5500 data + state PBM laws + proprietary opacity scoring = a moat horizontal sales tools can't cross. They sell contact volume; we sell evidence-anchored positioning.
+                  </p>
+                </Card>
+              </div>
+            </div>
+          </div>
+        </section>
+
         {/* CTA Section */}
         <section className="py-20 px-4">
           <div className="max-w-4xl mx-auto text-center">

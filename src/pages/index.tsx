@@ -789,6 +789,49 @@ export default function HomePage() {
           </div>
         </section>
 
+        {/* Fitness Call CTA */}
+        <section className="relative py-16 border-t border-[#1F2937] overflow-hidden">
+          <div className="absolute inset-0 bg-gradient-to-r from-emerald-500/10 via-blue-500/10 to-purple-500/10" />
+          <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-[#B8860B]/10 via-transparent to-transparent" />
+          
+          <div className="max-w-4xl mx-auto px-4 md:px-8 relative z-10">
+            <AnimatedSection className="text-center space-y-8">
+              <div className="space-y-4">
+                <Badge className="bg-emerald-500/20 text-emerald-300 border-emerald-500/30 px-4 py-2">
+                  No-Obligation Discovery Session
+                </Badge>
+                <h2 className="text-4xl md:text-5xl font-serif font-bold text-white">
+                  Book Your 20-Minute Fitness Call
+                </h2>
+                <p className="text-xl text-gray-300 max-w-2xl mx-auto leading-relaxed">
+                  Let's assess your current benefits structure and identify immediate optimization opportunities. Zero pressure, pure value.
+                </p>
+              </div>
+
+              <CalendlyWidget 
+                url="https://calendly.com/jer-kincaidrmc/30min"
+                buttonText="Book Your 20-Minute Fitness Call"
+                className="bg-gradient-to-r from-emerald-600 to-emerald-500 hover:from-emerald-500 hover:to-emerald-400 text-white font-bold text-lg px-12 py-5 rounded-xl shadow-2xl shadow-emerald-500/30 transition-all duration-300 hover:scale-105 inline-flex items-center gap-3"
+              />
+
+              <div className="flex items-center justify-center gap-6 text-sm text-gray-400 flex-wrap">
+                <div className="flex items-center gap-2">
+                  <CheckCircle2 className="w-5 h-5 text-emerald-400" />
+                  <span>Quick 20-minute assessment</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <CheckCircle2 className="w-5 h-5 text-emerald-400" />
+                  <span>Immediate actionable insights</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <CheckCircle2 className="w-5 h-5 text-emerald-400" />
+                  <span>No obligation required</span>
+                </div>
+              </div>
+            </AnimatedSection>
+          </div>
+        </section>
+
         <section className="py-12 border-t border-b border-[#1F2937]">
           <div className="max-w-7xl mx-auto px-4 md:px-8 flex flex-col md:flex-row items-center justify-between gap-8">
             <div className="text-center md:text-left space-y-1">

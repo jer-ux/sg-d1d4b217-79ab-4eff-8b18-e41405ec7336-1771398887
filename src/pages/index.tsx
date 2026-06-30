@@ -671,7 +671,7 @@ export default function HomePage() {
                   Unified Enterprise Command
                 </motion.span>
                 <h2 className="text-4xl md:text-5xl font-serif font-bold bg-gradient-to-r from-white via-neutral-100 to-neutral-300 bg-clip-text text-transparent">
-                  Live Fiduciary Intelligence Portal
+                  Kincaid IQ™
                 </h2>
                 <p className="text-neutral-400 text-lg leading-relaxed">
                   Real-time overcharge tracking feeds and analytical dashboards optimized for each executive role.

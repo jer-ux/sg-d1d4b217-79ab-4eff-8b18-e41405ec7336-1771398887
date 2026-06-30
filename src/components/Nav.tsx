@@ -349,12 +349,6 @@ export default function Nav() {
                 </div>
               )}
             </div>
-
-            <Link href="/request-demo">
-              <Button className="bg-[#8C1515] hover:bg-[#a61c1c] text-white">
-                Contact Sales
-              </Button>
-            </Link>
           </div>
 
           {/* Mobile menu button */}

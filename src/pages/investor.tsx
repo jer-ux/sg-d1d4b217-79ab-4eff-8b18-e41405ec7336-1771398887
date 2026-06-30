@@ -122,21 +122,7 @@ export default function InvestorPage() {
     }
   ];
 
-  const traction = [
-    { metric: "5", label: "Enterprise Customers", sublabel: "Fortune 500 & Mid-Market" },
-    { metric: "$12B+", label: "Benefits Under Management", sublabel: "Across all customer base" },
-    { metric: "18%", label: "Average Cost Savings", sublabel: "Year 1 documented results" },
-    { metric: "98%", label: "Customer Retention", sublabel: "After initial contract" },
-    { metric: "<90", label: "Days to Value", sublabel: "From contract to first insight" },
-    { metric: "3x", label: "YoY Revenue Growth", sublabel: "Last 18 months" }
-  ];
-
-  const useOfFunds = [
-    { category: "Product Development", percentage: 45, amount: "$4.5M", description: "AI agent capabilities, platform features, integrations" },
-    { category: "Sales & Marketing", percentage: 30, amount: "$3.0M", description: "Enterprise sales team, marketing automation, demand gen" },
-    { category: "Operations & Infrastructure", percentage: 15, amount: "$1.5M", description: "Cloud infrastructure, security, compliance" },
-    { category: "Customer Success", percentage: 10, amount: "$1.0M", description: "Onboarding, support, customer expansion" }
-  ];
+  const useOfFunds = [];
 
   const milestones = [
     { quarter: "Q2 2026", title: "Series A Close", details: "Complete $10M raise, expand team to 25" },
@@ -399,46 +385,6 @@ export default function InvestorPage() {
                     <p className="text-gray-300 font-medium mb-1">{stat.label}</p>
                     <p className="text-gray-500 text-sm">{stat.sublabel}</p>
                   </div>
-                </motion.div>
-              ))}
-            </motion.div>
-          </div>
-        </section>
-
-        {/* Traction & Metrics */}
-        <section className="py-8 px-6 bg-gradient-to-b from-black to-zinc-950">
-          <div className="max-w-7xl mx-auto">
-            <motion.div
-              initial="initial"
-              whileInView="animate"
-              viewport={{ once: true, margin: "-100px" }}
-              variants={fadeInUp}
-              className="text-center mb-8"
-            >
-              <h2 className="text-4xl font-bold text-blue-100 mb-3">
-                Traction & Validation
-              </h2>
-              <p className="text-xl text-gray-400">
-                Real results with enterprise customers
-              </p>
-            </motion.div>
-
-            <motion.div
-              className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4"
-              initial="initial"
-              whileInView="animate"
-              viewport={{ once: true, margin: "-100px" }}
-              variants={staggerContainer}
-            >
-              {traction.map((item, i) => (
-                <motion.div
-                  key={i}
-                  variants={fadeInUp}
-                  className="p-6 rounded-2xl bg-gradient-to-br from-zinc-900 to-black border border-purple-500/20 hover:border-purple-500/40 transition-all duration-300"
-                >
-                  <div className="text-4xl font-bold text-purple-400 mb-2">{item.metric}</div>
-                  <div className="text-lg font-semibold text-purple-100 mb-1">{item.label}</div>
-                  <div className="text-sm text-gray-400">{item.sublabel}</div>
                 </motion.div>
               ))}
             </motion.div>

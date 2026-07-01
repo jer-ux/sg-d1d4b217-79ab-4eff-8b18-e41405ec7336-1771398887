@@ -245,30 +245,6 @@ export default function HomePage() {
           </div>
         </section>
 
-        <section className="relative py-16 border-t border-[#1F2937] overflow-hidden">
-          <div className="absolute inset-0 pointer-events-none opacity-10">
-            <TechBackdrop intensity={0.3} density={0.6} />
-          </div>
-
-          <div className="max-w-7xl mx-auto px-4 md:px-8 relative z-10">
-            
-            <AnimatedSection className="mb-10 text-center max-w-3xl mx-auto space-y-4">
-              <span className="text-xs font-mono text-[#B8860B] uppercase tracking-widest">Interactive Audit Playground</span>
-              <h2 className="text-4xl md:text-5xl font-serif font-bold">The Fiduciary Lab Hub</h2>
-              <p className="text-neutral-400 text-lg leading-relaxed">
-                Unlock immediate practical value with three active forensic toolkits. Run a contract uploader simulation, query benefits brokers CAA compliance ratings, or compute instant actuarial recoveries.
-              </p>
-            </AnimatedSection>
-
-            <AnimatedSection className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-              <LandingUploader />
-              <LandingBrokerLookup />
-              <LandingActuarialReport />
-            </AnimatedSection>
-
-          </div>
-        </section>
-
         <section id="roi-calculator" className="relative py-16 border-t border-[#1F2937] overflow-hidden">
           <div className="absolute inset-0 pointer-events-none">
             <div className="absolute inset-0 opacity-20">

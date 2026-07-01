@@ -31,78 +31,6 @@ export default function Nav() {
 
           {/* Desktop Navigation */}
           <div className="hidden md:flex md:items-center md:space-x-1">
-            {/* Intelligence Series - Dropdown */}
-            <div className="relative">
-              <button
-                onClick={() => {
-                  setKincaidIqDropdownOpen(!kincaidIqDropdownOpen);
-                  setCompanyDropdownOpen(false);
-                  setFocusAreasDropdownOpen(false);
-                  setAuditsDropdownOpen(false);
-                  setProductsDropdownOpen(false);
-                }}
-                className="flex items-center gap-2 px-4 py-2 text-black hover:text-black/80 transition-colors rounded-lg hover:bg-slate-50 font-medium">
-                Intelligence Series
-                <ChevronDown className={`w-3 h-3 transition-transform ${kincaidIqDropdownOpen ? "rotate-180" : ""}`} />
-              </button>
-              {kincaidIqDropdownOpen && (
-                <div className="absolute top-full left-0 mt-2 w-72 bg-gray-900/95 backdrop-blur-xl rounded-xl border border-gray-700/50 shadow-xl overflow-hidden z-[210]">
-                  <div className="p-2">
-                    <Link
-                      href="/kincaid-iq-intelligence-series"
-                      onClick={() => setKincaidIqDropdownOpen(false)}
-                      className="block px-4 py-3 text-gray-300 hover:text-white hover:bg-purple-500/10 rounded-lg transition-colors duration-150">
-                      <div className="font-medium">Intelligence Overview</div>
-                      <div className="text-xs text-gray-400">Main dashboard and analytics</div>
-                    </Link>
-                    <Link
-                      href="/solutions/rx-defense"
-                      onClick={() => setKincaidIqDropdownOpen(false)}
-                      className="block px-4 py-3 text-gray-300 hover:text-white hover:bg-rose-500/10 rounded-lg transition-colors duration-150">
-                      <div className="font-medium">Rx PBM Defense Contract x-Ray</div>
-                      <div className="text-xs text-gray-400">PBM contract forensics</div>
-                    </Link>
-                    <Link
-                      href="/solutions/actuarial-benefits"
-                      onClick={() => setKincaidIqDropdownOpen(false)}
-                      className="block px-4 py-3 text-gray-300 hover:text-white hover:bg-cyan-500/10 rounded-lg transition-colors duration-150">
-                      <div className="font-medium">Actuarial Analysis</div>
-                      <div className="text-xs text-gray-400">Risk modeling & projections</div>
-                    </Link>
-                    <Link
-                      href="/solutions/mark-cuban-cost-drugs"
-                      onClick={() => setKincaidIqDropdownOpen(false)}
-                      className="block px-4 py-3 text-gray-300 hover:text-white hover:bg-blue-500/10 rounded-lg transition-colors duration-150">
-                      <div className="font-medium">Mark Cuban Cost Drugs</div>
-                      <div className="text-xs text-gray-400">Drug cost benchmarking</div>
-                    </Link>
-                    <Link
-                      href="/pbm-crime-boss"
-                      onClick={() => setKincaidIqDropdownOpen(false)}
-                      className="block px-4 py-3 text-gray-300 hover:text-white hover:bg-orange-500/10 rounded-lg transition-colors duration-150">
-                      <div className="font-medium">PBM Crime Boss</div>
-                      <div className="text-xs text-gray-400">Insider newsletter & investigations</div>
-                    </Link>
-
-                    {/* Premium PDF Case Study Showcase */}
-                    <a
-                      href="/Kincaid_iQ_JBHunt_EBITDA_Defense.pdf"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      onClick={() => setKincaidIqDropdownOpen(false)}
-                      className="block mx-1 mt-2 px-4 py-3 bg-gradient-to-r from-amber-500/10 to-amber-600/5 hover:from-amber-500/20 hover:to-amber-600/10 text-amber-300 hover:text-amber-100 rounded-lg border border-amber-500/30 transition-all duration-150">
-                      <div className="flex items-center justify-between">
-                        <span className="font-semibold text-xs uppercase tracking-wider text-amber-400">Featured Audit Report</span>
-                        <span className="text-[9px] bg-amber-500/20 border border-amber-500/30 text-amber-300 px-1.5 py-0.5 rounded font-bold uppercase">PDF</span>
-                      </div>
-                      <div className="font-bold text-sm mt-1">JB Hunt EBITDA Defense</div>
-                      <div className="text-[11px] text-amber-300/70 mt-0.5 leading-snug">Forensic actuarial intelligence and EBITDA shielding</div>
-                    </a>
-                  </div>
-                </div>
-              )}
-            </div>
-
             {/* Company Menu */}
             <div className="relative">
               <button
@@ -175,6 +103,78 @@ export default function Nav() {
                       </div>
                       <div className="text-xs text-gray-400">Access full forensic PDF libraries</div>
                     </Link>
+                  </div>
+                </div>
+              )}
+            </div>
+
+            {/* Intelligence Series - Dropdown */}
+            <div className="relative">
+              <button
+                onClick={() => {
+                  setKincaidIqDropdownOpen(!kincaidIqDropdownOpen);
+                  setCompanyDropdownOpen(false);
+                  setFocusAreasDropdownOpen(false);
+                  setAuditsDropdownOpen(false);
+                  setProductsDropdownOpen(false);
+                }}
+                className="flex items-center gap-2 px-4 py-2 text-black hover:text-black/80 transition-colors rounded-lg hover:bg-slate-50 font-medium">
+                Intelligence Series
+                <ChevronDown className={`w-3 h-3 transition-transform ${kincaidIqDropdownOpen ? "rotate-180" : ""}`} />
+              </button>
+              {kincaidIqDropdownOpen && (
+                <div className="absolute top-full left-0 mt-2 w-72 bg-gray-900/95 backdrop-blur-xl rounded-xl border border-gray-700/50 shadow-xl overflow-hidden z-[210]">
+                  <div className="p-2">
+                    <Link
+                      href="/kincaid-iq-intelligence-series"
+                      onClick={() => setKincaidIqDropdownOpen(false)}
+                      className="block px-4 py-3 text-gray-300 hover:text-white hover:bg-purple-500/10 rounded-lg transition-colors duration-150">
+                      <div className="font-medium">Intelligence Overview</div>
+                      <div className="text-xs text-gray-400">Main dashboard and analytics</div>
+                    </Link>
+                    <Link
+                      href="/solutions/rx-defense"
+                      onClick={() => setKincaidIqDropdownOpen(false)}
+                      className="block px-4 py-3 text-gray-300 hover:text-white hover:bg-rose-500/10 rounded-lg transition-colors duration-150">
+                      <div className="font-medium">Rx PBM Defense Contract x-Ray</div>
+                      <div className="text-xs text-gray-400">PBM contract forensics</div>
+                    </Link>
+                    <Link
+                      href="/solutions/actuarial-benefits"
+                      onClick={() => setKincaidIqDropdownOpen(false)}
+                      className="block px-4 py-3 text-gray-300 hover:text-white hover:bg-cyan-500/10 rounded-lg transition-colors duration-150">
+                      <div className="font-medium">Actuarial Analysis</div>
+                      <div className="text-xs text-gray-400">Risk modeling & projections</div>
+                    </Link>
+                    <Link
+                      href="/solutions/mark-cuban-cost-drugs"
+                      onClick={() => setKincaidIqDropdownOpen(false)}
+                      className="block px-4 py-3 text-gray-300 hover:text-white hover:bg-blue-500/10 rounded-lg transition-colors duration-150">
+                      <div className="font-medium">Mark Cuban Cost Drugs</div>
+                      <div className="text-xs text-gray-400">Drug cost benchmarking</div>
+                    </Link>
+                    <Link
+                      href="/pbm-crime-boss"
+                      onClick={() => setKincaidIqDropdownOpen(false)}
+                      className="block px-4 py-3 text-gray-300 hover:text-white hover:bg-orange-500/10 rounded-lg transition-colors duration-150">
+                      <div className="font-medium">PBM Crime Boss</div>
+                      <div className="text-xs text-gray-400">Insider newsletter & investigations</div>
+                    </Link>
+
+                    {/* Premium PDF Case Study Showcase */}
+                    <a
+                      href="/Kincaid_iQ_JBHunt_EBITDA_Defense.pdf"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      onClick={() => setKincaidIqDropdownOpen(false)}
+                      className="block mx-1 mt-2 px-4 py-3 bg-gradient-to-r from-amber-500/10 to-amber-600/5 hover:from-amber-500/20 hover:to-amber-600/10 text-amber-300 hover:text-amber-100 rounded-lg border border-amber-500/30 transition-all duration-150">
+                      <div className="flex items-center justify-between">
+                        <span className="font-semibold text-xs uppercase tracking-wider text-amber-400">Featured Audit Report</span>
+                        <span className="text-[9px] bg-amber-500/20 border border-amber-500/30 text-amber-300 px-1.5 py-0.5 rounded font-bold uppercase">PDF</span>
+                      </div>
+                      <div className="font-bold text-sm mt-1">JB Hunt EBITDA Defense</div>
+                      <div className="text-[11px] text-amber-300/70 mt-0.5 leading-snug">Forensic actuarial intelligence and EBITDA shielding</div>
+                    </a>
                   </div>
                 </div>
               )}
@@ -441,67 +441,6 @@ export default function Nav() {
               )}
             </div>
 
-            {/* Intelligence Series Dropdown - Mobile */}
-            <div className="bg-white/5 rounded-xl overflow-hidden">
-              <button
-                onClick={() => setKincaidIqDropdownOpen(!kincaidIqDropdownOpen)}
-                className="flex items-center justify-between w-full px-4 py-3.5 text-gray-200 hover:text-white hover:bg-white/10 transition-all duration-200">
-                <span className="font-semibold">Intelligence Series</span>
-                <ChevronDown className={`w-4 h-4 transition-transform duration-300 ${kincaidIqDropdownOpen ? "rotate-180" : ""}`} />
-              </button>
-              {kincaidIqDropdownOpen && (
-                <div className="bg-black/40 border-t border-white/5 animate-in slide-in-from-top-2 duration-200">
-                  <div className="px-2 py-2 space-y-1">
-                    <Link 
-                      href="/kincaid-iq-intelligence-series" 
-                      onClick={() => setIsOpen(false)}
-                      className="block px-4 py-2.5 text-sm text-gray-300 hover:text-white hover:bg-purple-500/20 rounded-lg transition-all duration-150">
-                      <div className="flex items-center gap-2">
-                        <LineChart className="w-4 h-4 text-purple-400" />
-                        Intelligence Overview
-                      </div>
-                    </Link>
-                    <Link 
-                      href="/solutions/rx-defense" 
-                      onClick={() => setIsOpen(false)}
-                      className="block px-4 py-2.5 text-sm text-gray-300 hover:text-white hover:bg-rose-500/20 rounded-lg transition-all duration-150">
-                      <div className="flex items-center gap-2">
-                        <Shield className="w-4 h-4 text-rose-400" />
-                        Rx PBM Defense
-                      </div>
-                    </Link>
-                    <Link 
-                      href="/solutions/actuarial-benefits" 
-                      onClick={() => setIsOpen(false)}
-                      className="block px-4 py-2.5 text-sm text-gray-300 hover:text-white hover:bg-cyan-500/20 rounded-lg transition-all duration-150">
-                      <div className="flex items-center gap-2">
-                        <BarChart3 className="w-4 h-4 text-cyan-400" />
-                        Actuarial Analysis
-                      </div>
-                    </Link>
-                    <Link 
-                      href="/solutions/mark-cuban-cost-drugs" 
-                      onClick={() => setIsOpen(false)}
-                      className="block px-4 py-2.5 text-sm text-gray-300 hover:text-white hover:bg-blue-500/20 rounded-lg transition-all duration-150">
-                      <div className="flex items-center gap-2">
-                        <DollarSign className="w-4 h-4 text-blue-400" />
-                        Mark Cuban Cost Drugs
-                      </div>
-                    </Link>
-                    <Link 
-                      href="/pbm-crime-boss" 
-                      onClick={() => setIsOpen(false)}
-                      className="block px-4 py-2.5 text-sm text-gray-300 hover:text-white hover:bg-orange-500/20 rounded-lg transition-all duration-150">
-                      <div className="flex items-center gap-2">
-                        <AlertTriangle className="w-4 h-4 text-orange-400" />
-                        PBM Crime Boss
-                      </div>
-                    </Link>
-                  </div>
-                </div>
-              )}
-            </div>
-
             {/* Company Dropdown - Mobile */}
             <div className="bg-white/5 rounded-xl overflow-hidden">
               <button
@@ -574,6 +513,67 @@ export default function Nav() {
                       <div className="flex items-center gap-2">
                         <FolderOpen className="w-4 h-4 text-blue-400" />
                         Uploads & Briefs
+                      </div>
+                    </Link>
+                  </div>
+                </div>
+              )}
+            </div>
+
+            {/* Intelligence Series Dropdown - Mobile */}
+            <div className="bg-white/5 rounded-xl overflow-hidden">
+              <button
+                onClick={() => setKincaidIqDropdownOpen(!kincaidIqDropdownOpen)}
+                className="flex items-center justify-between w-full px-4 py-3.5 text-gray-200 hover:text-white hover:bg-white/10 transition-all duration-200">
+                <span className="font-semibold">Intelligence Series</span>
+                <ChevronDown className={`w-4 h-4 transition-transform duration-300 ${kincaidIqDropdownOpen ? "rotate-180" : ""}`} />
+              </button>
+              {kincaidIqDropdownOpen && (
+                <div className="bg-black/40 border-t border-white/5 animate-in slide-in-from-top-2 duration-200">
+                  <div className="px-2 py-2 space-y-1">
+                    <Link 
+                      href="/kincaid-iq-intelligence-series" 
+                      onClick={() => setIsOpen(false)}
+                      className="block px-4 py-2.5 text-sm text-gray-300 hover:text-white hover:bg-purple-500/20 rounded-lg transition-all duration-150">
+                      <div className="flex items-center gap-2">
+                        <LineChart className="w-4 h-4 text-purple-400" />
+                        Intelligence Overview
+                      </div>
+                    </Link>
+                    <Link 
+                      href="/solutions/rx-defense" 
+                      onClick={() => setIsOpen(false)}
+                      className="block px-4 py-2.5 text-sm text-gray-300 hover:text-white hover:bg-rose-500/20 rounded-lg transition-all duration-150">
+                      <div className="flex items-center gap-2">
+                        <Shield className="w-4 h-4 text-rose-400" />
+                        Rx PBM Defense
+                      </div>
+                    </Link>
+                    <Link 
+                      href="/solutions/actuarial-benefits" 
+                      onClick={() => setIsOpen(false)}
+                      className="block px-4 py-2.5 text-sm text-gray-300 hover:text-white hover:bg-cyan-500/20 rounded-lg transition-all duration-150">
+                      <div className="flex items-center gap-2">
+                        <BarChart3 className="w-4 h-4 text-cyan-400" />
+                        Actuarial Analysis
+                      </div>
+                    </Link>
+                    <Link 
+                      href="/solutions/mark-cuban-cost-drugs" 
+                      onClick={() => setIsOpen(false)}
+                      className="block px-4 py-2.5 text-sm text-gray-300 hover:text-white hover:bg-blue-500/20 rounded-lg transition-all duration-150">
+                      <div className="flex items-center gap-2">
+                        <DollarSign className="w-4 h-4 text-blue-400" />
+                        Mark Cuban Cost Drugs
+                      </div>
+                    </Link>
+                    <Link 
+                      href="/pbm-crime-boss" 
+                      onClick={() => setIsOpen(false)}
+                      className="block px-4 py-2.5 text-sm text-gray-300 hover:text-white hover:bg-orange-500/20 rounded-lg transition-all duration-150">
+                      <div className="flex items-center gap-2">
+                        <AlertTriangle className="w-4 h-4 text-orange-400" />
+                        PBM Crime Boss
                       </div>
                     </Link>
                   </div>

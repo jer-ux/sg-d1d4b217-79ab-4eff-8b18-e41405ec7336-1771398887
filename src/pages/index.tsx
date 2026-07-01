@@ -573,9 +573,9 @@ export default function HomePage() {
 
           <AnimatedSection className="mb-10 text-center max-w-3xl mx-auto space-y-4">
             <span className="text-xs font-mono text-[#B8860B] uppercase tracking-widest">Platform Core Architecture</span>
-            <h2 className="text-4xl md:text-5xl font-serif font-bold">Core Analytical Capabilities</h2>
+            <h2 className="text-4xl md:text-5xl font-serif font-bold">8 Pillars of Fiduciary Intelligence</h2>
             <p className="text-neutral-400 text-lg leading-relaxed">
-              Three foundational analytical modules supporting fiduciary healthcare governance.
+              Eight foundational analytical capabilities driving comprehensive fiduciary healthcare governance and PBM oversight.
             </p>
           </AnimatedSection>
 

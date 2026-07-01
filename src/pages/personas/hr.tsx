@@ -399,7 +399,7 @@ export default function HRLeadersPage() {
                   </p>
 
                   <div className="flex flex-col sm:flex-row gap-4">
-                    <Link href="/request-demo">
+                    <Link href="/#dashboard">
                       <Button size="lg" className="bg-gradient-to-r from-rose-600 to-pink-600 hover:from-rose-700 hover:to-pink-700 text-white text-lg px-8 py-6 shadow-2xl shadow-rose-500/50">
                         See HR Dashboard Demo
                         <ArrowRight className="w-5 h-5 ml-2" />

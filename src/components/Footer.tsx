@@ -27,6 +27,55 @@ export default function Footer() {
         </div>
       </div>
 
+      {/* PBM Contract Clarity 360° CTA */}
+      <div className="max-w-7xl mx-auto px-6 py-12 border-b border-slate-200">
+        <div className="max-w-4xl mx-auto text-center space-y-6">
+          <div className="inline-flex items-center gap-2 px-4 py-2 bg-blue-50 text-blue-700 rounded-full text-sm font-semibold border border-blue-200">
+            <Shield className="w-4 h-4" />
+            <span>PBM Contract Intelligence</span>
+          </div>
+          
+          <h2 className="text-3xl md:text-4xl font-bold text-slate-900">
+            PBM Contract Clarity 360°
+          </h2>
+          
+          <p className="text-lg text-slate-600 max-w-2xl mx-auto leading-relaxed">
+            Upload your PBM contract and get instant 0-100 fiduciary scoring, redline generator, and clause-by-clause analysis. See exactly where your contract deviates from fiduciary standards.
+          </p>
+          
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
+            <Link 
+              href="/solutions/rx-defense"
+              className="inline-flex items-center gap-2 bg-gradient-to-r from-blue-600 to-blue-500 hover:from-blue-500 hover:to-blue-400 text-white font-semibold px-8 py-4 rounded-lg shadow-lg shadow-blue-500/30 transition-all duration-300 hover:scale-105"
+            >
+              <Shield className="w-5 h-5" />
+              Analyze Your Contract
+            </Link>
+            <Link
+              href="/solutions/rx-defense"
+              className="text-blue-600 hover:text-blue-700 font-semibold underline underline-offset-4 transition-colors"
+            >
+              Learn more about Contract Clarity →
+            </Link>
+          </div>
+          
+          <div className="flex items-center justify-center gap-6 text-sm text-slate-500 flex-wrap pt-4">
+            <div className="flex items-center gap-2">
+              <CheckCircle className="w-4 h-4 text-blue-600" />
+              <span>Instant 0-100 scoring</span>
+            </div>
+            <div className="flex items-center gap-2">
+              <CheckCircle className="w-4 h-4 text-blue-600" />
+              <span>Automated redlines</span>
+            </div>
+            <div className="flex items-center gap-2">
+              <CheckCircle className="w-4 h-4 text-blue-600" />
+              <span>Clause-level analysis</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
       <div className="max-w-7xl mx-auto px-6 py-12">
         <div className="mb-12">
           <Image 

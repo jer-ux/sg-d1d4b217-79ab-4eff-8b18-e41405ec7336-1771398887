@@ -269,23 +269,6 @@ export default function HomePage() {
           </div>
         </section>
 
-        <section className="relative py-16 border-t border-[#1F2937] overflow-hidden">
-          <div className="absolute inset-0 pointer-events-none">
-            <div className="absolute inset-0 opacity-10 bg-gradient-to-b from-transparent via-[#B8860B]/5 to-transparent" />
-          </div>
-          <div className="max-w-7xl mx-auto px-4 md:px-8 relative z-10">
-            <AnimatedSection className="mb-10 text-center max-w-3xl mx-auto space-y-4">
-              <span className="text-xs font-mono text-[#B8860B] uppercase tracking-widest">Forensic Research & Analysis</span>
-              <h2 className="text-4xl md:text-5xl font-serif font-bold">Fiduciary Intelligence Library</h2>
-              <p className="text-neutral-400 text-lg leading-relaxed">
-                Unlock deep structural overcharge proof. Authenticate secure executive download access to our certified PBM generic pricing arbitrage, EBITDA defense audit, and sovereign actuarial research papers.
-              </p>
-            </AnimatedSection>
-
-            <DocumentCarousel />
-          </div>
-        </section>
-
         <section id="roi-calculator" className="relative py-16 border-t border-[#1F2937] overflow-hidden">
           <div className="absolute inset-0 pointer-events-none">
             <div className="absolute inset-0 opacity-20">

@@ -600,6 +600,91 @@ export default function HomePage() {
               </div>
             </motion.div>
 
+            <motion.div
+              variants={fadeInUpVariants}
+              whileHover={{ y: -4 }}
+              className="group relative rounded-lg border border-[#2A3F54] bg-[#151B23] p-8 hover:border-[#3A4F64] cursor-pointer transition-all duration-200"
+            >
+              <div className="mb-4 inline-flex rounded bg-[#1A3A52]/20 p-3">
+                <FileText className="h-6 w-6 text-[#B8860B]" />
+              </div>
+              <h3 className="mb-2 text-xl font-serif font-bold text-white">Contract Intelligence & Compliance</h3>
+              <p className="text-sm text-neutral-400 leading-relaxed">
+                Automated PBM contract clause extraction, fiduciary scoring, and continuous monitoring of contractual guarantee fulfillment against actual performance metrics.
+              </p>
+              <div className="mt-4 flex items-center gap-1 text-xs font-semibold text-[#B8860B] group-hover:text-[#D4AF37]">
+                Review contract monitoring <ChevronRight className="h-4 w-4" />
+              </div>
+            </motion.div>
+
+            <motion.div
+              variants={fadeInUpVariants}
+              whileHover={{ y: -4 }}
+              className="group relative rounded-lg border border-[#2A3F54] bg-[#151B23] p-8 hover:border-[#3A4F64] cursor-pointer transition-all duration-200"
+            >
+              <div className="mb-4 inline-flex rounded bg-[#1A3A52]/20 p-3">
+                <TrendingUp className="h-6 w-6 text-[#B8860B]" />
+              </div>
+              <h3 className="mb-2 text-xl font-serif font-bold text-white">Actuarial Risk Modeling</h3>
+              <p className="text-sm text-neutral-400 leading-relaxed">
+                Monte Carlo simulation engines for benefit cost forecasting, stop-loss optimization, and multi-year trend projection with confidence intervals and scenario planning.
+              </p>
+              <div className="mt-4 flex items-center gap-1 text-xs font-semibold text-[#B8860B] group-hover:text-[#D4AF37]">
+                Review risk methodology <ChevronRight className="h-4 w-4" />
+              </div>
+            </motion.div>
+
+            <motion.div
+              variants={fadeInUpVariants}
+              whileHover={{ y: -4 }}
+              className="group relative rounded-lg border border-[#2A3F54] bg-[#151B23] p-8 hover:border-[#3A4F64] cursor-pointer transition-all duration-200"
+            >
+              <div className="mb-4 inline-flex rounded bg-[#1A3A52]/20 p-3">
+                <Activity className="h-6 w-6 text-[#B8860B]" />
+              </div>
+              <h3 className="mb-2 text-xl font-serif font-bold text-white">Real-Time Claims Surveillance</h3>
+              <p className="text-sm text-neutral-400 leading-relaxed">
+                Live streaming anomaly detection for prescription claims processing, flagging formulary violations, spread pricing irregularities, and specialty drug overcharges as they occur.
+              </p>
+              <div className="mt-4 flex items-center gap-1 text-xs font-semibold text-[#B8860B] group-hover:text-[#D4AF37]">
+                Review surveillance protocols <ChevronRight className="h-4 w-4" />
+              </div>
+            </motion.div>
+
+            <motion.div
+              variants={fadeInUpVariants}
+              whileHover={{ y: -4 }}
+              className="group relative rounded-lg border border-[#2A3F54] bg-[#151B23] p-8 hover:border-[#3A4F64] cursor-pointer transition-all duration-200"
+            >
+              <div className="mb-4 inline-flex rounded bg-[#1A3A52]/20 p-3">
+                <Award className="h-6 w-6 text-[#B8860B]" />
+              </div>
+              <h3 className="mb-2 text-xl font-serif font-bold text-white">Regulatory & Legal Framework</h3>
+              <p className="text-sm text-neutral-400 leading-relaxed">
+                ERISA fiduciary compliance validation, DOL audit readiness, and CAA transparency requirements enforcement with automated legal documentation and evidence preservation.
+              </p>
+              <div className="mt-4 flex items-center gap-1 text-xs font-semibold text-[#B8860B] group-hover:text-[#D4AF37]">
+                Review compliance standards <ChevronRight className="h-4 w-4" />
+              </div>
+            </motion.div>
+
+            <motion.div
+              variants={fadeInUpVariants}
+              whileHover={{ y: -4 }}
+              className="group relative rounded-lg border border-[#2A3F54] bg-[#151B23] p-8 hover:border-[#3A4F64] cursor-pointer transition-all duration-200"
+            >
+              <div className="mb-4 inline-flex rounded bg-[#1A3A52]/20 p-3">
+                <BarChart3 className="h-6 w-6 text-[#B8860B]" />
+              </div>
+              <h3 className="mb-2 text-xl font-serif font-bold text-white">Predictive Cost Analytics</h3>
+              <p className="text-sm text-neutral-400 leading-relaxed">
+                Machine learning models for future spend forecasting, therapeutic substitution impact analysis, and proactive intervention opportunity identification to prevent cost escalation.
+              </p>
+              <div className="mt-4 flex items-center gap-1 text-xs font-semibold text-[#B8860B] group-hover:text-[#D4AF37]">
+                Review predictive models <ChevronRight className="h-4 w-4" />
+              </div>
+            </motion.div>
+
           </motion.div>
         </section>
 

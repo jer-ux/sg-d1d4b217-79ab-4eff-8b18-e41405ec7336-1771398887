@@ -844,8 +844,8 @@ export default function HomePage() {
             {
               task: "PBM Contract Forensic Audit",
               manual: "12 weeks",
-              automated: "48 hours",
-              savings: "11 weeks"
+              automated: "4 hours",
+              savings: "11.98 weeks"
             },
             {
               task: "Rebate Reconciliation Report",

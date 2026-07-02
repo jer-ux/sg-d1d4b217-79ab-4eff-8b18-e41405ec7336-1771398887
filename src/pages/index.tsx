@@ -868,8 +868,8 @@ export default function HomePage() {
             {
               task: "M&A Due Diligence Audit",
               manual: "10 weeks",
-              automated: "10 days",
-              savings: "8 weeks"
+              automated: "1 hour",
+              savings: "9.99 weeks"
             }
           ]}
         />

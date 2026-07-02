@@ -1,6 +1,6 @@
 ---
 title: Avenir-Inspired Marketing Enhancements
-status: in_progress
+status: done
 priority: urgent
 type: feature
 tags: [marketing, conversion-optimization]
@@ -24,12 +24,12 @@ Implement 6 conversion-focused improvements learned from Avenir's website analys
 - [x] Create LiveDemoCTA component
 - [x] Create ObjectionsFAQ component
 - [x] Create QuantifiedTestimonials component
-- [ ] Fix navigation links to use Next.js Link
-- [ ] Add TimeSavings to homepage, Contract X-Ray, War Room
-- [ ] Add SecurityBadges to homepage footer, platform page
-- [ ] Add FAQ to homepage and pricing
-- [ ] Add LiveDemoCTA to homepage hero
-- [ ] Add QuantifiedTestimonials to homepage
+- [x] Fix navigation links to use Next.js Link
+- [x] Add TimeSavings to homepage, Contract X-Ray, War Room
+- [x] Add SecurityBadges to homepage footer, platform page
+- [x] Add FAQ to homepage and pricing
+- [x] Add LiveDemoCTA to homepage hero
+- [x] Add QuantifiedTestimonials to homepage
 
 ## Acceptance
 - Homepage shows clear time savings comparison above the fold

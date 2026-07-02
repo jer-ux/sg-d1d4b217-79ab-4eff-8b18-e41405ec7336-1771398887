@@ -25,6 +25,11 @@ import { ExitIntentPopup } from "@/components/ExitIntentPopup";
 import { InteractiveHeroDashboard } from "@/components/home/InteractiveHeroDashboard";
 import { DocumentCarousel } from "@/components/home/DocumentCarousel";
 import { AuditJourneyTimeline } from "@/components/home/AuditJourneyTimeline";
+import { TimeSavingsComparison } from "@/components/marketing/TimeSavingsComparison";
+import { SecurityBadges } from "@/components/marketing/SecurityBadges";
+import { LiveDemoCTA } from "@/components/marketing/LiveDemoCTA";
+import { ObjectionsFAQ } from "@/components/marketing/ObjectionsFAQ";
+import { QuantifiedTestimonials } from "@/components/marketing/QuantifiedTestimonials";
 import Nav from "@/components/Nav";
 import Footer from "@/components/Footer";
 import { Badge } from "@/components/ui/badge";
@@ -833,6 +838,55 @@ export default function HomePage() {
           </div>
         </section>
 
+        {/* Time Savings Comparison */}
+        <TimeSavingsComparison
+          savings={[
+            {
+              task: "PBM Contract Forensic Audit",
+              manual: "12 weeks",
+              automated: "48 hours",
+              savings: "11 weeks"
+            },
+            {
+              task: "Rebate Reconciliation Report",
+              manual: "6 weeks",
+              automated: "2 hours",
+              savings: "5.9 weeks"
+            },
+            {
+              task: "Spread Pricing Analysis",
+              manual: "8 weeks",
+              automated: "4 hours",
+              savings: "7.8 weeks"
+            },
+            {
+              task: "Board-Ready Compliance Report",
+              manual: "4 weeks",
+              automated: "30 minutes",
+              savings: "3.9 weeks"
+            },
+            {
+              task: "M&A Due Diligence Audit",
+              manual: "10 weeks",
+              automated: "10 days",
+              savings: "8 weeks"
+            }
+          ]}
+        />
+
+        {/* Quantified Testimonials */}
+        <QuantifiedTestimonials />
+
+        {/* Live Demo CTA */}
+        <section className="relative py-16 border-t border-[#1F2937]">
+          <div className="max-w-7xl mx-auto px-4 md:px-8">
+            <LiveDemoCTA variant="hero" />
+          </div>
+        </section>
+
+        {/* Objections FAQ */}
+        <ObjectionsFAQ />
+
         {/* Fitness Call CTA */}
         <section className="relative py-16 border-t border-[#1F2937] overflow-hidden">
           <div className="absolute inset-0 bg-gradient-to-r from-emerald-500/10 via-blue-500/10 to-purple-500/10" />
@@ -898,6 +952,9 @@ export default function HomePage() {
         </section>
 
         <Footer />
+
+        {/* Security & Compliance */}
+        <SecurityBadges variant="full" showTrustCenter={true} />
       </div>
 
       <BadgeDetailSystem

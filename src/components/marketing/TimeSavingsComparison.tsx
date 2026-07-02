@@ -2,6 +2,7 @@
 
 import { Clock, Zap, ArrowRight, CheckCircle2 } from "lucide-react";
 import { Card } from "@/components/ui/card";
+import Link from "next/link";
 
 interface TimeSaving {
   task: string;
@@ -132,13 +133,13 @@ export function TimeSavingsComparison({
             <p className="text-slate-400 mb-4">
               Equivalent of <span className="text-white font-semibold">2-3 full-time analysts</span> per engagement
             </p>
-            <a
+            <Link
               href="/request-demo"
               className="inline-flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white px-8 py-4 rounded-lg font-semibold transition-colors"
             >
               See Live Demo
               <ArrowRight className="w-5 h-5" />
-            </a>
+            </Link>
           </div>
         )}
       </div>

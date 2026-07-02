@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { ChevronDown, Shield, Users, Code, DollarSign, Zap, AlertCircle } from "lucide-react";
 import { Card } from "@/components/ui/card";
+import Link from "next/link";
 
 interface FAQItem {
   question: string;
@@ -141,13 +142,13 @@ export function ObjectionsFAQ() {
 
         <div className="text-center mt-12">
           <p className="text-slate-400 mb-4">Still have questions?</p>
-          <a
+          <Link
             href="/contact"
             className="inline-flex items-center gap-2 text-blue-400 hover:text-blue-300 font-medium"
           >
             Talk to a fiduciary intelligence specialist
             <ChevronDown className="w-4 h-4 rotate-[-90deg]" />
-          </a>
+          </Link>
         </div>
       </div>
     </div>

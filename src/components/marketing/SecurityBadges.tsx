@@ -3,6 +3,7 @@
 import { Shield, Lock, Server, CheckCircle2, ExternalLink, Clock } from "lucide-react";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
+import Link from "next/link";
 
 interface SecurityBadgesProps {
   variant?: "full" | "compact";
@@ -123,13 +124,13 @@ export function SecurityBadges({ variant = "full", showTrustCenter = true }: Sec
               </div>
             </div>
             {showTrustCenter && (
-              <a
+              <Link
                 href="/security-governance"
                 className="inline-flex items-center gap-2 text-blue-400 hover:text-blue-300 font-medium whitespace-nowrap"
               >
                 Visit Trust Center
                 <ExternalLink className="w-4 h-4" />
-              </a>
+              </Link>
             )}
           </div>
         </Card>

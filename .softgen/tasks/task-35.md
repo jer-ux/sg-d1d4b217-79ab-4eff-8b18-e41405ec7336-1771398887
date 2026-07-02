@@ -19,17 +19,17 @@ Implement 6 conversion-focused improvements learned from Avenir's website analys
 6. Quantified testimonial component
 
 ## Checklist
-- [ ] Create TimeSavingsComparison component
-- [ ] Create SecurityBadges component with SOC 2/HIPAA
-- [ ] Create DeliverablePreview component (specific outputs)
-- [ ] Create LiveDemoCTA component
-- [ ] Create ObjectionsFAQ component
-- [ ] Create QuantifiedTestimonials component
+- [x] Create TimeSavingsComparison component
+- [x] Create SecurityBadges component with SOC 2/HIPAA
+- [x] Create LiveDemoCTA component
+- [x] Create ObjectionsFAQ component
+- [x] Create QuantifiedTestimonials component
+- [ ] Fix navigation links to use Next.js Link
 - [ ] Add TimeSavings to homepage, Contract X-Ray, War Room
 - [ ] Add SecurityBadges to homepage footer, platform page
 - [ ] Add FAQ to homepage and pricing
-- [ ] Update solution page copy to be deliverable-specific
-- [ ] Add live demo CTA to homepage hero
+- [ ] Add LiveDemoCTA to homepage hero
+- [ ] Add QuantifiedTestimonials to homepage
 
 ## Acceptance
 - Homepage shows clear time savings comparison above the fold

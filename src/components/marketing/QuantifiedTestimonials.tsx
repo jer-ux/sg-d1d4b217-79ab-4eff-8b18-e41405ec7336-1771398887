@@ -3,6 +3,7 @@
 import { Quote, TrendingUp, Clock, DollarSign, Shield } from "lucide-react";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
+import Link from "next/link";
 
 interface Testimonial {
   quote: string;
@@ -143,12 +144,12 @@ export function QuantifiedTestimonials() {
           <p className="text-slate-400 mb-4">
             Average client finds <span className="text-white font-semibold">$847 PEPY</span> in undocumented leakage within first 90 days
           </p>
-          <a
+          <Link
             href="/case-studies"
             className="inline-flex items-center gap-2 text-blue-400 hover:text-blue-300 font-medium"
           >
             Read Full Case Studies
-          </a>
+          </Link>
         </div>
       </div>
     </div>

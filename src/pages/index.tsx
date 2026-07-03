@@ -181,9 +181,8 @@ export default function HomePage() {
                 <span className="text-neutral-500">at renewal.</span>
               </h1>
 
-              <p className="text-xl text-neutral-300 max-w-2xl leading-relaxed font-normal">
-                SiriusB iQ delivers 24/7 forensic intelligence on your PBM contract—not quarterly reports when it's too late. 
-                The accountability-without-visibility gap ends here.
+              <p className="text-xl md:text-2xl text-neutral-400 leading-relaxed max-w-3xl">
+                Kincaid IQ provides forensic intelligence on your PBM contract, TPA contract, Stop-loss contract, & live health and Rx claims made auditable. 24/7 forensic intelligence—not quarterly reports when it's too late. The accountability-without-visibility gap ends here.
               </p>
 
               {/* Three Problems */}

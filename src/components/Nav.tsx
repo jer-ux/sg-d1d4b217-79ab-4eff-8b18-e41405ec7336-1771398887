@@ -546,7 +546,7 @@ export default function Nav() {
                       className="block px-4 py-2.5 text-sm text-gray-300 hover:text-white hover:bg-rose-500/20 rounded-lg transition-all duration-150">
                       <div className="flex items-center gap-2">
                         <Shield className="w-4 h-4 text-rose-400" />
-                        Rx PBM Defense
+                        PBM Contract Clarity 360*
                       </div>
                     </Link>
                     <Link 

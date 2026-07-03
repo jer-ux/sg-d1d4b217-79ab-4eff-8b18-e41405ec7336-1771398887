@@ -159,7 +159,7 @@ export default function HomePage() {
             </div>
           </div>
 
-          <div className="grid lg:grid-cols-12 gap-16 items-center w-full relative z-10">
+          <div className="grid lg:grid-cols-12 gap-16 items-start w-full relative z-10">
             
             <motion.div 
               className="lg:col-span-7 space-y-8"

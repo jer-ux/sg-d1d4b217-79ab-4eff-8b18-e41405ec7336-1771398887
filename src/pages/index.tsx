@@ -182,7 +182,7 @@ export default function HomePage() {
               </h1>
 
               <p className="text-xl md:text-2xl text-neutral-400 leading-relaxed max-w-3xl">
-                Kincaid IQ provides forensic intelligence on your PBM contract, TPA contract, Stop-loss contract, & live health and Rx claims made auditable. 24/7 forensic intelligence—not quarterly reports when it's too late. The accountability-without-visibility gap ends here.
+                Kincaid IQ provides live forensic intelligence on your PBM contract, TPA contract, Stop-loss contract, Network Contract & live telemetry of all health and Rx claims. 24/7 forensic intelligence—not monthly reports when it's too late. The accountability-without-visibility gap ends here.
               </p>
 
               {/* Three Problems */}

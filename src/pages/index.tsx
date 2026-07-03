@@ -178,8 +178,7 @@ export default function HomePage() {
                 <span className="bg-gradient-to-r from-blue-400 via-cyan-400 to-blue-500 bg-clip-text text-transparent">
                   $120M
                 </span>{" "}
-                in healthcare spend.
-                <br />
+                in healthcare spend.{" "}
                 <span className="text-gray-400 text-4xl md:text-5xl lg:text-6xl">
                   Where did the money go?
                 </span>

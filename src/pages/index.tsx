@@ -139,14 +139,15 @@ export default function HomePage() {
   return (
     <>
       <SEO 
-        title="Kincaid IQ - Fiduciary Healthcare Intelligence & PBM Overcharge Forensics"
-        description="Eliminate PBM spread pricing, hidden commissions, and rebate leakage. Recover 20-35% of your annual prescription benefit spend with certified fiduciary proof."
+        title="Kincaid IQ - Continuous Forensic Intelligence for Healthcare Benefits"
+        description="You're accountable for healthcare spend. But you only hear about it at renewal. Get 24/7 PBM monitoring with Kincaid IQ - the forensic intelligence layer that works with your consultant."
       />
       
       <Nav />
       
       <div className="min-h-screen bg-[#0F1419] text-neutral-100 selection:bg-[#B8860B]/20 overflow-x-hidden font-sans">
 
+        {/* Hero Section - Kind Health Inspired */}
         <section className="relative min-h-screen pt-32 pb-20 px-4 md:px-8 max-w-7xl mx-auto flex items-center">
           <div className="absolute inset-0 overflow-hidden pointer-events-none">
             <div className="absolute inset-0 opacity-30">
@@ -166,18 +167,51 @@ export default function HomePage() {
               transition={{ duration: 0.8, ease: "easeOut" }}
             >
               
-              <div className="inline-flex items-center gap-2 bg-[#1A3A52]/20 border border-[#1A3A52] rounded px-4 py-2 text-xs font-mono text-[#B8860B] uppercase tracking-wider">
-                <Shield className="h-4 w-4" />
-                ERISA Fiduciary Standard Governed
+              <div className="inline-flex items-center gap-2 bg-emerald-500/10 border border-emerald-500/30 rounded px-4 py-2 text-xs font-mono text-emerald-400 uppercase tracking-wider">
+                <Activity className="h-4 w-4" />
+                Continuous Forensic Intelligence
               </div>
 
               <h1 className="text-5xl md:text-6xl lg:text-7xl font-serif font-bold tracking-tight leading-[1.1] text-white">
-                Is your PBM expert serving your best interest, or theirs?
+                You're accountable for<br/>
+                <span className="bg-gradient-to-r from-emerald-400 via-teal-400 to-cyan-400 bg-clip-text text-transparent">
+                  healthcare spend.
+                </span><br/>
+                But you only hear about it<br/>
+                <span className="text-neutral-500">at renewal.</span>
               </h1>
 
               <p className="text-xl text-neutral-300 max-w-2xl leading-relaxed font-normal">
-                You are legally required to have a strict fiduciary for your 401(k) retirement plan. Why should your multi-million dollar pharmacy benefit plan be any different? We forensic audit PBM contracts, uncover hidden spreads, and guarantee results.
+                SiriusB iQ delivers 24/7 forensic intelligence on your PBM contract—not quarterly reports when it's too late. 
+                The accountability-without-visibility gap ends here.
               </p>
+
+              {/* Three Problems */}
+              <div className="grid md:grid-cols-3 gap-4">
+                {[
+                  {
+                    icon: "📅",
+                    problem: "Renewal-Only Insights",
+                    description: "By the time you see the damage, it's too late to negotiate."
+                  },
+                  {
+                    icon: "📊",
+                    problem: "Unusable Data",
+                    description: "Spreadsheets and dashboards don't tell you what to do next."
+                  },
+                  {
+                    icon: "⚖️",
+                    problem: "Fiduciary Exposure",
+                    description: "DOL wants documented decisions. You have quarterly PDFs."
+                  }
+                ].map((item, idx) => (
+                  <div key={idx} className="bg-neutral-900/50 border border-neutral-800 rounded-lg p-6 hover:border-emerald-500/30 transition-colors">
+                    <div className="text-3xl mb-3">{item.icon}</div>
+                    <h3 className="font-semibold mb-2 text-emerald-400">{item.problem}</h3>
+                    <p className="text-sm text-neutral-400">{item.description}</p>
+                  </div>
+                ))}
+              </div>
 
               <div className="border border-[#2A3F54] bg-[#151B23] rounded-lg p-5 flex items-center justify-between gap-4 max-w-2xl">
                 <div className="flex items-center gap-3">
@@ -217,18 +251,17 @@ export default function HomePage() {
               </div>
 
               <div className="flex flex-col sm:flex-row items-center gap-4">
-                <CalendlyWidget 
-                  url="https://calendly.com/jer-kincaidrmc/30min"
-                  buttonText="Book Your Free Fiduciary Audit"
-                  className="bg-[#1A3A52] hover:bg-[#234766] text-white font-semibold text-base px-8 py-4 rounded transition-colors duration-200 w-full sm:w-auto"
-                />
-
-                <Link
-                  href="#roi-calculator"
-                  className="flex items-center justify-center gap-2 border border-[#2A3F54] bg-transparent hover:bg-[#151B23] text-neutral-200 hover:text-white font-semibold text-base px-8 py-4 rounded transition-colors duration-200 w-full sm:w-auto"
-                >
-                  <DollarSign className="h-5 w-5" />
-                  Calculate Your Savings
+                <Link href="/request-demo">
+                  <Button size="lg" className="text-lg px-8">
+                    See It Live
+                    <ChevronRight className="ml-2" />
+                  </Button>
+                </Link>
+                <Link href="/research/forensic-audit-suite">
+                  <Button size="lg" variant="outline" className="text-lg px-8">
+                    <BookOpen className="mr-2 w-5 h-5" />
+                    Read Stanford Research
+                  </Button>
                 </Link>
               </div>
 
@@ -248,6 +281,187 @@ export default function HomePage() {
               <InteractiveHeroDashboard />
             </motion.div>
 
+          </div>
+        </section>
+
+        {/* Works with Your Consultant Section */}
+        <section className="py-20 border-t border-neutral-800 bg-neutral-900/30">
+          <div className="container mx-auto px-4 max-w-7xl">
+            <AnimatedSection>
+              <div className="text-center mb-12">
+                <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-emerald-500/10 text-emerald-400 text-sm font-medium mb-6">
+                  <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
+                  Not a Broker Replacement
+                </div>
+                <h2 className="text-4xl md:text-5xl font-serif font-bold mb-6">
+                  Works <span className="text-emerald-400">with</span> your consultant.
+                </h2>
+                <p className="text-xl text-neutral-400 max-w-3xl mx-auto">
+                  SiriusB iQ is a shared intelligence layer for you and your broker. 
+                  We make them look better, not obsolete.
+                </p>
+              </div>
+
+              <div className="grid md:grid-cols-2 gap-8">
+                {/* For Employers */}
+                <div className="bg-neutral-900/70 border border-neutral-800 rounded-xl p-8">
+                  <div className="text-3xl mb-4">🏢</div>
+                  <h3 className="text-2xl font-semibold mb-4">For Employers</h3>
+                  <ul className="space-y-4">
+                    {[
+                      "Continuous forensic monitoring (not renewal-only)",
+                      "Plain-English view for CFOs, CEOs, CHROs",
+                      "Fiduciary documentation that survives DOL audits",
+                      "Evidence-backed decisions with audit trails",
+                      "Real-time alerts when contract violations occur"
+                    ].map((item, idx) => (
+                      <li key={idx} className="flex items-start gap-3">
+                        <ChevronRight className="w-5 h-5 text-emerald-400 flex-shrink-0 mt-0.5" />
+                        <span className="text-neutral-300">{item}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+
+                {/* For Consultants */}
+                <div className="bg-neutral-900/70 border border-neutral-800 rounded-xl p-8">
+                  <div className="text-3xl mb-4">🤝</div>
+                  <h3 className="text-2xl font-semibold mb-4">For Your Consultant</h3>
+                  <ul className="space-y-4">
+                    {[
+                      "Elevates their advice with forensic-grade data",
+                      "Frees them from spreadsheet archaeology",
+                      "Positions them as strategic advisors, not data janitors",
+                      "Gives them ammunition for PBM negotiations",
+                      "Makes renewals faster with pre-analyzed intelligence"
+                    ].map((item, idx) => (
+                      <li key={idx} className="flex items-start gap-3">
+                        <ChevronRight className="w-5 h-5 text-emerald-400 flex-shrink-0 mt-0.5" />
+                        <span className="text-neutral-300">{item}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              </div>
+
+              <div className="mt-12 bg-gradient-to-r from-emerald-500/10 to-teal-500/10 border border-emerald-500/20 rounded-xl p-8 text-center">
+                <p className="text-lg text-neutral-300 mb-4">
+                  <span className="font-semibold text-emerald-400">Consultant partnership program:</span> We pay you 25% of subscription value when you refer clients. 
+                  You keep the relationship, we handle the forensics.
+                </p>
+                <Link href="/enterprise/partner-portal">
+                  <Button variant="outline" className="border-emerald-500/30 hover:border-emerald-500">
+                    Learn About Partnerships
+                    <ChevronRight className="ml-2" />
+                  </Button>
+                </Link>
+              </div>
+            </AnimatedSection>
+          </div>
+        </section>
+
+        {/* Continuous vs Point-in-Time Intelligence */}
+        <section className="py-20 border-t border-neutral-800 bg-neutral-900/30">
+          <div className="container mx-auto px-4 max-w-6xl">
+            <AnimatedSection>
+              <div className="text-center mb-12">
+                <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-emerald-500/10 text-emerald-400 text-sm font-medium mb-6">
+                  <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
+                  The Fundamental Difference
+                </div>
+                <h2 className="text-4xl md:text-5xl font-serif font-bold mb-6">
+                  Continuous Intelligence vs.<br/>
+                  <span className="text-neutral-500">Point-in-Time Audits</span>
+                </h2>
+                <p className="text-xl text-neutral-400 max-w-3xl mx-auto">
+                  Traditional consultants show you what happened last quarter. SiriusB iQ shows you what's happening right now—and what to do about it.
+                </p>
+              </div>
+
+              <div className="grid md:grid-cols-2 gap-8">
+                {/* Traditional Approach */}
+                <div className="bg-neutral-900/70 border border-red-900/30 rounded-xl p-8">
+                  <div className="flex items-center gap-3 mb-6">
+                    <div className="w-12 h-12 rounded-full bg-red-500/10 flex items-center justify-center">
+                      <span className="text-2xl">📄</span>
+                    </div>
+                    <div>
+                      <h3 className="text-xl font-semibold text-red-400">Traditional Audit</h3>
+                      <p className="text-sm text-neutral-500">Quarterly or Annual</p>
+                    </div>
+                  </div>
+                  <ul className="space-y-3">
+                    {[
+                      "12-week turnaround for insights",
+                      "Quarterly PDF reports (outdated on arrival)",
+                      "Renewal-only negotiation leverage",
+                      "Requires manual follow-up on every finding",
+                      "No alerts when contract violations occur",
+                      "Historical data only (backward-looking)",
+                      "Single snapshot in time"
+                    ].map((item, idx) => (
+                      <li key={idx} className="flex items-start gap-3">
+                        <span className="text-red-500 mt-1">✗</span>
+                        <span className="text-neutral-400">{item}</span>
+                      </li>
+                    ))}
+                  </ul>
+                  <div className="mt-6 pt-6 border-t border-neutral-800">
+                    <div className="text-sm text-neutral-500">Result:</div>
+                    <div className="text-lg font-semibold text-red-400">You're always reacting, never preventing.</div>
+                  </div>
+                </div>
+
+                {/* SiriusB iQ Approach */}
+                <div className="bg-gradient-to-br from-emerald-500/10 to-teal-500/10 border border-emerald-500/30 rounded-xl p-8">
+                  <div className="flex items-center gap-3 mb-6">
+                    <div className="w-12 h-12 rounded-full bg-emerald-500/20 flex items-center justify-center">
+                      <span className="text-2xl">📡</span>
+                    </div>
+                    <div>
+                      <h3 className="text-xl font-semibold text-emerald-400">Continuous Intelligence</h3>
+                      <p className="text-sm text-emerald-300/70">24/7 Monitoring</p>
+                    </div>
+                  </div>
+                  <ul className="space-y-3">
+                    {[
+                      "4-hour initial audit, then real-time",
+                      "Live dashboard + instant alerts",
+                      "Negotiate anytime with fresh evidence",
+                      "Automated action recommendations",
+                      "Real-time violation detection & quantification",
+                      "Predictive modeling (forward-looking)",
+                      "Continuous baseline comparison"
+                    ].map((item, idx) => (
+                      <li key={idx} className="flex items-start gap-3">
+                        <ChevronRight className="w-5 h-5 text-emerald-400 flex-shrink-0 mt-0.5" />
+                        <span className="text-neutral-300">{item}</span>
+                      </li>
+                    ))}
+                  </ul>
+                  <div className="mt-6 pt-6 border-t border-emerald-500/20">
+                    <div className="text-sm text-emerald-300/70">Result:</div>
+                    <div className="text-lg font-semibold text-emerald-400">You catch problems before they become losses.</div>
+                  </div>
+                </div>
+              </div>
+
+              <div className="mt-12 text-center">
+                <div className="inline-flex items-center gap-8 px-8 py-4 rounded-full bg-neutral-900/70 border border-emerald-500/30">
+                  <div>
+                    <div className="text-sm text-neutral-500">Traditional Audit</div>
+                    <div className="text-2xl font-bold text-red-400">$85K-$250K</div>
+                    <div className="text-xs text-neutral-600">12 weeks</div>
+                  </div>
+                  <ChevronRight className="w-6 h-6 text-emerald-400" />
+                  <div>
+                    <div className="text-sm text-emerald-300/70">Continuous Intelligence</div>
+                    <div className="text-2xl font-bold text-emerald-400">$12,500</div>
+                    <div className="text-xs text-emerald-500">4 hours + 24/7</div>
+                  </div>
+                </div>
+              </div>
+            </AnimatedSection>
           </div>
         </section>
 
@@ -694,7 +908,6 @@ export default function HomePage() {
         </section>
 
         <section id="dashboard" className="relative py-16 border-t border-[#1F2937] overflow-hidden">
-          {/* Enhanced Multi-layer Background System */}
           <div className="absolute inset-0 pointer-events-none">
             <div className="absolute inset-0 opacity-40">
               <TechBackdrop intensity={0.8} density={1.0} />
@@ -767,7 +980,6 @@ export default function HomePage() {
             </AnimatedSection>
 
             <AnimatedSection className="rounded-xl border border-[#2A3F54] bg-gradient-to-br from-[#0C1117] via-[#0F1419] to-[#0C1117] p-10 relative overflow-hidden shadow-2xl">
-              {/* Animated Top Border Glow */}
               <motion.div 
                 className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-[#B8860B] to-transparent"
                 animate={{
@@ -777,7 +989,6 @@ export default function HomePage() {
                 transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
               />
               
-              {/* Corner Accent Glows */}
               <div className="absolute top-0 left-0 w-32 h-32 bg-[#1A3A52] opacity-20 blur-3xl" />
               <div className="absolute bottom-0 right-0 w-32 h-32 bg-[#B8860B] opacity-10 blur-3xl" />
               
@@ -838,7 +1049,6 @@ export default function HomePage() {
           </div>
         </section>
 
-        {/* Time Savings Comparison */}
         <TimeSavingsComparison
           savings={[
             {
@@ -874,20 +1084,16 @@ export default function HomePage() {
           ]}
         />
 
-        {/* Quantified Testimonials */}
         <QuantifiedTestimonials />
 
-        {/* Live Demo CTA */}
         <section className="relative py-16 border-t border-[#1F2937]">
           <div className="max-w-7xl mx-auto px-4 md:px-8">
             <LiveDemoCTA variant="hero" />
           </div>
         </section>
 
-        {/* Objections FAQ */}
         <ObjectionsFAQ />
 
-        {/* Fitness Call CTA */}
         <section className="relative py-16 border-t border-[#1F2937] overflow-hidden">
           <div className="absolute inset-0 bg-gradient-to-r from-emerald-500/10 via-blue-500/10 to-purple-500/10" />
           <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-[#B8860B]/10 via-transparent to-transparent" />
@@ -953,7 +1159,6 @@ export default function HomePage() {
 
         <Footer />
 
-        {/* Security & Compliance */}
         <SecurityBadges variant="full" showTrustCenter={true} />
       </div>
 

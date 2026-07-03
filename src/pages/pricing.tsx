@@ -6,7 +6,7 @@ import { SiteFooter } from "@/components/site/SiteFooter";
 import Nav from "@/components/Nav";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
-import SEO from "@/components/SEO";
+import { SEO } from "@/components/SEO";
 
 export default function PricingPage() {
   return (

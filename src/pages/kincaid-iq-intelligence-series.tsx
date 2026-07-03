@@ -12,7 +12,7 @@ import { Card, CardHeader, CardTitle, CardDescription, CardContent } from "@/com
 import Nav from "@/components/Nav";
 import Footer from "@/components/Footer";
 import { IntelligenceSandbox } from "@/components/kincaid-iq/IntelligenceSandbox";
-import SEO from "@/components/SEO";
+import { SEO } from "@/components/SEO";
 
 const reportsData = [
   {

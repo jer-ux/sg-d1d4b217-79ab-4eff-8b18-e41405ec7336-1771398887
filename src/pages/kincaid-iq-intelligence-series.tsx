@@ -426,7 +426,7 @@ export default function KincaidIQIntelligenceSeries() {
   return (
     <>
       <Head>
-        <title>Intelligence Series | Kincaid IQ Data Sciences Lab</title>
+        <title>Intelligence Series | Kincaid Health Data Sciences Lab</title>
         <meta name="description" content="Forensic PBM intelligence reports and actuarial analysis for fiduciaries, actuaries, and capital markets." />
       </Head>
       <SEO 
@@ -447,7 +447,7 @@ export default function KincaidIQIntelligenceSeries() {
               </div>
               
               <h1 className="text-5xl md:text-6xl font-serif font-bold text-white mb-6 leading-tight">
-                Kincaid IQ Intelligence Series
+                Kincaid Health Intelligence Series
               </h1>
               
               <p className="text-xl text-neutral-300 leading-relaxed mb-8">
@@ -540,7 +540,7 @@ export default function KincaidIQIntelligenceSeries() {
                   <Badge className="bg-rose-500/10 text-rose-400 border border-rose-500/30 mb-3 animate-pulse">LIVE FORENSIC RADAR</Badge>
                   <h2 className="text-3xl font-serif font-bold text-white mb-4">Live Forensic Audit Stream</h2>
                   <p className="text-neutral-400">
-                    Real-time transaction-level anomalies automatically flagged by Kincaid IQ's analytical engine. This stream showcases verified contract deviations and margin spreads across various employer plans.
+                    Real-time transaction-level anomalies automatically flagged by Kincaid Health's analytical engine. This stream showcases verified contract deviations and margin spreads across various employer plans.
                   </p>
                 </div>
                 <div>
@@ -603,7 +603,7 @@ export default function KincaidIQIntelligenceSeries() {
                 <div className="space-y-1">
                   <h4 className="text-sm font-semibold text-white">Continuous Transaction Monitoring Integration</h4>
                   <p className="text-xs text-neutral-400 max-w-2xl">
-                    Kincaid IQ links securely into Snowflake, Databricks, or standard claim formats via 1-click cloud sync to execute forensic pattern matching daily on active health plan bills.
+                    Kincaid Health links securely into Snowflake, Databricks, or standard claim formats via 1-click cloud sync to execute forensic pattern matching daily on active health plan bills.
                   </p>
                 </div>
                 <Link href="/contact">
@@ -809,7 +809,7 @@ export default function KincaidIQIntelligenceSeries() {
               
               <div className="space-y-6">
                 <p className="text-neutral-300 leading-relaxed text-lg">
-                  Each intelligence report in the Kincaid IQ series undergoes rigorous forensic analysis employing proprietary actuarial modeling frameworks, contract intelligence algorithms, and evidence-based validation protocols. Our methodologies comply with Actuarial Standards of Practice and withstand regulatory scrutiny in ERISA fiduciary contexts.
+                  Each intelligence report in the Kincaid Health series undergoes rigorous forensic analysis employing proprietary actuarial modeling frameworks, contract intelligence algorithms, and evidence-based validation protocols. Our methodologies comply with Actuarial Standards of Practice and withstand regulatory scrutiny in ERISA fiduciary contexts.
                 </p>
                 
                 <h3 className="text-xl font-serif font-semibold text-white pt-4">Core Analytical Frameworks</h3>

@@ -451,28 +451,77 @@ export default function CapitalMarketsPage() {
               viewport={{ once: true }}
               className="text-center mb-6"
             >
-          </motion.div>
-          <motion.div {...staggerContainer} className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-            {[
-              { metric: "285", label: "Evidence Receipts/Year", subtext: "Per portfolio company", icon: FileText, color: "cyan" },
-              { metric: "100%", label: "Audit-Ready Lineage", subtext: "Every claim traced to source", icon: Shield, color: "violet" },
-              { metric: "$18M", label: "Avg Premium", subtext: "Documented vs. undocumented exits", icon: TrendingUp, color: "emerald" },
-              { metric: "4.2x", label: "Valuation Multiple", subtext: "On proven optimization claims", icon: DollarSign, color: "indigo" }
-            ].map((item, i) => (
-              <motion.div
-                key={i}
-                {...fadeInUp}
-                className={`p-6 rounded-2xl bg-gradient-to-br from-${item.color}-950/40 to-transparent border border-${item.color}-500/20 hover:border-${item.color}-500/40 transition-all duration-300 text-center group hover:scale-105`}
-              >
-                <div className={`inline-block p-3 rounded-xl bg-${item.color}-500/20 mb-4`}>
-                  <item.icon className={`w-6 h-6 text-${item.color}-400`} />
-                </div>
-                <div className={`text-4xl font-bold text-${item.color}-300 mb-2`}>{item.metric}</div>
-                <div className="text-sm font-semibold text-gray-300 mb-1">{item.label}</div>
-                <div className="text-xs text-gray-500">{item.subtext}</div>
-              </motion.div>
-            ))}
-          </motion.div>
+              <h2 className="text-4xl font-bold text-blue-100 mb-4">
+                Value Creation Framework
+              </h2>
+              <p className="text-xl text-gray-400 max-w-3xl mx-auto">
+                Quantified pathways to EBITDA improvement and enterprise value creation
+              </p>
+            </motion.div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+              {[
+                {
+                  title: "Direct Cost Reduction",
+                  metrics: [
+                    { label: "PBM Spread Recovery", value: "$2.8M - $4.2M annually" },
+                    { label: "Stop-Loss Premium Optimization", value: "12-18% reduction" },
+                    { label: "Claims Leakage Prevention", value: "$890K - $1.4M recovery" }
+                  ],
+                  multiplier: "3.2x EBITDA multiple = $12.8M - $19.2M value creation"
+                },
+                {
+                  title: "Operational Efficiency",
+                  metrics: [
+                    { label: "Benefits Admin Time Reduction", value: "340 hours/year" },
+                    { label: "Broker/Consultant Fees Elimination", value: "$180K - $280K" },
+                    { label: "Audit & Compliance Cost Reduction", value: "$125K - $175K" }
+                  ],
+                  multiplier: "Operational leverage = 15-22% margin improvement"
+                },
+                {
+                  title: "Risk Mitigation",
+                  metrics: [
+                    { label: "Fiduciary Breach Exposure", value: "$0 (eliminated)" },
+                    { label: "DOL Audit Risk Score", value: "89% reduction" },
+                    { label: "ERISA Compliance Coverage", value: "100% documented" }
+                  ],
+                  multiplier: "De-risked profile = 0.5-0.8x multiple expansion"
+                },
+                {
+                  title: "Strategic Positioning",
+                  metrics: [
+                    { label: "Benefits Cost Predictability", value: "±3% variance (vs ±12%)" },
+                    { label: "M&A Due Diligence Readiness", value: "Complete documentation" },
+                    { label: "Employee Benefits Satisfaction", value: "+18% NPS improvement" }
+                  ],
+                  multiplier: "Enhanced attractiveness to strategic & financial buyers"
+                }
+              ].map((framework, i) => (
+                <motion.div
+                  key={i}
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: i * 0.1 }}
+                  className="p-8 rounded-2xl bg-gradient-to-br from-zinc-900 to-black border border-blue-500/20"
+                >
+                  <h3 className="text-2xl font-bold text-blue-100 mb-6">{framework.title}</h3>
+                  <div className="space-y-4 mb-6">
+                    {framework.metrics.map((metric, j) => (
+                      <div key={j} className="flex justify-between items-start">
+                        <span className="text-gray-400">{metric.label}</span>
+                        <span className="text-blue-100 font-semibold text-right ml-4">{metric.value}</span>
+                      </div>
+                    ))}
+                  </div>
+                  <div className="pt-6 border-t border-blue-500/20">
+                    <p className="text-sm text-gray-500 italic">{framework.multiplier}</p>
+                  </div>
+                </motion.div>
+              ))}
+            </div>
+          </div>
         </section>
 
         {/* Success Metrics Grid */}

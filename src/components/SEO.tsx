@@ -1,4 +1,5 @@
 import Head from 'next/head';
+import React from 'react';
 
 interface SEOProps {
   title?: string;
@@ -13,7 +14,7 @@ export function SEOElements({
   description = "Enterprise-grade fiduciary intelligence platform for healthcare benefits analysis and PBM contract forensics. Continuous monitoring, not quarterly reports.",
   image = "/og-image.png",
   url = "https://kincaidhealth.ai",
-}: SEOProps): JSX.Element {
+}: SEOProps): React.ReactElement {
   const siteName = "Kincaid Health";
   const fullTitle = title.includes(siteName) ? title : `${title} | ${siteName}`;
   const fullImageUrl = image.startsWith('http') ? image : `${url}${image}`;

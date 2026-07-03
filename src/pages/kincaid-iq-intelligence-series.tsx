@@ -12,6 +12,7 @@ import { Card, CardHeader, CardTitle, CardDescription, CardContent } from "@/com
 import Nav from "@/components/Nav";
 import Footer from "@/components/Footer";
 import { IntelligenceSandbox } from "@/components/kincaid-iq/IntelligenceSandbox";
+import SEO from "@/components/SEO";
 
 const reportsData = [
   {
@@ -428,6 +429,10 @@ export default function KincaidIQIntelligenceSeries() {
         <title>Intelligence Series | Kincaid IQ Data Sciences Lab</title>
         <meta name="description" content="Forensic PBM intelligence reports and actuarial analysis for fiduciaries, actuaries, and capital markets." />
       </Head>
+      <SEO 
+        title="Kincaid Health Intelligence Series - Actuarial Benefits, PBM Defense & Claims Recovery"
+        description="Complete suite of forensic intelligence products: Actuarial Benefits Intelligence, PBM Contract Clarity 360*, Claims Recovery Intelligence, and Sales Intelligence for self-funded healthcare."
+      />
 
       <Nav />
 

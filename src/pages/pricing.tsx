@@ -6,6 +6,7 @@ import { SiteFooter } from "@/components/site/SiteFooter";
 import Nav from "@/components/Nav";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
+import SEO from "@/components/SEO";
 
 export default function PricingPage() {
   return (
@@ -17,6 +18,11 @@ export default function PricingPage() {
           content="Transparent pricing for PBM contract forensic analysis. One-time engagement or ongoing monitoring. No hidden fees."
         />
       </Head>
+
+      <SEO
+        title="Kincaid Health Pricing - Transparent, Fiduciary-First Healthcare Intelligence"
+        description="Enterprise pricing for continuous forensic intelligence. No hidden fees, no commission conflicts. Pay for protection, not PBM profits."
+      />
 
       <Nav />
 

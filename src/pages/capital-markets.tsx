@@ -153,11 +153,11 @@ export default function CapitalMarketsPage() {
         <Nav />
 
         {/* Hero Section */}
-        <section className="pt-32 pb-20 px-6 bg-gradient-to-b from-black via-indigo-950/20 to-black relative overflow-hidden">
-          <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-indigo-900/20 via-transparent to-transparent" />
+        <section className="relative py-8 overflow-hidden">
+          <div className="absolute inset-0 bg-gradient-to-b from-blue-950/20 via-black to-black" />
           
           <div className="max-w-7xl mx-auto relative z-10">
-            <motion.div {...fadeInUp} className="text-center mb-16">
+            <motion.div {...fadeInUp} className="text-center mb-6">
               <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-indigo-500/10 border border-indigo-500/20 mb-6">
                 <LineChart className="w-4 h-4 text-indigo-400" />
                 <span className="text-sm text-indigo-300 font-medium">For PE / VC / M&A Professionals</span>
@@ -195,10 +195,15 @@ export default function CapitalMarketsPage() {
           </div>
         </section>
 
-        {/* Investment Risks Section */}
-        <section className="py-20 px-6 bg-gradient-to-b from-black to-zinc-950">
-          <div className="max-w-7xl mx-auto">
-            <motion.div {...fadeInUp} className="text-center mb-16">
+        {/* Problem Statement */}
+        <section className="py-8 bg-gradient-to-b from-black to-zinc-950">
+          <div className="max-w-7xl mx-auto px-6">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              className="text-center mb-6"
+            >
               <h2 className="text-4xl md:text-5xl font-bold text-indigo-100 mb-4">
                 The Four Risks Destroying Deal Value
               </h2>
@@ -257,9 +262,9 @@ export default function CapitalMarketsPage() {
         </section>
 
         {/* 48-Hour DD Workflow */}
-        <section className="py-20 px-6 bg-gradient-to-b from-zinc-950 to-black">
+        <section className="py-8 px-6 bg-gradient-to-b from-zinc-950 to-black">
           <div className="max-w-7xl mx-auto">
-            <motion.div {...fadeInUp} className="text-center mb-16">
+            <motion.div {...fadeInUp} className="text-center mb-6">
               <h2 className="text-4xl md:text-5xl font-bold text-indigo-100 mb-4">
                 48-Hour Diligence Workflow
               </h2>
@@ -313,184 +318,167 @@ export default function CapitalMarketsPage() {
           </div>
         </section>
 
-        {/* Portfolio Management Arsenal */}
-        <section className="py-20 px-6 bg-gradient-to-b from-black to-zinc-950">
-          <div className="max-w-7xl mx-auto">
-            <motion.div {...fadeInUp} className="text-center mb-16">
-              <h2 className="text-4xl md:text-5xl font-bold text-indigo-100 mb-4">
-                Portfolio Management Arsenal
-              </h2>
-              <p className="text-xl text-gray-400 max-w-3xl mx-auto">
-                Post-close value office tools that ensure every synergy has an owner, every claim has evidence, and every board pack has audit-grade receipts
-              </p>
-            </motion.div>
+        {/* Market Intelligence */}
+        <section className="py-8">
+          <div className="max-w-7xl mx-auto px-6">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              className="text-center mb-6"
+            >
+          </motion.div>
+          <motion.div {...staggerContainer} className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+            {portfolioTools.map((tool, index) => (
+              <motion.div
+                key={index}
+                {...fadeInUp}
+                className={`p-8 rounded-2xl bg-gradient-to-br from-${tool.color}-950/20 to-transparent border border-${tool.color}-500/20 hover:border-${tool.color}-500/40 transition-all duration-300 cursor-pointer`}
+                onClick={() => setExpandedTool(expandedTool === index ? null : index)}
+              >
+                <div className={`inline-block p-3 rounded-xl bg-${tool.color}-500/20 mb-4`}>
+                  <tool.icon className={`w-6 h-6 text-${tool.color}-400`} />
+                </div>
+                
+                <h3 className="text-xl font-bold text-white mb-3">{tool.title}</h3>
+                <p className="text-gray-400 text-sm mb-4 leading-relaxed">{tool.description}</p>
 
-            <motion.div {...staggerContainer} className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {portfolioTools.map((tool, index) => (
-                <motion.div
-                  key={index}
-                  {...fadeInUp}
-                  className={`p-8 rounded-2xl bg-gradient-to-br from-${tool.color}-950/20 to-transparent border border-${tool.color}-500/20 hover:border-${tool.color}-500/40 transition-all duration-300 cursor-pointer`}
-                  onClick={() => setExpandedTool(expandedTool === index ? null : index)}
-                >
-                  <div className={`inline-block p-3 rounded-xl bg-${tool.color}-500/20 mb-4`}>
-                    <tool.icon className={`w-6 h-6 text-${tool.color}-400`} />
-                  </div>
-                  
-                  <h3 className="text-xl font-bold text-white mb-3">{tool.title}</h3>
-                  <p className="text-gray-400 text-sm mb-4 leading-relaxed">{tool.description}</p>
-
-                  {expandedTool === index && (
-                    <motion.div
-                      initial={{ opacity: 0, height: 0 }}
-                      animate={{ opacity: 1, height: "auto" }}
-                      className="space-y-4 mt-6"
-                    >
-                      <div>
-                        <div className="text-xs font-semibold text-gray-400 mb-2">KEY FEATURES:</div>
-                        <div className="space-y-2">
-                          {tool.features.map((feature, i) => (
-                            <div key={i} className="flex items-center gap-2 text-xs text-gray-500">
-                              <div className={`w-1.5 h-1.5 rounded-full bg-${tool.color}-400`} />
-                              <span>{feature}</span>
-                            </div>
-                          ))}
-                        </div>
+                {expandedTool === index && (
+                  <motion.div
+                    initial={{ opacity: 0, height: 0 }}
+                    animate={{ opacity: 1, height: "auto" }}
+                    className="space-y-4 mt-6"
+                  >
+                    <div>
+                      <div className="text-xs font-semibold text-gray-400 mb-2">KEY FEATURES:</div>
+                      <div className="space-y-2">
+                        {tool.features.map((feature, i) => (
+                          <div key={i} className="flex items-center gap-2 text-xs text-gray-500">
+                            <div className={`w-1.5 h-1.5 rounded-full bg-${tool.color}-400`} />
+                            <span>{feature}</span>
+                          </div>
+                        ))}
                       </div>
+                    </div>
 
-                      <div className={`p-3 rounded-xl bg-${tool.color}-500/10 border border-${tool.color}-500/20`}>
-                        <div className="text-xs font-semibold text-gray-400 mb-2">OUTCOMES:</div>
-                        <div className="space-y-1">
-                          {tool.outcomes.map((outcome, i) => (
-                            <div key={i} className="flex items-center gap-2 text-xs text-gray-300">
-                              <CheckCircle2 className={`w-3 h-3 text-${tool.color}-400 flex-shrink-0`} />
-                              <span>{outcome}</span>
-                            </div>
-                          ))}
-                        </div>
+                    <div className={`p-3 rounded-xl bg-${tool.color}-500/10 border border-${tool.color}-500/20`}>
+                      <div className="text-xs font-semibold text-gray-400 mb-2">OUTCOMES:</div>
+                      <div className="space-y-1">
+                        {tool.outcomes.map((outcome, i) => (
+                          <div key={i} className="flex items-center gap-2 text-xs text-gray-300">
+                            <CheckCircle2 className={`w-3 h-3 text-${tool.color}-400 flex-shrink-0`} />
+                            <span>{outcome}</span>
+                          </div>
+                        ))}
                       </div>
-                    </motion.div>
-                  )}
-                </motion.div>
-              ))}
-            </motion.div>
-          </div>
+                    </div>
+                  </motion.div>
+                )}
+              </motion.div>
+            ))}
+          </motion.div>
         </section>
 
-        {/* Real Portfolio Impact */}
-        <section className="py-20 px-6 bg-gradient-to-b from-zinc-950 to-black">
-          <div className="max-w-7xl mx-auto">
-            <motion.div {...fadeInUp} className="text-center mb-16">
-              <h2 className="text-4xl md:text-5xl font-bold text-indigo-100 mb-4">
-                Real Portfolio Impact
-              </h2>
-              <p className="text-xl text-gray-400 max-w-3xl mx-auto">
-                Mid-market PE firm with 8 portfolio companies deploys SiriusB iQ value office across holdings
-              </p>
-            </motion.div>
-
-            <motion.div {...fadeInUp} className="grid grid-cols-1 lg:grid-cols-2 gap-8 max-w-6xl mx-auto">
-              <div className="p-8 rounded-2xl bg-gradient-to-br from-rose-950/20 to-transparent border border-rose-500/30">
-                <div className="flex items-center gap-3 mb-6">
-                  <div className="text-4xl">❌</div>
-                  <h3 className="text-2xl font-bold text-rose-300">Before SiriusB iQ</h3>
+        {/* Case Studies */}
+        <section className="py-8">
+          <div className="max-w-7xl mx-auto px-6">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              className="text-center mb-6"
+            >
+          </motion.div>
+          <motion.div {...staggerContainer} className="grid grid-cols-1 md:grid-cols-2 gap-4 max-w-6xl mx-auto">
+            <div className="p-8 rounded-2xl bg-gradient-to-br from-rose-950/20 to-transparent border border-rose-500/30">
+              <div className="flex items-center gap-3 mb-6">
+                <div className="text-4xl">❌</div>
+                <h3 className="text-2xl font-bold text-rose-300">Before SiriusB iQ</h3>
+              </div>
+              <div className="space-y-4 text-gray-400">
+                <div className="flex items-start gap-3">
+                  <AlertTriangle className="w-5 h-5 text-rose-400 flex-shrink-0 mt-0.5" />
+                  <p>Healthcare costs tracked as single line item across all 8 companies. Zero visibility into actual spend components.</p>
                 </div>
-                <div className="space-y-4 text-gray-400">
-                  <div className="flex items-start gap-3">
-                    <AlertTriangle className="w-5 h-5 text-rose-400 flex-shrink-0 mt-0.5" />
-                    <p>Healthcare costs tracked as single line item across all 8 companies. Zero visibility into actual spend components.</p>
-                  </div>
-                  <div className="flex items-start gap-3">
-                    <AlertTriangle className="w-5 h-5 text-rose-400 flex-shrink-0 mt-0.5" />
-                    <p>100-day plans promised "$12M in pharmacy optimization" but no owners, no tracking, no evidence.</p>
-                  </div>
-                  <div className="flex items-start gap-3">
-                    <AlertTriangle className="w-5 h-5 text-rose-400 flex-shrink-0 mt-0.5" />
-                    <p>CFO admits to IC: "We think we saved money but can't prove it. PBM won't share real data."</p>
-                  </div>
-                  <div className="flex items-start gap-3">
-                    <AlertTriangle className="w-5 h-5 text-rose-400 flex-shrink-0 mt-0.5" />
-                    <p>Exit buyer discounts optimization claims by 90%. Lost $31M in valuation premium.</p>
-                  </div>
+                <div className="flex items-start gap-3">
+                  <AlertTriangle className="w-5 h-5 text-rose-400 flex-shrink-0 mt-0.5" />
+                  <p>100-day plans promised "$12M in pharmacy optimization" but no owners, no tracking, no evidence.</p>
+                </div>
+                <div className="flex items-start gap-3">
+                  <AlertTriangle className="w-5 h-5 text-rose-400 flex-shrink-0 mt-0.5" />
+                  <p>CFO admits to IC: "We think we saved money but can't prove it. PBM won't share real data."</p>
+                </div>
+                <div className="flex items-start gap-3">
+                  <AlertTriangle className="w-5 h-5 text-rose-400 flex-shrink-0 mt-0.5" />
+                  <p>Exit buyer discounts optimization claims by 90%. Lost $31M in valuation premium.</p>
                 </div>
               </div>
+            </div>
 
-              <div className="p-8 rounded-2xl bg-gradient-to-br from-emerald-950/20 to-transparent border border-emerald-500/30">
-                <div className="flex items-center gap-3 mb-6">
-                  <div className="text-4xl">✓</div>
-                  <h3 className="text-2xl font-bold text-emerald-300">With SiriusB iQ</h3>
+            <div className="p-8 rounded-2xl bg-gradient-to-br from-emerald-950/20 to-transparent border border-emerald-500/30">
+              <div className="flex items-center gap-3 mb-6">
+                <div className="text-4xl">✓</div>
+                <h3 className="text-2xl font-bold text-emerald-300">With SiriusB iQ</h3>
+              </div>
+              <div className="space-y-4 text-gray-400">
+                <div className="flex items-start gap-3">
+                  <CheckCircle2 className="w-5 h-5 text-emerald-400 flex-shrink-0 mt-0.5" />
+                  <p>Portfolio-wide dashboard shows real-time pharmacy costs vs. NADAC benchmarks across all holdings.</p>
                 </div>
-                <div className="space-y-4 text-gray-400">
-                  <div className="flex items-start gap-3">
-                    <CheckCircle2 className="w-5 h-5 text-emerald-400 flex-shrink-0 mt-0.5" />
-                    <p>Portfolio-wide dashboard shows real-time pharmacy costs vs. NADAC benchmarks across all holdings.</p>
-                  </div>
-                  <div className="flex items-start gap-3">
-                    <CheckCircle2 className="w-5 h-5 text-emerald-400 flex-shrink-0 mt-0.5" />
-                    <p>$8.8M in documented savings across 8 companies with 285 evidence receipts per year per holding.</p>
-                  </div>
-                  <div className="flex items-start gap-3">
-                    <CheckCircle2 className="w-5 h-5 text-emerald-400 flex-shrink-0 mt-0.5" />
-                    <p>Every synergy has owner, status, and proof. Weekly 15min reconciliation per portfolio company.</p>
-                  </div>
-                  <div className="flex items-start gap-3">
-                    <CheckCircle2 className="w-5 h-5 text-emerald-400 flex-shrink-0 mt-0.5" />
-                    <p>Exit buyer adopts governance framework. Pays $37M premium for "audit-ready value creation discipline."</p>
-                  </div>
+                <div className="flex items-start gap-3">
+                  <CheckCircle2 className="w-5 h-5 text-emerald-400 flex-shrink-0 mt-0.5" />
+                  <p>$8.8M in documented savings across 8 companies with 285 evidence receipts per year per holding.</p>
+                </div>
+                <div className="flex items-start gap-3">
+                  <CheckCircle2 className="w-5 h-5 text-emerald-400 flex-shrink-0 mt-0.5" />
+                  <p>Every synergy has owner, status, and proof. Weekly 15min reconciliation per portfolio company.</p>
+                </div>
+                <div className="flex items-start gap-3">
+                  <CheckCircle2 className="w-5 h-5 text-emerald-400 flex-shrink-0 mt-0.5" />
+                  <p>Exit buyer adopts governance framework. Pays $37M premium for "audit-ready value creation discipline."</p>
                 </div>
               </div>
-            </motion.div>
-
-            <motion.div {...fadeInUp} className="mt-12 text-center">
-              <div className="inline-block p-8 rounded-2xl bg-gradient-to-br from-indigo-950/40 to-transparent border border-indigo-500/20">
-                <div className="text-5xl font-bold text-indigo-300 mb-2">$37M</div>
-                <div className="text-lg text-gray-300">Enterprise Value Added from Documented Governance</div>
-                <div className="text-sm text-gray-500 mt-2">4.2x multiple on healthcare optimization vs. undocumented claims</div>
-              </div>
-            </motion.div>
-          </div>
+            </div>
+          </motion.div>
         </section>
 
-        {/* Exit Positioning Section */}
-        <section className="py-20 px-6 bg-gradient-to-b from-black to-zinc-950">
-          <div className="max-w-7xl mx-auto">
-            <motion.div {...fadeInUp} className="text-center mb-16">
-              <h2 className="text-4xl md:text-5xl font-bold text-indigo-100 mb-4">
-                Turn Healthcare Into Premium Valuation
-              </h2>
-              <p className="text-xl text-gray-400 max-w-3xl mx-auto">
-                Buyers pay premium for documented governance discipline. Evidence receipts convert PowerPoint claims into measurable alpha.
-              </p>
-            </motion.div>
-
-            <motion.div {...staggerContainer} className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-              {[
-                { metric: "285", label: "Evidence Receipts/Year", subtext: "Per portfolio company", icon: FileText, color: "cyan" },
-                { metric: "100%", label: "Audit-Ready Lineage", subtext: "Every claim traced to source", icon: Shield, color: "violet" },
-                { metric: "$18M", label: "Avg Premium", subtext: "Documented vs. undocumented exits", icon: TrendingUp, color: "emerald" },
-                { metric: "4.2x", label: "Valuation Multiple", subtext: "On proven optimization claims", icon: DollarSign, color: "indigo" }
-              ].map((item, i) => (
-                <motion.div
-                  key={i}
-                  {...fadeInUp}
-                  className={`p-6 rounded-2xl bg-gradient-to-br from-${item.color}-950/40 to-transparent border border-${item.color}-500/20 hover:border-${item.color}-500/40 transition-all duration-300 text-center group hover:scale-105`}
-                >
-                  <div className={`inline-block p-3 rounded-xl bg-${item.color}-500/20 mb-4`}>
-                    <item.icon className={`w-6 h-6 text-${item.color}-400`} />
-                  </div>
-                  <div className={`text-4xl font-bold text-${item.color}-300 mb-2`}>{item.metric}</div>
-                  <div className="text-sm font-semibold text-gray-300 mb-1">{item.label}</div>
-                  <div className="text-xs text-gray-500">{item.subtext}</div>
-                </motion.div>
-              ))}
-            </motion.div>
-          </div>
+        {/* ROI Framework */}
+        <section className="py-8 bg-gradient-to-b from-black to-zinc-950">
+          <div className="max-w-7xl mx-auto px-6">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              className="text-center mb-6"
+            >
+          </motion.div>
+          <motion.div {...staggerContainer} className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+            {[
+              { metric: "285", label: "Evidence Receipts/Year", subtext: "Per portfolio company", icon: FileText, color: "cyan" },
+              { metric: "100%", label: "Audit-Ready Lineage", subtext: "Every claim traced to source", icon: Shield, color: "violet" },
+              { metric: "$18M", label: "Avg Premium", subtext: "Documented vs. undocumented exits", icon: TrendingUp, color: "emerald" },
+              { metric: "4.2x", label: "Valuation Multiple", subtext: "On proven optimization claims", icon: DollarSign, color: "indigo" }
+            ].map((item, i) => (
+              <motion.div
+                key={i}
+                {...fadeInUp}
+                className={`p-6 rounded-2xl bg-gradient-to-br from-${item.color}-950/40 to-transparent border border-${item.color}-500/20 hover:border-${item.color}-500/40 transition-all duration-300 text-center group hover:scale-105`}
+              >
+                <div className={`inline-block p-3 rounded-xl bg-${item.color}-500/20 mb-4`}>
+                  <item.icon className={`w-6 h-6 text-${item.color}-400`} />
+                </div>
+                <div className={`text-4xl font-bold text-${item.color}-300 mb-2`}>{item.metric}</div>
+                <div className="text-sm font-semibold text-gray-300 mb-1">{item.label}</div>
+                <div className="text-xs text-gray-500">{item.subtext}</div>
+              </motion.div>
+            ))}
+          </motion.div>
         </section>
 
         {/* Success Metrics Grid */}
-        <section className="py-20 px-6 bg-gradient-to-b from-zinc-950 to-black">
+        <section className="py-8 px-6 bg-gradient-to-b from-zinc-950 to-black">
           <div className="max-w-7xl mx-auto">
-            <motion.div {...fadeInUp} className="text-center mb-16">
+            <motion.div {...fadeInUp} className="text-center mb-6">
               <h2 className="text-4xl md:text-5xl font-bold text-indigo-100 mb-4">
                 Capital Markets Success Metrics
               </h2>
@@ -522,9 +510,9 @@ export default function CapitalMarketsPage() {
           </div>
         </section>
 
-        {/* Premium DD Package CTA */}
-        <section className="py-20 px-6 bg-gradient-to-b from-black to-zinc-950">
-          <div className="max-w-4xl mx-auto">
+        {/* CTA Section */}
+        <section className="py-8 bg-gradient-to-b from-zinc-950 to-black">
+          <div className="max-w-7xl mx-auto px-6">
             <motion.div {...fadeInUp} className="p-12 rounded-3xl bg-gradient-to-br from-indigo-950/40 to-transparent border border-indigo-500/20 relative overflow-hidden">
               <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,_var(--tw-gradient-stops))] from-indigo-600/10 via-transparent to-transparent" />
               
@@ -592,7 +580,7 @@ export default function CapitalMarketsPage() {
         </section>
 
         {/* Final CTA */}
-        <section className="py-20 px-6 bg-gradient-to-b from-zinc-950 to-black">
+        <section className="py-8 px-6 bg-gradient-to-b from-zinc-950 to-black">
           <div className="max-w-4xl mx-auto text-center">
             <motion.div {...fadeInUp}>
               <h3 className="text-4xl md:text-5xl font-bold text-indigo-100 mb-6">

@@ -241,6 +241,13 @@ export default function PricingPage() {
                   </Button>
                 </Link>
               </Card>
+
+              <div className="bg-gradient-to-br from-red-500/10 to-orange-500/10 border border-red-500/20 rounded-xl p-8">
+                <div className="flex items-center gap-3 mb-4">
+                  <Shield className="w-8 h-8 text-red-400" />
+                  <h3 className="text-2xl font-bold text-white">PBM Contract Clarity 360*</h3>
+                </div>
+              </div>
             </div>
           </div>
         </section>

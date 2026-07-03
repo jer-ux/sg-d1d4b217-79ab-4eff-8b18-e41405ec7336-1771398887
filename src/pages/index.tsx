@@ -183,7 +183,7 @@ export default function HomePage() {
               </h1>
 
               <p className="text-xl md:text-2xl text-neutral-400 leading-relaxed max-w-3xl">
-                Kincaid Health provides live forensic intelligence on your PBM, TPA, Stop-loss, and Network Contract & live telemetry of all health and Rx claims. 24/7 forensic intelligence—not monthly reports when it's too late. The accountability-without-visibility gap ends here. We do not just give you a view into your benefits spend, we give you a complete view of your business. From accounting to IT.
+                Kincaid Health provides live forensic intelligence for your PBM, TPA, Stop-Loss, and Network Contracts. Live telemetry is provided for all health and Rx claims. 24/7/365 forensic intelligence—not monthly reports when it's too late. The accountability-without-visibility gap ends here.
               </p>
 
               {/* Three Problems */}

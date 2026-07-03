@@ -263,7 +263,7 @@ export default function BoardOfDirectorsPage() {
 
       <div className="min-h-screen bg-black text-white">
         {/* Hero Section */}
-        <section className="relative pt-32 pb-20 overflow-hidden">
+        <section className="relative pt-20 pb-12 overflow-hidden">
           <div className="absolute inset-0 bg-gradient-to-b from-amber-950/20 via-black to-black" />
           <div className="absolute inset-0">
             <div className="absolute top-20 left-1/4 w-96 h-96 bg-amber-500/10 rounded-full blur-3xl" />
@@ -294,7 +294,7 @@ export default function BoardOfDirectorsPage() {
         </section>
 
         {/* Board Members Grid */}
-        <section className="py-20">
+        <section className="py-12">
           <div className="max-w-7xl mx-auto px-6">
             <div className="grid md:grid-cols-2 lg:grid-cols-2 gap-8">
               {boardMembers.map((member, index) => (
@@ -916,14 +916,14 @@ export default function BoardOfDirectorsPage() {
         </section>
 
         {/* Company Values Section */}
-        <section className="py-20 bg-gradient-to-b from-black via-amber-950/5 to-black">
+        <section className="py-12 bg-gradient-to-b from-black via-amber-950/5 to-black">
           <div className="max-w-7xl mx-auto px-6">
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.8 }}
-              className="text-center mb-16"
+              className="text-center mb-12"
             >
               <h2 className="text-4xl font-bold text-amber-100 mb-4">
                 Our Guiding Principles

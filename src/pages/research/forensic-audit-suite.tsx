@@ -75,8 +75,141 @@ export default function ForensicAuditSuiteResearch() {
           </div>
         </section>
 
-        {/* Main Content */}
-        <section className="relative py-16 px-6">
+        {/* 5 Virtual Employees Section */}
+        <section className="py-20 border-b border-border">
+          <div className="container mx-auto px-4 max-w-7xl">
+            <div className="text-center mb-16">
+              <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary/10 text-primary text-sm font-medium mb-6">
+                <span className="w-2 h-2 rounded-full bg-primary animate-pulse" />
+                Core Value Proposition
+              </div>
+              <h2 className="text-4xl md:text-5xl font-bold mb-6">
+                5 Employees. Zero Overhead.
+              </h2>
+              <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
+                Kincaid IQ delivers the functional equivalent of five senior professionals—instantly deployable, continuously available, at 97% cost reduction.
+              </p>
+            </div>
+
+            {/* Cost Comparison */}
+            <div className="bg-card rounded-lg border border-border p-8 mb-12">
+              <div className="grid md:grid-cols-3 gap-8 items-center">
+                <div className="text-center">
+                  <div className="text-sm text-muted-foreground mb-2">Traditional Staffing</div>
+                  <div className="text-4xl font-bold text-destructive">$1.03M - $1.47M</div>
+                  <div className="text-sm text-muted-foreground mt-2">Annual cost + benefits</div>
+                </div>
+                <div className="flex items-center justify-center">
+                  <ChevronRight className="w-8 h-8 text-primary" />
+                </div>
+                <div className="text-center">
+                  <div className="text-sm text-muted-foreground mb-2">Kincaid IQ Platform</div>
+                  <div className="text-4xl font-bold text-primary">$55,500</div>
+                  <div className="text-sm text-muted-foreground mt-2">Annual platform fee</div>
+                </div>
+              </div>
+              <div className="mt-8 text-center">
+                <div className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-primary/10 border border-primary/20">
+                  <span className="text-2xl font-bold text-primary">17.6x - 26.4x ROI</span>
+                  <span className="text-muted-foreground">in eliminated staffing costs alone</span>
+                </div>
+              </div>
+            </div>
+
+            {/* Virtual Employee Cards */}
+            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 mb-12">
+              {[
+                {
+                  role: "Senior Benefits Consultant",
+                  cost: "$250K-$371K",
+                  capabilities: ["PBM contract forensic audit in 4 hours", "Vendor performance benchmarking", "Cost optimization strategies"],
+                  icon: "💼"
+                },
+                {
+                  role: "Actuarial Analyst (ASA/FSA)",
+                  cost: "$165K-$220K",
+                  capabilities: ["Rebate reconciliation (99.8% accuracy)", "Monte Carlo risk modeling", "Loss ratio analysis"],
+                  icon: "📊"
+                },
+                {
+                  role: "Contract Attorney",
+                  cost: "$270K-$420K",
+                  capabilities: ["Fiduciary risk assessment (47 statutes)", "Clause extraction & analysis", "M&A due diligence in 1 hour"],
+                  icon: "⚖️"
+                },
+                {
+                  role: "Data Engineer",
+                  cost: "$190K-$245K",
+                  capabilities: ["100% claims database coverage", "Spread pricing analysis", "Real-time monitoring infrastructure"],
+                  icon: "🔧"
+                },
+                {
+                  role: "Compliance Officer",
+                  cost: "$155K-$210K",
+                  capabilities: ["Board-ready reports in 30 minutes", "CAA/ERISA compliance tracking", "Regulatory change monitoring"],
+                  icon: "✓"
+                }
+              ].map((employee, idx) => (
+                <div key={idx} className="bg-card rounded-lg border border-border p-6 hover:border-primary/50 transition-colors">
+                  <div className="text-4xl mb-4">{employee.icon}</div>
+                  <h3 className="text-lg font-semibold mb-2">{employee.role}</h3>
+                  <div className="text-sm text-destructive line-through mb-4">{employee.cost} annually</div>
+                  <ul className="space-y-2">
+                    {employee.capabilities.map((cap, i) => (
+                      <li key={i} className="text-sm text-muted-foreground flex items-start gap-2">
+                        <ChevronRight className="w-4 h-4 text-primary mt-0.5 flex-shrink-0" />
+                        <span>{cap}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              ))}
+              
+              {/* Summary Card */}
+              <div className="bg-primary/5 rounded-lg border-2 border-primary p-6 flex flex-col items-center justify-center text-center">
+                <div className="text-5xl mb-4">🚀</div>
+                <h3 className="text-xl font-bold mb-2">All Included</h3>
+                <p className="text-sm text-muted-foreground mb-4">Day 1 capability. Zero ramp time. No management burden.</p>
+                <div className="text-3xl font-bold text-primary">$55.5K</div>
+                <div className="text-xs text-muted-foreground mt-1">97% cost reduction</div>
+              </div>
+            </div>
+
+            {/* Key Benefits */}
+            <div className="grid md:grid-cols-3 gap-6">
+              <div className="bg-card rounded-lg border border-border p-6">
+                <h4 className="font-semibold mb-3 flex items-center gap-2">
+                  <span className="text-primary">⚡</span>
+                  Instant Deployment
+                </h4>
+                <p className="text-sm text-muted-foreground">
+                  No hiring (6-18 months), no onboarding, no training. Full capability from day one.
+                </p>
+              </div>
+              <div className="bg-card rounded-lg border border-border p-6">
+                <h4 className="font-semibold mb-3 flex items-center gap-2">
+                  <span className="text-primary">🔄</span>
+                  Zero Management Burden
+                </h4>
+                <p className="text-sm text-muted-foreground">
+                  No benefits, no turnover, no performance reviews. No vacation or sick leave.
+                </p>
+              </div>
+              <div className="bg-card rounded-lg border border-border p-6">
+                <h4 className="font-semibold mb-3 flex items-center gap-2">
+                  <span className="text-primary">📈</span>
+                  Continuous Availability
+                </h4>
+                <p className="text-sm text-muted-foreground">
+                  24/7 processing. Audit 1 contract or 1,000 simultaneously. Never "too busy."
+                </p>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* Table of Contents & Content */}
+        <section className="py-20">
           <div className="max-w-7xl mx-auto">
             <div className="grid lg:grid-cols-[280px_1fr] gap-12">
               

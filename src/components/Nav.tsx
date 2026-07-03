@@ -98,7 +98,7 @@ export default function Nav() {
               <button
                 onMouseEnter={() => setKincaidHealthDropdownOpen(true)}
                 onMouseLeave={() => setKincaidHealthDropdownOpen(false)}
-                className="relative px-3 py-2 text-sm flex items-center gap-1 text-white/80 hover:text-white transition-colors"
+                className="flex items-center gap-2 px-4 py-2 text-black hover:text-black/80 transition-colors rounded-lg hover:bg-slate-50 font-medium"
               >
                 Intelligence Series
                 <ChevronDown className={`w-3 h-3 transition-transform ${kincaidHealthDropdownOpen ? "rotate-180" : ""}`} />

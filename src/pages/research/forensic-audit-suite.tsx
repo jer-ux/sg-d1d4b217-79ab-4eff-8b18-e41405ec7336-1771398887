@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { SEO } from "@/components/SEO";
-import { Nav } from "@/components/Nav";
-import { Footer } from "@/components/Footer";
+import Nav from "@/components/Nav";
+import Footer from "@/components/Footer";
 import { Button } from "@/components/ui/button";
 import { FileDown, ChevronRight, BookOpen } from "lucide-react";
 import Link from "next/link";

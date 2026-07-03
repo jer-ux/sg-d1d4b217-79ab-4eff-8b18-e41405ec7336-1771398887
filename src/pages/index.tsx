@@ -6,8 +6,8 @@ import { SEO } from "@/components/SEO";
 import {
   FileText, Shield, TrendingUp, CheckCircle2, Activity, ArrowRight,
   Building2, Database, BarChart3, Award, AlertTriangle, Clock,
-  DollarSign, Percent, ChevronRight, Check, X, Layers, Eye, Info, BookOpen
-} from "lucide-react";
+  DollarSign, Percent, ChevronRight, Check, X, Layers, Eye, Info, BookOpen } from
+"lucide-react";
 import { ExecutiveWarRoom } from "@/components/warroom/ExecutiveWarRoom";
 import { CHROWarRoom } from "@/components/warroom/CHROWarRoom";
 import { BoardWarRoom } from "@/components/warroom/BoardWarRoom";
@@ -36,12 +36,12 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 
 const mockAudits = [
-  { company: "Midwest Logistics", lives: 420, issue: "Generic Spread Markup", savings: "$142,500", severity: "high" },
-  { company: "Apparel Retailer", lives: 1250, issue: "Rebate GPO Retained", savings: "$684,000", severity: "critical" },
-  { company: "Tech Solutions", lives: 310, issue: "Specialty Coupon Exclusion", savings: "$94,200", severity: "medium" },
-  { company: "Northeast Manufacturing", lives: 2800, issue: "MAC List Overcharges", savings: "$1,120,400", severity: "critical" },
-  { company: "Southwest Healthcare", lives: 850, issue: "Non-Fid Commission Skimming", savings: "$322,000", severity: "high" }
-];
+{ company: "Midwest Logistics", lives: 420, issue: "Generic Spread Markup", savings: "$142,500", severity: "high" },
+{ company: "Apparel Retailer", lives: 1250, issue: "Rebate GPO Retained", savings: "$684,000", severity: "critical" },
+{ company: "Tech Solutions", lives: 310, issue: "Specialty Coupon Exclusion", savings: "$94,200", severity: "medium" },
+{ company: "Northeast Manufacturing", lives: 2800, issue: "MAC List Overcharges", savings: "$1,120,400", severity: "critical" },
+{ company: "Southwest Healthcare", lives: 850, issue: "Non-Fid Commission Skimming", savings: "$322,000", severity: "high" }];
+
 
 const fadeInUpVariants = {
   hidden: { opacity: 0, y: 30 },
@@ -58,7 +58,7 @@ const staggerContainer = {
   }
 };
 
-const AnimatedSection = ({ children, className = "" }: { children: React.ReactNode; className?: string }) => {
+const AnimatedSection = ({ children, className = "" }: {children: React.ReactNode;className?: string;}) => {
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, margin: "-100px" });
 
@@ -68,11 +68,11 @@ const AnimatedSection = ({ children, className = "" }: { children: React.ReactNo
       initial="hidden"
       animate={isInView ? "visible" : "hidden"}
       variants={fadeInUpVariants}
-      className={className}
-    >
+      className={className}>
+      
       {children}
-    </motion.div>
-  );
+    </motion.div>);
+
 };
 
 export default function HomePage() {
@@ -80,13 +80,13 @@ export default function HomePage() {
   const [auditIndex, setAuditIndex] = useState(0);
   const [activePlaygroundTab, setActivePlaygroundTab] = useState<"calculator" | "costplus" | "risk">("calculator");
   const [activeWarRoomRole, setActiveWarRoomRole] = useState<"cfo" | "chro" | "board" | "pe">("cfo");
-  
+
   const [calcLives, setCalcLives] = useState(500);
   const [calcSpend, setCalcSpend] = useState(3000000);
   const [calcSpread, setCalcSpread] = useState(25);
 
   const [selectedSpecialtyDrug, setSelectedSpecialtyDrug] = useState("Imatinib");
-  const specialtyDrugs: Record<string, { brand: string; pbm: number; costplus: number; indication: string }> = {
+  const specialtyDrugs: Record<string, {brand: string;pbm: number;costplus: number;indication: string;}> = {
     "Imatinib": { brand: "Gleevec (Cancer)", pbm: 8200, costplus: 140, indication: "Oncology" },
     "Abiraterone": { brand: "Zytiga (Prostate)", pbm: 6400, costplus: 185, indication: "Oncology" },
     "Emtricitabine": { brand: "Truvada (HIV)", pbm: 1800, costplus: 45, indication: "Specialty" },
@@ -109,13 +109,13 @@ export default function HomePage() {
     return () => clearInterval(interval);
   }, []);
 
-  const estimatedSpreadLeakage = (calcSpend * (calcSpread / 100));
+  const estimatedSpreadLeakage = calcSpend * (calcSpread / 100);
   const estimatedPbmSavings = estimatedSpreadLeakage * 0.85;
-  const pmpmSavings = (estimatedPbmSavings / calcLives) / 12;
+  const pmpmSavings = estimatedPbmSavings / calcLives / 12;
 
   const currentDrugData = specialtyDrugs[selectedSpecialtyDrug];
   const drugSavings = currentDrugData.pbm - currentDrugData.costplus;
-  const drugSavingsPercent = ((drugSavings / currentDrugData.pbm) * 100).toFixed(0);
+  const drugSavingsPercent = (drugSavings / currentDrugData.pbm * 100).toFixed(0);
 
   const totalCost = riskLives * 11500;
   const rawTrendCost = totalCost * (riskTrend / 100);
@@ -138,11 +138,11 @@ export default function HomePage() {
 
   return (
     <>
-      <SEO 
+      <SEO
         title="Kincaid Health - Continuous Forensic Intelligence for Healthcare Benefits"
         description="You're accountable for healthcare spend. But you only hear about it at renewal. Get 24/7 PBM monitoring with Kincaid Health - the forensic intelligence layer that works with your consultant."
-        image="/og-image.png"
-      />
+        image="/og-image.png" />
+      
       
       <Nav />
       
@@ -161,12 +161,12 @@ export default function HomePage() {
 
           <div className="grid lg:grid-cols-12 gap-16 items-start w-full relative z-10">
             
-            <motion.div 
+            <motion.div
               className="lg:col-span-7 space-y-8"
               initial={{ opacity: 0, x: -30 }}
               animate={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.8, ease: "easeOut" }}
-            >
+              transition={{ duration: 0.8, ease: "easeOut" }}>
+              
               
               <div className="inline-flex items-center gap-2 bg-emerald-500/10 border border-emerald-500/30 rounded px-4 py-2 text-xs font-mono text-emerald-400 uppercase tracking-wider">
                 <Activity className="h-4 w-4" />
@@ -174,11 +174,11 @@ export default function HomePage() {
               </div>
 
               <h1 className="text-5xl md:text-6xl lg:text-7xl font-serif font-bold tracking-tight leading-[1.1] text-white">
-                You're accountable for<br/>
+                You're accountable for<br />
                 <span className="bg-gradient-to-r from-emerald-400 via-teal-400 to-cyan-400 bg-clip-text text-transparent">
                   healthcare spend.
-                </span><br/>
-                But you only hear about it<br/>
+                </span><br />
+                But you only hear about it<br />
                 <span className="text-neutral-500">at renewal.</span>
               </h1>
 
@@ -189,28 +189,28 @@ export default function HomePage() {
               {/* Three Problems */}
               <div className="grid md:grid-cols-3 gap-4">
                 {[
-                  {
-                    icon: "📅",
-                    problem: "Renewal-Only Insights",
-                    description: "By the time you see the damage, it's too late to negotiate."
-                  },
-                  {
-                    icon: "📊",
-                    problem: "Unusable Data",
-                    description: "Spreadsheets and dashboards don't tell you what to do next."
-                  },
-                  {
-                    icon: "⚖️",
-                    problem: "Fiduciary Exposure",
-                    description: "DOL wants documented decisions. You have quarterly PDFs."
-                  }
-                ].map((item, idx) => (
-                  <div key={idx} className="bg-neutral-900/50 border border-neutral-800 rounded-lg p-6 hover:border-emerald-500/30 transition-colors">
+                {
+                  icon: "📅",
+                  problem: "Renewal-Only Insights",
+                  description: "By the time you see the damage, it's too late to negotiate."
+                },
+                {
+                  icon: "📊",
+                  problem: "Unusable Data",
+                  description: "Spreadsheets and dashboards don't tell you what to do next."
+                },
+                {
+                  icon: "⚖️",
+                  problem: "Fiduciary Exposure",
+                  description: "DOL wants documented decisions. You have quarterly PDFs."
+                }].
+                map((item, idx) =>
+                <div key={idx} className="bg-neutral-900/50 border border-neutral-800 rounded-lg p-6 hover:border-emerald-500/30 transition-colors">
                     <div className="text-3xl mb-3">{item.icon}</div>
-                    <h3 className="font-semibold mb-2 text-emerald-400">{item.problem}</h3>
-                    <p className="text-sm text-neutral-400">{item.description}</p>
+                    <h3 className="font-semibold mb-2 text-emerald-400">Fiduciary Correction Protection </h3>
+                    <p className="text-sm text-neutral-400">DOL wants documented, continuous decision making.</p>
                   </div>
-                ))}
+                )}
               </div>
 
               <div className="border border-[#2A3F54] bg-[#151B23] rounded-lg p-5 flex items-center justify-between gap-4 max-w-2xl">
@@ -228,8 +228,8 @@ export default function HomePage() {
                         animate={{ opacity: 1, y: 0 }}
                         exit={{ opacity: 0, y: -10 }}
                         transition={{ duration: 0.3 }}
-                        className="text-sm font-medium text-neutral-200"
-                      >
+                        className="text-sm font-medium text-neutral-200">
+                        
                         {mockAudits[auditIndex].company} ({mockAudits[auditIndex].lives} lives): {mockAudits[auditIndex].issue}
                       </motion.div>
                     </AnimatePresence>
@@ -242,8 +242,8 @@ export default function HomePage() {
                     initial={{ scale: 0.95, opacity: 0 }}
                     animate={{ scale: 1, opacity: 1 }}
                     exit={{ scale: 0.95, opacity: 0 }}
-                    className="bg-red-950/30 border border-red-900/40 rounded px-3 py-2 text-right font-mono"
-                  >
+                    className="bg-red-950/30 border border-red-900/40 rounded px-3 py-2 text-right font-mono">
+                    
                     <div className="text-[9px] text-red-400 font-semibold uppercase tracking-wide">Estimated Waste</div>
                     <div className="text-sm font-bold text-red-300">{mockAudits[auditIndex].savings}</div>
                   </motion.div>
@@ -272,12 +272,12 @@ export default function HomePage() {
               </div>
             </motion.div>
 
-            <motion.div 
+            <motion.div
               className="lg:col-span-5 relative"
               initial={{ opacity: 0, x: 30 }}
               animate={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.8, delay: 0.2, ease: "easeOut" }}
-            >
+              transition={{ duration: 0.8, delay: 0.2, ease: "easeOut" }}>
+              
               <InteractiveHeroDashboard />
             </motion.div>
 
@@ -309,17 +309,17 @@ export default function HomePage() {
                   <h3 className="text-2xl font-semibold mb-4">For Employers</h3>
                   <ul className="space-y-4">
                     {[
-                      "Continuous forensic monitoring (not renewal-only)",
-                      "Plain-English view for CFOs, CEOs, CHROs",
-                      "Fiduciary documentation that survives DOL audits",
-                      "Evidence-backed decisions with audit trails",
-                      "Real-time alerts when contract violations occur"
-                    ].map((item, idx) => (
-                      <li key={idx} className="flex items-start gap-3">
+                    "Continuous forensic monitoring (not renewal-only)",
+                    "Plain-English view for CFOs, CEOs, CHROs",
+                    "Fiduciary documentation that survives DOL audits",
+                    "Evidence-backed decisions with audit trails",
+                    "Real-time alerts when contract violations occur"].
+                    map((item, idx) =>
+                    <li key={idx} className="flex items-start gap-3">
                         <ChevronRight className="w-5 h-5 text-emerald-400 flex-shrink-0 mt-0.5" />
                         <span className="text-neutral-300">{item}</span>
                       </li>
-                    ))}
+                    )}
                   </ul>
                 </div>
 
@@ -329,17 +329,17 @@ export default function HomePage() {
                   <h3 className="text-2xl font-semibold mb-4">For Your Consultant</h3>
                   <ul className="space-y-4">
                     {[
-                      "Elevates their advice with forensic-grade data",
-                      "Frees them from spreadsheet archaeology",
-                      "Positions them as strategic advisors, not data janitors",
-                      "Gives them ammunition for PBM negotiations",
-                      "Makes renewals faster with pre-analyzed intelligence"
-                    ].map((item, idx) => (
-                      <li key={idx} className="flex items-start gap-3">
+                    "Elevates their advice with forensic-grade data",
+                    "Frees them from spreadsheet archaeology",
+                    "Positions them as strategic advisors, not data janitors",
+                    "Gives them ammunition for PBM negotiations",
+                    "Makes renewals faster with pre-analyzed intelligence"].
+                    map((item, idx) =>
+                    <li key={idx} className="flex items-start gap-3">
                         <ChevronRight className="w-5 h-5 text-emerald-400 flex-shrink-0 mt-0.5" />
                         <span className="text-neutral-300">{item}</span>
                       </li>
-                    ))}
+                    )}
                   </ul>
                 </div>
               </div>
@@ -370,7 +370,7 @@ export default function HomePage() {
                   The Fundamental Difference
                 </div>
                 <h2 className="text-4xl md:text-5xl font-serif font-bold mb-6">
-                  Continuous Intelligence vs.<br/>
+                  Continuous Intelligence vs.<br />
                   <span className="text-neutral-500">Point-in-Time Audits</span>
                 </h2>
                 <p className="text-xl text-neutral-400 max-w-3xl mx-auto">
@@ -392,19 +392,19 @@ export default function HomePage() {
                   </div>
                   <ul className="space-y-3">
                     {[
-                      "12-week turnaround for insights",
-                      "Quarterly PDF reports (outdated on arrival)",
-                      "Renewal-only negotiation leverage",
-                      "Requires manual follow-up on every finding",
-                      "No alerts when contract violations occur",
-                      "Historical data only (backward-looking)",
-                      "Single snapshot in time"
-                    ].map((item, idx) => (
-                      <li key={idx} className="flex items-start gap-3">
+                    "12-week turnaround for insights",
+                    "Quarterly PDF reports (outdated on arrival)",
+                    "Renewal-only negotiation leverage",
+                    "Requires manual follow-up on every finding",
+                    "No alerts when contract violations occur",
+                    "Historical data only (backward-looking)",
+                    "Single snapshot in time"].
+                    map((item, idx) =>
+                    <li key={idx} className="flex items-start gap-3">
                         <span className="text-red-500 mt-1">✗</span>
                         <span className="text-neutral-400">{item}</span>
                       </li>
-                    ))}
+                    )}
                   </ul>
                   <div className="mt-6 pt-6 border-t border-neutral-800">
                     <div className="text-sm text-neutral-500">Result:</div>
@@ -425,19 +425,19 @@ export default function HomePage() {
                   </div>
                   <ul className="space-y-3">
                     {[
-                      "4-hour initial audit, then real-time",
-                      "Live dashboard + instant alerts",
-                      "Negotiate anytime with fresh evidence",
-                      "Automated action recommendations",
-                      "Real-time violation detection & quantification",
-                      "Predictive modeling (forward-looking)",
-                      "Continuous baseline comparison"
-                    ].map((item, idx) => (
-                      <li key={idx} className="flex items-start gap-3">
+                    "4-hour initial audit, then real-time",
+                    "Live dashboard + instant alerts",
+                    "Negotiate anytime with fresh evidence",
+                    "Automated action recommendations",
+                    "Real-time violation detection & quantification",
+                    "Predictive modeling (forward-looking)",
+                    "Continuous baseline comparison"].
+                    map((item, idx) =>
+                    <li key={idx} className="flex items-start gap-3">
                         <ChevronRight className="w-5 h-5 text-emerald-400 flex-shrink-0 mt-0.5" />
                         <span className="text-neutral-300">{item}</span>
                       </li>
-                    ))}
+                    )}
                   </ul>
                   <div className="mt-6 pt-6 border-t border-emerald-500/20">
                     <div className="text-sm text-emerald-300/70">Result:</div>
@@ -481,14 +481,14 @@ export default function HomePage() {
               
               <div className="bg-[#151B23] border border-[#2A3F54] rounded p-6 min-h-[160px] flex flex-col justify-between">
                 <AnimatePresence mode="wait">
-                  {hoveredLeakage ? (
-                    <motion.div
-                      key={hoveredLeakage}
-                      initial={{ opacity: 0, y: 10 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      exit={{ opacity: 0, y: -10 }}
-                      className="space-y-3"
-                    >
+                  {hoveredLeakage ?
+                  <motion.div
+                    key={hoveredLeakage}
+                    initial={{ opacity: 0, y: 10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: -10 }}
+                    className="space-y-3">
+                    
                       <div className="text-sm font-semibold text-[#B8860B] uppercase font-mono tracking-wider">{hoveredLeakage} Analysis:</div>
                       <p className="text-sm text-neutral-200 leading-relaxed">
                         {hoveredLeakage === "Formulary" && "PBMs frequently manipulate formularies, favoring high-rebate specialty drugs even when cheaper, therapeutically equivalent generics are available."}
@@ -500,23 +500,23 @@ export default function HomePage() {
                         <Check className="h-4 w-4" />
                         Kincaid Solution: Complete contract carve-out & direct transparent pricing models.
                       </div>
-                    </motion.div>
-                  ) : (
-                    <div className="flex items-center justify-center h-28 text-neutral-500 text-sm font-mono italic">
+                    </motion.div> :
+
+                  <div className="flex items-center justify-center h-28 text-neutral-500 text-sm font-mono italic">
                       Hover over different sectors on the heatmap to diagnose cost vulnerabilities...
                     </div>
-                  )}
+                  }
                 </AnimatePresence>
               </div>
             </AnimatedSection>
 
-            <motion.div 
+            <motion.div
               className="lg:col-span-7 grid grid-cols-2 gap-4"
               variants={staggerContainer}
               initial="hidden"
               whileInView="visible"
-              viewport={{ once: true, margin: "-100px" }}
-            >
+              viewport={{ once: true, margin: "-100px" }}>
+              
               
               <motion.button
                 variants={fadeInUpVariants}
@@ -524,11 +524,11 @@ export default function HomePage() {
                 onMouseLeave={() => setHoveredLeakage(null)}
                 whileHover={{ scale: 1.02 }}
                 className={`relative rounded-lg p-6 text-left border transition-all duration-200 ${
-                  hoveredLeakage === "Formulary"
-                    ? "bg-red-950/20 border-red-900/50"
-                    : "bg-[#151B23] border-[#2A3F54] hover:border-[#3A4F64]"
-                }`}
-              >
+                hoveredLeakage === "Formulary" ?
+                "bg-red-950/20 border-red-900/50" :
+                "bg-[#151B23] border-[#2A3F54] hover:border-[#3A4F64]"}`
+                }>
+                
                 <div className="absolute top-4 right-4 h-2.5 w-2.5 rounded-full bg-red-400" />
                 <Layers className="h-8 w-8 text-neutral-400 mb-4" />
                 <h4 className="text-lg font-semibold text-white">Formulary Manipulation</h4>
@@ -542,11 +542,11 @@ export default function HomePage() {
                 onMouseLeave={() => setHoveredLeakage(null)}
                 whileHover={{ scale: 1.02 }}
                 className={`relative rounded-lg p-6 text-left border transition-all duration-200 ${
-                  hoveredLeakage === "Specialty"
-                    ? "bg-red-950/20 border-red-900/50"
-                    : "bg-[#151B23] border-[#2A3F54] hover:border-[#3A4F64]"
-                }`}
-              >
+                hoveredLeakage === "Specialty" ?
+                "bg-red-950/20 border-red-900/50" :
+                "bg-[#151B23] border-[#2A3F54] hover:border-[#3A4F64]"}`
+                }>
+                
                 <div className="absolute top-4 right-4 h-2.5 w-2.5 rounded-full bg-red-500" />
                 <Activity className="h-8 w-8 text-neutral-400 mb-4" />
                 <h4 className="text-lg font-semibold text-white">Specialty Markups</h4>
@@ -560,11 +560,11 @@ export default function HomePage() {
                 onMouseLeave={() => setHoveredLeakage(null)}
                 whileHover={{ scale: 1.02 }}
                 className={`relative rounded-lg p-6 text-left border transition-all duration-200 ${
-                  hoveredLeakage === "Rebates"
-                    ? "bg-red-950/20 border-red-900/50"
-                    : "bg-[#151B23] border-[#2A3F54] hover:border-[#3A4F64]"
-                }`}
-              >
+                hoveredLeakage === "Rebates" ?
+                "bg-red-950/20 border-red-900/50" :
+                "bg-[#151B23] border-[#2A3F54] hover:border-[#3A4F64]"}`
+                }>
+                
                 <div className="absolute top-4 right-4 h-2.5 w-2.5 rounded-full bg-red-400" />
                 <DollarSign className="h-8 w-8 text-neutral-400 mb-4" />
                 <h4 className="text-lg font-semibold text-white">Rebate Retaining</h4>
@@ -578,11 +578,11 @@ export default function HomePage() {
                 onMouseLeave={() => setHoveredLeakage(null)}
                 whileHover={{ scale: 1.02 }}
                 className={`relative rounded-lg p-6 text-left border transition-all duration-200 ${
-                  hoveredLeakage === "Spread Pricing"
-                    ? "bg-red-950/20 border-red-900/50"
-                    : "bg-[#151B23] border-[#2A3F54] hover:border-[#3A4F64]"
-                }`}
-              >
+                hoveredLeakage === "Spread Pricing" ?
+                "bg-red-950/20 border-red-900/50" :
+                "bg-[#151B23] border-[#2A3F54] hover:border-[#3A4F64]"}`
+                }>
+                
                 <div className="absolute top-4 right-4 h-2.5 w-2.5 rounded-full bg-red-400" />
                 <Percent className="h-8 w-8 text-neutral-400 mb-4" />
                 <h4 className="text-lg font-semibold text-white">Spread Pricing</h4>
@@ -715,20 +715,20 @@ export default function HomePage() {
             </p>
           </AnimatedSection>
 
-          <motion.div 
+          <motion.div
             className="grid gap-4 md:grid-cols-2 lg:grid-cols-4 relative z-10"
             variants={staggerContainer}
             initial="hidden"
             whileInView="visible"
-            viewport={{ once: true, margin: "-100px" }}
-          >
+            viewport={{ once: true, margin: "-100px" }}>
+            
             
             <motion.div
               variants={fadeInUpVariants}
               onClick={() => handleBadgeClick("receipts")}
               whileHover={{ y: -4 }}
-              className="group relative rounded-lg border border-[#2A3F54] bg-[#151B23] p-5 hover:border-[#3A4F64] cursor-pointer transition-all duration-200"
-            >
+              className="group relative rounded-lg border border-[#2A3F54] bg-[#151B23] p-5 hover:border-[#3A4F64] cursor-pointer transition-all duration-200">
+              
               <div className="mb-3 inline-flex rounded bg-[#1A3A52]/20 p-2.5">
                 <FileText className="h-5 w-5 text-[#B8860B]" />
               </div>
@@ -745,8 +745,8 @@ export default function HomePage() {
               variants={fadeInUpVariants}
               onClick={() => handleBadgeClick("ebitda")}
               whileHover={{ y: -4 }}
-              className="group relative rounded-lg border border-[#2A3F54] bg-[#151B23] p-5 hover:border-[#3A4F64] cursor-pointer transition-all duration-200"
-            >
+              className="group relative rounded-lg border border-[#2A3F54] bg-[#151B23] p-5 hover:border-[#3A4F64] cursor-pointer transition-all duration-200">
+              
               <div className="mb-3 inline-flex rounded bg-[#1A3A52]/20 p-2.5">
                 <Shield className="h-5 w-5 text-[#B8860B]" />
               </div>
@@ -763,8 +763,8 @@ export default function HomePage() {
               variants={fadeInUpVariants}
               onClick={() => handleBadgeClick("verification")}
               whileHover={{ y: -4 }}
-              className="group relative rounded-lg border border-[#2A3F54] bg-[#151B23] p-5 hover:border-[#3A4F64] cursor-pointer transition-all duration-200"
-            >
+              className="group relative rounded-lg border border-[#2A3F54] bg-[#151B23] p-5 hover:border-[#3A4F64] cursor-pointer transition-all duration-200">
+              
               <div className="mb-3 inline-flex rounded bg-[#1A3A52]/20 p-2.5">
                 <Database className="h-5 w-5 text-[#B8860B]" />
               </div>
@@ -780,8 +780,8 @@ export default function HomePage() {
             <motion.div
               variants={fadeInUpVariants}
               whileHover={{ y: -4 }}
-              className="group relative rounded-lg border border-[#2A3F54] bg-[#151B23] p-5 hover:border-[#3A4F64] cursor-pointer transition-all duration-200"
-            >
+              className="group relative rounded-lg border border-[#2A3F54] bg-[#151B23] p-5 hover:border-[#3A4F64] cursor-pointer transition-all duration-200">
+              
               <div className="mb-3 inline-flex rounded bg-[#1A3A52]/20 p-2.5">
                 <FileText className="h-5 w-5 text-[#B8860B]" />
               </div>
@@ -797,8 +797,8 @@ export default function HomePage() {
             <motion.div
               variants={fadeInUpVariants}
               whileHover={{ y: -4 }}
-              className="group relative rounded-lg border border-[#2A3F54] bg-[#151B23] p-5 hover:border-[#3A4F64] cursor-pointer transition-all duration-200"
-            >
+              className="group relative rounded-lg border border-[#2A3F54] bg-[#151B23] p-5 hover:border-[#3A4F64] cursor-pointer transition-all duration-200">
+              
               <div className="mb-3 inline-flex rounded bg-[#1A3A52]/20 p-2.5">
                 <TrendingUp className="h-5 w-5 text-[#B8860B]" />
               </div>
@@ -814,8 +814,8 @@ export default function HomePage() {
             <motion.div
               variants={fadeInUpVariants}
               whileHover={{ y: -4 }}
-              className="group relative rounded-lg border border-[#2A3F54] bg-[#151B23] p-5 hover:border-[#3A4F64] cursor-pointer transition-all duration-200"
-            >
+              className="group relative rounded-lg border border-[#2A3F54] bg-[#151B23] p-5 hover:border-[#3A4F64] cursor-pointer transition-all duration-200">
+              
               <div className="mb-3 inline-flex rounded bg-[#1A3A52]/20 p-2.5">
                 <Activity className="h-5 w-5 text-[#B8860B]" />
               </div>
@@ -831,8 +831,8 @@ export default function HomePage() {
             <motion.div
               variants={fadeInUpVariants}
               whileHover={{ y: -4 }}
-              className="group relative rounded-lg border border-[#2A3F54] bg-[#151B23] p-5 hover:border-[#3A4F64] cursor-pointer transition-all duration-200"
-            >
+              className="group relative rounded-lg border border-[#2A3F54] bg-[#151B23] p-5 hover:border-[#3A4F64] cursor-pointer transition-all duration-200">
+              
               <div className="mb-3 inline-flex rounded bg-[#1A3A52]/20 p-2.5">
                 <Award className="h-5 w-5 text-[#B8860B]" />
               </div>
@@ -848,8 +848,8 @@ export default function HomePage() {
             <motion.div
               variants={fadeInUpVariants}
               whileHover={{ y: -4 }}
-              className="group relative rounded-lg border border-[#2A3F54] bg-[#151B23] p-5 hover:border-[#3A4F64] cursor-pointer transition-all duration-200"
-            >
+              className="group relative rounded-lg border border-[#2A3F54] bg-[#151B23] p-5 hover:border-[#3A4F64] cursor-pointer transition-all duration-200">
+              
               <div className="mb-3 inline-flex rounded bg-[#1A3A52]/20 p-2.5">
                 <BarChart3 className="h-5 w-5 text-[#B8860B]" />
               </div>
@@ -877,17 +877,17 @@ export default function HomePage() {
           <div className="max-w-7xl mx-auto px-4 md:px-8 relative z-10">
             <AnimatedSection className="flex flex-col md:flex-row md:items-center justify-between gap-6 mb-10">
               <div className="space-y-3">
-                <motion.span 
+                <motion.span
                   className="inline-block text-xs font-mono text-[#B8860B] uppercase tracking-widest font-semibold"
-                  animate={{ 
+                  animate={{
                     textShadow: [
-                      "0 0 10px rgba(184, 134, 11, 0.3)",
-                      "0 0 20px rgba(184, 134, 11, 0.5)",
-                      "0 0 10px rgba(184, 134, 11, 0.3)"
-                    ]
+                    "0 0 10px rgba(184, 134, 11, 0.3)",
+                    "0 0 20px rgba(184, 134, 11, 0.5)",
+                    "0 0 10px rgba(184, 134, 11, 0.3)"]
+
                   }}
-                  transition={{ duration: 2, repeat: Infinity }}
-                >
+                  transition={{ duration: 2, repeat: Infinity }}>
+                  
                   Unified Enterprise Command
                 </motion.span>
                 <h2 className="text-4xl md:text-5xl font-serif font-bold bg-gradient-to-r from-white via-neutral-100 to-neutral-300 bg-clip-text text-transparent">
@@ -899,8 +899,8 @@ export default function HomePage() {
               </div>
               <Link
                 href="/solutions"
-                className="group inline-flex items-center gap-2 border border-[#2A3F54] hover:border-[#B8860B] bg-gradient-to-br from-[#151B23] to-[#0F1419] px-6 py-3 rounded text-sm font-semibold text-neutral-200 hover:text-white transition-all duration-300 shadow-lg hover:shadow-[#B8860B]/20"
-              >
+                className="group inline-flex items-center gap-2 border border-[#2A3F54] hover:border-[#B8860B] bg-gradient-to-br from-[#151B23] to-[#0F1419] px-6 py-3 rounded text-sm font-semibold text-neutral-200 hover:text-white transition-all duration-300 shadow-lg hover:shadow-[#B8860B]/20">
+                
                 <span>View Full Command Center</span>
                 <ChevronRight className="h-4 w-4 group-hover:translate-x-1 transition-transform" />
               </Link>
@@ -909,49 +909,49 @@ export default function HomePage() {
             <AnimatedSection className="flex justify-center mb-8">
               <div className="inline-flex gap-1.5 bg-gradient-to-br from-[#151B23] via-[#1A2A3A] to-[#151B23] rounded-lg p-1.5 border border-[#2A3F54] shadow-2xl">
                 {[
-                  { key: "cfo", label: "CFO View" },
-                  { key: "chro", label: "CHRO View" },
-                  { key: "board", label: "Board View" },
-                  { key: "pe", label: "PE Operator View" }
-                ].map((role) => (
-                  <button
-                    key={role.key}
-                    onClick={() => setActiveWarRoomRole(role.key as any)}
-                    className={`relative px-6 py-3 rounded-md text-sm font-semibold transition-all duration-300 ${
-                      activeWarRoomRole === role.key
-                        ? "bg-gradient-to-br from-[#1A3A52] to-[#234766] text-white shadow-lg shadow-[#1A3A52]/50"
-                        : "text-neutral-400 hover:text-white hover:bg-[#151B23]/50"
-                    }`}
-                  >
-                    {activeWarRoomRole === role.key && (
-                      <motion.div
-                        layoutId="activeTab"
-                        className="absolute inset-0 bg-gradient-to-br from-[#1A3A52] to-[#234766] rounded-md"
-                        style={{ zIndex: -1 }}
-                        transition={{ type: "spring", bounce: 0.2, duration: 0.6 }}
-                      />
-                    )}
+                { key: "cfo", label: "CFO View" },
+                { key: "chro", label: "CHRO View" },
+                { key: "board", label: "Board View" },
+                { key: "pe", label: "PE Operator View" }].
+                map((role) =>
+                <button
+                  key={role.key}
+                  onClick={() => setActiveWarRoomRole(role.key as any)}
+                  className={`relative px-6 py-3 rounded-md text-sm font-semibold transition-all duration-300 ${
+                  activeWarRoomRole === role.key ?
+                  "bg-gradient-to-br from-[#1A3A52] to-[#234766] text-white shadow-lg shadow-[#1A3A52]/50" :
+                  "text-neutral-400 hover:text-white hover:bg-[#151B23]/50"}`
+                  }>
+                  
+                    {activeWarRoomRole === role.key &&
+                  <motion.div
+                    layoutId="activeTab"
+                    className="absolute inset-0 bg-gradient-to-br from-[#1A3A52] to-[#234766] rounded-md"
+                    style={{ zIndex: -1 }}
+                    transition={{ type: "spring", bounce: 0.2, duration: 0.6 }} />
+
+                  }
                     <span className="relative z-10">{role.label}</span>
                   </button>
-                ))}
+                )}
               </div>
             </AnimatedSection>
 
             <AnimatedSection className="rounded-xl border border-[#2A3F54] bg-gradient-to-br from-[#0C1117] via-[#0F1419] to-[#0C1117] p-10 relative overflow-hidden shadow-2xl">
-              <motion.div 
+              <motion.div
                 className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-[#B8860B] to-transparent"
                 animate={{
                   opacity: [0.5, 1, 0.5],
                   scaleX: [0.8, 1, 0.8]
                 }}
-                transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
-              />
+                transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }} />
+              
               
               <div className="absolute top-0 left-0 w-32 h-32 bg-[#1A3A52] opacity-20 blur-3xl" />
               <div className="absolute bottom-0 right-0 w-32 h-32 bg-[#B8860B] opacity-10 blur-3xl" />
               
-              {activeWarRoomRole === "cfo" && (
-                <div className="space-y-8 relative z-10">
+              {activeWarRoomRole === "cfo" &&
+              <div className="space-y-8 relative z-10">
                   <div className="flex items-center justify-between mb-8">
                     <div>
                       <h3 className="text-3xl font-serif font-bold bg-gradient-to-r from-white to-neutral-300 bg-clip-text text-transparent">
@@ -960,15 +960,15 @@ export default function HomePage() {
                       <p className="text-sm text-neutral-400 mt-2">Financial impact & EBITDA defense metrics</p>
                     </div>
                     <motion.div
-                      animate={{
-                        boxShadow: [
-                          "0 0 20px rgba(184, 134, 11, 0.2)",
-                          "0 0 30px rgba(184, 134, 11, 0.4)",
-                          "0 0 20px rgba(184, 134, 11, 0.2)"
-                        ]
-                      }}
-                      transition={{ duration: 2, repeat: Infinity }}
-                    >
+                    animate={{
+                      boxShadow: [
+                      "0 0 20px rgba(184, 134, 11, 0.2)",
+                      "0 0 30px rgba(184, 134, 11, 0.4)",
+                      "0 0 20px rgba(184, 134, 11, 0.2)"]
+
+                    }}
+                    transition={{ duration: 2, repeat: Infinity }}>
+                    
                       <Badge className="bg-gradient-to-r from-[#1A3A52] to-[#234766] text-[#B8860B] border border-[#B8860B]/30 px-4 py-1.5 text-xs font-bold shadow-lg">
                         LIVE FINANCIAL DATA
                       </Badge>
@@ -980,28 +980,28 @@ export default function HomePage() {
                     <ExecutiveWarRoom />
                   </div>
                 </div>
-              )}
+              }
 
-              {activeWarRoomRole === "chro" && (
-                <div className="relative">
+              {activeWarRoomRole === "chro" &&
+              <div className="relative">
                   <div className="absolute inset-0 bg-gradient-to-r from-[#1A3A52]/20 via-transparent to-[#B8860B]/20 rounded-xl blur-xl" />
                   <CHROWarRoom />
                 </div>
-              )}
+              }
 
-              {activeWarRoomRole === "board" && (
-                <div className="relative">
+              {activeWarRoomRole === "board" &&
+              <div className="relative">
                   <div className="absolute inset-0 bg-gradient-to-r from-[#1A3A52]/20 via-transparent to-[#B8860B]/20 rounded-xl blur-xl" />
                   <BoardWarRoom />
                 </div>
-              )}
+              }
 
-              {activeWarRoomRole === "pe" && (
-                <div className="relative">
+              {activeWarRoomRole === "pe" &&
+              <div className="relative">
                   <div className="absolute inset-0 bg-gradient-to-r from-[#1A3A52]/20 via-transparent to-[#B8860B]/20 rounded-xl blur-xl" />
                   <PEOperatorWarRoom />
                 </div>
-              )}
+              }
               
             </AnimatedSection>
           </div>
@@ -1009,38 +1009,38 @@ export default function HomePage() {
 
         <TimeSavingsComparison
           savings={[
-            {
-              task: "PBM Contract Forensic Audit",
-              manual: "12 weeks",
-              automated: "4 hours",
-              savings: "11.98 weeks"
-            },
-            {
-              task: "Rebate Reconciliation Report",
-              manual: "6 weeks",
-              automated: "2 hours",
-              savings: "5.9 weeks"
-            },
-            {
-              task: "Spread Pricing Analysis",
-              manual: "8 weeks",
-              automated: "4 hours",
-              savings: "7.8 weeks"
-            },
-            {
-              task: "Board-Ready Compliance Report",
-              manual: "4 weeks",
-              automated: "30 minutes",
-              savings: "3.9 weeks"
-            },
-            {
-              task: "M&A Due Diligence Audit",
-              manual: "10 weeks",
-              automated: "1 hour",
-              savings: "9.99 weeks"
-            }
-          ]}
-        />
+          {
+            task: "PBM Contract Forensic Audit",
+            manual: "12 weeks",
+            automated: "4 hours",
+            savings: "11.98 weeks"
+          },
+          {
+            task: "Rebate Reconciliation Report",
+            manual: "6 weeks",
+            automated: "2 hours",
+            savings: "5.9 weeks"
+          },
+          {
+            task: "Spread Pricing Analysis",
+            manual: "8 weeks",
+            automated: "4 hours",
+            savings: "7.8 weeks"
+          },
+          {
+            task: "Board-Ready Compliance Report",
+            manual: "4 weeks",
+            automated: "30 minutes",
+            savings: "3.9 weeks"
+          },
+          {
+            task: "M&A Due Diligence Audit",
+            manual: "10 weeks",
+            automated: "1 hour",
+            savings: "9.99 weeks"
+          }]
+          } />
+        
 
         <QuantifiedTestimonials />
 
@@ -1070,11 +1070,11 @@ export default function HomePage() {
                 </p>
               </div>
 
-              <CalendlyWidget 
+              <CalendlyWidget
                 url="https://calendly.com/jer-kincaidrmc/30min"
                 buttonText="Book Your 20-Minute Fitness Call"
-                className="bg-gradient-to-r from-emerald-600 to-emerald-500 hover:from-emerald-500 hover:to-emerald-400 text-white font-bold text-lg px-12 py-5 rounded-xl shadow-2xl shadow-emerald-500/30 transition-all duration-300 hover:scale-105 inline-flex items-center gap-3"
-              />
+                className="bg-gradient-to-r from-emerald-600 to-emerald-500 hover:from-emerald-500 hover:to-emerald-400 text-white font-bold text-lg px-12 py-5 rounded-xl shadow-2xl shadow-emerald-500/30 transition-all duration-300 hover:scale-105 inline-flex items-center gap-3" />
+              
 
               <div className="flex items-center justify-center gap-6 text-sm text-gray-400 flex-wrap">
                 <div className="flex items-center gap-2">
@@ -1100,13 +1100,13 @@ export default function HomePage() {
               <div className="text-xs font-mono text-neutral-500 uppercase tracking-wide">Fiduciary Assurance Standards</div>
               <div className="text-sm font-semibold text-neutral-300">Adhering to strict national operational healthcare and cybersecurity frameworks.</div>
             </div>
-            <motion.div 
+            <motion.div
               className="flex flex-wrap items-center justify-center gap-4 text-xs font-mono font-semibold text-neutral-400"
               variants={staggerContainer}
               initial="hidden"
               whileInView="visible"
-              viewport={{ once: true }}
-            >
+              viewport={{ once: true }}>
+              
               <motion.span variants={fadeInUpVariants} className="border border-[#2A3F54] bg-[#151B23] px-3 py-1.5 rounded">SSAE-18 SOC 2 TYPE II</motion.span>
               <motion.span variants={fadeInUpVariants} className="border border-[#2A3F54] bg-[#151B23] px-3 py-1.5 rounded">HIPAA ENCRYPTED</motion.span>
               <motion.span variants={fadeInUpVariants} className="border border-[#2A3F54] bg-[#151B23] px-3 py-1.5 rounded">ERISA FIDUCIARY</motion.span>
@@ -1124,10 +1124,10 @@ export default function HomePage() {
         badgeType={selectedBadge}
         level={badgeLevel}
         onClose={handleBadgeClose}
-        onNextLevel={handleNextLevel}
-      />
+        onNextLevel={handleNextLevel} />
+      
 
       <ExitIntentPopup />
-    </>
-  );
+    </>);
+
 }

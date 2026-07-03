@@ -186,33 +186,6 @@ export default function HomePage() {
                 Kincaid Health provides live forensic intelligence for your PBM, TPA, Stop-Loss, and Network Contracts. Live telemetry is provided for all health and Rx claims. 24/7/365 forensic intelligence—not monthly reports when it's too late. The accountability-without-visibility gap ends here.
               </p>
 
-              {/* Three Problems */}
-              <div className="grid md:grid-cols-3 gap-4">
-                {[
-                {
-                  icon: "📅",
-                  problem: "Renewal-Only Insights",
-                  description: "By the time you see the damage, it's too late to negotiate."
-                },
-                {
-                  icon: "📊",
-                  problem: "Unusable Data",
-                  description: "Spreadsheets and dashboards don't tell you what to do next."
-                },
-                {
-                  icon: "⚖️",
-                  problem: "Fiduciary Exposure",
-                  description: "DOL wants documented decisions. You have quarterly PDFs."
-                }].
-                map((item, idx) =>
-                <div key={idx} className="bg-neutral-900/50 border border-neutral-800 rounded-lg p-6 hover:border-emerald-500/30 transition-colors">
-                    <div className="text-3xl mb-3">{item.icon}</div>
-                    <h3 className="font-semibold mb-2 text-emerald-400">Fiduciary Correction Protection </h3>
-                    <p className="text-sm text-neutral-400">DOL wants documented, continuous decision making.</p>
-                  </div>
-                )}
-              </div>
-
               <div className="border border-[#2A3F54] bg-[#151B23] rounded-lg p-5 flex items-center justify-between gap-4 max-w-2xl">
                 <div className="flex items-center gap-3">
                   <div className="relative flex h-2.5 w-2.5">

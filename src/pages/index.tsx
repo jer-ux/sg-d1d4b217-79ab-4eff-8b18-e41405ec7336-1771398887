@@ -465,7 +465,7 @@ export default function HomePage() {
           </div>
         </section>
 
-        <section className="relative py-12 border-t border-[#1F2937] overflow-hidden">
+        <section className="relative py-16 border-t border-[#1F2937] overflow-hidden">
           <div className="absolute inset-0 pointer-events-none opacity-10">
             <TechBackdrop intensity={0.3} density={0.6} />
           </div>

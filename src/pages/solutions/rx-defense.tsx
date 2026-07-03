@@ -533,7 +533,7 @@ export default function RxDefensePresentation() {
   return (
     <div className="min-h-screen bg-[#050505] text-slate-300 font-sans selection:bg-rose-500/30 relative">
       <Head>
-        <title>RX Defense | PBM Contract X-Ray Forensic Analysis</title>
+        <title>PBM Contract Clarity 360 | Forensic PBM Contract Analysis</title>
       </Head>
 
       <Nav />
@@ -616,7 +616,7 @@ export default function RxDefensePresentation() {
               </Button>
               <div>
                 <div className="text-xs text-slate-500 uppercase tracking-widest font-bold">
-                  Rx Defense IQ™ Presentation
+                  PBM Contract Clarity 360™ Presentation
                 </div>
                 <div className="text-sm text-white font-semibold hidden md:block">
                   {currentPage === 0 ? "Overview" : `Provision ${currentPage}: ${provisions[currentPage - 1].title}`}
@@ -668,7 +668,7 @@ export default function RxDefensePresentation() {
                     <span className="text-sm font-bold text-rose-400 uppercase tracking-widest">PBM Contract X-Ray</span>
                   </div>
                   <h1 className="text-5xl md:text-7xl font-black text-white mb-6 tracking-tight">
-                    Rx PBM Defense™ Contract x-Ray
+                    PBM Contract Clarity 360
                   </h1>
                   <p className="text-2xl md:text-3xl text-slate-300 mb-6 font-bold">
                     The Forensic Infrastructure That Turns<br />
@@ -945,7 +945,7 @@ export default function RxDefensePresentation() {
                 </div>
               </div>
 
-              {/* What Is PBM Contract X-Ray */}
+              {/* What Is PBM Contract Clarity 360 */}
               <section className="py-20 bg-gradient-to-b from-black to-gray-900">
                 <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_0%,rgba(244,63,94,0.1),transparent_70%)]" />
                 <div className="relative z-10">
@@ -953,7 +953,7 @@ export default function RxDefensePresentation() {
                     <div className="bg-rose-500/20 p-3 rounded-xl border border-rose-500/30">
                       <ShieldAlert className="w-6 h-6 text-rose-500" />
                     </div>
-                    <h2 className="text-3xl font-bold text-white">What Is PBM Contract X-Ray?</h2>
+                    <h2 className="text-3xl font-bold text-white">What Is PBM Contract Clarity 360?</h2>
                   </div>
                   
                   <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
@@ -964,7 +964,7 @@ export default function RxDefensePresentation() {
                         and impossible to detect during contract execution.
                       </p>
                       <p className="text-lg text-slate-300 leading-relaxed mb-6">
-                        <span className="font-bold text-white">RX Defense™</span> is forensic contract analysis that forces transparency. 
+                        <span className="font-bold text-white">PBM Contract Clarity 360</span> is forensic contract analysis that forces transparency. 
                         We map every revenue stream, validate every pricing mechanism, and document every conflict of interest, then translate findings into Board-ready reports and enforceable contract language.
                       </p>
                     </div>

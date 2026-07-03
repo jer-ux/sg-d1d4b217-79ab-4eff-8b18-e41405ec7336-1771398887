@@ -136,7 +136,7 @@ export default function Nav() {
                       href="/solutions/rx-defense"
                       onClick={() => setKincaidIqDropdownOpen(false)}
                       className="block px-4 py-3 text-gray-300 hover:text-white hover:bg-rose-500/10 rounded-lg transition-colors duration-150">
-                      <div className="font-medium">Rx PBM Defense Contract x-Ray</div>
+                      <div className="font-medium">PBM Contract Clarity 360*</div>
                       <div className="text-xs text-gray-400">PBM contract forensics</div>
                     </Link>
                     <Link

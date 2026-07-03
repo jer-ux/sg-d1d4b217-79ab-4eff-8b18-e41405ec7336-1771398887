@@ -246,7 +246,7 @@ export default function HomePage() {
             </motion.div>
 
             <motion.div
-              className="lg:col-span-5 relative"
+              className="lg:col-span-5 relative scale-[0.8] origin-top"
               initial={{ opacity: 0, x: 30 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.8, delay: 0.2, ease: "easeOut" }}>

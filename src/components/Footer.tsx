@@ -80,7 +80,7 @@ export default function Footer() {
         <div className="mb-12">
           <Image 
             src="/1772951240194-20bfeb68-285b-4423-9485-b2585796d66a.jpeg"
-            alt="Kincaid IQ Data Sciences Lab"
+            alt="Kincaid Health Data Sciences Lab"
             width={240}
             height={60}
             className="h-14 w-auto"
@@ -143,7 +143,7 @@ export default function Footer() {
         
         <div className="pt-8 border-t border-neutral-800 flex flex-col md:flex-row justify-between items-center gap-4">
           <p className="text-sm text-neutral-500">
-            © 2026 Kincaid IQ Data Sciences Lab. All rights reserved.
+            © 2026 Kincaid Health Data Sciences Lab. All rights reserved.
           </p>
           <div className="flex gap-6">
             <Link href="#" className="text-gray-500 hover:text-white transition-colors text-sm">

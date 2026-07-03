@@ -139,8 +139,9 @@ export default function HomePage() {
   return (
     <>
       <SEO 
-        title="Kincaid IQ - Continuous Forensic Intelligence for Healthcare Benefits"
-        description="You're accountable for healthcare spend. But you only hear about it at renewal. Get 24/7 PBM monitoring with Kincaid IQ - the forensic intelligence layer that works with your consultant."
+        title="Kincaid Health - Continuous Forensic Intelligence for Healthcare Benefits"
+        description="You're accountable for healthcare spend. But you only hear about it at renewal. Get 24/7 PBM monitoring with Kincaid Health - the forensic intelligence layer that works with your consultant."
+        image="/og-image.png"
       />
       
       <Nav />
@@ -182,7 +183,7 @@ export default function HomePage() {
               </h1>
 
               <p className="text-xl md:text-2xl text-neutral-400 leading-relaxed max-w-3xl">
-                Kincaid IQ provides live forensic intelligence on your PBM contract, TPA contract, Stop-loss contract, Network Contract & live telemetry of all health and Rx claims. 24/7 forensic intelligence—not monthly reports when it's too late. The accountability-without-visibility gap ends here.
+                Kincaid Health provides live forensic intelligence on your PBM contract, TPA contract, Stop-loss contract, Network Contract & live telemetry of all health and Rx claims. 24/7 forensic intelligence—not monthly reports when it's too late. The accountability-without-visibility gap ends here.
               </p>
 
               {/* Three Problems */}
@@ -296,7 +297,7 @@ export default function HomePage() {
                   Works <span className="text-emerald-400">with</span> your consultant.
                 </h2>
                 <p className="text-xl text-neutral-400 max-w-3xl mx-auto">
-                  SiriusB iQ is a shared intelligence layer for you and your broker. 
+                  Kincaid Health is a shared intelligence layer for you and your broker. 
                   We make them look better, not obsolete.
                 </p>
               </div>
@@ -373,7 +374,7 @@ export default function HomePage() {
                   <span className="text-neutral-500">Point-in-Time Audits</span>
                 </h2>
                 <p className="text-xl text-neutral-400 max-w-3xl mx-auto">
-                  Traditional consultants show you what happened last quarter. SiriusB iQ shows you what's happening right now—and what to do about it.
+                  Traditional consultants show you what happened last quarter. Kincaid Health shows you what's happening right now—and what to do about it.
                 </p>
               </div>
 
@@ -475,7 +476,7 @@ export default function HomePage() {
               <span className="text-xs font-mono text-red-400 uppercase tracking-widest">Plan Vulnerability Diagnosis</span>
               <h2 className="text-4xl md:text-5xl font-serif font-bold">Plan Cost Leakage Heatmap</h2>
               <p className="text-neutral-300 text-lg leading-relaxed">
-                Pharmacy benefit costs are heavily inflated inside traditional PBM frameworks. Hover over each sector to inspect exactly how PBMs extract margins and see Kincaid IQ's contract solution.
+                Pharmacy benefit costs are heavily inflated inside traditional PBM frameworks. Hover over each sector to inspect exactly how PBMs extract margins and see Kincaid Health's contract solution.
               </p>
               
               <div className="bg-[#151B23] border border-[#2A3F54] rounded p-6 min-h-[160px] flex flex-col justify-between">

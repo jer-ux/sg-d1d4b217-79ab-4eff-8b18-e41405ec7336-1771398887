@@ -9,25 +9,28 @@ interface SEOProps {
 
 // SEO elements that can be used in _document.tsx (returns JSX without Head wrapper)
 export function SEOElements({
-  title = "Kincaid IQ | Enterprise Fiduciary Intelligence Platform",
-  description = "Transform benefits intelligence with algorithmic fiduciary governance. Real-time EBITDA impact tracking, AI-powered contract analysis, actuarial precision, and cryptographic audit trails. Trusted by Fortune 500 enterprises for healthcare cost optimization and compliance excellence.",
+  title = "Kincaid Health | Enterprise Fiduciary Intelligence Platform",
+  description = "Enterprise-grade fiduciary intelligence platform for healthcare benefits analysis and PBM contract forensics. Continuous monitoring, not quarterly reports.",
   image = "/og-image.png",
-  url = "https://kincaidiq.ai",
-}: SEOProps) {
-  const siteName = "Kincaid IQ";
+  url = "https://kincaidhealth.ai",
+}: SEOProps): JSX.Element {
+  const siteName = "Kincaid Health";
+  const fullTitle = title.includes(siteName) ? title : `${title} | ${siteName}`;
   const fullImageUrl = image.startsWith('http') ? image : `${url}${image}`;
   
   return (
     <>
-      <title>{title}</title>
+      <meta charSet="utf-8" />
+      <meta name="viewport" content="width=device-width, initial-scale=1" />
+      <title>{fullTitle}</title>
       <meta name="description" content={description} />
+      <meta name="author" content="Kincaid Health" />
+      <meta name="publisher" content="Kincaid Health" />
       <link rel="icon" href="/favicon.ico" />
       <link rel="canonical" href={url} />
       
       {/* Core SEO */}
       <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
-      <meta name="author" content="Kincaid IQ" />
-      <meta name="publisher" content="Kincaid IQ" />
       <meta name="keywords" content="AI benefits platform, fiduciary governance, PBM contract analysis, healthcare cost optimization, EBITDA impact tracking, actuarial intelligence, contract compliance, enterprise benefits, algorithmic governance, verified savings" />
 
       {/* Open Graph */}
@@ -75,7 +78,7 @@ export function SEOElements({
           "contactPoint": {
             "@type": "ContactPoint",
             "contactType": "Sales",
-            "email": "info@kincaidiq.ai"
+            "email": "info@kincaidhealth.ai"
           }
         })
       }} />
@@ -102,16 +105,18 @@ export function SEOElements({
 // SEO component for use in pages/_app.tsx or individual pages (uses next/head)
 // Note: Flattened structure (no fragment) for better Next.js Head compatibility during hot reload
 export function SEO({
-  title = "Kincaid IQ | Enterprise Fiduciary Intelligence Platform",
-  description = "Transform benefits intelligence with algorithmic fiduciary governance. Real-time EBITDA impact tracking, AI-powered contract analysis, actuarial precision, and cryptographic audit trails. Trusted by Fortune 500 enterprises for healthcare cost optimization and compliance excellence.",
+  title = "Kincaid Health | Enterprise Fiduciary Intelligence Platform",
+  description = "Enterprise-grade fiduciary intelligence platform for healthcare benefits analysis and PBM contract forensics. Continuous monitoring, not quarterly reports.",
   image = "/og-image.png",
-  url = "https://kincaidiq.ai"
+  url = "https://kincaidhealth.ai"
 }: SEOProps) {
-  const siteName = "Kincaid IQ";
+  const siteName = "Kincaid Health";
   const fullImageUrl = image.startsWith('http') ? image : `${url}${image}`;
   
   return (
     <Head>
+      <meta charSet="utf-8" />
+      <meta name="viewport" content="width=device-width, initial-scale=1" />
       <title>{title}</title>
       <meta name="description" content={description} />
       <link rel="icon" href="/favicon.ico" />
@@ -119,8 +124,8 @@ export function SEO({
       
       {/* Core SEO */}
       <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
-      <meta name="author" content="Kincaid IQ" />
-      <meta name="publisher" content="Kincaid IQ" />
+      <meta name="author" content="Kincaid Health" />
+      <meta name="publisher" content="Kincaid Health" />
       <meta name="keywords" content="AI benefits platform, fiduciary governance, PBM contract analysis, healthcare cost optimization, EBITDA impact tracking, actuarial intelligence, contract compliance, enterprise benefits, algorithmic governance, verified savings" />
 
       {/* Open Graph */}

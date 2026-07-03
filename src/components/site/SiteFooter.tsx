@@ -6,7 +6,7 @@ export function SiteFooter() {
       <div className="mx-auto max-w-7xl px-6 py-12">
         <div className="grid gap-8 md:grid-cols-4">
           <div>
-            <div className="text-lg font-semibold text-white">Kincaid IQ</div>
+            <div className="text-lg font-semibold text-white">Kincaid Health</div>
             <p className="mt-3 text-sm text-white/60">
               Benefits intelligence built for finance teams.
             </p>
@@ -16,7 +16,7 @@ export function SiteFooter() {
             <div className="text-sm font-medium text-white">Platform</div>
             <ul className="mt-3 space-y-2 text-sm text-white/60">
               <li>
-                <Link href="/kincaid-iq" className="hover:text-white">
+                <Link href="/kincaid-health" className="hover:text-white">
                   Overview
                 </Link>
               </li>
@@ -62,7 +62,7 @@ export function SiteFooter() {
         </div>
 
         <div className="mt-12 border-t border-white/10 pt-8 text-center text-sm text-white/40">
-          © {new Date().getFullYear()} Kincaid IQ. All rights reserved.
+          © {new Date().getFullYear()} Kincaid Health. All rights reserved.
         </div>
       </div>
     </footer>

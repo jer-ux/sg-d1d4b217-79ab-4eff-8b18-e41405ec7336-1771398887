@@ -1,7 +1,7 @@
 import { useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
-import { Menu, X, ChevronDown, Search, Users, Building2, AlertTriangle, Calculator, FileText, TrendingUp, Briefcase, BarChart3, Shield, LineChart, DollarSign, Heart, FolderOpen } from "lucide-react";
+import { Menu, X, ChevronDown, Search, Users, Building2, AlertTriangle, Calculator, FileText, TrendingUp, Briefcase, BarChart3, Shield, LineChart, DollarSign, Heart, FolderOpen, Activity, Sparkles } from "lucide-react";
 import { useRouter } from "next/router";
 import { Button } from "@/components/ui/button";
 
@@ -10,6 +10,7 @@ export default function Nav() {
   const [companyDropdownOpen, setCompanyDropdownOpen] = useState(false);
   const [focusAreasDropdownOpen, setFocusAreasDropdownOpen] = useState(false);
   const [kincaidIqDropdownOpen, setKincaidIqDropdownOpen] = useState(false);
+  const [kincaidHealthDropdownOpen, setKincaidHealthDropdownOpen] = useState(false);
   const [auditsDropdownOpen, setAuditsDropdownOpen] = useState(false);
   const [productsDropdownOpen, setProductsDropdownOpen] = useState(false);
 
@@ -20,13 +21,17 @@ export default function Nav() {
           {/* Logo */}
           <Link href="/" className="flex items-center group">
             <Image 
-              src="/1772951240194-20bfeb68-285b-4423-9485-b2585796d66a.jpeg"
-              alt="Kincaid IQ Data Sciences Lab"
-              width={57}
-              height={57}
-              className="h-[57px] w-[57px] rounded-full object-cover border-2 border-[#B8860B]/30 transition-transform duration-300 ease-out group-hover:scale-110"
+              src="/1779554612985.png"
+              width={40}
+              height={40}
+              alt="Kincaid Health Data Sciences Lab"
+              className="rounded-lg"
               priority
             />
+            <div className="flex flex-col">
+              <span className="text-sm font-bold tracking-tight leading-none">SiriusB iQ</span>
+              <span className="text-[10px] text-neutral-400 leading-none mt-0.5">Kincaid Health™</span>
+            </div>
           </Link>
 
           {/* Desktop Navigation */}
@@ -111,70 +116,62 @@ export default function Nav() {
             {/* Intelligence Series - Dropdown */}
             <div className="relative">
               <button
-                onClick={() => {
-                  setKincaidIqDropdownOpen(!kincaidIqDropdownOpen);
-                  setCompanyDropdownOpen(false);
-                  setFocusAreasDropdownOpen(false);
-                  setAuditsDropdownOpen(false);
-                  setProductsDropdownOpen(false);
-                }}
-                className="flex items-center gap-2 px-4 py-2 text-black hover:text-black/80 transition-colors rounded-lg hover:bg-slate-50 font-medium">
+                onMouseEnter={() => setKincaidHealthDropdownOpen(true)}
+                onMouseLeave={() => setKincaidHealthDropdownOpen(false)}
+                className="relative px-3 py-2 text-sm flex items-center gap-1 text-white/80 hover:text-white transition-colors"
+              >
                 Intelligence Series
-                <ChevronDown className={`w-3 h-3 transition-transform ${kincaidIqDropdownOpen ? "rotate-180" : ""}`} />
+                <ChevronDown className={`w-3 h-3 transition-transform ${kincaidHealthDropdownOpen ? "rotate-180" : ""}`} />
               </button>
-              {kincaidIqDropdownOpen && (
-                <div className="absolute top-full left-0 mt-2 w-72 bg-gray-900/95 backdrop-blur-xl rounded-xl border border-gray-700/50 shadow-xl overflow-hidden z-[210]">
+              {kincaidHealthDropdownOpen && (
+                <div
+                  onMouseEnter={() => setKincaidHealthDropdownOpen(true)}
+                  onMouseLeave={() => setKincaidHealthDropdownOpen(false)}
+                  className="absolute top-full left-0 mt-2 w-72 bg-gray-900/95 backdrop-blur-xl rounded-xl border border-gray-700/50 shadow-xl overflow-hidden z-[210]">
                   <div className="p-2">
                     <Link
-                      href="/kincaid-iq-intelligence-series"
-                      onClick={() => setKincaidIqDropdownOpen(false)}
-                      className="block px-4 py-3 text-gray-300 hover:text-white hover:bg-purple-500/10 rounded-lg transition-colors duration-150">
-                      <div className="font-medium">Intelligence Overview</div>
-                      <div className="text-xs text-gray-400">Main dashboard and analytics</div>
+                      href="/kincaid-health-intelligence-series"
+                      onClick={() => setKincaidHealthDropdownOpen(false)}
+                      className="block px-4 py-3 text-gray-300 hover:text-white hover:bg-rose-500/10 rounded-lg transition-colors duration-150">
+                      <div className="font-medium">Overview</div>
+                      <div className="text-xs text-gray-400">Complete intelligence series</div>
+                    </Link>
+                    <Link
+                      href="/solutions/actuarial-benefits"
+                      onClick={() => setKincaidHealthDropdownOpen(false)}
+                      className="block px-4 py-3 text-gray-300 hover:text-white hover:bg-rose-500/10 rounded-lg transition-colors duration-150">
+                      <div className="font-medium">Actuarial Benefits Intelligence</div>
+                      <div className="text-xs text-gray-400">Stop-loss & captive modeling</div>
                     </Link>
                     <Link
                       href="/solutions/rx-defense"
-                      onClick={() => setKincaidIqDropdownOpen(false)}
+                      onClick={() => setKincaidHealthDropdownOpen(false)}
                       className="block px-4 py-3 text-gray-300 hover:text-white hover:bg-rose-500/10 rounded-lg transition-colors duration-150">
                       <div className="font-medium">PBM Contract Clarity 360*</div>
                       <div className="text-xs text-gray-400">PBM contract forensics</div>
                     </Link>
                     <Link
-                      href="/solutions/actuarial-benefits"
-                      onClick={() => setKincaidIqDropdownOpen(false)}
-                      className="block px-4 py-3 text-gray-300 hover:text-white hover:bg-cyan-500/10 rounded-lg transition-colors duration-150">
-                      <div className="font-medium">Actuarial Analysis</div>
-                      <div className="text-xs text-gray-400">Risk modeling & projections</div>
+                      href="/solutions/claims-recovery-iq"
+                      onClick={() => setKincaidHealthDropdownOpen(false)}
+                      className="block px-4 py-3 text-gray-300 hover:text-white hover:bg-rose-500/10 rounded-lg transition-colors duration-150">
+                      <div className="font-medium">Claims Recovery Intelligence</div>
+                      <div className="text-xs text-gray-400">Forensic recovery engine</div>
                     </Link>
                     <Link
-                      href="/solutions/mark-cuban-cost-drugs"
-                      onClick={() => setKincaidIqDropdownOpen(false)}
-                      className="block px-4 py-3 text-gray-300 hover:text-white hover:bg-blue-500/10 rounded-lg transition-colors duration-150">
-                      <div className="font-medium">Mark Cuban Cost Drugs</div>
-                      <div className="text-xs text-gray-400">Drug cost benchmarking</div>
+                      href="/solutions/sales-iq"
+                      onClick={() => setKincaidHealthDropdownOpen(false)}
+                      className="block px-4 py-3 text-gray-300 hover:text-white hover:bg-rose-500/10 rounded-lg transition-colors duration-150">
+                      <div className="font-medium">Sales Intelligence</div>
+                      <div className="text-xs text-gray-400">Pipeline & forecast modeling</div>
                     </Link>
+                    <div className="h-px bg-gradient-to-r from-transparent via-gray-700 to-transparent my-1" />
                     <Link
-                      href="/pbm-crime-boss"
-                      onClick={() => setKincaidIqDropdownOpen(false)}
-                      className="block px-4 py-3 text-gray-300 hover:text-white hover:bg-orange-500/10 rounded-lg transition-colors duration-150">
-                      <div className="font-medium">PBM Crime Boss</div>
-                      <div className="text-xs text-gray-400">Insider newsletter & investigations</div>
+                      href="/expert-partners"
+                      onClick={() => setKincaidHealthDropdownOpen(false)}
+                      className="block px-4 py-3 text-gray-300 hover:text-white hover:bg-rose-500/10 rounded-lg transition-colors duration-150">
+                      <div className="font-medium">Expert Partners</div>
+                      <div className="text-xs text-gray-400">Specialized intelligence providers</div>
                     </Link>
-
-                    {/* Premium PDF Case Study Showcase */}
-                    <a
-                      href="/Kincaid_iQ_JBHunt_EBITDA_Defense.pdf"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      onClick={() => setKincaidIqDropdownOpen(false)}
-                      className="block mx-1 mt-2 px-4 py-3 bg-gradient-to-r from-amber-500/10 to-amber-600/5 hover:from-amber-500/20 hover:to-amber-600/10 text-amber-300 hover:text-amber-100 rounded-lg border border-amber-500/30 transition-all duration-150">
-                      <div className="flex items-center justify-between">
-                        <span className="font-semibold text-xs uppercase tracking-wider text-amber-400">Featured Audit Report</span>
-                        <span className="text-[9px] bg-amber-500/20 border border-amber-500/30 text-amber-300 px-1.5 py-0.5 rounded font-bold uppercase">PDF</span>
-                      </div>
-                      <div className="font-bold text-sm mt-1">JB Hunt EBITDA Defense</div>
-                      <div className="text-[11px] text-amber-300/70 mt-0.5 leading-snug">Forensic actuarial intelligence and EBITDA shielding</div>
-                    </a>
                   </div>
                 </div>
               )}
@@ -523,12 +520,15 @@ export default function Nav() {
             {/* Intelligence Series Dropdown - Mobile */}
             <div className="bg-white/5 rounded-xl overflow-hidden">
               <button
-                onClick={() => setKincaidIqDropdownOpen(!kincaidIqDropdownOpen)}
-                className="flex items-center justify-between w-full px-4 py-3.5 text-gray-200 hover:text-white hover:bg-white/10 transition-all duration-200">
-                <span className="font-semibold">Intelligence Series</span>
-                <ChevronDown className={`w-4 h-4 transition-transform duration-300 ${kincaidIqDropdownOpen ? "rotate-180" : ""}`} />
+                onClick={() => setKincaidHealthDropdownOpen(!kincaidHealthDropdownOpen)}
+                className="flex items-center justify-between w-full px-4 py-2.5 text-sm text-gray-300 hover:text-white hover:bg-rose-500/20 rounded-lg transition-all duration-150">
+                <div className="flex items-center gap-2">
+                  <Sparkles className="w-4 h-4 text-rose-400" />
+                  Intelligence Series
+                </div>
+                <ChevronDown className={`w-4 h-4 transition-transform duration-300 ${kincaidHealthDropdownOpen ? "rotate-180" : ""}`} />
               </button>
-              {kincaidIqDropdownOpen && (
+              {kincaidHealthDropdownOpen && (
                 <div className="bg-black/40 border-t border-white/5 animate-in slide-in-from-top-2 duration-200">
                   <div className="px-2 py-2 space-y-1">
                     <Link 

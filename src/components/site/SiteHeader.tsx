@@ -9,7 +9,7 @@ export function SiteHeader({ active }: { active?: string }) {
         <Link href="/" className="flex items-center">
           <Image 
             src="/1772951240194-20bfeb68-285b-4423-9485-b2585796d66a.jpeg"
-            alt="Kincaid IQ Data Sciences Lab"
+            alt="Kincaid Health Data Sciences Lab"
             width={150}
             height={38}
             className="h-9 w-auto"
@@ -19,8 +19,8 @@ export function SiteHeader({ active }: { active?: string }) {
 
         <nav className="hidden items-center gap-6 md:flex">
           <Link
-            href="/kincaid-iq"
-            className={`text-sm ${active === "kincaid-iq" ? "text-white" : "text-white/60 hover:text-white"}`}
+            href="/kincaid-health"
+            className={`text-sm ${active === "kincaid-health" ? "text-white" : "text-white/60 hover:text-white"}`}
           >
             Platform
           </Link>

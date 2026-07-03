@@ -251,6 +251,22 @@ export default function HomePage() {
               animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.8, delay: 0.2, ease: "easeOut" }}>
               
+              {/* Overlay Text */}
+              <motion.div
+                className="absolute top-8 left-1/2 -translate-x-1/2 z-20 text-center w-full px-4"
+                initial={{ opacity: 0, y: -20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.8, delay: 0.6, ease: "easeOut" }}>
+                <div className="bg-gradient-to-br from-emerald-500/10 to-teal-500/10 backdrop-blur-md border border-emerald-500/30 rounded-lg px-6 py-4 shadow-2xl">
+                  <h3 className="text-2xl font-bold text-white mb-1">
+                    Live Intelligence Feed
+                  </h3>
+                  <p className="text-sm text-emerald-300/90 font-medium">
+                    Every claim. Every contract. Every violation. In real-time.
+                  </p>
+                </div>
+              </motion.div>
+
               <InteractiveHeroDashboard />
             </motion.div>
 

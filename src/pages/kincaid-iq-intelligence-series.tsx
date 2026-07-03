@@ -131,7 +131,7 @@ const reportsData = [
   },
   {
     id: "rx-defense",
-    title: "Rx Defense: PBM Contract X-Ray",
+    title: "PBM Contract Clarity 360",
     subtitle: "Forensic PBM Contract Analysis",
     description: "Comprehensive forensic audit methodology for pharmacy benefit management contracts. Employs semantic clause extraction, spread pricing detection algorithms, and rebate reconciliation frameworks to identify contractual leakage.",
     href: "/solutions/rx-defense",

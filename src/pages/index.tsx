@@ -173,13 +173,16 @@ export default function HomePage() {
                 Continuous Forensic Intelligence
               </div>
 
-              <h1 className="text-5xl md:text-6xl lg:text-7xl font-serif font-bold tracking-tight leading-[1.1] text-white">
-                You're accountable for<br />
-                <span className="bg-gradient-to-r from-emerald-400 via-teal-400 to-cyan-400 bg-clip-text text-transparent">
-                  healthcare spend.
-                </span><br />
-                But you only hear about it<br />
-                <span className="text-neutral-500">at renewal.</span>
+              <h1 className="text-5xl md:text-6xl lg:text-7xl font-black text-white tracking-tight leading-[1.1]">
+                You're accountable for{" "}
+                <span className="bg-gradient-to-r from-blue-400 via-cyan-400 to-blue-500 bg-clip-text text-transparent">
+                  $120M
+                </span>{" "}
+                in healthcare spend.
+                <br />
+                <span className="text-gray-400 text-4xl md:text-5xl lg:text-6xl">
+                  Where did the money go?
+                </span>
               </h1>
 
               <p className="text-xl md:text-2xl text-neutral-400 leading-relaxed max-w-3xl">

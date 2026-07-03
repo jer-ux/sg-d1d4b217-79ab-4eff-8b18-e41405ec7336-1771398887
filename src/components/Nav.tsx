@@ -84,29 +84,9 @@ export default function Nav() {
                     <Link
                       href="/capital-markets"
                       onClick={() => setCompanyDropdownOpen(false)}
-                      className="block px-4 py-3 text-gray-300 hover:text-white hover:bg-amber-500/10 rounded-lg transition-colors duration-150 border-b border-gray-700/30">
+                      className="block px-4 py-3 text-gray-300 hover:text-white hover:bg-amber-500/10 rounded-lg transition-colors duration-150">
                       <div className="font-medium">Capital Markets</div>
                       <div className="text-xs text-gray-400">Market solutions</div>
-                    </Link>
-                    <Link
-                      href="/broker-compensation"
-                      onClick={() => setCompanyDropdownOpen(false)}
-                      className="block px-4 py-3 text-gray-300 hover:text-white hover:bg-[#8C1515]/20 rounded-lg transition-colors duration-150">
-                      <div className="font-medium flex items-center gap-2">
-                        <Calculator className="w-4 h-4 text-amber-500" />
-                        5-Year Broker Auditor
-                      </div>
-                      <div className="text-xs text-gray-400">Audit commissions & secret plan kickbacks</div>
-                    </Link>
-                    <Link
-                      href="/all-uploads"
-                      onClick={() => setCompanyDropdownOpen(false)}
-                      className="block px-4 py-3 text-gray-300 hover:text-white hover:bg-blue-500/10 rounded-lg transition-colors duration-150">
-                      <div className="font-medium flex items-center gap-2">
-                        <FolderOpen className="w-4 h-4 text-blue-400" />
-                        Uploads & Briefs
-                      </div>
-                      <div className="text-xs text-gray-400">Access full forensic PDF libraries</div>
                     </Link>
                   </div>
                 </div>
@@ -488,28 +468,10 @@ export default function Nav() {
                     <Link 
                       href="/capital-markets" 
                       onClick={() => setIsOpen(false)}
-                      className="block px-4 py-2.5 text-sm text-gray-300 hover:text-white hover:bg-amber-500/20 rounded-lg transition-all duration-150 border-b border-white/10">
+                      className="block px-4 py-2.5 text-sm text-gray-300 hover:text-white hover:bg-amber-500/20 rounded-lg transition-all duration-150">
                       <div className="flex items-center gap-2">
                         <LineChart className="w-4 h-4 text-amber-400" />
                         Capital Markets
-                      </div>
-                    </Link>
-                    <Link 
-                      href="/broker-compensation" 
-                      onClick={() => setIsOpen(false)}
-                      className="block px-4 py-2.5 text-sm text-gray-300 hover:text-white hover:bg-[#8C1515]/30 rounded-lg transition-all duration-150">
-                      <div className="flex items-center gap-2">
-                        <Calculator className="w-4 h-4 text-red-400" />
-                        5-Year Broker Auditor
-                      </div>
-                    </Link>
-                    <Link 
-                      href="/all-uploads" 
-                      onClick={() => setIsOpen(false)}
-                      className="block px-4 py-2.5 text-sm text-gray-300 hover:text-white hover:bg-blue-500/20 rounded-lg transition-all duration-150">
-                      <div className="flex items-center gap-2">
-                        <FolderOpen className="w-4 h-4 text-blue-400" />
-                        Uploads & Briefs
                       </div>
                     </Link>
                   </div>

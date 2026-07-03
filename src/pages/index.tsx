@@ -149,7 +149,7 @@ export default function HomePage() {
       <div className="min-h-screen bg-[#0F1419] text-neutral-100 selection:bg-[#B8860B]/20 overflow-x-hidden font-sans">
 
         {/* Hero Section - Kind Health Inspired */}
-        <section className="relative min-h-screen pt-32 pb-20 px-4 md:px-8 max-w-7xl mx-auto flex items-center">
+        <section className="relative min-h-screen pt-24 pb-12 px-4 md:px-8 max-w-7xl mx-auto flex items-center">
           <div className="absolute inset-0 overflow-hidden pointer-events-none">
             <div className="absolute inset-0 opacity-30">
               <Hero3D />
@@ -159,10 +159,10 @@ export default function HomePage() {
             </div>
           </div>
 
-          <div className="grid lg:grid-cols-12 gap-16 items-start w-full relative z-10">
+          <div className="grid lg:grid-cols-12 gap-8 items-start w-full relative z-10">
             
             <motion.div
-              className="lg:col-span-7 space-y-8"
+              className="lg:col-span-7 space-y-6"
               initial={{ opacity: 0, x: -30 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.8, ease: "easeOut" }}>
@@ -285,10 +285,10 @@ export default function HomePage() {
         </section>
 
         {/* Works with Your Consultant Section */}
-        <section className="py-20 border-t border-neutral-800 bg-neutral-900/30">
+        <section className="py-12 border-t border-neutral-800 bg-neutral-900/30">
           <div className="container mx-auto px-4 max-w-7xl">
             <AnimatedSection>
-              <div className="text-center mb-12">
+              <div className="text-center mb-8">
                 <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-emerald-500/10 text-emerald-400 text-sm font-medium mb-6">
                   <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
                   Not a Broker Replacement
@@ -361,10 +361,10 @@ export default function HomePage() {
         </section>
 
         {/* Continuous vs Point-in-Time Intelligence */}
-        <section className="py-20 border-t border-neutral-800 bg-neutral-900/30">
+        <section className="py-12 border-t border-neutral-800 bg-neutral-900/30">
           <div className="container mx-auto px-4 max-w-6xl">
             <AnimatedSection>
-              <div className="text-center mb-12">
+              <div className="text-center mb-8">
                 <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-emerald-500/10 text-emerald-400 text-sm font-medium mb-6">
                   <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
                   The Fundamental Difference
@@ -465,7 +465,7 @@ export default function HomePage() {
           </div>
         </section>
 
-        <section className="relative py-16 max-w-7xl mx-auto px-4 md:px-8 overflow-hidden">
+        <section className="relative py-12 max-w-7xl mx-auto px-4 md:px-8 overflow-hidden">
           <div className="absolute inset-0 pointer-events-none opacity-10">
             <TechBackdrop intensity={0.3} density={0.6} />
           </div>
@@ -595,7 +595,7 @@ export default function HomePage() {
           </div>
         </section>
 
-        <section className="relative py-16 border-t border-[#1F2937] overflow-hidden">
+        <section className="relative py-12 border-t border-[#1F2937] overflow-hidden">
           <div className="absolute inset-0 pointer-events-none opacity-10">
             <TechBackdrop intensity={0.3} density={0.6} />
           </div>
@@ -690,7 +690,7 @@ export default function HomePage() {
             <div className="absolute inset-0 opacity-10 bg-gradient-to-b from-transparent via-[#B8860B]/5 to-transparent" />
           </div>
           <div className="max-w-7xl mx-auto px-4 md:px-8 relative z-10">
-            <AnimatedSection className="mb-12 text-center max-w-3xl mx-auto space-y-4">
+            <AnimatedSection className="mb-8 text-center max-w-3xl mx-auto space-y-4">
               <span className="text-xs font-mono text-[#B8860B] uppercase tracking-widest font-semibold">Operational Blueprint</span>
               <h2 className="text-4xl md:text-5xl font-serif font-bold">The 30-Day Forensic Audit Journey</h2>
               <p className="text-neutral-400 text-lg leading-relaxed">
@@ -702,12 +702,12 @@ export default function HomePage() {
           </div>
         </section>
 
-        <section className="relative py-16 max-w-7xl mx-auto px-4 md:px-8 overflow-hidden border-t border-[#1F2937]">
+        <section className="relative py-12 max-w-7xl mx-auto px-4 md:px-8 overflow-hidden border-t border-[#1F2937]">
           <div className="absolute inset-0 pointer-events-none opacity-10">
             <TechBackdrop intensity={0.3} density={0.6} />
           </div>
 
-          <AnimatedSection className="mb-10 text-center max-w-3xl mx-auto space-y-4">
+          <AnimatedSection className="mb-8 text-center max-w-3xl mx-auto space-y-4">
             <span className="text-xs font-mono text-[#B8860B] uppercase tracking-widest">Platform Core Architecture</span>
             <h2 className="text-4xl md:text-5xl font-serif font-bold">8 Pillars of Fiduciary Intelligence</h2>
             <p className="text-neutral-400 text-lg leading-relaxed">
@@ -865,7 +865,7 @@ export default function HomePage() {
           </motion.div>
         </section>
 
-        <section id="dashboard" className="relative py-16 border-t border-[#1F2937] overflow-hidden">
+        <section id="dashboard" className="relative py-12 border-t border-[#1F2937] overflow-hidden">
           <div className="absolute inset-0 pointer-events-none">
             <div className="absolute inset-0 opacity-40">
               <TechBackdrop intensity={0.8} density={1.0} />
@@ -875,7 +875,7 @@ export default function HomePage() {
           </div>
 
           <div className="max-w-7xl mx-auto px-4 md:px-8 relative z-10">
-            <AnimatedSection className="flex flex-col md:flex-row md:items-center justify-between gap-6 mb-10">
+            <AnimatedSection className="flex flex-col md:flex-row md:items-center justify-between gap-6 mb-8">
               <div className="space-y-3">
                 <motion.span
                   className="inline-block text-xs font-mono text-[#B8860B] uppercase tracking-widest font-semibold"
@@ -1044,7 +1044,7 @@ export default function HomePage() {
 
         <QuantifiedTestimonials />
 
-        <section className="relative py-16 border-t border-[#1F2937]">
+        <section className="relative py-12 border-t border-[#1F2937]">
           <div className="max-w-7xl mx-auto px-4 md:px-8">
             <LiveDemoCTA variant="hero" />
           </div>
@@ -1052,12 +1052,12 @@ export default function HomePage() {
 
         <ObjectionsFAQ />
 
-        <section className="relative py-16 border-t border-[#1F2937] overflow-hidden">
+        <section className="relative py-12 border-t border-[#1F2937] overflow-hidden">
           <div className="absolute inset-0 bg-gradient-to-r from-emerald-500/10 via-blue-500/10 to-purple-500/10" />
           <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-[#B8860B]/10 via-transparent to-transparent" />
           
           <div className="max-w-4xl mx-auto px-4 md:px-8 relative z-10">
-            <AnimatedSection className="text-center space-y-8">
+            <AnimatedSection className="text-center space-y-6">
               <div className="space-y-4">
                 <Badge className="bg-emerald-500/20 text-emerald-300 border-emerald-500/30 px-4 py-2">
                   No-Obligation Discovery Session

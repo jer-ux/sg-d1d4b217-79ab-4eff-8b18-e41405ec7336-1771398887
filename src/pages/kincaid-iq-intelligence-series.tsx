@@ -438,7 +438,7 @@ export default function KincaidIQIntelligenceSeries() {
 
       <main className="min-h-screen bg-[#0F1419]">
         {/* Hero Section */}
-        <section className="relative min-h-screen flex items-center justify-center overflow-hidden bg-gradient-to-b from-black via-[#0A0E27] to-black z-10">
+        <section className="relative py-16 flex items-center justify-center overflow-hidden bg-gradient-to-b from-black via-[#0A0E27] to-black z-10">
           <div className="max-w-7xl mx-auto px-6">
             <div className="max-w-3xl">
               <div className="inline-flex items-center gap-2 bg-[#1A3A52]/20 border border-[#1A3A52] rounded px-4 py-2 text-xs font-mono text-[#B8860B] uppercase tracking-wider mb-6">
@@ -618,7 +618,7 @@ export default function KincaidIQIntelligenceSeries() {
 
         {/* Reports Tab and Filter System */}
         {activeTab === "reports" && (
-          <>
+          <section className="py-8 bg-black">
             {/* Category Filter */}
             <section className="border-b border-[#1F2937] bg-[#151B23] sticky top-16 z-10">
               <div className="max-w-7xl mx-auto px-6 py-4">
@@ -796,7 +796,7 @@ export default function KincaidIQIntelligenceSeries() {
                 </div>
               </div>
             </section>
-          </>
+          </section>
         )}
 
         {/* Methodology Section */}
@@ -972,7 +972,7 @@ export default function KincaidIQIntelligenceSeries() {
 
         {/* CTA Section */}
         <section className="py-16 border-t border-[#1F2937]">
-          <div className="max-w-7xl mx-auto px-6">
+          <div className="relative z-10 max-w-6xl mx-auto px-6 py-8 text-center">
             <div className="max-w-3xl mx-auto text-center">
               <h2 className="text-3xl font-serif font-bold text-white mb-6">
                 Request Custom Intelligence Brief

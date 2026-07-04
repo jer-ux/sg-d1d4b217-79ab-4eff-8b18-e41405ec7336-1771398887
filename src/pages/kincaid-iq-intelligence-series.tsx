@@ -438,7 +438,7 @@ export default function KincaidIQIntelligenceSeries() {
 
       <main className="min-h-screen bg-[#0F1419]">
         {/* Hero Section */}
-        <section className="relative pt-32 pb-16 border-b border-[#1F2937] bg-gradient-to-b from-[#0B0F13] to-[#0F1419]">
+        <section className="relative min-h-screen flex items-center justify-center overflow-hidden bg-gradient-to-b from-black via-[#0A0E27] to-black z-10">
           <div className="max-w-7xl mx-auto px-6">
             <div className="max-w-3xl">
               <div className="inline-flex items-center gap-2 bg-[#1A3A52]/20 border border-[#1A3A52] rounded px-4 py-2 text-xs font-mono text-[#B8860B] uppercase tracking-wider mb-6">
@@ -502,7 +502,7 @@ export default function KincaidIQIntelligenceSeries() {
         </section>
 
         {/* Secondary Navigation: Reports & Live Stream Tabs */}
-        <section className="border-b border-[#1F2937] bg-[#151B23] sticky top-16 z-30">
+        <section className="border-b border-[#1F2937] bg-[#151B23] sticky top-16 z-40">
           <div className="max-w-7xl mx-auto px-6 py-4">
             <div className="flex flex-wrap gap-2">
               <button

@@ -448,10 +448,11 @@ export default function FamilyOfficesPage() {
                 className="text-center mb-8"
               >
             </motion.div>
-          </section>
+          </div>
+        </section>
 
-          {/* CTA */}
-          <section className="py-8 bg-gradient-to-b from-neutral-950 to-black">
+        {/* CTA */}
+        <section className="py-8 bg-gradient-to-b from-neutral-950 to-black">
             <div className="max-w-4xl mx-auto px-6 text-center">
               <motion.div
                 initial={{ opacity: 0, scale: 0.9 }}

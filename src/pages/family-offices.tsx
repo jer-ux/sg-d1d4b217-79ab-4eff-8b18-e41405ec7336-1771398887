@@ -140,7 +140,7 @@ export default function FamilyOfficesPage() {
 
             <motion.div 
               style={{ opacity, scale }}
-              className="relative px-6 py-8"
+              className="relative px-6 py-4"
             >
               <div className="mx-auto max-w-7xl">
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
@@ -456,9 +456,9 @@ export default function FamilyOfficesPage() {
             <div className="max-w-4xl mx-auto px-6 text-center">
               <motion.div
                 initial={{ opacity: 0, scale: 0.9 }}
-                whileInView={{ opacity: 1, scale: 1 }}
-                viewport={{ once: true, margin: "-100px" }}
-                transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
+                animate={{ opacity: 1, scale: 1 }}
+                transition={{ duration: 0.8 }}
+                className="mb-4"
               >
                 <h2 className="text-6xl font-bold mb-6">
                   <span className="bg-gradient-to-r from-white via-purple-200 to-cyan-200 bg-clip-text text-transparent">

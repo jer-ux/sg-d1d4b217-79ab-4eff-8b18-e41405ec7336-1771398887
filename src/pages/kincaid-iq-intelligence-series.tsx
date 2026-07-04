@@ -502,7 +502,7 @@ export default function KincaidIQIntelligenceSeries() {
         </section>
 
         {/* Secondary Navigation: Reports & Live Stream Tabs */}
-        <section className="border-b border-[#1F2937] bg-[#151B23] sticky top-16 z-40">
+        <section className="border-b border-[#1F2937] bg-[#151B23] sticky top-16 z-10">
           <div className="max-w-7xl mx-auto px-6 py-4">
             <div className="flex flex-wrap gap-2">
               <button
@@ -620,7 +620,7 @@ export default function KincaidIQIntelligenceSeries() {
         {activeTab === "reports" && (
           <>
             {/* Category Filter */}
-            <section className="border-b border-[#1F2937] bg-[#151B23] sticky top-16 z-30">
+            <section className="border-b border-[#1F2937] bg-[#151B23] sticky top-16 z-5">
               <div className="max-w-7xl mx-auto px-6 py-4">
                 <div className="flex items-center gap-3 overflow-x-auto">
                   <span className="text-sm font-medium text-neutral-400 whitespace-nowrap flex items-center gap-1">

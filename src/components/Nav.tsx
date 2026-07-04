@@ -110,7 +110,7 @@ export default function Nav() {
                   className="absolute top-full left-0 mt-2 w-72 bg-gray-900/95 backdrop-blur-xl rounded-xl border border-gray-700/50 shadow-xl overflow-hidden z-[210]">
                   <div className="p-2">
                     <Link
-                      href="/kincaid-health-intelligence-series"
+                      href="/kincaid-iq-intelligence-series"
                       onClick={() => setKincaidHealthDropdownOpen(false)}
                       className="block px-4 py-3 text-gray-300 hover:text-white hover:bg-rose-500/10 rounded-lg transition-colors duration-150">
                       <div className="font-medium">Overview</div>

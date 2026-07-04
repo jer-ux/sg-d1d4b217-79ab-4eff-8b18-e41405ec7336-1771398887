@@ -140,7 +140,7 @@ export default function FamilyOfficesPage() {
 
             <motion.div 
               style={{ opacity, scale }}
-              className="relative px-6 py-32"
+              className="relative px-6 py-8"
             >
               <div className="mx-auto max-w-7xl">
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
@@ -258,7 +258,7 @@ export default function FamilyOfficesPage() {
           </section>
 
           {/* Investment Thesis with 3D Cards */}
-          <section className="relative px-6 py-24 border-b border-white/10 overflow-hidden">
+          <section className="relative px-6 py-8 border-b border-white/10 overflow-hidden">
             {/* Background gradient animation */}
             <motion.div
               className="absolute inset-0 opacity-20"
@@ -321,7 +321,7 @@ export default function FamilyOfficesPage() {
           </section>
 
           {/* Service Lines with Interactive Cards */}
-          <section className="relative px-6 py-24 border-b border-white/10 overflow-hidden">
+          <section className="relative px-6 py-8 border-b border-white/10 overflow-hidden">
             <div className="absolute inset-0 bg-gradient-to-b from-transparent via-purple-950/20 to-transparent" />
 
             <div className="relative mx-auto max-w-7xl">
@@ -380,7 +380,7 @@ export default function FamilyOfficesPage() {
           </section>
 
           {/* Performance Metrics with Animated Counters */}
-          <section className="relative px-6 py-24 border-b border-white/10 overflow-hidden">
+          <section className="relative px-6 py-8 border-b border-white/10 overflow-hidden">
             <div className="absolute inset-0 bg-gradient-to-b from-purple-950/20 to-transparent" />
 
             <div className="relative mx-auto max-w-7xl">
@@ -438,23 +438,21 @@ export default function FamilyOfficesPage() {
             </div>
           </section>
 
-          {/* CTA Section with Premium Effects */}
-          <section className="relative px-6 py-32 overflow-hidden">
-            {/* Animated background */}
-            <motion.div
-              className="absolute inset-0 opacity-30"
-              animate={{
-                background: [
-                  "radial-gradient(circle at 20% 20%, #8b5cf6 0%, transparent 50%)",
-                  "radial-gradient(circle at 80% 80%, #3b82f6 0%, transparent 50%)",
-                  "radial-gradient(circle at 20% 80%, #ec4899 0%, transparent 50%)",
-                  "radial-gradient(circle at 80% 20%, #8b5cf6 0%, transparent 50%)",
-                ],
-              }}
-              transition={{ duration: 12, repeat: Infinity }}
-            />
+          {/* Case Study */}
+          <section className="py-8 bg-black">
+            <div className="max-w-6xl mx-auto px-6">
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                className="text-center mb-8"
+              >
+            </motion.div>
+          </section>
 
-            <div className="relative mx-auto max-w-4xl text-center">
+          {/* CTA */}
+          <section className="py-8 bg-gradient-to-b from-neutral-950 to-black">
+            <div className="max-w-4xl mx-auto px-6 text-center">
               <motion.div
                 initial={{ opacity: 0, scale: 0.9 }}
                 whileInView={{ opacity: 1, scale: 1 }}

@@ -502,7 +502,7 @@ export default function KincaidIQIntelligenceSeries() {
         </section>
 
         {/* Secondary Navigation: Reports & Live Stream Tabs */}
-        <section className="border-b border-[#1F2937] bg-[#151B23] sticky top-16 z-10">
+        <section className="border-b border-[#1F2937] bg-[#151B23] sticky top-16 z-5">
           <div className="max-w-7xl mx-auto px-6 py-4">
             <div className="flex flex-wrap gap-2">
               <button

@@ -140,7 +140,7 @@ export default function HomePage() {
     <>
       <SEO
         title="Kincaid Health - Continuous Forensic Intelligence for Healthcare Benefits"
-        description="You're accountable for healthcare spend. But you only hear about it at renewal. Get 24/7 PBM monitoring with Kincaid Health - the forensic intelligence layer that works with your consultant."
+        description="You're accountable for healthcare spend. But you only hear about it at renewal. Get 24/7 PBM monitoring with Kincaid Health - the forensic intelligence layer for CFOs, CHROs, and Boards."
         image="/og-image.png" />
       
       

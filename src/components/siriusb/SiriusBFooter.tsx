@@ -73,7 +73,7 @@ export function SiriusBFooter() {
         </div>
 
         <div className="mt-8 pt-8 border-t border-border text-center text-sm text-muted-foreground">
-          © {new Date().getFullYear()} SiriusB iQ. All rights reserved.
+          <p className="text-sm text-neutral-500">© 2026 Kincaid Health. All rights reserved.</p>
         </div>
       </div>
     </footer>

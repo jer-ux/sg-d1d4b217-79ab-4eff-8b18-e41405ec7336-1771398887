@@ -398,7 +398,7 @@ export default function BoardMembersPage() {
   return (
     <>
       <Head>
-        <title>For Board Members: Fiduciary Governance & DOL Audit Defense | SiriusB iQ</title>
+        <title>Kincaid Health for Board Members: Fiduciary Governance & DOL Audit Defense | SiriusB iQ</title>
         <meta
           name="description"
           content="Board-level governance infrastructure for healthcare benefits — real-time monitoring, immutable evidence receipts, DOL audit defense, and algorithmic ERISA compliance."

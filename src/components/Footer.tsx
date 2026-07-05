@@ -143,7 +143,7 @@ export default function Footer() {
         
         <div className="pt-8 border-t border-neutral-800 flex flex-col md:flex-row justify-between items-center gap-4">
           <p className="text-sm text-neutral-500">
-            © 2026 Kincaid Health Data Sciences Lab. All rights reserved.
+            © 2026 Kincaid Health. All rights reserved.
           </p>
           <div className="flex gap-6">
             <Link href="#" className="text-gray-500 hover:text-white transition-colors text-sm">

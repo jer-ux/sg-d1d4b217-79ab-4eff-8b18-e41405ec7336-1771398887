@@ -668,7 +668,7 @@ export default function RxDefensePresentation() {
                     <span className="text-sm font-bold text-rose-400 uppercase tracking-widest">PBM Contract X-Ray</span>
                   </div>
                   <h1 className="text-5xl md:text-7xl font-black text-white mb-6 tracking-tight">
-                    PBM Contract Clarity 360
+                    Kincaid Health Rx Defense
                   </h1>
                   <p className="text-2xl md:text-3xl text-slate-300 mb-6 font-bold">
                     The Forensic Infrastructure That Turns<br />

@@ -181,7 +181,7 @@ export function CHROWarRoom() {
           <div className="flex items-start justify-between gap-4">
             <div className="flex-1">
               <div className="flex items-center gap-3 mb-2">
-                <div className="text-2xl font-black bg-gradient-to-r from-purple-400 via-purple-300 to-indigo-300 bg-clip-text text-transparent">Kincaid IQ</div>
+                <div className="text-2xl font-black bg-gradient-to-r from-purple-400 via-purple-300 to-indigo-300 bg-clip-text text-transparent">Kincaid Health</div>
                 <div className="text-xs tracking-wide text-purple-400/70 font-medium uppercase border-l border-purple-500/30 pl-3">CHRO Edition</div>
               </div>
               <h1 className="text-xl font-bold tracking-tight text-white">Human Capital & Benefits Analytics</h1>

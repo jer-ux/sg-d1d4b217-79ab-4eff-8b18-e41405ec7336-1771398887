@@ -261,7 +261,7 @@ export function WarRoomV2() {
       <div className="mx-auto max-w-6xl px-6">
         <div className="flex flex-col lg:flex-row gap-4 lg:items-center lg:justify-between">
           <div>
-            <div className="text-3xl font-semibold tracking-tight">Kincaid IQ War Room</div>
+            <div className="text-3xl font-semibold tracking-tight">Kincaid Health War Room</div>
             <div className="text-white/65 mt-2">Four tiles. One ledger. Evidence-first decisions.</div>
             <div className="text-xs text-white/55 mt-2">
               Status: <span className="text-white/80">{connected ? "Connected" : "Disconnected"}</span>

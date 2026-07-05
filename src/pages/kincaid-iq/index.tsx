@@ -115,7 +115,7 @@ export default function KincaidIQPage() {
   return (
     <>
       <Head>
-        <title>Kincaid IQ - Advanced Actuarial Intelligence Platform</title>
+        <title>Kincaid Health - Advanced Actuarial Intelligence Platform</title>
         <meta
           name="description"
           content="PE-grade pharmacy benefit analysis. DRAP reconstruction, spread detection, credibility-weighted forecasting, and EBITDA impact quantification."
@@ -132,7 +132,7 @@ export default function KincaidIQPage() {
               Fiduciary-Grade Intelligence
             </Badge>
             <h1 className="text-5xl md:text-6xl font-black mb-6 bg-gradient-to-r from-blue-400 via-cyan-400 to-teal-400 bg-clip-text text-transparent">
-              Kincaid IQ
+              Kincaid Health
             </h1>
             <p className="text-2xl text-slate-300 mb-4 font-semibold">
               The Actuarial Intelligence Platform for Private Equity

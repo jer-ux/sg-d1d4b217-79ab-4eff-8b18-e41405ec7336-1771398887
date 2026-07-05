@@ -9,8 +9,8 @@ export default function ContactPage() {
   return (
     <>
       <SEO
-        title="Contact — Kincaid IQ"
-        description="Book a strategy call to discuss how Kincaid IQ can help your organization."
+        title="Contact — Kincaid Health"
+        description="Book a strategy call to discuss how Kincaid Health can help your organization."
       />
       <div className="min-h-screen bg-[#070B12] text-white">
         <SiteHeader />
@@ -21,7 +21,7 @@ export default function ContactPage() {
             <div className="text-center mb-12">
               <h1 className="text-4xl md:text-5xl font-bold mb-4">Book a Strategy Call</h1>
               <p className="text-lg text-white/70 max-w-2xl mx-auto">
-                Schedule a 30-minute call with Jeremiah to discuss your PBM contract, healthcare costs, and how Kincaid IQ can help.
+                Schedule a 30-minute call with Jeremiah to discuss your PBM contract, healthcare costs, and how Kincaid Health can help.
               </p>
             </div>
 

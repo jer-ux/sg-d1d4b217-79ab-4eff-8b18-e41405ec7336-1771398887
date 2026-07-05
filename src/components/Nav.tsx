@@ -268,7 +268,7 @@ export default function Nav() {
                       className="block px-4 py-3 text-gray-300 hover:text-white hover:bg-purple-500/10 rounded-lg transition-colors duration-150 border-b border-gray-700/30">
                       <div className="font-medium flex items-center gap-2">
                         <BarChart3 className="w-4 h-4 text-purple-400" />
-                        Kincaid IQ™
+                        Kincaid Health™
                       </div>
                       <div className="text-xs text-gray-400 mt-1">Executive command center - CFO war room for fiduciary-grade intelligence</div>
                     </Link>
@@ -359,7 +359,7 @@ export default function Nav() {
                       className="block px-4 py-2.5 text-sm text-gray-300 hover:text-white hover:bg-purple-500/20 rounded-lg transition-all duration-150">
                       <div className="flex items-center gap-2">
                         <BarChart3 className="w-4 h-4 text-purple-400" />
-                        Kincaid IQ™
+                        Kincaid Health™
                       </div>
                       <div className="text-xs text-gray-400 mt-0.5">CFO war room & command center</div>
                     </Link>

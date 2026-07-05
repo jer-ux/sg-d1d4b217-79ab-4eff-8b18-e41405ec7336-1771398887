@@ -56,9 +56,9 @@ export function ExecutiveWarRoom() {
           <div className="flex items-start justify-between gap-4">
             <div className="flex-1">
               <div className="flex items-center gap-3">
-                <div className="text-xs tracking-wide text-purple-400 font-semibold uppercase">Kincaid IQ</div>
+                <div className="text-xs tracking-wide text-purple-400 font-semibold uppercase">Kincaid Health</div>
               </div>
-              <h1 className="mt-3 text-2xl font-bold tracking-tight bg-gradient-to-r from-white via-purple-100 to-blue-100 bg-clip-text text-transparent">Kincaid IQ</h1>
+              <h1 className="mt-3 text-2xl font-bold tracking-tight bg-gradient-to-r from-white via-purple-100 to-blue-100 bg-clip-text text-transparent">Kincaid Health</h1>
               <div className="mt-1 text-sm text-zinc-400">
                 McKinsey + Bain KPIs with Evidence Receipts. <span className="text-purple-300 font-medium">Verified</span> or it&apos;s not real.
               </div>

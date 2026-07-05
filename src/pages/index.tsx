@@ -138,10 +138,10 @@ export default function HomePage() {
 
   return (
     <>
-      <SEO
-        title="Kincaid Health - Continuous Forensic Intelligence for Healthcare Benefits"
-        description="You're accountable for healthcare spend. But you only hear about it at renewal. Get 24/7 PBM monitoring with Kincaid Health - the forensic intelligence layer for CFOs, CHROs, and Boards."
-        image="/og-image.png" />
+      <SEO 
+        title="Kincaid Health | Fiduciary-Grade AI for Healthcare Intelligence" 
+        description="Enterprise healthcare intelligence platform powered by fiduciary-grade AI. Real-time analytics, contract analysis, and compliance monitoring for health plans and benefits teams."
+      />
       
       
       <Nav />
@@ -288,8 +288,7 @@ export default function HomePage() {
                   Works <span className="text-emerald-400">with</span> your consultant.
                 </h2>
                 <p className="text-xl text-neutral-400 max-w-3xl mx-auto">
-                  Kincaid Health is a shared intelligence layer for you and your broker. 
-                  We make them look better, not obsolete.
+                  Kincaid Health is the fiduciary-grade AI platform that gives
                 </p>
               </div>
 
@@ -749,7 +748,7 @@ export default function HomePage() {
                   }}
                   transition={{ duration: 2, repeat: Infinity }}>
                   
-                  Unified Enterprise Command
+                  Kincaid Health
                 </motion.span>
                 <h2 className="text-4xl md:text-5xl font-serif font-bold bg-gradient-to-r from-white via-neutral-100 to-neutral-300 bg-clip-text text-transparent">
                   Kincaid Health™

@@ -1,4 +1,4 @@
-// Kincaid IQ - Fiduciary-Grade Rx Claims Intelligence Engine
+// Kincaid Health - Fiduciary-Grade Rx Claims Intelligence Engine
 // DRAP Analysis, Spread Detection, Rebate Reconstruction, Contract Compliance
 
 import type {

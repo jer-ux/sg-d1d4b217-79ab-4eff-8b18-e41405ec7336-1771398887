@@ -71,7 +71,7 @@ export function HowItWorksFlow() {
             Receipt → Gate → Verified Value
           </div>
           <div className="mt-2 max-w-2xl text-white/75">
-            Kincaid IQ is engineered so executive decisions are backed by provable lineage, enforced controls,
+            Kincaid Health is engineered so executive decisions are backed by provable lineage, enforced controls,
             and closed-loop value tracking.
           </div>
         </div>

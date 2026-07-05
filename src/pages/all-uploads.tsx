@@ -52,7 +52,7 @@ const ALL_ASSETS: UploadedAsset[] = [
     size: "11.5 MB",
     date: "2026-06",
     docId: "IND-IHC-43P",
-    author: "Kincaid IQ Actuarial Dept",
+    author: "Kincaid Health Actuarial Dept",
     subType: "Forensic Plan Audit"
   },
   {
@@ -148,7 +148,7 @@ const ALL_ASSETS: UploadedAsset[] = [
     size: "23.8 MB",
     date: "2026-06",
     docId: "HER-HCP-V1",
-    author: "Kincaid IQ Actuarial Dept",
+    author: "Kincaid Health Actuarial Dept",
     subType: "Forensic Plan Audit"
   },
   {
@@ -160,7 +160,7 @@ const ALL_ASSETS: UploadedAsset[] = [
     size: "23.8 MB",
     date: "2026-06",
     docId: "HER-HCP-COMP",
-    author: "Kincaid IQ Actuarial Dept",
+    author: "Kincaid Health Actuarial Dept",
     subType: "Financial Plan Audit"
   },
   {
@@ -184,7 +184,7 @@ const ALL_ASSETS: UploadedAsset[] = [
     size: "2.2 MB",
     date: "2026-06",
     docId: "HPB-4PG-V1",
-    author: "Kincaid IQ Forensic Labs",
+    author: "Kincaid Health Forensic Labs",
     subType: "Plan Leakage Brief"
   },
   {
@@ -196,7 +196,7 @@ const ALL_ASSETS: UploadedAsset[] = [
     size: "2.2 MB",
     date: "2026-06",
     docId: "HPB-4PG-CORE",
-    author: "Kincaid IQ Forensic Labs",
+    author: "Kincaid Health Forensic Labs",
     subType: "Actionable Recoveries"
   },
   {
@@ -208,7 +208,7 @@ const ALL_ASSETS: UploadedAsset[] = [
     size: "11.7 MB",
     date: "2026-06",
     docId: "HPB-501-44V1",
-    author: "Kincaid IQ Forensic Labs",
+    author: "Kincaid Health Forensic Labs",
     subType: "Complete Plan Audit"
   },
   {
@@ -220,7 +220,7 @@ const ALL_ASSETS: UploadedAsset[] = [
     size: "11.7 MB",
     date: "2026-06",
     docId: "HPB-501-44CR",
-    author: "Kincaid IQ Forensic Labs",
+    author: "Kincaid Health Forensic Labs",
     subType: "Complete Plan Audit"
   },
   {
@@ -280,7 +280,7 @@ const ALL_ASSETS: UploadedAsset[] = [
     size: "11.8 MB",
     date: "2026-06",
     docId: "INO-501-44P",
-    author: "Kincaid IQ Forensic Labs",
+    author: "Kincaid Health Forensic Labs",
     subType: "Complete Plan Audit"
   },
   {
@@ -304,7 +304,7 @@ const ALL_ASSETS: UploadedAsset[] = [
     size: "2.2 MB",
     date: "2026-06",
     docId: "RFL-RATN-CLN",
-    author: "Kincaid IQ Clinical Dept",
+    author: "Kincaid Health Clinical Dept",
     subType: "Clinical Interference Review"
   },
   {
@@ -328,7 +328,7 @@ const ALL_ASSETS: UploadedAsset[] = [
     size: "86.6 MB",
     date: "2026-06",
     docId: "NHS-LEAK-CORE",
-    author: "Kincaid IQ Forensic Labs",
+    author: "Kincaid Health Forensic Labs",
     subType: "National Leakage Audit"
   },
   {
@@ -340,7 +340,7 @@ const ALL_ASSETS: UploadedAsset[] = [
     size: "34.8 MB",
     date: "2026-06",
     docId: "NHS-LEAK-V1",
-    author: "Kincaid IQ Forensic Labs",
+    author: "Kincaid Health Forensic Labs",
     subType: "National Leakage Brief"
   },
   {
@@ -368,7 +368,7 @@ const ALL_ASSETS: UploadedAsset[] = [
     subType: "Integration Blueprint"
   },
   {
-    title: "Kincaid IQ Rx Defense Strategy Dossier",
+    title: "Kincaid Health Rx Defense Strategy Dossier",
     filename: "Kincaid-IQ-Rx-Defense-IQ-2026-06-03_1_.pdf",
     category: "Litigation & Forensic Audits",
     type: "PDF Document",
@@ -376,7 +376,7 @@ const ALL_ASSETS: UploadedAsset[] = [
     size: "8.2 MB",
     date: "2026-06",
     docId: "KNC-RXD-2026",
-    author: "Kincaid IQ Actuarial Dept",
+    author: "Kincaid Health Actuarial Dept",
     subType: "Capabilities Dossier"
   },
   {
@@ -416,15 +416,15 @@ const ALL_ASSETS: UploadedAsset[] = [
     subType: "Executive Advisory Paper"
   },
   {
-    title: "Kincaid iQ Ultimate Fiduciary Platform Guide",
+    title: "Kincaid Health Ultimate Fiduciary Platform Guide",
     filename: "Kincaid_IQ_The_Ultimate_Fiduciary_Platform.pdf",
     category: "Platform Blueprints & Briefings",
     type: "PDF Document",
-    description: "Complete capabilities brief detailing Kincaid iQ platform modules, data integrations, and audit pipelines.",
+    description: "Complete capabilities brief detailing Kincaid Health platform modules, data integrations, and audit pipelines.",
     size: "15.4 MB",
     date: "2026-06",
     docId: "KNC-ULT-PLAT",
-    author: "Kincaid IQ Marketing",
+    author: "Kincaid Health Marketing",
     subType: "Platform Capability Guide"
   },
   {
@@ -528,7 +528,7 @@ const ALL_ASSETS: UploadedAsset[] = [
     filename: "SiriusB_iQ_Glassmorphic_v1_Kincaid_IQ_Executive_Deployment_1_.pdf",
     category: "Platform Blueprints & Briefings",
     type: "PDF Document",
-    description: "Detailed system deployment protocol explaining the implementation timeline of Kincaid IQ's glassmorphic user dashboard.",
+    description: "Detailed system deployment protocol explaining the implementation timeline of Kincaid Health's glassmorphic user dashboard.",
     size: "10.0 MB",
     date: "2026-06",
     docId: "SRB-GLM-DEP",

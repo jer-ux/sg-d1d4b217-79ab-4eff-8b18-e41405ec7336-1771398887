@@ -26,7 +26,7 @@ const teamMembers = [
     role: "Founder & Chief Executive Officer",
     image: "/jeremiah-shrack-professional.png",
     linkedin: "https://www.linkedin.com/in/shrack",
-    bio: "Jeremiah Shrack is the Founder and Chief Executive Officer of SiriusB iQ AI Data Sciences, where he leads the strategic vision of Kincaid IQ. A humanitarian and business leader with over two decades of experience engineering intelligent operating systems and scaling organizations.",
+    bio: "Jeremiah Shrack is the Founder and Chief Executive Officer of SiriusB iQ AI Data Sciences, where he leads the strategic vision of Kincaid Health. A humanitarian and business leader with over two decades of experience engineering intelligent operating systems and scaling organizations.",
     education: [
       {
         school: "Indiana Wesleyan University",
@@ -65,7 +65,7 @@ const teamMembers = [
         company: "SiriusB iQ AI Data Sciences Company",
         title: "Founder & Chief Executive Officer",
         period: "Apr 2023 - Present",
-        description: "Founder of Kincaid IQ, an AI-enabled enterprise intelligence platform engineered for advanced middle and large-market executives. Built on blue-giant computational architecture, consolidating fragmented data into real-time intelligence models powered by 1,000+ validated KPI algorithms.",
+        description: "Founder of Kincaid Health, an AI-enabled enterprise intelligence platform engineered for advanced middle and large-market executives. Built on blue-giant computational architecture, consolidating fragmented data into real-time intelligence models powered by 1,000+ validated KPI algorithms.",
         highlights: [
           "Designed AI reasoning layer and modeling frameworks",
           "Integrated Vertex AI and governed model deployment",
@@ -237,7 +237,7 @@ const teamMembers = [
         company: "SiriusB iQ AI Data Sciences",
         title: "Distinguished Chief Research & Technology Officer",
         period: "Present",
-        description: "Leading advanced research initiatives in AI, machine learning, and computational intelligence. Architecting the scientific foundation of Kincaid IQ's analytical engine.",
+        description: "Leading advanced research initiatives in AI, machine learning, and computational intelligence. Architecting the scientific foundation of Kincaid Health's analytical engine.",
         highlights: [
           "Oversees AI research and development strategy",
           "Leads machine learning model innovation",

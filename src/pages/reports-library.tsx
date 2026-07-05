@@ -57,7 +57,7 @@ const tab1Categories = [
         isImage: false,
       },
       {
-        title: "Kincaid IQ Predictive Intelligence Report",
+        title: "Kincaid Health Predictive Intelligence Report",
         description: "High-level risk analytics projection, utilizing machine learning algorithms to model future cost-mitigation curves.",
         file: "/kincaid-iq-predictive-intelligence-report_3_.pdf",
         size: "Intelligence",
@@ -96,8 +96,8 @@ const tab1Categories = [
         isImage: false,
       },
       {
-        title: "The Engine & The Instrument (Kincaid IQ vs Rebel IQ)",
-        description: "Comparative operational analysis detailing Kincaid IQ's mathematical optimization superiority over Rebel IQ.",
+        title: "The Engine & The Instrument (Kincaid Health vs Rebel IQ)",
+        description: "Comparative operational analysis detailing Kincaid Health's mathematical optimization superiority over Rebel IQ.",
         file: "/The-Engine-and-the-Instrument-Kincaid-IQ-vs-Rebel-IQ.pdf",
         size: "Platform Comparison",
         type: "Strategy Whitepaper",
@@ -177,7 +177,7 @@ const tab2Categories = [
         isImage: false,
       },
       {
-        title: "Kincaid IQ: The Ultimate Fiduciary Platform",
+        title: "Kincaid Health: The Ultimate Fiduciary Platform",
         description: "The premier handbook on our algorithmic fiduciary ecosystem, defining how autonomous intelligence shields employers from CAA liability.",
         file: "/Kincaid_IQ_The_Ultimate_Fiduciary_Platform.pdf",
         size: "Platform Manual",
@@ -232,7 +232,7 @@ const tab2Categories = [
         isImage: false,
       },
       {
-        title: "Kincaid IQ Executive Deployment",
+        title: "Kincaid Health Executive Deployment",
         description: "Platform overview and implementation guide",
         file: "/SiriusB_iQ_Glassmorphic_v1_Kincaid_IQ_Executive_Deployment_1_.pdf",
         size: "Guide",
@@ -315,8 +315,8 @@ export default function ReportsLibrary() {
   return (
     <>
       <SEO
-        title="Reports & Research Library | Kincaid IQ Intelligence Series"
-        description="Access comprehensive case studies, white papers, Form 5500 analyses, and platform documentation from SiriusB iQ's Kincaid IQ Intelligence Series."
+        title="Reports & Research Library | Kincaid Health Intelligence Series"
+        description="Access comprehensive case studies, white papers, Form 5500 analyses, and platform documentation from SiriusB iQ's Kincaid Health Intelligence Series."
       />
       <Nav />
       
@@ -326,7 +326,7 @@ export default function ReportsLibrary() {
           <div className="max-w-4xl mx-auto text-center space-y-6">
             <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-amber-500/10 border border-amber-500/20 mb-2">
               <Sparkles className="w-4 h-4 text-amber-400 animate-pulse" />
-              <span className="text-sm text-amber-300 font-semibold">Kincaid IQ Intelligence Series</span>
+              <span className="text-sm text-amber-300 font-semibold">Kincaid Health Intelligence Series</span>
             </div>
             
             <h1 className="text-4xl md:text-6xl font-bold bg-gradient-to-r from-amber-400 via-amber-100 to-amber-500 bg-clip-text text-transparent leading-tight">

@@ -1,4 +1,4 @@
-// Mock data for Kincaid IQ development and demos
+// Mock data for Kincaid Health development and demos
 
 import type { Organization, ClaimsUpload, CensusUpload, Intervention } from "./types";
 

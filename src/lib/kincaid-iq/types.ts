@@ -1,4 +1,4 @@
-// Core Kincaid IQ Types - Advanced Actuarial Benefits Platform
+// Core Kincaid Health Types - Advanced Actuarial Benefits Platform
 
 export type User = {
   id: string;

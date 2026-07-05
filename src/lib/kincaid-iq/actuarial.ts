@@ -1,4 +1,4 @@
-// Kincaid IQ Advanced Actuarial Calculation Engine
+// Kincaid Health Advanced Actuarial Calculation Engine
 // Credibility-Weighted Multi-Year Forecasting with Trend Decomposition
 
 import type { 

@@ -119,7 +119,7 @@ export function SavingsCalculator() {
             Calculate Your Hidden PBM Costs
           </h2>
           <p className="text-gray-400 max-w-2xl mx-auto">
-            Enter your plan details to see how much you could be saving with Kincaid IQ's Rx PBM Contract X-Ray
+            Enter your plan details to see how much you could be saving with Kincaid Health's Rx PBM Contract X-Ray
           </p>
         </div>
 

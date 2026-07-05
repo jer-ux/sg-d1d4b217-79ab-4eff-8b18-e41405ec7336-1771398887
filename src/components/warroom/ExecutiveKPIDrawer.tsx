@@ -662,7 +662,7 @@ function generateLevel4Data(key: string, transaction: any) {
       hash: "a3f9c8e2d4b7f3a1c9e5d8b2f4a7c3e1b9d5f2a8c4e7b1d3f5a9c2e4b8d1f3a5c7e2b4d6f9a1c3e5",
       lineage: [
         { system: "UnitedHealthcare EDI 837 Gateway", timestamp: "2024-01-28 09:15:22 UTC" },
-        { system: "Kincaid IQ Claim Parser Engine", timestamp: "2024-01-28 09:15:45 UTC" },
+        { system: "Kincaid Health Claim Parser Engine", timestamp: "2024-01-28 09:15:45 UTC" },
         { system: "Data Quality Validation Engine", timestamp: "2024-01-28 09:16:03 UTC" },
         { system: "Evidence Receipt Generator", timestamp: "2024-01-28 09:16:12 UTC" },
         { system: "Cryptographic Hash Generator", timestamp: "2024-01-28 09:16:15 UTC" }

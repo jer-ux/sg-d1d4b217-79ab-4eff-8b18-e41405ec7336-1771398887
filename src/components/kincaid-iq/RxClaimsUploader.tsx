@@ -61,7 +61,7 @@ export function RxClaimsUploader({ onUploadComplete }: RxClaimsUploaderProps) {
             Upload Rx Claims Data
           </CardTitle>
           <CardDescription>
-            Upload pharmacy claims file (CSV/Excel) or use demo data to see Kincaid IQ analysis
+            Upload pharmacy claims file (CSV/Excel) or use demo data to see Kincaid Health analysis
           </CardDescription>
         </CardHeader>
         <CardContent className="space-y-4">

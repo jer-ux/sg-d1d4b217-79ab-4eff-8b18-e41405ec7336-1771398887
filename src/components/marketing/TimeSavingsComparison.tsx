@@ -69,7 +69,7 @@ export function TimeSavingsComparison({
           <Card className="bg-blue-950/30 border-blue-800/50 p-6">
             <div className="flex items-center gap-3 mb-2">
               <Zap className="w-5 h-5 text-blue-400" />
-              <span className="text-sm font-medium text-blue-400">Kincaid iQ Automated</span>
+              <span className="text-sm font-medium text-blue-400">Kincaid Health Automated</span>
             </div>
             <div className="text-3xl font-bold text-white">{totalAutomatedHours}h</div>
             <div className="text-sm text-slate-500 mt-1">Self-service platform</div>

@@ -6,7 +6,7 @@ export function RxDefenseHero() {
   return (
     <>
       <SEO
-        title="Rx Defense: PBM Contract x-Ray — Kincaid IQ"
+        title="Rx Defense: PBM Contract x-Ray — Kincaid Health"
         description="Forensic infrastructure that turns pharmacy contract opacity into board-level intelligence. Stop losing millions to hidden PBM fees."
       />
       

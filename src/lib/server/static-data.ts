@@ -35,7 +35,7 @@ export const platformFeatures = [
     ]
   },
   {
-    title: "Kincaid IQ Actuarial",
+    title: "Kincaid Health Actuarial",
     description: "Advanced modeling for captive insurance and stop-loss strategies",
     icon: "TrendingUp",
     benefits: [
@@ -126,7 +126,7 @@ export const testimonials = [
     savings: "$4.2M recovered"
   },
   {
-    quote: "Kincaid IQ's actuarial modeling helped us optimize our captive strategy and reduce stop-loss premiums by 18%.",
+    quote: "Kincaid Health's actuarial modeling helped us optimize our captive strategy and reduce stop-loss premiums by 18%.",
     author: "Risk Manager, Private Equity Firm",
     company: "Portfolio of 12 companies",
     savings: "$2.1M annual savings"
@@ -162,7 +162,7 @@ export const useCases = [
     solutions: [
       "Unified platform across all portfolio companies",
       "Comparative analytics & benchmarking",
-      "Kincaid IQ captive insurance modeling"
+      "Kincaid Health captive insurance modeling"
     ],
     outcomes: [
       "20-30% improvement in cross-portfolio efficiency",
@@ -212,7 +212,7 @@ export const milestones = [
   { year: "2023", event: "SiriusB IQ Founded", description: "Mission to bring algorithmic accountability to healthcare spend" },
   { year: "2024", event: "War Room Platform Launch", description: "Real-time arbitrage detection for self-funded employers" },
   { year: "2024", event: "Evidence Receipt Protocol", description: "Introduced cryptographic proof system for all financial claims" },
-  { year: "2025", event: "Kincaid IQ Release", description: "Advanced actuarial modeling for captive insurance strategies" }
+  { year: "2025", event: "Kincaid Health Release", description: "Advanced actuarial modeling for captive insurance strategies" }
 ];
 
 export const companyValues = [

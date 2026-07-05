@@ -66,7 +66,7 @@ export function ExternalSourceReceiptCard({ source }: ExternalSourceReceiptCardP
       </div>
 
       <div className="mt-4 rounded-xl border border-white/10 bg-black/30 p-4">
-        <div className="text-xs font-semibold text-white/60 mb-2">How Kincaid IQ uses this</div>
+        <div className="text-xs font-semibold text-white/60 mb-2">How Kincaid Health uses this</div>
         <div className="text-sm text-white/75 space-y-1">
           {activeSource.usageNotes.map((note, idx) => (
             <div key={idx}>• {note}</div>

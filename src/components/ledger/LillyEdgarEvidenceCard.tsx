@@ -11,7 +11,7 @@ export function LillyEdgarEvidenceCard() {
         <div>
           <div className="text-sm font-semibold text-white">External Evidence (Authoritative): Eli Lilly • SEC EDGAR</div>
           <div className="mt-1 text-sm text-white/65">
-            We treat SEC filings as authoritative public artifacts. Kincaid IQ links to them as evidence pointers—then enforces internal VERIFIED gating for any derived KPI.
+            We treat SEC filings as authoritative public artifacts. Kincaid Health links to them as evidence pointers—then enforces internal VERIFIED gating for any derived KPI.
           </div>
         </div>
         <a

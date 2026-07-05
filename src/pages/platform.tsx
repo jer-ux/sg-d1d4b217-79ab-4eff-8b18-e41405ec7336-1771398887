@@ -699,7 +699,7 @@ export default function PlatformPage() {
           category: "Resources & Documentation"
         },
         {
-          title: "Kincaid IQ Product",
+          title: "Kincaid Health Product",
           description: "Comprehensive product overview with feature roadmap and release notes",
           href: "/kincaid-iq",
           icon: Zap,
@@ -988,7 +988,7 @@ export default function PlatformPage() {
                 Ready to see it in action?
               </h2>
               <p className="text-white/70 mb-6 leading-relaxed">
-                Schedule a personalized demo to see how Kincaid IQ can transform your operations 
+                Schedule a personalized demo to see how Kincaid Health can transform your operations 
                 with verifiable intelligence and automated governance.
               </p>
               <div className="flex flex-wrap gap-3">

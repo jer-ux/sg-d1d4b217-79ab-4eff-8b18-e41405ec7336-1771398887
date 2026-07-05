@@ -4,6 +4,7 @@ import Image from "next/image";
 import { Menu, X, ChevronDown, Search, Users, Building2, AlertTriangle, Calculator, FileText, TrendingUp, Briefcase, BarChart3, Shield, LineChart, DollarSign, Heart, FolderOpen, Activity, Sparkles } from "lucide-react";
 import { useRouter } from "next/router";
 import { Button } from "@/components/ui/button";
+import { KincaidIQLogo } from "@/components/KincaidIQLogo";
 
 export default function Nav() {
   const [isOpen, setIsOpen] = useState(false);
@@ -20,18 +21,7 @@ export default function Nav() {
         <div className="flex h-16 items-center justify-between">
           {/* Logo */}
           <Link href="/" className="flex items-center group">
-            <Image 
-              src="/1779554612985.png"
-              width={40}
-              height={40}
-              alt="Kincaid Health Data Sciences Lab"
-              className="rounded-lg"
-              priority
-            />
-            <div className="flex flex-col">
-              <span className="text-sm font-bold tracking-tight leading-none">SiriusB iQ</span>
-              <span className="text-[10px] text-neutral-400 leading-none mt-0.5">Kincaid Health™</span>
-            </div>
+            <KincaidIQLogo className="h-8" />
           </Link>
 
           {/* Desktop Navigation */}

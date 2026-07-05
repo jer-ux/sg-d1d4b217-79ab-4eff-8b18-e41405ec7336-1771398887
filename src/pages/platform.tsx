@@ -757,6 +757,10 @@ export default function PlatformPage() {
       <Head>
         <title>Platform Overview - SiriusB iQ AI Data Sciences Lab</title>
       </Head>
+      <SEO 
+        title="Platform Overview — Kincaid Health"
+        description="Kincaid Health transforms healthcare benefits management with AI-powered analytics, contract intelligence, and real-time monitoring."
+      />
       
       <Nav />
 
@@ -836,11 +840,10 @@ export default function PlatformPage() {
           >
             <div className="text-xs tracking-[0.2em] text-blue-400/70 uppercase mb-4">Platform</div>
             <h1 className="text-5xl md:text-6xl font-bold bg-gradient-to-r from-blue-400 via-purple-400 to-pink-400 bg-clip-text text-transparent mb-6 leading-tight">
-              Explore the Platform
+              Kincaid Health Platform
             </h1>
             <p className="text-lg text-white/70 max-w-3xl leading-relaxed mb-8">
-              A comprehensive operating system for fiduciary-grade decisions. Navigate through our core platform capabilities, 
-              industry solutions, integrations, and resources to find exactly what you need.
+              The Kincaid Health Platform is the enterprise healthcare intelligence system
             </p>
 
             <div className="flex flex-wrap gap-3 mb-12">

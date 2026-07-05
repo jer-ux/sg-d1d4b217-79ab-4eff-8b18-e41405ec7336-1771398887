@@ -123,8 +123,8 @@ export default function PlatformOverviewPage() {
   return (
     <>
       <SEO
-        title="Platform Overview | SiriusB iQ"
-        description="Discover the AI-powered platform transforming health economics and benefits intelligence with real-time analytics and enterprise security."
+        title="Platform Overview — Kincaid Health"
+        description="Kincaid Health is the enterprise intelligence platform that transforms healthcare cost management with AI-powered intelligence and evidence-based accountability."
       />
       <SiteHeader />
       <Nav />

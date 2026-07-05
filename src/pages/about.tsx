@@ -27,8 +27,8 @@ export default function AboutPage() {
   return (
     <>
       <SEO 
-        title="About SiriusB iQ - Algorithmic Fiduciary Intelligence Platform"
-        description="Learn about SiriusB iQ's mission to transform enterprise governance through algorithmic fiduciary intelligence, data orchestration, and agentic workflows."
+        title="About — Kincaid Health"
+        description="Kincaid Health is the AI-powered platform turning healthcare cost opacity into evidence-based accountability."
       />
       <Nav />
       
@@ -65,14 +65,8 @@ export default function AboutPage() {
                 </span>
               </motion.div>
 
-              <h1 className="text-5xl md:text-7xl font-bold mb-6">
-                <span className="bg-gradient-to-r from-blue-200 via-purple-200 to-pink-200 bg-clip-text text-transparent">
-                  Transforming Enterprise
-                </span>
-                <br />
-                <span className="bg-gradient-to-r from-blue-400 via-purple-400 to-pink-400 bg-clip-text text-transparent">
-                  Governance & Intelligence
-                </span>
+              <h1 className="text-5xl md:text-6xl font-bold tracking-tight bg-gradient-to-r from-white via-neutral-200 to-neutral-400 bg-clip-text text-transparent">
+                About Kincaid Health
               </h1>
 
               <p className="text-xl md:text-2xl text-gray-300 max-w-4xl mx-auto mb-8 leading-relaxed">

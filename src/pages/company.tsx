@@ -615,9 +615,9 @@ export default function CompanyPage() {
 
   return (
     <>
-      <SEO
-        title="Leadership Team - SiriusB iQ"
-        description="Meet the exceptional leadership team behind SiriusB iQ's AI-driven platform. Combined expertise in AI, actuarial science, public policy, and scientific research."
+      <SEO 
+        title="Company — Kincaid Health"
+        description="Learn about Kincaid Health's mission to bring transparency and accountability to healthcare benefits."
       />
       
       <div className="min-h-screen bg-gradient-to-b from-slate-950 via-slate-900 to-slate-950">
@@ -635,8 +635,8 @@ export default function CompanyPage() {
               <span className="text-blue-400 text-sm font-medium">Leadership Team</span>
             </div>
             
-            <h1 className="text-5xl md:text-6xl font-bold mb-6 bg-gradient-to-r from-blue-400 via-purple-400 to-pink-400 bg-clip-text text-transparent">
-              World-Class Leadership
+            <h1 className="text-5xl md:text-6xl font-bold tracking-tight bg-gradient-to-r from-white via-neutral-200 to-neutral-400 bg-clip-text text-transparent mb-6">
+              Kincaid Health
             </h1>
             
             <p className="text-xl text-slate-300 max-w-3xl mx-auto leading-relaxed">

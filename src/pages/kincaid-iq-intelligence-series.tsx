@@ -430,8 +430,8 @@ export default function KincaidIQIntelligenceSeries() {
         <meta name="description" content="Forensic PBM intelligence reports and actuarial analysis for fiduciaries, actuaries, and capital markets." />
       </Head>
       <SEO 
-        title="Kincaid Health Intelligence Series - Actuarial Benefits, PBM Defense & Claims Recovery"
-        description="Complete suite of forensic intelligence products: Actuarial Benefits Intelligence, PBM Contract Clarity 360*, Claims Recovery Intelligence, and Sales Intelligence for self-funded healthcare."
+        title="Intelligence Series — Kincaid Health"
+        description="Real-world case studies demonstrating how Kincaid Health uncovers hidden waste and protects bottom lines."
       />
 
       <Nav />
@@ -446,12 +446,12 @@ export default function KincaidIQIntelligenceSeries() {
                 Forensic Intelligence Center
               </div>
               
-              <h1 className="text-5xl md:text-6xl font-serif font-bold text-white mb-6 leading-tight">
+              <h1 className="text-5xl md:text-6xl font-bold mb-6 bg-gradient-to-br from-white via-neutral-200 to-neutral-400 bg-clip-text text-transparent">
                 Kincaid Health Intelligence Series
               </h1>
               
-              <p className="text-xl text-neutral-300 leading-relaxed mb-8">
-                Evidence-based forensic audits employing actuarial rigor, contract intelligence frameworks, and clinical validation protocols. Sorted seamlessly from essential benchmarking dockets to flagship risk defense suites.
+              <p className="text-xl text-neutral-400 max-w-3xl mx-auto">
+                Real case studies showing how Kincaid Health uncovers hidden waste, stops leakage, and protects bottom lines.
               </p>
             </div>
           </div>

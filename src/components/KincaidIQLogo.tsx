@@ -3,79 +3,131 @@ import React from "react";
 export function KincaidIQLogo({ className = "" }: { className?: string }) {
   return (
     <svg
-      viewBox="0 0 200 50"
+      viewBox="0 0 180 50"
       className={className}
       xmlns="http://www.w3.org/2000/svg"
     >
       <defs>
-        <linearGradient id="brand-gradient" x1="0%" y1="0%" x2="100%" y2="100%">
+        <linearGradient id="shield-gradient" x1="0%" y1="0%" x2="0%" y2="100%">
           <stop offset="0%" stopColor="#DC2626" />
-          <stop offset="50%" stopColor="#EF4444" />
+          <stop offset="50%" stopColor="#B91C1C" />
+          <stop offset="100%" stopColor="#991B1B" />
+        </linearGradient>
+        <linearGradient id="gold-gradient" x1="0%" y1="0%" x2="100%" y2="0%">
+          <stop offset="0%" stopColor="#FCD34D" />
+          <stop offset="50%" stopColor="#F59E0B" />
+          <stop offset="100%" stopColor="#D97706" />
+        </linearGradient>
+        <linearGradient id="accent-gradient" x1="0%" y1="0%" x2="100%" y2="0%">
+          <stop offset="0%" stopColor="#DC2626" />
           <stop offset="100%" stopColor="#F97316" />
         </linearGradient>
-        <linearGradient id="text-gradient" x1="0%" y1="0%" x2="100%" y2="0%">
-          <stop offset="0%" stopColor="#111827" />
-          <stop offset="100%" stopColor="#374151" />
-        </linearGradient>
+        <filter id="shadow">
+          <feDropShadow dx="0" dy="2" stdDeviation="3" floodOpacity="0.3"/>
+        </filter>
       </defs>
 
-      {/* Modern shield/badge shape */}
+      {/* Heraldic Shield */}
       <path
-        d="M 8 15 L 8 28 Q 8 35 15 38 L 20 40 L 25 38 Q 32 35 32 28 L 32 15 Q 32 12 29 12 L 11 12 Q 8 12 8 15 Z"
-        fill="url(#brand-gradient)"
-        opacity="0.9"
+        d="M 25 5 L 45 5 Q 47 5 47 7 L 47 25 Q 47 35 35 42 Q 25 47 25 47 Q 25 47 15 42 Q 3 35 3 25 L 3 7 Q 3 5 5 5 Z"
+        fill="url(#shield-gradient)"
+        stroke="url(#gold-gradient)"
+        strokeWidth="1.5"
+        filter="url(#shadow)"
       />
 
-      {/* K letterform with medical cross integration */}
-      <g>
+      {/* Inner shield detail */}
+      <path
+        d="M 25 8 L 42 8 Q 44 8 44 10 L 44 24 Q 44 32 35 38 Q 25 43 25 43 Q 25 43 15 38 Q 6 32 6 24 L 6 10 Q 6 8 8 8 Z"
+        fill="none"
+        stroke="#FCD34D"
+        strokeWidth="0.5"
+        opacity="0.3"
+      />
+
+      {/* Ornate K with cross */}
+      <g transform="translate(25, 25)">
+        {/* Left vertical stem */}
+        <rect x="-8" y="-15" width="3" height="30" fill="white" rx="1"/>
+        
+        {/* Upper diagonal */}
         <path
-          d="M 13 17 L 13 36 L 15 36 L 15 27 L 23 36 L 26 36 L 18 27 L 25 17 L 22 17 L 15 26 L 15 17 Z"
+          d="M -5 -5 L 8 -15 L 10 -13 L -3 -3 Z"
           fill="white"
-          opacity="0.95"
         />
         
-        {/* Integrated medical cross */}
-        <rect x="17.5" y="22" width="1.5" height="6" fill="white" opacity="0.95" />
-        <rect x="16" y="23.5" width="4.5" height="1.5" fill="white" opacity="0.95" />
+        {/* Lower diagonal */}
+        <path
+          d="M -5 5 L 8 15 L 10 13 L -3 3 Z"
+          fill="white"
+        />
+        
+        {/* Medical cross integration */}
+        <g opacity="0.9">
+          <rect x="2" y="-3" width="6" height="1.5" fill="url(#gold-gradient)" rx="0.5"/>
+          <rect x="4" y="-5" width="2" height="6" fill="url(#gold-gradient)" rx="0.5"/>
+        </g>
+        
+        {/* Crown detail at top */}
+        <path
+          d="M -8 -16 L -7 -17 L -6 -16 L -5 -17 L -4 -16"
+          stroke="url(#gold-gradient)"
+          strokeWidth="0.8"
+          fill="none"
+        />
       </g>
 
-      {/* Pulse indicator dot */}
-      <circle cx="30" cy="14" r="2" fill="#EF4444">
-        <animate
-          attributeName="opacity"
-          values="1;0.3;1"
-          dur="2s"
-          repeatCount="indefinite"
-        />
-      </circle>
+      {/* Decorative ribbons */}
+      <path
+        d="M 10 40 Q 15 42 20 40"
+        stroke="url(#gold-gradient)"
+        strokeWidth="1.5"
+        fill="none"
+        opacity="0.6"
+      />
+      <path
+        d="M 30 40 Q 35 42 40 40"
+        stroke="url(#gold-gradient)"
+        strokeWidth="1.5"
+        fill="none"
+        opacity="0.6"
+      />
 
-      {/* KINCAID HEALTH text */}
+      {/* KINCAID text */}
       <text
-        x="40"
-        y="26"
+        x="60"
+        y="28"
         fontFamily="system-ui, -apple-system, sans-serif"
-        fontSize="16"
+        fontSize="20"
         fontWeight="700"
-        fill="url(#text-gradient)"
+        fill="#1F2937"
         letterSpacing="-0.5"
       >
         KINCAID
       </text>
 
+      {/* HEALTH text with accent bar */}
       <text
-        x="40"
-        y="38"
+        x="60"
+        y="42"
         fontFamily="system-ui, -apple-system, sans-serif"
-        fontSize="10"
-        fontWeight="500"
+        fontSize="9"
+        fontWeight="400"
         fill="#6B7280"
-        letterSpacing="1.5"
+        letterSpacing="2"
       >
         HEALTH
       </text>
-
-      {/* Accent line under HEALTH */}
-      <rect x="40" y="40" width="40" height="1.5" fill="url(#brand-gradient)" opacity="0.6" />
+      <rect x="60" y="44" width="40" height="1.5" fill="url(#accent-gradient)" opacity="0.6" />
+      
+      {/* Laurel detail */}
+      <path
+        d="M 165 25 Q 167 23 169 25 Q 167 27 165 25 M 171 25 Q 173 23 175 25 Q 173 27 171 25"
+        stroke="#D97706"
+        strokeWidth="0.8"
+        fill="none"
+        opacity="0.4"
+      />
     </svg>
   );
 }

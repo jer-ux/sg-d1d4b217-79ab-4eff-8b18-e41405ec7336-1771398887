@@ -12,105 +12,93 @@ export function KincaidIQLogo({ className = "" }: { className?: string }) {
     >
       <defs>
         <linearGradient id="shield-gradient" x1="0%" y1="0%" x2="100%" y2="100%">
-          <stop offset="0%" stopColor="#3b82f6" />
-          <stop offset="100%" stopColor="#1d4ed8" />
+          <stop offset="0%" stopColor="#1e40af" />
+          <stop offset="100%" stopColor="#0c1e47" />
         </linearGradient>
         <linearGradient id="border-gradient" x1="0%" y1="0%" x2="100%" y2="100%">
-          <stop offset="0%" stopColor="#60a5fa" />
-          <stop offset="50%" stopColor="#3b82f6" />
-          <stop offset="100%" stopColor="#2563eb" />
+          <stop offset="0%" stopColor="#3b82f6" />
+          <stop offset="100%" stopColor="#1e3a8a" />
         </linearGradient>
         <linearGradient id="brand-gradient" x1="0%" y1="0%" x2="100%" y2="0%">
-          <stop offset="0%" stopColor="#3b82f6" />
-          <stop offset="100%" stopColor="#60a5fa" />
+          <stop offset="0%" stopColor="#1e40af" />
+          <stop offset="100%" stopColor="#3b82f6" />
         </linearGradient>
       </defs>
 
-      {/* Heraldic Shield */}
+      {/* Angular Military Shield */}
       <path
-        d="M 25 5 
-           L 33 5 
-           C 35 5, 37 7, 37 9 
-           L 37 22 
-           C 37 26, 35 28, 31 32 
-           L 29 34 
-           L 27 32 
-           C 23 28, 21 26, 21 22 
-           L 21 9 
-           C 21 7, 23 5, 25 5 Z"
+        d="M 29 4 
+           L 37 4 
+           L 40 7 
+           L 40 20 
+           L 37 28 
+           L 33 34 
+           L 29 37 
+           L 25 34 
+           L 21 28 
+           L 18 20 
+           L 18 7 
+           L 21 4 
+           Z"
         fill="url(#shield-gradient)"
         stroke="url(#border-gradient)"
-        strokeWidth="1"
+        strokeWidth="2"
       />
 
-      {/* Ornate K with Crown and Medical Cross */}
-      <g transform="translate(24, 12)">
-        {/* Crown detail at top */}
-        <path
-          d="M 2 0 L 3 -1 L 4 0 L 5 -1 L 6 0 L 7 -1 L 8 0"
-          stroke="#60a5fa"
-          strokeWidth="1"
-          fill="none"
+      {/* Powerful K with Sharp Angles */}
+      <g transform="translate(23, 10)">
+        {/* Vertical bar - thicker */}
+        <rect x="2" y="2" width="3" height="22" fill="white" />
+        
+        {/* Upper diagonal - sharp angle */}
+        <polygon 
+          points="5,8 12,2 14,4 7,12" 
+          fill="white"
         />
         
-        {/* K letterform - medieval style */}
-        <path
-          d="M 2 2 L 2 18 M 2 8 L 8 2 M 2 10 L 8 18"
-          stroke="white"
-          strokeWidth="2.5"
-          strokeLinecap="round"
-          strokeLinejoin="round"
+        {/* Lower diagonal - sharp angle */}
+        <polygon 
+          points="5,14 7,12 14,22 12,24" 
+          fill="white"
         />
         
-        {/* Medical cross integrated into K */}
-        <rect x="4" y="8" width="1.5" height="4" fill="#60a5fa" />
-        <rect x="2.5" y="9.5" width="4" height="1.5" fill="#60a5fa" />
+        {/* Medical cross - bold and centered */}
+        <rect x="6" y="11" width="2.5" height="6" fill="#3b82f6" />
+        <rect x="4" y="13" width="6" height="2.5" fill="#3b82f6" />
       </g>
 
-      {/* Decorative ribbon below shield */}
-      <path
-        d="M 18 36 Q 20 38, 22 36 Q 24 34, 26 36 Q 28 38, 30 36 Q 32 34, 34 36 Q 36 38, 38 36 Q 40 34, 42 36"
-        stroke="#3b82f6"
-        strokeWidth="1.2"
-        fill="none"
-        opacity="0.6"
-      />
+      {/* Sharp accent lines */}
+      <line x1="18" y1="38" x2="40" y2="38" stroke="#3b82f6" strokeWidth="2" opacity="0.5" />
+      <line x1="20" y1="40" x2="38" y2="40" stroke="#1e40af" strokeWidth="1.5" opacity="0.3" />
 
-      {/* Laurel accents on right */}
-      <path
-        d="M 42 20 Q 44 21, 43 23 Q 42 25, 44 26"
-        stroke="#60a5fa"
-        strokeWidth="1.2"
-        fill="none"
-        opacity="0.5"
-      />
-
-      {/* KINCAID text */}
+      {/* KINCAID text - bold and industrial */}
       <text
         x="50"
-        y="25"
+        y="26"
         fontFamily="system-ui, -apple-system, sans-serif"
-        fontSize="20"
-        fontWeight="800"
+        fontSize="22"
+        fontWeight="900"
         fill="white"
-        letterSpacing="-0.5"
+        letterSpacing="-1"
       >
         KINCAID
       </text>
 
-      {/* HEALTH text with accent bar */}
+      {/* HEALTH text - strong and wide */}
       <text
         x="50"
         y="42"
         fontFamily="system-ui, -apple-system, sans-serif"
-        fontSize="10"
-        fontWeight="600"
-        fill="#9CA3AF"
-        letterSpacing="2"
+        fontSize="11"
+        fontWeight="700"
+        fill="#94a3b8"
+        letterSpacing="3"
       >
         HEALTH
       </text>
-      <rect x="50" y="44" width="40" height="2" fill="url(#brand-gradient)" opacity="0.7" />
+      
+      {/* Bold accent bar */}
+      <rect x="50" y="45" width="50" height="2.5" fill="url(#brand-gradient)" opacity="0.8" />
     </svg>
   );
 }

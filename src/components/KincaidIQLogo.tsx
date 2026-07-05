@@ -3,57 +3,119 @@ import React from "react";
 export function KincaidIQLogo({ className = "" }: { className?: string }) {
   return (
     <svg
-      viewBox="0 0 200 50"
+      viewBox="0 0 220 50"
       className={className}
       xmlns="http://www.w3.org/2000/svg"
     >
       <defs>
-        <linearGradient id="kincaid-gradient" x1="0%" y1="0%" x2="100%" y2="0%">
-          <stop offset="0%" stopColor="#1F2937" />
-          <stop offset="100%" stopColor="#111827" />
+        <linearGradient id="k-gradient" x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%" stopColor="#DC2626" />
+          <stop offset="50%" stopColor="#F43F5E" />
+          <stop offset="100%" stopColor="#FB7185" />
         </linearGradient>
-        <linearGradient id="cross-gradient" x1="0%" y1="0%" x2="100%" y2="100%">
-          <stop offset="0%" stopColor="#F43F5E" />
-          <stop offset="100%" stopColor="#BE123C" />
+        <linearGradient id="text-gradient" x1="0%" y1="0%" x2="100%" y2="0%">
+          <stop offset="0%" stopColor="#111827" />
+          <stop offset="100%" stopColor="#374151" />
+        </linearGradient>
+        <linearGradient id="pulse-gradient" x1="0%" y1="0%" x2="100%" y2="0%">
+          <stop offset="0%" stopColor="#EF4444" stopOpacity="0.3" />
+          <stop offset="50%" stopColor="#F43F5E" stopOpacity="0.5" />
+          <stop offset="100%" stopColor="#EF4444" stopOpacity="0.3" />
         </linearGradient>
       </defs>
 
-      {/* K monogram with health cross */}
+      {/* Hexagonal badge background */}
       <g>
-        {/* K letter form */}
-        <path
-          d="M 12 10 L 12 40 L 16 40 L 16 26 L 28 40 L 33 40 L 21 26 L 32 10 L 27 10 L 16 24 L 16 10 Z"
-          fill="url(#kincaid-gradient)"
+        <polygon
+          points="18,5 30,5 36,15 30,25 18,25 12,15"
+          fill="url(#k-gradient)"
+          opacity="0.15"
         />
-        
-        {/* Health cross symbol integrated in K */}
-        <rect x="19" y="18" width="2" height="8" fill="url(#cross-gradient)" />
-        <rect x="17" y="20" width="6" height="2" fill="url(#cross-gradient)" />
+        <polygon
+          points="18,7 30,7 35,15 30,23 18,23 13,15"
+          fill="none"
+          stroke="url(#k-gradient)"
+          strokeWidth="1.5"
+        />
       </g>
 
-      {/* KINCAID text */}
+      {/* Bold K with integrated cross */}
+      <g>
+        <path
+          d="M 16 10 L 19 10 L 19 21 L 28 10 L 32 10 L 24 19.5 L 32 29 L 28 29 L 19 19.5 L 19 29 L 16 29 Z"
+          fill="url(#k-gradient)"
+          strokeWidth="0.5"
+          stroke="url(#k-gradient)"
+        />
+        
+        {/* Medical cross - sharp and modern */}
+        <rect x="22.5" y="12" width="1.5" height="6" fill="#DC2626" />
+        <rect x="20.5" y="14" width="5.5" height="1.5" fill="#DC2626" />
+      </g>
+
+      {/* KINCAID - bold modern font */}
       <text
-        x="40"
-        y="28"
+        x="42"
+        y="23"
         fontFamily="system-ui, -apple-system, sans-serif"
-        fontSize="18"
-        fontWeight="700"
-        fill="url(#kincaid-gradient)"
+        fontSize="20"
+        fontWeight="900"
+        fill="url(#text-gradient)"
+        letterSpacing="-0.5"
       >
         KINCAID
       </text>
 
-      {/* HEALTH text */}
+      {/* HEALTH - with accent bar */}
+      <g>
+        <rect x="42" y="28" width="16" height="1.5" fill="url(#k-gradient)" opacity="0.6" />
+        <text
+          x="42"
+          y="39"
+          fontFamily="system-ui, -apple-system, sans-serif"
+          fontSize="9"
+          fontWeight="600"
+          fill="#6B7280"
+          letterSpacing="2"
+        >
+          HEALTH
+        </text>
+      </g>
+
+      {/* Pulse indicator */}
+      <circle cx="200" cy="15" r="3" fill="url(#k-gradient)">
+        <animate
+          attributeName="opacity"
+          values="1;0.3;1"
+          dur="2s"
+          repeatCount="indefinite"
+        />
+      </circle>
+      <circle cx="200" cy="15" r="5" fill="none" stroke="url(#k-gradient)" strokeWidth="0.5" opacity="0.5">
+        <animate
+          attributeName="r"
+          values="3;6;3"
+          dur="2s"
+          repeatCount="indefinite"
+        />
+        <animate
+          attributeName="opacity"
+          values="0.5;0;0.5"
+          dur="2s"
+          repeatCount="indefinite"
+        />
+      </circle>
+
+      {/* IQ indicator */}
       <text
-        x="40"
-        y="42"
+        x="170"
+        y="20"
         fontFamily="system-ui, -apple-system, sans-serif"
-        fontSize="11"
-        fontWeight="400"
-        fill="#6B7280"
-        letterSpacing="1"
+        fontSize="10"
+        fontWeight="700"
+        fill="url(#k-gradient)"
       >
-        HEALTH
+        iQ
       </text>
     </svg>
   );

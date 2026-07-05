@@ -34,12 +34,12 @@ export const menuItems = [
 export type NavItem_Old = { label: string; href: string };
 
 export const siteConfig = {
-  name: "Kincaid IQ",
+  name: "Kincaid Health",
   description: "High-Velocity Decision Engine for Health Economics & Benefits Intelligence",
   navLinks: [
     { href: "/", label: "Home" },
     { href: "/platform", label: "Platform" },
-    { href: "/kincaid-iq", label: "Kincaid IQ" },
+    { href: "/kincaid-iq", label: "Kincaid Health" },
     { href: "/contract-intelligence", label: "Contract Intel" },
     { href: "/evidence-receipts", label: "Evidence" },
     { href: "/verified-savings-ledger", label: "Ledger" },

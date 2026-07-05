@@ -19,7 +19,7 @@ export default function Navbar() {
         <Link href="/" className="flex items-center">
           <Image 
             src="/1772951240194-20bfeb68-285b-4423-9485-b2585796d66a.jpeg"
-            alt="Kincaid IQ Data Sciences Lab"
+            alt="Kincaid Health Data Sciences Lab"
             width={150}
             height={38}
             className="h-9 w-auto"

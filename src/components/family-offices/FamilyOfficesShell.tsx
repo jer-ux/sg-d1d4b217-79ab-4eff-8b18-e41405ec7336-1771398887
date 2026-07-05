@@ -15,7 +15,7 @@ export default function FamilyOfficesShell(props: {
   return (
     <main className="min-h-screen bg-black text-white">
       <Head>
-        <title>{title} | Kincaid IQ</title>
+        <title>{title} | Kincaid Health</title>
         <meta name="description" content={subtitle || title} />
       </Head>
 
@@ -66,7 +66,7 @@ export default function FamilyOfficesShell(props: {
 
         <div className="mt-14 rounded-3xl border border-white/10 bg-white/5 p-6">
           <div className="text-xs tracking-[0.2em] text-white/50">KENDRA™</div>
-          <div className="mt-3 text-lg font-semibold text-white/90">Kincaid IQ Client Concierge</div>
+          <div className="mt-3 text-lg font-semibold text-white/90">Kincaid Health Client Concierge</div>
           <div className="mt-2 text-sm text-white/70">
             Confidential intake, routing, and scheduling.
           </div>

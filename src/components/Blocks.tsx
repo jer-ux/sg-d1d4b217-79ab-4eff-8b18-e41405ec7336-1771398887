@@ -19,7 +19,7 @@ export function CTA() {
     <div className="rounded-3xl border border-orange-400/25 bg-gradient-to-br from-orange-400/10 via-rose-400/5 to-transparent p-8 mt-10 shadow-[0_20px_70px_rgba(251,191,36,0.15)] backdrop-blur-xl transition-all hover:border-orange-400/35">
       <div className="text-2xl font-bold text-white">Make value provable.</div>
       <div className="text-white/80 mt-3 max-w-2xl text-lg">
-        Kincaid IQ turns complex cost and operational opacity into an auditable ledger with evidence receipts, controls, and action workflows.
+        Kincaid Health turns complex cost and operational opacity into an auditable ledger with evidence receipts, controls, and action workflows.
       </div>
       <div className="mt-6 flex gap-3">
         <Link 

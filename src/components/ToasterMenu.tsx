@@ -144,7 +144,7 @@ export function ToasterMenu() {
               <div className="px-6 pt-6 pb-4 border-b border-gray-200 dark:border-gray-800">
                 <div className="flex items-center justify-between">
                   <div>
-                    <h2 className="text-2xl font-semibold tracking-tight">Kincaid IQ</h2>
+                    <h2 className="text-2xl font-semibold tracking-tight">Kincaid Health</h2>
                     <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">
                       AI Data Sciences Lab
                     </p>
@@ -242,7 +242,7 @@ export function ToasterMenu() {
               <div className="px-6 py-4 border-t border-gray-200 dark:border-gray-800">
                 <div className="text-xs text-gray-500 dark:text-gray-400 text-center space-y-1">
                   <div>Press ESC to close</div>
-                  <div className="text-[10px]">© 2026 Kincaid IQ. All rights reserved.</div>
+                  <div className="text-[10px]">© 2026 Kincaid Health. All rights reserved.</div>
                 </div>
               </div>
             </motion.div>

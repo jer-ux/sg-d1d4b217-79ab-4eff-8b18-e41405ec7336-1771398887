@@ -277,6 +277,196 @@ export default function CFOPage() {
           </motion.div>
         </section>
 
+        {/* War Room Preview - Las Vegas Style */}
+        <section className="relative py-32 overflow-hidden">
+          {/* Vegas Background Effects */}
+          <div className="absolute inset-0 bg-gradient-to-b from-black via-purple-950/20 to-black" />
+          <div className="absolute inset-0">
+            <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-purple-500/20 rounded-full blur-[120px] animate-pulse" />
+            <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-blue-500/20 rounded-full blur-[120px] animate-pulse" style={{ animationDelay: "1s" }} />
+            <div className="absolute top-1/2 left-1/2 w-96 h-96 bg-pink-500/10 rounded-full blur-[100px] animate-pulse" style={{ animationDelay: "2s" }} />
+          </div>
+          
+          {/* Neon Grid Overlay */}
+          <div className="absolute inset-0 opacity-10">
+            <div className="absolute inset-0" style={{
+              backgroundImage: `
+                linear-gradient(rgba(139, 92, 246, 0.3) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(139, 92, 246, 0.3) 1px, transparent 1px)
+              `,
+              backgroundSize: "60px 60px"
+            }} />
+          </div>
+
+          {/* Scanning Lines Effect */}
+          <div className="absolute inset-0 pointer-events-none overflow-hidden">
+            <div className="absolute w-full h-1 bg-gradient-to-r from-transparent via-purple-400/50 to-transparent animate-scan" />
+            <div className="absolute w-full h-1 bg-gradient-to-r from-transparent via-blue-400/30 to-transparent animate-scan" style={{ animationDelay: "2s" }} />
+          </div>
+
+          <div className="relative max-w-7xl mx-auto px-6">
+            <motion.div
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8 }}
+              className="text-center mb-16"
+            >
+              {/* Vegas-style neon header */}
+              <div className="inline-block relative mb-6">
+                <div className="absolute inset-0 bg-purple-500/20 blur-2xl" />
+                <h2 className="relative text-5xl md:text-6xl font-black tracking-tight">
+                  <span className="bg-gradient-to-r from-purple-400 via-pink-400 to-blue-400 bg-clip-text text-transparent animate-gradient">
+                    Executive Command Center
+                  </span>
+                </h2>
+                {/* Neon glow effect */}
+                <div className="absolute -inset-4 bg-gradient-to-r from-purple-500/20 via-pink-500/20 to-blue-500/20 blur-xl opacity-50 animate-pulse" />
+              </div>
+              
+              <p className="text-xl text-neutral-400 max-w-3xl mx-auto leading-relaxed">
+                Real-time financial intelligence with{" "}
+                <span className="text-purple-400 font-semibold">Vegas-grade visualization</span>
+              </p>
+            </motion.div>
+
+            {/* Interactive War Room Display */}
+            <motion.div
+              initial={{ opacity: 0, scale: 0.95 }}
+              whileInView={{ opacity: 1, scale: 1 }}
+              transition={{ duration: 0.8, delay: 0.2 }}
+              className="relative"
+            >
+              {/* Holographic border effect */}
+              <div className="absolute -inset-1 bg-gradient-to-r from-purple-500 via-pink-500 to-blue-500 rounded-2xl blur-xl opacity-30 animate-pulse" />
+              
+              <div className="relative bg-black/80 backdrop-blur-xl border border-purple-500/30 rounded-2xl overflow-hidden shadow-2xl">
+                {/* Neon top bar */}
+                <div className="h-1 bg-gradient-to-r from-purple-500 via-pink-500 to-blue-500 animate-gradient" />
+                
+                {/* Content with Vegas styling */}
+                <div className="p-8">
+                  <div className="grid grid-cols-3 gap-6 mb-8">
+                    {[
+                      { label: "EBITDA Impact", value: "$4.2M", change: "+12.8%", color: "from-green-400 to-emerald-500" },
+                      { label: "Risk Score", value: "23", change: "-45%", color: "from-blue-400 to-cyan-500" },
+                      { label: "Savings Locked", value: "$1.8M", change: "+22%", color: "from-purple-400 to-pink-500" }
+                    ].map((kpi, i) => (
+                      <motion.div
+                        key={i}
+                        initial={{ opacity: 0, y: 20 }}
+                        whileInView={{ opacity: 1, y: 0 }}
+                        transition={{ delay: 0.4 + i * 0.1 }}
+                        className="relative group"
+                      >
+                        {/* Vegas card glow */}
+                        <div className={`absolute -inset-0.5 bg-gradient-to-r ${kpi.color} rounded-lg blur opacity-0 group-hover:opacity-50 transition-opacity`} />
+                        
+                        <div className="relative bg-black/60 backdrop-blur-sm border border-white/10 rounded-lg p-6">
+                          <div className="text-xs font-semibold text-neutral-400 uppercase tracking-wider mb-2">
+                            {kpi.label}
+                          </div>
+                          <div className={`text-3xl font-black bg-gradient-to-r ${kpi.color} bg-clip-text text-transparent mb-1`}>
+                            {kpi.value}
+                          </div>
+                          <div className="text-sm text-green-400 font-semibold">
+                            {kpi.change}
+                          </div>
+                          {/* Sparkle effect */}
+                          <div className="absolute top-2 right-2 w-2 h-2 bg-white/80 rounded-full animate-ping" />
+                        </div>
+                      </motion.div>
+                    ))}
+                  </div>
+
+                  {/* Live data stream visualization */}
+                  <div className="space-y-4">
+                    {[
+                      { event: "Contract Leakage Detected", value: "$142K", severity: "high" },
+                      { event: "Vendor Compliance Issue", value: "$89K", severity: "medium" },
+                      { event: "Claims Anomaly Pattern", value: "$67K", severity: "high" }
+                    ].map((item, i) => (
+                      <motion.div
+                        key={i}
+                        initial={{ opacity: 0, x: -20 }}
+                        whileInView={{ opacity: 1, x: 0 }}
+                        transition={{ delay: 0.6 + i * 0.1 }}
+                        className="relative group cursor-pointer"
+                      >
+                        {/* Scanning line effect on hover */}
+                        <div className="absolute inset-0 bg-gradient-to-r from-transparent via-purple-500/20 to-transparent translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-1000" />
+                        
+                        <div className="relative flex items-center gap-4 p-4 bg-black/40 backdrop-blur-sm border border-white/5 rounded-lg hover:border-purple-500/30 transition-all">
+                          <div className={`w-2 h-2 rounded-full ${item.severity === "high" ? "bg-red-400" : "bg-amber-400"} animate-pulse shadow-lg ${item.severity === "high" ? "shadow-red-400/50" : "shadow-amber-400/50"}`} />
+                          <div className="flex-1">
+                            <div className="text-sm font-semibold text-white/90">{item.event}</div>
+                            <div className="text-xs text-neutral-500">Just now</div>
+                          </div>
+                          <div className="text-lg font-bold bg-gradient-to-r from-red-400 to-pink-400 bg-clip-text text-transparent">
+                            {item.value}
+                          </div>
+                          {/* Holographic arrow */}
+                          <div className="text-purple-400 opacity-0 group-hover:opacity-100 transition-opacity">
+                            →
+                          </div>
+                        </div>
+                      </motion.div>
+                    ))}
+                  </div>
+                </div>
+
+                {/* Bottom neon accent */}
+                <div className="h-1 bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 animate-gradient" style={{ animationDirection: "reverse" }} />
+              </div>
+            </motion.div>
+
+            {/* CTA with Vegas styling */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.8 }}
+              className="text-center mt-12"
+            >
+              <Link href="/request-demo">
+                <motion.button
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
+                  className="relative group px-8 py-4 rounded-lg overflow-hidden"
+                >
+                  {/* Animated Vegas border */}
+                  <div className="absolute inset-0 bg-gradient-to-r from-purple-500 via-pink-500 to-blue-500 animate-gradient" />
+                  <div className="absolute inset-[2px] bg-black rounded-lg" />
+                  
+                  <span className="relative text-lg font-bold bg-gradient-to-r from-purple-400 via-pink-400 to-blue-400 bg-clip-text text-transparent">
+                    Experience the Command Center
+                  </span>
+                  
+                  {/* Glow effect on hover */}
+                  <div className="absolute inset-0 bg-gradient-to-r from-purple-500/20 via-pink-500/20 to-blue-500/20 blur-xl opacity-0 group-hover:opacity-100 transition-opacity" />
+                </motion.button>
+              </Link>
+            </motion.div>
+          </div>
+
+          <style jsx>{`
+            @keyframes scan {
+              0% { top: 0; }
+              100% { top: 100%; }
+            }
+            @keyframes gradient {
+              0% { background-position: 0% 50%; }
+              50% { background-position: 100% 50%; }
+              100% { background-position: 0% 50%; }
+            }
+            .animate-scan {
+              animation: scan 3s linear infinite;
+            }
+            .animate-gradient {
+              background-size: 200% auto;
+              animation: gradient 3s linear infinite;
+            }
+          `}</style>
+        </section>
+
         {/* Live Interactive EBITDA Leakage Simulator Sandbox */}
         <section id="ebitda-leakage-simulator" className="py-24 px-4 bg-gradient-to-b from-slate-950 to-emerald-950/40 border-t border-emerald-500/20">
           <div className="max-w-6xl mx-auto">

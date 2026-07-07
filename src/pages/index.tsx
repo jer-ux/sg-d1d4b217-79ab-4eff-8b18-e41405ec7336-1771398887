@@ -248,11 +248,11 @@ export default function HomePage() {
             </motion.div>
 
             <motion.div
-              className="lg:col-span-5 relative scale-[0.8] origin-top"
-              initial={{ opacity: 0, x: 30 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.8, delay: 0.2, ease: "easeOut" }}>
-              
+              initial={{ opacity: 0, x: 50 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.8, delay: 0.2 }}
+              className="relative max-w-[100.8rem] mx-auto"
+            >
               {/* Overlay Text */}
               <motion.div
                 className="absolute top-8 left-1/2 -translate-x-1/2 z-20 text-center w-full px-4"

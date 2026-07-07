@@ -246,15 +246,14 @@ export default function Nav() {
             </div>
 
             {/* Products Dropdown */}
-            <div className="relative">
+            <div 
+              className="relative group"
+              onMouseEnter={() => setProductsDropdownOpen(true)}
+              onMouseLeave={() => {
+                setTimeout(() => setProductsDropdownOpen(false), 300);
+              }}
+            >
               <button
-                onClick={() => {
-                  setProductsDropdownOpen(!productsDropdownOpen);
-                  setKincaidIqDropdownOpen(false);
-                  setCompanyDropdownOpen(false);
-                  setFocusAreasDropdownOpen(false);
-                  setAuditsDropdownOpen(false);
-                }}
                 className="flex items-center gap-2 px-4 py-2 text-[#8C1515] hover:text-[#a61c1c] font-semibold transition-colors rounded-lg hover:bg-red-50/50">
                 Products
                 <ChevronDown className={`w-3 h-3 transition-transform ${productsDropdownOpen ? "rotate-180" : ""}`} />

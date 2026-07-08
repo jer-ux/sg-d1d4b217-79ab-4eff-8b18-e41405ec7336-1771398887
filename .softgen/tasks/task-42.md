@@ -53,7 +53,8 @@ kincaid-aios/
 8. Update build configs
 
 ## Checklist
-- [ ] Create new monorepo directory structure
+- [x] Create new monorepo directory structure documentation
+- [x] Fix RLS policies to eliminate recursion
 - [ ] Migrate frontend (src/ → apps/web/)
 - [ ] Migrate backend core (backend/ → apps/api/)
 - [ ] Extract actuarial engine to services/actuarial-engine/

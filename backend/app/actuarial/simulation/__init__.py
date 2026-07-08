@@ -8,7 +8,7 @@ from .monte_carlo import MonteCarloEngine
 from .statistics import SummaryStatistics
 from .confidence import ConfidenceInterval
 from .var import RiskMetrics
-from .scenarios import Scenario
+from .scenarios import Scenario, ScenarioLibrary
 from .distributions import Distribution, DistributionFactory
 from .random_variables import RandomVariable
 from .models import (
@@ -24,6 +24,7 @@ from .extended_models import (
     PricingModel,
     WorkforceCostModel
 )
+from .default_scenarios import library as default_scenarios
 
 __all__ = [
     "SimulationEngine",
@@ -33,6 +34,7 @@ __all__ = [
     "ConfidenceInterval",
     "RiskMetrics",
     "Scenario",
+    "ScenarioLibrary",
     "Distribution",
     "DistributionFactory",
     "RandomVariable",
@@ -45,4 +47,5 @@ __all__ = [
     "PensionFundingModel",
     "PricingModel",
     "WorkforceCostModel",
+    "default_scenarios",
 ]

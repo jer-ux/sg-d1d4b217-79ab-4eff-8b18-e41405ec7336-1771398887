@@ -20,24 +20,39 @@ export interface Database {
           id: string
           email: string
           name: string | null
+          full_name: string | null
           company: string | null
+          phone: string | null
+          job_title: string | null
           message: string | null
+          status: string | null
+          source: string | null
           created_at: string
         }
         Insert: {
           id?: string
           email: string
           name?: string | null
+          full_name?: string | null
           company?: string | null
+          phone?: string | null
+          job_title?: string | null
           message?: string | null
+          status?: string | null
+          source?: string | null
           created_at?: string
         }
         Update: {
           id?: string
           email?: string
           name?: string | null
+          full_name?: string | null
           company?: string | null
+          phone?: string | null
+          job_title?: string | null
           message?: string | null
+          status?: string | null
+          source?: string | null
           created_at?: string
         }
       }

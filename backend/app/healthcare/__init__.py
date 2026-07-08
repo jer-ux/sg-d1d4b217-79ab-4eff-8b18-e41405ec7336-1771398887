@@ -3,69 +3,90 @@ KINCAID HEALTH™ HEALTHCARE INTELLIGENCE SDK
 Complete Actuarial & Analytics Platform
 """
 
-from .claims_forecasting import MedicalClaimsEngine
+from .healthcare_model import HealthcareTrendModel
+from .claims_forecasting import ClaimsForecastingEngine
 from .pharmacy_trend import PharmacyTrendEngine
 from .glp1_economics import GLP1EconomicsEngine
 from .specialty_drug import SpecialtyDrugEngine
-from .utilization import UtilizationAnalytics
-from .pmpm import PMPMAnalytics
+from .utilization import UtilizationEngine
+from .pmpm import PMPMEngine
 from .completion_factors import CompletionFactorEngine
 from .ibnr import IBNREngine
 from .risk_adjustment import RiskAdjustmentEngine
 from .population_health import PopulationHealthEngine
 from .large_claims import LargeClaimantEngine
 from .stop_loss_pricing import StopLossPricingEngine
-from .stop_loss_optimization import StopLossOptimizer
+from .stop_loss_optimization import StopLossOptimizationEngine
 from .network_performance import NetworkPerformanceEngine
-from .provider_contracts import ProviderContractAnalytics
+from .provider_contracts import ProviderContractEngine
 from .pbm_intelligence import PBMIntelligenceEngine
-from .formulary import FormularyAnalytics
+from .formulary_analytics import FormularyAnalyticsEngine
 from .rebate_economics import RebateEconomicsEngine
-from .spread_detection import SpreadPricingDetector
-from .fiduciary_leakage import FiduciaryLeakageDetector
 from .employer_benchmark import EmployerBenchmarkEngine
 from .renewal_projection import RenewalProjectionEngine
 from .plan_design import PlanDesignSimulator
-from .contribution_optimizer import ContributionOptimizer
+from .contribution_optimizer import ContributionOptimizerEngine
 from .trend_attribution import TrendAttributionEngine
-from .cost_decomposition import CostDriverDecomposition
-from .monte_carlo import MonteCarloForecast
-from .bayesian_updating import BayesianUpdater
-from .credibility import CredibilityWeighting
+from .cost_decomposition import CostDecompositionEngine
+from .spread_detection import SpreadDetectionEngine
+from .fiduciary_leakage import FiduciaryLeakageEngine
+from .monte_carlo import MonteCarloEngine
+from .bayesian_updating import BayesianUpdatingEngine
+from .credibility import CredibilityEngine
 from .executive_reporting import ExecutiveReporter
 from .board_reporting import BoardReporter
-from .ai_decision_support import AIDecisionEngine
+from .ai_decision import AIDecisionEngine
 
 __all__ = [
-    "MedicalClaimsEngine",
+    # Core Model
+    "HealthcareTrendModel",
+    
+    # Medical & Pharmacy (8)
+    "ClaimsForecastingEngine",
     "PharmacyTrendEngine",
     "GLP1EconomicsEngine",
     "SpecialtyDrugEngine",
-    "UtilizationAnalytics",
-    "PMPMAnalytics",
+    
+    # Utilization & Cost (4)
+    "UtilizationEngine",
+    "PMPMEngine",
     "CompletionFactorEngine",
     "IBNREngine",
+    
+    # Risk & Population (2)
     "RiskAdjustmentEngine",
     "PopulationHealthEngine",
+    
+    # Stop-Loss (3)
     "LargeClaimantEngine",
     "StopLossPricingEngine",
-    "StopLossOptimizer",
+    "StopLossOptimizationEngine",
+    
+    # Network & Provider (2)
     "NetworkPerformanceEngine",
-    "ProviderContractAnalytics",
+    "ProviderContractEngine",
+    
+    # PBM Intelligence (5)
     "PBMIntelligenceEngine",
-    "FormularyAnalytics",
+    "FormularyAnalyticsEngine",
     "RebateEconomicsEngine",
-    "SpreadPricingDetector",
-    "FiduciaryLeakageDetector",
+    "SpreadDetectionEngine",
+    "FiduciaryLeakageEngine",
+    
+    # Employer & Plan Design (4)
     "EmployerBenchmarkEngine",
     "RenewalProjectionEngine",
     "PlanDesignSimulator",
-    "ContributionOptimizer",
+    "ContributionOptimizerEngine",
+    
+    # Advanced Analytics (6)
     "TrendAttributionEngine",
-    "CostDriverDecomposition",
-    "MonteCarloForecast",
-    "BayesianUpdater",
-    "CredibilityWeighting",
+    "CostDecompositionEngine",
+    "MonteCarloEngine",
+    "BayesianUpdatingEngine",
+    "CredibilityEngine",
+    
+    # Reporting & AI (3)
     "ExecutiveReporter",
     "BoardReporter",
     "AIDecisionEngine",

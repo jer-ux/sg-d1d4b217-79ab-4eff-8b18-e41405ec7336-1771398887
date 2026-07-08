@@ -1,6 +1,7 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 import { submitContact } from "@/services/contactService";
 import { sendToLightfield } from "@/lib/crm/lightfield";
+import { sendContactFormLead } from "@/lib/crm/lightfield";
 
 export default async function handler(
   req: NextApiRequest,
@@ -52,6 +53,19 @@ export default async function handler(
       // Still return success since we saved to database
     }
 
+    // Send to Lightfield CRM via form lead
+    const lightfieldResult = await sendContactFormLead({
+      name: formData.full_name,
+      email: formData.email,
+      company: formData.company,
+      phone: formData.phone,
+      message: formData.message,
+    });
+
+    if (!lightfieldResult.success) {
+      console.error("Lightfield integration failed:", lightfieldResult.error);
+    }
+
     return res.status(200).json({
       success: true,
       message: "Contact submitted successfully",
@@ -59,6 +73,7 @@ export default async function handler(
         id: result.contact.id,
         crmSynced: crmResult.success,
         crmContactId: crmResult.contactId,
+        lightfield: lightfieldResult.success ? "synced" : "failed",
       },
     });
   } catch (error) {

@@ -3,6 +3,133 @@
  * Sends contact form submissions to Lightfield.ai CRM
  */
 
+const LIGHTFIELD_API_KEY = process.env.LIGHTFIELD_API_KEY;
+const LIGHTFIELD_API_URL = process.env.LIGHTFIELD_API_URL || "https://api.lightfield.ai/v1";
+
+interface LightfieldLead {
+  firstName?: string;
+  lastName?: string;
+  email: string;
+  company?: string;
+  phone?: string;
+  role?: string;
+  source: string;
+  notes?: string;
+  customFields?: Record<string, any>;
+}
+
+export async function sendLeadToLightfield(lead: LightfieldLead) {
+  if (!LIGHTFIELD_API_KEY) {
+    console.warn("Lightfield API key not configured");
+    return { success: false, error: "API key not configured" };
+  }
+
+  try {
+    const response = await fetch(`${LIGHTFIELD_API_URL}/leads`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": `Bearer ${LIGHTFIELD_API_KEY}`,
+      },
+      body: JSON.stringify({
+        ...lead,
+        timestamp: new Date().toISOString(),
+        platform: "Kincaid Health",
+      }),
+    });
+
+    if (!response.ok) {
+      const error = await response.text();
+      console.error("Lightfield API error:", error);
+      return { success: false, error };
+    }
+
+    const data = await response.json();
+    return { success: true, data };
+  } catch (error) {
+    console.error("Failed to send lead to Lightfield:", error);
+    return { success: false, error: String(error) };
+  }
+}
+
+export async function sendContactFormLead(data: {
+  name: string;
+  email: string;
+  company?: string;
+  phone?: string;
+  message: string;
+}) {
+  const [firstName, ...lastNameParts] = data.name.split(" ");
+  const lastName = lastNameParts.join(" ");
+
+  return sendLeadToLightfield({
+    firstName,
+    lastName,
+    email: data.email,
+    company: data.company,
+    phone: data.phone,
+    source: "Contact Form",
+    notes: data.message,
+  });
+}
+
+export async function sendDemoRequestLead(data: {
+  name: string;
+  email: string;
+  company?: string;
+  phone?: string;
+  role?: string;
+  message?: string;
+  interests?: string[];
+}) {
+  const [firstName, ...lastNameParts] = data.name.split(" ");
+  const lastName = lastNameParts.join(" ");
+
+  return sendLeadToLightfield({
+    firstName,
+    lastName,
+    email: data.email,
+    company: data.company,
+    phone: data.phone,
+    role: data.role,
+    source: "Demo Request",
+    notes: data.message,
+    customFields: {
+      interests: data.interests,
+    },
+  });
+}
+
+export async function sendNewsletterLead(data: {
+  email: string;
+  source?: string;
+}) {
+  return sendLeadToLightfield({
+    email: data.email,
+    source: data.source || "Newsletter Signup",
+  });
+}
+
+export async function sendCalendlyLead(data: {
+  name: string;
+  email: string;
+  eventType: string;
+  scheduledTime: string;
+}) {
+  const [firstName, ...lastNameParts] = data.name.split(" ");
+  const lastName = lastNameParts.join(" ");
+
+  return sendLeadToLightfield({
+    firstName,
+    lastName,
+    email: data.email,
+    source: "Calendly - " + data.eventType,
+    customFields: {
+      scheduledTime: data.scheduledTime,
+    },
+  });
+}
+
 export interface LightfieldContact {
   email: string;
   name?: string;

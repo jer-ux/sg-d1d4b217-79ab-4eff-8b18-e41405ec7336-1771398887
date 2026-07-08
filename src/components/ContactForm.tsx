@@ -55,63 +55,24 @@ export function ContactForm({
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    
-    // Reset states
     setIsSubmitting(true);
     setSubmitStatus("idle");
     setErrorMessage("");
 
-    // Validate
-    const newErrors: Record<string, string> = {};
-    
-    if (!formData.full_name.trim()) {
-      newErrors.full_name = "Name is required";
-    }
-    
-    if (!formData.email.trim()) {
-      newErrors.email = "Email is required";
-    } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
-      newErrors.email = "Please enter a valid email address";
-    }
-    
-    if (!formData.message.trim()) {
-      newErrors.message = "Message is required";
-    }
-
-    if (Object.keys(newErrors).length > 0) {
-      setErrors(newErrors);
-      setIsSubmitting(false);
-      return;
-    }
-
     try {
-      // Gather metadata
-      const metadata = {
-        userAgent: typeof window !== "undefined" ? window.navigator.userAgent : "",
-        referrer: typeof document !== "undefined" ? document.referrer : "",
-        timestamp: new Date().toISOString(),
-      };
-
-      // Call API endpoint that saves to Supabase AND sends to Lightfield CRM
       const response = await fetch("/api/contact/submit", {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          ...formData,
-          source,
-          metadata,
-        }),
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(formData),
       });
 
       const result = await response.json();
 
-      if (!response.ok || !result.success) {
-        throw new Error(result.error || "Failed to submit form");
+      if (!response.ok) {
+        throw new Error(result.message || "Failed to submit form");
       }
 
-      // Success!
+      setIsSubmitting(false);
       setSubmitStatus("success");
       setFormData({
         full_name: "",
@@ -129,14 +90,13 @@ export function ContactForm({
       }
     } catch (error) {
       const errorMsg = error instanceof Error ? error.message : "An error occurred. Please try again.";
-      setErrorMessage(errorMsg);
+      setIsSubmitting(false);
       setSubmitStatus("error");
+      setErrorMessage(errorMsg);
       
       if (onError) {
         onError(errorMsg);
       }
-    } finally {
-      setIsSubmitting(false);
     }
   };
 

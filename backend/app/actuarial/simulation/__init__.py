@@ -17,6 +17,13 @@ from .models import (
     AggregateLossModel,
     LargeClaimShockModel
 )
+from .extended_models import (
+    StopLossModel,
+    IBNRModel,
+    PensionFundingModel,
+    PricingModel,
+    WorkforceCostModel
+)
 
 __all__ = [
     "SimulationEngine",
@@ -33,4 +40,9 @@ __all__ = [
     "PremiumRenewalModel",
     "AggregateLossModel",
     "LargeClaimShockModel",
+    "StopLossModel",
+    "IBNRModel",
+    "PensionFundingModel",
+    "PricingModel",
+    "WorkforceCostModel",
 ]

@@ -17,7 +17,8 @@ import {
   CheckCircle2, 
   Plus, 
   X,
-  AlertCircle
+  AlertCircle,
+  Trash2
 } from "lucide-react";
 
 interface EmailSchedule {

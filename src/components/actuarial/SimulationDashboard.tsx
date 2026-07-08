@@ -1,7 +1,7 @@
-"""
-KINCAID HEALTH™ ACTUARIAL DASHBOARD
-Main Simulation Interface
-"""
+/**
+ * KINCAID HEALTH™ ACTUARIAL DASHBOARD
+ * Main Simulation Interface
+ */
 
 import { useState, useEffect } from "react";
 import {

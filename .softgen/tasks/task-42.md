@@ -20,6 +20,8 @@ Architecture documented in docs/UNIVERSAL-ENGINE-ARCHITECTURE.md (180+ pages).
 ## Checklist
 - [x] Define the 15 Universal Engines architecture
 - [x] Document Universal Engine Architecture (docs/UNIVERSAL-ENGINE-ARCHITECTURE.md)
+- [x] Create Universal Data Model schema (19-level entity hierarchy)
+- [ ] Deploy Universal Data Model to Supabase
 - [ ] Update monorepo structure (engines/ and domains/ folders)
 - [ ] Create engine interface specifications
 - [ ] Build Engine 1: Economic Engine

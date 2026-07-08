@@ -1,326 +1,389 @@
 """
-KINCAID HEALTH™ CLAIMS INGESTION PIPELINE
-Medical & Pharmacy Claims Processing
+KINCAID HEALTH™ CLAIMS INGESTION SERVICE
+Medical and pharmacy claims processing pipeline
 """
 
-from typing import Dict, List, Any, Optional
+from typing import Dict, List, Optional, Any
 from datetime import datetime, date
-from sqlalchemy.orm import Session
-from sqlalchemy import and_
-import logging
+from decimal import Decimal
+import pandas as pd
+import hashlib
+import re
 
-from ..models import (
-    Claim, ClaimLine, ClaimDiagnosis, ClaimProcedure,
-    Member, Eligibility, Provider, Facility, Organization
-)
-from ..models.claim import ClaimTypeEnum, ClaimStatusEnum
-from ..claims.rules_engine import ClaimsRulesEngine
-
-logger = logging.getLogger(__name__)
+from app.services.validation import DataValidator
+from app.services.code_mapping import CodeMapper
+from app.services.deduplication import DeduplicationEngine
 
 
 class ClaimsIngestionPipeline:
     """
-    Enterprise-grade claims ingestion pipeline
-    Handles EDI 837, flat files, and API submissions
+    End-to-end claims processing pipeline
+    Validates, deduplicates, normalizes, and loads claims data
     """
     
-    def __init__(self, db: Session, organization_id: int):
-        self.db = db
-        self.organization_id = organization_id
-        self.rules_engine = ClaimsRulesEngine()
-        self.stats = {
-            "received": 0,
-            "processed": 0,
-            "errors": 0,
-            "warnings": 0,
-            "duplicates": 0
-        }
-    
-    def ingest_claim_batch(
+    def __init__(self, tenant_id: str):
+        self.tenant_id = tenant_id
+        self.validator = DataValidator()
+        self.code_mapper = CodeMapper()
+        self.deduplicator = DeduplicationEngine()
+        
+    def process_medical_claims(
         self,
-        claims_data: List[Dict[str, Any]],
-        auto_validate: bool = True
+        file_path: str,
+        file_format: str = "csv"
     ) -> Dict[str, Any]:
         """
-        Ingest a batch of claims
+        Process medical claims file
         
         Args:
-            claims_data: List of claim dictionaries
-            auto_validate: Run validation rules automatically
+            file_path: Path to claims file
+            file_format: csv, excel, fixed_width, or x12
             
         Returns:
-            Ingestion summary with stats and errors
+            Processing results with counts and errors
         """
-        results = []
-        
-        for claim_data in claims_data:
-            try:
-                self.stats["received"] += 1
-                result = self._ingest_single_claim(claim_data, auto_validate)
-                results.append(result)
-                
-                if result["status"] == "SUCCESS":
-                    self.stats["processed"] += 1
-                elif result["status"] == "DUPLICATE":
-                    self.stats["duplicates"] += 1
-                else:
-                    self.stats["errors"] += 1
-                    
-                if result.get("warnings"):
-                    self.stats["warnings"] += len(result["warnings"])
-                    
-            except Exception as e:
-                logger.error(f"Error ingesting claim: {str(e)}")
-                self.stats["errors"] += 1
-                results.append({
-                    "status": "ERROR",
-                    "error": str(e),
-                    "claim_id": claim_data.get("claim_id", "UNKNOWN")
-                })
-        
-        self.db.commit()
-        
-        return {
-            "summary": self.stats,
-            "results": results
-        }
-    
-    def _ingest_single_claim(
-        self,
-        claim_data: Dict[str, Any],
-        auto_validate: bool
-    ) -> Dict[str, Any]:
-        """Process a single claim"""
-        
-        # Check for duplicates
-        existing = self.db.query(Claim).filter(
-            and_(
-                Claim.claim_id == claim_data["claim_id"],
-                Claim.organization_id == self.organization_id
-            )
-        ).first()
-        
-        if existing:
-            return {
-                "status": "DUPLICATE",
-                "claim_id": claim_data["claim_id"],
-                "existing_id": existing.id
-            }
-        
-        # Validate member exists
-        member = self._get_or_create_member(claim_data)
-        if not member:
-            return {
-                "status": "ERROR",
-                "error": "Member not found or invalid",
-                "claim_id": claim_data["claim_id"]
-            }
-        
-        # Create claim header
-        claim = Claim(
-            claim_id=claim_data["claim_id"],
-            claim_number=claim_data.get("claim_number"),
-            member_id=member.id,
-            subscriber_id=claim_data.get("subscriber_id"),
-            organization_id=self.organization_id,
-            
-            # Dates
-            service_date_from=self._parse_date(claim_data["service_date_from"]),
-            service_date_to=self._parse_date(claim_data["service_date_to"]),
-            received_date=self._parse_date(claim_data.get("received_date", datetime.now())),
-            processed_date=self._parse_date(claim_data.get("processed_date")) if claim_data.get("processed_date") else None,
-            paid_date=self._parse_date(claim_data.get("paid_date")) if claim_data.get("paid_date") else None,
-            
-            # Classification
-            claim_type=ClaimTypeEnum(claim_data["claim_type"]),
-            place_of_service=claim_data.get("place_of_service"),
-            admission_type=claim_data.get("admission_type"),
-            bill_type=claim_data.get("bill_type"),
-            
-            # Financial
-            billed_amount=float(claim_data.get("billed_amount", 0)),
-            allowed_amount=float(claim_data.get("allowed_amount", 0)),
-            paid_amount=float(claim_data.get("paid_amount", 0)),
-            member_responsibility=float(claim_data.get("member_responsibility", 0)),
-            deductible_applied=float(claim_data.get("deductible_applied", 0)),
-            coinsurance_applied=float(claim_data.get("coinsurance_applied", 0)),
-            copay_applied=float(claim_data.get("copay_applied", 0)),
-            cob_amount=float(claim_data.get("cob_amount", 0)),
-            
-            # Status
-            status=ClaimStatusEnum(claim_data.get("status", "RECEIVED"))
-        )
-        
-        self.db.add(claim)
-        self.db.flush()  # Get claim.id
-        
-        # Add claim lines
-        for line_data in claim_data.get("lines", []):
-            line = ClaimLine(
-                claim_id=claim.id,
-                line_number=line_data["line_number"],
-                procedure_code=line_data["procedure_code"],
-                procedure_modifier_1=line_data.get("modifier_1"),
-                procedure_modifier_2=line_data.get("modifier_2"),
-                procedure_modifier_3=line_data.get("modifier_3"),
-                procedure_modifier_4=line_data.get("modifier_4"),
-                revenue_code=line_data.get("revenue_code"),
-                units=float(line_data.get("units", 1)),
-                days=int(line_data.get("days", 1)),
-                billed_amount=float(line_data.get("billed_amount", 0)),
-                allowed_amount=float(line_data.get("allowed_amount", 0)),
-                paid_amount=float(line_data.get("paid_amount", 0)),
-                diagnosis_pointer_1=line_data.get("diagnosis_pointer_1"),
-                diagnosis_pointer_2=line_data.get("diagnosis_pointer_2"),
-                diagnosis_pointer_3=line_data.get("diagnosis_pointer_3"),
-                diagnosis_pointer_4=line_data.get("diagnosis_pointer_4")
-            )
-            self.db.add(line)
-        
-        # Add diagnoses
-        for diag_data in claim_data.get("diagnoses", []):
-            diagnosis = ClaimDiagnosis(
-                claim_id=claim.id,
-                diagnosis_sequence=diag_data["sequence"],
-                diagnosis_code=diag_data["code"],
-                diagnosis_description=diag_data.get("description"),
-                present_on_admission=diag_data.get("present_on_admission")
-            )
-            self.db.add(diagnosis)
-        
-        # Add procedures (institutional)
-        for proc_data in claim_data.get("procedures", []):
-            procedure = ClaimProcedure(
-                claim_id=claim.id,
-                procedure_sequence=proc_data["sequence"],
-                procedure_code=proc_data["code"],
-                procedure_code_type=proc_data["code_type"],
-                procedure_description=proc_data.get("description"),
-                procedure_date=self._parse_date(proc_data.get("date"))
-            )
-            self.db.add(procedure)
-        
-        # Run validation if requested
-        if auto_validate:
-            validation = self._validate_claim(claim)
-            claim.validation_status = validation["status"]
-            claim.validation_errors = validation.get("errors")
-            claim.validation_warnings = validation.get("warnings")
-        
-        return {
-            "status": "SUCCESS",
-            "claim_id": claim.claim_id,
-            "internal_id": claim.id,
-            "validation_status": claim.validation_status if auto_validate else "NOT_VALIDATED",
-            "warnings": claim.validation_warnings if auto_validate else []
-        }
-    
-    def _get_or_create_member(self, claim_data: Dict[str, Any]) -> Optional[Member]:
-        """Get existing member or create if needed"""
-        member_id = claim_data.get("member_id")
-        
-        if not member_id:
-            return None
-        
-        member = self.db.query(Member).filter(
-            and_(
-                Member.member_id == member_id,
-                Member.organization_id == self.organization_id
-            )
-        ).first()
-        
-        return member
-    
-    def _validate_claim(self, claim: Claim) -> Dict[str, Any]:
-        """Run validation rules on claim"""
-        
-        # Get member with eligibility
-        member = self.db.query(Member).filter(Member.id == claim.member_id).first()
-        
-        # Get eligibility for service date
-        eligibility = self.db.query(Eligibility).filter(
-            and_(
-                Eligibility.member_id == member.id,
-                Eligibility.eligibility_date == claim.service_date_from
-            )
-        ).first()
-        
-        # Build claim dict for rules engine
-        claim_dict = {
-            "claim_id": claim.claim_id,
-            "member": {
-                "age": member.age,
-                "gender": member.gender.value,
-                "date_of_birth": member.date_of_birth
-            },
-            "service_date": claim.service_date_from,
-            "eligibility": {
-                "is_eligible": eligibility.is_eligible if eligibility else False,
-                "coverage_type": eligibility.coverage_type.value if eligibility else None
-            },
-            "billed_amount": claim.billed_amount,
-            "paid_amount": claim.paid_amount,
-            "claim_type": claim.claim_type.value,
-            "place_of_service": claim.place_of_service,
-            "lines": [
-                {
-                    "procedure_code": line.procedure_code,
-                    "units": line.units,
-                    "billed_amount": line.billed_amount
-                }
-                for line in claim.lines
-            ],
-            "diagnoses": [
-                {
-                    "code": diag.diagnosis_code,
-                    "sequence": diag.diagnosis_sequence
-                }
-                for diag in claim.diagnoses
-            ]
-        }
-        
-        # Run validation
-        validation_result = self.rules_engine.validate_claim(claim_dict)
-        
-        # Determine status
-        if validation_result["errors"]:
-            status = "FAILED"
-        elif validation_result["warnings"]:
-            status = "WARNING"
+        # Load raw data
+        if file_format == "csv":
+            df = pd.read_csv(file_path, dtype=str)
+        elif file_format == "excel":
+            df = pd.read_excel(file_path, dtype=str)
+        elif file_format == "x12":
+            df = self._parse_x12_837(file_path)
         else:
-            status = "PASSED"
-        
-        return {
-            "status": status,
-            "errors": validation_result["errors"],
-            "warnings": validation_result["warnings"]
+            raise ValueError(f"Unsupported format: {file_format}")
+            
+        results = {
+            "total_records": len(df),
+            "valid_records": 0,
+            "invalid_records": 0,
+            "duplicate_records": 0,
+            "errors": [],
+            "warnings": []
         }
-    
-    def _parse_date(self, date_value: Any) -> Optional[date]:
-        """Parse date from various formats"""
-        if not date_value:
-            return None
         
-        if isinstance(date_value, date):
-            return date_value
+        # Validate required fields
+        required_fields = [
+            "member_id", "claim_number", "service_date",
+            "provider_npi", "diagnosis_code", "procedure_code",
+            "allowed_amount", "paid_amount"
+        ]
         
-        if isinstance(date_value, datetime):
-            return date_value.date()
-        
-        if isinstance(date_value, str):
-            # Try common formats
-            for fmt in ["%Y-%m-%d", "%m/%d/%Y", "%Y%m%d"]:
-                try:
-                    return datetime.strptime(date_value, fmt).date()
-                except ValueError:
+        missing_fields = [f for f in required_fields if f not in df.columns]
+        if missing_fields:
+            results["errors"].append(f"Missing required fields: {missing_fields}")
+            return results
+            
+        # Process each claim
+        valid_claims = []
+        for idx, row in df.iterrows():
+            try:
+                # Validate claim structure
+                validation = self.validator.validate_medical_claim(row.to_dict())
+                if not validation["valid"]:
+                    results["invalid_records"] += 1
+                    results["errors"].append({
+                        "row": idx + 1,
+                        "claim_number": row.get("claim_number"),
+                        "errors": validation["errors"]
+                    })
                     continue
+                    
+                # Normalize codes
+                normalized_claim = self._normalize_medical_claim(row)
+                
+                # Check for duplicates
+                is_duplicate = self.deduplicator.is_duplicate_claim(
+                    normalized_claim,
+                    self.tenant_id
+                )
+                
+                if is_duplicate:
+                    results["duplicate_records"] += 1
+                    results["warnings"].append({
+                        "row": idx + 1,
+                        "claim_number": row.get("claim_number"),
+                        "message": "Duplicate claim detected"
+                    })
+                    continue
+                    
+                # Add to valid claims
+                valid_claims.append(normalized_claim)
+                results["valid_records"] += 1
+                
+            except Exception as e:
+                results["invalid_records"] += 1
+                results["errors"].append({
+                    "row": idx + 1,
+                    "claim_number": row.get("claim_number", "unknown"),
+                    "error": str(e)
+                })
+                
+        # Bulk load valid claims
+        if valid_claims:
+            self._bulk_insert_medical_claims(valid_claims)
+            
+        return results
         
-        return None
-    
-    def get_ingestion_stats(self) -> Dict[str, Any]:
-        """Return current ingestion statistics"""
-        return {
-            **self.stats,
-            "success_rate": (self.stats["processed"] / self.stats["received"] * 100) if self.stats["received"] > 0 else 0
+    def process_pharmacy_claims(
+        self,
+        file_path: str,
+        file_format: str = "csv"
+    ) -> Dict[str, Any]:
+        """
+        Process pharmacy claims file
+        
+        Args:
+            file_path: Path to pharmacy claims file
+            file_format: csv, excel, or ncpdp
+            
+        Returns:
+            Processing results
+        """
+        # Load raw data
+        if file_format == "csv":
+            df = pd.read_csv(file_path, dtype=str)
+        elif file_format == "excel":
+            df = pd.read_excel(file_path, dtype=str)
+        elif file_format == "ncpdp":
+            df = self._parse_ncpdp(file_path)
+        else:
+            raise ValueError(f"Unsupported format: {file_format}")
+            
+        results = {
+            "total_records": len(df),
+            "valid_records": 0,
+            "invalid_records": 0,
+            "duplicate_records": 0,
+            "errors": [],
+            "warnings": []
         }
+        
+        # Validate required fields
+        required_fields = [
+            "member_id", "claim_number", "fill_date",
+            "ndc", "quantity", "days_supply",
+            "ingredient_cost", "dispensing_fee", "total_paid"
+        ]
+        
+        missing_fields = [f for f in required_fields if f not in df.columns]
+        if missing_fields:
+            results["errors"].append(f"Missing required fields: {missing_fields}")
+            return results
+            
+        # Process each pharmacy claim
+        valid_claims = []
+        for idx, row in df.iterrows():
+            try:
+                # Validate pharmacy claim
+                validation = self.validator.validate_pharmacy_claim(row.to_dict())
+                if not validation["valid"]:
+                    results["invalid_records"] += 1
+                    results["errors"].append({
+                        "row": idx + 1,
+                        "claim_number": row.get("claim_number"),
+                        "errors": validation["errors"]
+                    })
+                    continue
+                    
+                # Normalize pharmacy claim
+                normalized_claim = self._normalize_pharmacy_claim(row)
+                
+                # Check for duplicates
+                is_duplicate = self.deduplicator.is_duplicate_claim(
+                    normalized_claim,
+                    self.tenant_id
+                )
+                
+                if is_duplicate:
+                    results["duplicate_records"] += 1
+                    continue
+                    
+                valid_claims.append(normalized_claim)
+                results["valid_records"] += 1
+                
+            except Exception as e:
+                results["invalid_records"] += 1
+                results["errors"].append({
+                    "row": idx + 1,
+                    "error": str(e)
+                })
+                
+        # Bulk load
+        if valid_claims:
+            self._bulk_insert_pharmacy_claims(valid_claims)
+            
+        return results
+        
+    def _normalize_medical_claim(self, row: pd.Series) -> Dict[str, Any]:
+        """Normalize medical claim data"""
+        # Clean and validate diagnosis codes
+        dx_codes = []
+        for i in range(1, 13):
+            dx_field = f"diagnosis_code_{i}" if i > 1 else "diagnosis_code"
+            if dx_field in row and pd.notna(row[dx_field]):
+                cleaned = self.code_mapper.normalize_icd10(row[dx_field])
+                if cleaned:
+                    dx_codes.append(cleaned)
+                    
+        # Clean and validate procedure codes
+        proc_codes = []
+        for i in range(1, 7):
+            proc_field = f"procedure_code_{i}" if i > 1 else "procedure_code"
+            if proc_field in row and pd.notna(row[proc_field]):
+                cleaned = self.code_mapper.normalize_cpt(row[proc_field])
+                if cleaned:
+                    proc_codes.append(cleaned)
+                    
+        return {
+            "tenant_id": self.tenant_id,
+            "member_id": str(row["member_id"]).strip(),
+            "claim_number": str(row["claim_number"]).strip(),
+            "service_date": self._parse_date(row["service_date"]),
+            "provider_npi": self._normalize_npi(row["provider_npi"]),
+            "diagnosis_codes": dx_codes,
+            "procedure_codes": proc_codes,
+            "place_of_service": str(row.get("place_of_service", "")).strip(),
+            "allowed_amount": self._parse_decimal(row["allowed_amount"]),
+            "paid_amount": self._parse_decimal(row["paid_amount"]),
+            "member_responsibility": self._parse_decimal(row.get("member_responsibility", 0)),
+            "claim_type": row.get("claim_type", "medical").lower(),
+            "created_at": datetime.utcnow(),
+            "claim_hash": self._generate_claim_hash(row)
+        }
+        
+    def _normalize_pharmacy_claim(self, row: pd.Series) -> Dict[str, Any]:
+        """Normalize pharmacy claim data"""
+        # Normalize NDC
+        ndc = self.code_mapper.normalize_ndc(row["ndc"])
+        
+        # Map to GPI
+        gpi = self.code_mapper.map_ndc_to_gpi(ndc) if ndc else None
+        
+        return {
+            "tenant_id": self.tenant_id,
+            "member_id": str(row["member_id"]).strip(),
+            "claim_number": str(row["claim_number"]).strip(),
+            "fill_date": self._parse_date(row["fill_date"]),
+            "ndc": ndc,
+            "gpi": gpi,
+            "drug_name": row.get("drug_name", "").strip(),
+            "quantity": float(row["quantity"]),
+            "days_supply": int(row["days_supply"]),
+            "ingredient_cost": self._parse_decimal(row["ingredient_cost"]),
+            "dispensing_fee": self._parse_decimal(row.get("dispensing_fee", 0)),
+            "total_paid": self._parse_decimal(row["total_paid"]),
+            "member_copay": self._parse_decimal(row.get("member_copay", 0)),
+            "pharmacy_npi": self._normalize_npi(row.get("pharmacy_npi", "")),
+            "is_brand": row.get("is_brand", "").upper() == "Y",
+            "is_specialty": row.get("is_specialty", "").upper() == "Y",
+            "created_at": datetime.utcnow(),
+            "claim_hash": self._generate_claim_hash(row)
+        }
+        
+    def _parse_date(self, date_str: str) -> Optional[date]:
+        """Parse date from various formats"""
+        if pd.isna(date_str):
+            return None
+            
+        date_formats = [
+            "%Y-%m-%d",
+            "%m/%d/%Y",
+            "%Y%m%d",
+            "%m-%d-%Y"
+        ]
+        
+        for fmt in date_formats:
+            try:
+                return datetime.strptime(str(date_str).strip(), fmt).date()
+            except ValueError:
+                continue
+                
+        return None
+        
+    def _parse_decimal(self, value: Any) -> Decimal:
+        """Parse decimal from string, handling currency symbols"""
+        if pd.isna(value):
+            return Decimal("0")
+            
+        # Remove currency symbols and commas
+        cleaned = re.sub(r'[,$]', '', str(value).strip())
+        try:
+            return Decimal(cleaned)
+        except:
+            return Decimal("0")
+            
+    def _normalize_npi(self, npi: str) -> Optional[str]:
+        """Normalize NPI to 10 digits"""
+        if pd.isna(npi):
+            return None
+            
+        # Remove non-digits
+        digits = re.sub(r'\D', '', str(npi))
+        
+        # Validate length
+        if len(digits) != 10:
+            return None
+            
+        return digits
+        
+    def _generate_claim_hash(self, row: pd.Series) -> str:
+        """Generate unique hash for claim deduplication"""
+        key_fields = [
+            str(row.get("member_id", "")),
+            str(row.get("claim_number", "")),
+            str(row.get("service_date", row.get("fill_date", ""))),
+            str(row.get("provider_npi", row.get("pharmacy_npi", "")))
+        ]
+        
+        hash_input = "|".join(key_fields).encode()
+        return hashlib.sha256(hash_input).hexdigest()
+        
+    def _parse_x12_837(self, file_path: str) -> pd.DataFrame:
+        """Parse X12 837 EDI file"""
+        # Simplified X12 parser - production would use dedicated library
+        # like pyx12 or python-x12
+        raise NotImplementedError("X12 837 parsing requires EDI library")
+        
+    def _parse_ncpdp(self, file_path: str) -> pd.DataFrame:
+        """Parse NCPDP pharmacy claim file"""
+        # Simplified NCPDP parser
+        raise NotImplementedError("NCPDP parsing requires specialized library")
+        
+    def _bulk_insert_medical_claims(self, claims: List[Dict[str, Any]]):
+        """Bulk insert medical claims to database"""
+        # Production implementation would use SQLAlchemy bulk_insert_mappings
+        # or database-specific bulk load utilities
+        pass
+        
+    def _bulk_insert_pharmacy_claims(self, claims: List[Dict[str, Any]]):
+        """Bulk insert pharmacy claims to database"""
+        pass
+
+
+# Example usage
+if __name__ == "__main__":
+    pipeline = ClaimsIngestionPipeline(tenant_id="acme-corp")
+    
+    # Process medical claims
+    results = pipeline.process_medical_claims(
+        file_path="data/medical_claims_2024.csv",
+        file_format="csv"
+    )
+    
+    print(f"Medical Claims Processing Results:")
+    print(f"  Total: {results['total_records']}")
+    print(f"  Valid: {results['valid_records']}")
+    print(f"  Invalid: {results['invalid_records']}")
+    print(f"  Duplicates: {results['duplicate_records']}")
+    
+    # Process pharmacy claims
+    results = pipeline.process_pharmacy_claims(
+        file_path="data/pharmacy_claims_2024.csv",
+        file_format="csv"
+    )
+    
+    print(f"\nPharmacy Claims Processing Results:")
+    print(f"  Total: {results['total_records']}")
+    print(f"  Valid: {results['valid_records']}")
+    print(f"  Invalid: {results['invalid_records']}")
+    print(f"  Duplicates: {results['duplicate_records']}")

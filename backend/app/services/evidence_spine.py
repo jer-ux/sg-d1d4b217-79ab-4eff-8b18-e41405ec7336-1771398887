@@ -1,364 +1,531 @@
 """
-KINCAID HEALTH™ INTELLIGENCE KERNEL
-Evidence Spine — Universal Activity Tracking
-
-Captures all system activity as evidence objects for:
-- Audit compliance
-- Root cause analysis
-- Decision provenance
-- Performance analytics
-- Security forensics
+KINCAID HEALTH™ EVIDENCE SPINE
+Complete data lineage tracking from source to insight
 """
 
+from typing import Dict, List, Optional, Any
 from datetime import datetime
-from typing import Optional, Dict, Any, List
-from sqlalchemy.orm import Session
-import uuid
+from enum import Enum
+import hashlib
 import json
 
-from app.models.audit_log import AuditLog
-from app.models.evidence_object import EvidenceObject
+
+class EvidenceType(str, Enum):
+    """Types of evidence objects"""
+    SOURCE_FILE = "source_file"
+    INGESTION_JOB = "ingestion_job"
+    VALIDATION_RESULT = "validation_result"
+    TRANSFORMATION = "transformation"
+    ANALYTICS_RUN = "analytics_run"
+    MODEL_PREDICTION = "model_prediction"
+    RECOMMENDATION = "recommendation"
+    DECISION = "decision"
+    AUDIT_EVENT = "audit_event"
+
+
+class DataQualityScore:
+    """
+    Calculate comprehensive data quality scores
+    Completeness + Accuracy + Consistency + Timeliness + Coverage
+    """
+    
+    @staticmethod
+    def calculate_completeness(
+        required_fields: List[str],
+        actual_data: Dict[str, Any]
+    ) -> float:
+        """
+        Calculate completeness score (0-1)
+        Percentage of required fields that are non-null
+        """
+        if not required_fields:
+            return 1.0
+            
+        filled = sum(
+            1 for field in required_fields
+            if field in actual_data and actual_data[field] is not None
+        )
+        
+        return filled / len(required_fields)
+        
+    @staticmethod
+    def calculate_accuracy(
+        validation_results: Dict[str, bool]
+    ) -> float:
+        """
+        Calculate accuracy score (0-1)
+        Percentage of validations that passed
+        """
+        if not validation_results:
+            return 1.0
+            
+        passed = sum(1 for valid in validation_results.values() if valid)
+        return passed / len(validation_results)
+        
+    @staticmethod
+    def calculate_consistency(
+        cross_checks: List[Dict[str, Any]]
+    ) -> float:
+        """
+        Calculate consistency score (0-1)
+        Check if data is consistent across sources/periods
+        """
+        if not cross_checks:
+            return 1.0
+            
+        consistent = sum(1 for check in cross_checks if check.get("consistent", False))
+        return consistent / len(cross_checks)
+        
+    @staticmethod
+    def calculate_timeliness(
+        expected_date: datetime,
+        actual_date: datetime,
+        sla_days: int = 5
+    ) -> float:
+        """
+        Calculate timeliness score (0-1)
+        How close to expected delivery date
+        """
+        days_late = (actual_date - expected_date).days
+        
+        if days_late <= 0:
+            return 1.0
+        elif days_late >= sla_days:
+            return 0.0
+        else:
+            return 1.0 - (days_late / sla_days)
+            
+    @staticmethod
+    def calculate_coverage(
+        expected_count: int,
+        actual_count: int
+    ) -> float:
+        """
+        Calculate coverage score (0-1)
+        Percentage of expected records received
+        """
+        if expected_count == 0:
+            return 1.0
+            
+        return min(actual_count / expected_count, 1.0)
+        
+    @classmethod
+    def calculate_overall_score(
+        cls,
+        completeness: float,
+        accuracy: float,
+        consistency: float,
+        timeliness: float,
+        coverage: float,
+        weights: Optional[Dict[str, float]] = None
+    ) -> Dict[str, Any]:
+        """
+        Calculate weighted overall data quality score
+        
+        Args:
+            completeness: Completeness score 0-1
+            accuracy: Accuracy score 0-1
+            consistency: Consistency score 0-1
+            timeliness: Timeliness score 0-1
+            coverage: Coverage score 0-1
+            weights: Optional custom weights (default: equal weight)
+            
+        Returns:
+            Overall score with breakdown
+        """
+        if weights is None:
+            weights = {
+                "completeness": 0.25,
+                "accuracy": 0.25,
+                "consistency": 0.20,
+                "timeliness": 0.15,
+                "coverage": 0.15
+            }
+            
+        overall = (
+            weights["completeness"] * completeness +
+            weights["accuracy"] * accuracy +
+            weights["consistency"] * consistency +
+            weights["timeliness"] * timeliness +
+            weights["coverage"] * coverage
+        )
+        
+        # Determine quality grade
+        if overall >= 0.90:
+            grade = "A"
+        elif overall >= 0.80:
+            grade = "B"
+        elif overall >= 0.70:
+            grade = "C"
+        elif overall >= 0.60:
+            grade = "D"
+        else:
+            grade = "F"
+            
+        return {
+            "overall_score": overall,
+            "grade": grade,
+            "dimensions": {
+                "completeness": completeness,
+                "accuracy": accuracy,
+                "consistency": consistency,
+                "timeliness": timeliness,
+                "coverage": coverage
+            },
+            "weights": weights
+        }
 
 
 class EvidenceSpine:
     """
-    Universal activity tracking system
-    
-    Every action in the system creates an evidence object:
-    - Data uploads → evidence of data ingestion
-    - API calls → evidence of system usage
-    - AI agent executions → evidence of analytical decisions
-    - User actions → evidence of human decisions
-    - System events → evidence of infrastructure health
+    Track complete data lineage from source to decision
+    Every insight traceable to source evidence
     """
     
-    def __init__(self, db: Session):
-        self.db = db
-    
-    def track_data_upload(
+    def __init__(self, tenant_id: str):
+        self.tenant_id = tenant_id
+        
+    def create_evidence_object(
         self,
-        organization_id: str,
-        user_id: Optional[str],
-        dataset_id: str,
-        filename: str,
-        rows: int,
-        quality_score: int,
-        metadata: Dict[str, Any]
+        evidence_type: EvidenceType,
+        entity_type: str,
+        entity_id: str,
+        metadata: Dict[str, Any],
+        parent_evidence_id: Optional[str] = None
     ) -> str:
-        """Track data upload event"""
+        """
+        Create evidence object in the spine
         
-        # Create audit log
-        audit_id = str(uuid.uuid4())
-        audit_log = AuditLog(
-            id=audit_id,
-            user_id=user_id,
-            actor_type="user",
-            action="upload",
-            action_category="data",
-            target_type="dataset",
-            target_id=dataset_id,
-            description=f"Uploaded dataset: {filename}",
-            after_state={
-                "filename": filename,
-                "rows": rows,
-                "quality_score": quality_score,
-            },
-            metadata=metadata,
-            created_at=datetime.utcnow()
+        Args:
+            evidence_type: Type of evidence
+            entity_type: Entity being tracked (claim, member, file, etc)
+            entity_id: Unique identifier for the entity
+            metadata: Evidence metadata
+            parent_evidence_id: Parent evidence for traceability chain
+            
+        Returns:
+            Evidence object ID
+        """
+        evidence_id = self._generate_evidence_id(
+            evidence_type,
+            entity_type,
+            entity_id
         )
-        self.db.add(audit_log)
         
-        # Create evidence object
-        evidence_id = str(uuid.uuid4())
-        evidence = EvidenceObject(
-            id=evidence_id,
-            organization_id=organization_id,
-            object_type="data_ingestion",
-            object_category="operational",
-            title=f"Data Upload: {filename}",
-            description=f"Uploaded {rows:,} rows with quality score {quality_score}%",
-            confidence_score=quality_score / 100.0,
-            confidence_level=self._get_confidence_level(quality_score / 100.0),
-            source_type="user",
-            source_id=user_id,
-            evidence_chain=[{"audit_log_id": audit_id}],
-            data={
-                "dataset_id": dataset_id,
-                "filename": filename,
-                "rows": rows,
-                "quality_score": quality_score,
-                "metadata": metadata,
-            },
-            review_status="approved",  # Data uploads auto-approved
-            created_at=datetime.utcnow()
-        )
-        self.db.add(evidence)
+        evidence_object = {
+            "evidence_id": evidence_id,
+            "tenant_id": self.tenant_id,
+            "evidence_type": evidence_type.value,
+            "entity_type": entity_type,
+            "entity_id": entity_id,
+            "parent_evidence_id": parent_evidence_id,
+            "metadata": metadata,
+            "created_at": datetime.utcnow(),
+            "created_by": "system"  # Or actual user
+        }
         
-        self.db.commit()
+        self._store_evidence(evidence_object)
         return evidence_id
-    
-    def track_api_call(
+        
+    def track_file_ingestion(
         self,
-        organization_id: str,
-        user_id: Optional[str],
-        endpoint: str,
-        method: str,
-        status_code: int,
-        duration_ms: float,
-        request_data: Optional[Dict[str, Any]] = None,
-        response_data: Optional[Dict[str, Any]] = None,
-        ip_address: Optional[str] = None,
-        user_agent: Optional[str] = None
+        file_name: str,
+        file_hash: str,
+        source: str,
+        record_count: int,
+        quality_scores: Dict[str, float]
     ) -> str:
-        """Track API call"""
-        
-        audit_id = str(uuid.uuid4())
-        audit_log = AuditLog(
-            id=audit_id,
-            user_id=user_id,
-            actor_type="user" if user_id else "anonymous",
-            action=method.lower(),
-            action_category="api",
-            target_type="endpoint",
-            target_id=endpoint,
-            description=f"{method} {endpoint} → {status_code}",
-            after_state={
-                "status_code": status_code,
-                "duration_ms": duration_ms,
-                "request": request_data,
-                "response": response_data,
-            },
-            ip_address=ip_address,
-            user_agent=user_agent,
-            created_at=datetime.utcnow()
+        """Track source file ingestion"""
+        return self.create_evidence_object(
+            evidence_type=EvidenceType.SOURCE_FILE,
+            entity_type="file",
+            entity_id=file_hash,
+            metadata={
+                "file_name": file_name,
+                "source": source,
+                "record_count": record_count,
+                "quality_scores": quality_scores
+            }
         )
-        self.db.add(audit_log)
-        self.db.commit()
         
-        return audit_id
-    
-    def track_agent_execution(
+    def track_transformation(
         self,
-        organization_id: str,
-        agent_name: str,
-        agent_version: str,
-        task: str,
-        result: Dict[str, Any],
-        confidence_score: float,
-        evidence_chain: List[Dict[str, Any]],
-        execution_time_ms: float
+        transformation_name: str,
+        input_evidence_ids: List[str],
+        output_count: int,
+        rules_applied: List[str]
     ) -> str:
-        """Track AI agent execution"""
-        
-        # Create audit log
-        audit_id = str(uuid.uuid4())
-        audit_log = AuditLog(
-            id=audit_id,
-            actor_type="agent",
-            actor_name=agent_name,
-            action="execute",
-            action_category="analysis",
-            target_type="task",
-            description=f"Agent {agent_name} executed: {task}",
-            after_state={
-                "result": result,
-                "confidence_score": confidence_score,
-                "execution_time_ms": execution_time_ms,
-            },
-            created_at=datetime.utcnow()
+        """Track data transformation"""
+        evidence_id = self.create_evidence_object(
+            evidence_type=EvidenceType.TRANSFORMATION,
+            entity_type="transformation",
+            entity_id=transformation_name,
+            metadata={
+                "output_count": output_count,
+                "rules_applied": rules_applied
+            }
         )
-        self.db.add(audit_log)
         
-        # Create evidence object
-        evidence_id = str(uuid.uuid4())
-        evidence = EvidenceObject(
-            id=evidence_id,
-            organization_id=organization_id,
-            object_type="agent_analysis",
-            object_category="analytical",
-            title=f"{agent_name}: {task}",
-            description=result.get("summary", "AI agent analysis completed"),
-            confidence_score=confidence_score,
-            confidence_level=self._get_confidence_level(confidence_score),
-            source_type="agent",
-            agent_name=agent_name,
-            agent_version=agent_version,
-            evidence_chain=evidence_chain + [{"audit_log_id": audit_id}],
-            data=result,
-            review_status="pending",  # Agent outputs need review
-            created_at=datetime.utcnow()
-        )
-        self.db.add(evidence)
-        
-        self.db.commit()
+        # Link to input evidence
+        for input_id in input_evidence_ids:
+            self._create_evidence_link(input_id, evidence_id)
+            
         return evidence_id
-    
-    def track_user_decision(
+        
+    def track_analytics_run(
         self,
-        organization_id: str,
-        user_id: str,
+        model_name: str,
+        model_version: str,
+        input_evidence_ids: List[str],
+        results: Dict[str, Any],
+        confidence: float
+    ) -> str:
+        """Track analytics model execution"""
+        evidence_id = self.create_evidence_object(
+            evidence_type=EvidenceType.ANALYTICS_RUN,
+            entity_type="analytics",
+            entity_id=f"{model_name}_{model_version}",
+            metadata={
+                "model_name": model_name,
+                "model_version": model_version,
+                "results": results,
+                "confidence": confidence
+            }
+        )
+        
+        # Link to input evidence
+        for input_id in input_evidence_ids:
+            self._create_evidence_link(input_id, evidence_id)
+            
+        return evidence_id
+        
+    def track_recommendation(
+        self,
+        recommendation_type: str,
+        recommendation: str,
+        supporting_evidence_ids: List[str],
+        financial_impact: float,
+        confidence: float
+    ) -> str:
+        """Track AI-generated recommendation"""
+        evidence_id = self.create_evidence_object(
+            evidence_type=EvidenceType.RECOMMENDATION,
+            entity_type="recommendation",
+            entity_id=recommendation_type,
+            metadata={
+                "recommendation": recommendation,
+                "financial_impact": financial_impact,
+                "confidence": confidence
+            }
+        )
+        
+        # Link to supporting evidence
+        for evidence_id_support in supporting_evidence_ids:
+            self._create_evidence_link(evidence_id_support, evidence_id)
+            
+        return evidence_id
+        
+    def track_decision(
+        self,
         decision_type: str,
         decision: str,
-        rationale: str,
-        evidence_object_ids: List[str],
-        financial_impact: Optional[Dict[str, float]] = None
+        decision_maker: str,
+        recommendation_evidence_id: str,
+        rationale: str
     ) -> str:
-        """Track user decision with supporting evidence"""
-        
-        # Create audit log
-        audit_id = str(uuid.uuid4())
-        audit_log = AuditLog(
-            id=audit_id,
-            user_id=user_id,
-            actor_type="user",
-            action="decide",
-            action_category="decision",
-            target_type=decision_type,
-            description=f"User decision: {decision}",
-            after_state={
+        """Track human decision based on recommendation"""
+        return self.create_evidence_object(
+            evidence_type=EvidenceType.DECISION,
+            entity_type="decision",
+            entity_id=decision_type,
+            metadata={
                 "decision": decision,
-                "rationale": rationale,
-                "supporting_evidence": evidence_object_ids,
+                "decision_maker": decision_maker,
+                "rationale": rationale
             },
-            created_at=datetime.utcnow()
+            parent_evidence_id=recommendation_evidence_id
         )
-        self.db.add(audit_log)
         
-        # Create evidence object
-        evidence_id = str(uuid.uuid4())
-        evidence = EvidenceObject(
-            id=evidence_id,
-            organization_id=organization_id,
-            object_type="decision",
-            object_category="governance",
-            title=f"Decision: {decision}",
-            description=rationale,
-            confidence_score=1.0,  # User decisions have full confidence
-            confidence_level="very_high",
-            source_type="user",
-            source_id=user_id,
-            evidence_chain=[{"audit_log_id": audit_id}],
-            related_objects=evidence_object_ids,
-            financial_impact_min=financial_impact.get("min") if financial_impact else None,
-            financial_impact_expected=financial_impact.get("expected") if financial_impact else None,
-            financial_impact_max=financial_impact.get("max") if financial_impact else None,
-            data={
-                "decision_type": decision_type,
-                "decision": decision,
-                "rationale": rationale,
-                "supporting_evidence": evidence_object_ids,
-            },
-            review_status="approved",  # User decisions auto-approved
-            created_at=datetime.utcnow()
-        )
-        self.db.add(evidence)
-        
-        self.db.commit()
-        return evidence_id
-    
-    def track_system_event(
+    def get_evidence_lineage(
         self,
-        event_type: str,
-        event_name: str,
-        description: str,
-        severity: str,  # info, warning, error, critical
-        metadata: Dict[str, Any]
-    ) -> str:
-        """Track system event"""
+        evidence_id: str,
+        depth: int = 10
+    ) -> Dict[str, Any]:
+        """
+        Get complete lineage for an evidence object
+        Trace back to original source data
         
-        audit_id = str(uuid.uuid4())
-        audit_log = AuditLog(
-            id=audit_id,
-            actor_type="system",
-            action="event",
-            action_category="system",
-            target_type=event_type,
-            description=description,
-            after_state=metadata,
-            created_at=datetime.utcnow()
-        )
-        self.db.add(audit_log)
-        self.db.commit()
-        
-        return audit_id
-    
-    def get_evidence_chain(
-        self,
-        evidence_object_id: str
-    ) -> List[Dict[str, Any]]:
-        """Retrieve complete evidence chain for an object"""
-        
-        evidence = self.db.query(EvidenceObject).filter(
-            EvidenceObject.id == evidence_object_id
-        ).first()
-        
+        Args:
+            evidence_id: Evidence object to trace
+            depth: Maximum depth to traverse
+            
+        Returns:
+            Evidence lineage tree
+        """
+        evidence = self._get_evidence(evidence_id)
         if not evidence:
-            return []
+            return {}
+            
+        lineage = {
+            "evidence": evidence,
+            "parents": [],
+            "children": []
+        }
         
-        chain = []
-        current = evidence
+        # Traverse parents
+        if evidence.get("parent_evidence_id") and depth > 0:
+            parent_lineage = self.get_evidence_lineage(
+                evidence["parent_evidence_id"],
+                depth - 1
+            )
+            lineage["parents"].append(parent_lineage)
+            
+        # Get linked evidence
+        links = self._get_evidence_links(evidence_id)
+        for link in links:
+            if depth > 0:
+                linked_lineage = self.get_evidence_lineage(
+                    link["linked_evidence_id"],
+                    depth - 1
+                )
+                lineage["children"].append(linked_lineage)
+                
+        return lineage
         
-        while current:
-            chain.append({
-                "evidence_id": current.id,
-                "title": current.title,
-                "type": current.object_type,
-                "confidence": current.confidence_score,
-                "created_at": current.created_at.isoformat(),
-                "agent": current.agent_name,
-                "source": current.source_type,
+    def generate_evidence_report(
+        self,
+        entity_type: str,
+        entity_id: str
+    ) -> Dict[str, Any]:
+        """
+        Generate comprehensive evidence report for an entity
+        
+        Args:
+            entity_type: Type of entity (claim, member, recommendation, etc)
+            entity_id: Entity identifier
+            
+        Returns:
+            Evidence report with lineage, quality scores, and audit trail
+        """
+        # Get all evidence for entity
+        evidence_objects = self._get_evidence_by_entity(entity_type, entity_id)
+        
+        report = {
+            "entity_type": entity_type,
+            "entity_id": entity_id,
+            "evidence_count": len(evidence_objects),
+            "evidence_chain": [],
+            "quality_summary": {},
+            "audit_trail": []
+        }
+        
+        for evidence in evidence_objects:
+            # Build lineage
+            lineage = self.get_evidence_lineage(evidence["evidence_id"])
+            report["evidence_chain"].append(lineage)
+            
+            # Extract quality scores
+            if "quality_scores" in evidence.get("metadata", {}):
+                report["quality_summary"] = evidence["metadata"]["quality_scores"]
+                
+            # Add to audit trail
+            report["audit_trail"].append({
+                "timestamp": evidence["created_at"],
+                "evidence_type": evidence["evidence_type"],
+                "created_by": evidence["created_by"]
             })
             
-            # Follow previous version
-            if current.previous_version_id:
-                current = self.db.query(EvidenceObject).filter(
-                    EvidenceObject.id == current.previous_version_id
-                ).first()
-            else:
-                current = None
+        return report
         
-        return chain
-    
-    def _get_confidence_level(self, score: float) -> str:
-        """Convert confidence score to level"""
-        if score >= 0.9:
-            return "very_high"
-        elif score >= 0.75:
-            return "high"
-        elif score >= 0.5:
-            return "medium"
-        elif score >= 0.25:
-            return "low"
-        else:
-            return "very_low"
-    
-    def query_evidence(
+    def _generate_evidence_id(
         self,
-        organization_id: str,
-        object_type: Optional[str] = None,
-        start_date: Optional[datetime] = None,
-        end_date: Optional[datetime] = None,
-        confidence_min: Optional[float] = None,
-        limit: int = 100
-    ) -> List[EvidenceObject]:
-        """Query evidence objects with filters"""
+        evidence_type: EvidenceType,
+        entity_type: str,
+        entity_id: str
+    ) -> str:
+        """Generate unique evidence ID"""
+        timestamp = datetime.utcnow().isoformat()
+        hash_input = f"{self.tenant_id}:{evidence_type.value}:{entity_type}:{entity_id}:{timestamp}"
+        hash_hex = hashlib.sha256(hash_input.encode()).hexdigest()[:16]
+        return f"EV-{hash_hex}"
         
-        query = self.db.query(EvidenceObject).filter(
-            EvidenceObject.organization_id == organization_id
-        )
+    def _store_evidence(self, evidence_object: Dict[str, Any]):
+        """Store evidence object in database"""
+        # Production: insert into evidence_objects table
+        pass
         
-        if object_type:
-            query = query.filter(EvidenceObject.object_type == object_type)
+    def _create_evidence_link(
+        self,
+        source_evidence_id: str,
+        target_evidence_id: str
+    ):
+        """Create link between evidence objects"""
+        # Production: insert into evidence_links table
+        pass
         
-        if start_date:
-            query = query.filter(EvidenceObject.created_at >= start_date)
+    def _get_evidence(self, evidence_id: str) -> Optional[Dict[str, Any]]:
+        """Get evidence object by ID"""
+        # Production: query database
+        return None
         
-        if end_date:
-            query = query.filter(EvidenceObject.created_at <= end_date)
+    def _get_evidence_links(self, evidence_id: str) -> List[Dict[str, Any]]:
+        """Get all evidence links for an object"""
+        # Production: query database
+        return []
         
-        if confidence_min:
-            query = query.filter(EvidenceObject.confidence_score >= confidence_min)
-        
-        query = query.order_by(EvidenceObject.created_at.desc()).limit(limit)
-        
-        return query.all()
+    def _get_evidence_by_entity(
+        self,
+        entity_type: str,
+        entity_id: str
+    ) -> List[Dict[str, Any]]:
+        """Get all evidence objects for an entity"""
+        # Production: query database
+        return []
+
+
+# Example usage
+if __name__ == "__main__":
+    spine = EvidenceSpine(tenant_id="acme-corp")
+    
+    # Track file ingestion
+    file_evidence = spine.track_file_ingestion(
+        file_name="claims_2024_q1.csv",
+        file_hash="abc123",
+        source="carrier",
+        record_count=50000,
+        quality_scores={
+            "completeness": 0.98,
+            "accuracy": 0.95,
+            "timeliness": 1.0
+        }
+    )
+    
+    # Track transformation
+    transform_evidence = spine.track_transformation(
+        transformation_name="claims_normalization",
+        input_evidence_ids=[file_evidence],
+        output_count=49800,
+        rules_applied=["deduplicate", "normalize_codes", "validate_amounts"]
+    )
+    
+    # Track analytics
+    analytics_evidence = spine.track_analytics_run(
+        model_name="high_cost_predictor",
+        model_version="2.1",
+        input_evidence_ids=[transform_evidence],
+        results={"predicted_high_cost": 125},
+        confidence=0.87
+    )
+    
+    # Track recommendation
+    rec_evidence = spine.track_recommendation(
+        recommendation_type="intervention",
+        recommendation="Implement care management for 125 high-risk members",
+        supporting_evidence_ids=[analytics_evidence],
+        financial_impact=-850000,
+        confidence=0.87
+    )
+    
+    # Get lineage
+    lineage = spine.get_evidence_lineage(rec_evidence)
+    print(json.dumps(lineage, indent=2, default=str))

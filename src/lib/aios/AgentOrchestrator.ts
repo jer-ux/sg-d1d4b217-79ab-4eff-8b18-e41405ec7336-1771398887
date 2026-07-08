@@ -24,7 +24,7 @@ export interface AgentRegistry {
 export class AgentOrchestrator {
   private agents: AgentRegistry;
   private taskQueue: TaskDefinition[];
-  private activeT asks: Map<string, TaskDefinition>;
+  private activeTasks: Map<string, TaskDefinition>;
   private completedTasks: Map<string, ConsensusResult>;
 
   constructor() {
@@ -157,7 +157,7 @@ export class AgentOrchestrator {
     debateMap: Map<string, AgentDebatePosition[]>,
     task: TaskDefinition
   ): Promise<ConsensusResult> {
-    let bestRecommendation: Recommendation | null = null;
+    const bestRecommendation: Recommendation | null = null;
     let highestConsensus = 0;
 
     // Find recommendation with highest consensus

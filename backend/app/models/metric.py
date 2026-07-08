@@ -3,10 +3,8 @@ KINCAID IQ™ DATA INTELLIGENCE CORE v0.1
 Metric Model
 """
 
-from sqlalchemy import Column
-from sqlalchemy import Integer
-from sqlalchemy import Float
-from sqlalchemy import String
+from sqlalchemy import Column, Integer, Float, String, ForeignKey
+from sqlalchemy.orm import relationship
 
 from app.database import Base
 
@@ -22,7 +20,8 @@ class Metric(Base):
     )
     
     dataset_id = Column(
-        Integer
+        String,
+        ForeignKey("datasets.id", ondelete="CASCADE")
     )
     
     name = Column(
@@ -36,3 +35,6 @@ class Metric(Base):
     category = Column(
         String
     )
+    
+    # Relationships
+    dataset = relationship("Dataset", back_populates="metrics")

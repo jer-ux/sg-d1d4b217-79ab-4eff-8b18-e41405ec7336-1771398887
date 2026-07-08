@@ -3,24 +3,31 @@ KINCAID IQ™ DATA INTELLIGENCE CORE v0.1
 Dataset Model
 """
 
-from sqlalchemy import Column
-from sqlalchemy import Integer
-from sqlalchemy import String
-from sqlalchemy import DateTime
-
+from sqlalchemy import Column, Integer, String, DateTime, ForeignKey
+from sqlalchemy.orm import relationship
 from datetime import datetime
+import uuid
 
 from app.database import Base
 
 
+def generate_uuid():
+    return str(uuid.uuid4())
+
+
 class Dataset(Base):
-    """Uploaded dataset entity"""
-    
     __tablename__ = "datasets"
     
     id = Column(
-        Integer,
-        primary_key=True
+        String,
+        primary_key=True,
+        default=generate_uuid
+    )
+    
+    organization_id = Column(
+        String,
+        ForeignKey("organizations.id", ondelete="CASCADE"),
+        nullable=False
     )
     
     name = Column(
@@ -43,3 +50,8 @@ class Dataset(Base):
         DateTime,
         default=datetime.utcnow
     )
+    
+    # Relationships
+    organization = relationship("Organization", back_populates="datasets")
+    claims = relationship("Claim", back_populates="dataset", cascade="all, delete-orphan")
+    metrics = relationship("Metric", back_populates="dataset", cascade="all, delete-orphan")

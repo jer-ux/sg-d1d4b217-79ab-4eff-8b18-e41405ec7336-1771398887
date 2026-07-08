@@ -4,32 +4,36 @@ Abstract Models & Concrete Implementations
 """
 
 from abc import ABC, abstractmethod
-from typing import Dict, List, Any, Optional
-import numpy as np
+from typing import Dict, Any, List, Optional
 import pandas as pd
+import numpy as np
 from datetime import datetime
 
-from app.actuarial.interfaces import ClaimsData, ActuarialAssumptions, ActuarialResults
+from .interfaces import (
+    ClaimsData,
+    ActuarialAssumptions,
+    ActuarialResults,
+    ModelResult,
+    Assumption
+)
+from .assumptions import AssumptionLibrary
+from .credibility import CredibilityEngine
+from .trend import TrendEngine
+from .forecast import ForecastEngine
+from .simulation import SimulationEngine
+from .benchmarks import BenchmarkEngine
 
 
 class ActuarialModel(ABC):
     """
     Abstract base class for all actuarial models
-    
-    All models follow the same lifecycle:
-    1. validate() - Check data quality and completeness
-    2. prepare() - Transform and prepare data
-    3. calculate() - Execute core calculations
-    4. summarize() - Format results
     """
     
-    def __init__(self, name: str, version: str = "1.0.0"):
+    def __init__(self, name: str, version: str = "1.0"):
         self.name = name
         self.version = version
-        self.data: Optional[ClaimsData] = None
-        self.assumptions: Optional[ActuarialAssumptions] = None
-        self.results: Optional[ActuarialResults] = None
         self.warnings: List[str] = []
+        self.evidence: List[Dict[str, Any]] = []
     
     @abstractmethod
     def validate(self, data: ClaimsData) -> bool:
@@ -37,274 +41,334 @@ class ActuarialModel(ABC):
         pass
     
     @abstractmethod
-    def prepare(self, data: ClaimsData, assumptions: ActuarialAssumptions) -> pd.DataFrame:
+    def prepare(self, data: ClaimsData) -> Dict[str, Any]:
         """Prepare data for calculation"""
         pass
     
     @abstractmethod
-    def calculate(self) -> Dict[str, Any]:
-        """Execute core actuarial calculations"""
+    def calculate(self, prepared_data: Dict[str, Any]) -> ModelResult:
+        """Execute core calculation"""
         pass
     
     @abstractmethod
-    def summarize(self) -> ActuarialResults:
-        """Summarize results into standard format"""
+    def summarize(self, result: ModelResult) -> Dict[str, Any]:
+        """Generate executive summary"""
         pass
     
-    def execute(self, data: ClaimsData, assumptions: ActuarialAssumptions) -> ActuarialResults:
-        """Full execution pipeline"""
+    def run(self, data: ClaimsData) -> ModelResult:
+        """
+        Execute full model workflow
+        """
+        # Validate
         if not self.validate(data):
-            raise ValueError(f"Data validation failed for {self.name}")
+            return ModelResult(
+                name=self.name,
+                success=False,
+                metrics={},
+                assumptions={},
+                warnings=self.warnings,
+                confidence=0.0,
+                evidence=self.evidence
+            )
         
-        self.data = data
-        self.assumptions = assumptions
-        
-        # Prepare data
-        prepared = self.prepare(data, assumptions)
+        # Prepare
+        prepared = self.prepare(data)
         
         # Calculate
-        calc_results = self.calculate()
+        result = self.calculate(prepared)
         
-        # Summarize
-        results = self.summarize()
-        results.warnings = self.warnings
-        
-        return results
+        return result
 
 
 class TrendProjectionModel(ActuarialModel):
     """
-    Medical/Pharmacy trend projection model
-    Uses historical claims to project future cost trends
+    Medical cost trend projection with credibility weighting
     """
     
     def __init__(self):
-        super().__init__(name="TrendProjection", version="1.0.0")
-        self.df: Optional[pd.DataFrame] = None
+        super().__init__(name="TrendProjection", version="2.0")
+        self.trend_engine = TrendEngine()
+        self.credibility_engine = CredibilityEngine()
+        self.forecast_engine = ForecastEngine()
     
     def validate(self, data: ClaimsData) -> bool:
-        if not data.claims:
-            self.warnings.append("No claims data provided")
-            return False
+        """Validate claims data"""
+        if data.member_months < 12:
+            self.warnings.append("Less than 12 months of exposure - low credibility")
         
-        if data.member_months < 1000:
-            self.warnings.append("Low credibility: member months < 1000")
+        if data.total_claims <= 0:
+            self.warnings.append("Total claims must be positive")
+            return False
         
         return True
     
-    def prepare(self, data: ClaimsData, assumptions: ActuarialAssumptions) -> pd.DataFrame:
-        # Convert claims to DataFrame
-        df = pd.DataFrame(data.claims)
+    def prepare(self, data: ClaimsData) -> Dict[str, Any]:
+        """Prepare data for trend analysis"""
+        current_pmpm = data.pmpm()
         
-        # Calculate PMPM
-        if 'paid_amount' in df.columns:
-            total_paid = df['paid_amount'].sum()
-            pmpm = total_paid / data.member_months
-        else:
-            pmpm = 0
-            self.warnings.append("No paid_amount column found")
+        # Build assumptions
+        assumptions = AssumptionLibrary.build_assumption_set(
+            exposure_months=data.member_months,
+            industry=data.industry
+        )
         
-        self.df = df
-        return df
-    
-    def calculate(self) -> Dict[str, Any]:
-        # Calculate historical trend
-        # Simplified: use assumption trend rate
-        historical_trend = self.assumptions.trend_rate
-        
-        # Project forward
-        periods = self.assumptions.forecast_periods
-        base_pmpm = self.df['paid_amount'].sum() / self.data.member_months
-        
-        projections = []
-        for i in range(periods):
-            projected_pmpm = base_pmpm * ((1 + historical_trend) ** (i + 1))
-            projections.append({
-                'period': i + 1,
-                'pmpm': projected_pmpm,
-                'total': projected_pmpm * self.data.member_months
-            })
+        # Track evidence
+        self.evidence.append({
+            'type': 'input_data',
+            'member_months': data.member_months,
+            'total_claims': data.total_claims,
+            'current_pmpm': current_pmpm
+        })
         
         return {
-            'historical_trend': historical_trend,
-            'projected_trend': historical_trend,
-            'base_pmpm': base_pmpm,
-            'projections': projections
+            'current_pmpm': current_pmpm,
+            'assumptions': assumptions,
+            'data': data
         }
     
-    def summarize(self) -> ActuarialResults:
-        calc = self.calculate()
+    def calculate(self, prepared_data: Dict[str, Any]) -> ModelResult:
+        """Execute trend projection"""
+        current_pmpm = prepared_data['current_pmpm']
+        assumptions = prepared_data['assumptions']
+        data = prepared_data['data']
         
-        return ActuarialResults(
-            model_name=self.name,
-            execution_timestamp=datetime.utcnow(),
-            expected_claims=calc['projections'][-1]['total'],
-            expected_pmpm=calc['projections'][-1]['pmpm'],
-            credibility_weight=min(1.0, self.data.member_months / self.assumptions.credibility_threshold),
-            historical_trend=calc['historical_trend'],
-            projected_trend=calc['projected_trend'],
-            forecast_periods=calc['projections'],
-            forecast_total=sum(p['total'] for p in calc['projections']),
-            percentile_50=calc['projections'][-1]['total'],
-            percentile_75=calc['projections'][-1]['total'] * 1.15,
-            percentile_90=calc['projections'][-1]['total'] * 1.25,
-            percentile_95=calc['projections'][-1]['total'] * 1.35,
-            percentile_99=calc['projections'][-1]['total'] * 1.50,
-            ci_lower=calc['projections'][-1]['total'] * 0.85,
-            ci_upper=calc['projections'][-1]['total'] * 1.35,
-            assumptions=self.assumptions.dict(),
-            data_quality_score=0.85,
-            warnings=self.warnings
+        # Get medical trend assumption
+        medical_trend = assumptions['medical_trend'].value
+        credibility = assumptions['credibility_factor'].value
+        
+        # Project forward 12 months
+        forecast = self.forecast_engine.project_pmpm(
+            base_pmpm=current_pmpm,
+            trend_rate=medical_trend,
+            periods=12,
+            member_count=data.member_count or (data.member_months // 12)
         )
+        
+        # Track evidence
+        self.evidence.append({
+            'type': 'projection',
+            'base_pmpm': current_pmpm,
+            'trend_rate': medical_trend,
+            'credibility': credibility,
+            'projected_pmpm': forecast['projected_pmpm']
+        })
+        
+        return ModelResult(
+            name=self.name,
+            success=True,
+            metrics={
+                'current_pmpm': round(current_pmpm, 2),
+                'projected_pmpm': round(forecast['projected_pmpm'], 2),
+                'annual_trend': round(medical_trend, 4),
+                'monthly_trend': round(medical_trend / 12, 4),
+                'credibility_score': round(credibility, 4)
+            },
+            assumptions={
+                'medical_trend': assumptions['medical_trend'].__dict__,
+                'credibility': assumptions['credibility_factor'].__dict__
+            },
+            warnings=self.warnings,
+            confidence=credibility,
+            evidence=self.evidence
+        )
+    
+    def summarize(self, result: ModelResult) -> Dict[str, Any]:
+        """Generate CFO summary"""
+        return {
+            'model': self.name,
+            'current_monthly_cost': result.metrics['current_pmpm'],
+            'projected_monthly_cost': result.metrics['projected_pmpm'],
+            'annual_increase_percent': round(result.metrics['annual_trend'] * 100, 2),
+            'confidence_level': self._confidence_label(result.confidence),
+            'warnings': result.warnings
+        }
+    
+    def _confidence_label(self, score: float) -> str:
+        if score >= 0.90:
+            return 'Very High'
+        elif score >= 0.75:
+            return 'High'
+        elif score >= 0.50:
+            return 'Medium'
+        else:
+            return 'Low'
 
 
 class StopLossOptimizationModel(ActuarialModel):
     """
-    Stop-loss optimization model
-    Analyzes specific vs aggregate stop-loss scenarios
+    Stop-loss specific attachment point optimization
     """
     
     def __init__(self):
-        super().__init__(name="StopLossOptimization", version="1.0.0")
-        self.df: Optional[pd.DataFrame] = None
+        super().__init__(name="StopLossOptimization", version="2.0")
+        self.simulation_engine = SimulationEngine()
     
     def validate(self, data: ClaimsData) -> bool:
-        if not data.claims:
+        if data.large_claims is None:
+            self.warnings.append("Large claims data not provided")
             return False
         return True
     
-    def prepare(self, data: ClaimsData, assumptions: ActuarialAssumptions) -> pd.DataFrame:
-        df = pd.DataFrame(data.claims)
-        self.df = df
-        return df
+    def prepare(self, data: ClaimsData) -> Dict[str, Any]:
+        return {
+            'total_claims': data.total_claims,
+            'large_claims': data.large_claims,
+            'member_months': data.member_months
+        }
     
-    def calculate(self) -> Dict[str, Any]:
-        # Calculate loss scenarios at different deductibles
-        deductibles = [50000, 75000, 100000, 150000, 200000, 250000]
+    def calculate(self, prepared_data: Dict[str, Any]) -> ModelResult:
+        """Calculate optimal attachment point"""
+        total_claims = prepared_data['total_claims']
+        large_claims = prepared_data['large_claims']
         
-        scenarios = []
-        for ded in deductibles:
-            # Claims above deductible
-            if 'paid_amount' in self.df.columns:
-                excess_claims = self.df[self.df['paid_amount'] > ded]['paid_amount'].sum()
-                retained = self.df['paid_amount'].sum() - excess_claims
-            else:
-                excess_claims = 0
-                retained = 0
+        # Simulate different attachment points
+        attachment_points = [50000, 75000, 100000, 125000, 150000, 200000, 250000]
+        results = []
+        
+        for ap in attachment_points:
+            # Estimate premium cost vs risk retained
+            premium_estimate = large_claims * 1.25  # 25% load
+            retained_risk = total_claims - large_claims
             
-            scenarios.append({
-                'deductible': ded,
-                'excess_claims': excess_claims,
-                'retained_claims': retained,
-                'estimated_premium': excess_claims * 1.25,  # Simplified loading
+            results.append({
+                'attachment_point': ap,
+                'estimated_premium': premium_estimate,
+                'retained_risk': retained_risk,
+                'total_cost': premium_estimate + retained_risk
             })
         
-        return {'scenarios': scenarios}
-    
-    def summarize(self) -> ActuarialResults:
-        calc = self.calculate()
+        # Find optimal (lowest total cost)
+        optimal = min(results, key=lambda x: x['total_cost'])
         
-        return ActuarialResults(
-            model_name=self.name,
-            execution_timestamp=datetime.utcnow(),
-            expected_claims=self.df['paid_amount'].sum() if 'paid_amount' in self.df.columns else 0,
-            expected_pmpm=0,
-            credibility_weight=1.0,
-            historical_trend=0.08,
-            projected_trend=0.08,
-            forecast_periods=calc['scenarios'],
-            forecast_total=0,
-            percentile_50=0,
-            percentile_75=0,
-            percentile_90=0,
-            percentile_95=0,
-            percentile_99=0,
-            ci_lower=0,
-            ci_upper=0,
-            assumptions=self.assumptions.dict(),
-            data_quality_score=0.90,
-            warnings=self.warnings
+        self.evidence.append({
+            'type': 'optimization',
+            'scenarios': results,
+            'optimal': optimal
+        })
+        
+        return ModelResult(
+            name=self.name,
+            success=True,
+            metrics={
+                'optimal_attachment': optimal['attachment_point'],
+                'estimated_premium': round(optimal['estimated_premium'], 2),
+                'retained_risk': round(optimal['retained_risk'], 2)
+            },
+            assumptions={},
+            warnings=self.warnings,
+            confidence=0.80,
+            evidence=self.evidence
         )
+    
+    def summarize(self, result: ModelResult) -> Dict[str, Any]:
+        return {
+            'model': self.name,
+            'recommended_attachment': result.metrics['optimal_attachment'],
+            'estimated_annual_premium': result.metrics['estimated_premium'],
+            'retained_risk': result.metrics['retained_risk']
+        }
 
 
 class LossRatioModel(ActuarialModel):
-    """Loss ratio analysis and monitoring"""
+    """
+    Loss ratio calculation and projection
+    """
     
     def __init__(self):
-        super().__init__(name="LossRatio", version="1.0.0")
+        super().__init__(name="LossRatio", version="2.0")
     
     def validate(self, data: ClaimsData) -> bool:
-        return bool(data.claims)
+        return data.total_claims > 0
     
-    def prepare(self, data: ClaimsData, assumptions: ActuarialAssumptions) -> pd.DataFrame:
-        return pd.DataFrame(data.claims)
+    def prepare(self, data: ClaimsData) -> Dict[str, Any]:
+        return {'data': data}
     
-    def calculate(self) -> Dict[str, Any]:
-        # Simplified loss ratio calculation
-        return {
-            'loss_ratio': 0.85,
-            'target_ratio': 0.80,
-            'variance': 0.05
-        }
-    
-    def summarize(self) -> ActuarialResults:
-        return ActuarialResults(
-            model_name=self.name,
-            execution_timestamp=datetime.utcnow(),
-            expected_claims=0,
-            expected_pmpm=0,
-            credibility_weight=1.0,
-            historical_trend=0.08,
-            projected_trend=0.08,
-            forecast_periods=[],
-            forecast_total=0,
-            percentile_50=0,
-            percentile_75=0,
-            percentile_90=0,
-            percentile_95=0,
-            percentile_99=0,
-            ci_lower=0,
-            ci_upper=0,
-            assumptions=self.assumptions.dict(),
-            data_quality_score=0.85,
-            warnings=self.warnings
+    def calculate(self, prepared_data: Dict[str, Any]) -> ModelResult:
+        data = prepared_data['data']
+        
+        # Estimate premium (claims / 0.85 typical target loss ratio)
+        estimated_premium = data.total_claims / 0.85
+        loss_ratio = data.total_claims / estimated_premium
+        
+        return ModelResult(
+            name=self.name,
+            success=True,
+            metrics={
+                'actual_claims': data.total_claims,
+                'estimated_premium': round(estimated_premium, 2),
+                'loss_ratio': round(loss_ratio, 4),
+                'target_loss_ratio': 0.85
+            },
+            assumptions={
+                'target_loss_ratio': Assumption(
+                    name='target_loss_ratio',
+                    value=0.85,
+                    source='industry_standard',
+                    effective_date=datetime.now().isoformat(),
+                    notes='Industry standard for self-funded plans'
+                ).__dict__
+            },
+            warnings=self.warnings,
+            confidence=0.90,
+            evidence=self.evidence
         )
+    
+    def summarize(self, result: ModelResult) -> Dict[str, Any]:
+        return {
+            'model': self.name,
+            'loss_ratio': result.metrics['loss_ratio'],
+            'status': 'favorable' if result.metrics['loss_ratio'] < 0.85 else 'unfavorable'
+        }
 
 
 class PremiumForecastModel(ActuarialModel):
-    """Premium forecasting model"""
+    """
+    Premium renewal forecast
+    """
     
     def __init__(self):
-        super().__init__(name="PremiumForecast", version="1.0.0")
+        super().__init__(name="PremiumForecast", version="2.0")
+        self.trend_engine = TrendEngine()
     
     def validate(self, data: ClaimsData) -> bool:
-        return bool(data.claims)
+        return data.member_months >= 12
     
-    def prepare(self, data: ClaimsData, assumptions: ActuarialAssumptions) -> pd.DataFrame:
-        return pd.DataFrame(data.claims)
+    def prepare(self, data: ClaimsData) -> Dict[str, Any]:
+        assumptions = AssumptionLibrary.build_assumption_set(data.member_months)
+        return {
+            'data': data,
+            'assumptions': assumptions
+        }
     
-    def calculate(self) -> Dict[str, Any]:
-        return {'forecast': []}
-    
-    def summarize(self) -> ActuarialResults:
-        return ActuarialResults(
-            model_name=self.name,
-            execution_timestamp=datetime.utcnow(),
-            expected_claims=0,
-            expected_pmpm=0,
-            credibility_weight=1.0,
-            historical_trend=0.08,
-            projected_trend=0.08,
-            forecast_periods=[],
-            forecast_total=0,
-            percentile_50=0,
-            percentile_75=0,
-            percentile_90=0,
-            percentile_95=0,
-            percentile_99=0,
-            ci_lower=0,
-            ci_upper=0,
-            assumptions=self.assumptions.dict(),
-            data_quality_score=0.85,
-            warnings=self.warnings
+    def calculate(self, prepared_data: Dict[str, Any]) -> ModelResult:
+        data = prepared_data['data']
+        assumptions = prepared_data['assumptions']
+        
+        current_pmpm = data.pmpm()
+        trend = assumptions['medical_trend'].value
+        
+        # Project forward
+        projected_pmpm = current_pmpm * (1 + trend)
+        
+        return ModelResult(
+            name=self.name,
+            success=True,
+            metrics={
+                'current_pmpm': round(current_pmpm, 2),
+                'projected_pmpm': round(projected_pmpm, 2),
+                'annual_increase': round((projected_pmpm - current_pmpm), 2)
+            },
+            assumptions={
+                'medical_trend': assumptions['medical_trend'].__dict__
+            },
+            warnings=self.warnings,
+            confidence=0.85,
+            evidence=self.evidence
         )
+    
+    def summarize(self, result: ModelResult) -> Dict[str, Any]:
+        return {
+            'model': self.name,
+            'renewal_pmpm': result.metrics['projected_pmpm'],
+            'increase_amount': result.metrics['annual_increase']
+        }

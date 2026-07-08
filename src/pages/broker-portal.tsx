@@ -1,7 +1,5 @@
-"""
-KINCAID HEALTH™ BROKER/CONSULTANT PORTAL
-Tenant-aware dashboard with role-based access
-"""
+// KINCAID HEALTH™ BROKER/CONSULTANT PORTAL
+// Tenant-aware dashboard with role-based access
 
 import { useEffect, useState } from "react";
 import { SEO } from "@/components/SEO";

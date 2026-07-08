@@ -1,7 +1,5 @@
-"""
-KINCAID HEALTH™ SUPER ADMIN PORTAL
-Tenant management, company onboarding, role assignment
-"""
+// KINCAID HEALTH™ SUPER ADMIN PORTAL
+// Tenant management, company onboarding, role assignment
 
 import { useEffect, useState } from "react";
 import { SEO } from "@/components/SEO";

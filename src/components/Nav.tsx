@@ -1,7 +1,7 @@
 import { useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
-import { Menu, X, ChevronDown, Search, Users, Building2, AlertTriangle, Calculator, FileText, TrendingUp, Briefcase, BarChart3, Shield, LineChart, DollarSign, Heart, FolderOpen, Activity, Sparkles } from "lucide-react";
+import { Menu, X, ChevronDown, Search, Users, Building2, AlertTriangle, Calculator, FileText, TrendingUp, Briefcase, BarChart3, Shield, LineChart, DollarSign, Heart, FolderOpen, Activity, Sparkles, Code, Database } from "lucide-react";
 import { useRouter } from "next/router";
 import { Button } from "@/components/ui/button";
 import { KincaidIQLogo } from "@/components/KincaidIQLogo";
@@ -14,6 +14,7 @@ export default function Nav() {
   const [kincaidHealthDropdownOpen, setKincaidHealthDropdownOpen] = useState(false);
   const [auditsDropdownOpen, setAuditsDropdownOpen] = useState(false);
   const [productsDropdownOpen, setProductsDropdownOpen] = useState(false);
+  const [toolsDropdownOpen, setToolsDropdownOpen] = useState(false);
 
   return (
     <nav className="fixed top-0 z-[200] w-full border-b border-slate-200/20 bg-white/95 backdrop-blur-xl">
@@ -35,6 +36,7 @@ export default function Nav() {
                   setFocusAreasDropdownOpen(false);
                   setAuditsDropdownOpen(false);
                   setProductsDropdownOpen(false);
+                  setToolsDropdownOpen(false);
                 }}
                 className="flex items-center gap-2 px-4 py-2 text-black hover:text-black/80 transition-colors rounded-lg hover:bg-slate-50 font-medium">
                 Company
@@ -156,6 +158,7 @@ export default function Nav() {
                   setCompanyDropdownOpen(false);
                   setAuditsDropdownOpen(false);
                   setProductsDropdownOpen(false);
+                  setToolsDropdownOpen(false);
                 }}
                 className="flex items-center gap-2 px-4 py-2 text-black hover:text-black/80 transition-colors rounded-lg hover:bg-slate-50 font-medium">
                 Areas of Focus
@@ -315,6 +318,69 @@ export default function Nav() {
                 </div>
               )}
             </div>
+
+            {/* Tools Dropdown - NEW */}
+            <div className="relative">
+              <button
+                onClick={() => {
+                  setToolsDropdownOpen(!toolsDropdownOpen);
+                  setCompanyDropdownOpen(false);
+                  setKincaidIqDropdownOpen(false);
+                  setFocusAreasDropdownOpen(false);
+                  setAuditsDropdownOpen(false);
+                  setProductsDropdownOpen(false);
+                }}
+                className="flex items-center gap-2 px-4 py-2 text-black hover:text-black/80 transition-colors rounded-lg hover:bg-slate-50 font-medium">
+                Tools
+                <ChevronDown className={`w-3 h-3 transition-transform ${toolsDropdownOpen ? "rotate-180" : ""}`} />
+              </button>
+              {toolsDropdownOpen && (
+                <div className="absolute top-full left-0 mt-2 w-72 bg-gray-900/95 backdrop-blur-xl rounded-xl border border-gray-700/50 shadow-xl overflow-hidden z-[210]">
+                  <div className="p-2">
+                    <Link
+                      href="/intelligence-hub"
+                      onClick={() => setToolsDropdownOpen(false)}
+                      className="block px-4 py-3 text-gray-300 hover:text-white hover:bg-purple-500/10 rounded-lg transition-colors duration-150">
+                      <div className="font-medium flex items-center gap-2">
+                        <Sparkles className="w-4 h-4 text-purple-400" />
+                        Intelligence Hub
+                      </div>
+                      <div className="text-xs text-gray-400">Central access to all tools & agents</div>
+                    </Link>
+                    <Link
+                      href="/evidence-spine"
+                      onClick={() => setToolsDropdownOpen(false)}
+                      className="block px-4 py-3 text-gray-300 hover:text-white hover:bg-blue-500/10 rounded-lg transition-colors duration-150">
+                      <div className="font-medium flex items-center gap-2">
+                        <Shield className="w-4 h-4 text-blue-400" />
+                        Evidence Spine
+                      </div>
+                      <div className="text-xs text-gray-400">Audit logs & activity tracking</div>
+                    </Link>
+                    <Link
+                      href="/api-documentation"
+                      onClick={() => setToolsDropdownOpen(false)}
+                      className="block px-4 py-3 text-gray-300 hover:text-white hover:bg-emerald-500/10 rounded-lg transition-colors duration-150">
+                      <div className="font-medium flex items-center gap-2">
+                        <Code className="w-4 h-4 text-emerald-400" />
+                        API Documentation
+                      </div>
+                      <div className="text-xs text-gray-400">FastAPI endpoint reference</div>
+                    </Link>
+                    <Link
+                      href="/databank-manager"
+                      onClick={() => setToolsDropdownOpen(false)}
+                      className="block px-4 py-3 text-gray-300 hover:text-white hover:bg-cyan-500/10 rounded-lg transition-colors duration-150">
+                      <div className="font-medium flex items-center gap-2">
+                        <Database className="w-4 h-4 text-cyan-400" />
+                        Data Upload
+                      </div>
+                      <div className="text-xs text-gray-400">CSV/Excel file ingestion</div>
+                    </Link>
+                  </div>
+                </div>
+              )}
+            </div>
           </div>
 
           {/* Mobile menu button */}
@@ -340,6 +406,62 @@ export default function Nav() {
                 <Calculator className="w-4 h-4" />
               </div>
             </Link>
+
+            {/* Tools Dropdown - Mobile - NEW */}
+            <div className="bg-white/5 rounded-xl overflow-hidden">
+              <button
+                onClick={() => setToolsDropdownOpen(!toolsDropdownOpen)}
+                className="flex items-center justify-between w-full px-4 py-3.5 text-gray-200 hover:text-white hover:bg-white/10 transition-all duration-200">
+                <span className="font-semibold">Intelligence Tools</span>
+                <ChevronDown className={`w-4 h-4 transition-transform duration-300 ${toolsDropdownOpen ? "rotate-180" : ""}`} />
+              </button>
+              {toolsDropdownOpen && (
+                <div className="bg-black/40 border-t border-white/5 animate-in slide-in-from-top-2 duration-200">
+                  <div className="px-2 py-2 space-y-1">
+                    <Link 
+                      href="/intelligence-hub" 
+                      onClick={() => setIsOpen(false)}
+                      className="block px-4 py-2.5 text-sm text-gray-300 hover:text-white hover:bg-purple-500/20 rounded-lg transition-all duration-150">
+                      <div className="flex items-center gap-2">
+                        <Sparkles className="w-4 h-4 text-purple-400" />
+                        Intelligence Hub
+                      </div>
+                      <div className="text-xs text-gray-400 mt-0.5">Central access point</div>
+                    </Link>
+                    <Link 
+                      href="/evidence-spine" 
+                      onClick={() => setIsOpen(false)}
+                      className="block px-4 py-2.5 text-sm text-gray-300 hover:text-white hover:bg-blue-500/20 rounded-lg transition-all duration-150">
+                      <div className="flex items-center gap-2">
+                        <Shield className="w-4 h-4 text-blue-400" />
+                        Evidence Spine
+                      </div>
+                      <div className="text-xs text-gray-400 mt-0.5">Audit & provenance</div>
+                    </Link>
+                    <Link 
+                      href="/api-documentation" 
+                      onClick={() => setIsOpen(false)}
+                      className="block px-4 py-2.5 text-sm text-gray-300 hover:text-white hover:bg-emerald-500/20 rounded-lg transition-all duration-150">
+                      <div className="flex items-center gap-2">
+                        <Code className="w-4 h-4 text-emerald-400" />
+                        API Docs
+                      </div>
+                      <div className="text-xs text-gray-400 mt-0.5">Backend API reference</div>
+                    </Link>
+                    <Link 
+                      href="/databank-manager" 
+                      onClick={() => setIsOpen(false)}
+                      className="block px-4 py-2.5 text-sm text-gray-300 hover:text-white hover:bg-cyan-500/20 rounded-lg transition-all duration-150">
+                      <div className="flex items-center gap-2">
+                        <Database className="w-4 h-4 text-cyan-400" />
+                        Data Upload
+                      </div>
+                      <div className="text-xs text-gray-400 mt-0.5">CSV/Excel ingestion</div>
+                    </Link>
+                  </div>
+                </div>
+              )}
+            </div>
 
             {/* Products Dropdown - Mobile */}
             <div className="bg-white/5 rounded-xl overflow-hidden">

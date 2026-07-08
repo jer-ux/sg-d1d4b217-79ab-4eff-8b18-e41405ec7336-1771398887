@@ -1,4 +1,4 @@
-# KINCAID IQ™ INTELLIGENCE KERNEL
+# KINCAID HEALTH™ INTELLIGENCE KERNEL
 # Enterprise Production Dependencies
 
 # API Framework

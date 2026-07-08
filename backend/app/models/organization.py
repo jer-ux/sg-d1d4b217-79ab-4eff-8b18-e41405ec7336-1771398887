@@ -1,5 +1,5 @@
 """
-KINCAID IQ™ INTELLIGENCE KERNEL
+KINCAID HEALTH™ INTELLIGENCE KERNEL
 Organization Model — Multi-tenant Architecture
 """
 

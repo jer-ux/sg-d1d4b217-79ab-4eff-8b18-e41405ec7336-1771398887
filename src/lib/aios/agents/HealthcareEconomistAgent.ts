@@ -78,7 +78,7 @@ export class HealthcareEconomistAgent extends BaseAgent {
   async debate(recommendation: Recommendation): Promise<AgentDebatePosition> {
     let stance: "support" | "oppose" | "neutral" | "conditional" = "neutral";
     let reasoning = "";
-    let confidence = 0.83;
+    const confidence = 0.83;
     const conditions: string[] = [];
 
     // Check for market dynamics consideration

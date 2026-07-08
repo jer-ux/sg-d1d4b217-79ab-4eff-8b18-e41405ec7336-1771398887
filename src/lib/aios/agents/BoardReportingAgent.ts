@@ -78,7 +78,7 @@ export class BoardReportingAgent extends BaseAgent {
   async debate(recommendation: Recommendation): Promise<AgentDebatePosition> {
     let stance: "support" | "oppose" | "neutral" | "conditional" = "neutral";
     let reasoning = "";
-    let confidence = 0.85;
+    const confidence = 0.85;
     const conditions: string[] = [];
 
     // Check executive readability

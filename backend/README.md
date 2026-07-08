@@ -1,4 +1,4 @@
-# KINCAID IQ™ INTELLIGENCE KERNEL
+# KINCAID HEALTH™ INTELLIGENCE KERNEL
 ## Enterprise Backend — Production Ready
 
 **The Intelligence Infrastructure for Healthcare Financial Intelligence**
@@ -60,7 +60,7 @@ source venv/bin/activate  # Windows: venv\Scripts\activate
 pip install -r requirements.txt
 
 # Set up database
-createdb kincaid
+createdb kincaid_health
 ```
 
 ### Configuration
@@ -68,7 +68,7 @@ createdb kincaid
 Create `.env` file:
 ```env
 # Database
-DATABASE_URL=postgresql://postgres:password@localhost/kincaid
+DATABASE_URL=postgresql://postgres:password@localhost/kincaid_health
 
 # AI Providers
 OPENAI_API_KEY=your_openai_key
@@ -144,6 +144,27 @@ Every finding, recommendation, and decision is an `EvidenceObject` with:
 
 ---
 
+## Evidence Spine
+
+The Evidence Spine tracks all system activity as immutable evidence objects:
+
+**Tracked Activities:**
+- Data uploads → Evidence of data ingestion
+- API calls → Evidence of system usage
+- AI agent executions → Evidence of analytical decisions
+- User actions → Evidence of human decisions
+- System events → Evidence of infrastructure health
+
+**Evidence Properties:**
+- Confidence scoring (0.0 to 1.0)
+- Financial impact quantification
+- Risk assessment scoring
+- Complete provenance chain
+- Version history (immutable trail)
+- Agent attribution
+
+---
+
 ## API Endpoints
 
 ### Core APIs
@@ -216,7 +237,8 @@ Every finding, recommendation, and decision is an `EvidenceObject` with:
 - Consensus building
 - Evidence synthesis
 
-### Evidence Service
+### Evidence Spine Service
+- Universal activity tracking
 - Provenance tracking
 - Version management
 - Review workflow
@@ -272,10 +294,10 @@ Every finding, recommendation, and decision is an `EvidenceObject` with:
 
 ```bash
 # Build image
-docker build -t kincaid-iq-backend .
+docker build -t kincaid-health-backend .
 
 # Run container
-docker run -p 8000:8000 kincaid-iq-backend
+docker run -p 8000:8000 kincaid-health-backend
 ```
 
 ### Docker Compose
@@ -302,7 +324,7 @@ kubectl get pods
 kubectl get services
 
 # View logs
-kubectl logs -f deployment/kincaid-iq-api
+kubectl logs -f deployment/kincaid-health-api
 ```
 
 ---
@@ -324,13 +346,19 @@ kubectl logs -f deployment/kincaid-iq-api
 - Consensus building
 - Evidence provenance
 
-### 🔄 Phase 3: Intelligence Kernel (In Progress)
+### ✅ Phase 3: Evidence Spine (Complete)
+- Universal activity tracking
+- Complete provenance chain
+- Immutable audit trail
+- Evidence-based decision support
+
+### 🔄 Phase 4: Intelligence Kernel (In Progress)
 - Knowledge graph integration
 - Vector intelligence
 - Continuous learning
 - Real-time streaming
 
-### 📋 Phase 4: Production Hardening (Planned)
+### 📋 Phase 5: Production Hardening (Planned)
 - Performance optimization
 - Security hardening
 - Observability

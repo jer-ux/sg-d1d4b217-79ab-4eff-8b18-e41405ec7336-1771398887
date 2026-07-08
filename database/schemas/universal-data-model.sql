@@ -1,4 +1,4 @@
--- KINCAID IQ™ INTELLIGENCE KERNEL
+-- KINCAID HEALTH™ INTELLIGENCE KERNEL
 -- Universal Enterprise Data Model
 -- Complete schema for multi-tenant intelligence platform
 

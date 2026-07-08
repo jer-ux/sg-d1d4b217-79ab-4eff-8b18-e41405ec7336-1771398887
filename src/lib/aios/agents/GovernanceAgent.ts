@@ -78,7 +78,7 @@ export class GovernanceAgent extends BaseAgent {
   async debate(recommendation: Recommendation): Promise<AgentDebatePosition> {
     let stance: "support" | "oppose" | "neutral" | "conditional" = "neutral";
     let reasoning = "";
-    let confidence = 0.92;
+    const confidence = 0.92;
     const conditions: string[] = [];
 
     // Check for documentation requirements

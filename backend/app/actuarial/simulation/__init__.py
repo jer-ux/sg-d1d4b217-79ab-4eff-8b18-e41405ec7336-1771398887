@@ -3,25 +3,34 @@ KINCAID HEALTH™ ACTUARIAL ENGINE
 Monte Carlo Simulation Framework
 """
 
-from .engine import SimulationEngine
-from .monte_carlo import MonteCarloSimulator
-from .distributions import DistributionFactory, Distribution
+from .engine import SimulationEngine, SimulationResult
+from .monte_carlo import MonteCarloEngine
+from .statistics import SummaryStatistics
+from .confidence import ConfidenceInterval
+from .var import RiskMetrics
+from .scenarios import Scenario
+from .distributions import Distribution, DistributionFactory
 from .random_variables import RandomVariable
-from .scenarios import ScenarioGenerator
-from .statistics import StatisticalAnalyzer
-from .confidence import ConfidenceIntervalCalculator
-from .var import ValueAtRiskCalculator
-from .models import SimulationModel
+from .models import (
+    HealthcareTrendModel,
+    PremiumRenewalModel,
+    AggregateLossModel,
+    LargeClaimShockModel
+)
 
 __all__ = [
     "SimulationEngine",
-    "MonteCarloSimulator",
-    "DistributionFactory",
+    "SimulationResult",
+    "MonteCarloEngine",
+    "SummaryStatistics",
+    "ConfidenceInterval",
+    "RiskMetrics",
+    "Scenario",
     "Distribution",
+    "DistributionFactory",
     "RandomVariable",
-    "ScenarioGenerator",
-    "StatisticalAnalyzer",
-    "ConfidenceIntervalCalculator",
-    "ValueAtRiskCalculator",
-    "SimulationModel",
+    "HealthcareTrendModel",
+    "PremiumRenewalModel",
+    "AggregateLossModel",
+    "LargeClaimShockModel",
 ]

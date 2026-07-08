@@ -1,10 +1,10 @@
 """
-KINCAID HEALTH™ AIOS
-Enterprise Actuarial Intelligence Operating System
+KINCAID IQ™ INTELLIGENCE KERNEL
+Enterprise Healthcare Intelligence Platform
 
-Python Backend - __init__.py
+Version: 0.1.0
 """
 
-__version__ = "1.0.0"
-__author__ = "Kincaid Health"
-__description__ = "Fortune 100-grade Actuarial Intelligence Operating System"
+__version__ = "0.1.0"
+__author__ = "SiriusB IQ"
+__license__ = "Proprietary"

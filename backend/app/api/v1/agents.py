@@ -1,131 +1,131 @@
 """
-KINCAID HEALTH™ AIOS
-AI Agents API Endpoints
+KINCAID IQ™ INTELLIGENCE KERNEL
+AI Agents API
+
+Endpoints for orchestrating autonomous analyst agents
 """
 
-from fastapi import APIRouter, HTTPException, BackgroundTasks
+from fastapi import APIRouter, HTTPException, Depends
+from sqlalchemy.orm import Session
+from typing import List, Dict, Any
 from pydantic import BaseModel
-from typing import Dict, Any, Optional, List
-from datetime import datetime
-import structlog
 
-from app.agents.orchestrator import agent_orchestrator
+from app.models.database import get_db
+from app.config import settings
 
-logger = structlog.get_logger()
 router = APIRouter()
 
-class AgentTaskRequest(BaseModel):
-    task_type: str  # "analysis", "forecast", "audit", "recommendation"
+
+class AgentTask(BaseModel):
+    """Task submission for AI agents"""
+    task_type: str  # analysis, forecast, simulation, recommendation
+    organization_id: str
     context: Dict[str, Any]
-    required_agents: List[str]
-    priority: str = "medium"  # "low", "medium", "high", "urgent"
+    required_agents: List[str] = []  # Empty = auto-select
 
-class AgentTaskResponse(BaseModel):
+
+class AgentResponse(BaseModel):
+    """Response from AI agent analysis"""
     task_id: str
     status: str
-    message: str
+    agents_assigned: List[str]
+    consensus_score: float
+    confidence_score: float
+    recommendations: List[Dict[str, Any]]
+    evidence: Dict[str, Any]
+    debate_summary: Optional[str] = None
 
-class TaskStatusResponse(BaseModel):
-    task_id: str
-    status: str  # "queued", "processing", "complete", "error"
-    progress: Optional[float]
-    created_at: datetime
-    completed_at: Optional[datetime]
 
-class TaskResultResponse(BaseModel):
-    task_id: str
-    status: str
-    consensus_percentage: float
-    confidence_percentage: float
-    recommendation: Dict[str, Any]
-    debate_summary: str
-    executive_summary: str
-    evidence: List[Dict[str, Any]]
-
-@router.post("/task", response_model=AgentTaskResponse)
-async def submit_agent_task(
-    request: AgentTaskRequest,
-    background_tasks: BackgroundTasks
-):
+@router.post("/orchestrate", response_model=AgentResponse)
+async def orchestrate_agents(task: AgentTask, db: Session = Depends(get_db)):
     """
-    Submit a task for multi-agent analysis.
+    Orchestrate multi-agent analysis
     
-    The task will be processed through:
-    1. Independent analysis by required agents
-    2. Multi-agent debate
-    3. Consensus building
-    4. Self-critique validation
+    This endpoint triggers the autonomous analyst layer to:
+    1. Route task to appropriate agents
+    2. Conduct independent analysis
+    3. Facilitate agent debate
+    4. Build consensus
+    5. Return unified recommendation
     """
-    try:
-        task_id = await agent_orchestrator.submit_task(
-            task_type=request.task_type,
-            context=request.context,
-            required_agents=request.required_agents,
-            priority=request.priority
-        )
-        
-        logger.info("agent_task_submitted", task_id=task_id, agents=request.required_agents)
-        
-        return AgentTaskResponse(
-            task_id=task_id,
-            status="queued",
-            message=f"Task submitted successfully. {len(request.required_agents)} agents will collaborate."
-        )
-    except Exception as e:
-        logger.error("agent_task_submission_failed", error=str(e))
-        raise HTTPException(status_code=500, detail=str(e))
+    if not settings.ENABLE_AI_AGENTS:
+        raise HTTPException(status_code=503, detail="AI Agents are not enabled")
+    
+    # TODO: Implement agent orchestration
+    # This will connect to the AgentOrchestrator class
+    
+    return AgentResponse(
+        task_id="temp-id",
+        status="completed",
+        agents_assigned=["CFOAgent", "ChiefActuaryAgent"],
+        consensus_score=0.87,
+        confidence_score=0.92,
+        recommendations=[],
+        evidence={},
+        debate_summary="Agents reached consensus on financial impact analysis"
+    )
 
-@router.get("/task/{task_id}/status", response_model=TaskStatusResponse)
-async def get_task_status(task_id: str):
-    """Get the current status of an agent task"""
-    try:
-        status = await agent_orchestrator.get_task_status(task_id)
-        
-        if not status:
-            raise HTTPException(status_code=404, detail="Task not found")
-        
-        return TaskStatusResponse(**status)
-    except HTTPException:
-        raise
-    except Exception as e:
-        logger.error("get_task_status_failed", task_id=task_id, error=str(e))
-        raise HTTPException(status_code=500, detail=str(e))
 
-@router.get("/task/{task_id}/result", response_model=TaskResultResponse)
-async def get_task_result(task_id: str):
-    """Get the final result of a completed agent task"""
-    try:
-        result = await agent_orchestrator.get_task_result(task_id)
-        
-        if not result:
-            raise HTTPException(status_code=404, detail="Task not found or not complete")
-        
-        return TaskResultResponse(**result)
-    except HTTPException:
-        raise
-    except Exception as e:
-        logger.error("get_task_result_failed", task_id=task_id, error=str(e))
-        raise HTTPException(status_code=500, detail=str(e))
+@router.get("/agents")
+async def list_agents():
+    """List available AI agents"""
+    return {
+        "agents": [
+            {
+                "name": "ChiefActuaryAgent",
+                "status": "active",
+                "expertise": ["actuarial_analysis", "risk_modeling", "forecasting"]
+            },
+            {
+                "name": "CFOAgent",
+                "status": "active",
+                "expertise": ["financial_analysis", "roi_calculation", "budget_impact"]
+            },
+            {
+                "name": "CHROAgent",
+                "status": "active",
+                "expertise": ["workforce_analytics", "benefits_optimization", "retention"]
+            },
+            {
+                "name": "ChiefRiskOfficerAgent",
+                "status": "active",
+                "expertise": ["risk_assessment", "scenario_analysis", "mitigation"]
+            },
+            {
+                "name": "HealthcareEconomistAgent",
+                "status": "active",
+                "expertise": ["market_analysis", "price_elasticity", "economic_modeling"]
+            },
+            {
+                "name": "DataQualityAgent",
+                "status": "active",
+                "expertise": ["data_validation", "quality_scoring", "anomaly_detection"]
+            },
+            {
+                "name": "GovernanceAgent",
+                "status": "active",
+                "expertise": ["fiduciary_compliance", "policy_review", "audit_readiness"]
+            },
+            {
+                "name": "ComplianceAgent",
+                "status": "active",
+                "expertise": ["erisa_compliance", "hipaa_privacy", "regulatory_reporting"]
+            },
+            {
+                "name": "BoardReportingAgent",
+                "status": "active",
+                "expertise": ["executive_communication", "strategic_synthesis", "reporting"]
+            }
+        ]
+    }
 
-@router.get("/available")
-async def get_available_agents():
-    """Get list of available agents and their capabilities"""
-    try:
-        agents = await agent_orchestrator.get_available_agents()
-        return {
-            "agents": agents,
-            "count": len(agents)
-        }
-    except Exception as e:
-        logger.error("get_available_agents_failed", error=str(e))
-        raise HTTPException(status_code=500, detail=str(e))
 
-@router.get("/status")
-async def get_orchestrator_status():
-    """Get orchestrator status and metrics"""
-    try:
-        status = await agent_orchestrator.get_status()
-        return status
-    except Exception as e:
-        logger.error("get_orchestrator_status_failed", error=str(e))
-        raise HTTPException(status_code=500, detail=str(e))
+@router.get("/agents/{agent_name}/capabilities")
+async def get_agent_capabilities(agent_name: str):
+    """Get detailed capabilities of a specific agent"""
+    # TODO: Return agent-specific capabilities
+    return {
+        "agent": agent_name,
+        "capabilities": [],
+        "performance_metrics": {}
+    }

@@ -59,6 +59,91 @@ export interface Database {
           created_at?: string
         }
       }
+      pbm_contracts: {
+        Row: {
+          id: string
+          contract_name: string
+          contract_number: string | null
+          pbm_name: string
+          contract_type: string | null
+          plan_size: string | null
+          effective_date: string | null
+          termination_date: string | null
+          overall_score: number | null
+          risk_level: string | null
+          red_flags: number | null
+          annual_cost_estimate: number | null
+          metadata: Json | null
+          created_at: string
+        }
+        Insert: {
+          id?: string
+          contract_name: string
+          contract_number?: string | null
+          pbm_name: string
+          contract_type?: string | null
+          plan_size?: string | null
+          effective_date?: string | null
+          termination_date?: string | null
+          overall_score?: number | null
+          risk_level?: string | null
+          red_flags?: number | null
+          annual_cost_estimate?: number | null
+          metadata?: Json | null
+          created_at?: string
+        }
+        Update: {
+          id?: string
+          contract_name?: string
+          contract_number?: string | null
+          pbm_name?: string
+          contract_type?: string | null
+          plan_size?: string | null
+          effective_date?: string | null
+          termination_date?: string | null
+          overall_score?: number | null
+          risk_level?: string | null
+          red_flags?: number | null
+          annual_cost_estimate?: number | null
+          metadata?: Json | null
+          created_at?: string
+        }
+      }
+      contract_provisions: {
+        Row: {
+          id: string
+          contract_id: string
+          provision_type: string
+          provision_text: string | null
+          score: number | null
+          risk_flag: string | null
+          analysis: string | null
+          cost_impact: number | null
+          created_at: string
+        }
+        Insert: {
+          id?: string
+          contract_id: string
+          provision_type: string
+          provision_text?: string | null
+          score?: number | null
+          risk_flag?: string | null
+          analysis?: string | null
+          cost_impact?: number | null
+          created_at?: string
+        }
+        Update: {
+          id?: string
+          contract_id?: string
+          provision_type?: string
+          provision_text?: string | null
+          score?: number | null
+          risk_flag?: string | null
+          analysis?: string | null
+          cost_impact?: number | null
+          created_at?: string
+        }
+      }
       claims_databank: {
         Row: {
           id: string

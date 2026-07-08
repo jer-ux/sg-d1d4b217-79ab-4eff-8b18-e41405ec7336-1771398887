@@ -55,22 +55,28 @@ kincaid-aios/
 ## Checklist
 - [x] Create new monorepo directory structure documentation
 - [x] Fix RLS policies to eliminate recursion
-- [ ] Migrate frontend (src/ → apps/web/)
-- [ ] Migrate backend core (backend/ → apps/api/)
+- [x] Create physical directory structure (apps, services, database, infrastructure, security, docs)
+- [ ] Create apps/web/package.json and config files
+- [ ] Create apps/api/requirements.txt and config files
+- [ ] Migrate frontend code (src/ → apps/web/src/)
+- [ ] Migrate public assets (public/ → apps/web/public/)
+- [ ] Migrate backend code (backend/ → apps/api/)
+- [ ] Create monorepo root package.json with workspaces
 - [ ] Extract actuarial engine to services/actuarial-engine/
 - [ ] Extract PBM engine to services/pbm-engine/
 - [ ] Extract risk engine to services/risk-engine/
 - [ ] Extract reporting engine to services/reporting-engine/
 - [ ] Extract AI agents to services/ai-agents/
 - [ ] Create data ingestion service structure
-- [ ] Move database migrations (supabase/ → database/)
-- [ ] Organize infrastructure files
+- [ ] Move database migrations (supabase/ → database/migrations/)
+- [ ] Organize infrastructure files (docker, kubernetes)
 - [ ] Create security service structure
-- [ ] Update package.json and dependencies
-- [ ] Update import paths across all files
-- [ ] Update Docker and Kubernetes configs
-- [ ] Create monorepo root package.json with workspaces
+- [ ] Update all import paths across codebase
+- [ ] Update Docker and Kubernetes configs for new structure
 - [ ] Update deployment scripts
+- [ ] Test frontend runs from apps/web/
+- [ ] Test backend runs from apps/api/
+- [ ] Test services run independently
 
 ## Acceptance
 - New directory structure exists with all 7 top-level folders

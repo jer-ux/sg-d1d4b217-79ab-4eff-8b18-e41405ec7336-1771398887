@@ -2,6 +2,7 @@
 // Tenant-aware dashboard with role-based access
 
 import { useEffect, useState } from "react";
+import { useRouter } from "next/router";
 import { SEO } from "@/components/SEO";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -22,16 +23,11 @@ import {
   Activity,
   ShieldCheck,
   Target,
-  BarChart3
+  BarChart3,
+  LogOut
 } from "lucide-react";
 import { cn } from "@/lib/utils";
-
-interface TenantContext {
-  tenant_id: string;
-  tenant_name: string;
-  role: string;
-  permissions: string[];
-}
+import { usePortalAuth } from "@/contexts/PortalAuthContext";
 
 interface ClientSummary {
   client_id: string;
@@ -56,38 +52,72 @@ interface AnalyticsSummary {
 }
 
 export default function BrokerPortal() {
-  const [tenantContext, setTenantContext] = useState<TenantContext | null>(null);
+  const router = useRouter();
+  const { user, loading: authLoading, signOut } = usePortalAuth();
   const [clients, setClients] = useState<ClientSummary[]>([]);
   const [analytics, setAnalytics] = useState<AnalyticsSummary | null>(null);
   const [loading, setLoading] = useState(true);
   const [selectedClient, setSelectedClient] = useState<string | null>(null);
 
   useEffect(() => {
-    loadBrokerDashboard();
-  }, []);
+    // Redirect to login if not authenticated
+    if (!authLoading && !user) {
+      router.push("/login?redirect=/broker-portal");
+      return;
+    }
+
+    // Check if user has broker/consultant role
+    if (!authLoading && user) {
+      const allowedRoles = ["broker", "consultant", "enterprise_admin"];
+      if (!allowedRoles.includes(user.role)) {
+        router.push("/?error=unauthorized");
+        return;
+      }
+
+      loadBrokerDashboard();
+    }
+  }, [user, authLoading, router]);
 
   const loadBrokerDashboard = async () => {
+    if (!user) return;
+
     setLoading(true);
     try {
-      // Fetch tenant context (automatically filtered by logged-in user)
-      const contextRes = await fetch("/api/auth/context");
-      const context = await contextRes.json();
-      setTenantContext(context);
-
       // Fetch clients (automatically filtered by tenant_id via middleware)
-      const clientsRes = await fetch("/api/broker/clients");
-      const clientsData = await clientsRes.json();
-      setClients(clientsData);
+      const clientsRes = await fetch("/api/broker/clients", {
+        headers: {
+          "Authorization": `Bearer ${user.token}`,
+          "X-Tenant-ID": user.tenant_id
+        }
+      });
+      
+      if (clientsRes.ok) {
+        const clientsData = await clientsRes.json();
+        setClients(clientsData);
+      }
 
       // Fetch analytics summary (tenant-scoped)
-      const analyticsRes = await fetch("/api/broker/analytics/summary");
-      const analyticsData = await analyticsRes.json();
-      setAnalytics(analyticsData);
+      const analyticsRes = await fetch("/api/broker/analytics/summary", {
+        headers: {
+          "Authorization": `Bearer ${user.token}`,
+          "X-Tenant-ID": user.tenant_id
+        }
+      });
+      
+      if (analyticsRes.ok) {
+        const analyticsData = await analyticsRes.json();
+        setAnalytics(analyticsData);
+      }
     } catch (error) {
       console.error("Failed to load broker dashboard:", error);
     } finally {
       setLoading(false);
     }
+  };
+
+  const handleSignOut = async () => {
+    await signOut();
+    router.push("/");
   };
 
   const getHealthScoreColor = (score: string) => {
@@ -100,7 +130,7 @@ export default function BrokerPortal() {
     return colors[score as keyof typeof colors];
   };
 
-  if (loading) {
+  if (authLoading || loading) {
     return (
       <div className="min-h-screen bg-background flex items-center justify-center">
         <div className="text-center">
@@ -111,21 +141,8 @@ export default function BrokerPortal() {
     );
   }
 
-  if (!tenantContext) {
-    return (
-      <div className="min-h-screen bg-background flex items-center justify-center">
-        <Card className="p-8 max-w-md text-center">
-          <AlertTriangle className="h-12 w-12 text-destructive mx-auto mb-4" />
-          <h2 className="text-xl font-semibold mb-2">Access Denied</h2>
-          <p className="text-muted-foreground mb-4">
-            You must be logged in as a Broker or Consultant to access this portal.
-          </p>
-          <Button onClick={() => window.location.href = "/login"}>
-            Sign In
-          </Button>
-        </Card>
-      </div>
-    );
+  if (!user) {
+    return null; // Will redirect in useEffect
   }
 
   return (
@@ -143,7 +160,7 @@ export default function BrokerPortal() {
               <div>
                 <h1 className="text-2xl font-bold">Broker Portal</h1>
                 <p className="text-sm text-muted-foreground">
-                  {tenantContext.tenant_name} • {tenantContext.role}
+                  {user.organization_name} • {user.role}
                 </p>
               </div>
               <div className="flex items-center gap-3">
@@ -154,6 +171,10 @@ export default function BrokerPortal() {
                 <Button variant="outline" size="sm" onClick={loadBrokerDashboard}>
                   <RefreshCw className="h-4 w-4 mr-2" />
                   Refresh
+                </Button>
+                <Button variant="outline" size="sm" onClick={handleSignOut}>
+                  <LogOut className="h-4 w-4 mr-2" />
+                  Sign Out
                 </Button>
                 <Button size="sm">
                   <Download className="h-4 w-4 mr-2" />

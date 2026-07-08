@@ -2,6 +2,7 @@
 // Tenant management, company onboarding, role assignment
 
 import { useEffect, useState } from "react";
+import { useRouter } from "next/router";
 import { SEO } from "@/components/SEO";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -38,9 +39,11 @@ import {
   Settings,
   Database,
   Activity,
-  AlertTriangle
+  AlertTriangle,
+  LogOut
 } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { usePortalAuth } from "@/contexts/PortalAuthContext";
 
 interface Tenant {
   tenant_id: string;
@@ -77,11 +80,12 @@ const SYSTEM_ROLES = [
 ];
 
 export default function AdminPortal() {
+  const router = useRouter();
+  const { user, loading: authLoading, signOut } = usePortalAuth();
   const [tenants, setTenants] = useState<Tenant[]>([]);
   const [users, setUsers] = useState<User[]>([]);
   const [loading, setLoading] = useState(true);
   const [searchQuery, setSearchQuery] = useState("");
-  const [isAuthorized, setIsAuthorized] = useState(false);
 
   // New tenant form state
   const [newTenant, setNewTenant] = useState({
@@ -101,40 +105,48 @@ export default function AdminPortal() {
   });
 
   useEffect(() => {
-    checkAuthorization();
-  }, []);
+    // Redirect to login if not authenticated
+    if (!authLoading && !user) {
+      router.push("/login?redirect=/admin-portal");
+      return;
+    }
 
-  const checkAuthorization = async () => {
-    try {
-      const res = await fetch("/api/auth/context");
-      const context = await res.json();
-      
-      if (context.role !== "super_admin") {
-        setIsAuthorized(false);
+    // Check if user is super admin
+    if (!authLoading && user) {
+      if (user.role !== "super_admin") {
+        router.push("/?error=unauthorized");
         return;
       }
 
-      setIsAuthorized(true);
-      await loadAdminData();
-    } catch (error) {
-      console.error("Authorization check failed:", error);
-      setIsAuthorized(false);
+      loadAdminData();
     }
-  };
+  }, [user, authLoading, router]);
 
   const loadAdminData = async () => {
+    if (!user) return;
+
     setLoading(true);
     try {
       const [tenantsRes, usersRes] = await Promise.all([
-        fetch("/api/admin/tenants"),
-        fetch("/api/admin/users")
+        fetch("/api/admin/tenants", {
+          headers: {
+            "Authorization": `Bearer ${user.token}`
+          }
+        }),
+        fetch("/api/admin/users", {
+          headers: {
+            "Authorization": `Bearer ${user.token}`
+          }
+        })
       ]);
 
-      const tenantsData = await tenantsRes.json();
-      const usersData = await usersRes.json();
+      if (tenantsRes.ok && usersRes.ok) {
+        const tenantsData = await tenantsRes.json();
+        const usersData = await usersRes.json();
 
-      setTenants(tenantsData);
-      setUsers(usersData);
+        setTenants(tenantsData);
+        setUsers(usersData);
+      }
     } catch (error) {
       console.error("Failed to load admin data:", error);
     } finally {
@@ -143,10 +155,15 @@ export default function AdminPortal() {
   };
 
   const handleCreateTenant = async () => {
+    if (!user) return;
+
     try {
       const res = await fetch("/api/admin/tenants", {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: { 
+          "Content-Type": "application/json",
+          "Authorization": `Bearer ${user.token}`
+        },
         body: JSON.stringify(newTenant)
       });
 
@@ -166,10 +183,15 @@ export default function AdminPortal() {
   };
 
   const handleCreateUser = async () => {
+    if (!user) return;
+
     try {
       const res = await fetch("/api/admin/users", {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: { 
+          "Content-Type": "application/json",
+          "Authorization": `Bearer ${user.token}`
+        },
         body: JSON.stringify(newUser)
       });
 
@@ -185,6 +207,11 @@ export default function AdminPortal() {
     } catch (error) {
       console.error("Failed to create user:", error);
     }
+  };
+
+  const handleSignOut = async () => {
+    await signOut();
+    router.push("/");
   };
 
   const getStatusBadge = (status: string) => {
@@ -206,7 +233,18 @@ export default function AdminPortal() {
     );
   };
 
-  if (!isAuthorized) {
+  if (authLoading || loading) {
+    return (
+      <div className="min-h-screen bg-background flex items-center justify-center">
+        <div className="text-center">
+          <Activity className="h-8 w-8 animate-spin text-primary mx-auto mb-4" />
+          <p className="text-muted-foreground">Loading admin portal...</p>
+        </div>
+      </div>
+    );
+  }
+
+  if (!user || user.role !== "super_admin") {
     return (
       <div className="min-h-screen bg-background flex items-center justify-center">
         <Card className="p-8 max-w-md text-center">
@@ -215,21 +253,10 @@ export default function AdminPortal() {
           <p className="text-muted-foreground mb-4">
             Only Super Admins can access this portal.
           </p>
-          <Button onClick={() => window.location.href = "/"}>
+          <Button onClick={() => router.push("/")}>
             Return Home
           </Button>
         </Card>
-      </div>
-    );
-  }
-
-  if (loading) {
-    return (
-      <div className="min-h-screen bg-background flex items-center justify-center">
-        <div className="text-center">
-          <Activity className="h-8 w-8 animate-spin text-primary mx-auto mb-4" />
-          <p className="text-muted-foreground">Loading admin portal...</p>
-        </div>
       </div>
     );
   }
@@ -260,7 +287,7 @@ export default function AdminPortal() {
                 <div>
                   <h1 className="text-2xl font-bold">Super Admin Portal</h1>
                   <p className="text-sm text-muted-foreground">
-                    Platform administration and tenant management
+                    {user.email} • Platform administrator
                   </p>
                 </div>
               </div>
@@ -268,6 +295,10 @@ export default function AdminPortal() {
                 <Badge variant="outline" className="bg-red-50 text-red-700 border-red-300">
                   SUPER ADMIN
                 </Badge>
+                <Button variant="outline" size="sm" onClick={handleSignOut}>
+                  <LogOut className="h-4 w-4 mr-2" />
+                  Sign Out
+                </Button>
                 <Button variant="outline" size="sm">
                   <Settings className="h-4 w-4 mr-2" />
                   Settings

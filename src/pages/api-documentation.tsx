@@ -206,7 +206,7 @@ export default function APIDocumentation() {
                             <div key={key} className="flex items-center gap-2 font-mono text-sm">
                               <span className="text-primary">{key}</span>
                               <span className="text-muted-foreground">:</span>
-                              <span className="text-muted-foreground">{type}</span>
+                              <span className="text-muted-foreground">{String(type)}</span>
                             </div>
                           ))}
                         </div>
@@ -221,7 +221,7 @@ export default function APIDocumentation() {
                           <div key={key} className="flex items-center gap-2 font-mono text-sm">
                             <span className="text-primary">{key}</span>
                             <span className="text-muted-foreground">:</span>
-                            <span className="text-muted-foreground">{type}</span>
+                            <span className="text-muted-foreground">{String(type)}</span>
                           </div>
                         ))}
                       </div>

@@ -1,7 +1,21 @@
 import { supabase } from "@/integrations/supabase/client";
 import type { User } from "@supabase/supabase-js";
 
-export type PortalRole = "internal_team" | "investor" | "partner" | "admin" | "owner";
+export type PortalRole = 
+  | "super_admin" 
+  | "enterprise_admin" 
+  | "actuary" 
+  | "benefits_analyst" 
+  | "broker" 
+  | "cfo" 
+  | "chro" 
+  | "auditor" 
+  | "board_viewer"
+  | "admin"
+  | "owner"
+  | "internal_team"
+  | "investor"
+  | "partner";
 export type PortalType = "tools" | "investor" | "admin";
 
 interface PortalAccess {

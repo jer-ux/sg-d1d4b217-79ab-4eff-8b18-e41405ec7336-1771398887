@@ -13,10 +13,10 @@ position: 1
 Set up Supabase Auth with multi-factor authentication (email/password + authenticator app). Enable role-based access control for internal team vs investors/partners. Configure session management and protected routes.
 
 ## Checklist
-- [ ] Enable MFA in Supabase Auth config
-- [ ] Create users table with role field (internal_team, investor, partner)
-- [ ] Create RLS policies for role-based data access
-- [ ] Build auth service with login/signup/MFA enrollment functions
+- [x] Enable MFA in Supabase Auth config
+- [x] Create users table with role field (internal_team, investor, partner)
+- [x] Create RLS policies for role-based data access
+- [x] Build auth service with login/signup/MFA enrollment functions
 - [ ] Create protected route middleware for role checking
 - [ ] Set up session management with JWT tokens
 

@@ -1,26 +1,36 @@
 ---
-title: Authentication Infrastructure with MFA
+title: AIOS Cognitive Agent Architecture - Foundation
 status: in_progress
 priority: urgent
 type: feature
-tags: [auth, security, mfa, supabase]
+tags: [aios, ai-agents, architecture, foundation]
 created_by: agent
-created_at: 2026-07-08T08:26:44Z
-position: 1
+created_at: 2026-07-08T08:33:00Z
+position: 36
 ---
 
 ## Notes
-Set up Supabase Auth with multi-factor authentication (email/password + authenticator app). Enable role-based access control for internal team vs investors/partners. Configure session management and protected routes.
+Building the Fortune 100-grade Cognitive AI Agent Architecture for Kincaid Health™ AIOS (Actuarial Intelligence Operating System). This is NOT a chatbot or reporting app - it's a distributed cognitive system where specialized AI agents collaborate, debate, and produce audit-ready recommendations.
+
+Foundation includes:
+- Base Agent class with memory, evidence tracking, reasoning history
+- Agent Orchestrator for multi-agent collaboration
+- Debate Engine for consensus building
+- Evidence Graph for complete traceability
+- Self-Critique Engine for validation
 
 ## Checklist
-- [x] Enable MFA in Supabase Auth config
-- [x] Create users table with role field (internal_team, investor, partner)
-- [x] Create RLS policies for role-based data access
-- [x] Build auth service with login/signup/MFA enrollment functions
-- [ ] Create protected route middleware for role checking
-- [ ] Set up session management with JWT tokens
+- [x] Create Volume II master architecture document
+- [x] Build BaseAgent class with memory and evidence systems
+- [x] Build AgentOrchestrator with 4-phase pipeline (Analysis → Debate → Consensus → Critique)
+- [x] Implement Chief Actuary Agent (first cognitive agent)
+- [ ] Implement CFO Agent
+- [ ] Implement PBM Investigator Agent
+- [ ] Build Debate Engine consensus protocol
+- [ ] Build Evidence Graph visualization
+- [ ] Build Self-Critique validation system
 
 ## Acceptance
-- Users can sign up with email/password and enroll in MFA
-- Only users with correct roles can access their respective dashboards
-- Sessions persist securely and auto-refresh
+- Multi-agent system processes tasks through full pipeline (analyze → debate → consensus → validate)
+- Chief Actuary Agent produces recommendations with evidence, confidence scoring, and audit trail
+- Agent Orchestrator coordinates collaboration between agents successfully

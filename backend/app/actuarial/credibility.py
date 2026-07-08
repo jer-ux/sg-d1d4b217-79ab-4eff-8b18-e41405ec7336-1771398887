@@ -3,71 +3,117 @@ KINCAID HEALTH™ ACTUARIAL ENGINE
 Credibility Weighting Engine
 """
 
-import math
 from typing import Dict, Any
+import math
 
 
 class CredibilityEngine:
     """
-    Calculate actuarial credibility weights
+    Classical credibility theory implementation
     
-    Uses classical credibility theory:
-    Z = sqrt(n / (n + k))
-    where n = exposure, k = full credibility standard
+    Bühlmann Credibility: Z = sqrt(n / (n + k))
+    where k is the credibility constant
     """
     
-    def __init__(self, full_credibility_standard: int = 1082):
-        self.k = full_credibility_standard
-    
-    def calculate_credibility(
-        self,
-        member_months: int,
-        claims_count: int
-    ) -> Dict[str, Any]:
+    def __init__(self, k: int = 1082):
         """
-        Calculate credibility weight
+        Initialize with credibility constant
         
+        Args:
+            k: Credibility constant (1082 for healthcare, 1000 for commercial)
+        """
+        self.k = k
+    
+    def calculate_z(self, exposure: int) -> float:
+        """
+        Calculate credibility factor Z
+        
+        Args:
+            exposure: Number of exposure units (member-months, lives, etc)
+            
         Returns:
-            - credibility_weight: 0.0 to 1.0
-            - level: 'full', 'partial', 'minimal', 'insufficient'
-            - exposure_ratio: actual / required for full credibility
+            Credibility factor between 0 and 1
         """
-        # Classical credibility formula
-        z = math.sqrt(member_months / (member_months + self.k))
-        
-        # Determine credibility level
-        if z >= 0.95:
-            level = 'full'
-        elif z >= 0.75:
-            level = 'substantial'
-        elif z >= 0.50:
-            level = 'partial'
-        elif z >= 0.25:
-            level = 'minimal'
-        else:
-            level = 'insufficient'
-        
-        # Exposure ratio
-        exposure_ratio = member_months / self.k
-        
-        return {
-            'credibility_weight': round(z, 4),
-            'level': level,
-            'exposure_ratio': round(exposure_ratio, 4),
-            'member_months': member_months,
-            'claims_count': claims_count,
-            'full_credibility_standard': self.k
-        }
+        return math.sqrt(exposure / (exposure + self.k))
     
-    def blend_with_benchmark(
+    def weighted_average(
         self,
-        actual_value: float,
-        benchmark_value: float,
-        credibility_weight: float
+        experience: float,
+        manual: float,
+        z: float
     ) -> float:
         """
-        Blend actual experience with benchmark using credibility
+        Blend experience data with manual rates using credibility
         
-        Blended = (Z × Actual) + ((1 - Z) × Benchmark)
+        Args:
+            experience: Experience-based value (from actual data)
+            manual: Manual/benchmark value
+            z: Credibility factor (0 to 1)
+            
+        Returns:
+            Credibility-weighted average
         """
-        return (credibility_weight * actual_value) + ((1 - credibility_weight) * benchmark_value)
+        return (z * experience) + ((1 - z) * manual)
+    
+    def full_credibility_standard(
+        self,
+        claims: int,
+        expected_frequency: float = 0.15,
+        confidence_level: float = 0.95,
+        accuracy: float = 0.05
+    ) -> Dict[str, Any]:
+        """
+        Calculate full credibility standard
+        
+        Full credibility when:
+        n >= (z^2 * variance) / (accuracy^2 * expected^2)
+        
+        Returns:
+            Dictionary with credibility analysis
+        """
+        # Z-score for confidence level
+        z_score = 1.96 if confidence_level == 0.95 else 2.576  # 95% or 99%
+        
+        # Assume Poisson (variance = mean)
+        variance = expected_frequency
+        
+        # Full credibility standard
+        n_required = (z_score ** 2 * variance) / (accuracy ** 2 * expected_frequency ** 2)
+        
+        # Actual credibility
+        if claims >= n_required:
+            credibility_pct = 1.0
+            status = "Full Credibility"
+        else:
+            credibility_pct = math.sqrt(claims / n_required)
+            status = "Partial Credibility"
+        
+        return {
+            'claims_observed': claims,
+            'claims_required_full': round(n_required, 0),
+            'credibility_percent': round(credibility_pct, 4),
+            'status': status,
+            'confidence_level': confidence_level,
+            'accuracy_target': accuracy
+        }
+    
+    def classify_credibility(self, z: float) -> str:
+        """
+        Classify credibility level
+        
+        Args:
+            z: Credibility factor
+            
+        Returns:
+            Classification label
+        """
+        if z >= 0.90:
+            return "Full Credibility"
+        elif z >= 0.75:
+            return "Substantial Credibility"
+        elif z >= 0.50:
+            return "Partial Credibility"
+        elif z >= 0.25:
+            return "Minimal Credibility"
+        else:
+            return "Insufficient Credibility"

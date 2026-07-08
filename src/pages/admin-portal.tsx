@@ -44,6 +44,7 @@ import {
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { usePortalAuth } from "@/contexts/PortalAuthContext";
+import { supabase } from "@/integrations/supabase/client";
 
 interface Tenant {
   tenant_id: string;
@@ -81,7 +82,7 @@ const SYSTEM_ROLES = [
 
 export default function AdminPortal() {
   const router = useRouter();
-  const { user, loading: authLoading, signOut } = usePortalAuth();
+  const { user, profile, loading: authLoading, signOut } = usePortalAuth();
   const [tenants, setTenants] = useState<Tenant[]>([]);
   const [users, setUsers] = useState<User[]>([]);
   const [loading, setLoading] = useState(true);
@@ -112,30 +113,34 @@ export default function AdminPortal() {
     }
 
     // Check if user is super admin
-    if (!authLoading && user) {
-      if (user.role !== "super_admin") {
+    if (!authLoading && user && profile) {
+      if (profile.role !== "super_admin" && profile.role !== "admin") {
         router.push("/?error=unauthorized");
         return;
       }
 
       loadAdminData();
     }
-  }, [user, authLoading, router]);
+  }, [user, profile, authLoading, router]);
 
   const loadAdminData = async () => {
-    if (!user) return;
+    if (!user || !profile) return;
 
     setLoading(true);
     try {
+      // Get session for token
+      const { data: { session } } = await supabase.auth.getSession();
+      if (!session) return;
+
       const [tenantsRes, usersRes] = await Promise.all([
         fetch("/api/admin/tenants", {
           headers: {
-            "Authorization": `Bearer ${user.token}`
+            "Authorization": `Bearer ${session.access_token}`
           }
         }),
         fetch("/api/admin/users", {
           headers: {
-            "Authorization": `Bearer ${user.token}`
+            "Authorization": `Bearer ${session.access_token}`
           }
         })
       ]);
@@ -155,14 +160,17 @@ export default function AdminPortal() {
   };
 
   const handleCreateTenant = async () => {
-    if (!user) return;
+    if (!user || !profile) return;
 
     try {
+      const { data: { session } } = await supabase.auth.getSession();
+      if (!session) return;
+
       const res = await fetch("/api/admin/tenants", {
         method: "POST",
         headers: { 
           "Content-Type": "application/json",
-          "Authorization": `Bearer ${user.token}`
+          "Authorization": `Bearer ${session.access_token}`
         },
         body: JSON.stringify(newTenant)
       });
@@ -183,14 +191,17 @@ export default function AdminPortal() {
   };
 
   const handleCreateUser = async () => {
-    if (!user) return;
+    if (!user || !profile) return;
 
     try {
+      const { data: { session } } = await supabase.auth.getSession();
+      if (!session) return;
+
       const res = await fetch("/api/admin/users", {
         method: "POST",
         headers: { 
           "Content-Type": "application/json",
-          "Authorization": `Bearer ${user.token}`
+          "Authorization": `Bearer ${session.access_token}`
         },
         body: JSON.stringify(newUser)
       });
@@ -244,7 +255,7 @@ export default function AdminPortal() {
     );
   }
 
-  if (!user || user.role !== "super_admin") {
+  if (!user || (profile?.role !== "super_admin" && profile?.role !== "admin")) {
     return (
       <div className="min-h-screen bg-background flex items-center justify-center">
         <Card className="p-8 max-w-md text-center">

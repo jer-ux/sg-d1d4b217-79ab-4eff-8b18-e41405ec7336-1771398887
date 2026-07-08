@@ -28,6 +28,7 @@ import {
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { usePortalAuth } from "@/contexts/PortalAuthContext";
+import { supabase } from "@/integrations/supabase/client";
 
 interface ClientSummary {
   client_id: string;
@@ -53,7 +54,7 @@ interface AnalyticsSummary {
 
 export default function BrokerPortal() {
   const router = useRouter();
-  const { user, loading: authLoading, signOut } = usePortalAuth();
+  const { user, profile, loading: authLoading, signOut } = usePortalAuth();
   const [clients, setClients] = useState<ClientSummary[]>([]);
   const [analytics, setAnalytics] = useState<AnalyticsSummary | null>(null);
   const [loading, setLoading] = useState(true);
@@ -67,27 +68,31 @@ export default function BrokerPortal() {
     }
 
     // Check if user has broker/consultant role
-    if (!authLoading && user) {
+    if (!authLoading && user && profile) {
       const allowedRoles = ["broker", "consultant", "enterprise_admin"];
-      if (!allowedRoles.includes(user.role)) {
+      if (!profile.role || !allowedRoles.includes(profile.role)) {
         router.push("/?error=unauthorized");
         return;
       }
 
       loadBrokerDashboard();
     }
-  }, [user, authLoading, router]);
+  }, [user, profile, authLoading, router]);
 
   const loadBrokerDashboard = async () => {
-    if (!user) return;
+    if (!user || !profile) return;
 
     setLoading(true);
     try {
+      // Get session for token
+      const { data: { session } } = await supabase.auth.getSession();
+      if (!session) return;
+
       // Fetch clients (automatically filtered by tenant_id via middleware)
       const clientsRes = await fetch("/api/broker/clients", {
         headers: {
-          "Authorization": `Bearer ${user.token}`,
-          "X-Tenant-ID": user.tenant_id
+          "Authorization": `Bearer ${session.access_token}`,
+          "X-Tenant-ID": profile.organization_id || ""
         }
       });
       
@@ -99,8 +104,8 @@ export default function BrokerPortal() {
       // Fetch analytics summary (tenant-scoped)
       const analyticsRes = await fetch("/api/broker/analytics/summary", {
         headers: {
-          "Authorization": `Bearer ${user.token}`,
-          "X-Tenant-ID": user.tenant_id
+          "Authorization": `Bearer ${session.access_token}`,
+          "X-Tenant-ID": profile.organization_id || ""
         }
       });
       
@@ -160,7 +165,7 @@ export default function BrokerPortal() {
               <div>
                 <h1 className="text-2xl font-bold">Broker Portal</h1>
                 <p className="text-sm text-muted-foreground">
-                  {user.organization_name} • {user.role}
+                  {profile?.full_name || user?.email} • {profile?.role}
                 </p>
               </div>
               <div className="flex items-center gap-3">

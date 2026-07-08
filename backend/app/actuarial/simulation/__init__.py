@@ -11,6 +11,7 @@ from .var import RiskMetrics
 from .scenarios import Scenario, ScenarioLibrary
 from .distributions import Distribution, DistributionFactory
 from .random_variables import RandomVariable
+from .correlation import CorrelationEngine, CorrelatedVariable
 from .models import (
     HealthcareTrendModel,
     PremiumRenewalModel,
@@ -23,6 +24,11 @@ from .extended_models import (
     PensionFundingModel,
     PricingModel,
     WorkforceCostModel
+)
+from .correlated_models import (
+    CorrelatedHealthcareTrendModel,
+    CorrelatedMarketRiskModel,
+    CorrelatedOperationalRiskModel
 )
 from .default_scenarios import library as default_scenarios
 
@@ -38,6 +44,8 @@ __all__ = [
     "Distribution",
     "DistributionFactory",
     "RandomVariable",
+    "CorrelationEngine",
+    "CorrelatedVariable",
     "HealthcareTrendModel",
     "PremiumRenewalModel",
     "AggregateLossModel",
@@ -47,5 +55,8 @@ __all__ = [
     "PensionFundingModel",
     "PricingModel",
     "WorkforceCostModel",
+    "CorrelatedHealthcareTrendModel",
+    "CorrelatedMarketRiskModel",
+    "CorrelatedOperationalRiskModel",
     "default_scenarios",
 ]

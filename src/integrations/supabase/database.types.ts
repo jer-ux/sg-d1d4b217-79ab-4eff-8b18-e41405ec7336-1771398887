@@ -27,6 +27,7 @@ export interface Database {
           message: string | null
           status: string | null
           source: string | null
+          metadata: Json | null
           created_at: string
         }
         Insert: {
@@ -40,6 +41,7 @@ export interface Database {
           message?: string | null
           status?: string | null
           source?: string | null
+          metadata?: Json | null
           created_at?: string
         }
         Update: {
@@ -53,6 +55,7 @@ export interface Database {
           message?: string | null
           status?: string | null
           source?: string | null
+          metadata?: Json | null
           created_at?: string
         }
       }

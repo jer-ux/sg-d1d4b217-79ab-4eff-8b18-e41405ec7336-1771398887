@@ -34,8 +34,21 @@ import {
 } from "@/components/ui/select";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Download, Play, Save, FileText, HelpCircle, TrendingUp, Activity, AlertTriangle } from "lucide-react";
+import { Download, Play, RefreshCw, TrendingUp, AlertCircle, HelpCircle, Wand2, Activity, Save, FileText, AlertTriangle } from "lucide-react";
 import { Tooltip as UITooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
+
+// Import all 10 user-friendly components
+import { SetupWizard } from "./SetupWizard";
+import { NaturalLanguageInput } from "./NaturalLanguageInput";
+import { TemplatesLibrary } from "./TemplatesLibrary";
+import { ComparisonMode } from "./ComparisonMode";
+import { WhatIfCalculator } from "./WhatIfCalculator";
+import { GlossarySidebar } from "./GlossarySidebar";
+import { ConfidenceIndicator } from "./ConfidenceIndicator";
+import { CollaborativeFeatures } from "./CollaborativeFeatures";
+import { SavedAnalyses } from "./SavedAnalyses";
+import { EmailScheduler } from "./EmailScheduler";
+import { CorrelationVisualizer } from "./CorrelationVisualizer";
 
 interface SimulationResult {
   summary: {

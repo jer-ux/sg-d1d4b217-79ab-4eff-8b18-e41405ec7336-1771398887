@@ -1,804 +1,376 @@
--- =============================================================================
--- KINCAID HEALTH™ AIOS
--- UNIVERSAL DATA MODEL
--- Enterprise Entity Hierarchy & Relationships
--- =============================================================================
+-- KINCAID IQ™ INTELLIGENCE KERNEL
+-- Universal Enterprise Data Model
+-- Complete schema for multi-tenant intelligence platform
 
--- Enable UUID extension
-CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
-
--- =============================================================================
--- LEVEL 1: ORGANIZATION (Root Entity)
--- =============================================================================
+-- ============================================================================
+-- MULTI-TENANT ARCHITECTURE
+-- ============================================================================
 
 CREATE TABLE organizations (
-  id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
-  name TEXT NOT NULL,
-  type TEXT NOT NULL, -- 'enterprise', 'holding_company', 'subsidiary'
-  industry TEXT,
-  headquarters_location TEXT,
-  employee_count INTEGER,
-  revenue_annual DECIMAL(15,2),
-  fiscal_year_end DATE,
-  tax_id TEXT,
-  duns_number TEXT,
-  
-  -- Metadata
-  created_at TIMESTAMPTZ DEFAULT NOW(),
-  updated_at TIMESTAMPTZ DEFAULT NOW(),
-  created_by UUID,
-  metadata JSONB DEFAULT '{}'::jsonb
+    id VARCHAR PRIMARY KEY,
+    name VARCHAR NOT NULL,
+    industry VARCHAR,
+    employee_count INTEGER,
+    tier VARCHAR DEFAULT 'professional',  -- free, professional, enterprise
+    features JSONB DEFAULT '{}',
+    settings JSONB DEFAULT '{}',
+    is_active BOOLEAN DEFAULT TRUE,
+    created_at TIMESTAMP DEFAULT NOW(),
+    updated_at TIMESTAMP DEFAULT NOW()
 );
 
-CREATE INDEX idx_organizations_type ON organizations(type);
-CREATE INDEX idx_organizations_industry ON organizations(industry);
+CREATE INDEX idx_organizations_tier ON organizations(tier);
+CREATE INDEX idx_organizations_is_active ON organizations(is_active);
 
--- =============================================================================
--- LEVEL 2: DIVISIONS (Business Units)
--- =============================================================================
+-- ============================================================================
+-- AUTHENTICATION & AUTHORIZATION
+-- ============================================================================
 
-CREATE TABLE divisions (
-  id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
-  organization_id UUID NOT NULL REFERENCES organizations(id) ON DELETE CASCADE,
-  name TEXT NOT NULL,
-  division_code TEXT,
-  region TEXT,
-  head_count INTEGER,
-  budget_annual DECIMAL(15,2),
-  
-  -- Hierarchy
-  parent_division_id UUID REFERENCES divisions(id),
-  
-  -- Metadata
-  created_at TIMESTAMPTZ DEFAULT NOW(),
-  updated_at TIMESTAMPTZ DEFAULT NOW(),
-  metadata JSONB DEFAULT '{}'::jsonb
+CREATE TABLE users (
+    id VARCHAR PRIMARY KEY,
+    organization_id VARCHAR NOT NULL REFERENCES organizations(id) ON DELETE CASCADE,
+    email VARCHAR UNIQUE NOT NULL,
+    hashed_password VARCHAR NOT NULL,
+    full_name VARCHAR,
+    role VARCHAR DEFAULT 'analyst',  -- admin, analyst, viewer, executive
+    permissions JSONB DEFAULT '{}',
+    is_active BOOLEAN DEFAULT TRUE,
+    last_login TIMESTAMP,
+    created_at TIMESTAMP DEFAULT NOW(),
+    updated_at TIMESTAMP DEFAULT NOW()
 );
 
-CREATE INDEX idx_divisions_org ON divisions(organization_id);
-CREATE INDEX idx_divisions_parent ON divisions(parent_division_id);
+CREATE INDEX idx_users_organization ON users(organization_id);
+CREATE INDEX idx_users_email ON users(email);
+CREATE INDEX idx_users_role ON users(role);
 
--- =============================================================================
--- LEVEL 3: DEPARTMENTS (Functional Areas)
--- =============================================================================
+-- ============================================================================
+-- DATA FABRIC
+-- ============================================================================
 
-CREATE TABLE departments (
-  id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
-  division_id UUID NOT NULL REFERENCES divisions(id) ON DELETE CASCADE,
-  name TEXT NOT NULL,
-  department_code TEXT,
-  function TEXT, -- 'operations', 'finance', 'hr', 'legal', 'technology'
-  cost_center TEXT,
-  head_count INTEGER,
-  
-  -- Metadata
-  created_at TIMESTAMPTZ DEFAULT NOW(),
-  updated_at TIMESTAMPTZ DEFAULT NOW(),
-  metadata JSONB DEFAULT '{}'::jsonb
+CREATE TABLE datasets (
+    id VARCHAR PRIMARY KEY,
+    organization_id VARCHAR NOT NULL REFERENCES organizations(id) ON DELETE CASCADE,
+    name VARCHAR,
+    source VARCHAR,
+    rows INTEGER,
+    quality_score INTEGER,
+    created_at TIMESTAMP DEFAULT NOW()
 );
 
-CREATE INDEX idx_departments_division ON departments(division_id);
-CREATE INDEX idx_departments_function ON departments(function);
+CREATE INDEX idx_datasets_organization ON datasets(organization_id);
 
--- =============================================================================
--- LEVEL 4: EMPLOYEES (People)
--- =============================================================================
-
-CREATE TABLE employees (
-  id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
-  department_id UUID REFERENCES departments(id),
-  
-  -- Identity
-  employee_number TEXT UNIQUE NOT NULL,
-  first_name TEXT NOT NULL,
-  last_name TEXT NOT NULL,
-  email TEXT,
-  phone TEXT,
-  
-  -- Employment
-  job_title TEXT,
-  employment_status TEXT, -- 'active', 'inactive', 'terminated', 'leave'
-  hire_date DATE,
-  termination_date DATE,
-  salary_annual DECIMAL(12,2),
-  
-  -- Metadata
-  created_at TIMESTAMPTZ DEFAULT NOW(),
-  updated_at TIMESTAMPTZ DEFAULT NOW(),
-  metadata JSONB DEFAULT '{}'::jsonb
+CREATE TABLE metrics (
+    id SERIAL PRIMARY KEY,
+    dataset_id VARCHAR REFERENCES datasets(id) ON DELETE CASCADE,
+    name VARCHAR,
+    value FLOAT,
+    category VARCHAR
 );
 
-CREATE INDEX idx_employees_dept ON employees(department_id);
-CREATE INDEX idx_employees_status ON employees(employment_status);
-CREATE INDEX idx_employees_number ON employees(employee_number);
+CREATE INDEX idx_metrics_dataset ON metrics(dataset_id);
+CREATE INDEX idx_metrics_category ON metrics(category);
 
--- =============================================================================
--- LEVEL 5: PLANS (Benefit Plans)
--- =============================================================================
-
-CREATE TABLE plans (
-  id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
-  organization_id UUID NOT NULL REFERENCES organizations(id),
-  
-  -- Plan Details
-  plan_name TEXT NOT NULL,
-  plan_type TEXT, -- 'medical', 'dental', 'vision', 'pharmacy', 'disability', 'life'
-  plan_year INTEGER,
-  effective_date DATE,
-  termination_date DATE,
-  
-  -- Financial
-  premium_total DECIMAL(15,2),
-  deductible DECIMAL(10,2),
-  out_of_pocket_max DECIMAL(10,2),
-  
-  -- Enrollment
-  covered_lives INTEGER,
-  
-  -- Metadata
-  created_at TIMESTAMPTZ DEFAULT NOW(),
-  updated_at TIMESTAMPTZ DEFAULT NOW(),
-  metadata JSONB DEFAULT '{}'::jsonb
-);
-
-CREATE INDEX idx_plans_org ON plans(organization_id);
-CREATE INDEX idx_plans_type ON plans(plan_type);
-CREATE INDEX idx_plans_year ON plans(plan_year);
-
--- =============================================================================
--- LEVEL 6: CLAIMS (Healthcare Claims)
--- =============================================================================
+-- ============================================================================
+-- HEALTHCARE CLAIMS
+-- ============================================================================
 
 CREATE TABLE claims (
-  id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
-  plan_id UUID NOT NULL REFERENCES plans(id),
-  employee_id UUID REFERENCES employees(id),
-  
-  -- Claim Identity
-  claim_number TEXT UNIQUE NOT NULL,
-  claim_type TEXT, -- 'medical', 'pharmacy', 'dental', 'vision'
-  claim_status TEXT, -- 'pending', 'approved', 'denied', 'paid'
-  
-  -- Dates
-  service_date DATE,
-  received_date DATE,
-  processed_date DATE,
-  paid_date DATE,
-  
-  -- Financial
-  billed_amount DECIMAL(12,2),
-  allowed_amount DECIMAL(12,2),
-  paid_amount DECIMAL(12,2),
-  member_responsibility DECIMAL(12,2),
-  
-  -- Clinical
-  diagnosis_codes TEXT[],
-  procedure_codes TEXT[],
-  
-  -- Metadata
-  created_at TIMESTAMPTZ DEFAULT NOW(),
-  updated_at TIMESTAMPTZ DEFAULT NOW(),
-  metadata JSONB DEFAULT '{}'::jsonb
+    id VARCHAR PRIMARY KEY,
+    organization_id VARCHAR NOT NULL REFERENCES organizations(id) ON DELETE CASCADE,
+    dataset_id VARCHAR REFERENCES datasets(id) ON DELETE CASCADE,
+    
+    -- Identification
+    claim_id VARCHAR NOT NULL,
+    claim_type VARCHAR,  -- medical, pharmacy
+    member_id VARCHAR,
+    
+    -- Financial
+    billed_amount FLOAT,
+    allowed_amount FLOAT,
+    paid_amount FLOAT,
+    member_responsibility FLOAT,
+    
+    -- Dates
+    service_date DATE,
+    paid_date DATE,
+    
+    -- Clinical
+    diagnosis_codes JSONB,  -- Array of ICD-10 codes
+    procedure_codes JSONB,  -- Array of CPT/HCPCS codes
+    ndc_code VARCHAR,  -- For pharmacy claims
+    
+    -- Provider
+    provider_id VARCHAR,
+    provider_name VARCHAR,
+    provider_specialty VARCHAR,
+    
+    -- Status
+    claim_status VARCHAR,  -- paid, denied, pending
+    
+    -- Metadata
+    metadata JSONB,
+    created_at TIMESTAMP DEFAULT NOW()
 );
 
-CREATE INDEX idx_claims_plan ON claims(plan_id);
-CREATE INDEX idx_claims_employee ON claims(employee_id);
-CREATE INDEX idx_claims_number ON claims(claim_number);
-CREATE INDEX idx_claims_status ON claims(claim_status);
+CREATE INDEX idx_claims_organization ON claims(organization_id);
+CREATE INDEX idx_claims_dataset ON claims(dataset_id);
+CREATE INDEX idx_claims_claim_id ON claims(claim_id);
+CREATE INDEX idx_claims_member_id ON claims(member_id);
 CREATE INDEX idx_claims_service_date ON claims(service_date);
+CREATE INDEX idx_claims_claim_type ON claims(claim_type);
 
--- =============================================================================
--- LEVEL 7: CONTRACTS (Agreements)
--- =============================================================================
-
-CREATE TABLE contracts (
-  id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
-  organization_id UUID NOT NULL REFERENCES organizations(id),
-  
-  -- Contract Identity
-  contract_number TEXT UNIQUE NOT NULL,
-  contract_type TEXT, -- 'pbm', 'stop_loss', 'tpa', 'provider', 'vendor'
-  contract_status TEXT, -- 'draft', 'active', 'expired', 'terminated'
-  
-  -- Parties
-  vendor_id UUID,
-  
-  -- Terms
-  effective_date DATE,
-  termination_date DATE,
-  auto_renewal BOOLEAN DEFAULT FALSE,
-  notice_days INTEGER,
-  
-  -- Financial
-  contract_value_annual DECIMAL(15,2),
-  
-  -- Documents
-  document_url TEXT,
-  
-  -- Metadata
-  created_at TIMESTAMPTZ DEFAULT NOW(),
-  updated_at TIMESTAMPTZ DEFAULT NOW(),
-  metadata JSONB DEFAULT '{}'::jsonb
-);
-
-CREATE INDEX idx_contracts_org ON contracts(organization_id);
-CREATE INDEX idx_contracts_vendor ON contracts(vendor_id);
-CREATE INDEX idx_contracts_type ON contracts(contract_type);
-CREATE INDEX idx_contracts_status ON contracts(contract_status);
-
--- =============================================================================
--- LEVEL 8: VENDORS (Suppliers/Partners)
--- =============================================================================
+-- ============================================================================
+-- VENDORS
+-- ============================================================================
 
 CREATE TABLE vendors (
-  id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
-  
-  -- Identity
-  vendor_name TEXT NOT NULL,
-  vendor_type TEXT, -- 'pbm', 'carrier', 'tpa', 'provider', 'consultant'
-  tax_id TEXT,
-  duns_number TEXT,
-  
-  -- Contact
-  contact_name TEXT,
-  contact_email TEXT,
-  contact_phone TEXT,
-  address TEXT,
-  
-  -- Performance
-  performance_score DECIMAL(5,2),
-  risk_rating TEXT, -- 'low', 'medium', 'high'
-  
-  -- Metadata
-  created_at TIMESTAMPTZ DEFAULT NOW(),
-  updated_at TIMESTAMPTZ DEFAULT NOW(),
-  metadata JSONB DEFAULT '{}'::jsonb
+    id VARCHAR PRIMARY KEY,
+    organization_id VARCHAR NOT NULL REFERENCES organizations(id) ON DELETE CASCADE,
+    
+    -- Identification
+    vendor_name VARCHAR NOT NULL,
+    vendor_type VARCHAR,  -- pbm, tpa, broker, consultant, network, stop_loss
+    
+    -- Contact
+    contact_name VARCHAR,
+    contact_email VARCHAR,
+    contact_phone VARCHAR,
+    
+    -- Performance
+    performance_score FLOAT,
+    performance_metrics JSONB,
+    
+    -- Financial
+    total_spend FLOAT,
+    savings_claimed FLOAT,
+    savings_validated FLOAT,
+    
+    -- Risk
+    risk_score FLOAT,
+    risk_factors JSONB,
+    
+    -- Status
+    is_active BOOLEAN DEFAULT TRUE,
+    
+    -- Metadata
+    metadata JSONB,
+    created_at TIMESTAMP DEFAULT NOW(),
+    updated_at TIMESTAMP DEFAULT NOW()
 );
 
+CREATE INDEX idx_vendors_organization ON vendors(organization_id);
 CREATE INDEX idx_vendors_type ON vendors(vendor_type);
-CREATE INDEX idx_vendors_risk ON vendors(risk_rating);
+CREATE INDEX idx_vendors_is_active ON vendors(is_active);
 
--- =============================================================================
--- LEVEL 9: INVOICES (Billing Documents)
--- =============================================================================
+-- ============================================================================
+-- CONTRACTS
+-- ============================================================================
 
-CREATE TABLE invoices (
-  id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
-  contract_id UUID REFERENCES contracts(id),
-  vendor_id UUID NOT NULL REFERENCES vendors(id),
-  
-  -- Invoice Identity
-  invoice_number TEXT UNIQUE NOT NULL,
-  invoice_status TEXT, -- 'pending', 'approved', 'paid', 'disputed'
-  
-  -- Dates
-  invoice_date DATE,
-  due_date DATE,
-  paid_date DATE,
-  
-  -- Financial
-  invoice_amount DECIMAL(15,2),
-  paid_amount DECIMAL(15,2),
-  
-  -- Metadata
-  created_at TIMESTAMPTZ DEFAULT NOW(),
-  updated_at TIMESTAMPTZ DEFAULT NOW(),
-  metadata JSONB DEFAULT '{}'::jsonb
+CREATE TABLE contracts (
+    id VARCHAR PRIMARY KEY,
+    organization_id VARCHAR NOT NULL REFERENCES organizations(id) ON DELETE CASCADE,
+    vendor_id VARCHAR REFERENCES vendors(id) ON DELETE SET NULL,
+    
+    -- Identification
+    contract_number VARCHAR,
+    contract_type VARCHAR,  -- pbm, tpa, stop_loss, medical_network, pharmacy_network
+    contract_name VARCHAR,
+    
+    -- Dates
+    effective_date DATE,
+    termination_date DATE,
+    renewal_date DATE,
+    
+    -- Financial terms
+    admin_fee FLOAT,
+    admin_fee_type VARCHAR,  -- PEPM, percentage, flat
+    
+    -- Guarantees & Performance
+    guarantees JSONB,
+    performance_metrics JSONB,
+    
+    -- Document
+    document_url VARCHAR,
+    document_text TEXT,  -- Extracted text from PDF
+    clauses JSONB,  -- Extracted clauses
+    
+    -- Risk assessment
+    risk_score FLOAT,
+    risk_factors JSONB,
+    
+    -- Status
+    status VARCHAR DEFAULT 'active',  -- active, expired, terminated, pending
+    
+    -- Metadata
+    metadata JSONB,
+    created_at TIMESTAMP DEFAULT NOW(),
+    updated_at TIMESTAMP DEFAULT NOW()
 );
 
-CREATE INDEX idx_invoices_contract ON invoices(contract_id);
-CREATE INDEX idx_invoices_vendor ON invoices(vendor_id);
-CREATE INDEX idx_invoices_status ON invoices(invoice_status);
-CREATE INDEX idx_invoices_date ON invoices(invoice_date);
+CREATE INDEX idx_contracts_organization ON contracts(organization_id);
+CREATE INDEX idx_contracts_vendor ON contracts(vendor_id);
+CREATE INDEX idx_contracts_contract_number ON contracts(contract_number);
+CREATE INDEX idx_contracts_type ON contracts(contract_type);
+CREATE INDEX idx_contracts_status ON contracts(status);
+CREATE INDEX idx_contracts_effective_date ON contracts(effective_date);
 
--- =============================================================================
--- LEVEL 10: PAYMENTS (Transactions)
--- =============================================================================
+-- ============================================================================
+-- EVIDENCE OBJECTS (IntelligenceObject Pattern)
+-- ============================================================================
 
-CREATE TABLE payments (
-  id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
-  invoice_id UUID REFERENCES invoices(id),
-  
-  -- Payment Identity
-  payment_number TEXT UNIQUE NOT NULL,
-  payment_method TEXT, -- 'ach', 'wire', 'check', 'card'
-  payment_status TEXT, -- 'pending', 'completed', 'failed', 'reversed'
-  
-  -- Dates
-  payment_date DATE,
-  cleared_date DATE,
-  
-  -- Financial
-  payment_amount DECIMAL(15,2),
-  
-  -- Metadata
-  created_at TIMESTAMPTZ DEFAULT NOW(),
-  updated_at TIMESTAMPTZ DEFAULT NOW(),
-  metadata JSONB DEFAULT '{}'::jsonb
+CREATE TABLE evidence_objects (
+    id VARCHAR PRIMARY KEY,
+    organization_id VARCHAR NOT NULL REFERENCES organizations(id) ON DELETE CASCADE,
+    
+    -- Classification
+    object_type VARCHAR NOT NULL,  -- finding, recommendation, decision, risk, model, report
+    object_category VARCHAR,  -- financial, clinical, operational, compliance
+    
+    -- Core content
+    title VARCHAR NOT NULL,
+    description TEXT,
+    
+    -- Intelligence metadata
+    confidence_score FLOAT,  -- 0.0 to 1.0
+    confidence_level VARCHAR,  -- very_low, low, medium, high, very_high
+    
+    -- Financial impact
+    financial_impact_min FLOAT,
+    financial_impact_expected FLOAT,
+    financial_impact_max FLOAT,
+    
+    -- Risk assessment
+    risk_score FLOAT,  -- 0.0 to 1.0
+    risk_level VARCHAR,  -- minimal, low, medium, high, critical
+    
+    -- Provenance
+    source_type VARCHAR,  -- data, model, agent, user, external
+    source_id VARCHAR,
+    evidence_chain JSONB,  -- Array of evidence sources
+    
+    -- Relationships
+    related_objects JSONB,  -- Array of related evidence object IDs
+    contract_id VARCHAR REFERENCES contracts(id) ON DELETE SET NULL,
+    
+    -- Agent attribution
+    agent_name VARCHAR,  -- Which AI agent generated this
+    agent_version VARCHAR,
+    
+    -- Review status
+    review_status VARCHAR DEFAULT 'pending',  -- pending, reviewed, approved, rejected
+    reviewed_by VARCHAR,  -- User ID
+    reviewed_at TIMESTAMP,
+    
+    -- Version control
+    version INTEGER DEFAULT 1,
+    previous_version_id VARCHAR REFERENCES evidence_objects(id) ON DELETE SET NULL,
+    
+    -- Full data payload
+    data JSONB,
+    
+    -- Timestamps
+    created_at TIMESTAMP DEFAULT NOW(),
+    updated_at TIMESTAMP DEFAULT NOW(),
+    expires_at TIMESTAMP  -- For time-sensitive findings
 );
 
-CREATE INDEX idx_payments_invoice ON payments(invoice_id);
-CREATE INDEX idx_payments_status ON payments(payment_status);
-CREATE INDEX idx_payments_date ON payments(payment_date);
+CREATE INDEX idx_evidence_organization ON evidence_objects(organization_id);
+CREATE INDEX idx_evidence_object_type ON evidence_objects(object_type);
+CREATE INDEX idx_evidence_object_category ON evidence_objects(object_category);
+CREATE INDEX idx_evidence_contract ON evidence_objects(contract_id);
+CREATE INDEX idx_evidence_agent_name ON evidence_objects(agent_name);
+CREATE INDEX idx_evidence_review_status ON evidence_objects(review_status);
+CREATE INDEX idx_evidence_confidence_score ON evidence_objects(confidence_score);
+CREATE INDEX idx_evidence_risk_score ON evidence_objects(risk_score);
+CREATE INDEX idx_evidence_created_at ON evidence_objects(created_at);
 
--- =============================================================================
--- LEVEL 11: DRUGS (Pharmaceuticals)
--- =============================================================================
+-- ============================================================================
+-- AUDIT TRAIL
+-- ============================================================================
 
-CREATE TABLE drugs (
-  id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
-  
-  -- Drug Identity
-  ndc TEXT UNIQUE NOT NULL,
-  drug_name TEXT NOT NULL,
-  generic_name TEXT,
-  brand_name TEXT,
-  
-  -- Classification
-  therapeutic_class TEXT,
-  drug_class TEXT,
-  controlled_substance BOOLEAN DEFAULT FALSE,
-  
-  -- Pricing
-  awp DECIMAL(10,2),
-  wac DECIMAL(10,2),
-  nadac DECIMAL(10,2),
-  
-  -- Metadata
-  created_at TIMESTAMPTZ DEFAULT NOW(),
-  updated_at TIMESTAMPTZ DEFAULT NOW(),
-  metadata JSONB DEFAULT '{}'::jsonb
+CREATE TABLE audit_logs (
+    id VARCHAR PRIMARY KEY,
+    
+    -- Actor
+    user_id VARCHAR REFERENCES users(id) ON DELETE SET NULL,
+    actor_type VARCHAR,  -- user, agent, system
+    actor_name VARCHAR,
+    
+    -- Action
+    action VARCHAR NOT NULL,  -- create, read, update, delete, approve, reject, execute
+    action_category VARCHAR,  -- data, analysis, decision, system, security
+    
+    -- Target
+    target_type VARCHAR,  -- dataset, evidence_object, contract, user, organization
+    target_id VARCHAR,
+    evidence_object_id VARCHAR REFERENCES evidence_objects(id) ON DELETE SET NULL,
+    
+    -- Details
+    description TEXT,
+    before_state JSONB,  -- State before action
+    after_state JSONB,  -- State after action
+    
+    -- Context
+    request_id VARCHAR,  -- Trace ID for related actions
+    ip_address VARCHAR,
+    user_agent VARCHAR,
+    
+    -- Metadata
+    metadata JSONB,
+    
+    -- Timestamp
+    created_at TIMESTAMP DEFAULT NOW()
 );
 
-CREATE INDEX idx_drugs_ndc ON drugs(ndc);
-CREATE INDEX idx_drugs_therapeutic_class ON drugs(therapeutic_class);
+CREATE INDEX idx_audit_user ON audit_logs(user_id);
+CREATE INDEX idx_audit_actor_type ON audit_logs(actor_type);
+CREATE INDEX idx_audit_action ON audit_logs(action);
+CREATE INDEX idx_audit_action_category ON audit_logs(action_category);
+CREATE INDEX idx_audit_target_type ON audit_logs(target_type);
+CREATE INDEX idx_audit_evidence_object ON audit_logs(evidence_object_id);
+CREATE INDEX idx_audit_created_at ON audit_logs(created_at);
+CREATE INDEX idx_audit_request_id ON audit_logs(request_id);
 
--- =============================================================================
--- LEVEL 12: PROVIDERS (Healthcare Providers)
--- =============================================================================
+-- ============================================================================
+-- DASHBOARDS
+-- ============================================================================
 
-CREATE TABLE providers (
-  id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
-  
-  -- Provider Identity
-  npi TEXT UNIQUE,
-  provider_name TEXT NOT NULL,
-  provider_type TEXT, -- 'physician', 'hospital', 'facility', 'pharmacy'
-  specialty TEXT,
-  
-  -- Contact
-  address TEXT,
-  phone TEXT,
-  
-  -- Network
-  network_status TEXT, -- 'in_network', 'out_of_network', 'preferred'
-  
-  -- Performance
-  quality_score DECIMAL(5,2),
-  cost_efficiency_score DECIMAL(5,2),
-  
-  -- Metadata
-  created_at TIMESTAMPTZ DEFAULT NOW(),
-  updated_at TIMESTAMPTZ DEFAULT NOW(),
-  metadata JSONB DEFAULT '{}'::jsonb
+CREATE TABLE dashboards (
+    id SERIAL PRIMARY KEY,
+    name VARCHAR,
+    dashboard_type VARCHAR,
+    config JSONB,
+    created_at TIMESTAMP DEFAULT NOW()
 );
 
-CREATE INDEX idx_providers_npi ON providers(npi);
-CREATE INDEX idx_providers_type ON providers(provider_type);
-CREATE INDEX idx_providers_network ON providers(network_status);
+-- ============================================================================
+-- PERFORMANCE OPTIMIZATION
+-- ============================================================================
 
--- =============================================================================
--- LEVEL 13: BENEFITS (Coverage)
--- =============================================================================
+-- Analyze tables for query optimization
+ANALYZE organizations;
+ANALYZE users;
+ANALYZE datasets;
+ANALYZE claims;
+ANALYZE vendors;
+ANALYZE contracts;
+ANALYZE evidence_objects;
+ANALYZE audit_logs;
 
-CREATE TABLE benefits (
-  id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
-  plan_id UUID NOT NULL REFERENCES plans(id),
-  
-  -- Benefit Details
-  benefit_name TEXT NOT NULL,
-  benefit_type TEXT, -- 'medical', 'pharmacy', 'preventive', 'mental_health'
-  
-  -- Coverage
-  coverage_level TEXT, -- 'individual', 'family'
-  deductible DECIMAL(10,2),
-  coinsurance DECIMAL(5,2),
-  copay DECIMAL(7,2),
-  out_of_pocket_max DECIMAL(10,2),
-  
-  -- Limits
-  annual_limit DECIMAL(12,2),
-  lifetime_limit DECIMAL(12,2),
-  
-  -- Metadata
-  created_at TIMESTAMPTZ DEFAULT NOW(),
-  updated_at TIMESTAMPTZ DEFAULT NOW(),
-  metadata JSONB DEFAULT '{}'::jsonb
-);
+-- ============================================================================
+-- COMMENTS
+-- ============================================================================
 
-CREATE INDEX idx_benefits_plan ON benefits(plan_id);
-CREATE INDEX idx_benefits_type ON benefits(benefit_type);
+COMMENT ON TABLE organizations IS 'Multi-tenant organization entities';
+COMMENT ON TABLE users IS 'User authentication and authorization';
+COMMENT ON TABLE datasets IS 'Uploaded data files and their metadata';
+COMMENT ON TABLE claims IS 'Healthcare claims (medical + pharmacy)';
+COMMENT ON TABLE vendors IS 'Third-party service providers (PBM, TPA, etc.)';
+COMMENT ON TABLE contracts IS 'Vendor contracts with terms and performance metrics';
+COMMENT ON TABLE evidence_objects IS 'Universal IntelligenceObject pattern - findings, recommendations, decisions, risks';
+COMMENT ON TABLE audit_logs IS 'Complete activity tracking for compliance and governance';
 
--- =============================================================================
--- LEVEL 14: FINANCIAL STATEMENTS (Accounting)
--- =============================================================================
-
-CREATE TABLE financial_statements (
-  id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
-  organization_id UUID NOT NULL REFERENCES organizations(id),
-  
-  -- Statement Identity
-  statement_type TEXT NOT NULL, -- 'income', 'balance_sheet', 'cash_flow'
-  fiscal_period TEXT, -- '2024-Q1', '2024-Q2', '2024'
-  statement_date DATE,
-  
-  -- Financial Data (stored as JSONB for flexibility)
-  line_items JSONB,
-  
-  -- Status
-  status TEXT, -- 'draft', 'final', 'audited'
-  
-  -- Metadata
-  created_at TIMESTAMPTZ DEFAULT NOW(),
-  updated_at TIMESTAMPTZ DEFAULT NOW(),
-  metadata JSONB DEFAULT '{}'::jsonb
-);
-
-CREATE INDEX idx_financial_statements_org ON financial_statements(organization_id);
-CREATE INDEX idx_financial_statements_type ON financial_statements(statement_type);
-CREATE INDEX idx_financial_statements_period ON financial_statements(fiscal_period);
-
--- =============================================================================
--- LEVEL 15: POLICIES (Rules/Guidelines)
--- =============================================================================
-
-CREATE TABLE policies (
-  id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
-  organization_id UUID NOT NULL REFERENCES organizations(id),
-  
-  -- Policy Identity
-  policy_name TEXT NOT NULL,
-  policy_type TEXT, -- 'benefits', 'compliance', 'governance', 'security'
-  policy_number TEXT UNIQUE,
-  
-  -- Content
-  policy_text TEXT,
-  policy_url TEXT,
-  
-  -- Lifecycle
-  effective_date DATE,
-  review_date DATE,
-  status TEXT, -- 'draft', 'active', 'retired'
-  
-  -- Metadata
-  created_at TIMESTAMPTZ DEFAULT NOW(),
-  updated_at TIMESTAMPTZ DEFAULT NOW(),
-  metadata JSONB DEFAULT '{}'::jsonb
-);
-
-CREATE INDEX idx_policies_org ON policies(organization_id);
-CREATE INDEX idx_policies_type ON policies(policy_type);
-CREATE INDEX idx_policies_status ON policies(status);
-
--- =============================================================================
--- LEVEL 16: AI MODELS (Machine Learning Models)
--- =============================================================================
-
-CREATE TABLE ai_models (
-  id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
-  
-  -- Model Identity
-  model_name TEXT NOT NULL,
-  model_type TEXT, -- 'classification', 'regression', 'forecasting', 'clustering'
-  model_version TEXT,
-  
-  -- Purpose
-  use_case TEXT,
-  target_variable TEXT,
-  
-  -- Performance
-  accuracy DECIMAL(5,4),
-  precision_score DECIMAL(5,4),
-  recall DECIMAL(5,4),
-  f1_score DECIMAL(5,4),
-  
-  -- Training
-  training_date TIMESTAMPTZ,
-  training_records INTEGER,
-  features JSONB,
-  
-  -- Deployment
-  deployment_status TEXT, -- 'development', 'staging', 'production', 'retired'
-  deployment_date TIMESTAMPTZ,
-  
-  -- Metadata
-  created_at TIMESTAMPTZ DEFAULT NOW(),
-  updated_at TIMESTAMPTZ DEFAULT NOW(),
-  metadata JSONB DEFAULT '{}'::jsonb
-);
-
-CREATE INDEX idx_ai_models_type ON ai_models(model_type);
-CREATE INDEX idx_ai_models_status ON ai_models(deployment_status);
-
--- =============================================================================
--- LEVEL 17: RISKS (Exposures)
--- =============================================================================
-
-CREATE TABLE risks (
-  id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
-  organization_id UUID NOT NULL REFERENCES organizations(id),
-  
-  -- Risk Identity
-  risk_name TEXT NOT NULL,
-  risk_type TEXT, -- 'financial', 'operational', 'compliance', 'strategic', 'clinical'
-  risk_category TEXT,
-  
-  -- Assessment
-  likelihood TEXT, -- 'low', 'medium', 'high'
-  impact TEXT, -- 'low', 'medium', 'high', 'critical'
-  risk_score DECIMAL(5,2),
-  
-  -- Financial Impact
-  potential_loss_min DECIMAL(15,2),
-  potential_loss_max DECIMAL(15,2),
-  
-  -- Status
-  risk_status TEXT, -- 'identified', 'assessed', 'mitigated', 'accepted', 'transferred'
-  
-  -- Ownership
-  owner_id UUID,
-  
-  -- Metadata
-  created_at TIMESTAMPTZ DEFAULT NOW(),
-  updated_at TIMESTAMPTZ DEFAULT NOW(),
-  metadata JSONB DEFAULT '{}'::jsonb
-);
-
-CREATE INDEX idx_risks_org ON risks(organization_id);
-CREATE INDEX idx_risks_type ON risks(risk_type);
-CREATE INDEX idx_risks_status ON risks(risk_status);
-
--- =============================================================================
--- LEVEL 18: CONTROLS (Mitigations)
--- =============================================================================
-
-CREATE TABLE controls (
-  id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
-  risk_id UUID REFERENCES risks(id),
-  
-  -- Control Identity
-  control_name TEXT NOT NULL,
-  control_type TEXT, -- 'preventive', 'detective', 'corrective'
-  control_category TEXT,
-  
-  -- Effectiveness
-  effectiveness TEXT, -- 'effective', 'partially_effective', 'ineffective'
-  test_date DATE,
-  test_result TEXT,
-  
-  -- Ownership
-  owner_id UUID,
-  
-  -- Status
-  control_status TEXT, -- 'designed', 'implemented', 'operating', 'retired'
-  
-  -- Metadata
-  created_at TIMESTAMPTZ DEFAULT NOW(),
-  updated_at TIMESTAMPTZ DEFAULT NOW(),
-  metadata JSONB DEFAULT '{}'::jsonb
-);
-
-CREATE INDEX idx_controls_risk ON controls(risk_id);
-CREATE INDEX idx_controls_type ON controls(control_type);
-CREATE INDEX idx_controls_status ON controls(control_status);
-
--- =============================================================================
--- LEVEL 19: RECOMMENDATIONS (Actions)
--- =============================================================================
-
-CREATE TABLE recommendations (
-  id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
-  organization_id UUID NOT NULL REFERENCES organizations(id),
-  
-  -- Recommendation Identity
-  recommendation_title TEXT NOT NULL,
-  recommendation_type TEXT, -- 'cost_savings', 'risk_reduction', 'process_improvement', 'compliance'
-  priority TEXT, -- 'low', 'medium', 'high', 'critical'
-  
-  -- Content
-  description TEXT,
-  rationale TEXT,
-  implementation_steps JSONB,
-  
-  -- Impact
-  estimated_savings DECIMAL(15,2),
-  estimated_roi DECIMAL(5,2),
-  risk_reduction_score DECIMAL(5,2),
-  
-  -- Timeline
-  recommended_date DATE,
-  target_implementation_date DATE,
-  actual_implementation_date DATE,
-  
-  -- Source
-  source TEXT, -- 'ai_agent', 'human_analyst', 'automated_rule'
-  source_agent TEXT,
-  confidence_score DECIMAL(5,2),
-  
-  -- Status
-  status TEXT, -- 'proposed', 'approved', 'in_progress', 'implemented', 'rejected'
-  
-  -- Ownership
-  assigned_to UUID,
-  
-  -- Metadata
-  created_at TIMESTAMPTZ DEFAULT NOW(),
-  updated_at TIMESTAMPTZ DEFAULT NOW(),
-  metadata JSONB DEFAULT '{}'::jsonb
-);
-
-CREATE INDEX idx_recommendations_org ON recommendations(organization_id);
-CREATE INDEX idx_recommendations_type ON recommendations(recommendation_type);
-CREATE INDEX idx_recommendations_status ON recommendations(status);
-CREATE INDEX idx_recommendations_priority ON recommendations(priority);
-
--- =============================================================================
--- ENTITY RELATIONSHIPS & LINEAGE
--- =============================================================================
-
-CREATE TABLE entity_relationships (
-  id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
-  
-  -- Source & Target
-  source_entity_type TEXT NOT NULL,
-  source_entity_id UUID NOT NULL,
-  target_entity_type TEXT NOT NULL,
-  target_entity_id UUID NOT NULL,
-  
-  -- Relationship
-  relationship_type TEXT, -- 'has_many', 'belongs_to', 'references', 'impacts', 'derives_from'
-  relationship_strength DECIMAL(5,2), -- 0.0 to 1.0
-  
-  -- Metadata
-  created_at TIMESTAMPTZ DEFAULT NOW(),
-  metadata JSONB DEFAULT '{}'::jsonb
-);
-
-CREATE INDEX idx_entity_relationships_source ON entity_relationships(source_entity_type, source_entity_id);
-CREATE INDEX idx_entity_relationships_target ON entity_relationships(target_entity_type, target_entity_id);
-
--- =============================================================================
--- ENGINE ACTIVITY LOG (Which engine touched which entity)
--- =============================================================================
-
-CREATE TABLE engine_activity_log (
-  id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
-  
-  -- Engine
-  engine_name TEXT NOT NULL, -- 'economic_engine', 'statistical_engine', etc.
-  engine_operation TEXT NOT NULL,
-  
-  -- Entity
-  entity_type TEXT NOT NULL,
-  entity_id UUID NOT NULL,
-  
-  -- Activity
-  activity_type TEXT, -- 'read', 'write', 'compute', 'analyze'
-  
-  -- Performance
-  execution_time_ms INTEGER,
-  
-  -- Results
-  results JSONB,
-  
-  -- Metadata
-  timestamp TIMESTAMPTZ DEFAULT NOW(),
-  user_id UUID,
-  session_id UUID
-);
-
-CREATE INDEX idx_engine_activity_engine ON engine_activity_log(engine_name);
-CREATE INDEX idx_engine_activity_entity ON engine_activity_log(entity_type, entity_id);
-CREATE INDEX idx_engine_activity_timestamp ON engine_activity_log(timestamp);
-
--- =============================================================================
--- VIEWS FOR COMMON QUERIES
--- =============================================================================
-
--- Organization hierarchy view
-CREATE VIEW organization_hierarchy AS
-SELECT 
-  o.id as organization_id,
-  o.name as organization_name,
-  d.id as division_id,
-  d.name as division_name,
-  dept.id as department_id,
-  dept.name as department_name,
-  COUNT(DISTINCT e.id) as employee_count
-FROM organizations o
-LEFT JOIN divisions d ON d.organization_id = o.id
-LEFT JOIN departments dept ON dept.division_id = d.id
-LEFT JOIN employees e ON e.department_id = dept.id
-GROUP BY o.id, o.name, d.id, d.name, dept.id, dept.name;
-
--- Claims financial summary view
-CREATE VIEW claims_financial_summary AS
-SELECT
-  c.plan_id,
-  p.plan_name,
-  COUNT(c.id) as claim_count,
-  SUM(c.billed_amount) as total_billed,
-  SUM(c.allowed_amount) as total_allowed,
-  SUM(c.paid_amount) as total_paid,
-  AVG(c.paid_amount) as avg_claim_cost
-FROM claims c
-JOIN plans p ON p.id = c.plan_id
-WHERE c.claim_status = 'paid'
-GROUP BY c.plan_id, p.plan_name;
-
--- Vendor performance view
-CREATE VIEW vendor_performance AS
-SELECT
-  v.id as vendor_id,
-  v.vendor_name,
-  v.vendor_type,
-  COUNT(DISTINCT con.id) as contract_count,
-  SUM(con.contract_value_annual) as total_contract_value,
-  COUNT(DISTINCT inv.id) as invoice_count,
-  SUM(inv.invoice_amount) as total_invoiced,
-  v.performance_score,
-  v.risk_rating
-FROM vendors v
-LEFT JOIN contracts con ON con.vendor_id = v.id
-LEFT JOIN invoices inv ON inv.vendor_id = v.id
-GROUP BY v.id, v.vendor_name, v.vendor_type, v.performance_score, v.risk_rating;
-
--- =============================================================================
--- ROW LEVEL SECURITY (RLS) SETUP
--- =============================================================================
-
--- Enable RLS on all tables
-ALTER TABLE organizations ENABLE ROW LEVEL SECURITY;
-ALTER TABLE divisions ENABLE ROW LEVEL SECURITY;
-ALTER TABLE departments ENABLE ROW LEVEL SECURITY;
-ALTER TABLE employees ENABLE ROW LEVEL SECURITY;
-ALTER TABLE plans ENABLE ROW LEVEL SECURITY;
-ALTER TABLE claims ENABLE ROW LEVEL SECURITY;
-ALTER TABLE contracts ENABLE ROW LEVEL SECURITY;
-ALTER TABLE vendors ENABLE ROW LEVEL SECURITY;
-ALTER TABLE invoices ENABLE ROW LEVEL SECURITY;
-ALTER TABLE payments ENABLE ROW LEVEL SECURITY;
-ALTER TABLE drugs ENABLE ROW LEVEL SECURITY;
-ALTER TABLE providers ENABLE ROW LEVEL SECURITY;
-ALTER TABLE benefits ENABLE ROW LEVEL SECURITY;
-ALTER TABLE financial_statements ENABLE ROW LEVEL SECURITY;
-ALTER TABLE policies ENABLE ROW LEVEL SECURITY;
-ALTER TABLE ai_models ENABLE ROW LEVEL SECURITY;
-ALTER TABLE risks ENABLE ROW LEVEL SECURITY;
-ALTER TABLE controls ENABLE ROW LEVEL SECURITY;
-ALTER TABLE recommendations ENABLE ROW LEVEL SECURITY;
-
--- Basic RLS policies (authenticated users can read, admins can write)
-CREATE POLICY "authenticated_read" ON organizations FOR SELECT USING (auth.uid() IS NOT NULL);
-CREATE POLICY "authenticated_read" ON divisions FOR SELECT USING (auth.uid() IS NOT NULL);
-CREATE POLICY "authenticated_read" ON departments FOR SELECT USING (auth.uid() IS NOT NULL);
-CREATE POLICY "authenticated_read" ON employees FOR SELECT USING (auth.uid() IS NOT NULL);
-CREATE POLICY "authenticated_read" ON plans FOR SELECT USING (auth.uid() IS NOT NULL);
-CREATE POLICY "authenticated_read" ON claims FOR SELECT USING (auth.uid() IS NOT NULL);
-CREATE POLICY "authenticated_read" ON contracts FOR SELECT USING (auth.uid() IS NOT NULL);
-CREATE POLICY "authenticated_read" ON vendors FOR SELECT USING (auth.uid() IS NOT NULL);
-CREATE POLICY "authenticated_read" ON invoices FOR SELECT USING (auth.uid() IS NOT NULL);
-CREATE POLICY "authenticated_read" ON payments FOR SELECT USING (auth.uid() IS NOT NULL);
-CREATE POLICY "authenticated_read" ON drugs FOR SELECT USING (auth.uid() IS NOT NULL);
-CREATE POLICY "authenticated_read" ON providers FOR SELECT USING (auth.uid() IS NOT NULL);
-CREATE POLICY "authenticated_read" ON benefits FOR SELECT USING (auth.uid() IS NOT NULL);
-CREATE POLICY "authenticated_read" ON financial_statements FOR SELECT USING (auth.uid() IS NOT NULL);
-CREATE POLICY "authenticated_read" ON policies FOR SELECT USING (auth.uid() IS NOT NULL);
-CREATE POLICY "authenticated_read" ON ai_models FOR SELECT USING (auth.uid() IS NOT NULL);
-CREATE POLICY "authenticated_read" ON risks FOR SELECT USING (auth.uid() IS NOT NULL);
-CREATE POLICY "authenticated_read" ON controls FOR SELECT USING (auth.uid() IS NOT NULL);
-CREATE POLICY "authenticated_read" ON recommendations FOR SELECT USING (auth.uid() IS NOT NULL);
-
--- =============================================================================
--- END OF UNIVERSAL DATA MODEL
--- =============================================================================
+-- ============================================================================
+-- END SCHEMA
+-- ============================================================================

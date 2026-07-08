@@ -1,8 +1,1 @@
-export type Database = {
-  public: {
-    Tables: {};
-    Views: {};
-    Functions: {};
-    Enums: {};
-  };
-};
+/* eslint-disable @typescript-eslint/no-empty-object-type */

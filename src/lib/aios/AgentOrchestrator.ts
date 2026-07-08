@@ -199,7 +199,7 @@ export class AgentOrchestrator {
    */
   private async selfCritique(consensus: ConsensusResult): Promise<ConsensusResult> {
     // Mathematical verification
-    if (consensus.financial_impact) {
+    if (consensus.final_recommendation.financial_impact) {
       // Verify calculations are mathematically sound
     }
 

@@ -1,7 +1,7 @@
 import { useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
-import { Menu, X, ChevronDown, Search, Users, Building2, AlertTriangle, Calculator, FileText, TrendingUp, Briefcase, BarChart3, Shield, LineChart, DollarSign, Heart, FolderOpen, Activity, Sparkles, Code, Database } from "lucide-react";
+import { Menu, X, ChevronDown, Search, Users, Building2, AlertTriangle, Calculator, FileText, TrendingUp, Briefcase, BarChart3, Shield, LineChart, DollarSign, Heart, FolderOpen, Activity, Sparkles, Code, Database, Pill } from "lucide-react";
 import { useRouter } from "next/router";
 import { Button } from "@/components/ui/button";
 import { KincaidIQLogo } from "@/components/KincaidIQLogo";
@@ -121,6 +121,13 @@ export default function Nav() {
                       className="block px-4 py-3 text-gray-300 hover:text-white hover:bg-rose-500/10 rounded-lg transition-colors duration-150">
                       <div className="font-medium">PBM Contract Clarity 360*</div>
                       <div className="text-xs text-gray-400">PBM contract forensics</div>
+                    </Link>
+                    <Link
+                      href="/solutions/nadac-benchmarking"
+                      onClick={() => setKincaidHealthDropdownOpen(false)}
+                      className="block px-4 py-3 text-gray-300 hover:text-white hover:bg-rose-500/10 rounded-lg transition-colors duration-150">
+                      <div className="font-medium">NADAC Benchmarking Intelligence</div>
+                      <div className="text-xs text-gray-400">Pharmacy spread pricing detection</div>
                     </Link>
                     <Link
                       href="/solutions/claims-recovery-iq"
@@ -620,6 +627,15 @@ export default function Nav() {
                       <div className="flex items-center gap-2">
                         <Shield className="w-4 h-4 text-rose-400" />
                         PBM Contract Clarity 360*
+                      </div>
+                    </Link>
+                    <Link 
+                      href="/solutions/nadac-benchmarking" 
+                      onClick={() => setIsOpen(false)}
+                      className="block px-4 py-2.5 text-sm text-gray-300 hover:text-white hover:bg-rose-500/20 rounded-lg transition-all duration-150">
+                      <div className="flex items-center gap-2">
+                        <Pill className="w-4 h-4 text-rose-400" />
+                        NADAC Benchmarking Intelligence
                       </div>
                     </Link>
                     <Link 

@@ -1,94 +1,94 @@
-import { AlertCircle, TrendingDown, FileX, ShieldAlert } from "lucide-react";
-
-const problems = [
-  {
-    icon: <AlertCircle className="w-6 h-6" />,
-    title: "Hidden Spread Pricing",
-    description: "PBMs mark up drug costs 20-400% while claiming they're saving you money. Your contract allows it.",
-    impact: "$2.4M average annual leakage",
-  },
-  {
-    icon: <TrendingDown className="w-6 h-6" />,
-    title: "Contract Leakage",
-    description: "89% of pharmacy contracts have material gaps that PBMs exploit for profit while your members pay more.",
-    impact: "$180 per employee per year",
-  },
-  {
-    icon: <FileX className="w-6 h-6" />,
-    title: "Audit Rights Watered Down",
-    description: "Your contract limits when, how, and what you can audit. PBMs wrote these clauses — not your lawyers.",
-    impact: "3-5 year discovery delay",
-  },
-  {
-    icon: <ShieldAlert className="w-6 h-6" />,
-    title: "Fiduciary Blind Spots",
-    description: "ERISA requires prudent oversight. Your current contract makes that legally impossible to demonstrate.",
-    impact: "DOL audit exposure",
-  },
-];
+import { AlertTriangle, DollarSign, Eye, FileText } from "lucide-react";
+import { Badge } from "@/components/ui/badge";
 
 export function ProblemStatement() {
   return (
-    <section id="the-problem" className="py-24 bg-[#070B12]">
-      <div className="mx-auto max-w-7xl px-6">
-        <div className="text-center mb-16">
-          <h2 className="text-4xl md:text-5xl font-bold mb-4 text-white">
-            The Problem Nobody Wants to Talk About
-          </h2>
-          <p className="text-xl text-white/70 max-w-3xl mx-auto">
-            Your PBM contract isn't protecting you — it's protecting them. Here's what's hiding in the fine print.
-          </p>
-        </div>
+    <section className="py-20 border-t border-slate-800">
+      <div className="max-w-7xl mx-auto px-6">
+        <div className="max-w-4xl mx-auto">
+          <div className="text-center mb-16">
+            <Badge className="bg-red-500/10 text-red-400 border border-red-500/30 mb-4">
+              THE PROBLEM
+            </Badge>
+            <h2 className="text-4xl md:text-5xl font-bold text-white mb-6">
+              The $6.4 Billion Arbitrage
+            </h2>
+            <p className="text-xl text-slate-400">
+              Pharmacy benefit management contracts contain sophisticated pricing mechanisms that systematically extract value from employer health plans through spread pricing, rebate retention, and contractual complexity.
+            </p>
+          </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-          {problems.map((problem, index) => (
-            <ProblemCard key={index} {...problem} />
-          ))}
-        </div>
-
-        <div className="mt-16 p-8 bg-gradient-to-r from-red-900/20 to-orange-900/20 border border-red-500/30 rounded-2xl">
-          <div className="flex items-start gap-4">
-            <div className="flex-shrink-0 w-12 h-12 rounded-full bg-red-500/20 flex items-center justify-center">
-              <AlertCircle className="w-6 h-6 text-red-400" />
+          <div className="grid md:grid-cols-2 gap-8">
+            <div className="bg-slate-900/50 border border-slate-800 rounded-xl p-6">
+              <div className="flex items-start gap-4 mb-4">
+                <div className="w-10 h-10 bg-red-500/10 rounded-lg flex items-center justify-center flex-shrink-0">
+                  <AlertTriangle className="w-5 h-5 text-red-400" />
+                </div>
+                <div>
+                  <h3 className="text-lg font-bold text-white mb-2">Spread Pricing</h3>
+                  <p className="text-sm text-slate-400">
+                    PBMs charge employers one price while paying pharmacies a lower rate, pocketing the difference—often exceeding 300% of acquisition cost.
+                  </p>
+                </div>
+              </div>
             </div>
-            <div>
-              <h3 className="text-2xl font-bold text-white mb-2">The Real Cost</h3>
-              <p className="text-white/80 text-lg mb-4">
-                A mid-sized employer with 2,000 covered lives loses an average of <span className="font-bold text-red-400">$360,000 annually</span> to 
-                contract leakage alone. Over a typical 3-year contract term, that's <span className="font-bold text-red-400">$1.08M</span> straight to PBM profit margins.
-              </p>
-              <p className="text-white/70">
-                And that's just spread pricing. Add DIR fees, rebate retention, formulary steering, and specialty carve-outs — 
-                the actual number is often 3-5x higher.
-              </p>
+
+            <div className="bg-slate-900/50 border border-slate-800 rounded-xl p-6">
+              <div className="flex items-start gap-4 mb-4">
+                <div className="w-10 h-10 bg-red-500/10 rounded-lg flex items-center justify-center flex-shrink-0">
+                  <DollarSign className="w-5 h-5 text-red-400" />
+                </div>
+                <div>
+                  <h3 className="text-lg font-bold text-white mb-2">Rebate Retention</h3>
+                  <p className="text-sm text-slate-400">
+                    Manufacturer rebates that should flow to employers are retained by PBMs through vague contract language and delayed disclosure timelines.
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            <div className="bg-slate-900/50 border border-slate-800 rounded-xl p-6">
+              <div className="flex items-start gap-4 mb-4">
+                <div className="w-10 h-10 bg-red-500/10 rounded-lg flex items-center justify-center flex-shrink-0">
+                  <Eye className="w-5 h-5 text-red-400" />
+                </div>
+                <div>
+                  <h3 className="text-lg font-bold text-white mb-2">Contractual Opacity</h3>
+                  <p className="text-sm text-slate-400">
+                    Complex contract language, defined terms buried in appendices, and performance guarantees with undisclosed calculation methodologies obscure true costs.
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            <div className="bg-slate-900/50 border border-slate-800 rounded-xl p-6">
+              <div className="flex items-start gap-4 mb-4">
+                <div className="w-10 h-10 bg-red-500/10 rounded-lg flex items-center justify-center flex-shrink-0">
+                  <FileText className="w-5 h-5 text-red-400" />
+                </div>
+                <div>
+                  <h3 className="text-lg font-bold text-white mb-2">Audit Limitations</h3>
+                  <p className="text-sm text-slate-400">
+                    Restricted audit rights, limited data access, and narrow audit windows prevent comprehensive verification of PBM financial reporting.
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div className="mt-12 bg-gradient-to-r from-amber-900/20 to-red-900/20 border border-amber-500/30 rounded-xl p-8">
+            <div className="flex items-start gap-4">
+              <AlertTriangle className="w-8 h-8 text-amber-400 flex-shrink-0" />
+              <div>
+                <h3 className="text-xl font-bold text-white mb-3">The Fiduciary Risk</h3>
+                <p className="text-slate-300 leading-relaxed">
+                  Under ERISA, plan fiduciaries have a legal obligation to ensure that PBM contracts serve the exclusive benefit of plan participants. The Consolidated Appropriations Act (CAA) requires disclosure of "all direct and indirect compensation" received by service providers. Failure to forensically validate PBM financial reporting creates personal liability for trustees and executives.
+                </p>
+              </div>
             </div>
           </div>
         </div>
       </div>
     </section>
-  );
-}
-
-function ProblemCard({ icon, title, description, impact }: {
-  icon: React.ReactNode;
-  title: string;
-  description: string;
-  impact: string;
-}) {
-  return (
-    <div className="group bg-gradient-to-br from-[#0a1520] to-[#050a10] border border-cyan-900/30 hover:border-cyan-700/50 rounded-2xl p-8 transition-all">
-      <div className="flex items-start gap-4 mb-4">
-        <div className="flex-shrink-0 w-12 h-12 rounded-full bg-red-500/10 flex items-center justify-center text-red-400 group-hover:bg-red-500/20 transition-colors">
-          {icon}
-        </div>
-        <div>
-          <h3 className="text-xl font-bold text-white mb-2">{title}</h3>
-          <p className="text-white/70 mb-4">{description}</p>
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-red-500/10 border border-red-500/30">
-            <span className="text-sm font-semibold text-red-400">{impact}</span>
-          </div>
-        </div>
-      </div>
-    </div>
   );
 }

@@ -1,4 +1,5 @@
 import { AlertCircle, ArrowRight, DollarSign, ShieldAlert, Lock, AlertTriangle } from "lucide-react";
+import { LucideIcon } from "lucide-react";
 
 interface Issue {
   title: string;
@@ -26,9 +27,10 @@ interface Provision {
 
 interface ProvisionCardProps {
   provision: Provision;
+  icon: LucideIcon;
 }
 
-export function ProvisionCard({ provision }: ProvisionCardProps) {
+export function ProvisionCard({ provision, icon: Icon }: ProvisionCardProps) {
   return (
     <section className="mb-24">
       <div className={`text-xs font-bold tracking-[0.2em] ${provision.statusColor} mb-4 uppercase`}>

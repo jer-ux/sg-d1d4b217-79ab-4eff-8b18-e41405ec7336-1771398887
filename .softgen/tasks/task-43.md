@@ -26,12 +26,12 @@ position: 43
 - [x] Create backend/engines/ directory structure
 - [x] Build Economic Engine microservice (cost attribution, ROI calculation, value flows)
 - [x] Build Statistical Engine microservice (distributions, regression, credibility weighting)
+- [x] Build Simulation Engine microservice (Monte Carlo, correlations, tail risk)
 - [x] Add Pydantic models for engine request/response schemas
 - [x] Implement engine computation logic (not mocks - real math)
 - [x] Add unit tests for each engine's core computations
 - [x] Create Docker containers for each engine
-- [ ] Build Simulation Engine microservice (Monte Carlo, correlations, tail risk)
-- [ ] Add docker-compose orchestration for local development
+- [x] Add docker-compose orchestration for local development
 
 ### Phase 2: Engine API Gateway & SDK
 - [ ] Build FastAPI gateway service (backend/gateway/)

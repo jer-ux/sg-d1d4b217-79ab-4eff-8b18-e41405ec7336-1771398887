@@ -46,14 +46,15 @@ position: 43
 - [x] Document SDK usage with code examples
 
 ### Phase 3: Frontend Engine Integration
-- [ ] Create Next.js API route: /api/v1/engines/proxy
+- [x] Create Next.js API route: /api/v1/engines/proxy
+- [x] Create Next.js API route: /api/v1/engines/status
+- [x] Create reusable React hooks (useEconomicEngine, useStatisticalEngine, useSimulationEngine)
+- [x] Add real-time engine status indicators in UI
 - [ ] Replace mock data in War Room with live Economic Engine calls
 - [ ] Replace mock data in Executive Command Center with live Statistical Engine calls
 - [ ] Replace mock simulators in Persona pages with live Simulation Engine calls
 - [ ] Add loading states and error handling for engine calls
 - [ ] Implement client-side caching for expensive computations
-- [ ] Create reusable React hooks (useEconomicEngine, useStatisticalEngine, useSimulationEngine)
-- [ ] Add real-time engine status indicators in UI
 
 ### Phase 4: Observability & Monitoring
 - [ ] Add OpenTelemetry instrumentation to all engines

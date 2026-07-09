@@ -42,6 +42,7 @@ import {
   ListCheck
 } from "lucide-react";
 import { SEO } from "@/components/SEO";
+import { EngineStatusIndicator } from "@/components/EngineStatusIndicator";
 
 // Import new executive components
 import { ExecutiveHeader } from "@/components/executive/ExecutiveHeader";
@@ -69,6 +70,7 @@ export default function ExecutiveCommandCenter() {
 
       <div className="min-h-screen bg-gradient-to-br from-slate-950 via-slate-900 to-slate-950 pb-20 text-white">
         <ExecutiveHeader timeframe={timeframe} onTimeframeChange={setTimeframe} />
+        <EngineStatusIndicator />
 
         {/* Main Content */}
         <div className="max-w-[1800px] mx-auto px-8 py-8">

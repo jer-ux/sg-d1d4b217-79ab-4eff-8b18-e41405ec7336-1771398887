@@ -119,6 +119,73 @@ const generateMockAuditLogs = () => {
 };
 
 export default function EvidenceSpine() {
+  const [searchQuery, setSearchQuery] = useState("");
+  const [dateFrom, setDateFrom] = useState("");
+  const [dateTo, setDateTo] = useState("");
+  const [objectType, setObjectType] = useState("all");
+  const [confidenceMin, setConfidenceMin] = useState(0);
+  const [impactMin, setImpactMin] = useState(0);
+  const [riskLevel, setRiskLevel] = useState("all");
+  const [reviewStatus, setReviewStatus] = useState("all");
+  const [activeTab, setActiveTab] = useState("evidence");
+  const [selectedEvidence, setSelectedEvidence] = useState<any>(null);
+
+  const [evidenceObjects] = useState(() => generateMockEvidenceObjects());
+  const [auditLogs] = useState(() => generateMockAuditLogs());
+
+  // Calculate statistics
+  const stats = {
+    totalObjects: evidenceObjects.length,
+    avgConfidence: (evidenceObjects.reduce((sum, obj) => sum + obj.confidence_score, 0) / evidenceObjects.length).toFixed(2),
+    totalImpact: evidenceObjects.reduce((sum, obj) => sum + obj.financial_impact_expected, 0),
+    highRiskCount: evidenceObjects.filter(obj => obj.risk_level === "high" || obj.risk_level === "critical").length,
+  };
+
+  // Filter evidence objects
+  const filteredEvidence = evidenceObjects.filter(obj => {
+    if (searchQuery && !obj.title.toLowerCase().includes(searchQuery.toLowerCase())) return false;
+    if (objectType !== "all" && obj.object_type !== objectType) return false;
+    if (riskLevel !== "all" && obj.risk_level !== riskLevel) return false;
+    if (reviewStatus !== "all" && obj.review_status !== reviewStatus) return false;
+    if (obj.confidence_score < confidenceMin) return false;
+    if (obj.financial_impact_expected < impactMin) return false;
+    if (dateFrom && new Date(obj.created_at) < new Date(dateFrom)) return false;
+    if (dateTo && new Date(obj.created_at) > new Date(dateTo)) return false;
+    return true;
+  });
+
+  // Helper functions for badge styling
+  const getConfidenceBadge = (level: string) => {
+    const styles: Record<string, string> = {
+      very_low: "bg-red-500/10 text-red-400 border-red-500/20",
+      low: "bg-orange-500/10 text-orange-400 border-orange-500/20",
+      medium: "bg-yellow-500/10 text-yellow-400 border-yellow-500/20",
+      high: "bg-blue-500/10 text-blue-400 border-blue-500/20",
+      very_high: "bg-green-500/10 text-green-400 border-green-500/20",
+    };
+    return styles[level] || styles.medium;
+  };
+
+  const getRiskBadge = (level: string) => {
+    const styles: Record<string, string> = {
+      minimal: "bg-green-500/10 text-green-400 border-green-500/20",
+      low: "bg-blue-500/10 text-blue-400 border-blue-500/20",
+      medium: "bg-yellow-500/10 text-yellow-400 border-yellow-500/20",
+      high: "bg-orange-500/10 text-orange-400 border-orange-500/20",
+      critical: "bg-red-500/10 text-red-400 border-red-500/20",
+    };
+    return styles[level] || styles.medium;
+  };
+
+  const getReviewBadge = (status: string) => {
+    const styles: Record<string, string> = {
+      pending: "bg-yellow-500/10 text-yellow-400 border-yellow-500/20",
+      reviewed: "bg-blue-500/10 text-blue-400 border-blue-500/20",
+      approved: "bg-green-500/10 text-green-400 border-green-500/20",
+    };
+    return styles[status] || styles.pending;
+  };
+
   return (
     <ProtectedToolsRoute>
       <SEO

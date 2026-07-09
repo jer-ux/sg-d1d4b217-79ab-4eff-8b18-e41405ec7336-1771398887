@@ -666,3 +666,10 @@ export default function AdminPortal() {
     </>
   );
 }
+
+// Force server-side rendering - this page requires runtime authentication
+export async function getServerSideProps() {
+  return {
+    props: {}
+  };
+}

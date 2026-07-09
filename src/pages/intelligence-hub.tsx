@@ -21,6 +21,10 @@ import {
   CheckCircle2,
   Sparkles,
 } from "lucide-react";
+import { SEO } from "@/components/SEO";
+import Nav from "@/components/Nav";
+import Footer from "@/components/Footer";
+import { ProtectedToolsRoute } from "@/components/ProtectedToolsRoute";
 
 const tools = [
   {
@@ -118,208 +122,214 @@ const backendEndpoints = [
 
 export default function IntelligenceHub() {
   return (
-    <div className="min-h-screen bg-background">
-      <div className="max-w-7xl mx-auto p-6 space-y-12">
-        {/* Header */}
-        <div className="space-y-4">
-          <div className="flex items-center gap-3">
-            <Sparkles className="w-10 h-10 text-primary" />
-            <h1 className="text-5xl font-bold">Intelligence Hub</h1>
-          </div>
-          <p className="text-xl text-muted-foreground max-w-3xl">
-            Central access point for all Kincaid Health™ intelligence tools, AI agents, and analytics engines.
-            Complete end-to-end workflow from data ingestion to executive reporting.
-          </p>
-          <div className="flex items-center gap-3">
-            <Badge variant="outline" className="gap-2">
-              <CheckCircle2 className="w-4 h-4 text-green-500" />
-              All Systems Operational
-            </Badge>
-            <Badge variant="outline">8 Tools Available</Badge>
-            <Badge variant="outline">9 AI Agents Active</Badge>
-          </div>
-        </div>
-
-        {/* Quick Start */}
-        <Card className="p-6 bg-primary/5 border-primary/20">
+    <ProtectedToolsRoute>
+      <SEO
+        title="Intelligence Hub - Kincaid Health"
+        description="Central access to all intelligence tools and AI agents"
+      />
+      <div className="min-h-screen bg-background">
+        <div className="max-w-7xl mx-auto p-6 space-y-12">
+          {/* Header */}
           <div className="space-y-4">
-            <h2 className="text-2xl font-bold flex items-center gap-2">
-              <AlertCircle className="w-6 h-6 text-primary" />
-              Quick Start
-            </h2>
-            <div className="grid md:grid-cols-2 gap-4">
-              <div className="space-y-2">
-                <h3 className="font-semibold">Backend (Python/FastAPI)</h3>
-                <pre className="bg-background rounded-lg p-3 text-sm font-mono">
+            <div className="flex items-center gap-3">
+              <Sparkles className="w-10 h-10 text-primary" />
+              <h1 className="text-5xl font-bold">Intelligence Hub</h1>
+            </div>
+            <p className="text-xl text-muted-foreground max-w-3xl">
+              Central access point for all Kincaid Health™ intelligence tools, AI agents, and analytics engines.
+              Complete end-to-end workflow from data ingestion to executive reporting.
+            </p>
+            <div className="flex items-center gap-3">
+              <Badge variant="outline" className="gap-2">
+                <CheckCircle2 className="w-4 h-4 text-green-500" />
+                All Systems Operational
+              </Badge>
+              <Badge variant="outline">8 Tools Available</Badge>
+              <Badge variant="outline">9 AI Agents Active</Badge>
+            </div>
+          </div>
+
+          {/* Quick Start */}
+          <Card className="p-6 bg-primary/5 border-primary/20">
+            <div className="space-y-4">
+              <h2 className="text-2xl font-bold flex items-center gap-2">
+                <AlertCircle className="w-6 h-6 text-primary" />
+                Quick Start
+              </h2>
+              <div className="grid md:grid-cols-2 gap-4">
+                <div className="space-y-2">
+                  <h3 className="font-semibold">Backend (Python/FastAPI)</h3>
+                  <pre className="bg-background rounded-lg p-3 text-sm font-mono">
 {`cd backend
 source venv/bin/activate
 uvicorn app.main:app --reload
 
 # Running at http://localhost:8000`}
-                </pre>
-              </div>
-              <div className="space-y-2">
-                <h3 className="font-semibold">Frontend (Next.js)</h3>
-                <pre className="bg-background rounded-lg p-3 text-sm font-mono">
+                  </pre>
+                </div>
+                <div className="space-y-2">
+                  <h3 className="font-semibold">Frontend (Next.js)</h3>
+                  <pre className="bg-background rounded-lg p-3 text-sm font-mono">
 {`npm run dev
 
 # Running at http://localhost:3000`}
-                </pre>
+                  </pre>
+                </div>
+              </div>
+              <div className="flex gap-2">
+                <a href="http://localhost:8000/docs" target="_blank" rel="noopener noreferrer">
+                  <Button variant="outline">
+                    Interactive API Docs
+                  </Button>
+                </a>
+                <a href="/docs/ACCESSING-NEW-TOOLS.md" target="_blank" rel="noopener noreferrer">
+                  <Button variant="outline">
+                    Access Guide
+                  </Button>
+                </a>
               </div>
             </div>
-            <div className="flex gap-2">
-              <a href="http://localhost:8000/docs" target="_blank" rel="noopener noreferrer">
-                <Button variant="outline">
-                  Interactive API Docs
-                </Button>
-              </a>
-              <a href="/docs/ACCESSING-NEW-TOOLS.md" target="_blank" rel="noopener noreferrer">
-                <Button variant="outline">
-                  Access Guide
-                </Button>
-              </a>
+          </Card>
+
+          {/* Tools Grid */}
+          <div className="space-y-4">
+            <h2 className="text-3xl font-bold">Intelligence Tools</h2>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {tools.map((tool) => {
+                const Icon = tool.icon;
+                return (
+                  <Link key={tool.name} href={tool.href}>
+                    <Card className="p-6 hover:border-primary transition-all h-full cursor-pointer group">
+                      <div className="space-y-4">
+                        <div className="flex items-start justify-between">
+                          <div className={`${tool.bgColor} p-3 rounded-lg`}>
+                            <Icon className={`w-6 h-6 ${tool.color}`} />
+                          </div>
+                          <Badge variant="outline" className="gap-1">
+                            <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse" />
+                            {tool.status}
+                          </Badge>
+                        </div>
+                        <div className="space-y-2">
+                          <h3 className="text-xl font-bold group-hover:text-primary transition-colors">
+                            {tool.name}
+                          </h3>
+                          <p className="text-sm text-muted-foreground">
+                            {tool.description}
+                          </p>
+                        </div>
+                        <div className="space-y-2">
+                          <p className="text-xs font-semibold text-muted-foreground">Features:</p>
+                          <div className="flex flex-wrap gap-2">
+                            {tool.features.map((feature) => (
+                              <Badge key={feature} variant="secondary" className="text-xs">
+                                {feature}
+                              </Badge>
+                            ))}
+                          </div>
+                        </div>
+                      </div>
+                    </Card>
+                  </Link>
+                );
+              })}
             </div>
           </div>
-        </Card>
 
-        {/* Tools Grid */}
-        <div className="space-y-4">
-          <h2 className="text-3xl font-bold">Intelligence Tools</h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {tools.map((tool) => {
-              const Icon = tool.icon;
-              return (
-                <Link key={tool.name} href={tool.href}>
-                  <Card className="p-6 hover:border-primary transition-all h-full cursor-pointer group">
-                    <div className="space-y-4">
-                      <div className="flex items-start justify-between">
-                        <div className={`${tool.bgColor} p-3 rounded-lg`}>
-                          <Icon className={`w-6 h-6 ${tool.color}`} />
-                        </div>
-                        <Badge variant="outline" className="gap-1">
-                          <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse" />
-                          {tool.status}
-                        </Badge>
-                      </div>
-                      <div className="space-y-2">
-                        <h3 className="text-xl font-bold group-hover:text-primary transition-colors">
-                          {tool.name}
-                        </h3>
-                        <p className="text-sm text-muted-foreground">
-                          {tool.description}
-                        </p>
-                      </div>
-                      <div className="space-y-2">
-                        <p className="text-xs font-semibold text-muted-foreground">Features:</p>
-                        <div className="flex flex-wrap gap-2">
-                          {tool.features.map((feature) => (
-                            <Badge key={feature} variant="secondary" className="text-xs">
-                              {feature}
-                            </Badge>
-                          ))}
-                        </div>
-                      </div>
+          {/* Backend API Endpoints */}
+          <Card className="p-6">
+            <div className="space-y-4">
+              <h2 className="text-2xl font-bold flex items-center gap-2">
+                <Code className="w-6 h-6" />
+                Backend API Endpoints
+              </h2>
+              <p className="text-muted-foreground">
+                FastAPI server running at <code className="bg-muted px-2 py-1 rounded">http://localhost:8000</code>
+              </p>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                {backendEndpoints.map((endpoint, idx) => (
+                  <div key={idx} className="flex items-center gap-3 bg-muted/50 rounded-lg p-3">
+                    <Badge variant={endpoint.method === "GET" ? "default" : "secondary"}>
+                      {endpoint.method}
+                    </Badge>
+                    <div className="flex-1">
+                      <code className="text-sm font-mono">{endpoint.path}</code>
+                      <p className="text-xs text-muted-foreground">{endpoint.description}</p>
                     </div>
-                  </Card>
-                </Link>
-              );
-            })}
-          </div>
-        </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </Card>
 
-        {/* Backend API Endpoints */}
-        <Card className="p-6">
-          <div className="space-y-4">
-            <h2 className="text-2xl font-bold flex items-center gap-2">
-              <Code className="w-6 h-6" />
-              Backend API Endpoints
-            </h2>
-            <p className="text-muted-foreground">
-              FastAPI server running at <code className="bg-muted px-2 py-1 rounded">http://localhost:8000</code>
-            </p>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-              {backendEndpoints.map((endpoint, idx) => (
-                <div key={idx} className="flex items-center gap-3 bg-muted/50 rounded-lg p-3">
-                  <Badge variant={endpoint.method === "GET" ? "default" : "secondary"}>
-                    {endpoint.method}
-                  </Badge>
-                  <div className="flex-1">
-                    <code className="text-sm font-mono">{endpoint.path}</code>
-                    <p className="text-xs text-muted-foreground">{endpoint.description}</p>
+          {/* Workflow Diagram */}
+          <Card className="p-6 bg-muted/30">
+            <div className="space-y-4">
+              <h2 className="text-2xl font-bold">Complete Intelligence Workflow</h2>
+              <div className="flex flex-col md:flex-row items-center justify-between gap-4 text-center">
+                <div className="flex-1 space-y-2">
+                  <div className="bg-green-500/10 p-4 rounded-lg">
+                    <Upload className="w-8 h-8 mx-auto text-green-500" />
+                    <p className="font-semibold mt-2">1. Upload Data</p>
+                    <p className="text-xs text-muted-foreground">CSV/Excel ingestion</p>
                   </div>
                 </div>
-              ))}
+                <div className="text-2xl text-muted-foreground">→</div>
+                <div className="flex-1 space-y-2">
+                  <div className="bg-blue-500/10 p-4 rounded-lg">
+                    <Brain className="w-8 h-8 mx-auto text-blue-500" />
+                    <p className="font-semibold mt-2">2. AI Analysis</p>
+                    <p className="text-xs text-muted-foreground">9 specialist agents</p>
+                  </div>
+                </div>
+                <div className="text-2xl text-muted-foreground">→</div>
+                <div className="flex-1 space-y-2">
+                  <div className="bg-purple-500/10 p-4 rounded-lg">
+                    <Shield className="w-8 h-8 mx-auto text-purple-500" />
+                    <p className="font-semibold mt-2">3. Evidence Tracking</p>
+                    <p className="text-xs text-muted-foreground">Complete provenance</p>
+                  </div>
+                </div>
+                <div className="text-2xl text-muted-foreground">→</div>
+                <div className="flex-1 space-y-2">
+                  <div className="bg-red-500/10 p-4 rounded-lg">
+                    <Activity className="w-8 h-8 mx-auto text-red-500" />
+                    <p className="font-semibold mt-2">4. Executive Action</p>
+                    <p className="text-xs text-muted-foreground">War room dashboard</p>
+                  </div>
+                </div>
+              </div>
             </div>
-          </div>
-        </Card>
+          </Card>
 
-        {/* Workflow Diagram */}
-        <Card className="p-6 bg-muted/30">
-          <div className="space-y-4">
-            <h2 className="text-2xl font-bold">Complete Intelligence Workflow</h2>
-            <div className="flex flex-col md:flex-row items-center justify-between gap-4 text-center">
-              <div className="flex-1 space-y-2">
-                <div className="bg-green-500/10 p-4 rounded-lg">
-                  <Upload className="w-8 h-8 mx-auto text-green-500" />
-                  <p className="font-semibold mt-2">1. Upload Data</p>
-                  <p className="text-xs text-muted-foreground">CSV/Excel ingestion</p>
-                </div>
-              </div>
-              <div className="text-2xl text-muted-foreground">→</div>
-              <div className="flex-1 space-y-2">
-                <div className="bg-blue-500/10 p-4 rounded-lg">
-                  <Brain className="w-8 h-8 mx-auto text-blue-500" />
-                  <p className="font-semibold mt-2">2. AI Analysis</p>
-                  <p className="text-xs text-muted-foreground">9 specialist agents</p>
-                </div>
-              </div>
-              <div className="text-2xl text-muted-foreground">→</div>
-              <div className="flex-1 space-y-2">
-                <div className="bg-purple-500/10 p-4 rounded-lg">
-                  <Shield className="w-8 h-8 mx-auto text-purple-500" />
-                  <p className="font-semibold mt-2">3. Evidence Tracking</p>
-                  <p className="text-xs text-muted-foreground">Complete provenance</p>
-                </div>
-              </div>
-              <div className="text-2xl text-muted-foreground">→</div>
-              <div className="flex-1 space-y-2">
-                <div className="bg-red-500/10 p-4 rounded-lg">
-                  <Activity className="w-8 h-8 mx-auto text-red-500" />
-                  <p className="font-semibold mt-2">4. Executive Action</p>
-                  <p className="text-xs text-muted-foreground">War room dashboard</p>
-                </div>
+          {/* Documentation Links */}
+          <Card className="p-6">
+            <div className="space-y-4">
+              <h2 className="text-2xl font-bold">Documentation & Resources</h2>
+              <div className="grid md:grid-cols-3 gap-4">
+                <a href="/docs/ACCESSING-NEW-TOOLS.md" target="_blank" rel="noopener noreferrer">
+                  <Button variant="outline" className="w-full justify-start gap-2">
+                    <FileText className="w-4 h-4" />
+                    Access Guide
+                  </Button>
+                </a>
+                <a href="http://localhost:8000/docs" target="_blank" rel="noopener noreferrer">
+                  <Button variant="outline" className="w-full justify-start gap-2">
+                    <Code className="w-4 h-4" />
+                    Interactive API Docs
+                  </Button>
+                </a>
+                <Link href="/api-documentation">
+                  <Button variant="outline" className="w-full justify-start gap-2">
+                    <Database className="w-4 h-4" />
+                    API Documentation
+                  </Button>
+                </Link>
               </div>
             </div>
-          </div>
-        </Card>
-
-        {/* Documentation Links */}
-        <Card className="p-6">
-          <div className="space-y-4">
-            <h2 className="text-2xl font-bold">Documentation & Resources</h2>
-            <div className="grid md:grid-cols-3 gap-4">
-              <a href="/docs/ACCESSING-NEW-TOOLS.md" target="_blank" rel="noopener noreferrer">
-                <Button variant="outline" className="w-full justify-start gap-2">
-                  <FileText className="w-4 h-4" />
-                  Access Guide
-                </Button>
-              </a>
-              <a href="http://localhost:8000/docs" target="_blank" rel="noopener noreferrer">
-                <Button variant="outline" className="w-full justify-start gap-2">
-                  <Code className="w-4 h-4" />
-                  Interactive API Docs
-                </Button>
-              </a>
-              <Link href="/api-documentation">
-                <Button variant="outline" className="w-full justify-start gap-2">
-                  <Database className="w-4 h-4" />
-                  API Documentation
-                </Button>
-              </Link>
-            </div>
-          </div>
-        </Card>
+          </Card>
+        </div>
       </div>
-    </div>
+    </ProtectedToolsRoute>
   );
 }

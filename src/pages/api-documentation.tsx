@@ -19,6 +19,10 @@ import {
   CheckCircle2,
   AlertCircle
 } from "lucide-react";
+import { SEO } from "@/components/SEO";
+import Nav from "@/components/Nav";
+import Footer from "@/components/Footer";
+import { ProtectedToolsRoute } from "@/components/ProtectedToolsRoute";
 
 const API_ENDPOINTS = {
   data: [
@@ -106,103 +110,123 @@ const API_ENDPOINTS = {
   ],
 };
 
-export default function APIDocumentation() {
+export default function ApiDocumentation() {
   const [activeTab, setActiveTab] = useState("data");
   const [apiStatus, setApiStatus] = useState<"checking" | "online" | "offline">("checking");
 
   return (
-    <div className="min-h-screen bg-background">
-      <div className="max-w-7xl mx-auto p-6 space-y-8">
-        {/* Header */}
-        <div className="space-y-2">
-          <h1 className="text-4xl font-bold">KINCAID HEALTH™ API</h1>
-          <p className="text-xl text-muted-foreground">
-            Enterprise Healthcare Intelligence Platform API Documentation
-          </p>
-          <div className="flex items-center gap-3 mt-4">
-            <Badge variant="outline" className="gap-2">
-              <CheckCircle2 className="w-4 h-4 text-green-500" />
-              API v0.1
-            </Badge>
-            <Badge variant="outline" className="gap-2">
-              <Database className="w-4 h-4" />
-              FastAPI Backend
-            </Badge>
-            <a 
-              href="http://localhost:8000/docs" 
-              target="_blank" 
-              rel="noopener noreferrer"
-            >
-              <Button variant="outline">
-                Interactive Docs
-              </Button>
-            </a>
-          </div>
-        </div>
-
-        {/* Base URL */}
-        <Card className="p-6 bg-muted/50">
+    <ProtectedToolsRoute>
+      <SEO
+        title="API Documentation - Kincaid Health"
+        description="FastAPI endpoint reference and integration guides"
+      />
+      <div className="min-h-screen bg-background">
+        <div className="max-w-7xl mx-auto p-6 space-y-8">
+          {/* Header */}
           <div className="space-y-2">
-            <p className="text-sm font-medium text-muted-foreground">Base URL</p>
-            <div className="flex items-center gap-2">
-              <code className="px-3 py-2 bg-background rounded text-lg font-mono">
-                http://localhost:8000
-              </code>
-              <Badge variant={apiStatus === "online" ? "default" : "destructive"}>
-                {apiStatus === "checking" ? "Checking..." : apiStatus}
+            <h1 className="text-4xl font-bold">KINCAID HEALTH™ API</h1>
+            <p className="text-xl text-muted-foreground">
+              Enterprise Healthcare Intelligence Platform API Documentation
+            </p>
+            <div className="flex items-center gap-3 mt-4">
+              <Badge variant="outline" className="gap-2">
+                <CheckCircle2 className="w-4 h-4 text-green-500" />
+                API v0.1
               </Badge>
+              <Badge variant="outline" className="gap-2">
+                <Database className="w-4 h-4" />
+                FastAPI Backend
+              </Badge>
+              <a 
+                href="http://localhost:8000/docs" 
+                target="_blank" 
+                rel="noopener noreferrer"
+              >
+                <Button variant="outline">
+                  Interactive Docs
+                </Button>
+              </a>
             </div>
           </div>
-        </Card>
 
-        {/* Endpoints by Category */}
-        <Tabs value={activeTab} onValueChange={setActiveTab}>
-          <TabsList className="grid w-full grid-cols-4">
-            <TabsTrigger value="data" className="gap-2">
-              <Database className="w-4 h-4" />
-              Data Ingestion
-            </TabsTrigger>
-            <TabsTrigger value="analytics" className="gap-2">
-              <LineChart className="w-4 h-4" />
-              Analytics
-            </TabsTrigger>
-            <TabsTrigger value="agents" className="gap-2">
-              <Brain className="w-4 h-4" />
-              AI Agents
-            </TabsTrigger>
-            <TabsTrigger value="evidence" className="gap-2">
-              <Shield className="w-4 h-4" />
-              Evidence Spine
-            </TabsTrigger>
-          </TabsList>
+          {/* Base URL */}
+          <Card className="p-6 bg-muted/50">
+            <div className="space-y-2">
+              <p className="text-sm font-medium text-muted-foreground">Base URL</p>
+              <div className="flex items-center gap-2">
+                <code className="px-3 py-2 bg-background rounded text-lg font-mono">
+                  http://localhost:8000
+                </code>
+                <Badge variant={apiStatus === "online" ? "default" : "destructive"}>
+                  {apiStatus === "checking" ? "Checking..." : apiStatus}
+                </Badge>
+              </div>
+            </div>
+          </Card>
 
-          {Object.entries(API_ENDPOINTS).map(([category, endpoints]) => (
-            <TabsContent key={category} value={category} className="space-y-4">
-              {endpoints.map((endpoint, idx) => (
-                <Card key={idx} className="p-6">
-                  <div className="space-y-4">
-                    {/* Method & Path */}
-                    <div className="flex items-start justify-between">
-                      <div className="flex items-center gap-3">
-                        <Badge 
-                          variant={endpoint.method === "GET" ? "default" : "secondary"}
-                          className="font-mono"
-                        >
-                          {endpoint.method}
-                        </Badge>
-                        <code className="text-lg font-mono">{endpoint.path}</code>
+          {/* Endpoints by Category */}
+          <Tabs value={activeTab} onValueChange={setActiveTab}>
+            <TabsList className="grid w-full grid-cols-4">
+              <TabsTrigger value="data" className="gap-2">
+                <Database className="w-4 h-4" />
+                Data Ingestion
+              </TabsTrigger>
+              <TabsTrigger value="analytics" className="gap-2">
+                <LineChart className="w-4 h-4" />
+                Analytics
+              </TabsTrigger>
+              <TabsTrigger value="agents" className="gap-2">
+                <Brain className="w-4 h-4" />
+                AI Agents
+              </TabsTrigger>
+              <TabsTrigger value="evidence" className="gap-2">
+                <Shield className="w-4 h-4" />
+                Evidence Spine
+              </TabsTrigger>
+            </TabsList>
+
+            {Object.entries(API_ENDPOINTS).map(([category, endpoints]) => (
+              <TabsContent key={category} value={category} className="space-y-4">
+                {endpoints.map((endpoint, idx) => (
+                  <Card key={idx} className="p-6">
+                    <div className="space-y-4">
+                      {/* Method & Path */}
+                      <div className="flex items-start justify-between">
+                        <div className="flex items-center gap-3">
+                          <Badge 
+                            variant={endpoint.method === "GET" ? "default" : "secondary"}
+                            className="font-mono"
+                          >
+                            {endpoint.method}
+                          </Badge>
+                          <code className="text-lg font-mono">{endpoint.path}</code>
+                        </div>
                       </div>
-                    </div>
 
-                    {/* Description */}
-                    <p className="text-muted-foreground">{endpoint.description}</p>
+                      {/* Description */}
+                      <p className="text-muted-foreground">{endpoint.description}</p>
 
-                    {/* Parameters */}
-                    {endpoint.params && (
+                      {/* Parameters */}
+                      {endpoint.params && (
+                        <div className="space-y-2">
+                          <p className="text-sm font-semibold">Parameters</p>
+                          <div className="bg-muted/50 rounded-lg p-4 space-y-2">
+                            {Object.entries(endpoint.params).map(([key, type]) => (
+                              <div key={key} className="flex items-center gap-2 font-mono text-sm">
+                                <span className="text-primary">{key}</span>
+                                <span className="text-muted-foreground">:</span>
+                                <span className="text-muted-foreground">{String(type)}</span>
+                              </div>
+                            ))}
+                          </div>
+                        </div>
+                      )}
+
+                      {/* Returns */}
                       <div className="space-y-2">
-                        <p className="text-sm font-semibold">Parameters</p>
+                        <p className="text-sm font-semibold">Returns</p>
                         <div className="bg-muted/50 rounded-lg p-4 space-y-2">
-                          {Object.entries(endpoint.params).map(([key, type]) => (
+                          {Object.entries(endpoint.returns).map(([key, type]) => (
                             <div key={key} className="flex items-center gap-2 font-mono text-sm">
                               <span className="text-primary">{key}</span>
                               <span className="text-muted-foreground">:</span>
@@ -211,76 +235,62 @@ export default function APIDocumentation() {
                           ))}
                         </div>
                       </div>
-                    )}
 
-                    {/* Returns */}
-                    <div className="space-y-2">
-                      <p className="text-sm font-semibold">Returns</p>
-                      <div className="bg-muted/50 rounded-lg p-4 space-y-2">
-                        {Object.entries(endpoint.returns).map(([key, type]) => (
-                          <div key={key} className="flex items-center gap-2 font-mono text-sm">
-                            <span className="text-primary">{key}</span>
-                            <span className="text-muted-foreground">:</span>
-                            <span className="text-muted-foreground">{String(type)}</span>
-                          </div>
-                        ))}
-                      </div>
-                    </div>
-
-                    {/* Example */}
-                    <details className="cursor-pointer">
-                      <summary className="text-sm font-semibold mb-2">Example Request</summary>
-                      <pre className="bg-muted/50 rounded-lg p-4 overflow-x-auto">
-                        <code className="text-sm">
+                      {/* Example */}
+                      <details className="cursor-pointer">
+                        <summary className="text-sm font-semibold mb-2">Example Request</summary>
+                        <pre className="bg-muted/50 rounded-lg p-4 overflow-x-auto">
+                          <code className="text-sm">
 {`fetch('http://localhost:8000${endpoint.path}', {
   method: '${endpoint.method}',
   ${endpoint.params ? `body: JSON.stringify(${JSON.stringify(endpoint.params, null, 2)})` : ''}
 })`}
-                        </code>
-                      </pre>
-                    </details>
-                  </div>
-                </Card>
-              ))}
-            </TabsContent>
-          ))}
-        </Tabs>
+                          </code>
+                        </pre>
+                      </details>
+                    </div>
+                  </Card>
+                ))}
+              </TabsContent>
+            ))}
+          </Tabs>
 
-        {/* Evidence Spine Architecture */}
-        <Card className="p-6">
-          <div className="space-y-4">
-            <div className="flex items-center gap-2">
-              <Shield className="w-6 h-6 text-primary" />
-              <h2 className="text-2xl font-bold">Evidence Spine</h2>
-            </div>
-            <p className="text-muted-foreground">
-              Every action in the system creates an immutable evidence object with complete provenance:
-            </p>
-            <div className="grid md:grid-cols-2 gap-4 mt-4">
-              <div className="bg-muted/50 rounded-lg p-4">
-                <h3 className="font-semibold mb-2">Tracked Activities</h3>
-                <ul className="space-y-2 text-sm">
-                  <li>• Data uploads → Evidence of data ingestion</li>
-                  <li>• API calls → Evidence of system usage</li>
-                  <li>• AI agent executions → Evidence of analytical decisions</li>
-                  <li>• User actions → Evidence of human decisions</li>
-                  <li>• System events → Evidence of infrastructure health</li>
-                </ul>
+          {/* Evidence Spine Architecture */}
+          <Card className="p-6">
+            <div className="space-y-4">
+              <div className="flex items-center gap-2">
+                <Shield className="w-6 h-6 text-primary" />
+                <h2 className="text-2xl font-bold">Evidence Spine</h2>
               </div>
-              <div className="bg-muted/50 rounded-lg p-4">
-                <h3 className="font-semibold mb-2">Evidence Properties</h3>
-                <ul className="space-y-2 text-sm">
-                  <li>• Confidence scoring (0.0 to 1.0)</li>
-                  <li>• Financial impact quantification</li>
-                  <li>• Risk assessment scoring</li>
-                  <li>• Complete provenance chain</li>
-                  <li>• Version history (immutable trail)</li>
-                </ul>
+              <p className="text-muted-foreground">
+                Every action in the system creates an immutable evidence object with complete provenance:
+              </p>
+              <div className="grid md:grid-cols-2 gap-4 mt-4">
+                <div className="bg-muted/50 rounded-lg p-4">
+                  <h3 className="font-semibold mb-2">Tracked Activities</h3>
+                  <ul className="space-y-2 text-sm">
+                    <li>• Data uploads → Evidence of data ingestion</li>
+                    <li>• API calls → Evidence of system usage</li>
+                    <li>• AI agent executions → Evidence of analytical decisions</li>
+                    <li>• User actions → Evidence of human decisions</li>
+                    <li>• System events → Evidence of infrastructure health</li>
+                  </ul>
+                </div>
+                <div className="bg-muted/50 rounded-lg p-4">
+                  <h3 className="font-semibold mb-2">Evidence Properties</h3>
+                  <ul className="space-y-2 text-sm">
+                    <li>• Confidence scoring (0.0 to 1.0)</li>
+                    <li>• Financial impact quantification</li>
+                    <li>• Risk assessment scoring</li>
+                    <li>• Complete provenance chain</li>
+                    <li>• Version history (immutable trail)</li>
+                  </ul>
+                </div>
               </div>
             </div>
-          </div>
-        </Card>
+          </Card>
+        </div>
       </div>
-    </div>
+    </ProtectedToolsRoute>
   );
 }

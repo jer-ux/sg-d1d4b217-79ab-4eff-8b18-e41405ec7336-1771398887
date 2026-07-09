@@ -111,7 +111,7 @@ export default function RealtimeClaimsSurveillance() {
                 </div>
                 <h3 className="text-xl font-semibold text-white mb-3">Priority Alert Routing</h3>
                 <p className="text-neutral-400 leading-relaxed">
-                  High-value violations (>$10K) trigger immediate Slack/Teams notifications to plan administrators. Medium alerts queue for weekly review. Low-priority patterns tracked for trend analysis.
+                  High-value violations ({'>'}$10K) trigger immediate Slack/Teams notifications to plan administrators. Medium alerts queue for weekly review. Low-priority patterns tracked for trend analysis.
                 </p>
               </div>
 

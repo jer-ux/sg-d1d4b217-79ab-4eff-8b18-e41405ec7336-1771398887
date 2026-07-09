@@ -586,17 +586,19 @@ export default function HomePage() {
             <motion.div
               variants={fadeInUpVariants}
               onClick={() => handleBadgeClick("receipts")}
-              whileHover={{ y: -4 }}
-              className="group relative rounded-lg border border-[#2A3F54] bg-[#151B23] p-5 hover:border-[#3A4F64] cursor-pointer transition-all duration-200">
+              whileHover={{ y: -4, scale: 1.02 }}
+              className="group relative rounded-lg border-2 border-[#B8860B] bg-gradient-to-br from-[#D4AF37] via-[#B8860B] to-[#8B7500] p-5 hover:border-[#D4AF37] hover:shadow-2xl hover:shadow-[#B8860B]/50 cursor-pointer transition-all duration-300 overflow-hidden">
+              <div className="absolute inset-0 bg-gradient-to-br from-white/20 via-transparent to-black/20 pointer-events-none" />
+              <div className="absolute inset-0 bg-gradient-to-tr from-transparent via-white/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none" />
               
-              <div className="mb-3 inline-flex rounded bg-[#1A3A52]/20 p-2.5">
-                <FileText className="h-5 w-5 text-[#B8860B]" />
+              <div className="mb-3 inline-flex rounded bg-black/20 p-2.5 relative z-10">
+                <FileText className="h-5 w-5 text-[#0A0F1E]" />
               </div>
-              <h3 className="mb-2 text-base font-serif font-bold text-white">Verified Savings Documentation</h3>
-              <p className="text-xs text-neutral-400 leading-relaxed">
+              <h3 className="mb-2 text-base font-serif font-bold text-[#0A0F1E] relative z-10">Verified Savings Documentation</h3>
+              <p className="text-xs text-[#1A1F0F] leading-relaxed relative z-10">
                 Timestamped audit trail documenting contract compliance events, overcharge recoveries, and third-party verification records with complete chain of custody.
               </p>
-              <div className="mt-3 flex items-center gap-1 text-xs font-semibold text-[#B8860B] group-hover:text-[#D4AF37]">
+              <div className="mt-3 flex items-center gap-1 text-xs font-semibold text-[#0A0F1E] group-hover:text-black relative z-10">
                 Review documentation standards <ChevronRight className="h-3.5 w-3.5" />
               </div>
             </motion.div>
@@ -604,17 +606,19 @@ export default function HomePage() {
             <motion.div
               variants={fadeInUpVariants}
               onClick={() => handleBadgeClick("ebitda")}
-              whileHover={{ y: -4 }}
-              className="group relative rounded-lg border border-[#2A3F54] bg-[#151B23] p-5 hover:border-[#3A4F64] cursor-pointer transition-all duration-200">
+              whileHover={{ y: -4, scale: 1.02 }}
+              className="group relative rounded-lg border-2 border-[#B8860B] bg-gradient-to-br from-[#D4AF37] via-[#B8860B] to-[#8B7500] p-5 hover:border-[#D4AF37] hover:shadow-2xl hover:shadow-[#B8860B]/50 cursor-pointer transition-all duration-300 overflow-hidden">
+              <div className="absolute inset-0 bg-gradient-to-br from-white/20 via-transparent to-black/20 pointer-events-none" />
+              <div className="absolute inset-0 bg-gradient-to-tr from-transparent via-white/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none" />
               
-              <div className="mb-3 inline-flex rounded bg-[#1A3A52]/20 p-2.5">
-                <Shield className="h-5 w-5 text-[#B8860B]" />
+              <div className="mb-3 inline-flex rounded bg-black/20 p-2.5 relative z-10">
+                <Shield className="h-5 w-5 text-[#0A0F1E]" />
               </div>
-              <h3 className="mb-2 text-base font-serif font-bold text-white">Financial Impact Analysis</h3>
-              <p className="text-xs text-neutral-400 leading-relaxed">
+              <h3 className="mb-2 text-base font-serif font-bold text-[#0A0F1E] relative z-10">Financial Impact Analysis</h3>
+              <p className="text-xs text-[#1A1F0F] leading-relaxed relative z-10">
                 Quantitative assessment of pharmacy benefit optimization on enterprise profitability. Direct measurement of prescription cost containment effects on operating margins.
               </p>
-              <div className="mt-3 flex items-center gap-1 text-xs font-semibold text-[#B8860B] group-hover:text-[#D4AF37]">
+              <div className="mt-3 flex items-center gap-1 text-xs font-semibold text-[#0A0F1E] group-hover:text-black relative z-10">
                 Review financial methodology <ChevronRight className="h-3.5 w-3.5" />
               </div>
             </motion.div>
@@ -622,102 +626,114 @@ export default function HomePage() {
             <motion.div
               variants={fadeInUpVariants}
               onClick={() => handleBadgeClick("verification")}
-              whileHover={{ y: -4 }}
-              className="group relative rounded-lg border border-[#2A3F54] bg-[#151B23] p-5 hover:border-[#3A4F64] cursor-pointer transition-all duration-200">
+              whileHover={{ y: -4, scale: 1.02 }}
+              className="group relative rounded-lg border-2 border-[#B8860B] bg-gradient-to-br from-[#D4AF37] via-[#B8860B] to-[#8B7500] p-5 hover:border-[#D4AF37] hover:shadow-2xl hover:shadow-[#B8860B]/50 cursor-pointer transition-all duration-300 overflow-hidden">
+              <div className="absolute inset-0 bg-gradient-to-br from-white/20 via-transparent to-black/20 pointer-events-none" />
+              <div className="absolute inset-0 bg-gradient-to-tr from-transparent via-white/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none" />
               
-              <div className="mb-3 inline-flex rounded bg-[#1A3A52]/20 p-2.5">
-                <Database className="h-5 w-5 text-[#B8860B]" />
+              <div className="mb-3 inline-flex rounded bg-black/20 p-2.5 relative z-10">
+                <Database className="h-5 w-5 text-[#0A0F1E]" />
               </div>
-              <h3 className="mb-2 text-base font-serif font-bold text-white">Multi-Source Data Reconciliation</h3>
-              <p className="text-xs text-neutral-400 leading-relaxed">
+              <h3 className="mb-2 text-base font-serif font-bold text-[#0A0F1E] relative z-10">Multi-Source Data Reconciliation</h3>
+              <p className="text-xs text-[#1A1F0F] leading-relaxed relative z-10">
                 Integration and normalization of claims data, contract formularies, and pricing benchmarks across disparate healthcare data sources for actuarial analysis.
               </p>
-              <div className="mt-3 flex items-center gap-1 text-xs font-semibold text-[#B8860B] group-hover:text-[#D4AF37]">
+              <div className="mt-3 flex items-center gap-1 text-xs font-semibold text-[#0A0F1E] group-hover:text-black relative z-10">
                 Review integration protocols <ChevronRight className="h-3.5 w-3.5" />
               </div>
             </motion.div>
 
             <motion.div
               variants={fadeInUpVariants}
-              whileHover={{ y: -4 }}
-              className="group relative rounded-lg border border-[#2A3F54] bg-[#151B23] p-5 hover:border-[#3A4F64] cursor-pointer transition-all duration-200">
+              whileHover={{ y: -4, scale: 1.02 }}
+              className="group relative rounded-lg border-2 border-[#B8860B] bg-gradient-to-br from-[#D4AF37] via-[#B8860B] to-[#8B7500] p-5 hover:border-[#D4AF37] hover:shadow-2xl hover:shadow-[#B8860B]/50 cursor-pointer transition-all duration-300 overflow-hidden">
+              <div className="absolute inset-0 bg-gradient-to-br from-white/20 via-transparent to-black/20 pointer-events-none" />
+              <div className="absolute inset-0 bg-gradient-to-tr from-transparent via-white/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none" />
               
-              <div className="mb-3 inline-flex rounded bg-[#1A3A52]/20 p-2.5">
-                <FileText className="h-5 w-5 text-[#B8860B]" />
+              <div className="mb-3 inline-flex rounded bg-black/20 p-2.5 relative z-10">
+                <FileText className="h-5 w-5 text-[#0A0F1E]" />
               </div>
-              <h3 className="mb-2 text-base font-serif font-bold text-white">Contract Intelligence & Compliance</h3>
-              <p className="text-xs text-neutral-400 leading-relaxed">
+              <h3 className="mb-2 text-base font-serif font-bold text-[#0A0F1E] relative z-10">Contract Intelligence & Compliance</h3>
+              <p className="text-xs text-[#1A1F0F] leading-relaxed relative z-10">
                 Automated PBM contract clause extraction, fiduciary scoring, and continuous monitoring of contractual guarantee fulfillment against actual performance metrics.
               </p>
-              <div className="mt-3 flex items-center gap-1 text-xs font-semibold text-[#B8860B] group-hover:text-[#D4AF37]">
+              <div className="mt-3 flex items-center gap-1 text-xs font-semibold text-[#0A0F1E] group-hover:text-black relative z-10">
                 Review contract monitoring <ChevronRight className="h-3.5 w-3.5" />
               </div>
             </motion.div>
 
             <motion.div
               variants={fadeInUpVariants}
-              whileHover={{ y: -4 }}
-              className="group relative rounded-lg border border-[#2A3F54] bg-[#151B23] p-5 hover:border-[#3A4F64] cursor-pointer transition-all duration-200">
+              whileHover={{ y: -4, scale: 1.02 }}
+              className="group relative rounded-lg border-2 border-[#B8860B] bg-gradient-to-br from-[#D4AF37] via-[#B8860B] to-[#8B7500] p-5 hover:border-[#D4AF37] hover:shadow-2xl hover:shadow-[#B8860B]/50 cursor-pointer transition-all duration-300 overflow-hidden">
+              <div className="absolute inset-0 bg-gradient-to-br from-white/20 via-transparent to-black/20 pointer-events-none" />
+              <div className="absolute inset-0 bg-gradient-to-tr from-transparent via-white/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none" />
               
-              <div className="mb-3 inline-flex rounded bg-[#1A3A52]/20 p-2.5">
-                <TrendingUp className="h-5 w-5 text-[#B8860B]" />
+              <div className="mb-3 inline-flex rounded bg-black/20 p-2.5 relative z-10">
+                <TrendingUp className="h-5 w-5 text-[#0A0F1E]" />
               </div>
-              <h3 className="mb-2 text-base font-serif font-bold text-white">Actuarial Risk Modeling</h3>
-              <p className="text-xs text-neutral-400 leading-relaxed">
+              <h3 className="mb-2 text-base font-serif font-bold text-[#0A0F1E] relative z-10">Actuarial Risk Modeling</h3>
+              <p className="text-xs text-[#1A1F0F] leading-relaxed relative z-10">
                 Monte Carlo simulation engines for benefit cost forecasting, stop-loss optimization, and multi-year trend projection with confidence intervals and scenario planning.
               </p>
-              <div className="mt-3 flex items-center gap-1 text-xs font-semibold text-[#B8860B] group-hover:text-[#D4AF37]">
+              <div className="mt-3 flex items-center gap-1 text-xs font-semibold text-[#0A0F1E] group-hover:text-black relative z-10">
                 Review risk methodology <ChevronRight className="h-3.5 w-3.5" />
               </div>
             </motion.div>
 
             <motion.div
               variants={fadeInUpVariants}
-              whileHover={{ y: -4 }}
-              className="group relative rounded-lg border border-[#2A3F54] bg-[#151B23] p-5 hover:border-[#3A4F64] cursor-pointer transition-all duration-200">
+              whileHover={{ y: -4, scale: 1.02 }}
+              className="group relative rounded-lg border-2 border-[#B8860B] bg-gradient-to-br from-[#D4AF37] via-[#B8860B] to-[#8B7500] p-5 hover:border-[#D4AF37] hover:shadow-2xl hover:shadow-[#B8860B]/50 cursor-pointer transition-all duration-300 overflow-hidden">
+              <div className="absolute inset-0 bg-gradient-to-br from-white/20 via-transparent to-black/20 pointer-events-none" />
+              <div className="absolute inset-0 bg-gradient-to-tr from-transparent via-white/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none" />
               
-              <div className="mb-3 inline-flex rounded bg-[#1A3A52]/20 p-2.5">
-                <Activity className="h-5 w-5 text-[#B8860B]" />
+              <div className="mb-3 inline-flex rounded bg-black/20 p-2.5 relative z-10">
+                <Activity className="h-5 w-5 text-[#0A0F1E]" />
               </div>
-              <h3 className="mb-2 text-base font-serif font-bold text-white">Real-Time Claims Surveillance</h3>
-              <p className="text-xs text-neutral-400 leading-relaxed">
+              <h3 className="mb-2 text-base font-serif font-bold text-[#0A0F1E] relative z-10">Real-Time Claims Surveillance</h3>
+              <p className="text-xs text-[#1A1F0F] leading-relaxed relative z-10">
                 Live streaming anomaly detection for prescription claims processing, flagging formulary violations, spread pricing irregularities, and specialty drug overcharges as they occur.
               </p>
-              <div className="mt-3 flex items-center gap-1 text-xs font-semibold text-[#B8860B] group-hover:text-[#D4AF37]">
+              <div className="mt-3 flex items-center gap-1 text-xs font-semibold text-[#0A0F1E] group-hover:text-black relative z-10">
                 Review surveillance protocols <ChevronRight className="h-3.5 w-3.5" />
               </div>
             </motion.div>
 
             <motion.div
               variants={fadeInUpVariants}
-              whileHover={{ y: -4 }}
-              className="group relative rounded-lg border border-[#2A3F54] bg-[#151B23] p-5 hover:border-[#3A4F64] cursor-pointer transition-all duration-200">
+              whileHover={{ y: -4, scale: 1.02 }}
+              className="group relative rounded-lg border-2 border-[#B8860B] bg-gradient-to-br from-[#D4AF37] via-[#B8860B] to-[#8B7500] p-5 hover:border-[#D4AF37] hover:shadow-2xl hover:shadow-[#B8860B]/50 cursor-pointer transition-all duration-300 overflow-hidden">
+              <div className="absolute inset-0 bg-gradient-to-br from-white/20 via-transparent to-black/20 pointer-events-none" />
+              <div className="absolute inset-0 bg-gradient-to-tr from-transparent via-white/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none" />
               
-              <div className="mb-3 inline-flex rounded bg-[#1A3A52]/20 p-2.5">
-                <Award className="h-5 w-5 text-[#B8860B]" />
+              <div className="mb-3 inline-flex rounded bg-black/20 p-2.5 relative z-10">
+                <Award className="h-5 w-5 text-[#0A0F1E]" />
               </div>
-              <h3 className="mb-2 text-base font-serif font-bold text-white">Regulatory & Legal Framework</h3>
-              <p className="text-xs text-neutral-400 leading-relaxed">
+              <h3 className="mb-2 text-base font-serif font-bold text-[#0A0F1E] relative z-10">Regulatory & Legal Framework</h3>
+              <p className="text-xs text-[#1A1F0F] leading-relaxed relative z-10">
                 ERISA fiduciary compliance validation, DOL audit readiness, and CAA transparency requirements enforcement with automated legal documentation and evidence preservation.
               </p>
-              <div className="mt-3 flex items-center gap-1 text-xs font-semibold text-[#B8860B] group-hover:text-[#D4AF37]">
+              <div className="mt-3 flex items-center gap-1 text-xs font-semibold text-[#0A0F1E] group-hover:text-black relative z-10">
                 Review compliance standards <ChevronRight className="h-3.5 w-3.5" />
               </div>
             </motion.div>
 
             <motion.div
               variants={fadeInUpVariants}
-              whileHover={{ y: -4 }}
-              className="group relative rounded-lg border border-[#2A3F54] bg-[#151B23] p-5 hover:border-[#3A4F64] cursor-pointer transition-all duration-200">
+              whileHover={{ y: -4, scale: 1.02 }}
+              className="group relative rounded-lg border-2 border-[#B8860B] bg-gradient-to-br from-[#D4AF37] via-[#B8860B] to-[#8B7500] p-5 hover:border-[#D4AF37] hover:shadow-2xl hover:shadow-[#B8860B]/50 cursor-pointer transition-all duration-300 overflow-hidden">
+              <div className="absolute inset-0 bg-gradient-to-br from-white/20 via-transparent to-black/20 pointer-events-none" />
+              <div className="absolute inset-0 bg-gradient-to-tr from-transparent via-white/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none" />
               
-              <div className="mb-3 inline-flex rounded bg-[#1A3A52]/20 p-2.5">
-                <BarChart3 className="h-5 w-5 text-[#B8860B]" />
+              <div className="mb-3 inline-flex rounded bg-black/20 p-2.5 relative z-10">
+                <BarChart3 className="h-5 w-5 text-[#0A0F1E]" />
               </div>
-              <h3 className="mb-2 text-base font-serif font-bold text-white">Predictive Cost Analytics</h3>
-              <p className="text-xs text-neutral-400 leading-relaxed">
+              <h3 className="mb-2 text-base font-serif font-bold text-[#0A0F1E] relative z-10">Predictive Cost Analytics</h3>
+              <p className="text-xs text-[#1A1F0F] leading-relaxed relative z-10">
                 Machine learning models for future spend forecasting, therapeutic substitution impact analysis, and proactive intervention opportunity identification to prevent cost escalation.
               </p>
-              <div className="mt-3 flex items-center gap-1 text-xs font-semibold text-[#B8860B] group-hover:text-[#D4AF37]">
+              <div className="mt-3 flex items-center gap-1 text-xs font-semibold text-[#0A0F1E] group-hover:text-black relative z-10">
                 Review predictive models <ChevronRight className="h-3.5 w-3.5" />
               </div>
             </motion.div>

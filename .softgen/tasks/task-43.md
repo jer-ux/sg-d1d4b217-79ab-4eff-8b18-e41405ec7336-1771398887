@@ -25,11 +25,11 @@ position: 43
 ### Phase 1: Core Engine Microservices (Economic, Statistical, Simulation)
 - [x] Create backend/engines/ directory structure
 - [x] Build Economic Engine microservice (cost attribution, ROI calculation, value flows)
+- [x] Build Statistical Engine microservice (distributions, regression, credibility weighting)
 - [x] Add Pydantic models for engine request/response schemas
 - [x] Implement engine computation logic (not mocks - real math)
 - [x] Add unit tests for each engine's core computations
 - [x] Create Docker containers for each engine
-- [ ] Build Statistical Engine microservice (distributions, regression, credibility weighting)
 - [ ] Build Simulation Engine microservice (Monte Carlo, correlations, tail risk)
 - [ ] Add docker-compose orchestration for local development
 

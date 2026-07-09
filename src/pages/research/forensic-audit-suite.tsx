@@ -64,10 +64,16 @@ export default function ForensicAuditSuiteResearch() {
             </div>
 
             <div className="flex flex-wrap gap-3">
-              <Button className="bg-[#B8860B] hover:bg-[#D4AF37] text-[#0A0F1E] font-semibold">
-                <FileDown className="h-4 w-4 mr-2" />
-                Download PDF
-              </Button>
+              <a 
+                href="/docs/forensic-audit-suite-research.md" 
+                download="forensic-audit-suite-research.md"
+                className="inline-flex"
+              >
+                <Button className="bg-[#B8860B] hover:bg-[#D4AF37] text-[#0A0F1E] font-semibold">
+                  <FileDown className="h-4 w-4 mr-2" />
+                  Download PDF
+                </Button>
+              </a>
               <Button variant="outline" className="border-[#2A3F54] text-white hover:bg-[#151B23]">
                 Share Research
               </Button>
@@ -447,10 +453,16 @@ export default function ForensicAuditSuiteResearch() {
                       This preview covers sections 1-2. The complete 668-line research paper includes detailed competitive analysis, all 5 service deep dives, economic modeling, strategic recommendations, and risk mitigation strategies.
                     </p>
                     <div className="flex flex-wrap gap-3 justify-center">
-                      <Button className="bg-[#B8860B] hover:bg-[#D4AF37] text-[#0A0F1E] font-semibold">
-                        <FileDown className="h-4 w-4 mr-2" />
-                        Download Complete Paper
-                      </Button>
+                      <a 
+                        href="/docs/forensic-audit-suite-research.md" 
+                        download="forensic-audit-suite-research.md"
+                        className="inline-flex"
+                      >
+                        <Button className="bg-[#B8860B] hover:bg-[#D4AF37] text-[#0A0F1E] font-semibold">
+                          <FileDown className="h-4 w-4 mr-2" />
+                          Download Complete Paper
+                        </Button>
+                      </a>
                       <a 
                         href="/docs/forensic-audit-suite-research.md" 
                         download

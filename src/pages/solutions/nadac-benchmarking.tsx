@@ -176,9 +176,10 @@ export default function NADACBenchmarkingPage() {
               <motion.div variants={fadeInUpVariants} className="flex flex-wrap items-center justify-center gap-4">
                 <CalendlyPopupButton
                   url="https://calendly.com/jeremiah-kincaid-iq/kincaid-iq-intelligence-demo"
-                  text="Schedule Intelligence Demo"
                   className="inline-flex items-center gap-2 rounded-lg bg-emerald-600 px-6 py-3.5 text-base font-semibold text-white hover:bg-emerald-500 transition-all shadow-lg shadow-emerald-500/20"
-                />
+                >
+                  Schedule Intelligence Demo
+                </CalendlyPopupButton>
                 <Link href="#pricing">
                   <Button variant="outline" className="border-neutral-700 text-white hover:bg-neutral-800">
                     View Pricing <ChevronRight className="ml-2 h-4 w-4" />
@@ -383,13 +384,14 @@ export default function NADACBenchmarkingPage() {
 
                   <CalendlyPopupButton
                     url="https://calendly.com/jeremiah-kincaid-iq/nadac-intelligence-consultation"
-                    text={tier.cta}
                     className={`w-full inline-flex items-center justify-center gap-2 rounded-lg px-6 py-3 font-semibold transition-all ${
                       tier.highlight
                         ? "bg-emerald-600 text-white hover:bg-emerald-500 shadow-lg shadow-emerald-500/20"
                         : "bg-white/5 text-white hover:bg-white/10 border border-white/10"
                     }`}
-                  />
+                  >
+                    {tier.cta}
+                  </CalendlyPopupButton>
                 </motion.div>
               ))}
             </motion.div>
@@ -415,9 +417,10 @@ export default function NADACBenchmarkingPage() {
               <motion.div variants={fadeInUpVariants} className="flex flex-wrap items-center justify-center gap-4">
                 <CalendlyPopupButton
                   url="https://calendly.com/jeremiah-kincaid-iq/nadac-intelligence-consultation"
-                  text="Schedule Consultation"
                   className="inline-flex items-center gap-2 rounded-lg bg-emerald-600 px-8 py-4 text-lg font-semibold text-white hover:bg-emerald-500 transition-all shadow-lg shadow-emerald-500/20"
-                />
+                >
+                  Schedule Consultation
+                </CalendlyPopupButton>
                 <Link href="/solutions/rx-defense">
                   <Button variant="outline" size="lg" className="border-neutral-700 text-white hover:bg-neutral-800">
                     Explore PBM Contract Clarity 360* <ArrowRight className="ml-2 h-5 w-5" />

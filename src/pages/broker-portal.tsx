@@ -30,6 +30,9 @@ import { cn } from "@/lib/utils";
 import { usePortalAuth } from "@/contexts/PortalAuthContext";
 import { supabase } from "@/integrations/supabase/client";
 
+// Force dynamic rendering - this page uses client-side auth context
+export const dynamic = 'force-dynamic';
+
 interface ClientSummary {
   client_id: string;
   client_name: string;

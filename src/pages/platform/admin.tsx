@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import Head from "next/head";
-import { Nav } from "@/components/Nav";
+import Nav from "@/components/Nav";
 import { SEO } from "@/components/SEO";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -133,12 +133,12 @@ export default function EngineAdminDashboard() {
   const [selectedEngine, setSelectedEngine] = useState<string | null>(null);
   const [eliMode, setEliMode] = useState(false);
   const [runningJobs, setRunningJobs] = useState<any[]>([]);
-  const { economic, statistical, simulation } = useEngineStatus();
+  const engineStatusData = useEngineStatus();
 
   const engineStatus = {
-    economic: economic.status,
-    statistical: statistical.status,
-    simulation: simulation.status,
+    economic: engineStatusData.data?.engines?.economic?.status || "unknown",
+    statistical: engineStatusData.data?.engines?.statistical?.status || "unknown",
+    simulation: engineStatusData.data?.engines?.simulation?.status || "unknown",
   };
 
   return (

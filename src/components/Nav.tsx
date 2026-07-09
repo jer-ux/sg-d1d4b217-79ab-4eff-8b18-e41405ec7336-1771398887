@@ -105,7 +105,7 @@ export default function Nav() {
                       href="/kincaid-iq-intelligence-series"
                       onClick={() => setKincaidHealthDropdownOpen(false)}
                       className="block px-4 py-3 text-gray-300 hover:text-white hover:bg-rose-500/10 rounded-lg transition-colors duration-150">
-                      <div className="font-medium">Overview</div>
+                      <div className="font-medium">Intelligence Products</div>
                       <div className="text-xs text-gray-400">Complete intelligence series</div>
                     </Link>
                     <Link
@@ -610,7 +610,7 @@ export default function Nav() {
                       className="block px-4 py-2.5 text-sm text-gray-300 hover:text-white hover:bg-purple-500/20 rounded-lg transition-all duration-150">
                       <div className="flex items-center gap-2">
                         <LineChart className="w-4 h-4 text-purple-400" />
-                        Intelligence Overview
+                        Intelligence Products
                       </div>
                     </Link>
                     <Link 

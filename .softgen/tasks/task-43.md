@@ -34,16 +34,16 @@ position: 43
 - [x] Add docker-compose orchestration for local development
 
 ### Phase 2: Engine API Gateway & SDK
-- [ ] Build FastAPI gateway service (backend/gateway/)
-- [ ] Implement engine routing and load balancing
-- [ ] Create unified OpenAPI spec for all engines
-- [ ] Add authentication & authorization middleware
-- [ ] Build Python SDK (kincaid_engines_sdk) for backend-to-engine calls
-- [ ] Build TypeScript SDK (@kincaid/engines-sdk) for frontend-to-engine calls
-- [ ] Implement engine-to-engine communication protocol
-- [ ] Add rate limiting and request throttling
-- [ ] Create API key management system
-- [ ] Document SDK usage with code examples
+- [x] Build FastAPI gateway service (backend/gateway/)
+- [x] Implement engine routing and load balancing
+- [x] Create unified OpenAPI spec for all engines
+- [x] Add authentication & authorization middleware
+- [x] Build Python SDK (kincaid_engines_sdk) for backend-to-engine calls
+- [x] Build TypeScript SDK (@kincaid/engines-sdk) for frontend-to-engine calls
+- [x] Implement engine-to-engine communication protocol
+- [x] Add rate limiting and request throttling
+- [x] Create API key management system
+- [x] Document SDK usage with code examples
 
 ### Phase 3: Frontend Engine Integration
 - [ ] Create Next.js API route: /api/v1/engines/proxy

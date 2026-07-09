@@ -153,26 +153,6 @@ const reportsData = [
     ]
   },
   {
-    id: "hopebridge-501",
-    title: "Hopebridge 501 Actuarial & Contract Evaluation",
-    subtitle: "Forensic Health Plan Assessment",
-    description: "A comprehensive 44-page deep dive into Hopebridge plan benefits structure, analyzing reinsurance corridors, administrative fee leakage, and generic utilization incentives.",
-    href: "/Kincaid_IQ_Hopebridge_501_44pg.pdf",
-    category: "Benchmarking",
-    readTime: "14 min read",
-    price: 29000,
-    priceLabel: "$29,000",
-    deliverables: [
-      "44-page custom benefits and plan design evaluation",
-      "Reinsurance corridor optimization analysis",
-      "Generic substitution incentive mapping"
-    ],
-    keyFindings: [
-      "Identified $1.4M in potential reinsurance premium savings",
-      "Administrative fee misalignment represented 8.2% of core plan costs"
-    ]
-  },
-  {
     id: "actuarial",
     title: "Actuarial Benefits Intelligence",
     subtitle: "Stochastic Risk Modeling & Trend Projections",

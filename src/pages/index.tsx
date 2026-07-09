@@ -585,9 +585,9 @@ export default function HomePage() {
             
             <motion.div
               variants={fadeInUpVariants}
-              onClick={() => handleBadgeClick("receipts")}
               whileHover={{ y: -4, scale: 1.02 }}
               className="group relative rounded-lg border-2 border-[#B8860B] bg-gradient-to-br from-[#D4AF37] via-[#B8860B] to-[#8B7500] p-5 hover:border-[#D4AF37] hover:shadow-2xl hover:shadow-[#B8860B]/50 cursor-pointer transition-all duration-300 overflow-hidden">
+              <Link href="/pillars/verified-savings-documentation" className="absolute inset-0 z-20" />
               <div className="absolute inset-0 bg-gradient-to-br from-white/20 via-transparent to-black/20 pointer-events-none" />
               <div className="absolute inset-0 bg-gradient-to-tr from-transparent via-white/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none" />
               
@@ -605,9 +605,9 @@ export default function HomePage() {
 
             <motion.div
               variants={fadeInUpVariants}
-              onClick={() => handleBadgeClick("ebitda")}
               whileHover={{ y: -4, scale: 1.02 }}
               className="group relative rounded-lg border-2 border-[#B8860B] bg-gradient-to-br from-[#D4AF37] via-[#B8860B] to-[#8B7500] p-5 hover:border-[#D4AF37] hover:shadow-2xl hover:shadow-[#B8860B]/50 cursor-pointer transition-all duration-300 overflow-hidden">
+              <Link href="/pillars/financial-impact-analysis" className="absolute inset-0 z-20" />
               <div className="absolute inset-0 bg-gradient-to-br from-white/20 via-transparent to-black/20 pointer-events-none" />
               <div className="absolute inset-0 bg-gradient-to-tr from-transparent via-white/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none" />
               
@@ -625,9 +625,9 @@ export default function HomePage() {
 
             <motion.div
               variants={fadeInUpVariants}
-              onClick={() => handleBadgeClick("verification")}
               whileHover={{ y: -4, scale: 1.02 }}
               className="group relative rounded-lg border-2 border-[#B8860B] bg-gradient-to-br from-[#D4AF37] via-[#B8860B] to-[#8B7500] p-5 hover:border-[#D4AF37] hover:shadow-2xl hover:shadow-[#B8860B]/50 cursor-pointer transition-all duration-300 overflow-hidden">
+              <Link href="/pillars/multi-source-data-reconciliation" className="absolute inset-0 z-20" />
               <div className="absolute inset-0 bg-gradient-to-br from-white/20 via-transparent to-black/20 pointer-events-none" />
               <div className="absolute inset-0 bg-gradient-to-tr from-transparent via-white/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none" />
               
@@ -647,6 +647,7 @@ export default function HomePage() {
               variants={fadeInUpVariants}
               whileHover={{ y: -4, scale: 1.02 }}
               className="group relative rounded-lg border-2 border-[#B8860B] bg-gradient-to-br from-[#D4AF37] via-[#B8860B] to-[#8B7500] p-5 hover:border-[#D4AF37] hover:shadow-2xl hover:shadow-[#B8860B]/50 cursor-pointer transition-all duration-300 overflow-hidden">
+              <Link href="/pillars/contract-intelligence-compliance" className="absolute inset-0 z-20" />
               <div className="absolute inset-0 bg-gradient-to-br from-white/20 via-transparent to-black/20 pointer-events-none" />
               <div className="absolute inset-0 bg-gradient-to-tr from-transparent via-white/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none" />
               
@@ -666,6 +667,7 @@ export default function HomePage() {
               variants={fadeInUpVariants}
               whileHover={{ y: -4, scale: 1.02 }}
               className="group relative rounded-lg border-2 border-[#B8860B] bg-gradient-to-br from-[#D4AF37] via-[#B8860B] to-[#8B7500] p-5 hover:border-[#D4AF37] hover:shadow-2xl hover:shadow-[#B8860B]/50 cursor-pointer transition-all duration-300 overflow-hidden">
+              <Link href="/pillars/actuarial-risk-modeling" className="absolute inset-0 z-20" />
               <div className="absolute inset-0 bg-gradient-to-br from-white/20 via-transparent to-black/20 pointer-events-none" />
               <div className="absolute inset-0 bg-gradient-to-tr from-transparent via-white/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none" />
               
@@ -685,6 +687,7 @@ export default function HomePage() {
               variants={fadeInUpVariants}
               whileHover={{ y: -4, scale: 1.02 }}
               className="group relative rounded-lg border-2 border-[#B8860B] bg-gradient-to-br from-[#D4AF37] via-[#B8860B] to-[#8B7500] p-5 hover:border-[#D4AF37] hover:shadow-2xl hover:shadow-[#B8860B]/50 cursor-pointer transition-all duration-300 overflow-hidden">
+              <Link href="/pillars/realtime-claims-surveillance" className="absolute inset-0 z-20" />
               <div className="absolute inset-0 bg-gradient-to-br from-white/20 via-transparent to-black/20 pointer-events-none" />
               <div className="absolute inset-0 bg-gradient-to-tr from-transparent via-white/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none" />
               
@@ -704,6 +707,7 @@ export default function HomePage() {
               variants={fadeInUpVariants}
               whileHover={{ y: -4, scale: 1.02 }}
               className="group relative rounded-lg border-2 border-[#B8860B] bg-gradient-to-br from-[#D4AF37] via-[#B8860B] to-[#8B7500] p-5 hover:border-[#D4AF37] hover:shadow-2xl hover:shadow-[#B8860B]/50 cursor-pointer transition-all duration-300 overflow-hidden">
+              <Link href="/pillars/regulatory-legal-framework" className="absolute inset-0 z-20" />
               <div className="absolute inset-0 bg-gradient-to-br from-white/20 via-transparent to-black/20 pointer-events-none" />
               <div className="absolute inset-0 bg-gradient-to-tr from-transparent via-white/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none" />
               
@@ -723,6 +727,7 @@ export default function HomePage() {
               variants={fadeInUpVariants}
               whileHover={{ y: -4, scale: 1.02 }}
               className="group relative rounded-lg border-2 border-[#B8860B] bg-gradient-to-br from-[#D4AF37] via-[#B8860B] to-[#8B7500] p-5 hover:border-[#D4AF37] hover:shadow-2xl hover:shadow-[#B8860B]/50 cursor-pointer transition-all duration-300 overflow-hidden">
+              <Link href="/pillars/predictive-cost-analytics" className="absolute inset-0 z-20" />
               <div className="absolute inset-0 bg-gradient-to-br from-white/20 via-transparent to-black/20 pointer-events-none" />
               <div className="absolute inset-0 bg-gradient-to-tr from-transparent via-white/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none" />
               

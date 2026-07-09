@@ -22,7 +22,7 @@ export default function Nav() {
         <div className="flex items-center justify-between h-16 px-6">
           {/* Logo */}
           <Link href="/" className="flex items-center space-x-2">
-            <KincaidIQLogo className="h-24" />
+            <KincaidIQLogo className="h-12" />
           </Link>
 
           {/* Desktop Navigation */}

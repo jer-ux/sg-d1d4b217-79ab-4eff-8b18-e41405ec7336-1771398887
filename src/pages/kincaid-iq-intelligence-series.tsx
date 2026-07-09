@@ -11,7 +11,6 @@ import { Badge } from "@/components/ui/badge";
 import { Card, CardHeader, CardTitle, CardDescription, CardContent } from "@/components/ui/card";
 import Nav from "@/components/Nav";
 import Footer from "@/components/Footer";
-import { IntelligenceSandbox } from "@/components/kincaid-iq/IntelligenceSandbox";
 import { SEO } from "@/components/SEO";
 
 const reportsData = [
@@ -331,12 +330,6 @@ export default function KincaidIQIntelligenceSeries() {
   const [activeTab, setActiveTab] = useState<"reports" | "live-stream">("reports");
   const [mounted, setMounted] = useState(false);
 
-  // Sandbox state
-  const [coveredLives, setCoveredLives] = useState<number>(5000);
-  const [currentPbmModel, setCurrentPbmModel] = useState<"traditional-spread" | "carve-out-pass" | "fully-bundled">("traditional-spread");
-  const [specialtyRatio, setSpecialtyRatio] = useState<number>(45); // % of spend that is specialty
-  const [simulatedLoss, setSimulatedLoss] = useState({ spread: 0, rebateLeakage: 0, complianceGap: 0, total: 0 });
-
   // Live Stream state
   const [auditEvents, setAuditEvents] = useState(initialAuditEvents);
   const [isRefreshing, setIsRefreshing] = useState(false);
@@ -344,36 +337,6 @@ export default function KincaidIQIntelligenceSeries() {
   useEffect(() => {
     setMounted(true);
   }, []);
-
-  // Recalculate Sandbox simulation
-  useEffect(() => {
-    let baseLossPerLife = 0;
-    let rebateRatio = 0.35;
-    let complianceRatio = 0.15;
-
-    if (currentPbmModel === "traditional-spread") {
-      baseLossPerLife = 50;
-      rebateRatio = 0.42;
-    } else if (currentPbmModel === "carve-out-pass") {
-      baseLossPerLife = 25;
-      rebateRatio = 0.18;
-      complianceRatio = 0.25;
-    } else {
-      baseLossPerLife = 70;
-      rebateRatio = 0.55;
-    }
-
-    // Factor in specialty ratio (specialty drugs are high-cost, high-arbitrage)
-    const specialtyMultiplier = 1 + (specialtyRatio - 40) / 100;
-    const totalPotentialLoss = coveredLives * baseLossPerLife * specialtyMultiplier;
-
-    const spread = Math.round(totalPotentialLoss * (1 - rebateRatio - complianceRatio));
-    const rebateLeakage = Math.round(totalPotentialLoss * rebateRatio);
-    const complianceGap = Math.round(totalPotentialLoss * complianceRatio);
-    const total = spread + rebateLeakage + complianceGap;
-
-    setSimulatedLoss({ spread, rebateLeakage, complianceGap, total });
-  }, [coveredLives, currentPbmModel, specialtyRatio]);
 
   const triggerMockAlertRefresh = () => {
     setIsRefreshing(true);
@@ -426,11 +389,11 @@ export default function KincaidIQIntelligenceSeries() {
   return (
     <>
       <Head>
-        <title>Intelligence Series | Kincaid Health Data Sciences Lab</title>
+        <title>Intelligence Products | Kincaid Health Data Sciences Lab</title>
         <meta name="description" content="Forensic PBM intelligence reports and actuarial analysis for fiduciaries, actuaries, and capital markets." />
       </Head>
       <SEO 
-        title="Intelligence Series — Kincaid Health"
+        title="Intelligence Products — Kincaid Health"
         description="Real-world case studies demonstrating how Kincaid Health uncovers hidden waste and protects bottom lines."
       />
 
@@ -438,16 +401,16 @@ export default function KincaidIQIntelligenceSeries() {
 
       <main className="min-h-screen bg-[#0F1419]">
         {/* Hero Section */}
-        <section className="relative py-16 flex items-center justify-center overflow-hidden bg-gradient-to-b from-black via-[#0A0E27] to-black z-10">
+        <section className="relative py-12 flex items-center justify-center overflow-hidden bg-gradient-to-b from-black via-[#0A0E27] to-black z-10">
           <div className="max-w-7xl mx-auto px-6">
             <div className="max-w-3xl">
-              <div className="inline-flex items-center gap-2 bg-[#1A3A52]/20 border border-[#1A3A52] rounded px-4 py-2 text-xs font-mono text-[#B8860B] uppercase tracking-wider mb-6">
+              <div className="inline-flex items-center gap-2 bg-[#1A3A52]/20 border border-[#1A3A52] rounded px-4 py-2 text-xs font-mono text-[#B8860B] uppercase tracking-wider mb-4">
                 <FileText className="w-4 h-4 text-[#B8860B]" />
                 Forensic Intelligence Center
               </div>
               
-              <h1 className="text-5xl md:text-6xl font-bold mb-6 bg-gradient-to-br from-white via-neutral-200 to-neutral-400 bg-clip-text text-transparent">
-                Kincaid Health Intelligence Series
+              <h1 className="text-5xl md:text-6xl font-bold mb-4 bg-gradient-to-br from-white via-neutral-200 to-neutral-400 bg-clip-text text-transparent">
+                Intelligence Products
               </h1>
               
               <p className="text-xl text-neutral-400 max-w-3xl mx-auto">
@@ -457,44 +420,24 @@ export default function KincaidIQIntelligenceSeries() {
           </div>
         </section>
 
-        {/* Forensic Risk Sandbox - FIRST THING YOU SEE */}
-        {mounted && (
-          <section className="py-16 bg-[#11161C] border-b border-[#1F2937]">
-            <div className="max-w-7xl mx-auto px-6">
-              <div className="max-w-3xl mb-12">
-                <Badge className="bg-[#B8860B]/10 text-[#B8860B] border border-[#B8860B] mb-3">ACTUARIAL SIMULATOR</Badge>
-                <h2 className="text-3xl font-serif font-bold text-white mb-4">Forensic Risk Sandbox</h2>
-                <p className="text-neutral-400">
-                  Model your group's exposure to common PBM pricing mechanics. Adjust plan components below to project hidden contract leakage, uncaptured manufacturer rebates, and MAC list spreads based on retrospective actuarial audit benchmarks.
-                </p>
-              </div>
-
-              <IntelligenceSandbox 
-                coveredLives={coveredLives} 
-                setCoveredLives={setCoveredLives} 
-              />
-            </div>
-          </section>
-        )}
-
-        {/* Impact Metrics Panel (Dynamic and Always Visible) */}
-        <section className="py-12 border-b border-[#1F2937]">
+        {/* Impact Metrics Panel */}
+        <section className="py-8 border-b border-[#1F2937]">
           <div className="max-w-7xl mx-auto px-6">
-            <div className="grid md:grid-cols-4 gap-8">
+            <div className="grid md:grid-cols-4 gap-6">
               <div className="text-center">
-                <div className="text-4xl font-serif font-bold text-white mb-2">$273M</div>
+                <div className="text-4xl font-serif font-bold text-white mb-1">$273M</div>
                 <div className="text-sm text-neutral-400">Identified Contractual Leakage</div>
               </div>
               <div className="text-center">
-                <div className="text-4xl font-serif font-bold text-white mb-2">13</div>
+                <div className="text-4xl font-serif font-bold text-white mb-1">13</div>
                 <div className="text-sm text-neutral-400">Published Intelligence Reports</div>
               </div>
               <div className="text-center">
-                <div className="text-4xl font-serif font-bold text-white mb-2">31%</div>
+                <div className="text-4xl font-serif font-bold text-white mb-1">31%</div>
                 <div className="text-sm text-neutral-400">Average Cost Reduction</div>
               </div>
               <div className="text-center">
-                <div className="text-4xl font-serif font-bold text-white mb-2">247</div>
+                <div className="text-4xl font-serif font-bold text-white mb-1">247</div>
                 <div className="text-sm text-neutral-400">Organizations Served</div>
               </div>
             </div>
@@ -503,11 +446,11 @@ export default function KincaidIQIntelligenceSeries() {
 
         {/* Secondary Navigation: Reports & Live Stream Tabs */}
         <section className="border-b border-[#1F2937] bg-[#151B23] sticky top-16 z-10">
-          <div className="max-w-7xl mx-auto px-6 py-4">
+          <div className="max-w-7xl mx-auto px-6 py-3">
             <div className="flex flex-wrap gap-2">
               <button
                 onClick={() => setActiveTab("reports")}
-                className={`px-5 py-3 text-sm font-semibold border-b-2 transition-all ${
+                className={`px-5 py-2.5 text-sm font-semibold border-b-2 transition-all ${
                   activeTab === "reports" 
                     ? "border-[#B8860B] text-[#B8860B] bg-[#151B23]/40" 
                     : "border-transparent text-neutral-400 hover:text-white"
@@ -518,7 +461,7 @@ export default function KincaidIQIntelligenceSeries() {
               </button>
               <button
                 onClick={() => setActiveTab("live-stream")}
-                className={`px-5 py-3 text-sm font-semibold border-b-2 transition-all ${
+                className={`px-5 py-2.5 text-sm font-semibold border-b-2 transition-all ${
                   activeTab === "live-stream" 
                     ? "border-[#B8860B] text-[#B8860B] bg-[#151B23]/40" 
                     : "border-transparent text-neutral-400 hover:text-white"
@@ -533,12 +476,12 @@ export default function KincaidIQIntelligenceSeries() {
 
         {/* Live Forensic Audit Stream View */}
         {activeTab === "live-stream" && mounted && (
-          <section className="py-16 bg-[#11161C] border-b border-[#1F2937]">
+          <section className="py-12 bg-[#11161C] border-b border-[#1F2937]">
             <div className="max-w-7xl mx-auto px-6">
-              <div className="max-w-3xl mb-12 flex justify-between items-end">
+              <div className="max-w-3xl mb-8 flex justify-between items-end">
                 <div>
                   <Badge className="bg-rose-500/10 text-rose-400 border border-rose-500/30 mb-3 animate-pulse">LIVE FORENSIC RADAR</Badge>
-                  <h2 className="text-3xl font-serif font-bold text-white mb-4">Live Forensic Audit Stream</h2>
+                  <h2 className="text-3xl font-serif font-bold text-white mb-3">Live Forensic Audit Stream</h2>
                   <p className="text-neutral-400">
                     Real-time transaction-level anomalies automatically flagged by Kincaid Health's analytical engine. This stream showcases verified contract deviations and margin spreads across various employer plans.
                   </p>
@@ -555,11 +498,11 @@ export default function KincaidIQIntelligenceSeries() {
                 </div>
               </div>
 
-              <div className="space-y-4">
+              <div className="space-y-3">
                 {auditEvents.map((event) => (
                   <div 
                     key={event.id}
-                    className="bg-[#151B23] border border-[#2A3F54]/80 hover:border-[#B8860B]/50 transition-all rounded-lg p-5 flex flex-col md:flex-row md:items-center justify-between gap-4"
+                    className="bg-[#151B23] border border-[#2A3F54]/80 hover:border-[#B8860B]/50 transition-all rounded-lg p-4 flex flex-col md:flex-row md:items-center justify-between gap-4"
                   >
                     <div className="flex items-start gap-4">
                       <div className={`w-10 h-10 rounded-lg flex items-center justify-center flex-shrink-0 mt-0.5 ${
@@ -599,7 +542,7 @@ export default function KincaidIQIntelligenceSeries() {
                 ))}
               </div>
 
-              <div className="bg-[#1A3A52]/10 border border-[#1A3A52] rounded-lg p-6 mt-8 flex flex-col md:flex-row justify-between items-center gap-4">
+              <div className="bg-[#1A3A52]/10 border border-[#1A3A52] rounded-lg p-5 mt-6 flex flex-col md:flex-row justify-between items-center gap-4">
                 <div className="space-y-1">
                   <h4 className="text-sm font-semibold text-white">Continuous Transaction Monitoring Integration</h4>
                   <p className="text-xs text-neutral-400 max-w-2xl">
@@ -618,10 +561,10 @@ export default function KincaidIQIntelligenceSeries() {
 
         {/* Reports Tab and Filter System */}
         {activeTab === "reports" && (
-          <section className="py-8 bg-black">
+          <section className="py-6 bg-black">
             {/* Category Filter */}
             <section className="border-b border-[#1F2937] bg-[#151B23] sticky top-16 z-10">
-              <div className="max-w-7xl mx-auto px-6 py-4">
+              <div className="max-w-7xl mx-auto px-6 py-3">
                 <div className="flex items-center gap-3 overflow-x-auto">
                   <span className="text-sm font-medium text-neutral-400 whitespace-nowrap flex items-center gap-1">
                     <Filter className="w-4 h-4" />
@@ -644,10 +587,10 @@ export default function KincaidIQIntelligenceSeries() {
               </div>
             </section>
 
-            {/* Comprehensive Dossier Grid sorted by lowest price first */}
-            <section className="py-16">
+            {/* Comprehensive Dossier Grid */}
+            <section className="py-12">
               <div className="max-w-7xl mx-auto px-6">
-                <div className="flex items-center justify-between mb-8 pb-4 border-b border-[#2A3F54]/40">
+                <div className="flex items-center justify-between mb-6 pb-3 border-b border-[#2A3F54]/40">
                   <div>
                     <h2 className="text-3xl font-serif font-bold text-white">
                       Intelligence Series Dossiers
@@ -661,7 +604,7 @@ export default function KincaidIQIntelligenceSeries() {
                   </Badge>
                 </div>
                 
-                <div className="grid gap-8">
+                <div className="grid gap-6">
                   {filteredReports.map((report) => (
                     <div 
                       key={report.id} 
@@ -671,11 +614,11 @@ export default function KincaidIQIntelligenceSeries() {
                           : "border-[#2A3F54] bg-[#151B23] hover:border-[#B8860B]/50 hover:bg-[#1C232B]"
                       }`}
                     >
-                      <div className="p-8">
-                        <div className="grid lg:grid-cols-12 gap-8 items-start">
+                      <div className="p-6">
+                        <div className="grid lg:grid-cols-12 gap-6 items-start">
                           
                           {/* Left Column: Category, Metadata and Title */}
-                          <div className="lg:col-span-8 space-y-4">
+                          <div className="lg:col-span-8 space-y-3">
                             <div className="flex flex-wrap items-center gap-3">
                               <Badge className={`${
                                 report.featured 
@@ -705,13 +648,13 @@ export default function KincaidIQIntelligenceSeries() {
 
                             {/* Report Deliverables List */}
                             {report.deliverables && (
-                              <div className="bg-[#0F1419]/60 border border-[#2A3F54]/60 rounded-xl p-5">
-                                <h4 className="text-xs font-mono uppercase tracking-widest text-[#B8860B] mb-3">
+                              <div className="bg-[#0F1419]/60 border border-[#2A3F54]/60 rounded-xl p-4">
+                                <h4 className="text-xs font-mono uppercase tracking-widest text-[#B8860B] mb-2">
                                   Scope of Deliverables
                                 </h4>
-                                <div className="grid md:grid-cols-2 gap-3">
+                                <div className="grid md:grid-cols-2 gap-2">
                                   {report.deliverables.map((item, idx) => (
-                                    <div key={idx} className="flex items-start gap-2.5 text-sm text-neutral-300">
+                                    <div key={idx} className="flex items-start gap-2 text-sm text-neutral-300">
                                       <ChevronRight className="w-4 h-4 mt-0.5 text-[#B8860B] flex-shrink-0" />
                                       <span>{item}</span>
                                     </div>
@@ -722,11 +665,11 @@ export default function KincaidIQIntelligenceSeries() {
 
                             {/* Key Findings List */}
                             {report.keyFindings && (
-                              <div className="border-l-4 border-[#B8860B] pl-4 py-1.5 space-y-2">
+                              <div className="border-l-4 border-[#B8860B] pl-4 py-1 space-y-1.5">
                                 <h4 className="text-xs font-mono uppercase tracking-widest text-[#B8860B]">
                                   Key Research Findings
                                 </h4>
-                                <ul className="space-y-1.5">
+                                <ul className="space-y-1">
                                   {report.keyFindings.map((finding, idx) => (
                                     <li key={idx} className="flex items-start gap-2 text-sm text-neutral-300 leading-relaxed">
                                       <ChevronRight className="w-4 h-4 mt-0.5 text-amber-500/70 flex-shrink-0" />
@@ -739,7 +682,7 @@ export default function KincaidIQIntelligenceSeries() {
                           </div>
 
                           {/* Right Column: Pricing Tag & Call-to-Actions */}
-                          <div className="lg:col-span-4 flex flex-col justify-between h-full bg-[#0F1419]/80 border border-[#2A3F54]/40 rounded-xl p-6 space-y-6">
+                          <div className="lg:col-span-4 flex flex-col justify-between h-full bg-[#0F1419]/80 border border-[#2A3F54]/40 rounded-xl p-5 space-y-5">
                             <div className="space-y-1">
                               <span className="text-xs font-mono text-neutral-400 uppercase tracking-wider block">Dossier Access Valuation</span>
                               <div className="text-4xl font-extrabold tracking-tight text-white flex items-baseline gap-1">
@@ -754,9 +697,9 @@ export default function KincaidIQIntelligenceSeries() {
                               </p>
                             </div>
 
-                            <div className="space-y-3 pt-4 border-t border-[#2A3F54]/40">
+                            <div className="space-y-2.5 pt-3 border-t border-[#2A3F54]/40">
                               <Link href={report.href} className="w-full block" target={report.href.endsWith(".pdf") ? "_blank" : undefined}>
-                                <Button className={`w-full font-bold uppercase tracking-wider text-xs py-5 ${
+                                <Button className={`w-full font-bold uppercase tracking-wider text-xs py-4 ${
                                   report.featured 
                                     ? "bg-[#B8860B] hover:bg-[#9A7209] text-[#0F1419]" 
                                     : "bg-amber-500/10 hover:bg-amber-500 border border-amber-500/20 hover:text-black text-amber-400"
@@ -783,7 +726,7 @@ export default function KincaidIQIntelligenceSeries() {
                             </div>
 
                             {/* Additional standard context info */}
-                            <div className="pt-2 text-[10px] text-neutral-500 flex items-center gap-1.5 justify-center">
+                            <div className="pt-1 text-[10px] text-neutral-500 flex items-center gap-1.5 justify-center">
                               <Shield className="w-3.5 h-3.5 text-[#B8860B]/70" />
                               <span>ASOP Compliance Certified</span>
                             </div>
@@ -800,27 +743,27 @@ export default function KincaidIQIntelligenceSeries() {
         )}
 
         {/* Methodology Section */}
-        <section className="py-16 border-t border-[#1F2937]">
+        <section className="py-12 border-t border-[#1F2937]">
           <div className="max-w-7xl mx-auto px-6">
             <div className="max-w-4xl mx-auto">
-              <h2 className="text-3xl font-serif font-bold text-white mb-6">
+              <h2 className="text-3xl font-serif font-bold text-white mb-4">
                 Research Methodology & Analytical Rigor
               </h2>
               
-              <div className="space-y-6">
+              <div className="space-y-5">
                 <p className="text-neutral-300 leading-relaxed text-lg">
                   Each intelligence report in the Kincaid Health series undergoes rigorous forensic analysis employing proprietary actuarial modeling frameworks, contract intelligence algorithms, and evidence-based validation protocols. Our methodologies comply with Actuarial Standards of Practice and withstand regulatory scrutiny in ERISA fiduciary contexts.
                 </p>
                 
-                <h3 className="text-xl font-serif font-semibold text-white pt-4">Core Analytical Frameworks</h3>
+                <h3 className="text-xl font-serif font-semibold text-white pt-3">Core Analytical Frameworks</h3>
                 
-                <div className="grid md:grid-cols-2 gap-6">
-                  <div className="bg-[#151B23] border border-[#2A3F54] rounded-lg p-6">
-                    <div className="flex items-center gap-3 mb-4">
+                <div className="grid md:grid-cols-2 gap-5">
+                  <div className="bg-[#151B23] border border-[#2A3F54] rounded-lg p-5">
+                    <div className="flex items-center gap-3 mb-3">
                       <Microscope className="w-6 h-6 text-[#B8860B]" />
                       <h4 className="font-semibold text-white">Actuarial Science</h4>
                     </div>
-                    <ul className="space-y-2 text-sm text-neutral-300">
+                    <ul className="space-y-1.5 text-sm text-neutral-300">
                       <li className="flex items-start gap-2">
                         <ChevronRight className="w-4 h-4 mt-0.5 text-[#B8860B] flex-shrink-0" />
                         <span>Monte Carlo simulation with 10,000+ scenario iterations</span>
@@ -840,12 +783,12 @@ export default function KincaidIQIntelligenceSeries() {
                     </ul>
                   </div>
 
-                  <div className="bg-[#151B23] border border-[#2A3F54] rounded-lg p-6">
-                    <div className="flex items-center gap-3 mb-4">
+                  <div className="bg-[#151B23] border border-[#2A3F54] rounded-lg p-5">
+                    <div className="flex items-center gap-3 mb-3">
                       <Shield className="w-6 h-6 text-[#B8860B]" />
                       <h4 className="font-semibold text-white">Contract Intelligence</h4>
                     </div>
-                    <ul className="space-y-2 text-sm text-neutral-300">
+                    <ul className="space-y-1.5 text-sm text-neutral-300">
                       <li className="flex items-start gap-2">
                         <ChevronRight className="w-4 h-4 mt-0.5 text-[#B8860B] flex-shrink-0" />
                         <span>Semantic NLP clause extraction and classification</span>
@@ -865,12 +808,12 @@ export default function KincaidIQIntelligenceSeries() {
                     </ul>
                   </div>
 
-                  <div className="bg-[#151B23] border border-[#2A3F54] rounded-lg p-6">
-                    <div className="flex items-center gap-3 mb-4">
+                  <div className="bg-[#151B23] border border-[#2A3F54] rounded-lg p-5">
+                    <div className="flex items-center gap-3 mb-3">
                       <BarChart3 className="w-6 h-6 text-[#B8860B]" />
                       <h4 className="font-semibold text-white">Statistical Analysis</h4>
                     </div>
-                    <ul className="space-y-2 text-sm text-neutral-300">
+                    <ul className="space-y-1.5 text-sm text-neutral-300">
                       <li className="flex items-start gap-2">
                         <ChevronRight className="w-4 h-4 mt-0.5 text-[#B8860B] flex-shrink-0" />
                         <span>Hypothesis testing (t-tests, ANOVA, chi-square)</span>
@@ -890,12 +833,12 @@ export default function KincaidIQIntelligenceSeries() {
                     </ul>
                   </div>
 
-                  <div className="bg-[#151B23] border border-[#2A3F54] rounded-lg p-6">
-                    <div className="flex items-center gap-3 mb-4">
+                  <div className="bg-[#151B23] border border-[#2A3F54] rounded-lg p-5">
+                    <div className="flex items-center gap-3 mb-3">
                       <Target className="w-6 h-6 text-[#B8860B]" />
                       <h4 className="font-semibold text-white">Benchmarking Standards</h4>
                     </div>
-                    <ul className="space-y-2 text-sm text-neutral-300">
+                    <ul className="space-y-1.5 text-sm text-neutral-300">
                       <li className="flex items-start gap-2">
                         <ChevronRight className="w-4 h-4 mt-0.5 text-[#B8860B] flex-shrink-0" />
                         <span>NADAC federal pricing references (CMS)</span>
@@ -916,8 +859,8 @@ export default function KincaidIQIntelligenceSeries() {
                   </div>
                 </div>
 
-                <div className="border-l-4 border-[#1A3A52] pl-6 py-4 bg-[#151B23] rounded-r-lg mt-8">
-                  <h4 className="text-sm font-semibold text-white mb-3">Professional Standards & Peer Review</h4>
+                <div className="border-l-4 border-[#1A3A52] pl-5 py-3 bg-[#151B23] rounded-r-lg mt-6">
+                  <h4 className="text-sm font-semibold text-white mb-2">Professional Standards & Peer Review</h4>
                   <p className="text-neutral-300 leading-relaxed text-sm">
                     All published intelligence reports undergo peer review by credentialed actuaries (FSA, ASA, EA) and comply with relevant Actuarial Standards of Practice. Findings are validated against industry benchmarks, regulatory guidance, and peer-reviewed actuarial literature to ensure analytical rigor and professional defensibility in fiduciary contexts. Each report includes complete methodology disclosure, sensitivity analyses, and limitations statements per professional standards.
                   </p>
@@ -928,15 +871,15 @@ export default function KincaidIQIntelligenceSeries() {
         </section>
 
         {/* Trust Indicators */}
-        <section className="py-12 border-t border-[#1F2937]">
+        <section className="py-10 border-t border-[#1F2937]">
           <div className="max-w-7xl mx-auto px-6">
-            <div className="grid md:grid-cols-3 gap-8">
+            <div className="grid md:grid-cols-3 gap-6">
               <div className="flex items-start gap-4">
                 <div className="w-12 h-12 rounded-lg bg-[#1A3A52]/20 border border-[#1A3A52] flex items-center justify-center flex-shrink-0">
                   <Users className="w-6 h-6 text-[#B8860B]" />
                 </div>
                 <div>
-                  <h3 className="font-semibold text-white mb-2">Actuarial Credentialed</h3>
+                  <h3 className="font-semibold text-white mb-1.5">Actuarial Credentialed</h3>
                   <p className="text-sm text-neutral-400 leading-relaxed">
                     All reports authored by FSA, ASA, or EA credentialed actuaries. Peer review by independent actuaries with relevant specialty certification (health, pension, enterprise risk).
                   </p>
@@ -948,7 +891,7 @@ export default function KincaidIQIntelligenceSeries() {
                   <Shield className="w-6 h-6 text-[#B8860B]" />
                 </div>
                 <div>
-                  <h3 className="font-semibold text-white mb-2">ERISA Compliant</h3>
+                  <h3 className="font-semibold text-white mb-1.5">ERISA Compliant</h3>
                   <p className="text-sm text-neutral-400 leading-relaxed">
                     Analysis frameworks align with ERISA fiduciary standards, DOL guidance on prudent benefit administration, and litigation-tested documentation requirements.
                   </p>
@@ -960,7 +903,7 @@ export default function KincaidIQIntelligenceSeries() {
                   <FileText className="w-6 h-6 text-[#B8860B]" />
                 </div>
                 <div>
-                  <h3 className="font-semibold text-white mb-2">Evidence-Based</h3>
+                  <h3 className="font-semibold text-white mb-1.5">Evidence-Based</h3>
                   <p className="text-sm text-neutral-400 leading-relaxed">
                     Every finding substantiated with primary source documentation, regulatory citations, peer-reviewed literature, or quantitative analysis with disclosed methodology.
                   </p>
@@ -971,14 +914,14 @@ export default function KincaidIQIntelligenceSeries() {
         </section>
 
         {/* CTA Section */}
-        <section className="py-16 border-t border-[#1F2937]">
-          <div className="relative z-10 max-w-6xl mx-auto px-6 py-8 text-center">
+        <section className="py-12 border-t border-[#1F2937]">
+          <div className="relative z-10 max-w-6xl mx-auto px-6 py-6 text-center">
             <div className="max-w-3xl mx-auto text-center">
-              <h2 className="text-3xl font-serif font-bold text-white mb-6">
+              <h2 className="text-3xl font-serif font-bold text-white mb-5">
                 Request Custom Intelligence Brief
               </h2>
               
-              <p className="text-lg text-neutral-300 mb-8 leading-relaxed">
+              <p className="text-lg text-neutral-300 mb-6 leading-relaxed">
                 Our forensic analysis team produces customized intelligence reports tailored to your organization's PBM contracts, claims experience, and risk profile. Each engagement employs the same rigorous methodology as our published series, with deliverables designed for board presentation and regulatory defense.
               </p>
 

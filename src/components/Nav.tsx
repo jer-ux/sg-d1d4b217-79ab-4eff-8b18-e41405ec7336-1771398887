@@ -86,10 +86,21 @@ export default function Nav() {
             </div>
 
             {/* Intelligence Series - Dropdown */}
-            <div className="relative">
+            <div 
+              className="relative group"
+              onMouseEnter={() => {
+                setKincaidHealthDropdownOpen(true);
+                setCompanyDropdownOpen(false);
+                setFocusAreasDropdownOpen(false);
+                setAuditsDropdownOpen(false);
+                setProductsDropdownOpen(false);
+                setToolsDropdownOpen(false);
+              }}
+              onMouseLeave={() => {
+                setTimeout(() => setKincaidHealthDropdownOpen(false), 300);
+              }}
+            >
               <button
-                onMouseEnter={() => setKincaidHealthDropdownOpen(true)}
-                onMouseLeave={() => setKincaidHealthDropdownOpen(false)}
                 className="flex items-center gap-2 px-4 py-2 text-black hover:text-black/80 transition-colors rounded-lg hover:bg-slate-50 font-medium"
               >
                 Intelligence Series
@@ -98,7 +109,9 @@ export default function Nav() {
               {kincaidHealthDropdownOpen && (
                 <div
                   onMouseEnter={() => setKincaidHealthDropdownOpen(true)}
-                  onMouseLeave={() => setKincaidHealthDropdownOpen(false)}
+                  onMouseLeave={() => {
+                    setTimeout(() => setKincaidHealthDropdownOpen(false), 300);
+                  }}
                   className="absolute top-full left-0 mt-2 w-72 bg-gray-900/95 backdrop-blur-xl rounded-xl border border-gray-700/50 shadow-xl overflow-hidden z-[210]">
                   <div className="p-2">
                     <Link

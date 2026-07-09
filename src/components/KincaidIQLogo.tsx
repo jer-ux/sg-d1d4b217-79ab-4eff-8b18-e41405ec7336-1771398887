@@ -73,28 +73,28 @@ export function KincaidIQLogo({ className = "" }: { className?: string }) {
 
       {/* KINCAID text - bold and industrial */}
       <text
-        x="50"
-        y="26"
-        fontFamily="system-ui, -apple-system, sans-serif"
-        fontSize="22"
-        fontWeight="900"
-        fill="white"
-        letterSpacing="-1"
+        x="38"
+        y="32"
+        fontSize="28"
+        fontWeight="700"
+        fontFamily="'Inter', sans-serif"
+        fill="#1a1a1a"
+        letterSpacing="-0.5"
       >
-        KINCAID
+        Kincaid
       </text>
 
       {/* HEALTH text - strong and wide */}
       <text
-        x="50"
-        y="42"
-        fontFamily="system-ui, -apple-system, sans-serif"
-        fontSize="11"
-        fontWeight="700"
-        fill="#94a3b8"
-        letterSpacing="3"
+        x="38"
+        y="54"
+        fontSize="18"
+        fontWeight="600"
+        fontFamily="'Inter', sans-serif"
+        fill="#8C1515"
+        letterSpacing="-0.3"
       >
-        HEALTH
+        Health
       </text>
       
       {/* Bold accent bar */}

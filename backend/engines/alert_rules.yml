@@ -1,0 +1,58 @@
+# Prometheus Alert Rules for KINCAID Engines
+
+groups:
+  - name: engine_health
+    interval: 30s
+    rules:
+      # Engine Down Alert
+      - alert: EngineDown
+        expr: up{job=~".*-engine"} == 0
+        for: 1m
+        labels:
+          severity: critical
+        annotations:
+          summary: "Engine {{ $labels.engine }} is down"
+          description: "{{ $labels.engine }} engine has been unreachable for more than 1 minute"
+
+      # High Error Rate
+      - alert: HighErrorRate
+        expr: rate(economic_errors_total[5m]) > 0.05 OR rate(statistical_errors_total[5m]) > 0.05 OR rate(simulation_errors_total[5m]) > 0.05
+        for: 5m
+        labels:
+          severity: warning
+        annotations:
+          summary: "High error rate detected in {{ $labels.engine }}"
+          description: "Error rate is {{ $value }} errors/sec for operation {{ $labels.operation }}"
+
+      # High Latency
+      - alert: HighLatency
+        expr: histogram_quantile(0.95, rate(economic_request_duration_seconds_bucket[5m])) > 1.0
+        for: 5m
+        labels:
+          severity: warning
+        annotations:
+          summary: "High latency detected in {{ $labels.engine }}"
+          description: "P95 latency is {{ $value }}s for operation {{ $labels.operation }}"
+
+      # Engine Saturation
+      - alert: EngineSaturation
+        expr: avg_over_time(economic_active_requests[5m]) > 50 OR avg_over_time(statistical_active_requests[5m]) > 50 OR avg_over_time(simulation_active_requests[5m]) > 50
+        for: 10m
+        labels:
+          severity: warning
+        annotations:
+          summary: "Engine {{ $labels.engine }} is saturated"
+          description: "Average active requests is {{ $value }} over the last 5 minutes"
+
+  - name: sla_monitoring
+    interval: 1m
+    rules:
+      # SLA Breach (99.9% uptime = 43.2 minutes downtime/month)
+      - alert: SLABreach
+        expr: (1 - (sum(rate(economic_requests_total{status="success"}[30d])) / sum(rate(economic_requests_total[30d])))) > 0.001
+        for: 5m
+        labels:
+          severity: critical
+        annotations:
+          summary: "SLA breach: Uptime below 99.9%"
+          description: "Current uptime is {{ $value | humanizePercentage }}"

@@ -1,0 +1,43 @@
+# Prometheus configuration for KINCAID Engines
+global:
+  scrape_interval: 15s
+  evaluation_interval: 15s
+  external_labels:
+    cluster: 'kincaid-engines'
+    environment: 'production'
+
+# Alertmanager configuration
+alerting:
+  alertmanagers:
+    - static_configs:
+        - targets: ['alertmanager:9093']
+
+# Load alert rules
+rule_files:
+  - "alert_rules.yml"
+
+# Scrape configurations
+scrape_configs:
+  - job_name: 'economic-engine'
+    static_configs:
+      - targets: ['economic-engine:9091']
+        labels:
+          engine: 'economic'
+  
+  - job_name: 'statistical-engine'
+    static_configs:
+      - targets: ['statistical-engine:9092']
+        labels:
+          engine: 'statistical'
+  
+  - job_name: 'simulation-engine'
+    static_configs:
+      - targets: ['simulation-engine:9093']
+        labels:
+          engine: 'simulation'
+  
+  - job_name: 'gateway'
+    static_configs:
+      - targets: ['gateway:9090']
+        labels:
+          component: 'gateway'

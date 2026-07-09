@@ -1,0 +1,64 @@
+{
+  "dashboard": {
+    "title": "Economic Engine - Performance & Health",
+    "tags": ["kincaid", "engines", "economic"],
+    "timezone": "utc",
+    "panels": [
+      {
+        "title": "Requests per Second",
+        "type": "graph",
+        "targets": [
+          {
+            "expr": "rate(economic_requests_total[5m])",
+            "legendFormat": "{{operation}} - {{status}}"
+          }
+        ],
+        "gridPos": {"x": 0, "y": 0, "w": 12, "h": 8}
+      },
+      {
+        "title": "Request Duration (p95)",
+        "type": "graph",
+        "targets": [
+          {
+            "expr": "histogram_quantile(0.95, rate(economic_request_duration_seconds_bucket[5m]))",
+            "legendFormat": "{{operation}}"
+          }
+        ],
+        "gridPos": {"x": 12, "y": 0, "w": 12, "h": 8}
+      },
+      {
+        "title": "Active Requests",
+        "type": "graph",
+        "targets": [
+          {
+            "expr": "economic_active_requests",
+            "legendFormat": "{{operation}}"
+          }
+        ],
+        "gridPos": {"x": 0, "y": 8, "w": 12, "h": 8}
+      },
+      {
+        "title": "Error Rate",
+        "type": "graph",
+        "targets": [
+          {
+            "expr": "rate(economic_errors_total[5m])",
+            "legendFormat": "{{operation}} - {{error_type}}"
+          }
+        ],
+        "gridPos": {"x": 12, "y": 8, "w": 12, "h": 8}
+      },
+      {
+        "title": "Computation Cost",
+        "type": "graph",
+        "targets": [
+          {
+            "expr": "rate(economic_computation_cost_total[5m])",
+            "legendFormat": "{{operation}}"
+          }
+        ],
+        "gridPos": {"x": 0, "y": 16, "w": 24, "h": 8}
+      }
+    ]
+  }
+}

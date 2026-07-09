@@ -1,6 +1,6 @@
 ---
 title: Background Workers + Simplified Admin Dashboard
-status: in_progress
+status: done
 priority: urgent
 type: feature
 tags: [engines, admin, background-jobs, ux]

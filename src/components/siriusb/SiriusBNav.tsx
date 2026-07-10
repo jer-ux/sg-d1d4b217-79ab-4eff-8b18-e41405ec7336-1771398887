@@ -1,89 +1,40 @@
 import Link from "next/link";
+import { Shield } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { Menu, X } from "lucide-react";
-import { useState } from "react";
 
-export function SiriusBNav() {
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-
+export function KincaidHealthNav() {
   return (
-    <nav className="fixed top-0 left-0 right-0 z-50 bg-background/80 backdrop-blur-md border-b border-border">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex items-center justify-between h-16">
-          {/* Logo */}
+    <nav className="fixed top-0 z-50 w-full border-b border-neutral-800 bg-black/95 backdrop-blur-xl">
+      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+        <div className="flex h-16 items-center justify-between">
           <Link href="/" className="flex items-center space-x-2">
-            <div className="font-bold text-xl bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
-              SiriusB iQ
-            </div>
+            <Shield className="h-8 w-8 text-emerald-400" />
+            <span className="text-xl font-bold text-white">Kincaid Health</span>
           </Link>
-
-          {/* Desktop Navigation */}
-          <div className="hidden md:flex items-center space-x-8">
-            <Link href="/platform" className="text-sm font-medium hover:text-primary transition-colors">
-              Platform
+          
+          <div className="flex items-center space-x-4">
+            <Link href="/platform">
+              <Button variant="ghost" className="text-neutral-300 hover:text-white">
+                Platform
+              </Button>
             </Link>
-            <Link href="/case-studies" className="text-sm font-medium hover:text-primary transition-colors">
-              Case Studies
-            </Link>
-            <Link href="/all-uploads" className="text-sm font-medium hover:text-primary transition-colors">
-              Uploads & Briefs
-            </Link>
-            <Link href="/company" className="text-sm font-medium hover:text-primary transition-colors">
-              Company
+            <Link href="/company">
+              <Button variant="ghost" className="text-neutral-300 hover:text-white">
+                Company
+              </Button>
             </Link>
             <Link href="/contact">
-              <Button size="sm">Contact Us</Button>
+              <Button variant="ghost" className="text-neutral-300 hover:text-white">
+                Contact
+              </Button>
             </Link>
-          </div>
-
-          {/* Mobile Menu Button */}
-          <button
-            className="md:hidden p-2"
-            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            aria-label="Toggle menu"
-          >
-            {mobileMenuOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
-          </button>
-        </div>
-
-        {/* Mobile Menu */}
-        {mobileMenuOpen && (
-          <div className="md:hidden py-4 space-y-3 border-t border-border">
-            <Link
-              href="/platform"
-              className="block px-3 py-2 text-sm font-medium hover:bg-accent rounded-md transition-colors"
-              onClick={() => setMobileMenuOpen(false)}
-            >
-              Platform
-            </Link>
-            <Link
-              href="/case-studies"
-              className="block px-3 py-2 text-sm font-medium hover:bg-accent rounded-md transition-colors"
-              onClick={() => setMobileMenuOpen(false)}
-            >
-              Case Studies
-            </Link>
-            <Link
-              href="/all-uploads"
-              className="block px-3 py-2 text-sm font-medium hover:bg-accent rounded-md transition-colors"
-              onClick={() => setMobileMenuOpen(false)}
-            >
-              Uploads & Briefs
-            </Link>
-            <Link
-              href="/company"
-              className="block px-3 py-2 text-sm font-medium hover:bg-accent rounded-md transition-colors"
-              onClick={() => setMobileMenuOpen(false)}
-            >
-              Company
-            </Link>
-            <Link href="/contact" onClick={() => setMobileMenuOpen(false)}>
-              <Button size="sm" className="w-full">
-                Contact Us
+            <Link href="/request-demo">
+              <Button className="bg-emerald-600 hover:bg-emerald-700 text-white">
+                Request Demo
               </Button>
             </Link>
           </div>
-        )}
+        </div>
       </div>
     </nav>
   );

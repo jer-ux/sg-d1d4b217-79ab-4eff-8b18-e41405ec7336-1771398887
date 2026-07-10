@@ -401,6 +401,13 @@ export default function Nav() {
                 </div>
               )}
             </div>
+
+            {/* Engines Link - NEW */}
+            <Link
+              href="/engines"
+              className="px-4 py-2 text-black hover:text-black/80 transition-colors rounded-lg hover:bg-slate-50 font-medium">
+              Engines
+            </Link>
           </div>
 
           {/* Mobile menu button */}

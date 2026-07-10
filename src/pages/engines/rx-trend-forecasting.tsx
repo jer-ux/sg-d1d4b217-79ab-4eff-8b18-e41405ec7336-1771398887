@@ -1,7 +1,7 @@
 import Head from "next/head";
 import Link from "next/link";
 import { ArrowLeft, Pill, Database, BarChart3, Activity, AlertCircle, CheckCircle2 } from "lucide-react";
-import { Footer } from "@/components/Footer";
+import Footer from "@/components/Footer";
 
 export default function RxTrendForecastingEngine() {
   return (

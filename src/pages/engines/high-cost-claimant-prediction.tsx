@@ -140,7 +140,7 @@ export default function HighCostClaimantPrediction() {
                   <div className="flex-1">
                     <h3 className="text-xl font-bold text-gray-900 mb-2">Step 3: Risk Stratification & Actionability</h3>
                     <p className="text-gray-700 mb-3">
-                      Segment members into tiers: Critical ({'>'}80% probability, needs intensive case management), High (60-80%, care management outreach), Moderate (40-60%, preventive engagement), Low ({'<'}40%, wellness programs). For each high-risk member, generate actionability score: is this someone care management can actually help? (Motivated patient with controllable condition = high actionability. Late-stage cancer = low actionability, refer to palliative care.)
+                      Segment members into tiers: Critical ({'{>'}80% probability, needs intensive case management), High (60-80%, care management outreach), Moderate (40-60%, preventive engagement), Low ({'{'}<'}40%, wellness programs). For each high-risk member, generate actionability score: is this someone care management can actually help? (Motivated patient with controllable condition = high actionability. Late-stage cancer = low actionability, refer to palliative care.)
                     </p>
                   </div>
                 </div>

@@ -27,6 +27,185 @@ export interface IndividualReport {
 
 export const INDIVIDUAL_REPORTS: IndividualReport[] = [
   {
+    id: "cost-plus-rx-savings-analysis",
+    name: "Mark Cuban Cost Plus Rx Savings Analysis",
+    price: 1500,
+    category: "pbm",
+    description: "Compare your current PBM drug costs against Mark Cuban Cost Plus Drugs transparent pricing to quantify immediate savings opportunities on 800+ generic medications.",
+    deliverables: [
+      "Drug-by-drug cost comparison (your PBM vs Cost Plus)",
+      "Total annual savings quantification",
+      "Top 50 medications with highest spread markup",
+      "Member out-of-pocket impact analysis",
+      "Implementation roadmap for Cost Plus integration",
+      "Formulary transition recommendations"
+    ],
+    turnaroundDays: 7,
+    requiredData: [
+      "12 months of pharmacy claims data",
+      "Current formulary list",
+      "PBM contract pricing terms"
+    ],
+    idealFor: [
+      "Self-insured employers exploring transparent pricing",
+      "HR leaders seeking immediate cost reduction",
+      "Benefits consultants evaluating alternatives",
+      "Companies with high generic drug utilization"
+    ],
+    sampleInsights: [
+      "Identified $420K annual savings on 200 drugs",
+      "Found 340% average markup vs Cost Plus pricing",
+      "Projected 65% reduction in member copays"
+    ],
+    laborHours: {
+      total: 12,
+      breakdown: [
+        { role: "Pharmacy Benefits Analyst", hours: 8, rate: 125 },
+        { role: "Data Analyst", hours: 3, rate: 95 },
+        { role: "Senior Consultant (QA)", hours: 1, rate: 200 }
+      ],
+      effectiveHourlyRate: 125
+    }
+  },
+
+  {
+    id: "cost-plus-formulary-optimization",
+    name: "Cost Plus Drugs Formulary Optimization Report",
+    price: 2200,
+    category: "pbm",
+    description: "Strategic formulary redesign leveraging Cost Plus transparent pricing alongside your existing PBM to maximize savings while maintaining clinical quality and member access.",
+    deliverables: [
+      "Optimized formulary design (3-tier hybrid strategy)",
+      "Clinical equivalency analysis for Cost Plus generics",
+      "Member disruption impact assessment",
+      "Pharmacy network integration plan",
+      "Cost-benefit analysis by therapeutic class",
+      "Implementation timeline with milestones",
+      "Member communication templates"
+    ],
+    turnaroundDays: 14,
+    requiredData: [
+      "24 months of pharmacy claims",
+      "Current formulary with tier structure",
+      "Clinical protocols and prior auth rules",
+      "Member satisfaction data (if available)"
+    ],
+    idealFor: [
+      "CFOs targeting pharmacy cost optimization",
+      "Clinical teams maintaining quality standards",
+      "Self-insured plans with formulary flexibility",
+      "Benefits teams preparing for renewals"
+    ],
+    sampleInsights: [
+      "Hybrid formulary saved $680K annually",
+      "Maintained 98% therapeutic equivalency",
+      "Reduced member out-of-pocket by 52%",
+      "Zero disruption for 94% of members"
+    ],
+    laborHours: {
+      total: 18,
+      breakdown: [
+        { role: "Clinical Pharmacist (PharmD)", hours: 10, rate: 155 },
+        { role: "Formulary Strategist", hours: 6, rate: 135 },
+        { role: "Senior Consultant (Review)", hours: 2, rate: 225 }
+      ],
+      effectiveHourlyRate: 142
+    }
+  },
+
+  {
+    id: "cost-plus-vs-pbm-total-cost",
+    name: "Cost Plus vs Traditional PBM Total Cost Comparison",
+    price: 2400,
+    category: "pbm",
+    description: "Comprehensive total cost of care analysis comparing your current PBM arrangement against a Cost Plus Drugs integration including admin fees, rebates, and hidden costs.",
+    deliverables: [
+      "Total cost of care modeling (5 scenarios)",
+      "Transparent pricing vs spread markup analysis",
+      "Rebate retention impact quantification",
+      "Administrative fee comparison",
+      "Implementation cost analysis",
+      "3-year financial projection model",
+      "Risk-adjusted ROI calculation",
+      "Vendor negotiation leverage points"
+    ],
+    turnaroundDays: 16,
+    requiredData: [
+      "24 months of pharmacy claims",
+      "PBM contract with all amendments",
+      "Rebate reports and fee schedules",
+      "Administrative service agreements"
+    ],
+    idealFor: [
+      "Boards evaluating PBM relationships",
+      "CFOs conducting strategic sourcing",
+      "Self-insured plans seeking transparency",
+      "PE firms modeling portfolio optimization"
+    ],
+    sampleInsights: [
+      "Total cost reduction of $1.2M annually",
+      "Eliminated $340K in hidden PBM fees",
+      "Cost Plus admin fee 70% below traditional PBM",
+      "3-year NPV of $3.8M favoring Cost Plus hybrid"
+    ],
+    laborHours: {
+      total: 20,
+      breakdown: [
+        { role: "PBM Forensic Analyst", hours: 12, rate: 150 },
+        { role: "Financial Modeler", hours: 6, rate: 125 },
+        { role: "Senior Consultant (Review)", hours: 2, rate: 225 }
+      ],
+      effectiveHourlyRate: 140
+    }
+  },
+
+  {
+    id: "cost-plus-member-impact-analysis",
+    name: "Mark Cuban Cost Plus Member Impact & Engagement Report",
+    price: 1800,
+    category: "pbm",
+    description: "Member-centric analysis showing out-of-pocket savings, accessibility improvements, and engagement strategies for Cost Plus Drugs adoption across your population.",
+    deliverables: [
+      "Member segmentation by savings potential",
+      "Out-of-pocket cost reduction by member cohort",
+      "Medication adherence improvement projection",
+      "Member communication strategy and materials",
+      "Digital engagement plan (Cost Plus platform)",
+      "Behavioral economics incentive design",
+      "Success metrics and KPI dashboard",
+      "Case studies and testimonials template"
+    ],
+    turnaroundDays: 10,
+    requiredData: [
+      "12 months of pharmacy claims by member",
+      "Member demographics and income data",
+      "Current medication adherence rates",
+      "Employee engagement survey results (if available)"
+    ],
+    idealFor: [
+      "HR leaders focused on employee value",
+      "Benefits teams driving engagement",
+      "Companies with cost-conscious populations",
+      "Organizations prioritizing medication adherence"
+    ],
+    sampleInsights: [
+      "Average member saves $840 annually",
+      "72% of members qualify for $100+ savings",
+      "Adherence projected to improve 28%",
+      "Employee satisfaction score +18 points"
+    ],
+    laborHours: {
+      total: 14,
+      breakdown: [
+        { role: "Population Health Analyst", hours: 8, rate: 135 },
+        { role: "Member Engagement Strategist", hours: 4, rate: 125 },
+        { role: "Senior Consultant (Review)", hours: 2, rate: 200 }
+      ],
+      effectiveHourlyRate: 129
+    }
+  },
+
+  {
     id: "pbm-spread-analysis",
     name: "PBM Spread Analysis Report",
     price: 2000,

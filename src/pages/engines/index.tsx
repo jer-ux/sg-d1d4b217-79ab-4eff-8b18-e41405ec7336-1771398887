@@ -7,7 +7,9 @@ import {
   TrendingUp, AlertTriangle, Target, Activity,
   DollarSign, Settings, Users, Database, BarChart3,
   Shield, FileText, Code, Brain, Lock, LineChart, Building2, CheckCircle2,
-  Zap, Award, Pill, Dna, MapPin, Calendar, Briefcase
+  Zap, Award, Pill, Dna, MapPin, Calendar, Briefcase, Heart, TrendingDown,
+  Globe, Microscope, Factory, Truck, Home, School, Cpu, GitBranch, Scale,
+  FileCheck, Eye, Search, Calculator, PieChart, Workflow
 } from "lucide-react";
 import { SEO } from "@/components/SEO";
 import { Badge } from "@/components/ui/badge";
@@ -39,24 +41,27 @@ const engineCategories = [
     count: 20,
     color: "from-blue-600 to-cyan-600",
     icon: TrendingUp,
-    description: "Forecasting, normalization, and trend decomposition",
+    description: "Actuarial-grade forecasting, normalization, and credibility-weighted trend analysis",
     engines: [
       { id: "medical-trend-forecasting", name: "Medical Trend Forecasting", icon: TrendingUp },
       { id: "rx-trend-forecasting", name: "Rx Trend Forecasting", icon: Pill },
+      { id: "dental-trend-analysis", name: "Dental Trend Analysis", icon: Activity },
+      { id: "vision-trend-analysis", name: "Vision Trend Analysis", icon: Eye },
       { id: "catastrophic-claims-forecasting", name: "Catastrophic Claims Forecasting", icon: AlertTriangle },
       { id: "high-cost-claimant-prediction", name: "High-Cost Claimant Prediction", icon: Target },
       { id: "glp1-financial-impact", name: "GLP-1 Financial Impact", icon: Activity },
       { id: "gene-therapy-exposure", name: "Gene Therapy Exposure", icon: Dna },
-      { id: "oncology-cost-projection", name: "Oncology Cost Projection", icon: Activity },
+      { id: "oncology-cost-projection", name: "Oncology Cost Projection", icon: Microscope },
       { id: "inflation-decomposition", name: "Inflation Decomposition", icon: TrendingUp },
       { id: "provider-unit-cost-trend", name: "Provider Unit Cost Trend", icon: DollarSign },
       { id: "utilization-trend-engine", name: "Utilization Trend Engine", icon: Activity },
       { id: "geographic-normalization", name: "Geographic Normalization", icon: MapPin },
       { id: "age-gender-risk-adjustment", name: "Age/Gender Risk Adjustment", icon: Users },
       { id: "case-mix-adjustment", name: "Case Mix Adjustment", icon: Activity },
-      { id: "pmpm-normalization", name: "PMPM Normalization", icon: Users },
+      { id: "pmpm-normalization", name: "PMPM Normalization", icon: Calculator },
       { id: "seasonality-adjustment", name: "Seasonality Adjustment", icon: Calendar },
       { id: "credibility-weighting", name: "Credibility Weighting", icon: Target },
+      { id: "monte-carlo-forecasting", name: "Monte Carlo Forecasting", icon: BarChart3 },
     ],
   },
   {
@@ -65,8 +70,29 @@ const engineCategories = [
     count: 20,
     color: "from-emerald-600 to-teal-600",
     icon: DollarSign,
-    description: "Site-of-care, payment integrity, specialty pharmacy, PBM intelligence",
-    engines: [],
+    description: "Economic modeling, payment integrity, and strategic cost optimization",
+    engines: [
+      { id: "site-of-care-migration", name: "Site-of-Care Migration", icon: MapPin },
+      { id: "network-disruption-modeling", name: "Network Disruption Modeling", icon: AlertTriangle },
+      { id: "reference-based-pricing", name: "Reference-Based Pricing Savings", icon: DollarSign },
+      { id: "direct-contracting-valuation", name: "Direct Contracting Valuation", icon: FileCheck },
+      { id: "centers-of-excellence-roi", name: "Centers of Excellence ROI", icon: Award },
+      { id: "bundled-payment-modeling", name: "Bundled Payment Modeling", icon: Package },
+      { id: "payment-integrity-analysis", name: "Payment Integrity Analysis", icon: Shield },
+      { id: "fraud-detection", name: "Waste, Fraud, and Abuse Detection", icon: Search },
+      { id: "episode-of-care-valuation", name: "Episode-of-Care Valuation", icon: FileText },
+      { id: "specialty-pharmacy-economics", name: "Specialty Pharmacy Economics", icon: Pill },
+      { id: "biosimilar-adoption", name: "Biosimilar Adoption Modeling", icon: Dna },
+      { id: "drug-pipeline-forecasting", name: "Drug Pipeline Forecasting", icon: TrendingUp },
+      { id: "rebate-optimization", name: "Rebate Optimization", icon: DollarSign },
+      { id: "pbm-spread-detection", name: "PBM Spread Pricing Detection", icon: Search },
+      { id: "employer-cost-shifting", name: "Employer Cost Shifting", icon: TrendingDown },
+      { id: "member-cost-burden", name: "Member Cost Burden", icon: Users },
+      { id: "benefit-richness-scoring", name: "Benefit Richness Scoring", icon: Award },
+      { id: "cost-elasticity", name: "Cost Elasticity", icon: Activity },
+      { id: "plan-migration-simulation", name: "Plan Migration Simulation", icon: Workflow },
+      { id: "healthcare-inflation-attribution", name: "Healthcare Inflation Attribution", icon: TrendingUp },
+    ],
   },
   {
     id: "fiduciary-governance",
@@ -74,8 +100,34 @@ const engineCategories = [
     count: 25,
     color: "from-purple-600 to-pink-600",
     icon: Shield,
-    description: "ERISA scoring, contract analysis, compliance monitoring, audit readiness",
-    engines: [],
+    description: "ERISA compliance, vendor transparency, and board-level governance scoring",
+    engines: [
+      { id: "erisa-risk-scoring", name: "ERISA Fiduciary Risk Scoring", icon: Shield },
+      { id: "pbm-contract-scoring", name: "PBM Contract Scoring", icon: FileCheck },
+      { id: "stop-loss-contract-scoring", name: "Stop-Loss Contract Scoring", icon: Shield },
+      { id: "tpa-governance-scoring", name: "TPA Governance Scoring", icon: Award },
+      { id: "vendor-compensation-transparency", name: "Vendor Compensation Transparency", icon: Eye },
+      { id: "hidden-revenue-detection", name: "Hidden Revenue Detection", icon: Search },
+      { id: "conflict-of-interest", name: "Conflict-of-Interest Analysis", icon: AlertTriangle },
+      { id: "audit-readiness-scoring", name: "Audit Readiness Scoring", icon: FileCheck },
+      { id: "governance-maturity", name: "Governance Maturity Assessment", icon: Award },
+      { id: "board-oversight-scoring", name: "Board Oversight Scoring", icon: Shield },
+      { id: "ai-governance", name: "AI Governance Assessment", icon: Brain },
+      { id: "compliance-monitoring", name: "Compliance Monitoring", icon: Eye },
+      { id: "regulatory-exposure", name: "Regulatory Exposure", icon: AlertTriangle },
+      { id: "litigation-probability", name: "Litigation Probability", icon: Scale },
+      { id: "documentation-completeness", name: "Documentation Completeness", icon: FileText },
+      { id: "decision-traceability", name: "Decision Traceability", icon: GitBranch },
+      { id: "procurement-integrity", name: "Procurement Integrity", icon: Shield },
+      { id: "contract-language-risk", name: "Contract Language Risk", icon: FileCheck },
+      { id: "benchmark-deviation", name: "Benchmark Deviation Analysis", icon: BarChart3 },
+      { id: "fiduciary-evidence-generation", name: "Fiduciary Evidence Generation", icon: FileText },
+      { id: "board-reporting-engine", name: "Board Reporting Engine", icon: PieChart },
+      { id: "internal-controls", name: "Internal Controls Assessment", icon: Lock },
+      { id: "third-party-oversight", name: "Third-Party Oversight Scoring", icon: Eye },
+      { id: "procurement-fairness", name: "Procurement Fairness Analysis", icon: Scale },
+      { id: "policy-compliance", name: "Policy Compliance Engine", icon: FileCheck },
+    ],
   },
   {
     id: "workforce-human-capital",
@@ -83,8 +135,29 @@ const engineCategories = [
     count: 20,
     color: "from-amber-600 to-orange-600",
     icon: Users,
-    description: "Absenteeism, productivity, demographics, health equity, wellness ROI",
-    engines: [],
+    description: "Population health, productivity analytics, and workforce risk modeling",
+    engines: [
+      { id: "workforce-health-risk", name: "Workforce Health Risk", icon: Heart },
+      { id: "absenteeism-forecasting", name: "Absenteeism Forecasting", icon: Calendar },
+      { id: "presenteeism-impact", name: "Presenteeism Impact", icon: Activity },
+      { id: "productivity-loss-valuation", name: "Productivity Loss Valuation", icon: DollarSign },
+      { id: "workforce-demographics", name: "Workforce Demographic Projections", icon: Users },
+      { id: "retirement-forecasting", name: "Retirement Forecasting", icon: Calendar },
+      { id: "disability-incidence", name: "Disability Incidence", icon: Heart },
+      { id: "behavioral-health-utilization", name: "Behavioral Health Utilization", icon: Brain },
+      { id: "population-health-segmentation", name: "Population Health Segmentation", icon: Users },
+      { id: "benefit-engagement", name: "Benefit Engagement", icon: Award },
+      { id: "employee-lifetime-value", name: "Employee Lifetime Value", icon: DollarSign },
+      { id: "health-equity-analysis", name: "Health Equity Analysis", icon: Scale },
+      { id: "workforce-resilience", name: "Workforce Resilience", icon: Shield },
+      { id: "burnout-prediction", name: "Burnout Prediction", icon: AlertTriangle },
+      { id: "claims-risk-segmentation", name: "Claims Risk Segmentation", icon: Target },
+      { id: "disease-burden-forecasting", name: "Disease Burden Forecasting", icon: TrendingUp },
+      { id: "preventive-care-optimization", name: "Preventive Care Optimization", icon: Heart },
+      { id: "wellness-roi", name: "Wellness ROI", icon: Award },
+      { id: "benefit-strategy-optimization", name: "Benefit Strategy Optimization", icon: Target },
+      { id: "workforce-financial-stress", name: "Workforce Financial Stress", icon: DollarSign },
+    ],
   },
   {
     id: "predictive-ai",
@@ -92,8 +165,29 @@ const engineCategories = [
     count: 20,
     color: "from-indigo-600 to-violet-600",
     icon: Brain,
-    description: "Hospital admission prediction, fraud detection, digital twin simulation",
-    engines: [],
+    description: "Machine learning models, digital twins, and Bayesian forecasting",
+    engines: [
+      { id: "large-claimant-prediction", name: "Large Claimant Prediction", icon: Target },
+      { id: "hospital-admission-prediction", name: "Hospital Admission Prediction", icon: Activity },
+      { id: "readmission-prediction", name: "Readmission Prediction", icon: AlertTriangle },
+      { id: "chronic-disease-progression", name: "Chronic Disease Progression", icon: TrendingUp },
+      { id: "rx-adherence-prediction", name: "Rx Adherence Prediction", icon: Pill },
+      { id: "member-churn", name: "Member Churn", icon: TrendingDown },
+      { id: "employer-renewal-prediction", name: "Employer Renewal Prediction", icon: Calendar },
+      { id: "broker-opportunity-scoring", name: "Broker Opportunity Scoring", icon: Target },
+      { id: "fraud-prediction", name: "Fraud Prediction", icon: Search },
+      { id: "recovery-opportunity-prediction", name: "Recovery Opportunity Prediction", icon: DollarSign },
+      { id: "stop-loss-laser-prediction", name: "Stop-Loss Laser Prediction", icon: Target },
+      { id: "reserve-adequacy", name: "Reserve Adequacy", icon: Shield },
+      { id: "premium-forecasting", name: "Premium Forecasting", icon: TrendingUp },
+      { id: "cash-flow-projection", name: "Cash Flow Projection", icon: DollarSign },
+      { id: "capital-allocation", name: "Capital Allocation Optimization", icon: PieChart },
+      { id: "scenario-generation", name: "Scenario Generation", icon: Workflow },
+      { id: "digital-twin-simulation", name: "Digital Twin Simulation", icon: Cpu },
+      { id: "causal-inference", name: "Causal Inference Engine", icon: GitBranch },
+      { id: "bayesian-forecasting", name: "Bayesian Forecasting", icon: Brain },
+      { id: "reinforcement-learning", name: "Reinforcement Learning Optimization", icon: Zap },
+    ],
   },
   {
     id: "pe-cfo",
@@ -101,8 +195,29 @@ const engineCategories = [
     count: 20,
     color: "from-rose-600 to-red-600",
     icon: Briefcase,
-    description: "EBITDA enhancement, M&A due diligence, synergy valuation, portfolio benchmarking",
-    engines: [],
+    description: "Enterprise value creation, M&A due diligence, and portfolio optimization",
+    engines: [
+      { id: "ebitda-enhancement", name: "EBITDA Enhancement", icon: TrendingUp },
+      { id: "working-capital-impact", name: "Working Capital Impact", icon: DollarSign },
+      { id: "cash-flow-forecasting", name: "Cash Flow Forecasting", icon: Activity },
+      { id: "enterprise-value-creation", name: "Enterprise Value Creation", icon: Award },
+      { id: "acquisition-due-diligence", name: "Acquisition Due Diligence", icon: Search },
+      { id: "portfolio-benchmarking", name: "Portfolio Benchmarking", icon: BarChart3 },
+      { id: "synergy-valuation", name: "Synergy Valuation", icon: DollarSign },
+      { id: "benefit-harmonization", name: "Benefit Harmonization", icon: Users },
+      { id: "integration-cost-modeling", name: "Integration Cost Modeling", icon: Calculator },
+      { id: "capital-efficiency", name: "Capital Efficiency", icon: Target },
+      { id: "margin-improvement", name: "Margin Improvement", icon: TrendingUp },
+      { id: "operating-leverage", name: "Operating Leverage", icon: Activity },
+      { id: "return-on-invested-capital", name: "Return on Invested Capital", icon: Award },
+      { id: "total-rewards-optimization", name: "Total Rewards Optimization", icon: DollarSign },
+      { id: "compensation-benchmarking", name: "Compensation Benchmarking", icon: BarChart3 },
+      { id: "shared-services-valuation", name: "Shared Services Valuation", icon: Building2 },
+      { id: "healthcare-cost-leakage", name: "Healthcare Cost Leakage", icon: Search },
+      { id: "vendor-consolidation", name: "Vendor Consolidation", icon: Building2 },
+      { id: "procurement-optimization", name: "Procurement Optimization", icon: Target },
+      { id: "portfolio-risk-scoring", name: "Portfolio Risk Scoring", icon: Shield },
+    ],
   },
 ];
 
@@ -111,17 +226,17 @@ export default function EnginesPage() {
 
   return (
     <>
-      <Head>
-        <title>Actuarial Intelligence Engines | Kincaid IQ</title>
-        <meta name="description" content="150+ specialized actuarial, economic, governance, and AI decision engines. Universal data feed, modular architecture." />
-      </Head>
+      <SEO
+        title="Actuarial Intelligence Engines | Kincaid IQ"
+        description="125+ specialized actuarial, economic, governance, and AI decision engines. Universal data feed, modular architecture."
+      />
 
       <div className="min-h-screen bg-gradient-to-b from-slate-950 via-slate-900 to-slate-950 relative overflow-hidden">
         {/* Animated background effects */}
         <div className="absolute inset-0 overflow-hidden pointer-events-none">
           <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-cyan-500/20 rounded-full blur-[100px] animate-pulse" />
-          <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-purple-500/20 rounded-full blur-[100px] animate-pulse" style={{ animationDelay: '1s' }} />
-          <div className="absolute top-1/2 left-1/2 w-96 h-96 bg-pink-500/20 rounded-full blur-[100px] animate-pulse" style={{ animationDelay: '2s' }} />
+          <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-purple-500/20 rounded-full blur-[100px] animate-pulse" style={{ animationDelay: "1s" }} />
+          <div className="absolute top-1/2 left-1/2 w-96 h-96 bg-pink-500/20 rounded-full blur-[100px] animate-pulse" style={{ animationDelay: "2s" }} />
         </div>
 
         {/* Hero section */}
@@ -140,7 +255,7 @@ export default function EnginesPage() {
             </h2>
             
             <p className="text-xl md:text-2xl text-gray-300 max-w-4xl mx-auto mb-8">
-              150+ specialized engines. One universal data feed. Modular architecture.
+              125+ specialized engines. One universal data feed. Modular architecture.
             </p>
 
             <div className="flex flex-wrap gap-4 justify-center items-center mb-12">
@@ -204,42 +319,33 @@ export default function EnginesPage() {
                     </div>
 
                     {/* Engine cards grid */}
-                    {category.engines.length > 0 && (
-                      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-3 mt-6">
-                        {category.engines.map((engine) => {
-                          const EngineIcon = engine.icon;
-                          return (
-                            <Link
-                              key={engine.id}
-                              href={`/engines/${engine.id}`}
-                              className="group/card relative">
-                              {/* Neon glow on hover */}
-                              <div className={`absolute -inset-0.5 bg-gradient-to-r ${category.color} rounded-lg opacity-0 group-hover/card:opacity-75 blur transition-all duration-300`} />
-                              
-                              <div className="relative bg-slate-800/50 border border-slate-700/50 rounded-lg p-4 hover:bg-slate-800 transition-all duration-300">
-                                <div className="flex items-start gap-3">
-                                  <div className={`p-2 bg-gradient-to-br ${category.color} rounded-lg transform group-hover/card:scale-110 transition-transform duration-300`}>
-                                    <EngineIcon className="w-4 h-4 text-white" />
-                                  </div>
-                                  <div className="flex-1 min-w-0">
-                                    <h4 className="font-semibold text-white text-sm group-hover/card:text-cyan-400 transition-colors duration-300 leading-tight">
-                                      {engine.name}
-                                    </h4>
-                                  </div>
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-3 mt-6">
+                      {category.engines.map((engine) => {
+                        const EngineIcon = engine.icon;
+                        return (
+                          <Link
+                            key={engine.id}
+                            href={`/engines/${engine.id}`}
+                            className="group/card relative">
+                            {/* Neon glow on hover */}
+                            <div className={`absolute -inset-0.5 bg-gradient-to-r ${category.color} rounded-lg opacity-0 group-hover/card:opacity-75 blur transition-all duration-300`} />
+                            
+                            <div className="relative bg-slate-800/50 border border-slate-700/50 rounded-lg p-4 hover:bg-slate-800 transition-all duration-300">
+                              <div className="flex items-start gap-3">
+                                <div className={`p-2 bg-gradient-to-br ${category.color} rounded-lg transform group-hover/card:scale-110 transition-transform duration-300`}>
+                                  <EngineIcon className="w-4 h-4 text-white" />
+                                </div>
+                                <div className="flex-1 min-w-0">
+                                  <h4 className="font-semibold text-white text-sm group-hover/card:text-cyan-400 transition-colors duration-300 leading-tight">
+                                    {engine.name}
+                                  </h4>
                                 </div>
                               </div>
-                            </Link>
-                          );
-                        })}
-                      </div>
-                    )}
-
-                    {category.engines.length === 0 && (
-                      <div className="mt-6 text-center py-8 bg-slate-800/30 rounded-xl border border-slate-700/30">
-                        <p className="text-gray-400 mb-2">Coming Soon</p>
-                        <p className="text-sm text-gray-500">Building {category.count}+ engines in this domain</p>
-                      </div>
-                    )}
+                            </div>
+                          </Link>
+                        );
+                      })}
+                    </div>
                   </div>
                 </div>
               );
@@ -256,7 +362,7 @@ export default function EnginesPage() {
                   <span className="text-cyan-300 font-medium">Universal SDK</span>
                 </div>
                 <h3 className="text-3xl font-bold text-white mb-3">
-                  One Data Feed. 150+ Engines.
+                  One Data Feed. 125+ Engines.
                 </h3>
                 <p className="text-gray-300 max-w-2xl mx-auto">
                   Upload once. Medical claims, Rx claims, member census, contracts, financials → normalized to universal schema → routed to all applicable engines automatically.
@@ -645,8 +751,8 @@ export default function EnginesPage() {
                   <div className="text-sm text-neutral-400">Specialized Engines</div>
                 </div>
                 <div className="text-center">
-                  <div className="text-4xl font-bold text-[#B8860B] mb-2">7</div>
-                  <div className="text-sm text-neutral-400">Major Categories</div>
+                  <div className="text-4xl font-bold text-[#B8860B] mb-2">6</div>
+                  <div className="text-sm text-neutral-400">Major Domains</div>
                 </div>
                 <div className="text-center">
                   <div className="text-4xl font-bold text-[#B8860B] mb-2">100%</div>

@@ -190,6 +190,10 @@ export default function HomePage() {
                   Enterprise-grade PBM transparency, claims analytics, and fiduciary governance. 
                   Real-time cost intelligence that actually works.
                 </p>
+                <p className="text-lg text-neutral-400 mb-8 max-w-2xl">
+                  Kincaid Health turns healthcare data chaos into defensible intelligence. 
+                  Built for CFOs, actuaries, and boards who need answers—not dashboards.
+                </p>
               </motion.div>
 
               <div className="border border-[#2A3F54] bg-[#151B23] rounded-lg p-5 flex items-center justify-between gap-4 max-w-2xl">
@@ -292,7 +296,7 @@ export default function HomePage() {
                   Works <span className="text-emerald-400">with</span> your consultant.
                 </h2>
                 <p className="text-xl text-neutral-400 max-w-3xl mx-auto">
-                  Kincaid Health is the fiduciary-grade AI platform that gives
+                  Kincaid Health is the fiduciary-grade AI platform that elevates your consultant's strategic value.
                 </p>
               </div>
 
@@ -406,7 +410,7 @@ export default function HomePage() {
                   </div>
                 </div>
 
-                {/* SiriusB iQ Approach */}
+                {/* Kincaid Health Approach */}
                 <div className="bg-gradient-to-br from-emerald-500/10 to-teal-500/10 border border-emerald-500/30 rounded-xl p-8">
                   <div className="flex items-center gap-3 mb-6">
                     <div className="w-12 h-12 rounded-full bg-emerald-500/20 flex items-center justify-center">

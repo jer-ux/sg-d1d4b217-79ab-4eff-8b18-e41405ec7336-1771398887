@@ -9,7 +9,7 @@ import {
   Shield, FileText, Code, Brain, Lock, LineChart, Building2, CheckCircle2,
   Zap, Award, Pill, Dna, MapPin, Calendar, Briefcase, Heart, TrendingDown,
   Globe, Microscope, Factory, Truck, Home, School, Cpu, GitBranch, Scale,
-  FileCheck, Eye, Search, Calculator, PieChart, Workflow
+  FileCheck, Eye, Search, Calculator, PieChart, Workflow, Package
 } from "lucide-react";
 import { SEO } from "@/components/SEO";
 import { Badge } from "@/components/ui/badge";

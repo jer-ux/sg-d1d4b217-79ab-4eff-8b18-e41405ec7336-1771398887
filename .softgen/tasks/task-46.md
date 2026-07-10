@@ -1,6 +1,6 @@
 ---
 title: Las Vegas Engine Template & Design System
-status: in_progress
+status: done
 priority: urgent
 type: feature
 tags: [engines, design-system, template]
@@ -15,7 +15,7 @@ Create the foundational design system and reusable template for all 125+ engine 
 ## Checklist
 - [x] Define Vegas color palette (neon pink, electric blue, gold, purple)
 - [x] Create EngineDetailTemplate component with sections: Overview, Technical Specs, Mathematical Model, Data Flows, Use Cases
-- [x] Build first 3 reference engines: Medical Trend Forecasting, EBITDA Enhancement, Large Claimant Prediction
+- [x] Build first 4 reference engines: Medical Trend Forecasting, EBITDA Enhancement, Large Claimant Prediction, Monte Carlo Forecasting
 
 ## Acceptance
 - Template component is reusable for any engine

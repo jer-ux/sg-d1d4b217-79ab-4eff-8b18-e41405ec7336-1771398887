@@ -3,23 +3,49 @@ title: Build 20 Actuarial Engine Pages
 status: in_progress
 priority: high
 type: feature
-tags: [engines, actuarial, platform]
+tags: [engines, actuarial, documentation]
 created_by: agent
-created_at: 2026-07-10T04:56:34Z
-position: 45
+created_at: 2026-07-10T04:59:00Z
+position: 1
 ---
 
 ## Notes
-Build 20 specialized actuarial engine pages showcasing Kincaid Health's analytical capabilities. Each engine page should detail methodology, inputs, outputs, and real-world use cases.
+Building 20 specialized actuarial engine pages from the Financial & Trend Engines category. Each page includes:
+- Problem statement with real-world context
+- Detailed methodology (step-by-step how it works)
+- Required inputs
+- Engine outputs
+- Real-world use cases
+- CTA for demo request
+
+Added "Engines" link to navbar between Tools and existing sections.
 
 ## Checklist
-- [x] Create task file
-- [ ] Create /engines directory structure
-- [ ] Add "Engines" to navbar
-- [ ] Build engine index page listing all 20 engines
-- [ ] Create individual pages for Financial & Trend Engines (20 pages)
+- [x] Create /engines index page with all 20 engine cards
+- [x] Add "Engines" link to navbar
+- [x] Create Medical Trend Forecasting engine page
+- [x] Create Rx Trend Forecasting engine page
+- [x] Create Catastrophic Claims Forecasting engine page
+- [ ] Create remaining 17 engine pages:
+  - High-cost claimant prediction
+  - GLP-1 financial impact modeling
+  - Gene therapy exposure modeling
+  - Oncology cost projection
+  - Inflation decomposition
+  - Provider unit cost trend
+  - Utilization trend engine
+  - Geographic normalization
+  - Age/gender risk adjustment
+  - Case mix adjustment
+  - PMPM normalization
+  - PEPY normalization
+  - Seasonality adjustment
+  - Credibility weighting
+  - Monte Carlo forecasting
+  - Dental trend analysis
+  - Vision trend analysis
 
 ## Acceptance
-- User can navigate to "Engines" from navbar
-- Each engine has dedicated page with methodology documentation
+- All 20 Financial & Trend engine pages are accessible via /engines
+- Each page follows consistent structure with methodology documentation
 - All 20 engines are accessible and properly documented

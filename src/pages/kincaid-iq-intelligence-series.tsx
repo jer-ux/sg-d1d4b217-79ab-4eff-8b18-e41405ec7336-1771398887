@@ -13,6 +13,7 @@ import Nav from "@/components/Nav";
 import Footer from "@/components/Footer";
 import { SEO } from "@/components/SEO";
 import { INDIVIDUAL_REPORTS, ENTERPRISE_REPORTS, type IndividualReport, type EnterpriseReport } from "@/lib/pricing/individual-reports";
+import { IntelligenceCheckoutModal } from "@/components/IntelligenceCheckoutModal";
 
 // Mock Live Stream Data
 const initialAuditEvents = [
@@ -23,11 +24,16 @@ const initialAuditEvents = [
   { id: 5, time: "40 mins ago", plan: "Texan Energy Partners", type: "Specialty Pharmacy Spread", desc: "Buy-and-bill drug billed via PBM-owned specialty portal at 28% markup", loss: "$31,700", severity: "high" },
 ];
 
+type PriceRange = "all" | "0-5k" | "5k-20k" | "20k-50k" | "50k+";
+
 export default function KincaidIQIntelligenceSeries() {
   const [selectedCategory, setSelectedCategory] = useState<string>("all");
   const [selectedTier, setSelectedTier] = useState<"individual" | "enterprise" | "all">("all");
+  const [selectedPriceRange, setSelectedPriceRange] = useState<PriceRange>("all");
   const [activeTab, setActiveTab] = useState<"reports" | "live-stream">("reports");
   const [mounted, setMounted] = useState(false);
+  const [checkoutModalOpen, setCheckoutModalOpen] = useState(false);
+  const [selectedReport, setSelectedReport] = useState<IndividualReport | null>(null);
 
   // Live Stream state
   const [auditEvents, setAuditEvents] = useState(initialAuditEvents);
@@ -36,6 +42,11 @@ export default function KincaidIQIntelligenceSeries() {
   useEffect(() => {
     setMounted(true);
   }, []);
+
+  const handleOrderClick = (report: IndividualReport) => {
+    setSelectedReport(report);
+    setCheckoutModalOpen(true);
+  };
 
   const triggerMockAlertRefresh = () => {
     setIsRefreshing(true);
@@ -80,6 +91,16 @@ export default function KincaidIQIntelligenceSeries() {
     return ["all", ...Array.from(cats).sort()];
   }, []);
 
+  // Price range filter helper
+  const filterByPriceRange = (price: number, range: PriceRange): boolean => {
+    if (range === "all") return true;
+    if (range === "0-5k") return price <= 5000;
+    if (range === "5k-20k") return price > 5000 && price <= 20000;
+    if (range === "20k-50k") return price > 20000 && price <= 50000;
+    if (range === "50k+") return price > 50000;
+    return true;
+  };
+
   // Filter reports
   const filteredReports = useMemo(() => {
     let reports = allReports;
@@ -93,9 +114,14 @@ export default function KincaidIQIntelligenceSeries() {
     if (selectedCategory !== "all") {
       reports = reports.filter(r => r.category === selectedCategory);
     }
+
+    // Filter by price range
+    if (selectedPriceRange !== "all") {
+      reports = reports.filter(r => filterByPriceRange(r.price, selectedPriceRange));
+    }
     
     return reports;
-  }, [allReports, selectedCategory, selectedTier]);
+  }, [allReports, selectedCategory, selectedTier, selectedPriceRange]);
 
   const formatCurrency = (amount: number) => {
     return new Intl.NumberFormat("en-US", {
@@ -323,6 +349,27 @@ export default function KincaidIQIntelligenceSeries() {
                       }`}
                     >
                       {category === "all" ? "All Categories" : category}
+                    </button>
+                  ))}
+                </div>
+
+                {/* Price Range Filter */}
+                <div className="flex items-center gap-3 overflow-x-auto">
+                  <span className="text-sm font-medium text-neutral-400 whitespace-nowrap flex items-center gap-1">
+                    <DollarSign className="w-4 h-4" />
+                    Price:
+                  </span>
+                  {(["all", "0-5k", "5k-20k", "20k-50k", "50k+"] as const).map((range) => (
+                    <button
+                      key={range}
+                      onClick={() => setSelectedPriceRange(range)}
+                      className={`px-4 py-2 rounded border text-sm font-medium whitespace-nowrap transition-colors ${
+                        selectedPriceRange === range
+                          ? "bg-[#1A3A52] text-white border-[#1A3A52]"
+                          : "bg-[#0F1419] text-neutral-300 border-[#2A3F54] hover:border-[#3A4F64] hover:bg-[#151B23]"
+                      }`}
+                    >
+                      {range === "all" ? "All Prices" : range === "0-5k" ? "$0 - $5K" : range === "5k-20k" ? "$5K - $20K" : range === "20k-50k" ? "$20K - $50K" : "$50K+"}
                     </button>
                   ))}
                 </div>
@@ -588,6 +635,18 @@ export default function KincaidIQIntelligenceSeries() {
             </div>
           </div>
         </section>
+
+        {/* Checkout Modal */}
+        {selectedReport && (
+          <IntelligenceCheckoutModal
+            report={selectedReport}
+            isOpen={checkoutModalOpen}
+            onClose={() => {
+              setCheckoutModalOpen(false);
+              setSelectedReport(null);
+            }}
+          />
+        )}
       </main>
 
       <Footer />

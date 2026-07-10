@@ -123,8 +123,8 @@ export default function PlatformOverviewPage() {
   return (
     <>
       <SEO
-        title="Platform Overview — Kincaid Health"
-        description="Kincaid Health is the enterprise intelligence platform that transforms healthcare cost management with AI-powered intelligence and evidence-based accountability."
+        title="Platform Overview | Kincaid Health"
+        description="Comprehensive overview of the Kincaid Health healthcare intelligence platform - architecture, capabilities, and integration ecosystem."
       />
       <SiteHeader />
       <Nav />
@@ -181,12 +181,12 @@ export default function PlatformOverviewPage() {
                 <Cpu className="h-5 w-5 text-purple-400" />
               </motion.div>
 
-              <h1 className="text-6xl md:text-8xl font-bold mb-6 bg-gradient-to-r from-blue-400 via-purple-400 to-cyan-400 bg-clip-text text-transparent">
-                Platform Overview
+              <h1 className="text-4xl md:text-6xl font-serif font-bold mb-6">
+                The Kincaid Health Platform
               </h1>
-              <p className="text-xl md:text-2xl text-gray-300 max-w-4xl mx-auto mb-12">
-                The AI-powered intelligence platform transforming health economics and benefits management
-                through real-time analytics, enterprise security, and seamless integration
+              <p className="text-xl md:text-2xl text-gray-300 max-w-3xl leading-relaxed">
+                Enterprise healthcare intelligence infrastructure designed for continuous 
+                fiduciary oversight and algorithmic cost management.
               </p>
 
               {/* CTA Buttons */}

@@ -758,8 +758,8 @@ export default function PlatformPage() {
         <title>Platform Overview - SiriusB iQ AI Data Sciences Lab</title>
       </Head>
       <SEO 
-        title="Platform Overview — Kincaid Health"
-        description="Kincaid Health transforms healthcare benefits management with AI-powered analytics, contract intelligence, and real-time monitoring."
+        title="Kincaid Health Platform | Healthcare Intelligence & PBM Analytics"
+        description="Comprehensive healthcare intelligence platform combining real-time claims monitoring, contract enforcement, actuarial modeling, and fiduciary documentation."
       />
       
       <Nav />
@@ -839,11 +839,20 @@ export default function PlatformPage() {
             transition={{ duration: 0.6 }}
           >
             <div className="text-xs tracking-[0.2em] text-blue-400/70 uppercase mb-4">Platform</div>
-            <h1 className="text-5xl md:text-6xl font-bold bg-gradient-to-r from-blue-400 via-purple-400 to-pink-400 bg-clip-text text-transparent mb-6 leading-tight">
-              Kincaid Health Platform
+            <h1 className="text-5xl md:text-6xl font-serif font-bold mb-6 leading-tight">
+              The Kincaid Health<br/>
+              <span className="bg-gradient-to-r from-blue-400 via-cyan-400 to-teal-400 bg-clip-text text-transparent">
+                Intelligence Platform
+              </span>
             </h1>
             <p className="text-lg text-white/70 max-w-3xl leading-relaxed mb-8">
               The Kincaid Health Platform is the enterprise healthcare intelligence system
+            </p>
+            <p className="text-lg text-white/70 max-w-3xl leading-relaxed mb-8">
+              Kincaid Health is the world's first algorithmic fiduciary intelligence platform—
+              a unified system that continuously ingests healthcare data, applies AI-driven 
+              analysis in real-time, and surfaces actionable insights through role-specific 
+              command centers.
             </p>
 
             <div className="flex flex-wrap gap-3 mb-12">

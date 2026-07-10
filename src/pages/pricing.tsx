@@ -20,8 +20,8 @@ export default function PricingPage() {
       </Head>
 
       <SEO
-        title="Kincaid Health Pricing - Transparent, Fiduciary-First Healthcare Intelligence"
-        description="Enterprise pricing for continuous forensic intelligence. No hidden fees, no commission conflicts. Pay for protection, not PBM profits."
+        title="Pricing | Kincaid Health"
+        description="Transparent pricing for enterprise healthcare intelligence. Simple plans starting at $12,500/year for continuous PBM monitoring and fiduciary documentation."
       />
 
       <Nav />
@@ -33,12 +33,13 @@ export default function PricingPage() {
         <section className="relative pt-32 pb-20 px-4 overflow-hidden">
           <div className="absolute inset-0 bg-gradient-to-b from-purple-900/20 to-black" />
           <div className="relative max-w-5xl mx-auto text-center">
-            <h1 className="text-5xl md:text-6xl font-bold mb-6 bg-gradient-to-r from-purple-400 via-pink-400 to-red-400 bg-clip-text text-transparent">
-              Transparent Pricing
+            <h1 className="text-4xl md:text-6xl font-bold mb-6">
+              Simple, Transparent Pricing
             </h1>
             
-            <p className="text-xl text-gray-300 mb-8 max-w-3xl mx-auto">
-              No hidden fees. No surprise charges. Just straightforward pricing for PBM contract forensic analysis.
+            <p className="text-xl text-gray-300 max-w-2xl mx-auto">
+              Kincaid Health delivers enterprise-grade healthcare intelligence at a fraction 
+              of traditional consulting costs.
             </p>
           </div>
         </section>

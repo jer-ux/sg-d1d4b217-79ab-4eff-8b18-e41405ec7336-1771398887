@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Activity, Zap, AlertTriangle, Eye, ArrowRight, Radio } from "lucide-react";
 import Link from "next/link";
 import { motion } from "framer-motion";
+import { FiduciaryPillarsSection } from "@/components/FiduciaryPillarsSection";
 
 export default function RealtimeClaimsSurveillance() {
   return (
@@ -189,6 +190,9 @@ export default function RealtimeClaimsSurveillance() {
             </div>
           </div>
         </section>
+
+        {/* 8 Pillars Navigation */}
+        <FiduciaryPillarsSection />
 
         <section className="py-20 border-t border-[#1F2937]">
           <div className="max-w-4xl mx-auto px-6 text-center">

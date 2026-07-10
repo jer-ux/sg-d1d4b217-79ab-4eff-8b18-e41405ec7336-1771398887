@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import { TrendingUp, BarChart3, Target, Zap, ArrowRight, Activity } from "lucide-react";
 import Link from "next/link";
 import { motion } from "framer-motion";
+import { FiduciaryPillarsSection } from "@/components/FiduciaryPillarsSection";
 
 export default function ActuarialRiskModeling() {
   return (
@@ -166,6 +167,9 @@ export default function ActuarialRiskModeling() {
             </div>
           </div>
         </section>
+
+        {/* 8 Pillars Navigation */}
+        <FiduciaryPillarsSection />
 
         <section className="py-20 border-t border-[#1F2937]">
           <div className="max-w-4xl mx-auto px-6 text-center">

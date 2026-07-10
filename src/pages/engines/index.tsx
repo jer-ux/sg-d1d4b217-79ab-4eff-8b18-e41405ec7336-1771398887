@@ -3,7 +3,7 @@ import Link from "next/link";
 import { 
   TrendingUp, Pill, AlertTriangle, Target, Activity, Dna, 
   DollarSign, MapPin, Users, Calendar, Database, BarChart3,
-  Shield, FileText, Award, Brain, Briefcase, LineChart
+  Shield, FileText, Award, Brain, Briefcase, LineChart, Building2, CheckCircle2
 } from "lucide-react";
 import Footer from "@/components/Footer";
 
@@ -294,6 +294,348 @@ export default function EnginesIndex() {
           </div>
         </div>
       </div>
+
+      {/* Comprehensive Engine Catalog */}
+      <section className="py-24 border-t border-neutral-800">
+        <div className="container mx-auto px-4 max-w-7xl">
+          <AnimatedSection className="mb-16 text-center space-y-4">
+            <span className="text-xs font-mono text-[#B8860B] uppercase tracking-widest font-semibold">
+              125+ Specialized Engines
+            </span>
+            <h2 className="text-4xl md:text-5xl lg:text-6xl font-serif font-bold bg-gradient-to-r from-white via-neutral-100 to-neutral-300 bg-clip-text text-transparent">
+              The Actuarial Intelligence Operating System
+            </h2>
+            <p className="text-neutral-400 text-lg leading-relaxed max-w-3xl mx-auto">
+              Rather than one monolithic engine, Kincaid IQ is architected as a modular intelligence platform composed of specialized computational engines—each purpose-built for specific healthcare, financial, and governance domains.
+            </p>
+          </AnimatedSection>
+
+          <div className="grid gap-8">
+            {/* Financial & Trend Engines */}
+            <AnimatedSection>
+              <div className="bg-gradient-to-br from-[#0F1419] to-[#151B23] border border-[#2A3F54] rounded-2xl p-8 shadow-2xl">
+                <div className="flex items-start gap-4 mb-6">
+                  <div className="p-3 bg-gradient-to-br from-[#1A3A52] to-[#234766] rounded-xl">
+                    <TrendingUp className="h-6 w-6 text-[#B8860B]" />
+                  </div>
+                  <div>
+                    <h3 className="text-2xl font-serif font-bold text-white mb-2">
+                      Financial & Trend Engines (20+)
+                    </h3>
+                    <p className="text-neutral-400 text-sm">
+                      Actuarial-grade forecasting, normalization, and credibility-weighted trend analysis
+                    </p>
+                  </div>
+                </div>
+                <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-3">
+                  {[
+                    "Medical trend forecasting",
+                    "Rx trend forecasting",
+                    "Dental trend analysis",
+                    "Vision trend analysis",
+                    "Catastrophic claims forecasting",
+                    "High-cost claimant prediction",
+                    "GLP-1 financial impact modeling",
+                    "Gene therapy exposure modeling",
+                    "Oncology cost projection",
+                    "Inflation decomposition",
+                    "Provider unit cost trend",
+                    "Utilization trend engine",
+                    "Geographic normalization",
+                    "Age/gender risk adjustment",
+                    "Case mix adjustment",
+                    "PMPM normalization",
+                    "PEPY normalization",
+                    "Seasonality adjustment",
+                    "Credibility weighting",
+                    "Monte Carlo forecasting"
+                  ].map((engine, i) => (
+                    <div key={i} className="flex items-center gap-2 text-neutral-300 text-sm">
+                      <CheckCircle2 className="h-4 w-4 text-emerald-400 flex-shrink-0" />
+                      <span>{engine}</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </AnimatedSection>
+
+            {/* Healthcare Economics Engines */}
+            <AnimatedSection>
+              <div className="bg-gradient-to-br from-[#0F1419] to-[#151B23] border border-[#2A3F54] rounded-2xl p-8 shadow-2xl">
+                <div className="flex items-start gap-4 mb-6">
+                  <div className="p-3 bg-gradient-to-br from-[#1A3A52] to-[#234766] rounded-xl">
+                    <DollarSign className="h-6 w-6 text-[#B8860B]" />
+                  </div>
+                  <div>
+                    <h3 className="text-2xl font-serif font-bold text-white mb-2">
+                      Healthcare Economics Engines (20+)
+                    </h3>
+                    <p className="text-neutral-400 text-sm">
+                      Economic modeling, payment integrity, and strategic cost optimization
+                    </p>
+                  </div>
+                </div>
+                <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-3">
+                  {[
+                    "Site-of-care migration",
+                    "Network disruption modeling",
+                    "Reference-based pricing savings",
+                    "Direct contracting valuation",
+                    "Centers of Excellence ROI",
+                    "Bundled payment modeling",
+                    "Payment integrity analysis",
+                    "Waste, fraud, and abuse detection",
+                    "Episode-of-care valuation",
+                    "Specialty pharmacy economics",
+                    "Biosimilar adoption modeling",
+                    "Drug pipeline forecasting",
+                    "Rebate optimization",
+                    "PBM spread pricing detection",
+                    "Employer cost shifting",
+                    "Member cost burden",
+                    "Benefit richness scoring",
+                    "Cost elasticity",
+                    "Plan migration simulation",
+                    "Healthcare inflation attribution"
+                  ].map((engine, i) => (
+                    <div key={i} className="flex items-center gap-2 text-neutral-300 text-sm">
+                      <CheckCircle2 className="h-4 w-4 text-emerald-400 flex-shrink-0" />
+                      <span>{engine}</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </AnimatedSection>
+
+            {/* Fiduciary & Governance Engines */}
+            <AnimatedSection>
+              <div className="bg-gradient-to-br from-[#0F1419] to-[#151B23] border border-[#2A3F54] rounded-2xl p-8 shadow-2xl">
+                <div className="flex items-start gap-4 mb-6">
+                  <div className="p-3 bg-gradient-to-br from-[#1A3A52] to-[#234766] rounded-xl">
+                    <Shield className="h-6 w-6 text-[#B8860B]" />
+                  </div>
+                  <div>
+                    <h3 className="text-2xl font-serif font-bold text-white mb-2">
+                      Fiduciary & Governance Engines (25+)
+                    </h3>
+                    <p className="text-neutral-400 text-sm">
+                      ERISA compliance, vendor transparency, and board-level governance scoring
+                    </p>
+                  </div>
+                </div>
+                <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-3">
+                  {[
+                    "ERISA fiduciary risk scoring",
+                    "PBM contract scoring",
+                    "Stop-loss contract scoring",
+                    "TPA governance scoring",
+                    "Vendor compensation transparency",
+                    "Hidden revenue detection",
+                    "Conflict-of-interest analysis",
+                    "Audit readiness scoring",
+                    "Governance maturity assessment",
+                    "Board oversight scoring",
+                    "AI governance assessment",
+                    "Compliance monitoring",
+                    "Regulatory exposure",
+                    "Litigation probability",
+                    "Documentation completeness",
+                    "Decision traceability",
+                    "Procurement integrity",
+                    "Contract language risk",
+                    "Benchmark deviation analysis",
+                    "Fiduciary evidence generation",
+                    "Board reporting engine",
+                    "Internal controls assessment",
+                    "Third-party oversight scoring",
+                    "Procurement fairness analysis",
+                    "Policy compliance engine"
+                  ].map((engine, i) => (
+                    <div key={i} className="flex items-center gap-2 text-neutral-300 text-sm">
+                      <CheckCircle2 className="h-4 w-4 text-emerald-400 flex-shrink-0" />
+                      <span>{engine}</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </AnimatedSection>
+
+            {/* Workforce & Human Capital Engines */}
+            <AnimatedSection>
+              <div className="bg-gradient-to-br from-[#0F1419] to-[#151B23] border border-[#2A3F54] rounded-2xl p-8 shadow-2xl">
+                <div className="flex items-start gap-4 mb-6">
+                  <div className="p-3 bg-gradient-to-br from-[#1A3A52] to-[#234766] rounded-xl">
+                    <Users className="h-6 w-6 text-[#B8860B]" />
+                  </div>
+                  <div>
+                    <h3 className="text-2xl font-serif font-bold text-white mb-2">
+                      Workforce & Human Capital Engines (20+)
+                    </h3>
+                    <p className="text-neutral-400 text-sm">
+                      Population health, productivity analytics, and workforce risk modeling
+                    </p>
+                  </div>
+                </div>
+                <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-3">
+                  {[
+                    "Workforce health risk",
+                    "Absenteeism forecasting",
+                    "Presenteeism impact",
+                    "Productivity loss valuation",
+                    "Workforce demographic projections",
+                    "Retirement forecasting",
+                    "Disability incidence",
+                    "Behavioral health utilization",
+                    "Population health segmentation",
+                    "Benefit engagement",
+                    "Employee lifetime value",
+                    "Health equity analysis",
+                    "Workforce resilience",
+                    "Burnout prediction",
+                    "Claims risk segmentation",
+                    "Disease burden forecasting",
+                    "Preventive care optimization",
+                    "Wellness ROI",
+                    "Benefit strategy optimization",
+                    "Workforce financial stress"
+                  ].map((engine, i) => (
+                    <div key={i} className="flex items-center gap-2 text-neutral-300 text-sm">
+                      <CheckCircle2 className="h-4 w-4 text-emerald-400 flex-shrink-0" />
+                      <span>{engine}</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </AnimatedSection>
+
+            {/* Predictive AI Engines */}
+            <AnimatedSection>
+              <div className="bg-gradient-to-br from-[#0F1419] to-[#151B23] border border-[#2A3F54] rounded-2xl p-8 shadow-2xl">
+                <div className="flex items-start gap-4 mb-6">
+                  <div className="p-3 bg-gradient-to-br from-[#1A3A52] to-[#234766] rounded-xl">
+                    <Brain className="h-6 w-6 text-[#B8860B]" />
+                  </div>
+                  <div>
+                    <h3 className="text-2xl font-serif font-bold text-white mb-2">
+                      Predictive AI Engines (20+)
+                    </h3>
+                    <p className="text-neutral-400 text-sm">
+                      Machine learning models, digital twins, and Bayesian forecasting
+                    </p>
+                  </div>
+                </div>
+                <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-3">
+                  {[
+                    "Large claimant prediction",
+                    "Hospital admission prediction",
+                    "Readmission prediction",
+                    "Chronic disease progression",
+                    "Rx adherence prediction",
+                    "Member churn",
+                    "Employer renewal prediction",
+                    "Broker opportunity scoring",
+                    "Fraud prediction",
+                    "Recovery opportunity prediction",
+                    "Stop-loss laser prediction",
+                    "Reserve adequacy",
+                    "Premium forecasting",
+                    "Cash flow projection",
+                    "Capital allocation optimization",
+                    "Scenario generation",
+                    "Digital twin simulation",
+                    "Causal inference engine",
+                    "Bayesian forecasting",
+                    "Reinforcement learning optimization"
+                  ].map((engine, i) => (
+                    <div key={i} className="flex items-center gap-2 text-neutral-300 text-sm">
+                      <CheckCircle2 className="h-4 w-4 text-emerald-400 flex-shrink-0" />
+                      <span>{engine}</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </AnimatedSection>
+
+            {/* Private Equity & CFO Engines */}
+            <AnimatedSection>
+              <div className="bg-gradient-to-br from-[#0F1419] to-[#151B23] border border-[#2A3F54] rounded-2xl p-8 shadow-2xl">
+                <div className="flex items-start gap-4 mb-6">
+                  <div className="p-3 bg-gradient-to-br from-[#1A3A52] to-[#234766] rounded-xl">
+                    <Building2 className="h-6 w-6 text-[#B8860B]" />
+                  </div>
+                  <div>
+                    <h3 className="text-2xl font-serif font-bold text-white mb-2">
+                      Private Equity & CFO Engines (20+)
+                    </h3>
+                    <p className="text-neutral-400 text-sm">
+                      Enterprise value creation, M&A due diligence, and portfolio optimization
+                    </p>
+                  </div>
+                </div>
+                <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-3">
+                  {[
+                    "EBITDA enhancement",
+                    "Working capital impact",
+                    "Cash flow forecasting",
+                    "Enterprise value creation",
+                    "Acquisition due diligence",
+                    "Portfolio benchmarking",
+                    "Synergy valuation",
+                    "Benefit harmonization",
+                    "Integration cost modeling",
+                    "Capital efficiency",
+                    "Margin improvement",
+                    "Operating leverage",
+                    "Return on invested capital",
+                    "Total rewards optimization",
+                    "Compensation benchmarking",
+                    "Shared services valuation",
+                    "Healthcare cost leakage",
+                    "Vendor consolidation",
+                    "Procurement optimization",
+                    "Portfolio risk scoring"
+                  ].map((engine, i) => (
+                    <div key={i} className="flex items-center gap-2 text-neutral-300 text-sm">
+                      <CheckCircle2 className="h-4 w-4 text-emerald-400 flex-shrink-0" />
+                      <span>{engine}</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </AnimatedSection>
+          </div>
+
+          {/* Vision Statement */}
+          <AnimatedSection className="mt-16">
+            <div className="bg-gradient-to-br from-[#1A3A52]/20 to-[#234766]/20 border border-[#B8860B]/30 rounded-2xl p-12 text-center">
+              <h3 className="text-3xl font-serif font-bold text-white mb-4">
+                An Actuarial Intelligence Operating System
+              </h3>
+              <p className="text-neutral-300 text-lg leading-relaxed max-w-4xl mx-auto mb-8">
+                Rather than thinking of Kincaid IQ as "one actuarial engine," we've architected it as a composable intelligence platform. Each specialized engine can operate independently or be orchestrated together to solve complex enterprise challenges—from ERISA fiduciary compliance to private equity value creation to CFO-level financial forecasting.
+              </p>
+              <div className="grid md:grid-cols-4 gap-6 max-w-4xl mx-auto">
+                <div className="text-center">
+                  <div className="text-4xl font-bold text-[#B8860B] mb-2">125+</div>
+                  <div className="text-sm text-neutral-400">Specialized Engines</div>
+                </div>
+                <div className="text-center">
+                  <div className="text-4xl font-bold text-[#B8860B] mb-2">7</div>
+                  <div className="text-sm text-neutral-400">Major Categories</div>
+                </div>
+                <div className="text-center">
+                  <div className="text-4xl font-bold text-[#B8860B] mb-2">100%</div>
+                  <div className="text-sm text-neutral-400">Modular Architecture</div>
+                </div>
+                <div className="text-center">
+                  <div className="text-4xl font-bold text-[#B8860B] mb-2">∞</div>
+                  <div className="text-sm text-neutral-400">Composable Workflows</div>
+                </div>
+              </div>
+            </div>
+          </AnimatedSection>
+        </div>
+      </section>
 
       <Footer />
 

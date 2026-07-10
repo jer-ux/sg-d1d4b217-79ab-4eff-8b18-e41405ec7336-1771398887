@@ -371,7 +371,7 @@ export default function MarkCubanCostDrugs() {
   return (
     <>
       <Head>
-        <title>National Benchmarking & Cost Plus Auditing | SiriusB iQ</title>
+        <title>National Benchmarking & Cost Plus Auditing | Kincaid Health</title>
         <meta name="description" content="Industrial-grade national PBM benchmarking tool comparing claims against Mark Cuban Cost Plus Drugs standard pricing indices." />
       </Head>
 

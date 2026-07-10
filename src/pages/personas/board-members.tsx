@@ -159,7 +159,7 @@ const complianceFramework = [
       "Evidence receipts for all material decisions with source data and methodology",
       "Independent expert consultation when specialized knowledge is required"
     ],
-    validation: "SiriusB iQ automates quarterly benchmarking, tracks guarantee compliance in real-time, generates evidence receipts with immutable audit trails, and provides board-ready summaries — fulfilling prudence duty at algorithmic scale without manual overhead.",
+    validation: "Kincaid Health automates quarterly benchmarking, tracks guarantee compliance in real-time, generates evidence receipts with immutable audit trails, and provides board-ready summaries — fulfilling prudence duty at algorithmic scale without manual overhead.",
     caselaw: "Tibble v. Edison (2015): Ongoing duty to monitor investments and remove imprudent options"
   },
   {
@@ -439,7 +439,9 @@ export default function BoardMembersPage() {
                   </p>
                   
                   <p className="text-lg text-purple-300/80 mb-10">
-                    SiriusB iQ provides board-ready governance infrastructure: real-time algorithmic monitoring, immutable evidence receipts, and pre-assembled DOL audit packages — so you fulfill your fiduciary duty with documented precision, not consultant promises and hope.
+                    Kincaid Health delivers board-ready intelligence with cryptographically verified 
+                    evidence trails, enabling you to fulfill your fiduciary duties with confidence 
+                    and defend decisions with mathematical precision.
                   </p>
 
                   <div className="flex flex-col sm:flex-row gap-4">

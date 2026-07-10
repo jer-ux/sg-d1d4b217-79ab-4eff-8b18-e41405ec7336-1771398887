@@ -61,7 +61,7 @@ const financialRisks = [
     analogy: "Like sending a friend to cash a $100 manufacturer rebate check for your TV, and they only hand you $60 back, claiming the other $40 was a 'retention handling fee'.",
     description: "Drug manufacturers pay massive cash incentives (rebates) for specialty medications. PBMs hide these under custom labels like 'administrative fees' so they don't have to pass them back to you.",
     reality: "If your contract doesn't explicitly guarantee '100% pass-through of all manufacturer revenue streams', your PBM is legally pocketing your rebates.",
-    solution: "SiriusB iQ forces full rebate transparency, tracking every manufacturer dollar down to the exact National Drug Code (NDC)."
+    solution: "Kincaid Health forces full rebate transparency, tracking every manufacturer dollar down to the exact National Drug Code (NDC)."
   },
   {
     title: "Personal Liability (The Yale/MIT Wakeup Call)",
@@ -174,7 +174,7 @@ export default function CFOPage() {
   return (
     <>
       <Head>
-        <title>For CFOs: Plain-English EBITDA Defense & Cost Optimization | SiriusB iQ</title>
+        <title>For CFOs: Plain-English EBITDA Defense & Cost Optimization | Kincaid Health</title>
         <meta
           name="description"
           content="Identify 15-25% in recoverable pharmacy spend with simple, automated contract forensics. Protect your company from fiduciary liability."
@@ -874,7 +874,7 @@ export default function CFOPage() {
                   </Link>
                   
                   <p className="text-xs text-center text-emerald-200">
-                    By submitting, you agree to receive communications about SiriusB iQ cost optimization solutions. Unsubscribe anytime.
+                    By submitting, you agree to receive communications about Kincaid Health cost optimization solutions. Unsubscribe anytime.
                   </p>
                 </form>
               </div>

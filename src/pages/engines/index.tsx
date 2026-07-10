@@ -6,6 +6,50 @@ import {
   Shield, FileText, Award, Brain, Briefcase, LineChart, Building2, CheckCircle2
 } from "lucide-react";
 import Footer from "@/components/Footer";
+import { useRouter } from "next/router";
+import { motion, useInView } from "framer-motion";
+import { useRef } from "react";
+import {
+  TrendingUp,
+  DollarSign,
+  Shield,
+  Users,
+  Brain,
+  Building2,
+  CheckCircle2,
+  Activity,
+  BarChart3,
+  LineChart,
+  Target,
+  Zap,
+  Lock,
+  Database,
+  Code,
+  Settings,
+  FileText,
+  AlertTriangle
+} from "lucide-react";
+import { SEO } from "@/components/SEO";
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+
+// AnimatedSection component for scroll-triggered animations
+function AnimatedSection({ children, className = "" }: { children: React.ReactNode; className?: string }) {
+  const ref = useRef(null);
+  const isInView = useInView(ref, { once: true, margin: "-100px" });
+
+  return (
+    <motion.div
+      ref={ref}
+      initial={{ opacity: 0, y: 50 }}
+      animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 50 }}
+      transition={{ duration: 0.6, ease: "easeOut" }}
+      className={className}
+    >
+      {children}
+    </motion.div>
+  );
+}
 
 const engineCategories = [
   {

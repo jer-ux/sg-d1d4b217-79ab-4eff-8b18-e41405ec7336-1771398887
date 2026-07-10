@@ -1,5 +1,3 @@
-
-<![CDATA[
 import React from "react";
 
 export function KincaidIQLogo({ className = "" }: { className?: string }) {
@@ -27,7 +25,6 @@ export function KincaidIQLogo({ className = "" }: { className?: string }) {
         </linearGradient>
       </defs>
 
-      {/* Angular Military Shield */}
       <path
         d="M 24 8 
            L 32 8 
@@ -47,32 +44,25 @@ export function KincaidIQLogo({ className = "" }: { className?: string }) {
         strokeWidth="1.5"
       />
 
-      {/* Powerful K with Sharp Angles */}
       <g transform="translate(18, 14)">
-        {/* Vertical bar */}
         <rect x="2" y="2" width="2.5" height="20" fill="white" />
         
-        {/* Upper diagonal */}
         <polygon 
           points="4.5,7 11,2 12.5,3.5 6,11" 
           fill="white"
         />
         
-        {/* Lower diagonal */}
         <polygon 
           points="4.5,13 6,11 12.5,21 11,22.5" 
           fill="white"
         />
         
-        {/* Medical cross - centered */}
         <rect x="5.5" y="10" width="2" height="5" fill="#3b82f6" />
         <rect x="4" y="12" width="5" height="2" fill="#3b82f6" />
       </g>
 
-      {/* Sharp accent lines */}
       <line x1="13" y1="42" x2="35" y2="42" stroke="#3b82f6" strokeWidth="1.5" opacity="0.4" />
 
-      {/* KINCAID text - bold and professional */}
       <text
         x="48"
         y="32"
@@ -85,7 +75,6 @@ export function KincaidIQLogo({ className = "" }: { className?: string }) {
         Kincaid
       </text>
 
-      {/* HEALTH text - prominent */}
       <text
         x="48"
         y="50"
@@ -98,9 +87,7 @@ export function KincaidIQLogo({ className = "" }: { className?: string }) {
         HEALTH
       </text>
       
-      {/* Accent bar under Health */}
       <rect x="48" y="52" width="65" height="2" fill="url(#brand-gradient)" opacity="0.6" />
     </svg>
   );
 }
-</![CDATA[>

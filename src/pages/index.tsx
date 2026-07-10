@@ -139,9 +139,13 @@ export default function HomePage() {
   return (
     <>
       <SEO 
-        title="Kincaid Health | Fiduciary-Grade AI for Healthcare Intelligence" 
-        description="Enterprise healthcare intelligence platform powered by fiduciary-grade AI. Real-time analytics, contract analysis, and compliance monitoring for health plans and benefits teams."
+        title="Kincaid Health | Healthcare Intelligence & PBM Transparency Platform"
+        description="Enterprise-grade PBM transparency, claims analytics, and fiduciary governance platform. Real-time cost intelligence and automated contract enforcement for self-insured employers."
+        image="/og-image.png"
       />
+      <Head>
+        <title>Kincaid Health | Healthcare Intelligence Platform</title>
+      </Head>
       
       
       <Nav />
@@ -173,20 +177,20 @@ export default function HomePage() {
                 Continuous Forensic Intelligence
               </div>
 
-              <h1 className="text-5xl md:text-6xl lg:text-7xl font-black text-white tracking-tight leading-[1.05] mb-4">
-                You're accountable for{" "}
-                <span className="bg-gradient-to-r from-blue-400 via-cyan-400 to-blue-500 bg-clip-text text-transparent">
-                  $120M
-                </span>{" "}
-                in healthcare spend.{" "}
-                <span className="text-gray-400 text-4xl md:text-5xl lg:text-6xl">
-                  Where did the money go?
-                </span>
-              </h1>
-
-              <p className="text-xl md:text-2xl text-neutral-400 leading-relaxed max-w-3xl">
-                Kincaid Health provides live forensic intelligence for your PBM, TPA, Stop-Loss, and Network Contracts. Live telemetry is provided for all health and Rx claims. 24/7/365 forensic intelligence—not monthly reports when it's too late. The accountability-without-visibility gap ends here.
-              </p>
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.8 }}
+              >
+                <h1 className="text-5xl md:text-7xl font-serif font-bold text-white mb-6 leading-tight">
+                  Kincaid Health<br />
+                  <span className="text-[#B8860B]">Healthcare Intelligence</span>
+                </h1>
+                <p className="text-xl md:text-2xl text-neutral-300 mb-8 leading-relaxed max-w-2xl">
+                  Enterprise-grade PBM transparency, claims analytics, and fiduciary governance. 
+                  Real-time cost intelligence that actually works.
+                </p>
+              </motion.div>
 
               <div className="border border-[#2A3F54] bg-[#151B23] rounded-lg p-5 flex items-center justify-between gap-4 max-w-2xl">
                 <div className="flex items-center gap-3">

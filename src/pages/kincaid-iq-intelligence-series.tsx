@@ -15,6 +15,30 @@ import { SEO } from "@/components/SEO";
 
 const reportsData = [
   {
+    id: "mark-cuban",
+    title: "Cost Plus Drug Pricing Analysis",
+    subtitle: "Alternative Distribution Model Validation",
+    description: "Comparative analysis of traditional PBM pricing versus cost-plus distribution models employing Mark Cuban Cost Plus Drug Company (MCCPDC) as reference architecture. Validates pricing transparency claims, quantifies elimination of spread pricing, and models savings potential.",
+    href: "/solutions/mark-cuban-cost-drugs",
+    category: "Pricing Intelligence",
+    readTime: "10 min read",
+    price: 12500,
+    priceLabel: "$12,500",
+    deliverables: [
+      "Traditional vs cost-plus pricing comparison",
+      "WAC verification and transparency validation",
+      "Spread pricing elimination quantification",
+      "Therapeutic class savings modeling",
+      "Implementation barrier analysis"
+    ],
+    keyFindings: [
+      "Average 65% cost reduction on 127 commonly prescribed medications",
+      "Full pricing transparency with published wholesale acquisition costs",
+      "Elimination of spread pricing saves $38-$52 per prescription",
+      "Implementation requires formulary redesign and member education"
+    ]
+  },
+  {
     id: "nadac-benchmark",
     title: "NADAC Benchmarking Intelligence",
     subtitle: "Federal Pricing Reference Standards Validation",
@@ -58,30 +82,6 @@ const reportsData = [
       "Average 14-day delay on critical specialty medications",
       "18% of prior authorizations rejected on initial submission without clinical grounds",
       "Member abandonment rate rose by 11% under high-copay tiers"
-    ]
-  },
-  {
-    id: "mark-cuban",
-    title: "Cost Plus Drug Pricing Analysis",
-    subtitle: "Alternative Distribution Model Validation",
-    description: "Comparative analysis of traditional PBM pricing versus cost-plus distribution models employing Mark Cuban Cost Plus Drug Company (MCCPDC) as reference architecture. Validates pricing transparency claims, quantifies elimination of spread pricing, and models savings potential.",
-    href: "/solutions/mark-cuban-cost-drugs",
-    category: "Pricing Intelligence",
-    readTime: "10 min read",
-    price: 12500,
-    priceLabel: "$12,500",
-    deliverables: [
-      "Traditional vs cost-plus pricing comparison",
-      "WAC verification and transparency validation",
-      "Spread pricing elimination quantification",
-      "Therapeutic class savings modeling",
-      "Implementation barrier analysis"
-    ],
-    keyFindings: [
-      "Average 65% cost reduction on 127 commonly prescribed medications",
-      "Full pricing transparency with published wholesale acquisition costs",
-      "Elimination of spread pricing saves $38-$52 per prescription",
-      "Implementation requires formulary redesign and member education"
     ]
   },
   {

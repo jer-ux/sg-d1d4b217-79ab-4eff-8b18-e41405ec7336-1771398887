@@ -176,250 +176,225 @@ export default function HomePage() {
       
       <div className="min-h-screen bg-[#0F1419] text-neutral-100 selection:bg-[#B8860B]/20 overflow-x-hidden font-sans">
 
-        <section className="relative min-h-screen pt-24 pb-12 px-4 md:px-8 max-w-7xl mx-auto flex items-center overflow-hidden">
-          <div className="absolute inset-0 overflow-hidden pointer-events-none">
-            <div className="absolute inset-0 bg-gradient-to-br from-[#B8860B]/10 via-transparent to-emerald-500/5" />
-            
+        {/* Hero Section - Enhanced with 3D Parallax & Particles */}
+        <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
+          {/* Multi-layer Animated Background */}
+          <div className="absolute inset-0 pointer-events-none">
+            {/* Base gradient layer */}
             <motion.div 
-              className="absolute top-1/4 left-1/4 w-96 h-96 bg-[#B8860B]/20 rounded-full blur-3xl"
+              className="absolute inset-0 bg-gradient-to-br from-[#0C1117] via-[#1A2A3A] to-[#0C1117]"
               animate={{
+                backgroundPosition: ["0% 0%", "100% 100%"],
+              }}
+              transition={{ duration: 20, repeat: Infinity, repeatType: "reverse" }}
+              style={{ backgroundSize: "200% 200%" }}
+            />
+            
+            {/* Animated grid overlay */}
+            <motion.div 
+              className="absolute inset-0 opacity-20"
+              style={{
+                backgroundImage: `linear-gradient(to right, #2A3F54 1px, transparent 1px),
+                                 linear-gradient(to bottom, #2A3F54 1px, transparent 1px)`,
+                backgroundSize: "80px 80px"
+              }}
+              animate={{
+                backgroundPosition: ["0px 0px", "80px 80px"],
+              }}
+              transition={{ duration: 30, repeat: Infinity, ease: "linear" }}
+            />
+            
+            {/* Floating orbs with glow */}
+            <motion.div 
+              className="absolute top-20 left-20 w-96 h-96 bg-[#1A3A52] rounded-full blur-3xl opacity-30"
+              animate={{
+                x: [0, 50, 0],
+                y: [0, 30, 0],
                 scale: [1, 1.2, 1],
+              }}
+              transition={{ duration: 15, repeat: Infinity, ease: "easeInOut" }}
+            />
+            <motion.div 
+              className="absolute bottom-20 right-20 w-96 h-96 bg-[#B8860B] rounded-full blur-3xl opacity-20"
+              animate={{
+                x: [0, -30, 0],
+                y: [0, -50, 0],
+                scale: [1, 1.3, 1],
+              }}
+              transition={{ duration: 18, repeat: Infinity, ease: "easeInOut" }}
+            />
+            
+            {/* Radial glow from center */}
+            <motion.div 
+              className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-[#1A3A52]/20 via-transparent to-transparent"
+              animate={{
                 opacity: [0.3, 0.5, 0.3],
               }}
-              transition={{
-                duration: 8,
-                repeat: Infinity,
-                ease: "easeInOut"
-              }}
+              transition={{ duration: 8, repeat: Infinity }}
             />
-            
-            <motion.div 
-              className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-emerald-500/20 rounded-full blur-3xl"
-              animate={{
-                scale: [1.2, 1, 1.2],
-                opacity: [0.2, 0.4, 0.2],
-              }}
-              transition={{
-                duration: 10,
-                repeat: Infinity,
-                ease: "easeInOut",
-                delay: 2
-              }}
-            />
-
-            {Array.from({ length: 30 }).map((_, i) => (
-              <FloatingParticle key={i} delay={i * 0.5} duration={15 + Math.random() * 10} />
-            ))}
-            
-            <div className="absolute inset-0 opacity-30">
-              <Hero3D />
-            </div>
-            <div className="absolute inset-0 opacity-20">
-              <TechBackdrop intensity={0.5} density={0.8} />
-            </div>
           </div>
 
-          <div className="grid lg:grid-cols-12 gap-8 items-start w-full relative z-10">
-            
-            <motion.div
-              className="lg:col-span-7 space-y-6"
-              initial={{ opacity: 0, x: -30 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.8, ease: "easeOut" }}>
-              
-              
-              <motion.div 
-                className="inline-flex items-center gap-2 bg-gradient-to-r from-emerald-500/20 to-emerald-600/10 border border-emerald-500/40 rounded-full px-5 py-2.5 text-xs font-mono text-emerald-300 uppercase tracking-wider backdrop-blur-sm shadow-lg shadow-emerald-500/20"
-                animate={{
-                  boxShadow: [
-                    "0 0 20px rgba(16, 185, 129, 0.2)",
-                    "0 0 40px rgba(16, 185, 129, 0.4)",
-                    "0 0 20px rgba(16, 185, 129, 0.2)"
-                  ]
-                }}
-                transition={{ duration: 3, repeat: Infinity }}
-              >
-                <motion.div
-                  animate={{ rotate: 360 }}
-                  transition={{ duration: 3, repeat: Infinity, ease: "linear" }}
-                >
-                  <Activity className="h-4 w-4" />
-                </motion.div>
-                Continuous Forensic Intelligence
-              </motion.div>
-
+          <div className="max-w-7xl mx-auto px-4 md:px-8 py-20 relative z-10">
+            <motion.div 
+              className="max-w-4xl mx-auto text-center space-y-8"
+              initial={{ opacity: 0, y: 40 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8, ease: "easeOut" }}
+            >
+              {/* Animated badge */}
               <motion.div
+                initial={{ opacity: 0, scale: 0.9 }}
+                animate={{ opacity: 1, scale: 1 }}
+                transition={{ delay: 0.2 }}
+              >
+                <Badge className="inline-flex items-center gap-2 bg-gradient-to-r from-[#1A3A52] to-[#234766] text-[#B8860B] border border-[#B8860B]/30 px-4 py-2 text-sm font-bold shadow-2xl">
+                  <motion.div
+                    animate={{ rotate: 360 }}
+                    transition={{ duration: 3, repeat: Infinity, ease: "linear" }}
+                  >
+                    <Shield className="h-4 w-4" />
+                  </motion.div>
+                  Evidence-First™ Fiduciary Intelligence
+                </Badge>
+              </motion.div>
+
+              {/* Main headline with text gradient animation */}
+              <motion.h1 
+                className="text-5xl md:text-7xl lg:text-8xl font-serif font-bold leading-tight"
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.8 }}
+                transition={{ delay: 0.3, duration: 0.8 }}
               >
-                <h1 className="text-5xl md:text-7xl font-serif font-bold mb-6 leading-tight">
-                  <motion.span 
-                    className="inline-block text-white"
-                    animate={{
-                      textShadow: [
-                        "0 0 20px rgba(255, 255, 255, 0.1)",
-                        "0 0 40px rgba(255, 255, 255, 0.2)",
-                        "0 0 20px rgba(255, 255, 255, 0.1)"
-                      ]
-                    }}
-                    transition={{ duration: 4, repeat: Infinity }}
-                  >
-                    Kincaid Health
-                  </motion.span>
-                  <br />
-                  <motion.span 
-                    className="bg-gradient-to-r from-[#B8860B] via-[#FFD700] to-[#B8860B] bg-clip-text text-transparent bg-size-200 animate-shimmer"
-                    style={{
-                      backgroundSize: "200% 100%",
-                    }}
-                    animate={{
-                      backgroundPosition: ["0% 50%", "100% 50%", "0% 50%"]
-                    }}
-                    transition={{ duration: 5, repeat: Infinity, ease: "linear" }}
-                  >
-                    Healthcare Intelligence
-                  </motion.span>
-                </h1>
-                <p className="text-xl md:text-2xl text-neutral-300 mb-8 leading-relaxed max-w-2xl">
-                  Enterprise-grade PBM transparency, claims analytics, and fiduciary governance. 
-                  Real-time cost intelligence that actually works.
-                </p>
-                <p className="text-lg text-neutral-400 mb-8 max-w-2xl">
-                  Kincaid Health turns healthcare data chaos into defensible intelligence. 
-                  Built for CFOs, actuaries, and boards who need answers—not dashboards.
-                </p>
-              </motion.div>
+                <motion.span 
+                  className="block bg-gradient-to-r from-white via-neutral-100 to-white bg-clip-text text-transparent bg-[length:200%_auto]"
+                  animate={{
+                    backgroundPosition: ["0%", "200%"],
+                  }}
+                  transition={{ duration: 5, repeat: Infinity, ease: "linear" }}
+                >
+                  Sovereign by Math,
+                </motion.span>
+                <motion.span 
+                  className="block mt-2 bg-gradient-to-r from-[#B8860B] via-[#D4AF37] to-[#B8860B] bg-clip-text text-transparent bg-[length:200%_auto]"
+                  animate={{
+                    backgroundPosition: ["200%", "0%"],
+                  }}
+                  transition={{ duration: 5, repeat: Infinity, ease: "linear" }}
+                >
+                  Not by Trust
+                </motion.span>
+              </motion.h1>
 
-              <motion.div 
-                className="border border-[#2A3F54] bg-gradient-to-br from-[#151B23] to-[#0F1419] rounded-xl p-5 flex items-center justify-between gap-4 max-w-2xl shadow-2xl backdrop-blur-sm"
-                whileHover={{ scale: 1.02, boxShadow: "0 0 40px rgba(184, 134, 11, 0.3)" }}
-                transition={{ duration: 0.3 }}
-              >
-                <div className="flex items-center gap-3">
-                  <div className="relative flex h-3 w-3">
-                    <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-500 opacity-75"></span>
-                    <span className="relative inline-flex rounded-full h-3 w-3 bg-red-500 shadow-lg shadow-red-500/50"></span>
-                  </div>
-                  <div>
-                    <div className="text-[10px] font-mono tracking-wider text-neutral-500 uppercase mb-1">Live Audit Detection</div>
-                    <AnimatePresence mode="wait">
-                      <motion.div
-                        key={auditIndex}
-                        initial={{ opacity: 0, y: 10 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        exit={{ opacity: 0, y: -10 }}
-                        transition={{ duration: 0.3 }}
-                        className="text-sm font-medium text-neutral-200">
-                        
-                        {mockAudits[auditIndex].company} ({mockAudits[auditIndex].lives} lives): {mockAudits[auditIndex].issue}
-                      </motion.div>
-                    </AnimatePresence>
-                  </div>
-                </div>
-
-                <AnimatePresence mode="wait">
-                  <motion.div
-                    key={auditIndex}
-                    initial={{ scale: 0.95, opacity: 0 }}
-                    animate={{ scale: 1, opacity: 1 }}
-                    exit={{ scale: 0.95, opacity: 0 }}
-                    className="bg-gradient-to-br from-red-950/40 to-red-900/20 border border-red-900/50 rounded-lg px-4 py-2.5 text-right font-mono shadow-lg shadow-red-900/30">
-                    
-                    <div className="text-[9px] text-red-400 font-semibold uppercase tracking-wide">Estimated Waste</div>
-                    <div className="text-sm font-bold text-red-300">{mockAudits[auditIndex].savings}</div>
-                  </motion.div>
-                </AnimatePresence>
-              </motion.div>
-
-              <motion.div 
-                className="flex flex-col sm:flex-row items-center gap-4"
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.8, delay: 0.4 }}
-              >
-                <Link href="/request-demo">
-                  <motion.div
-                    whileHover={{ scale: 1.05, boxShadow: "0 0 30px rgba(184, 134, 11, 0.5)" }}
-                    whileTap={{ scale: 0.98 }}
-                  >
-                    <Button size="lg" className="text-lg px-8 bg-gradient-to-r from-[#B8860B] to-[#8B6914] hover:from-[#FFD700] hover:to-[#B8860B] shadow-lg shadow-[#B8860B]/30">
-                      <Sparkles className="mr-2 w-5 h-5" />
-                      See It Live
-                      <ChevronRight className="ml-2" />
-                    </Button>
-                  </motion.div>
-                </Link>
-                <Link href="/research/forensic-audit-suite">
-                  <motion.div
-                    whileHover={{ scale: 1.05 }}
-                    whileTap={{ scale: 0.98 }}
-                  >
-                    <Button size="lg" variant="outline" className="text-lg px-8 border-[#B8860B]/30 hover:border-[#B8860B] hover:bg-[#B8860B]/10">
-                      <BookOpen className="mr-2 w-5 h-5" />
-                      Read Stanford Research
-                    </Button>
-                  </motion.div>
-                </Link>
-              </motion.div>
-
-              <motion.div 
-                className="text-sm text-neutral-500 font-mono flex items-center gap-4 flex-wrap"
+              {/* Subtitle with stagger animation */}
+              <motion.p 
+                className="text-xl md:text-2xl text-neutral-300 leading-relaxed max-w-3xl mx-auto"
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
-                transition={{ duration: 0.8, delay: 0.6 }}
+                transition={{ delay: 0.5, duration: 0.8 }}
               >
-                {["✓ SSAE-18 SOC 2 certified", "✓ HIPAA-compliant", "✓ Credentialed Actuarial team"].map((item, idx) => (
-                  <motion.span
-                    key={idx}
-                    initial={{ opacity: 0, x: -10 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    transition={{ duration: 0.5, delay: 0.8 + idx * 0.1 }}
-                  >
-                    {item}
-                  </motion.span>
-                ))}
-              </motion.div>
-            </motion.div>
+                Enterprise healthcare intelligence platform that{" "}
+                <span className="text-[#B8860B] font-semibold">cryptographically verifies</span>{" "}
+                every contract term, claims transaction, and fiduciary decision with{" "}
+                <span className="text-white font-semibold">actuarial-grade evidence receipts</span>.
+              </motion.p>
 
-            <motion.div
-              initial={{ opacity: 0, x: 50 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.8, delay: 0.2 }}
-              className="relative max-w-[100.8rem] mx-auto lg:col-span-5"
-            >
-              <motion.div
-                className="absolute -inset-4 bg-gradient-to-r from-[#B8860B]/20 via-emerald-500/20 to-[#B8860B]/20 rounded-2xl blur-2xl"
-                animate={{
-                  opacity: [0.3, 0.6, 0.3],
-                  scale: [0.95, 1.05, 0.95]
-                }}
-                transition={{ duration: 5, repeat: Infinity, ease: "easeInOut" }}
-              />
-              
-              <motion.div
-                className="absolute top-8 left-1/2 -translate-x-1/2 z-20 text-center w-full px-4"
-                initial={{ opacity: 0, y: -20 }}
+              {/* Enhanced CTA buttons with magnetic hover */}
+              <motion.div 
+                className="flex flex-col sm:flex-row items-center justify-center gap-4"
+                initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.8, delay: 0.6, ease: "easeOut" }}>
-                <motion.div 
-                  className="bg-gradient-to-br from-emerald-500/20 to-teal-500/20 backdrop-blur-xl border border-emerald-500/40 rounded-xl px-6 py-4 shadow-2xl"
-                  whileHover={{ scale: 1.05, boxShadow: "0 0 50px rgba(16, 185, 129, 0.4)" }}
+                transition={{ delay: 0.7, duration: 0.8 }}
+              >
+                <motion.div
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.98 }}
                 >
-                  <h3 className="text-2xl font-bold text-white mb-1 flex items-center justify-center gap-2">
-                    <Zap className="w-6 h-6 text-emerald-400" />
-                    Live Intelligence Feed
-                  </h3>
-                  <p className="text-sm text-emerald-300/90 font-medium">
-                    Every claim. Every contract. Every violation. In real-time.
-                  </p>
+                  <CalendlyWidget 
+                    url="https://calendly.com/jer-kincaidrmc/30min"
+                    buttonText="Book Your Free Fiduciary Audit"
+                    className="relative group bg-gradient-to-r from-[#1A3A52] to-[#234766] hover:from-[#234766] hover:to-[#2A5A82] text-white font-bold text-base px-8 py-4 rounded-xl transition-all duration-300 shadow-2xl shadow-[#1A3A52]/50 hover:shadow-[#1A3A52]/80 w-full sm:w-auto overflow-hidden"
+                  />
+                </motion.div>
+
+                <motion.div
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.98 }}
+                >
+                  <Link
+                    href="#roi-calculator"
+                    className="relative group flex items-center justify-center gap-2 border-2 border-[#2A3F54] hover:border-[#B8860B] bg-transparent hover:bg-[#151B23] text-neutral-200 hover:text-white font-bold text-base px-8 py-4 rounded-xl transition-all duration-300 w-full sm:w-auto overflow-hidden"
+                  >
+                    <motion.div
+                      className="absolute inset-0 bg-gradient-to-r from-[#B8860B]/0 via-[#B8860B]/10 to-[#B8860B]/0 opacity-0 group-hover:opacity-100"
+                      animate={{
+                        x: ["-100%", "100%"],
+                      }}
+                      transition={{ duration: 1.5, repeat: Infinity }}
+                    />
+                    <DollarSign className="h-5 w-5 relative z-10" />
+                    <span className="relative z-10">Calculate Your Savings</span>
+                  </Link>
                 </motion.div>
               </motion.div>
 
-              <InteractiveHeroDashboard />
+              {/* Trust indicators with fade-in */}
+              <motion.div 
+                className="flex flex-wrap items-center justify-center gap-6 md:gap-8 pt-8 text-sm text-neutral-400"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ delay: 0.9, duration: 0.8 }}
+              >
+                <div className="flex items-center gap-2">
+                  <motion.div
+                    animate={{ scale: [1, 1.2, 1] }}
+                    transition={{ duration: 2, repeat: Infinity }}
+                  >
+                    <CheckCircle2 className="h-5 w-5 text-emerald-400" />
+                  </motion.div>
+                  <span>SOC 2 Type II Certified</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <motion.div
+                    animate={{ scale: [1, 1.2, 1] }}
+                    transition={{ duration: 2, repeat: Infinity, delay: 0.3 }}
+                  >
+                    <Shield className="h-5 w-5 text-emerald-400" />
+                  </motion.div>
+                  <span>HIPAA Compliant</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <motion.div
+                    animate={{ scale: [1, 1.2, 1] }}
+                    transition={{ duration: 2, repeat: Infinity, delay: 0.6 }}
+                  >
+                    <Award className="h-5 w-5 text-emerald-400" />
+                  </motion.div>
+                  <span>ERISA Section 404 Validated</span>
+                </div>
+              </motion.div>
             </motion.div>
-
           </div>
+
+          {/* Animated scroll indicator */}
+          <motion.div 
+            className="absolute bottom-8 left-1/2 transform -translate-x-1/2"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1, y: [0, 10, 0] }}
+            transition={{ 
+              opacity: { delay: 1.2 },
+              y: { duration: 2, repeat: Infinity }
+            }}
+          >
+            <div className="flex flex-col items-center gap-2 text-neutral-400">
+              <span className="text-xs font-mono uppercase tracking-widest">Scroll to Explore</span>
+              <motion.div
+                animate={{ y: [0, 5, 0] }}
+                transition={{ duration: 1.5, repeat: Infinity }}
+              >
+                <ChevronRight className="h-6 w-6 rotate-90" />
+              </motion.div>
+            </div>
+          </motion.div>
         </section>
 
         <section className="py-12 border-t border-neutral-800 bg-neutral-900/30">
@@ -709,6 +684,286 @@ export default function HomePage() {
               </div>
             </AnimatedSection>
 
+          </div>
+        </section>
+
+        {/* Interactive Audit Playground - Enhanced with 3D Effects */}
+        <section className="relative py-24 max-w-7xl mx-auto px-4 md:px-8 overflow-hidden">
+          {/* Animated background elements */}
+          <div className="absolute inset-0 pointer-events-none">
+            <motion.div 
+              className="absolute top-0 right-0 w-96 h-96 bg-[#1A3A52] rounded-full blur-3xl opacity-10"
+              animate={{
+                scale: [1, 1.3, 1],
+                rotate: [0, 180, 360],
+              }}
+              transition={{ duration: 20, repeat: Infinity }}
+            />
+            <motion.div 
+              className="absolute bottom-0 left-0 w-96 h-96 bg-[#B8860B] rounded-full blur-3xl opacity-10"
+              animate={{
+                scale: [1.3, 1, 1.3],
+                rotate: [360, 180, 0],
+              }}
+              transition={{ duration: 25, repeat: Infinity }}
+            />
+          </div>
+
+          <AnimatedSection className="mb-16 text-center space-y-4 relative z-10">
+            <motion.span 
+              className="inline-block text-xs font-mono text-[#B8860B] uppercase tracking-widest font-semibold"
+              animate={{
+                textShadow: [
+                  "0 0 10px rgba(184, 134, 11, 0.5)",
+                  "0 0 20px rgba(184, 134, 11, 0.8)",
+                  "0 0 10px rgba(184, 134, 11, 0.5)"
+                ]
+              }}
+              transition={{ duration: 3, repeat: Infinity }}
+            >
+              Try The Platform Live
+            </motion.span>
+            <h2 className="text-4xl md:text-5xl lg:text-6xl font-serif font-bold bg-gradient-to-r from-white via-neutral-100 to-neutral-300 bg-clip-text text-transparent">
+              Interactive Audit Playground
+            </h2>
+            <p className="text-neutral-400 text-lg leading-relaxed max-w-3xl mx-auto">
+              Experience the platform's core capabilities with live demos. Upload data, run forensic analysis, and see evidence-backed results in real-time.
+            </p>
+          </AnimatedSection>
+
+          <div className="grid md:grid-cols-3 gap-8 relative z-10">
+            <AnimatedSection>
+              <motion.div
+                whileHover={{ 
+                  scale: 1.03,
+                  rotateY: 5,
+                  rotateX: 5,
+                  z: 50
+                }}
+                transition={{ type: "spring", stiffness: 300, damping: 20 }}
+                className="relative group h-full"
+                style={{ transformStyle: "preserve-3d" }}
+              >
+                <div className="absolute inset-0 bg-gradient-to-br from-[#1A3A52]/30 to-[#234766]/30 rounded-2xl blur-xl group-hover:blur-2xl transition-all duration-300 opacity-0 group-hover:opacity-100" />
+                <div className="relative bg-gradient-to-br from-[#0F1419] to-[#151B23] border border-[#2A3F54] group-hover:border-[#B8860B]/50 rounded-2xl p-8 h-full flex flex-col shadow-2xl transition-all duration-300">
+                  <motion.div 
+                    className="mb-6 p-4 bg-gradient-to-br from-[#1A3A52] to-[#234766] rounded-xl w-fit"
+                    whileHover={{ rotate: 360 }}
+                    transition={{ duration: 0.6 }}
+                  >
+                    <FileText className="h-8 w-8 text-[#B8860B]" />
+                  </motion.div>
+                  <h3 className="text-2xl font-serif font-bold mb-4 text-white group-hover:text-[#B8860B] transition-colors duration-300">
+                    Upload Your PBM Contract
+                  </h3>
+                  <p className="text-neutral-400 mb-6 flex-grow leading-relaxed">
+                    Drop in your pharmacy benefit manager agreement. Our AI extracts every pricing term, rebate formula, and hidden fee structure.
+                  </p>
+                  <LandingUploader />
+                </div>
+              </motion.div>
+            </AnimatedSection>
+
+            <AnimatedSection>
+              <motion.div
+                whileHover={{ 
+                  scale: 1.03,
+                  rotateY: 5,
+                  rotateX: 5,
+                  z: 50
+                }}
+                transition={{ type: "spring", stiffness: 300, damping: 20 }}
+                className="relative group h-full"
+                style={{ transformStyle: "preserve-3d" }}
+              >
+                <div className="absolute inset-0 bg-gradient-to-br from-[#1A3A52]/30 to-[#234766]/30 rounded-2xl blur-xl group-hover:blur-2xl transition-all duration-300 opacity-0 group-hover:opacity-100" />
+                <div className="relative bg-gradient-to-br from-[#0F1419] to-[#151B23] border border-[#2A3F54] group-hover:border-[#B8860B]/50 rounded-2xl p-8 h-full flex flex-col shadow-2xl transition-all duration-300">
+                  <motion.div 
+                    className="mb-6 p-4 bg-gradient-to-br from-[#1A3A52] to-[#234766] rounded-xl w-fit"
+                    whileHover={{ rotate: 360 }}
+                    transition={{ duration: 0.6 }}
+                  >
+                    <Database className="h-8 w-8 text-[#B8860B]" />
+                  </motion.div>
+                  <h3 className="text-2xl font-serif font-bold mb-4 text-white group-hover:text-[#B8860B] transition-colors duration-300">
+                    Check Broker Integrity
+                  </h3>
+                  <p className="text-neutral-400 mb-6 flex-grow leading-relaxed">
+                    Search our forensic database of healthcare brokers. See verified compensation disclosures and conflict-of-interest flags.
+                  </p>
+                  <LandingBrokerLookup />
+                </div>
+              </motion.div>
+            </AnimatedSection>
+
+            <AnimatedSection>
+              <motion.div
+                whileHover={{ 
+                  scale: 1.03,
+                  rotateY: 5,
+                  rotateX: 5,
+                  z: 50
+                }}
+                transition={{ type: "spring", stiffness: 300, damping: 20 }}
+                className="relative group h-full"
+                style={{ transformStyle: "preserve-3d" }}
+              >
+                <div className="absolute inset-0 bg-gradient-to-br from-[#1A3A52]/30 to-[#234766]/30 rounded-2xl blur-xl group-hover:blur-2xl transition-all duration-300 opacity-0 group-hover:opacity-100" />
+                <div className="relative bg-gradient-to-br from-[#0F1419] to-[#151B23] border border-[#2A3F54] group-hover:border-[#B8860B]/50 rounded-2xl p-8 h-full flex flex-col shadow-2xl transition-all duration-300">
+                  <motion.div 
+                    className="mb-6 p-4 bg-gradient-to-br from-[#1A3A52] to-[#234766] rounded-xl w-fit"
+                    whileHover={{ rotate: 360 }}
+                    transition={{ duration: 0.6 }}
+                  >
+                    <BarChart3 className="h-8 w-8 text-[#B8860B]" />
+                  </motion.div>
+                  <h3 className="text-2xl font-serif font-bold mb-4 text-white group-hover:text-[#B8860B] transition-colors duration-300">
+                    Generate Actuarial Report
+                  </h3>
+                  <p className="text-neutral-400 mb-6 flex-grow leading-relaxed">
+                    Input your claims data parameters. Get instant Monte Carlo forecasting with credibility-weighted trend analysis.
+                  </p>
+                  <LandingActuarialReport />
+                </div>
+              </motion.div>
+            </AnimatedSection>
+          </div>
+        </section>
+
+        {/* Evidence-First Foundation - Enhanced Visual Treatment */}
+        <section className="relative py-24 border-t border-[#1F2937] overflow-hidden">
+          {/* Multi-layer background system */}
+          <div className="absolute inset-0 pointer-events-none">
+            <div className="absolute inset-0 opacity-30">
+              <TechBackdrop intensity={0.7} density={0.9} />
+            </div>
+            {/* Animated gradient sweeps */}
+            <motion.div 
+              className="absolute inset-0 bg-gradient-to-r from-transparent via-[#1A3A52]/10 to-transparent"
+              animate={{
+                x: ["-100%", "200%"],
+              }}
+              transition={{ duration: 15, repeat: Infinity, ease: "linear" }}
+            />
+            <motion.div 
+              className="absolute inset-0 bg-gradient-to-l from-transparent via-[#B8860B]/5 to-transparent"
+              animate={{
+                x: ["200%", "-100%"],
+              }}
+              transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
+            />
+            {/* Floating particles */}
+            {[...Array(20)].map((_, i) => (
+              <motion.div
+                key={i}
+                className="absolute w-1 h-1 bg-[#B8860B] rounded-full opacity-30"
+                style={{
+                  left: `${Math.random() * 100}%`,
+                  top: `${Math.random() * 100}%`,
+                }}
+                animate={{
+                  y: [-20, 20, -20],
+                  opacity: [0.1, 0.5, 0.1],
+                }}
+                transition={{
+                  duration: 5 + Math.random() * 5,
+                  repeat: Infinity,
+                  delay: Math.random() * 5,
+                }}
+              />
+            ))}
+          </div>
+
+          <div className="max-w-7xl mx-auto px-4 md:px-8 relative z-10">
+            <AnimatedSection className="mb-16 text-center space-y-4">
+              <motion.span 
+                className="inline-block text-xs font-mono text-emerald-400 uppercase tracking-widest font-semibold"
+                animate={{
+                  textShadow: [
+                    "0 0 10px rgba(16, 185, 129, 0.5)",
+                    "0 0 20px rgba(16, 185, 129, 0.8)",
+                    "0 0 10px rgba(16, 185, 129, 0.5)"
+                  ]
+                }}
+                transition={{ duration: 3, repeat: Infinity }}
+              >
+                The Verification Engine
+              </motion.span>
+              <h2 className="text-4xl md:text-5xl lg:text-6xl font-serif font-bold bg-gradient-to-r from-white via-neutral-100 to-neutral-300 bg-clip-text text-transparent">
+                Evidence-First Foundation
+              </h2>
+              <p className="text-neutral-400 text-lg leading-relaxed max-w-3xl mx-auto">
+                Every metric, claim, and recommendation backed by cryptographically signed evidence receipts. No assertions without proof.
+              </p>
+            </AnimatedSection>
+
+            <div className="grid md:grid-cols-3 gap-8 mb-16">
+              {[
+                {
+                  icon: Shield,
+                  title: "Cryptographic Evidence",
+                  description: "Every data point tracked with blockchain-grade receipts. Full audit trail from source to insight.",
+                  gradient: "from-violet-600 to-purple-600",
+                  delay: 0
+                },
+                {
+                  icon: CheckCircle2,
+                  title: "7-Level Verification",
+                  description: "Data quality tests, actuarial validation, legal compliance checks—before any number reaches your dashboard.",
+                  gradient: "from-emerald-600 to-teal-600",
+                  delay: 0.2
+                },
+                {
+                  icon: Activity,
+                  title: "Real-Time Lineage",
+                  description: "Click any metric to trace its evidence path. See exactly where the number came from and who verified it.",
+                  gradient: "from-blue-600 to-cyan-600",
+                  delay: 0.4
+                }
+              ].map((item, i) => (
+                <AnimatedSection key={i}>
+                  <motion.div
+                    whileHover={{ 
+                      y: -8,
+                      scale: 1.02,
+                    }}
+                    transition={{ type: "spring", stiffness: 300, damping: 20 }}
+                    className="relative group h-full"
+                  >
+                    {/* Animated gradient border */}
+                    <motion.div 
+                      className={`absolute inset-0 rounded-2xl bg-gradient-to-r ${item.gradient} opacity-0 group-hover:opacity-100 blur-xl transition-all duration-500`}
+                    />
+                    <div className="relative bg-gradient-to-br from-[#0F1419] to-[#151B23] border border-[#2A3F54] group-hover:border-transparent rounded-2xl p-8 h-full flex flex-col shadow-2xl transition-all duration-300">
+                      <motion.div 
+                        className={`mb-6 p-4 bg-gradient-to-br ${item.gradient} rounded-xl w-fit relative`}
+                        whileHover={{ rotate: [0, -10, 10, -10, 0] }}
+                        transition={{ duration: 0.5 }}
+                      >
+                        <item.icon className="h-8 w-8 text-white relative z-10" />
+                        <motion.div
+                          className="absolute inset-0 rounded-xl"
+                          animate={{
+                            boxShadow: [
+                              "0 0 20px rgba(255, 255, 255, 0.3)",
+                              "0 0 40px rgba(255, 255, 255, 0.5)",
+                              "0 0 20px rgba(255, 255, 255, 0.3)"
+                            ]
+                          }}
+                          transition={{ duration: 2, repeat: Infinity }}
+                        />
+                      </motion.div>
+                      <h3 className="text-2xl font-serif font-bold mb-4 text-white group-hover:text-transparent group-hover:bg-gradient-to-r group-hover:from-white group-hover:to-neutral-300 group-hover:bg-clip-text transition-all duration-300">
+                        {item.title}
+                      </h3>
+                      <p className="text-neutral-400 leading-relaxed">
+                        {item.description}
+                      </p>
+                    </div>
+                  </motion.div>
+                </AnimatedSection>
+              ))}
+            </div>
           </div>
         </section>
 

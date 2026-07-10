@@ -104,8 +104,6 @@ PHARMACY BENEFIT MANAGEMENT AGREEMENT
       <KincaidHealthNav />
 
       <div className="min-h-screen bg-black text-white">
-        <SiriusBNav />
-
         <div className="pt-24 pb-12 px-6 max-w-7xl mx-auto">
           <div className="mb-8">
             <Badge className="mb-4 bg-blue-500/20 text-blue-300 border-blue-500/30">

@@ -300,25 +300,18 @@ export default function HomePage() {
                 </p>
               </div>
 
-              <div className="grid md:grid-cols-2 gap-8">
-                {/* For Employers */}
-                <div className="bg-neutral-900/70 border border-neutral-800 rounded-xl p-8">
-                  <div className="text-3xl mb-4">🏢</div>
-                  <h3 className="text-2xl font-semibold mb-4">For Employers</h3>
-                  <ul className="space-y-4">
-                    {[
-                    "Continuous forensic monitoring (not renewal-only)",
-                    "Plain-English view for CFOs, CEOs, CHROs",
-                    "Fiduciary documentation that survives DOL audits",
-                    "Evidence-backed decisions with audit trails",
-                    "Real-time alerts when contract violations occur"].
-                    map((item, idx) =>
-                    <li key={idx} className="flex items-start gap-3">
-                        <ChevronRight className="w-5 h-5 text-emerald-400 flex-shrink-0 mt-0.5" />
-                        <span className="text-neutral-300">{item}</span>
-                      </li>
-                    )}
-                  </ul>
+              <div className="grid md:grid-cols-2 gap-8 max-w-5xl mx-auto">
+                {/* Traditional Consultant Approach */}
+                <div className="bg-gradient-to-br from-neutral-900/50 to-neutral-800/50 border border-neutral-700/50 rounded-xl p-8">
+                  <div className="flex items-center gap-3 mb-6">
+                    <div className="w-12 h-12 rounded-full bg-neutral-700/50 flex items-center justify-center">
+                      <span className="text-2xl">📊</span>
+                    </div>
+                    <div>
+                      <h3 className="text-xl font-semibold text-neutral-300">Point-in-Time Analysis</h3>
+                      <p className="text-sm text-neutral-500">Annual/Quarterly Reviews</p>
+                    </div>
+                  </div>
                 </div>
 
                 {/* For Consultants */}

@@ -14,6 +14,15 @@ export interface IndividualReport {
   requiredData: string[];
   idealFor: string[];
   sampleInsights: string[];
+  laborHours: {
+    total: number;
+    breakdown: {
+      role: string;
+      hours: number;
+      rate: number;
+    }[];
+    effectiveHourlyRate: number;
+  };
 }
 
 export const INDIVIDUAL_REPORTS: IndividualReport[] = [
@@ -47,7 +56,16 @@ export const INDIVIDUAL_REPORTS: IndividualReport[] = [
       "Identified $847K in annual spread overcharges",
       "Found 23% AWP inflation above NADAC benchmarks",
       "Discovered $312K in undisclosed rebate retention"
-    ]
+    ],
+    laborHours: {
+      total: 18,
+      breakdown: [
+        { role: "Pharmacy Benefits Analyst", hours: 12, rate: 125 },
+        { role: "Data Analyst", hours: 4, rate: 95 },
+        { role: "Senior Consultant (QA/Review)", hours: 2, rate: 200 }
+      ],
+      effectiveHourlyRate: 111
+    }
   },
 
   {
@@ -81,7 +99,16 @@ export const INDIVIDUAL_REPORTS: IndividualReport[] = [
       "Recommended $250K attachment saved $180K annually",
       "Identified 78% probability of favorable claims year",
       "Found $95K in over-insured aggregate coverage"
-    ]
+    ],
+    laborHours: {
+      total: 16,
+      breakdown: [
+        { role: "Actuary (ASA)", hours: 10, rate: 175 },
+        { role: "Risk Analyst", hours: 4, rate: 110 },
+        { role: "Senior Actuary (QA)", hours: 2, rate: 250 }
+      ],
+      effectiveHourlyRate: 138
+    }
   },
 
   {
@@ -115,7 +142,16 @@ export const INDIVIDUAL_REPORTS: IndividualReport[] = [
       "Recovered $1.2M in guarantee failures",
       "Found 14% admin fee overcharges",
       "Identified $327K in uncredited rebates"
-    ]
+    ],
+    laborHours: {
+      total: 20,
+      breakdown: [
+        { role: "Forensic Auditor", hours: 12, rate: 150 },
+        { role: "Contract Analyst", hours: 6, rate: 95 },
+        { role: "Senior Consultant (Review)", hours: 2, rate: 225 }
+      ],
+      effectiveHourlyRate: 125
+    }
   },
 
   {
@@ -149,7 +185,16 @@ export const INDIVIDUAL_REPORTS: IndividualReport[] = [
       "Projected 8.4% medical trend vs. 11% carrier estimate",
       "GLP-1 adoption to add 3.2% pharmacy trend",
       "Identified $450K budget cushion opportunity"
-    ]
+    ],
+    laborHours: {
+      total: 15,
+      breakdown: [
+        { role: "Actuary (ASA)", hours: 10, rate: 175 },
+        { role: "Data Scientist", hours: 3, rate: 120 },
+        { role: "Senior Actuary (Review)", hours: 2, rate: 250 }
+      ],
+      effectiveHourlyRate: 140
+    }
   },
 
   {
@@ -183,7 +228,16 @@ export const INDIVIDUAL_REPORTS: IndividualReport[] = [
       "Identified 7 material fiduciary gaps",
       "Found $280K in unreasonable indirect fees",
       "Recommended governance policy to reduce DOL risk"
-    ]
+    ],
+    laborHours: {
+      total: 20,
+      breakdown: [
+        { role: "ERISA Compliance Specialist", hours: 12, rate: 165 },
+        { role: "Benefits Attorney", hours: 4, rate: 300 },
+        { role: "Fiduciary Consultant (Review)", hours: 4, rate: 185 }
+      ],
+      effectiveHourlyRate: 140
+    }
   },
 
   {
@@ -217,7 +271,16 @@ export const INDIVIDUAL_REPORTS: IndividualReport[] = [
       "White bagging could save $620K annually",
       "Found 32% site-of-care cost differential",
       "Identified $180K in unused copay cards"
-    ]
+    ],
+    laborHours: {
+      total: 18,
+      breakdown: [
+        { role: "Clinical Pharmacist (PharmD)", hours: 10, rate: 155 },
+        { role: "Pharmacy Benefits Analyst", hours: 6, rate: 115 },
+        { role: "Senior Consultant (Review)", hours: 2, rate: 225 }
+      ],
+      effectiveHourlyRate: 133
+    }
   },
 
   {
@@ -251,7 +314,16 @@ export const INDIVIDUAL_REPORTS: IndividualReport[] = [
       "Found $340K in discount guarantee failures",
       "23% of spend at out-of-network premium rates",
       "Narrow network could reduce costs 18%"
-    ]
+    ],
+    laborHours: {
+      total: 17,
+      breakdown: [
+        { role: "Network Analyst", hours: 10, rate: 125 },
+        { role: "Data Analyst", hours: 5, rate: 95 },
+        { role: "Senior Consultant (Review)", hours: 2, rate: 200 }
+      ],
+      effectiveHourlyRate: 135
+    }
   },
 
   {
@@ -285,7 +357,16 @@ export const INDIVIDUAL_REPORTS: IndividualReport[] = [
       "HSA strategy saves $520K in employer costs",
       "High deductible adoption could reach 68%",
       "Tax advantages worth $240K annually"
-    ]
+    ],
+    laborHours: {
+      total: 18,
+      breakdown: [
+        { role: "Benefits Actuary", hours: 12, rate: 165 },
+        { role: "Benefits Consultant", hours: 4, rate: 140 },
+        { role: "Senior Actuary (Review)", hours: 2, rate: 250 }
+      ],
+      effectiveHourlyRate: 144
+    }
   },
 
   {
@@ -319,7 +400,16 @@ export const INDIVIDUAL_REPORTS: IndividualReport[] = [
       "Recovered $680K in unpaid rebates",
       "Found 19% formulary non-compliance",
       "Identified undisclosed admin fee carve-outs"
-    ]
+    ],
+    laborHours: {
+      total: 20,
+      breakdown: [
+        { role: "PBM Auditor", hours: 14, rate: 155 },
+        { role: "Pharmacy Analyst", hours: 4, rate: 105 },
+        { role: "Senior Consultant (Review)", hours: 2, rate: 225 }
+      ],
+      effectiveHourlyRate: 135
+    }
   },
 
   {
@@ -353,7 +443,16 @@ export const INDIVIDUAL_REPORTS: IndividualReport[] = [
       "Identified $125K in risk score underpayment",
       "Found 12% coding documentation gaps",
       "Chronic condition prevalence 8% above norms"
-    ]
+    ],
+    laborHours: {
+      total: 16,
+      breakdown: [
+        { role: "Risk Adjustment Actuary", hours: 10, rate: 175 },
+        { role: "Clinical Data Analyst", hours: 4, rate: 110 },
+        { role: "Senior Actuary (Review)", hours: 2, rate: 250 }
+      ],
+      effectiveHourlyRate: 156
+    }
   },
 
   {
@@ -387,7 +486,16 @@ export const INDIVIDUAL_REPORTS: IndividualReport[] = [
       "Found 6 material reporting errors",
       "Identified $95K in undisclosed indirect fees",
       "Recommended corrective filings to reduce risk"
-    ]
+    ],
+    laborHours: {
+      total: 16,
+      breakdown: [
+        { role: "ERISA Compliance Specialist", hours: 10, rate: 185 },
+        { role: "Benefits Attorney", hours: 4, rate: 325 },
+        { role: "Compliance Auditor (Review)", hours: 2, rate: 200 }
+      ],
+      effectiveHourlyRate: 188
+    }
   },
 
   {
@@ -421,7 +529,16 @@ export const INDIVIDUAL_REPORTS: IndividualReport[] = [
       "Found $180K in undisclosed contingent fees",
       "Broker total comp 3.2x disclosed amount",
       "Identified vendor rebate conflicts"
-    ]
+    ],
+    laborHours: {
+      total: 18,
+      breakdown: [
+        { role: "Compensation Analyst", hours: 10, rate: 145 },
+        { role: "Benefits Attorney", hours: 4, rate: 300 },
+        { role: "Fiduciary Consultant (Review)", hours: 4, rate: 175 }
+      ],
+      effectiveHourlyRate: 161
+    }
   }
 ];
 
@@ -506,6 +623,17 @@ export interface EnterpriseReport {
   requiredData: string[];
   idealFor: string[];
   outcomes: string[];
+  laborHours: {
+    total: number;
+    breakdown: {
+      role: string;
+      hours: number;
+      rate: number;
+    }[];
+    effectiveHourlyRate: number;
+    teamSize: number;
+    calendarWeeks: number;
+  };
 }
 
 export const ENTERPRISE_REPORTS: EnterpriseReport[] = [
@@ -552,7 +680,20 @@ export const ENTERPRISE_REPORTS: EnterpriseReport[] = [
       "Quantified $3.1M in vendor contract leakage",
       "Recommended plan design changes saving $5.4M",
       "Optimized stop-loss reducing premium 22%"
-    ]
+    ],
+    laborHours: {
+      total: 480,
+      breakdown: [
+        { role: "Lead Actuary (FSA/ASA)", hours: 120, rate: 275 },
+        { role: "Senior Healthcare Economist", hours: 100, rate: 225 },
+        { role: "Data Analyst", hours: 150, rate: 125 },
+        { role: "Compliance Specialist", hours: 60, rate: 165 },
+        { role: "Project Manager", hours: 50, rate: 175 }
+      ],
+      effectiveHourlyRate: 104,
+      teamSize: 7,
+      calendarWeeks: 9
+    }
   },
 
   {
@@ -599,7 +740,20 @@ export const ENTERPRISE_REPORTS: EnterpriseReport[] = [
       "Established defensible fiduciary framework",
       "Recovered $2.4M in unreasonable fees",
       "Passed DOL audit with zero findings"
-    ]
+    ],
+    laborHours: {
+      total: 1200,
+      breakdown: [
+        { role: "ERISA Attorney (Partner)", hours: 200, rate: 450 },
+        { role: "Senior Fiduciary Consultant", hours: 300, rate: 225 },
+        { role: "Compliance Auditor", hours: 250, rate: 175 },
+        { role: "Benefits Governance Specialist", hours: 250, rate: 165 },
+        { role: "Change Management Lead", hours: 200, rate: 185 }
+      ],
+      effectiveHourlyRate: 150,
+      teamSize: 5,
+      calendarWeeks: 14
+    }
   },
 
   {
@@ -644,7 +798,19 @@ export const ENTERPRISE_REPORTS: EnterpriseReport[] = [
       "Identified $12M cumulative savings opportunity",
       "Modeled GLP-1 adoption saving $4.6M vs. unmanaged",
       "Built defensible 5-year budget model"
-    ]
+    ],
+    laborHours: {
+      total: 550,
+      breakdown: [
+        { role: "Chief Actuary (FSA)", hours: 150, rate: 325 },
+        { role: "Healthcare Economist", hours: 140, rate: 225 },
+        { role: "Data Scientist", hours: 180, rate: 145 },
+        { role: "Population Health Specialist", hours: 80, rate: 165 }
+      ],
+      effectiveHourlyRate: 155,
+      teamSize: 4,
+      calendarWeeks: 11
+    }
   },
 
   {
@@ -691,7 +857,20 @@ export const ENTERPRISE_REPORTS: EnterpriseReport[] = [
       "Identified $18.3M in 3-year leakage",
       "Secured $2.1M in guarantee settlements",
       "Renegotiated contracts saving $6.2M annually"
-    ]
+    ],
+    laborHours: {
+      total: 880,
+      breakdown: [
+        { role: "Forensic Auditor (CPA/CFE)", hours: 200, rate: 185 },
+        { role: "Healthcare Contract Attorney", hours: 120, rate: 350 },
+        { role: "Claims Analyst", hours: 400, rate: 115 },
+        { role: "Negotiation Strategist", hours: 100, rate: 225 },
+        { role: "Project Manager", hours: 60, rate: 175 }
+      ],
+      effectiveHourlyRate: 136,
+      teamSize: 8,
+      calendarWeeks: 16
+    }
   },
 
   {
@@ -738,7 +917,20 @@ export const ENTERPRISE_REPORTS: EnterpriseReport[] = [
       "Targeted interventions projected to save $7.4M",
       "Pharmacy adherence program ROI of 4.2:1",
       "Reduced ER utilization by 18% in high-risk cohort"
-    ]
+    ],
+    laborHours: {
+      total: 620,
+      breakdown: [
+        { role: "Population Health Actuary", hours: 140, rate: 225 },
+        { role: "Clinical Data Scientist", hours: 180, rate: 165 },
+        { role: "Behavioral Health Specialist", hours: 100, rate: 155 },
+        { role: "Pharmacy Analytics Expert", hours: 120, rate: 145 },
+        { role: "Care Management Consultant", hours: 80, rate: 175 }
+      ],
+      effectiveHourlyRate: 153,
+      teamSize: 5,
+      calendarWeeks: 11
+    }
   },
 
   {
@@ -787,7 +979,20 @@ export const ENTERPRISE_REPORTS: EnterpriseReport[] = [
       "Negotiated $8.5M reduction in purchase price",
       "Harmonization plan saved $11.3M over 3 years",
       "Avoided $6.8M in integration mistakes"
-    ]
+    ],
+    laborHours: {
+      total: 950,
+      breakdown: [
+        { role: "M&A Benefits Specialist", hours: 250, rate: 275 },
+        { role: "Actuary (FSA/MAAA)", hours: 200, rate: 285 },
+        { role: "ERISA Attorney", hours: 150, rate: 400 },
+        { role: "Integration Project Manager", hours: 200, rate: 185 },
+        { role: "Change Management Consultant", hours: 150, rate: 195 }
+      ],
+      effectiveHourlyRate: 153,
+      teamSize: 5,
+      calendarWeeks: 17
+    }
   },
 
   {
@@ -836,7 +1041,20 @@ export const ENTERPRISE_REPORTS: EnterpriseReport[] = [
       "Corrected 23 material compliance violations",
       "Established defensible compliance framework",
       "Avoided $2.4M in potential regulatory fines"
-    ]
+    ],
+    laborHours: {
+      total: 750,
+      breakdown: [
+        { role: "Employee Benefits Attorney (Partner)", hours: 180, rate: 425 },
+        { role: "Compliance Specialist", hours: 220, rate: 185 },
+        { role: "Benefits Administration Auditor", hours: 180, rate: 155 },
+        { role: "Regulatory Affairs Consultant", hours: 120, rate: 195 },
+        { role: "Implementation Manager", hours: 50, rate: 175 }
+      ],
+      effectiveHourlyRate: 147,
+      teamSize: 5,
+      calendarWeeks: 13
+    }
   },
 
   {
@@ -885,7 +1103,20 @@ export const ENTERPRISE_REPORTS: EnterpriseReport[] = [
       "Identified $14.3M in annual pharmacy savings",
       "Specialty drug strategies saved $8.9M",
       "Biosimilar adoption projected to save $3.2M annually"
-    ]
+    ],
+    laborHours: {
+      total: 850,
+      breakdown: [
+        { role: "PBM Forensic Auditor", hours: 240, rate: 195 },
+        { role: "Clinical Pharmacist (PharmD)", hours: 180, rate: 175 },
+        { role: "Pharmacy Benefits Consultant", hours: 200, rate: 165 },
+        { role: "Rebate Analytics Specialist", hours: 160, rate: 145 },
+        { role: "Contract Negotiation Expert", hours: 70, rate: 225 }
+      ],
+      effectiveHourlyRate: 159,
+      teamSize: 5,
+      calendarWeeks: 15
+    }
   },
 
   {
@@ -934,7 +1165,20 @@ export const ENTERPRISE_REPORTS: EnterpriseReport[] = [
       "Reduced board-level fiduciary risk by 67%",
       "Implemented quarterly risk monitoring dashboard",
       "Enhanced board meeting efficiency by 40%"
-    ]
+    ],
+    laborHours: {
+      total: 1000,
+      breakdown: [
+        { role: "Board Governance Consultant", hours: 200, rate: 275 },
+        { role: "ERISA Attorney (Senior Partner)", hours: 180, rate: 475 },
+        { role: "Chief Benefits Officer (Former Fortune 100)", hours: 240, rate: 325 },
+        { role: "Risk Management Specialist", hours: 220, rate: 185 },
+        { role: "Executive Advisor", hours: 160, rate: 225 }
+      ],
+      effectiveHourlyRate: 160,
+      teamSize: 5,
+      calendarWeeks: 11
+    }
   },
 
   {
@@ -984,7 +1228,21 @@ export const ENTERPRISE_REPORTS: EnterpriseReport[] = [
       "Reduced vendor reporting costs by $480K annually",
       "Enabled real-time decision-making capability",
       "Improved forecast accuracy from 78% to 94%"
-    ]
+    ],
+    laborHours: {
+      total: 1600,
+      breakdown: [
+        { role: "Healthcare Data Architect", hours: 300, rate: 225 },
+        { role: "Data Engineer", hours: 700, rate: 145 },
+        { role: "Machine Learning Specialist", hours: 240, rate: 185 },
+        { role: "Analytics Platform Developer", hours: 200, rate: 155 },
+        { role: "Data Governance Consultant", hours: 100, rate: 195 },
+        { role: "Training Specialist", hours: 60, rate: 135 }
+      ],
+      effectiveHourlyRate: 141,
+      teamSize: 9,
+      calendarWeeks: 18
+    }
   },
 
   {
@@ -1032,7 +1290,20 @@ export const ENTERPRISE_REPORTS: EnterpriseReport[] = [
       "Bundled payment strategy projected to save $9.8M",
       "Established quality metrics dashboard",
       "Negotiated shared savings arrangement worth $4.2M"
-    ]
+    ],
+    laborHours: {
+      total: 1100,
+      breakdown: [
+        { role: "Value-Based Care Strategist", hours: 280, rate: 245 },
+        { role: "Healthcare Economist", hours: 260, rate: 225 },
+        { role: "Provider Network Specialist", hours: 240, rate: 165 },
+        { role: "Quality Metrics Analyst", hours: 200, rate: 145 },
+        { role: "Healthcare Attorney", hours: 120, rate: 375 }
+      ],
+      effectiveHourlyRate: 159,
+      teamSize: 5,
+      calendarWeeks: 15
+    }
   },
 
   {
@@ -1090,7 +1361,24 @@ export const ENTERPRISE_REPORTS: EnterpriseReport[] = [
       "Enhanced talent attraction and retention metrics",
       "Achieved top-quartile competitive positioning",
       "Optimized tax efficiency worth $42M annually"
-    ]
+    ],
+    laborHours: {
+      total: 8500,
+      breakdown: [
+        { role: "Total Rewards Practice Leader", hours: 600, rate: 425 },
+        { role: "Global Benefits Consultant", hours: 2400, rate: 225 },
+        { role: "Retirement Plan Actuary (FSA/EA)", hours: 800, rate: 295 },
+        { role: "Executive Compensation Specialist", hours: 600, rate: 275 },
+        { role: "Global Mobility Expert", hours: 500, rate: 245 },
+        { role: "Tax Strategist (CPA)", hours: 400, rate: 325 },
+        { role: "Organizational Psychologist", hours: 400, rate: 265 },
+        { role: "Change Management Team", hours: 1600, rate: 185 },
+        { role: "Project Management Office", hours: 1200, rate: 165 }
+      ],
+      effectiveHourlyRate: 141,
+      teamSize: 17,
+      calendarWeeks: 28
+    }
   }
 ];
 

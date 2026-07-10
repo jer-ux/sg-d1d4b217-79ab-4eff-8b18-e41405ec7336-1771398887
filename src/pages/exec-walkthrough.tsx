@@ -3,12 +3,15 @@ import dynamic from "next/dynamic";
 import { useMemo, useState } from "react";
 import Link from "next/link";
 import { motion, AnimatePresence, Variants } from "framer-motion";
-import { ArrowRight, ChevronLeft, ChevronRight, ShieldCheck, Database, Cpu, Users, BadgeCheck } from "lucide-react";
+import { ArrowRight, ChevronLeft, ChevronRight, ShieldCheck, Database, Cpu, Users, BadgeCheck, Shield, CheckCircle } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 
-const Exec3DDemo = dynamic(() => import("@/components/siriusb/Exec3DDemo"), { ssr: false });
+const Exec3DDemo = dynamic(
+  () => import("@/components/siriusb/Exec3DDemo").then(mod => ({ default: mod.Exec3DDemo })),
+  { ssr: false }
+);
 
 type Step = {
   id: string;

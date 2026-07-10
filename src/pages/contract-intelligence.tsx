@@ -99,10 +99,11 @@ PHARMACY BENEFIT MANAGEMENT AGREEMENT
   return (
     <>
       <Head>
-        <title>Contract Intelligence - SiriusB iQ AI Data Sciences Lab</title>
+        <title>Contract Intelligence | Kincaid Health</title>
+        <meta name="description" content="AI-powered PBM contract analysis and optimization" />
       </Head>
 
-      <Nav />
+      <KincaidHealthNav />
 
       <div className="min-h-screen bg-black text-white">
         <SiriusBNav />
@@ -460,7 +461,7 @@ PHARMACY BENEFIT MANAGEMENT AGREEMENT
           </Tabs>
         </div>
 
-        <SiriusBFooter />
+        <KincaidHealthFooter />
       </div>
     </>
   );

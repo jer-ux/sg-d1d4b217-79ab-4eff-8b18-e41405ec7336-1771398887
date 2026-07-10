@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import { FileText, CheckCircle, Clock, Shield, Database, ArrowRight, Download } from "lucide-react";
 import Link from "next/link";
 import { motion } from "framer-motion";
+import { FiduciaryPillarsSection } from "@/components/FiduciaryPillarsSection";
 
 export default function VerifiedSavingsDocumentation() {
   return (
@@ -190,6 +191,9 @@ export default function VerifiedSavingsDocumentation() {
             </div>
           </div>
         </section>
+
+        {/* 8 Pillars Navigation */}
+        <FiduciaryPillarsSection />
 
         {/* CTA Section */}
         <section className="py-20 border-t border-[#1F2937]">

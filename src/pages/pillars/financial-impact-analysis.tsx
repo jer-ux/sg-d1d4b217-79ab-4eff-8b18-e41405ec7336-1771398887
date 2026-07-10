@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Shield, TrendingUp, DollarSign, BarChart3, ArrowRight, Target } from "lucide-react";
 import Link from "next/link";
 import { motion } from "framer-motion";
+import { FiduciaryPillarsSection } from "@/components/FiduciaryPillarsSection";
 
 export default function FinancialImpactAnalysis() {
   return (
@@ -167,6 +168,9 @@ export default function FinancialImpactAnalysis() {
             </div>
           </div>
         </section>
+
+        {/* 8 Pillars Navigation */}
+        <FiduciaryPillarsSection />
 
         {/* CTA Section */}
         <section className="py-20 border-t border-[#1F2937]">

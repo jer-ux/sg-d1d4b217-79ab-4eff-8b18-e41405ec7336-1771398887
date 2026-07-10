@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import { FileText, Scale, AlertTriangle, CheckCircle2, ArrowRight, Search } from "lucide-react";
 import Link from "next/link";
 import { motion } from "framer-motion";
+import { FiduciaryPillarsSection } from "@/components/FiduciaryPillarsSection";
 
 export default function ContractIntelligenceCompliance() {
   return (
@@ -187,6 +188,9 @@ export default function ContractIntelligenceCompliance() {
             </div>
           </div>
         </section>
+
+        {/* 8 Pillars Navigation */}
+        <FiduciaryPillarsSection />
 
         <section className="py-20 border-t border-[#1F2937]">
           <div className="max-w-4xl mx-auto px-6 text-center">

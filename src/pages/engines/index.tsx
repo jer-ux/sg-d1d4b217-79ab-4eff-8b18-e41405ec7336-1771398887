@@ -125,7 +125,7 @@ const engineCategories = [
   },
 ];
 
-export default function EnginesIndex() {
+export default function EnginesPage() {
   const totalEngines = engineCategories.reduce((sum, cat) => sum + cat.count, 0);
 
   return (

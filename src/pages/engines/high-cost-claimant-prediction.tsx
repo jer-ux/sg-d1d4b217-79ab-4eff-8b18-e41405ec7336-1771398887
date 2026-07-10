@@ -8,7 +8,7 @@ export default function HighCostClaimantPrediction() {
     <>
       <Head>
         <title>High-Cost Claimant Prediction Engine | Kincaid IQ</title>
-        <meta name="description" content="Machine learning prediction of members likely to become high-cost claimants (>$50K) in the next 12 months." />
+        <meta name="description" content="Machine learning prediction of members likely to become high-cost claimants in the next 12 months." />
       </Head>
 
       <div className="min-h-screen bg-gradient-to-b from-slate-50 to-white">
@@ -42,7 +42,7 @@ export default function HighCostClaimantPrediction() {
                 <div>
                   <h3 className="font-bold text-red-900 mb-2">5% of Members Drive 50% of Costs — But Which 5%?</h3>
                   <p className="text-red-800">
-                    Healthcare costs follow the "80/20 rule" on steroids: a tiny fraction of members account for the vast majority of claims. By the time someone has a $500K cancer diagnosis, it's too late for cost management. The opportunity is early identification — the diabetic who will progress to dialysis, the chest pain that will become heart surgery, the joint pain that will become total replacement.
+                    Healthcare costs follow an extreme concentration pattern: a tiny fraction of members account for the vast majority of claims. By the time someone has a catastrophic diagnosis, intervention opportunities are limited. The key is early identification of members on the path to high costs.
                   </p>
                 </div>
               </div>
@@ -58,11 +58,11 @@ export default function HighCostClaimantPrediction() {
                   </li>
                   <li className="flex items-start gap-2">
                     <div className="w-1.5 h-1.5 rounded-full bg-red-500 mt-2 flex-shrink-0" />
-                    <span>Waste care management budget on "worried well" (low-risk members who self-enroll)</span>
+                    <span>Waste care management budget on low-risk members who self-enroll</span>
                   </li>
                   <li className="flex items-start gap-2">
                     <div className="w-1.5 h-1.5 rounded-full bg-red-500 mt-2 flex-shrink-0" />
-                    <span>Miss the diabetic who will hit $80K in dialysis costs next year</span>
+                    <span>Miss the diabetic who will hit significant dialysis costs next year</span>
                   </li>
                   <li className="flex items-start gap-2">
                     <div className="w-1.5 h-1.5 rounded-full bg-red-500 mt-2 flex-shrink-0" />
@@ -76,7 +76,7 @@ export default function HighCostClaimantPrediction() {
                 <ul className="space-y-2 text-gray-700">
                   <li className="flex items-start gap-2">
                     <CheckCircle2 className="w-5 h-5 text-emerald-600 flex-shrink-0" />
-                    <span>Identify top 200 members by predicted 12-month cost with 82% accuracy</span>
+                    <span>Identify top 200 members by predicted 12-month cost with high accuracy</span>
                   </li>
                   <li className="flex items-start gap-2">
                     <CheckCircle2 className="w-5 h-5 text-emerald-600 flex-shrink-0" />
@@ -84,7 +84,7 @@ export default function HighCostClaimantPrediction() {
                   </li>
                   <li className="flex items-start gap-2">
                     <CheckCircle2 className="w-5 h-5 text-emerald-600 flex-shrink-0" />
-                    <span>Prevent progression: intercept the pre-diabetic before dialysis</span>
+                    <span>Prevent progression: intercept early-stage conditions before escalation</span>
                   </li>
                   <li className="flex items-start gap-2">
                     <CheckCircle2 className="w-5 h-5 text-emerald-600 flex-shrink-0" />
@@ -106,7 +106,7 @@ export default function HighCostClaimantPrediction() {
                   <div className="flex-1">
                     <h3 className="text-xl font-bold text-gray-900 mb-2">Step 1: Feature Engineering</h3>
                     <p className="text-gray-700 mb-3">
-                      Extract 200+ predictive features from claims, pharmacy, and biometric data: chronic condition combinations (diabetes + hypertension = 4x risk), medication adherence gaps, lab values (HbA1c >9.0), ER utilization patterns, specialist referrals, social determinants (zip code poverty rate). The algorithm learns: "diabetic with poor control + hypertension + kidney disease labs = 78% probability of becoming high-cost."
+                      Extract predictive features from claims, pharmacy, and biometric data: chronic condition combinations, medication adherence patterns, lab values, ER utilization, specialist referrals, and social determinants. The algorithm learns which combinations signal high future risk.
                     </p>
                   </div>
                 </div>
@@ -120,7 +120,7 @@ export default function HighCostClaimantPrediction() {
                   <div className="flex-1">
                     <h3 className="text-xl font-bold text-gray-900 mb-2">Step 2: Gradient Boosting Model Training</h3>
                     <p className="text-gray-700 mb-3">
-                      Train XGBoost model on 24 months of historical data: predict which members exceeded $50K in claims in Year N based on Year N-1 features. Model outputs probability score 0-100 for each active member. Validate on holdout set: top decile captures 47% of actual high-cost claimants (10x random selection).
+                      Train machine learning model on historical data to predict which members will exceed cost thresholds. Model outputs probability scores for each active member. Validate on holdout set to ensure prediction accuracy significantly exceeds random selection.
                     </p>
                     <div className="bg-purple-50 p-4 rounded-lg">
                       <p className="text-sm font-mono text-purple-900">
@@ -138,9 +138,9 @@ export default function HighCostClaimantPrediction() {
                     <TrendingUp className="w-6 h-6 text-blue-600" />
                   </div>
                   <div className="flex-1">
-                    <h3 className="text-xl font-bold text-gray-900 mb-2">Step 3: Risk Stratification & Actionability</h3>
+                    <h3 className="text-xl font-bold text-gray-900 mb-2">Step 3: Risk Stratification and Actionability</h3>
                     <p className="text-gray-700 mb-3">
-                      Segment members into tiers: Critical (above 80% probability, needs intensive case management), High (60-80%, care management outreach), Moderate (40-60%, preventive engagement), Low (below 40%, wellness programs). For each high-risk member, generate actionability score: is this someone care management can actually help? (Motivated patient with controllable condition = high actionability. Late-stage cancer = low actionability, refer to palliative care.)
+                      Segment members into risk tiers: Critical (high probability, needs intensive case management), High (care management outreach), Moderate (preventive engagement), Low (wellness programs). For each high-risk member, generate actionability score based on intervention potential.
                     </p>
                   </div>
                 </div>
@@ -152,9 +152,9 @@ export default function HighCostClaimantPrediction() {
                     <CheckCircle2 className="w-6 h-6 text-emerald-600" />
                   </div>
                   <div className="flex-1">
-                    <h3 className="text-xl font-bold text-gray-900 mb-2">Step 4: Intervention Targeting & ROI Measurement</h3>
+                    <h3 className="text-xl font-bold text-gray-900 mb-2">Step 4: Intervention Targeting and ROI Measurement</h3>
                     <p className="text-gray-700 mb-3">
-                      Care management team receives monthly list: "These 50 members have highest predicted cost + actionability score." Track outcomes: compare actual costs for engaged members vs. propensity-matched control group who declined outreach. Typical ROI: $4.20 saved per $1.00 spent on care management when targeting is prediction-driven vs. $1.80 with self-enrollment.
+                      Care management team receives monthly targeted list of highest-priority members. Track outcomes: compare actual costs for engaged members vs. matched control group who declined outreach. Typical ROI: substantially higher returns with prediction-driven targeting vs. self-enrollment.
                     </p>
                   </div>
                 </div>
@@ -170,7 +170,7 @@ export default function HighCostClaimantPrediction() {
                   <li className="flex items-start gap-3 bg-white border border-gray-200 rounded-lg p-4">
                     <div className="w-2 h-2 rounded-full bg-indigo-600 mt-2 flex-shrink-0" />
                     <div>
-                      <div className="font-semibold text-gray-900">24 Months Medical & Pharmacy Claims</div>
+                      <div className="font-semibold text-gray-900">24 Months Medical and Pharmacy Claims</div>
                       <div className="text-sm text-gray-600">With diagnosis codes, procedures, NDC codes</div>
                     </div>
                   </li>
@@ -231,23 +231,23 @@ export default function HighCostClaimantPrediction() {
             <h2 className="text-3xl font-bold text-gray-900 mb-6">Real-World Use Cases</h2>
             <div className="grid md:grid-cols-3 gap-6">
               <div className="bg-gradient-to-br from-indigo-50 to-purple-50 border border-indigo-200 rounded-xl p-6">
-                <h3 className="font-bold text-gray-900 mb-3">$1.2M Dialysis Prevention</h3>
+                <h3 className="font-bold text-gray-900 mb-3">Dialysis Prevention Success</h3>
                 <p className="text-gray-700 text-sm">
-                  Engine identified 12 pre-diabetics with HbA1c above 8.5 plus hypertension. Care management enrolled 9 in intensive program. After 18 months: 8/9 improved control, avoided projected dialysis. Prevented cost: $1.2M over 5 years at $80K/year per dialysis patient.
+                  Engine identified 12 pre-diabetics with elevated HbA1c and hypertension. Care management enrolled 9 in intensive program. After 18 months: 8 of 9 improved control, avoiding projected dialysis costs of over $1M across 5 years.
                 </p>
               </div>
 
               <div className="bg-gradient-to-br from-blue-50 to-cyan-50 border border-blue-200 rounded-xl p-6">
                 <h3 className="font-bold text-gray-900 mb-3">Care Management ROI Proof</h3>
                 <p className="text-gray-700 text-sm">
-                  Health system targeted care management to top 150 predicted members. Year 1: engaged cohort cost $18,240 PMPY vs. $24,680 for propensity-matched controls who declined. ROI = 4.8:1 on $180K program spend. Board approved 3-year expansion.
+                  Health system targeted care management to top 150 predicted members. Year 1: engaged cohort averaged substantially lower costs vs. propensity-matched controls who declined. Program ROI exceeded 4:1 on spend, securing board approval for expansion.
                 </p>
               </div>
 
               <div className="bg-gradient-to-br from-emerald-50 to-teal-50 border border-emerald-200 rounded-xl p-6">
                 <h3 className="font-bold text-gray-900 mb-3">Stop-Loss Laser Avoidance</h3>
                 <p className="text-gray-700 text-sm">
-                  Manufacturing company's stop-loss carrier threatened "laser" (member-specific exclusion) on 3 high-cost members. Engine showed 2 of 3 had declining risk scores due to successful care management. Carrier dropped laser threat after seeing predictive evidence of improvement.
+                  Manufacturing company's stop-loss carrier threatened member-specific exclusions on 3 high-cost members. Engine showed 2 of 3 had declining risk scores due to successful care management. Carrier dropped threat after seeing predictive evidence of improvement.
                 </p>
               </div>
             </div>
@@ -256,7 +256,7 @@ export default function HighCostClaimantPrediction() {
           <section className="bg-gradient-to-r from-indigo-600 to-purple-600 rounded-2xl p-8 text-center text-white">
             <h2 className="text-3xl font-bold mb-4">Target the Right 5%</h2>
             <p className="text-xl text-indigo-100 mb-6 max-w-2xl mx-auto">
-              Stop wasting care management budget on the worried well. Predict who will spiral before they do.
+              Stop wasting care management budget on low-risk members. Predict who will escalate before they do.
             </p>
             <Link
               href="/request-demo"

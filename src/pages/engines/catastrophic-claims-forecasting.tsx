@@ -106,11 +106,11 @@ export default function CatastrophicClaimsForecasting() {
                   <div className="flex-1">
                     <h3 className="text-xl font-bold text-gray-900 mb-2">Step 1: Historical Large Claim Analysis</h3>
                     <p className="text-gray-700 mb-3">
-                      Identify all claims >$100K in last 36 months. Classify by condition (NICU, transplant, cancer, trauma, chronic high-cost). Calculate incidence rate per 1,000 members. Adjust for population changes (aging, chronic disease prevalence shifts).
+                      Identify all claims &gt;$100K in last 36 months. Classify by condition (NICU, transplant, cancer, trauma, chronic high-cost). Calculate incidence rate per 1,000 members. Adjust for population changes (aging, chronic disease prevalence shifts).
                     </p>
                     <div className="bg-red-50 p-4 rounded-lg">
                       <p className="text-sm font-mono text-red-900">
-                        Large Claim Rate = (# Claims >$100K) / (Member Months / 1,000)
+                        Large Claim Rate = (# Claims &gt;$100K) / (Member Months / 1,000)
                       </p>
                     </div>
                   </div>
@@ -170,7 +170,7 @@ export default function CatastrophicClaimsForecasting() {
                     <div className="w-2 h-2 rounded-full bg-red-600 mt-2 flex-shrink-0" />
                     <div>
                       <div className="font-semibold text-gray-900">36 Months Medical Claims</div>
-                      <div className="text-sm text-gray-600">With paid amounts >$100K flagged</div>
+                      <div className="text-sm text-gray-600">With paid amounts {'>'}$100K flagged</div>
                     </div>
                   </li>
                   <li className="flex items-start gap-3 bg-white border border-gray-200 rounded-lg p-4">

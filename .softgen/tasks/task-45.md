@@ -33,11 +33,11 @@ Added "Engines" link to navbar between Tools and existing sections.
 - [x] Create Inflation decomposition engine page
 - [x] Create Provider unit cost trend engine page
 - [x] Create Utilization trend engine page
-- [ ] Create remaining 10 engine pages:
-  - Geographic normalization
-  - Age/gender risk adjustment
-  - Case mix adjustment
-  - PMPM normalization
+- [x] Create Geographic normalization engine page
+- [x] Create Age/gender risk adjustment engine page
+- [x] Create Case mix adjustment engine page
+- [x] Create PMPM normalization engine page
+- [ ] Create remaining 6 engine pages:
   - PEPY normalization
   - Seasonality adjustment
   - Credibility weighting

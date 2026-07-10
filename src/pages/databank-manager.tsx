@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import Head from "next/head";
 import { Database, Upload, Eye } from "lucide-react";
 import { SEO } from "@/components/SEO";
 import { KincaidHealthNav } from "@/components/siriusb/SiriusBNav";
@@ -8,7 +9,6 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { DatabankUploader } from "@/components/databank/DatabankUploader";
 import { DatabankViewer } from "@/components/databank/DatabankViewer";
 import { ProtectedToolsRoute } from "@/components/ProtectedToolsRoute";
-import { Head } from "lucide-react";
 
 export default function DatabankManager() {
   const [activeTab, setActiveTab] = useState("upload");

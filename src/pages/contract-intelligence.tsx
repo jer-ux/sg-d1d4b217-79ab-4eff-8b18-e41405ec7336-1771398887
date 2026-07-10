@@ -1,10 +1,8 @@
 import Head from "next/head";
 import { useState } from "react";
-import { SiteFooter } from "@/components/site/SiteFooter";
-import Nav from "@/components/Nav";
 import { SEO } from "@/components/SEO";
-import { SiriusBNav } from "@/components/siriusb/SiriusBNav";
-import { SiriusBFooter } from "@/components/siriusb/SiriusBFooter";
+import { KincaidHealthNav } from "@/components/siriusb/SiriusBNav";
+import { KincaidHealthFooter } from "@/components/siriusb/SiriusBFooter";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";

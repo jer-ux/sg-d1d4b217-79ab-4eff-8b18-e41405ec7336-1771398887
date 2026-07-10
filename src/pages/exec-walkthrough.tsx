@@ -160,11 +160,7 @@ export default function ExecWalkthroughPage() {
               >
                 <Card className="overflow-hidden border-2">
                   <CardContent className="p-0 aspect-square bg-black/5 dark:bg-black/20">
-                    <Exec3DDemo
-                      cameraPosition={currentStepData.camera.position}
-                      cameraLookAt={currentStepData.camera.lookAt}
-                      accent={currentStepData.accent}
-                    />
+                    <Exec3DDemo />
                   </CardContent>
                 </Card>
               </motion.div>

@@ -132,7 +132,7 @@ export default function ActuariesPage() {
   return (
     <>
       <Head>
-        <title>For Actuaries: Advanced Analytics & Risk Modeling | SiriusB iQ</title>
+        <title>For Actuaries: Advanced Analytics & Risk Modeling | Kincaid Health</title>
         <meta
           name="description"
           content="Actuarial-grade pharmacy benefit modeling, trend decomposition, Monte Carlo simulation, and risk assessment tools meeting SOA/AAA professional standards."
@@ -172,7 +172,7 @@ export default function ActuariesPage() {
                   </p>
                   
                   <p className="text-lg text-cyan-300/80 mb-10">
-                    SiriusB iQ delivers production-ready pharmacy benefit analytics: raw claims, trend decomposition, Monte Carlo modeling, and NADAC benchmarking built to Society of Actuaries (SOA) standards.
+                    Kincaid Health delivers production-ready pharmacy benefit analytics: raw claims, trend decomposition, Monte Carlo modeling, and NADAC benchmarking built to Society of Actuaries (SOA) standards.
                   </p>
 
                   <div className="flex flex-col sm:flex-row gap-4">
@@ -383,7 +383,7 @@ export default function ActuariesPage() {
                           <div className="space-y-3">
                             <div>
                               <div className="flex justify-between text-xs mb-1">
-                                <span className="text-cyan-300">SiriusB Forensic Oversight Spend Max</span>
+                                <span className="text-cyan-300">Kincaid Health Forensic Oversight Spend Max</span>
                                 <span className="font-bold text-white">${(simResults.valueAtRisk / 1000000).toFixed(2)}M</span>
                               </div>
                               <div className="w-full bg-cyan-950 h-2.5 rounded-full overflow-hidden">
@@ -556,7 +556,7 @@ export default function ActuariesPage() {
                 Real-World Actuarial Applications
               </h2>
               <p className="text-xl text-cyan-300 max-w-3xl mx-auto">
-                How actuaries use SiriusB iQ for rate filings, reserve analysis, and benefit design
+                How actuaries use Kincaid Health for rate filings, reserve analysis, and benefit design
               </p>
             </motion.div>
 
@@ -690,7 +690,7 @@ export default function ActuariesPage() {
                 Join Leading Actuarial Teams
               </h2>
               <p className="text-2xl text-cyan-200 mb-12">
-                FSAs at Fortune 500 health plans and consulting firms trust SiriusB iQ for mission-critical risk validation.
+                FSAs at Fortune 500 health plans and consulting firms trust Kincaid Health for mission-critical risk validation.
               </p>
               <div className="flex flex-col sm:flex-row gap-4 justify-center">
                 <Link href="/request-demo">

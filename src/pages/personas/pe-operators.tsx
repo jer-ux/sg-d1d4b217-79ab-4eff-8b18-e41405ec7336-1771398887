@@ -85,7 +85,7 @@ export default function PEOperatorsPage() {
   return (
     <>
       <Head>
-        <title>For PE Operating Partners: Portfolio EBITDA Creation | SiriusB iQ</title>
+        <title>For PE Operating Partners: Portfolio EBITDA Creation | Kincaid Health</title>
         <meta
           name="description"
           content="Healthcare cost optimization engineered for private equity. Turn hidden portfolio company benefits waste into enterprise valuation growth."
@@ -118,7 +118,7 @@ export default function PEOperatorsPage() {
                 </p>
                 
                 <p className="text-sm text-slate-400 mb-8 leading-relaxed">
-                  SiriusB iQ delivers institutional, forensic-grade contract restructuring and automated claims monitoring. Install our defensive infrastructure within 30 days, realize hard cash flow in 90 days, and document audited valuation additions for future buyers.
+                  Kincaid Health delivers institutional, forensic-grade contract restructuring and automated claims monitoring. Install our defensive infrastructure within 30 days, realize hard cash flow in 90 days, and document audited valuation additions for future buyers.
                 </p>
 
                 <div className="flex flex-col sm:flex-row gap-4">
@@ -734,7 +734,7 @@ export default function PEOperatorsPage() {
                   </Link>
                   
                   <p className="text-[10px] text-center text-slate-500">
-                    By submitting, you agree to receive strategic communications from SiriusB iQ. Unsubscribe anytime.
+                    By submitting, you agree to receive strategic communications from Kincaid Health. Unsubscribe anytime.
                   </p>
                 </form>
               </div>

@@ -339,7 +339,7 @@ export default function BrokersPage() {
                   </p>
                   
                   <p className="text-lg text-amber-300/80 mb-10">
-                    SiriusB iQ gives you forensic PBM analytics, real-time client dashboards, and evidence-backed value reports — so you win renewals with documented ROI, not RFP theater.
+                    Kincaid Health gives you forensic PBM analytics, real-time client dashboards, and evidence-backed value reports — so you win renewals with documented ROI, not RFP theater.
                   </p>
 
                   <div className="flex flex-col sm:flex-row gap-4">
@@ -666,7 +666,7 @@ export default function BrokersPage() {
                         <div className="flex items-start gap-3">
                           <CheckCircle2 className="w-5 h-5 text-emerald-400 flex-shrink-0 mt-0.5" />
                           <div>
-                            <div className="text-sm font-semibold text-emerald-400 mb-2">SiriusB iQ Solution:</div>
+                            <div className="text-sm font-semibold text-emerald-400 mb-2">Kincaid Health Solution:</div>
                             <p className="text-emerald-200 text-sm">{challenge.solution}</p>
                           </div>
                         </div>
@@ -764,7 +764,7 @@ export default function BrokersPage() {
                 The 94% Retention Framework
               </h2>
               <p className="text-xl text-amber-300 max-w-3xl mx-auto">
-                How leading brokers use SiriusB iQ to achieve industry-leading client retention
+                How leading brokers use Kincaid Health to achieve industry-leading client retention
               </p>
             </motion.div>
 
@@ -822,7 +822,7 @@ export default function BrokersPage() {
               className="text-center mb-16"
             >
               <h2 className="text-5xl font-black mb-6 bg-gradient-to-r from-amber-200 to-orange-200 bg-clip-text text-transparent">
-                Traditional Broker vs. SiriusB iQ Broker
+                Traditional Broker vs. Kincaid Health Broker
               </h2>
               <p className="text-xl text-amber-300 max-w-3xl mx-auto">
                 Why leading brokerages adopt forensic analytics to win and retain clients
@@ -835,7 +835,7 @@ export default function BrokersPage() {
                   <tr className="border-b-2 border-amber-500/30">
                     <th className="text-left p-4 text-amber-300 font-bold">Dimension</th>
                     <th className="text-left p-4 text-gray-400 font-bold">Traditional Broker</th>
-                    <th className="text-left p-4 text-amber-400 font-bold">SiriusB iQ Broker</th>
+                    <th className="text-left p-4 text-amber-400 font-bold">Kincaid Health Broker</th>
                     <th className="text-left p-4 text-emerald-400 font-bold">Your Advantage</th>
                   </tr>
                 </thead>

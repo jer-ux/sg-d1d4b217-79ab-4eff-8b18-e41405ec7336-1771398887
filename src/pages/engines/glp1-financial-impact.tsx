@@ -1,7 +1,7 @@
 import Head from "next/head";
 import Link from "next/link";
 import { ArrowLeft, Activity, TrendingDown, DollarSign, AlertCircle, CheckCircle2 } from "lucide-react";
-import { Footer } from "@/components/Footer";
+import Footer from "@/components/Footer";
 
 export default function GLP1FinancialImpact() {
   return (

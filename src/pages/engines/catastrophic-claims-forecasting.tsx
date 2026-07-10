@@ -1,7 +1,7 @@
 import Head from "next/head";
 import Link from "next/link";
 import { ArrowLeft, AlertTriangle, Database, BarChart3, TrendingUp, AlertCircle, CheckCircle2 } from "lucide-react";
-import { Footer } from "@/components/Footer";
+import Footer from "@/components/Footer";
 
 export default function CatastrophicClaimsForecasting() {
   return (

@@ -190,6 +190,219 @@ export default function KincaidIQIntelligenceSeries() {
           </div>
         </section>
 
+        {/* Featured: Mark Cuban Cost Plus Drugs Intelligence */}
+        <section className="py-16 bg-gradient-to-b from-[#0A0E27] to-black border-b border-[#1F2937]">
+          <div className="max-w-7xl mx-auto px-6">
+            <div className="text-center mb-8">
+              <Badge className="bg-amber-500/10 text-amber-400 border border-amber-500/30 mb-3 uppercase tracking-wider text-xs">
+                Featured Intelligence Series
+              </Badge>
+              <h2 className="text-4xl md:text-5xl font-serif font-bold text-white mb-3">
+                Mark Cuban Cost Plus Drugs Intelligence
+              </h2>
+              <p className="text-lg text-neutral-400 max-w-3xl mx-auto">
+                Transparent pricing analysis and strategic integration reports for Cost Plus Drugs — quantify savings, optimize formularies, and maximize member value.
+              </p>
+            </div>
+
+            <div className="grid md:grid-cols-2 gap-6">
+              {INDIVIDUAL_REPORTS.filter(r => r.id.startsWith("cost-plus")).map((report) => (
+                <div 
+                  key={report.id}
+                  className="bg-gradient-to-br from-[#151B23] to-[#0F1419] border-2 border-amber-500/30 hover:border-amber-500/60 rounded-xl overflow-hidden transition-all duration-300 shadow-xl hover:shadow-2xl hover:shadow-amber-500/10"
+                >
+                  <div className="p-6">
+                    <div className="flex items-start justify-between mb-4">
+                      <Badge className="bg-amber-500/20 text-amber-400 border border-amber-500/40 text-xs uppercase tracking-wider">
+                        Cost Plus Intelligence
+                      </Badge>
+                      <div className="text-right">
+                        <div className="text-2xl font-bold text-white">{formatCurrency(report.price)}</div>
+                        <div className="text-xs text-neutral-500">{report.turnaroundDays} days</div>
+                      </div>
+                    </div>
+
+                    <h3 className="text-xl font-serif font-bold text-white mb-3 leading-tight">
+                      {report.name}
+                    </h3>
+
+                    <p className="text-sm text-neutral-300 mb-4 leading-relaxed">
+                      {report.description}
+                    </p>
+
+                    <div className="bg-[#0F1419]/60 border border-[#2A3F54]/60 rounded-lg p-3 mb-4">
+                      <div className="text-[10px] font-mono uppercase tracking-widest text-amber-400 mb-2">
+                        Key Deliverables
+                      </div>
+                      <div className="space-y-1.5">
+                        {report.deliverables.slice(0, 4).map((item, idx) => (
+                          <div key={idx} className="flex items-start gap-2 text-xs text-neutral-300">
+                            <Check className="w-3.5 h-3.5 mt-0.5 text-amber-400 flex-shrink-0" />
+                            <span>{item}</span>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+
+                    <div className="flex gap-2">
+                      <Button 
+                        onClick={() => handleOrderClick(report)}
+                        className="flex-1 bg-amber-500 hover:bg-amber-600 text-black font-bold text-xs py-2"
+                      >
+                        Order Report
+                      </Button>
+                      <Link href="/contact">
+                        <Button variant="outline" className="border-amber-500/30 text-amber-400 hover:bg-amber-500/10 text-xs px-4">
+                          <Info className="w-3.5 h-3.5" />
+                        </Button>
+                      </Link>
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+
+            <div className="mt-8 text-center">
+              <Link href="/solutions/mark-cuban-cost-drugs">
+                <Button variant="outline" className="border-amber-500/30 text-amber-400 hover:bg-amber-500/10">
+                  View Cost Plus Drugs Solution Page
+                  <ChevronRight className="w-4 h-4 ml-2" />
+                </Button>
+              </Link>
+            </div>
+          </div>
+        </section>
+
+        {/* 8 Pillars of Fiduciary Responsibility - Board Member Focus */}
+        <section className="py-16 bg-gradient-to-b from-black via-[#0A0E27] to-black border-b border-[#1F2937]">
+          <div className="max-w-7xl mx-auto px-6">
+            <div className="text-center mb-12">
+              <Badge className="bg-[#B8860B]/10 text-[#B8860B] border border-[#B8860B]/30 mb-3 uppercase tracking-wider text-xs">
+                Fiduciary Framework
+              </Badge>
+              <h2 className="text-4xl md:text-5xl font-serif font-bold text-white mb-3">
+                8 Pillars of Fiduciary Responsibility
+              </h2>
+              <p className="text-lg text-neutral-400 max-w-3xl mx-auto">
+                Comprehensive governance framework for board members and plan fiduciaries — defense-ready documentation and continuous oversight infrastructure.
+              </p>
+            </div>
+
+            <div className="grid md:grid-cols-4 gap-4 mb-8">
+              {[
+                { 
+                  num: "1", 
+                  title: "Verified Savings Documentation", 
+                  desc: "Timestamped audit trail with complete chain of custody",
+                  href: "/pillars/verified-savings-documentation",
+                  color: "emerald"
+                },
+                { 
+                  num: "2", 
+                  title: "Financial Impact Analysis", 
+                  desc: "EBITDA quantification and board-ready financial models",
+                  href: "/pillars/financial-impact-analysis",
+                  color: "blue"
+                },
+                { 
+                  num: "3", 
+                  title: "Multi-Source Data Reconciliation", 
+                  desc: "Cross-system verification and data integrity validation",
+                  href: "/pillars/multi-source-data-reconciliation",
+                  color: "amber"
+                },
+                { 
+                  num: "4", 
+                  title: "Contract Intelligence & Compliance", 
+                  desc: "Automated clause extraction and guarantee enforcement",
+                  href: "/pillars/contract-intelligence-compliance",
+                  color: "purple"
+                },
+                { 
+                  num: "5", 
+                  title: "Actuarial Risk Modeling", 
+                  desc: "Monte Carlo simulations and credibility-weighted forecasts",
+                  href: "/pillars/actuarial-risk-modeling",
+                  color: "rose"
+                },
+                { 
+                  num: "6", 
+                  title: "Real-Time Claims Surveillance", 
+                  desc: "Transaction-level anomaly detection and forensic alerts",
+                  href: "/pillars/realtime-claims-surveillance",
+                  color: "orange"
+                },
+                { 
+                  num: "7", 
+                  title: "Regulatory & Legal Framework", 
+                  desc: "ERISA compliance monitoring and DOL audit readiness",
+                  href: "/pillars/regulatory-legal-framework",
+                  color: "indigo"
+                },
+                { 
+                  num: "8", 
+                  title: "Predictive Cost Analytics", 
+                  desc: "AI-powered trend forecasting and intervention modeling",
+                  href: "/pillars/predictive-cost-analytics",
+                  color: "cyan"
+                }
+              ].map((pillar) => (
+                <Link key={pillar.num} href={pillar.href}>
+                  <div className={`group bg-[#151B23] border-2 border-[#2A3F54] hover:border-${pillar.color}-500/60 rounded-xl p-5 transition-all duration-300 hover:shadow-xl hover:shadow-${pillar.color}-500/10 cursor-pointer h-full`}>
+                    <div className={`w-10 h-10 rounded-full bg-${pillar.color}-500/10 flex items-center justify-center mb-3 border border-${pillar.color}-500/30`}>
+                      <span className={`text-lg font-bold text-${pillar.color}-400`}>{pillar.num}</span>
+                    </div>
+                    <h3 className="text-sm font-semibold text-white mb-2 group-hover:text-[#B8860B] transition-colors leading-tight">
+                      {pillar.title}
+                    </h3>
+                    <p className="text-xs text-neutral-400 leading-relaxed">
+                      {pillar.desc}
+                    </p>
+                  </div>
+                </Link>
+              ))}
+            </div>
+
+            <div className="bg-gradient-to-br from-[#151B23] to-[#0F1419] border-2 border-[#1A3A52] rounded-xl p-8">
+              <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
+                <div className="flex-1">
+                  <div className="flex items-center gap-2 mb-3">
+                    <Shield className="w-5 h-5 text-[#B8860B]" />
+                    <h3 className="text-xl font-serif font-bold text-white">Board Fiduciary Defense Package</h3>
+                  </div>
+                  <p className="text-neutral-300 leading-relaxed">
+                    Complete documentation framework demonstrating compliance with ERISA duty of prudence. Defense-ready audit trail for DOL inquiries, litigation response, and board reporting.
+                  </p>
+                  <div className="flex flex-wrap gap-3 mt-4">
+                    <Badge className="bg-emerald-500/10 text-emerald-400 border border-emerald-500/30 text-xs">
+                      DOL Audit Ready
+                    </Badge>
+                    <Badge className="bg-blue-500/10 text-blue-400 border border-blue-500/30 text-xs">
+                      Litigation Defense
+                    </Badge>
+                    <Badge className="bg-amber-500/10 text-amber-400 border border-amber-500/30 text-xs">
+                      404(c) Compliance
+                    </Badge>
+                  </div>
+                </div>
+                <div className="flex flex-col gap-3">
+                  <Link href="/personas/board-members">
+                    <Button className="bg-[#B8860B] hover:bg-[#D4AF37] text-black font-bold whitespace-nowrap">
+                      Board Member Portal
+                      <ChevronRight className="w-4 h-4 ml-2" />
+                    </Button>
+                  </Link>
+                  <Link href="/board-of-directors">
+                    <Button variant="outline" className="border-[#2A3F54] text-neutral-300 hover:bg-[#0C1117] whitespace-nowrap">
+                      View Executive Dashboard
+                    </Button>
+                  </Link>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
         {/* Secondary Navigation: Reports & Live Stream Tabs */}
         <section className="border-b border-[#1F2937] bg-[#151B23] sticky top-16 z-10">
           <div className="max-w-7xl mx-auto px-6 py-3">

@@ -398,7 +398,7 @@ export default function HomePage() {
         </section>
 
         <section className="py-12 border-t border-neutral-800 bg-neutral-900/30">
-          <div className="container mx-auto px-4 max-w-7xl">
+          <div className="container mx-auto px-4 max-w-6xl">
             <AnimatedSection>
               <div className="text-center mb-8">
                 <motion.div 

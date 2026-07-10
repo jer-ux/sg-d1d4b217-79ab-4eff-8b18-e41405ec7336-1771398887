@@ -46,7 +46,7 @@ export async function sendSlackNotification(notification: SlackNotification) {
         }
       ],
       footer: "Contract X-Ray Intelligence",
-      footer_icon: "https://siriusb.ai/favicon.ico"
+      footer_icon: "https://kincaidhealth.ai/favicon.ico"
     }]
   };
 
@@ -113,7 +113,7 @@ export async function notifyAnalysisComplete(data: {
       `📊 Overall Score: ${data.overallScore}/100\n` +
       `⚠️ Red Flags: ${data.redFlags}\n` +
       `💰 Potential Savings: $${(data.potentialSavings / 1000).toFixed(0)}K\n\n` +
-      `<https://siriusb.ai/contract-analysis/${data.contractId}|View Full Report>`,
+      `<https://kincaidhealth.ai/contract-analysis/${data.contractId}|View Full Report>`,
     contractId: data.contractId,
     severity
   });
@@ -134,7 +134,7 @@ export async function notifyCriticalRedFlags(data: {
   return sendSlackNotification({
     channel: "#contract-alerts",
     message: `*🚨 Critical Issues Found: ${data.fileName}*\n\n${flagsList}\n\n` +
-      `<https://siriusb.ai/contract-analysis/${data.contractId}|Review Immediately>`,
+      `<https://kincaidhealth.ai/contract-analysis/${data.contractId}|Review Immediately>`,
     contractId: data.contractId,
     severity: "critical"
   });
@@ -154,7 +154,7 @@ export async function notifyMention(data: {
     message: `*You were mentioned in a contract comment*\n\n` +
       `By: ${data.commentedBy}\n` +
       `Comment: "${data.comment}"\n\n` +
-      `<https://siriusb.ai/contract-analysis/${data.contractId}|View Comment>`,
+      `<https://kincaidhealth.ai/contract-analysis/${data.contractId}|View Comment>`,
     contractId: data.contractId,
     severity: "info"
   });
@@ -172,7 +172,7 @@ export async function notifySlackRenewalDue(data: {
   
   return sendSlackNotification({
     channel: "#contract-alerts",
-    message: `*⏰ Contract Renewal Alert: ${data.contractName}*\n\nThis contract is due for renewal in *${data.daysUntilRenewal} days*.\n\n<https://siriusb.ai/contract-analysis/${data.contractId}|Review Contract>`,
+    message: `*⏰ Contract Renewal Alert: ${data.contractName}*\n\nThis contract is due for renewal in *${data.daysUntilRenewal} days*.\n\n<https://kincaidhealth.ai/contract-analysis/${data.contractId}|Review Contract>`,
     contractId: data.contractId,
     severity
   });
@@ -188,7 +188,7 @@ export async function notifySlackClauseChange(data: {
 }) {
   return sendSlackNotification({
     channel: "#contract-alerts",
-    message: `*⚠️ Clause Change Detected*\n\n*Clause:* ${data.clause}\n\n*Details:*\n${data.change}\n\n<https://siriusb.ai/contract-analysis/${data.contractId}|Review Changes>`,
+    message: `*⚠️ Clause Change Detected*\n\n*Clause:* ${data.clause}\n\n*Details:*\n${data.change}\n\n<https://kincaidhealth.ai/contract-analysis/${data.contractId}|Review Changes>`,
     contractId: data.contractId,
     severity: "warning"
   });

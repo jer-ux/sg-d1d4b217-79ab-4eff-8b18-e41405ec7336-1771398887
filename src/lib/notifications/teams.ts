@@ -118,7 +118,7 @@ export async function notifyTeamsAnalysisComplete(data: {
     actions: [{
       type: "Action.OpenUrl",
       title: "View Full Report",
-      url: `https://siriusb.ai/contract-analysis/${data.contractId}`
+      url: `https://kincaidhealth.ai/contract-analysis/${data.contractId}`
     }]
   });
 }
@@ -145,12 +145,12 @@ export async function notifyTeamsRenewalDue(data: {
       {
         type: "Action.OpenUrl",
         title: "Review Contract",
-        url: `https://siriusb.ai/contract-analysis/${data.contractId}`
+        url: `https://kincaidhealth.ai/contract-analysis/${data.contractId}`
       },
       {
         type: "Action.OpenUrl",
         title: "Start Negotiation",
-        url: `https://siriusb.ai/contract-analysis/${data.contractId}?tab=savings`
+        url: `https://kincaidhealth.ai/contract-analysis/${data.contractId}?tab=savings`
       }
     ]
   });

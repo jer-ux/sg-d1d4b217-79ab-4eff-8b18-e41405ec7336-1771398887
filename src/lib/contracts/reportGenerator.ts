@@ -121,7 +121,7 @@ export function generateExecutiveSummary(
   options: EnterpriseReportOptions = {}
 ): string {
   const theme = options.theme || "professional";
-  const companyName = options.companyName || "SiriusB iQ";
+  const companyName = options.companyName || "Kincaid Health";
   const confidentiality = options.confidentialityLevel || "Confidential";
 
   // Validate input data

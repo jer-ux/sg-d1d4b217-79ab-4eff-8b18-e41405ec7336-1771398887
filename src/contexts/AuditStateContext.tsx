@@ -23,8 +23,8 @@ export const INITIAL_AUDITS: Record<string, PersonaAudit> = {
     title: "Actuarial Trend & Reserve Accuracy",
     riskWeight: 150000,
     items: [
-      { id: 1, category: "Data Access", weight: 9, text: "We have direct, un-redacted access to claim-level pharmacy data (not aggregated PBM portal exports).", remediation: "Negotiate direct feed access or transition to SiriusB independent claims vault." },
-      { id: 2, category: "Trend Modeling", weight: 8, text: "Our trend models isolate unit cost, utilization, and drug mix separately.", remediation: "Utilize SiriusB Trend Decomposition Panel to isolate cost drivers." },
+      { id: 1, category: "Data Access", weight: 9, text: "We have direct, un-redacted access to claim-level pharmacy data (not aggregated PBM portal exports).", remediation: "Negotiate direct feed access or transition to Kincaid Health independent claims vault." },
+      { id: 2, category: "Trend Modeling", weight: 8, text: "Our trend models isolate unit cost, utilization, and drug mix separately.", remediation: "Utilize Kincaid Health Trend Decomposition Panel to isolate cost drivers." },
       { id: 3, category: "Benchmarking", weight: 8, text: "We independently benchmark specialty drug ingredient costs against CMS NADAC pricing.", remediation: "Implement real-time NADAC-to-AWP spread mapping audits." },
       { id: 4, category: "Model Governance", weight: 7, text: "All model assumptions (rebate pass-through, generic launch timing) are version-controlled.", remediation: "Utilize continuous model version-control features." },
       { id: 5, category: "IBNR Adjustments", weight: 7, text: "We adjust IBNR and reserves using credibility-weighted industry and plan experience.", remediation: "Run automated credibility-weighting calculations quarterly." }
@@ -36,10 +36,10 @@ export const INITIAL_AUDITS: Record<string, PersonaAudit> = {
     title: "EBITDA & Financial Leakage",
     riskWeight: 245000,
     items: [
-      { id: 1, category: "Contract Compliance", weight: 10, text: "We perform automated monthly audits on 100% of PBM pharmacy claims (not random quarterly samples).", remediation: "Deploy SiriusB automated monthly claims auditing engine." },
+      { id: 1, category: "Contract Compliance", weight: 10, text: "We perform automated monthly audits on 100% of PBM pharmacy claims (not random quarterly samples).", remediation: "Deploy Kincaid Health automated monthly claims auditing engine." },
       { id: 2, category: "Rebate Verification", weight: 9, text: "We independently verify that 100% of manufacturer rebates and admin fees are fully credited back.", remediation: "Reconciliation of PBM administrative fees to wholesale rebate payouts." },
       { id: 3, category: "Contract Alignment", weight: 8, text: "Our broker/consultant has zero financial ties, commissions, or indirect overrides from our PBM partner.", remediation: "Request fully transparent fee-only contracts with mandatory form 5500 schedule C disclosures." },
-      { id: 4, category: "Fiduciary Risk", weight: 9, text: "Our benefits team documents all fiduciary-grade decisions with formal, audit-ready evidence receipts.", remediation: "Adopt SiriusB Fiduciary Ledger with cryptographically signed evidence receipts." },
+      { id: 4, category: "Fiduciary Risk", weight: 9, text: "Our benefits team documents all fiduciary-grade decisions with formal, audit-ready evidence receipts.", remediation: "Adopt Kincaid Health Fiduciary Ledger with cryptographically signed evidence receipts." },
       { id: 5, category: "Renewal Defense", weight: 8, text: "We issue clean RFPs based on plan-specific historical experience rather than PBM-provided averages.", remediation: "Construct independent dynamic RFPs with the PBM Contract Vault." }
     ]
   },
@@ -63,7 +63,7 @@ export const INITIAL_AUDITS: Record<string, PersonaAudit> = {
     riskWeight: 310000,
     items: [
       { id: 1, category: "Portfolio Leverage", weight: 9, text: "We aggregate purchasing power across all portfolio companies into a master coalition agreement.", remediation: "Establish a master portfolio coalition contract with standard custom pricing sheets." },
-      { id: 2, category: "Due Diligence", weight: 10, text: "We perform a formal PBM contract forensics review during the pre-acquisition due diligence phase.", remediation: "Integrate SiriusB Contract X-Ray into the standard M&A pre-close diligence playbook." },
+      { id: 2, category: "Due Diligence", weight: 10, text: "We perform a formal PBM contract forensics review during the pre-acquisition due diligence phase.", remediation: "Integrate Kincaid Health Contract X-Ray into the standard M&A pre-close diligence playbook." },
       { id: 3, category: "Leakage Tracking", weight: 8, text: "We track and report pharmacy program leakage as a direct impact metric on enterprise value.", remediation: "Link PBM audited leakage directly into portco EBITDA reports and exit valuation models." },
       { id: 4, category: "Post-Close Integration", weight: 8, text: "All newly acquired portcos are automatically migrated to our audited master agreement within 90 days.", remediation: "Automate transition mapping and deployment guides for newly acquired entities." },
       { id: 5, category: "Exit Readiness", weight: 9, text: "We have clean, audited pharmacy trend records ready to showcase as enterprise value improvements upon exit.", remediation: "Provide historical audited saving receipts and clean trend lines to prospective buyers." }
@@ -76,7 +76,7 @@ export const INITIAL_AUDITS: Record<string, PersonaAudit> = {
     riskWeight: 140000,
     items: [
       { id: 1, category: "Fiduciary Disclosure", weight: 10, text: "We provide full written disclosures of all direct and indirect commissions under CAA 2021 guidelines.", remediation: "Provide written fiduciary fee agreement schedules automatically to all clients." },
-      { id: 2, category: "RFP Validation", weight: 8, text: "We utilize real historical claim-level data (not sample claim files) for RFP bid verification.", remediation: "Use the SiriusB PBM RFP Opportunity Sandbox to upload and verify all bids dynamically." },
+      { id: 2, category: "RFP Validation", weight: 8, text: "We utilize real historical claim-level data (not sample claim files) for RFP bid verification.", remediation: "Use the Kincaid Health PBM RFP Opportunity Sandbox to upload and verify all bids dynamically." },
       { id: 3, category: "Audit Independence", weight: 9, text: "Our contract audits are conducted by independent, non-conflict third-party analytical suites.", remediation: "Incorporate third-party forensic audits into the core client advisory model." },
       { id: 4, category: "Guarantees Validation", weight: 8, text: "We run monthly validation checks on all client PBM contract discount and rebate guarantees.", remediation: "Introduce continuous guarantee validation alerts for client portfolios." },
       { id: 5, category: "Fiduciary Status", weight: 9, text: "We formally act as co-fiduciaries alongside our plan sponsor clients regarding vendor selection.", remediation: "Adopt a formal co-fiduciary posture with documented, objective decision logs." }
@@ -115,7 +115,7 @@ export function AuditStateProvider({ children }: { children: React.ReactNode }) 
 
   // Load from localStorage on mount
   useEffect(() => {
-    const saved = localStorage.getItem("siriusb_audit_state");
+    const saved = localStorage.getItem("kincaid_health_audit_state");
     if (saved) {
       try {
         setCheckedItems(JSON.parse(saved));
@@ -127,7 +127,7 @@ export function AuditStateProvider({ children }: { children: React.ReactNode }) 
 
   const saveState = (newState: Record<string, number[]>) => {
     setCheckedItems(newState);
-    localStorage.setItem("siriusb_audit_state", JSON.stringify(newState));
+    localStorage.setItem("kincaid_health_audit_state", JSON.stringify(newState));
   };
 
   const toggleItem = (personaId: string, itemId: number) => {

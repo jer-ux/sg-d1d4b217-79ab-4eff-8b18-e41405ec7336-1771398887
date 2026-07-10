@@ -48,8 +48,8 @@ export function SEOElements({
 
       {/* Twitter */}
       <meta name="twitter:card" content="summary_large_image" />
-      <meta name="twitter:site" content="@SiriusBiQ" />
-      <meta name="twitter:creator" content="@SiriusBiQ" />
+      <meta name="twitter:site" content="@KincaidHealthAI" />
+      <meta name="twitter:creator" content="@KincaidHealthAI" />
       <meta name="twitter:title" content={title} />
       <meta name="twitter:description" content={description} />
       <meta name="twitter:image" content={fullImageUrl} />
@@ -74,7 +74,7 @@ export function SEOElements({
           "logo": `${url}/og-image.png`,
           "description": description,
           "sameAs": [
-            "https://www.linkedin.com/company/siriusb-iq"
+            "https://www.linkedin.com/company/kincaid-health"
           ],
           "contactPoint": {
             "@type": "ContactPoint",
@@ -143,8 +143,8 @@ export function SEO({
 
       {/* Twitter */}
       <meta name="twitter:card" content="summary_large_image" />
-      <meta name="twitter:site" content="@SiriusBiQ" />
-      <meta name="twitter:creator" content="@SiriusBiQ" />
+      <meta name="twitter:site" content="@KincaidHealthAI" />
+      <meta name="twitter:creator" content="@KincaidHealthAI" />
       <meta name="twitter:title" content={title} />
       <meta name="twitter:description" content={description} />
       <meta name="twitter:image" content={fullImageUrl} />

@@ -6,7 +6,7 @@
 import { supabase } from "@/integrations/supabase/client";
 
 export const DEMO_USER = {
-  email: "demo@siriusb.ai",
+  email: "demo@kincaidhealth.ai",
   password: "Demo2024!Secure",
   id: "00000000-0000-0000-0000-000000000001", // Fixed UUID for demo
   org_id: "11111111-1111-1111-1111-111111111111" // Demo org

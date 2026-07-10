@@ -356,15 +356,11 @@ export default function KincaidIQIntelligenceSeries() {
     "Benchmarking"
   ];
 
-  // Dynamic sorting: Lowest Price First
-  const sortedReports = useMemo(() => {
-    return [...reportsData].sort((a, b) => a.price - b.price);
-  }, []);
-  
+  // Use natural array order (Cost Plus first)
   const filteredReports = useMemo(() => {
-    if (selectedCategory === "all") return sortedReports;
-    return sortedReports.filter(r => r.category === selectedCategory);
-  }, [selectedCategory, sortedReports]);
+    if (selectedCategory === "all") return reportsData;
+    return reportsData.filter(r => r.category === selectedCategory);
+  }, [selectedCategory]);
 
   return (
     <>
@@ -437,7 +433,7 @@ export default function KincaidIQIntelligenceSeries() {
                 }`}
               >
                 <ListCollapse className="w-4 h-4 inline-block mr-2" />
-                Intelligence Reports (Lowest Price First)
+                Intelligence Reports
               </button>
               <button
                 onClick={() => setActiveTab("live-stream")}
@@ -576,11 +572,11 @@ export default function KincaidIQIntelligenceSeries() {
                       Intelligence Series Dossiers
                     </h2>
                     <p className="text-sm text-neutral-400 mt-1">
-                      Showcasing all available forensic audit frameworks and research publications, sorted with the lowest price tier first.
+                      Comprehensive forensic audit frameworks and research publications.
                     </p>
                   </div>
                   <Badge variant="outline" className="border-[#B8860B]/30 bg-[#B8860B]/10 text-[#B8860B] font-mono text-xs px-3 py-1 uppercase tracking-wider">
-                    Price Ascending
+                    {filteredReports.length} Reports
                   </Badge>
                 </div>
                 

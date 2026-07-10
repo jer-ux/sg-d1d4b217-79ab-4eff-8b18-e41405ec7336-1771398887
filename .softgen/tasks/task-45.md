@@ -26,10 +26,10 @@ Added "Engines" link to navbar between Tools and existing sections.
 - [x] Create Medical Trend Forecasting engine page
 - [x] Create Rx Trend Forecasting engine page
 - [x] Create Catastrophic Claims Forecasting engine page
-- [ ] Create remaining 17 engine pages:
-  - High-cost claimant prediction
-  - GLP-1 financial impact modeling
-  - Gene therapy exposure modeling
+- [x] Create High-cost claimant prediction engine page
+- [x] Create GLP-1 financial impact modeling engine page
+- [x] Create Gene therapy exposure modeling engine page
+- [ ] Create remaining 14 engine pages:
   - Oncology cost projection
   - Inflation decomposition
   - Provider unit cost trend

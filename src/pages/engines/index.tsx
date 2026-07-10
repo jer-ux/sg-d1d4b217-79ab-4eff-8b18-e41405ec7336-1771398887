@@ -1,33 +1,11 @@
-import Head from "next/head";
-import Link from "next/link";
-import { 
-  TrendingUp, Pill, AlertTriangle, Target, Activity, Dna, 
-  DollarSign, MapPin, Users, Calendar, Database, BarChart3,
-  Shield, FileText, Award, Brain, Briefcase, LineChart, Building2, CheckCircle2
-} from "lucide-react";
-import Footer from "@/components/Footer";
 import { useRouter } from "next/router";
 import { motion, useInView } from "framer-motion";
 import { useRef } from "react";
 import {
-  TrendingUp,
-  DollarSign,
-  Shield,
-  Users,
-  Brain,
-  Building2,
-  CheckCircle2,
-  Activity,
-  BarChart3,
-  LineChart,
-  Target,
-  Zap,
-  Lock,
-  Database,
-  Code,
-  Settings,
-  FileText,
-  AlertTriangle
+  TrendingUp, AlertTriangle, Target, Activity,
+  DollarSign, Settings, Users, Database, BarChart3,
+  Shield, FileText, Code, Brain, Lock, LineChart, Building2, CheckCircle2,
+  Zap
 } from "lucide-react";
 import { SEO } from "@/components/SEO";
 import { Badge } from "@/components/ui/badge";

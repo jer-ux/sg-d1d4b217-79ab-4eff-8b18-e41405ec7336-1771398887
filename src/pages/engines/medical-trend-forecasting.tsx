@@ -1,5 +1,6 @@
 import { TrendingUp, Database, BarChart3, Activity, AlertCircle, CheckCircle2, Cpu, GitBranch, Target, Zap } from "lucide-react";
 import { EngineDetailLayout, VegasSection, VegasMetricCard, VegasCodeBlock, VegasFeatureGrid, VegasFeatureCard } from "@/components/engines/EngineDetailLayout";
+import Link from "next/link";
 
 export default function MedicalTrendForecastingEngine() {
   return (
@@ -381,12 +382,12 @@ Used for:
             Stop accepting carrier trend estimates at face value. Run an independent, credibility-weighted forecast 
             specific to your population in under 30 seconds.
           </p>
-          <a
+          <Link
             href="/request-demo"
             className="inline-flex items-center gap-3 bg-white text-purple-600 px-10 py-5 rounded-xl font-black text-lg hover:bg-purple-50 transition-all duration-200 shadow-2xl hover:shadow-purple-500/50 transform hover:scale-105">
             Request Engine Demo
             <span className="text-2xl">→</span>
-          </a>
+          </Link>
         </div>
       </div>
     </EngineDetailLayout>

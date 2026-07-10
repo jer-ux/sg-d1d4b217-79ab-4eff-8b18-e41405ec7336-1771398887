@@ -6,7 +6,7 @@ import { SEO } from "@/components/SEO";
 import {
   FileText, Shield, TrendingUp, CheckCircle2, Activity, ArrowRight,
   Building2, Database, BarChart3, Award, AlertTriangle, Clock,
-  DollarSign, Percent, ChevronRight, Check, X, Layers, Eye, Info, BookOpen } from
+  DollarSign, Percent, ChevronRight, Check, X, Layers, Eye, Info, BookOpen, Sparkles, Zap } from
 "lucide-react";
 import { ExecutiveWarRoom } from "@/components/warroom/ExecutiveWarRoom";
 import { CHROWarRoom } from "@/components/warroom/CHROWarRoom";
@@ -73,6 +73,30 @@ const AnimatedSection = ({ children, className = "" }: {children: React.ReactNod
       {children}
     </motion.div>);
 
+};
+
+const FloatingParticle = ({ delay = 0, duration = 20 }: { delay?: number; duration?: number }) => {
+  return (
+    <motion.div
+      className="absolute w-1 h-1 bg-[#B8860B] rounded-full"
+      style={{
+        left: `${Math.random() * 100}%`,
+        top: `${Math.random() * 100}%`,
+      }}
+      animate={{
+        y: [-20, -40, -20],
+        x: [-10, 10, -10],
+        opacity: [0, 1, 0],
+        scale: [0, 1.5, 0]
+      }}
+      transition={{
+        duration,
+        repeat: Infinity,
+        delay,
+        ease: "easeInOut"
+      }}
+    />
+  );
 };
 
 export default function HomePage() {
@@ -152,9 +176,41 @@ export default function HomePage() {
       
       <div className="min-h-screen bg-[#0F1419] text-neutral-100 selection:bg-[#B8860B]/20 overflow-x-hidden font-sans">
 
-        {/* Hero Section - Kind Health Inspired */}
-        <section className="relative min-h-screen pt-24 pb-12 px-4 md:px-8 max-w-7xl mx-auto flex items-center">
+        <section className="relative min-h-screen pt-24 pb-12 px-4 md:px-8 max-w-7xl mx-auto flex items-center overflow-hidden">
           <div className="absolute inset-0 overflow-hidden pointer-events-none">
+            <div className="absolute inset-0 bg-gradient-to-br from-[#B8860B]/10 via-transparent to-emerald-500/5" />
+            
+            <motion.div 
+              className="absolute top-1/4 left-1/4 w-96 h-96 bg-[#B8860B]/20 rounded-full blur-3xl"
+              animate={{
+                scale: [1, 1.2, 1],
+                opacity: [0.3, 0.5, 0.3],
+              }}
+              transition={{
+                duration: 8,
+                repeat: Infinity,
+                ease: "easeInOut"
+              }}
+            />
+            
+            <motion.div 
+              className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-emerald-500/20 rounded-full blur-3xl"
+              animate={{
+                scale: [1.2, 1, 1.2],
+                opacity: [0.2, 0.4, 0.2],
+              }}
+              transition={{
+                duration: 10,
+                repeat: Infinity,
+                ease: "easeInOut",
+                delay: 2
+              }}
+            />
+
+            {Array.from({ length: 30 }).map((_, i) => (
+              <FloatingParticle key={i} delay={i * 0.5} duration={15 + Math.random() * 10} />
+            ))}
+            
             <div className="absolute inset-0 opacity-30">
               <Hero3D />
             </div>
@@ -172,19 +228,58 @@ export default function HomePage() {
               transition={{ duration: 0.8, ease: "easeOut" }}>
               
               
-              <div className="inline-flex items-center gap-2 bg-emerald-500/10 border border-emerald-500/30 rounded px-4 py-2 text-xs font-mono text-emerald-400 uppercase tracking-wider">
-                <Activity className="h-4 w-4" />
+              <motion.div 
+                className="inline-flex items-center gap-2 bg-gradient-to-r from-emerald-500/20 to-emerald-600/10 border border-emerald-500/40 rounded-full px-5 py-2.5 text-xs font-mono text-emerald-300 uppercase tracking-wider backdrop-blur-sm shadow-lg shadow-emerald-500/20"
+                animate={{
+                  boxShadow: [
+                    "0 0 20px rgba(16, 185, 129, 0.2)",
+                    "0 0 40px rgba(16, 185, 129, 0.4)",
+                    "0 0 20px rgba(16, 185, 129, 0.2)"
+                  ]
+                }}
+                transition={{ duration: 3, repeat: Infinity }}
+              >
+                <motion.div
+                  animate={{ rotate: 360 }}
+                  transition={{ duration: 3, repeat: Infinity, ease: "linear" }}
+                >
+                  <Activity className="h-4 w-4" />
+                </motion.div>
                 Continuous Forensic Intelligence
-              </div>
+              </motion.div>
 
               <motion.div
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.8 }}
               >
-                <h1 className="text-5xl md:text-7xl font-serif font-bold text-white mb-6 leading-tight">
-                  Kincaid Health<br />
-                  <span className="text-[#B8860B]">Healthcare Intelligence</span>
+                <h1 className="text-5xl md:text-7xl font-serif font-bold mb-6 leading-tight">
+                  <motion.span 
+                    className="inline-block text-white"
+                    animate={{
+                      textShadow: [
+                        "0 0 20px rgba(255, 255, 255, 0.1)",
+                        "0 0 40px rgba(255, 255, 255, 0.2)",
+                        "0 0 20px rgba(255, 255, 255, 0.1)"
+                      ]
+                    }}
+                    transition={{ duration: 4, repeat: Infinity }}
+                  >
+                    Kincaid Health
+                  </motion.span>
+                  <br />
+                  <motion.span 
+                    className="bg-gradient-to-r from-[#B8860B] via-[#FFD700] to-[#B8860B] bg-clip-text text-transparent bg-size-200 animate-shimmer"
+                    style={{
+                      backgroundSize: "200% 100%",
+                    }}
+                    animate={{
+                      backgroundPosition: ["0% 50%", "100% 50%", "0% 50%"]
+                    }}
+                    transition={{ duration: 5, repeat: Infinity, ease: "linear" }}
+                  >
+                    Healthcare Intelligence
+                  </motion.span>
                 </h1>
                 <p className="text-xl md:text-2xl text-neutral-300 mb-8 leading-relaxed max-w-2xl">
                   Enterprise-grade PBM transparency, claims analytics, and fiduciary governance. 
@@ -196,11 +291,15 @@ export default function HomePage() {
                 </p>
               </motion.div>
 
-              <div className="border border-[#2A3F54] bg-[#151B23] rounded-lg p-5 flex items-center justify-between gap-4 max-w-2xl">
+              <motion.div 
+                className="border border-[#2A3F54] bg-gradient-to-br from-[#151B23] to-[#0F1419] rounded-xl p-5 flex items-center justify-between gap-4 max-w-2xl shadow-2xl backdrop-blur-sm"
+                whileHover={{ scale: 1.02, boxShadow: "0 0 40px rgba(184, 134, 11, 0.3)" }}
+                transition={{ duration: 0.3 }}
+              >
                 <div className="flex items-center gap-3">
-                  <div className="relative flex h-2.5 w-2.5">
-                    <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-500 opacity-40"></span>
-                    <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-red-500"></span>
+                  <div className="relative flex h-3 w-3">
+                    <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-500 opacity-75"></span>
+                    <span className="relative inline-flex rounded-full h-3 w-3 bg-red-500 shadow-lg shadow-red-500/50"></span>
                   </div>
                   <div>
                     <div className="text-[10px] font-mono tracking-wider text-neutral-500 uppercase mb-1">Live Audit Detection</div>
@@ -225,56 +324,96 @@ export default function HomePage() {
                     initial={{ scale: 0.95, opacity: 0 }}
                     animate={{ scale: 1, opacity: 1 }}
                     exit={{ scale: 0.95, opacity: 0 }}
-                    className="bg-red-950/30 border border-red-900/40 rounded px-3 py-2 text-right font-mono">
+                    className="bg-gradient-to-br from-red-950/40 to-red-900/20 border border-red-900/50 rounded-lg px-4 py-2.5 text-right font-mono shadow-lg shadow-red-900/30">
                     
                     <div className="text-[9px] text-red-400 font-semibold uppercase tracking-wide">Estimated Waste</div>
                     <div className="text-sm font-bold text-red-300">{mockAudits[auditIndex].savings}</div>
                   </motion.div>
                 </AnimatePresence>
-              </div>
+              </motion.div>
 
-              <div className="flex flex-col sm:flex-row items-center gap-4">
+              <motion.div 
+                className="flex flex-col sm:flex-row items-center gap-4"
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.8, delay: 0.4 }}
+              >
                 <Link href="/request-demo">
-                  <Button size="lg" className="text-lg px-8">
-                    See It Live
-                    <ChevronRight className="ml-2" />
-                  </Button>
+                  <motion.div
+                    whileHover={{ scale: 1.05, boxShadow: "0 0 30px rgba(184, 134, 11, 0.5)" }}
+                    whileTap={{ scale: 0.98 }}
+                  >
+                    <Button size="lg" className="text-lg px-8 bg-gradient-to-r from-[#B8860B] to-[#8B6914] hover:from-[#FFD700] hover:to-[#B8860B] shadow-lg shadow-[#B8860B]/30">
+                      <Sparkles className="mr-2 w-5 h-5" />
+                      See It Live
+                      <ChevronRight className="ml-2" />
+                    </Button>
+                  </motion.div>
                 </Link>
                 <Link href="/research/forensic-audit-suite">
-                  <Button size="lg" variant="outline" className="text-lg px-8">
-                    <BookOpen className="mr-2 w-5 h-5" />
-                    Read Stanford Research
-                  </Button>
+                  <motion.div
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.98 }}
+                  >
+                    <Button size="lg" variant="outline" className="text-lg px-8 border-[#B8860B]/30 hover:border-[#B8860B] hover:bg-[#B8860B]/10">
+                      <BookOpen className="mr-2 w-5 h-5" />
+                      Read Stanford Research
+                    </Button>
+                  </motion.div>
                 </Link>
-              </div>
+              </motion.div>
 
-              <div className="text-sm text-neutral-500 font-mono flex items-center gap-4 flex-wrap">
-                <span>✓ SSAE-18 SOC 2 certified</span>
-                <span>✓ HIPAA-compliant</span>
-                <span>✓ Credentialed Actuarial team</span>
-              </div>
+              <motion.div 
+                className="text-sm text-neutral-500 font-mono flex items-center gap-4 flex-wrap"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ duration: 0.8, delay: 0.6 }}
+              >
+                {["✓ SSAE-18 SOC 2 certified", "✓ HIPAA-compliant", "✓ Credentialed Actuarial team"].map((item, idx) => (
+                  <motion.span
+                    key={idx}
+                    initial={{ opacity: 0, x: -10 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ duration: 0.5, delay: 0.8 + idx * 0.1 }}
+                  >
+                    {item}
+                  </motion.span>
+                ))}
+              </motion.div>
             </motion.div>
 
             <motion.div
               initial={{ opacity: 0, x: 50 }}
               whileInView={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.8, delay: 0.2 }}
-              className="relative max-w-[100.8rem] mx-auto"
+              className="relative max-w-[100.8rem] mx-auto lg:col-span-5"
             >
-              {/* Overlay Text */}
+              <motion.div
+                className="absolute -inset-4 bg-gradient-to-r from-[#B8860B]/20 via-emerald-500/20 to-[#B8860B]/20 rounded-2xl blur-2xl"
+                animate={{
+                  opacity: [0.3, 0.6, 0.3],
+                  scale: [0.95, 1.05, 0.95]
+                }}
+                transition={{ duration: 5, repeat: Infinity, ease: "easeInOut" }}
+              />
+              
               <motion.div
                 className="absolute top-8 left-1/2 -translate-x-1/2 z-20 text-center w-full px-4"
                 initial={{ opacity: 0, y: -20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.8, delay: 0.6, ease: "easeOut" }}>
-                <div className="bg-gradient-to-br from-emerald-500/10 to-teal-500/10 backdrop-blur-md border border-emerald-500/30 rounded-lg px-6 py-4 shadow-2xl">
-                  <h3 className="text-2xl font-bold text-white mb-1">
+                <motion.div 
+                  className="bg-gradient-to-br from-emerald-500/20 to-teal-500/20 backdrop-blur-xl border border-emerald-500/40 rounded-xl px-6 py-4 shadow-2xl"
+                  whileHover={{ scale: 1.05, boxShadow: "0 0 50px rgba(16, 185, 129, 0.4)" }}
+                >
+                  <h3 className="text-2xl font-bold text-white mb-1 flex items-center justify-center gap-2">
+                    <Zap className="w-6 h-6 text-emerald-400" />
                     Live Intelligence Feed
                   </h3>
                   <p className="text-sm text-emerald-300/90 font-medium">
                     Every claim. Every contract. Every violation. In real-time.
                   </p>
-                </div>
+                </motion.div>
               </motion.div>
 
               <InteractiveHeroDashboard />
@@ -283,15 +422,24 @@ export default function HomePage() {
           </div>
         </section>
 
-        {/* Works with Your Consultant Section */}
         <section className="py-12 border-t border-neutral-800 bg-neutral-900/30">
           <div className="container mx-auto px-4 max-w-7xl">
             <AnimatedSection>
               <div className="text-center mb-8">
-                <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-emerald-500/10 text-emerald-400 text-sm font-medium mb-6">
+                <motion.div 
+                  className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-emerald-500/10 text-emerald-400 text-sm font-medium mb-6"
+                  animate={{
+                    boxShadow: [
+                      "0 0 20px rgba(16, 185, 129, 0.2)",
+                      "0 0 40px rgba(16, 185, 129, 0.4)",
+                      "0 0 20px rgba(16, 185, 129, 0.2)"
+                    ]
+                  }}
+                  transition={{ duration: 3, repeat: Infinity }}
+                >
                   <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
                   Not a Broker Replacement
-                </div>
+                </motion.div>
                 <h2 className="text-4xl md:text-5xl font-serif font-bold mb-6">
                   Works <span className="text-emerald-400">with</span> your consultant.
                 </h2>
@@ -301,8 +449,10 @@ export default function HomePage() {
               </div>
 
               <div className="grid md:grid-cols-2 gap-8 max-w-5xl mx-auto">
-                {/* Traditional Consultant Approach */}
-                <div className="bg-gradient-to-br from-neutral-900/50 to-neutral-800/50 border border-neutral-700/50 rounded-xl p-8">
+                <motion.div 
+                  className="bg-gradient-to-br from-neutral-900/50 to-neutral-800/50 border border-neutral-700/50 rounded-xl p-8"
+                  whileHover={{ scale: 1.02, boxShadow: "0 0 30px rgba(0, 0, 0, 0.5)" }}
+                >
                   <div className="flex items-center gap-3 mb-6">
                     <div className="w-12 h-12 rounded-full bg-neutral-700/50 flex items-center justify-center">
                       <span className="text-2xl">📊</span>
@@ -312,10 +462,12 @@ export default function HomePage() {
                       <p className="text-sm text-neutral-500">Annual/Quarterly Reviews</p>
                     </div>
                   </div>
-                </div>
+                </motion.div>
 
-                {/* For Consultants */}
-                <div className="bg-neutral-900/70 border border-neutral-800 rounded-xl p-8">
+                <motion.div 
+                  className="bg-gradient-to-br from-emerald-500/10 to-teal-500/10 border border-emerald-500/30 rounded-xl p-8"
+                  whileHover={{ scale: 1.02, boxShadow: "0 0 40px rgba(16, 185, 129, 0.3)" }}
+                >
                   <div className="text-3xl mb-4">🤝</div>
                   <h3 className="text-2xl font-semibold mb-4">For Your Consultant</h3>
                   <ul className="space-y-4">
@@ -326,32 +478,42 @@ export default function HomePage() {
                     "Gives them ammunition for PBM negotiations",
                     "Makes renewals faster with pre-analyzed intelligence"].
                     map((item, idx) =>
-                    <li key={idx} className="flex items-start gap-3">
+                    <motion.li 
+                      key={idx} 
+                      className="flex items-start gap-3"
+                      initial={{ opacity: 0, x: -10 }}
+                      whileInView={{ opacity: 1, x: 0 }}
+                      transition={{ duration: 0.5, delay: idx * 0.1 }}
+                    >
                         <ChevronRight className="w-5 h-5 text-emerald-400 flex-shrink-0 mt-0.5" />
                         <span className="text-neutral-300">{item}</span>
-                      </li>
+                      </motion.li>
                     )}
                   </ul>
-                </div>
+                </motion.div>
               </div>
 
-              <div className="mt-12 bg-gradient-to-r from-emerald-500/10 to-teal-500/10 border border-emerald-500/20 rounded-xl p-8 text-center">
+              <motion.div 
+                className="mt-12 bg-gradient-to-r from-emerald-500/10 to-teal-500/10 border border-emerald-500/20 rounded-xl p-8 text-center"
+                whileHover={{ scale: 1.01, boxShadow: "0 0 40px rgba(16, 185, 129, 0.2)" }}
+              >
                 <p className="text-lg text-neutral-300 mb-4">
                   <span className="font-semibold text-emerald-400">Consultant partnership program:</span> We pay you 25% of subscription value when you refer clients. 
                   You keep the relationship, we handle the forensics.
                 </p>
                 <Link href="/enterprise/partner-portal">
-                  <Button variant="outline" className="border-emerald-500/30 hover:border-emerald-500">
-                    Learn About Partnerships
-                    <ChevronRight className="ml-2" />
-                  </Button>
+                  <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.98 }}>
+                    <Button variant="outline" className="border-emerald-500/30 hover:border-emerald-500">
+                      Learn About Partnerships
+                      <ChevronRight className="ml-2" />
+                    </Button>
+                  </motion.div>
                 </Link>
-              </div>
+              </motion.div>
             </AnimatedSection>
           </div>
         </section>
 
-        {/* Continuous vs Point-in-Time Intelligence */}
         <section className="py-12 border-t border-neutral-800 bg-neutral-900/30">
           <div className="container mx-auto px-4 max-w-6xl">
             <AnimatedSection>
@@ -370,8 +532,10 @@ export default function HomePage() {
               </div>
 
               <div className="grid md:grid-cols-2 gap-8">
-                {/* Traditional Approach */}
-                <div className="bg-neutral-900/70 border border-red-900/30 rounded-xl p-8">
+                <motion.div 
+                  className="bg-neutral-900/70 border border-red-900/30 rounded-xl p-8"
+                  whileHover={{ scale: 1.01, borderColor: "rgba(220, 38, 38, 0.5)" }}
+                >
                   <div className="flex items-center gap-3 mb-6">
                     <div className="w-12 h-12 rounded-full bg-red-500/10 flex items-center justify-center">
                       <span className="text-2xl">📄</span>
@@ -401,10 +565,12 @@ export default function HomePage() {
                     <div className="text-sm text-neutral-500">Result:</div>
                     <div className="text-lg font-semibold text-red-400">You're always reacting, never preventing.</div>
                   </div>
-                </div>
+                </motion.div>
 
-                {/* Kincaid Health Approach */}
-                <div className="bg-gradient-to-br from-emerald-500/10 to-teal-500/10 border border-emerald-500/30 rounded-xl p-8">
+                <motion.div 
+                  className="bg-gradient-to-br from-emerald-500/10 to-teal-500/10 border border-emerald-500/30 rounded-xl p-8"
+                  whileHover={{ scale: 1.01, boxShadow: "0 0 40px rgba(16, 185, 129, 0.3)" }}
+                >
                   <div className="flex items-center gap-3 mb-6">
                     <div className="w-12 h-12 rounded-full bg-emerald-500/20 flex items-center justify-center">
                       <span className="text-2xl">📡</span>
@@ -434,7 +600,7 @@ export default function HomePage() {
                     <div className="text-sm text-emerald-300/70">Result:</div>
                     <div className="text-lg font-semibold text-emerald-400">You catch problems before they become losses.</div>
                   </div>
-                </div>
+                </motion.div>
               </div>
 
               <div className="mt-12 text-center">

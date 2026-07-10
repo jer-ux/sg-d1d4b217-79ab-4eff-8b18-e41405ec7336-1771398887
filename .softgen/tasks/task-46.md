@@ -15,7 +15,7 @@ Create the foundational design system and reusable template for all 125+ engine 
 ## Checklist
 - [x] Define Vegas color palette (neon pink, electric blue, gold, purple)
 - [x] Create EngineDetailTemplate component with sections: Overview, Technical Specs, Mathematical Model, Data Flows, Use Cases
-- [ ] Build first 3 reference engines: Medical Trend Forecasting, EBITDA Enhancement, Large Claimant Prediction
+- [x] Build first 3 reference engines: Medical Trend Forecasting, EBITDA Enhancement, Large Claimant Prediction
 
 ## Acceptance
 - Template component is reusable for any engine

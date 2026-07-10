@@ -44,8 +44,8 @@ export default function RxDefensePage() {
         />
       </Head>
       <SEO
-        title="PBM Contract Clarity — Kincaid Health"
-        description="Forensic PBM contract analysis toolkit detecting spread pricing, rebate retention, and contractual leakage with clause-by-clause validation."
+        title="Rx Defense: PBM Contract Forensics | Kincaid Health"
+        description="Automated PBM contract monitoring, guarantee enforcement, and pharmacy claims auditing. Defend your EBITDA from hidden PBM fees and spread pricing."
       />
 
       <Nav />

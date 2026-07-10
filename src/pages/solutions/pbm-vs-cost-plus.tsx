@@ -197,7 +197,7 @@ export default function PbmVsCostPlusComparison() {
   return (
     <>
       <Head>
-        <title>Traditional PBM vs. Cost Plus Comparison Tool | SiriusB iQ</title>
+        <title>Traditional PBM vs. Cost Plus Comparison Tool | Kincaid Health</title>
         <meta name="description" content="Side-by-side comparison tool of your traditional PBM contract and a transparent Cost Plus plan." />
       </Head>
 
@@ -211,7 +211,7 @@ export default function PbmVsCostPlusComparison() {
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
             <Link href="/" className="flex items-center gap-3 hover:opacity-90 transition-opacity">
               <span className="text-xl font-bold bg-gradient-to-r from-indigo-400 via-purple-400 to-emerald-400 bg-clip-text text-transparent">
-                SiriusB iQ
+                Kincaid Health
               </span>
               <span className="text-xs font-semibold px-2 py-0.5 bg-indigo-900/40 text-indigo-400 border border-indigo-500/20 rounded-md uppercase tracking-wider">
                 Sciences Lab

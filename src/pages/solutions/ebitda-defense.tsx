@@ -13,8 +13,8 @@ export default function EBITDADefensePage() {
   return (
     <>
       <SEO
-        title="EBITDA Defense - Financial Performance Protection | SiriusB iQ"
-        description="Protect and optimize EBITDA with AI-powered margin defense, cost leakage detection, and real-time financial performance monitoring."
+        title="EBITDA Defense: Healthcare Cost Optimization | Kincaid Health"
+        description="Protect enterprise EBITDA from healthcare cost inflation. Forensic PBM auditing and contract optimization for private equity and CFOs."
         image="/og-image.png"
       />
       

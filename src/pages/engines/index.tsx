@@ -1,3 +1,5 @@
+import Head from "next/head";
+import Link from "next/link";
 import { useRouter } from "next/router";
 import { motion, useInView } from "framer-motion";
 import { useRef } from "react";
@@ -5,11 +7,12 @@ import {
   TrendingUp, AlertTriangle, Target, Activity,
   DollarSign, Settings, Users, Database, BarChart3,
   Shield, FileText, Code, Brain, Lock, LineChart, Building2, CheckCircle2,
-  Zap
+  Zap, Award, Pill, Dna, MapPin, Calendar, Briefcase
 } from "lucide-react";
 import { SEO } from "@/components/SEO";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
+import { Footer } from "@/components/Footer";
 
 // AnimatedSection component for scroll-triggered animations
 function AnimatedSection({ children, className = "" }: { children: React.ReactNode; className?: string }) {

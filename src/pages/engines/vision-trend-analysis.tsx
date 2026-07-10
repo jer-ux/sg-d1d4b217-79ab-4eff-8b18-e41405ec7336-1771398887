@@ -19,7 +19,7 @@ export default function VisionTrendAnalysisEngine() {
                 <ArrowLeft className="w-5 h-5" />
                 <span className="font-medium">Back to Engines</span>
               </Link>
-              <EngineStatusIndicator status="operational" />
+              <EngineStatusIndicator />
             </div>
           </div>
         </div>

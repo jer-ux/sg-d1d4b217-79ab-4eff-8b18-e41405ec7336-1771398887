@@ -27,9 +27,8 @@ export default function SalesIQ() {
   return (
     <>
       <SEO
-        title="Sales IQ™ - Sales Intelligence Platform | Kincaid IQ"
-        description="Win on proprietary intelligence, not contact volume. 14+ data sources, 50-state regulatory map, SBI™ opacity scoring, and recoverable capital modeling for the self-funded benefits market."
-        image="/og-image.png"
+        title="Sales IQ: Healthcare Sales Enablement | Kincaid Health"
+        description="Transform healthcare consultants and brokers into data-driven advisors. Real-time intelligence, competitive analysis, and deal acceleration tools."
       />
       <div className="min-h-screen bg-gradient-to-b from-slate-950 via-slate-900 to-slate-950">
         <Nav />

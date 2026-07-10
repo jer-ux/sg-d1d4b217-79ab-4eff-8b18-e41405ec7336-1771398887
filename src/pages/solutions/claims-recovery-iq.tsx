@@ -28,9 +28,8 @@ export default function ClaimsRecoveryIQ() {
   return (
     <>
       <SEO
-        title="Claims Recovery IQ™ - Forensic Recovery Engine | Kincaid IQ"
-        description="Recover 1.22% of total claims spend through forensic line-level reconciliation. 90-day audit cycle with ERISA-compliant demand letters and three-tier evidence standards."
-        image="/og-image.png"
+        title="Claims Recovery IQ: Automated Recovery Platform | Kincaid Health"
+        description="Automated claims error detection and recovery. Machine learning identifies overpayments, billing errors, and recovery opportunities."
       />
       <div className="min-h-screen bg-gradient-to-b from-slate-950 via-slate-900 to-slate-950">
         <Nav />

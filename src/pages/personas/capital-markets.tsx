@@ -265,7 +265,7 @@ export default function CapitalMarketsPage() {
   return (
     <>
       <Head>
-        <title>For Capital Markets: Healthcare Investment Intelligence | SiriusB iQ</title>
+        <title>For Capital Markets: Healthcare Investment Intelligence | Kincaid Health</title>
         <meta
           name="description"
           content="PE/VC/M&A healthcare diligence tools. 48-hour forensics, portfolio monitoring, exit positioning. Turn healthcare into measurable alpha with evidence-backed value creation."
@@ -306,7 +306,7 @@ export default function CapitalMarketsPage() {
                   </p>
                   
                   <p className="text-lg text-indigo-300/80 mb-10">
-                    SiriusB iQ delivers forensic healthcare analytics for deal diligence, portfolio monitoring, and exit positioning. See the cost structure your competitors can't — and turn healthcare into measurable alpha.
+                    Kincaid Health delivers forensic healthcare analytics for deal diligence, portfolio monitoring, and exit positioning. See the cost structure your competitors can't — and turn healthcare into measurable alpha.
                   </p>
 
                   <div className="flex flex-col sm:flex-row gap-4">
@@ -427,7 +427,7 @@ export default function CapitalMarketsPage() {
                         <div className="flex items-start gap-3 mb-3">
                           <CheckCircle2 className="w-5 h-5 text-emerald-400 flex-shrink-0 mt-0.5" />
                           <div>
-                            <div className="text-sm font-semibold text-emerald-400 mb-2">SiriusB iQ Solution:</div>
+                            <div className="text-sm font-semibold text-emerald-400 mb-2">Kincaid Health Solution:</div>
                             <p className="text-emerald-200 text-sm">{risk.solution}</p>
                           </div>
                         </div>
@@ -581,7 +581,7 @@ export default function CapitalMarketsPage() {
             <Card className="bg-gradient-to-r from-indigo-950/50 to-blue-950/50 border-indigo-500/40 p-10">
               <div className="grid md:grid-cols-2 gap-8 mb-8">
                 <div>
-                  <div className="text-sm text-indigo-400 mb-3 uppercase tracking-wide font-semibold">Before SiriusB iQ</div>
+                  <div className="text-sm text-indigo-400 mb-3 uppercase tracking-wide font-semibold">Before Kincaid Health</div>
                   <div className="bg-gradient-to-br from-red-950/50 to-orange-950/50 border border-red-500/30 rounded-xl p-6">
                     <div className="text-4xl font-black text-red-400 mb-2">{caseStudy.totalSpend}</div>
                     <div className="text-sm text-red-200 mb-4">Total Healthcare Spend</div>
@@ -825,7 +825,7 @@ export default function CapitalMarketsPage() {
                 Turn Healthcare Into Alpha
               </h2>
               <p className="text-2xl text-indigo-200 mb-12">
-                Schedule a 30-minute capital markets briefing to see how SiriusB iQ unlocks 15-25% in portfolio company healthcare spend.
+                Schedule a 30-minute capital markets briefing to see how Kincaid Health unlocks 15-25% in portfolio company healthcare spend.
               </p>
               <div className="flex flex-col sm:flex-row gap-4 justify-center">
                 <Link href="/request-demo">

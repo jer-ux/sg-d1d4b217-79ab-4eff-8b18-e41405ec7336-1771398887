@@ -33,10 +33,9 @@ import Nav from "@/components/Nav";
 export default function AITransformationPage() {
   return (
     <>
-      <SEO
-        title="100% AI Transformation for Middle & Large Market | SiriusB iQ"
-        description="Complete AI-driven business transformation for middle and large market enterprises. Automate operations, reduce costs by 40-60%, and scale intelligently with agentic AI systems."
-        image="/slide04_architecture.png"
+      <SEO 
+        title="AI Transformation: Healthcare AI Platform | Kincaid Health"
+        description="Enterprise AI transformation for healthcare benefits. Agentic workflows, intelligent automation, and decision augmentation."
       />
       <SiteHeader />
       <Nav />

@@ -26,7 +26,7 @@ const teamMembers = [
     role: "Founder & Chief Executive Officer",
     image: "/jeremiah-shrack-professional.png",
     linkedin: "https://www.linkedin.com/in/shrack",
-    bio: "Jeremiah Shrack is the Founder and Chief Executive Officer of SiriusB iQ AI Data Sciences, where he leads the strategic vision of Kincaid Health. A humanitarian and business leader with over two decades of experience engineering intelligent operating systems and scaling organizations.",
+    bio: "Jeremiah Shrack is the Founder and Chief Executive Officer of Kincaid Health, where he leads the strategic vision of the platform. A humanitarian and business leader with over two decades of experience engineering intelligent operating systems and scaling organizations.",
     education: [
       {
         school: "Indiana Wesleyan University",
@@ -62,7 +62,7 @@ const teamMembers = [
     ],
     experience: [
       {
-        company: "SiriusB iQ AI Data Sciences Company",
+        company: "Kincaid Health",
         title: "Founder & Chief Executive Officer",
         period: "Apr 2023 - Present",
         description: "Founder of Kincaid Health, an AI-enabled enterprise intelligence platform engineered for advanced middle and large-market executives. Built on blue-giant computational architecture, consolidating fragmented data into real-time intelligence models powered by 1,000+ validated KPI algorithms.",
@@ -198,7 +198,7 @@ const teamMembers = [
     role: "Board Director & Chair of Public Sector Governance",
     image: "/Hamann_Michael.jpg",
     linkedin: "https://www.linkedin.com/in/mike-hamann-33274023/",
-    bio: "Mike Hamann brings decades of distinguished public service and fiscal leadership to SiriusB iQ. As former Indiana State Representative and Budget Director, he has proven expertise in legislative strategy, government operations, and financial stewardship at the highest levels of state government.",
+    bio: "Mike Hamann brings decades of distinguished public service and fiscal leadership to Kincaid Health. As former Indiana State Representative and Budget Director, he has proven expertise in legislative strategy, government operations, and financial stewardship at the highest levels of state government.",
     experience: [
       {
         company: "State of Indiana",
@@ -224,17 +224,17 @@ const teamMembers = [
       "Policy Development"
     ],
     philosophy: "Effective governance requires both fiscal discipline and innovative thinking. My experience in state government taught me that the best solutions emerge when public sector accountability meets private sector innovation.",
-    vision: "To ensure SiriusB iQ maintains the highest standards of fiscal responsibility, regulatory compliance, and ethical governance while driving innovation in the public and private sectors. Government and business leaders deserve tools that respect both their fiduciary duties and their need for actionable intelligence."
+    vision: "To ensure Kincaid Health maintains the highest standards of fiscal responsibility, regulatory compliance, and ethical governance while driving innovation in the public and private sectors. Government and business leaders deserve tools that respect both their fiduciary duties and their need for actionable intelligence."
   },
   {
     name: "Dr. Michael Ochieng'",
     role: "Distinguished Chief Research & Technology Officer",
     image: "/dr-michael-ochieng-company.png",
     linkedin: "https://www.linkedin.com/in/michael9ochieng/",
-    bio: "Dr. Michael Ochieng' serves as Distinguished Chief Research & Technology Officer, bringing world-class expertise in AI research, machine learning systems, and computational science. His academic credentials and research contributions position SiriusB iQ at the forefront of AI innovation.",
+    bio: "Dr. Michael Ochieng' serves as Distinguished Chief Research & Technology Officer, bringing world-class expertise in AI research, machine learning systems, and computational science. His academic credentials and research contributions position Kincaid Health at the forefront of AI innovation.",
     experience: [
       {
-        company: "SiriusB iQ AI Data Sciences",
+        company: "Kincaid Health",
         title: "Distinguished Chief Research & Technology Officer",
         period: "Present",
         description: "Leading advanced research initiatives in AI, machine learning, and computational intelligence. Architecting the scientific foundation of Kincaid Health's analytical engine.",
@@ -257,20 +257,20 @@ const teamMembers = [
       "Scientific Computing"
     ],
     philosophy: "The most powerful AI systems are those built on rigorous scientific principles, validated through empirical research, and designed with deep respect for the complexity of real-world problems. Technology must serve humanity with precision, transparency, and accountability.",
-    vision: "To establish SiriusB iQ as the gold standard in research-driven AI solutions, where every algorithm is validated, every model is explainable, and every insight is grounded in sound scientific methodology. Our platform will set new benchmarks for academic rigor in commercial AI applications."
+    vision: "To establish Kincaid Health as the gold standard in research-driven AI solutions, where every algorithm is validated, every model is explainable, and every insight is grounded in sound scientific methodology. Our platform will set new benchmarks for academic rigor in commercial AI applications."
   },
   {
     name: "Dr. Jacqueline El-Sayed",
     role: "Board Director and Distinguished Chief Scientist Officer",
     image: "/dr-jacqueline-el-sayed-company.png",
     linkedin: "https://www.linkedin.com/in/jacquelineelsayed/",
-    bio: "Dr. Jacqueline El-Sayed serves as Board Director and Distinguished Chief Scientist Officer, bringing exceptional expertise in data science, statistical analysis, and scientific methodology. Her leadership ensures SiriusB iQ maintains the highest standards of scientific excellence and analytical rigor.",
+    bio: "Dr. Jacqueline El-Sayed serves as Board Director and Distinguished Chief Scientist Officer, bringing exceptional expertise in data science, statistical analysis, and scientific methodology. Her leadership ensures Kincaid Health maintains the highest standards of scientific excellence and analytical rigor.",
     experience: [
       {
-        company: "SiriusB iQ AI Data Sciences",
+        company: "Kincaid Health",
         title: "Board Member and Distinguished Chief Scientist Officer",
         period: "Present",
-        description: "Oversees scientific methodology, data integrity, and analytical frameworks across all SiriusB iQ platforms. Ensures every model, algorithm, and insight meets rigorous scientific standards.",
+        description: "Oversees scientific methodology, data integrity, and analytical frameworks across all Kincaid Health platforms. Ensures every model, algorithm, and insight meets rigorous scientific standards.",
         highlights: [
           "Directs scientific methodology and standards",
           "Validates analytical frameworks and models",
@@ -290,7 +290,7 @@ const teamMembers = [
       "Cross-functional Collaboration"
     ],
     philosophy: "Science without rigor is merely speculation. Every data point matters, every assumption must be tested, and every conclusion must be defensible. The pursuit of truth requires both intellectual humility and methodological discipline.",
-    vision: "To build a scientific culture at SiriusB iQ where curiosity drives innovation, evidence guides decisions, and methodological excellence is non-negotiable. Our commitment to scientific integrity will differentiate us in an industry often driven by hype over substance."
+    vision: "To build a scientific culture at Kincaid Health where curiosity drives innovation, evidence guides decisions, and methodological excellence is non-negotiable. Our commitment to scientific integrity will differentiate us in an industry often driven by hype over substance."
   },
   {
     name: "Catherine Farley",
@@ -323,17 +323,17 @@ const teamMembers = [
       "Fiduciary Risk Management"
     ],
     philosophy: "The intersection of AI and fiduciary duty requires a new governance framework—one that treats algorithmic decision-making with the same rigor as human fiduciary responsibility. I advocate for transparent AI systems that can be audited, explained, and held accountable to the same standards as human decision-makers in positions of trust.",
-    vision: "As Executive Chair of the Committee on Algorithmic Governance & Fiduciary Risk, my vision is to establish SiriusB iQ as the gold standard for ethical AI deployment in benefits management. Every algorithmic decision made by the platform must withstand the scrutiny of fiduciary duty, regulatory review, and client trust."
+    vision: "As Executive Chair of the Committee on Algorithmic Governance & Fiduciary Risk, my vision is to establish Kincaid Health as the gold standard for ethical AI deployment in benefits management. Every algorithmic decision made by the platform must withstand the scrutiny of fiduciary duty, regulatory review, and client trust."
   },
   {
     name: "Nicole Burns",
     role: "Board Director and Silicon Valley GTM",
     image: "/nicole-burns.jpg",
     linkedin: "https://www.linkedin.com/in/nicburns/",
-    bio: "Nicole Burns brings extensive expertise in Go-To-Market (GTM) strategy, driving enterprise growth, strategic partnerships, and market expansion. With a proven track record of scaling technology platforms and aligning complex value propositions with market needs, she leads the commercialization strategy for SiriusB iQ.",
+    bio: "Nicole Burns brings extensive expertise in Go-To-Market (GTM) strategy, driving enterprise growth, strategic partnerships, and market expansion. With a proven track record of scaling technology platforms and aligning complex value propositions with market needs, she leads the commercialization strategy for Kincaid Health.",
     experience: [
       {
-        company: "SiriusB iQ AI Data Sciences",
+        company: "Kincaid Health",
         title: "Silicon Valley GTM",
         period: "Present",
         description: "Leading comprehensive go-to-market strategies, revenue operations, and strategic partnerships for the algorithmic fiduciary intelligence platform.",
@@ -354,7 +354,7 @@ const teamMembers = [
       "Commercialization Strategy"
     ],
     philosophy: "Effective go-to-market strategies require a deep alignment between market needs and product capabilities. It's about translating complex technical value propositions into clear, compelling narratives that drive enterprise adoption and build lasting client partnerships.",
-    vision: "To accelerate the adoption of algorithmic fiduciary intelligence across the enterprise landscape, establishing SiriusB iQ as the undeniable standard for healthcare financial governance and strategic decision-making."
+    vision: "To accelerate the adoption of algorithmic fiduciary intelligence across the enterprise landscape, establishing Kincaid Health as the undeniable standard for healthcare financial governance and strategic decision-making."
   }
 ];
 

@@ -70,7 +70,7 @@ export default function AboutPage() {
               </h1>
 
               <p className="text-xl md:text-2xl text-gray-300 max-w-4xl mx-auto mb-8 leading-relaxed">
-                SiriusB iQ is the world's first algorithmic fiduciary intelligence platform, 
+                Kincaid Health is the world's first algorithmic fiduciary intelligence platform, 
                 empowering enterprises with real-time data orchestration, compliance automation, 
                 and agentic workflows that drive measurable value.
               </p>
@@ -616,7 +616,7 @@ export default function AboutPage() {
                   Ready to Transform Your Enterprise?
                 </h2>
                 <p className="text-xl text-gray-300 mb-8">
-                  Join the leading organizations using SiriusB iQ to drive measurable value through algorithmic intelligence.
+                  Join the leading organizations using Kincaid Health to drive measurable value through algorithmic intelligence.
                 </p>
                 <div className="flex flex-col sm:flex-row gap-4 justify-center">
                   <Link

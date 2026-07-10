@@ -12,7 +12,7 @@ import {
 import { SEO } from "@/components/SEO";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Footer } from "@/components/Footer";
+import Footer from "@/components/Footer";
 
 // AnimatedSection component for scroll-triggered animations
 function AnimatedSection({ children, className = "" }: { children: React.ReactNode; className?: string }) {

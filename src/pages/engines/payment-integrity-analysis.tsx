@@ -86,7 +86,7 @@ FOR each claim IN paid_claims:
   bundled_code = CHECK_ncci_edits(procedure_codes)
   IF bundled_code EXISTS AND components_billed_separately:
     overpayment = SUM(component_payments) - bundled_rate
-    FLAG "Unbundling violation - recover ${overpayment}"
+    FLAG "Unbundling violation - recover $" + overpayment
   
   // Layer 3: Pricing validation
   fair_value = GET_benchmark(DRG, CPT, geography, percentile_40)

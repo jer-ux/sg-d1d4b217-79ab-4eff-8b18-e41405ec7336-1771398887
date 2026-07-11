@@ -20,7 +20,7 @@ Build detailed Las Vegas-style engine pages for all Healthcare Economics categor
 - [x] Centers of Excellence ROI page
 - [x] Bundled payment modeling page
 - [x] Payment integrity analysis page
-- [ ] Waste, fraud, and abuse detection page
+- [x] Waste, fraud, and abuse detection page
 - [ ] Episode-of-care valuation page
 - [ ] Specialty pharmacy economics page
 - [ ] Biosimilar adoption modeling page

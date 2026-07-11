@@ -7,8 +7,8 @@ export default function MonteCarloForecastingEngine() {
     <EngineDetailLayout
       title="Monte Carlo Forecasting"
       category="Financial & Trend Engine"
-      icon={Dices}
-      description="Run 10,000+ stochastic simulations to generate probability distributions for future healthcare costs, explicitly modeling tail risk and extreme events."
+      tagline="Run 10,000+ stochastic simulations to generate probability distributions for future healthcare costs, explicitly modeling tail risk and extreme events"
+      gradient="from-indigo-600 via-blue-600 to-purple-600"
     >
       {/* Problem Statement */}
       <VegasSection title="The Illusion of the Single-Point Estimate" gradient="from-indigo-500/10 to-blue-500/10">

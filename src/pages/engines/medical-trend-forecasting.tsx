@@ -7,8 +7,8 @@ export default function MedicalTrendForecastingEngine() {
     <EngineDetailLayout
       title="Medical Trend Forecasting"
       category="Financial & Trend Engine"
-      icon={TrendingUp}
-      description="Predict medical claims trend 12-36 months forward using credibility-weighted historical experience, population health adjustments, and Monte Carlo simulation"
+      tagline="Predict medical claims trend 12-36 months forward using credibility-weighted historical experience, population health adjustments, and Monte Carlo simulation"
+      gradient="from-fuchsia-600 via-purple-600 to-cyan-600"
     >
       {/* Problem Statement */}
       <VegasSection title="The $2M Budget Blindspot" gradient="from-red-500/10 to-orange-500/10">

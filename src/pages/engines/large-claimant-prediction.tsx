@@ -7,8 +7,8 @@ export default function LargeClaimantPredictionEngine() {
     <EngineDetailLayout
       title="Large Claimant Prediction"
       category="Predictive AI Engine"
-      icon={AlertTriangle}
-      description="Predict high-cost claimants 6-18 months before they cross the stop-loss threshold using ML models trained on medical + pharmacy + biometric + social determinants data"
+      tagline="Predict high-cost claimants 6-18 months before they cross the stop-loss threshold using ML models trained on medical + pharmacy + biometric + social determinants data"
+      gradient="from-red-600 via-orange-600 to-amber-600"
     >
       {/* Problem Statement */}
       <VegasSection title="The $1.5M Shock No One Saw Coming" gradient="from-red-500/10 to-orange-500/10">

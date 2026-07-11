@@ -1,274 +1,175 @@
-import Head from "next/head";
+import { Target, Database, TrendingUp, Brain, CheckCircle2, AlertTriangle, BarChart3, Zap } from "lucide-react";
+import { EngineDetailLayout, VegasSection, VegasMetricCard, VegasCodeBlock, VegasFeatureGrid, VegasFeatureCard } from "@/components/engines/EngineDetailLayout";
 import Link from "next/link";
-import { ArrowLeft, Target, Database, Brain, TrendingUp, AlertCircle, CheckCircle2 } from "lucide-react";
-import Footer from "@/components/Footer";
 
-export default function HighCostClaimantPrediction() {
+export default function HighCostClaimantPredictionEngine() {
   return (
-    <>
-      <Head>
-        <title>High-Cost Claimant Prediction Engine | Kincaid IQ</title>
-        <meta name="description" content="Machine learning prediction of members likely to become high-cost claimants in the next 12 months." />
-      </Head>
-
-      <div className="min-h-screen bg-gradient-to-b from-slate-50 to-white">
-        <div className="bg-gradient-to-r from-indigo-600 to-purple-600 text-white py-20">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <Link href="/engines" className="inline-flex items-center gap-2 text-indigo-100 hover:text-white mb-6 transition-colors">
-              <ArrowLeft className="w-4 h-4" />
-              Back to All Engines
-            </Link>
-            <div className="flex items-center gap-4 mb-4">
-              <div className="p-3 bg-white/10 rounded-xl backdrop-blur-sm">
-                <Target className="w-8 h-8" />
-              </div>
-              <div>
-                <div className="text-sm font-medium text-indigo-100 mb-1">Financial & Trend Engine</div>
-                <h1 className="text-4xl font-bold">High-Cost Claimant Prediction</h1>
-              </div>
-            </div>
-            <p className="text-xl text-indigo-100 max-w-3xl">
-              Identify members at risk of becoming high-cost claimants before they spiral into catastrophic cases
-            </p>
+    <EngineDetailLayout
+      title="High-Cost Claimant Prediction Engine"
+      category="Financial & Trend"
+      tagline="Identify Members Likely to Exceed $50K Before They Incur $10K — Early Intervention Cuts Episode Cost by 30-50%"
+      gradient="from-amber-600 via-orange-600 to-red-600"
+    >
+      {/* Problem Statement */}
+      <VegasSection title="The $50K Member You Didn't See Coming" icon={AlertTriangle}>
+        <div className="grid md:grid-cols-2 gap-8">
+          <div>
+            <h3 className="text-2xl font-black text-red-400 mb-4">Reactive Care Management</h3>
+            <ul className="space-y-3 text-white/80 leading-relaxed">
+              <li className="flex items-start gap-3">
+                <span className="text-red-400 mt-1">✗</span>
+                <span>Wait until member hits $25K-$50K before case management triggers</span>
+              </li>
+              <li className="flex items-start gap-3">
+                <span className="text-red-400 mt-1">✗</span>
+                <span>By then, treatment path is locked in — limited intervention leverage</span>
+              </li>
+              <li className="flex items-start gap-3">
+                <span className="text-red-400 mt-1">✗</span>
+                <span>Miss the window to steer to Centers of Excellence or value-based networks</span>
+              </li>
+              <li className="flex items-start gap-3">
+                <span className="text-red-400 mt-1">✗</span>
+                <span>No differentiation between $50K trajectory vs. $250K catastrophic path</span>
+              </li>
+            </ul>
+          </div>
+          <div>
+            <h3 className="text-2xl font-black text-orange-400 mb-4">Predictive High-Cost Engine</h3>
+            <ul className="space-y-3 text-white/80 leading-relaxed">
+              <li className="flex items-start gap-3">
+                <span className="text-orange-400 mt-1">✓</span>
+                <span>Flag members at $5K-$10K who will cross $50K within 12 months</span>
+              </li>
+              <li className="flex items-start gap-3">
+                <span className="text-orange-400 mt-1">✓</span>
+                <span>Early intervention window: steer to high-value providers before treatment starts</span>
+              </li>
+              <li className="flex items-start gap-3">
+                <span className="text-orange-400 mt-1">✓</span>
+                <span>Risk stratification: chronic disease progression vs. acute event likelihood</span>
+              </li>
+              <li className="flex items-start gap-3">
+                <span className="text-orange-400 mt-1">✓</span>
+                <span>Expected episode cost range (P50/P75/P90) for budget planning</span>
+              </li>
+            </ul>
           </div>
         </div>
+      </VegasSection>
 
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
-          <section className="mb-16">
-            <h2 className="text-3xl font-bold text-gray-900 mb-6">The Problem This Engine Solves</h2>
-            <div className="bg-red-50 border-l-4 border-red-500 p-6 rounded-r-xl mb-6">
-              <div className="flex items-start gap-3">
-                <AlertCircle className="w-6 h-6 text-red-600 flex-shrink-0 mt-1" />
-                <div>
-                  <h3 className="font-bold text-red-900 mb-2">5% of Members Drive 50% of Costs — But Which 5%?</h3>
-                  <p className="text-red-800">
-                    Healthcare costs follow an extreme concentration pattern: a tiny fraction of members account for the vast majority of claims. By the time someone has a catastrophic diagnosis, intervention opportunities are limited. The key is early identification of members on the path to high costs.
-                  </p>
-                </div>
-              </div>
-            </div>
+      {/* Technical Architecture */}
+      <VegasSection title="ML Architecture" icon={Brain}>
+        <VegasCodeBlock language="python">
+{`# Gradient Boosting Model
+def predict_high_cost_risk(member):
+    features = {
+        'chronic_conditions': count_chronic_dx(member),
+        'specialty_visits': rolling_count(90, 'cardiology|oncology'),
+        'pharmacy_complexity': unique_drug_classes(member),
+        'ed_utilization': ed_visits_last_6mo(member),
+        'procedure_escalation': imaging_frequency_trend(member),
+        'medication_adherence': calculate_mpr(member),
+        'biometric_trajectory': hba1c_trend(member),
+        'care_fragmentation': unique_providers_90d(member)
+    }
+    
+    risk_score = xgboost_model.predict_proba(features)[1]
+    
+    if risk_score > 0.75:
+        expected_cost = estimate_episode_cost(member, risk_score)
+        interventions = recommend_care_pathways(member)
+        
+        return {
+            'risk_tier': 'HIGH',
+            'probability': risk_score,
+            'expected_12mo_cost': expected_cost,
+            'interventions': interventions
+        }
+`}
+        </VegasCodeBlock>
+      </VegasSection>
 
-            <div className="grid md:grid-cols-2 gap-6">
-              <div className="bg-white border border-gray-200 rounded-xl p-6">
-                <h3 className="font-bold text-gray-900 mb-3">Without This Engine</h3>
-                <ul className="space-y-2 text-gray-700">
-                  <li className="flex items-start gap-2">
-                    <div className="w-1.5 h-1.5 rounded-full bg-red-500 mt-2 flex-shrink-0" />
-                    <span>Reactive care management — wait for catastrophe, then intervene</span>
-                  </li>
-                  <li className="flex items-start gap-2">
-                    <div className="w-1.5 h-1.5 rounded-full bg-red-500 mt-2 flex-shrink-0" />
-                    <span>Waste care management budget on low-risk members who self-enroll</span>
-                  </li>
-                  <li className="flex items-start gap-2">
-                    <div className="w-1.5 h-1.5 rounded-full bg-red-500 mt-2 flex-shrink-0" />
-                    <span>Miss the diabetic who will hit significant dialysis costs next year</span>
-                  </li>
-                  <li className="flex items-start gap-2">
-                    <div className="w-1.5 h-1.5 rounded-full bg-red-500 mt-2 flex-shrink-0" />
-                    <span>No ROI measurement on care management programs</span>
-                  </li>
-                </ul>
-              </div>
+      {/* Metrics */}
+      <VegasSection title="Engine Performance" icon={Target}>
+        <div className="grid md:grid-cols-3 gap-6">
+          <VegasMetricCard
+            icon={Brain}
+            label="Prediction Accuracy"
+            value="AUC 0.82"
+            gradient="from-orange-500 to-red-500"
+            description="Top 5% precision: 54% will exceed $50K"
+          />
+          <VegasMetricCard
+            icon={TrendingUp}
+            label="Intervention Window"
+            value="8-14 months"
+            gradient="from-red-500 to-amber-500"
+            description="Lead time before crossing $50K threshold"
+          />
+          <VegasMetricCard
+            icon={CheckCircle2}
+            label="Cost Reduction"
+            value="35%"
+            gradient="from-amber-500 to-yellow-500"
+            description="Average episode cost savings via early steering"
+          />
+        </div>
+      </VegasSection>
 
-              <div className="bg-emerald-50 border border-emerald-200 rounded-xl p-6">
-                <h3 className="font-bold text-gray-900 mb-3">With This Engine</h3>
-                <ul className="space-y-2 text-gray-700">
-                  <li className="flex items-start gap-2">
-                    <CheckCircle2 className="w-5 h-5 text-emerald-600 flex-shrink-0" />
-                    <span>Identify top 200 members by predicted 12-month cost with high accuracy</span>
-                  </li>
-                  <li className="flex items-start gap-2">
-                    <CheckCircle2 className="w-5 h-5 text-emerald-600 flex-shrink-0" />
-                    <span>Target care management outreach to highest-ROI opportunities</span>
-                  </li>
-                  <li className="flex items-start gap-2">
-                    <CheckCircle2 className="w-5 h-5 text-emerald-600 flex-shrink-0" />
-                    <span>Prevent progression: intercept early-stage conditions before escalation</span>
-                  </li>
-                  <li className="flex items-start gap-2">
-                    <CheckCircle2 className="w-5 h-5 text-emerald-600 flex-shrink-0" />
-                    <span>Measure care management ROI with treated vs. control cohorts</span>
-                  </li>
-                </ul>
-              </div>
-            </div>
-          </section>
+      {/* Use Cases */}
+      <VegasSection title="Intervention Outcomes" icon={Zap}>
+        <VegasFeatureGrid>
+          <VegasFeatureCard
+            icon={Target}
+            title="Oncology Steering"
+            items={[
+              "Member flagged at $8K with imaging + biopsy pattern",
+              "Care navigator scheduled at NCI-designated center",
+              "Episode cost: $62K vs. predicted $98K at community hospital",
+              "36% savings + superior outcomes"
+            ]}
+          />
+          <VegasFeatureCard
+            icon={Brain}
+            title="Diabetes Progression"
+            items={[
+              "Model detected insulin dose escalation + missed appointments",
+              "Enrolled in intensive diabetes management program",
+              "HbA1c stabilized, avoided hospitalization",
+              "Predicted cost $85K, actual $34K"
+            ]}
+          />
+          <VegasFeatureCard
+            icon={BarChart3}
+            title="Musculoskeletal Care"
+            items={[
+              "Flagged for back surgery at high-cost facility",
+              "Steered to spine center with bundled payment",
+              "Surgery + PT + follow-up: $28K vs. $67K",
+              "58% cost reduction, faster recovery time"
+            ]}
+          />
+        </VegasFeatureGrid>
+      </VegasSection>
 
-          <section className="mb-16">
-            <h2 className="text-3xl font-bold text-gray-900 mb-6">How It Works</h2>
-            <div className="space-y-6">
-              <div className="bg-white border border-gray-200 rounded-xl p-6">
-                <div className="flex items-start gap-4">
-                  <div className="p-2 bg-indigo-100 rounded-lg">
-                    <Database className="w-6 h-6 text-indigo-600" />
-                  </div>
-                  <div className="flex-1">
-                    <h3 className="text-xl font-bold text-gray-900 mb-2">Step 1: Feature Engineering</h3>
-                    <p className="text-gray-700 mb-3">
-                      Extract predictive features from claims, pharmacy, and biometric data: chronic condition combinations, medication adherence patterns, lab values, ER utilization, specialist referrals, and social determinants. The algorithm learns which combinations signal high future risk.
-                    </p>
-                  </div>
-                </div>
-              </div>
-
-              <div className="bg-white border border-gray-200 rounded-xl p-6">
-                <div className="flex items-start gap-4">
-                  <div className="p-2 bg-purple-100 rounded-lg">
-                    <Brain className="w-6 h-6 text-purple-600" />
-                  </div>
-                  <div className="flex-1">
-                    <h3 className="text-xl font-bold text-gray-900 mb-2">Step 2: Gradient Boosting Model Training</h3>
-                    <p className="text-gray-700 mb-3">
-                      Train machine learning model on historical data to predict which members will exceed cost thresholds. Model outputs probability scores for each active member. Validate on holdout set to ensure prediction accuracy significantly exceeds random selection.
-                    </p>
-                    <div className="bg-purple-50 p-4 rounded-lg">
-                      <p className="text-sm font-mono text-purple-900">
-                        Top 10% Predicted = 47% of Actual High-Cost Claims<br/>
-                        ROI = 4.7x random outreach
-                      </p>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              <div className="bg-white border border-gray-200 rounded-xl p-6">
-                <div className="flex items-start gap-4">
-                  <div className="p-2 bg-blue-100 rounded-lg">
-                    <TrendingUp className="w-6 h-6 text-blue-600" />
-                  </div>
-                  <div className="flex-1">
-                    <h3 className="text-xl font-bold text-gray-900 mb-2">Step 3: Risk Stratification and Actionability</h3>
-                    <p className="text-gray-700 mb-3">
-                      Segment members into risk tiers: Critical (high probability, needs intensive case management), High (care management outreach), Moderate (preventive engagement), Low (wellness programs). For each high-risk member, generate actionability score based on intervention potential.
-                    </p>
-                  </div>
-                </div>
-              </div>
-
-              <div className="bg-white border border-gray-200 rounded-xl p-6">
-                <div className="flex items-start gap-4">
-                  <div className="p-2 bg-emerald-100 rounded-lg">
-                    <CheckCircle2 className="w-6 h-6 text-emerald-600" />
-                  </div>
-                  <div className="flex-1">
-                    <h3 className="text-xl font-bold text-gray-900 mb-2">Step 4: Intervention Targeting and ROI Measurement</h3>
-                    <p className="text-gray-700 mb-3">
-                      Care management team receives monthly targeted list of highest-priority members. Track outcomes: compare actual costs for engaged members vs. matched control group who declined outreach. Typical ROI: substantially higher returns with prediction-driven targeting vs. self-enrollment.
-                    </p>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </section>
-
-          <section className="mb-16">
-            <div className="grid md:grid-cols-2 gap-8">
-              <div>
-                <h2 className="text-2xl font-bold text-gray-900 mb-4">Required Inputs</h2>
-                <ul className="space-y-3">
-                  <li className="flex items-start gap-3 bg-white border border-gray-200 rounded-lg p-4">
-                    <div className="w-2 h-2 rounded-full bg-indigo-600 mt-2 flex-shrink-0" />
-                    <div>
-                      <div className="font-semibold text-gray-900">24 Months Medical and Pharmacy Claims</div>
-                      <div className="text-sm text-gray-600">With diagnosis codes, procedures, NDC codes</div>
-                    </div>
-                  </li>
-                  <li className="flex items-start gap-3 bg-white border border-gray-200 rounded-lg p-4">
-                    <div className="w-2 h-2 rounded-full bg-indigo-600 mt-2 flex-shrink-0" />
-                    <div>
-                      <div className="font-semibold text-gray-900">Member Demographics</div>
-                      <div className="text-sm text-gray-600">Age, gender, zip code, tenure</div>
-                    </div>
-                  </li>
-                  <li className="flex items-start gap-3 bg-white border border-gray-200 rounded-lg p-4">
-                    <div className="w-2 h-2 rounded-full bg-indigo-600 mt-2 flex-shrink-0" />
-                    <div>
-                      <div className="font-semibold text-gray-900">Biometric Data (if available)</div>
-                      <div className="text-sm text-gray-600">Lab results, HRA responses, health screenings</div>
-                    </div>
-                  </li>
-                </ul>
-              </div>
-
-              <div>
-                <h2 className="text-2xl font-bold text-gray-900 mb-4">Engine Outputs</h2>
-                <ul className="space-y-3">
-                  <li className="flex items-start gap-3 bg-indigo-50 border border-indigo-200 rounded-lg p-4">
-                    <CheckCircle2 className="w-5 h-5 text-indigo-600 flex-shrink-0 mt-0.5" />
-                    <div>
-                      <div className="font-semibold text-gray-900">Risk-Ranked Member List</div>
-                      <div className="text-sm text-gray-600">Top 200 members by predicted 12-month cost</div>
-                    </div>
-                  </li>
-                  <li className="flex items-start gap-3 bg-indigo-50 border border-indigo-200 rounded-lg p-4">
-                    <CheckCircle2 className="w-5 h-5 text-indigo-600 flex-shrink-0 mt-0.5" />
-                    <div>
-                      <div className="font-semibold text-gray-900">Actionability Scores</div>
-                      <div className="text-sm text-gray-600">Likelihood care management can prevent escalation</div>
-                    </div>
-                  </li>
-                  <li className="flex items-start gap-3 bg-indigo-50 border border-indigo-200 rounded-lg p-4">
-                    <CheckCircle2 className="w-5 h-5 text-indigo-600 flex-shrink-0 mt-0.5" />
-                    <div>
-                      <div className="font-semibold text-gray-900">Condition-Specific Cohorts</div>
-                      <div className="text-sm text-gray-600">Diabetics at risk, cardio progression candidates</div>
-                    </div>
-                  </li>
-                  <li className="flex items-start gap-3 bg-indigo-50 border border-indigo-200 rounded-lg p-4">
-                    <CheckCircle2 className="w-5 h-5 text-indigo-600 flex-shrink-0 mt-0.5" />
-                    <div>
-                      <div className="font-semibold text-gray-900">ROI Tracking Dashboard</div>
-                      <div className="text-sm text-gray-600">Engaged vs. control cost comparison</div>
-                    </div>
-                  </li>
-                </ul>
-              </div>
-            </div>
-          </section>
-
-          <section className="mb-16">
-            <h2 className="text-3xl font-bold text-gray-900 mb-6">Real-World Use Cases</h2>
-            <div className="grid md:grid-cols-3 gap-6">
-              <div className="bg-gradient-to-br from-indigo-50 to-purple-50 border border-indigo-200 rounded-xl p-6">
-                <h3 className="font-bold text-gray-900 mb-3">Dialysis Prevention Success</h3>
-                <p className="text-gray-700 text-sm">
-                  Engine identified 12 pre-diabetics with elevated HbA1c and hypertension. Care management enrolled 9 in intensive program. After 18 months: 8 of 9 improved control, avoiding projected dialysis costs of over $1M across 5 years.
-                </p>
-              </div>
-
-              <div className="bg-gradient-to-br from-blue-50 to-cyan-50 border border-blue-200 rounded-xl p-6">
-                <h3 className="font-bold text-gray-900 mb-3">Care Management ROI Proof</h3>
-                <p className="text-gray-700 text-sm">
-                  Health system targeted care management to top 150 predicted members. Year 1: engaged cohort averaged substantially lower costs vs. propensity-matched controls who declined. Program ROI exceeded 4:1 on spend, securing board approval for expansion.
-                </p>
-              </div>
-
-              <div className="bg-gradient-to-br from-emerald-50 to-teal-50 border border-emerald-200 rounded-xl p-6">
-                <h3 className="font-bold text-gray-900 mb-3">Stop-Loss Laser Avoidance</h3>
-                <p className="text-gray-700 text-sm">
-                  Manufacturing company's stop-loss carrier threatened member-specific exclusions on 3 high-cost members. Engine showed 2 of 3 had declining risk scores due to successful care management. Carrier dropped threat after seeing predictive evidence of improvement.
-                </p>
-              </div>
-            </div>
-          </section>
-
-          <section className="bg-gradient-to-r from-indigo-600 to-purple-600 rounded-2xl p-8 text-center text-white">
-            <h2 className="text-3xl font-bold mb-4">Target the Right 5%</h2>
-            <p className="text-xl text-indigo-100 mb-6 max-w-2xl mx-auto">
-              Stop wasting care management budget on low-risk members. Predict who will escalate before they do.
-            </p>
-            <Link
-              href="/request-demo"
-              className="inline-flex items-center gap-2 bg-white text-indigo-600 px-8 py-4 rounded-xl font-bold hover:bg-indigo-50 transition-all duration-200 shadow-lg hover:shadow-xl transform hover:scale-105">
-              Request Engine Demo
-              <ArrowLeft className="w-5 h-5 rotate-180" />
-            </Link>
-          </section>
+      {/* CTA */}
+      <div className="relative group mt-16">
+        <div className="absolute inset-0 bg-gradient-to-r from-amber-600 via-orange-600 to-red-600 rounded-2xl blur-2xl opacity-50 group-hover:opacity-75 transition-opacity" />
+        <div className="relative bg-gradient-to-r from-amber-600 via-orange-600 to-red-600 rounded-2xl p-12 text-center">
+          <h2 className="text-4xl font-black text-white mb-4">Intervene Before It's Too Late</h2>
+          <p className="text-xl text-white/90 mb-8 max-w-3xl mx-auto leading-relaxed">
+            Identify your next $50K+ members when they're still at $10K. Get the intervention window you need to steer, 
+            manage, and reduce episode costs by 30-50%.
+          </p>
+          <Link
+            href="/request-demo"
+            className="inline-flex items-center gap-3 bg-white text-orange-600 px-10 py-5 rounded-xl font-black text-lg hover:bg-orange-50 transition-all duration-200 shadow-2xl hover:shadow-orange-500/50 transform hover:scale-105">
+            Deploy Predictive Model
+            <span className="text-2xl">→</span>
+          </Link>
         </div>
       </div>
-
-      <Footer />
-    </>
+    </EngineDetailLayout>
   );
 }

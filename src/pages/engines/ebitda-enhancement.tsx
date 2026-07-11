@@ -7,8 +7,8 @@ export default function EBITDAEnhancementEngine() {
     <EngineDetailLayout
       title="EBITDA Enhancement"
       category="Private Equity & CFO Engine"
-      icon={DollarSign}
-      description="Quantify healthcare cost optimization opportunities that flow directly to EBITDA, with implementation roadmaps and 12-24 month impact models"
+      tagline="Quantify healthcare cost optimization opportunities that flow directly to EBITDA, with implementation roadmaps and 12-24 month impact models"
+      gradient="from-emerald-600 via-teal-600 to-cyan-600"
     >
       {/* Problem Statement */}
       <VegasSection title="The $4M EBITDA Hole No One Sees" gradient="from-red-500/10 to-orange-500/10">

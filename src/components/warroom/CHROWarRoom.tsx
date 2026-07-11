@@ -6,7 +6,7 @@ import { KPITile } from "./tiles/KPITile";
 import { ExecutiveEventStream } from "./ExecutiveEventStream";
 import { CHRODrillDownDrawer } from "./CHRODrillDownDrawer";
 import { motion } from "framer-motion";
-import { TrendingUp, AlertTriangle, DollarSign, CheckCircle2, Activity } from "lucide-react";
+import { TrendingUp, AlertTriangle, DollarSign, CheckCircle2, Activity, Users } from "lucide-react";
 
 const DEFAULT_FILTERS: Filters = {
   org: "Portfolio",
@@ -279,6 +279,66 @@ export function CHROWarRoom() {
               <div className="mt-3 flex items-center gap-2 text-xs">
                 <span className="text-emerald-400">↑ 8% vs last quarter</span>
                 <TrendingUp className="h-3 w-3 text-emerald-400" />
+              </div>
+            </motion.div>
+
+            <motion.div
+              whileHover={{ scale: 1.02 }}
+              className="bg-gradient-to-br from-rose-500/10 to-red-500/10 border border-rose-500/30 rounded-lg p-4">
+              <div className="flex items-center justify-between mb-3">
+                <span className="text-xs font-mono text-rose-400 uppercase tracking-wide">Employee Engagement</span>
+                <Users className="h-4 w-4 text-rose-400" />
+              </div>
+              <div className="text-2xl font-bold text-white mb-1">73%</div>
+              <div className="text-xs text-neutral-400">Active participation rate</div>
+              <div className="mt-3 flex items-center gap-2 text-xs">
+                <span className="text-emerald-400">↑ 5% vs industry avg</span>
+                <CheckCircle2 className="h-3 w-3 text-emerald-400" />
+              </div>
+            </motion.div>
+
+            <motion.div
+              whileHover={{ scale: 1.02 }}
+              className="bg-gradient-to-br from-indigo-500/10 to-violet-500/10 border border-indigo-500/30 rounded-lg p-4">
+              <div className="flex items-center justify-between mb-3">
+                <span className="text-xs font-mono text-indigo-400 uppercase tracking-wide">Healthcare Costs</span>
+                <DollarSign className="h-4 w-4 text-indigo-400" />
+              </div>
+              <div className="text-2xl font-bold text-white mb-1">$14.2M</div>
+              <div className="text-xs text-neutral-400">Annual benefits spend</div>
+              <div className="mt-3 flex items-center gap-2 text-xs">
+                <span className="text-emerald-400">↓ $2.1M vs forecast</span>
+                <TrendingUp className="h-3 w-3 text-emerald-400" />
+              </div>
+            </motion.div>
+
+            <motion.div
+              whileHover={{ scale: 1.02 }}
+              className="bg-gradient-to-br from-teal-500/10 to-cyan-500/10 border border-teal-500/30 rounded-lg p-4">
+              <div className="flex items-center justify-between mb-3">
+                <span className="text-xs font-mono text-teal-400 uppercase tracking-wide">Benefits Utilization</span>
+                <Activity className="h-4 w-4 text-teal-400" />
+              </div>
+              <div className="text-2xl font-bold text-white mb-1">82%</div>
+              <div className="text-xs text-neutral-400">Program adoption rate</div>
+              <div className="mt-3 flex items-center gap-2 text-xs">
+                <span className="text-emerald-400">↑ 12% YoY</span>
+                <TrendingUp className="h-3 w-3 text-emerald-400" />
+              </div>
+            </motion.div>
+
+            <motion.div
+              whileHover={{ scale: 1.02 }}
+              className="bg-gradient-to-br from-orange-500/10 to-amber-500/10 border border-orange-500/30 rounded-lg p-4">
+              <div className="flex items-center justify-between mb-3">
+                <span className="text-xs font-mono text-orange-400 uppercase tracking-wide">Retention Rate</span>
+                <Users className="h-4 w-4 text-orange-400" />
+              </div>
+              <div className="text-2xl font-bold text-white mb-1">91%</div>
+              <div className="text-xs text-neutral-400">12-month retention</div>
+              <div className="mt-3 flex items-center gap-2 text-xs">
+                <span className="text-emerald-400">↑ 4% vs target</span>
+                <CheckCircle2 className="h-3 w-3 text-emerald-400" />
               </div>
             </motion.div>
           </div>

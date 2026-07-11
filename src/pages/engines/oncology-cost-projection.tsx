@@ -1,268 +1,207 @@
-import Head from "next/head";
+import { HeartPulse, Database, TrendingUp, AlertTriangle, CheckCircle2, Target, BarChart3, Zap } from "lucide-react";
+import { EngineDetailLayout, VegasSection, VegasMetricCard, VegasCodeBlock, VegasFeatureGrid, VegasFeatureCard } from "@/components/engines/EngineDetailLayout";
 import Link from "next/link";
-import { ArrowLeft, Activity, DollarSign, TrendingUp, AlertCircle, CheckCircle2 } from "lucide-react";
-import Footer from "@/components/Footer";
 
 export default function OncologyCostProjectionEngine() {
   return (
-    <>
-      <Head>
-        <title>Oncology Cost Projection Engine | Kincaid IQ</title>
-        <meta name="description" content="Multi-year cancer care cost forecasting with treatment pathway modeling and specialty drug impact analysis." />
-      </Head>
-
-      <div className="min-h-screen bg-gradient-to-b from-slate-50 to-white">
-        <div className="bg-gradient-to-r from-rose-600 to-pink-600 text-white py-20">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <Link href="/engines" className="inline-flex items-center gap-2 text-rose-100 hover:text-white mb-6 transition-colors">
-              <ArrowLeft className="w-4 h-4" />
-              Back to All Engines
-            </Link>
-            <div className="flex items-center gap-4 mb-4">
-              <div className="p-3 bg-white/10 rounded-xl backdrop-blur-sm">
-                <Activity className="w-8 h-8" />
-              </div>
-              <div>
-                <div className="text-sm font-medium text-rose-100 mb-1">Financial & Trend Engine</div>
-                <h1 className="text-4xl font-bold">Oncology Cost Projection</h1>
-              </div>
-            </div>
-            <p className="text-xl text-rose-100 max-w-3xl">
-              Project multi-year cancer care costs by cancer type, stage, and treatment pathway with immunotherapy and specialty drug impact
-            </p>
+    <EngineDetailLayout
+      title="Oncology Cost Projection Engine"
+      category="Financial & Trend"
+      tagline="Project 12-36 Month Cancer Treatment Costs by Stage, Modality, and Site-of-Care—From Diagnosis Through Survivorship"
+      gradient="from-rose-600 via-pink-600 to-fuchsia-600"
+    >
+      {/* Problem Statement */}
+      <VegasSection title="The $400K Cancer Budget Black Box" icon={AlertTriangle}>
+        <div className="grid md:grid-cols-2 gap-8">
+          <div>
+            <h3 className="text-2xl font-black text-red-400 mb-4">Traditional Cancer Cost Forecasting</h3>
+            <ul className="space-y-3 text-white/80 leading-relaxed">
+              <li className="flex items-start gap-3">
+                <span className="text-red-400 mt-1">✗</span>
+                <span>Average $150K-$400K per cancer diagnosis—but massive variance by type, stage, treatment</span>
+              </li>
+              <li className="flex items-start gap-3">
+                <span className="text-red-400 mt-1">✗</span>
+                <span>CFOs can't model specific oncology pipeline: who has pre-cancer signals, who's in active treatment</span>
+              </li>
+              <li className="flex items-start gap-3">
+                <span className="text-red-400 mt-1">✗</span>
+                <span>Site-of-care cost differentials ignored (academic center vs. community vs. COE)</span>
+              </li>
+              <li className="flex items-start gap-3">
+                <span className="text-red-400 mt-1">✗</span>
+                <span>No modeling of immunotherapy vs. chemotherapy cost trajectories</span>
+              </li>
+            </ul>
+          </div>
+          <div>
+            <h3 className="text-2xl font-black text-pink-400 mb-4">Oncology Projection Engine</h3>
+            <ul className="space-y-3 text-white/80 leading-relaxed">
+              <li className="flex items-start gap-3">
+                <span className="text-pink-400 mt-1">✓</span>
+                <span>Stage-specific cost modeling: Stage I breast cancer ($45K) vs. Stage IV lung ($380K)</span>
+              </li>
+              <li className="flex items-start gap-3">
+                <span className="text-pink-400 mt-1">✓</span>
+                <span>Active cancer pipeline visibility: current patients + pre-diagnosis screening signals</span>
+              </li>
+              <li className="flex items-start gap-3">
+                <span className="text-pink-400 mt-1">✓</span>
+                <span>Site-of-care optimization: NCI-designated center steering saves 15-30%</span>
+              </li>
+              <li className="flex items-start gap-3">
+                <span className="text-pink-400 mt-1">✓</span>
+                <span>Treatment modality cost curves: immunotherapy, targeted therapy, CAR-T, radiation, surgery</span>
+              </li>
+            </ul>
           </div>
         </div>
+      </VegasSection>
 
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
-          <section className="mb-16">
-            <h2 className="text-3xl font-bold text-gray-900 mb-6">The Problem This Engine Solves</h2>
-            <div className="bg-red-50 border-l-4 border-red-500 p-6 rounded-r-xl mb-6">
-              <div className="flex items-start gap-3">
-                <AlertCircle className="w-6 h-6 text-red-600 flex-shrink-0 mt-1" />
-                <div>
-                  <h3 className="font-bold text-red-900 mb-2">Cancer Care Costs Are Unpredictable and Exploding</h3>
-                  <p className="text-red-800">
-                    Stage 4 cancer patient enters plan → immunotherapy + targeted therapy + supportive care = $250K-$600K per year. Multiply by 2-5 year survival improvement from new treatments. CFOs need accurate 3-5 year oncology cost projections for budgeting, stop-loss optimization, and board risk communication—not retrospective shock when costs spiral.
-                  </p>
-                </div>
-              </div>
-            </div>
+      {/* Technical Architecture */}
+      <VegasSection title="Cancer-Specific Forecasting Model" icon={HeartPulse}>
+        <VegasCodeBlock language="python">
+{`# Oncology Cost Projection
+cancer_types = {
+    'breast': {
+        'stage_1': {'mean_cost': 45000, 'std': 12000, 'duration_months': 12},
+        'stage_2': {'mean_cost': 85000, 'std': 22000, 'duration_months': 18},
+        'stage_3': {'mean_cost': 165000, 'std': 45000, 'duration_months': 24},
+        'stage_4': {'mean_cost': 290000, 'std': 80000, 'duration_months': 36}
+    },
+    'lung': {
+        'stage_1': {'mean_cost': 95000, 'std': 25000, 'duration_months': 14},
+        'stage_2': {'mean_cost': 175000, 'std': 48000, 'duration_months': 20},
+        'stage_3': {'mean_cost': 285000, 'std': 75000, 'duration_months': 28},
+        'stage_4': {'mean_cost': 380000, 'std': 110000, 'duration_months': 24}
+    },
+    'colorectal': {
+        'stage_1': {'mean_cost': 55000, 'std': 15000, 'duration_months': 10},
+        'stage_2': {'mean_cost': 95000, 'std': 28000, 'duration_months': 16},
+        'stage_3': {'mean_cost': 145000, 'std': 42000, 'duration_months': 22},
+        'stage_4': {'mean_cost': 240000, 'std': 70000, 'duration_months': 30}
+    }
+}
 
-            <div className="grid md:grid-cols-2 gap-6">
-              <div className="bg-white border border-gray-200 rounded-xl p-6">
-                <h3 className="font-bold text-gray-900 mb-3">Without This Engine</h3>
-                <ul className="space-y-2 text-gray-700">
-                  <li className="flex items-start gap-2">
-                    <div className="w-1.5 h-1.5 rounded-full bg-red-500 mt-2 flex-shrink-0" />
-                    <span>No visibility into oncology patient pipeline and stage distribution</span>
-                  </li>
-                  <li className="flex items-start gap-2">
-                    <div className="w-1.5 h-1.5 rounded-full bg-red-500 mt-2 flex-shrink-0" />
-                    <span>Can't quantify immunotherapy adoption impact on multi-year costs</span>
-                  </li>
-                  <li className="flex items-start gap-2">
-                    <div className="w-1.5 h-1.5 rounded-full bg-red-500 mt-2 flex-shrink-0" />
-                    <span>Budget assumes historical trend—misses new treatment paradigm shift</span>
-                  </li>
-                  <li className="flex items-start gap-2">
-                    <div className="w-1.5 h-1.5 rounded-full bg-red-500 mt-2 flex-shrink-0" />
-                    <span>Stop-loss attachment doesn't account for extended survival costs</span>
-                  </li>
-                </ul>
-              </div>
+def project_oncology_cohort(active_cancer_members, high_risk_screening):
+    total_exposure = 0
+    
+    # Active Treatment Pipeline
+    for member in active_cancer_members:
+        cancer_type = member.primary_cancer_dx
+        stage = member.cancer_stage
+        months_remaining = estimate_treatment_duration(member)
+        
+        base_cost = cancer_types[cancer_type][stage]['mean_cost']
+        
+        # Site-of-Care Adjustment
+        if member.treating_at_coe:
+            cost_multiplier = 0.85  # COE discount via negotiated rates
+        elif member.treating_at_academic:
+            cost_multiplier = 1.15  # Academic center premium
+        else:
+            cost_multiplier = 1.0
+        
+        projected_cost = base_cost * cost_multiplier * (months_remaining / 12)
+        total_exposure += projected_cost
+    
+    # Pre-Diagnosis Risk Pool (screening signals)
+    incidence_rate = 0.005  # 0.5% annual cancer incidence
+    expected_new_cases = len(high_risk_screening) * incidence_rate
+    avg_cost_new_dx = 120000  # Mixed stage distribution
+    
+    total_exposure += expected_new_cases * avg_cost_new_dx
+    
+    return {
+        'current_active_treatment': len(active_cancer_members),
+        'expected_new_diagnoses': expected_new_cases,
+        'total_12mo_exposure': total_exposure,
+        'p75_exposure': total_exposure * 1.25,
+        'p90_exposure': total_exposure * 1.55
+    }
+`}
+        </VegasCodeBlock>
+      </VegasSection>
 
-              <div className="bg-emerald-50 border border-emerald-200 rounded-xl p-6">
-                <h3 className="font-bold text-gray-900 mb-3">With This Engine</h3>
-                <ul className="space-y-2 text-gray-700">
-                  <li className="flex items-start gap-2">
-                    <CheckCircle2 className="w-5 h-5 text-emerald-600 flex-shrink-0" />
-                    <span>Treatment pathway modeling by cancer type and stage</span>
-                  </li>
-                  <li className="flex items-start gap-2">
-                    <CheckCircle2 className="w-5 h-5 text-emerald-600 flex-shrink-0" />
-                    <span>5-year cost projection with immunotherapy adoption curves</span>
-                  </li>
-                  <li className="flex items-start gap-2">
-                    <CheckCircle2 className="w-5 h-5 text-emerald-600 flex-shrink-0" />
-                    <span>Specialty drug pipeline impact on future costs</span>
-                  </li>
-                  <li className="flex items-start gap-2">
-                    <CheckCircle2 className="w-5 h-5 text-emerald-600 flex-shrink-0" />
-                    <span>Reserve recommendations by cancer prevalence in your population</span>
-                  </li>
-                </ul>
-              </div>
-            </div>
-          </section>
+      {/* Metrics */}
+      <VegasSection title="Clinical & Financial Intelligence" icon={Target}>
+        <div className="grid md:grid-cols-3 gap-6">
+          <VegasMetricCard
+            icon={HeartPulse}
+            label="Cancer Types Tracked"
+            value="12 Major"
+            gradient="from-rose-500 to-pink-500"
+            description="Breast, lung, colorectal, prostate, lymphoma, leukemia, melanoma, pancreatic, ovarian, kidney, bladder, brain"
+          />
+          <VegasMetricCard
+            icon={TrendingUp}
+            label="Forecast Horizon"
+            value="12-36 Months"
+            gradient="from-pink-500 to-fuchsia-500"
+            description="Stage-specific treatment duration modeling"
+          />
+          <VegasMetricCard
+            icon={CheckCircle2}
+            label="COE Steering Savings"
+            value="15-30%"
+            gradient="from-fuchsia-500 to-purple-500"
+            description="NCI-designated centers vs. community oncology"
+          />
+        </div>
+      </VegasSection>
 
-          <section className="mb-16">
-            <h2 className="text-3xl font-bold text-gray-900 mb-6">How It Works</h2>
-            <div className="space-y-6">
-              <div className="bg-white border border-gray-200 rounded-xl p-6">
-                <div className="flex items-start gap-4">
-                  <div className="p-2 bg-rose-100 rounded-lg">
-                    <Activity className="w-6 h-6 text-rose-600" />
-                  </div>
-                  <div className="flex-1">
-                    <h3 className="text-xl font-bold text-gray-900 mb-2">Step 1: Cancer Prevalence & Stage Distribution</h3>
-                    <p className="text-gray-700 mb-3">
-                      Analyze historical claims to identify active cancer patients by type (breast, lung, colorectal, prostate, etc.) and stage (I-IV). Calculate prevalence rates and new diagnosis incidence. Project forward: how many new cases will enter plan annually based on population age/demographics? Output: 5-year oncology patient census forecast.
-                    </p>
-                  </div>
-                </div>
-              </div>
+      {/* Use Cases */}
+      <VegasSection title="Oncology Budget Planning" icon={Zap}>
+        <VegasFeatureGrid>
+          <VegasFeatureCard
+            icon={Target}
+            title="Stage IV Lung Cancer"
+            items={[
+              "Member diagnosed Q1 2025, starting immunotherapy",
+              "Projected 24-month treatment cost: $380K",
+              "Steered to NCI-designated center: $325K actual",
+              "14% savings + access to clinical trials"
+            ]}
+          />
+          <VegasFeatureCard
+            icon={BarChart3}
+            title="Breast Cancer Cohort"
+            items={[
+              "4 active members in treatment (Stage I-III)",
+              "Combined projected exposure: $285K",
+              "1 high-risk screening signal (BRCA+)",
+              "Total 12-month budget: $345K (includes new dx probability)"
+            ]}
+          />
+          <VegasFeatureCard
+            icon={CheckCircle2}
+            title="CAR-T Therapy Planning"
+            items={[
+              "2 lymphoma patients eligible for CAR-T",
+              "Treatment cost: $475K each = $950K exposure",
+              "Stop-loss laser placed at $400K specific",
+              "Net plan exposure: $150K vs. $950K uninsured"
+            ]}
+          />
+        </VegasFeatureGrid>
+      </VegasSection>
 
-              <div className="bg-white border border-gray-200 rounded-xl p-6">
-                <div className="flex items-start gap-4">
-                  <div className="p-2 bg-pink-100 rounded-lg">
-                    <TrendingUp className="w-6 h-6 text-pink-600" />
-                  </div>
-                  <div className="flex-1">
-                    <h3 className="text-xl font-bold text-gray-900 mb-2">Step 2: Treatment Pathway Cost Modeling</h3>
-                    <p className="text-gray-700 mb-3">
-                      Map standard-of-care treatment pathways by cancer type/stage: surgery → chemo → radiation → immunotherapy → supportive care. Cost each component using claims data + specialty drug pricing. Model treatment duration, response rates, and progression probabilities. Output: expected lifetime cost per cancer patient by type and stage.
-                    </p>
-                  </div>
-                </div>
-              </div>
-
-              <div className="bg-white border border-gray-200 rounded-xl p-6">
-                <div className="flex items-start gap-4">
-                  <div className="p-2 bg-purple-100 rounded-lg">
-                    <DollarSign className="w-6 h-6 text-purple-600" />
-                  </div>
-                  <div className="flex-1">
-                    <h3 className="text-xl font-bold text-gray-900 mb-2">Step 3: Specialty Drug & Pipeline Impact</h3>
-                    <p className="text-gray-700 mb-3">
-                      Model immunotherapy adoption: Keytruda, Opdivo, Tecentriq uptake curves by cancer type. Add emerging therapies in FDA pipeline: CAR-T (blood cancers), TIL therapy (solid tumors), antibody-drug conjugates. Incorporate approval probability, launch timing, and market penetration rates. Output: year-by-year specialty oncology drug cost forecast.
-                    </p>
-                  </div>
-                </div>
-              </div>
-
-              <div className="bg-white border border-gray-200 rounded-xl p-6">
-                <div className="flex items-start gap-4">
-                  <div className="p-2 bg-emerald-100 rounded-lg">
-                    <CheckCircle2 className="w-6 h-6 text-emerald-600" />
-                  </div>
-                  <div className="flex-1">
-                    <h3 className="text-xl font-bold text-gray-900 mb-2">Step 4: Multi-Year Budget & Reserve Recommendations</h3>
-                    <p className="text-gray-700 mb-3">
-                      Aggregate across all cancer types: total projected oncology spend Years 1-5. Compare to baseline historical trend to quantify specialty drug acceleration. Recommend reserve amounts: Stage 4 diagnoses are probabilistic, set reserves for 90% confidence scenario. Output: board-ready 5-year oncology budget with variance analysis.
-                    </p>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </section>
-
-          <section className="mb-16">
-            <div className="grid md:grid-cols-2 gap-8">
-              <div>
-                <h2 className="text-2xl font-bold text-gray-900 mb-4">Required Inputs</h2>
-                <ul className="space-y-3">
-                  <li className="flex items-start gap-3 bg-white border border-gray-200 rounded-lg p-4">
-                    <div className="w-2 h-2 rounded-full bg-rose-600 mt-2 flex-shrink-0" />
-                    <div>
-                      <div className="font-semibold text-gray-900">36 Months Medical & Pharmacy Claims</div>
-                      <div className="text-sm text-gray-600">With oncology diagnosis codes and specialty drug NDCs</div>
-                    </div>
-                  </li>
-                  <li className="flex items-start gap-3 bg-white border border-gray-200 rounded-lg p-4">
-                    <div className="w-2 h-2 rounded-full bg-rose-600 mt-2 flex-shrink-0" />
-                    <div>
-                      <div className="font-semibold text-gray-900">Employee Census</div>
-                      <div className="text-sm text-gray-600">Age/gender distribution for incidence projections</div>
-                    </div>
-                  </li>
-                  <li className="flex items-start gap-3 bg-white border border-gray-200 rounded-lg p-4">
-                    <div className="w-2 h-2 rounded-full bg-rose-600 mt-2 flex-shrink-0" />
-                    <div>
-                      <div className="font-semibold text-gray-900">Plan Design & Coverage Rules</div>
-                      <div className="text-sm text-gray-600">Specialty tier coinsurance and prior auth policies</div>
-                    </div>
-                  </li>
-                </ul>
-              </div>
-
-              <div>
-                <h2 className="text-2xl font-bold text-gray-900 mb-4">Engine Outputs</h2>
-                <ul className="space-y-3">
-                  <li className="flex items-start gap-3 bg-rose-50 border border-rose-200 rounded-lg p-4">
-                    <CheckCircle2 className="w-5 h-5 text-rose-600 flex-shrink-0 mt-0.5" />
-                    <div>
-                      <div className="font-semibold text-gray-900">5-Year Oncology Cost Forecast</div>
-                      <div className="text-sm text-gray-600">By cancer type with confidence intervals</div>
-                    </div>
-                  </li>
-                  <li className="flex items-start gap-3 bg-rose-50 border border-rose-200 rounded-lg p-4">
-                    <CheckCircle2 className="w-5 h-5 text-rose-600 flex-shrink-0 mt-0.5" />
-                    <div>
-                      <div className="font-semibold text-gray-900">Treatment Pathway Cost Analysis</div>
-                      <div className="text-sm text-gray-600">Expected lifetime cost per patient by stage</div>
-                    </div>
-                  </li>
-                  <li className="flex items-start gap-3 bg-rose-50 border border-rose-200 rounded-lg p-4">
-                    <CheckCircle2 className="w-5 h-5 text-rose-600 flex-shrink-0 mt-0.5" />
-                    <div>
-                      <div className="font-semibold text-gray-900">Specialty Drug Impact Report</div>
-                      <div className="text-sm text-gray-600">Immunotherapy adoption curves and pipeline drugs</div>
-                    </div>
-                  </li>
-                  <li className="flex items-start gap-3 bg-rose-50 border border-rose-200 rounded-lg p-4">
-                    <CheckCircle2 className="w-5 h-5 text-rose-600 flex-shrink-0 mt-0.5" />
-                    <div>
-                      <div className="font-semibold text-gray-900">Reserve Recommendations</div>
-                      <div className="text-sm text-gray-600">By cancer type probability and severity</div>
-                    </div>
-                  </li>
-                </ul>
-              </div>
-            </div>
-          </section>
-
-          <section className="mb-16">
-            <h2 className="text-3xl font-bold text-gray-900 mb-6">Real-World Use Cases</h2>
-            <div className="grid md:grid-cols-3 gap-6">
-              <div className="bg-gradient-to-br from-rose-50 to-pink-50 border border-rose-200 rounded-xl p-6">
-                <h3 className="font-bold text-gray-900 mb-3">$1.8M Budget Accuracy</h3>
-                <p className="text-gray-700 text-sm">
-                  CFO budgeted $2.4M oncology spend for Year 1 using engine's forecast. Actual came in at $2.6M (8% variance vs. 40% typical). Years 2-3: immunotherapy adoption matched engine's projection. Board cited "best-in-class forecasting" in earnings call.
-                </p>
-              </div>
-
-              <div className="bg-gradient-to-br from-purple-50 to-indigo-50 border border-purple-200 rounded-xl p-6">
-                <h3 className="font-bold text-gray-900 mb-3">Stage 4 Lung Cancer Reserve</h3>
-                <p className="text-gray-700 text-sm">
-                  Engine identified 2 Stage 3 lung cancer patients likely to progress to Stage 4 requiring immunotherapy combo ($400K+/year). CFO set $600K reserve. Actual: both progressed, total cost $780K. Reserve absorbed 77% of impact—no EBITDA surprise.
-                </p>
-              </div>
-
-              <div className="bg-gradient-to-br from-blue-50 to-cyan-50 border border-blue-200 rounded-xl p-6">
-                <h3 className="font-bold text-gray-900 mb-3">CAR-T Coverage Decision</h3>
-                <p className="text-gray-700 text-sm">
-                  Board debated covering CAR-T ($475K). Engine showed 12,000-life plan had only 8% annual probability of eligible patient. NPV analysis: cover it, net financial risk $38K/year. Board approved—avoided $200K premium surcharge to exclude coverage.
-                </p>
-              </div>
-            </div>
-          </section>
-
-          <section className="bg-gradient-to-r from-rose-600 to-pink-600 rounded-2xl p-8 text-center text-white">
-            <h2 className="text-3xl font-bold mb-4">Project Oncology Costs with Confidence</h2>
-            <p className="text-xl text-rose-100 mb-6 max-w-2xl mx-auto">
-              Stop budgeting oncology costs with last year's trend. Model treatment pathways, specialty drug pipelines, and multi-year impact.
-            </p>
-            <Link
-              href="/request-demo"
-              className="inline-flex items-center gap-2 bg-white text-rose-600 px-8 py-4 rounded-xl font-bold hover:bg-rose-50 transition-all duration-200 shadow-lg hover:shadow-xl transform hover:scale-105">
-              Request Engine Demo
-              <ArrowLeft className="w-5 h-5 rotate-180" />
-            </Link>
-          </section>
+      {/* CTA */}
+      <div className="relative group mt-16">
+        <div className="absolute inset-0 bg-gradient-to-r from-rose-600 via-pink-600 to-fuchsia-600 rounded-2xl blur-2xl opacity-50 group-hover:opacity-75 transition-opacity" />
+        <div className="relative bg-gradient-to-r from-rose-600 via-pink-600 to-fuchsia-600 rounded-2xl p-12 text-center">
+          <h2 className="text-4xl font-black text-white mb-4">Know Your Oncology Exposure Before It Hits</h2>
+          <p className="text-xl text-white/90 mb-8 max-w-3xl mx-auto leading-relaxed">
+            Project cancer treatment costs by stage, modality, and site-of-care. Budget with confidence, steer to Centers of Excellence, optimize stop-loss coverage.
+          </p>
+          <Link
+            href="/request-demo"
+            className="inline-flex items-center gap-3 bg-white text-pink-600 px-10 py-5 rounded-xl font-black text-lg hover:bg-pink-50 transition-all duration-200 shadow-2xl hover:shadow-pink-500/50 transform hover:scale-105">
+            Run Oncology Forecast
+            <span className="text-2xl">→</span>
+          </Link>
         </div>
       </div>
-
-      <Footer />
-    </>
+    </EngineDetailLayout>
   );
 }

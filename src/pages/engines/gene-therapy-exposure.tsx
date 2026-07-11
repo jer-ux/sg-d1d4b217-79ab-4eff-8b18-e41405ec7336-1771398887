@@ -205,7 +205,7 @@ Q4 2027 - Beta-Thalassemia (betibeglogene autotemcel)
           <VegasFeatureCard
             icon={DollarSign}
             title="Hemophilia Pipeline Reserve"
-            items=[
+            items={[
               "Population: 15,000 lives, 1 severe hemophilia A patient",
               "Roctavian FDA approval expected Q4 2026",
               "Treatment uptake probability: 60%",
@@ -216,7 +216,7 @@ Q4 2027 - Beta-Thalassemia (betibeglogene autotemcel)
           <VegasFeatureCard
             icon={Target}
             title="CAR-T Cost Negotiation"
-            items=[
+            items={[
               "Cancer center quoted $475K for CAR-T therapy",
               "Engine identified 2 alternative sites at $390K",
               "Patient steered to lower-cost NCI-designated center",

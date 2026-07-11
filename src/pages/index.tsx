@@ -637,9 +637,9 @@ export default function HomePage() {
             <motion.div
               variants={fadeInUpVariants}
               whileHover={{ y: -4, scale: 1.02 }}
-              className="group relative rounded-lg border-2 border-cyan-300/40 bg-gradient-to-br from-slate-200 via-cyan-100 to-blue-200 p-5 hover:border-cyan-400 hover:shadow-2xl hover:shadow-cyan-400/60 cursor-pointer transition-all duration-300 overflow-hidden">
+              className="group relative rounded-lg border-2 border-[#D4AF37]/50 bg-gradient-to-br from-amber-100 via-yellow-50 to-amber-200 p-5 hover:border-[#FFD700] hover:shadow-2xl hover:shadow-[#FFD700]/60 cursor-pointer transition-all duration-300 overflow-hidden">
               <Link href="/pillars/verified-savings-documentation" className="absolute inset-0 z-20" />
-              <div className="absolute inset-0 bg-gradient-to-br from-white/60 via-cyan-200/30 to-blue-300/40 pointer-events-none" />
+              <div className="absolute inset-0 bg-gradient-to-br from-white/60 via-amber-100/30 to-yellow-200/40 pointer-events-none" />
               <motion.div 
                 className="absolute inset-0 bg-gradient-to-tr from-transparent via-white/80 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none"
                 animate={{
@@ -665,7 +665,7 @@ export default function HomePage() {
                 }}
               />
               <motion.div
-                className="absolute top-4 right-6 w-1 h-1 bg-cyan-300 rounded-full"
+                className="absolute top-4 right-6 w-1 h-1 bg-[#FFD700] rounded-full"
                 animate={{
                   scale: [0, 1.2, 0],
                   opacity: [0, 1, 0]
@@ -678,14 +678,14 @@ export default function HomePage() {
                 }}
               />
               
-              <div className="mb-3 inline-flex rounded bg-slate-900/20 p-2.5 relative z-10">
-                <FileText className="h-5 w-5 text-slate-900" />
+              <div className="mb-3 inline-flex rounded bg-amber-900/20 p-2.5 relative z-10">
+                <FileText className="h-5 w-5 text-amber-900" />
               </div>
-              <h3 className="mb-2 text-base font-serif font-bold text-slate-900 relative z-10">Verified Savings Documentation</h3>
-              <p className="text-xs text-slate-800 leading-relaxed relative z-10">
+              <h3 className="mb-2 text-base font-serif font-bold text-amber-900 relative z-10">Verified Savings Documentation</h3>
+              <p className="text-xs text-amber-800 leading-relaxed relative z-10">
                 Timestamped audit trail documenting contract compliance events, overcharge recoveries, and third-party verification records with complete chain of custody.
               </p>
-              <div className="mt-3 flex items-center gap-1 text-xs font-semibold text-slate-900 group-hover:text-slate-950 relative z-10">
+              <div className="mt-3 flex items-center gap-1 text-xs font-semibold text-amber-900 group-hover:text-amber-950 relative z-10">
                 Review documentation standards <ChevronRight className="h-3.5 w-3.5" />
               </div>
             </motion.div>
@@ -693,9 +693,9 @@ export default function HomePage() {
             <motion.div
               variants={fadeInUpVariants}
               whileHover={{ y: -4, scale: 1.02 }}
-              className="group relative rounded-lg border-2 border-cyan-300/40 bg-gradient-to-br from-slate-200 via-cyan-100 to-blue-200 p-5 hover:border-cyan-400 hover:shadow-2xl hover:shadow-cyan-400/60 cursor-pointer transition-all duration-300 overflow-hidden">
+              className="group relative rounded-lg border-2 border-[#D4AF37]/50 bg-gradient-to-br from-amber-100 via-yellow-50 to-amber-200 p-5 hover:border-[#FFD700] hover:shadow-2xl hover:shadow-[#FFD700]/60 cursor-pointer transition-all duration-300 overflow-hidden">
               <Link href="/pillars/financial-impact-analysis" className="absolute inset-0 z-20" />
-              <div className="absolute inset-0 bg-gradient-to-br from-white/60 via-cyan-200/30 to-blue-300/40 pointer-events-none" />
+              <div className="absolute inset-0 bg-gradient-to-br from-white/60 via-amber-100/30 to-yellow-200/40 pointer-events-none" />
               <motion.div 
                 className="absolute inset-0 bg-gradient-to-tr from-transparent via-white/80 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none"
                 animate={{
@@ -723,7 +723,7 @@ export default function HomePage() {
                 }}
               />
               <motion.div
-                className="absolute top-5 right-7 w-1 h-1 bg-cyan-300 rounded-full"
+                className="absolute top-5 right-7 w-1 h-1 bg-[#FFD700] rounded-full"
                 animate={{
                   scale: [0, 1.2, 0],
                   opacity: [0, 1, 0]
@@ -736,14 +736,14 @@ export default function HomePage() {
                 }}
               />
               
-              <div className="mb-3 inline-flex rounded bg-slate-900/20 p-2.5 relative z-10">
-                <Shield className="h-5 w-5 text-slate-900" />
+              <div className="mb-3 inline-flex rounded bg-amber-900/20 p-2.5 relative z-10">
+                <Shield className="h-5 w-5 text-amber-900" />
               </div>
-              <h3 className="mb-2 text-base font-serif font-bold text-slate-900 relative z-10">Financial Impact Analysis</h3>
-              <p className="text-xs text-slate-800 leading-relaxed relative z-10">
+              <h3 className="mb-2 text-base font-serif font-bold text-amber-900 relative z-10">Financial Impact Analysis</h3>
+              <p className="text-xs text-amber-800 leading-relaxed relative z-10">
                 Quantitative assessment of pharmacy benefit optimization on enterprise profitability. Direct measurement of prescription cost containment effects on operating margins.
               </p>
-              <div className="mt-3 flex items-center gap-1 text-xs font-semibold text-slate-900 group-hover:text-slate-950 relative z-10">
+              <div className="mt-3 flex items-center gap-1 text-xs font-semibold text-amber-900 group-hover:text-amber-950 relative z-10">
                 Review financial methodology <ChevronRight className="h-3.5 w-3.5" />
               </div>
             </motion.div>
@@ -751,9 +751,9 @@ export default function HomePage() {
             <motion.div
               variants={fadeInUpVariants}
               whileHover={{ y: -4, scale: 1.02 }}
-              className="group relative rounded-lg border-2 border-cyan-300/40 bg-gradient-to-br from-slate-200 via-cyan-100 to-blue-200 p-5 hover:border-cyan-400 hover:shadow-2xl hover:shadow-cyan-400/60 cursor-pointer transition-all duration-300 overflow-hidden">
+              className="group relative rounded-lg border-2 border-[#D4AF37]/50 bg-gradient-to-br from-amber-100 via-yellow-50 to-amber-200 p-5 hover:border-[#FFD700] hover:shadow-2xl hover:shadow-[#FFD700]/60 cursor-pointer transition-all duration-300 overflow-hidden">
               <Link href="/pillars/multi-source-data-reconciliation" className="absolute inset-0 z-20" />
-              <div className="absolute inset-0 bg-gradient-to-br from-white/60 via-cyan-200/30 to-blue-300/40 pointer-events-none" />
+              <div className="absolute inset-0 bg-gradient-to-br from-white/60 via-amber-100/30 to-yellow-200/40 pointer-events-none" />
               <motion.div 
                 className="absolute inset-0 bg-gradient-to-tr from-transparent via-white/80 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none"
                 animate={{
@@ -781,7 +781,7 @@ export default function HomePage() {
                 }}
               />
               <motion.div
-                className="absolute top-6 right-2 w-1 h-1 bg-cyan-300 rounded-full"
+                className="absolute top-6 right-2 w-1 h-1 bg-[#FFD700] rounded-full"
                 animate={{
                   scale: [0, 1.2, 0],
                   opacity: [0, 1, 0]
@@ -794,14 +794,14 @@ export default function HomePage() {
                 }}
               />
               
-              <div className="mb-3 inline-flex rounded bg-slate-900/20 p-2.5 relative z-10">
-                <Database className="h-5 w-5 text-slate-900" />
+              <div className="mb-3 inline-flex rounded bg-amber-900/20 p-2.5 relative z-10">
+                <Database className="h-5 w-5 text-amber-900" />
               </div>
-              <h3 className="mb-2 text-base font-serif font-bold text-slate-900 relative z-10">Multi-Source Data Reconciliation</h3>
-              <p className="text-xs text-slate-800 leading-relaxed relative z-10">
+              <h3 className="mb-2 text-base font-serif font-bold text-amber-900 relative z-10">Multi-Source Data Reconciliation</h3>
+              <p className="text-xs text-amber-800 leading-relaxed relative z-10">
                 Integration and normalization of claims data, contract formularies, and pricing benchmarks across disparate healthcare data sources for actuarial analysis.
               </p>
-              <div className="mt-3 flex items-center gap-1 text-xs font-semibold text-slate-900 group-hover:text-slate-950 relative z-10">
+              <div className="mt-3 flex items-center gap-1 text-xs font-semibold text-amber-900 group-hover:text-amber-950 relative z-10">
                 Review integration protocols <ChevronRight className="h-3.5 w-3.5" />
               </div>
             </motion.div>
@@ -809,9 +809,9 @@ export default function HomePage() {
             <motion.div
               variants={fadeInUpVariants}
               whileHover={{ y: -4, scale: 1.02 }}
-              className="group relative rounded-lg border-2 border-cyan-300/40 bg-gradient-to-br from-slate-200 via-cyan-100 to-blue-200 p-5 hover:border-cyan-400 hover:shadow-2xl hover:shadow-cyan-400/60 cursor-pointer transition-all duration-300 overflow-hidden">
+              className="group relative rounded-lg border-2 border-[#D4AF37]/50 bg-gradient-to-br from-amber-100 via-yellow-50 to-amber-200 p-5 hover:border-[#FFD700] hover:shadow-2xl hover:shadow-[#FFD700]/60 cursor-pointer transition-all duration-300 overflow-hidden">
               <Link href="/pillars/contract-intelligence-compliance" className="absolute inset-0 z-20" />
-              <div className="absolute inset-0 bg-gradient-to-br from-white/60 via-cyan-200/30 to-blue-300/40 pointer-events-none" />
+              <div className="absolute inset-0 bg-gradient-to-br from-white/60 via-amber-100/30 to-yellow-200/40 pointer-events-none" />
               <motion.div 
                 className="absolute inset-0 bg-gradient-to-tr from-transparent via-white/80 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none"
                 animate={{
@@ -839,7 +839,7 @@ export default function HomePage() {
                 }}
               />
               <motion.div
-                className="absolute top-2 right-8 w-1 h-1 bg-cyan-300 rounded-full"
+                className="absolute top-2 right-8 w-1 h-1 bg-[#FFD700] rounded-full"
                 animate={{
                   scale: [0, 1.2, 0],
                   opacity: [0, 1, 0]
@@ -852,14 +852,14 @@ export default function HomePage() {
                 }}
               />
               
-              <div className="mb-3 inline-flex rounded bg-slate-900/20 p-2.5 relative z-10">
-                <FileText className="h-5 w-5 text-slate-900" />
+              <div className="mb-3 inline-flex rounded bg-amber-900/20 p-2.5 relative z-10">
+                <FileText className="h-5 w-5 text-amber-900" />
               </div>
-              <h3 className="mb-2 text-base font-serif font-bold text-slate-900 relative z-10">Contract Intelligence & Compliance</h3>
-              <p className="text-xs text-slate-800 leading-relaxed relative z-10">
+              <h3 className="mb-2 text-base font-serif font-bold text-amber-900 relative z-10">Contract Intelligence & Compliance</h3>
+              <p className="text-xs text-amber-800 leading-relaxed relative z-10">
                 Automated PBM contract clause extraction, fiduciary scoring, and continuous monitoring of contractual guarantee fulfillment against actual performance metrics.
               </p>
-              <div className="mt-3 flex items-center gap-1 text-xs font-semibold text-slate-900 group-hover:text-slate-950 relative z-10">
+              <div className="mt-3 flex items-center gap-1 text-xs font-semibold text-amber-900 group-hover:text-amber-950 relative z-10">
                 Review contract monitoring <ChevronRight className="h-3.5 w-3.5" />
               </div>
             </motion.div>
@@ -867,9 +867,9 @@ export default function HomePage() {
             <motion.div
               variants={fadeInUpVariants}
               whileHover={{ y: -4, scale: 1.02 }}
-              className="group relative rounded-lg border-2 border-cyan-300/40 bg-gradient-to-br from-slate-200 via-cyan-100 to-blue-200 p-5 hover:border-cyan-400 hover:shadow-2xl hover:shadow-cyan-400/60 cursor-pointer transition-all duration-300 overflow-hidden">
+              className="group relative rounded-lg border-2 border-[#D4AF37]/50 bg-gradient-to-br from-amber-100 via-yellow-50 to-amber-200 p-5 hover:border-[#FFD700] hover:shadow-2xl hover:shadow-[#FFD700]/60 cursor-pointer transition-all duration-300 overflow-hidden">
               <Link href="/pillars/actuarial-risk-modeling" className="absolute inset-0 z-20" />
-              <div className="absolute inset-0 bg-gradient-to-br from-white/60 via-cyan-200/30 to-blue-300/40 pointer-events-none" />
+              <div className="absolute inset-0 bg-gradient-to-br from-white/60 via-amber-100/30 to-yellow-200/40 pointer-events-none" />
               <motion.div 
                 className="absolute inset-0 bg-gradient-to-tr from-transparent via-white/80 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none"
                 animate={{
@@ -897,7 +897,7 @@ export default function HomePage() {
                 }}
               />
               <motion.div
-                className="absolute top-5 right-3 w-1 h-1 bg-cyan-300 rounded-full"
+                className="absolute top-5 right-3 w-1 h-1 bg-[#FFD700] rounded-full"
                 animate={{
                   scale: [0, 1.2, 0],
                   opacity: [0, 1, 0]
@@ -910,14 +910,14 @@ export default function HomePage() {
                 }}
               />
               
-              <div className="mb-3 inline-flex rounded bg-slate-900/20 p-2.5 relative z-10">
-                <TrendingUp className="h-5 w-5 text-slate-900" />
+              <div className="mb-3 inline-flex rounded bg-amber-900/20 p-2.5 relative z-10">
+                <TrendingUp className="h-5 w-5 text-amber-900" />
               </div>
-              <h3 className="mb-2 text-base font-serif font-bold text-slate-900 relative z-10">Actuarial Risk Modeling</h3>
-              <p className="text-xs text-slate-800 leading-relaxed relative z-10">
+              <h3 className="mb-2 text-base font-serif font-bold text-amber-900 relative z-10">Actuarial Risk Modeling</h3>
+              <p className="text-xs text-amber-800 leading-relaxed relative z-10">
                 Monte Carlo simulation engines for benefit cost forecasting, stop-loss optimization, and multi-year trend projection with confidence intervals and scenario planning.
               </p>
-              <div className="mt-3 flex items-center gap-1 text-xs font-semibold text-slate-900 group-hover:text-slate-950 relative z-10">
+              <div className="mt-3 flex items-center gap-1 text-xs font-semibold text-amber-900 group-hover:text-amber-950 relative z-10">
                 Review risk methodology <ChevronRight className="h-3.5 w-3.5" />
               </div>
             </motion.div>
@@ -925,9 +925,9 @@ export default function HomePage() {
             <motion.div
               variants={fadeInUpVariants}
               whileHover={{ y: -4, scale: 1.02 }}
-              className="group relative rounded-lg border-2 border-cyan-300/40 bg-gradient-to-br from-slate-200 via-cyan-100 to-blue-200 p-5 hover:border-cyan-400 hover:shadow-2xl hover:shadow-cyan-400/60 cursor-pointer transition-all duration-300 overflow-hidden">
+              className="group relative rounded-lg border-2 border-[#D4AF37]/50 bg-gradient-to-br from-amber-100 via-yellow-50 to-amber-200 p-5 hover:border-[#FFD700] hover:shadow-2xl hover:shadow-[#FFD700]/60 cursor-pointer transition-all duration-300 overflow-hidden">
               <Link href="/pillars/realtime-claims-surveillance" className="absolute inset-0 z-20" />
-              <div className="absolute inset-0 bg-gradient-to-br from-white/60 via-cyan-200/30 to-blue-300/40 pointer-events-none" />
+              <div className="absolute inset-0 bg-gradient-to-br from-white/60 via-amber-100/30 to-yellow-200/40 pointer-events-none" />
               <motion.div 
                 className="absolute inset-0 bg-gradient-to-tr from-transparent via-white/80 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none"
                 animate={{
@@ -955,7 +955,7 @@ export default function HomePage() {
                 }}
               />
               <motion.div
-                className="absolute top-6 right-4 w-1 h-1 bg-cyan-300 rounded-full"
+                className="absolute top-6 right-4 w-1 h-1 bg-[#FFD700] rounded-full"
                 animate={{
                   scale: [0, 1.2, 0],
                   opacity: [0, 1, 0]
@@ -968,14 +968,14 @@ export default function HomePage() {
                 }}
               />
               
-              <div className="mb-3 inline-flex rounded bg-slate-900/20 p-2.5 relative z-10">
-                <Activity className="h-5 w-5 text-slate-900" />
+              <div className="mb-3 inline-flex rounded bg-amber-900/20 p-2.5 relative z-10">
+                <Activity className="h-5 w-5 text-amber-900" />
               </div>
-              <h3 className="mb-2 text-base font-serif font-bold text-slate-900 relative z-10">Real-Time Claims Surveillance</h3>
-              <p className="text-xs text-slate-800 leading-relaxed relative z-10">
+              <h3 className="mb-2 text-base font-serif font-bold text-amber-900 relative z-10">Real-Time Claims Surveillance</h3>
+              <p className="text-xs text-amber-800 leading-relaxed relative z-10">
                 Live streaming anomaly detection for prescription claims processing, flagging formulary violations, spread pricing irregularities, and specialty drug overcharges as they occur.
               </p>
-              <div className="mt-3 flex items-center gap-1 text-xs font-semibold text-slate-900 group-hover:text-slate-950 relative z-10">
+              <div className="mt-3 flex items-center gap-1 text-xs font-semibold text-amber-900 group-hover:text-amber-950 relative z-10">
                 Review surveillance protocols <ChevronRight className="h-3.5 w-3.5" />
               </div>
             </motion.div>
@@ -983,9 +983,9 @@ export default function HomePage() {
             <motion.div
               variants={fadeInUpVariants}
               whileHover={{ y: -4, scale: 1.02 }}
-              className="group relative rounded-lg border-2 border-cyan-300/40 bg-gradient-to-br from-slate-200 via-cyan-100 to-blue-200 p-5 hover:border-cyan-400 hover:shadow-2xl hover:shadow-cyan-400/60 cursor-pointer transition-all duration-300 overflow-hidden">
+              className="group relative rounded-lg border-2 border-[#D4AF37]/50 bg-gradient-to-br from-amber-100 via-yellow-50 to-amber-200 p-5 hover:border-[#FFD700] hover:shadow-2xl hover:shadow-[#FFD700]/60 cursor-pointer transition-all duration-300 overflow-hidden">
               <Link href="/pillars/regulatory-legal-framework" className="absolute inset-0 z-20" />
-              <div className="absolute inset-0 bg-gradient-to-br from-white/60 via-cyan-200/30 to-blue-300/40 pointer-events-none" />
+              <div className="absolute inset-0 bg-gradient-to-br from-white/60 via-amber-100/30 to-yellow-200/40 pointer-events-none" />
               <motion.div 
                 className="absolute inset-0 bg-gradient-to-tr from-transparent via-white/80 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none"
                 animate={{
@@ -1013,7 +1013,7 @@ export default function HomePage() {
                 }}
               />
               <motion.div
-                className="absolute top-2 right-5 w-1 h-1 bg-cyan-300 rounded-full"
+                className="absolute top-2 right-5 w-1 h-1 bg-[#FFD700] rounded-full"
                 animate={{
                   scale: [0, 1.2, 0],
                   opacity: [0, 1, 0]
@@ -1026,14 +1026,14 @@ export default function HomePage() {
                 }}
               />
               
-              <div className="mb-3 inline-flex rounded bg-slate-900/20 p-2.5 relative z-10">
-                <Award className="h-5 w-5 text-slate-900" />
+              <div className="mb-3 inline-flex rounded bg-amber-900/20 p-2.5 relative z-10">
+                <Award className="h-5 w-5 text-amber-900" />
               </div>
-              <h3 className="mb-2 text-base font-serif font-bold text-slate-900 relative z-10">Regulatory & Legal Framework</h3>
-              <p className="text-xs text-slate-800 leading-relaxed relative z-10">
+              <h3 className="mb-2 text-base font-serif font-bold text-amber-900 relative z-10">Regulatory & Legal Framework</h3>
+              <p className="text-xs text-amber-800 leading-relaxed relative z-10">
                 ERISA fiduciary compliance validation, DOL audit readiness, and CAA transparency requirements enforcement with automated legal documentation and evidence preservation.
               </p>
-              <div className="mt-3 flex items-center gap-1 text-xs font-semibold text-slate-900 group-hover:text-slate-950 relative z-10">
+              <div className="mt-3 flex items-center gap-1 text-xs font-semibold text-amber-900 group-hover:text-amber-950 relative z-10">
                 Review compliance standards <ChevronRight className="h-3.5 w-3.5" />
               </div>
             </motion.div>
@@ -1041,9 +1041,9 @@ export default function HomePage() {
             <motion.div
               variants={fadeInUpVariants}
               whileHover={{ y: -4, scale: 1.02 }}
-              className="group relative rounded-lg border-2 border-cyan-300/40 bg-gradient-to-br from-slate-200 via-cyan-100 to-blue-200 p-5 hover:border-cyan-400 hover:shadow-2xl hover:shadow-cyan-400/60 cursor-pointer transition-all duration-300 overflow-hidden">
+              className="group relative rounded-lg border-2 border-[#D4AF37]/50 bg-gradient-to-br from-amber-100 via-yellow-50 to-amber-200 p-5 hover:border-[#FFD700] hover:shadow-2xl hover:shadow-[#FFD700]/60 cursor-pointer transition-all duration-300 overflow-hidden">
               <Link href="/pillars/predictive-cost-analytics" className="absolute inset-0 z-20" />
-              <div className="absolute inset-0 bg-gradient-to-br from-white/60 via-cyan-200/30 to-blue-300/40 pointer-events-none" />
+              <div className="absolute inset-0 bg-gradient-to-br from-white/60 via-amber-100/30 to-yellow-200/40 pointer-events-none" />
               <motion.div 
                 className="absolute inset-0 bg-gradient-to-tr from-transparent via-white/80 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none"
                 animate={{
@@ -1071,7 +1071,7 @@ export default function HomePage() {
                 }}
               />
               <motion.div
-                className="absolute top-5 right-8 w-1 h-1 bg-cyan-300 rounded-full"
+                className="absolute top-5 right-8 w-1 h-1 bg-[#FFD700] rounded-full"
                 animate={{
                   scale: [0, 1.2, 0],
                   opacity: [0, 1, 0]
@@ -1084,14 +1084,14 @@ export default function HomePage() {
                 }}
               />
               
-              <div className="mb-3 inline-flex rounded bg-slate-900/20 p-2.5 relative z-10">
-                <BarChart3 className="h-5 w-5 text-slate-900" />
+              <div className="mb-3 inline-flex rounded bg-amber-900/20 p-2.5 relative z-10">
+                <BarChart3 className="h-5 w-5 text-amber-900" />
               </div>
-              <h3 className="mb-2 text-base font-serif font-bold text-slate-900 relative z-10">Predictive Cost Analytics</h3>
-              <p className="text-xs text-slate-800 leading-relaxed relative z-10">
+              <h3 className="mb-2 text-base font-serif font-bold text-amber-900 relative z-10">Predictive Cost Analytics</h3>
+              <p className="text-xs text-amber-800 leading-relaxed relative z-10">
                 Machine learning models for future spend forecasting, therapeutic substitution impact analysis, and proactive intervention opportunity identification to prevent cost escalation.
               </p>
-              <div className="mt-3 flex items-center gap-1 text-xs font-semibold text-slate-900 group-hover:text-slate-950 relative z-10">
+              <div className="mt-3 flex items-center gap-1 text-xs font-semibold text-amber-900 group-hover:text-amber-950 relative z-10">
                 Review predictive models <ChevronRight className="h-3.5 w-3.5" />
               </div>
             </motion.div>

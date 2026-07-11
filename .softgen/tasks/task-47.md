@@ -23,10 +23,10 @@ Build detailed Las Vegas-style engine pages for all Financial & Trend category e
 - [x] Gene therapy exposure page
 - [x] Oncology cost projection page
 - [x] Inflation decomposition page
-- [ ] Provider unit cost trend page
-- [ ] Utilization trend engine page
-- [ ] Geographic normalization page
-- [ ] Age/gender risk adjustment page
+- [x] Provider unit cost trend page
+- [x] Utilization trend engine page
+- [x] Geographic normalization page
+- [x] Age/gender risk adjustment page
 - [ ] Case mix adjustment page
 - [ ] PMPM normalization page
 - [ ] PEPY normalization page

@@ -6,7 +6,7 @@ import { SEO } from "@/components/SEO";
 import {
   FileText, Shield, TrendingUp, CheckCircle2, Activity, ArrowRight,
   Building2, Database, BarChart3, Award, AlertTriangle, Clock,
-  DollarSign, Percent, ChevronRight, Check, X, Layers, Eye, Info, BookOpen, Sparkles, Zap } from
+  DollarSign, Percent, ChevronRight, Check, X, Layers, Eye, Info, BookOpen, Sparkles, Zap, Brain } from
 "lucide-react";
 import { ExecutiveWarRoom } from "@/components/warroom/ExecutiveWarRoom";
 import { CHROWarRoom } from "@/components/warroom/CHROWarRoom";
@@ -34,6 +34,7 @@ import Nav from "@/components/Nav";
 import Footer from "@/components/Footer";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
+import { Card, CardContent } from "@/components/ui/card";
 
 const mockAudits = [
 { company: "Midwest Logistics", lives: 420, issue: "Generic Spread Markup", savings: "$142,500", severity: "high" },
@@ -1648,6 +1649,61 @@ export default function HomePage() {
         
 
         <QuantifiedTestimonials />
+
+        {/* Platform Preview */}
+        <section className="py-24 bg-gradient-to-b from-background to-slate-950">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="text-center mb-16">
+              <h2 className="text-4xl font-black text-transparent bg-clip-text bg-gradient-to-r from-primary via-accent to-secondary mb-4">
+                See Kincaid IQ in Action
+              </h2>
+              <p className="text-xl text-slate-300 max-w-3xl mx-auto">
+                Experience the platform that transforms healthcare benefits from a cost center into a strategic advantage
+              </p>
+            </div>
+
+            <div className="grid md:grid-cols-3 gap-8 mb-16">
+              <Card className="bg-slate-900/50 border-slate-800 hover:border-primary/50 transition-all duration-300">
+                <CardContent className="p-6">
+                  <TrendingUp className="w-12 h-12 text-primary mb-4" />
+                  <h3 className="text-xl font-bold text-white mb-3">Live Analytics</h3>
+                  <p className="text-slate-300 leading-relaxed">
+                    Real-time claims intelligence with predictive trend modeling and anomaly detection
+                  </p>
+                </CardContent>
+              </Card>
+
+              <Card className="bg-slate-900/50 border-slate-800 hover:border-accent/50 transition-all duration-300">
+                <CardContent className="p-6">
+                  <Shield className="w-12 h-12 text-accent mb-4" />
+                  <h3 className="text-xl font-bold text-white mb-3">Fiduciary Defense</h3>
+                  <p className="text-slate-300 leading-relaxed">
+                    Automated compliance monitoring with full audit trails and ERISA documentation
+                  </p>
+                </CardContent>
+              </Card>
+
+              <Card className="bg-slate-900/50 border-slate-800 hover:border-secondary/50 transition-all duration-300">
+                <CardContent className="p-6">
+                  <Brain className="w-12 h-12 text-secondary mb-4" />
+                  <h3 className="text-xl font-bold text-white mb-3">AI Copilot</h3>
+                  <p className="text-slate-300 leading-relaxed">
+                    Natural language queries with instant actuarial-grade analysis and reporting
+                  </p>
+                </CardContent>
+              </Card>
+            </div>
+
+            <div className="text-center">
+              <Link
+                href="/platform"
+                className="inline-flex items-center gap-2 bg-gradient-to-r from-primary to-accent text-white px-8 py-4 rounded-xl font-bold text-lg hover:shadow-2xl hover:shadow-primary/50 transition-all duration-300 group">
+                Explore Platform Features
+                <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
+              </Link>
+            </div>
+          </div>
+        </section>
 
         <section className="relative py-12 border-t border-[#1F2937]">
           <div className="max-w-7xl mx-auto px-4 md:px-8">

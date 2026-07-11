@@ -17,9 +17,9 @@ Build detailed Las Vegas-style engine pages for all Healthcare Economics categor
 - [x] Network disruption modeling page
 - [x] Reference-based pricing savings page
 - [x] Direct contracting valuation page
-- [ ] Centers of Excellence ROI page
-- [ ] Bundled payment modeling page
-- [ ] Payment integrity analysis page
+- [x] Centers of Excellence ROI page
+- [x] Bundled payment modeling page
+- [x] Payment integrity analysis page
 - [ ] Waste, fraud, and abuse detection page
 - [ ] Episode-of-care valuation page
 - [ ] Specialty pharmacy economics page

@@ -1,8 +1,8 @@
 import { useState } from "react";
 import Head from "next/head";
 import Link from "next/link";
-import { Footer } from "@/components/Footer";
-import { Nav } from "@/components/Nav";
+import Footer from "@/components/Footer";
+import Nav from "@/components/Nav";
 import { Users, DollarSign, Building2, ArrowLeft, Target, TrendingUp, Calendar, CheckCircle2, AlertTriangle } from "lucide-react";
 
 export default function BenefitHarmonizationEngine() {

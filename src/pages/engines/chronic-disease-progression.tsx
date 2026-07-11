@@ -1,8 +1,8 @@
 import { useState } from "react";
 import Head from "next/head";
 import Link from "next/link";
-import { Footer } from "@/components/Footer";
-import { Nav } from "@/components/Nav";
+import Footer from "@/components/Footer";
+import Nav from "@/components/Nav";
 import { Activity, TrendingUp, Users, AlertTriangle, ArrowLeft, Database, Brain, Target, CheckCircle2, Calendar, DollarSign } from "lucide-react";
 
 export default function ChronicDiseaseProgressionEngine() {

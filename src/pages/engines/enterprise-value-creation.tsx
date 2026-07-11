@@ -1,8 +1,8 @@
 import { useState } from "react";
 import Head from "next/head";
 import Link from "next/link";
-import { Footer } from "@/components/Footer";
-import { Nav } from "@/components/Nav";
+import Footer from "@/components/Footer";
+import Nav from "@/components/Nav";
 import { TrendingUp, DollarSign, Target, ArrowLeft, Briefcase, Building2, Calendar, CheckCircle2, ArrowUpRight } from "lucide-react";
 
 export default function EnterpriseValueCreationEngine() {

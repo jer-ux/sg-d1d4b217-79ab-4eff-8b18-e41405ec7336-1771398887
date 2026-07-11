@@ -7,23 +7,23 @@ import Footer from "@/components/Footer";
 interface EngineDetailLayoutProps {
   title: string;
   category: string;
-  icon: LucideIcon;
-  description: string;
+  tagline: string;
+  gradient: string;
   children: ReactNode;
 }
 
-export function EngineDetailLayout({ title, category, icon: Icon, description, children }: EngineDetailLayoutProps) {
+export function EngineDetailLayout({ title, category, tagline, gradient, children }: EngineDetailLayoutProps) {
   return (
     <>
       <Head>
         <title>{title} | Kincaid IQ Engine</title>
-        <meta name="description" content={description} />
+        <meta name="description" content={tagline} />
       </Head>
 
       <div className="min-h-screen bg-black">
         {/* Vegas Hero */}
         <div className="relative overflow-hidden">
-          <div className="absolute inset-0 bg-gradient-to-br from-fuchsia-600 via-purple-600 to-cyan-600 opacity-90" />
+          <div className={`absolute inset-0 bg-gradient-to-br ${gradient} opacity-90`} />
           <div className="absolute inset-0" style={{
             backgroundImage: `radial-gradient(circle at 20% 50%, rgba(236, 72, 153, 0.3) 0%, transparent 50%),
                              radial-gradient(circle at 80% 80%, rgba(59, 130, 246, 0.3) 0%, transparent 50%),
@@ -36,26 +36,17 @@ export function EngineDetailLayout({ title, category, icon: Icon, description, c
               <span className="font-semibold">All Engines</span>
             </Link>
             
-            <div className="flex items-start gap-6 mb-6">
-              <div className="relative">
-                <div className="absolute inset-0 bg-white/20 blur-2xl rounded-full" />
-                <div className="relative p-6 bg-white/10 rounded-3xl backdrop-blur-xl border border-white/20">
-                  <Icon className="w-16 h-16 text-white" strokeWidth={1.5} />
-                </div>
+            <div className="flex-1">
+              <div className="inline-flex items-center gap-2 px-4 py-1.5 bg-white/10 backdrop-blur-xl border border-white/20 rounded-full mb-4">
+                <div className="w-2 h-2 bg-cyan-400 rounded-full animate-pulse" />
+                <span className="text-sm font-bold text-white tracking-wide">{category}</span>
               </div>
-              
-              <div className="flex-1">
-                <div className="inline-flex items-center gap-2 px-4 py-1.5 bg-white/10 backdrop-blur-xl border border-white/20 rounded-full mb-4">
-                  <div className="w-2 h-2 bg-cyan-400 rounded-full animate-pulse" />
-                  <span className="text-sm font-bold text-white tracking-wide">{category}</span>
-                </div>
-                <h1 className="text-5xl md:text-6xl font-black text-white mb-4 tracking-tight">
-                  {title}
-                </h1>
-                <p className="text-xl text-white/90 max-w-3xl leading-relaxed">
-                  {description}
-                </p>
-              </div>
+              <h1 className="text-5xl md:text-6xl font-black text-white mb-4 tracking-tight">
+                {title}
+              </h1>
+              <p className="text-xl text-white/90 max-w-3xl leading-relaxed">
+                {tagline}
+              </p>
             </div>
           </div>
 
@@ -84,16 +75,24 @@ export function EngineDetailLayout({ title, category, icon: Icon, description, c
   );
 }
 
-export function VegasSection({ title, children, gradient = "from-fuchsia-500/10 to-purple-500/10" }: { 
-  title: string; 
+export function VegasSection({ title, icon: Icon, children, gradient = "from-fuchsia-500/10 to-purple-500/10" }: { 
+  title: string;
+  icon?: LucideIcon;
   children: ReactNode;
   gradient?: string;
 }) {
   return (
     <section className="mb-16">
-      <h2 className="text-3xl font-black text-transparent bg-clip-text bg-gradient-to-r from-fuchsia-400 via-purple-400 to-cyan-400 mb-8">
-        {title}
-      </h2>
+      <div className="flex items-center gap-3 mb-8">
+        {Icon && (
+          <div className="w-10 h-10 bg-gradient-to-br from-fuchsia-500 to-purple-500 rounded-lg flex items-center justify-center">
+            <Icon className="w-5 h-5 text-white" />
+          </div>
+        )}
+        <h2 className="text-3xl font-black text-transparent bg-clip-text bg-gradient-to-r from-fuchsia-400 via-purple-400 to-cyan-400">
+          {title}
+        </h2>
+      </div>
       <div className={`bg-gradient-to-br ${gradient} backdrop-blur-xl border border-white/10 rounded-2xl p-8`}>
         {children}
       </div>
@@ -101,42 +100,62 @@ export function VegasSection({ title, children, gradient = "from-fuchsia-500/10 
   );
 }
 
-export function VegasMetricCard({ label, value, sublabel }: { label: string; value: string; sublabel?: string }) {
+export function VegasMetricCard({ icon: Icon, label, value, sublabel, gradient, description }: { 
+  icon?: LucideIcon;
+  label: string; 
+  value: string; 
+  sublabel?: string;
+  gradient?: string;
+  description?: string;
+}) {
   return (
     <div className="relative group">
-      <div className="absolute inset-0 bg-gradient-to-br from-fuchsia-600 to-purple-600 rounded-xl blur opacity-50 group-hover:opacity-75 transition-opacity" />
+      <div className={`absolute inset-0 bg-gradient-to-br ${gradient || 'from-fuchsia-600 to-purple-600'} rounded-xl blur opacity-50 group-hover:opacity-75 transition-opacity`} />
       <div className="relative bg-black/50 backdrop-blur-xl border border-white/20 rounded-xl p-6">
+        {Icon && (
+          <div className="w-12 h-12 bg-gradient-to-br from-fuchsia-500 to-purple-500 rounded-lg flex items-center justify-center mb-4">
+            <Icon className="w-6 h-6 text-white" />
+          </div>
+        )}
         <div className="text-sm font-bold text-purple-300 mb-2">{label}</div>
         <div className="text-3xl font-black text-white mb-1">{value}</div>
         {sublabel && <div className="text-xs text-white/60">{sublabel}</div>}
+        {description && <div className="text-sm text-white/70 mt-3">{description}</div>}
       </div>
     </div>
   );
 }
 
-export function VegasCodeBlock({ children }: { children: string }) {
+export function VegasCodeBlock({ children, language }: { children: string; language?: string }) {
   return (
     <div className="relative group">
       <div className="absolute inset-0 bg-gradient-to-r from-cyan-500 to-blue-500 rounded-lg blur opacity-30 group-hover:opacity-50 transition-opacity" />
       <pre className="relative bg-black/80 backdrop-blur-xl border border-cyan-500/30 rounded-lg p-6 overflow-x-auto">
+        {language && (
+          <div className="text-xs font-bold text-cyan-400 mb-3 uppercase tracking-wider">
+            {language}
+          </div>
+        )}
         <code className="text-sm text-cyan-300 font-mono">{children}</code>
       </pre>
     </div>
   );
 }
 
-export function VegasFeatureGrid({ children }: { children: ReactNode }) {
+export function VegasFeatureGrid({ children, columns }: { children: ReactNode; columns?: number }) {
+  const gridCols = columns === 2 ? 'md:grid-cols-2' : 'md:grid-cols-2 lg:grid-cols-3';
   return (
-    <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+    <div className={`grid ${gridCols} gap-6`}>
       {children}
     </div>
   );
 }
 
-export function VegasFeatureCard({ icon: Icon, title, description }: { 
+export function VegasFeatureCard({ icon: Icon, title, description, items }: { 
   icon: LucideIcon; 
   title: string; 
-  description: string;
+  description?: string;
+  items?: string[];
 }) {
   return (
     <div className="relative group">
@@ -146,7 +165,17 @@ export function VegasFeatureCard({ icon: Icon, title, description }: {
           <Icon className="w-6 h-6 text-white" />
         </div>
         <h3 className="text-lg font-bold text-white mb-2">{title}</h3>
-        <p className="text-sm text-white/70 leading-relaxed">{description}</p>
+        {description && <p className="text-sm text-white/70 leading-relaxed">{description}</p>}
+        {items && (
+          <ul className="space-y-2 mt-4">
+            {items.map((item, idx) => (
+              <li key={idx} className="flex items-start gap-2">
+                <span className="text-cyan-400 mt-1">•</span>
+                <span className="text-sm text-white/70 leading-relaxed">{item}</span>
+              </li>
+            ))}
+          </ul>
+        )}
       </div>
     </div>
   );

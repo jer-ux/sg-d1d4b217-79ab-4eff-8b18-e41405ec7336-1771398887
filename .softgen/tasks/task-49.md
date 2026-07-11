@@ -17,7 +17,7 @@ position: 4
 - [ ] Vendor compensation transparency page
 - [x] Hidden revenue detection page
 - [ ] Conflict-of-interest analysis page
-- [ ] Audit readiness scoring page
+- [x] Audit readiness scoring page
 - [ ] Governance maturity assessment page
 - [ ] Board oversight scoring page
 - [ ] AI governance assessment page
@@ -30,7 +30,7 @@ position: 4
 - [ ] Contract language risk page
 - [ ] Benchmark deviation analysis page
 - [ ] Fiduciary evidence generation page
-- [ ] Board reporting engine page
+- [x] Board reporting engine page
 - [ ] Internal controls assessment page
 - [ ] Third-party oversight scoring page
 - [ ] Procurement fairness analysis page

@@ -1,19 +1,22 @@
 ---
 title: Healthcare Economics Engines (20 pages)
-status: todo
+status: in_progress
 priority: high
 type: feature
-tags: [engines, healthcare, economics]
+tags: [engines, economics, healthcare, vegas]
 created_by: agent
-created_at: 2026-07-10T13:53:00Z
+created_at: 2026-07-10T13:55:00Z
 position: 3
 ---
 
+## Notes
+Build detailed Las Vegas-style engine pages for all Healthcare Economics category engines.
+
 ## Checklist
-- [ ] Site-of-care migration page
-- [ ] Network disruption modeling page
-- [ ] Reference-based pricing savings page
-- [ ] Direct contracting valuation page
+- [x] Site-of-care migration page
+- [x] Network disruption modeling page
+- [x] Reference-based pricing savings page
+- [x] Direct contracting valuation page
 - [ ] Centers of Excellence ROI page
 - [ ] Bundled payment modeling page
 - [ ] Payment integrity analysis page

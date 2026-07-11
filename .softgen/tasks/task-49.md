@@ -1,6 +1,6 @@
 ---
 title: Fiduciary & Governance Engines (25 pages)
-status: todo
+status: in_progress
 priority: high
 type: feature
 tags: [engines, fiduciary, governance]
@@ -10,12 +10,12 @@ position: 4
 ---
 
 ## Checklist
-- [ ] ERISA fiduciary risk scoring page
-- [ ] PBM contract scoring page
-- [ ] Stop-loss contract scoring page
+- [x] ERISA fiduciary risk scoring page
+- [x] PBM contract scoring page
+- [x] Stop-loss contract scoring page
 - [ ] TPA governance scoring page
 - [ ] Vendor compensation transparency page
-- [ ] Hidden revenue detection page
+- [x] Hidden revenue detection page
 - [ ] Conflict-of-interest analysis page
 - [ ] Audit readiness scoring page
 - [ ] Governance maturity assessment page

@@ -189,7 +189,7 @@ export default function MemberCostBurdenEngine() {
                     family size, or high utilization events.
                   </p>
                   <div className="bg-neutral-800/50 rounded p-3 text-xs text-neutral-400">
-                    <strong className="text-emerald-400">Impact:</strong> 240 employees with >$8K annual
+                    <strong className="text-emerald-400">Impact:</strong> 240 employees with {'>'}$8K annual
                     out-of-pocket spend
                   </div>
                 </Card>

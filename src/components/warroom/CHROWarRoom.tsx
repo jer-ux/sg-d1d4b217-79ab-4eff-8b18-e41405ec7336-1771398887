@@ -5,6 +5,8 @@ import { ExecutiveFiltersBar } from "./widgets/ExecutiveFiltersBar";
 import { KPITile } from "./tiles/KPITile";
 import { ExecutiveEventStream } from "./ExecutiveEventStream";
 import { CHRODrillDownDrawer } from "./CHRODrillDownDrawer";
+import { motion } from "framer-motion";
+import { TrendingUp, AlertTriangle, DollarSign, CheckCircle2, Activity } from "lucide-react";
 
 const DEFAULT_FILTERS: Filters = {
   org: "Portfolio",
@@ -216,11 +218,69 @@ export function CHROWarRoom() {
             </h2>
             <div className="text-xs text-purple-400/80 font-medium px-2 py-0.5 rounded-full bg-purple-900/30 border border-purple-500/20">McKinsey Framework</div>
           </div>
-          <div className="grid grid-cols-1 gap-4 lg:grid-cols-2 xl:grid-cols-4">
-            <KPITile data={tileMap.get("benefitsUtilization")} onClick={handleTileClick} />
-            <KPITile data={tileMap.get("employeeRetention")} onClick={handleTileClick} />
-            <KPITile data={tileMap.get("healthcareROI")} onClick={handleTileClick} />
-            <KPITile data={tileMap.get("wellnessEngagement")} onClick={handleTileClick} />
+          <div className="grid grid-cols-2 gap-3">
+            <motion.div
+              whileHover={{ scale: 1.02 }}
+              className="bg-gradient-to-br from-emerald-500/10 to-teal-500/10 border border-emerald-500/30 rounded-lg p-4">
+              <div className="flex items-center justify-between mb-3">
+                <span className="text-xs font-mono text-emerald-400 uppercase tracking-wide">Workforce Health</span>
+                <TrendingUp className="h-4 w-4 text-emerald-400" />
+              </div>
+              <div className="text-2xl font-bold text-white mb-1">Medium Risk</div>
+              <div className="text-xs text-neutral-400">Population health score: 72/100</div>
+              <div className="mt-3 h-1.5 bg-neutral-800 rounded-full overflow-hidden">
+                <motion.div
+                  className="h-full bg-gradient-to-r from-emerald-500 to-teal-500"
+                  initial={{ width: 0 }}
+                  animate={{ width: "72%" }}
+                  transition={{ duration: 1, delay: 0.5 }} />
+              </div>
+            </motion.div>
+
+            <motion.div
+              whileHover={{ scale: 1.02 }}
+              className="bg-gradient-to-br from-amber-500/10 to-orange-500/10 border border-amber-500/30 rounded-lg p-4">
+              <div className="flex items-center justify-between mb-3">
+                <span className="text-xs font-mono text-amber-400 uppercase tracking-wide">Productivity Loss</span>
+                <AlertTriangle className="h-4 w-4 text-amber-400" />
+              </div>
+              <div className="text-2xl font-bold text-white mb-1">$847K</div>
+              <div className="text-xs text-neutral-400">Annual absenteeism cost</div>
+              <div className="mt-3 flex items-center gap-2 text-xs">
+                <span className="text-red-400">↑ 12% YoY</span>
+                <span className="text-neutral-500">Needs intervention</span>
+              </div>
+            </motion.div>
+
+            <motion.div
+              whileHover={{ scale: 1.02 }}
+              className="bg-gradient-to-br from-blue-500/10 to-cyan-500/10 border border-blue-500/30 rounded-lg p-4">
+              <div className="flex items-center justify-between mb-3">
+                <span className="text-xs font-mono text-blue-400 uppercase tracking-wide">Benefits ROI</span>
+                <DollarSign className="h-4 w-4 text-blue-400" />
+              </div>
+              <div className="text-2xl font-bold text-white mb-1">3.2x</div>
+              <div className="text-xs text-neutral-400">Return on wellness investment</div>
+              <div className="mt-3 flex items-center gap-2 text-xs">
+                <span className="text-emerald-400">↑ 0.4x vs target</span>
+                <CheckCircle2 className="h-3 w-3 text-emerald-400" />
+              </div>
+            </motion.div>
+
+            <motion.div
+              whileHover={{ scale: 1.02 }}
+              className="bg-gradient-to-br from-purple-500/10 to-pink-500/10 border border-purple-500/30 rounded-lg p-4">
+              <div className="flex items-center justify-between mb-3">
+                <span className="text-xs font-mono text-purple-400 uppercase tracking-wide">Wellness Programs</span>
+                <Activity className="h-4 w-4 text-purple-400" />
+              </div>
+              <div className="text-2xl font-bold text-white mb-1">64%</div>
+              <div className="text-xs text-neutral-400">Employee engagement rate</div>
+              <div className="mt-3 flex items-center gap-2 text-xs">
+                <span className="text-emerald-400">↑ 8% vs last quarter</span>
+                <TrendingUp className="h-3 w-3 text-emerald-400" />
+              </div>
+            </motion.div>
           </div>
         </section>
 

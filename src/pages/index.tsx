@@ -24,7 +24,6 @@ import { PBMSpreadCalculator } from "@/components/PBMSpreadCalculator";
 import { ExitIntentPopup } from "@/components/ExitIntentPopup";
 import { InteractiveHeroDashboard } from "@/components/home/InteractiveHeroDashboard";
 import { DocumentCarousel } from "@/components/home/DocumentCarousel";
-import { AuditJourneyTimeline } from "@/components/home/AuditJourneyTimeline";
 import { TimeSavingsComparison } from "@/components/marketing/TimeSavingsComparison";
 import { SecurityBadges } from "@/components/marketing/SecurityBadges";
 import { LiveDemoCTA } from "@/components/marketing/LiveDemoCTA";
@@ -608,8 +607,6 @@ export default function HomePage() {
                 Our standardized 30-day fiduciary audit pipeline processes raw claim lines securely under ERISA protection with zero operational friction.
               </p>
             </AnimatedSection>
-
-            <AuditJourneyTimeline />
           </div>
         </section>
 

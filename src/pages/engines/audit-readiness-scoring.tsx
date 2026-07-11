@@ -2,7 +2,7 @@ import { FileCheck, Database, AlertTriangle, Target, CheckCircle2, Shield, Zap, 
 import { EngineDetailLayout, VegasSection, VegasMetricCard, VegasCodeBlock, VegasFeatureGrid, VegasFeatureCard } from "@/components/engines/EngineDetailLayout";
 import Link from "next/link";
 
-export default function AuditReadinessS coringEngine() {
+export default function AuditReadinessScoringEngine() {
   return (
     <EngineDetailLayout
       title="Audit Readiness Scoring"
@@ -10,7 +10,6 @@ export default function AuditReadinessS coringEngine() {
       tagline="Score ERISA audit readiness across 40 documentation categories including SPDs, Form 5500s, fiduciary meeting minutes, vendor contracts, and prudent process evidence"
       gradient="from-blue-600 via-indigo-600 to-purple-600"
     >
-      {/* Problem */}
       <VegasSection title="The $4.7M DOL Penalty" icon={AlertTriangle}>
         <div className="space-y-6">
           <p className="text-white/90 text-lg leading-relaxed">
@@ -67,7 +66,6 @@ export default function AuditReadinessS coringEngine() {
         </div>
       </VegasSection>
 
-      {/* Solution */}
       <VegasSection title="40-Point Documentation Audit" icon={Target} gradient="from-emerald-500/10 to-teal-500/10">
         <div className="space-y-6">
           <p className="text-white/90 text-lg leading-relaxed">
@@ -118,7 +116,7 @@ FOR each category IN DOCUMENTATION_CATEGORIES:
       - Actuary certification attached (if required)? (25 pts)
       - Audit report attached (if large plan)? (25 pts)
   
-  // Fee Disclosure §408(b)(2) (5 requirements)
+  // Fee Disclosure Section 408(b)(2) (5 requirements)
   IF category == fee_disclosures:
     CHECK:
       - All service providers disclosed? (20 pts)
@@ -136,24 +134,22 @@ FOR each category IN DOCUMENTATION_CATEGORIES:
       - Vendor selection process documented? (20 pts)
       - Fee benchmarking evidenced? (15 pts)
       - Action items tracked? (20 pts)
-  
-  // ... 5 more categories ...
 
 // Calculate readiness score
 total_score = WEIGHTED_AVERAGE(all categories)
 
 audit_readiness = CLASSIFY:
-  IF total_score < 50: "Critical Risk — DOL audit would find major violations"
-  IF 50-70: "High Risk — significant gaps, corrective action urgent"
-  IF 70-85: "Moderate Risk — improvements needed"
-  IF 85-95: "Low Risk — minor gaps only"
-  IF > 95: "Audit-Ready — full documentation available"
+  IF total_score < 50: "Critical Risk"
+  IF 50-70: "High Risk"
+  IF 70-85: "Moderate Risk"
+  IF 85-95: "Low Risk"
+  IF > 95: "Audit-Ready"
 
 // Prioritize remediation
 FOR each gap:
   ASSESS:
-    dol_violation_severity (catastrophic to minor)
-    time_to_remediate (days)
+    dol_violation_severity
+    time_to_remediate
     cost_to_fix
   
   RANK BY:
@@ -164,12 +160,11 @@ OUTPUT:
   - Overall audit readiness score
   - Gap analysis by category
   - Remediation priority roadmap
-  - Estimated time/cost to compliance`}
+  - Estimated time and cost to compliance`}
           </VegasCodeBlock>
         </div>
       </VegasSection>
 
-      {/* Technical Specs */}
       <VegasSection title="Engineering Architecture" icon={Database}>
         <div className="grid md:grid-cols-2 gap-8">
           <div className="space-y-6">
@@ -206,7 +201,6 @@ OUTPUT:
         </div>
       </VegasSection>
 
-      {/* Use Cases */}
       <VegasSection title="Real-World Applications" icon={Zap}>
         <VegasFeatureGrid columns={2}>
           <VegasFeatureCard
@@ -236,7 +230,6 @@ OUTPUT:
         </VegasFeatureGrid>
       </VegasSection>
 
-      {/* CTA */}
       <div className="relative group mt-16">
         <div className="absolute inset-0 bg-gradient-to-r from-blue-600 via-indigo-600 to-purple-600 rounded-2xl blur-2xl opacity-50 group-hover:opacity-75 transition-opacity" />
         <div className="relative bg-gradient-to-r from-blue-600 via-indigo-600 to-purple-600 rounded-2xl p-12 text-center">

@@ -1,245 +1,296 @@
-import { Building2, Database, Brain, AlertTriangle, CheckCircle2, Target, Zap, Activity } from "lucide-react";
-import { EngineDetailLayout, VegasSection, VegasMetricCard, VegasCodeBlock, VegasFeatureGrid, VegasFeatureCard } from "@/components/engines/EngineDetailLayout";
+import { useState } from "react";
+import Head from "next/head";
 import Link from "next/link";
+import Footer from "@/components/Footer";
+import Nav from "@/components/Nav";
+import { Activity, TrendingUp, AlertTriangle, ArrowLeft, Target, Brain } from "lucide-react";
 
 export default function HospitalAdmissionPredictionEngine() {
+  const [activeTab, setActiveTab] = useState("overview");
+
   return (
-    <EngineDetailLayout
-      title="Hospital Admission Prediction"
-      category="Predictive AI Engine"
-      tagline="Predict hospital admissions 30-90 days in advance using ML models trained on claims, pharmacy, labs, vitals, and social determinants to enable proactive care interventions"
-      gradient="from-red-600 via-pink-600 to-rose-600"
-    >
-      <VegasSection title="The $47K Preventable Admission" icon={AlertTriangle}>
-        <div className="space-y-6">
-          <p className="text-white/90 text-lg leading-relaxed">
-            A diabetic member with rising A1C, missed endocrinology appointments, and irregular insulin fills shows up at the ER with diabetic ketoacidosis. 5-day ICU stay, $47K bill, near-fatal outcome. Your care management team: "We didn't know they were deteriorating." The warning signs were there—scattered across claims, pharmacy, and lab data—but no system connected the dots until crisis hit. Reactive medicine costs 8-12x more than proactive intervention.
-          </p>
-          
-          <div className="grid md:grid-cols-3 gap-6">
-            <VegasMetricCard
-              icon={AlertTriangle}
-              label="Preventable Admits"
-              value="42-58%"
-              sublabel="of hospitalizations avoidable"
-              gradient="from-orange-600 to-red-600"
-            />
-            <VegasMetricCard
-              icon={Building2}
-              label="Avg Inpatient Cost"
-              value="$18-52K"
-              sublabel="per admission"
-              gradient="from-red-600 to-rose-600"
-            />
-            <VegasMetricCard
-              icon={Target}
-              label="Intervention ROI"
-              value="8-12x"
-              sublabel="proactive vs. reactive"
-              gradient="from-rose-600 to-pink-600"
-            />
-          </div>
+    <>
+      <Head>
+        <title>Hospital Admission Prediction Engine | Kincaid IQ</title>
+        <meta name="description" content="Predict hospital admissions 30-90 days in advance using AI-powered risk scoring and intervention triggers." />
+      </Head>
 
-          <div className="bg-orange-500/10 border border-orange-500/30 rounded-xl p-6">
-            <h4 className="text-xl font-bold text-white mb-3 flex items-center gap-2">
-              <span className="text-orange-400">✗</span> What Fails Without This Engine
-            </h4>
-            <ul className="space-y-2 text-white/80">
-              <li className="flex items-start gap-2">
-                <span className="text-orange-400">•</span>
-                <span>Reactive care management: intervene only after admission occurs</span>
-              </li>
-              <li className="flex items-start gap-2">
-                <span className="text-orange-400">•</span>
-                <span>Siloed data: claims, pharmacy, labs never integrated into unified risk view</span>
-              </li>
-              <li className="flex items-start gap-2">
-                <span className="text-orange-400">•</span>
-                <span>Late identification: by the time care manager calls, patient already in hospital</span>
-              </li>
-              <li className="flex items-start gap-2">
-                <span className="text-orange-400">•</span>
-                <span>Wasted resources: high-touch outreach to stable members, miss high-risk deteriorators</span>
-              </li>
-            </ul>
-          </div>
-        </div>
-      </VegasSection>
+      <Nav />
 
-      <VegasSection title="90-Day Admission Forecasting" icon={Target} gradient="from-emerald-500/10 to-teal-500/10">
-        <div className="space-y-6">
-          <p className="text-white/90 text-lg leading-relaxed">
-            Our Hospital Admission Prediction Engine trains gradient-boosted ML models on 250+ clinical and behavioral features (diagnoses, procedures, pharmacy adherence, lab trends, vitals, ED visits, care gaps, social determinants) to predict 30/60/90-day admission probability with 82-89% accuracy, enabling targeted interventions before crisis.
-          </p>
+      <div className="min-h-screen bg-neutral-950 text-neutral-50 pt-20">
+        <div className="max-w-7xl mx-auto px-4 py-12">
+          <Link href="/engines" className="inline-flex items-center gap-2 text-emerald-400 hover:text-emerald-300 mb-8 transition-colors">
+            <ArrowLeft className="w-4 h-4" />
+            Back to Engines
+          </Link>
 
-          <VegasCodeBlock language="Admission Prediction ML Pipeline">
-{`// Multi-modal feature engineering
-FEATURES = ENGINEER from:
-  
-  // Medical claims (diagnosis progression)
-  chronic_condition_count
-  recent_diagnosis_codes (ICD-10)
-  procedure_complexity_trend
-  specialist_visit_frequency
-  ED_utilization_12mo
-  
-  // Pharmacy (adherence signals)
-  medication_adherence_score
-  refill_irregularity
-  medication_count (polypharmacy)
-  high_risk_drug_combinations
-  opioid_usage_pattern
-  
-  // Labs & Vitals (clinical deterioration)
-  A1C_trend (diabetics)
-  eGFR_decline (kidney function)
-  blood_pressure_control
-  weight_change_velocity
-  lab_gap_days (missing tests)
-  
-  // Utilization patterns
-  PCP_visit_gap_days
-  specialist_no_show_rate
-  care_plan_adherence
-  readmission_history
-  length_of_stay_trend
-  
-  // Social determinants
-  transportation_barriers
-  medication_cost_burden
-  food_insecurity_index
-  social_isolation_score
+          <div className="mb-12">
+            <div className="flex items-center gap-4 mb-4">
+              <div className="p-3 bg-red-500/10 rounded-lg">
+                <Activity className="w-8 h-8 text-red-400" />
+              </div>
+              <div>
+                <h1 className="text-4xl font-display font-bold">Hospital Admission Prediction Engine</h1>
+                <p className="text-neutral-400 mt-2">Intervene before high-cost episodes occur</p>
+              </div>
+            </div>
 
-// Train gradient boosting model
-MODEL = XGBoost(
-  objective: "binary:logistic",
-  max_depth: 8,
-  learning_rate: 0.05,
-  n_estimators: 500,
-  scale_pos_weight: 3.2  // Address class imbalance
-)
-
-TRAIN on:
-  - 180K member-months (3-year history)
-  - 8,400 admission events
-  - Stratified by diagnosis group
-
-VALIDATE:
-  - Holdout set: 20% of data
-  - AUC-ROC: 0.87
-  - Precision@10%: 0.71 (71% of top-10% actually admit)
-  - F1-score: 0.74
-
-// Generate predictions
-FOR each active_member:
-  admission_probability_30d = MODEL.predict(features)
-  admission_probability_60d = MODEL.predict(features, horizon=60)
-  admission_probability_90d = MODEL.predict(features, horizon=90)
-  
-  risk_tier = CLASSIFY:
-    IF prob_30d > 0.40: "Imminent Risk"
-    IF prob_60d > 0.25: "High Risk"  
-    IF prob_90d > 0.15: "Moderate Risk"
-    ELSE: "Low Risk"
-  
-  // SHAP explanation for care managers
-  top_risk_factors = SHAP.values(member)
-  
-  OUTPUT:
-    "Member ID: 12847
-     30-day admission risk: 47% (Imminent)
-     Top drivers:
-       - A1C jumped 8.2 → 11.4 in 60 days
-       - Missed 3 endocrinology appointments
-       - Insulin fills irregular (40-day gaps)
-       - Recent ED visit for hyperglycemia
-       - No PCP contact in 120 days
-     Recommended intervention: Urgent diabetes nurse outreach + insulin assistance program"`}
-          </VegasCodeBlock>
-        </div>
-      </VegasSection>
-
-      <VegasSection title="Engineering Architecture" icon={Database}>
-        <div className="grid md:grid-cols-2 gap-8">
-          <div className="space-y-6">
-            <h4 className="text-xl font-bold text-white">Core Components</h4>
-            <ul className="space-y-3 text-white/80">
-              <li className="flex items-start gap-3">
-                <CheckCircle2 className="w-5 h-5 text-cyan-400 flex-shrink-0 mt-0.5" />
-                <span><strong className="text-white">Multi-Modal Feature Engine:</strong> Integrate claims + pharmacy + labs + vitals + SDOH</span>
-              </li>
-              <li className="flex items-start gap-3">
-                <CheckCircle2 className="w-5 h-5 text-cyan-400 flex-shrink-0 mt-0.5" />
-                <span><strong className="text-white">Gradient Boosting Model:</strong> XGBoost trained on 180K member-months</span>
-              </li>
-              <li className="flex items-start gap-3">
-                <CheckCircle2 className="w-5 h-5 text-cyan-400 flex-shrink-0 mt-0.5" />
-                <span><strong className="text-white">SHAP Explainability:</strong> Show care managers WHY member is high-risk</span>
-              </li>
-              <li className="flex items-start gap-3">
-                <CheckCircle2 className="w-5 h-5 text-cyan-400 flex-shrink-0 mt-0.5" />
-                <span><strong className="text-white">Risk Stratification:</strong> Tier members into Imminent/High/Moderate/Low buckets</span>
-              </li>
-            </ul>
-          </div>
-
-          <div className="space-y-6">
-            <h4 className="text-xl font-bold text-white">Model Performance</h4>
-            <div className="grid grid-cols-2 gap-4">
-              <VegasMetricCard label="AUC-ROC" value="0.87" sublabel="discrimination accuracy" gradient="from-emerald-600 to-teal-600" />
-              <VegasMetricCard label="Precision@10%" value="71%" sublabel="top-decile accuracy" gradient="from-teal-600 to-cyan-600" />
-              <VegasMetricCard label="Lead Time" value="30-90 days" sublabel="before admission" gradient="from-cyan-600 to-blue-600" />
-              <VegasMetricCard label="Features" value="250+" sublabel="clinical + behavioral" gradient="from-blue-600 to-indigo-600" />
+            <div className="grid md:grid-cols-3 gap-6 mt-8">
+              <div className="bg-neutral-900/50 border border-neutral-800 rounded-lg p-6">
+                <Brain className="w-10 h-10 text-red-400 mb-3" />
+                <h3 className="text-xl font-semibold mb-2">Predictive Models</h3>
+                <p className="text-neutral-400 text-sm">90-day forward-looking risk scores updated daily</p>
+              </div>
+              <div className="bg-neutral-900/50 border border-neutral-800 rounded-lg p-6">
+                <Target className="w-10 h-10 text-emerald-400 mb-3" />
+                <h3 className="text-xl font-semibold mb-2">Intervention Triggers</h3>
+                <p className="text-neutral-400 text-sm">Automated alerts to care managers when risk crosses thresholds</p>
+              </div>
+              <div className="bg-neutral-900/50 border border-neutral-800 rounded-lg p-6">
+                <TrendingUp className="w-10 h-10 text-blue-400 mb-3" />
+                <h3 className="text-xl font-semibold mb-2">ROI Validation</h3>
+                <p className="text-neutral-400 text-sm">Track prevented admissions vs. control groups</p>
+              </div>
             </div>
           </div>
-        </div>
-      </VegasSection>
 
-      <VegasSection title="Real-World Applications" icon={Zap}>
-        <VegasFeatureGrid columns={2}>
-          <VegasFeatureCard
-            icon={Target}
-            title="Diabetic Crisis Prevention"
-            items={[
-              "Model flagged member with 47% 30-day admission risk",
-              "Key signals: A1C spike, missed appointments, irregular insulin fills",
-              "Care manager intervention: Urgent diabetes nurse outreach",
-              "Connected to endocrinology, insulin assistance program",
-              "Outcome: A1C stabilized, avoided $47K DKA admission",
-              "ROI: $180 intervention cost vs. $47K hospital bill = 261x"
-            ]}
-          />
-          <VegasFeatureCard
-            icon={Activity}
-            title="CHF Readmission Prevention"
-            items={[
-              "Model predicted 68% 30-day readmission risk post-discharge",
-              "Drivers: Poor medication adherence, no PCP follow-up scheduled",
-              "Intervention: Home health visit + medication reconciliation",
-              "Cardiologist appointment within 7 days",
-              "Outcome: No readmission in 90 days, stable heart function",
-              "Saved $32K readmission penalty + improved quality scores"
-            ]}
-          />
-        </VegasFeatureGrid>
-      </VegasSection>
+          <div className="border-b border-neutral-800 mb-8">
+            <div className="flex gap-8">
+              {["overview", "model", "use-cases"].map((tab) => (
+                <button
+                  key={tab}
+                  onClick={() => setActiveTab(tab)}
+                  className={`pb-4 px-2 font-medium transition-colors relative ${
+                    activeTab === tab
+                      ? "text-emerald-400"
+                      : "text-neutral-400 hover:text-neutral-300"
+                  }`}
+                >
+                  {tab.charAt(0).toUpperCase() + tab.slice(1)}
+                  {activeTab === tab && (
+                    <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-emerald-400" />
+                  )}
+                </button>
+              ))}
+            </div>
+          </div>
 
-      <div className="relative group mt-16">
-        <div className="absolute inset-0 bg-gradient-to-r from-red-600 via-pink-600 to-rose-600 rounded-2xl blur-2xl opacity-50 group-hover:opacity-75 transition-opacity" />
-        <div className="relative bg-gradient-to-r from-red-600 via-pink-600 to-rose-600 rounded-2xl p-12 text-center">
-          <h2 className="text-4xl font-black text-white mb-4">Predict Admissions Before Crisis Hits</h2>
-          <p className="text-xl text-white/90 mb-8 max-w-3xl mx-auto leading-relaxed">
-            Use AI to identify high-risk members 30-90 days before hospitalization. Enable proactive interventions 
-            that prevent admissions, save lives, and reduce costs by 8-12x vs. reactive care.
-          </p>
-          <Link
-            href="/request-demo"
-            className="inline-flex items-center gap-3 bg-white text-red-600 px-10 py-5 rounded-xl font-black text-lg hover:bg-red-50 transition-all duration-200 shadow-2xl hover:shadow-red-500/50 transform hover:scale-105">
-            Request Engine Demo
-            <span className="text-2xl">→</span>
-          </Link>
+          {activeTab === "overview" && (
+            <div className="space-y-8">
+              <div className="bg-gradient-to-br from-red-500/10 to-orange-500/10 border border-red-500/20 rounded-lg p-8">
+                <h2 className="text-2xl font-display font-bold mb-4">Prevent Admissions Before They Happen</h2>
+                <p className="text-neutral-300 mb-4">
+                  The average inpatient admission costs $15,000-$30,000. Most are preventable with timely intervention—
+                  medication adherence support, care coordination, home health, or ambulatory urgent care. But reactive 
+                  utilization management only sees members AFTER admission when it's too late. Our engine predicts who will 
+                  be hospitalized in the next 30-90 days so care teams can intervene proactively.
+                </p>
+                <div className="bg-neutral-900/50 rounded-lg p-6 mt-6">
+                  <h3 className="font-semibold mb-4">The $4.8M Savings Model</h3>
+                  <div className="grid md:grid-cols-2 gap-6 text-sm">
+                    <div>
+                      <div className="text-red-400 font-semibold mb-2">Without Prediction</div>
+                      <ul className="space-y-2 text-neutral-400 text-xs">
+                        <li>• 240 admissions per year (2,000 employees)</li>
+                        <li>• Avg cost: $20,000 per admission</li>
+                        <li>• Annual cost: $4.8M in inpatient claims</li>
+                        <li>• Care managers react to discharges</li>
+                        <li>• 28% readmission rate within 30 days</li>
+                      </ul>
+                    </div>
+                    <div>
+                      <div className="text-emerald-400 font-semibold mb-2">With Prediction + Intervention</div>
+                      <ul className="space-y-2 text-neutral-400 text-xs">
+                        <li>• 180 admissions prevented (75% success rate on high-risk)</li>
+                        <li>• 60 admissions occur despite intervention</li>
+                        <li>• Intervention cost: $800/member (high-risk cohort)</li>
+                        <li>• Net savings: $2.4M (prevented admits - intervention cost)</li>
+                        <li>• Readmission rate drops to 14%</li>
+                      </ul>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div className="bg-neutral-900/50 border border-neutral-800 rounded-lg p-8">
+                <h2 className="text-2xl font-display font-bold mb-6">How Prediction Creates Intervention Windows</h2>
+                <div className="space-y-6">
+                  <div className="border-l-4 border-emerald-400 pl-6">
+                    <h3 className="font-semibold text-lg mb-2">30-Day High Risk</h3>
+                    <p className="text-neutral-400 text-sm mb-3">
+                      Member has 60%+ probability of admission in next 30 days based on recent ER visits, missed medications, 
+                      chronic condition progression signals. Trigger immediate care manager outreach, medication reconciliation, 
+                      telehealth check-in, or urgent care redirection protocol.
+                    </p>
+                    <div className="bg-neutral-800/50 rounded p-3 text-xs text-neutral-400">
+                      <strong className="text-emerald-400">Intervention ROI:</strong> $800 care management cost prevents 
+                      $20,000 admission 75% of the time = 18.8:1 ROI on high-risk cohort
+                    </div>
+                  </div>
+
+                  <div className="border-l-4 border-amber-400 pl-6">
+                    <h3 className="font-semibold text-lg mb-2">60-Day Moderate Risk</h3>
+                    <p className="text-neutral-400 text-sm mb-3">
+                      Member trending toward high risk—recent lab abnormalities, increasing Rx utilization, psychosocial 
+                      stressors documented. Schedule preventive PCP visit, adjust medications, coordinate specialist follow-up, 
+                      or enroll in disease management program before condition escalates.
+                    </p>
+                    <div className="bg-neutral-800/50 rounded p-3 text-xs text-neutral-400">
+                      <strong className="text-amber-400">Prevention Window:</strong> 60 days allows scheduling PCP appointments, 
+                      medication titration, home modifications—interventions that need lead time
+                    </div>
+                  </div>
+
+                  <div className="border-l-4 border-blue-400 pl-6">
+                    <h3 className="font-semibold text-lg mb-2">90-Day Emerging Risk</h3>
+                    <p className="text-neutral-400 text-sm mb-3">
+                      Member shows early warning signs—new chronic diagnosis, suboptimal adherence, lifestyle risk factors. 
+                      Enroll in wellness coaching, benefits navigation, or digital health programs. Build relationship with 
+                      care team before acute episode develops.
+                    </p>
+                    <div className="bg-neutral-800/50 rounded p-3 text-xs text-neutral-400">
+                      <strong className="text-blue-400">Upstream Engagement:</strong> 90-day horizon allows relationship-building 
+                      interventions that require member trust and buy-in
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          )}
+
+          {activeTab === "model" && (
+            <div className="space-y-6">
+              <div className="bg-neutral-900/50 border border-neutral-800 rounded-lg p-8">
+                <h2 className="text-2xl font-display font-bold mb-6">Predictive Features & Weights</h2>
+                <p className="text-neutral-400 text-sm mb-6">
+                  Model trained on 5 years of claims, clinical, and engagement data across 2M+ members. Updated daily as new 
+                  claims/encounters post. Outputs risk score 0-100 for each member with feature importance breakdown.
+                </p>
+                <div className="space-y-6">
+                  <div className="bg-neutral-800/50 rounded-lg p-6">
+                    <h3 className="font-semibold mb-4 text-red-400">Top Admission Predictors (Feature Importance)</h3>
+                    <div className="space-y-3 text-sm">
+                      <div className="flex items-start justify-between">
+                        <span className="text-neutral-400">Recent ER visit (last 7 days)</span>
+                        <span className="text-red-400 font-mono">32% weight</span>
+                      </div>
+                      <div className="flex items-start justify-between">
+                        <span className="text-neutral-400">Medication non-adherence (PDC under 60%)</span>
+                        <span className="text-red-400 font-mono">18% weight</span>
+                      </div>
+                      <div className="flex items-start justify-between">
+                        <span className="text-neutral-400">Recent hospitalization (last 30 days)</span>
+                        <span className="text-red-400 font-mono">15% weight</span>
+                      </div>
+                      <div className="flex items-start justify-between">
+                        <span className="text-neutral-400">CHF/COPD exacerbation pattern</span>
+                        <span className="text-red-400 font-mono">12% weight</span>
+                      </div>
+                      <div className="flex items-start justify-between">
+                        <span className="text-neutral-400">Missed PCP appointments (3+ in 6 months)</span>
+                        <span className="text-red-400 font-mono">8% weight</span>
+                      </div>
+                      <div className="flex items-start justify-between">
+                        <span className="text-neutral-400">Polypharmacy (10+ active Rx)</span>
+                        <span className="text-red-400 font-mono">7% weight</span>
+                      </div>
+                      <div className="flex items-start justify-between">
+                        <span className="text-neutral-400">Social determinants (housing/food insecurity)</span>
+                        <span className="text-red-400 font-mono">5% weight</span>
+                      </div>
+                      <div className="flex items-start justify-between">
+                        <span className="text-neutral-400">Age 65+ with 3+ chronic conditions</span>
+                        <span className="text-red-400 font-mono">3% weight</span>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="bg-neutral-800/50 rounded-lg p-6">
+                    <h3 className="font-semibold mb-4 text-emerald-400">Model Performance Metrics</h3>
+                    <div className="grid md:grid-cols-2 gap-4 text-sm">
+                      <div className="space-y-2">
+                        <div className="flex justify-between">
+                          <span className="text-neutral-400">AUC-ROC:</span>
+                          <span className="text-emerald-400 font-mono">0.84</span>
+                        </div>
+                        <div className="flex justify-between">
+                          <span className="text-neutral-400">Precision (high-risk):</span>
+                          <span className="text-emerald-400 font-mono">68%</span>
+                        </div>
+                        <div className="flex justify-between">
+                          <span className="text-neutral-400">Recall (high-risk):</span>
+                          <span className="text-emerald-400 font-mono">72%</span>
+                        </div>
+                      </div>
+                      <div className="space-y-2">
+                        <div className="flex justify-between">
+                          <span className="text-neutral-400">False positive rate:</span>
+                          <span className="text-amber-400 font-mono">12%</span>
+                        </div>
+                        <div className="flex justify-between">
+                          <span className="text-neutral-400">Lead time:</span>
+                          <span className="text-blue-400 font-mono">45 days avg</span>
+                        </div>
+                        <div className="flex justify-between">
+                          <span className="text-neutral-400">Daily updates:</span>
+                          <span className="text-purple-400 font-mono">Real-time</span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          )}
+
+          {activeTab === "use-cases" && (
+            <div className="space-y-6">
+              <div className="bg-neutral-900/50 border border-neutral-800 rounded-lg p-8">
+                <h2 className="text-2xl font-display font-bold mb-6">Real-World Applications</h2>
+                <div className="space-y-6">
+                  <div className="border-l-4 border-emerald-400 pl-6">
+                    <h3 className="font-semibold text-lg mb-2">Care Management Prioritization</h3>
+                    <p className="text-neutral-400 text-sm mb-3">
+                      Care managers have limited capacity (150-200 members each). Prediction identifies the 15-20 members most 
+                      likely to admit next month so managers focus time where it matters most.
+                    </p>
+                    <div className="bg-neutral-800/50 rounded p-3 text-xs text-neutral-400">
+                      <strong className="text-emerald-400">Deployment:</strong> Health system with 3,000 self-insured lives 
+                      prevented 42 admissions in first 6 months by prioritizing top-decile risk members
+                    </div>
+                  </div>
+
+                  <div className="border-l-4 border-blue-400 pl-6">
+                    <h3 className="font-semibold text-lg mb-2">ER Diversion Programs</h3>
+                    <p className="text-neutral-400 text-sm mb-3">
+                      High-risk members flagged for 24/7 nurse hotline access and virtual urgent care. When they call, system 
+                      knows they're high-risk and escalates to experienced RN who can de-escalate ER visits.
+                    </p>
+                    <div className="bg-neutral-800/50 rounded p-3 text-xs text-neutral-400">
+                      <strong className="text-blue-400">ROI Case:</strong> Manufacturer redirected 78 ER visits to virtual 
+                      urgent care in Q1 (predicted high-risk cohort)—saved $156K vs. ER cost
+                    </div>
+                  </div>
+
+                  <div className="border-l-4 border-purple-400 pl-6">
+                    <h3 className="font-semibold text-lg mb-2">Stop-Loss Premium Negotiation</h3>
+                    <p className="text-neutral-400 text-sm mb-3">
+                      Show stop-loss carrier your admission prevention program is working. Lower admission rates = lower 
+                      expected claims = better stop-loss pricing at renewal.
+                    </p>
+                    <div className="bg-neutral-800/50 rounded p-3 text-xs text-neutral-400">
+                      <strong className="text-purple-400">Premium Impact:</strong> PE portfolio company reduced admission 
+                      rate 22% with prediction program—stop-loss carrier lowered renewal premium 18%
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          )}
         </div>
       </div>
-    </EngineDetailLayout>
+
+      <Footer />
+    </>
   );
 }

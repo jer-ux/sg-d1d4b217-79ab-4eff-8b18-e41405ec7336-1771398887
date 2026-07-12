@@ -97,7 +97,7 @@ export default function Nav() {
                 setToolsDropdownOpen(false);
               }}
               onMouseLeave={() => {
-                setTimeout(() => setKincaidHealthDropdownOpen(false), 300);
+                setKincaidHealthDropdownOpen(false);
               }}
             >
               <button
@@ -110,7 +110,7 @@ export default function Nav() {
                 <div
                   onMouseEnter={() => setKincaidHealthDropdownOpen(true)}
                   onMouseLeave={() => {
-                    setTimeout(() => setKincaidHealthDropdownOpen(false), 300);
+                    setKincaidHealthDropdownOpen(false);
                   }}
                   className="absolute top-full left-0 mt-2 w-72 bg-gray-900/95 backdrop-blur-xl rounded-xl border border-gray-700/50 shadow-xl overflow-hidden z-[210]">
                   <div className="p-2">
@@ -271,9 +271,16 @@ export default function Nav() {
             {/* Products Dropdown */}
             <div 
               className="relative group"
-              onMouseEnter={() => setProductsDropdownOpen(true)}
+              onMouseEnter={() => {
+                setProductsDropdownOpen(true);
+                setCompanyDropdownOpen(false);
+                setFocusAreasDropdownOpen(false);
+                setAuditsDropdownOpen(false);
+                setKincaidHealthDropdownOpen(false);
+                setToolsDropdownOpen(false);
+              }}
               onMouseLeave={() => {
-                setTimeout(() => setProductsDropdownOpen(false), 300);
+                setProductsDropdownOpen(false);
               }}
             >
               <button

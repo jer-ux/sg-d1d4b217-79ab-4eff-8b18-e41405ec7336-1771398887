@@ -1,251 +1,323 @@
-import { Building2, Database, TrendingDown, DollarSign, AlertTriangle, CheckCircle2, Target, Zap } from "lucide-react";
-import { EngineDetailLayout, VegasSection, VegasMetricCard, VegasCodeBlock, VegasFeatureGrid, VegasFeatureCard } from "@/components/engines/EngineDetailLayout";
+import { useState } from "react";
+import Head from "next/head";
 import Link from "next/link";
+import Footer from "@/components/Footer";
+import Nav from "@/components/Nav";
+import { MapPin, TrendingDown, DollarSign, ArrowLeft, Building2, Target } from "lucide-react";
 
 export default function SiteOfCareMigrationEngine() {
+  const [activeTab, setActiveTab] = useState("overview");
+
   return (
-    <EngineDetailLayout
-      title="Site-of-Care Migration Engine"
-      category="Healthcare Economics"
-      tagline="Quantify Savings from Moving Procedures from Hospital Outpatient to Ambulatory Surgery Centers or Physician Offices"
-      gradient="from-violet-600 via-purple-600 to-fuchsia-600"
-    >
-      {/* Problem Statement */}
-      <VegasSection title="The Hospital Markup Problem" icon={AlertTriangle}>
-        <div className="grid md:grid-cols-2 gap-8">
-          <div>
-            <h3 className="text-2xl font-black text-red-400 mb-4">Status Quo Hospital Outpatient</h3>
-            <ul className="space-y-3 text-white/80 leading-relaxed">
-              <li className="flex items-start gap-3">
-                <span className="text-red-400 mt-1">✗</span>
-                <span>Colonoscopy at hospital outpatient: $4,200. Same procedure at ASC: $1,800 (57% lower)</span>
-              </li>
-              <li className="flex items-start gap-3">
-                <span className="text-red-400 mt-1">✗</span>
-                <span>Members default to hospital system for convenience, no cost transparency</span>
-              </li>
-              <li className="flex items-start gap-3">
-                <span className="text-red-400 mt-1">✗</span>
-                <span>Facility fees add $2,000-5,000 to routine procedures (MRI, infusion, imaging)</span>
-              </li>
-              <li className="flex items-start gap-3">
-                <span className="text-red-400 mt-1">✗</span>
-                <span>Cannot identify migration candidates: which procedures are safe for ASC/office?</span>
-              </li>
-            </ul>
-          </div>
-          <div>
-            <h3 className="text-2xl font-black text-violet-400 mb-4">Site-of-Care Optimization</h3>
-            <ul className="space-y-3 text-white/80 leading-relaxed">
-              <li className="flex items-start gap-3">
-                <span className="text-violet-400 mt-1">✓</span>
-                <span>CPT-level cost comparison: hospital vs. ASC vs. office setting for 200+ procedures</span>
-              </li>
-              <li className="flex items-start gap-3">
-                <span className="text-violet-400 mt-1">✓</span>
-                <span>Member steering programs: transparency tools + financial incentives to choose lower-cost site</span>
-              </li>
-              <li className="flex items-start gap-3">
-                <span className="text-violet-400 mt-1">✓</span>
-                <span>Quality validation: ASC outcomes equivalent/better for routine procedures (CMS data)</span>
-              </li>
-              <li className="flex items-start gap-3">
-                <span className="text-violet-400 mt-1">✓</span>
-                <span>Savings waterfall: identify highest-volume, highest-spread procedures for targeted migration</span>
-              </li>
-            </ul>
-          </div>
-        </div>
-      </VegasSection>
+    <>
+      <Head>
+        <title>Site of Care Migration Engine | Kincaid IQ</title>
+        <meta name="description" content="Shift procedures from hospital outpatient to ASC/office settings for 40-60% cost reduction." />
+      </Head>
 
-      {/* Technical Architecture */}
-      <VegasSection title="Site-of-Care Economics Model" icon={Building2}>
-        <VegasCodeBlock language="python">
-{`# Site-of-Care Savings Calculator
-import pandas as pd
+      <Nav />
 
-site_of_care_pricing = {
-    '45378': {  # Colonoscopy with biopsy
-        'hospital_outpatient': 4200,
-        'asc': 1800,
-        'office': None  # Not applicable
-    },
-    '77080': {  # DXA bone density scan
-        'hospital_outpatient': 425,
-        'asc': None,
-        'office': 180
-    },
-    '96413': {  # Chemotherapy infusion
-        'hospital_outpatient': 3800,
-        'asc': 2400,
-        'office': 1950
-    },
-    '70553': {  # MRI brain with contrast
-        'hospital_outpatient': 2850,
-        'asc': 1200,
-        'office': None
-    },
-    '52000': {  # Cystoscopy
-        'hospital_outpatient': 3100,
-        'asc': 1450,
-        'office': 950
-    }
-}
-
-def calculate_site_migration_savings(claims_data, target_procedures):
-    """
-    Quantify savings from migrating procedures to lower-cost sites
-    """
-    savings_opportunities = []
-    
-    for procedure_code in target_procedures:
-        # Filter claims to this procedure
-        proc_claims = claims_data[claims_data.cpt_code == procedure_code]
-        
-        # Classify current site of service
-        hosp_claims = proc_claims[proc_claims.site == 'hospital_outpatient']
-        asc_claims = proc_claims[proc_claims.site == 'asc']
-        
-        # Calculate potential savings
-        hosp_count = len(hosp_claims)
-        hosp_cost = site_of_care_pricing[procedure_code]['hospital_outpatient']
-        asc_cost = site_of_care_pricing[procedure_code]['asc']
-        
-        if asc_cost is not None:
-            unit_savings = hosp_cost - asc_cost
-            total_savings = hosp_count * unit_savings
-            
-            savings_opportunities.append({
-                'procedure': procedure_code,
-                'hospital_volume': hosp_count,
-                'hospital_cost_each': hosp_cost,
-                'asc_cost_each': asc_cost,
-                'unit_savings': unit_savings,
-                'savings_pct': (unit_savings / hosp_cost) * 100,
-                'total_savings_potential': total_savings
-            })
-    
-    return pd.DataFrame(savings_opportunities).sort_values('total_savings_potential', ascending=False)
-
-def model_migration_program(baseline_claims, migration_rate=0.30):
-    """
-    Forecast realistic migration assuming 30% adoption in year 1
-    """
-    opportunities = calculate_site_migration_savings(baseline_claims, target_procedures)
-    
-    year_1_savings = opportunities.total_savings_potential.sum() * migration_rate
-    year_2_savings = opportunities.total_savings_potential.sum() * 0.50  # 50% by year 2
-    year_3_savings = opportunities.total_savings_potential.sum() * 0.65  # 65% steady state
-    
-    return {
-        'total_opportunity': opportunities.total_savings_potential.sum(),
-        'year_1_actual': year_1_savings,
-        'year_2_actual': year_2_savings,
-        'year_3_steady_state': year_3_savings
-    }
-
-# Example: 5,000-Employee Group
-# Procedure: Colonoscopy (45378)
-#   - Current: 185 procedures/year at hospital outpatient ($4,200 each)
-#   - Cost: $777,000
-#
-# Site-of-Care Program:
-#   - ASC alternative: $1,800 each
-#   - Savings per case: $2,400 (57%)
-#   - Year 1: 30% migration (56 cases) = $134,400 savings
-#   - Year 3: 65% migration (120 cases) = $288,000 savings
-#
-# Across All Targetable Procedures:
-#   - Total opportunity: $1.2M annually
-#   - Year 1 realized: $360K (30% migration)
-#   - Year 3 realized: $780K (65% migration)
-`}
-        </VegasCodeBlock>
-      </VegasSection>
-
-      {/* Metrics */}
-      <VegasSection title="Site-of-Care Savings Potential" icon={Target}>
-        <div className="grid md:grid-cols-3 gap-6">
-          <VegasMetricCard
-            icon={DollarSign}
-            label="Colonoscopy Savings"
-            value="57%"
-            gradient="from-violet-500 to-purple-500"
-            description="Hospital ($4,200) vs. ASC ($1,800)"
-          />
-          <VegasMetricCard
-            icon={TrendingDown}
-            label="MRI Cost Reduction"
-            value="58%"
-            gradient="from-purple-500 to-fuchsia-500"
-            description="Hospital ($2,850) vs. Independent ($1,200)"
-          />
-          <VegasMetricCard
-            icon={CheckCircle2}
-            label="Typical ROI"
-            value="12-18 months"
-            gradient="from-fuchsia-500 to-pink-500"
-            description="Payback period for migration program launch"
-          />
-        </div>
-      </VegasSection>
-
-      {/* Use Cases */}
-      <VegasSection title="Migration Program Success" icon={Zap}>
-        <VegasFeatureGrid>
-          <VegasFeatureCard
-            icon={Target}
-            title="Colonoscopy Migration Campaign"
-            items={[
-              "Baseline: 220 colonoscopies/year, 78% at hospital outpatient",
-              "Hospital cost: $4,200, ASC cost: $1,800",
-              "Launched transparency tool + $200 gift card incentive for ASC choice",
-              "Year 1: 42% chose ASC (92 procedures migrated)",
-              "Savings: 92 × $2,400 = $220,800 (net of $18,400 incentives)"
-            ]}
-          />
-          <VegasFeatureCard
-            icon={Building2}
-            title="Imaging Center Strategy"
-            items={[
-              "MRI volume: 340/year, 85% at hospital ($2,850 each)",
-              "Independent imaging center: $1,200 (same equipment, faster appointments)",
-              "Member communication: price transparency + quality scores",
-              "Year 1 migration: 55% (160 cases)",
-              "Savings: 160 × $1,650 = $264,000 annually"
-            ]}
-          />
-          <VegasFeatureCard
-            icon={CheckCircle2}
-            title="Infusion Therapy Shift"
-            items={[
-              "Rheumatology biologics: 85 patients, all at hospital infusion center",
-              "Hospital: $3,800/infusion, Office-based: $1,950",
-              "Rheumatologist opened office infusion suite",
-              "Steered 60 patients (70%) to office setting",
-              "Annual savings: 60 patients × 12 infusions × $1,850 = $1.33M"
-            ]}
-          />
-        </VegasFeatureGrid>
-      </VegasSection>
-
-      {/* CTA */}
-      <div className="relative group mt-16">
-        <div className="absolute inset-0 bg-gradient-to-r from-violet-600 via-purple-600 to-fuchsia-600 rounded-2xl blur-2xl opacity-50 group-hover:opacity-75 transition-opacity" />
-        <div className="relative bg-gradient-to-r from-violet-600 via-purple-600 to-fuchsia-600 rounded-2xl p-12 text-center">
-          <h2 className="text-4xl font-black text-white mb-4">Stop Overpaying for Hospital Facility Fees</h2>
-          <p className="text-xl text-white/90 mb-8 max-w-3xl mx-auto leading-relaxed">
-            Identify procedures safe for ASC or office migration. Quantify savings by CPT code. 
-            Launch member steering programs with transparency + incentives.
-          </p>
-          <Link
-            href="/request-demo"
-            className="inline-flex items-center gap-3 bg-white text-purple-600 px-10 py-5 rounded-xl font-black text-lg hover:bg-purple-50 transition-all duration-200 shadow-2xl hover:shadow-purple-500/50 transform hover:scale-105">
-            Calculate Site Migration Savings
-            <span className="text-2xl">→</span>
+      <div className="min-h-screen bg-neutral-950 text-neutral-50 pt-20">
+        <div className="max-w-7xl mx-auto px-4 py-12">
+          <Link href="/engines" className="inline-flex items-center gap-2 text-emerald-400 hover:text-emerald-300 mb-8 transition-colors">
+            <ArrowLeft className="w-4 h-4" />
+            Back to Engines
           </Link>
+
+          <div className="mb-12">
+            <div className="flex items-center gap-4 mb-4">
+              <div className="p-3 bg-blue-500/10 rounded-lg">
+                <MapPin className="w-8 h-8 text-blue-400" />
+              </div>
+              <div>
+                <h1 className="text-4xl font-display font-bold">Site of Care Migration Engine</h1>
+                <p className="text-neutral-400 mt-2">Same procedure, lower-cost setting, massive savings</p>
+              </div>
+            </div>
+
+            <div className="grid md:grid-cols-3 gap-6 mt-8">
+              <div className="bg-neutral-900/50 border border-neutral-800 rounded-lg p-6">
+                <Building2 className="w-10 h-10 text-blue-400 mb-3" />
+                <h3 className="text-xl font-semibold mb-2">ASC Opportunity</h3>
+                <p className="text-neutral-400 text-sm">Identify procedures that can safely move to ambulatory surgery centers</p>
+              </div>
+              <div className="bg-neutral-900/50 border border-neutral-800 rounded-lg p-6">
+                <DollarSign className="w-10 h-10 text-emerald-400 mb-3" />
+                <h3 className="text-xl font-semibold mb-2">Cost Differential</h3>
+                <p className="text-neutral-400 text-sm">Quantify savings per procedure at each site of care</p>
+              </div>
+              <div className="bg-neutral-900/50 border border-neutral-800 rounded-lg p-6">
+                <Target className="w-10 h-10 text-purple-400 mb-3" />
+                <h3 className="text-xl font-semibold mb-2">Member Steering</h3>
+                <p className="text-neutral-400 text-sm">Design incentives to drive members to lower-cost settings</p>
+              </div>
+            </div>
+          </div>
+
+          <div className="border-b border-neutral-800 mb-8">
+            <div className="flex gap-8">
+              {["overview", "analysis", "use-cases"].map((tab) => (
+                <button
+                  key={tab}
+                  onClick={() => setActiveTab(tab)}
+                  className={`pb-4 px-2 font-medium transition-colors relative ${
+                    activeTab === tab
+                      ? "text-emerald-400"
+                      : "text-neutral-400 hover:text-neutral-300"
+                  }`}
+                >
+                  {tab.charAt(0).toUpperCase() + tab.slice(1)}
+                  {activeTab === tab && (
+                    <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-emerald-400" />
+                  )}
+                </button>
+              ))}
+            </div>
+          </div>
+
+          {activeTab === "overview" && (
+            <div className="space-y-8">
+              <div className="bg-gradient-to-br from-blue-500/10 to-emerald-500/10 border border-blue-500/20 rounded-lg p-8">
+                <h2 className="text-2xl font-display font-bold mb-4">The $2.4M Site-of-Care Opportunity</h2>
+                <p className="text-neutral-300 mb-4">
+                  Medicare pays 40-60% less for the same procedure when performed in an ASC vs. hospital outpatient department (HOPD). 
+                  Commercial plans inherit this cost structure but rarely enforce it. Colonoscopy at HOPD: $3,200. Same scope at ASC: 
+                  $1,400. Multiply by your volume and the waste is staggering. Our engine identifies every procedure currently performed 
+                  at high-cost sites that could safely migrate to ASCs, physician offices, or imaging centers.
+                </p>
+                <div className="bg-neutral-900/50 rounded-lg p-6 mt-6">
+                  <h3 className="font-semibold mb-4">Real World: Manufacturing Client (2,800 lives)</h3>
+                  <div className="grid md:grid-cols-2 gap-6 text-sm">
+                    <div>
+                      <div className="text-blue-400 font-semibold mb-2">Current State (HOPD Heavy)</div>
+                      <ul className="space-y-2 text-neutral-400 text-xs">
+                        <li>• 420 colonoscopies/year: 88% at HOPD, 12% at ASC</li>
+                        <li>• Avg HOPD cost: $3,180 (facility + physician)</li>
+                        <li>• Avg ASC cost: $1,380</li>
+                        <li>• <strong>Annual colonoscopy spend: $1.18M</strong></li>
+                        <li>• Similar patterns: upper GI, knee arthroscopy, cataract, pain procedures</li>
+                        <li>• Total site-of-care spend: $4.8M across all procedures</li>
+                      </ul>
+                    </div>
+                    <div>
+                      <div className="text-emerald-400 font-semibold mb-2">Optimized State (60% ASC Migration)</div>
+                      <ul className="space-y-2 text-neutral-400 text-xs">
+                        <li>• Colonoscopy: 60% migrated to ASC (252 procedures)</li>
+                        <li>• Savings per migrated procedure: $1,800</li>
+                        <li>• <strong>Colonoscopy savings alone: $454K/year</strong></li>
+                        <li>• Full optimization across all procedures: $2.4M annual savings</li>
+                        <li>• Implementation: differential copay ($50 ASC vs $250 HOPD)</li>
+                        <li>• Member satisfaction: higher (shorter wait, better experience)</li>
+                      </ul>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div className="bg-neutral-900/50 border border-neutral-800 rounded-lg p-8">
+                <h2 className="text-2xl font-display font-bold mb-6">High-Opportunity Procedures</h2>
+                <div className="space-y-6">
+                  <div className="border-l-4 border-emerald-400 pl-6">
+                    <h3 className="font-semibold text-lg mb-2">Colonoscopy / Upper GI</h3>
+                    <p className="text-neutral-400 text-sm mb-3">
+                      HOPD facility fee: $2,400-$3,600. ASC: $800-$1,200. Same scope, same physician, 70% lower facility cost. 
+                      No clinical reason for HOPD unless high-risk patient (ASA 4+).
+                    </p>
+                    <div className="bg-neutral-800/50 rounded p-3 text-xs text-neutral-400">
+                      <strong className="text-emerald-400">Savings per procedure:</strong> $1,800-$2,400 · Typical volume: 
+                      300-500 annually per 2,000 lives
+                    </div>
+                  </div>
+
+                  <div className="border-l-4 border-blue-400 pl-6">
+                    <h3 className="font-semibold text-lg mb-2">Orthopedic Procedures</h3>
+                    <p className="text-neutral-400 text-sm mb-3">
+                      Knee arthroscopy, shoulder arthroscopy, carpal tunnel release. HOPD: $8K-$12K. ASC: $3K-$5K. Medicare 
+                      removed total knee/hip from inpatient-only list in 2018—even major joints can be ASC.
+                    </p>
+                    <div className="bg-neutral-800/50 rounded p-3 text-xs text-neutral-400">
+                      <strong className="text-blue-400">Savings per procedure:</strong> $5,000-$7,000 · Volume varies widely 
+                      by industry (manufacturing higher)
+                    </div>
+                  </div>
+
+                  <div className="border-l-4 border-purple-400 pl-6">
+                    <h3 className="font-semibold text-lg mb-2">Imaging: MRI / CT</h3>
+                    <p className="text-neutral-400 text-sm mb-3">
+                      Hospital-based MRI: $2,200. Free-standing imaging center: $600. Literally the same magnet. Commercial 
+                      plans don't enforce site-of-service edits; members default to hospital because it's convenient.
+                    </p>
+                    <div className="bg-neutral-800/50 rounded p-3 text-xs text-neutral-400">
+                      <strong className="text-purple-400">Savings per scan:</strong> $1,200-$1,800 · High volume (200-400/year 
+                      per 2,000 lives)
+                    </div>
+                  </div>
+
+                  <div className="border-l-4 border-amber-400 pl-6">
+                    <h3 className="font-semibold text-lg mb-2">Pain Management Procedures</h3>
+                    <p className="text-neutral-400 text-sm mb-3">
+                      Epidural injections, facet blocks, nerve ablations. HOPD: $4K-$6K. ASC: $1.5K-$2.5K. Low complexity, 
+                      perfect ASC candidates. Many plans still pay HOPD rates.
+                    </p>
+                    <div className="bg-neutral-800/50 rounded p-3 text-xs text-neutral-400">
+                      <strong className="text-amber-400">Savings per procedure:</strong> $2,500-$3,500 · Growing volume 
+                      (aging workforce)
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          )}
+
+          {activeTab === "analysis" && (
+            <div className="space-y-6">
+              <div className="bg-neutral-900/50 border border-neutral-800 rounded-lg p-8">
+                <h2 className="text-2xl font-display font-bold mb-6">Migration Opportunity Analysis</h2>
+                <p className="text-neutral-400 text-sm mb-6">
+                  Engine analyzes historical claims, identifies procedures by CPT code, tags current site of service, compares 
+                  allowed amounts across sites, and calculates theoretical savings if X% migrate to lower-cost settings.
+                </p>
+                <div className="space-y-6">
+                  <div className="bg-neutral-800/50 rounded-lg p-6">
+                    <h3 className="font-semibold mb-4 text-blue-400">Sample Analysis Output</h3>
+                    <div className="space-y-3 text-sm">
+                      <div className="grid grid-cols-5 gap-4 text-xs font-semibold text-neutral-500 border-b border-neutral-700 pb-2">
+                        <span>Procedure</span>
+                        <span>Current Site</span>
+                        <span>Volume</span>
+                        <span>Cost Delta</span>
+                        <span>Annual Savings</span>
+                      </div>
+                      <div className="grid grid-cols-5 gap-4 text-xs">
+                        <span className="text-neutral-300">Colonoscopy</span>
+                        <span className="text-red-400">88% HOPD</span>
+                        <span className="text-neutral-400 font-mono">420</span>
+                        <span className="text-neutral-400 font-mono">$1,800</span>
+                        <span className="text-emerald-400 font-mono">$454K</span>
+                      </div>
+                      <div className="grid grid-cols-5 gap-4 text-xs">
+                        <span className="text-neutral-300">MRI Brain</span>
+                        <span className="text-red-400">92% Hospital</span>
+                        <span className="text-neutral-400 font-mono">180</span>
+                        <span className="text-neutral-400 font-mono">$1,600</span>
+                        <span className="text-emerald-400 font-mono">$265K</span>
+                      </div>
+                      <div className="grid grid-cols-5 gap-4 text-xs">
+                        <span className="text-neutral-300">Knee Arthroscopy</span>
+                        <span className="text-red-400">78% HOPD</span>
+                        <span className="text-neutral-400 font-mono">85</span>
+                        <span className="text-neutral-400 font-mono">$6,200</span>
+                        <span className="text-emerald-400 font-mono">$411K</span>
+                      </div>
+                      <div className="grid grid-cols-5 gap-4 text-xs">
+                        <span className="text-neutral-300">Cataract Surgery</span>
+                        <span className="text-amber-400">42% HOPD</span>
+                        <span className="text-neutral-400 font-mono">95</span>
+                        <span className="text-neutral-400 font-mono">$2,400</span>
+                        <span className="text-emerald-400 font-mono">$96K</span>
+                      </div>
+                      <div className="grid grid-cols-5 gap-4 text-xs">
+                        <span className="text-neutral-300">Pain Injections</span>
+                        <span className="text-red-400">85% HOPD</span>
+                        <span className="text-neutral-400 font-mono">320</span>
+                        <span className="text-neutral-400 font-mono">$3,100</span>
+                        <span className="text-emerald-400 font-mono">$843K</span>
+                      </div>
+                      <div className="col-span-5 border-t border-neutral-700 pt-2 mt-2">
+                        <div className="flex justify-between font-semibold">
+                          <span className="text-neutral-300">Total 5-Procedure Opportunity (60% migration rate)</span>
+                          <span className="text-emerald-400">$2.07M/year</span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="bg-neutral-800/50 rounded-lg p-6">
+                    <h3 className="font-semibold mb-4 text-emerald-400">Implementation Tactics</h3>
+                    <div className="space-y-3 text-sm">
+                      <div className="flex items-start gap-3">
+                        <div className="w-1.5 h-1.5 rounded-full bg-emerald-400 mt-2" />
+                        <div>
+                          <div className="font-semibold text-neutral-200">Differential Copay</div>
+                          <div className="text-neutral-400 text-xs">$50 ASC vs $250 HOPD for procedures on migration list—drives 70%+ compliance</div>
+                        </div>
+                      </div>
+                      <div className="flex items-start gap-3">
+                        <div className="w-1.5 h-1.5 rounded-full bg-blue-400 mt-2" />
+                        <div>
+                          <div className="font-semibold text-neutral-200">Pre-Authorization Steering</div>
+                          <div className="text-neutral-400 text-xs">Require pre-auth for HOPD; ASC auto-approved—administrative friction drives behavior</div>
+                        </div>
+                      </div>
+                      <div className="flex items-start gap-3">
+                        <div className="w-1.5 h-1.5 rounded-full bg-purple-400 mt-2" />
+                        <div>
+                          <div className="font-semibold text-neutral-200">Provider Network Tier</div>
+                          <div className="text-neutral-400 text-xs">ASC in Tier 1, HOPD in Tier 2—lower member cost share at preferred sites</div>
+                        </div>
+                      </div>
+                      <div className="flex items-start gap-3">
+                        <div className="w-1.5 h-1.5 rounded-full bg-amber-400 mt-2" />
+                        <div>
+                          <div className="font-semibold text-neutral-200">Member Education Campaign</div>
+                          <div className="text-neutral-400 text-xs">Proactive outreach when procedure scheduled—highlight cost/quality parity at ASC</div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          )}
+
+          {activeTab === "use-cases" && (
+            <div className="space-y-6">
+              <div className="bg-neutral-900/50 border border-neutral-800 rounded-lg p-8">
+                <h2 className="text-2xl font-display font-bold mb-6">Deployment Strategies</h2>
+                <div className="space-y-6">
+                  <div className="border-l-4 border-emerald-400 pl-6">
+                    <h3 className="font-semibold text-lg mb-2">Plan Design Optimization</h3>
+                    <p className="text-neutral-400 text-sm mb-3">
+                      Redesign benefit to incentivize ASC for 50+ high-volume procedures. Differential copay is simplest; 
+                      tiered network is strongest. Show ROI to justify design change at renewal.
+                    </p>
+                    <div className="bg-neutral-800/50 rounded p-3 text-xs text-neutral-400">
+                      <strong className="text-emerald-400">Manufacturing Client:</strong> Implemented differential copay 
+                      Jan 1—by Dec 31, ASC utilization up from 12% to 68%, saved $1.9M vs. prior year
+                    </div>
+                  </div>
+
+                  <div className="border-l-4 border-blue-400 pl-6">
+                    <h3 className="font-semibold text-lg mb-2">Provider Contracting</h3>
+                    <p className="text-neutral-400 text-sm mb-3">
+                      Negotiate ASC rates as % of Medicare (110-130%) instead of % of hospital charges. Build ASC network 
+                      with guaranteed volume in exchange for competitive pricing.
+                    </p>
+                    <div className="bg-neutral-800/50 rounded p-3 text-xs text-neutral-400">
+                      <strong className="text-blue-400">Self-Funded Plan:</strong> Contracted directly with 6 ASCs at 
+                      125% Medicare—avoided TPA markup, saved additional $380K beyond site-of-care shift
+                    </div>
+                  </div>
+
+                  <div className="border-l-4 border-purple-400 pl-6">
+                    <h3 className="font-semibold text-lg mb-2">Member Engagement</h3>
+                    <p className="text-neutral-400 text-sm mb-3">
+                      Proactive outreach when high-opportunity procedure is scheduled. Explain cost difference, quality 
+                      equivalence, faster recovery. Most members unaware of cost delta—they just go where provider schedules.
+                    </p>
+                    <div className="bg-neutral-800/50 rounded p-3 text-xs text-neutral-400">
+                      <strong className="text-purple-400">Healthcare System:</strong> Launched "Smart Site" campaign with 
+                      pre-procedure calls—74% of contacted members chose ASC when presented with cost/quality data
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          )}
         </div>
       </div>
-    </EngineDetailLayout>
+
+      <Footer />
+    </>
   );
 }

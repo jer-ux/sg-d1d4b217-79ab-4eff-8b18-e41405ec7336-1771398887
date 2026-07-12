@@ -31,71 +31,35 @@ const MetricsCloud3D = dynamic(() => import("@/components/investor/MetricsCloud3
 const Timeline3D = dynamic(() => import("@/components/investor/Timeline3D"), { ssr: false });
 const ROIVisualization3D = dynamic(() => import("@/components/investor/ROIVisualization3D"), { ssr: false });
 
-// Animation variants
-const fadeInUp = {
-  initial: { opacity: 0, y: 60 },
-  animate: { opacity: 1, y: 0 },
-  transition: { duration: 0.8, ease: [0.6, -0.05, 0.01, 0.99] }
-};
-
-const fadeIn = {
-  initial: { opacity: 0 },
-  animate: { opacity: 1 },
-  transition: { duration: 1 }
-};
-
-const staggerContainer = {
-  initial: {},
-  animate: {
-    transition: {
-      staggerChildren: 0.15
-    }
-  }
-};
-
-const scaleIn = {
-  initial: { opacity: 0, scale: 0.8 },
-  animate: { opacity: 1, scale: 1 },
-  transition: { duration: 0.7, ease: [0.6, -0.05, 0.01, 0.99] }
-};
-
-const slideInLeft = {
-  initial: { opacity: 0, x: -60 },
-  animate: { opacity: 1, x: 0 },
-  transition: { duration: 0.8, ease: [0.6, -0.05, 0.01, 0.99] }
-};
-
-const slideInRight = {
-  initial: { opacity: 0, x: 60 },
-  animate: { opacity: 1, x: 0 },
-  transition: { duration: 0.8, ease: [0.6, -0.05, 0.01, 0.99] }
-};
-
 export default function InvestorPage() {
   const investmentHighlights = [
     {
       icon: Brain,
       title: "AI-Native Platform",
       description: "Built from the ground up with agentic AI at the core, not retrofitted legacy software",
-      color: "from-blue-600 to-blue-500"
+      color: "blue",
+      particles: 12
     },
     {
       icon: Shield,
       title: "Fiduciary-Grade Security",
       description: "SOC 2, HIPAA compliant with enterprise-grade audit trails and governance",
-      color: "from-purple-600 to-purple-500"
+      color: "purple",
+      particles: 10
     },
     {
       icon: TrendingUp,
       title: "Proven ROI",
       description: "Average 18% cost reduction in first year with documented savings evidence",
-      color: "from-green-600 to-green-500"
+      color: "emerald",
+      particles: 14
     },
     {
       icon: Lock,
       title: "Data Moat",
       description: "Proprietary benchmarking database across $12B+ in benefits spend",
-      color: "from-orange-600 to-orange-500"
+      color: "amber",
+      particles: 11
     }
   ];
 
@@ -103,26 +67,32 @@ export default function InvestorPage() {
     {
       title: "Algorithmic Fiduciary Intelligence",
       description: "Our AI agents continuously monitor, analyze, and optimize benefits programs in real-time—going far beyond static dashboards or manual consulting.",
-      icon: Brain
+      icon: Brain,
+      color: "blue",
+      particles: 15
     },
     {
       title: "Evidence-Based Lineage",
       description: "Every recommendation includes complete audit trails linking to source documents, creating defensible fiduciary documentation.",
-      icon: CheckCircle2
+      icon: CheckCircle2,
+      color: "emerald",
+      particles: 12
     },
     {
       title: "Multi-Stakeholder Platform",
       description: "Unified workspace for CFOs, HR, brokers, advisors, and TPAs—eliminating information silos and misaligned incentives.",
-      icon: Users
+      icon: Users,
+      color: "violet",
+      particles: 10
     },
     {
       title: "Network Effects",
       description: "Each customer adds anonymized benchmarking data, making the platform exponentially more valuable for all participants.",
-      icon: Globe
+      icon: Globe,
+      color: "cyan",
+      particles: 13
     }
   ];
-
-  const useOfFunds = [];
 
   const milestones = [
     { quarter: "Q2 2026", title: "Series A Close", details: "Complete $10M raise, expand team to 25" },
@@ -153,9 +123,9 @@ export default function InvestorPage() {
         {/* 3D Hero Section */}
         <motion.div 
           className="pt-8"
-          initial="initial"
-          animate="animate"
-          variants={fadeIn}
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 1 }}
         >
           <Suspense fallback={
             <div className="w-full h-[400px] sm:h-[500px] lg:h-[600px] flex items-center justify-center">
@@ -167,14 +137,37 @@ export default function InvestorPage() {
         </motion.div>
 
         {/* Executive Summary */}
-        <section className="pb-4 px-6 bg-gradient-to-b from-black to-zinc-950">
-          <div className="max-w-7xl mx-auto">
+        <section className="relative pb-20 px-6 bg-gradient-to-b from-black to-zinc-950 overflow-hidden">
+          {/* Animated background orbs */}
+          <div className="absolute inset-0 pointer-events-none">
             <motion.div
-              initial="initial"
-              whileInView="animate"
-              viewport={{ once: true, margin: "-100px" }}
-              variants={fadeInUp}
-              className="text-center mb-4"
+              className="absolute top-1/4 left-1/4 w-[600px] h-[600px] bg-gradient-radial from-blue-500/20 via-blue-500/5 to-transparent rounded-full blur-3xl"
+              animate={{ 
+                x: [0, 80, 0],
+                y: [0, -40, 0],
+                scale: [1, 1.15, 1],
+                opacity: [0.3, 0.5, 0.3]
+              }}
+              transition={{ duration: 16, repeat: Infinity, ease: "easeInOut" }}
+            />
+            <motion.div
+              className="absolute bottom-1/4 right-1/4 w-[500px] h-[500px] bg-gradient-radial from-purple-500/15 via-purple-500/5 to-transparent rounded-full blur-3xl"
+              animate={{ 
+                x: [0, -60, 0],
+                y: [0, 50, 0],
+                scale: [1, 1.2, 1],
+                opacity: [0.2, 0.4, 0.2]
+              }}
+              transition={{ duration: 18, repeat: Infinity, ease: "easeInOut", delay: 3 }}
+            />
+          </div>
+
+          <div className="relative max-w-7xl mx-auto">
+            <motion.div
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              className="text-center mb-16"
             >
               <h2 className="text-5xl font-bold text-blue-100 mb-4">
                 Investment Thesis
@@ -185,45 +178,146 @@ export default function InvestorPage() {
             </motion.div>
 
             {/* Investment Highlights Grid */}
-            <motion.div
-              className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-3"
-              initial="initial"
-              whileInView="animate"
-              viewport={{ once: true, margin: "-100px" }}
-              variants={staggerContainer}
-            >
-              {investmentHighlights.map((highlight, i) => (
-                <motion.div
-                  key={i}
-                  variants={fadeInUp}
-                  className="group relative"
-                >
-                  <div className="h-full p-6 rounded-2xl bg-gradient-to-br from-zinc-900 to-black border border-blue-500/20 hover:border-blue-500/40 transition-all duration-300">
-                    <div className={`inline-flex p-4 rounded-xl bg-gradient-to-br ${highlight.color} mb-4`}>
-                      <highlight.icon className="h-7 w-7 text-white" />
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+              {investmentHighlights.map((highlight, index) => {
+                const Icon = highlight.icon;
+                return (
+                  <motion.div
+                    key={index}
+                    initial={{ opacity: 0, y: 50 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ duration: 0.8, delay: index * 0.15, type: "spring" }}
+                    className="group relative"
+                  >
+                    {/* Floating particles */}
+                    <div className="absolute inset-0 pointer-events-none">
+                      {Array.from({ length: highlight.particles }).map((_, i) => (
+                        <motion.div
+                          key={i}
+                          className={`absolute w-1 h-1 bg-${highlight.color}-400/60 rounded-full`}
+                          style={{
+                            left: `${Math.random() * 100}%`,
+                            top: `${Math.random() * 100}%`,
+                          }}
+                          animate={{
+                            y: [0, -30, 0],
+                            x: [0, Math.random() * 20 - 10, 0],
+                            opacity: [0, 1, 0],
+                            scale: [0, 1.5, 0],
+                          }}
+                          transition={{
+                            duration: 3 + Math.random() * 2,
+                            repeat: Infinity,
+                            delay: Math.random() * 2,
+                            ease: "easeInOut"
+                          }}
+                        />
+                      ))}
                     </div>
-                    <h3 className="text-xl font-bold text-blue-100 mb-3">{highlight.title}</h3>
-                    <p className="text-gray-400 text-sm leading-relaxed">{highlight.description}</p>
-                  </div>
-                </motion.div>
-              ))}
-            </motion.div>
+
+                    <motion.div
+                      className="h-full p-6 rounded-2xl bg-gradient-to-br from-zinc-900/80 via-zinc-900/50 to-black/80 border border-blue-500/20 backdrop-blur-xl overflow-hidden"
+                      whileHover={{ 
+                        scale: 1.05,
+                        rotateY: 5,
+                        rotateX: -5,
+                        borderColor: "rgba(59, 130, 246, 0.6)",
+                        boxShadow: "0 30px 60px -15px rgba(59, 130, 246, 0.4)"
+                      }}
+                      transition={{ type: "spring", stiffness: 300, damping: 20 }}
+                      style={{ transformStyle: "preserve-3d" }}
+                    >
+                      {/* Gradient glow on hover */}
+                      <motion.div
+                        className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-700"
+                        style={{
+                          background: `radial-gradient(circle at 50% 50%, rgba(59, 130, 246, 0.15), transparent 70%)`
+                        }}
+                      />
+
+                      {/* Animated icon */}
+                      <motion.div
+                        className="relative mb-4"
+                        whileHover={{ scale: 1.2, rotate: 10 }}
+                        transition={{ type: "spring", stiffness: 400 }}
+                      >
+                        <div className={`inline-flex p-4 rounded-xl bg-gradient-to-br from-${highlight.color}-600 to-${highlight.color}-500 group-hover:shadow-xl group-hover:shadow-${highlight.color}-500/50 transition-all duration-500`}>
+                          <Icon className="h-7 w-7 text-white" />
+                        </div>
+                        
+                        {/* Pulsing ring */}
+                        <motion.div
+                          className={`absolute inset-0 rounded-xl border-2 border-${highlight.color}-400/40`}
+                          animate={{ scale: [1, 1.2, 1], opacity: [0.5, 0, 0.5] }}
+                          transition={{ duration: 2, repeat: Infinity, ease: "easeOut" }}
+                        />
+                      </motion.div>
+
+                      <h3 className="text-xl font-bold text-blue-100 mb-3 group-hover:text-blue-50 transition-colors">{highlight.title}</h3>
+                      <p className="text-gray-400 text-sm leading-relaxed group-hover:text-gray-300 transition-colors">{highlight.description}</p>
+
+                      {/* Shimmer effect on hover */}
+                      <motion.div
+                        className="absolute inset-0 opacity-0 group-hover:opacity-100 pointer-events-none"
+                        initial={false}
+                      >
+                        <motion.div
+                          className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent"
+                          animate={{ x: ["-100%", "200%"] }}
+                          transition={{ duration: 1.5, repeat: Infinity, repeatDelay: 2 }}
+                        />
+                      </motion.div>
+
+                      {/* Corner accents */}
+                      <div className="absolute top-0 right-0 w-16 h-16 border-t-2 border-r-2 border-blue-500/0 group-hover:border-blue-500/60 rounded-tr-2xl transition-all duration-500" />
+                      <div className="absolute bottom-0 left-0 w-16 h-16 border-b-2 border-l-2 border-blue-500/0 group-hover:border-blue-500/60 rounded-bl-2xl transition-all duration-500" />
+                    </motion.div>
+                  </motion.div>
+                );
+              })}
+            </div>
           </div>
         </section>
 
         {/* Problem/Solution */}
-        <section className="py-4 px-6">
-          <div className="max-w-7xl mx-auto">
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+        <section className="relative py-20 px-6 overflow-hidden">
+          {/* Background orbs */}
+          <div className="absolute inset-0 pointer-events-none">
+            <motion.div
+              className="absolute top-1/3 right-1/4 w-[700px] h-[700px] bg-gradient-radial from-red-500/15 via-red-500/5 to-transparent rounded-full blur-3xl"
+              animate={{ 
+                x: [0, -70, 0],
+                y: [0, 40, 0],
+                scale: [1, 1.1, 1],
+                opacity: [0.25, 0.4, 0.25]
+              }}
+              transition={{ duration: 20, repeat: Infinity, ease: "easeInOut" }}
+            />
+            <motion.div
+              className="absolute bottom-1/3 left-1/4 w-[600px] h-[600px] bg-gradient-radial from-green-500/15 via-green-500/5 to-transparent rounded-full blur-3xl"
+              animate={{ 
+                x: [0, 60, 0],
+                y: [0, -30, 0],
+                scale: [1, 1.15, 1],
+                opacity: [0.2, 0.35, 0.2]
+              }}
+              transition={{ duration: 17, repeat: Infinity, ease: "easeInOut", delay: 2 }}
+            />
+          </div>
+
+          <div className="relative max-w-7xl mx-auto">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
               {/* Problem */}
               <motion.div
-                initial="initial"
-                whileInView="animate"
-                viewport={{ once: true, margin: "-100px" }}
-                variants={slideInLeft}
+                initial={{ opacity: 0, x: -50 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.8 }}
+                className="group"
               >
-                <div className="h-full p-8 rounded-2xl bg-gradient-to-br from-red-950/20 to-transparent border border-red-500/20">
-                  <div className="inline-flex p-3 rounded-xl bg-gradient-to-br from-red-600 to-red-500 mb-6">
+                <div className="h-full p-8 rounded-2xl bg-gradient-to-br from-red-950/20 to-transparent border border-red-500/20 backdrop-blur-xl group-hover:border-red-500/40 transition-all duration-500">
+                  <div className="inline-flex p-3 rounded-xl bg-gradient-to-br from-red-600 to-red-500 mb-6 group-hover:shadow-xl group-hover:shadow-red-500/50 transition-all">
                     <AlertTriangle className="h-8 w-8 text-white" />
                   </div>
                   <h3 className="text-3xl font-bold text-red-100 mb-6">The Problem</h3>
@@ -250,13 +344,14 @@ export default function InvestorPage() {
 
               {/* Solution */}
               <motion.div
-                initial="initial"
-                whileInView="animate"
-                viewport={{ once: true, margin: "-100px" }}
-                variants={slideInRight}
+                initial={{ opacity: 0, x: 50 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.8 }}
+                className="group"
               >
-                <div className="h-full p-8 rounded-2xl bg-gradient-to-br from-green-950/20 to-transparent border border-green-500/20">
-                  <div className="inline-flex p-3 rounded-xl bg-gradient-to-br from-green-600 to-green-500 mb-6">
+                <div className="h-full p-8 rounded-2xl bg-gradient-to-br from-green-950/20 to-transparent border border-green-500/20 backdrop-blur-xl group-hover:border-green-500/40 transition-all duration-500">
+                  <div className="inline-flex p-3 rounded-xl bg-gradient-to-br from-green-600 to-green-500 mb-6 group-hover:shadow-xl group-hover:shadow-green-500/50 transition-all">
                     <Lightbulb className="h-8 w-8 text-white" />
                   </div>
                   <h3 className="text-3xl font-bold text-green-100 mb-6">Our Solution</h3>
@@ -285,14 +380,27 @@ export default function InvestorPage() {
         </section>
 
         {/* Competitive Advantages */}
-        <section className="py-4 px-6 bg-gradient-to-b from-zinc-950 to-black">
-          <div className="max-w-7xl mx-auto">
+        <section className="relative py-20 px-6 bg-gradient-to-b from-zinc-950 to-black overflow-hidden">
+          {/* Background orbs */}
+          <div className="absolute inset-0 pointer-events-none">
             <motion.div
-              initial="initial"
-              whileInView="animate"
-              viewport={{ once: true, margin: "-100px" }}
-              variants={fadeInUp}
-              className="text-center mb-4"
+              className="absolute top-1/2 left-1/2 w-[800px] h-[800px] bg-gradient-radial from-blue-500/15 via-blue-500/5 to-transparent rounded-full blur-3xl"
+              animate={{ 
+                x: [0, 90, 0],
+                y: [0, -50, 0],
+                scale: [1, 1.2, 1],
+                opacity: [0.3, 0.5, 0.3]
+              }}
+              transition={{ duration: 22, repeat: Infinity, ease: "easeInOut" }}
+            />
+          </div>
+
+          <div className="relative max-w-7xl mx-auto">
+            <motion.div
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              className="text-center mb-16"
             >
               <h2 className="text-4xl font-bold text-blue-100 mb-3">
                 Our Competitive Moat
@@ -302,43 +410,93 @@ export default function InvestorPage() {
               </p>
             </motion.div>
 
-            <motion.div
-              className="grid grid-cols-1 md:grid-cols-2 gap-4"
-              initial="initial"
-              whileInView="animate"
-              viewport={{ once: true, margin: "-100px" }}
-              variants={staggerContainer}
-            >
-              {competitiveAdvantages.map((advantage, i) => (
-                <motion.div
-                  key={i}
-                  variants={fadeInUp}
-                  className="p-6 rounded-2xl bg-gradient-to-br from-zinc-900 to-black border border-blue-500/20 hover:border-blue-500/40 transition-all duration-300"
-                >
-                  <div className="flex items-start gap-4">
-                    <div className="p-3 rounded-xl bg-gradient-to-br from-blue-600 to-blue-500">
-                      <advantage.icon className="h-6 w-6 text-white" />
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              {competitiveAdvantages.map((advantage, index) => {
+                const Icon = advantage.icon;
+                return (
+                  <motion.div
+                    key={index}
+                    initial={{ opacity: 0, y: 50 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ duration: 0.8, delay: index * 0.15, type: "spring" }}
+                    className="group relative"
+                  >
+                    {/* Floating particles */}
+                    <div className="absolute inset-0 pointer-events-none">
+                      {Array.from({ length: advantage.particles }).map((_, i) => (
+                        <motion.div
+                          key={i}
+                          className={`absolute w-1 h-1 bg-${advantage.color}-400/60 rounded-full`}
+                          style={{
+                            left: `${Math.random() * 100}%`,
+                            top: `${Math.random() * 100}%`,
+                          }}
+                          animate={{
+                            y: [0, -25, 0],
+                            x: [0, Math.random() * 15 - 7.5, 0],
+                            opacity: [0, 1, 0],
+                            scale: [0, 1.3, 0],
+                          }}
+                          transition={{
+                            duration: 2.5 + Math.random() * 1.5,
+                            repeat: Infinity,
+                            delay: Math.random() * 2,
+                            ease: "easeInOut"
+                          }}
+                        />
+                      ))}
                     </div>
-                    <div className="flex-1">
-                      <h3 className="text-xl font-bold text-blue-100 mb-3">{advantage.title}</h3>
-                      <p className="text-gray-400 leading-relaxed">{advantage.description}</p>
-                    </div>
-                  </div>
-                </motion.div>
-              ))}
-            </motion.div>
+
+                    <motion.div
+                      className="p-6 rounded-2xl bg-gradient-to-br from-zinc-900/80 to-black/80 border border-blue-500/20 backdrop-blur-xl overflow-hidden"
+                      whileHover={{ 
+                        scale: 1.03,
+                        borderColor: "rgba(59, 130, 246, 0.6)",
+                        boxShadow: "0 25px 50px -12px rgba(59, 130, 246, 0.4)"
+                      }}
+                      transition={{ type: "spring", stiffness: 300, damping: 20 }}
+                    >
+                      <div className="flex items-start gap-4">
+                        <motion.div 
+                          className="p-3 rounded-xl bg-gradient-to-br from-blue-600 to-blue-500 group-hover:shadow-lg group-hover:shadow-blue-500/50 transition-all"
+                          whileHover={{ scale: 1.1, rotate: 5 }}
+                        >
+                          <Icon className="h-6 w-6 text-white" />
+                        </motion.div>
+                        <div className="flex-1">
+                          <h3 className="text-xl font-bold text-blue-100 mb-3 group-hover:text-blue-50 transition-colors">{advantage.title}</h3>
+                          <p className="text-gray-400 leading-relaxed group-hover:text-gray-300 transition-colors">{advantage.description}</p>
+                        </div>
+                      </div>
+
+                      {/* Shimmer effect */}
+                      <motion.div
+                        className="absolute inset-0 opacity-0 group-hover:opacity-100 pointer-events-none"
+                        initial={false}
+                      >
+                        <motion.div
+                          className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent"
+                          animate={{ x: ["-100%", "200%"] }}
+                          transition={{ duration: 1.5, repeat: Infinity, repeatDelay: 2 }}
+                        />
+                      </motion.div>
+                    </motion.div>
+                  </motion.div>
+                );
+              })}
+            </div>
           </div>
         </section>
 
         {/* Market Opportunity with 3D */}
-        <section className="py-4 px-6">
+        <section className="py-20 px-6">
           <div className="max-w-7xl mx-auto">
             <motion.div
-              initial="initial"
-              whileInView="animate"
-              viewport={{ once: true, margin: "-100px" }}
-              variants={fadeInUp}
-              className="text-center mb-4"
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              className="text-center mb-16"
             >
               <h2 className="text-4xl font-bold text-blue-100 mb-3">
                 Market Opportunity
@@ -349,10 +507,10 @@ export default function InvestorPage() {
             </motion.div>
 
             <motion.div
-              initial="initial"
-              whileInView="animate"
-              viewport={{ once: true, margin: "-100px" }}
-              variants={scaleIn}
+              initial={{ opacity: 0, scale: 0.9 }}
+              whileInView={{ opacity: 1, scale: 1 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.7 }}
             >
               <Suspense fallback={<div className="w-full h-[500px] bg-zinc-900/50 rounded-2xl animate-pulse" />}>
                 <MetricsCloud3D />
@@ -360,46 +518,82 @@ export default function InvestorPage() {
             </motion.div>
 
             {/* Stats Grid */}
-            <motion.div 
-              className="grid grid-cols-1 md:grid-cols-3 gap-3 mt-4"
-              initial="initial"
-              whileInView="animate"
-              viewport={{ once: true, margin: "-100px" }}
-              variants={staggerContainer}
-            >
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-16">
               {[
-                { icon: TrendingUp, label: "Market Growth", value: "23% CAGR", sublabel: "Benefits tech sector", color: "from-blue-600 to-blue-500" },
-                { icon: Target, label: "Addressable Market", value: "$120B TAM", sublabel: "U.S. benefits consulting", color: "from-blue-500 to-blue-400" },
-                { icon: Zap, label: "Time to Value", value: "< 90 Days", sublabel: "Contract to first insight", color: "from-blue-600 to-blue-500" },
-              ].map((stat, i) => (
-                <motion.div
-                  key={i}
-                  variants={fadeInUp}
-                  className="relative group"
-                >
-                  <div className="p-6 rounded-2xl bg-gradient-to-br from-zinc-900 to-black border border-blue-500/20 hover:border-blue-500/40 transition-all duration-300">
-                    <div className={`inline-flex p-3 rounded-xl bg-gradient-to-br ${stat.color} mb-4`}>
-                      <stat.icon className="h-6 w-6 text-white" />
+                { icon: TrendingUp, label: "Market Growth", value: "23% CAGR", sublabel: "Benefits tech sector", color: "blue", particles: 10 },
+                { icon: Target, label: "Addressable Market", value: "$120B TAM", sublabel: "U.S. benefits consulting", color: "violet", particles: 12 },
+                { icon: Zap, label: "Time to Value", value: "< 90 Days", sublabel: "Contract to first insight", color: "emerald", particles: 11 },
+              ].map((stat, index) => {
+                const Icon = stat.icon;
+                return (
+                  <motion.div
+                    key={index}
+                    initial={{ opacity: 0, y: 50 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ duration: 0.8, delay: index * 0.15, type: "spring" }}
+                    className="group relative"
+                  >
+                    {/* Floating particles */}
+                    <div className="absolute inset-0 pointer-events-none">
+                      {Array.from({ length: stat.particles }).map((_, i) => (
+                        <motion.div
+                          key={i}
+                          className={`absolute w-1 h-1 bg-${stat.color}-400/60 rounded-full`}
+                          style={{
+                            left: `${Math.random() * 100}%`,
+                            top: `${Math.random() * 100}%`,
+                          }}
+                          animate={{
+                            y: [0, -30, 0],
+                            x: [0, Math.random() * 20 - 10, 0],
+                            opacity: [0, 1, 0],
+                            scale: [0, 1.5, 0],
+                          }}
+                          transition={{
+                            duration: 3 + Math.random() * 2,
+                            repeat: Infinity,
+                            delay: Math.random() * 2,
+                            ease: "easeInOut"
+                          }}
+                        />
+                      ))}
                     </div>
-                    <h3 className="text-3xl font-bold text-blue-100 mb-2">{stat.value}</h3>
-                    <p className="text-gray-300 font-medium mb-1">{stat.label}</p>
-                    <p className="text-gray-500 text-sm">{stat.sublabel}</p>
-                  </div>
-                </motion.div>
-              ))}
-            </motion.div>
+
+                    <motion.div
+                      className="p-6 rounded-2xl bg-gradient-to-br from-zinc-900/80 to-black/80 border border-blue-500/20 backdrop-blur-xl"
+                      whileHover={{ 
+                        scale: 1.05,
+                        borderColor: "rgba(59, 130, 246, 0.6)",
+                        boxShadow: "0 30px 60px -15px rgba(59, 130, 246, 0.4)"
+                      }}
+                      transition={{ type: "spring", stiffness: 300 }}
+                    >
+                      <motion.div
+                        className={`inline-flex p-3 rounded-xl bg-gradient-to-br from-${stat.color}-600 to-${stat.color}-500 mb-4 group-hover:shadow-xl group-hover:shadow-${stat.color}-500/50 transition-all`}
+                        whileHover={{ scale: 1.1, rotate: 5 }}
+                      >
+                        <Icon className="h-6 w-6 text-white" />
+                      </motion.div>
+                      <h3 className="text-3xl font-bold text-blue-100 mb-2">{stat.value}</h3>
+                      <p className="text-gray-300 font-medium mb-1">{stat.label}</p>
+                      <p className="text-gray-500 text-sm">{stat.sublabel}</p>
+                    </motion.div>
+                  </motion.div>
+                );
+              })}
+            </div>
           </div>
         </section>
 
         {/* ROI Visualization Section */}
-        <section className="py-4 px-6">
+        <section className="py-20 px-6">
           <div className="max-w-7xl mx-auto">
             <motion.div
-              initial="initial"
-              whileInView="animate"
-              viewport={{ once: true, margin: "-100px" }}
-              variants={slideInLeft}
-              className="text-center mb-4"
+              initial={{ opacity: 0, x: -50 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true }}
+              className="text-center mb-16"
             >
               <h2 className="text-4xl font-bold text-blue-100 mb-3">
                 Return on Investment
@@ -410,10 +604,10 @@ export default function InvestorPage() {
             </motion.div>
 
             <motion.div
-              initial="initial"
-              whileInView="animate"
-              viewport={{ once: true, margin: "-100px" }}
-              variants={scaleIn}
+              initial={{ opacity: 0, scale: 0.9 }}
+              whileInView={{ opacity: 1, scale: 1 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.7 }}
             >
               <Suspense fallback={<div className="w-full h-[500px] bg-zinc-900/50 rounded-2xl animate-pulse" />}>
                 <ROIVisualization3D />
@@ -422,66 +616,14 @@ export default function InvestorPage() {
           </div>
         </section>
 
-        {/* Use of Funds */}
-        <section className="py-4 px-6 bg-gradient-to-b from-zinc-950 to-black">
-          <div className="max-w-7xl mx-auto">
-            <motion.div
-              initial="initial"
-              whileInView="animate"
-              viewport={{ once: true, margin: "-100px" }}
-              variants={fadeInUp}
-              className="text-center mb-4"
-            >
-              <h2 className="text-4xl font-bold text-blue-100 mb-3">
-                Use of Funds
-              </h2>
-              <p className="text-xl text-gray-400">
-                $10M Series A allocation for 18-month runway
-              </p>
-            </motion.div>
-
-            <motion.div
-              className="max-w-4xl mx-auto space-y-3"
-              initial="initial"
-              whileInView="animate"
-              viewport={{ once: true, margin: "-100px" }}
-              variants={staggerContainer}
-            >
-              {useOfFunds.map((item, i) => (
-                <motion.div
-                  key={i}
-                  variants={fadeInUp}
-                  className="p-6 rounded-2xl bg-gradient-to-br from-zinc-900 to-black border border-blue-500/20"
-                >
-                  <div className="flex items-center justify-between mb-3">
-                    <h3 className="text-xl font-bold text-blue-100">{item.category}</h3>
-                    <div className="flex items-center gap-4">
-                      <span className="text-2xl font-bold text-blue-400">{item.amount}</span>
-                      <span className="text-lg text-gray-400">{item.percentage}%</span>
-                    </div>
-                  </div>
-                  <div className="w-full h-3 bg-zinc-800 rounded-full overflow-hidden mb-3">
-                    <div 
-                      className="h-full bg-gradient-to-r from-blue-600 to-blue-400 rounded-full transition-all duration-1000"
-                      style={{ width: `${item.percentage}%` }}
-                    />
-                  </div>
-                  <p className="text-gray-400">{item.description}</p>
-                </motion.div>
-              ))}
-            </motion.div>
-          </div>
-        </section>
-
         {/* Timeline Section */}
-        <section className="py-4 px-6">
+        <section className="py-20 px-6">
           <div className="max-w-7xl mx-auto">
             <motion.div
-              initial="initial"
-              whileInView="animate"
-              viewport={{ once: true, margin: "-100px" }}
-              variants={slideInRight}
-              className="text-center mb-4"
+              initial={{ opacity: 0, x: 50 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true }}
+              className="text-center mb-16"
             >
               <h2 className="text-4xl font-bold text-blue-100 mb-3">
                 Execution Roadmap
@@ -492,11 +634,11 @@ export default function InvestorPage() {
             </motion.div>
 
             <motion.div
-              initial="initial"
-              whileInView="animate"
-              viewport={{ once: true, margin: "-100px" }}
-              variants={scaleIn}
-              className="mb-4"
+              initial={{ opacity: 0, scale: 0.9 }}
+              whileInView={{ opacity: 1, scale: 1 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.7 }}
+              className="mb-16"
             >
               <Suspense fallback={<div className="w-full h-[400px] bg-zinc-900/50 rounded-2xl animate-pulse" />}>
                 <Timeline3D />
@@ -504,39 +646,45 @@ export default function InvestorPage() {
             </motion.div>
 
             {/* Milestone Cards */}
-            <motion.div
-              className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3"
-              initial="initial"
-              whileInView="animate"
-              viewport={{ once: true, margin: "-100px" }}
-              variants={staggerContainer}
-            >
-              {milestones.map((milestone, i) => (
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {milestones.map((milestone, index) => (
                 <motion.div
-                  key={i}
-                  variants={fadeInUp}
-                  className="p-6 rounded-2xl bg-gradient-to-br from-zinc-900 to-black border border-green-500/20 hover:border-green-500/40 transition-all duration-300"
+                  key={index}
+                  initial={{ opacity: 0, y: 50 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.8, delay: index * 0.1, type: "spring" }}
+                  className="group"
                 >
-                  <div className="inline-flex px-3 py-1 rounded-full bg-green-500/20 text-green-400 text-sm font-semibold mb-4">
-                    {milestone.quarter}
-                  </div>
-                  <h3 className="text-xl font-bold text-green-100 mb-2">{milestone.title}</h3>
-                  <p className="text-gray-400">{milestone.details}</p>
+                  <motion.div
+                    className="p-6 rounded-2xl bg-gradient-to-br from-zinc-900/80 to-black/80 border border-green-500/20 backdrop-blur-xl"
+                    whileHover={{ 
+                      scale: 1.05,
+                      borderColor: "rgba(34, 197, 94, 0.4)",
+                      boxShadow: "0 25px 50px -12px rgba(34, 197, 94, 0.4)"
+                    }}
+                    transition={{ type: "spring", stiffness: 300 }}
+                  >
+                    <div className="inline-flex px-3 py-1 rounded-full bg-green-500/20 text-green-400 text-sm font-semibold mb-4 group-hover:bg-green-500/30 transition-colors">
+                      {milestone.quarter}
+                    </div>
+                    <h3 className="text-xl font-bold text-green-100 mb-2 group-hover:text-green-50 transition-colors">{milestone.title}</h3>
+                    <p className="text-gray-400 group-hover:text-gray-300 transition-colors">{milestone.details}</p>
+                  </motion.div>
                 </motion.div>
               ))}
-            </motion.div>
+            </div>
           </div>
         </section>
 
         {/* Risk Factors */}
-        <section className="py-4 px-6 bg-gradient-to-b from-black to-zinc-950">
+        <section className="py-20 px-6 bg-gradient-to-b from-black to-zinc-950">
           <div className="max-w-7xl mx-auto">
             <motion.div
-              initial="initial"
-              whileInView="animate"
-              viewport={{ once: true, margin: "-100px" }}
-              variants={fadeInUp}
-              className="text-center mb-4"
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              className="text-center mb-16"
             >
               <h2 className="text-4xl font-bold text-blue-100 mb-3">
                 Risk Factors & Mitigation
@@ -546,50 +694,55 @@ export default function InvestorPage() {
               </p>
             </motion.div>
 
-            <motion.div
-              className="max-w-5xl mx-auto space-y-3"
-              initial="initial"
-              whileInView="animate"
-              viewport={{ once: true, margin: "-100px" }}
-              variants={staggerContainer}
-            >
-              {risks.map((item, i) => (
+            <div className="max-w-5xl mx-auto space-y-6">
+              {risks.map((item, index) => (
                 <motion.div
-                  key={i}
-                  variants={fadeInUp}
-                  className="p-6 rounded-2xl bg-gradient-to-br from-zinc-900 to-black border border-orange-500/20"
+                  key={index}
+                  initial={{ opacity: 0, y: 50 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.8, delay: index * 0.1, type: "spring" }}
+                  className="group"
                 >
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <div>
-                      <div className="flex items-center gap-3 mb-3">
-                        <AlertTriangle className="h-5 w-5 text-orange-400" />
-                        <h3 className="text-lg font-bold text-orange-100">Risk</h3>
+                  <motion.div
+                    className="p-6 rounded-2xl bg-gradient-to-br from-zinc-900/80 to-black/80 border border-orange-500/20 backdrop-blur-xl"
+                    whileHover={{ 
+                      scale: 1.02,
+                      borderColor: "rgba(249, 115, 22, 0.4)"
+                    }}
+                    transition={{ type: "spring", stiffness: 300 }}
+                  >
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                      <div>
+                        <div className="flex items-center gap-3 mb-3">
+                          <AlertTriangle className="h-5 w-5 text-orange-400" />
+                          <h3 className="text-lg font-bold text-orange-100">Risk</h3>
+                        </div>
+                        <p className="text-gray-300">{item.risk}</p>
                       </div>
-                      <p className="text-gray-300">{item.risk}</p>
-                    </div>
-                    <div>
-                      <div className="flex items-center gap-3 mb-3">
-                        <Shield className="h-5 w-5 text-green-400" />
-                        <h3 className="text-lg font-bold text-green-100">Mitigation</h3>
+                      <div>
+                        <div className="flex items-center gap-3 mb-3">
+                          <Shield className="h-5 w-5 text-green-400" />
+                          <h3 className="text-lg font-bold text-green-100">Mitigation</h3>
+                        </div>
+                        <p className="text-gray-300">{item.mitigation}</p>
                       </div>
-                      <p className="text-gray-300">{item.mitigation}</p>
                     </div>
-                  </div>
+                  </motion.div>
                 </motion.div>
               ))}
-            </motion.div>
+            </div>
           </div>
         </section>
 
         {/* Team Highlight */}
-        <section className="py-4 px-6">
+        <section className="py-20 px-6">
           <div className="max-w-7xl mx-auto">
             <motion.div
-              initial="initial"
-              whileInView="animate"
-              viewport={{ once: true, margin: "-100px" }}
-              variants={fadeInUp}
-              className="text-center mb-4"
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              className="text-center mb-16"
             >
               <h2 className="text-4xl font-bold text-blue-100 mb-3">
                 Leadership Team
@@ -600,44 +753,51 @@ export default function InvestorPage() {
             </motion.div>
 
             <motion.div
-              initial="initial"
-              whileInView="animate"
-              viewport={{ once: true, margin: "-100px" }}
-              variants={fadeInUp}
-              className="max-w-4xl mx-auto p-8 rounded-2xl bg-gradient-to-br from-zinc-900 to-black border border-blue-500/20"
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              className="max-w-4xl mx-auto group"
             >
-              <div className="text-center">
-                <div className="inline-flex p-4 rounded-full bg-gradient-to-br from-blue-600 to-blue-500 mb-6">
-                  <Award className="h-12 w-12 text-white" />
+              <motion.div
+                className="p-8 rounded-2xl bg-gradient-to-br from-zinc-900/80 to-black/80 border border-blue-500/20 backdrop-blur-xl"
+                whileHover={{ 
+                  scale: 1.02,
+                  borderColor: "rgba(59, 130, 246, 0.4)"
+                }}
+                transition={{ type: "spring", stiffness: 300 }}
+              >
+                <div className="text-center">
+                  <div className="inline-flex p-4 rounded-full bg-gradient-to-br from-blue-600 to-blue-500 mb-6 group-hover:shadow-xl group-hover:shadow-blue-500/50 transition-all">
+                    <Award className="h-12 w-12 text-white" />
+                  </div>
+                  <h3 className="text-2xl font-bold text-blue-100 mb-4">Jeremiah Shrack, Founder & CEO</h3>
+                  <p className="text-gray-300 leading-relaxed mb-4">
+                    15+ years in benefits consulting and compliance. Previously led $500M+ benefits programs for Fortune 500 clients. Deep expertise in ERISA, fiduciary governance, and benefits optimization.
+                  </p>
+                  <Link 
+                    href="/board-of-directors"
+                    className="inline-flex items-center gap-2 text-blue-400 hover:text-blue-300 transition-colors"
+                  >
+                    View Full Board of Directors
+                    <Rocket className="h-4 w-4" />
+                  </Link>
                 </div>
-                <h3 className="text-2xl font-bold text-blue-100 mb-4">Jeremiah Shrack, Founder & CEO</h3>
-                <p className="text-gray-300 leading-relaxed mb-4">
-                  15+ years in benefits consulting and compliance. Previously led $500M+ benefits programs for Fortune 500 clients. Deep expertise in ERISA, fiduciary governance, and benefits optimization.
-                </p>
-                <Link 
-                  href="/board-of-directors"
-                  className="inline-flex items-center gap-2 text-blue-400 hover:text-blue-300 transition-colors"
-                >
-                  View Full Board of Directors
-                  <Rocket className="h-4 w-4" />
-                </Link>
-              </div>
+              </motion.div>
             </motion.div>
           </div>
         </section>
 
         {/* CTA Section */}
-        <section className="py-4 px-6 bg-gradient-to-b from-zinc-950 to-black">
+        <section className="py-20 px-6 bg-gradient-to-b from-zinc-950 to-black">
           <div className="max-w-4xl mx-auto">
             <motion.div
-              initial="initial"
-              whileInView="animate"
-              viewport={{ once: true, margin: "-100px" }}
-              variants={fadeInUp}
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
               className="text-center"
             >
               <motion.div 
-                className="inline-flex flex-col items-center gap-4 p-8 rounded-2xl bg-gradient-to-br from-blue-950/20 to-transparent border border-blue-500/20"
+                className="inline-flex flex-col items-center gap-4 p-8 rounded-2xl bg-gradient-to-br from-blue-950/20 to-transparent border border-blue-500/20 backdrop-blur-xl"
                 whileHover={{ scale: 1.02, borderColor: "rgba(59, 130, 246, 0.4)" }}
                 transition={{ duration: 0.3 }}
               >
@@ -651,19 +811,25 @@ export default function InvestorPage() {
                   We're raising a <strong className="text-blue-400">$10M Series A</strong> to accelerate product development, expand our enterprise sales team, and capture market leadership in the algorithmic fiduciary intelligence space.
                 </p>
                 <div className="flex flex-col sm:flex-row gap-4 mt-4">
-                  <Link
-                    href="/request-demo"
-                    className="inline-flex items-center gap-3 px-10 py-5 rounded-xl bg-gradient-to-r from-blue-600 to-blue-500 text-white text-lg font-semibold hover:from-blue-500 hover:to-blue-400 transition-all duration-300 shadow-lg shadow-blue-500/20 hover:shadow-blue-500/40 hover:scale-105"
-                  >
-                    <Play className="h-6 w-6" />
-                    <span>Request Investor Meeting</span>
+                  <Link href="/request-demo">
+                    <motion.button
+                      className="inline-flex items-center gap-3 px-10 py-5 rounded-xl bg-gradient-to-r from-blue-600 to-blue-500 text-white text-lg font-semibold shadow-lg shadow-blue-500/20"
+                      whileHover={{ scale: 1.05, boxShadow: "0 30px 60px -15px rgba(59, 130, 246, 0.5)" }}
+                      whileTap={{ scale: 0.95 }}
+                    >
+                      <Play className="h-6 w-6" />
+                      <span>Request Investor Meeting</span>
+                    </motion.button>
                   </Link>
-                  <Link
-                    href="/platform"
-                    className="inline-flex items-center gap-3 px-10 py-5 rounded-xl bg-zinc-800 text-white text-lg font-semibold hover:bg-zinc-700 transition-all duration-300 border border-zinc-700"
-                  >
-                    <BarChart3 className="h-6 w-6" />
-                    <span>Explore Platform</span>
+                  <Link href="/platform">
+                    <motion.button
+                      className="inline-flex items-center gap-3 px-10 py-5 rounded-xl bg-zinc-800 text-white text-lg font-semibold border border-zinc-700"
+                      whileHover={{ scale: 1.05, backgroundColor: "rgb(63, 63, 70)" }}
+                      whileTap={{ scale: 0.95 }}
+                    >
+                      <BarChart3 className="h-6 w-6" />
+                      <span>Explore Platform</span>
+                    </motion.button>
                   </Link>
                 </div>
               </motion.div>

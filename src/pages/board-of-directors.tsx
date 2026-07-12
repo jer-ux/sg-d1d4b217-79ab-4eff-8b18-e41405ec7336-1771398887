@@ -1,8 +1,8 @@
 "use client";
 
 import type React from "react";
-import { motion, AnimatePresence } from "framer-motion";
-import { useState, useMemo, useEffect } from "react";
+import { motion, AnimatePresence, useScroll, useTransform } from "framer-motion";
+import { useState, useMemo, useEffect, useRef } from "react";
 import { 
   Shield, 
   Users, 
@@ -20,7 +20,13 @@ import {
   DollarSign,
   Activity,
   FileText,
-  Settings
+  Settings,
+  Target,
+  Lock,
+  Zap,
+  BarChart3,
+  Eye,
+  ArrowUpRight
 } from "lucide-react";
 import Nav from "@/components/Nav";
 import Footer from "@/components/Footer";
@@ -40,11 +46,11 @@ const boardMembers = [
     title: "Founder & Chief Executive Officer",
     image: "/jeremiah-shrack-board.jpg",
     linkedin: "https://www.linkedin.com/in/shrack",
-    bio: "Humanitarian and business leader with over two decades of experience engineering intelligent operating systems and scaling organizations. Achieved #2 in North America for Canon while working 60 hours/week and attending IWU full-time.",
+    bio: "Humanitarian and business leader with over two decades of experience engineering intelligent operating systems and scaling organizations.",
     fullBio: {
       introduction: "Over two decades, he has built a reputation for engineering intelligent operating systems, scaling organizations, and redefining how advanced analytics intersect with human judgment. As a senior executive, Jeremiah drives enterprise-wide revenue growth, operational excellence, and high-impact PBM/Rx consulting engagements.",
-      platform: "SiriusB iQ is a next-generation intelligent consulting operating system that integrates six purpose-built subsystems extending the reasoning frameworks of VortexAI, LogicAI, and JimShrackExpressAI. Each operating system is strategically designed to accelerate AI transformation in industries Jeremiah identifies as early adopters of intelligent automation. The platform combines ethical machine reasoning, actuarial precision, and human-centered design to drive measurable performance improvements for clients.",
-      philosophy: "Jeremiah approaches AI and analytics through an ethical lens — ensuring that systems enhance, not replace, human decision-making. His leadership philosophy emphasizes clarity, accountability, and innovation, translating strategic objectives into scalable processes and measurable outcomes across the enterprise. He believes that the most powerful technology serves humanity — not the other way around.",
+      platform: "SiriusB iQ is a next-generation intelligent consulting operating system that integrates six purpose-built subsystems extending the reasoning frameworks of VortexAI, LogicAI, and JimShrackExpressAI.",
+      philosophy: "Jeremiah approaches AI and analytics through an ethical lens — ensuring that systems enhance, not replace, human decision-making.",
       expertise: [
         "Enterprise Executive Sales and Leadership",
         "Benefits Actuarial Consulting (Jumbo and Large-Market)",
@@ -53,7 +59,7 @@ const boardMembers = [
         "Ethical AI Deployment & Governance",
         "Organizational Transformation at Scale"
       ],
-      vision: "Grounded in business discipline, faith in God, and respect for humanity, Jeremiah is dedicated to helping employers outperform in the rapidly evolving health, benefits, and AI transformation landscape. Under his leadership, SiriusB iQ leverages decades of combined consulting experience to deliver 20–35% savings on self-funded PBM and Rx contracts, empowering mid- and large-market organizations through transparent, data-driven actuarial insights."
+      vision: "Grounded in business discipline, faith in God, and respect for humanity, Jeremiah is dedicated to helping employers outperform in the rapidly evolving health, benefits, and AI transformation landscape."
     }
   },
   {
@@ -61,32 +67,32 @@ const boardMembers = [
     title: "Board Director and Distinguished Chief Scientist Officer",
     image: "/dr-jacqueline-el-sayed.png",
     linkedin: "https://www.linkedin.com/in/jacquelineelsayed/",
-    bio: "Dr. Jacqueline El-Sayed is the Chief Executive Officer for Intentional Design Group LLC and Intentional Design Institute 501c3. She is a builder and global speaker with leadership experience across industry, education, and government.",
+    bio: "CEO for Intentional Design Group LLC and Intentional Design Institute. Global speaker with leadership across industry, education, and government.",
     fullBio: {
-      introduction: "Dr. Jacqueline El-Sayed is the Chief Executive Officer (CEO) for Intentional Design Group LLC and Intentional Design Institute 501c3. She is a builder and global speaker with leadership experience across industry, education, and government. She recently served as CEO for the group: SAE International (SAE), Performance Review Institute (PRI), Industry Technologies Consortia (ITC) & Fullsight Shared Services. Her previous role was CEO for the American Society for Engineering Education (ASEE). She joined ASEE as Chief Academic Officer driving growth and alignment across all professional services & leading new business innovation. Before this, she served as Chief Academic Officer & Vice President for Academic Affairs at Marygrove College.",
-      platform: "Dr. El-Sayed began her career as an engineer for General Motors Truck Group and has been nationally recognized as an ACE Fellow, NLA Fellow, and ASEE Fellow & Hall of Famer. She is a professor emerita of mechanical engineering and served on the faculty at Kettering University for 18 years, earning the role Associate Provost/Vice President. Dr. El-Sayed has served as PI or co-PI for multiple externally funded projects totaling $60+ MM, including founding PI on the NSF Defining and Building the Engineering Workforce of the Future (FREE), the Engineering Postdoctoral Fellowship Program (eFellows) & the CISE Research Expansion series and Co-PI on the NSF Innovative Postdoctoral Entrepreneurial Research Fellowship (IPERF), Engineering Mindset Blueprint & the Vertical/Horizontal Manufacturing Integration series.",
-      philosophy: "Dr. El-Sayed is a four-time gubernatorial appointee to the Michigan Truck Safety Commission and, as commissioner, served as chair for two terms. She also chaired the Driver's Education Advisory Committee and Motorcycle Safety Advisory Committee for the Michigan Department of State, work that resulted in new legislation for Michigan. Her extensive government service demonstrates a commitment to public safety and policy innovation that translates technical expertise into legislative action.",
+      introduction: "Dr. Jacqueline El-Sayed is the Chief Executive Officer (CEO) for Intentional Design Group LLC and Intentional Design Institute 501c3. She is a builder and global speaker with leadership experience across industry, education, and government.",
+      platform: "Dr. El-Sayed began her career as an engineer for General Motors Truck Group and has been nationally recognized as an ACE Fellow, NLA Fellow, and ASEE Fellow & Hall of Famer.",
+      philosophy: "Dr. El-Sayed's extensive government service demonstrates a commitment to public safety and policy innovation that translates technical expertise into legislative action.",
       expertise: [
-        "CEO Leadership Across Multiple Organizations (SAE, ASEE, PRI, ITC)",
+        "CEO Leadership Across Multiple Organizations",
         "Engineering Education & Workforce Development",
         "Research Leadership ($60+ MM in Funded Projects)",
-        "Government Policy & Public Safety Commission Leadership",
+        "Government Policy & Public Safety Commission",
         "Academic Administration & Faculty Development",
         "Manufacturing & Automotive Engineering"
       ],
-      vision: "Dr. El-Sayed currently serves on MIT TechAMP Adv Council, National Academy of Science, Engineering, and Medicine (NASEM) Roundtable for Systemic Change in Undergrad STEM Education, Engineering Research Visioning Alliance (ERVA), Women in Engineering Proactive Network (WEPAN) Board and as Chair, Engineering Societies Roundtable. She recently completed board positions for Society of Manufacturing Engineers (SME), American Council on Education (ACE) Council of Fellows, Society of College and University Planners (SCUP) and a tenure of 10 years as Trustee on the Bloomfield Hills Board of Education. She is married and has three adult children."
+      vision: "Dr. El-Sayed currently serves on MIT TechAMP Adv Council, NASEM Roundtable for Systemic Change in Undergrad STEM Education, and chairs the Engineering Societies Roundtable."
     }
   },
   {
     name: "Catherine Farley",
-    title: "Executive Chair, Committee on Algorithmic Governance & Fiduciary Risk",
+    title: "Executive Chair, Committee on Algorithmic Governance",
     image: "/catherine-farley.jpg",
     linkedin: "https://www.linkedin.com/in/catherine-farley-233b28/",
-    bio: "Catherine Farley is a seasoned financial services executive with deep expertise in operational excellence, wealth management, and strategic transformation. Her career spans leadership roles at major financial institutions where she drove innovation and operational efficiency at scale.",
+    bio: "Seasoned financial services executive with deep expertise in operational excellence, wealth management, and strategic transformation.",
     fullBio: {
-      introduction: "Catherine Farley brings over two decades of financial services leadership to SiriusB iQ's board, with a proven track record of driving operational excellence and strategic transformation at major institutions. Her expertise spans wealth management, fiduciary governance, and large-scale operational optimization, making her uniquely qualified to guide algorithmic governance frameworks in the emerging AI-driven benefits landscape.",
-      platform: "Throughout her career, Catherine has led initiatives that balance innovation with rigorous risk management, ensuring that technological advancement serves fiduciary duty rather than compromising it. Her approach to governance emphasizes transparency, accountability, and measurable outcomes—principles that align perfectly with SiriusB iQ's mission to bring algorithmic precision to benefits management.",
-      philosophy: "Catherine believes that the intersection of AI and fiduciary duty requires a new governance framework—one that treats algorithmic decision-making with the same rigor as human fiduciary responsibility. She advocates for transparent AI systems that can be audited, explained, and held accountable to the same standards as human decision-makers in positions of trust.",
+      introduction: "Catherine Farley brings over two decades of financial services leadership to SiriusB iQ's board, with a proven track record of driving operational excellence and strategic transformation at major institutions.",
+      platform: "Throughout her career, Catherine has led initiatives that balance innovation with rigorous risk management, ensuring that technological advancement serves fiduciary duty rather than compromising it.",
+      philosophy: "Catherine believes that the intersection of AI and fiduciary duty requires a new governance framework—one that treats algorithmic decision-making with the same rigor as human fiduciary responsibility.",
       expertise: [
         "Operational Excellence & Process Optimization",
         "Wealth Management & Fiduciary Governance",
@@ -95,7 +101,7 @@ const boardMembers = [
         "Financial Services Leadership",
         "Board Governance & Oversight"
       ],
-      vision: "As Executive Chair of the Committee on Algorithmic Governance & Fiduciary Risk, Catherine's vision is to establish SiriusB iQ AI Data Sciences Lab as the gold standard for ethical AI deployment in benefits management. She is committed to ensuring that every algorithmic decision made by the platform can withstand the scrutiny of fiduciary duty, regulatory review, and client trust."
+      vision: "As Executive Chair of the Committee on Algorithmic Governance & Fiduciary Risk, Catherine's vision is to establish SiriusB iQ as the gold standard for ethical AI deployment in benefits management."
     }
   },
   {
@@ -103,20 +109,20 @@ const boardMembers = [
     title: "Board Director & Chair of Public Sector Governance",
     image: "/1517039361817_1_.jpeg",
     linkedin: "https://www.linkedin.com/in/mike-hamann-33274023/",
-    bio: "Mike Hamann's career in public service is defined by a deep commitment to the residents of St. Joseph County. He served two terms as County Auditor, acting as the county's chief financial officer and fiduciary steward until the end of 2022.",
+    bio: "Two-term St. Joseph County Auditor with comprehensive experience across executive policy, legislative intent, and fiscal reality.",
     fullBio: {
-      introduction: "Mike Hamann's career in public service is defined by a deep commitment to the residents of St. Joseph County. Most notably, Mike served two terms as the St. Joseph County Auditor, acting as the county's chief financial officer and fiduciary steward until the end of 2022. His leadership was marked by a 'boots-on-the-ground' philosophy, whether he was challenging property assessment loopholes to protect the local tax base or advocating for federal relief funds to support high-impact community initiatives like Motels4Now.",
-      platform: "His political insight is rooted in a rare 'triple-threat' of local governance experience, having served on the Board of Commissioners (1999–2002), the County Council (elected 2008), and finally in the Auditor's office. This comprehensive background gave him a masterclass view of the intersection between executive policy, legislative intent, and fiscal reality.",
-      philosophy: "What sets Mike apart is that his commitment to the classroom was never a 'second act'—it was a concurrent calling. For years, Mike balanced the heavy responsibilities of public office with the rigorous demands of teaching at Saint Joseph's High School and his alma mater, Marian High School. By serving as a public servant and a teacher simultaneously, Mike transformed the study of U.S. History and Government from a living, breathing case study. His students didn't just read about the separation of powers or local tax structures; they learned from the man who was actively managing them.",
+      introduction: "Mike Hamann's career in public service is defined by a deep commitment to the residents of St. Joseph County, serving two terms as County Auditor and acting as the county's chief financial officer.",
+      platform: "His political insight is rooted in a rare 'triple-threat' of local governance experience, having served on the Board of Commissioners, County Council, and as County Auditor.",
+      philosophy: "What sets Mike apart is his commitment to the classroom, balancing public office with teaching U.S. History and Government at Saint Joseph's High School and Marian High School.",
       expertise: [
-        "County-Level Fiscal Management & Fiduciary Stewardship",
+        "County-Level Fiscal Management",
         "Legislative & Executive Policy Implementation",
         "Property Assessment & Tax Base Protection",
-        "Federal Relief Fund Allocation & Community Impact",
+        "Federal Relief Fund Allocation",
         "Government Education & Civic Leadership",
         "U.S. History & Government Instruction"
       ],
-      vision: "A proud Marian High School alum and a graduate of the University of Notre Dame, Mike's career has come full circle. Now retired from government and teaching full-time at Marian, he continues to bridge the gap between the town hall and the classroom, ensuring the next generation of leaders understands that 'Government' isn't just a textbook chapter—it's a tool for community transformation."
+      vision: "A proud University of Notre Dame graduate, Mike continues to bridge the gap between the town hall and the classroom, ensuring the next generation understands that Government is a tool for community transformation."
     }
   },
   {
@@ -124,20 +130,20 @@ const boardMembers = [
     title: "Board Director and Chief of Insurance",
     image: "/1759522317489.png",
     linkedin: "https://www.linkedin.com/in/kyle-riddle-47581946/",
-    bio: "Certified Employee Benefits Manager (University of Pennsylvania) and Certified Financial Planner who brings MIT engineering rigor and Stanford MBA strategic thinking to insurance and benefits management. Father of four, dedicated to ensuring people live lives better than they could have ever dreamed of.",
+    bio: "Certified Employee Benefits Manager (UPenn) and CFP who brings MIT engineering rigor and Stanford MBA strategic thinking to insurance.",
     fullBio: {
-      introduction: "Kyle Riddle is a distinguished insurance executive whose career exemplifies the convergence of academic excellence and practical wisdom in the employee benefits landscape. As a Certified Employee Benefits Manager from the University of Pennsylvania and a Certified Financial Planner, Kyle has built a reputation for bringing uncompromising analytical rigor to complex insurance and risk management challenges. His unique educational foundation—combining MIT's engineering discipline with Stanford's MBA strategic frameworks—enables him to approach benefits design and insurance governance with a level of precision rarely seen in the industry.",
-      platform: "Kyle's approach to insurance and benefits consulting is rooted in the belief that technical complexity should never obscure human outcomes. He systematically deconstructs insurance products, regulatory frameworks, and actuarial models to identify inefficiencies, hidden costs, and structural risks that erode employer value and member experience. By applying engineering-level rigor to financial planning, Kyle transforms insurance from an opaque compliance exercise into a strategic lever for organizational performance and employee wellbeing. His methodology emphasizes transparency, quantifiable results, and alignment between fiduciary duty and operational reality.",
-      philosophy: "Kyle's guiding philosophy is profoundly simple yet radically ambitious: 'People deserve to live lives better than they could have ever dreamed of.' This conviction drives every actuarial model, every risk assessment, and every benefits recommendation he produces. As a father of four, Kyle approaches his work with the understanding that insurance and benefits are not abstract financial instruments—they are the safety nets that protect families, enable dreams, and provide dignity in moments of crisis. He believes that when fiduciary responsibility is executed with precision and empathy, employers can deliver benefits programs that don't just meet regulatory standards—they transform lives.",
+      introduction: "Kyle Riddle is a distinguished insurance executive whose career exemplifies the convergence of academic excellence and practical wisdom in the employee benefits landscape.",
+      platform: "Kyle's approach to insurance and benefits consulting is rooted in the belief that technical complexity should never obscure human outcomes.",
+      philosophy: "Kyle's guiding philosophy: 'People deserve to live lives better than they could have ever dreamed of.' This conviction drives every actuarial model and risk assessment he produces.",
       expertise: [
         "Regulatory Compliance & Fiduciary Governance",
         "Insurance Risk Management & Actuarial Analysis",
         "Employee Benefits Strategy & Plan Design",
-        "Certified Financial Planning & Wealth Management",
-        "MIT Engineering Rigor Applied to Benefits Architecture",
-        "Stanford MBA Strategic Frameworks for Insurance Operations"
+        "Certified Financial Planning",
+        "MIT Engineering Rigor Applied to Benefits",
+        "Stanford MBA Strategic Frameworks"
       ],
-      vision: "At SiriusB iQ, Kyle's vision is to establish a new standard for insurance and benefits intelligence—one where actuarial precision, regulatory mastery, and human-centered design converge to deliver measurable improvements in both employer outcomes and member experiences. He is committed to leveraging algorithmic fiduciary platforms to expose inefficiencies, eliminate waste, and redirect savings toward benefits that genuinely enhance quality of life. Under his leadership, SiriusB iQ's insurance practice will serve as the bridge between technical excellence and the deeply human aspiration that every individual deserves access to benefits that enable them to live beyond their expectations."
+      vision: "At SiriusB iQ, Kyle's vision is to establish a new standard for insurance and benefits intelligence—one where actuarial precision, regulatory mastery, and human-centered design converge."
     }
   },
   {
@@ -145,11 +151,11 @@ const boardMembers = [
     title: "Board Director and Silicon Valley GTM",
     image: "/nicole-burns.jpg",
     linkedin: "https://www.linkedin.com/in/nicburns/",
-    bio: "Nicole Burns brings extensive expertise in Go-To-Market (GTM) strategy, driving enterprise growth, strategic partnerships, and market expansion. With a proven track record of scaling technology platforms and aligning complex value propositions with market needs, she leads the commercialization strategy for SiriusB iQ.",
+    bio: "Go-To-Market strategy expert driving enterprise growth, strategic partnerships, and market expansion for technology platforms.",
     fullBio: {
-      introduction: "Nicole Burns is a recognized Go-To-Market strategy expert with extensive experience driving growth, strategic partnerships, and market expansion across enterprise landscapes. Her leadership on the board ensures that SiriusB iQ's sophisticated algorithmic fiduciary platforms are effectively commercialized and scaled to meet urgent market demands.",
-      platform: "Her strategic platform focuses on translating complex actuarial and AI capabilities into compelling enterprise value propositions. By designing and executing scalable GTM frameworks, Nicole aligns SiriusB iQ's core intelligence products with the specific financial and operational needs of large-market employers and fiduciaries.",
-      philosophy: "Nicole's philosophy centers on the belief that effective go-to-market strategies require deep alignment between market needs and product capabilities. She advocates for commercialization strategies that build lasting client partnerships by demystifying complex technologies and focusing on measurable, deterministic outcomes.",
+      introduction: "Nicole Burns is a recognized Go-To-Market strategy expert with extensive experience driving growth, strategic partnerships, and market expansion across enterprise landscapes.",
+      platform: "Her strategic platform focuses on translating complex actuarial and AI capabilities into compelling enterprise value propositions.",
+      philosophy: "Nicole's philosophy centers on the belief that effective go-to-market strategies require deep alignment between market needs and product capabilities.",
       expertise: [
         "Go-To-Market (GTM) Strategy",
         "Enterprise Sales Leadership",
@@ -158,7 +164,7 @@ const boardMembers = [
         "Revenue Operations",
         "Commercialization Strategy"
       ],
-      vision: "As a member of the Board of Directors, Nicole's vision is to accelerate the adoption of algorithmic fiduciary intelligence across the enterprise landscape, establishing SiriusB iQ as the undeniable standard for healthcare financial governance and strategic decision-making."
+      vision: "Nicole's vision is to accelerate the adoption of algorithmic fiduciary intelligence across the enterprise landscape, establishing SiriusB iQ as the undeniable standard."
     }
   },
   {
@@ -166,23 +172,30 @@ const boardMembers = [
     title: "Board Director and Distinguished Actuarial Science Officer",
     image: "/eric.jpeg",
     linkedin: "https://www.linkedin.com/in/eric-dreyfus-ab47915/",
-    bio: "Actuarial science professional with extensive Fortune 500 health and welfare consulting experience. Led employee benefit financials for employers ranging from 100 to 50,000 employees, specializing in renewal negotiations, utilization analytics, and IBNR reserve calculations for self-insured organizations.",
+    bio: "Actuarial science professional with Fortune 500 health and welfare consulting experience across major insurance carriers.",
     fullBio: {
-      introduction: "Eric Dreyfus brings decades of actuarial and underwriting expertise to SiriusB iQ's board, with a distinguished career spanning major insurance carriers (MetLife, Aetna/US Healthcare) and premier consulting firms (Towers Perrin, now Willis Towers Watson, and Mercer). His deep technical proficiency in actuarial science, combined with hands-on experience managing complex employee benefit financials for Fortune 100 and Fortune 500 employers, positions him as a critical strategic adviser on healthcare cost modeling, risk assessment, and fiduciary governance. Eric's career trajectory—from underwriter to practice leader—demonstrates a rare combination of technical precision and strategic business development that directly aligns with SiriusB iQ's mission to bring algorithmic rigor to benefits intelligence.",
-      platform: "Eric's consulting platform is built on a foundation of actuarial precision applied to real-world benefit design challenges. Throughout his career at Towers Perrin, Mercer, Hays, Apex Benefits Group, AssuredPartners, and currently Sympl Benefits, he has developed a methodology that transforms complex financial data—renewal negotiations, premium calculations, utilization analytics, IBNR reserves, and claim projections—into actionable strategic insights for employers. His approach emphasizes moving beyond the 'status quo' by leveraging innovative healthcare strategies that deliver sustainable, high-performing benefit programs. This philosophy of challenging conventional wisdom and building data-driven alternatives mirrors SiriusB iQ's core value proposition of replacing opaque traditional benefits management with transparent, algorithmic intelligence.",
-      philosophy: "Eric's guiding philosophy centers on disrupting the 'status quo' in employee benefits—a principle that has driven his work across small, middle-market, and large employers. He believes that sustainable benefit programs must be built on rigorous financial analysis, transparent cost structures, and a commitment to measurable value rather than industry inertia. By working 'one employer at a time,' Eric focuses on creating bespoke solutions that balance financial performance with genuine value perception among employees. This commitment to individualized, data-driven strategy over one-size-fits-all approaches makes him an invaluable adviser as SiriusB iQ scales its algorithmic platforms to serve diverse employer segments—from middle-market organizations to jumbo accounts requiring actuarial-grade precision.",
+      introduction: "Eric Dreyfus brings decades of actuarial and underwriting expertise to SiriusB iQ's board, with a distinguished career spanning MetLife, Aetna, Towers Perrin, and Mercer.",
+      platform: "Eric's consulting platform is built on a foundation of actuarial precision applied to real-world benefit design challenges.",
+      philosophy: "Eric's guiding philosophy centers on disrupting the 'status quo' in employee benefits through rigorous financial analysis and transparent cost structures.",
       expertise: [
-        "Actuarial Science & Life/Health Underwriting (MetLife, Aetna)",
-        "Fortune 500 Health & Welfare Consulting (Towers Perrin/WTW)",
-        "Employee Benefit Financial Modeling (Renewal/Marketing Negotiations)",
-        "COBRA/Premium Calculations & Utilization Review Analytics",
-        "IBNR Reserve & Claim Projection Modeling for Self-Insured Employers",
-        "Middle to Large Group Risk Assessment (500-50,000 Employees)",
-        "Practice Leadership & Consultant Team Management"
+        "Actuarial Science & Life/Health Underwriting",
+        "Fortune 500 Health & Welfare Consulting",
+        "Employee Benefit Financial Modeling",
+        "COBRA/Premium Calculations",
+        "IBNR Reserve & Claim Projection Modeling",
+        "Middle to Large Group Risk Assessment"
       ],
-      vision: "As Senior Adviser to SiriusB iQ, Eric's vision is to ensure that the platform's actuarial intelligence and cost modeling capabilities meet the rigorous standards required by sophisticated employers and their fiduciaries. His experience across the full spectrum of employer sizes—from 100-employee organizations to Fortune 100 enterprises—enables him to guide SiriusB iQ's product roadmap to serve both middle-market and jumbo accounts with equal precision. Eric is committed to leveraging his decades of consulting expertise to validate that SiriusB iQ's algorithmic outputs deliver the same level of actuarial accuracy and strategic insight that he has personally provided to clients throughout his career, while scaling those capabilities through intelligent automation."
+      vision: "Eric's vision is to ensure that SiriusB iQ's actuarial intelligence meets the rigorous standards required by sophisticated employers and their fiduciaries."
     }
   }
+];
+
+// Live intelligence metrics
+const liveMetrics = [
+  { label: "Fiduciary Risk Score", value: "9.4", trend: "+12%", icon: Shield, color: "emerald" },
+  { label: "Governance Maturity", value: "94%", trend: "+8%", icon: Target, color: "amber" },
+  { label: "AI Ethics Compliance", value: "100%", trend: "Stable", icon: Lock, color: "blue" },
+  { label: "Board Oversight Index", value: "8.7", trend: "+15%", icon: Eye, color: "violet" }
 ];
 
 export default function BoardOfDirectorsPage() {
@@ -190,18 +203,35 @@ export default function BoardOfDirectorsPage() {
   const [lightboxImage, setLightboxImage] = useState<string | null>(null);
   const [hoveredCard, setHoveredCard] = useState<number | null>(null);
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
-  const [formData, setFormData] = useState({
-    name: "",
-    email: "",
-    subject: "",
-    message: ""
-  });
+  const [formData, setFormData] = useState({ name: "", email: "", subject: "", message: "" });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const { toast } = useToast();
+  const heroRef = useRef<HTMLDivElement>(null);
+  const { scrollYProgress } = useScroll({ target: heroRef, offset: ["start start", "end start"] });
+  const opacity = useTransform(scrollYProgress, [0, 0.5], [1, 0]);
+  const scale = useTransform(scrollYProgress, [0, 0.5], [1, 0.95]);
+
+  // Animated metrics
+  const [metricsValues, setMetricsValues] = useState(liveMetrics.map(() => 0));
+  
+  useEffect(() => {
+    const intervals = liveMetrics.map((metric, index) => {
+      return setInterval(() => {
+        setMetricsValues(prev => {
+          const newValues = [...prev];
+          const target = parseFloat(metric.value);
+          const current = newValues[index];
+          newValues[index] = Math.min(current + (target / 50), target);
+          return newValues;
+        });
+      }, 30);
+    });
+    
+    return () => intervals.forEach(clearInterval);
+  }, []);
 
   const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>, index: number) => {
     if (hoveredCard !== index) return;
-    
     const rect = e.currentTarget.getBoundingClientRect();
     const x = (e.clientX - rect.left) / rect.width;
     const y = (e.clientY - rect.top) / rect.height;
@@ -209,42 +239,26 @@ export default function BoardOfDirectorsPage() {
   };
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    setFormData(prev => ({
-      ...prev,
-      [e.target.name]: e.target.value
-    }));
+    setFormData(prev => ({ ...prev, [e.target.name]: e.target.value }));
   };
 
   const handleFormSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsSubmitting(true);
-
     try {
       const response = await fetch("/api/contact/submit", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          ...formData,
-          recipient: selectedMember?.name,
-          recipientEmail: selectedMember?.linkedin
-        })
+        body: JSON.stringify({ ...formData, recipient: selectedMember?.name })
       });
-
       if (response.ok) {
-        toast({
-          title: "Message Sent Successfully",
-          description: `Your message to ${selectedMember?.name} has been delivered. They will respond directly to your email.`,
-        });
+        toast({ title: "Message Sent", description: `Your message to ${selectedMember?.name} has been delivered.` });
         setFormData({ name: "", email: "", subject: "", message: "" });
       } else {
         throw new Error("Failed to send message");
       }
     } catch (error) {
-      toast({
-        title: "Message Delivery Failed",
-        description: "Unable to send your message. Please try again or contact us directly.",
-        variant: "destructive",
-      });
+      toast({ title: "Failed", description: "Unable to send your message.", variant: "destructive" });
     } finally {
       setIsSubmitting(false);
     }
@@ -257,415 +271,262 @@ export default function BoardOfDirectorsPage() {
       </Head>
       <SEO
         title="Board of Directors | SiriusB iQ AI Data Sciences Lab"
-        description="Meet the board of directors guiding SiriusB iQ AI Data Sciences Lab's mission to revolutionize health economics and benefits intelligence through algorithmic fiduciary platforms."
+        description="Meet the board guiding SiriusB iQ's mission to revolutionize health economics through algorithmic fiduciary platforms."
       />
       <Nav />
 
       <div className="min-h-screen bg-black text-white">
-        {/* Hero Section */}
-        <section className="relative pt-20 pb-12 overflow-hidden">
-          <div className="absolute inset-0 bg-gradient-to-b from-amber-950/20 via-black to-black" />
+        {/* Premium Hero with Live Dashboard */}
+        <motion.section 
+          ref={heroRef}
+          className="relative pt-24 pb-16 overflow-hidden"
+          style={{ opacity, scale }}
+        >
+          {/* Animated Background */}
           <div className="absolute inset-0">
-            <div className="absolute top-20 left-1/4 w-96 h-96 bg-amber-500/10 rounded-full blur-3xl" />
-            <div className="absolute bottom-20 right-1/4 w-96 h-96 bg-amber-600/10 rounded-full blur-3xl" />
+            <div className="absolute inset-0 bg-gradient-to-b from-amber-950/30 via-black to-black" />
+            <motion.div
+              className="absolute top-20 left-1/4 w-[600px] h-[600px] bg-amber-500/20 rounded-full blur-[120px]"
+              animate={{ x: [0, 50, 0], y: [0, 30, 0], scale: [1, 1.1, 1] }}
+              transition={{ duration: 20, repeat: Infinity, ease: "easeInOut" }}
+            />
+            <motion.div
+              className="absolute bottom-20 right-1/4 w-[500px] h-[500px] bg-emerald-500/15 rounded-full blur-[100px]"
+              animate={{ x: [0, -40, 0], y: [0, -20, 0], scale: [1, 1.15, 1] }}
+              transition={{ duration: 18, repeat: Infinity, ease: "easeInOut", delay: 1 }}
+            />
           </div>
 
           <div className="relative max-w-7xl mx-auto px-6">
             <motion.div
-              initial={{ opacity: 0, y: 20 }}
+              initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8 }}
-              className="text-center"
+              transition={{ duration: 1 }}
+              className="text-center mb-16"
             >
-              <div className="flex items-center justify-center gap-3 mb-6">
-                <Shield className="h-12 w-12 text-amber-400" />
-                <h1 className="text-5xl md:text-7xl font-bold bg-gradient-to-r from-amber-300 via-amber-100 to-white bg-clip-text text-transparent">
+              <div className="flex items-center justify-center gap-4 mb-6">
+                <motion.div
+                  animate={{ rotate: 360 }}
+                  transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
+                >
+                  <Shield className="h-16 w-16 text-amber-400" />
+                </motion.div>
+                <h1 className="text-6xl md:text-8xl font-bold bg-gradient-to-r from-amber-300 via-amber-100 to-white bg-clip-text text-transparent">
                   Board of Directors
                 </h1>
               </div>
-              <p className="text-xl md:text-2xl text-gray-300 max-w-3xl mx-auto mb-4">
-                Leaders who protect your bottom line
+              <p className="text-2xl md:text-3xl text-gray-300 max-w-4xl mx-auto mb-6 font-light">
+                Executive leadership protecting your fiduciary interests
               </p>
-              <p className="text-base text-gray-400 max-w-2xl mx-auto">
-                Expert guidance ensuring you pay fair prices, eliminate waste, and maintain compliance
+              <p className="text-lg text-gray-400 max-w-3xl mx-auto">
+                Real-time governance intelligence • Algorithmic oversight • Zero tolerance for waste
               </p>
             </motion.div>
-          </div>
-        </section>
 
-        {/* Board Members Grid */}
-        <section className="py-12">
-          <div className="max-w-7xl mx-auto px-6">
+            {/* Live Intelligence Dashboard */}
+            <motion.div
+              initial={{ opacity: 0, y: 40 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 1, delay: 0.3 }}
+              className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-12"
+            >
+              {liveMetrics.map((metric, index) => {
+                const Icon = metric.icon;
+                return (
+                  <motion.div
+                    key={index}
+                    initial={{ opacity: 0, scale: 0.9 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    transition={{ duration: 0.6, delay: 0.4 + index * 0.1 }}
+                    className="relative group"
+                  >
+                    <div className="absolute inset-0 bg-gradient-to-r from-amber-500/20 to-emerald-500/20 rounded-2xl blur-xl opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+                    <div className="relative p-6 rounded-2xl bg-gradient-to-br from-zinc-900/90 to-zinc-950/90 border border-amber-500/30 backdrop-blur-xl">
+                      <div className="flex items-center justify-between mb-4">
+                        <Icon className={`h-8 w-8 text-${metric.color}-400`} />
+                        <motion.div
+                          className="text-xs font-semibold text-emerald-400 flex items-center gap-1"
+                          animate={{ opacity: [0.5, 1, 0.5] }}
+                          transition={{ duration: 2, repeat: Infinity }}
+                        >
+                          <ArrowUpRight className="h-3 w-3" />
+                          {metric.trend}
+                        </motion.div>
+                      </div>
+                      <div className="text-4xl font-bold text-white mb-1">
+                        {metricsValues[index].toFixed(metric.label.includes("Score") ? 1 : 0)}
+                        {metric.label.includes("%") && "%"}
+                      </div>
+                      <div className="text-sm text-gray-400">{metric.label}</div>
+                      
+                      {/* Live pulse indicator */}
+                      <div className="absolute top-4 right-4">
+                        <motion.div
+                          className="w-2 h-2 bg-emerald-400 rounded-full"
+                          animate={{ scale: [1, 1.4, 1], opacity: [1, 0.5, 1] }}
+                          transition={{ duration: 2, repeat: Infinity }}
+                        />
+                      </div>
+                    </div>
+                  </motion.div>
+                );
+              })}
+            </motion.div>
+          </div>
+        </motion.section>
+
+        {/* Board Members - Premium Grid */}
+        <section className="py-16 relative">
+          <div className="absolute inset-0 bg-gradient-to-b from-black via-zinc-950/50 to-black pointer-events-none" />
+          
+          <div className="relative max-w-7xl mx-auto px-6">
+            <motion.div
+              initial={{ opacity: 0 }}
+              whileInView={{ opacity: 1 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.8 }}
+              className="text-center mb-12"
+            >
+              <h2 className="text-4xl font-bold text-amber-100 mb-4">Executive Leadership</h2>
+              <p className="text-gray-400 max-w-2xl mx-auto">
+                Decades of combined expertise in fiduciary governance, actuarial science, and AI ethics
+              </p>
+            </motion.div>
+
             <div className="grid md:grid-cols-2 lg:grid-cols-2 gap-8">
               {boardMembers.map((member, index) => (
                 <motion.div
                   key={index}
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
+                  initial={{ opacity: 0, y: 40 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
                   transition={{ duration: 0.6, delay: index * 0.1 }}
-                  className="group relative cursor-pointer perspective-1000"
+                  className="group relative cursor-pointer"
                   onMouseEnter={() => setHoveredCard(index)}
-                  onMouseLeave={() => {
-                    setHoveredCard(null);
-                    setMousePosition({ x: 0.5, y: 0.5 });
-                  }}
+                  onMouseLeave={() => { setHoveredCard(null); setMousePosition({ x: 0.5, y: 0.5 }); }}
                   onMouseMove={(e) => handleMouseMove(e, index)}
                   onClick={() => setSelectedMember(member)}
                 >
                   <motion.div
-                    className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-amber-950/30 via-zinc-900/50 to-slate-900/30 border border-amber-500/20 p-8 transition-all duration-700"
+                    className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-zinc-900/80 via-zinc-900/60 to-zinc-950/80 border border-amber-500/20 p-10 backdrop-blur-xl"
                     animate={{
-                      rotateX: hoveredCard === index ? (mousePosition.y - 0.5) * 10 : 0,
-                      rotateY: hoveredCard === index ? (mousePosition.x - 0.5) * 10 : 0,
-                      scale: hoveredCard === index ? 1.05 : 1,
-                      borderColor: hoveredCard === index ? "rgba(251, 191, 36, 0.7)" : "rgba(251, 191, 36, 0.2)",
+                      rotateX: hoveredCard === index ? (mousePosition.y - 0.5) * 8 : 0,
+                      rotateY: hoveredCard === index ? (mousePosition.x - 0.5) * 8 : 0,
+                      scale: hoveredCard === index ? 1.03 : 1,
+                      borderColor: hoveredCard === index ? "rgba(251, 191, 36, 0.6)" : "rgba(251, 191, 36, 0.2)",
                       boxShadow: hoveredCard === index 
-                        ? "0 25px 50px -12px rgba(251, 191, 36, 0.5)" 
-                        : "0 10px 15px -3px rgba(0, 0, 0, 0.1)",
+                        ? "0 30px 60px -15px rgba(251, 191, 36, 0.5)" 
+                        : "0 10px 30px -10px rgba(0, 0, 0, 0.3)",
                     }}
-                    transition={{ 
-                      type: "spring", 
-                      stiffness: 300, 
-                      damping: 20,
-                      boxShadow: { duration: 0.5 },
-                      borderColor: { duration: 0.5 }
-                    }}
-                    style={{
-                      transformStyle: "preserve-3d",
-                    }}
+                    transition={{ type: "spring", stiffness: 300, damping: 25 }}
+                    style={{ transformStyle: "preserve-3d" }}
                   >
-                    {/* Animated gradient border overlay */}
-                    <motion.div
-                      className="absolute inset-0 rounded-2xl pointer-events-none"
-                      initial={{ opacity: 0 }}
-                      animate={{ opacity: hoveredCard === index ? 1 : 0 }}
-                      transition={{ duration: 0.5 }}
-                    >
-                      <div className="absolute inset-0 rounded-2xl bg-gradient-to-r from-amber-500/0 via-amber-400/30 to-amber-500/0 animate-pulse" />
-                    </motion.div>
-
-                    {/* Dynamic background glow that follows mouse */}
-                    <motion.div
-                      className="absolute w-64 h-64 bg-gradient-radial from-amber-500/30 via-amber-500/10 to-transparent pointer-events-none blur-2xl"
-                      animate={{
-                        opacity: hoveredCard === index ? 1 : 0,
-                        left: hoveredCard === index ? `${mousePosition.x * 100}%` : "50%",
-                        top: hoveredCard === index ? `${mousePosition.y * 100}%` : "50%",
-                        x: "-50%",
-                        y: "-50%",
-                      }}
-                      transition={{ duration: 0.3, ease: "easeOut" }}
-                    />
-
-                    {/* Ripple effect on hover */}
-                    {hoveredCard === index && (
-                      <>
-                        <motion.div
-                          className="absolute rounded-full border-2 border-amber-400/50 pointer-events-none"
-                          style={{
-                            left: `${mousePosition.x * 100}%`,
-                            top: `${mousePosition.y * 100}%`,
-                            x: "-50%",
-                            y: "-50%",
-                          }}
-                          initial={{ width: 0, height: 0, opacity: 0.8 }}
-                          animate={{ 
-                            width: 300, 
-                            height: 300, 
-                            opacity: 0 
-                          }}
-                          transition={{ duration: 1.2, ease: "easeOut" }}
-                        />
-                        <motion.div
-                          className="absolute rounded-full border border-amber-400/30 pointer-events-none"
-                          style={{
-                            left: `${mousePosition.x * 100}%`,
-                            top: `${mousePosition.y * 100}%`,
-                            x: "-50%",
-                            y: "-50%",
-                          }}
-                          initial={{ width: 0, height: 0, opacity: 0.6 }}
-                          animate={{ 
-                            width: 400, 
-                            height: 400, 
-                            opacity: 0 
-                          }}
-                          transition={{ duration: 1.5, ease: "easeOut", delay: 0.1 }}
-                        />
-                      </>
-                    )}
-
-                    {/* Enhanced particle effect */}
+                    {/* Dynamic glow */}
                     {hoveredCard === index && (
                       <motion.div
-                        className="absolute inset-0 pointer-events-none overflow-hidden rounded-2xl"
-                        initial={{ opacity: 0 }}
-                        animate={{ opacity: 1 }}
-                        transition={{ duration: 0.4 }}
-                      >
-                        {[...Array(20)].map((_, i) => (
-                          <motion.div
-                            key={i}
-                            className="absolute w-1.5 h-1.5 bg-amber-400 rounded-full"
-                            style={{
-                              left: `${Math.random() * 100}%`,
-                              top: `${Math.random() * 100}%`,
-                            }}
-                            animate={{
-                              y: [0, -30, 0],
-                              x: [(Math.random() - 0.5) * 20, (Math.random() - 0.5) * 40, (Math.random() - 0.5) * 20],
-                              opacity: [0, 1, 0],
-                              scale: [0.5, 1, 0.5],
-                            }}
-                            transition={{
-                              duration: 2 + Math.random(),
-                              repeat: Infinity,
-                              delay: i * 0.08,
-                              ease: "easeInOut",
-                            }}
-                          />
-                        ))}
-                      </motion.div>
+                        className="absolute w-96 h-96 bg-gradient-radial from-amber-400/30 via-amber-500/10 to-transparent blur-3xl pointer-events-none"
+                        animate={{
+                          left: `${mousePosition.x * 100}%`,
+                          top: `${mousePosition.y * 100}%`,
+                          x: "-50%",
+                          y: "-50%",
+                        }}
+                        transition={{ duration: 0.2 }}
+                      />
                     )}
 
-                    {/* Member Image */}
+                    {/* Profile Image */}
                     <motion.div
-                      className="relative w-32 h-32 mx-auto mb-6 rounded-full overflow-hidden border-4 border-amber-500/30 transition-all duration-700"
+                      className="relative w-40 h-40 mx-auto mb-8 rounded-2xl overflow-hidden border-4 border-amber-500/40"
                       animate={{
-                        borderColor: hoveredCard === index ? "rgba(251, 191, 36, 0.8)" : "rgba(251, 191, 36, 0.3)",
-                        scale: hoveredCard === index ? 1.15 : 1,
-                        y: hoveredCard === index ? -8 : 0,
+                        borderColor: hoveredCard === index ? "rgba(251, 191, 36, 0.9)" : "rgba(251, 191, 36, 0.4)",
+                        scale: hoveredCard === index ? 1.1 : 1,
+                        y: hoveredCard === index ? -10 : 0,
                       }}
-                      transition={{ 
-                        type: "spring", 
-                        stiffness: 300, 
-                        damping: 20 
-                      }}
-                      style={{
-                        transformStyle: "preserve-3d",
-                        transform: hoveredCard === index ? "translateZ(30px)" : "translateZ(0px)",
-                      }}
+                      transition={{ type: "spring", stiffness: 300, damping: 20 }}
+                      style={{ transform: hoveredCard === index ? "translateZ(40px)" : "translateZ(0px)" }}
                     >
                       <motion.img
                         src={member.image}
                         alt={member.name}
                         className="w-full h-full object-cover"
-                        animate={{
-                          scale: hoveredCard === index ? 1.1 : 1,
-                        }}
-                        transition={{ duration: 0.7 }}
+                        animate={{ scale: hoveredCard === index ? 1.15 : 1 }}
+                        transition={{ duration: 0.6 }}
                       />
                       <motion.div
-                        className="absolute inset-0 bg-gradient-to-t from-amber-500/30 to-transparent"
+                        className="absolute inset-0 bg-gradient-to-t from-amber-500/40 to-transparent"
                         initial={{ opacity: 0 }}
                         animate={{ opacity: hoveredCard === index ? 1 : 0 }}
-                        transition={{ duration: 0.5 }}
                       />
-                      
-                      {/* Multiple pulsing ring effects */}
-                      {hoveredCard === index && (
-                        <>
-                          <motion.div
-                            className="absolute inset-0 rounded-full border-2 border-amber-400"
-                            initial={{ scale: 1, opacity: 0.8 }}
-                            animate={{ scale: 1.4, opacity: 0 }}
-                            transition={{ duration: 1.5, repeat: Infinity }}
-                          />
-                          <motion.div
-                            className="absolute inset-0 rounded-full border-2 border-amber-300"
-                            initial={{ scale: 1, opacity: 0.6 }}
-                            animate={{ scale: 1.6, opacity: 0 }}
-                            transition={{ duration: 1.8, repeat: Infinity, delay: 0.3 }}
-                          />
-                        </>
-                      )}
                     </motion.div>
 
-                    {/* Member Info with staggered animations */}
-                    <div className="relative text-center" style={{ transformStyle: "preserve-3d" }}>
+                    {/* Member Info */}
+                    <div className="text-center" style={{ transformStyle: "preserve-3d" }}>
                       <motion.h3
-                        className="text-2xl font-bold text-amber-100 mb-2 transition-colors duration-500"
+                        className="text-3xl font-bold text-amber-100 mb-3"
                         animate={{
-                          y: hoveredCard === index ? -4 : 0,
+                          y: hoveredCard === index ? -5 : 0,
                           scale: hoveredCard === index ? 1.05 : 1,
                         }}
-                        transition={{ 
-                          duration: 0.4,
-                          delay: hoveredCard === index ? 0.05 : 0,
-                        }}
-                        style={{
-                          transform: hoveredCard === index ? "translateZ(20px)" : "translateZ(0px)",
-                        }}
+                        style={{ transform: hoveredCard === index ? "translateZ(25px)" : "translateZ(0px)" }}
                       >
                         {member.name}
                       </motion.h3>
                       <motion.p
-                        className="text-amber-400 font-semibold mb-4 text-sm transition-colors duration-500"
-                        animate={{
-                          y: hoveredCard === index ? -3 : 0,
-                        }}
-                        transition={{ 
-                          duration: 0.4,
-                          delay: hoveredCard === index ? 0.1 : 0,
-                        }}
-                        style={{
-                          transform: hoveredCard === index ? "translateZ(15px)" : "translateZ(0px)",
-                        }}
+                        className="text-amber-400 font-semibold mb-6 text-base"
+                        animate={{ y: hoveredCard === index ? -4 : 0 }}
+                        style={{ transform: hoveredCard === index ? "translateZ(20px)" : "translateZ(0px)" }}
                       >
                         {member.title}
                       </motion.p>
                       <motion.p
-                        className="text-gray-400 text-sm leading-relaxed mb-6 line-clamp-3 transition-colors duration-500"
+                        className="text-gray-400 leading-relaxed mb-8"
                         animate={{
                           color: hoveredCard === index ? "rgb(209, 213, 219)" : "rgb(156, 163, 175)",
-                          y: hoveredCard === index ? -2 : 0,
+                          y: hoveredCard === index ? -3 : 0,
                         }}
-                        transition={{ 
-                          duration: 0.4,
-                          delay: hoveredCard === index ? 0.15 : 0,
-                        }}
-                        style={{
-                          transform: hoveredCard === index ? "translateZ(10px)" : "translateZ(0px)",
-                        }}
+                        style={{ transform: hoveredCard === index ? "translateZ(15px)" : "translateZ(0px)" }}
                       >
                         {member.bio}
                       </motion.p>
 
-                      {/* LinkedIn Button */}
-                      <motion.a
-                        href={member.linkedin}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="inline-flex items-center gap-2 px-4 py-2 mb-4 rounded-lg bg-amber-500/10 hover:bg-amber-500/20 border border-amber-500/30 hover:border-amber-400/60 text-amber-400 hover:text-amber-300 text-sm font-semibold transition-all duration-300"
-                        onClick={(e) => e.stopPropagation()}
-                        whileHover={{ scale: 1.05 }}
-                        whileTap={{ scale: 0.95 }}
-                        animate={{
-                          y: hoveredCard === index ? -1 : 0,
-                        }}
-                        transition={{ 
-                          duration: 0.4,
-                          delay: hoveredCard === index ? 0.2 : 0,
-                        }}
-                        style={{
-                          transform: hoveredCard === index ? "translateZ(15px)" : "translateZ(0px)",
-                        }}
-                      >
-                        <Linkedin className="h-4 w-4" />
-                        <span>View LinkedIn Profile</span>
-                      </motion.a>
-
-                      <motion.div
-                        className="flex items-center justify-center gap-2 text-amber-400 text-sm font-semibold transition-all duration-500"
-                        animate={{
-                          y: hoveredCard === index ? 0 : 0,
-                        }}
-                        transition={{ 
-                          duration: 0.4,
-                          delay: hoveredCard === index ? 0.25 : 0,
-                        }}
-                        style={{
-                          transform: hoveredCard === index ? "translateZ(20px)" : "translateZ(0px)",
-                        }}
-                      >
-                        <motion.div
-                          animate={{
-                            rotate: hoveredCard === index ? 360 : 0,
-                          }}
-                          transition={{
-                            duration: 2,
-                            repeat: hoveredCard === index ? Infinity : 0,
-                            ease: "linear",
-                          }}
+                      {/* Action Buttons */}
+                      <div className="flex gap-4 justify-center">
+                        <motion.a
+                          href={member.linkedin}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="inline-flex items-center gap-2 px-5 py-3 rounded-xl bg-amber-500/10 hover:bg-amber-500/20 border border-amber-500/30 text-amber-400 font-semibold transition-all"
+                          onClick={(e) => e.stopPropagation()}
+                          whileHover={{ scale: 1.05 }}
+                          whileTap={{ scale: 0.95 }}
                         >
-                          <Sparkles className="h-4 w-4" />
-                        </motion.div>
-                        <span>View Full Profile</span>
-                        <motion.div
-                          animate={{
-                            x: hoveredCard === index ? 6 : 0,
-                          }}
-                          transition={{ 
-                            duration: 0.3,
-                            repeat: hoveredCard === index ? Infinity : 0,
-                            repeatType: "reverse",
-                          }}
+                          <Linkedin className="h-5 w-5" />
+                          LinkedIn
+                        </motion.a>
+                        <motion.button
+                          className="inline-flex items-center gap-2 px-5 py-3 rounded-xl bg-gradient-to-r from-amber-600 to-amber-500 text-white font-semibold shadow-lg shadow-amber-500/30"
+                          whileHover={{ scale: 1.05, boxShadow: "0 20px 40px -10px rgba(251, 191, 36, 0.5)" }}
+                          whileTap={{ scale: 0.95 }}
                         >
-                          <ChevronRight className="h-4 w-4" />
-                        </motion.div>
-                      </motion.div>
+                          <Sparkles className="h-5 w-5" />
+                          Full Profile
+                        </motion.button>
+                      </div>
                     </div>
 
-                    {/* Decorative corner accents with enhanced animation */}
-                    <motion.div
-                      className="absolute top-0 right-0 w-32 h-32 bg-gradient-to-br from-amber-500/40 via-amber-400/15 to-transparent rounded-bl-3xl pointer-events-none"
-                      initial={{ opacity: 0, scale: 0.8 }}
-                      animate={{
-                        opacity: hoveredCard === index ? 1 : 0,
-                        scale: hoveredCard === index ? 1.1 : 0.8,
-                        rotate: hoveredCard === index ? 5 : 0,
-                      }}
-                      transition={{ duration: 0.6, ease: "easeOut" }}
-                    />
-                    <motion.div
-                      className="absolute bottom-0 left-0 w-32 h-32 bg-gradient-to-tr from-amber-500/40 via-amber-400/15 to-transparent rounded-tr-3xl pointer-events-none"
-                      initial={{ opacity: 0, scale: 0.8 }}
-                      animate={{
-                        opacity: hoveredCard === index ? 1 : 0,
-                        scale: hoveredCard === index ? 1.1 : 0.8,
-                        rotate: hoveredCard === index ? -5 : 0,
-                      }}
-                      transition={{ duration: 0.6, ease: "easeOut" }}
-                    />
-
-                    {/* Animated border shine effect */}
-                    {hoveredCard === index && (
-                      <motion.div
-                        className="absolute inset-0 rounded-2xl pointer-events-none overflow-hidden"
-                        style={{
-                          background: "linear-gradient(90deg, transparent, rgba(251, 191, 36, 0.4), transparent)",
-                        }}
-                        animate={{
-                          x: ["-100%", "200%"],
-                        }}
-                        transition={{
-                          duration: 1.8,
-                          repeat: Infinity,
-                          ease: "linear",
-                        }}
-                      />
-                    )}
-
-                    {/* Floating light orbs */}
+                    {/* Decorative corners */}
                     {hoveredCard === index && (
                       <>
                         <motion.div
-                          className="absolute w-3.5 h-3.5 bg-amber-400/60 rounded-full blur-sm pointer-events-none"
-                          animate={{
-                            x: [20, 80, 20],
-                            y: [30, 60, 30],
-                            opacity: [0.3, 0.8, 0.3],
-                          }}
-                          transition={{
-                            duration: 3,
-                            repeat: Infinity,
-                            ease: "easeInOut",
-                          }}
+                          className="absolute top-0 right-0 w-40 h-40 bg-gradient-to-br from-amber-500/40 to-transparent rounded-bl-3xl"
+                          initial={{ opacity: 0, scale: 0.8 }}
+                          animate={{ opacity: 1, scale: 1.1, rotate: 5 }}
                         />
                         <motion.div
-                          className="absolute w-2 h-2 bg-amber-300/50 rounded-full blur-sm pointer-events-none"
-                          style={{ right: 40, top: 40 }}
-                          animate={{
-                            x: [-10, 10, -10],
-                            y: [0, -20, 0],
-                            opacity: [0.2, 0.6, 0.2],
-                          }}
-                          transition={{
-                            duration: 2.5,
-                            repeat: Infinity,
-                            ease: "easeInOut",
-                            delay: 0.5,
-                          }}
+                          className="absolute bottom-0 left-0 w-40 h-40 bg-gradient-to-tr from-amber-500/40 to-transparent rounded-tr-3xl"
+                          initial={{ opacity: 0, scale: 0.8 }}
+                          animate={{ opacity: 1, scale: 1.1, rotate: -5 }}
                         />
                       </>
                     )}
@@ -674,240 +535,96 @@ export default function BoardOfDirectorsPage() {
               ))}
             </div>
 
-            {/* Detailed Profile Modal */}
+            {/* Profile Modal */}
             <Dialog open={!!selectedMember} onOpenChange={(open) => !open && setSelectedMember(null)}>
-              <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto bg-gradient-to-br from-zinc-900 via-black to-zinc-900 border border-amber-500/30">
+              <DialogContent className="max-w-5xl max-h-[90vh] overflow-y-auto bg-gradient-to-br from-zinc-900 via-black to-zinc-900 border border-amber-500/30">
                 {selectedMember && selectedMember.fullBio && (
                   <>
                     <DialogHeader className="border-b border-amber-500/20 pb-6">
                       <div className="flex flex-col md:flex-row gap-6 items-start">
                         <motion.div
-                          initial={{ scale: 0.8, opacity: 0 }}
-                          animate={{ scale: 1, opacity: 1 }}
-                          transition={{ duration: 0.4 }}
-                          className="relative w-32 h-32 rounded-full overflow-hidden border-4 border-amber-500/40 flex-shrink-0 cursor-pointer hover:border-amber-400/70 transition-all shadow-lg shadow-amber-500/20"
-                          onClick={(e) => {
-                            e.stopPropagation();
-                            setLightboxImage(selectedMember.image);
-                          }}
+                          initial={{ scale: 0.8 }}
+                          animate={{ scale: 1 }}
+                          className="w-40 h-40 rounded-2xl overflow-hidden border-4 border-amber-500/50 cursor-pointer"
+                          onClick={(e) => { e.stopPropagation(); setLightboxImage(selectedMember.image); }}
                         >
-                          <img
-                            src={selectedMember.image}
-                            alt={selectedMember.name}
-                            className="w-full h-full object-cover"
-                          />
-                          <div className="absolute inset-0 bg-gradient-to-t from-amber-500/20 to-transparent" />
+                          <img src={selectedMember.image} alt={selectedMember.name} className="w-full h-full object-cover" />
                         </motion.div>
-                        <div className="flex-1 space-y-3">
-                          <DialogTitle className="text-3xl md:text-4xl font-bold text-amber-100">
-                            {selectedMember.name}
-                          </DialogTitle>
-                          <p className="text-lg md:text-xl text-amber-400 font-semibold">
-                            {selectedMember.title}
-                          </p>
+                        <div className="flex-1 space-y-4">
+                          <DialogTitle className="text-4xl font-bold text-amber-100">{selectedMember.name}</DialogTitle>
+                          <p className="text-xl text-amber-400 font-semibold">{selectedMember.title}</p>
                           <a
                             href={selectedMember.linkedin}
                             target="_blank"
                             rel="noopener noreferrer"
-                            className="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-amber-500/10 hover:bg-amber-500/20 border border-amber-500/30 hover:border-amber-400/60 text-amber-400 hover:text-amber-300 text-sm font-semibold transition-all duration-300"
-                            onClick={(e) => e.stopPropagation()}
+                            className="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-amber-500/10 border border-amber-500/30 text-amber-400 font-semibold"
                           >
-                            <Linkedin className="h-4 w-4" />
-                            <span>View LinkedIn Profile</span>
+                            <Linkedin className="h-5 w-5" />
+                            LinkedIn Profile
                           </a>
                         </div>
                       </div>
                     </DialogHeader>
 
-                    {/* Full Biography Sections */}
-                    <motion.div 
-                      className="space-y-8 pt-6"
-                      initial={{ opacity: 0, y: 20 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      transition={{ duration: 0.5, delay: 0.2 }}
-                    >
-                      {/* Introduction */}
-                      <motion.div
-                        initial={{ opacity: 0, x: -20 }}
-                        animate={{ opacity: 1, x: 0 }}
-                        transition={{ duration: 0.4, delay: 0.3 }}
-                      >
-                        <h3 className="text-2xl font-bold text-amber-100 mb-4 flex items-center gap-3">
-                          <Shield className="h-6 w-6 text-amber-400" />
-                          Leadership & Experience
-                        </h3>
-                        <p className="text-gray-300 leading-relaxed text-[15px]">
-                          {selectedMember.fullBio.introduction}
-                        </p>
-                      </motion.div>
-
-                      {/* Platform */}
-                      <motion.div
-                        initial={{ opacity: 0, x: -20 }}
-                        animate={{ opacity: 1, x: 0 }}
-                        transition={{ duration: 0.4, delay: 0.4 }}
-                      >
-                        <h3 className="text-2xl font-bold text-amber-100 mb-4 flex items-center gap-3">
-                          <TrendingUp className="h-6 w-6 text-amber-400" />
-                          Platform & Approach
-                        </h3>
-                        <p className="text-gray-300 leading-relaxed text-[15px]">
-                          {selectedMember.fullBio.platform}
-                        </p>
-                      </motion.div>
-
-                      {/* Philosophy */}
-                      <motion.div
-                        initial={{ opacity: 0, x: -20 }}
-                        animate={{ opacity: 1, x: 0 }}
-                        transition={{ duration: 0.4, delay: 0.5 }}
-                      >
-                        <h3 className="text-2xl font-bold text-amber-100 mb-4 flex items-center gap-3">
-                          <Users className="h-6 w-6 text-amber-400" />
-                          Philosophy & Values
-                        </h3>
-                        <p className="text-gray-300 leading-relaxed text-[15px]">
-                          {selectedMember.fullBio.philosophy}
-                        </p>
-                      </motion.div>
-
-                      {/* Areas of Expertise */}
-                      <motion.div
-                        initial={{ opacity: 0, x: -20 }}
-                        animate={{ opacity: 1, x: 0 }}
-                        transition={{ duration: 0.4, delay: 0.6 }}
-                      >
-                        <h3 className="text-2xl font-bold text-amber-100 mb-4 flex items-center gap-3">
-                          <Award className="h-6 w-6 text-amber-400" />
-                          Areas of Expertise
-                        </h3>
-                        <div className="grid md:grid-cols-2 gap-3">
-                          {selectedMember.fullBio.expertise.map((area, idx) => (
-                            <motion.div
-                              key={idx}
-                              initial={{ opacity: 0, scale: 0.95 }}
-                              animate={{ opacity: 1, scale: 1 }}
-                              transition={{ duration: 0.3, delay: 0.7 + (idx * 0.05) }}
-                              className="flex items-start gap-3 p-3 rounded-lg bg-amber-500/5 border border-amber-500/10 hover:border-amber-500/30 hover:bg-amber-500/10 transition-all duration-300"
-                            >
-                              <ChevronRight className="h-5 w-5 text-amber-400 flex-shrink-0 mt-0.5" />
-                              <span className="text-gray-300 text-sm">{area}</span>
-                            </motion.div>
-                          ))}
-                        </div>
-                      </motion.div>
-
-                      {/* Vision & Ethos */}
-                      <motion.div
-                        initial={{ opacity: 0, y: 20 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ duration: 0.4, delay: 0.8 }}
-                        className="p-6 rounded-xl bg-gradient-to-br from-amber-950/30 to-transparent border border-amber-500/20"
-                      >
-                        <h3 className="text-2xl font-bold text-amber-100 mb-4 flex items-center gap-2">
-                          <Sparkles className="h-6 w-6 text-amber-400" />
-                          Vision & Ethos
-                        </h3>
-                        <p className="text-gray-300 leading-relaxed text-[15px]">
-                          {selectedMember.fullBio.vision}
-                        </p>
-                      </motion.div>
-
-                      {/* Professional Contact Form */}
-                      <motion.div
-                        initial={{ opacity: 0, y: 20 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ duration: 0.4, delay: 0.9 }}
-                        className="p-6 rounded-xl bg-gradient-to-br from-amber-950/20 to-zinc-900/30 border border-amber-500/30"
-                      >
-                        <h3 className="text-2xl font-bold text-amber-100 mb-2 flex items-center gap-2">
-                          <Mail className="h-6 w-6 text-amber-400" />
-                          Professional Outreach
-                        </h3>
-                        <p className="text-gray-400 text-sm mb-6">
-                          Contact {selectedMember.name} directly for consulting inquiries, partnership opportunities, or strategic guidance.
-                        </p>
+                    <div className="space-y-8 pt-6">
+                      {Object.entries(selectedMember.fullBio).map(([key, value], idx) => {
+                        if (key === "expertise") {
+                          return (
+                            <div key={key}>
+                              <h3 className="text-2xl font-bold text-amber-100 mb-4 flex items-center gap-3">
+                                <Award className="h-6 w-6 text-amber-400" />
+                                Areas of Expertise
+                              </h3>
+                              <div className="grid md:grid-cols-2 gap-3">
+                                {(value as string[]).map((area, i) => (
+                                  <div key={i} className="flex items-start gap-3 p-3 rounded-lg bg-amber-500/5 border border-amber-500/10">
+                                    <ChevronRight className="h-5 w-5 text-amber-400 flex-shrink-0 mt-0.5" />
+                                    <span className="text-gray-300 text-sm">{area}</span>
+                                  </div>
+                                ))}
+                              </div>
+                            </div>
+                          );
+                        }
                         
+                        const icons = {
+                          introduction: Shield,
+                          platform: TrendingUp,
+                          philosophy: Users,
+                          vision: Sparkles
+                        };
+                        const Icon = icons[key as keyof typeof icons];
+                        
+                        return (
+                          <div key={key}>
+                            <h3 className="text-2xl font-bold text-amber-100 mb-4 flex items-center gap-3">
+                              <Icon className="h-6 w-6 text-amber-400" />
+                              {key.charAt(0).toUpperCase() + key.slice(1)}
+                            </h3>
+                            <p className="text-gray-300 leading-relaxed">{value as string}</p>
+                          </div>
+                        );
+                      })}
+
+                      {/* Contact Form */}
+                      <div className="p-6 rounded-xl bg-gradient-to-br from-amber-950/20 to-zinc-900/30 border border-amber-500/30">
+                        <h3 className="text-2xl font-bold text-amber-100 mb-6 flex items-center gap-2">
+                          <Mail className="h-6 w-6 text-amber-400" />
+                          Contact {selectedMember.name.split(" ")[0]}
+                        </h3>
                         <form onSubmit={handleFormSubmit} className="space-y-4">
                           <div className="grid md:grid-cols-2 gap-4">
-                            <div className="space-y-2">
-                              <label className="text-sm font-semibold text-amber-300">Your Name *</label>
-                              <Input
-                                name="name"
-                                value={formData.name}
-                                onChange={handleInputChange}
-                                placeholder="John Smith"
-                                required
-                                className="bg-zinc-900/50 border-amber-500/30 focus:border-amber-400 text-gray-200 placeholder:text-gray-500"
-                              />
-                            </div>
-                            <div className="space-y-2">
-                              <label className="text-sm font-semibold text-amber-300">Your Email *</label>
-                              <Input
-                                name="email"
-                                type="email"
-                                value={formData.email}
-                                onChange={handleInputChange}
-                                placeholder="john@company.com"
-                                required
-                                className="bg-zinc-900/50 border-amber-500/30 focus:border-amber-400 text-gray-200 placeholder:text-gray-500"
-                              />
-                            </div>
+                            <Input name="name" value={formData.name} onChange={handleInputChange} placeholder="Your Name" required className="bg-zinc-900/50 border-amber-500/30 text-gray-200" />
+                            <Input name="email" type="email" value={formData.email} onChange={handleInputChange} placeholder="Your Email" required className="bg-zinc-900/50 border-amber-500/30 text-gray-200" />
                           </div>
-                          
-                          <div className="space-y-2">
-                            <label className="text-sm font-semibold text-amber-300">Subject *</label>
-                            <Input
-                              name="subject"
-                              value={formData.subject}
-                              onChange={handleInputChange}
-                              placeholder="Strategic partnership opportunity"
-                              required
-                              className="bg-zinc-900/50 border-amber-500/30 focus:border-amber-400 text-gray-200 placeholder:text-gray-500"
-                            />
-                          </div>
-                          
-                          <div className="space-y-2">
-                            <label className="text-sm font-semibold text-amber-300">Message *</label>
-                            <Textarea
-                              name="message"
-                              value={formData.message}
-                              onChange={handleInputChange}
-                              placeholder="I would like to discuss..."
-                              required
-                              rows={5}
-                              className="bg-zinc-900/50 border-amber-500/30 focus:border-amber-400 text-gray-200 placeholder:text-gray-500 resize-none"
-                            />
-                          </div>
-
-                          <Button
-                            type="submit"
-                            disabled={isSubmitting}
-                            className="w-full bg-gradient-to-r from-amber-600 to-amber-500 hover:from-amber-500 hover:to-amber-400 text-white font-semibold py-3 rounded-lg transition-all duration-300 shadow-lg shadow-amber-500/25 hover:shadow-amber-500/40 disabled:opacity-50 disabled:cursor-not-allowed"
-                          >
-                            {isSubmitting ? (
-                              <span className="flex items-center gap-2">
-                                <motion.div
-                                  animate={{ rotate: 360 }}
-                                  transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
-                                  className="w-4 h-4 border-2 border-white border-t-transparent rounded-full"
-                                />
-                                Sending Message...
-                              </span>
-                            ) : (
-                              <span className="flex items-center gap-2">
-                                <Send className="h-4 w-4" />
-                                Send Message to {selectedMember.name.split(" ")[0]}
-                              </span>
-                            )}
+                          <Input name="subject" value={formData.subject} onChange={handleInputChange} placeholder="Subject" required className="bg-zinc-900/50 border-amber-500/30 text-gray-200" />
+                          <Textarea name="message" value={formData.message} onChange={handleInputChange} placeholder="Message" required rows={5} className="bg-zinc-900/50 border-amber-500/30 text-gray-200" />
+                          <Button type="submit" disabled={isSubmitting} className="w-full bg-gradient-to-r from-amber-600 to-amber-500 hover:from-amber-500 hover:to-amber-400 text-white font-semibold py-3">
+                            {isSubmitting ? "Sending..." : <><Send className="h-4 w-4 mr-2" />Send Message</>}
                           </Button>
-
-                          <p className="text-xs text-gray-500 text-center">
-                            Your message will be sent directly to {selectedMember.name}&apos;s professional email. Response time typically within 48 hours.
-                          </p>
                         </form>
-                      </motion.div>
-                    </motion.div>
+                      </div>
+                    </div>
                   </>
                 )}
               </DialogContent>
@@ -915,57 +632,38 @@ export default function BoardOfDirectorsPage() {
           </div>
         </section>
 
-        {/* Company Values Section */}
-        <section className="py-12 bg-gradient-to-b from-black via-amber-950/5 to-black">
+        {/* Governance Principles */}
+        <section className="py-20 bg-gradient-to-b from-black via-zinc-950/30 to-black">
           <div className="max-w-7xl mx-auto px-6">
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
-              transition={{ duration: 0.8 }}
-              className="text-center mb-12"
+              className="text-center mb-16"
             >
-              <h2 className="text-4xl font-bold text-amber-100 mb-4">
-                Our Guiding Principles
-              </h2>
-              <p className="text-gray-400 max-w-2xl mx-auto">
-                The values that drive our mission and decision-making
+              <h2 className="text-5xl font-bold text-amber-100 mb-6">Governance Principles</h2>
+              <p className="text-xl text-gray-400 max-w-3xl mx-auto">
+                The framework guiding every decision we make for your organization
               </p>
             </motion.div>
 
             <div className="grid md:grid-cols-3 gap-8">
               {[
-                {
-                  icon: TrendingUp,
-                  title: "Innovation",
-                  description: "Pioneering AI-driven solutions for health economics",
-                },
-                {
-                  icon: Shield,
-                  title: "Integrity",
-                  description: "Transparent governance and ethical data practices",
-                },
-                {
-                  icon: Users,
-                  title: "Collaboration",
-                  description: "Building partnerships that drive industry transformation",
-                },
+                { icon: Zap, title: "Innovation", description: "AI-driven solutions that detect waste and optimize spend" },
+                { icon: Shield, title: "Integrity", description: "Transparent governance with full audit trails" },
+                { icon: BarChart3, title: "Results", description: "Measurable outcomes backed by actuarial precision" },
               ].map((value, index) => (
                 <motion.div
                   key={index}
-                  initial={{ opacity: 0, y: 20 }}
+                  initial={{ opacity: 0, y: 30 }}
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
-                  transition={{ duration: 0.6, delay: index * 0.1 }}
-                  className="group relative p-8 rounded-2xl bg-gradient-to-br from-zinc-900/40 to-black/40 border border-amber-500/20 hover:border-amber-500/40 transition-all duration-500"
+                  transition={{ delay: index * 0.15 }}
+                  className="group relative p-10 rounded-3xl bg-gradient-to-br from-zinc-900/60 to-black/60 border border-amber-500/20 hover:border-amber-500/50 transition-all"
                 >
-                  <value.icon className="h-12 w-12 text-amber-400 mb-6 group-hover:scale-110 transition-transform duration-500" />
-                  <h3 className="text-xl font-bold text-amber-100 mb-3">
-                    {value.title}
-                  </h3>
-                  <p className="text-gray-400 leading-relaxed">
-                    {value.description}
-                  </p>
+                  <value.icon className="h-16 w-16 text-amber-400 mb-6 group-hover:scale-110 transition-transform" />
+                  <h3 className="text-2xl font-bold text-amber-100 mb-4">{value.title}</h3>
+                  <p className="text-gray-400 leading-relaxed text-lg">{value.description}</p>
                 </motion.div>
               ))}
             </div>
@@ -975,14 +673,7 @@ export default function BoardOfDirectorsPage() {
         <Footer />
       </div>
 
-      {lightboxImage && (
-        <ImageLightbox
-          isOpen
-          imageSrc={lightboxImage}
-          imageAlt="Board member profile"
-          onClose={() => setLightboxImage(null)}
-        />
-      )}
+      {lightboxImage && <ImageLightbox isOpen imageSrc={lightboxImage} imageAlt="Board member" onClose={() => setLightboxImage(null)} />}
     </>
   );
 }

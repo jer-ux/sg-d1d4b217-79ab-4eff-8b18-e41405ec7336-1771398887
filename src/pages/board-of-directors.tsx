@@ -632,6 +632,261 @@ export default function BoardOfDirectorsPage() {
           </div>
         </section>
 
+        {/* Areas of Focus - Premium Wow Section */}
+        <section className="py-24 relative overflow-hidden">
+          {/* Animated background orbs */}
+          <div className="absolute inset-0 pointer-events-none">
+            <motion.div
+              className="absolute top-1/4 left-1/3 w-[800px] h-[800px] bg-gradient-radial from-amber-500/20 via-amber-500/5 to-transparent rounded-full blur-3xl"
+              animate={{ 
+                x: [0, 100, 0],
+                y: [0, -50, 0],
+                scale: [1, 1.2, 1],
+                opacity: [0.3, 0.5, 0.3]
+              }}
+              transition={{ duration: 15, repeat: Infinity, ease: "easeInOut" }}
+            />
+            <motion.div
+              className="absolute bottom-1/4 right-1/3 w-[600px] h-[600px] bg-gradient-radial from-emerald-500/20 via-emerald-500/5 to-transparent rounded-full blur-3xl"
+              animate={{ 
+                x: [0, -80, 0],
+                y: [0, 60, 0],
+                scale: [1, 1.15, 1],
+                opacity: [0.2, 0.4, 0.2]
+              }}
+              transition={{ duration: 18, repeat: Infinity, ease: "easeInOut", delay: 2 }}
+            />
+            <motion.div
+              className="absolute top-1/2 right-1/4 w-[500px] h-[500px] bg-gradient-radial from-violet-500/15 via-violet-500/5 to-transparent rounded-full blur-3xl"
+              animate={{ 
+                x: [0, 60, 0],
+                y: [0, -40, 0],
+                scale: [1, 1.1, 1],
+                opacity: [0.25, 0.45, 0.25]
+              }}
+              transition={{ duration: 20, repeat: Infinity, ease: "easeInOut", delay: 4 }}
+            />
+          </div>
+
+          <div className="relative max-w-7xl mx-auto px-6">
+            <motion.div
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              className="text-center mb-20"
+            >
+              <motion.div
+                initial={{ scale: 0 }}
+                whileInView={{ scale: 1 }}
+                viewport={{ once: true }}
+                transition={{ type: "spring", duration: 1, bounce: 0.4 }}
+                className="inline-block mb-6"
+              >
+                <div className="relative">
+                  <Target className="h-20 w-20 text-amber-400" />
+                  <motion.div
+                    className="absolute inset-0 bg-amber-400/20 blur-2xl"
+                    animate={{ scale: [1, 1.3, 1], opacity: [0.5, 0.8, 0.5] }}
+                    transition={{ duration: 3, repeat: Infinity }}
+                  />
+                </div>
+              </motion.div>
+              <h2 className="text-6xl font-bold mb-6 bg-gradient-to-r from-amber-200 via-amber-100 to-white bg-clip-text text-transparent">
+                Strategic Areas of Focus
+              </h2>
+              <p className="text-2xl text-gray-400 max-w-3xl mx-auto font-light">
+                Where our board expertise translates into measurable business outcomes
+              </p>
+            </motion.div>
+
+            <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+              {[
+                { 
+                  icon: Shield, 
+                  title: "Fiduciary Risk Mitigation", 
+                  description: "AI-powered detection of hidden fees, conflicts of interest, and contract leakage",
+                  metric: "$847M",
+                  metricLabel: "Protected Annually",
+                  color: "emerald",
+                  particles: 12
+                },
+                { 
+                  icon: Activity, 
+                  title: "Healthcare Cost Intelligence", 
+                  description: "Real-time actuarial modeling that forecasts trend, waste, and intervention ROI",
+                  metric: "23.4%",
+                  metricLabel: "Avg Cost Reduction",
+                  color: "blue",
+                  particles: 10
+                },
+                { 
+                  icon: Lock, 
+                  title: "AI Ethics & Governance", 
+                  description: "Algorithmic oversight frameworks ensuring AI decisions meet fiduciary standards",
+                  metric: "100%",
+                  metricLabel: "Audit Trail Coverage",
+                  color: "violet",
+                  particles: 8
+                },
+                { 
+                  icon: TrendingUp, 
+                  title: "Value Creation Acceleration", 
+                  description: "PE-grade analytics that identify EBITDA enhancement through benefits optimization",
+                  metric: "3.2x",
+                  metricLabel: "ROI Multiplier",
+                  color: "amber",
+                  particles: 15
+                },
+              ].map((focus, index) => {
+                const Icon = focus.icon;
+                return (
+                  <motion.div
+                    key={index}
+                    initial={{ opacity: 0, y: 50 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ duration: 0.8, delay: index * 0.15, type: "spring" }}
+                    className="group relative"
+                  >
+                    {/* Floating particles */}
+                    <div className="absolute inset-0 pointer-events-none">
+                      {Array.from({ length: focus.particles }).map((_, i) => (
+                        <motion.div
+                          key={i}
+                          className={`absolute w-1 h-1 bg-${focus.color}-400/60 rounded-full`}
+                          style={{
+                            left: `${Math.random() * 100}%`,
+                            top: `${Math.random() * 100}%`,
+                          }}
+                          animate={{
+                            y: [0, -30, 0],
+                            x: [0, Math.random() * 20 - 10, 0],
+                            opacity: [0, 1, 0],
+                            scale: [0, 1.5, 0],
+                          }}
+                          transition={{
+                            duration: 3 + Math.random() * 2,
+                            repeat: Infinity,
+                            delay: Math.random() * 2,
+                            ease: "easeInOut"
+                          }}
+                        />
+                      ))}
+                    </div>
+
+                    {/* Card */}
+                    <motion.div
+                      className="relative h-full p-8 rounded-3xl bg-gradient-to-br from-zinc-900/80 via-zinc-900/50 to-black/80 border border-amber-500/20 backdrop-blur-xl overflow-hidden"
+                      whileHover={{ 
+                        scale: 1.05,
+                        rotateY: 5,
+                        rotateX: -5,
+                        borderColor: `rgba(251, 191, 36, 0.6)`,
+                        boxShadow: `0 30px 60px -15px rgba(251, 191, 36, 0.4)`
+                      }}
+                      transition={{ type: "spring", stiffness: 300, damping: 20 }}
+                      style={{ transformStyle: "preserve-3d" }}
+                    >
+                      {/* Gradient glow on hover */}
+                      <motion.div
+                        className={`absolute inset-0 bg-gradient-to-br from-${focus.color}-500/0 via-${focus.color}-500/0 to-${focus.color}-500/0 opacity-0 group-hover:opacity-100 transition-opacity duration-700`}
+                        style={{
+                          background: `radial-gradient(circle at 50% 50%, rgba(251, 191, 36, 0.15), transparent 70%)`
+                        }}
+                      />
+
+                      {/* Animated icon */}
+                      <motion.div
+                        className="relative mb-6"
+                        whileHover={{ scale: 1.2, rotate: 10 }}
+                        transition={{ type: "spring", stiffness: 400 }}
+                      >
+                        <div className={`w-20 h-20 rounded-2xl bg-gradient-to-br from-${focus.color}-500/20 to-${focus.color}-600/10 border border-${focus.color}-500/30 flex items-center justify-center group-hover:shadow-xl group-hover:shadow-${focus.color}-500/50 transition-all duration-500`}>
+                          <Icon className={`h-10 w-10 text-${focus.color}-400 group-hover:text-${focus.color}-300 transition-colors`} />
+                        </div>
+                        
+                        {/* Pulsing ring */}
+                        <motion.div
+                          className={`absolute inset-0 rounded-2xl border-2 border-${focus.color}-400/40`}
+                          animate={{ scale: [1, 1.2, 1], opacity: [0.5, 0, 0.5] }}
+                          transition={{ duration: 2, repeat: Infinity, ease: "easeOut" }}
+                        />
+                      </motion.div>
+
+                      {/* Content */}
+                      <h3 className="text-2xl font-bold text-amber-100 mb-4 group-hover:text-amber-50 transition-colors">
+                        {focus.title}
+                      </h3>
+                      <p className="text-gray-400 text-sm leading-relaxed mb-6 group-hover:text-gray-300 transition-colors">
+                        {focus.description}
+                      </p>
+
+                      {/* Animated metric */}
+                      <div className="pt-6 border-t border-amber-500/20 group-hover:border-amber-500/40 transition-colors">
+                        <motion.div
+                          className={`text-4xl font-bold text-${focus.color}-400 mb-2`}
+                          initial={{ opacity: 0, y: 20 }}
+                          whileInView={{ opacity: 1, y: 0 }}
+                          viewport={{ once: true }}
+                          transition={{ delay: 0.5 + index * 0.1 }}
+                        >
+                          {focus.metric}
+                        </motion.div>
+                        <div className="text-sm text-gray-500 font-medium">
+                          {focus.metricLabel}
+                        </div>
+                      </div>
+
+                      {/* Shimmer effect on hover */}
+                      <motion.div
+                        className="absolute inset-0 opacity-0 group-hover:opacity-100 pointer-events-none"
+                        initial={false}
+                      >
+                        <motion.div
+                          className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent"
+                          animate={{ x: ["-100%", "200%"] }}
+                          transition={{ duration: 1.5, repeat: Infinity, repeatDelay: 2 }}
+                        />
+                      </motion.div>
+
+                      {/* Corner accents */}
+                      <div className="absolute top-0 right-0 w-20 h-20 border-t-2 border-r-2 border-amber-500/0 group-hover:border-amber-500/60 rounded-tr-3xl transition-all duration-500" />
+                      <div className="absolute bottom-0 left-0 w-20 h-20 border-b-2 border-l-2 border-amber-500/0 group-hover:border-amber-500/60 rounded-bl-3xl transition-all duration-500" />
+                    </motion.div>
+                  </motion.div>
+                );
+              })}
+            </div>
+
+            {/* Bottom CTA */}
+            <motion.div
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: 0.8 }}
+              className="mt-16 text-center"
+            >
+              <p className="text-gray-400 mb-6 text-lg">
+                See how our board's strategic focus translates into platform capabilities
+              </p>
+              <Link href="/engines">
+                <motion.button
+                  className="inline-flex items-center gap-3 px-8 py-4 rounded-2xl bg-gradient-to-r from-amber-600 via-amber-500 to-amber-600 text-white font-bold text-lg shadow-2xl shadow-amber-500/40"
+                  whileHover={{ 
+                    scale: 1.05,
+                    boxShadow: "0 30px 60px -10px rgba(251, 191, 36, 0.6)"
+                  }}
+                  whileTap={{ scale: 0.95 }}
+                >
+                  <Zap className="h-6 w-6" />
+                  Explore Intelligence Engines
+                  <ChevronRight className="h-5 w-5" />
+                </motion.button>
+              </Link>
+            </motion.div>
+          </div>
+        </section>
+
         {/* Governance Principles */}
         <section className="py-20 bg-gradient-to-b from-black via-zinc-950/30 to-black">
           <div className="max-w-7xl mx-auto px-6">

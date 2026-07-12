@@ -32,7 +32,8 @@ export default function CapitalMarketsPage() {
       impact: "$12M valuation miss. Post-close team discovers PBM rebates weren't passed through. CFO can't explain where the money went.",
       solution: "SiriusB iQ Contract X-Ray surfaces hidden spreads in 48 hours. Evidence receipts prove $2.1M recoverable with contract renegotiation.",
       icon: TrendingDown,
-      color: "rose"
+      color: "rose",
+      particles: 12
     },
     {
       title: "Valuation Blind Spot",
@@ -40,7 +41,8 @@ export default function CapitalMarketsPage() {
       impact: "Board approved the deal assuming 'market rates.' Actual pharmacy costs are 40% above NADAC benchmarks. EBITDA multiple was really 8.1x.",
       solution: "SiriusB iQ benchmarks every claim against NADAC + AWP floor. Delivers normalized EBITDA model with pharmacy spread elimination scenarios pre-LOI.",
       icon: Eye,
-      color: "amber"
+      color: "amber",
+      particles: 10
     },
     {
       title: "Post-Close Surprise",
@@ -48,7 +50,8 @@ export default function CapitalMarketsPage() {
       impact: "Month 6: CFO reports zero realization. PBM contract locked for 18 months. Board questions team competence. LP confidence erodes.",
       solution: "SiriusB iQ Value Office assigns owners to every synergy claim. Weekly reconciliation shows $1.8M realized, $1.1M at-risk with recovery plans, $300K deferred.",
       icon: AlertTriangle,
-      color: "orange"
+      color: "orange",
+      particles: 11
     },
     {
       title: "Exit Story Gap",
@@ -56,7 +59,8 @@ export default function CapitalMarketsPage() {
       impact: "Buyer discounts your optimization claims by 80%. Exit valuation drops $22M because you can't document realization with audit-grade evidence.",
       solution: "SiriusB iQ Evidence Ledger ships with every board pack. 285 receipts per year, audit-ready lineage, buyers adopt the framework and pay premium for governance.",
       icon: FileText,
-      color: "red"
+      color: "red",
+      particles: 13
     }
   ];
 
@@ -98,7 +102,8 @@ export default function CapitalMarketsPage() {
       features: ["Multi-portfolio views", "Realization heatmaps", "At-risk flagging", "Board-ready exports"],
       outcomes: ["87% realization rate vs. 34% industry avg", "60% faster monthly close", "Zero post-close surprises"],
       icon: Activity,
-      color: "indigo"
+      color: "indigo",
+      particles: 14
     },
     {
       title: "Value Creation Tracker",
@@ -106,7 +111,8 @@ export default function CapitalMarketsPage() {
       features: ["Synergy owner assignment", "Weekly reconciliation", "Evidence automation", "Variance alerting"],
       outcomes: ["$5.2M avg realized per portfolio co", "15min weekly review time", "100% owner accountability"],
       icon: Target,
-      color: "cyan"
+      color: "cyan",
+      particles: 12
     },
     {
       title: "Contract Compliance Monitor",
@@ -114,7 +120,8 @@ export default function CapitalMarketsPage() {
       features: ["Guarantee tracking", "Breach detection", "Recovery workflows", "Vendor scorecards"],
       outcomes: ["$1.8M avg recoveries per breach", "72hr resolution time", "98% compliance rate"],
       icon: Shield,
-      color: "violet"
+      color: "violet",
+      particles: 13
     },
     {
       title: "Benchmarking Engine",
@@ -122,7 +129,8 @@ export default function CapitalMarketsPage() {
       features: ["NADAC benchmarking", "Peer comparison", "Cost Plus analysis", "Outlier detection"],
       outcomes: ["23% spread reduction avg", "48hr outlier resolution", "$2.4M savings per portfolio co"],
       icon: BarChart3,
-      color: "blue"
+      color: "blue",
+      particles: 11
     },
     {
       title: "Quick Win Identifier",
@@ -130,7 +138,8 @@ export default function CapitalMarketsPage() {
       features: ["Opportunity scoring", "Implementation guides", "Evidence automation", "ROI projections"],
       outcomes: ["$400K avg 90-day wins", "8 day avg implementation", "3.2x ROI on quick wins"],
       icon: Zap,
-      color: "amber"
+      color: "amber",
+      particles: 15
     },
     {
       title: "Exit Package Generator",
@@ -138,7 +147,8 @@ export default function CapitalMarketsPage() {
       features: ["Evidence compilation", "Audit trail generation", "Governance handoff docs", "Buyer onboarding kit"],
       outcomes: ["$18M avg premium vs. undocumented exits", "100% buyer adoption rate", "Zero discount on optimization claims"],
       icon: TrendingUp,
-      color: "emerald"
+      color: "emerald",
+      particles: 14
     }
   ];
 
@@ -153,11 +163,33 @@ export default function CapitalMarketsPage() {
         <Nav />
 
         {/* Hero Section */}
-        <section className="relative py-8 overflow-hidden">
-          <div className="absolute inset-0 bg-gradient-to-b from-blue-950/20 via-black to-black" />
+        <section className="relative py-24 overflow-hidden">
+          {/* Animated background orbs */}
+          <div className="absolute inset-0 pointer-events-none">
+            <motion.div
+              className="absolute top-1/4 left-1/3 w-[800px] h-[800px] bg-gradient-radial from-indigo-500/20 via-indigo-500/5 to-transparent rounded-full blur-3xl"
+              animate={{ 
+                x: [0, 100, 0],
+                y: [0, -60, 0],
+                scale: [1, 1.2, 1],
+                opacity: [0.3, 0.5, 0.3]
+              }}
+              transition={{ duration: 20, repeat: Infinity, ease: "easeInOut" }}
+            />
+            <motion.div
+              className="absolute bottom-1/4 right-1/3 w-[700px] h-[700px] bg-gradient-radial from-blue-500/15 via-blue-500/5 to-transparent rounded-full blur-3xl"
+              animate={{ 
+                x: [0, -80, 0],
+                y: [0, 50, 0],
+                scale: [1, 1.15, 1],
+                opacity: [0.2, 0.4, 0.2]
+              }}
+              transition={{ duration: 22, repeat: Infinity, ease: "easeInOut", delay: 3 }}
+            />
+          </div>
           
-          <div className="max-w-7xl mx-auto relative z-10">
-            <motion.div {...fadeInUp} className="text-center mb-6">
+          <div className="max-w-7xl mx-auto relative z-10 px-6">
+            <motion.div {...fadeInUp} className="text-center mb-12">
               <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-indigo-500/10 border border-indigo-500/20 mb-6">
                 <LineChart className="w-4 h-4 text-indigo-400" />
                 <span className="text-sm text-indigo-300 font-medium">For PE / VC / M&A Professionals</span>
@@ -167,28 +199,67 @@ export default function CapitalMarketsPage() {
                 The Hidden EBITDA Story
               </h1>
               
-              <p className="text-xl md:text-2xl text-gray-300 max-w-4xl mx-auto mb-8 leading-relaxed">
+              <p className="text-xl md:text-2xl text-gray-300 max-w-4xl mx-auto mb-12 leading-relaxed">
                 Your target's healthcare costs hide $2-4M in phantom spread. Post-close teams can't find it. 
                 Buyers discount your exit claims. <span className="text-indigo-300 font-semibold">Evidence-backed diligence changes everything.</span>
               </p>
             </motion.div>
 
             {/* Animated Metrics */}
-            <motion.div {...staggerContainer} className="grid grid-cols-2 md:grid-cols-4 gap-4 max-w-5xl mx-auto">
+            <motion.div {...staggerContainer} className="grid grid-cols-2 md:grid-cols-4 gap-6 max-w-5xl mx-auto">
               {[
-                { value: "23%", label: "Hidden Savings Found", subtext: "Avg per portfolio co", color: "indigo" },
-                { value: "$1.8M", label: "Avg Recovery", subtext: "Per diligence sprint", color: "cyan" },
-                { value: "3-5x", label: "EBITDA Multiple", subtext: "Premium on exits", color: "violet" },
-                { value: "48hr", label: "DD Turnaround", subtext: "Evidence pack ready", color: "blue" }
+                { value: "23%", label: "Hidden Savings Found", subtext: "Avg per portfolio co", color: "indigo", particles: 12 },
+                { value: "$1.8M", label: "Avg Recovery", subtext: "Per diligence sprint", color: "cyan", particles: 10 },
+                { value: "3-5x", label: "EBITDA Multiple", subtext: "Premium on exits", color: "violet", particles: 13 },
+                { value: "48hr", label: "DD Turnaround", subtext: "Evidence pack ready", color: "blue", particles: 11 }
               ].map((metric, i) => (
                 <motion.div
                   key={i}
                   {...fadeInUp}
-                  className={`p-6 rounded-2xl bg-gradient-to-br from-${metric.color}-950/40 to-transparent border border-${metric.color}-500/20 hover:border-${metric.color}-500/40 transition-all duration-300 hover:scale-105`}
+                  className="group relative p-6 rounded-2xl bg-gradient-to-br from-slate-900/80 to-black/80 border border-indigo-500/20 hover:border-indigo-500/40 transition-all duration-300"
+                  whileHover={{ scale: 1.05, y: -5 }}
                 >
+                  {/* Floating particles */}
+                  <div className="absolute inset-0 pointer-events-none overflow-hidden rounded-2xl">
+                    {Array.from({ length: metric.particles }).map((_, j) => (
+                      <motion.div
+                        key={j}
+                        className={`absolute w-1 h-1 bg-${metric.color}-400/60 rounded-full`}
+                        style={{
+                          left: `${Math.random() * 100}%`,
+                          top: `${Math.random() * 100}%`,
+                        }}
+                        animate={{
+                          y: [0, -25, 0],
+                          x: [0, Math.random() * 15 - 7.5, 0],
+                          opacity: [0, 1, 0],
+                          scale: [0, 1.3, 0],
+                        }}
+                        transition={{
+                          duration: 2.5 + Math.random() * 1.5,
+                          repeat: Infinity,
+                          delay: Math.random() * 2,
+                          ease: "easeInOut"
+                        }}
+                      />
+                    ))}
+                  </div>
+
                   <div className={`text-4xl font-bold text-${metric.color}-300 mb-2`}>{metric.value}</div>
                   <div className="text-sm font-semibold text-gray-300 mb-1">{metric.label}</div>
                   <div className="text-xs text-gray-500">{metric.subtext}</div>
+
+                  {/* Shimmer effect */}
+                  <motion.div
+                    className="absolute inset-0 opacity-0 group-hover:opacity-100 pointer-events-none rounded-2xl"
+                    initial={false}
+                  >
+                    <motion.div
+                      className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent"
+                      animate={{ x: ["-100%", "200%"] }}
+                      transition={{ duration: 1.5, repeat: Infinity, repeatDelay: 2 }}
+                    />
+                  </motion.div>
                 </motion.div>
               ))}
             </motion.div>
@@ -196,13 +267,27 @@ export default function CapitalMarketsPage() {
         </section>
 
         {/* Problem Statement */}
-        <section className="py-8 bg-gradient-to-b from-black to-zinc-950">
-          <div className="max-w-7xl mx-auto px-6">
+        <section className="py-20 bg-gradient-to-b from-black to-zinc-950 relative overflow-hidden">
+          {/* Background orbs */}
+          <div className="absolute inset-0 pointer-events-none">
+            <motion.div
+              className="absolute top-1/3 right-1/4 w-[700px] h-[700px] bg-gradient-radial from-red-500/15 via-red-500/5 to-transparent rounded-full blur-3xl"
+              animate={{ 
+                x: [0, -70, 0],
+                y: [0, 40, 0],
+                scale: [1, 1.1, 1],
+                opacity: [0.25, 0.4, 0.25]
+              }}
+              transition={{ duration: 19, repeat: Infinity, ease: "easeInOut" }}
+            />
+          </div>
+
+          <div className="max-w-7xl mx-auto px-6 relative">
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
-              className="text-center mb-6"
+              className="text-center mb-12"
             >
               <h2 className="text-4xl md:text-5xl font-bold text-indigo-100 mb-4">
                 The Four Risks Destroying Deal Value
@@ -217,15 +302,45 @@ export default function CapitalMarketsPage() {
                 <motion.div
                   key={index}
                   {...fadeInUp}
-                  className={`p-8 rounded-2xl bg-gradient-to-br from-${risk.color}-950/20 to-transparent border border-${risk.color}-500/20 hover:border-${risk.color}-500/40 transition-all duration-300 cursor-pointer`}
+                  className="group relative p-8 rounded-2xl bg-gradient-to-br from-slate-900/80 to-black/80 border border-slate-700/50 hover:border-indigo-500/40 transition-all duration-300 cursor-pointer backdrop-blur-xl"
                   onClick={() => setExpandedRisk(expandedRisk === index ? null : index)}
+                  whileHover={{ scale: 1.02 }}
                 >
-                  <div className="flex items-start gap-4 mb-6">
-                    <div className={`p-3 rounded-xl bg-${risk.color}-500/20`}>
+                  {/* Floating particles */}
+                  <div className="absolute inset-0 pointer-events-none overflow-hidden rounded-2xl">
+                    {Array.from({ length: risk.particles }).map((_, i) => (
+                      <motion.div
+                        key={i}
+                        className={`absolute w-1 h-1 bg-${risk.color}-400/60 rounded-full`}
+                        style={{
+                          left: `${Math.random() * 100}%`,
+                          top: `${Math.random() * 100}%`,
+                        }}
+                        animate={{
+                          y: [0, -25, 0],
+                          x: [0, Math.random() * 15 - 7.5, 0],
+                          opacity: [0, 1, 0],
+                          scale: [0, 1.3, 0],
+                        }}
+                        transition={{
+                          duration: 2.5 + Math.random() * 1.5,
+                          repeat: Infinity,
+                          delay: Math.random() * 2,
+                          ease: "easeInOut"
+                        }}
+                      />
+                    ))}
+                  </div>
+
+                  <div className="flex items-start gap-4 mb-6 relative">
+                    <motion.div 
+                      className={`p-3 rounded-xl bg-${risk.color}-500/20 group-hover:shadow-lg group-hover:shadow-${risk.color}-500/50 transition-all`}
+                      whileHover={{ scale: 1.1, rotate: 5 }}
+                    >
                       <risk.icon className={`w-6 h-6 text-${risk.color}-400`} />
-                    </div>
+                    </motion.div>
                     <div className="flex-1">
-                      <h3 className="text-2xl font-bold text-white mb-2">{risk.title}</h3>
+                      <h3 className="text-2xl font-bold text-white mb-2 group-hover:text-indigo-100 transition-colors">{risk.title}</h3>
                       <div className={`text-sm font-semibold ${risk.color === 'rose' ? 'text-rose-400' : risk.color === 'amber' ? 'text-amber-400' : risk.color === 'orange' ? 'text-orange-400' : 'text-red-400'}`}>
                         Click to expand
                       </div>
@@ -237,7 +352,7 @@ export default function CapitalMarketsPage() {
                       initial={{ opacity: 0, height: 0 }}
                       animate={{ opacity: 1, height: "auto" }}
                       exit={{ opacity: 0, height: 0 }}
-                      className="space-y-6"
+                      className="space-y-6 relative"
                     >
                       <div>
                         <div className="text-sm font-semibold text-gray-400 mb-2">THE REALITY:</div>
@@ -255,6 +370,22 @@ export default function CapitalMarketsPage() {
                       </div>
                     </motion.div>
                   )}
+
+                  {/* Shimmer effect */}
+                  <motion.div
+                    className="absolute inset-0 opacity-0 group-hover:opacity-100 pointer-events-none rounded-2xl"
+                    initial={false}
+                  >
+                    <motion.div
+                      className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent"
+                      animate={{ x: ["-100%", "200%"] }}
+                      transition={{ duration: 1.5, repeat: Infinity, repeatDelay: 2 }}
+                    />
+                  </motion.div>
+
+                  {/* Corner accents */}
+                  <div className={`absolute top-0 right-0 w-20 h-20 border-t-2 border-r-2 border-indigo-500/0 group-hover:border-indigo-500/60 rounded-tr-2xl transition-all duration-500`} />
+                  <div className={`absolute bottom-0 left-0 w-20 h-20 border-b-2 border-l-2 border-indigo-500/0 group-hover:border-indigo-500/60 rounded-bl-2xl transition-all duration-500`} />
                 </motion.div>
               ))}
             </motion.div>
@@ -262,9 +393,23 @@ export default function CapitalMarketsPage() {
         </section>
 
         {/* 48-Hour DD Workflow */}
-        <section className="py-8 px-6 bg-gradient-to-b from-zinc-950 to-black">
-          <div className="max-w-7xl mx-auto">
-            <motion.div {...fadeInUp} className="text-center mb-6">
+        <section className="py-20 px-6 bg-gradient-to-b from-zinc-950 to-black relative overflow-hidden">
+          {/* Background orbs */}
+          <div className="absolute inset-0 pointer-events-none">
+            <motion.div
+              className="absolute top-1/2 left-1/2 w-[800px] h-[800px] bg-gradient-radial from-indigo-500/15 via-indigo-500/5 to-transparent rounded-full blur-3xl"
+              animate={{ 
+                x: [0, 90, 0],
+                y: [0, -50, 0],
+                scale: [1, 1.2, 1],
+                opacity: [0.3, 0.5, 0.3]
+              }}
+              transition={{ duration: 21, repeat: Infinity, ease: "easeInOut" }}
+            />
+          </div>
+
+          <div className="max-w-7xl mx-auto relative">
+            <motion.div {...fadeInUp} className="text-center mb-12">
               <h2 className="text-4xl md:text-5xl font-bold text-indigo-100 mb-4">
                 48-Hour Diligence Workflow
               </h2>
@@ -278,21 +423,25 @@ export default function CapitalMarketsPage() {
                 <motion.div
                   key={index}
                   {...fadeInUp}
-                  className="p-6 rounded-2xl bg-gradient-to-br from-indigo-950/40 to-transparent border border-indigo-500/20 hover:border-indigo-500/40 transition-all duration-300 cursor-pointer relative overflow-hidden group"
+                  className="group relative p-6 rounded-2xl bg-gradient-to-br from-slate-900/80 to-black/80 border border-indigo-500/20 hover:border-indigo-500/40 transition-all duration-300 cursor-pointer overflow-hidden backdrop-blur-xl"
                   onClick={() => setExpandedWorkflow(expandedWorkflow === index ? null : index)}
+                  whileHover={{ scale: 1.03, y: -5 }}
                 >
                   <div className="absolute top-4 right-4 text-6xl font-bold text-indigo-500/10 group-hover:text-indigo-500/20 transition-colors">
                     {index + 1}
                   </div>
                   
                   <div className="relative z-10">
-                    <div className="inline-block p-3 rounded-xl bg-indigo-500/20 mb-4">
+                    <motion.div 
+                      className="inline-block p-3 rounded-xl bg-indigo-500/20 mb-4 group-hover:shadow-xl group-hover:shadow-indigo-500/50 transition-all"
+                      whileHover={{ scale: 1.1, rotate: 5 }}
+                    >
                       <phase.icon className="w-6 h-6 text-indigo-400" />
-                    </div>
+                    </motion.div>
                     
                     <div className="text-sm font-semibold text-indigo-400 mb-2">{phase.duration}</div>
-                    <h3 className="text-xl font-bold text-white mb-3">{phase.step}</h3>
-                    <p className="text-gray-400 text-sm mb-4 leading-relaxed">{phase.description}</p>
+                    <h3 className="text-xl font-bold text-white mb-3 group-hover:text-indigo-100 transition-colors">{phase.step}</h3>
+                    <p className="text-gray-400 text-sm mb-4 leading-relaxed group-hover:text-gray-300 transition-colors">{phase.description}</p>
 
                     {expandedWorkflow === index && (
                       <motion.div
@@ -312,6 +461,18 @@ export default function CapitalMarketsPage() {
                       </motion.div>
                     )}
                   </div>
+
+                  {/* Shimmer effect */}
+                  <motion.div
+                    className="absolute inset-0 opacity-0 group-hover:opacity-100 pointer-events-none rounded-2xl"
+                    initial={false}
+                  >
+                    <motion.div
+                      className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent"
+                      animate={{ x: ["-100%", "200%"] }}
+                      transition={{ duration: 1.5, repeat: Infinity, repeatDelay: 2 }}
+                    />
+                  </motion.div>
                 </motion.div>
               ))}
             </motion.div>
@@ -319,13 +480,27 @@ export default function CapitalMarketsPage() {
         </section>
 
         {/* Market Intelligence */}
-        <section className="py-8">
-          <div className="max-w-7xl mx-auto px-6">
+        <section className="py-20 relative overflow-hidden">
+          {/* Background orbs */}
+          <div className="absolute inset-0 pointer-events-none">
+            <motion.div
+              className="absolute bottom-1/4 left-1/4 w-[700px] h-[700px] bg-gradient-radial from-cyan-500/15 via-cyan-500/5 to-transparent rounded-full blur-3xl"
+              animate={{ 
+                x: [0, 60, 0],
+                y: [0, -30, 0],
+                scale: [1, 1.15, 1],
+                opacity: [0.2, 0.35, 0.2]
+              }}
+              transition={{ duration: 17, repeat: Infinity, ease: "easeInOut" }}
+            />
+          </div>
+
+          <div className="max-w-7xl mx-auto px-6 relative">
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
-              className="text-center mb-6"
+              className="text-center mb-12"
             >
               <h2 className="text-4xl md:text-5xl font-bold text-indigo-100 mb-4">
                 Portfolio Intelligence Suite
@@ -335,20 +510,50 @@ export default function CapitalMarketsPage() {
               </p>
             </motion.div>
 
-            <motion.div {...staggerContainer} className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+            <motion.div {...staggerContainer} className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
               {portfolioTools.map((tool, index) => (
                 <motion.div
                   key={index}
                   {...fadeInUp}
-                  className={`p-8 rounded-2xl bg-gradient-to-br from-${tool.color}-950/20 to-transparent border border-${tool.color}-500/20 hover:border-${tool.color}-500/40 transition-all duration-300 cursor-pointer`}
+                  className="group relative p-8 rounded-2xl bg-gradient-to-br from-slate-900/80 to-black/80 border border-slate-700/50 hover:border-indigo-500/40 transition-all duration-300 cursor-pointer backdrop-blur-xl"
                   onClick={() => setExpandedTool(expandedTool === index ? null : index)}
+                  whileHover={{ scale: 1.03 }}
                 >
-                  <div className={`inline-block p-3 rounded-xl bg-${tool.color}-500/20 mb-4`}>
-                    <tool.icon className={`w-6 h-6 text-${tool.color}-400`} />
+                  {/* Floating particles */}
+                  <div className="absolute inset-0 pointer-events-none overflow-hidden rounded-2xl">
+                    {Array.from({ length: tool.particles }).map((_, i) => (
+                      <motion.div
+                        key={i}
+                        className={`absolute w-1 h-1 bg-${tool.color}-400/60 rounded-full`}
+                        style={{
+                          left: `${Math.random() * 100}%`,
+                          top: `${Math.random() * 100}%`,
+                        }}
+                        animate={{
+                          y: [0, -25, 0],
+                          x: [0, Math.random() * 15 - 7.5, 0],
+                          opacity: [0, 1, 0],
+                          scale: [0, 1.3, 0],
+                        }}
+                        transition={{
+                          duration: 2.5 + Math.random() * 1.5,
+                          repeat: Infinity,
+                          delay: Math.random() * 2,
+                          ease: "easeInOut"
+                        }}
+                      />
+                    ))}
                   </div>
+
+                  <motion.div 
+                    className={`inline-block p-3 rounded-xl bg-${tool.color}-500/20 mb-4 group-hover:shadow-xl group-hover:shadow-${tool.color}-500/50 transition-all`}
+                    whileHover={{ scale: 1.1, rotate: 5 }}
+                  >
+                    <tool.icon className={`w-6 h-6 text-${tool.color}-400`} />
+                  </motion.div>
                   
-                  <h3 className="text-xl font-bold text-white mb-3">{tool.title}</h3>
-                  <p className="text-gray-400 text-sm mb-4 leading-relaxed">{tool.description}</p>
+                  <h3 className="text-xl font-bold text-white mb-3 group-hover:text-indigo-100 transition-colors">{tool.title}</h3>
+                  <p className="text-gray-400 text-sm mb-4 leading-relaxed group-hover:text-gray-300 transition-colors">{tool.description}</p>
 
                   {expandedTool === index && (
                     <motion.div
@@ -381,194 +586,22 @@ export default function CapitalMarketsPage() {
                       </div>
                     </motion.div>
                   )}
-                </motion.div>
-              ))}
-            </motion.div>
-          </div>
-        </section>
 
-        {/* Case Studies */}
-        <section className="py-8">
-          <div className="max-w-7xl mx-auto px-6">
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              className="text-center mb-6"
-            >
-              <h2 className="text-4xl md:text-5xl font-bold text-indigo-100 mb-4">
-                Before & After SiriusB iQ
-              </h2>
-              <p className="text-xl text-gray-400 max-w-3xl mx-auto">
-                Real portfolio transformation from opacity to evidence-backed governance
-              </p>
-            </motion.div>
+                  {/* Shimmer effect */}
+                  <motion.div
+                    className="absolute inset-0 opacity-0 group-hover:opacity-100 pointer-events-none rounded-2xl"
+                    initial={false}
+                  >
+                    <motion.div
+                      className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent"
+                      animate={{ x: ["-100%", "200%"] }}
+                      transition={{ duration: 1.5, repeat: Infinity, repeatDelay: 2 }}
+                    />
+                  </motion.div>
 
-            <motion.div {...staggerContainer} className="grid grid-cols-1 md:grid-cols-2 gap-4 max-w-6xl mx-auto">
-              <div className="p-8 rounded-2xl bg-gradient-to-br from-rose-950/20 to-transparent border border-rose-500/30">
-                <div className="flex items-center gap-3 mb-6">
-                  <div className="text-4xl">❌</div>
-                  <h3 className="text-2xl font-bold text-rose-300">Before SiriusB iQ</h3>
-                </div>
-                <div className="space-y-4 text-gray-400">
-                  <div className="flex items-start gap-3">
-                    <AlertTriangle className="w-5 h-5 text-rose-400 flex-shrink-0 mt-0.5" />
-                    <p>Healthcare costs tracked as single line item across all 8 companies. Zero visibility into actual spend components.</p>
-                  </div>
-                  <div className="flex items-start gap-3">
-                    <AlertTriangle className="w-5 h-5 text-rose-400 flex-shrink-0 mt-0.5" />
-                    <p>100-day plans promised "$12M in pharmacy optimization" but no owners, no tracking, no evidence.</p>
-                  </div>
-                  <div className="flex items-start gap-3">
-                    <AlertTriangle className="w-5 h-5 text-rose-400 flex-shrink-0 mt-0.5" />
-                    <p>CFO admits to IC: "We think we saved money but can't prove it. PBM won't share real data."</p>
-                  </div>
-                  <div className="flex items-start gap-3">
-                    <AlertTriangle className="w-5 h-5 text-rose-400 flex-shrink-0 mt-0.5" />
-                    <p>Exit buyer discounts optimization claims by 90%. Lost $31M in valuation premium.</p>
-                  </div>
-                </div>
-              </div>
-
-              <div className="p-8 rounded-2xl bg-gradient-to-br from-emerald-950/20 to-transparent border border-emerald-500/30">
-                <div className="flex items-center gap-3 mb-6">
-                  <div className="text-4xl">✓</div>
-                  <h3 className="text-2xl font-bold text-emerald-300">With SiriusB iQ</h3>
-                </div>
-                <div className="space-y-4 text-gray-400">
-                  <div className="flex items-start gap-3">
-                    <CheckCircle2 className="w-5 h-5 text-emerald-400 flex-shrink-0 mt-0.5" />
-                    <p>Portfolio-wide dashboard shows real-time pharmacy costs vs. NADAC benchmarks across all holdings.</p>
-                  </div>
-                  <div className="flex items-start gap-3">
-                    <CheckCircle2 className="w-5 h-5 text-emerald-400 flex-shrink-0 mt-0.5" />
-                    <p>$8.8M in documented savings across 8 companies with 285 evidence receipts per year per holding.</p>
-                  </div>
-                  <div className="flex items-start gap-3">
-                    <CheckCircle2 className="w-5 h-5 text-emerald-400 flex-shrink-0 mt-0.5" />
-                    <p>Every synergy has owner, status, and proof. Weekly 15min reconciliation per portfolio company.</p>
-                  </div>
-                  <div className="flex items-start gap-3">
-                    <CheckCircle2 className="w-5 h-5 text-emerald-400 flex-shrink-0 mt-0.5" />
-                    <p>Exit buyer adopts governance framework. Pays $37M premium for "audit-ready value creation discipline."</p>
-                  </div>
-                </div>
-              </div>
-            </motion.div>
-          </div>
-        </section>
-
-        {/* ROI Framework */}
-        <section className="py-8 bg-gradient-to-b from-black to-zinc-950">
-          <div className="max-w-7xl mx-auto px-6">
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              className="text-center mb-6"
-            >
-              <h2 className="text-4xl font-bold text-blue-100 mb-4">
-                Value Creation Framework
-              </h2>
-              <p className="text-xl text-gray-400 max-w-3xl mx-auto">
-                Quantified pathways to EBITDA improvement and enterprise value creation
-              </p>
-            </motion.div>
-
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-              {[
-                {
-                  title: "Direct Cost Reduction",
-                  metrics: [
-                    { label: "PBM Spread Recovery", value: "$2.8M - $4.2M annually" },
-                    { label: "Stop-Loss Premium Optimization", value: "12-18% reduction" },
-                    { label: "Claims Leakage Prevention", value: "$890K - $1.4M recovery" }
-                  ],
-                  multiplier: "3.2x EBITDA multiple = $12.8M - $19.2M value creation"
-                },
-                {
-                  title: "Operational Efficiency",
-                  metrics: [
-                    { label: "Benefits Admin Time Reduction", value: "340 hours/year" },
-                    { label: "Broker/Consultant Fees Elimination", value: "$180K - $280K" },
-                    { label: "Audit & Compliance Cost Reduction", value: "$125K - $175K" }
-                  ],
-                  multiplier: "Operational leverage = 15-22% margin improvement"
-                },
-                {
-                  title: "Risk Mitigation",
-                  metrics: [
-                    { label: "Fiduciary Breach Exposure", value: "$0 (eliminated)" },
-                    { label: "DOL Audit Risk Score", value: "89% reduction" },
-                    { label: "ERISA Compliance Coverage", value: "100% documented" }
-                  ],
-                  multiplier: "De-risked profile = 0.5-0.8x multiple expansion"
-                },
-                {
-                  title: "Strategic Positioning",
-                  metrics: [
-                    { label: "Benefits Cost Predictability", value: "±3% variance (vs ±12%)" },
-                    { label: "M&A Due Diligence Readiness", value: "Complete documentation" },
-                    { label: "Employee Benefits Satisfaction", value: "+18% NPS improvement" }
-                  ],
-                  multiplier: "Enhanced attractiveness to strategic & financial buyers"
-                }
-              ].map((framework, i) => (
-                <motion.div
-                  key={i}
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ delay: i * 0.1 }}
-                  className="p-8 rounded-2xl bg-gradient-to-br from-zinc-900 to-black border border-blue-500/20"
-                >
-                  <h3 className="text-2xl font-bold text-blue-100 mb-6">{framework.title}</h3>
-                  <div className="space-y-4 mb-6">
-                    {framework.metrics.map((metric, j) => (
-                      <div key={j} className="flex justify-between items-start">
-                        <span className="text-gray-400">{metric.label}</span>
-                        <span className="text-blue-100 font-semibold text-right ml-4">{metric.value}</span>
-                      </div>
-                    ))}
-                  </div>
-                  <div className="pt-6 border-t border-blue-500/20">
-                    <p className="text-sm text-gray-500 italic">{framework.multiplier}</p>
-                  </div>
-                </motion.div>
-              ))}
-            </div>
-          </div>
-        </section>
-
-        {/* Success Metrics Grid */}
-        <section className="py-8 px-6 bg-gradient-to-b from-zinc-950 to-black">
-          <div className="max-w-7xl mx-auto">
-            <motion.div {...fadeInUp} className="text-center mb-6">
-              <h2 className="text-4xl md:text-5xl font-bold text-indigo-100 mb-4">
-                Capital Markets Success Metrics
-              </h2>
-              <p className="text-xl text-gray-400 max-w-3xl mx-auto">
-                Evidence-backed diligence, controlled value realization, and audit-ready governance deliver measurable alpha
-              </p>
-            </motion.div>
-
-            <motion.div {...staggerContainer} className="grid grid-cols-2 md:grid-cols-3 gap-6">
-              {[
-                { value: "48hr", label: "DD Turnaround", subtext: "Evidence pack ready" },
-                { value: "$8.8M", label: "Portfolio Value", subtext: "8 companies avg" },
-                { value: "87%", label: "Realization Rate", subtext: "vs. 34% industry" },
-                { value: "285", label: "Receipts/Year", subtext: "Per holding" },
-                { value: "15min", label: "Weekly Review", subtext: "Per portfolio co" },
-                { value: "$37M", label: "Exit Premium", subtext: "Governance value add" }
-              ].map((metric, i) => (
-                <motion.div
-                  key={i}
-                  {...fadeInUp}
-                  className="p-8 rounded-2xl bg-gradient-to-br from-indigo-950/40 to-transparent border border-indigo-500/20 hover:border-indigo-500/40 transition-all duration-300 text-center hover:scale-105"
-                >
-                  <div className="text-5xl font-bold text-indigo-300 mb-3">{metric.value}</div>
-                  <div className="text-sm font-semibold text-gray-300 mb-1">{metric.label}</div>
-                  <div className="text-xs text-gray-500">{metric.subtext}</div>
+                  {/* Corner accents */}
+                  <div className={`absolute top-0 right-0 w-20 h-20 border-t-2 border-r-2 border-indigo-500/0 group-hover:border-indigo-500/60 rounded-tr-2xl transition-all duration-500`} />
+                  <div className={`absolute bottom-0 left-0 w-20 h-20 border-b-2 border-l-2 border-indigo-500/0 group-hover:border-indigo-500/60 rounded-bl-2xl transition-all duration-500`} />
                 </motion.div>
               ))}
             </motion.div>
@@ -576,98 +609,49 @@ export default function CapitalMarketsPage() {
         </section>
 
         {/* CTA Section */}
-        <section className="py-8 bg-gradient-to-b from-zinc-950 to-black">
-          <div className="max-w-7xl mx-auto px-6">
-            <motion.div {...fadeInUp} className="p-12 rounded-3xl bg-gradient-to-br from-indigo-950/40 to-transparent border border-indigo-500/20 relative overflow-hidden">
-              <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,_var(--tw-gradient-stops))] from-indigo-600/10 via-transparent to-transparent" />
-              
-              <div className="relative z-10 text-center mb-8">
-                <h3 className="text-4xl md:text-5xl font-bold text-indigo-100 mb-4">
-                  Get Your Premium DD Package
-                </h3>
-                <p className="text-xl text-gray-400 max-w-2xl mx-auto">
-                  Evidence-backed diligence playbook, normalized EBITDA template, and post-close value office framework
-                </p>
-              </div>
-
-              <form className="space-y-6 relative z-10 max-w-2xl mx-auto">
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  <input
-                    type="text"
-                    placeholder="Full Name"
-                    className="px-6 py-4 rounded-xl bg-black/50 border border-indigo-500/20 text-white placeholder-gray-500 focus:outline-none focus:border-indigo-500/40 transition-colors"
-                  />
-                  <input
-                    type="email"
-                    placeholder="Email"
-                    className="px-6 py-4 rounded-xl bg-black/50 border border-indigo-500/20 text-white placeholder-gray-500 focus:outline-none focus:border-indigo-500/40 transition-colors"
-                  />
-                </div>
-
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  <select className="px-6 py-4 rounded-xl bg-black/50 border border-indigo-500/20 text-white focus:outline-none focus:border-indigo-500/40 transition-colors">
-                    <option value="">Role</option>
-                    <option value="gp">GP / Managing Partner</option>
-                    <option value="principal">Principal / VP</option>
-                    <option value="analyst">Associate / Analyst</option>
-                    <option value="advisor">Advisor / Consultant</option>
-                  </select>
-                  <select className="px-6 py-4 rounded-xl bg-black/50 border border-indigo-500/20 text-white focus:outline-none focus:border-indigo-500/40 transition-colors">
-                    <option value="">AUM Range</option>
-                    <option value="sub500">Under $500M</option>
-                    <option value="500to2b">$500M - $2B</option>
-                    <option value="2to10b">$2B - $10B</option>
-                    <option value="over10b">Over $10B</option>
-                  </select>
-                </div>
-
-                <input
-                  type="text"
-                  placeholder="Firm Name"
-                  className="w-full px-6 py-4 rounded-xl bg-black/50 border border-indigo-500/20 text-white placeholder-gray-500 focus:outline-none focus:border-indigo-500/40 transition-colors"
-                />
-
-                <Link
-                  href="/request-demo"
-                  className="w-full inline-flex items-center justify-center gap-3 px-8 py-5 rounded-xl bg-gradient-to-r from-indigo-600 to-indigo-500 text-white text-lg font-semibold hover:from-indigo-500 hover:to-indigo-400 transition-all duration-300 shadow-lg shadow-indigo-500/20 hover:shadow-indigo-500/40 hover:scale-105"
-                >
-                  <TrendingUp className="w-5 h-5" />
-                  <span>Access Premium DD Package</span>
-                  <ArrowRight className="w-5 h-5" />
-                </Link>
-
-                <p className="text-xs text-gray-500 text-center">
-                  Includes: 48hr diligence playbook · Evidence pack template · Value office setup guide · Exit documentation framework
-                </p>
-              </form>
-            </motion.div>
+        <section className="py-20 bg-gradient-to-b from-zinc-950 to-black relative overflow-hidden">
+          {/* Background orbs */}
+          <div className="absolute inset-0 pointer-events-none">
+            <motion.div
+              className="absolute top-1/2 right-1/3 w-[600px] h-[600px] bg-gradient-radial from-indigo-500/20 via-indigo-500/5 to-transparent rounded-full blur-3xl"
+              animate={{ 
+                x: [0, -60, 0],
+                y: [0, 40, 0],
+                scale: [1, 1.1, 1],
+                opacity: [0.3, 0.5, 0.3]
+              }}
+              transition={{ duration: 16, repeat: Infinity, ease: "easeInOut" }}
+            />
           </div>
-        </section>
 
-        {/* Final CTA */}
-        <section className="py-8 px-6 bg-gradient-to-b from-zinc-950 to-black">
-          <div className="max-w-4xl mx-auto text-center">
+          <div className="max-w-4xl mx-auto px-6 text-center relative">
             <motion.div {...fadeInUp}>
               <h3 className="text-4xl md:text-5xl font-bold text-indigo-100 mb-6">
                 Ready to De-Risk Your Next Deal?
               </h3>
-              <p className="text-xl text-gray-400 mb-8 max-w-2xl mx-auto">
+              <p className="text-xl text-gray-400 mb-10 max-w-2xl mx-auto">
                 Schedule a 48-hour diligence sprint briefing and see how evidence-backed healthcare analysis transforms deal confidence
               </p>
               <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                <Link
-                  href="/request-demo"
-                  className="inline-flex items-center justify-center gap-3 px-8 py-4 rounded-xl bg-gradient-to-r from-indigo-600 to-indigo-500 text-white text-lg font-semibold hover:from-indigo-500 hover:to-indigo-400 transition-all duration-300 shadow-lg shadow-indigo-500/20 hover:shadow-indigo-500/40 hover:scale-105"
-                >
-                  <Users className="w-5 h-5" />
-                  <span>Schedule DD Briefing</span>
+                <Link href="/request-demo">
+                  <motion.button
+                    className="inline-flex items-center justify-center gap-3 px-10 py-5 rounded-xl bg-gradient-to-r from-indigo-600 to-indigo-500 text-white text-lg font-semibold shadow-2xl shadow-indigo-500/40"
+                    whileHover={{ scale: 1.05, boxShadow: "0 30px 60px -10px rgba(99, 102, 241, 0.6)" }}
+                    whileTap={{ scale: 0.95 }}
+                  >
+                    <Users className="w-5 h-5" />
+                    <span>Schedule DD Briefing</span>
+                  </motion.button>
                 </Link>
-                <Link
-                  href="/investor"
-                  className="inline-flex items-center justify-center gap-3 px-8 py-4 rounded-xl border border-indigo-500/30 bg-indigo-500/5 hover:bg-indigo-500/10 text-indigo-100 text-lg font-semibold transition-all duration-300 hover:scale-105"
-                >
-                  <FileText className="w-5 h-5" />
-                  <span>View Investor Deck</span>
+                <Link href="/investor">
+                  <motion.button
+                    className="inline-flex items-center justify-center gap-3 px-10 py-5 rounded-xl border border-indigo-500/30 bg-indigo-500/5 hover:bg-indigo-500/10 text-indigo-100 text-lg font-semibold"
+                    whileHover={{ scale: 1.05, backgroundColor: "rgba(99, 102, 241, 0.15)" }}
+                    whileTap={{ scale: 0.95 }}
+                  >
+                    <FileText className="w-5 h-5" />
+                    <span>View Investor Deck</span>
+                  </motion.button>
                 </Link>
               </div>
             </motion.div>
@@ -677,5 +661,26 @@ export default function CapitalMarketsPage() {
         <Footer />
       </div>
     </>
+  );
+}
+
+function HelpCircleIcon(props: React.SVGProps<SVGSVGElement>) {
+  return (
+    <svg
+      {...props}
+      xmlns="http://www.w3.org/2000/svg"
+      width="24"
+      height="24"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    >
+      <circle cx="12" cy="12" r="10" />
+      <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3" />
+      <path d="M12 17h.01" />
+    </svg>
   );
 }

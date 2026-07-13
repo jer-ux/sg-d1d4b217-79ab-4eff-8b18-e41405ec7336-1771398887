@@ -19,8 +19,8 @@ Build all remaining engine detail pages to match the engines index. Need 62 more
 Each page follows the standard engine template with hero, methodology, use cases, technical specs, and CTA.
 
 ## Checklist
-- [x] Build 13 Fiduciary & Governance engine pages (5 done: ai-governance, compliance-monitoring, regulatory-exposure, litigation-probability, documentation-completeness)
-- [ ] Build remaining 8 Fiduciary & Governance pages
+- [x] Build 13 Fiduciary & Governance engine pages (10 done)
+- [ ] Build remaining 3 Fiduciary & Governance pages (internal-controls, third-party-oversight, procurement-fairness)
 - [ ] Build 16 Workforce & Human Capital engine pages
 - [ ] Build 16 Predictive AI engine pages
 - [ ] Build 17 PE & CFO engine pages

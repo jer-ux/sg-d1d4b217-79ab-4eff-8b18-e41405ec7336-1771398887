@@ -12,11 +12,6 @@ import {
 import Nav from "@/components/Nav";
 import Footer from "@/components/Footer";
 import Image from "next/image";
-import { Hero3DBackground } from "@/components/premium/Hero3DBackground";
-import { Interactive3DCard } from "@/components/premium/Interactive3DCard";
-import { NeonGlow } from "@/components/premium/NeonGlow";
-import { PremiumBackground } from "@/components/premium/PremiumBackground";
-import { AnimatedIcon3D } from "@/components/premium/AnimatedIcon3D";
 
 // Trust badges component with animation
 const TrustRibbon = () => (
@@ -128,7 +123,6 @@ const ActuarialReinsuranceOptimizer = () => {
     >
       <div className="absolute top-0 right-0 p-32 bg-emerald-500/5 rounded-full blur-3xl transition-all duration-700 group-hover:bg-emerald-500/10" />
       <div className="absolute bottom-0 left-0 p-32 bg-blue-500/5 rounded-full blur-3xl transition-all duration-700 group-hover:bg-blue-500/10" />
-      <NeonGlow className="absolute inset-0 opacity-20" />
       
       <div className="relative z-10">
         <div className="flex flex-col md:flex-row items-start md:items-center justify-between mb-8 pb-4 border-b border-slate-800">
@@ -339,7 +333,7 @@ const MethodologyPipeline = () => {
                 className="hidden md:block absolute top-8 left-[60%] w-full h-[2px] bg-gradient-to-r from-emerald-500/50 to-transparent z-0 origin-left"
               />
             )}
-            <Interactive3DCard className="relative z-10 bg-slate-900 border border-slate-800 p-6 rounded-2xl h-full hover:border-emerald-500/30 transition-colors group">
+            <div className="relative z-10 bg-slate-900 border border-slate-800 p-6 rounded-2xl h-full hover:border-emerald-500/30 transition-colors group">
               <motion.div
                 whileHover={{ rotate: 360, scale: 1.1 }}
                 transition={{ duration: 0.6 }}
@@ -349,7 +343,7 @@ const MethodologyPipeline = () => {
               </motion.div>
               <h4 className="text-lg font-bold text-white mb-3">{step.title}</h4>
               <p className="text-sm text-slate-400 leading-relaxed">{step.desc}</p>
-            </Interactive3DCard>
+            </div>
           </motion.div>
         ))}
       </div>
@@ -366,7 +360,10 @@ const FeaturedCaseStudy = () => (
     transition={{ duration: 0.6 }}
     className="bg-gradient-to-r from-emerald-950/40 to-blue-950/40 border border-emerald-500/30 rounded-3xl p-8 md:p-12 relative overflow-hidden"
   >
-    <PremiumBackground className="absolute inset-0 opacity-30" />
+    <div className="absolute inset-0 opacity-30">
+      <div className="absolute top-0 left-0 w-[500px] h-[500px] bg-emerald-500/20 rounded-full blur-3xl animate-pulse" />
+      <div className="absolute bottom-0 right-0 w-[600px] h-[600px] bg-blue-500/20 rounded-full blur-3xl animate-pulse" style={{ animationDelay: '1s' }} />
+    </div>
     <div className="grid md:grid-cols-2 gap-12 items-center relative z-10">
       <motion.div
         initial={{ opacity: 0, x: -30 }}
@@ -908,7 +905,10 @@ export default function ActuarialBenefitsPage() {
         <Nav />
 
         <section className="relative pt-32 pb-20 overflow-hidden border-b border-emerald-900/30">
-          <Hero3DBackground />
+          <div className="absolute inset-0">
+            <div className="absolute top-0 left-0 w-[800px] h-[800px] bg-emerald-500/10 rounded-full blur-3xl animate-pulse" />
+            <div className="absolute bottom-0 right-0 w-[600px] h-[600px] bg-blue-500/10 rounded-full blur-3xl animate-pulse" style={{ animationDelay: '2s' }} />
+          </div>
           <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-emerald-900/20 via-[#020617] to-[#020617]" />
           <div className="absolute inset-0 bg-[url('/grid.svg')] bg-center [mask-image:linear-gradient(180deg,white,rgba(255,255,255,0))]" />
           
@@ -1003,7 +1003,10 @@ export default function ActuarialBenefitsPage() {
         <TrustRibbon />
 
         <section className="py-24 bg-[#020617] border-b border-slate-800 relative overflow-hidden">
-          <PremiumBackground className="absolute inset-0 opacity-20" />
+          <div className="absolute inset-0 opacity-20">
+            <div className="absolute top-0 left-0 w-[500px] h-[500px] bg-purple-500/20 rounded-full blur-3xl animate-pulse" />
+            <div className="absolute bottom-0 right-0 w-[400px] h-[400px] bg-blue-500/20 rounded-full blur-3xl animate-pulse" style={{ animationDelay: '1.5s' }} />
+          </div>
           <div className="max-w-7xl mx-auto px-6 relative z-10">
             <div className="grid lg:grid-cols-12 gap-12 items-center mb-12">
               <motion.div
@@ -1081,7 +1084,10 @@ export default function ActuarialBenefitsPage() {
         </section>
 
         <section className="py-24 bg-slate-950 relative overflow-hidden">
-          <PremiumBackground className="absolute inset-0 opacity-10" />
+          <div className="absolute inset-0 opacity-10">
+            <div className="absolute top-1/4 left-0 w-[600px] h-[600px] bg-emerald-500/20 rounded-full blur-3xl animate-pulse" />
+            <div className="absolute bottom-1/4 right-0 w-[500px] h-[500px] bg-blue-500/20 rounded-full blur-3xl animate-pulse" style={{ animationDelay: '1s' }} />
+          </div>
           <div className="max-w-7xl mx-auto px-6 relative z-10">
             <motion.div
               initial={{ opacity: 0, y: 20 }}
@@ -1109,7 +1115,9 @@ export default function ActuarialBenefitsPage() {
                   className="bg-slate-900 border border-slate-800 rounded-3xl p-8 text-left hover:border-emerald-500/50 transition-all group relative overflow-hidden"
                 >
                   <div className="absolute inset-0 bg-gradient-to-br from-emerald-500/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
-                  <NeonGlow className="absolute inset-0 opacity-0 group-hover:opacity-20 transition-opacity" />
+                  <div className="absolute inset-0 opacity-0 group-hover:opacity-20 transition-opacity">
+                    <div className="absolute top-0 right-0 w-[200px] h-[200px] bg-emerald-500/30 rounded-full blur-2xl" />
+                  </div>
                   <div className="relative z-10">
                     <motion.div
                       whileHover={{ rotate: 360 }}

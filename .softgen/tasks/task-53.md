@@ -20,15 +20,15 @@ Each page follows the standard engine template with hero, methodology, use cases
 
 ## Checklist
 - [x] Build 13 Fiduciary & Governance engine pages (complete)
-- [ ] Build 16 Workforce & Human Capital engine pages (2/16 done: presenteeism-impact, productivity-loss-valuation)
+- [ ] Build 16 Workforce & Human Capital engine pages (5/16 done: presenteeism-impact, productivity-loss-valuation, workforce-demographics, disability-forecasting, behavioral-health-utilization)
 - [ ] Build 16 Predictive AI engine pages
 - [ ] Build 17 PE & CFO engine pages
 - [ ] Verify all links from engines index work
 - [ ] Run error check on completion
 
 ## Progress
-- **13/62 complete** - All Fiduciary & Governance engines built
-- Working on Workforce & Human Capital engines next (14 more to go)
+- **18/62 complete** - 13 Fiduciary + 5 Workforce engines built
+- Working on remaining 11 Workforce engines, then Predictive AI and PE & CFO
 
 ## Acceptance
 - All 62 engine detail pages exist and are accessible

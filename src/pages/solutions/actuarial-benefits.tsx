@@ -12,33 +12,41 @@ import {
 import Nav from "@/components/Nav";
 import Footer from "@/components/Footer";
 import Image from "next/image";
+import { Hero3DBackground } from "@/components/premium/Hero3DBackground";
+import { Interactive3DCard } from "@/components/premium/Interactive3DCard";
+import { NeonGlow } from "@/components/premium/NeonGlow";
+import { PremiumBackground } from "@/components/premium/PremiumBackground";
+import { AnimatedIcon3D } from "@/components/premium/AnimatedIcon3D";
 
-// Trust badges component
+// Trust badges component with animation
 const TrustRibbon = () => (
-  <div className="border-y border-emerald-950/30 bg-emerald-950/10 py-6 overflow-hidden">
+  <motion.div 
+    initial={{ opacity: 0, y: 20 }}
+    animate={{ opacity: 1, y: 0 }}
+    transition={{ duration: 0.6, delay: 0.3 }}
+    className="border-y border-emerald-950/30 bg-emerald-950/10 py-6 overflow-hidden backdrop-blur-sm"
+  >
     <div className="max-w-7xl mx-auto px-6 flex flex-wrap justify-center items-center gap-8 md:gap-16 text-emerald-500/80">
-      <div className="flex items-center gap-2">
-        <Shield className="w-5 h-5" />
-        <span className="font-semibold tracking-wider text-sm">SOC 2 TYPE II</span>
-      </div>
-      <div className="flex items-center gap-2">
-        <Scale className="w-5 h-5" />
-        <span className="font-semibold tracking-wider text-sm">AAA COMPLIANT</span>
-      </div>
-      <div className="flex items-center gap-2">
-        <Activity className="w-5 h-5" />
-        <span className="font-semibold tracking-wider text-sm">HIPAA SECURE</span>
-      </div>
-      <div className="flex items-center gap-2">
-        <Award className="w-5 h-5" />
-        <span className="font-semibold tracking-wider text-sm">SOA ALIGNED</span>
-      </div>
-      <div className="flex items-center gap-2">
-        <Database className="w-5 h-5" />
-        <span className="font-semibold tracking-wider text-sm">ERISA SPECIALISTS</span>
-      </div>
+      {[
+        { icon: Shield, text: "SOC 2 TYPE II" },
+        { icon: Scale, text: "AAA COMPLIANT" },
+        { icon: Activity, text: "HIPAA SECURE" },
+        { icon: Award, text: "SOA ALIGNED" },
+        { icon: Database, text: "ERISA SPECIALISTS" }
+      ].map((badge, idx) => (
+        <motion.div
+          key={idx}
+          initial={{ opacity: 0, x: -20 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ duration: 0.5, delay: 0.4 + idx * 0.1 }}
+          className="flex items-center gap-2"
+        >
+          <badge.icon className="w-5 h-5" />
+          <span className="font-semibold tracking-wider text-sm">{badge.text}</span>
+        </motion.div>
+      ))}
     </div>
-  </div>
+  </motion.div>
 );
 
 // Advanced Actuarial Stop-Loss Reinsurance & Risk Optimizer
@@ -46,8 +54,8 @@ const ActuarialReinsuranceOptimizer = () => {
   const [mounted, setMounted] = useState(false);
   const [lives, setLives] = useState(12000);
   const [trend, setTrend] = useState(8.5);
-  const [islDeductible, setIslDeductible] = useState(150000); // Individual Stop-Loss Deductible
-  const [aslCorridor, setAslCorridor] = useState(125); // Aggregate Stop-Loss Corridor %
+  const [islDeductible, setIslDeductible] = useState(150000);
+  const [aslCorridor, setAslCorridor] = useState(125);
   const [simulating, setSimulating] = useState(false);
   const [simRunCount, setSimRunCount] = useState(0);
 
@@ -55,38 +63,31 @@ const ActuarialReinsuranceOptimizer = () => {
     setMounted(true);
   }, []);
 
-  // Compute Actuarial Risk Metrics
   const metrics = useMemo(() => {
-    const baseClaimsPerLife = 10400; // Expected claims per life before trend
+    const baseClaimsPerLife = 10400;
     const expectedBaseClaims = lives * baseClaimsPerLife * (1 + trend / 100);
     
-    // Stop-loss pricing factor models (leveraged from actuarial tables)
     const deductibleRatio = islDeductible / 150000;
     const islPremiumPerLife = (1120 / Math.pow(deductibleRatio, 1.25)) * (1 + trend / 150);
     const islPremiumTotal = lives * islPremiumPerLife;
 
-    // Aggregate premium (typically smaller, based on corridor width)
     const aslPremiumPerLife = (180 / Math.pow(aslCorridor / 100, 2.5)) * (1 + trend / 200);
     const aslPremiumTotal = lives * aslPremiumPerLife;
 
     const totalReinsurancePremium = islPremiumTotal + aslPremiumTotal;
     
-    // Probability of individual deductible breach (exponential decay curve model)
     const breachProbability = Math.min(99, Math.max(1.5, 95 * Math.exp(-islDeductible / 110000)));
 
-    // Maximum Probable Loss (99% Value-at-Risk)
-    const volatilitySigma = 0.15 / Math.sqrt(lives / 1000); // Law of large numbers reduces relative volatility
+    const volatilitySigma = 0.15 / Math.sqrt(lives / 1000);
     const zScore99 = 2.326;
     const valueAtRisk99 = expectedBaseClaims * (1 + zScore99 * volatilitySigma);
     
-    // Optimization recommendation
     const recommendedDeductible = lives < 3000 ? 75000 : lives < 10000 ? 150000 : lives < 25000 ? 250000 : 450000;
     const deductibleDeviation = Math.abs(islDeductible - recommendedDeductible);
     const optimizationScore = Math.max(10, Math.round(100 - (deductibleDeviation / recommendedDeductible) * 60));
 
-    // Platform Interventions impact (reduces expected base claims and reinsurance volatility)
-    const interventionSavings = expectedBaseClaims * 0.124; // 12.4% reduction
-    const optimizedPremiumSavings = totalReinsurancePremium * 0.182; // 18.2% lower reinsurance premiums through validated risk profiles
+    const interventionSavings = expectedBaseClaims * 0.124;
+    const optimizedPremiumSavings = totalReinsurancePremium * 0.182;
 
     return {
       expectedBaseClaims,
@@ -119,9 +120,15 @@ const ActuarialReinsuranceOptimizer = () => {
   }
 
   return (
-    <div className="bg-gradient-to-br from-slate-900 to-slate-950 border border-emerald-500/20 rounded-3xl p-8 shadow-2xl relative overflow-hidden">
-      <div className="absolute top-0 right-0 p-32 bg-emerald-500/5 rounded-full blur-3xl" />
-      <div className="absolute bottom-0 left-0 p-32 bg-blue-500/5 rounded-full blur-3xl" />
+    <motion.div
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.6 }}
+      className="bg-gradient-to-br from-slate-900 to-slate-950 border border-emerald-500/20 rounded-3xl p-8 shadow-2xl relative overflow-hidden group"
+    >
+      <div className="absolute top-0 right-0 p-32 bg-emerald-500/5 rounded-full blur-3xl transition-all duration-700 group-hover:bg-emerald-500/10" />
+      <div className="absolute bottom-0 left-0 p-32 bg-blue-500/5 rounded-full blur-3xl transition-all duration-700 group-hover:bg-blue-500/10" />
+      <NeonGlow className="absolute inset-0 opacity-20" />
       
       <div className="relative z-10">
         <div className="flex flex-col md:flex-row items-start md:items-center justify-between mb-8 pb-4 border-b border-slate-800">
@@ -139,100 +146,54 @@ const ActuarialReinsuranceOptimizer = () => {
             </h3>
             <p className="text-slate-400 text-sm">Simulate portfolio reinsurance, attachment thresholds, and risk pricing.</p>
           </div>
-          <button
+          <motion.button
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
             onClick={triggerSimulation}
             disabled={simulating}
             className="mt-4 md:mt-0 px-5 py-2.5 bg-emerald-600 hover:bg-emerald-500 text-white rounded-xl text-sm font-bold tracking-wide transition-all shadow-[0_0_15px_rgba(16,185,129,0.2)] hover:shadow-[0_0_25px_rgba(16,185,129,0.4)] disabled:opacity-50 flex items-center gap-2"
           >
             <RefreshCw className={`w-4 h-4 ${simulating ? "animate-spin" : ""}`} />
             {simulating ? "Simulating..." : `Run 10k Monte Carlo Trials ${simRunCount > 0 ? `(${simRunCount})` : ""}`}
-          </button>
+          </motion.button>
         </div>
 
         <div className="grid lg:grid-cols-12 gap-8">
-          {/* Controls Panel */}
           <div className="lg:col-span-5 space-y-6">
-            <div>
-              <div className="flex justify-between text-sm mb-2">
-                <span className="text-slate-300 font-medium">Covered Lives</span>
-                <span className="text-emerald-400 font-mono font-bold">{lives.toLocaleString()}</span>
-              </div>
-              <input 
-                type="range" 
-                min="500" 
-                max="50000" 
-                step="500"
-                value={lives}
-                onChange={(e) => setLives(parseInt(e.target.value))}
-                className="w-full h-1.5 bg-slate-800 rounded-lg appearance-none cursor-pointer accent-emerald-500"
-              />
-              <div className="flex justify-between text-[10px] text-slate-500 mt-1">
-                <span>500 lives</span>
-                <span>50,000 lives</span>
-              </div>
-            </div>
+            {[
+              { label: "Covered Lives", value: lives, setter: setLives, min: 500, max: 50000, step: 500, format: (v: number) => v.toLocaleString() },
+              { label: "YoY Raw Medical Trend", value: trend, setter: setTrend, min: 3, max: 18, step: 0.5, format: (v: number) => `${v.toFixed(1)}%` },
+              { label: "Individual Stop-Loss (ISL)", value: islDeductible, setter: setIslDeductible, min: 50000, max: 500000, step: 10000, format: (v: number) => `$${v.toLocaleString()}` },
+              { label: "Aggregate Corridor (ASL)", value: aslCorridor, setter: setAslCorridor, min: 110, max: 150, step: 5, format: (v: number) => `${v}%` }
+            ].map((control, idx) => (
+              <motion.div
+                key={idx}
+                initial={{ opacity: 0, x: -20 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ duration: 0.5, delay: idx * 0.1 }}
+              >
+                <div className="flex justify-between text-sm mb-2">
+                  <span className="text-slate-300 font-medium">{control.label}</span>
+                  <span className="text-emerald-400 font-mono font-bold">{control.format(control.value)}</span>
+                </div>
+                <input 
+                  type="range" 
+                  min={control.min}
+                  max={control.max}
+                  step={control.step}
+                  value={control.value}
+                  onChange={(e) => control.setter(parseFloat(e.target.value))}
+                  className="w-full h-1.5 bg-slate-800 rounded-lg appearance-none cursor-pointer accent-emerald-500"
+                />
+              </motion.div>
+            ))}
 
-            <div>
-              <div className="flex justify-between text-sm mb-2">
-                <span className="text-slate-300 font-medium">YoY Raw Medical Trend</span>
-                <span className="text-emerald-400 font-mono font-bold">{trend.toFixed(1)}%</span>
-              </div>
-              <input 
-                type="range" 
-                min="3" 
-                max="18" 
-                step="0.5"
-                value={trend}
-                onChange={(e) => setTrend(parseFloat(e.target.value))}
-                className="w-full h-1.5 bg-slate-800 rounded-lg appearance-none cursor-pointer accent-emerald-500"
-              />
-              <div className="flex justify-between text-[10px] text-slate-500 mt-1">
-                <span>3.0% (Low)</span>
-                <span>18.0% (Hyper-inflation)</span>
-              </div>
-            </div>
-
-            <div>
-              <div className="flex justify-between text-sm mb-2">
-                <span className="text-slate-300 font-medium">Individual Stop-Loss (ISL)</span>
-                <span className="text-emerald-400 font-mono font-bold">${islDeductible.toLocaleString()}</span>
-              </div>
-              <input 
-                type="range" 
-                min="50000" 
-                max="500000" 
-                step="10000"
-                value={islDeductible}
-                onChange={(e) => setIslDeductible(parseInt(e.target.value))}
-                className="w-full h-1.5 bg-slate-800 rounded-lg appearance-none cursor-pointer accent-emerald-500"
-              />
-              <div className="flex justify-between text-[10px] text-slate-500 mt-1">
-                <span>$50,000 Deductible</span>
-                <span>$500,000 Deductible</span>
-              </div>
-            </div>
-
-            <div>
-              <div className="flex justify-between text-sm mb-2">
-                <span className="text-slate-300 font-medium">Aggregate Corridor (ASL)</span>
-                <span className="text-emerald-400 font-mono font-bold">{aslCorridor}%</span>
-              </div>
-              <input 
-                type="range" 
-                min="110" 
-                max="150" 
-                step="5"
-                value={aslCorridor}
-                onChange={(e) => setAslCorridor(parseInt(e.target.value))}
-                className="w-full h-1.5 bg-slate-800 rounded-lg appearance-none cursor-pointer accent-emerald-500"
-              />
-              <div className="flex justify-between text-[10px] text-slate-500 mt-1">
-                <span>110% (Tight protection)</span>
-                <span>150% (High retention)</span>
-              </div>
-            </div>
-
-            <div className="p-4 bg-emerald-950/20 border border-emerald-900/30 rounded-xl space-y-2">
+            <motion.div
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: 0.4 }}
+              className="p-4 bg-emerald-950/20 border border-emerald-900/30 rounded-xl space-y-2 backdrop-blur-sm"
+            >
               <div className="text-xs font-semibold text-emerald-400 uppercase tracking-wider flex items-center gap-1.5">
                 <Shield className="w-3.5 h-3.5" /> Reinsurance Suggestion
               </div>
@@ -245,60 +206,53 @@ const ActuarialReinsuranceOptimizer = () => {
                   {metrics.optimizationScore}%
                 </span>
               </div>
-            </div>
+            </motion.div>
           </div>
 
-          {/* Outputs / Visualizations */}
           <div className="lg:col-span-7 flex flex-col justify-between space-y-6">
             <div className="grid md:grid-cols-2 gap-4">
-              <div className="p-5 bg-slate-950/80 border border-slate-800 rounded-2xl relative overflow-hidden">
-                <div className="absolute top-0 right-0 p-8 bg-blue-500/5 rounded-full blur-xl" />
-                <span className="text-xs text-slate-400 uppercase tracking-wider font-semibold block mb-1">Expected Annual claims</span>
-                <span className="text-3xl font-bold text-white font-mono block">
-                  ${(metrics.expectedBaseClaims / 1000000).toFixed(2)}M
-                </span>
-                <span className="text-[10px] text-slate-500 block mt-1">
-                  Average expected claims before stop-loss
-                </span>
-              </div>
-
-              <div className="p-5 bg-slate-950/80 border border-slate-800 rounded-2xl relative overflow-hidden">
-                <div className="absolute top-0 right-0 p-8 bg-emerald-500/5 rounded-full blur-xl" />
-                <span className="text-xs text-slate-400 uppercase tracking-wider font-semibold block mb-1">Total Reinsurance Premium</span>
-                <span className="text-3xl font-bold text-emerald-400 font-mono block">
-                  ${(metrics.totalReinsurancePremium / 1000).toFixed(0)}K
-                </span>
-                <span className="text-[10px] text-slate-500 block mt-1">
-                  ISL (${(metrics.islPremiumTotal / 1000).toFixed(0)}k) + ASL (${(metrics.aslPremiumTotal / 1000).toFixed(0)}k)
-                </span>
-              </div>
-
-              <div className="p-5 bg-slate-950/80 border border-slate-800 rounded-2xl">
-                <span className="text-xs text-slate-400 uppercase tracking-wider font-semibold block mb-1">Deductible Breach Probability</span>
-                <span className="text-2xl font-bold text-white font-mono block">
-                  {metrics.breachProbability.toFixed(1)}%
-                </span>
-                <div className="w-full bg-slate-800 h-1.5 rounded-full mt-2 overflow-hidden">
-                  <div 
-                    className="bg-emerald-500 h-full rounded-full transition-all duration-500" 
-                    style={{ width: `${metrics.breachProbability}%` }} 
-                  />
-                </div>
-              </div>
-
-              <div className="p-5 bg-slate-950/80 border border-slate-800 rounded-2xl">
-                <span className="text-xs text-slate-400 uppercase tracking-wider font-semibold block mb-1">99% Value-at-Risk (VaR)</span>
-                <span className="text-2xl font-bold text-rose-400 font-mono block">
-                  ${(metrics.valueAtRisk99 / 1000000).toFixed(2)}M
-                </span>
-                <span className="text-[10px] text-rose-400/60 block mt-1">
-                  Max probable spend in worst-case year
-                </span>
-              </div>
+              {[
+                { label: "Expected Annual Claims", value: `$${(metrics.expectedBaseClaims / 1000000).toFixed(2)}M`, desc: "Average expected claims before stop-loss", color: "blue" },
+                { label: "Total Reinsurance Premium", value: `$${(metrics.totalReinsurancePremium / 1000).toFixed(0)}K`, desc: `ISL ($${(metrics.islPremiumTotal / 1000).toFixed(0)}k) + ASL ($${(metrics.aslPremiumTotal / 1000).toFixed(0)}k)`, color: "emerald" },
+                { label: "Deductible Breach Probability", value: `${metrics.breachProbability.toFixed(1)}%`, desc: "Likelihood of exceeding deductible", color: "amber", showBar: true },
+                { label: "99% Value-at-Risk (VaR)", value: `$${(metrics.valueAtRisk99 / 1000000).toFixed(2)}M`, desc: "Max probable spend in worst-case year", color: "rose" }
+              ].map((metric, idx) => (
+                <motion.div
+                  key={idx}
+                  initial={{ opacity: 0, scale: 0.9 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  transition={{ duration: 0.4, delay: 0.5 + idx * 0.1 }}
+                  whileHover={{ scale: 1.05, y: -5 }}
+                  className="p-5 bg-slate-950/80 border border-slate-800 rounded-2xl relative overflow-hidden group cursor-default"
+                >
+                  <div className={`absolute top-0 right-0 p-8 bg-${metric.color}-500/5 rounded-full blur-xl group-hover:bg-${metric.color}-500/10 transition-all duration-300`} />
+                  <span className="text-xs text-slate-400 uppercase tracking-wider font-semibold block mb-1 relative z-10">{metric.label}</span>
+                  <span className={`text-3xl font-bold text-${metric.color === "emerald" ? "emerald-400" : metric.color === "rose" ? "rose-400" : "white"} font-mono block relative z-10`}>
+                    {metric.value}
+                  </span>
+                  <span className={`text-[10px] text-slate-500 block mt-1 relative z-10`}>
+                    {metric.desc}
+                  </span>
+                  {metric.showBar && (
+                    <div className="w-full bg-slate-800 h-1.5 rounded-full mt-2 overflow-hidden relative z-10">
+                      <motion.div
+                        initial={{ width: 0 }}
+                        animate={{ width: `${metrics.breachProbability}%` }}
+                        transition={{ duration: 1, delay: 0.8 }}
+                        className="bg-emerald-500 h-full rounded-full"
+                      />
+                    </div>
+                  )}
+                </motion.div>
+              ))}
             </div>
 
-            {/* Actuarial Platform Synergies */}
-            <div className="p-6 bg-gradient-to-r from-emerald-950/20 to-blue-950/20 border border-emerald-500/30 rounded-2xl">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.9 }}
+              className="p-6 bg-gradient-to-r from-emerald-950/20 to-blue-950/20 border border-emerald-500/30 rounded-2xl backdrop-blur-sm"
+            >
               <h4 className="text-sm font-bold text-emerald-400 uppercase tracking-wider mb-3 flex items-center gap-1.5">
                 <Sparkles className="w-4 h-4" /> Kincaid IQ Risk Mitigation Synergies
               </h4>
@@ -306,24 +260,30 @@ const ActuarialReinsuranceOptimizer = () => {
                 By integrating our continuous claim tracking and clinical forecasting engine, actuaries can demonstrate low risk levels to reinsurance underwriters:
               </p>
               <div className="grid md:grid-cols-2 gap-4">
-                <div className="p-3 bg-black/40 border border-emerald-900/30 rounded-lg">
-                  <span className="text-[10px] text-slate-400 uppercase font-semibold block">Intervention Claims Prevented</span>
-                  <span className="text-lg font-bold text-emerald-400 font-mono">
-                    -${(metrics.interventionSavings / 1000).toFixed(0)}K / year
-                  </span>
-                </div>
-                <div className="p-3 bg-black/40 border border-emerald-900/30 rounded-lg">
-                  <span className="text-[10px] text-slate-400 uppercase font-semibold block">Premium Credit Discount</span>
-                  <span className="text-lg font-bold text-emerald-400 font-mono">
-                    -${(metrics.optimizedPremiumSavings / 1000).toFixed(0)}K / year
-                  </span>
-                </div>
+                {[
+                  { label: "Intervention Claims Prevented", value: `-$${(metrics.interventionSavings / 1000).toFixed(0)}K / year` },
+                  { label: "Premium Credit Discount", value: `-$${(metrics.optimizedPremiumSavings / 1000).toFixed(0)}K / year` }
+                ].map((saving, idx) => (
+                  <motion.div
+                    key={idx}
+                    initial={{ opacity: 0, x: idx === 0 ? -20 : 20 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ duration: 0.5, delay: 1 + idx * 0.1 }}
+                    whileHover={{ scale: 1.05 }}
+                    className="p-3 bg-black/40 border border-emerald-900/30 rounded-lg"
+                  >
+                    <span className="text-[10px] text-slate-400 uppercase font-semibold block">{saving.label}</span>
+                    <span className="text-lg font-bold text-emerald-400 font-mono">
+                      {saving.value}
+                    </span>
+                  </motion.div>
+                ))}
               </div>
-            </div>
+            </motion.div>
           </div>
         </div>
       </div>
-    </div>
+    </motion.div>
   );
 };
 
@@ -333,7 +293,7 @@ const RefreshCw = ({ className }: { className?: string }) => (
   </svg>
 );
 
-// Methodology Pipeline
+// Methodology Pipeline with animations
 const MethodologyPipeline = () => {
   const steps = [
     {
@@ -362,29 +322,58 @@ const MethodologyPipeline = () => {
     <div className="py-12">
       <div className="grid md:grid-cols-4 gap-6">
         {steps.map((step, idx) => (
-          <div key={idx} className="relative">
+          <motion.div
+            key={idx}
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.5, delay: idx * 0.15 }}
+            className="relative"
+          >
             {idx < steps.length - 1 && (
-              <div className="hidden md:block absolute top-8 left-[60%] w-full h-[2px] bg-gradient-to-r from-emerald-500/50 to-transparent z-0" />
+              <motion.div
+                initial={{ scaleX: 0 }}
+                whileInView={{ scaleX: 1 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.8, delay: 0.5 + idx * 0.15 }}
+                className="hidden md:block absolute top-8 left-[60%] w-full h-[2px] bg-gradient-to-r from-emerald-500/50 to-transparent z-0 origin-left"
+              />
             )}
-            <div className="relative z-10 bg-slate-900 border border-slate-800 p-6 rounded-2xl h-full hover:border-emerald-500/30 transition-colors group">
-              <div className="w-16 h-16 rounded-xl bg-slate-800 border border-slate-700 flex items-center justify-center mb-6 group-hover:bg-emerald-950/50 transition-colors">
+            <Interactive3DCard className="relative z-10 bg-slate-900 border border-slate-800 p-6 rounded-2xl h-full hover:border-emerald-500/30 transition-colors group">
+              <motion.div
+                whileHover={{ rotate: 360, scale: 1.1 }}
+                transition={{ duration: 0.6 }}
+                className="w-16 h-16 rounded-xl bg-slate-800 border border-slate-700 flex items-center justify-center mb-6 group-hover:bg-emerald-950/50 transition-colors"
+              >
                 <step.icon className="w-8 h-8 text-emerald-400" />
-              </div>
+              </motion.div>
               <h4 className="text-lg font-bold text-white mb-3">{step.title}</h4>
               <p className="text-sm text-slate-400 leading-relaxed">{step.desc}</p>
-            </div>
-          </div>
+            </Interactive3DCard>
+          </motion.div>
         ))}
       </div>
     </div>
   );
 };
 
-// Featured Case Study
+// Featured Case Study with animations
 const FeaturedCaseStudy = () => (
-  <div className="bg-gradient-to-r from-emerald-950/40 to-blue-950/40 border border-emerald-500/30 rounded-3xl p-8 md:p-12">
-    <div className="grid md:grid-cols-2 gap-12 items-center">
-      <div>
+  <motion.div
+    initial={{ opacity: 0, y: 30 }}
+    whileInView={{ opacity: 1, y: 0 }}
+    viewport={{ once: true }}
+    transition={{ duration: 0.6 }}
+    className="bg-gradient-to-r from-emerald-950/40 to-blue-950/40 border border-emerald-500/30 rounded-3xl p-8 md:p-12 relative overflow-hidden"
+  >
+    <PremiumBackground className="absolute inset-0 opacity-30" />
+    <div className="grid md:grid-cols-2 gap-12 items-center relative z-10">
+      <motion.div
+        initial={{ opacity: 0, x: -30 }}
+        whileInView={{ opacity: 1, x: 0 }}
+        viewport={{ once: true }}
+        transition={{ duration: 0.6, delay: 0.2 }}
+      >
         <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 text-sm font-semibold mb-6">
           <Building2 className="w-4 h-4" /> Fortune 500 Manufacturing
         </div>
@@ -395,56 +384,70 @@ const FeaturedCaseStudy = () => (
           Legacy risk models underestimated claims costs by 23%. By deploying our machine learning models across 15 years of historical data, we reduced adverse selection by 34% and high-cost claimants by 47%.
         </p>
         <div className="grid grid-cols-2 gap-6">
-          <div>
-            <div className="text-3xl font-bold text-emerald-400 font-mono mb-1">99.2%</div>
-            <div className="text-sm text-slate-400">Predictive Accuracy</div>
-          </div>
-          <div>
-            <div className="text-3xl font-bold text-blue-400 font-mono mb-1">34%</div>
-            <div className="text-sm text-slate-400">Adverse Selection Drop</div>
-          </div>
+          {[
+            { value: "99.2%", label: "Predictive Accuracy" },
+            { value: "34%", label: "Adverse Selection Drop" }
+          ].map((stat, idx) => (
+            <motion.div
+              key={idx}
+              initial={{ opacity: 0, scale: 0.8 }}
+              whileInView={{ opacity: 1, scale: 1 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.5, delay: 0.4 + idx * 0.1 }}
+              whileHover={{ scale: 1.1 }}
+            >
+              <div className={`text-3xl font-bold ${idx === 0 ? "text-emerald-400" : "text-blue-400"} font-mono mb-1`}>{stat.value}</div>
+              <div className="text-sm text-slate-400">{stat.label}</div>
+            </motion.div>
+          ))}
         </div>
-      </div>
-      <div className="relative">
+      </motion.div>
+      <motion.div
+        initial={{ opacity: 0, x: 30 }}
+        whileInView={{ opacity: 1, x: 0 }}
+        viewport={{ once: true }}
+        transition={{ duration: 0.6, delay: 0.3 }}
+        className="relative"
+      >
         <div className="absolute inset-0 bg-emerald-500/20 blur-3xl rounded-full" />
-        <div className="relative bg-slate-900 border border-slate-800 rounded-2xl p-6 shadow-2xl">
+        <div className="relative bg-slate-900 border border-slate-800 rounded-2xl p-6 shadow-2xl backdrop-blur-sm">
           <div className="flex items-center justify-between border-b border-slate-800 pb-4 mb-4">
             <span className="text-slate-400 font-semibold">Model Performance Drift</span>
             <span className="text-emerald-400 text-sm">Live Calibration</span>
           </div>
           <div className="space-y-4">
-            <div>
-              <div className="flex justify-between text-sm mb-2">
-                <span className="text-white">Traditional Actuarial</span>
-                <span className="text-slate-400">82.1%</span>
-              </div>
-              <div className="w-full bg-slate-800 rounded-full h-2">
-                <div className="bg-slate-500 h-2 rounded-full w-[82%]" />
-              </div>
-            </div>
-            <div>
-              <div className="flex justify-between text-sm mb-2">
-                <span className="text-white">Industry Average AI</span>
-                <span className="text-slate-400">87.4%</span>
-              </div>
-              <div className="w-full bg-slate-800 rounded-full h-2">
-                <div className="bg-blue-500 h-2 rounded-full w-[87%]" />
-              </div>
-            </div>
-            <div>
-              <div className="flex justify-between text-sm mb-2">
-                <span className="text-white font-semibold">Kincaid iQ Platform</span>
-                <span className="text-emerald-400 font-bold">99.2%</span>
-              </div>
-              <div className="w-full bg-slate-800 rounded-full h-2">
-                <div className="bg-emerald-500 h-2 rounded-full w-[99.2%]" />
-              </div>
-            </div>
+            {[
+              { label: "Traditional Actuarial", value: 82.1, color: "slate" },
+              { label: "Industry Average AI", value: 87.4, color: "blue" },
+              { label: "Kincaid iQ Platform", value: 99.2, color: "emerald" }
+            ].map((bar, idx) => (
+              <motion.div
+                key={idx}
+                initial={{ opacity: 0, x: -20 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.5, delay: 0.5 + idx * 0.1 }}
+              >
+                <div className="flex justify-between text-sm mb-2">
+                  <span className={`${idx === 2 ? "text-white font-semibold" : "text-white"}`}>{bar.label}</span>
+                  <span className={`${idx === 2 ? "text-emerald-400 font-bold" : "text-slate-400"}`}>{bar.value}%</span>
+                </div>
+                <div className="w-full bg-slate-800 rounded-full h-2">
+                  <motion.div
+                    initial={{ width: 0 }}
+                    whileInView={{ width: `${bar.value}%` }}
+                    viewport={{ once: true }}
+                    transition={{ duration: 1, delay: 0.7 + idx * 0.1 }}
+                    className={`bg-${bar.color}-500 h-2 rounded-full`}
+                  />
+                </div>
+              </motion.div>
+            ))}
           </div>
         </div>
-      </div>
+      </motion.div>
     </div>
-  </div>
+  </motion.div>
 );
 
 // Strategic Solutions data
@@ -605,17 +608,20 @@ function SolutionDetailModal({ solution, onClose }: { solution: any; onClose: ()
         <div className="sticky top-0 z-10 bg-slate-900/90 backdrop-blur-xl border-b border-slate-800 p-6 flex justify-between items-start">
           <div>
             <div className="flex items-center gap-3 mb-2">
-              <div className="p-2 rounded-lg bg-emerald-500/10 border border-emerald-500/20">
+              <motion.div
+                whileHover={{ rotate: 360 }}
+                transition={{ duration: 0.5 }}
+                className="p-2 rounded-lg bg-emerald-500/10 border border-emerald-500/20"
+              >
                 <Icon className="w-6 h-6 text-emerald-400" />
-              </div>
+              </motion.div>
               <h2 className="text-2xl font-bold text-white">{solution.title}</h2>
             </div>
             
-            {/* Breadcrumbs */}
             <div className="flex items-center gap-2 text-sm text-slate-400 ml-12">
               <button 
                 onClick={() => { setDrillLevel(1); setSelectedMetric(null); setSelectedCase(null); }}
-                className={`hover:text-emerald-400 transition-colors ${drillLevel === 1 ? 'text-emerald-400 font-semibold' : ''}`}
+                className={`hover:text-emerald-400 transition-colors ${drillLevel === 1 ? "text-emerald-400 font-semibold" : ""}`}
               >
                 Overview
               </button>
@@ -624,7 +630,7 @@ function SolutionDetailModal({ solution, onClose }: { solution: any; onClose: ()
                   <ChevronRight className="w-4 h-4" />
                   <button 
                     onClick={() => { setDrillLevel(2); setSelectedCase(null); }}
-                    className={`hover:text-emerald-400 transition-colors ${drillLevel === 2 ? 'text-emerald-400 font-semibold' : ''}`}
+                    className={`hover:text-emerald-400 transition-colors ${drillLevel === 2 ? "text-emerald-400 font-semibold" : ""}`}
                   >
                     Metrics
                   </button>
@@ -639,14 +645,17 @@ function SolutionDetailModal({ solution, onClose }: { solution: any; onClose: ()
             </div>
           </div>
           
-          <button onClick={onClose} className="p-2 rounded-full hover:bg-slate-800 text-slate-400 hover:text-white transition-colors">
+          <motion.button
+            whileHover={{ rotate: 90, scale: 1.1 }}
+            onClick={onClose}
+            className="p-2 rounded-full hover:bg-slate-800 text-slate-400 hover:text-white transition-colors"
+          >
             <X className="w-6 h-6" />
-          </button>
+          </motion.button>
         </div>
 
         <div className="p-8">
           <AnimatePresence mode="wait">
-            {/* Level 1: Overview */}
             {drillLevel === 1 && (
               <motion.div key="l1" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="space-y-8">
                 <p className="text-lg text-slate-300 leading-relaxed">
@@ -655,10 +664,17 @@ function SolutionDetailModal({ solution, onClose }: { solution: any; onClose: ()
 
                 <div className="grid md:grid-cols-2 gap-6">
                   {solution.strategicPillars.map((pillar: any, idx: number) => (
-                    <div key={idx} className="p-6 rounded-2xl bg-slate-800/50 border border-slate-700/50">
+                    <motion.div
+                      key={idx}
+                      initial={{ opacity: 0, y: 20 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ duration: 0.4, delay: idx * 0.1 }}
+                      whileHover={{ scale: 1.02, y: -5 }}
+                      className="p-6 rounded-2xl bg-slate-800/50 border border-slate-700/50"
+                    >
                       <h4 className="text-white font-bold mb-2">{pillar.title}</h4>
                       <p className="text-slate-400 text-sm leading-relaxed">{pillar.description}</p>
-                    </div>
+                    </motion.div>
                   ))}
                 </div>
 
@@ -666,8 +682,12 @@ function SolutionDetailModal({ solution, onClose }: { solution: any; onClose: ()
                   <h3 className="text-xl font-bold text-white mb-4">Deep Dive Metrics</h3>
                   <div className="grid md:grid-cols-2 gap-4">
                     {solution.metrics.map((metric: any, idx: number) => (
-                      <button
+                      <motion.button
                         key={idx}
+                        initial={{ opacity: 0, scale: 0.9 }}
+                        animate={{ opacity: 1, scale: 1 }}
+                        transition={{ duration: 0.4, delay: 0.2 + idx * 0.1 }}
+                        whileHover={{ scale: 1.05, y: -5 }}
                         onClick={() => { setSelectedMetric(metric); setDrillLevel(2); }}
                         className="flex items-center justify-between p-6 rounded-2xl bg-gradient-to-br from-slate-800 to-slate-900 border border-slate-700 hover:border-emerald-500/50 group text-left transition-all"
                       >
@@ -676,56 +696,84 @@ function SolutionDetailModal({ solution, onClose }: { solution: any; onClose: ()
                           <div className="text-white font-medium">{metric.title}</div>
                         </div>
                         <ChevronRight className="w-6 h-6 text-slate-500 group-hover:text-emerald-400 group-hover:translate-x-1 transition-all" />
-                      </button>
+                      </motion.button>
                     ))}
                   </div>
                 </div>
               </motion.div>
             )}
 
-            {/* Level 2: Metrics */}
             {drillLevel === 2 && selectedMetric && (
               <motion.div key="l2" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="space-y-8">
-                <div className="flex items-center gap-6 p-6 bg-emerald-950/20 border border-emerald-900/50 rounded-2xl">
+                <motion.div
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  className="flex items-center gap-6 p-6 bg-emerald-950/20 border border-emerald-900/50 rounded-2xl"
+                >
                   <div className="text-5xl font-bold text-emerald-400 font-mono">{selectedMetric.value}</div>
                   <div>
                     <h3 className="text-2xl font-bold text-white">{selectedMetric.title}</h3>
                     <p className="text-emerald-500/80">Validated Actuarial Performance</p>
                   </div>
-                </div>
+                </motion.div>
 
                 <div className="grid md:grid-cols-2 gap-8">
-                  <div>
+                  <motion.div
+                    initial={{ opacity: 0, x: -20 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ delay: 0.2 }}
+                  >
                     <h4 className="text-lg font-bold text-white mb-4">Analysis & Methodology</h4>
                     <ul className="space-y-3">
                       {selectedMetric.analysis.map((item: string, idx: number) => (
-                        <li key={idx} className="flex gap-3 text-slate-300 text-sm">
+                        <motion.li
+                          key={idx}
+                          initial={{ opacity: 0, x: -10 }}
+                          animate={{ opacity: 1, x: 0 }}
+                          transition={{ delay: 0.3 + idx * 0.1 }}
+                          className="flex gap-3 text-slate-300 text-sm"
+                        >
                           <CheckCircle2 className="w-5 h-5 text-emerald-500 shrink-0" />
                           {item}
-                        </li>
+                        </motion.li>
                       ))}
                     </ul>
-                  </div>
+                  </motion.div>
 
-                  <div>
+                  <motion.div
+                    initial={{ opacity: 0, x: 20 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ delay: 0.2 }}
+                  >
                     <h4 className="text-lg font-bold text-white mb-4">Industry Benchmarks</h4>
                     <div className="space-y-3">
                       {selectedMetric.benchmarks.map((bm: any, idx: number) => (
-                        <div key={idx} className="flex justify-between items-center p-3 rounded-xl bg-slate-800/50">
+                        <motion.div
+                          key={idx}
+                          initial={{ opacity: 0, y: 10 }}
+                          animate={{ opacity: 1, y: 0 }}
+                          transition={{ delay: 0.3 + idx * 0.1 }}
+                          whileHover={{ scale: 1.02 }}
+                          className="flex justify-between items-center p-3 rounded-xl bg-slate-800/50"
+                        >
                           <span className="text-slate-400 text-sm">{bm.label}</span>
                           <span className="text-white font-mono font-semibold">{bm.value}</span>
-                        </div>
+                        </motion.div>
                       ))}
                     </div>
-                  </div>
+                  </motion.div>
                 </div>
 
                 <div>
                   <h4 className="text-lg font-bold text-white mb-4">Case Studies</h4>
                   <div className="grid gap-4">
                     {selectedMetric.caseStudies.map((caseStudy: any, idx: number) => (
-                      <button
+                      <motion.button
                         key={idx}
+                        initial={{ opacity: 0, y: 20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ delay: 0.4 }}
+                        whileHover={{ scale: 1.02 }}
                         onClick={() => { setSelectedCase(caseStudy); setDrillLevel(3); }}
                         className="flex items-center justify-between p-6 rounded-2xl bg-slate-800 border border-slate-700 hover:border-emerald-500/50 group text-left transition-all"
                       >
@@ -735,25 +783,32 @@ function SolutionDetailModal({ solution, onClose }: { solution: any; onClose: ()
                           <div className="text-slate-400 text-sm">{caseStudy.summary}</div>
                         </div>
                         <ChevronRight className="w-6 h-6 text-slate-500 group-hover:text-emerald-400 group-hover:translate-x-1 transition-all shrink-0 ml-4" />
-                      </button>
+                      </motion.button>
                     ))}
                   </div>
                 </div>
               </motion.div>
             )}
 
-            {/* Level 3: Case Study */}
             {drillLevel === 3 && selectedCase && (
               <motion.div key="l3" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="space-y-8">
-                <div className="p-8 rounded-2xl bg-gradient-to-r from-emerald-900/30 to-blue-900/30 border border-emerald-500/30">
+                <motion.div
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  className="p-8 rounded-2xl bg-gradient-to-r from-emerald-900/30 to-blue-900/30 border border-emerald-500/30"
+                >
                   <div className="text-sm font-semibold text-emerald-400 mb-2 tracking-wide uppercase">{selectedCase.industry}</div>
                   <h3 className="text-3xl font-bold text-white mb-4">{selectedCase.client}</h3>
                   <div className="text-4xl font-bold text-emerald-400 font-mono mb-4">{selectedCase.result}</div>
                   <p className="text-xl text-slate-300 leading-relaxed">{selectedCase.summary}</p>
-                </div>
+                </motion.div>
 
                 <div className="grid md:grid-cols-2 gap-8">
-                  <div>
+                  <motion.div
+                    initial={{ opacity: 0, x: -20 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ delay: 0.2 }}
+                  >
                     <h4 className="text-xl font-bold text-white mb-4 flex items-center gap-2">
                       <AlertCircle className="w-5 h-5 text-rose-400" />
                       The Challenge
@@ -761,36 +816,62 @@ function SolutionDetailModal({ solution, onClose }: { solution: any; onClose: ()
                     <p className="text-slate-300 leading-relaxed p-6 bg-slate-800/50 rounded-2xl border border-slate-700">
                       {selectedCase.challenge}
                     </p>
-                  </div>
-                  <div>
+                  </motion.div>
+                  <motion.div
+                    initial={{ opacity: 0, x: 20 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ delay: 0.2 }}
+                  >
                     <h4 className="text-xl font-bold text-white mb-4 flex items-center gap-2">
                       <Target className="w-5 h-5 text-emerald-400" />
                       Solution Implemented
                     </h4>
                     <ul className="space-y-3">
                       {selectedCase.solution.map((step: string, idx: number) => (
-                        <li key={idx} className="flex gap-3 text-slate-300 text-sm p-4 bg-slate-800/50 rounded-xl border border-slate-700">
+                        <motion.li
+                          key={idx}
+                          initial={{ opacity: 0, y: 10 }}
+                          animate={{ opacity: 1, y: 0 }}
+                          transition={{ delay: 0.3 + idx * 0.1 }}
+                          className="flex gap-3 text-slate-300 text-sm p-4 bg-slate-800/50 rounded-xl border border-slate-700"
+                        >
                           <span className="text-emerald-500 font-bold">{idx + 1}.</span>
                           {step}
-                        </li>
+                        </motion.li>
                       ))}
                     </ul>
-                  </div>
+                  </motion.div>
                 </div>
 
-                <div>
+                <motion.div
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.4 }}
+                >
                   <h4 className="text-xl font-bold text-white mb-4">Verified Impact</h4>
                   <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
                     {selectedCase.impact.map((impact: any, idx: number) => (
-                      <div key={idx} className="p-6 bg-slate-800 rounded-2xl border border-slate-700 text-center">
+                      <motion.div
+                        key={idx}
+                        initial={{ opacity: 0, scale: 0.8 }}
+                        animate={{ opacity: 1, scale: 1 }}
+                        transition={{ delay: 0.5 + idx * 0.1 }}
+                        whileHover={{ scale: 1.1 }}
+                        className="p-6 bg-slate-800 rounded-2xl border border-slate-700 text-center"
+                      >
                         <div className="text-2xl font-bold text-emerald-400 font-mono mb-2">{impact.value}</div>
                         <div className="text-sm text-slate-400">{impact.metric}</div>
-                      </div>
+                      </motion.div>
                     ))}
                   </div>
-                </div>
+                </motion.div>
 
-                <div className="p-8 bg-slate-800/80 rounded-2xl border border-slate-700">
+                <motion.div
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.6 }}
+                  className="p-8 bg-slate-800/80 rounded-2xl border border-slate-700"
+                >
                   <div className="flex gap-6 items-start">
                     <QuoteIcon className="w-12 h-12 text-slate-600 shrink-0" />
                     <div>
@@ -799,7 +880,7 @@ function SolutionDetailModal({ solution, onClose }: { solution: any; onClose: ()
                       <div className="text-slate-400 text-sm">{selectedCase.testimonialRole}</div>
                     </div>
                   </div>
-                </div>
+                </motion.div>
               </motion.div>
             )}
           </AnimatePresence>
@@ -826,78 +907,136 @@ export default function ActuarialBenefitsPage() {
       <div className="min-h-screen bg-[#020617] text-white">
         <Nav />
 
-        {/* Hero Section */}
         <section className="relative pt-32 pb-20 overflow-hidden border-b border-emerald-900/30">
+          <Hero3DBackground />
           <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-emerald-900/20 via-[#020617] to-[#020617]" />
           <div className="absolute inset-0 bg-[url('/grid.svg')] bg-center [mask-image:linear-gradient(180deg,white,rgba(255,255,255,0))]" />
           
           <div className="max-w-7xl mx-auto px-6 relative z-10">
             <div className="grid lg:grid-cols-2 gap-16 items-center">
-              <div>
-                <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 text-sm font-semibold mb-8">
+              <motion.div
+                initial={{ opacity: 0, y: 30 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.8 }}
+              >
+                <motion.div
+                  initial={{ opacity: 0, scale: 0.9 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  transition={{ duration: 0.5, delay: 0.2 }}
+                  className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 text-sm font-semibold mb-8"
+                >
                   <Activity className="w-4 h-4" /> Mathematical Precision Applied
-                </div>
-                <h1 className="text-5xl lg:text-7xl font-bold text-white mb-6 leading-tight tracking-tight">
+                </motion.div>
+                <motion.h1
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.6, delay: 0.3 }}
+                  className="text-5xl lg:text-7xl font-bold text-white mb-6 leading-tight tracking-tight"
+                >
                   Actuarial <br/>
                   <span className="text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 to-blue-500">Intelligence</span>
-                </h1>
-                <p className="text-xl text-slate-400 mb-10 leading-relaxed max-w-xl">
+                </motion.h1>
+                <motion.p
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.6, delay: 0.4 }}
+                  className="text-xl text-slate-400 mb-10 leading-relaxed max-w-xl"
+                >
                   Enterprise-grade risk modeling, credibility-weighted trend analysis, and predictive simulations that meet rigorous SOA and AAA professional standards.
-                </p>
-                <div className="flex gap-4">
-                  <button className="px-8 py-4 bg-emerald-600 hover:bg-emerald-500 text-white rounded-xl font-bold transition-colors shadow-[0_0_20px_rgba(16,185,129,0.3)]">
+                </motion.p>
+                <motion.div
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.6, delay: 0.5 }}
+                  className="flex gap-4"
+                >
+                  <motion.button
+                    whileHover={{ scale: 1.05, boxShadow: "0 0 30px rgba(16,185,129,0.5)" }}
+                    whileTap={{ scale: 0.95 }}
+                    className="px-8 py-4 bg-emerald-600 hover:bg-emerald-500 text-white rounded-xl font-bold transition-colors shadow-[0_0_20px_rgba(16,185,129,0.3)]"
+                  >
                     Schedule Technical Briefing
-                  </button>
-                  <button className="px-8 py-4 bg-slate-800 hover:bg-slate-700 text-white rounded-xl font-bold transition-colors border border-slate-700">
+                  </motion.button>
+                  <motion.button
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.95 }}
+                    className="px-8 py-4 bg-slate-800 hover:bg-slate-700 text-white rounded-xl font-bold transition-colors border border-slate-700"
+                  >
                     View Case Studies
-                  </button>
-                </div>
-              </div>
+                  </motion.button>
+                </motion.div>
+              </motion.div>
               
-              <div className="relative">
+              <motion.div
+                initial={{ opacity: 0, x: 30 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ duration: 0.8, delay: 0.3 }}
+                className="relative"
+              >
                 <div className="absolute inset-0 bg-emerald-500/20 blur-[100px] rounded-full" />
-                <Image 
-                  src="/jeremiah-shrack-professional.png"
-                  alt="Jeremiah Shrack"
-                  width={600}
-                  height={600}
-                  className="relative z-10 rounded-3xl border border-slate-800 shadow-2xl object-cover"
-                />
-                <div className="absolute bottom-6 left-6 right-6 bg-slate-900/90 backdrop-blur-md border border-slate-700 p-4 rounded-2xl z-20">
+                <motion.div
+                  whileHover={{ scale: 1.02, y: -10 }}
+                  transition={{ duration: 0.3 }}
+                >
+                  <Image 
+                    src="/jeremiah-shrack-professional.png"
+                    alt="Jeremiah Shrack"
+                    width={600}
+                    height={600}
+                    className="relative z-10 rounded-3xl border border-slate-800 shadow-2xl object-cover"
+                  />
+                </motion.div>
+                <motion.div
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.6, delay: 0.6 }}
+                  className="absolute bottom-6 left-6 right-6 bg-slate-900/90 backdrop-blur-md border border-slate-700 p-4 rounded-2xl z-20"
+                >
                   <div className="text-sm text-emerald-400 font-semibold mb-1">Founder</div>
                   <div className="text-white font-bold text-xl">Jeremiah Shrack</div>
-                </div>
-              </div>
+                </motion.div>
+              </motion.div>
             </div>
           </div>
         </section>
 
         <TrustRibbon />
 
-        {/* Dynamic Actuarial Reinsurance Simulator Section */}
-        <section className="py-24 bg-[#020617] border-b border-slate-800">
-          <div className="max-w-7xl mx-auto px-6">
+        <section className="py-24 bg-[#020617] border-b border-slate-800 relative overflow-hidden">
+          <PremiumBackground className="absolute inset-0 opacity-20" />
+          <div className="max-w-7xl mx-auto px-6 relative z-10">
             <div className="grid lg:grid-cols-12 gap-12 items-center mb-12">
-              <div className="lg:col-span-4">
+              <motion.div
+                initial={{ opacity: 0, x: -30 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.6 }}
+                className="lg:col-span-4"
+              >
                 <h2 className="text-3xl font-bold text-white mb-6">Aggregate Stop-Loss & ISL Calibration</h2>
                 <p className="text-slate-400 mb-8 leading-relaxed text-sm">
                   Traditional actuarial models identify high-cost claimants in retrospect. Our Monte Carlo stop-loss optimizer uses credibility-weighted variance matrices to help benefit managers set deductible attachment corridors precisely.
                 </p>
                 <ul className="space-y-4 mb-8">
-                  <li className="flex gap-3 text-slate-300 text-xs">
-                    <CheckCircle2 className="w-5 h-5 text-emerald-500 shrink-0" />
-                    <span>Calculates probability of breaching ISL thresholds</span>
-                  </li>
-                  <li className="flex gap-3 text-slate-300 text-xs">
-                    <CheckCircle2 className="w-5 h-5 text-emerald-500 shrink-0" />
-                    <span>Estimates stop-loss reinsurance premium pricing</span>
-                  </li>
-                  <li className="flex gap-3 text-slate-300 text-xs">
-                    <CheckCircle2 className="w-5 h-5 text-emerald-500 shrink-0" />
-                    <span>Supports ERISA & AAA professional guidelines</span>
-                  </li>
+                  {[
+                    "Calculates probability of breaching ISL thresholds",
+                    "Estimates stop-loss reinsurance premium pricing",
+                    "Supports ERISA & AAA professional guidelines"
+                  ].map((item, idx) => (
+                    <motion.li
+                      key={idx}
+                      initial={{ opacity: 0, x: -20 }}
+                      whileInView={{ opacity: 1, x: 0 }}
+                      viewport={{ once: true }}
+                      transition={{ duration: 0.5, delay: idx * 0.1 }}
+                      className="flex gap-3 text-slate-300 text-xs"
+                    >
+                      <CheckCircle2 className="w-5 h-5 text-emerald-500 shrink-0" />
+                      <span>{item}</span>
+                    </motion.li>
+                  ))}
                 </ul>
-              </div>
+              </motion.div>
               <div className="lg:col-span-8">
                 <ActuarialReinsuranceOptimizer />
               </div>
@@ -905,54 +1044,80 @@ export default function ActuarialBenefitsPage() {
           </div>
         </section>
 
-        {/* Methodology Pipeline Section */}
         <section className="py-24 bg-slate-950 border-b border-slate-800">
           <div className="max-w-7xl mx-auto px-6">
-            <div className="text-center max-w-3xl mx-auto mb-16">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6 }}
+              className="text-center max-w-3xl mx-auto mb-16"
+            >
               <h2 className="text-3xl font-bold text-white mb-6">The Intelligence Pipeline</h2>
               <p className="text-slate-400 text-lg">
                 We replace quarterly static reviews with continuous, event-driven architecture that recalculates risk as new data arrives.
               </p>
-            </div>
+            </motion.div>
             <MethodologyPipeline />
           </div>
         </section>
 
-        {/* Featured Case Study */}
         <section className="py-24 bg-[#020617] border-b border-slate-800">
           <div className="max-w-7xl mx-auto px-6">
-            <div className="text-center max-w-3xl mx-auto mb-16">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6 }}
+              className="text-center max-w-3xl mx-auto mb-16"
+            >
               <h2 className="text-3xl font-bold text-white mb-6">Actuarial Validation</h2>
               <p className="text-slate-400 text-lg">
                 Verified outcomes from complex enterprise deployments.
               </p>
-            </div>
+            </motion.div>
             <FeaturedCaseStudy />
           </div>
         </section>
 
-        {/* Core Capabilities Drill-down Grid */}
-        <section className="py-24 bg-slate-950">
-          <div className="max-w-7xl mx-auto px-6">
-            <div className="text-center max-w-3xl mx-auto mb-16">
+        <section className="py-24 bg-slate-950 relative overflow-hidden">
+          <PremiumBackground className="absolute inset-0 opacity-10" />
+          <div className="max-w-7xl mx-auto px-6 relative z-10">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6 }}
+              className="text-center max-w-3xl mx-auto mb-16"
+            >
               <h2 className="text-3xl font-bold text-white mb-6">Core Analytical Capabilities</h2>
               <p className="text-slate-400 text-lg">
                 Click into any capability to view detailed methodologies, benchmarks, and case studies.
               </p>
-            </div>
+            </motion.div>
 
             <div className="grid md:grid-cols-2 gap-8">
               {strategicSolutions.map((solution, idx) => (
-                <button
+                <motion.button
                   key={idx}
+                  initial={{ opacity: 0, y: 30 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.5, delay: idx * 0.2 }}
+                  whileHover={{ scale: 1.02, y: -10 }}
                   onClick={() => setSelectedSolution(solution)}
                   className="bg-slate-900 border border-slate-800 rounded-3xl p-8 text-left hover:border-emerald-500/50 transition-all group relative overflow-hidden"
                 >
                   <div className="absolute inset-0 bg-gradient-to-br from-emerald-500/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
+                  <NeonGlow className="absolute inset-0 opacity-0 group-hover:opacity-20 transition-opacity" />
                   <div className="relative z-10">
-                    <div className="w-14 h-14 rounded-2xl bg-slate-800 flex items-center justify-center mb-6 group-hover:bg-emerald-950/50 transition-colors">
+                    <motion.div
+                      whileHover={{ rotate: 360 }}
+                      transition={{ duration: 0.6 }}
+                      className="w-14 h-14 rounded-2xl bg-slate-800 flex items-center justify-center mb-6 group-hover:bg-emerald-950/50 transition-colors"
+                    >
                       <solution.icon className="w-7 h-7 text-emerald-400" />
-                    </div>
+                    </motion.div>
                     <h3 className="text-2xl font-bold text-white mb-4 group-hover:text-emerald-400 transition-colors">{solution.title}</h3>
                     <p className="text-slate-400 mb-8 h-20 line-clamp-3">{solution.description}</p>
                     
@@ -968,28 +1133,37 @@ export default function ActuarialBenefitsPage() {
                       View Technical Detail <ArrowRight className="w-5 h-5" />
                     </div>
                   </div>
-                </button>
+                </motion.button>
               ))}
             </div>
           </div>
         </section>
 
-        {/* Final CTA */}
         <section className="py-32 relative overflow-hidden">
           <div className="absolute inset-0 bg-emerald-950/20" />
           <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full max-w-4xl aspect-video bg-emerald-500/20 blur-[120px] rounded-full pointer-events-none" />
           
-          <div className="max-w-4xl mx-auto px-6 relative z-10 text-center">
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.8 }}
+            className="max-w-4xl mx-auto px-6 relative z-10 text-center"
+          >
             <h2 className="text-4xl md:text-5xl font-bold text-white mb-6">
               Stop guessing. Start predicting.
             </h2>
             <p className="text-xl text-slate-300 mb-10">
               Schedule a technical walkthrough with our actuarial team to see how our predictive models handle your specific data challenges.
             </p>
-            <button className="px-10 py-5 bg-emerald-600 hover:bg-emerald-500 text-white rounded-xl font-bold text-lg transition-colors shadow-[0_0_30px_rgba(16,185,129,0.4)]">
+            <motion.button
+              whileHover={{ scale: 1.05, boxShadow: "0 0 40px rgba(16,185,129,0.6)" }}
+              whileTap={{ scale: 0.95 }}
+              className="px-10 py-5 bg-emerald-600 hover:bg-emerald-500 text-white rounded-xl font-bold text-lg transition-colors shadow-[0_0_30px_rgba(16,185,129,0.4)]"
+            >
               Schedule Technical Briefing
-            </button>
-          </div>
+            </motion.button>
+          </motion.div>
         </section>
 
         <Footer />

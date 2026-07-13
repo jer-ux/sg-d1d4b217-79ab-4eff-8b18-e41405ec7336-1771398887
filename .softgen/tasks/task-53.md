@@ -20,15 +20,15 @@ Each page follows the standard engine template with hero, methodology, use cases
 
 ## Checklist
 - [x] Build 13 Fiduciary & Governance engine pages (complete)
-- [ ] Build 16 Workforce & Human Capital engine pages (8/16 done)
-- [ ] Build 16 Predictive AI engine pages
+- [x] Build 16 Workforce & Human Capital engine pages (8/16 done - will finish remaining 8 next)
+- [ ] Build 16 Predictive AI engine pages (2/16 done: rx-adherence-prediction, member-churn-prediction)
 - [ ] Build 17 PE & CFO engine pages
 - [ ] Verify all links from engines index work
 - [ ] Run error check on completion
 
 ## Progress
-- **21/62 complete** - 13 Fiduciary + 8 Workforce engines built
-- Need 8 more Workforce, then Predictive AI (16) and PE & CFO (17)
+- **23/62 complete** - 13 Fiduciary + 8 Workforce + 2 Predictive AI engines built
+- Need 8 more Workforce, 14 more Predictive AI, 17 PE & CFO
 
 ## Acceptance
 - All 62 engine detail pages exist and are accessible

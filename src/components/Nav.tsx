@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useRef } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { Menu, X, ChevronDown, Search, Users, Building2, AlertTriangle, Calculator, FileText, TrendingUp, Briefcase, BarChart3, Shield, LineChart, DollarSign, Heart, FolderOpen, Activity, Sparkles, Code, Database, Pill } from "lucide-react";
@@ -15,6 +15,47 @@ export default function Nav() {
   const [auditsDropdownOpen, setAuditsDropdownOpen] = useState(false);
   const [productsDropdownOpen, setProductsDropdownOpen] = useState(false);
   const [toolsDropdownOpen, setToolsDropdownOpen] = useState(false);
+
+  const healthCloseTimer = useRef<NodeJS.Timeout | null>(null);
+  const productsCloseTimer = useRef<NodeJS.Timeout | null>(null);
+
+  const handleHealthMouseEnter = () => {
+    if (healthCloseTimer.current) {
+      clearTimeout(healthCloseTimer.current);
+      healthCloseTimer.current = null;
+    }
+    setKincaidHealthDropdownOpen(true);
+    setCompanyDropdownOpen(false);
+    setFocusAreasDropdownOpen(false);
+    setAuditsDropdownOpen(false);
+    setProductsDropdownOpen(false);
+    setToolsDropdownOpen(false);
+  };
+
+  const handleHealthMouseLeave = () => {
+    healthCloseTimer.current = setTimeout(() => {
+      setKincaidHealthDropdownOpen(false);
+    }, 300);
+  };
+
+  const handleProductsMouseEnter = () => {
+    if (productsCloseTimer.current) {
+      clearTimeout(productsCloseTimer.current);
+      productsCloseTimer.current = null;
+    }
+    setProductsDropdownOpen(true);
+    setCompanyDropdownOpen(false);
+    setFocusAreasDropdownOpen(false);
+    setAuditsDropdownOpen(false);
+    setKincaidHealthDropdownOpen(false);
+    setToolsDropdownOpen(false);
+  };
+
+  const handleProductsMouseLeave = () => {
+    productsCloseTimer.current = setTimeout(() => {
+      setProductsDropdownOpen(false);
+    }, 300);
+  };
 
   return (
     <nav className="fixed top-0 z-[200] w-full border-b border-slate-200/20 bg-white/95 backdrop-blur-xl">
@@ -88,17 +129,8 @@ export default function Nav() {
             {/* Intelligence Series - Dropdown */}
             <div 
               className="relative group"
-              onMouseEnter={() => {
-                setKincaidHealthDropdownOpen(true);
-                setCompanyDropdownOpen(false);
-                setFocusAreasDropdownOpen(false);
-                setAuditsDropdownOpen(false);
-                setProductsDropdownOpen(false);
-                setToolsDropdownOpen(false);
-              }}
-              onMouseLeave={() => {
-                setKincaidHealthDropdownOpen(false);
-              }}
+              onMouseEnter={handleHealthMouseEnter}
+              onMouseLeave={handleHealthMouseLeave}
             >
               <button
                 className="flex items-center gap-2 px-4 py-2 text-black hover:text-black/80 transition-colors rounded-lg hover:bg-slate-50 font-medium"
@@ -108,11 +140,9 @@ export default function Nav() {
               </button>
               {kincaidHealthDropdownOpen && (
                 <div
-                  onMouseEnter={() => setKincaidHealthDropdownOpen(true)}
-                  onMouseLeave={() => {
-                    setKincaidHealthDropdownOpen(false);
-                  }}
-                  className="absolute top-full left-0 mt-2 w-72 bg-gray-900/95 backdrop-blur-xl rounded-xl border border-gray-700/50 shadow-xl overflow-hidden z-[210]">
+                  onMouseEnter={handleHealthMouseEnter}
+                  onMouseLeave={handleHealthMouseLeave}
+                  className="absolute top-full left-0 mt-1 w-72 bg-gray-900/95 backdrop-blur-xl rounded-xl border border-gray-700/50 shadow-xl overflow-hidden z-[210]">
                   <div className="p-2">
                     <Link
                       href="/kincaid-iq-intelligence-series"
@@ -271,17 +301,8 @@ export default function Nav() {
             {/* Products Dropdown */}
             <div 
               className="relative group"
-              onMouseEnter={() => {
-                setProductsDropdownOpen(true);
-                setCompanyDropdownOpen(false);
-                setFocusAreasDropdownOpen(false);
-                setAuditsDropdownOpen(false);
-                setKincaidHealthDropdownOpen(false);
-                setToolsDropdownOpen(false);
-              }}
-              onMouseLeave={() => {
-                setProductsDropdownOpen(false);
-              }}
+              onMouseEnter={handleProductsMouseEnter}
+              onMouseLeave={handleProductsMouseLeave}
             >
               <button
                 className="flex items-center gap-2 px-4 py-2 text-[#8C1515] hover:text-[#a61c1c] font-semibold transition-colors rounded-lg hover:bg-red-50/50">
@@ -289,7 +310,10 @@ export default function Nav() {
                 <ChevronDown className={`w-3 h-3 transition-transform ${productsDropdownOpen ? "rotate-180" : ""}`} />
               </button>
               {productsDropdownOpen && (
-                <div className="absolute top-full left-0 mt-2 w-80 bg-gray-900/95 backdrop-blur-xl rounded-xl border border-gray-700/50 shadow-xl overflow-hidden z-[210]">
+                <div
+                  onMouseEnter={handleProductsMouseEnter}
+                  onMouseLeave={handleProductsMouseLeave}
+                  className="absolute top-full left-0 mt-1 w-80 bg-gray-900/95 backdrop-blur-xl rounded-xl border border-gray-700/50 shadow-xl overflow-hidden z-[210]">
                   <div className="p-2">
                     <Link
                       href="/#dashboard"

@@ -133,6 +133,15 @@ export default function SalesIQPage() {
                 </motion.div>
               ))}
             </div>
+
+            {/* CTA */}
+            <div className="text-center">
+              <Link href="/request-demo">
+                <Button size="lg" className="bg-blue-500 hover:bg-blue-600 text-white">
+                  Request Sales IQ Demo
+                </Button>
+              </Link>
+            </div>
           </div>
         </section>
       </main>

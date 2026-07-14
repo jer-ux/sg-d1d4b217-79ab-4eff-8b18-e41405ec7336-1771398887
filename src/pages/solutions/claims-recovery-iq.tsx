@@ -133,6 +133,15 @@ export default function ClaimsRecoveryIQPage() {
                 </motion.div>
               ))}
             </div>
+
+            {/* CTA */}
+            <div className="text-center">
+              <Link href="/request-demo">
+                <Button size="lg" className="bg-emerald-500 hover:bg-emerald-600 text-white">
+                  Request Claims Recovery Analysis
+                </Button>
+              </Link>
+            </div>
           </div>
         </section>
       </main>

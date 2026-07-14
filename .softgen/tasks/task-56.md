@@ -17,8 +17,8 @@ User provided complete list of 150 engines organized by category.
 ## Checklist
 - [x] Audit existing engine pages against the 150-engine list
 - [x] Identify missing engine pages (estimate 70-80 need to be created)
-- [ ] Create missing Population & Demographics engines (1-15) - 7/15 done
-- [ ] Create missing Medical Claims Analytics engines (16-30)
+- [x] Create missing Population & Demographics engines (1-15) - 15/15 done ✅
+- [ ] Create missing Medical Claims Analytics engines (16-30) - 4/15 done
 - [ ] Create missing Pharmacy Analytics engines (31-45)
 - [ ] Create missing Stop-Loss & Risk engines (46-60)
 - [ ] Create missing Financial Modeling engines (61-75)

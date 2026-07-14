@@ -13,13 +13,13 @@ position: 57
 Building Engine #1: Medical Trend Forecast Engine as production-quality FastAPI microservice. Foundation for all actuarial engines.
 
 ## Checklist
-- [ ] Create engine core logic (`backend/engines/trend/medical_forecast_engine.py`)
-- [ ] Create Pydantic models (`backend/engines/trend/models.py`)
-- [ ] Create FastAPI endpoints (`backend/engines/trend/main.py`)
-- [ ] Create unit tests (`backend/engines/trend/test_medical_forecast.py`)
-- [ ] Create API documentation (`backend/engines/trend/README.md`)
-- [ ] Create Dockerfile and docker-compose config
-- [ ] Integrate with shared actuarial math library
+- [x] Create engine core logic (`backend/engines/trend/medical_forecast_engine.py`)
+- [x] Create Pydantic models (`backend/engines/trend/models.py`)
+- [x] Create FastAPI endpoints (`backend/engines/trend/main.py`)
+- [x] Create unit tests (`backend/engines/trend/test_medical_forecast.py`)
+- [x] Create API documentation (`backend/engines/trend/README.md`)
+- [x] Create Dockerfile and docker-compose config
+- [x] Integrate with shared actuarial math library
 
 ## Acceptance
 - Medical Trend Forecast Engine runs as independent microservice

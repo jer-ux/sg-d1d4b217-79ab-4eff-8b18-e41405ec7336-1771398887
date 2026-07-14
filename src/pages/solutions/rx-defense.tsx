@@ -30,6 +30,8 @@ import { ProblemStatement } from "@/components/rx-defense/ProblemStatement";
 import { ProvisionCard } from "@/components/rx-defense/ProvisionCard";
 import { ROICalculator } from "@/components/rx-defense/ROICalculator";
 import { FAQSection } from "@/components/rx-defense/FAQSection";
+import { ParticleField3D } from "@/components/premium/ParticleField3D";
+import { motion } from "framer-motion";
 
 export default function RxDefensePage() {
   const [activeProvision, setActiveProvision] = useState<string | null>(null);
@@ -50,7 +52,8 @@ export default function RxDefensePage() {
 
       <Nav />
 
-      <main className="min-h-screen bg-gradient-to-b from-black via-slate-950 to-black">
+      <main className="min-h-screen bg-gradient-to-b from-black via-slate-950 to-black relative">
+        <ParticleField3D />
         {/* Hero Section */}
         <RxDefenseHero />
 
@@ -74,53 +77,31 @@ export default function RxDefensePage() {
 
             {/* Four Pillars */}
             <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6 mb-16">
-              <div className="bg-slate-900/50 border border-slate-800 rounded-xl p-6 hover:border-amber-500/50 transition-all">
-                <div className="w-12 h-12 bg-amber-500/10 rounded-lg flex items-center justify-center mb-4">
-                  <FileText className="w-6 h-6 text-amber-400" />
-                </div>
-                <h3 className="text-lg font-bold text-white mb-2">
-                  Clause Extraction
-                </h3>
-                <p className="text-sm text-slate-400">
-                  Semantic NLP analysis identifies and classifies every contractual obligation, pricing term, and financial provision.
-                </p>
-              </div>
-
-              <div className="bg-slate-900/50 border border-slate-800 rounded-xl p-6 hover:border-amber-500/50 transition-all">
-                <div className="w-12 h-12 bg-amber-500/10 rounded-lg flex items-center justify-center mb-4">
-                  <BarChart3 className="w-6 h-6 text-amber-400" />
-                </div>
-                <h3 className="text-lg font-bold text-white mb-2">
-                  Spread Detection
-                </h3>
-                <p className="text-sm text-slate-400">
-                  Statistical algorithms quantify pricing spreads between acquisition costs and reimbursement rates across all dispensing channels.
-                </p>
-              </div>
-
-              <div className="bg-slate-900/50 border border-slate-800 rounded-xl p-6 hover:border-amber-500/50 transition-all">
-                <div className="w-12 h-12 bg-amber-500/10 rounded-lg flex items-center justify-center mb-4">
-                  <Scale className="w-6 h-6 text-amber-400" />
-                </div>
-                <h3 className="text-lg font-bold text-white mb-2">
-                  Rebate Validation
-                </h3>
-                <p className="text-sm text-slate-400">
-                  Reconciliation frameworks verify pass-through percentages, disclosure timelines, and retained rebate calculations.
-                </p>
-              </div>
-
-              <div className="bg-slate-900/50 border border-slate-800 rounded-xl p-6 hover:border-amber-500/50 transition-all">
-                <div className="w-12 h-12 bg-amber-500/10 rounded-lg flex items-center justify-center mb-4">
-                  <AlertTriangle className="w-6 h-6 text-amber-400" />
-                </div>
-                <h3 className="text-lg font-bold text-white mb-2">
-                  Risk Scoring
-                </h3>
-                <p className="text-sm text-slate-400">
-                  Multi-factor risk assessment quantifies contract exposure, identifies material breaches, and prioritizes audit findings.
-                </p>
-              </div>
+              {[
+                { icon: FileText, title: "Clause Extraction", description: "Semantic NLP analysis identifies and classifies every contractual obligation, pricing term, and financial provision.", color: "amber" },
+                { icon: BarChart3, title: "Spread Detection", description: "Statistical algorithms quantify pricing spreads between acquisition costs and reimbursement rates across all dispensing channels.", color: "amber" },
+                { icon: Scale, title: "Rebate Validation", description: "Reconciliation frameworks verify pass-through percentages, disclosure timelines, and retained rebate calculations.", color: "amber" },
+                { icon: AlertTriangle, title: "Risk Scoring", description: "Multi-factor risk assessment quantifies contract exposure, identifies material breaches, and prioritizes audit findings.", color: "amber" }
+              ].map((pillar, idx) => (
+                <motion.div
+                  key={idx}
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.5, delay: idx * 0.1 }}
+                  viewport={{ once: true }}
+                  className="bg-slate-900/50 border border-slate-800 rounded-xl p-6 hover:border-amber-500/50 transition-all"
+                >
+                  <div className="w-12 h-12 bg-amber-500/10 rounded-lg flex items-center justify-center mb-4">
+                    <pillar.icon className="w-6 h-6 text-amber-400" />
+                  </div>
+                  <h3 className="text-lg font-bold text-white mb-2">
+                    {pillar.title}
+                  </h3>
+                  <p className="text-sm text-slate-400">
+                    {pillar.description}
+                  </p>
+                </motion.div>
+              ))}
             </div>
 
             {/* Detailed Framework Sections */}
@@ -227,77 +208,67 @@ export default function RxDefensePage() {
             </div>
 
             <div className="grid md:grid-cols-3 gap-8">
-              <Card className="bg-slate-900/50 border-slate-800 p-6">
-                <div className="flex items-center gap-3 mb-4">
-                  <div className="w-12 h-12 bg-amber-500/10 rounded-lg flex items-center justify-center">
-                    <Shield className="w-6 h-6 text-amber-400" />
-                  </div>
-                  <div>
-                    <div className="text-2xl font-bold text-white">$14.2M</div>
-                    <div className="text-xs text-slate-400">Contractual Leakage Identified</div>
-                  </div>
-                </div>
-                <h3 className="text-lg font-bold text-white mb-2">
-                  Multi-Employer Welfare Association
-                </h3>
-                <p className="text-sm text-slate-400 mb-4">
-                  Comprehensive forensic audit uncovered spread pricing, undisclosed GPO fees, and rebate retention totaling $14.2M annually.
-                </p>
-                <Link href="/Kincaid_iQ_Schwarz_Partners_MEWA_14_2M_Defense.pdf" target="_blank">
-                  <Button variant="outline" size="sm" className="w-full border-slate-700 text-slate-300">
-                    <Download className="w-4 h-4 mr-2" />
-                    Download Full Report
-                  </Button>
-                </Link>
-              </Card>
-
-              <Card className="bg-slate-900/50 border-slate-800 p-6">
-                <div className="flex items-center gap-3 mb-4">
-                  <div className="w-12 h-12 bg-amber-500/10 rounded-lg flex items-center justify-center">
-                    <BarChart3 className="w-6 h-6 text-amber-400" />
-                  </div>
-                  <div>
-                    <div className="text-2xl font-bold text-white">340%</div>
-                    <div className="text-xs text-slate-400">Above NADAC Reference</div>
-                  </div>
-                </div>
-                <h3 className="text-lg font-bold text-white mb-2">
-                  Generic MAC Pricing Analysis
-                </h3>
-                <p className="text-sm text-slate-400 mb-4">
-                  Statistical analysis revealed generic drug reimbursement rates 180-340% above federal NADAC benchmarks.
-                </p>
-                <Link href="/solutions/nadac-benchmarking">
-                  <Button variant="outline" size="sm" className="w-full border-slate-700 text-slate-300">
-                    <Eye className="w-4 h-4 mr-2" />
-                    View Analysis
-                  </Button>
-                </Link>
-              </Card>
-
-              <Card className="bg-slate-900/50 border-slate-800 p-6">
-                <div className="flex items-center gap-3 mb-4">
-                  <div className="w-12 h-12 bg-amber-500/10 rounded-lg flex items-center justify-center">
-                    <TrendingUp className="w-6 h-6 text-amber-400" />
-                  </div>
-                  <div>
-                    <div className="text-2xl font-bold text-white">23%</div>
-                    <div className="text-xs text-slate-400">Average Leakage Rate</div>
-                  </div>
-                </div>
-                <h3 className="text-lg font-bold text-white mb-2">
-                  Cross-Plan Benchmarking Study
-                </h3>
-                <p className="text-sm text-slate-400 mb-4">
-                  Analysis of 47 employer plans identified average contractual leakage of 23% relative to cost-plus pricing models.
-                </p>
-                <Link href="/solutions/mark-cuban-cost-drugs">
-                  <Button variant="outline" size="sm" className="w-full border-slate-700 text-slate-300">
-                    <Target className="w-4 h-4 mr-2" />
-                    Compare Models
-                  </Button>
-                </Link>
-              </Card>
+              {[
+                {
+                  amount: "$14.2M",
+                  label: "Contractual Leakage Identified",
+                  title: "Multi-Employer Welfare Association",
+                  description: "Comprehensive forensic audit uncovered spread pricing, undisclosed GPO fees, and rebate retention totaling $14.2M annually.",
+                  link: "/Kincaid_iQ_Schwarz_Partners_MEWA_14_2M_Defense.pdf",
+                  linkText: "Download Full Report",
+                  icon: Shield
+                },
+                {
+                  amount: "340%",
+                  label: "Above NADAC Reference",
+                  title: "Generic MAC Pricing Analysis",
+                  description: "Statistical analysis revealed generic drug reimbursement rates 180-340% above federal NADAC benchmarks.",
+                  link: "/solutions/nadac-benchmarking",
+                  linkText: "View Analysis",
+                  icon: BarChart3
+                },
+                {
+                  amount: "23%",
+                  label: "Average Leakage Rate",
+                  title: "Cross-Plan Benchmarking Study",
+                  description: "Analysis of 47 employer plans identified average contractual leakage of 23% relative to cost-plus pricing models.",
+                  link: "/solutions/mark-cuban-cost-drugs",
+                  linkText: "Compare Models",
+                  icon: TrendingUp
+                }
+              ].map((caseStudy, idx) => (
+                <motion.div
+                  key={idx}
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.5, delay: idx * 0.1 }}
+                  viewport={{ once: true }}
+                >
+                  <Card className="bg-slate-900/50 border-slate-800 p-6 h-full hover:border-amber-500/50 transition-all">
+                    <div className="flex items-center gap-3 mb-4">
+                      <div className="w-12 h-12 bg-amber-500/10 rounded-lg flex items-center justify-center">
+                        <caseStudy.icon className="w-6 h-6 text-amber-400" />
+                      </div>
+                      <div>
+                        <div className="text-2xl font-bold text-white">{caseStudy.amount}</div>
+                        <div className="text-xs text-slate-400">{caseStudy.label}</div>
+                      </div>
+                    </div>
+                    <h3 className="text-lg font-bold text-white mb-2">
+                      {caseStudy.title}
+                    </h3>
+                    <p className="text-sm text-slate-400 mb-4">
+                      {caseStudy.description}
+                    </p>
+                    <Link href={caseStudy.link} target={caseStudy.link.endsWith('.pdf') ? "_blank" : undefined}>
+                      <Button variant="outline" size="sm" className="w-full border-slate-700 text-slate-300">
+                        {caseStudy.link.endsWith('.pdf') ? <Download className="w-4 h-4 mr-2" /> : caseStudy.icon === BarChart3 ? <Eye className="w-4 h-4 mr-2" /> : <Target className="w-4 h-4 mr-2" />}
+                        {caseStudy.linkText}
+                      </Button>
+                    </Link>
+                  </Card>
+                </motion.div>
+              ))}
             </div>
           </div>
         </section>

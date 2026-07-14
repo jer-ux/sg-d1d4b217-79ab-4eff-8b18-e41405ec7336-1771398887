@@ -21,6 +21,8 @@ import {
   Award,
   BarChart3
 } from "lucide-react";
+import { ParticleField3D } from "@/components/premium/ParticleField3D";
+import { motion } from "framer-motion";
 
 export default function ClaimsRecoveryIQ() {
   const [selectedTier, setSelectedTier] = useState<"certified" | "modeled" | "insufficient">("certified");
@@ -31,7 +33,8 @@ export default function ClaimsRecoveryIQ() {
         title="Claims Recovery IQ: Automated Recovery Platform | Kincaid Health"
         description="Automated claims error detection and recovery. Machine learning identifies overpayments, billing errors, and recovery opportunities."
       />
-      <div className="min-h-screen bg-gradient-to-b from-slate-950 via-slate-900 to-slate-950">
+      <div className="min-h-screen bg-gradient-to-b from-slate-950 via-slate-900 to-slate-950 relative">
+        <ParticleField3D />
         <Nav />
 
         {/* Hero Section */}
@@ -39,16 +42,26 @@ export default function ClaimsRecoveryIQ() {
           <div className="absolute inset-0 bg-gradient-to-br from-emerald-500/10 via-transparent to-blue-500/10" />
           <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-emerald-900/20 via-transparent to-transparent" />
           
-          <div className="max-w-7xl mx-auto relative">
-            <div className="text-center mb-8">
+          <div className="max-w-7xl mx-auto relative z-10">
+            <motion.div 
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8 }}
+              className="text-center mb-8"
+            >
               <Badge className="mb-6 bg-emerald-500/20 text-emerald-300 border-emerald-500/30">
                 Forensic Claims Intelligence
               </Badge>
-              <h1 className="text-5xl md:text-7xl font-bold mb-6">
+              <motion.h1 
+                initial={{ opacity: 0, scale: 0.95 }}
+                animate={{ opacity: 1, scale: 1 }}
+                transition={{ duration: 0.6, delay: 0.2 }}
+                className="text-5xl md:text-7xl font-bold mb-6"
+              >
                 <span className="bg-gradient-to-r from-emerald-400 via-green-300 to-cyan-400 bg-clip-text text-transparent">
                   Claims Recovery IQ™
                 </span>
-              </h1>
+              </motion.h1>
               <p className="text-xl md:text-2xl text-gray-300 mb-4 max-w-4xl mx-auto">
                 Forensic Recovery Engine for Self-Funded Health Plans
               </p>
@@ -88,7 +101,7 @@ export default function ClaimsRecoveryIQ() {
                   </Button>
                 </Link>
               </div>
-            </div>
+            </motion.div>
           </div>
         </section>
 

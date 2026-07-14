@@ -22,6 +22,8 @@ import {
   Globe,
   AlertCircle
 } from "lucide-react";
+import { ParticleField3D } from "@/components/premium/ParticleField3D";
+import { motion } from "framer-motion";
 
 export default function SalesIQ() {
   return (
@@ -30,7 +32,8 @@ export default function SalesIQ() {
         title="Sales IQ: Healthcare Sales Enablement | Kincaid Health"
         description="Transform healthcare consultants and brokers into data-driven advisors. Real-time intelligence, competitive analysis, and deal acceleration tools."
       />
-      <div className="min-h-screen bg-gradient-to-b from-slate-950 via-slate-900 to-slate-950">
+      <div className="min-h-screen bg-gradient-to-b from-slate-950 via-slate-900 to-slate-950 relative">
+        <ParticleField3D />
         <Nav />
 
         {/* Hero Section */}
@@ -38,16 +41,26 @@ export default function SalesIQ() {
           <div className="absolute inset-0 bg-gradient-to-br from-blue-500/10 via-transparent to-purple-500/10" />
           <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-blue-900/20 via-transparent to-transparent" />
           
-          <div className="max-w-7xl mx-auto relative">
-            <div className="text-center mb-8">
+          <div className="max-w-7xl mx-auto relative z-10">
+            <motion.div 
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8 }}
+              className="text-center mb-8"
+            >
               <Badge className="mb-6 bg-blue-500/20 text-blue-300 border-blue-500/30">
                 Sales Intelligence Platform
               </Badge>
-              <h1 className="text-5xl md:text-7xl font-bold mb-6">
+              <motion.h1 
+                initial={{ opacity: 0, scale: 0.95 }}
+                animate={{ opacity: 1, scale: 1 }}
+                transition={{ duration: 0.6, delay: 0.2 }}
+                className="text-5xl md:text-7xl font-bold mb-6"
+              >
                 <span className="bg-gradient-to-r from-blue-400 via-cyan-300 to-purple-400 bg-clip-text text-transparent">
                   Sales IQ™
                 </span>
-              </h1>
+              </motion.h1>
               <p className="text-xl md:text-2xl text-gray-300 mb-4 max-w-4xl mx-auto">
                 Winning the Self-Funded Benefits Market with Proprietary Intelligence
               </p>
@@ -87,7 +100,7 @@ export default function SalesIQ() {
                   </Button>
                 </Link>
               </div>
-            </div>
+            </motion.div>
           </div>
         </section>
 

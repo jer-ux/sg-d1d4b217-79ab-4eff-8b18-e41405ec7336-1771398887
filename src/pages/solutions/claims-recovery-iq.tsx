@@ -5,7 +5,7 @@ import { Badge } from "@/components/ui/badge";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Shield, AlertTriangle, TrendingUp, DollarSign, CheckCircle, FileText, Clock, Target } from "lucide-react";
-import { Nav } from "@/components/Nav";
+import Nav from "@/components/Nav";
 import { ParticleField3D } from "@/components/premium/ParticleField3D";
 
 export default function ClaimsRecoveryIQPage() {

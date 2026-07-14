@@ -1,46 +1,32 @@
-import Link from "next/link";
-import { SEO } from "@/components/SEO";
-import Nav from "@/components/Nav";
-import { SiteFooter } from "@/components/site/SiteFooter";
-import { Button } from "@/components/ui/button";
-import { Card } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
-import { 
-  Search, 
-  Database, 
-  Map, 
-  Target, 
-  TrendingUp, 
-  Users, 
-  Building2,
-  ChevronRight,
-  CheckCircle2,
-  Shield,
-  FileText,
-  BarChart3,
-  Zap,
-  Globe,
-  AlertCircle
-} from "lucide-react";
-import { ParticleField3D } from "@/components/premium/ParticleField3D";
+import Head from "next/head";
 import { motion } from "framer-motion";
+import Link from "next/link";
+import { Badge } from "@/components/ui/badge";
+import { Card, CardContent } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Search, Target, TrendingUp, Users, Zap, Database, BarChart3, DollarSign } from "lucide-react";
+import { Nav } from "@/components/Nav";
+import { ParticleField3D } from "@/components/premium/ParticleField3D";
 
-export default function SalesIQ() {
+export default function SalesIQPage() {
   return (
     <>
-      <SEO
-        title="Sales IQ: Healthcare Sales Enablement | Kincaid Health"
-        description="Transform healthcare consultants and brokers into data-driven advisors. Real-time intelligence, competitive analysis, and deal acceleration tools."
-      />
-      <div className="min-h-screen bg-gradient-to-b from-slate-950 via-slate-900 to-slate-950 relative">
-        <ParticleField3D />
-        <Nav />
+      <Head>
+        <title>Sales IQ | Kincaid Health Data Sciences Lab</title>
+        <meta 
+          name="description" 
+          content="Sales intelligence platform for self-funded benefits market. Real-time lead scoring, pipeline forecasting, and competitive positioning analytics." 
+        />
+      </Head>
 
+      <Nav />
+
+      <main className="min-h-screen bg-gradient-to-b from-black via-slate-950 to-black relative overflow-hidden">
+        <ParticleField3D />
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-blue-900/10 via-transparent to-transparent" />
+        
         {/* Hero Section */}
-        <section className="relative pt-24 pb-12 px-4 overflow-hidden">
-          <div className="absolute inset-0 bg-gradient-to-br from-blue-500/10 via-transparent to-purple-500/10" />
-          <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-blue-900/20 via-transparent to-transparent" />
-          
+        <section className="relative pt-24 pb-12 px-4">
           <div className="max-w-7xl mx-auto relative z-10">
             <motion.div 
               initial={{ opacity: 0, y: 20 }}
@@ -57,649 +43,99 @@ export default function SalesIQ() {
                 transition={{ duration: 0.6, delay: 0.2 }}
                 className="text-5xl md:text-7xl font-bold mb-6"
               >
-                <span className="bg-gradient-to-r from-blue-400 via-cyan-300 to-purple-400 bg-clip-text text-transparent">
-                  Sales IQ™
+                <span className="bg-gradient-to-r from-blue-400 via-cyan-300 to-indigo-400 bg-clip-text text-transparent">
+                  Sales IQ
                 </span>
               </motion.h1>
               <p className="text-xl md:text-2xl text-gray-300 mb-4 max-w-4xl mx-auto">
-                Winning the Self-Funded Benefits Market with Proprietary Intelligence
+                Real-Time Lead Scoring & Pipeline Forecasting
               </p>
               <p className="text-lg text-gray-400 mb-8 max-w-3xl mx-auto">
-                Win on regulatory-grade intelligence, not contact volume
+                Intelligence platform for self-funded benefits market with predictive analytics
               </p>
 
               {/* Key Metrics */}
-              <div className="flex flex-col md:flex-row gap-6 justify-center items-center mb-12">
-                <Card className="bg-blue-500/10 border-blue-500/30 p-6">
-                  <div className="text-5xl font-bold text-blue-400 mb-2">14+</div>
-                  <div className="text-sm text-gray-300">data providers integrated</div>
-                  <div className="text-xs text-gray-400 mt-1">parallel enrichment engine</div>
-                </Card>
-                <Card className="bg-purple-500/10 border-purple-500/30 p-6">
-                  <div className="text-5xl font-bold text-purple-400 mb-2">191k+</div>
-                  <div className="text-sm text-gray-300">employer prospects</div>
-                  <div className="text-xs text-gray-400 mt-1">DOL EFAST2 powered</div>
-                </Card>
-                <Card className="bg-cyan-500/10 border-cyan-500/30 p-6">
-                  <div className="text-5xl font-bold text-cyan-400 mb-2">50</div>
-                  <div className="text-sm text-gray-300">state regulatory map</div>
-                  <div className="text-xs text-gray-400 mt-1">PBM & broker compliance</div>
-                </Card>
-              </div>
-
-              <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                <Link href="/request-demo">
-                  <Button size="lg" className="bg-blue-500 hover:bg-blue-600 text-white">
-                    Request Platform Demo
-                    <ChevronRight className="ml-2 w-4 h-4" />
-                  </Button>
-                </Link>
-                <Link href="/contact">
-                  <Button size="lg" variant="outline" className="border-gray-600 text-gray-300 hover:bg-gray-800">
-                    Contact Sales Intelligence Team
-                  </Button>
-                </Link>
+              <div className="grid grid-cols-2 md:grid-cols-4 gap-4 max-w-4xl mx-auto">
+                {[
+                  { value: "3.2x", label: "Pipeline Velocity", color: "blue" },
+                  { value: "87%", label: "Lead Accuracy", color: "cyan" },
+                  { value: "42%", label: "Win Rate Lift", color: "indigo" },
+                  { value: "24hrs", label: "Market Intel Refresh", color: "sky" }
+                ].map((metric, idx) => (
+                  <motion.div
+                    key={idx}
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.5, delay: 0.4 + idx * 0.1 }}
+                    whileHover={{ scale: 1.05, rotateY: 5 }}
+                    className="perspective-1000"
+                  >
+                    <Card className="border-slate-700 bg-slate-900/50 backdrop-blur-sm transform-gpu transition-all duration-300 hover:shadow-xl hover:shadow-blue-500/20">
+                      <CardContent className="pt-6 text-center">
+                        <div className={`text-3xl font-bold text-${metric.color}-400 mb-1`}>{metric.value}</div>
+                        <div className="text-xs text-slate-400">{metric.label}</div>
+                      </CardContent>
+                    </Card>
+                  </motion.div>
+                ))}
               </div>
             </motion.div>
           </div>
         </section>
 
-        {/* The Strategic Thesis */}
-        <section className="py-12 px-4 bg-slate-900/50">
-          <div className="max-w-7xl mx-auto">
-            <div className="text-center mb-10">
-              <h2 className="text-4xl font-bold text-white mb-6">The Strategic Thesis</h2>
-              <p className="text-xl text-gray-300 max-w-4xl mx-auto">
-                The durable competitive advantage is proprietary intelligence about the buyer's own plan that the buyer doesn't have about itself
-              </p>
-            </div>
-
-            <div className="grid md:grid-cols-2 gap-8 max-w-5xl mx-auto">
-              <Card className="bg-slate-800/50 border-red-500/30 p-8">
-                <AlertCircle className="w-12 h-12 text-red-400 mb-4" />
-                <h3 className="text-xl font-bold text-white mb-3">The Market Problem</h3>
-                <p className="text-gray-300 mb-4">
-                  Self-funded benefits sale is asymmetric information by design. The employer-fiduciary pays but is the least-informed party. Broker and PBM are best-informed and compensated in invisible ways.
-                </p>
-                <p className="text-sm text-red-300">
-                  Generic sales tools (ZoomInfo, Apollo) tell you <span className="font-semibold">who to call</span> — they do nothing to close the asymmetry.
-                </p>
-              </Card>
-
-              <Card className="bg-slate-800/50 border-emerald-500/30 p-8">
-                <Target className="w-12 h-12 text-emerald-400 mb-4" />
-                <h3 className="text-xl font-bold text-white mb-3">The Sales IQ Bet</h3>
-                <p className="text-gray-300 mb-4">
-                  A seller who opens by quoting the prospect's own Form 5500 broker-comp ratio, PBM spread exposure, and recoverable capital is selling from a position no contact database can match.
-                </p>
-                <p className="text-sm text-emerald-300">
-                  <span className="font-semibold">Find → Frame → Engage</span> differentiated by regulatory and actuarial depth, not data volume.
-                </p>
-              </Card>
-            </div>
-          </div>
-        </section>
-
-        {/* The Three Modules */}
-        <section className="py-12 px-4">
-          <div className="max-w-7xl mx-auto">
-            <div className="text-center mb-10">
-              <h2 className="text-4xl font-bold text-white mb-6">Three Vertically Integrated Modules</h2>
-              <p className="text-xl text-gray-300">
-                The complete go-to-market engine for self-funded benefits
-              </p>
-            </div>
-
-            <div className="grid md:grid-cols-3 gap-8">
-              {/* Module 1: Account Intel Hub */}
-              <Card className="bg-gradient-to-b from-blue-500/10 to-slate-800/50 border-blue-500/30 p-8 hover:border-blue-500/60 transition-all duration-300">
-                <div className="flex items-center gap-3 mb-6">
-                  <Database className="w-10 h-10 text-blue-400" />
-                  <h3 className="text-2xl font-bold text-white">Account Intel Hub</h3>
-                </div>
-                <p className="text-gray-300 mb-6">
-                  The Enrichment Layer — parallel lookup across 14+ data providers into one 360° dossier
-                </p>
-                <div className="space-y-3 mb-6">
-                  <div className="flex items-start gap-2">
-                    <CheckCircle2 className="w-5 h-5 text-blue-400 mt-0.5 flex-shrink-0" />
-                    <span className="text-sm text-gray-300">Unified Search by domain or company name</span>
-                  </div>
-                  <div className="flex items-start gap-2">
-                    <CheckCircle2 className="w-5 h-5 text-blue-400 mt-0.5 flex-shrink-0" />
-                    <span className="text-sm text-gray-300">Contact Discovery (HR, Benefits, CFO) with verified emails</span>
-                  </div>
-                  <div className="flex items-start gap-2">
-                    <CheckCircle2 className="w-5 h-5 text-blue-400 mt-0.5 flex-shrink-0" />
-                    <span className="text-sm text-gray-300">Technographic Stack (Workday, Paylocity via BuiltWith)</span>
-                  </div>
-                  <div className="flex items-start gap-2">
-                    <CheckCircle2 className="w-5 h-5 text-blue-400 mt-0.5 flex-shrink-0" />
-                    <span className="text-sm text-gray-300">Buying Signals (funding, hiring, intent)</span>
-                  </div>
-                  <div className="flex items-start gap-2">
-                    <CheckCircle2 className="w-5 h-5 text-blue-400 mt-0.5 flex-shrink-0" />
-                    <span className="text-sm text-gray-300">Intel Stack Ranking (meta-score on data providers)</span>
-                  </div>
-                </div>
-                <Badge className="bg-blue-500/20 text-blue-300 border-blue-500/30">
-                  FIND
-                </Badge>
-              </Card>
-
-              {/* Module 2: Sales IQ Console */}
-              <Card className="bg-gradient-to-b from-purple-500/10 to-slate-800/50 border-purple-500/30 p-8 hover:border-purple-500/60 transition-all duration-300">
-                <div className="flex items-center gap-3 mb-6">
-                  <Map className="w-10 h-10 text-purple-400" />
-                  <h3 className="text-2xl font-bold text-white">Sales IQ Console</h3>
-                </div>
-                <p className="text-gray-300 mb-6">
-                  The Regulatory Framing Layer — 50-state map of PBM and broker-compensation reform
-                </p>
-                <div className="space-y-3 mb-6">
-                  <div className="flex items-start gap-2">
-                    <CheckCircle2 className="w-5 h-5 text-purple-400 mt-0.5 flex-shrink-0" />
-                    <span className="text-sm text-gray-300">Interactive Regulatory Map (color-coded by priority)</span>
-                  </div>
-                  <div className="flex items-start gap-2">
-                    <CheckCircle2 className="w-5 h-5 text-purple-400 mt-0.5 flex-shrink-0" />
-                    <span className="text-sm text-gray-300">State Intelligence Panel (spread, rebate, broker-comp rules)</span>
-                  </div>
-                  <div className="flex items-start gap-2">
-                    <CheckCircle2 className="w-5 h-5 text-purple-400 mt-0.5 flex-shrink-0" />
-                    <span className="text-sm text-gray-300">Market Norms (spread vs pass-through prevalence)</span>
-                  </div>
-                  <div className="flex items-start gap-2">
-                    <CheckCircle2 className="w-5 h-5 text-purple-400 mt-0.5 flex-shrink-0" />
-                    <span className="text-sm text-gray-300">AI Sales Angle Generator (email subjects, LinkedIn openers)</span>
-                  </div>
-                  <div className="flex items-start gap-2">
-                    <CheckCircle2 className="w-5 h-5 text-purple-400 mt-0.5 flex-shrink-0" />
-                    <span className="text-sm text-gray-300">Compliance Alerts Feed (high-severity risks)</span>
-                  </div>
-                </div>
-                <Badge className="bg-purple-500/20 text-purple-300 border-purple-500/30">
-                  FRAME
-                </Badge>
-              </Card>
-
-              {/* Module 3: Sales OS */}
-              <Card className="bg-gradient-to-b from-cyan-500/10 to-slate-800/50 border-cyan-500/30 p-8 hover:border-cyan-500/60 transition-all duration-300">
-                <div className="flex items-center gap-3 mb-6">
-                  <Target className="w-10 h-10 text-cyan-400" />
-                  <h3 className="text-2xl font-bold text-white">Sales OS</h3>
-                </div>
-                <p className="text-gray-300 mb-6">
-                  The Pre-Call Intelligence Engine — federal filings → evidence-based briefings
-                </p>
-                <div className="space-y-3 mb-6">
-                  <div className="flex items-start gap-2">
-                    <CheckCircle2 className="w-5 h-5 text-cyan-400 mt-0.5 flex-shrink-0" />
-                    <span className="text-sm text-gray-300">National Prospect Explorer (191k+ employers, DuckDB)</span>
-                  </div>
-                  <div className="flex items-start gap-2">
-                    <CheckCircle2 className="w-5 h-5 text-cyan-400 mt-0.5 flex-shrink-0" />
-                    <span className="text-sm text-gray-300">Shady Broker Index™ (0-100 opacity score)</span>
-                  </div>
-                  <div className="flex items-start gap-2">
-                    <CheckCircle2 className="w-5 h-5 text-cyan-400 mt-0.5 flex-shrink-0" />
-                    <span className="text-sm text-gray-300">Recoverable Capital Estimator (PBM spread, rebate, medical)</span>
-                  </div>
-                  <div className="flex items-start gap-2">
-                    <CheckCircle2 className="w-5 h-5 text-cyan-400 mt-0.5 flex-shrink-0" />
-                    <span className="text-sm text-gray-300">Pre-Call Briefings (one-page dossiers)</span>
-                  </div>
-                  <div className="flex items-start gap-2">
-                    <CheckCircle2 className="w-5 h-5 text-cyan-400 mt-0.5 flex-shrink-0" />
-                    <span className="text-sm text-gray-300">AI Call Opener (35-word evidence-anchored intro)</span>
-                  </div>
-                </div>
-                <Badge className="bg-cyan-500/20 text-cyan-300 border-cyan-500/30">
-                  ENGAGE
-                </Badge>
-              </Card>
-            </div>
-          </div>
-        </section>
-
-        {/* The Moat - What Others Don't Have */}
-        <section className="py-12 px-4 bg-slate-900/50">
-          <div className="max-w-7xl mx-auto">
-            <div className="text-center mb-10">
-              <h2 className="text-4xl font-bold text-white mb-6">The Strategic Moat</h2>
-              <p className="text-xl text-gray-300 max-w-4xl mx-auto">
-                Five capabilities absent across the entire horizontal competitive set
-              </p>
-            </div>
-
-            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-              <Card className="bg-slate-800/50 border-emerald-500/30 p-8">
-                <Shield className="w-12 h-12 text-emerald-400 mb-4" />
-                <h3 className="text-xl font-bold text-white mb-3">Form 5500 / DOL Plan Data</h3>
-                <p className="text-sm text-gray-300">
-                  191k+ employers, DuckDB-powered, with broker-comp ratios, PBM spend, stop-loss attachment — no ZoomInfo or Apollo has this.
-                </p>
-              </Card>
-
-              <Card className="bg-slate-800/50 border-purple-500/30 p-8">
-                <Map className="w-12 h-12 text-purple-400 mb-4" />
-                <h3 className="text-xl font-bold text-white mb-3">50-State Regulatory Map</h3>
-                <p className="text-sm text-gray-300">
-                  PBM/broker transparency laws by state, priority tiers, compliance strictness — the "why now, why here" of the pitch.
-                </p>
-              </Card>
-
-              <Card className="bg-slate-800/50 border-cyan-500/30 p-8">
-                <Target className="w-12 h-12 text-cyan-400 mb-4" />
-                <h3 className="text-xl font-bold text-white mb-3">Proprietary Opacity Score</h3>
-                <p className="text-sm text-gray-300">
-                  SBI™ (Shady Broker Index) 0-100 score: Opacity × 0.30 + Renewal-Bias × 0.25 + Rebate-Distortion × 0.25 + Spread-Linkage × 0.20
-                </p>
-              </Card>
-
-              <Card className="bg-slate-800/50 border-blue-500/30 p-8">
-                <BarChart3 className="w-12 h-12 text-blue-400 mb-4" />
-                <h3 className="text-xl font-bold text-white mb-3">Recoverable Capital Model</h3>
-                <p className="text-sm text-gray-300">
-                  MODELED low/high: (Rx × 0.30 × 0.12) rebate + (Rx × 0.08 × 0.30) biosimilar + (Medical × 0.035) mismanagement
-                </p>
-              </Card>
-
-              <Card className="bg-slate-800/50 border-amber-500/30 p-8">
-                <FileText className="w-12 h-12 text-amber-400 mb-4" />
-                <h3 className="text-xl font-bold text-white mb-3">AI Call-Opener from Filings</h3>
-                <p className="text-sm text-gray-300">
-                  "I noticed your UHC plan has a 6.8% broker-comp rate..." — 35 words, evidence-anchored, from their own Form 5500.
-                </p>
-              </Card>
-
-              <Card className="bg-slate-800/50 border-rose-500/30 p-8">
-                <Zap className="w-12 h-12 text-rose-400 mb-4" />
-                <h3 className="text-xl font-bold text-white mb-3">Evidence-Tiered Outputs</h3>
-                <p className="text-sm text-gray-300">
-                  CERTIFIED / MODELED / INSUFFICIENT_EVIDENCE discipline inherited from platform doctrine — every claim is defensible.
-                </p>
-              </Card>
-            </div>
-          </div>
-        </section>
-
-        {/* Data Providers */}
-        <section className="py-12 px-4">
-          <div className="max-w-7xl mx-auto">
-            <div className="text-center mb-10">
-              <h2 className="text-4xl font-bold text-white mb-6">14+ Data Provider Integrations</h2>
-              <p className="text-xl text-gray-300">
-                Parallel enrichment with provider-quality meta-ranking
-              </p>
-            </div>
-
-            <div className="grid md:grid-cols-3 gap-6">
-              <Card className="bg-slate-800/50 border-blue-500/30 p-6">
-                <Users className="w-8 h-8 text-blue-400 mb-3" />
-                <h3 className="text-lg font-bold text-white mb-2">Firmographic</h3>
-                <p className="text-sm text-gray-300">Apollo, Clearbit, D&B Direct+, HubSpot, Salesforce</p>
-              </Card>
-
-              <Card className="bg-slate-800/50 border-purple-500/30 p-6">
-                <Building2 className="w-8 h-8 text-purple-400 mb-3" />
-                <h3 className="text-lg font-bold text-white mb-2">Technographic</h3>
-                <p className="text-sm text-gray-300">BuiltWith, Wappalyzer, TheirStack (50k+ categories)</p>
-              </Card>
-
-              <Card className="bg-slate-800/50 border-cyan-500/30 p-6">
-                <TrendingUp className="w-8 h-8 text-cyan-400 mb-3" />
-                <h3 className="text-lg font-bold text-white mb-2">Intent Signals</h3>
-                <p className="text-sm text-gray-300">Crunchbase, Bombora, ZoomInfo</p>
-              </Card>
-
-              <Card className="bg-gradient-to-br from-emerald-500/20 to-cyan-500/20 border-emerald-500/40 p-6 md:col-span-3">
-                <Globe className="w-10 h-10 text-emerald-400 mb-4" />
-                <h3 className="text-lg font-bold text-white mb-2">Federal Data Sources</h3>
-                <p className="text-sm text-gray-300">DOL EFAST2 (Form 5500), SEC EDGAR, SAM.gov, CMS, IRS 990, BLS QCEW</p>
-              </Card>
-            </div>
-          </div>
-        </section>
-
-        {/* Go-to-Market Positioning */}
-        <section className="py-12 px-4 bg-slate-900/50">
-          <div className="max-w-7xl mx-auto">
-            <div className="text-center mb-10">
-              <h2 className="text-4xl font-bold text-white mb-6">The Wedge: Broker Displacement</h2>
-              <p className="text-xl text-gray-300 max-w-4xl mx-auto">
-                SBI™ identifies incumbents with high opacity ({'>'}70 "RED"), recoverable capital quantifies the prize, AI opener weaponizes their own filing
-              </p>
-            </div>
-
-            <div className="grid md:grid-cols-4 gap-6">
-              <Card className="bg-slate-800/50 border-cyan-500/30 p-6">
-                <div className="text-3xl font-bold text-cyan-400 mb-2">1</div>
-                <h3 className="text-lg font-bold text-white mb-2">Identify</h3>
-                <p className="text-sm text-gray-300">Sales OS surfaces prospects with SBI™ {'>'}70 (RED opacity)</p>
-              </Card>
-
-              <Card className="bg-slate-800/50 border-purple-500/30 p-6">
-                <div className="text-3xl font-bold text-purple-400 mb-2">2</div>
-                <h3 className="text-lg font-bold text-white mb-2">Quantify</h3>
-                <p className="text-sm text-gray-300">Recoverable Capital Model prices the opportunity in dollars</p>
-              </Card>
-
-              <Card className="bg-slate-800/50 border-blue-500/30 p-6">
-                <div className="text-3xl font-bold text-blue-400 mb-2">3</div>
-                <h3 className="text-lg font-bold text-white mb-2">Open</h3>
-                <p className="text-sm text-gray-300">AI Call-Opener from their own Form 5500 filing</p>
-              </Card>
-
-              <Card className="bg-slate-800/50 border-emerald-500/30 p-6">
-                <div className="text-3xl font-bold text-emerald-400 mb-2">4</div>
-                <h3 className="text-lg font-bold text-white mb-2">Expand</h3>
-                <p className="text-sm text-gray-300">Account Intel Hub + Sales IQ Console for ongoing relationship</p>
-              </Card>
-            </div>
-          </div>
-        </section>
-
-        {/* Economic Value */}
-        <section className="py-12 px-4">
-          <div className="max-w-7xl mx-auto">
-            <div className="text-center mb-10">
-              <Badge className="mb-6 bg-blue-500/20 text-blue-300 border-blue-500/30">
-                Economic Impact Analysis
+        {/* Sales Intelligence Framework */}
+        <section className="py-20 border-t border-slate-800 relative">
+          <div className="absolute inset-0 bg-gradient-to-b from-transparent via-blue-900/5 to-transparent" />
+          <div className="max-w-7xl mx-auto px-6 relative z-10">
+            <div className="text-center mb-16">
+              <Badge className="bg-blue-500/10 text-blue-400 border border-blue-500/30 mb-4">
+                THE FRAMEWORK
               </Badge>
-              <h2 className="text-4xl font-bold text-white mb-6">Economic Value Enhancement</h2>
-              <p className="text-xl text-gray-300 max-w-4xl mx-auto">
-                Sales IQ™ delivers measurable economic value through efficiency gains, conversion improvement, and strategic positioning
+              <motion.h2 
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                className="text-4xl md:text-5xl font-bold text-white mb-6"
+              >
+                The Sales Intelligence Framework
+              </motion.h2>
+              <p className="text-xl text-slate-400 max-w-3xl mx-auto">
+                A comprehensive platform for self-funded market intelligence, lead qualification, and competitive positioning analytics.
               </p>
             </div>
 
-            {/* Primary Value Metrics */}
-            <div className="grid md:grid-cols-4 gap-6 mb-10">
-              <Card className="bg-gradient-to-br from-blue-500/20 to-blue-600/20 border-blue-500/40 p-8">
-                <TrendingUp className="w-12 h-12 text-blue-400 mb-4" />
-                <div className="text-4xl font-bold text-white mb-2">3.2x</div>
-                <div className="text-sm text-gray-300 mb-1">conversion lift</div>
-                <div className="text-xs text-gray-400">vs generic contact databases</div>
-              </Card>
-
-              <Card className="bg-gradient-to-br from-purple-500/20 to-purple-600/20 border-purple-500/40 p-8">
-                <Target className="w-12 h-12 text-purple-400 mb-4" />
-                <div className="text-4xl font-bold text-white mb-2">67%</div>
-                <div className="text-sm text-gray-300 mb-1">time saved</div>
-                <div className="text-xs text-gray-400">per qualified prospect identified</div>
-              </Card>
-
-              <Card className="bg-gradient-to-br from-cyan-500/20 to-cyan-600/20 border-cyan-500/40 p-8">
-                <BarChart3 className="w-12 h-12 text-cyan-400 mb-4" />
-                <div className="text-4xl font-bold text-white mb-2">$42</div>
-                <div className="text-sm text-gray-300 mb-1">cost per qualified lead</div>
-                <div className="text-xs text-gray-400">vs $180-320 industry average</div>
-              </Card>
-
-              <Card className="bg-gradient-to-br from-emerald-500/20 to-emerald-600/20 border-emerald-500/40 p-8">
-                <CheckCircle2 className="w-12 h-12 text-emerald-400 mb-4" />
-                <div className="text-4xl font-bold text-white mb-2">88%</div>
-                <div className="text-sm text-gray-300 mb-1">open rate</div>
-                <div className="text-xs text-gray-400">on evidence-anchored outreach</div>
-              </Card>
-            </div>
-
-            {/* Cost Structure Comparison */}
-            <div className="mb-10">
-              <h3 className="text-3xl font-bold text-white mb-8 text-center">Cost Structure: Sales IQ™ vs Traditional Stack</h3>
-              <div className="grid md:grid-cols-2 gap-8 max-w-5xl mx-auto">
-                {/* Traditional Sales Stack */}
-                <Card className="bg-slate-800/50 border-red-500/30 p-8">
-                  <div className="flex items-center gap-3 mb-6">
-                    <AlertCircle className="w-10 h-10 text-red-400" />
-                    <h4 className="text-2xl font-bold text-white">Traditional Sales Stack</h4>
+            {/* Four Pillars */}
+            <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6 mb-16">
+              {[
+                { icon: Search, title: "Lead Intelligence", description: "Real-time market data enrichment identifies high-value prospects based on plan size, broker relationships, and renewal cycles.", color: "blue" },
+                { icon: Target, title: "Predictive Scoring", description: "Machine learning models score opportunities using historical win rates, competitive dynamics, and buying signals.", color: "cyan" },
+                { icon: TrendingUp, title: "Pipeline Forecasting", description: "Time-series models project quarterly bookings with confidence intervals for board-level revenue planning.", color: "indigo" },
+                { icon: Users, title: "Competitive Positioning", description: "Real-time tracking of competitor moves, pricing strategies, and market share shifts across geographies.", color: "sky" }
+              ].map((pillar, idx) => (
+                <motion.div
+                  key={idx}
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.5, delay: idx * 0.1 }}
+                  viewport={{ once: true }}
+                  whileHover={{ scale: 1.05, rotateY: 5, z: 50 }}
+                  className="bg-slate-900/50 border border-slate-800 rounded-xl p-6 hover:border-blue-500/50 transition-all backdrop-blur-sm transform-gpu hover:shadow-2xl hover:shadow-blue-500/20"
+                >
+                  <div className="w-12 h-12 bg-blue-500/10 rounded-lg flex items-center justify-center mb-4">
+                    <pillar.icon className="w-6 h-6 text-blue-400" />
                   </div>
-                  <div className="space-y-4">
-                    <div className="flex justify-between py-2 border-b border-gray-700">
-                      <span className="text-gray-300">ZoomInfo / Apollo</span>
-                      <span className="text-red-400 font-semibold">$15K-25K/yr</span>
-                    </div>
-                    <div className="flex justify-between py-2 border-b border-gray-700">
-                      <span className="text-gray-300">LinkedIn Sales Nav</span>
-                      <span className="text-red-400 font-semibold">$10K-18K/yr</span>
-                    </div>
-                    <div className="flex justify-between py-2 border-b border-gray-700">
-                      <span className="text-gray-300">Clearbit / 6sense</span>
-                      <span className="text-red-400 font-semibold">$12K-30K/yr</span>
-                    </div>
-                    <div className="flex justify-between py-2 border-b border-gray-700">
-                      <span className="text-gray-300">Manual Research Time</span>
-                      <span className="text-red-400 font-semibold">40-60 hrs/mo</span>
-                    </div>
-                    <div className="flex justify-between py-2 border-b border-gray-700">
-                      <span className="text-gray-300">Form 5500 Access</span>
-                      <span className="text-red-400 font-semibold">None</span>
-                    </div>
-                    <div className="flex justify-between py-2 border-b border-gray-700">
-                      <span className="text-gray-300">Regulatory Intelligence</span>
-                      <span className="text-red-400 font-semibold">None</span>
-                    </div>
-                    <div className="flex justify-between py-2">
-                      <span className="text-gray-300 font-semibold">Total Annual Cost</span>
-                      <span className="text-red-400 font-bold">$37K-73K</span>
-                    </div>
-                  </div>
-                </Card>
-
-                {/* Sales IQ */}
-                <Card className="bg-blue-500/10 border-blue-500/40 p-8">
-                  <div className="flex items-center gap-3 mb-6">
-                    <CheckCircle2 className="w-10 h-10 text-blue-400" />
-                    <h4 className="text-2xl font-bold text-white">Sales IQ™ Platform</h4>
-                  </div>
-                  <div className="space-y-4">
-                    <div className="flex justify-between py-2 border-b border-blue-500/20">
-                      <span className="text-gray-300">14+ Data Providers</span>
-                      <span className="text-blue-400 font-semibold">Included</span>
-                    </div>
-                    <div className="flex justify-between py-2 border-b border-blue-500/20">
-                      <span className="text-gray-300">Form 5500 (191k+ employers)</span>
-                      <span className="text-blue-400 font-semibold">Included</span>
-                    </div>
-                    <div className="flex justify-between py-2 border-b border-blue-500/20">
-                      <span className="text-gray-300">50-State Regulatory Map</span>
-                      <span className="text-blue-400 font-semibold">Included</span>
-                    </div>
-                    <div className="flex justify-between py-2 border-b border-blue-500/20">
-                      <span className="text-gray-300">AI Call-Opener Generator</span>
-                      <span className="text-blue-400 font-semibold">Included</span>
-                    </div>
-                    <div className="flex justify-between py-2 border-b border-blue-500/20">
-                      <span className="text-gray-300">Recoverable Capital Model</span>
-                      <span className="text-blue-400 font-semibold">Included</span>
-                    </div>
-                    <div className="flex justify-between py-2 border-b border-blue-500/20">
-                      <span className="text-gray-300">Research Time Saved</span>
-                      <span className="text-blue-400 font-semibold">67% reduction</span>
-                    </div>
-                    <div className="flex justify-between py-2">
-                      <span className="text-gray-300 font-semibold">Platform Subscription</span>
-                      <span className="text-blue-400 font-bold">Contact Sales</span>
-                    </div>
-                  </div>
-                </Card>
-              </div>
-
-              <div className="mt-6 text-center">
-                <p className="text-lg text-gray-300 max-w-3xl mx-auto">
-                  <span className="text-blue-400 font-semibold">Unified intelligence platform:</span> Replace 3-5 disparate tools with one vertically integrated system that combines contact data, regulatory intelligence, and federal filings. Lower total cost, higher strategic value.
-                </p>
-              </div>
-            </div>
-
-            {/* Revenue Acceleration Multipliers */}
-            <div className="mb-10">
-              <h3 className="text-3xl font-bold text-white mb-8 text-center">Revenue Acceleration Multipliers</h3>
-              <div className="max-w-4xl mx-auto">
-                <Card className="bg-gradient-to-r from-purple-500/20 to-indigo-500/20 border-purple-500/40 p-8">
-                  <div className="grid md:grid-cols-2 gap-8 mb-6">
-                    <div>
-                      <h4 className="text-xl font-bold text-white mb-4">Conversion Impact</h4>
-                      <p className="text-gray-300 mb-4">
-                        Evidence-based openers convert at 3.2x the rate of generic cold outreach:
-                      </p>
-                      <div className="space-y-3">
-                        <div className="flex items-center gap-2">
-                          <CheckCircle2 className="w-5 h-5 text-blue-400 flex-shrink-0" />
-                          <span className="text-gray-300">Generic cold email: <span className="text-white font-semibold">2.1% response rate</span></span>
-                        </div>
-                        <div className="flex items-center gap-2">
-                          <CheckCircle2 className="w-5 h-5 text-blue-400 flex-shrink-0" />
-                          <span className="text-gray-300">Sales IQ opener: <span className="text-blue-400 font-bold">6.7% response rate</span></span>
-                        </div>
-                        <div className="flex items-center gap-2">
-                          <CheckCircle2 className="w-5 h-5 text-blue-400 flex-shrink-0" />
-                          <span className="text-gray-300">Demo-to-close: <span className="text-blue-400 font-bold">42% (vs 18% baseline)</span></span>
-                        </div>
-                      </div>
-                    </div>
-
-                    <div>
-                      <h4 className="text-xl font-bold text-white mb-4">Deal Size Expansion</h4>
-                      <p className="text-gray-300 mb-4">
-                        Opening with recoverable capital quantification anchors higher ACV:
-                      </p>
-                      <div className="bg-slate-900/50 rounded-lg p-6 border border-purple-500/30">
-                        <div className="text-center mb-4">
-                          <div className="text-sm text-gray-400 mb-2">Average ACV Lift</div>
-                          <div className="text-4xl font-bold text-purple-400">+$47K</div>
-                          <div className="text-sm text-gray-400 mt-1">Per closed deal vs baseline</div>
-                        </div>
-                        <div className="pt-4 border-t border-purple-500/20">
-                          <p className="text-xs text-gray-400 text-center">
-                            Prospects presented with quantified overcharge data buy broader platform scope
-                          </p>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-
-                  <div className="pt-6 border-t border-purple-500/30">
-                    <p className="text-sm text-gray-300 text-center">
-                      <span className="text-purple-400 font-semibold">Strategic insight:</span> The intelligence asymmetry creates urgency. A prospect who learns they're overpaying $2.4M wants the full forensic audit immediately — they don't start with a pilot.
-                    </p>
-                  </div>
-                </Card>
-              </div>
-            </div>
-
-            {/* Sales Team Productivity */}
-            <div className="mb-10">
-              <h3 className="text-3xl font-bold text-white mb-8 text-center">Sales Team Productivity Gains</h3>
-              <div className="grid md:grid-cols-3 gap-8">
-                <Card className="bg-slate-800/50 border-cyan-500/30 p-6">
-                  <div className="text-center">
-                    <div className="text-sm text-gray-400 mb-2">Research Time Saved</div>
-                    <div className="text-3xl font-bold text-cyan-400 mb-4">27 hrs/mo</div>
-                    <p className="text-sm text-gray-300">Per rep, redirected to selling activity</p>
-                  </div>
-                </Card>
-
-                <Card className="bg-slate-800/50 border-blue-500/30 p-6">
-                  <div className="text-center">
-                    <div className="text-sm text-gray-400 mb-2">Qualified Leads/Month</div>
-                    <div className="text-3xl font-bold text-blue-400 mb-4">+140%</div>
-                    <p className="text-sm text-gray-300">Increase in high-fit prospects identified</p>
-                  </div>
-                </Card>
-
-                <Card className="bg-slate-800/50 border-purple-500/30 p-6">
-                  <div className="text-center">
-                    <div className="text-sm text-gray-400 mb-2">Time to First Meeting</div>
-                    <div className="text-3xl font-bold text-purple-400 mb-4">-58%</div>
-                    <p className="text-sm text-gray-300">From prospecting to booked demo</p>
-                  </div>
-                </Card>
-              </div>
-
-              <div className="mt-6 text-center">
-                <p className="text-gray-300 max-w-3xl mx-auto">
-                  Eliminating manual research, manual Form 5500 lookups, and trial-and-error messaging liberates reps to focus on high-value conversations. The platform does the forensic work; the rep weaponizes it.
-                </p>
-              </div>
-            </div>
-
-            {/* Strategic Positioning Value */}
-            <div>
-              <h3 className="text-3xl font-bold text-white mb-8 text-center">Strategic Positioning: The Wedge Effect</h3>
-              <div className="grid md:grid-cols-2 gap-6">
-                <Card className="bg-slate-800/50 border-amber-500/30 p-6">
-                  <Target className="w-10 h-10 text-amber-400 mb-4" />
-                  <h4 className="text-lg font-bold text-white mb-3">Regulatory Arbitrage</h4>
-                  <p className="text-sm text-gray-300">
-                    The 50-state map surfaces geographic arbitrage opportunities. Sell fiduciary governance to Ohio employers (PBM Transparency Act, strict broker disclosure) while traditional reps pitch "savings" generically nationwide.
+                  <h3 className="text-lg font-bold text-white mb-2">
+                    {pillar.title}
+                  </h3>
+                  <p className="text-sm text-slate-400">
+                    {pillar.description}
                   </p>
-                </Card>
-
-                <Card className="bg-slate-800/50 border-emerald-500/30 p-6">
-                  <Shield className="w-10 h-10 text-emerald-400 mb-4" />
-                  <h4 className="text-lg font-bold text-white mb-3">Incumbent Displacement</h4>
-                  <p className="text-sm text-gray-300">
-                    SBI™ {'>'}70 (RED opacity) identifies vulnerable incumbents. Opening with "your broker scored 83/100 on our opacity index" reframes the relationship from renewal to replacement in one sentence.
-                  </p>
-                </Card>
-
-                <Card className="bg-slate-800/50 border-cyan-500/30 p-6">
-                  <BarChart3 className="w-10 h-10 text-cyan-400 mb-4" />
-                  <h4 className="text-lg font-bold text-white mb-3">Recoverable Capital as ROI Proof</h4>
-                  <p className="text-sm text-gray-300">
-                    The MODELED low/high range ($1.8M-$4.2M on a $40M spend) becomes the economic justification for immediate engagement. No abstract "reduce costs" pitch — concrete dollar recovery tied to their own plan data.
-                  </p>
-                </Card>
-
-                <Card className="bg-slate-800/50 border-purple-500/30 p-6">
-                  <FileText className="w-10 h-10 text-purple-400 mb-4" />
-                  <h4 className="text-lg font-bold text-white mb-3">Evidence-First Credibility</h4>
-                  <p className="text-sm text-gray-300">
-                    AI call-opener cites their Form 5500 Schedule A, line 1(b) broker-comp rate. The prospect's first reaction: "How did you get that?" — instant credibility that generic contact databases can't manufacture.
-                  </p>
-                </Card>
-              </div>
-
-              <div className="mt-6">
-                <Card className="bg-gradient-to-r from-amber-500/20 to-orange-500/20 border-amber-500/40 p-8">
-                  <h4 className="text-xl font-bold text-white mb-4 text-center">The Durable Moat</h4>
-                  <p className="text-gray-300 text-center leading-relaxed">
-                    Sales IQ™ isn't a better ZoomInfo — it's a <span className="text-white font-semibold">regulatory intelligence layer</span> that surfaces Plan-level asymmetries the buyer doesn't know about their own arrangement. Form 5500 data + state PBM laws + proprietary opacity scoring = a moat horizontal sales tools can't cross. They sell contact volume; we sell evidence-anchored positioning.
-                  </p>
-                </Card>
-              </div>
+                </motion.div>
+              ))}
             </div>
           </div>
         </section>
-
-        {/* CTA Section */}
-        <section className="py-12 px-4">
-          <div className="max-w-4xl mx-auto text-center">
-            <h2 className="text-4xl font-bold text-white mb-6">
-              Win on Intelligence, Not Volume
-            </h2>
-            <p className="text-xl text-gray-300 mb-8 max-w-2xl mx-auto">
-              Request a platform demo to see how Sales IQ™ arms your team with the asymmetric intelligence that closes deals
-            </p>
-            <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Link href="/request-demo">
-                <Button size="lg" className="bg-blue-500 hover:bg-blue-600 text-white">
-                  Request Platform Demo
-                  <ChevronRight className="ml-2 w-4 h-4" />
-                </Button>
-              </Link>
-              <Link href="/contact">
-                <Button size="lg" variant="outline" className="border-gray-600 text-gray-300 hover:bg-gray-800">
-                  Contact Sales Intelligence Team
-                </Button>
-              </Link>
-            </div>
-          </div>
-        </section>
-
-        <SiteFooter />
-      </div>
+      </main>
     </>
   );
 }

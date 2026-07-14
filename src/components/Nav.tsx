@@ -361,7 +361,7 @@ export default function Nav() {
                       className="block px-4 py-3 text-gray-300 hover:text-white hover:bg-rose-500/10 rounded-lg transition-colors duration-150">
                       <div className="font-medium flex items-center gap-2">
                         <FileText className="w-4 h-4 text-rose-400" />
-                        Rx Defense IQ™
+                        PBM Contract Clarity™
                       </div>
                       <div className="text-xs text-gray-400 mt-1">PBM contract analyzer with 0-100 fiduciary scoring & redline generator</div>
                     </Link>

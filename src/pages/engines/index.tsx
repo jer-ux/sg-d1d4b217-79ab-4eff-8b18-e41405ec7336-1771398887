@@ -1,8 +1,12 @@
+import { useState } from "react";
 import Head from "next/head";
+import { motion } from "framer-motion";
 import Link from "next/link";
-import { useRouter } from "next/router";
-import { motion, useInView } from "framer-motion";
-import { useRef } from "react";
+import Nav from "@/components/Nav";
+import { Badge } from "@/components/ui/badge";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { ParticleField3D } from "@/components/premium/ParticleField3D";
 import {
   TrendingUp, AlertTriangle, Target, Activity,
   DollarSign, Settings, Users, Database, BarChart3,
@@ -222,572 +226,152 @@ const engineCategories = [
 ];
 
 export default function EnginesPage() {
-  const totalEngines = engineCategories.reduce((sum, cat) => sum + cat.count, 0);
+  const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
 
   return (
     <>
-      <SEO
-        title="Actuarial Intelligence Engines | Kincaid IQ"
-        description="125+ specialized actuarial, economic, governance, and AI decision engines. Universal data feed, modular architecture."
-      />
+      <Head>
+        <title>Universal Intelligence Engines | Kincaid Health Data Sciences Lab</title>
+        <meta
+          name="description"
+          content="50+ specialized actuarial engines for healthcare analytics, forecasting, and decision intelligence."
+        />
+      </Head>
 
-      <div className="min-h-screen bg-gradient-to-b from-slate-950 via-slate-900 to-slate-950 relative overflow-hidden">
-        {/* Animated background effects */}
-        <div className="absolute inset-0 overflow-hidden pointer-events-none">
-          <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-cyan-500/20 rounded-full blur-[100px] animate-pulse" />
-          <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-purple-500/20 rounded-full blur-[100px] animate-pulse" style={{ animationDelay: "1s" }} />
-          <div className="absolute top-1/2 left-1/2 w-96 h-96 bg-pink-500/20 rounded-full blur-[100px] animate-pulse" style={{ animationDelay: "2s" }} />
-        </div>
+      <Nav />
 
-        {/* Hero section */}
-        <div className="relative pt-20 pb-16 px-4 sm:px-6 lg:px-8">
-          <div className="max-w-7xl mx-auto text-center">
-            <div className="inline-flex items-center gap-2 bg-gradient-to-r from-cyan-500/10 to-purple-500/10 backdrop-blur-sm border border-cyan-500/20 rounded-full px-6 py-2 mb-6 animate-pulse">
-              <div className="w-2 h-2 rounded-full bg-cyan-400 animate-ping" />
-              <span className="text-cyan-300 text-sm font-medium">Live: {totalEngines}+ Engines Running</span>
-            </div>
-            
-            <h1 className="text-5xl md:text-7xl font-bold mb-6 bg-gradient-to-r from-cyan-400 via-purple-400 to-pink-400 text-transparent bg-clip-text animate-gradient">
-              Actuarial Intelligence
-            </h1>
-            <h2 className="text-3xl md:text-5xl font-bold text-white mb-6">
-              Operating System
-            </h2>
-            
-            <p className="text-xl md:text-2xl text-gray-300 max-w-4xl mx-auto mb-8">
-              125+ specialized engines. One universal data feed. Modular architecture.
+      <div className="min-h-screen bg-gradient-to-b from-black via-slate-950 to-black relative overflow-hidden">
+        <ParticleField3D />
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-violet-900/20 via-transparent to-transparent" />
+        
+        <main className="container mx-auto px-4 py-8 relative z-10">
+          {/* Hero Section */}
+          <motion.div 
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8 }}
+            className="max-w-6xl mx-auto text-center mb-12"
+          >
+            <Badge className="mb-4 bg-violet-500/10 text-violet-400 border-violet-500/20 text-sm">
+              Universal Intelligence Platform
+            </Badge>
+            <motion.h1 
+              initial={{ opacity: 0, scale: 0.95 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ duration: 0.6, delay: 0.2 }}
+              className="text-5xl md:text-6xl font-black mb-6 bg-gradient-to-r from-violet-400 via-purple-400 to-fuchsia-400 bg-clip-text text-transparent"
+            >
+              Intelligence Engines
+            </motion.h1>
+            <p className="text-xl text-gray-300 mb-4 max-w-4xl mx-auto">
+              50+ Specialized Actuarial Engines for Healthcare Analytics
+            </p>
+            <p className="text-lg text-gray-400 mb-8 max-w-3xl mx-auto">
+              Modular, composable intelligence for forecasting, risk modeling, and decision automation
             </p>
 
-            <div className="flex flex-wrap gap-4 justify-center items-center mb-12">
-              <div className="bg-gradient-to-r from-cyan-600 to-blue-600 rounded-xl px-6 py-3 border border-cyan-400/30 shadow-lg shadow-cyan-500/20">
-                <div className="text-3xl font-bold text-white">{totalEngines}+</div>
-                <div className="text-sm text-cyan-100">Engines</div>
-              </div>
-              <div className="bg-gradient-to-r from-purple-600 to-pink-600 rounded-xl px-6 py-3 border border-purple-400/30 shadow-lg shadow-purple-500/20">
-                <div className="text-3xl font-bold text-white">6</div>
-                <div className="text-sm text-purple-100">Domains</div>
-              </div>
-              <div className="bg-gradient-to-r from-emerald-600 to-teal-600 rounded-xl px-6 py-3 border border-emerald-400/30 shadow-lg shadow-emerald-500/20">
-                <div className="text-3xl font-bold text-white">1</div>
-                <div className="text-sm text-emerald-100">Data Feed</div>
-              </div>
+            {/* Key Stats */}
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-4 max-w-4xl mx-auto">
+              {[
+                { value: "50+", label: "Specialized Engines", color: "violet" },
+                { value: "12", label: "Engine Categories", color: "purple" },
+                { value: "API", label: "First Architecture", color: "fuchsia" },
+                { value: "Real-time", label: "Orchestration", color: "pink" }
+              ].map((stat, idx) => (
+                <motion.div
+                  key={idx}
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.5, delay: 0.4 + idx * 0.1 }}
+                  whileHover={{ scale: 1.05, rotateY: 5 }}
+                  className="perspective-1000"
+                >
+                  <Card className="border-slate-700 bg-slate-900/50 backdrop-blur-sm transform-gpu transition-all duration-300 hover:shadow-xl hover:shadow-violet-500/20">
+                    <CardContent className="pt-6 text-center">
+                      <div className={`text-3xl font-bold text-${stat.color}-400 mb-1`}>{stat.value}</div>
+                      <div className="text-xs text-slate-400">{stat.label}</div>
+                    </CardContent>
+                  </Card>
+                </motion.div>
+              ))}
             </div>
+          </motion.div>
 
-            <Link
-              href="/request-demo"
-              className="inline-flex items-center gap-2 bg-gradient-to-r from-cyan-500 to-purple-500 hover:from-cyan-400 hover:to-purple-400 text-white px-8 py-4 rounded-xl font-bold text-lg shadow-2xl shadow-purple-500/50 transform hover:scale-105 transition-all duration-300 animate-pulse">
-              <LineChart className="w-6 h-6" />
-              Request Platform Demo
-            </Link>
-          </div>
-        </div>
+          {/* Category Filter */}
+          <motion.div 
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.6 }}
+            className="flex flex-wrap gap-3 justify-center mb-12"
+          >
+            <Button
+              variant={selectedCategory === null ? "default" : "outline"}
+              onClick={() => setSelectedCategory(null)}
+              className="rounded-full"
+            >
+              All Engines
+            </Button>
+            {engineCategories.map((category) => (
+              <Button
+                key={category.id}
+                variant={selectedCategory === category.id ? "default" : "outline"}
+                onClick={() => setSelectedCategory(category.id)}
+                className="rounded-full"
+              >
+                <category.icon className="w-4 h-4 mr-2" />
+                {category.label}
+              </Button>
+            ))}
+          </motion.div>
 
-        {/* Engine categories */}
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-20 relative z-10">
-          <div className="space-y-8">
-            {engineCategories.map((category, idx) => {
-              const Icon = category.icon;
+          {/* Engines Grid */}
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-7xl mx-auto">
+            {filteredEngines.map((engine, idx) => {
+              const categoryInfo = engineCategories.find(c => c.id === engine.category);
+              const CategoryIcon = categoryInfo?.icon || Activity;
+              
               return (
-                <div
-                  key={category.id}
-                  className="group relative"
-                  style={{ animationDelay: `${idx * 0.1}s` }}>
-                  {/* Vegas-style glow border */}
-                  <div className={`absolute -inset-0.5 bg-gradient-to-r ${category.color} rounded-2xl opacity-0 group-hover:opacity-100 blur-xl transition-all duration-500 animate-pulse`} />
-                  
-                  <div className="relative bg-slate-900/80 backdrop-blur-sm border border-slate-700/50 rounded-2xl p-6 hover:border-slate-600 transition-all duration-300">
-                    <div className="flex items-start justify-between mb-4">
-                      <div className="flex items-center gap-4">
-                        <div className={`p-3 bg-gradient-to-br ${category.color} rounded-xl shadow-lg transform group-hover:scale-110 transition-transform duration-300`}>
-                          <Icon className="w-8 h-8 text-white" />
+                <motion.div
+                  key={engine.id}
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.5, delay: idx * 0.05 }}
+                  viewport={{ once: true }}
+                  whileHover={{ scale: 1.03, rotateY: 3, z: 50 }}
+                  className="perspective-1000"
+                >
+                  <Link href={engine.href}>
+                    <Card className="border-slate-700 bg-slate-900/50 backdrop-blur-sm hover:border-violet-500/50 transition-all h-full transform-gpu hover:shadow-2xl hover:shadow-violet-500/20 cursor-pointer">
+                      <CardHeader>
+                        <div className="flex items-start justify-between mb-3">
+                          <div className="w-12 h-12 bg-violet-500/10 rounded-lg flex items-center justify-center">
+                            <CategoryIcon className="w-6 h-6 text-violet-400" />
+                          </div>
+                          <Badge variant="outline" className="text-xs border-slate-600">
+                            {categoryInfo?.label}
+                          </Badge>
                         </div>
-                        <div>
-                          <h3 className="text-2xl font-bold text-white mb-1 group-hover:text-transparent group-hover:bg-gradient-to-r group-hover:bg-clip-text group-hover:from-cyan-400 group-hover:to-purple-400 transition-all duration-300">
-                            {category.name}
-                          </h3>
-                          <p className="text-gray-400 text-sm">{category.description}</p>
+                        <CardTitle className="text-lg text-white group-hover:text-violet-300 transition-colors">
+                          {engine.name}
+                        </CardTitle>
+                      </CardHeader>
+                      <CardContent>
+                        <p className="text-sm text-slate-400 mb-4">{engine.description}</p>
+                        <div className="flex items-center justify-between text-xs">
+                          <span className="text-slate-500">Learn more →</span>
+                          <Badge variant="secondary" className="bg-slate-800/50">
+                            {engine.complexity}
+                          </Badge>
                         </div>
-                      </div>
-                      
-                      {/* Vegas-style count badge */}
-                      <div className={`relative px-6 py-2 bg-gradient-to-r ${category.color} rounded-full shadow-lg transform group-hover:scale-110 transition-transform duration-300 overflow-hidden`}>
-                        <div className="absolute inset-0 bg-white/20 animate-pulse" />
-                        <div className="relative font-bold text-white text-2xl tracking-wider">
-                          {category.count}+
-                        </div>
-                      </div>
-                    </div>
-
-                    {/* Engine cards grid */}
-                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-3 mt-6">
-                      {category.engines.map((engine) => {
-                        const EngineIcon = engine.icon;
-                        return (
-                          <Link
-                            key={engine.id}
-                            href={`/engines/${engine.id}`}
-                            className="group/card relative">
-                            {/* Neon glow on hover */}
-                            <div className={`absolute -inset-0.5 bg-gradient-to-r ${category.color} rounded-lg opacity-0 group-hover/card:opacity-75 blur transition-all duration-300`} />
-                            
-                            <div className="relative bg-slate-800/50 border border-slate-700/50 rounded-lg p-4 hover:bg-slate-800 transition-all duration-300">
-                              <div className="flex items-start gap-3">
-                                <div className={`p-2 bg-gradient-to-br ${category.color} rounded-lg transform group-hover/card:scale-110 transition-transform duration-300`}>
-                                  <EngineIcon className="w-4 h-4 text-white" />
-                                </div>
-                                <div className="flex-1 min-w-0">
-                                  <h4 className="font-semibold text-white text-sm group-hover/card:text-cyan-400 transition-colors duration-300 leading-tight">
-                                    {engine.name}
-                                  </h4>
-                                </div>
-                              </div>
-                            </div>
-                          </Link>
-                        );
-                      })}
-                    </div>
-                  </div>
-                </div>
+                      </CardContent>
+                    </Card>
+                  </Link>
+                </motion.div>
               );
             })}
           </div>
-
-          {/* Universal data feed section */}
-          <div className="mt-16 relative">
-            <div className="absolute -inset-0.5 bg-gradient-to-r from-cyan-500 via-purple-500 to-pink-500 rounded-2xl opacity-50 blur-xl animate-pulse" />
-            <div className="relative bg-slate-900/90 backdrop-blur-sm border border-slate-700/50 rounded-2xl p-8">
-              <div className="text-center mb-8">
-                <div className="inline-flex items-center gap-2 bg-gradient-to-r from-cyan-500/20 to-purple-500/20 backdrop-blur-sm border border-cyan-500/30 rounded-full px-6 py-2 mb-4">
-                  <Database className="w-5 h-5 text-cyan-400" />
-                  <span className="text-cyan-300 font-medium">Universal SDK</span>
-                </div>
-                <h3 className="text-3xl font-bold text-white mb-3">
-                  One Data Feed. 125+ Engines.
-                </h3>
-                <p className="text-gray-300 max-w-2xl mx-auto">
-                  Upload once. Medical claims, Rx claims, member census, contracts, financials → normalized to universal schema → routed to all applicable engines automatically.
-                </p>
-              </div>
-
-              <div className="grid md:grid-cols-3 gap-6">
-                <div className="bg-gradient-to-br from-slate-800 to-slate-900 rounded-xl p-6 border border-slate-700/50 hover:border-cyan-500/50 transition-all duration-300">
-                  <div className="w-12 h-12 bg-gradient-to-br from-cyan-600 to-blue-600 rounded-lg flex items-center justify-center mb-4">
-                    <FileText className="w-6 h-6 text-white" />
-                  </div>
-                  <h4 className="font-bold text-white mb-2">Normalized Schema</h4>
-                  <p className="text-gray-400 text-sm">
-                    Automatic normalization from any source format (carrier, TPA, ASO) to standard interface
-                  </p>
-                </div>
-
-                <div className="bg-gradient-to-br from-slate-800 to-slate-900 rounded-xl p-6 border border-slate-700/50 hover:border-purple-500/50 transition-all duration-300">
-                  <div className="w-12 h-12 bg-gradient-to-br from-purple-600 to-pink-600 rounded-lg flex items-center justify-center mb-4">
-                    <BarChart3 className="w-6 h-6 text-white" />
-                  </div>
-                  <h4 className="font-bold text-white mb-2">Smart Routing</h4>
-                  <p className="text-gray-400 text-sm">
-                    Auto-detect which engines can run based on data availability and completeness
-                  </p>
-                </div>
-
-                <div className="bg-gradient-to-br from-slate-800 to-slate-900 rounded-xl p-6 border border-slate-700/50 hover:border-emerald-500/50 transition-all duration-300">
-                  <div className="w-12 h-12 bg-gradient-to-br from-emerald-600 to-teal-600 rounded-lg flex items-center justify-center mb-4">
-                    <Award className="w-6 h-6 text-white" />
-                  </div>
-                  <h4 className="font-bold text-white mb-2">Parallel Execution</h4>
-                  <p className="text-gray-400 text-sm">
-                    Run 50+ engines simultaneously on the same dataset in minutes, not days
-                  </p>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          {/* CTA section */}
-          <div className="mt-16 text-center">
-            <div className="relative inline-block">
-              <div className="absolute -inset-1 bg-gradient-to-r from-cyan-500 via-purple-500 to-pink-500 rounded-2xl blur opacity-75 animate-pulse" />
-              <div className="relative bg-slate-900 rounded-2xl p-8 border border-slate-700/50">
-                <h3 className="text-2xl font-bold text-white mb-4">
-                  See The Engines In Action
-                </h3>
-                <p className="text-gray-300 mb-6 max-w-xl">
-                  Live demo with real healthcare data. See 20+ engines process claims, identify arbitrage, forecast trends, score contracts — all from one upload.
-                </p>
-                <Link
-                  href="/request-demo"
-                  className="inline-flex items-center gap-2 bg-gradient-to-r from-cyan-500 to-purple-500 hover:from-cyan-400 hover:to-purple-400 text-white px-8 py-4 rounded-xl font-bold shadow-2xl shadow-purple-500/50 transform hover:scale-105 transition-all duration-300">
-                  Request Platform Demo
-                  <LineChart className="w-5 h-5" />
-                </Link>
-              </div>
-            </div>
-          </div>
-        </div>
+        </main>
       </div>
-
-      {/* Comprehensive Engine Catalog */}
-      <section className="py-24 border-t border-neutral-800">
-        <div className="container mx-auto px-4 max-w-7xl">
-          <AnimatedSection className="mb-16 text-center space-y-4">
-            <span className="text-xs font-mono text-[#B8860B] uppercase tracking-widest font-semibold">
-              125+ Specialized Engines
-            </span>
-            <h2 className="text-4xl md:text-5xl lg:text-6xl font-serif font-bold bg-gradient-to-r from-white via-neutral-100 to-neutral-300 bg-clip-text text-transparent">
-              The Actuarial Intelligence Operating System
-            </h2>
-            <p className="text-neutral-400 text-lg leading-relaxed max-w-3xl mx-auto">
-              Rather than one monolithic engine, Kincaid IQ is architected as a modular intelligence platform composed of specialized computational engines—each purpose-built for specific healthcare, financial, and governance domains.
-            </p>
-          </AnimatedSection>
-
-          <div className="grid gap-8">
-            {/* Financial & Trend Engines */}
-            <AnimatedSection>
-              <div className="bg-gradient-to-br from-[#0F1419] to-[#151B23] border border-[#2A3F54] rounded-2xl p-8 shadow-2xl">
-                <div className="flex items-start gap-4 mb-6">
-                  <div className="p-3 bg-gradient-to-br from-[#1A3A52] to-[#234766] rounded-xl">
-                    <TrendingUp className="h-6 w-6 text-[#B8860B]" />
-                  </div>
-                  <div>
-                    <h3 className="text-2xl font-serif font-bold text-white mb-2">
-                      Financial & Trend Engines (20+)
-                    </h3>
-                    <p className="text-neutral-400 text-sm">
-                      Actuarial-grade forecasting, normalization, and credibility-weighted trend analysis
-                    </p>
-                  </div>
-                </div>
-                <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-3">
-                  {[
-                    "Medical trend forecasting",
-                    "Rx trend forecasting",
-                    "Dental trend analysis",
-                    "Vision trend analysis",
-                    "Catastrophic claims forecasting",
-                    "High-cost claimant prediction",
-                    "GLP-1 financial impact modeling",
-                    "Gene therapy exposure modeling",
-                    "Oncology cost projection",
-                    "Inflation decomposition",
-                    "Provider unit cost trend",
-                    "Utilization trend engine",
-                    "Geographic normalization",
-                    "Age/gender risk adjustment",
-                    "Case mix adjustment",
-                    "PMPM normalization",
-                    "PEPY normalization",
-                    "Seasonality adjustment",
-                    "Credibility weighting",
-                    "Monte Carlo forecasting"
-                  ].map((engine, i) => (
-                    <div key={i} className="flex items-center gap-2 text-neutral-300 text-sm">
-                      <CheckCircle2 className="h-4 w-4 text-emerald-400 flex-shrink-0" />
-                      <span>{engine}</span>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            </AnimatedSection>
-
-            {/* Healthcare Economics Engines */}
-            <AnimatedSection>
-              <div className="bg-gradient-to-br from-[#0F1419] to-[#151B23] border border-[#2A3F54] rounded-2xl p-8 shadow-2xl">
-                <div className="flex items-start gap-4 mb-6">
-                  <div className="p-3 bg-gradient-to-br from-[#1A3A52] to-[#234766] rounded-xl">
-                    <DollarSign className="h-6 w-6 text-[#B8860B]" />
-                  </div>
-                  <div>
-                    <h3 className="text-2xl font-serif font-bold text-white mb-2">
-                      Healthcare Economics Engines (20+)
-                    </h3>
-                    <p className="text-neutral-400 text-sm">
-                      Economic modeling, payment integrity, and strategic cost optimization
-                    </p>
-                  </div>
-                </div>
-                <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-3">
-                  {[
-                    "Site-of-care migration",
-                    "Network disruption modeling",
-                    "Reference-based pricing savings",
-                    "Direct contracting valuation",
-                    "Centers of Excellence ROI",
-                    "Bundled payment modeling",
-                    "Payment integrity analysis",
-                    "Waste, fraud, and abuse detection",
-                    "Episode-of-care valuation",
-                    "Specialty pharmacy economics",
-                    "Biosimilar adoption modeling",
-                    "Drug pipeline forecasting",
-                    "Rebate optimization",
-                    "PBM spread pricing detection",
-                    "Employer cost shifting",
-                    "Member cost burden",
-                    "Benefit richness scoring",
-                    "Cost elasticity",
-                    "Plan migration simulation",
-                    "Healthcare inflation attribution"
-                  ].map((engine, i) => (
-                    <div key={i} className="flex items-center gap-2 text-neutral-300 text-sm">
-                      <CheckCircle2 className="h-4 w-4 text-emerald-400 flex-shrink-0" />
-                      <span>{engine}</span>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            </AnimatedSection>
-
-            {/* Fiduciary & Governance Engines */}
-            <AnimatedSection>
-              <div className="bg-gradient-to-br from-[#0F1419] to-[#151B23] border border-[#2A3F54] rounded-2xl p-8 shadow-2xl">
-                <div className="flex items-start gap-4 mb-6">
-                  <div className="p-3 bg-gradient-to-br from-[#1A3A52] to-[#234766] rounded-xl">
-                    <Shield className="h-6 w-6 text-[#B8860B]" />
-                  </div>
-                  <div>
-                    <h3 className="text-2xl font-serif font-bold text-white mb-2">
-                      Fiduciary & Governance Engines (25+)
-                    </h3>
-                    <p className="text-neutral-400 text-sm">
-                      ERISA compliance, vendor transparency, and board-level governance scoring
-                    </p>
-                  </div>
-                </div>
-                <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-3">
-                  {[
-                    "ERISA fiduciary risk scoring",
-                    "PBM contract scoring",
-                    "Stop-loss contract scoring",
-                    "TPA governance scoring",
-                    "Vendor compensation transparency",
-                    "Hidden revenue detection",
-                    "Conflict-of-interest analysis",
-                    "Audit readiness scoring",
-                    "Governance maturity assessment",
-                    "Board oversight scoring",
-                    "AI governance assessment",
-                    "Compliance monitoring",
-                    "Regulatory exposure",
-                    "Litigation probability",
-                    "Documentation completeness",
-                    "Decision traceability",
-                    "Procurement integrity",
-                    "Contract language risk",
-                    "Benchmark deviation analysis",
-                    "Fiduciary evidence generation",
-                    "Board reporting engine",
-                    "Internal controls assessment",
-                    "Third-party oversight scoring",
-                    "Procurement fairness analysis",
-                    "Policy compliance engine"
-                  ].map((engine, i) => (
-                    <div key={i} className="flex items-center gap-2 text-neutral-300 text-sm">
-                      <CheckCircle2 className="h-4 w-4 text-emerald-400 flex-shrink-0" />
-                      <span>{engine}</span>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            </AnimatedSection>
-
-            {/* Workforce & Human Capital Engines */}
-            <AnimatedSection>
-              <div className="bg-gradient-to-br from-[#0F1419] to-[#151B23] border border-[#2A3F54] rounded-2xl p-8 shadow-2xl">
-                <div className="flex items-start gap-4 mb-6">
-                  <div className="p-3 bg-gradient-to-br from-[#1A3A52] to-[#234766] rounded-xl">
-                    <Users className="h-6 w-6 text-[#B8860B]" />
-                  </div>
-                  <div>
-                    <h3 className="text-2xl font-serif font-bold text-white mb-2">
-                      Workforce & Human Capital Engines (20+)
-                    </h3>
-                    <p className="text-neutral-400 text-sm">
-                      Population health, productivity analytics, and workforce risk modeling
-                    </p>
-                  </div>
-                </div>
-                <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-3">
-                  {[
-                    "Workforce health risk",
-                    "Absenteeism forecasting",
-                    "Presenteeism impact",
-                    "Productivity loss valuation",
-                    "Workforce demographic projections",
-                    "Retirement forecasting",
-                    "Disability incidence",
-                    "Behavioral health utilization",
-                    "Population health segmentation",
-                    "Benefit engagement",
-                    "Employee lifetime value",
-                    "Health equity analysis",
-                    "Workforce resilience",
-                    "Burnout prediction",
-                    "Claims risk segmentation",
-                    "Disease burden forecasting",
-                    "Preventive care optimization",
-                    "Wellness ROI",
-                    "Benefit strategy optimization",
-                    "Workforce financial stress"
-                  ].map((engine, i) => (
-                    <div key={i} className="flex items-center gap-2 text-neutral-300 text-sm">
-                      <CheckCircle2 className="h-4 w-4 text-emerald-400 flex-shrink-0" />
-                      <span>{engine}</span>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            </AnimatedSection>
-
-            {/* Predictive AI Engines */}
-            <AnimatedSection>
-              <div className="bg-gradient-to-br from-[#0F1419] to-[#151B23] border border-[#2A3F54] rounded-2xl p-8 shadow-2xl">
-                <div className="flex items-start gap-4 mb-6">
-                  <div className="p-3 bg-gradient-to-br from-[#1A3A52] to-[#234766] rounded-xl">
-                    <Brain className="h-6 w-6 text-[#B8860B]" />
-                  </div>
-                  <div>
-                    <h3 className="text-2xl font-serif font-bold text-white mb-2">
-                      Predictive AI Engines (20+)
-                    </h3>
-                    <p className="text-neutral-400 text-sm">
-                      Machine learning models, digital twins, and Bayesian forecasting
-                    </p>
-                  </div>
-                </div>
-                <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-3">
-                  {[
-                    "Large claimant prediction",
-                    "Hospital admission prediction",
-                    "Readmission prediction",
-                    "Chronic disease progression",
-                    "Rx adherence prediction",
-                    "Member churn",
-                    "Employer renewal prediction",
-                    "Broker opportunity scoring",
-                    "Fraud prediction",
-                    "Recovery opportunity prediction",
-                    "Stop-loss laser prediction",
-                    "Reserve adequacy",
-                    "Premium forecasting",
-                    "Cash flow projection",
-                    "Capital allocation optimization",
-                    "Scenario generation",
-                    "Digital twin simulation",
-                    "Causal inference engine",
-                    "Bayesian forecasting",
-                    "Reinforcement learning optimization"
-                  ].map((engine, i) => (
-                    <div key={i} className="flex items-center gap-2 text-neutral-300 text-sm">
-                      <CheckCircle2 className="h-4 w-4 text-emerald-400 flex-shrink-0" />
-                      <span>{engine}</span>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            </AnimatedSection>
-
-            {/* Private Equity & CFO Engines */}
-            <AnimatedSection>
-              <div className="bg-gradient-to-br from-[#0F1419] to-[#151B23] border border-[#2A3F54] rounded-2xl p-8 shadow-2xl">
-                <div className="flex items-start gap-4 mb-6">
-                  <div className="p-3 bg-gradient-to-br from-[#1A3A52] to-[#234766] rounded-xl">
-                    <Building2 className="h-6 w-6 text-[#B8860B]" />
-                  </div>
-                  <div>
-                    <h3 className="text-2xl font-serif font-bold text-white mb-2">
-                      Private Equity & CFO Engines (20+)
-                    </h3>
-                    <p className="text-neutral-400 text-sm">
-                      Enterprise value creation, M&A due diligence, and portfolio optimization
-                    </p>
-                  </div>
-                </div>
-                <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-3">
-                  {[
-                    "EBITDA enhancement",
-                    "Working capital impact",
-                    "Cash flow forecasting",
-                    "Enterprise value creation",
-                    "Acquisition due diligence",
-                    "Portfolio benchmarking",
-                    "Synergy valuation",
-                    "Benefit harmonization",
-                    "Integration cost modeling",
-                    "Capital efficiency",
-                    "Margin improvement",
-                    "Operating leverage",
-                    "Return on invested capital",
-                    "Total rewards optimization",
-                    "Compensation benchmarking",
-                    "Shared services valuation",
-                    "Healthcare cost leakage",
-                    "Vendor consolidation",
-                    "Procurement optimization",
-                    "Portfolio risk scoring"
-                  ].map((engine, i) => (
-                    <div key={i} className="flex items-center gap-2 text-neutral-300 text-sm">
-                      <CheckCircle2 className="h-4 w-4 text-emerald-400 flex-shrink-0" />
-                      <span>{engine}</span>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            </AnimatedSection>
-          </div>
-
-          {/* Vision Statement */}
-          <AnimatedSection className="mt-16">
-            <div className="bg-gradient-to-br from-[#1A3A52]/20 to-[#234766]/20 border border-[#B8860B]/30 rounded-2xl p-12 text-center">
-              <h3 className="text-3xl font-serif font-bold text-white mb-4">
-                An Actuarial Intelligence Operating System
-              </h3>
-              <p className="text-neutral-300 text-lg leading-relaxed max-w-4xl mx-auto mb-8">
-                Rather than thinking of Kincaid IQ as "one actuarial engine," we've architected it as a composable intelligence platform. Each specialized engine can operate independently or be orchestrated together to solve complex enterprise challenges—from ERISA fiduciary compliance to private equity value creation to CFO-level financial forecasting.
-              </p>
-              <div className="grid md:grid-cols-4 gap-6 max-w-4xl mx-auto">
-                <div className="text-center">
-                  <div className="text-4xl font-bold text-[#B8860B] mb-2">125+</div>
-                  <div className="text-sm text-neutral-400">Specialized Engines</div>
-                </div>
-                <div className="text-center">
-                  <div className="text-4xl font-bold text-[#B8860B] mb-2">6</div>
-                  <div className="text-sm text-neutral-400">Major Domains</div>
-                </div>
-                <div className="text-center">
-                  <div className="text-4xl font-bold text-[#B8860B] mb-2">100%</div>
-                  <div className="text-sm text-neutral-400">Modular Architecture</div>
-                </div>
-                <div className="text-center">
-                  <div className="text-4xl font-bold text-[#B8860B] mb-2">∞</div>
-                  <div className="text-sm text-neutral-400">Composable Workflows</div>
-                </div>
-              </div>
-            </div>
-          </AnimatedSection>
-        </div>
-      </section>
-
-      <Footer />
-
-      <style jsx>{`
-        @keyframes gradient {
-          0% {
-            background-position: 0% 50%;
-          }
-          50% {
-            background-position: 100% 50%;
-          }
-          100% {
-            background-position: 0% 50%;
-          }
-        }
-
-        .animate-gradient {
-          background-size: 200% 200%;
-          animation: gradient 3s ease infinite;
-        }
-      `}</style>
     </>
   );
 }

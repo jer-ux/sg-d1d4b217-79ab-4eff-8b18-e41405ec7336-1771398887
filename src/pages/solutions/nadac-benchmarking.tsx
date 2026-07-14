@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Link from "next/link";
 import { motion } from "framer-motion";
 import { 
@@ -27,6 +27,7 @@ import Nav from "@/components/Nav";
 import Footer from "@/components/Footer";
 import { Button } from "@/components/ui/button";
 import { CalendlyPopupButton } from "@/components/calendly/CalendlyPopupButton";
+import { ParticleField3D } from "@/components/premium/ParticleField3D";
 
 const fadeInUpVariants = {
   hidden: { opacity: 0, y: 20 },
@@ -132,6 +133,11 @@ const sampleAnomalies = [
 
 export default function NADACBenchmarkingPage() {
   const [selectedTier, setSelectedTier] = useState(1);
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   return (
     <>
@@ -143,11 +149,13 @@ export default function NADACBenchmarkingPage() {
       <Nav />
 
       <div className="min-h-screen bg-[#0A0F1E] text-white">
+        {mounted && <ParticleField3D />}
+        
         {/* Hero Section */}
         <section className="relative overflow-hidden border-b border-white/5 bg-gradient-to-b from-[#0A0F1E] via-[#0d1424] to-[#0A0F1E]">
           <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_0%,rgba(16,185,129,0.05),transparent_50%)]" />
           
-          <div className="relative mx-auto max-w-7xl px-6 py-24 sm:py-32">
+          <div className="relative mx-auto max-w-7xl px-6 py-24 sm:py-32 z-10">
             <motion.div
               initial="hidden"
               animate="visible"

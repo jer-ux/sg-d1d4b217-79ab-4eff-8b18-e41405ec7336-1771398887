@@ -12,6 +12,7 @@ import {
 import Nav from "@/components/Nav";
 import Footer from "@/components/Footer";
 import Image from "next/image";
+import { ParticleField3D } from "@/components/premium/ParticleField3D";
 
 // Trust badges component with animation
 const TrustRibbon = () => (
@@ -895,6 +896,11 @@ const QuoteIcon = ({ className }: { className?: string }) => (
 
 export default function ActuarialBenefitsPage() {
   const [selectedSolution, setSelectedSolution] = useState<any>(null);
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   return (
     <>
@@ -902,6 +908,7 @@ export default function ActuarialBenefitsPage() {
         <title>Actuarial Benefits Intelligence - Kincaid iQ</title>
       </Head>
       <div className="min-h-screen bg-[#020617] text-white">
+        {mounted && <ParticleField3D />}
         <Nav />
 
         <section className="relative pt-32 pb-20 overflow-hidden border-b border-emerald-900/30">

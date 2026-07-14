@@ -15,6 +15,7 @@ import Footer from "@/components/Footer";
 import { SEO } from "@/components/SEO";
 import { INDIVIDUAL_REPORTS, ENTERPRISE_REPORTS, type IndividualReport, type EnterpriseReport } from "@/lib/pricing/individual-reports";
 import { IntelligenceCheckoutModal } from "@/components/IntelligenceCheckoutModal";
+import { ParticleField3D } from "@/components/premium/ParticleField3D";
 
 // Mock Live Stream Data
 const initialAuditEvents = [
@@ -172,6 +173,9 @@ export default function KincaidIQIntelligenceSeries() {
       <Nav />
 
       <main className="min-h-screen bg-[#0F1419] relative overflow-hidden">
+        {/* Add 3D Particle Field */}
+        {mounted && <ParticleField3D />}
+        
         {/* Animated Gradient Background Mesh */}
         <motion.div 
           className="fixed inset-0 opacity-30 pointer-events-none"

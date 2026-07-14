@@ -1,252 +1,825 @@
 import Head from "next/head";
+import { motion } from "framer-motion";
 import Link from "next/link";
 import Nav from "@/components/Nav";
+import Footer from "@/components/Footer";
+import { Badge } from "@/components/ui/badge";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { ParticleField3D } from "@/components/premium/ParticleField3D";
+import { SEO } from "@/components/SEO";
 import {
-  Activity,
   TrendingUp,
-  BarChart3,
-  Brain,
+  Database,
   Shield,
   Zap,
-  Target,
+  Pill,
+  FileCheck,
+  Activity,
   Users,
   DollarSign,
+  BarChart3,
+  Brain,
+  Target,
 } from "lucide-react";
-import { SEO } from "@/components/SEO";
-import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
-import Footer from "@/components/Footer";
+import { useState } from "react";
 
 const engineCategories = [
-  { id: "forecasting", label: "Forecasting & Trend", icon: TrendingUp },
-  { id: "normalization", label: "Data Normalization", icon: BarChart3 },
-  { id: "risk", label: "Risk Analytics", icon: Shield },
-  { id: "interventions", label: "Interventions & Savings", icon: Target },
-  { id: "pharmacy", label: "Pharmacy Intelligence", icon: Activity },
-  { id: "governance", label: "Governance & Compliance", icon: Shield },
-  { id: "clinical", label: "Clinical Intelligence", icon: Brain },
-  { id: "workforce", label: "Workforce Analytics", icon: Users },
-  { id: "enterprise", label: "Enterprise Value", icon: DollarSign },
-];
-
-const engines = [
-  // Forecasting & Trend (12)
-  { id: "medical-trend", name: "Medical Trend Forecasting", href: "/engines/medical-trend-forecasting", category: "forecasting", description: "Time-series forecasting for medical cost trends", complexity: "Core" },
-  { id: "rx-trend", name: "Rx Trend Forecasting", href: "/engines/rx-trend-forecasting", category: "forecasting", description: "Pharmacy trend forecasting with drug pipeline analysis", complexity: "Core" },
-  { id: "catastrophic-claims", name: "Catastrophic Claims Forecasting", href: "/engines/catastrophic-claims-forecasting", category: "forecasting", description: "Tail risk modeling for extreme healthcare events", complexity: "Advanced" },
-  { id: "high-cost-claimant", name: "High Cost Claimant Prediction", href: "/engines/high-cost-claimant-prediction", category: "forecasting", description: "Predictive modeling for catastrophic claim probability", complexity: "Advanced" },
-  { id: "monte-carlo", name: "Monte Carlo Forecasting", href: "/engines/monte-carlo-forecasting", category: "forecasting", description: "Probabilistic forecasting with uncertainty quantification", complexity: "Advanced" },
-  { id: "dental-trend", name: "Dental Trend Analysis", href: "/engines/dental-trend-analysis", category: "forecasting", description: "Dental cost trend forecasting and utilization modeling", complexity: "Standard" },
-  { id: "vision-trend", name: "Vision Trend Analysis", href: "/engines/vision-trend-analysis", category: "forecasting", description: "Vision benefit cost forecasting and trend analysis", complexity: "Standard" },
-  { id: "inflation-decomp", name: "Inflation Decomposition", href: "/engines/inflation-decomposition", category: "forecasting", description: "Healthcare inflation attribution and component analysis", complexity: "Advanced" },
-  { id: "provider-unit-cost", name: "Provider Unit Cost Trend", href: "/engines/provider-unit-cost-trend", category: "forecasting", description: "Provider unit cost trend analysis and forecasting", complexity: "Standard" },
-  { id: "utilization-trend", name: "Utilization Trend Engine", href: "/engines/utilization-trend-engine", category: "forecasting", description: "Healthcare utilization trend modeling and forecasting", complexity: "Standard" },
-  { id: "chronic-disease", name: "Chronic Disease Progression", href: "/engines/chronic-disease-progression", category: "forecasting", description: "Multi-year chronic disease cost progression modeling", complexity: "Advanced" },
-  { id: "ibnr-reserve", name: "IBNR Reserve Modeling", href: "/engines/ibnr-reserve-modeling", category: "forecasting", description: "Incurred But Not Reported reserve estimation", complexity: "Advanced" },
-
-  // Data Normalization (8)
-  { id: "geographic-norm", name: "Geographic Normalization", href: "/engines/geographic-normalization", category: "normalization", description: "Geographic cost adjustment and market normalization", complexity: "Core" },
-  { id: "age-gender-risk", name: "Age/Gender Risk Adjustment", href: "/engines/age-gender-risk-adjustment", category: "normalization", description: "Demographic risk adjustment and normalization", complexity: "Core" },
-  { id: "case-mix", name: "Case Mix Adjustment", href: "/engines/case-mix-adjustment", category: "normalization", description: "Clinical complexity and case mix normalization", complexity: "Advanced" },
-  { id: "pmpm-norm", name: "PMPM Normalization", href: "/engines/pmpm-normalization", category: "normalization", description: "Per member per month cost standardization", complexity: "Core" },
-  { id: "seasonality", name: "Seasonality Adjustment", href: "/engines/seasonality-adjustment", category: "normalization", description: "Seasonal pattern removal and trend isolation", complexity: "Standard" },
-  { id: "credibility", name: "Credibility Weighting", href: "/engines/credibility-weighting", category: "normalization", description: "Statistical credibility and volume weighting", complexity: "Advanced" },
-  { id: "pepy-norm", name: "PEPY Normalization", href: "/engines/pepy-normalization", category: "normalization", description: "Per employee per year cost standardization", complexity: "Standard" },
-  { id: "benefit-richness", name: "Benefit Richness Scoring", href: "/engines/benefit-richness-scoring", category: "normalization", description: "Plan design richness quantification and adjustment", complexity: "Standard" },
-
-  // Risk Analytics (10)
-  { id: "glp1-impact", name: "GLP-1 Financial Impact", href: "/engines/glp1-financial-impact", category: "risk", description: "Obesity drug cost modeling and multi-year forecasting", complexity: "Advanced" },
-  { id: "gene-therapy", name: "Gene Therapy Exposure", href: "/engines/gene-therapy-exposure", category: "risk", description: "Ultra-high cost gene therapy financial modeling", complexity: "Advanced" },
-  { id: "oncology-cost", name: "Oncology Cost Projection", href: "/engines/oncology-cost-projection", category: "risk", description: "Cancer treatment cost forecasting and trend analysis", complexity: "Advanced" },
-  { id: "stop-loss-laser", name: "Stop Loss Laser Prediction", href: "/engines/stop-loss-laser-prediction", category: "risk", description: "Specific deductible laser prediction and pricing", complexity: "Advanced" },
-  { id: "hospital-admission", name: "Hospital Admission Prediction", href: "/engines/hospital-admission-prediction", category: "risk", description: "Inpatient admission probability and cost modeling", complexity: "Advanced" },
-  { id: "readmission", name: "Readmission Prediction", href: "/engines/readmission-prediction", category: "risk", description: "30-day hospital readmission prediction and cost", complexity: "Advanced" },
-  { id: "workforce-health", name: "Workforce Health Risk", href: "/engines/workforce-health-risk", category: "risk", description: "Employee population health risk scoring and segmentation", complexity: "Standard" },
-  { id: "fraud-prediction", name: "Fraud Prediction", href: "/engines/fraud-prediction", category: "risk", description: "Healthcare fraud and abuse detection algorithms", complexity: "Advanced" },
-  { id: "network-disruption", name: "Network Disruption Modeling", href: "/engines/network-disruption-modeling", category: "risk", description: "Provider network change impact and cost modeling", complexity: "Advanced" },
-  { id: "cost-elasticity", name: "Cost Elasticity", href: "/engines/cost-elasticity", category: "risk", description: "Member cost-sharing elasticity and utilization impact", complexity: "Advanced" },
-
-  // Interventions & Savings (12)
-  { id: "site-of-care", name: "Site of Care Migration", href: "/engines/site-of-care-migration", category: "interventions", description: "Cost optimization through care setting migration", complexity: "Standard" },
-  { id: "reference-pricing", name: "Reference Based Pricing Savings", href: "/engines/reference-based-pricing-savings", category: "interventions", description: "Reference-based pricing savings modeling", complexity: "Standard" },
-  { id: "direct-contracting", name: "Direct Contracting Valuation", href: "/engines/direct-contracting-valuation", category: "interventions", description: "Direct provider contract savings estimation", complexity: "Standard" },
-  { id: "coe-roi", name: "Centers of Excellence ROI", href: "/engines/centers-of-excellence-roi", category: "interventions", description: "Center of excellence program return on investment", complexity: "Standard" },
-  { id: "bundled-payment", name: "Bundled Payment Modeling", href: "/engines/bundled-payment-modeling", category: "interventions", description: "Episode-based bundled payment savings estimation", complexity: "Standard" },
-  { id: "payment-integrity", name: "Payment Integrity Analysis", href: "/engines/payment-integrity-analysis", category: "interventions", description: "Claims payment accuracy and recovery modeling", complexity: "Standard" },
-  { id: "waste-fraud-abuse", name: "Waste Fraud Abuse Detection", href: "/engines/waste-fraud-abuse-detection", category: "interventions", description: "Healthcare waste, fraud, and abuse identification", complexity: "Advanced" },
-  { id: "episode-valuation", name: "Episode of Care Valuation", href: "/engines/episode-of-care-valuation", category: "interventions", description: "Episode-based cost and quality performance measurement", complexity: "Standard" },
-  { id: "wellness-roi", name: "Wellness ROI", href: "/engines/wellness-roi", category: "interventions", description: "Workplace wellness program return on investment", complexity: "Standard" },
-  { id: "plan-migration", name: "Plan Migration Simulation", href: "/engines/plan-migration-simulation", category: "interventions", description: "Plan design change impact and member migration modeling", complexity: "Advanced" },
-  { id: "employer-cost-shifting", name: "Employer Cost Shifting", href: "/engines/employer-cost-shifting", category: "interventions", description: "Member cost-sharing strategy impact modeling", complexity: "Standard" },
-  { id: "benefit-harmonization", name: "Benefit Harmonization", href: "/engines/benefit-harmonization", category: "interventions", description: "Multi-site benefit standardization and savings modeling", complexity: "Standard" },
-
-  // Pharmacy Intelligence (9)
-  { id: "specialty-pharma", name: "Specialty Pharmacy Economics", href: "/engines/specialty-pharmacy-economics", category: "pharmacy", description: "High-cost specialty drug utilization and cost modeling", complexity: "Advanced" },
-  { id: "biosimilar-adoption", name: "Biosimilar Adoption Modeling", href: "/engines/biosimilar-adoption-modeling", category: "pharmacy", description: "Biosimilar market penetration and savings forecasting", complexity: "Advanced" },
-  { id: "drug-pipeline", name: "Drug Pipeline Forecasting", href: "/engines/drug-pipeline-forecasting", category: "pharmacy", description: "New drug approval and market impact modeling", complexity: "Advanced" },
-  { id: "rebate-optimization", name: "Rebate Optimization", href: "/engines/rebate-optimization", category: "pharmacy", description: "Pharmacy rebate and formulary optimization modeling", complexity: "Advanced" },
-  { id: "pbm-spread", name: "PBM Spread Pricing Detection", href: "/engines/pbm-spread-pricing-detection", category: "pharmacy", description: "PBM spread pricing identification and quantification", complexity: "Advanced" },
-  { id: "rx-adherence", name: "Rx Adherence Prediction", href: "/engines/rx-adherence-prediction", category: "pharmacy", description: "Medication adherence prediction and intervention targeting", complexity: "Standard" },
-  { id: "formulary-analytics", name: "Formulary Analytics", href: "/engines/demo", category: "pharmacy", description: "Formulary optimization and tier strategy analysis", complexity: "Standard" },
-  { id: "rebate-economics", name: "Rebate Economics", href: "/engines/demo", category: "pharmacy", description: "PBM rebate economics and pass-through modeling", complexity: "Advanced" },
-  { id: "drug-utilization", name: "Drug Utilization Management", href: "/engines/demo", category: "pharmacy", description: "Prior authorization and step therapy impact modeling", complexity: "Standard" },
-
-  // Governance & Compliance (10)
-  { id: "erisa-risk", name: "ERISA Fiduciary Risk Scoring", href: "/engines/erisa-fiduciary-risk-scoring", category: "governance", description: "ERISA fiduciary compliance and risk assessment", complexity: "Advanced" },
-  { id: "pbm-contract", name: "PBM Contract Scoring", href: "/engines/pbm-contract-scoring", category: "governance", description: "PBM contract language and performance scoring", complexity: "Advanced" },
-  { id: "stop-loss-contract", name: "Stop Loss Contract Scoring", href: "/engines/stop-loss-contract-scoring", category: "governance", description: "Stop loss insurance contract risk assessment", complexity: "Advanced" },
-  { id: "hidden-revenue", name: "Hidden Revenue Detection", href: "/engines/hidden-revenue-detection", category: "governance", description: "Vendor hidden revenue stream identification", complexity: "Advanced" },
-  { id: "audit-readiness", name: "Audit Readiness Scoring", href: "/engines/audit-readiness-scoring", category: "governance", description: "Plan audit preparedness and compliance assessment", complexity: "Standard" },
-  { id: "board-reporting", name: "Board Reporting Engine", href: "/engines/board-reporting-engine", category: "governance", description: "Executive and board-level reporting automation", complexity: "Standard" },
-  { id: "governance-maturity", name: "Governance Maturity Assessment", href: "/engines/governance-maturity-assessment", category: "governance", description: "Healthcare governance maturity scoring and benchmarking", complexity: "Standard" },
-  { id: "board-oversight", name: "Board Oversight Scoring", href: "/engines/board-oversight-scoring", category: "governance", description: "Board of directors oversight effectiveness assessment", complexity: "Standard" },
-  { id: "conflict-interest", name: "Conflict of Interest Analysis", href: "/engines/conflict-of-interest-analysis", category: "governance", description: "Vendor and advisor conflict of interest detection", complexity: "Advanced" },
-  { id: "vendor-transparency", name: "Vendor Compensation Transparency", href: "/engines/vendor-compensation-transparency", category: "governance", description: "Healthcare vendor compensation disclosure analysis", complexity: "Advanced" },
-
-  // Clinical Intelligence (8)
-  { id: "absenteeism", name: "Absenteeism Forecasting", href: "/engines/absenteeism-forecasting", category: "clinical", description: "Employee absence prediction and cost modeling", complexity: "Standard" },
-  { id: "presenteeism", name: "Presenteeism Impact", href: "/engines/presenteeism-impact", category: "clinical", description: "On-the-job productivity loss measurement and valuation", complexity: "Standard" },
-  { id: "productivity-loss", name: "Productivity Loss Valuation", href: "/engines/productivity-loss-valuation", category: "clinical", description: "Health-related productivity loss economic modeling", complexity: "Standard" },
-  { id: "workforce-demographics", name: "Workforce Demographics", href: "/engines/workforce-demographics", category: "clinical", description: "Employee population demographic risk profiling", complexity: "Standard" },
-  { id: "disability-forecasting", name: "Disability Forecasting", href: "/engines/disability-forecasting", category: "clinical", description: "Short and long-term disability cost forecasting", complexity: "Standard" },
-  { id: "behavioral-health", name: "Behavioral Health Utilization", href: "/engines/behavioral-health-utilization", category: "clinical", description: "Mental health and substance abuse utilization modeling", complexity: "Standard" },
-  { id: "talent-retention", name: "Talent Retention Risk", href: "/engines/talent-retention-risk", category: "clinical", description: "Health-related employee turnover prediction", complexity: "Standard" },
-  { id: "member-churn", name: "Member Churn Prediction", href: "/engines/member-churn-prediction", category: "clinical", description: "Health plan member attrition forecasting", complexity: "Standard" },
-
-  // Workforce Analytics (7)
-  { id: "tpa-governance", name: "TPA Governance Scoring", href: "/engines/tpa-governance-scoring", category: "workforce", description: "Third-party administrator performance and governance assessment", complexity: "Standard" },
-  { id: "member-cost-burden", name: "Member Cost Burden", href: "/engines/member-cost-burden", category: "workforce", description: "Employee out-of-pocket cost burden analysis", complexity: "Standard" },
-  { id: "benefit-plan-design", name: "Benefit Plan Design", href: "/engines/benefit-plan-design", category: "workforce", description: "Optimal benefit design modeling and simulation", complexity: "Standard" },
-  { id: "dependent-eligibility", name: "Dependent Eligibility", href: "/engines/dependent-eligibility", category: "workforce", description: "Dependent eligibility audit and compliance modeling", complexity: "Standard" },
-  { id: "ai-governance", name: "AI Governance", href: "/engines/ai-governance", category: "workforce", description: "AI system governance and risk management framework", complexity: "Advanced" },
-  { id: "compliance-monitoring", name: "Compliance Monitoring", href: "/engines/compliance-monitoring", category: "workforce", description: "Regulatory compliance monitoring and alerting", complexity: "Standard" },
-  { id: "regulatory-exposure", name: "Regulatory Exposure", href: "/engines/regulatory-exposure", category: "workforce", description: "Healthcare regulatory risk and exposure assessment", complexity: "Advanced" },
-
-  // Enterprise Value (6)
-  { id: "ebitda-enhancement", name: "EBITDA Enhancement", href: "/engines/ebitda-enhancement", category: "enterprise", description: "Enterprise value optimization through healthcare cost reduction", complexity: "Advanced" },
-  { id: "enterprise-value-creation", name: "Enterprise Value Creation", href: "/engines/enterprise-value-creation", category: "enterprise", description: "M&A healthcare cost due diligence and value creation modeling", complexity: "Advanced" },
-  { id: "large-claimant", name: "Large Claimant Prediction", href: "/engines/large-claimant-prediction", category: "enterprise", description: "Predictive modeling for catastrophic claim probability", complexity: "Advanced" },
-  { id: "litigation-probability", name: "Litigation Probability", href: "/engines/litigation-probability", category: "enterprise", description: "Healthcare litigation risk assessment and prediction", complexity: "Advanced" },
-  { id: "documentation-completeness", name: "Documentation Completeness", href: "/engines/documentation-completeness", category: "enterprise", description: "Healthcare plan documentation audit and completeness scoring", complexity: "Standard" },
-  { id: "decision-traceability", name: "Decision Traceability", href: "/engines/decision-traceability", category: "enterprise", description: "Fiduciary decision audit trail and documentation", complexity: "Standard" },
+  {
+    id: "forecasting",
+    label: "Forecasting & Trend",
+    icon: TrendingUp,
+    color: "blue",
+    engines: [
+      {
+        id: "medical-trend-forecasting",
+        name: "Medical Trend Forecasting",
+        href: "/engines/medical-trend-forecasting",
+        description: "Time-series forecasting for medical cost trends",
+      },
+      {
+        id: "rx-trend-forecasting",
+        name: "Rx Trend Forecasting",
+        href: "/engines/rx-trend-forecasting",
+        description: "Pharmacy trend forecasting with drug pipeline analysis",
+      },
+      {
+        id: "monte-carlo-forecasting",
+        name: "Monte Carlo Forecasting",
+        href: "/engines/monte-carlo-forecasting",
+        description: "Probabilistic forecasting with uncertainty quantification",
+      },
+      {
+        id: "catastrophic-claims-forecasting",
+        name: "Catastrophic Claims Forecasting",
+        href: "/engines/catastrophic-claims-forecasting",
+        description: "Tail risk modeling for extreme healthcare events",
+      },
+      {
+        id: "dental-trend-analysis",
+        name: "Dental Trend Analysis",
+        href: "/engines/dental-trend-analysis",
+        description: "Dental claims forecasting and cost trend analysis",
+      },
+      {
+        id: "vision-trend-analysis",
+        name: "Vision Trend Analysis",
+        href: "/engines/vision-trend-analysis",
+        description: "Vision benefits trend forecasting and utilization modeling",
+      },
+      {
+        id: "inflation-decomposition",
+        name: "Inflation Decomposition",
+        href: "/engines/inflation-decomposition",
+        description: "Medical inflation attribution by component drivers",
+      },
+      {
+        id: "provider-unit-cost-trend",
+        name: "Provider Unit Cost Trend",
+        href: "/engines/provider-unit-cost-trend",
+        description: "Provider contract rate inflation and unit cost forecasting",
+      },
+      {
+        id: "utilization-trend-engine",
+        name: "Utilization Trend Engine",
+        href: "/engines/utilization-trend-engine",
+        description: "Service utilization forecasting across categories",
+      },
+      {
+        id: "drug-pipeline-forecasting",
+        name: "Drug Pipeline Forecasting",
+        href: "/engines/drug-pipeline-forecasting",
+        description: "FDA pipeline impact modeling for specialty drugs",
+      },
+      {
+        id: "healthcare-inflation-attribution",
+        name: "Healthcare Inflation Attribution",
+        href: "/engines/healthcare-inflation-attribution",
+        description: "Root cause analysis of medical trend drivers",
+      },
+      {
+        id: "cost-elasticity",
+        name: "Cost Elasticity",
+        href: "/engines/cost-elasticity",
+        description: "Member cost-sharing impact on utilization",
+      },
+    ],
+  },
+  {
+    id: "normalization",
+    label: "Data Normalization",
+    icon: Database,
+    color: "purple",
+    engines: [
+      {
+        id: "geographic-normalization",
+        name: "Geographic Normalization",
+        href: "/engines/geographic-normalization",
+        description: "Cost adjustments for geographic variation",
+      },
+      {
+        id: "age-gender-risk-adjustment",
+        name: "Age/Gender Risk Adjustment",
+        href: "/engines/age-gender-risk-adjustment",
+        description: "Demographic risk normalization",
+      },
+      {
+        id: "case-mix-adjustment",
+        name: "Case Mix Adjustment",
+        href: "/engines/case-mix-adjustment",
+        description: "Severity and acuity normalization",
+      },
+      {
+        id: "pmpm-normalization",
+        name: "PMPM Normalization",
+        href: "/engines/pmpm-normalization",
+        description: "Per-member cost standardization",
+      },
+      {
+        id: "seasonality-adjustment",
+        name: "Seasonality Adjustment",
+        href: "/engines/seasonality-adjustment",
+        description: "Temporal pattern normalization",
+      },
+      {
+        id: "credibility-weighting",
+        name: "Credibility Weighting",
+        href: "/engines/credibility-weighting",
+        description: "Statistical credibility for small populations",
+      },
+      {
+        id: "pepy-normalization",
+        name: "PEPY Normalization",
+        href: "/engines/pepy-normalization",
+        description: "Per-employee-per-year cost standardization",
+      },
+      {
+        id: "benefit-richness-scoring",
+        name: "Benefit Richness Scoring",
+        href: "/engines/benefit-richness-scoring",
+        description: "Plan design normalization for benchmarking",
+      },
+    ],
+  },
+  {
+    id: "risk",
+    label: "Risk Analytics",
+    icon: Shield,
+    color: "red",
+    engines: [
+      {
+        id: "high-cost-claimant-prediction",
+        name: "High-Cost Claimant Prediction",
+        href: "/engines/high-cost-claimant-prediction",
+        description: "Predictive modeling for catastrophic claim probability",
+      },
+      {
+        id: "large-claimant-prediction",
+        name: "Large Claimant Prediction",
+        href: "/engines/large-claimant-prediction",
+        description: "Machine learning for high-cost member identification",
+      },
+      {
+        id: "stop-loss-laser-prediction",
+        name: "Stop-Loss Laser Prediction",
+        href: "/engines/stop-loss-laser-prediction",
+        description: "Individual member laser prediction modeling",
+      },
+      {
+        id: "chronic-disease-progression",
+        name: "Chronic Disease Progression",
+        href: "/engines/chronic-disease-progression",
+        description: "Disease trajectory forecasting and intervention timing",
+      },
+      {
+        id: "hospital-admission-prediction",
+        name: "Hospital Admission Prediction",
+        href: "/engines/hospital-admission-prediction",
+        description: "Inpatient admission probability modeling",
+      },
+      {
+        id: "readmission-prediction",
+        name: "Readmission Prediction",
+        href: "/engines/readmission-prediction",
+        description: "30-day readmission risk scoring",
+      },
+      {
+        id: "fraud-prediction",
+        name: "Fraud Prediction",
+        href: "/engines/fraud-prediction",
+        description: "Anomaly detection for fraudulent claims",
+      },
+      {
+        id: "waste-fraud-abuse-detection",
+        name: "Waste, Fraud & Abuse Detection",
+        href: "/engines/waste-fraud-abuse-detection",
+        description: "Payment integrity and improper billing detection",
+      },
+      {
+        id: "litigation-probability",
+        name: "Litigation Probability",
+        href: "/engines/litigation-probability",
+        description: "Legal risk scoring for plan operations",
+      },
+      {
+        id: "regulatory-exposure",
+        name: "Regulatory Exposure",
+        href: "/engines/regulatory-exposure",
+        description: "Compliance risk quantification",
+      },
+    ],
+  },
+  {
+    id: "interventions",
+    label: "Interventions",
+    icon: Zap,
+    color: "green",
+    engines: [
+      {
+        id: "glp1-financial-impact",
+        name: "GLP-1 Financial Impact",
+        href: "/engines/glp1-financial-impact",
+        description: "Obesity drug cost modeling and PMPM impact",
+      },
+      {
+        id: "gene-therapy-exposure",
+        name: "Gene Therapy Exposure",
+        href: "/engines/gene-therapy-exposure",
+        description: "Ultra-high-cost therapy financial modeling",
+      },
+      {
+        id: "oncology-cost-projection",
+        name: "Oncology Cost Projection",
+        href: "/engines/oncology-cost-projection",
+        description: "Cancer treatment cost forecasting",
+      },
+      {
+        id: "site-of-care-migration",
+        name: "Site of Care Migration",
+        href: "/engines/site-of-care-migration",
+        description: "Cost optimization through care setting shifts",
+      },
+      {
+        id: "network-disruption-modeling",
+        name: "Network Disruption Modeling",
+        href: "/engines/network-disruption-modeling",
+        description: "Provider network change impact analysis",
+      },
+      {
+        id: "reference-based-pricing-savings",
+        name: "Reference-Based Pricing Savings",
+        href: "/engines/reference-based-pricing-savings",
+        description: "Medicare-based payment strategy modeling",
+      },
+      {
+        id: "direct-contracting-valuation",
+        name: "Direct Contracting Valuation",
+        href: "/engines/direct-contracting-valuation",
+        description: "Direct provider contract financial modeling",
+      },
+      {
+        id: "centers-of-excellence-roi",
+        name: "Centers of Excellence ROI",
+        href: "/engines/centers-of-excellence-roi",
+        description: "Bundled payment program value quantification",
+      },
+      {
+        id: "bundled-payment-modeling",
+        name: "Bundled Payment Modeling",
+        href: "/engines/bundled-payment-modeling",
+        description: "Episode-based payment strategy analysis",
+      },
+      {
+        id: "plan-migration-simulation",
+        name: "Plan Migration Simulation",
+        href: "/engines/plan-migration-simulation",
+        description: "Plan design change financial modeling",
+      },
+      {
+        id: "wellness-roi",
+        name: "Wellness ROI",
+        href: "/engines/wellness-roi",
+        description: "Prevention program value measurement",
+      },
+      {
+        id: "employer-cost-shifting",
+        name: "Employer Cost Shifting",
+        href: "/engines/employer-cost-shifting",
+        description: "Member cost-share impact modeling",
+      },
+    ],
+  },
+  {
+    id: "pharmacy",
+    label: "Pharmacy Intelligence",
+    icon: Pill,
+    color: "indigo",
+    engines: [
+      {
+        id: "specialty-pharmacy-economics",
+        name: "Specialty Pharmacy Economics",
+        href: "/engines/specialty-pharmacy-economics",
+        description: "High-cost drug financial modeling",
+      },
+      {
+        id: "biosimilar-adoption-modeling",
+        name: "Biosimilar Adoption Modeling",
+        href: "/engines/biosimilar-adoption-modeling",
+        description: "Biologic to biosimilar conversion forecasting",
+      },
+      {
+        id: "rebate-optimization",
+        name: "Rebate Optimization",
+        href: "/engines/rebate-optimization",
+        description: "PBM rebate strategy financial modeling",
+      },
+      {
+        id: "pbm-spread-pricing-detection",
+        name: "PBM Spread Pricing Detection",
+        href: "/engines/pbm-spread-pricing-detection",
+        description: "Hidden pharmacy margin identification",
+      },
+      {
+        id: "formulary-analytics",
+        name: "Formulary Analytics",
+        href: "/engines/formulary-analytics",
+        description: "Drug tier optimization modeling",
+      },
+      {
+        id: "rx-adherence-prediction",
+        name: "Rx Adherence Prediction",
+        href: "/engines/rx-adherence-prediction",
+        description: "Medication compliance forecasting",
+      },
+      {
+        id: "member-churn-prediction",
+        name: "Member Churn Prediction",
+        href: "/engines/member-churn-prediction",
+        description: "Pharmacy benefit attrition modeling",
+      },
+      {
+        id: "payment-integrity-analysis",
+        name: "Payment Integrity Analysis",
+        href: "/engines/payment-integrity-analysis",
+        description: "Pharmacy claims audit and recovery",
+      },
+      {
+        id: "episode-of-care-valuation",
+        name: "Episode of Care Valuation",
+        href: "/engines/episode-of-care-valuation",
+        description: "Treatment pathway cost modeling",
+      },
+    ],
+  },
+  {
+    id: "governance",
+    label: "Governance & Compliance",
+    icon: FileCheck,
+    color: "yellow",
+    engines: [
+      {
+        id: "erisa-fiduciary-risk-scoring",
+        name: "ERISA Fiduciary Risk Scoring",
+        href: "/engines/erisa-fiduciary-risk-scoring",
+        description: "Plan sponsor legal exposure quantification",
+      },
+      {
+        id: "pbm-contract-scoring",
+        name: "PBM Contract Scoring",
+        href: "/engines/pbm-contract-scoring",
+        description: "Pharmacy benefit agreement risk assessment",
+      },
+      {
+        id: "stop-loss-contract-scoring",
+        name: "Stop-Loss Contract Scoring",
+        href: "/engines/stop-loss-contract-scoring",
+        description: "Reinsurance contract evaluation",
+      },
+      {
+        id: "hidden-revenue-detection",
+        name: "Hidden Revenue Detection",
+        href: "/engines/hidden-revenue-detection",
+        description: "Vendor compensation transparency analysis",
+      },
+      {
+        id: "audit-readiness-scoring",
+        name: "Audit Readiness Scoring",
+        href: "/engines/audit-readiness-scoring",
+        description: "Plan documentation completeness assessment",
+      },
+      {
+        id: "conflict-of-interest-analysis",
+        name: "Conflict of Interest Analysis",
+        href: "/engines/conflict-of-interest-analysis",
+        description: "Vendor relationship risk scoring",
+      },
+      {
+        id: "governance-maturity-assessment",
+        name: "Governance Maturity Assessment",
+        href: "/engines/governance-maturity-assessment",
+        description: "Fiduciary practice evaluation",
+      },
+      {
+        id: "board-oversight-scoring",
+        name: "Board Oversight Scoring",
+        href: "/engines/board-oversight-scoring",
+        description: "Director engagement measurement",
+      },
+      {
+        id: "ai-governance",
+        name: "AI Governance",
+        href: "/engines/ai-governance",
+        description: "AI decision transparency and audit trail",
+      },
+      {
+        id: "compliance-monitoring",
+        name: "Compliance Monitoring",
+        href: "/engines/compliance-monitoring",
+        description: "Regulatory adherence tracking",
+      },
+    ],
+  },
+  {
+    id: "clinical",
+    label: "Clinical Intelligence",
+    icon: Activity,
+    color: "teal",
+    engines: [
+      {
+        id: "ibnr-reserve-modeling",
+        name: "IBNR Reserve Modeling",
+        href: "/engines/ibnr-reserve-modeling",
+        description: "Incurred-but-not-reported claims estimation",
+      },
+      {
+        id: "board-reporting-engine",
+        name: "Board Reporting Engine",
+        href: "/engines/board-reporting-engine",
+        description: "Executive-level healthcare analytics",
+      },
+      {
+        id: "behavioral-health-utilization",
+        name: "Behavioral Health Utilization",
+        href: "/engines/behavioral-health-utilization",
+        description: "Mental health service forecasting",
+      },
+      {
+        id: "disability-forecasting",
+        name: "Disability Forecasting",
+        href: "/engines/disability-forecasting",
+        description: "STD/LTD claim probability modeling",
+      },
+      {
+        id: "dependent-eligibility",
+        name: "Dependent Eligibility",
+        href: "/engines/dependent-eligibility",
+        description: "Coverage fraud detection and auditing",
+      },
+      {
+        id: "documentation-completeness",
+        name: "Documentation Completeness",
+        href: "/engines/documentation-completeness",
+        description: "Plan document audit scoring",
+      },
+      {
+        id: "decision-traceability",
+        name: "Decision Traceability",
+        href: "/engines/decision-traceability",
+        description: "Fiduciary decision documentation",
+      },
+      {
+        id: "procurement-integrity",
+        name: "Procurement Integrity",
+        href: "/engines/procurement-integrity",
+        description: "Vendor selection process evaluation",
+      },
+    ],
+  },
+  {
+    id: "workforce",
+    label: "Workforce Analytics",
+    icon: Users,
+    color: "pink",
+    engines: [
+      {
+        id: "workforce-health-risk",
+        name: "Workforce Health Risk",
+        href: "/engines/workforce-health-risk",
+        description: "Employee population health risk stratification",
+      },
+      {
+        id: "absenteeism-forecasting",
+        name: "Absenteeism Forecasting",
+        href: "/engines/absenteeism-forecasting",
+        description: "Medical absence trend prediction",
+      },
+      {
+        id: "presenteeism-impact",
+        name: "Presenteeism Impact",
+        href: "/engines/presenteeism-impact",
+        description: "On-the-job productivity loss measurement",
+      },
+      {
+        id: "productivity-loss-valuation",
+        name: "Productivity Loss Valuation",
+        href: "/engines/productivity-loss-valuation",
+        description: "Health-related work output impact",
+      },
+      {
+        id: "workforce-demographics",
+        name: "Workforce Demographics",
+        href: "/engines/workforce-demographics",
+        description: "Population aging and retirement modeling",
+      },
+      {
+        id: "talent-retention-risk",
+        name: "Talent Retention Risk",
+        href: "/engines/talent-retention-risk",
+        description: "Benefits competitiveness assessment",
+      },
+      {
+        id: "benefit-plan-design",
+        name: "Benefit Plan Design",
+        href: "/engines/benefit-plan-design",
+        description: "Coverage optimization modeling",
+      },
+    ],
+  },
+  {
+    id: "enterprise",
+    label: "Enterprise Value",
+    icon: DollarSign,
+    color: "orange",
+    engines: [
+      {
+        id: "ebitda-enhancement",
+        name: "EBITDA Enhancement",
+        href: "/engines/ebitda-enhancement",
+        description: "Enterprise value creation through healthcare cost reduction",
+      },
+      {
+        id: "enterprise-value-creation",
+        name: "Enterprise Value Creation",
+        href: "/engines/enterprise-value-creation",
+        description: "M&A healthcare cost synergy modeling",
+      },
+      {
+        id: "benefit-harmonization",
+        name: "Benefit Harmonization",
+        href: "/engines/benefit-harmonization",
+        description: "Post-merger benefit integration",
+      },
+      {
+        id: "vendor-compensation-transparency",
+        name: "Vendor Compensation Transparency",
+        href: "/engines/vendor-compensation-transparency",
+        description: "Hidden fee and revenue stream detection",
+      },
+      {
+        id: "tpa-governance-scoring",
+        name: "TPA Governance Scoring",
+        href: "/engines/tpa-governance-scoring",
+        description: "Third-party administrator oversight",
+      },
+      {
+        id: "member-cost-burden",
+        name: "Member Cost Burden",
+        href: "/engines/member-cost-burden",
+        description: "Employee out-of-pocket expense modeling",
+      },
+    ],
+  },
 ];
 
 export default function EnginesPage() {
+  const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
+
+  const filteredEngines = selectedCategory
+    ? engineCategories.filter((cat) => cat.id === selectedCategory)
+    : engineCategories;
+
+  const totalEngines = engineCategories.reduce(
+    (acc, cat) => acc + cat.engines.length,
+    0
+  );
+
   return (
     <>
+      <Head>
+        <title>Intelligence Engines | Kincaid Health Data Sciences Lab</title>
+        <meta
+          name="description"
+          content="82+ specialized actuarial engines for healthcare analytics, forecasting, and decision intelligence. Modular, composable AI for health benefits optimization."
+        />
+      </Head>
       <SEO
-        title="Universal Intelligence Engines | Kincaid Health Data Sciences Lab"
-        description="50+ specialized actuarial engines for healthcare analytics, forecasting, and decision intelligence. Modular, composable intelligence for self-insured employers and health plans."
+        title="Intelligence Engines | Kincaid Health Data Sciences Lab"
+        description="82+ specialized actuarial engines for healthcare analytics, forecasting, and decision intelligence."
       />
 
       <Nav />
 
-      <main className="min-h-screen bg-gradient-to-b from-slate-950 via-slate-900 to-slate-950">
-        <div className="container mx-auto px-4 py-16">
-          <div className="max-w-6xl mx-auto">
-            {/* Header */}
-            <div className="text-center mb-16">
-              <Badge variant="outline" className="mb-4">
+      <div className="min-h-screen bg-gradient-to-b from-black via-slate-950 to-black relative overflow-hidden">
+        <ParticleField3D />
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-violet-900/20 via-transparent to-transparent" />
+
+        <main className="relative z-10">
+          <div className="container mx-auto px-4 py-16 lg:py-24">
+            {/* Hero Section */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8 }}
+              className="max-w-6xl mx-auto text-center mb-16"
+            >
+              <Badge className="mb-6 bg-violet-500/10 text-violet-400 border-violet-500/20 text-sm px-4 py-2">
                 Universal Intelligence Platform
               </Badge>
-              <h1 className="text-5xl font-bold mb-6 bg-gradient-to-r from-blue-400 via-purple-400 to-pink-400 bg-clip-text text-transparent">
+              <motion.h1
+                initial={{ opacity: 0, scale: 0.95 }}
+                animate={{ opacity: 1, scale: 1 }}
+                transition={{ duration: 0.6, delay: 0.2 }}
+                className="text-5xl md:text-7xl font-black mb-6 bg-gradient-to-r from-violet-400 via-purple-400 to-fuchsia-400 bg-clip-text text-transparent leading-tight"
+              >
                 Intelligence Engines
-              </h1>
-              <p className="text-xl text-slate-300 mb-4">
-                82 Specialized Actuarial Engines for Healthcare Analytics
+              </motion.h1>
+              <p className="text-xl md:text-2xl text-gray-300 mb-4 max-w-4xl mx-auto">
+                {totalEngines} Specialized Actuarial Engines for Healthcare
+                Analytics
               </p>
-              <p className="text-lg text-slate-400 max-w-3xl mx-auto">
-                Modular, composable intelligence for forecasting, risk modeling, and decision automation
+              <p className="text-lg text-gray-400 mb-12 max-w-3xl mx-auto">
+                Modular, composable intelligence for forecasting, risk modeling,
+                and decision automation
               </p>
-            </div>
 
-            {/* Stats Grid */}
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-6 mb-16">
-              <div className="bg-slate-800/50 backdrop-blur-sm border border-slate-700 rounded-lg p-6 text-center">
-                <div className="text-3xl font-bold text-blue-400 mb-2">82</div>
-                <div className="text-sm text-slate-400">Specialized Engines</div>
+              {/* Key Stats */}
+              <div className="grid grid-cols-2 md:grid-cols-4 gap-4 max-w-5xl mx-auto">
+                {[
+                  {
+                    value: `${totalEngines}+`,
+                    label: "Specialized Engines",
+                    color: "violet",
+                  },
+                  {
+                    value: `${engineCategories.length}`,
+                    label: "Engine Categories",
+                    color: "purple",
+                  },
+                  {
+                    value: "API",
+                    label: "First Architecture",
+                    color: "fuchsia",
+                  },
+                  {
+                    value: "Real-time",
+                    label: "Orchestration",
+                    color: "pink",
+                  },
+                ].map((stat, idx) => (
+                  <motion.div
+                    key={idx}
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.5, delay: 0.4 + idx * 0.1 }}
+                    whileHover={{ scale: 1.05, rotateY: 5 }}
+                    className="perspective-1000"
+                  >
+                    <Card className="border-slate-700 bg-slate-900/50 backdrop-blur-sm transform-gpu transition-all duration-300 hover:shadow-xl hover:shadow-violet-500/20">
+                      <CardContent className="pt-6 pb-6 text-center">
+                        <div
+                          className={`text-3xl font-bold text-${stat.color}-400 mb-1`}
+                        >
+                          {stat.value}
+                        </div>
+                        <div className="text-xs text-slate-400">
+                          {stat.label}
+                        </div>
+                      </CardContent>
+                    </Card>
+                  </motion.div>
+                ))}
               </div>
-              <div className="bg-slate-800/50 backdrop-blur-sm border border-slate-700 rounded-lg p-6 text-center">
-                <div className="text-3xl font-bold text-purple-400 mb-2">9</div>
-                <div className="text-sm text-slate-400">Engine Categories</div>
-              </div>
-              <div className="bg-slate-800/50 backdrop-blur-sm border border-slate-700 rounded-lg p-6 text-center">
-                <div className="text-3xl font-bold text-pink-400 mb-2">API</div>
-                <div className="text-sm text-slate-400">First Architecture</div>
-              </div>
-              <div className="bg-slate-800/50 backdrop-blur-sm border border-slate-700 rounded-lg p-6 text-center">
-                <div className="text-3xl font-bold text-cyan-400 mb-2">Real-time</div>
-                <div className="text-sm text-slate-400">Orchestration</div>
-              </div>
-            </div>
+            </motion.div>
+
+            {/* Category Filter */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.6 }}
+              className="flex flex-wrap gap-3 justify-center mb-16"
+            >
+              <Button
+                variant={selectedCategory === null ? "default" : "outline"}
+                onClick={() => setSelectedCategory(null)}
+                className="rounded-full"
+              >
+                All Engines
+              </Button>
+              {engineCategories.map((category) => (
+                <Button
+                  key={category.id}
+                  variant={
+                    selectedCategory === category.id ? "default" : "outline"
+                  }
+                  onClick={() => setSelectedCategory(category.id)}
+                  className="rounded-full"
+                >
+                  <category.icon className="w-4 h-4 mr-2" />
+                  {category.label}
+                </Button>
+              ))}
+            </motion.div>
 
             {/* Engine Categories */}
-            {engineCategories.map((category) => {
-              const categoryEngines = engines.filter(
-                (engine) => engine.category === category.id
-              );
-              const CategoryIcon = category.icon;
-
-              return (
-                <div key={category.id} className="mb-12">
-                  <div className="flex items-center gap-3 mb-6">
-                    <CategoryIcon className="w-6 h-6 text-blue-400" />
-                    <h2 className="text-2xl font-bold text-white">
-                      {category.label}
-                    </h2>
-                    <Badge variant="secondary" className="ml-auto">
-                      {categoryEngines.length} Engines
-                    </Badge>
-                  </div>
-
-                  <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
-                    {categoryEngines.map((engine) => (
-                      <Link
-                        key={engine.id}
-                        href={engine.href}
-                        className="group bg-slate-800/50 backdrop-blur-sm border border-slate-700 rounded-lg p-6 hover:border-blue-500/50 transition-all"
+            <div className="space-y-16 max-w-7xl mx-auto">
+              {filteredEngines.map((category, categoryIdx) => {
+                const CategoryIcon = category.icon;
+                return (
+                  <motion.div
+                    key={category.id}
+                    initial={{ opacity: 0, y: 30 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.6, delay: categoryIdx * 0.1 }}
+                    viewport={{ once: true }}
+                  >
+                    {/* Category Header */}
+                    <div className="flex items-center gap-4 mb-8">
+                      <div
+                        className={`w-12 h-12 bg-${category.color}-500/10 rounded-xl flex items-center justify-center`}
                       >
-                        <div className="flex items-start justify-between mb-3">
-                          <h3 className="text-lg font-semibold text-white group-hover:text-blue-400 transition-colors">
-                            {engine.name}
-                          </h3>
-                          <Badge variant="outline" className="text-xs">
-                            {engine.complexity}
-                          </Badge>
-                        </div>
-                        <p className="text-sm text-slate-400 mb-4">
-                          {engine.description}
+                        <CategoryIcon
+                          className={`w-6 h-6 text-${category.color}-400`}
+                        />
+                      </div>
+                      <div>
+                        <h2
+                          className={`text-2xl font-bold text-${category.color}-400`}
+                        >
+                          {category.label}
+                        </h2>
+                        <p className="text-sm text-slate-400">
+                          {category.engines.length} engines
                         </p>
-                        <div className="text-sm text-blue-400 group-hover:text-blue-300">
-                          Learn more →
-                        </div>
-                      </Link>
-                    ))}
-                  </div>
-                </div>
-              );
-            })}
+                      </div>
+                    </div>
 
-            {/* CTA Section */}
-            <div className="mt-16 bg-gradient-to-r from-blue-500/10 via-purple-500/10 to-pink-500/10 border border-blue-500/20 rounded-lg p-12 text-center">
-              <h2 className="text-3xl font-bold mb-4 text-white">
-                Ready to Deploy Intelligence?
-              </h2>
-              <p className="text-lg text-slate-300 mb-8 max-w-2xl mx-auto">
-                Access the full Universal Intelligence Platform with API-first architecture and real-time orchestration
-              </p>
-              <div className="flex flex-wrap gap-4 justify-center">
-                <Button size="lg" asChild>
-                  <Link href="/request-demo">Request Demo</Link>
-                </Button>
-                <Button size="lg" variant="outline" asChild>
-                  <Link href="/api-documentation">View API Docs</Link>
-                </Button>
-              </div>
+                    {/* Engines Grid */}
+                    <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+                      {category.engines.map((engine, idx) => (
+                        <motion.div
+                          key={engine.id}
+                          initial={{ opacity: 0, y: 20 }}
+                          whileInView={{ opacity: 1, y: 0 }}
+                          transition={{
+                            duration: 0.5,
+                            delay: idx * 0.05,
+                          }}
+                          viewport={{ once: true }}
+                          whileHover={{ scale: 1.03, rotateY: 3, z: 50 }}
+                          className="perspective-1000"
+                        >
+                          <Link href={engine.href}>
+                            <Card
+                              className={`border-slate-700 bg-slate-900/50 backdrop-blur-sm hover:border-${category.color}-500/50 transition-all h-full transform-gpu hover:shadow-2xl hover:shadow-${category.color}-500/20 cursor-pointer group`}
+                            >
+                              <CardHeader>
+                                <div className="flex items-start justify-between mb-3">
+                                  <div
+                                    className={`w-10 h-10 bg-${category.color}-500/10 rounded-lg flex items-center justify-center`}
+                                  >
+                                    <CategoryIcon
+                                      className={`w-5 h-5 text-${category.color}-400`}
+                                    />
+                                  </div>
+                                </div>
+                                <CardTitle
+                                  className={`text-lg text-white group-hover:text-${category.color}-300 transition-colors`}
+                                >
+                                  {engine.name}
+                                </CardTitle>
+                              </CardHeader>
+                              <CardContent>
+                                <p className="text-sm text-slate-400 mb-4">
+                                  {engine.description}
+                                </p>
+                                <div className="flex items-center justify-between text-xs">
+                                  <span className="text-slate-500">
+                                    Learn more →
+                                  </span>
+                                </div>
+                              </CardContent>
+                            </Card>
+                          </Link>
+                        </motion.div>
+                      ))}
+                    </div>
+                  </motion.div>
+                );
+              })}
             </div>
           </div>
-        </div>
-      </main>
+        </main>
+      </div>
 
       <Footer />
     </>

@@ -46,30 +46,67 @@ export default function RxDefensePage() {
         />
       </Head>
       <SEO
-        title="Rx Defense: PBM Contract Forensics | Kincaid Health"
+        title="PBM Contract Clarity: PBM Contract Forensics | Kincaid Health"
         description="Automated PBM contract monitoring, guarantee enforcement, and pharmacy claims auditing. Defend your EBITDA from hidden PBM fees and spread pricing."
       />
 
       <Nav />
 
-      <main className="min-h-screen bg-gradient-to-b from-black via-slate-950 to-black relative">
+      <main className="min-h-screen bg-gradient-to-b from-black via-slate-950 to-black relative overflow-hidden">
         <ParticleField3D />
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-amber-900/10 via-transparent to-transparent" />
+        
         {/* Hero Section */}
-        <RxDefenseHero />
+        <section className="relative pt-24 pb-12 px-4">
+          <div className="max-w-7xl mx-auto relative z-10">
+            <motion.div 
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8 }}
+              className="text-center mb-8"
+            >
+              <Badge className="mb-6 bg-amber-500/20 text-amber-300 border-amber-500/30">
+                Forensic Contract Intelligence
+              </Badge>
+              <motion.h1 
+                initial={{ opacity: 0, scale: 0.95 }}
+                animate={{ opacity: 1, scale: 1 }}
+                transition={{ duration: 0.6, delay: 0.2 }}
+                className="text-5xl md:text-7xl font-bold mb-6"
+              >
+                <span className="bg-gradient-to-r from-amber-400 via-yellow-300 to-orange-400 bg-clip-text text-transparent">
+                  PBM Contract Clarity
+                </span>
+              </motion.h1>
+              <p className="text-xl md:text-2xl text-gray-300 mb-4 max-w-4xl mx-auto">
+                Forensic PBM Contract Analysis & Clause-by-Clause Validation
+              </p>
+              <p className="text-lg text-gray-400 mb-8 max-w-3xl mx-auto">
+                Identify spread pricing, rebate retention, and contractual leakage with forensic precision
+              </p>
+            </motion.div>
+          </div>
+        </section>
 
         {/* Problem Statement */}
         <ProblemStatement />
 
         {/* The PBM Contract Clarity Framework */}
-        <section className="py-20 border-t border-slate-800">
-          <div className="max-w-7xl mx-auto px-6">
+        <section className="py-20 border-t border-slate-800 relative">
+          <div className="absolute inset-0 bg-gradient-to-b from-transparent via-amber-900/5 to-transparent" />
+          <div className="max-w-7xl mx-auto px-6 relative z-10">
             <div className="text-center mb-16">
               <Badge className="bg-amber-500/10 text-amber-400 border border-amber-500/30 mb-4">
                 THE FRAMEWORK
               </Badge>
-              <h2 className="text-4xl md:text-5xl font-bold text-white mb-6">
+              <motion.h2 
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                className="text-4xl md:text-5xl font-bold text-white mb-6"
+              >
                 The PBM Contract Clarity Framework
-              </h2>
+              </motion.h2>
               <p className="text-xl text-slate-400 max-w-3xl mx-auto">
                 A comprehensive forensic methodology for analyzing pharmacy benefit management contracts, detecting hidden costs, and quantifying contractual leakage.
               </p>
@@ -89,7 +126,8 @@ export default function RxDefensePage() {
                   whileInView={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.5, delay: idx * 0.1 }}
                   viewport={{ once: true }}
-                  className="bg-slate-900/50 border border-slate-800 rounded-xl p-6 hover:border-amber-500/50 transition-all"
+                  whileHover={{ scale: 1.05, rotateY: 5, z: 50 }}
+                  className="bg-slate-900/50 border border-slate-800 rounded-xl p-6 hover:border-amber-500/50 transition-all backdrop-blur-sm transform-gpu hover:shadow-2xl hover:shadow-amber-500/20"
                 >
                   <div className="w-12 h-12 bg-amber-500/10 rounded-lg flex items-center justify-center mb-4">
                     <pillar.icon className="w-6 h-6 text-amber-400" />

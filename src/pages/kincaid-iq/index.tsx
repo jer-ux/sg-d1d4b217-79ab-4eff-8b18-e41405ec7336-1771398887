@@ -124,16 +124,28 @@ export default function KincaidIQPage() {
 
       <Nav />
 
-      <div className="min-h-screen bg-gradient-to-b from-slate-950 via-slate-900 to-slate-950">
-        <main className="container mx-auto px-4 py-8">
+      <div className="min-h-screen bg-gradient-to-b from-slate-950 via-slate-900 to-slate-950 relative overflow-hidden">
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-blue-900/20 via-transparent to-transparent" />
+        
+        <main className="container mx-auto px-4 py-8 relative z-10">
           {/* Hero Section */}
-          <div className="max-w-6xl mx-auto text-center mb-12">
+          <motion.div 
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8 }}
+            className="max-w-6xl mx-auto text-center mb-12"
+          >
             <Badge className="mb-4 bg-blue-500/10 text-blue-400 border-blue-500/20 text-sm">
               Fiduciary-Grade Intelligence
             </Badge>
-            <h1 className="text-5xl md:text-6xl font-black mb-6 bg-gradient-to-r from-blue-400 via-cyan-400 to-teal-400 bg-clip-text text-transparent">
+            <motion.h1 
+              initial={{ opacity: 0, scale: 0.95 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ duration: 0.6, delay: 0.2 }}
+              className="text-5xl md:text-6xl font-black mb-6 bg-gradient-to-r from-blue-400 via-cyan-400 to-teal-400 bg-clip-text text-transparent"
+            >
               Kincaid Health
-            </h1>
+            </motion.h1>
             <p className="text-2xl text-slate-300 mb-4 font-semibold">
               The Actuarial Intelligence Platform for Private Equity
             </p>
@@ -165,32 +177,30 @@ export default function KincaidIQPage() {
 
             {/* Key Metrics */}
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4 max-w-4xl mx-auto">
-              <Card className="border-slate-700 bg-slate-900/50">
-                <CardContent className="pt-6 text-center">
-                  <div className="text-3xl font-bold text-blue-400 mb-1">$3.6M</div>
-                  <div className="text-xs text-slate-400">Avg Annual Savings</div>
-                </CardContent>
-              </Card>
-              <Card className="border-slate-700 bg-slate-900/50">
-                <CardContent className="pt-6 text-center">
-                  <div className="text-3xl font-bold text-cyan-400 mb-1">15</div>
-                  <div className="text-xs text-slate-400">Contract Provisions</div>
-                </CardContent>
-              </Card>
-              <Card className="border-slate-700 bg-slate-900/50">
-                <CardContent className="pt-6 text-center">
-                  <div className="text-3xl font-bold text-teal-400 mb-1">98%</div>
-                  <div className="text-xs text-slate-400">Predictive Accuracy</div>
-                </CardContent>
-              </Card>
-              <Card className="border-slate-700 bg-slate-900/50">
-                <CardContent className="pt-6 text-center">
-                  <div className="text-3xl font-bold text-emerald-400 mb-1">24hrs</div>
-                  <div className="text-xs text-slate-400">Time to Insights</div>
-                </CardContent>
-              </Card>
+              {[
+                { value: "$3.6M", label: "Avg Annual Savings", color: "blue" },
+                { value: "15", label: "Contract Provisions", color: "cyan" },
+                { value: "98%", label: "Predictive Accuracy", color: "teal" },
+                { value: "24hrs", label: "Time to Insights", color: "emerald" }
+              ].map((metric, idx) => (
+                <motion.div
+                  key={idx}
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.5, delay: 0.4 + idx * 0.1 }}
+                  whileHover={{ scale: 1.05, rotateY: 5 }}
+                  className="perspective-1000"
+                >
+                  <Card className="border-slate-700 bg-slate-900/50 backdrop-blur-sm transform-gpu transition-all duration-300 hover:shadow-xl hover:shadow-blue-500/20">
+                    <CardContent className="pt-6 text-center">
+                      <div className={`text-3xl font-bold text-${metric.color}-400 mb-1`}>{metric.value}</div>
+                      <div className="text-xs text-slate-400">{metric.label}</div>
+                    </CardContent>
+                  </Card>
+                </motion.div>
+              ))}
             </div>
-          </div>
+          </motion.div>
 
           {/* Main Dashboard Tabs */}
           <div className="max-w-7xl mx-auto">

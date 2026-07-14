@@ -34,7 +34,10 @@ export default function ShadyBrokerIndex() {
         <meta property="og:image" content="/og-shady-broker-index.png" />
       </Head>
 
-      <div className="min-h-screen bg-gradient-to-br from-gray-950 via-gray-900 to-black">
+      <div className="min-h-screen bg-gradient-to-br from-gray-950 via-gray-900 to-black relative overflow-hidden">
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_left,_var(--tw-gradient-stops))] from-rose-900/20 via-transparent to-transparent" />
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_bottom_right,_var(--tw-gradient-stops))] from-amber-900/20 via-transparent to-transparent" />
+        
         {/* Hero */}
         <section className="relative pt-32 pb-20 overflow-hidden">
           {/* Glass effect background */}
@@ -47,9 +50,14 @@ export default function ShadyBrokerIndex() {
               animate={{ opacity: 1, y: 0 }}
               className="mb-8">
               <div className="text-sm font-medium text-rose-400 mb-4 tracking-wider">THE SHADY BROKER INDEX</div>
-              <h1 className="text-5xl md:text-7xl font-bold text-white mb-6 leading-tight">
+              <motion.h1 
+                initial={{ opacity: 0, scale: 0.95 }}
+                animate={{ opacity: 1, scale: 1 }}
+                transition={{ duration: 0.6, delay: 0.2 }}
+                className="text-5xl md:text-7xl font-bold text-white mb-6 leading-tight"
+              >
                 Every basis point<br/>has a name.
-              </h1>
+              </motion.h1>
               <p className="text-xl md:text-2xl text-gray-400 max-w-3xl mx-auto leading-relaxed">
                 The transparency score for the brokers, consultants, and PBMs running America's self-insured health plans. Built on public DOL filings. Scored by honest math.
               </p>
@@ -61,7 +69,7 @@ export default function ShadyBrokerIndex() {
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, delay: 0.3 }}
               className="max-w-6xl mx-auto">
-              <div className="bg-black/40 backdrop-blur-xl border border-rose-500/20 rounded-2xl p-8 shadow-2xl">
+              <div className="bg-black/40 backdrop-blur-xl border border-rose-500/20 rounded-2xl p-8 shadow-2xl transform-gpu hover:shadow-rose-500/30 transition-shadow duration-300">
                 <div className="flex items-center gap-3 mb-6">
                   <AlertTriangle className="w-6 h-6 text-rose-400" />
                   <h3 className="text-xl font-bold text-white">The Shadiest Right Now</h3>
@@ -77,7 +85,8 @@ export default function ShadyBrokerIndex() {
                       initial={{ opacity: 0, x: -20 }}
                       animate={{ opacity: 1, x: 0 }}
                       transition={{ duration: 0.5, delay: 0.4 + i * 0.1 }}
-                      className="flex items-start gap-4 p-4 bg-gradient-to-r from-rose-500/5 to-transparent border border-rose-500/10 rounded-xl hover:border-rose-500/30 transition-all group cursor-pointer">
+                      whileHover={{ scale: 1.02, x: 4 }}
+                      className="flex items-start gap-4 p-4 bg-gradient-to-r from-rose-500/5 to-transparent border border-rose-500/10 rounded-xl hover:border-rose-500/30 transition-all group cursor-pointer transform-gpu hover:shadow-lg hover:shadow-rose-500/10">
                       {/* Grade Badge */}
                       <div className={`flex-shrink-0 w-16 h-16 rounded-xl flex flex-col items-center justify-center ${
                         entity.grade === 'F' ? 'bg-rose-500/20 border-2 border-rose-500' :

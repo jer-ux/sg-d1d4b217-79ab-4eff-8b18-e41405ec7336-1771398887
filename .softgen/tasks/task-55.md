@@ -17,13 +17,13 @@ Adding premium 3D visual effects and animations to all engine pages in src/pages
 Design approach: Consistent 3D card transforms, particle effects, gradient accents matching analytical/technical theme.
 
 ## Checklist
-- [ ] Add 3D effects to engines index page
-- [ ] Add 3D effects to medical-trend-forecasting
-- [ ] Add 3D effects to rx-trend-forecasting
-- [ ] Add 3D effects to monte-carlo-forecasting
-- [ ] Add 3D effects to ebitda-enhancement
-- [ ] Add 3D effects to large-claimant-prediction
-- [ ] Apply consistent styling across all engine pages
+- [x] Add 3D effects to engines index page
+- [x] Add 3D effects to medical-trend-forecasting
+- [x] Add 3D effects to rx-trend-forecasting
+- [x] Add 3D effects to monte-carlo-forecasting
+- [x] Add 3D effects to ebitda-enhancement
+- [x] Add 3D effects to large-claimant-prediction
+- [x] Apply consistent styling across all engine pages
 
 ## Acceptance
 All engine pages have premium 3D visual effects with smooth hover interactions, consistent technical/analytical styling across the platform.

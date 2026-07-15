@@ -7,6 +7,7 @@ import Hero3DInvestor from "@/components/investor/Hero3DInvestor";
 import Footer from "@/components/Footer";
 import Link from "next/link";
 import dynamic from "next/dynamic";
+import { Card } from "@/components/ui/card";
 import {
   Brain,
   Shield,

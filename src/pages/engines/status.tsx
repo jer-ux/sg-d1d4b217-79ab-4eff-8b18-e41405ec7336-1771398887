@@ -4,8 +4,8 @@ import { motion } from "framer-motion";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Footer } from "@/components/Footer";
-import { Nav } from "@/components/Nav";
+import Footer from "@/components/Footer";
+import Nav from "@/components/Nav";
 import { Activity, CheckCircle2, XCircle, Clock, RefreshCw, Zap } from "lucide-react";
 
 interface EngineStatus {

@@ -506,10 +506,9 @@ export default function HomePage() {
         </section>
 
         <section className="relative py-16 border-t border-[#1F2937] overflow-hidden">
-          <div className="absolute inset-0 pointer-events-none opacity-10">
-            <TechBackdrop intensity={0.3} density={0.6} />
+          <div className="absolute inset-0 pointer-events-none">
+            <div className="absolute inset-0 opacity-10 bg-gradient-to-b from-transparent via-[#B8860B]/5 to-transparent" />
           </div>
-
           <div className="max-w-5xl mx-auto px-4 md:px-8 relative z-10">
             
             <AnimatedSection className="mb-10 text-center space-y-4">
@@ -519,79 +518,6 @@ export default function HomePage() {
                 Compare the legal obligations, audit capabilities, and aligned incentives under our strict fiduciary healthcare model.
               </p>
             </AnimatedSection>
-
-            <AnimatedSection className="border border-[#2A3F54] bg-[#151B23] rounded-lg overflow-hidden">
-              <div className="grid grid-cols-12 bg-[#0F1419] p-4 font-mono text-xs font-semibold text-neutral-400 tracking-wider uppercase border-b border-[#2A3F54]">
-                <div className="col-span-6 md:col-span-5">Audit & Contract Parameter</div>
-                <div className="col-span-3 text-center text-red-400">Traditional Broker</div>
-                <div className="col-span-3 text-center text-emerald-400 md:col-span-4">Fiduciary Standard</div>
-              </div>
-
-              <div className="divide-y divide-[#1F2937]">
-                
-                <div className="grid grid-cols-12 p-5 items-center">
-                  <div className="col-span-6 md:col-span-5 space-y-1">
-                    <div className="font-semibold text-sm text-white">Legal Fiduciary Liability</div>
-                    <p className="text-xs text-neutral-400 leading-normal hidden md:block">Who bears legal responsibility for plan asset management under ERISA?</p>
-                  </div>
-                  <div className="col-span-3 flex justify-center text-red-500 font-semibold text-xs gap-1.5 items-center">
-                    <X className="h-4 w-4 shrink-0" />
-                    <span>None (Disclaimed)</span>
-                  </div>
-                  <div className="col-span-3 flex justify-center text-emerald-400 font-semibold text-xs gap-1.5 items-center md:col-span-4">
-                    <Check className="h-4 w-4 shrink-0" />
-                    <span>Contractually Assumed</span>
-                  </div>
-                </div>
-
-                <div className="grid grid-cols-12 p-5 items-center">
-                  <div className="col-span-6 md:col-span-5 space-y-1">
-                    <div className="font-semibold text-sm text-white">Full Contract & MAC Audit Rights</div>
-                    <p className="text-xs text-neutral-400 leading-normal hidden md:block">Do you have unlimited legal rights to audit invoice line items and MAC pricing lists?</p>
-                  </div>
-                  <div className="col-span-3 flex justify-center text-red-500 font-semibold text-xs gap-1.5 items-center">
-                    <X className="h-4 w-4 shrink-0" />
-                    <span>Heavily Restricted</span>
-                  </div>
-                  <div className="col-span-3 flex justify-center text-emerald-400 font-semibold text-xs gap-1.5 items-center md:col-span-4">
-                    <Check className="h-4 w-4 shrink-0" />
-                    <span>Unlimited / 100% Uncapped</span>
-                  </div>
-                </div>
-
-                <div className="grid grid-cols-12 p-5 items-center">
-                  <div className="col-span-6 md:col-span-5 space-y-1">
-                    <div className="font-semibold text-sm text-white">Compensation Alignment</div>
-                    <p className="text-xs text-neutral-400 leading-normal hidden md:block">How are compensation fees and commissions collected and structured?</p>
-                  </div>
-                  <div className="col-span-3 flex justify-center text-red-500 font-semibold text-xs gap-1.5 items-center">
-                    <X className="h-4 w-4 shrink-0" />
-                    <span>Opaque Commission/Bonus</span>
-                  </div>
-                  <div className="col-span-3 flex justify-center text-emerald-400 font-semibold text-xs gap-1.5 items-center md:col-span-4">
-                    <Check className="h-4 w-4 shrink-0" />
-                    <span>Flat Retainer (Aligned Fee)</span>
-                  </div>
-                </div>
-
-                <div className="grid grid-cols-12 p-5 items-center">
-                  <div className="col-span-6 md:col-span-5 space-y-1">
-                    <div className="font-semibold text-sm text-white">Rebate Optimization Flow</div>
-                    <p className="text-xs text-neutral-400 leading-normal hidden md:block">Are pharmaceutical manufacturer rebates shared fully with the plan sponsor?</p>
-                  </div>
-                  <div className="col-span-3 flex justify-center text-red-500 font-semibold text-xs gap-1.5 items-center">
-                    <X className="h-4 w-4 shrink-0" />
-                    <span>Retained by PBM / GPO</span>
-                  </div>
-                  <div className="col-span-3 flex justify-center text-emerald-400 font-semibold text-xs gap-1.5 items-center md:col-span-4">
-                    <Check className="h-4 w-4 shrink-0" />
-                    <span>100% Shared / Pass-Through</span>
-                  </div>
-                </div>
-
-              </div>
-            </AnimatedSection>
-
           </div>
         </section>
 

@@ -5,11 +5,15 @@ Actuarial engine for projecting pharmacy benefit costs.
 """
 
 from .engine import RxTrendEngine
-from .models import ClaimsHistory, TrendAssumption, ForecastResult
+from .models import RxHistory, RxAssumptions, RxForecast
+from .analytics import RxAnalytics
+
+__version__ = "1.0.0"
 
 __all__ = [
     "RxTrendEngine",
-    "ClaimsHistory",
-    "TrendAssumption",
-    "ForecastResult",
+    "RxHistory",
+    "RxAssumptions",
+    "RxForecast",
+    "RxAnalytics",
 ]

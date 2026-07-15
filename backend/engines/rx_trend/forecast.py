@@ -4,108 +4,61 @@ Rx Forecast Projections
 Projects future pharmacy costs using compound growth.
 """
 
-from .models import ForecastResult
+from .models import RxForecast
 
 
-class RxForecast:
-    """
-    Generate multi-year Rx cost projections.
-    
-    Uses compound growth formula:
-        Future Cost = Current Cost × (1 + Trend)^Years
-    """
-    
+class RxForecaster:
+    """Project pharmacy benefit costs"""
+
     def project(
         self,
-        current_cost: float,
+        current_gross_cost: float,
+        current_rebate: float,
         members: int,
         years: int,
         trend_rate: float
-    ) -> list:
+    ) -> list[RxForecast]:
         """
-        Project Rx costs over multiple years.
+        Project future pharmacy costs.
+        
+        Formula:
+        Future Cost = Current Cost × (1 + Trend)^Years
         
         Args:
-            current_cost: Current annual Rx spend
-            members: Current member count
-            years: Forecast horizon
-            trend_rate: Composite trend rate (decimal)
+            current_gross_cost: Current gross pharmacy cost
+            current_rebate: Current rebate amount
+            members: Number of covered members
+            years: Number of years to project
+            trend_rate: Composite trend rate
             
         Returns:
-            List of ForecastResult objects
+            List of yearly projections
         """
         results = []
         
-        for year in range(1, years + 1):
-            projected = current_cost * ((1 + trend_rate) ** year)
-            pmpm = projected / (members * 12)
-            
-            results.append(
-                ForecastResult(
-                    year=year,
-                    projected_cost=round(projected, 2),
-                    projected_pmpm=round(pmpm, 2),
-                    trend_rate=trend_rate
-                )
-            )
-        
-        return results
-    
-    
-    def project_by_category(
-        self,
-        current_brand: float,
-        current_generic: float,
-        current_specialty: float,
-        members: int,
-        years: int,
-        brand_trend: float,
-        generic_trend: float,
-        specialty_trend: float
-    ) -> list:
-        """
-        Project Rx costs by drug category.
-        
-        Args:
-            current_brand: Current brand drug spend
-            current_generic: Current generic drug spend
-            current_specialty: Current specialty drug spend
-            members: Current member count
-            years: Forecast horizon
-            brand_trend: Brand drug trend rate
-            generic_trend: Generic drug trend rate
-            specialty_trend: Specialty drug trend rate
-            
-        Returns:
-            List of ForecastResult objects with category detail
-        """
-        results = []
+        # Calculate current rebate percentage
+        rebate_rate = current_rebate / current_gross_cost if current_gross_cost > 0 else 0
         
         for year in range(1, years + 1):
-            brand = current_brand * ((1 + brand_trend) ** year)
-            generic = current_generic * ((1 + generic_trend) ** year)
-            specialty = current_specialty * ((1 + specialty_trend) ** year)
+            # Project gross cost
+            projected_gross = current_gross_cost * ((1 + trend_rate) ** year)
             
-            total = brand + generic + specialty
-            pmpm = total / (members * 12)
+            # Project rebates (assume rebate rate stays constant)
+            projected_rebate = projected_gross * rebate_rate
             
-            # Weighted average trend
-            total_current = current_brand + current_generic + current_specialty
-            weighted_trend = (
-                (current_brand / total_current * brand_trend) +
-                (current_generic / total_current * generic_trend) +
-                (current_specialty / total_current * specialty_trend)
-            )
+            # Calculate net cost
+            net_cost = projected_gross - projected_rebate
+            
+            # Calculate PMPM
+            pmpm = net_cost / (members * 12)
             
             results.append(
-                ForecastResult(
+                RxForecast(
                     year=year,
-                    projected_cost=round(total, 2),
-                    projected_pmpm=round(pmpm, 2),
-                    trend_rate=weighted_trend,
-                    brand_cost=round(brand, 2),
-                    generic_cost=round(generic, 2),
-                    specialty_cost=round(specialty, 2)
+                    gross_cost=round(projected_gross, 2),
+                    rebates=round(projected_rebate, 2),
+                    net_cost=round(net_cost, 2),
+                    pmpm=round(pmpm, 2)
                 )
             )
         

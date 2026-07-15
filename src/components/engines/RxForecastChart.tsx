@@ -37,11 +37,9 @@ export function RxForecastChart({
   showRebates = true,
 }: RxForecastChartProps) {
   
-  const chartData = useMemo(() => {
-    // Combine historical and forecast data
+  const { chartData, historicalData, projectedData } = useMemo(() => {
     const historicalPoints = historical.map(h => ({
       year: h.year,
-      type: "Historical" as const,
       net_cost: h.gross_cost - h.rebate,
       gross_cost: h.gross_cost,
       rebates: h.rebate,
@@ -50,23 +48,28 @@ export function RxForecastChart({
 
     const forecastPoints = forecast.map(f => ({
       year: f.year,
-      type: "Projected" as const,
       net_cost: f.net_cost,
       gross_cost: f.gross_cost,
       rebates: f.rebates,
       pmpm: f.pmpm,
     }));
 
-    return [...historicalPoints, ...forecastPoints];
+    const allPoints = [...historicalPoints, ...forecastPoints];
+
+    return {
+      chartData: allPoints,
+      historicalData: historicalPoints,
+      projectedData: forecastPoints,
+    };
   }, [historical, forecast]);
 
   const currentYear = historical.length > 0 ? historical[historical.length - 1].year : new Date().getFullYear();
 
   const stats = useMemo(() => {
-    const lastHistorical = chartData.find(d => d.type === "Historical" && d.year === currentYear);
-    const lastProjected = chartData[chartData.length - 1];
-    
-    if (!lastHistorical || !lastProjected) return null;
+    if (historicalData.length === 0 || projectedData.length === 0) return null;
+
+    const lastHistorical = historicalData[historicalData.length - 1];
+    const lastProjected = projectedData[projectedData.length - 1];
 
     const netCostGrowth = ((lastProjected.net_cost - lastHistorical.net_cost) / lastHistorical.net_cost) * 100;
     const pmpmGrowth = ((lastProjected.pmpm - lastHistorical.pmpm) / lastHistorical.pmpm) * 100;
@@ -79,7 +82,7 @@ export function RxForecastChart({
       endPmpm: lastProjected.pmpm,
       pmpmGrowth,
     };
-  }, [chartData, currentYear]);
+  }, [historicalData, projectedData]);
 
   const formatCurrency = (value: number) => {
     return new Intl.NumberFormat("en-US", {
@@ -189,37 +192,74 @@ export function RxForecastChart({
             />
 
             {showGrossCost && (
-              <Area
-                type="monotone"
-                dataKey="gross_cost"
-                stroke="#f59e0b"
-                strokeWidth={2}
-                fill="url(#grossCostGradient)"
-                name="Gross Cost"
-                strokeDasharray={(point) => point.type === "Projected" ? "5 5" : "0"}
-              />
+              <>
+                <Area
+                  data={historicalData}
+                  type="monotone"
+                  dataKey="gross_cost"
+                  stroke="#f59e0b"
+                  strokeWidth={2}
+                  fill="url(#grossCostGradient)"
+                  name="Gross Cost (Historical)"
+                  strokeDasharray="0"
+                />
+                <Area
+                  data={projectedData}
+                  type="monotone"
+                  dataKey="gross_cost"
+                  stroke="#f59e0b"
+                  strokeWidth={2}
+                  fill="url(#grossCostGradient)"
+                  name="Gross Cost (Projected)"
+                  strokeDasharray="5 5"
+                />
+              </>
             )}
 
             <Area
+              data={historicalData}
               type="monotone"
               dataKey="net_cost"
               stroke="#10b981"
               strokeWidth={3}
               fill="url(#netCostGradient)"
-              name="Net Cost"
-              strokeDasharray={(point) => point.type === "Projected" ? "5 5" : "0"}
+              name="Net Cost (Historical)"
+              strokeDasharray="0"
+            />
+            <Area
+              data={projectedData}
+              type="monotone"
+              dataKey="net_cost"
+              stroke="#10b981"
+              strokeWidth={3}
+              fill="url(#netCostGradient)"
+              name="Net Cost (Projected)"
+              strokeDasharray="5 5"
             />
 
             {showRebates && (
-              <Line
-                type="monotone"
-                dataKey="rebates"
-                stroke="#8b5cf6"
-                strokeWidth={2}
-                name="Rebates"
-                dot={false}
-                strokeDasharray={(point) => point.type === "Projected" ? "5 5" : "0"}
-              />
+              <>
+                <Line
+                  data={historicalData}
+                  type="monotone"
+                  dataKey="rebates"
+                  stroke="#8b5cf6"
+                  strokeWidth={2}
+                  name="Rebates (Historical)"
+                  dot={false}
+                  strokeDasharray="0"
+                />
+                <Line
+                  data={projectedData}
+                  type="monotone"
+                  dataKey="rebates"
+                  stroke="#8b5cf6"
+                  strokeWidth={2}
+                  name="Rebates (Projected)"
+                  dot={false}
+                  strokeDasharray="5 5"
+                />
+              </>
             )}
           </AreaChart>
         </ResponsiveContainer>
@@ -259,14 +299,26 @@ export function RxForecastChart({
             />
 
             <Line
+              data={historicalData}
               type="monotone"
               dataKey="pmpm"
               stroke="#06b6d4"
               strokeWidth={2}
-              name="PMPM"
+              name="PMPM (Historical)"
               dot={{ fill: "#06b6d4", r: 4 }}
               activeDot={{ r: 6 }}
-              strokeDasharray={(point) => point.type === "Projected" ? "5 5" : "0"}
+              strokeDasharray="0"
+            />
+            <Line
+              data={projectedData}
+              type="monotone"
+              dataKey="pmpm"
+              stroke="#06b6d4"
+              strokeWidth={2}
+              name="PMPM (Projected)"
+              dot={{ fill: "#06b6d4", r: 4 }}
+              activeDot={{ r: 6 }}
+              strokeDasharray="5 5"
             />
           </LineChart>
         </ResponsiveContainer>

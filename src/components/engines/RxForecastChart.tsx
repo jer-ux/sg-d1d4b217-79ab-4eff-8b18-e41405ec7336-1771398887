@@ -189,15 +189,27 @@ export function RxForecastChart({
             />
 
             {showGrossCost && (
-              <Area
-                type="monotone"
-                dataKey="gross_cost"
-                stroke="#f59e0b"
-                strokeWidth={2}
-                fill="url(#grossCostGradient)"
-                name="Gross Cost"
-                strokeDasharray={point => point.type === "Projected" ? "5 5" : "0"}
-              />
+              <>
+                <Area
+                  type="monotone"
+                  dataKey="gross_cost"
+                  stroke="#f59e0b"
+                  strokeWidth={2}
+                  fill="url(#grossCostGradient)"
+                  name="Gross Cost"
+                  data={chartData.filter(d => d.type === "Historical")}
+                />
+                <Area
+                  type="monotone"
+                  dataKey="gross_cost"
+                  stroke="#f59e0b"
+                  strokeWidth={2}
+                  fill="url(#grossCostGradient)"
+                  name="Gross Cost (Projected)"
+                  strokeDasharray="5 5"
+                  data={chartData.filter(d => d.type === "Projected")}
+                />
+              </>
             )}
 
             <Area
@@ -207,19 +219,41 @@ export function RxForecastChart({
               strokeWidth={3}
               fill="url(#netCostGradient)"
               name="Net Cost"
-              strokeDasharray={point => point.type === "Projected" ? "5 5" : "0"}
+              data={chartData.filter(d => d.type === "Historical")}
+            />
+            <Area
+              type="monotone"
+              dataKey="net_cost"
+              stroke="#10b981"
+              strokeWidth={3}
+              fill="url(#netCostGradient)"
+              name="Net Cost (Projected)"
+              strokeDasharray="5 5"
+              data={chartData.filter(d => d.type === "Projected")}
             />
 
             {showRebates && (
-              <Line
-                type="monotone"
-                dataKey="rebates"
-                stroke="#8b5cf6"
-                strokeWidth={2}
-                name="Rebates"
-                dot={false}
-                strokeDasharray={point => point.type === "Projected" ? "5 5" : "0"}
-              />
+              <>
+                <Line
+                  type="monotone"
+                  dataKey="rebates"
+                  stroke="#8b5cf6"
+                  strokeWidth={2}
+                  name="Rebates"
+                  dot={false}
+                  data={chartData.filter(d => d.type === "Historical")}
+                />
+                <Line
+                  type="monotone"
+                  dataKey="rebates"
+                  stroke="#8b5cf6"
+                  strokeWidth={2}
+                  name="Rebates (Projected)"
+                  strokeDasharray="5 5"
+                  dot={false}
+                  data={chartData.filter(d => d.type === "Projected")}
+                />
+              </>
             )}
           </AreaChart>
         </ResponsiveContainer>
@@ -266,7 +300,18 @@ export function RxForecastChart({
               name="PMPM"
               dot={{ fill: "#06b6d4", r: 4 }}
               activeDot={{ r: 6 }}
-              strokeDasharray={point => point.type === "Projected" ? "5 5" : "0"}
+              data={chartData.filter(d => d.type === "Historical")}
+            />
+            <Line
+              type="monotone"
+              dataKey="pmpm"
+              stroke="#06b6d4"
+              strokeWidth={2}
+              name="PMPM (Projected)"
+              strokeDasharray="5 5"
+              dot={{ fill: "#06b6d4", r: 4 }}
+              activeDot={{ r: 6 }}
+              data={chartData.filter(d => d.type === "Projected")}
             />
             <Line
               type="monotone"

@@ -1,5 +1,5 @@
 import Head from "next/head";
-import { motion } from "framer-motion";
+import { motion, useScroll, useTransform } from "framer-motion";
 import Link from "next/link";
 import Nav from "@/components/Nav";
 import Footer from "@/components/Footer";
@@ -21,6 +21,9 @@ import {
   BarChart3,
   Brain,
   Target,
+  Cpu,
+  Search,
+  ArrowRight,
 } from "lucide-react";
 import { useState } from "react";
 
@@ -621,10 +624,33 @@ export default function EnginesPage() {
 
       <div className="min-h-screen bg-gradient-to-b from-black via-slate-950 to-black relative overflow-hidden">
         <ParticleField3D />
-        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-violet-900/20 via-transparent to-transparent" />
+        
+        {/* Animated background orbs */}
+        <div className="fixed inset-0 pointer-events-none overflow-hidden">
+          <motion.div
+            className="absolute top-1/4 left-1/4 w-[800px] h-[800px] bg-gradient-radial from-cyan-500/15 via-cyan-500/5 to-transparent rounded-full blur-3xl"
+            animate={{ 
+              x: [0, 80, 0],
+              y: [0, -50, 0],
+              scale: [1, 1.2, 1],
+              opacity: [0.3, 0.5, 0.3]
+            }}
+            transition={{ duration: 18, repeat: Infinity, ease: "easeInOut" }}
+          />
+          <motion.div
+            className="absolute bottom-1/3 right-1/4 w-[700px] h-[700px] bg-gradient-radial from-blue-500/15 via-blue-500/5 to-transparent rounded-full blur-3xl"
+            animate={{ 
+              x: [0, -60, 0],
+              y: [0, 40, 0],
+              scale: [1, 1.15, 1],
+              opacity: [0.25, 0.45, 0.25]
+            }}
+            transition={{ duration: 20, repeat: Infinity, ease: "easeInOut", delay: 4 }}
+          />
+        </div>
 
-        <main className="relative z-10">
-          <div className="container mx-auto px-4 py-16 lg:py-24">
+        <main className="container mx-auto px-4 py-16 lg:py-24 max-w-6xl relative z-10">
+          <div className="max-w-6xl mx-auto text-center mb-16">
             {/* Hero Section */}
             <motion.div
               initial={{ opacity: 0, y: 20 }}
@@ -763,49 +789,71 @@ export default function EnginesPage() {
                       </div>
                     </div>
 
-                    {/* Engines Grid */}
-                    <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-                      {category.engines.map((engine, idx) => (
+                    {/* Engines List */}
+                    <div className="space-y-3">
+                      {category.engines.map((engine, index) => (
                         <motion.div
                           key={engine.id}
                           initial={{ opacity: 0, y: 20 }}
-                          whileInView={{ opacity: 1, y: 0 }}
-                          transition={{
-                            duration: 0.5,
-                            delay: idx * 0.05,
-                          }}
-                          viewport={{ once: true }}
-                          whileHover={{ scale: 1.03, rotateY: 3, z: 50 }}
-                          className="perspective-1000"
+                          animate={{ opacity: 1, y: 0 }}
+                          transition={{ duration: 0.4, delay: index * 0.02 }}
+                          whileHover={{ scale: 1.01, x: 5 }}
                         >
                           <Link href={engine.href}>
-                            <Card
-                              className={`border-slate-700 bg-slate-900/50 backdrop-blur-sm hover:border-${category.color}-500/50 transition-all h-full transform-gpu hover:shadow-2xl hover:shadow-${category.color}-500/20 cursor-pointer group`}
-                            >
-                              <CardHeader>
-                                <div className="flex items-start justify-between mb-3">
-                                  <div
-                                    className={`w-10 h-10 bg-${category.color}-500/10 rounded-lg flex items-center justify-center`}
+                            <Card className="group relative overflow-hidden bg-slate-900/50 border-slate-800 hover:border-cyan-500/50 transition-all cursor-pointer backdrop-blur-sm">
+                              {/* Hover gradient */}
+                              <motion.div
+                                className="absolute inset-0 bg-gradient-to-r from-cyan-500/5 via-blue-500/5 to-purple-500/5 opacity-0 group-hover:opacity-100 transition-opacity"
+                                initial={false}
+                              />
+                              
+                              {/* Shimmer effect */}
+                              <div className="absolute inset-0 opacity-0 group-hover:opacity-100 pointer-events-none">
+                                <motion.div
+                                  className="absolute inset-0 bg-gradient-to-r from-transparent via-white/5 to-transparent"
+                                  animate={{ x: ["-100%", "200%"] }}
+                                  transition={{ duration: 1.5, repeat: Infinity, repeatDelay: 3 }}
+                                />
+                              </div>
+
+                              <CardContent className="p-4 relative z-10">
+                                <div className="flex items-start gap-4">
+                                  {/* Number badge with animation */}
+                                  <motion.div 
+                                    className="text-cyan-400/60 font-mono text-sm min-w-[2rem] pt-0.5 font-bold"
+                                    whileHover={{ scale: 1.1, color: "rgb(34, 211, 238)" }}
                                   >
-                                    <CategoryIcon
-                                      className={`w-5 h-5 text-${category.color}-400`}
-                                    />
+                                    {index + 1}
+                                  </motion.div>
+                                  
+                                  <div className="flex-1 min-w-0">
+                                    <div className="flex items-start justify-between gap-4">
+                                      <div className="flex-1 min-w-0">
+                                        <h3 className="font-semibold text-base mb-1 text-white group-hover:text-cyan-400 transition-colors">
+                                          {engine.name}
+                                        </h3>
+                                        <p className="text-sm text-slate-400 group-hover:text-slate-300 transition-colors">
+                                          {engine.description}
+                                        </p>
+                                      </div>
+                                      <div className="flex items-center gap-2 flex-shrink-0">
+                                        <Badge 
+                                          variant="outline" 
+                                          className="text-xs bg-slate-800/50 border-slate-700 group-hover:border-cyan-500/50 transition-colors"
+                                        >
+                                          {category.label}
+                                        </Badge>
+                                        <motion.div
+                                          initial={{ x: 0 }}
+                                          className="text-slate-600 group-hover:text-cyan-400 transition-colors"
+                                          animate={{ x: 0 }}
+                                          whileHover={{ x: 5 }}
+                                        >
+                                          <ArrowRight className="w-4 h-4" />
+                                        </motion.div>
+                                      </div>
+                                    </div>
                                   </div>
-                                </div>
-                                <CardTitle
-                                  className={`text-lg text-white group-hover:text-${category.color}-300 transition-colors`}
-                                >
-                                  {engine.name}
-                                </CardTitle>
-                              </CardHeader>
-                              <CardContent>
-                                <p className="text-sm text-slate-400 mb-4">
-                                  {engine.description}
-                                </p>
-                                <div className="flex items-center justify-between text-xs">
-                                  <span className="text-slate-500">
-                                    Learn more →
-                                  </span>
                                 </div>
                               </CardContent>
                             </Card>
@@ -819,6 +867,55 @@ export default function EnginesPage() {
             </div>
           </div>
         </main>
+
+        {/* No Results */}
+        {filteredEngines.length === 0 && (
+          <motion.div 
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            className="text-center py-12"
+          >
+            <div className="w-16 h-16 bg-slate-800/50 rounded-full flex items-center justify-center mx-auto mb-4">
+              <Search className="w-8 h-8 text-slate-600" />
+            </div>
+            <p className="text-slate-400">
+              No engines found matching "{searchQuery}"
+            </p>
+          </motion.div>
+        )}
+
+        {/* Footer Stats */}
+        <motion.div 
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.8 }}
+          className="mt-16 pt-8 border-t border-slate-800"
+        >
+          <div className="grid grid-cols-3 gap-6 mb-8">
+            {[
+              { label: "Active Engines", value: filteredEngines.length, icon: Cpu, color: "cyan" },
+              { label: "Categories", value: "7+", icon: Target, color: "blue" },
+              { label: "Real-time", value: "99.9%", icon: Zap, color: "purple" }
+            ].map((stat, idx) => (
+              <motion.div
+                key={idx}
+                initial={{ opacity: 0, scale: 0.9 }}
+                animate={{ opacity: 1, scale: 1 }}
+                transition={{ delay: 0.9 + idx * 0.1 }}
+                className="text-center group"
+              >
+                <div className={`w-12 h-12 bg-${stat.color}-500/10 rounded-xl flex items-center justify-center mx-auto mb-3 group-hover:scale-110 transition-transform`}>
+                  <stat.icon className={`w-6 h-6 text-${stat.color}-400`} />
+                </div>
+                <div className={`text-2xl font-bold text-${stat.color}-400 mb-1`}>{stat.value}</div>
+                <div className="text-xs text-slate-500">{stat.label}</div>
+              </motion.div>
+            ))}
+          </div>
+          <p className="text-sm text-slate-500 text-center">
+            Showing {filteredEngines.length} of {allEngines.length} engines
+          </p>
+        </motion.div>
       </div>
 
       <Footer />

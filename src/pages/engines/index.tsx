@@ -7,6 +7,7 @@ import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { ParticleField3D } from "@/components/premium/ParticleField3D";
+import { NeonGlow } from "@/components/premium/NeonGlow";
 import { SEO } from "@/components/SEO";
 import {
   TrendingUp,
@@ -21,6 +22,8 @@ import {
   BarChart3,
   Brain,
   Target,
+  Sparkles,
+  ArrowRight,
 } from "lucide-react";
 import { useState } from "react";
 
@@ -30,6 +33,8 @@ const engineCategories = [
     label: "Forecasting & Trend",
     icon: TrendingUp,
     color: "blue",
+    gradient: "from-blue-600 to-cyan-500",
+    glow: "blue",
     engines: [
       {
         id: "medical-trend-forecasting",
@@ -110,6 +115,8 @@ const engineCategories = [
     label: "Data Normalization",
     icon: Database,
     color: "purple",
+    gradient: "from-purple-600 to-violet-500",
+    glow: "purple",
     engines: [
       {
         id: "geographic-normalization",
@@ -166,6 +173,8 @@ const engineCategories = [
     label: "Risk Analytics",
     icon: Shield,
     color: "red",
+    gradient: "from-red-600 to-rose-500",
+    glow: "red",
     engines: [
       {
         id: "high-cost-claimant-prediction",
@@ -234,6 +243,8 @@ const engineCategories = [
     label: "Interventions",
     icon: Zap,
     color: "green",
+    gradient: "from-emerald-600 to-green-500",
+    glow: "emerald",
     engines: [
       {
         id: "glp1-financial-impact",
@@ -314,6 +325,8 @@ const engineCategories = [
     label: "Pharmacy Intelligence",
     icon: Pill,
     color: "indigo",
+    gradient: "from-indigo-600 to-blue-500",
+    glow: "indigo",
     engines: [
       {
         id: "specialty-pharmacy-economics",
@@ -376,6 +389,8 @@ const engineCategories = [
     label: "Governance & Compliance",
     icon: FileCheck,
     color: "yellow",
+    gradient: "from-amber-600 to-yellow-500",
+    glow: "amber",
     engines: [
       {
         id: "erisa-fiduciary-risk-scoring",
@@ -444,6 +459,8 @@ const engineCategories = [
     label: "Clinical Intelligence",
     icon: Activity,
     color: "teal",
+    gradient: "from-teal-600 to-cyan-500",
+    glow: "teal",
     engines: [
       {
         id: "ibnr-reserve-modeling",
@@ -500,6 +517,8 @@ const engineCategories = [
     label: "Workforce Analytics",
     icon: Users,
     color: "pink",
+    gradient: "from-pink-600 to-rose-500",
+    glow: "pink",
     engines: [
       {
         id: "workforce-health-risk",
@@ -550,6 +569,8 @@ const engineCategories = [
     label: "Enterprise Value",
     icon: DollarSign,
     color: "orange",
+    gradient: "from-orange-600 to-amber-500",
+    glow: "orange",
     engines: [
       {
         id: "ebitda-enhancement",
@@ -622,6 +643,8 @@ export default function EnginesPage() {
       <div className="min-h-screen bg-gradient-to-b from-black via-slate-950 to-black relative overflow-hidden">
         <ParticleField3D />
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-violet-900/20 via-transparent to-transparent" />
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_bottom_left,_var(--tw-gradient-stops))] from-purple-900/10 via-transparent to-transparent" />
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_bottom_right,_var(--tw-gradient-stops))] from-fuchsia-900/10 via-transparent to-transparent" />
 
         <main className="relative z-10">
           <div className="container mx-auto px-4 py-16 lg:py-24">
@@ -632,86 +655,121 @@ export default function EnginesPage() {
               transition={{ duration: 0.8 }}
               className="max-w-6xl mx-auto text-center mb-16"
             >
-              <Badge className="mb-6 bg-violet-500/10 text-violet-400 border-violet-500/20 text-sm px-4 py-2">
-                Universal Intelligence Platform
-              </Badge>
+              <motion.div
+                initial={{ opacity: 0, scale: 0.9 }}
+                animate={{ opacity: 1, scale: 1 }}
+                transition={{ duration: 0.6 }}
+                className="relative inline-block mb-6"
+              >
+                <Badge className="relative z-10 bg-gradient-to-r from-violet-500/20 to-fuchsia-500/20 text-violet-300 border-violet-500/30 text-sm px-6 py-2 backdrop-blur-sm">
+                  <Sparkles className="w-4 h-4 mr-2 inline" />
+                  Universal Intelligence Platform
+                </Badge>
+                <div className="absolute inset-0 bg-violet-500/20 blur-xl rounded-full" />
+              </motion.div>
+
               <motion.h1
                 initial={{ opacity: 0, scale: 0.95 }}
                 animate={{ opacity: 1, scale: 1 }}
                 transition={{ duration: 0.6, delay: 0.2 }}
-                className="text-5xl md:text-7xl font-black mb-6 bg-gradient-to-r from-violet-400 via-purple-400 to-fuchsia-400 bg-clip-text text-transparent leading-tight"
+                className="text-5xl md:text-7xl lg:text-8xl font-black mb-6 leading-tight"
               >
-                Intelligence Engines
+                <span className="bg-gradient-to-r from-violet-400 via-purple-400 to-fuchsia-400 bg-clip-text text-transparent inline-block">
+                  Intelligence Engines
+                </span>
               </motion.h1>
-              <p className="text-xl md:text-2xl text-gray-300 mb-4 max-w-4xl mx-auto">
+
+              <motion.p
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.6, delay: 0.3 }}
+                className="text-xl md:text-2xl text-gray-300 mb-4 max-w-4xl mx-auto font-medium"
+              >
                 {totalEngines} Specialized Actuarial Engines for Healthcare
                 Analytics
-              </p>
-              <p className="text-lg text-gray-400 mb-12 max-w-3xl mx-auto">
+              </motion.p>
+
+              <motion.p
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.6, delay: 0.4 }}
+                className="text-lg text-gray-400 mb-12 max-w-3xl mx-auto"
+              >
                 Modular, composable intelligence for forecasting, risk modeling,
                 and decision automation
-              </p>
+              </motion.p>
 
-              {/* Key Stats */}
-              <div className="grid grid-cols-2 md:grid-cols-4 gap-4 max-w-5xl mx-auto">
+              {/* Key Stats with Premium Effects */}
+              <div className="grid grid-cols-2 md:grid-cols-4 gap-6 max-w-5xl mx-auto">
                 {[
                   {
                     value: `${totalEngines}+`,
                     label: "Specialized Engines",
-                    color: "violet",
+                    gradient: "from-violet-500 to-purple-500",
+                    icon: Brain,
                   },
                   {
                     value: `${engineCategories.length}`,
                     label: "Engine Categories",
-                    color: "purple",
+                    gradient: "from-purple-500 to-fuchsia-500",
+                    icon: Target,
                   },
                   {
                     value: "API",
                     label: "First Architecture",
-                    color: "fuchsia",
+                    gradient: "from-fuchsia-500 to-pink-500",
+                    icon: Zap,
                   },
                   {
                     value: "Real-time",
                     label: "Orchestration",
-                    color: "pink",
+                    gradient: "from-pink-500 to-rose-500",
+                    icon: Activity,
                   },
                 ].map((stat, idx) => (
                   <motion.div
                     key={idx}
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.5, delay: 0.4 + idx * 0.1 }}
-                    whileHover={{ scale: 1.05, rotateY: 5 }}
-                    className="perspective-1000"
+                    transition={{ duration: 0.5, delay: 0.5 + idx * 0.1 }}
+                    whileHover={{ 
+                      scale: 1.05, 
+                      rotateY: 5,
+                      transition: { duration: 0.2 }
+                    }}
+                    className="perspective-1000 group"
                   >
-                    <Card className="border-slate-700 bg-slate-900/50 backdrop-blur-sm transform-gpu transition-all duration-300 hover:shadow-xl hover:shadow-violet-500/20">
-                      <CardContent className="pt-6 pb-6 text-center">
-                        <div
-                          className={`text-3xl font-bold text-${stat.color}-400 mb-1`}
-                        >
-                          {stat.value}
-                        </div>
-                        <div className="text-xs text-slate-400">
-                          {stat.label}
-                        </div>
-                      </CardContent>
-                    </Card>
+                    <div className="relative">
+                      <div className={`absolute inset-0 bg-gradient-to-r ${stat.gradient} opacity-0 group-hover:opacity-20 blur-xl transition-opacity duration-300 rounded-2xl`} />
+                      <Card className="relative border-slate-700/50 bg-slate-900/80 backdrop-blur-xl transform-gpu transition-all duration-300 group-hover:border-slate-600 group-hover:shadow-2xl overflow-hidden">
+                        <div className={`absolute inset-0 bg-gradient-to-br ${stat.gradient} opacity-5`} />
+                        <CardContent className="relative pt-6 pb-6 text-center">
+                          <stat.icon className={`w-8 h-8 mx-auto mb-3 bg-gradient-to-r ${stat.gradient} bg-clip-text text-transparent`} />
+                          <div className={`text-3xl font-black bg-gradient-to-r ${stat.gradient} bg-clip-text text-transparent mb-2`}>
+                            {stat.value}
+                          </div>
+                          <div className="text-xs text-slate-400 font-medium">
+                            {stat.label}
+                          </div>
+                        </CardContent>
+                      </Card>
+                    </div>
                   </motion.div>
                 ))}
               </div>
             </motion.div>
 
-            {/* Category Filter */}
+            {/* Category Filter with Premium Styling */}
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.6 }}
-              className="flex flex-wrap gap-3 justify-center mb-16"
+              transition={{ duration: 0.6, delay: 0.7 }}
+              className="flex flex-wrap gap-3 justify-center mb-20"
             >
               <Button
                 variant={selectedCategory === null ? "default" : "outline"}
                 onClick={() => setSelectedCategory(null)}
-                className="rounded-full"
+                className="rounded-full px-6 bg-gradient-to-r from-violet-600 to-fuchsia-600 hover:from-violet-500 hover:to-fuchsia-500 border-0 shadow-lg shadow-violet-500/20"
               >
                 All Engines
               </Button>
@@ -722,7 +780,11 @@ export default function EnginesPage() {
                     selectedCategory === category.id ? "default" : "outline"
                   }
                   onClick={() => setSelectedCategory(category.id)}
-                  className="rounded-full"
+                  className={`rounded-full px-5 transition-all duration-300 ${
+                    selectedCategory === category.id
+                      ? `bg-gradient-to-r ${category.gradient} border-0 shadow-lg`
+                      : "border-slate-700 hover:border-slate-600 hover:bg-slate-800"
+                  }`}
                 >
                   <category.icon className="w-4 h-4 mr-2" />
                   {category.label}
@@ -730,40 +792,44 @@ export default function EnginesPage() {
               ))}
             </motion.div>
 
-            {/* Engine Categories */}
-            <div className="space-y-16 max-w-7xl mx-auto">
+            {/* Engine Categories with Enhanced Visual Design */}
+            <div className="space-y-24 max-w-7xl mx-auto">
               {filteredEngines.map((category, categoryIdx) => {
                 const CategoryIcon = category.icon;
                 return (
                   <motion.div
                     key={category.id}
-                    initial={{ opacity: 0, y: 30 }}
+                    initial={{ opacity: 0, y: 40 }}
                     whileInView={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.6, delay: categoryIdx * 0.1 }}
-                    viewport={{ once: true }}
+                    transition={{ duration: 0.7, delay: categoryIdx * 0.1 }}
+                    viewport={{ once: true, margin: "-100px" }}
                   >
-                    {/* Category Header */}
-                    <div className="flex items-center gap-4 mb-8">
-                      <div
-                        className={`w-12 h-12 bg-${category.color}-500/10 rounded-xl flex items-center justify-center`}
-                      >
-                        <CategoryIcon
-                          className={`w-6 h-6 text-${category.color}-400`}
-                        />
+                    {/* Premium Category Header */}
+                    <motion.div
+                      initial={{ opacity: 0, x: -20 }}
+                      whileInView={{ opacity: 1, x: 0 }}
+                      transition={{ duration: 0.6, delay: 0.2 }}
+                      viewport={{ once: true }}
+                      className="relative flex items-center gap-6 mb-12"
+                    >
+                      <div className="relative group">
+                        <div className={`absolute inset-0 bg-gradient-to-r ${category.gradient} blur-xl opacity-50 group-hover:opacity-75 transition-opacity duration-300 rounded-2xl`} />
+                        <div className={`relative w-16 h-16 bg-gradient-to-br ${category.gradient} rounded-2xl flex items-center justify-center shadow-2xl transform group-hover:scale-110 transition-transform duration-300`}>
+                          <CategoryIcon className="w-8 h-8 text-white" />
+                        </div>
                       </div>
-                      <div>
-                        <h2
-                          className={`text-2xl font-bold text-${category.color}-400`}
-                        >
+                      <div className="flex-1">
+                        <h2 className={`text-3xl md:text-4xl font-black bg-gradient-to-r ${category.gradient} bg-clip-text text-transparent mb-1`}>
                           {category.label}
                         </h2>
-                        <p className="text-sm text-slate-400">
-                          {category.engines.length} engines
+                        <p className="text-sm text-slate-400 font-medium">
+                          {category.engines.length} specialized engines
                         </p>
                       </div>
-                    </div>
+                      <div className={`hidden md:block flex-1 h-px bg-gradient-to-r ${category.gradient} opacity-20`} />
+                    </motion.div>
 
-                    {/* Engines Grid */}
+                    {/* Premium Engines Grid */}
                     <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
                       {category.engines.map((engine, idx) => (
                         <motion.div
@@ -774,41 +840,51 @@ export default function EnginesPage() {
                             duration: 0.5,
                             delay: idx * 0.05,
                           }}
-                          viewport={{ once: true }}
-                          whileHover={{ scale: 1.03, rotateY: 3, z: 50 }}
+                          viewport={{ once: true, margin: "-50px" }}
+                          whileHover={{ 
+                            scale: 1.03, 
+                            rotateY: 2,
+                            z: 50,
+                            transition: { duration: 0.2 }
+                          }}
                           className="perspective-1000"
                         >
                           <Link href={engine.href}>
-                            <Card
-                              className={`border-slate-700 bg-slate-900/50 backdrop-blur-sm hover:border-${category.color}-500/50 transition-all h-full transform-gpu hover:shadow-2xl hover:shadow-${category.color}-500/20 cursor-pointer group`}
-                            >
-                              <CardHeader>
-                                <div className="flex items-start justify-between mb-3">
-                                  <div
-                                    className={`w-10 h-10 bg-${category.color}-500/10 rounded-lg flex items-center justify-center`}
-                                  >
-                                    <CategoryIcon
-                                      className={`w-5 h-5 text-${category.color}-400`}
-                                    />
+                            <div className="relative group h-full">
+                              <div className={`absolute inset-0 bg-gradient-to-r ${category.gradient} opacity-0 group-hover:opacity-10 blur-2xl transition-all duration-500 rounded-2xl`} />
+                              
+                              <Card className={`relative h-full border-slate-700/50 bg-slate-900/80 backdrop-blur-xl hover:border-slate-600 transition-all duration-300 transform-gpu group-hover:shadow-2xl cursor-pointer overflow-hidden`}>
+                                <div className={`absolute inset-0 bg-gradient-to-br ${category.gradient} opacity-0 group-hover:opacity-5 transition-opacity duration-300`} />
+                                <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-transparent via-slate-700 to-transparent" />
+                                
+                                <CardHeader className="relative pb-3">
+                                  <div className="flex items-start justify-between mb-4">
+                                    <div className={`w-12 h-12 bg-gradient-to-br ${category.gradient} opacity-10 group-hover:opacity-20 rounded-xl flex items-center justify-center transition-all duration-300`}>
+                                      <CategoryIcon className={`w-6 h-6 bg-gradient-to-r ${category.gradient} bg-clip-text text-transparent`} />
+                                    </div>
+                                    <ArrowRight className={`w-5 h-5 text-slate-600 group-hover:text-slate-400 transform group-hover:translate-x-1 transition-all duration-300`} />
                                   </div>
-                                </div>
-                                <CardTitle
-                                  className={`text-lg text-white group-hover:text-${category.color}-300 transition-colors`}
-                                >
-                                  {engine.name}
-                                </CardTitle>
-                              </CardHeader>
-                              <CardContent>
-                                <p className="text-sm text-slate-400 mb-4">
-                                  {engine.description}
-                                </p>
-                                <div className="flex items-center justify-between text-xs">
-                                  <span className="text-slate-500">
-                                    Learn more →
-                                  </span>
-                                </div>
-                              </CardContent>
-                            </Card>
+                                  <CardTitle className={`text-lg text-white group-hover:bg-gradient-to-r group-hover:${category.gradient} group-hover:bg-clip-text group-hover:text-transparent transition-all duration-300`}>
+                                    {engine.name}
+                                  </CardTitle>
+                                </CardHeader>
+
+                                <CardContent className="relative">
+                                  <p className="text-sm text-slate-400 leading-relaxed mb-4">
+                                    {engine.description}
+                                  </p>
+                                  
+                                  <div className="flex items-center gap-2 text-xs">
+                                    <Badge variant="outline" className="border-slate-700 text-slate-400 bg-slate-800/50">
+                                      API Ready
+                                    </Badge>
+                                    <Badge variant="outline" className="border-slate-700 text-slate-400 bg-slate-800/50">
+                                      Real-time
+                                    </Badge>
+                                  </div>
+                                </CardContent>
+                              </Card>
+                            </div>
                           </Link>
                         </motion.div>
                       ))}
@@ -817,6 +893,38 @@ export default function EnginesPage() {
                 );
               })}
             </div>
+
+            {/* Bottom CTA Section */}
+            <motion.div
+              initial={{ opacity: 0, y: 40 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8 }}
+              viewport={{ once: true }}
+              className="mt-32 text-center"
+            >
+              <div className="relative inline-block">
+                <div className="absolute inset-0 bg-gradient-to-r from-violet-500 to-fuchsia-500 blur-3xl opacity-30 rounded-full" />
+                <Card className="relative border-slate-700/50 bg-slate-900/80 backdrop-blur-xl p-12 max-w-3xl mx-auto">
+                  <div className="absolute inset-0 bg-gradient-to-br from-violet-500/5 to-fuchsia-500/5 rounded-lg" />
+                  <div className="relative">
+                    <Brain className="w-16 h-16 mx-auto mb-6 bg-gradient-to-r from-violet-400 to-fuchsia-400 bg-clip-text text-transparent" />
+                    <h3 className="text-3xl font-bold text-white mb-4">
+                      Build Your Intelligence Stack
+                    </h3>
+                    <p className="text-lg text-slate-400 mb-8 max-w-2xl mx-auto">
+                      Compose any combination of engines to create custom analytics workflows
+                    </p>
+                    <Button
+                      size="lg"
+                      className="bg-gradient-to-r from-violet-600 to-fuchsia-600 hover:from-violet-500 hover:to-fuchsia-500 text-white border-0 shadow-xl shadow-violet-500/30 px-8"
+                    >
+                      View Documentation
+                      <ArrowRight className="w-5 h-5 ml-2" />
+                    </Button>
+                  </div>
+                </Card>
+              </div>
+            </motion.div>
           </div>
         </main>
       </div>

@@ -26,6 +26,7 @@ import {
   ArrowRight,
 } from "lucide-react";
 import { useState } from "react";
+import { Input } from "@/components/ui/input";
 
 const engineCategories = [
   {
@@ -596,6 +597,7 @@ const engineCategories = [
 
 export default function EnginesPage() {
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
+  const [searchQuery, setSearchQuery] = useState("");
 
   const filteredEngines = selectedCategory
     ? engineCategories.filter((cat) => cat.id === selectedCategory)
@@ -889,12 +891,12 @@ export default function EnginesPage() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.8 }}
-          className="mt-16 pt-8 border-t border-slate-800"
+          className="mt-16 pt-8 border-t border-slate-800 max-w-6xl mx-auto"
         >
           <div className="grid grid-cols-3 gap-6 mb-8">
             {[
-              { label: "Active Engines", value: filteredEngines.length, icon: Cpu, color: "cyan" },
-              { label: "Categories", value: "7+", icon: Target, color: "blue" },
+              { label: "Active Engines", value: totalEngines, icon: Cpu, color: "cyan" },
+              { label: "Categories", value: engineCategories.length.toString(), icon: Target, color: "blue" },
               { label: "Real-time", value: "99.9%", icon: Zap, color: "purple" }
             ].map((stat, idx) => (
               <motion.div
@@ -913,7 +915,7 @@ export default function EnginesPage() {
             ))}
           </div>
           <p className="text-sm text-slate-500 text-center">
-            Showing {filteredEngines.length} of {allEngines.length} engines
+            Showing {totalEngines} engines across {engineCategories.length} categories
           </p>
         </motion.div>
       </div>

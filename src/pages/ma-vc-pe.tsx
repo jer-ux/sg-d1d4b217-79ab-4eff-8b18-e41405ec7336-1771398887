@@ -8,7 +8,6 @@ import { Badge } from "@/components/ui/badge";
 import { TrendingUp, Target, Shield, FileCheck, Briefcase, Activity, CheckCircle2, ArrowRight, Sparkles, Zap, AlertTriangle } from "lucide-react";
 import Link from "next/link";
 import { motion, useScroll, useTransform, useInView } from "framer-motion";
-import { ParticleField3D } from "@/components/premium/ParticleField3D";
 
 function StatsCard({ title, value, description, icon: Icon, delay = 0, color = "emerald", particles = 10 }: { title: string; value: string; description: string; icon: any; delay?: number; color?: string; particles?: number }) {
   const ref = useRef(null);
@@ -110,8 +109,6 @@ export default function MaVcPePage() {
       />
       <div className="flex min-h-screen flex-col bg-slate-950 text-white">
         <Nav />
-        
-        <ParticleField3D />
         
         <main className="flex-1">
           {/* Hero Section */}

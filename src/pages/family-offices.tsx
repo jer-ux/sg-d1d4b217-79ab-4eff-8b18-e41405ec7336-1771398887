@@ -13,7 +13,6 @@ import { motion, useScroll, useTransform, useInView } from "framer-motion";
 import { PremiumBackground } from "@/components/premium/PremiumBackground";
 import { Interactive3DCard } from "@/components/premium/Interactive3DCard";
 import Nav from "@/components/Nav";
-import { ParticleField3D } from "@/components/premium/ParticleField3D";
 
 function AnimatedCounter({ value, suffix = "", prefix = "", duration = 2 }: { value: number | string; suffix?: string; prefix?: string; duration?: number }) {
   const ref = useRef(null);
@@ -154,8 +153,6 @@ export default function FamilyOfficesPage() {
       <div className="flex min-h-screen flex-col bg-gradient-to-br from-slate-950 via-purple-950 to-slate-900">
         <SiteHeader />
         <Nav />
-        
-        <ParticleField3D />
         
         <main className="flex-1">
           {/* Hero Section with Premium Background */}

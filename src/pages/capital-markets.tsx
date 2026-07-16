@@ -5,7 +5,6 @@ import { TrendingUp, PieChart, AlertTriangle, CheckCircle2, DollarSign, Target, 
 import Nav from "@/components/Nav";
 import Footer from "@/components/Footer";
 import { useState } from "react";
-import { ParticleField3D } from "@/components/premium/ParticleField3D";
 
 const fadeInUp = {
   initial: { opacity: 0, y: 60 },
@@ -162,8 +161,6 @@ export default function CapitalMarketsPage() {
 
       <div className="min-h-screen bg-black text-white">
         <Nav />
-
-        <ParticleField3D />
 
         {/* Hero Section */}
         <section className="relative py-24 overflow-hidden">

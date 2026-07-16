@@ -196,7 +196,7 @@ export function RxForecastChart({
                 strokeWidth={2}
                 fill="url(#grossCostGradient)"
                 name="Gross Cost"
-                strokeDasharray={(point) => point.type === "Projected" ? "5 5" : "0"}
+                strokeDasharray={point => point.type === "Projected" ? "5 5" : "0"}
               />
             )}
 
@@ -207,7 +207,7 @@ export function RxForecastChart({
               strokeWidth={3}
               fill="url(#netCostGradient)"
               name="Net Cost"
-              strokeDasharray={(point) => point.type === "Projected" ? "5 5" : "0"}
+              strokeDasharray={point => point.type === "Projected" ? "5 5" : "0"}
             />
 
             {showRebates && (
@@ -218,7 +218,7 @@ export function RxForecastChart({
                 strokeWidth={2}
                 name="Rebates"
                 dot={false}
-                strokeDasharray={(point) => point.type === "Projected" ? "5 5" : "0"}
+                strokeDasharray={point => point.type === "Projected" ? "5 5" : "0"}
               />
             )}
           </AreaChart>
@@ -266,7 +266,17 @@ export function RxForecastChart({
               name="PMPM"
               dot={{ fill: "#06b6d4", r: 4 }}
               activeDot={{ r: 6 }}
-              strokeDasharray={(point) => point.type === "Projected" ? "5 5" : "0"}
+              strokeDasharray={point => point.type === "Projected" ? "5 5" : "0"}
+            />
+            <Line
+              type="monotone"
+              dataKey="confidenceLow"
+              stroke="rgba(59, 130, 246, 0.2)"
+              strokeWidth={1}
+              strokeDasharray="5 5"
+              dot={false}
+              activeDot={false}
+              legendType="none"
             />
           </LineChart>
         </ResponsiveContainer>

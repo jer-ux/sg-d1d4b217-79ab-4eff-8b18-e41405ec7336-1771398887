@@ -1,303 +1,286 @@
-import { useState } from "react";
-import Head from "next/head";
+import { AlertCircle, TrendingUp, Users, Shield, DollarSign, CheckCircle2, Target, BarChart3 } from "lucide-react";
+import { EngineDetailLayout, VegasSection, VegasMetricCard, VegasCodeBlock, VegasFeatureGrid, VegasFeatureCard } from "@/components/engines/EngineDetailLayout";
 import Link from "next/link";
-import Footer from "@/components/Footer";
-import Nav from "@/components/Nav";
-import { AlertCircle, TrendingUp, Users, ArrowLeft, Shield, DollarSign } from "lucide-react";
 
 export default function NetworkDisruptionEngine() {
-  const [activeTab, setActiveTab] = useState("overview");
-
   return (
-    <>
-      <Head>
-        <title>Network Disruption Modeling Engine | Kincaid IQ</title>
-        <meta name="description" content="Model cost impact when key providers leave network or facility closes." />
-      </Head>
+    <EngineDetailLayout
+      title="Network Disruption Modeling Engine"
+      category="Network Risk & Strategy"
+      tagline="Model Cost Impact When Key Providers Leave Network or Facilities Close—Know Your Exposure Before the Disruption"
+      gradient="from-red-600 via-orange-600 to-amber-600"
+    >
+      {/* Problem Statement */}
+      <VegasSection title="The $840K Network Surprise" icon={AlertCircle}>
+        <div className="grid md:grid-cols-2 gap-8">
+          <div>
+            <h3 className="text-2xl font-black text-red-400 mb-4">Disruptions Discovered at Renewal</h3>
+            <ul className="space-y-3 text-white/80 leading-relaxed">
+              <li className="flex items-start gap-3">
+                <span className="text-red-400 mt-1">✗</span>
+                <span>Key orthopedic group exits network—90 days notice, no cost modeling</span>
+              </li>
+              <li className="flex items-start gap-3">
+                <span className="text-red-400 mt-1">✗</span>
+                <span>Hospital merger: two systems consolidate, demand 15% rate increase or termination</span>
+              </li>
+              <li className="flex items-start gap-3">
+                <span className="text-red-400 mt-1">✗</span>
+                <span>Local ASC closes—procedures shift to hospital HOPD at 2.5× cost</span>
+              </li>
+              <li className="flex items-start gap-3">
+                <span className="text-red-400 mt-1">✗</span>
+                <span>Most CFOs learn about disruption impact AFTER Q2 claims spike 18%</span>
+              </li>
+            </ul>
+          </div>
+          <div>
+            <h3 className="text-2xl font-black text-orange-400 mb-4">Network Disruption Engine</h3>
+            <ul className="space-y-3 text-white/80 leading-relaxed">
+              <li className="flex items-start gap-3">
+                <span className="text-orange-400 mt-1">✓</span>
+                <span>Provider concentration analysis: identify single points of failure (5-15% of spend)</span>
+              </li>
+              <li className="flex items-start gap-3">
+                <span className="text-orange-400 mt-1">✓</span>
+                <span>Scenario modeling: what if Group X leaves? Hospital Y closes? System Z merges?</span>
+              </li>
+              <li className="flex items-start gap-3">
+                <span className="text-orange-400 mt-1">✓</span>
+                <span>Cost impact forecasts: OON rates, alternative in-network sites, direct contracting</span>
+              </li>
+              <li className="flex items-start gap-3">
+                <span className="text-orange-400 mt-1">✓</span>
+                <span>Mitigation strategies: network RFP, direct contracts, member steering plans</span>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </VegasSection>
 
-      <Nav />
+      {/* Technical Architecture */}
+      <VegasSection title="Concentration Risk Algorithm" icon={Users}>
+        <VegasCodeBlock language="python">
+{`# Network Disruption Impact Model
+def analyze_network_concentration(claims_data, network_roster):
+    provider_spend = {}
+    
+    # Aggregate spend by provider/facility
+    for claim in claims_data:
+        provider_id = claim.rendering_provider_npi
+        facility_id = claim.facility_npi
+        
+        if provider_id not in provider_spend:
+            provider_spend[provider_id] = {
+                'name': lookup_provider_name(provider_id),
+                'specialty': lookup_specialty(provider_id),
+                'annual_spend': 0,
+                'claim_count': 0,
+                'unique_members': set()
+            }
+        
+        provider_spend[provider_id]['annual_spend'] += claim.paid_amount
+        provider_spend[provider_id]['claim_count'] += 1
+        provider_spend[provider_id]['unique_members'].add(claim.member_id)
+    
+    total_spend = sum(p['annual_spend'] for p in provider_spend.values())
+    
+    # Identify concentration risk
+    concentration_risk = []
+    for provider_id, data in provider_spend.items():
+        spend_pct = data['annual_spend'] / total_spend
+        
+        if spend_pct >= 0.05:  # 5%+ of total spend
+            risk_level = 'CRITICAL' if spend_pct >= 0.10 else 'HIGH'
+            concentration_risk.append({
+                'provider': data['name'],
+                'specialty': data['specialty'],
+                'annual_spend': data['annual_spend'],
+                'percent_of_total': spend_pct,
+                'member_count': len(data['unique_members']),
+                'risk_level': risk_level
+            })
+    
+    return sorted(concentration_risk, key=lambda x: x['annual_spend'], reverse=True)
 
-      <div className="min-h-screen bg-neutral-950 text-neutral-50 pt-20">
-        <div className="max-w-7xl mx-auto px-4 py-12">
-          <Link href="/engines" className="inline-flex items-center gap-2 text-emerald-400 hover:text-emerald-300 mb-8 transition-colors">
-            <ArrowLeft className="w-4 h-4" />
-            Back to Engines
+def model_provider_exit_impact(provider_id, claims_history, network_alternatives):
+    # Current in-network cost
+    provider_claims = claims_history.filter(provider=provider_id)
+    current_annual_cost = sum(c.paid_amount for c in provider_claims)
+    
+    # Scenario 1: Provider goes OON
+    oon_multiplier = 2.80  # OON facilities charge 280% of in-network allowed
+    plan_pays_oon = 0.60  # Plan pays 60%, member pays 40%
+    oon_annual_cost = current_annual_cost * oon_multiplier * plan_pays_oon
+    
+    # Scenario 2: Members redirect to alternative in-network
+    alt_provider_rates = [lookup_rates(alt) for alt in network_alternatives]
+    avg_alt_rate_multiplier = sum(alt_provider_rates) / len(alt_provider_rates)
+    redirect_annual_cost = current_annual_cost * avg_alt_rate_multiplier
+    
+    # Scenario 3: Direct contract with exiting provider
+    direct_contract_rate = 1.40  # 140% of Medicare (typical direct contract)
+    direct_contract_cost = (current_annual_cost / 1.80) * direct_contract_rate  # Assume current = 180% Medicare
+    
+    return {
+        'baseline_cost': current_annual_cost,
+        'oon_scenario': {
+            'annual_cost': oon_annual_cost,
+            'delta': oon_annual_cost - current_annual_cost,
+            'percent_increase': ((oon_annual_cost - current_annual_cost) / current_annual_cost) * 100
+        },
+        'redirect_scenario': {
+            'annual_cost': redirect_annual_cost,
+            'delta': redirect_annual_cost - current_annual_cost,
+            'percent_increase': ((redirect_annual_cost - current_annual_cost) / current_annual_cost) * 100
+        },
+        'direct_contract_scenario': {
+            'annual_cost': direct_contract_cost,
+            'delta': direct_contract_cost - current_annual_cost,
+            'percent_increase': ((direct_contract_cost - current_annual_cost) / current_annual_cost) * 100
+        },
+        'recommended': 'direct_contract_scenario'  # Lowest cost + preserves continuity
+    }
+
+# Example: Orthopedic group exit
+claims = load_claims('2024')
+concentration = analyze_network_concentration(claims, network)
+
+# Model impact of top risk provider leaving
+top_risk = concentration[0]  # ABC Orthopedics
+impact = model_provider_exit_impact(top_risk['provider_id'], claims, find_alternatives('orthopedics'))
+
+print(f"Provider: {top_risk['provider']} ({top_risk['percent_of_total']:.1%} of spend)")
+print(f"\\nScenario Analysis:")
+print(f"  OON: ${impact['oon_scenario']['annual_cost']:,.0f} (+${impact['oon_scenario']['delta']:,.0f})")
+print(f"  Redirect: ${impact['redirect_scenario']['annual_cost']:,.0f} (+${impact['redirect_scenario']['delta']:,.0f})")
+print(f"  Direct Contract: ${impact['direct_contract_scenario']['annual_cost']:,.0f} (+${impact['direct_contract_scenario']['delta']:,.0f})")
+print(f"\\nRecommendation: Negotiate direct contract (saves ${impact['oon_scenario']['delta'] - impact['direct_contract_scenario']['delta']:,.0f} vs OON)")
+`}
+        </VegasCodeBlock>
+      </VegasSection>
+
+      {/* Metrics */}
+      <VegasSection title="Risk Exposure Metrics" icon={Shield}>
+        <div className="grid md:grid-cols-3 gap-6">
+          <VegasMetricCard
+            icon={Users}
+            label="Concentration Threshold"
+            value="5-15%"
+            gradient="from-red-500 to-orange-500"
+            description="Single provider/facility share of total medical spend flagged as risk"
+          />
+          <VegasMetricCard
+            icon={TrendingUp}
+            label="OON Cost Multiplier"
+            value="2.8×"
+            gradient="from-orange-500 to-amber-500"
+            description="Average out-of-network facility charge vs. in-network allowed amount"
+          />
+          <VegasMetricCard
+            icon={DollarSign}
+            label="Avg Disruption Impact"
+            value="$460K"
+            gradient="from-amber-500 to-yellow-500"
+            description="Unexpected annual cost increase when high-volume provider exits"
+          />
+        </div>
+      </VegasSection>
+
+      {/* Common Scenarios */}
+      <VegasSection title="Disruption Scenario Library" icon={AlertCircle}>
+        <VegasCodeBlock language="markdown">
+{`# Network Disruption Playbook
+
+## Scenario 1: High-Volume Provider Exit
+**Trigger**: Single provider/group represents 5-15% of medical spend
+**Impact**: Members pay OON cost-share OR disrupt to new in-network (unknown cost)
+**Risk Factors**: Specialty groups (ortho, cardiology, GI), ASCs, infusion centers
+**Example**: Orthopedic group exits → $680K in-network → $1.14M OON (68% increase)
+
+## Scenario 2: Hospital System Merger
+**Trigger**: Two systems merge, one in-network, other not. Demand single contract at higher rates.
+**Impact**: Typical demand: 12-20% rate increase or termination threat
+**Affects**: ER, admissions, outpatient surgery, imaging
+**Example**: System merger demands 15% increase on $2.8M spend = +$420K annual cost
+
+## Scenario 3: Facility Closure
+**Trigger**: Local ASC closes or hospital converts to urgent care only
+**Impact**: Utilization redistributes to remaining facilities (often higher cost)
+**Example**: Low-cost ASC closes → procedures shift to hospital HOPD (facility fee 2.5× higher)
+
+## Scenario 4: Geographic Network Gap
+**Trigger**: Satellite office employees (80+ people) distant from in-network facilities
+**Impact**: Employees use local out-of-network hospital → all OON claims
+**Solution Options**:
+  1. Model cost of status quo OON leakage
+  2. Negotiate direct contract with local facility
+  3. Switch to broader network carrier
+
+## Scenario 5: TPA/Carrier Network Change
+**Trigger**: TPA loses contract with major hospital system mid-year
+**Impact**: Facilities previously in-network suddenly OON without notice
+**Example**: Regional hospital drops TPA → $1.6M annual utilization now OON
+`}
+        </VegasCodeBlock>
+      </VegasSection>
+
+      {/* Use Cases */}
+      <VegasSection title="Proactive Mitigation Success Stories" icon={CheckCircle2}>
+        <VegasFeatureGrid>
+          <VegasFeatureCard
+            icon={AlertCircle}
+            title="Orthopedic Group Exit"
+            items={[
+              "Manufacturing client: 90-day notice of group leaving network",
+              "Engine identified: $680K annual spend (12% of total)",
+              "Modeled 3 scenarios: OON ($1.14M), redirect ($820K), direct contract ($720K)",
+              "Negotiated direct contract at 140% Medicare before exit",
+              "Saved $420K vs. OON scenario + preserved continuity"
+            ]}
+          />
+          <VegasFeatureCard
+            icon={Target}
+            title="Hospital Merger Pre-Planning"
+            items={[
+              "PE portfolio company: two local systems announced merger",
+              "Modeled $2.8M annual utilization at merged system",
+              "Projected 15% rate increase demand = +$420K",
+              "Proactively switched carriers to network with merged entity",
+              "Actual increase: 8.5% ($238K) vs. 15% threat"
+            ]}
+          />
+          <VegasFeatureCard
+            icon={Users}
+            title="Multi-Site Network Optimization"
+            items={[
+              "Healthcare system: 4 office locations, uneven network coverage",
+              "Remote site (80 employees) had $340K OON leakage",
+              "Modeled direct contract with local hospital: $280K",
+              "Negotiated 3-year agreement, eliminated OON exposure",
+              "Net savings: $60K annually + improved employee satisfaction"
+            ]}
+          />
+        </VegasFeatureGrid>
+      </VegasSection>
+
+      {/* CTA */}
+      <div className="relative group mt-16">
+        <div className="absolute inset-0 bg-gradient-to-r from-red-600 via-orange-600 to-amber-600 rounded-2xl blur-2xl opacity-50 group-hover:opacity-75 transition-opacity" />
+        <div className="relative bg-gradient-to-r from-red-600 via-orange-600 to-amber-600 rounded-2xl p-12 text-center">
+          <h2 className="text-4xl font-black text-white mb-4">Know Your Network Risk Before the Disruption Hits</h2>
+          <p className="text-xl text-white/90 mb-8 max-w-3xl mx-auto leading-relaxed">
+            Identify provider concentration risk. Model exit scenarios. Build mitigation strategies 
+            (direct contracts, network RFPs, alternative sites) before the 90-day notice arrives.
+          </p>
+          <Link
+            href="/request-demo"
+            className="inline-flex items-center gap-3 bg-white text-orange-600 px-10 py-5 rounded-xl font-black text-lg hover:bg-orange-50 transition-all duration-200 shadow-2xl hover:shadow-orange-500/50 transform hover:scale-105">
+            Run Network Risk Analysis
+            <span className="text-2xl">→</span>
           </Link>
-
-          <div className="mb-12">
-            <div className="flex items-center gap-4 mb-4">
-              <div className="p-3 bg-red-500/10 rounded-lg">
-                <AlertCircle className="w-8 h-8 text-red-400" />
-              </div>
-              <div>
-                <h1 className="text-4xl font-display font-bold">Network Disruption Modeling Engine</h1>
-                <p className="text-neutral-400 mt-2">Know your exposure before the network changes</p>
-              </div>
-            </div>
-
-            <div className="grid md:grid-cols-3 gap-6 mt-8">
-              <div className="bg-neutral-900/50 border border-neutral-800 rounded-lg p-6">
-                <Users className="w-10 h-10 text-red-400 mb-3" />
-                <h3 className="text-xl font-semibold mb-2">Provider Impact</h3>
-                <p className="text-neutral-400 text-sm">Model cost if high-volume provider leaves network</p>
-              </div>
-              <div className="bg-neutral-900/50 border border-neutral-800 rounded-lg p-6">
-                <Shield className="w-10 h-10 text-blue-400 mb-3" />
-                <h3 className="text-xl font-semibold mb-2">Facility Closure</h3>
-                <p className="text-neutral-400 text-sm">Forecast utilization shift when hospital/ASC closes</p>
-              </div>
-              <div className="bg-neutral-900/50 border border-neutral-800 rounded-lg p-6">
-                <DollarSign className="w-10 h-10 text-emerald-400 mb-3" />
-                <h3 className="text-xl font-semibold mb-2">Cost Exposure</h3>
-                <p className="text-neutral-400 text-sm">Quantify PMPM impact of network disruption scenarios</p>
-              </div>
-            </div>
-          </div>
-
-          <div className="border-b border-neutral-800 mb-8">
-            <div className="flex gap-8">
-              {["overview", "modeling", "use-cases"].map((tab) => (
-                <button
-                  key={tab}
-                  onClick={() => setActiveTab(tab)}
-                  className={`pb-4 px-2 font-medium transition-colors relative ${
-                    activeTab === tab
-                      ? "text-emerald-400"
-                      : "text-neutral-400 hover:text-neutral-300"
-                  }`}
-                >
-                  {tab.charAt(0).toUpperCase() + tab.slice(1)}
-                  {activeTab === tab && (
-                    <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-emerald-400" />
-                  )}
-                </button>
-              ))}
-            </div>
-          </div>
-
-          {activeTab === "overview" && (
-            <div className="space-y-8">
-              <div className="bg-gradient-to-br from-red-500/10 to-orange-500/10 border border-red-500/20 rounded-lg p-8">
-                <h2 className="text-2xl font-display font-bold mb-4">The $840K Network Surprise</h2>
-                <p className="text-neutral-300 mb-4">
-                  Your local health system gives 90-day notice: key orthopedic group is leaving network. Or ASA announces 
-                  facility closure. Or your TPA loses contract with regional hospital. Network disruptions happen constantly—
-                  hospital mergers, physician retirements, contract disputes. Most employers learn about impact AFTER the 
-                  disruption when Q2 claims spike 18%. Our engine models exposure proactively so you can negotiate, prepare, 
-                  or switch networks before renewal.
-                </p>
-                <div className="bg-neutral-900/50 rounded-lg p-6 mt-6">
-                  <h3 className="font-semibold mb-4">Real Case: Orthopedic Group Exit</h3>
-                  <div className="grid md:grid-cols-2 gap-6 text-sm">
-                    <div>
-                      <div className="text-red-400 font-semibold mb-2">Discovered At Renewal (Reactive)</div>
-                      <ul className="space-y-2 text-neutral-400 text-xs">
-                        <li>• Ortho group represents 240 employees + dependents (8.5% of population)</li>
-                        <li>• Historical: $680K annual spend at in-network rates</li>
-                        <li>• Out-of-network: members pay 40% coinsurance, plan still pays 60%</li>
-                        <li>• OON facility charges 280% of prior allowed amount</li>
-                        <li>• Plan cost increases to $1.14M (68% jump)</li>
-                        <li>• <strong>Unbudgeted cost increase: $460K discovered at Q3 financials</strong></li>
-                      </ul>
-                    </div>
-                    <div>
-                      <div className="text-emerald-400 font-semibold mb-2">Modeled Proactively (120 Days Before Exit)</div>
-                      <ul className="space-y-2 text-neutral-400 text-xs">
-                        <li>• Engine flagged provider as 12% of total medical spend</li>
-                        <li>• Modeled 3 scenarios: stay with network, switch carriers, carve-out contract</li>
-                        <li>• Negotiated direct contract with ortho group: 140% Medicare</li>
-                        <li>• Alternative: switched to carrier with this group in-network</li>
-                        <li>• Actual cost impact: $720K (direct contract) vs $680K baseline</li>
-                        <li>• <strong>Avoided $420K surprise via proactive modeling + contract</strong></li>
-                      </ul>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              <div className="bg-neutral-900/50 border border-neutral-800 rounded-lg p-8">
-                <h2 className="text-2xl font-display font-bold mb-6">Common Disruption Scenarios</h2>
-                <div className="space-y-6">
-                  <div className="border-l-4 border-red-400 pl-6">
-                    <h3 className="font-semibold text-lg mb-2">High-Volume Provider Exit</h3>
-                    <p className="text-neutral-400 text-sm mb-3">
-                      Single provider or group represents 5-15% of your medical spend. When they leave network, members either 
-                      pay OON cost-share (plan still liable for 60-70%) or disrupt to new in-network provider (unknown cost).
-                    </p>
-                    <div className="bg-neutral-800/50 rounded p-3 text-xs text-neutral-400">
-                      <strong className="text-red-400">Risk Factors:</strong> Specialty groups (ortho, cardiology, GI), 
-                      single-specialty ASCs, high-cost infusion centers
-                    </div>
-                  </div>
-
-                  <div className="border-l-4 border-amber-400 pl-6">
-                    <h3 className="font-semibold text-lg mb-2">Hospital System Merger</h3>
-                    <p className="text-neutral-400 text-sm mb-3">
-                      Two systems merge, one was in-network, other wasn't. Post-merger they want single contract at higher 
-                      rates. Or merged entity terminates contract to gain negotiating leverage.
-                    </p>
-                    <div className="bg-neutral-800/50 rounded p-3 text-xs text-neutral-400">
-                      <strong className="text-amber-400">Cost Impact:</strong> Typical demand: 12-20% rate increase or 
-                      termination; affects ER, admissions, outpatient surgery
-                    </div>
-                  </div>
-
-                  <div className="border-l-4 border-blue-400 pl-6">
-                    <h3 className="font-semibold text-lg mb-2">Facility Closure</h3>
-                    <p className="text-neutral-400 text-sm mb-3">
-                      Local ASC closes or hospital converts to urgent care only. Historical utilization redistributes to 
-                      remaining facilities—often at higher cost if nearest alternative is more expensive.
-                    </p>
-                    <div className="bg-neutral-800/50 rounded p-3 text-xs text-neutral-400">
-                      <strong className="text-blue-400">Example:</strong> Low-cost ASC closes; procedures shift to hospital 
-                      HOPD (facility fee 2.5x higher)
-                    </div>
-                  </div>
-
-                  <div className="border-l-4 border-purple-400 pl-6">
-                    <h3 className="font-semibold text-lg mb-2">Geographic Network Gap</h3>
-                    <p className="text-neutral-400 text-sm mb-3">
-                      You have 80 employees in satellite office; nearest in-network hospital is 45 miles. Local hospital not 
-                      contracted. Employees use local facility, all OON claims.
-                    </p>
-                    <div className="bg-neutral-800/50 rounded p-3 text-xs text-neutral-400">
-                      <strong className="text-purple-400">Solution:</strong> Model cost of status quo vs. direct contract 
-                      with local facility vs. moving to broader network carrier
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          )}
-
-          {activeTab === "modeling" && (
-            <div className="space-y-6">
-              <div className="bg-neutral-900/50 border border-neutral-800 rounded-lg p-8">
-                <h2 className="text-2xl font-display font-bold mb-6">Disruption Impact Model</h2>
-                <p className="text-neutral-400 text-sm mb-6">
-                  Engine identifies high-concentration providers/facilities, models utilization redistribution under exit 
-                  scenarios, and forecasts cost impact at new reimbursement levels (OON rates or alternative in-network).
-                </p>
-                <div className="space-y-6">
-                  <div className="bg-neutral-800/50 rounded-lg p-6">
-                    <h3 className="font-semibold mb-4 text-red-400">Provider Concentration Analysis</h3>
-                    <div className="space-y-3 text-sm">
-                      <div className="grid grid-cols-4 gap-4 text-xs font-semibold text-neutral-500 border-b border-neutral-700 pb-2">
-                        <span>Provider/Facility</span>
-                        <span>Annual Spend</span>
-                        <span>% of Total</span>
-                        <span>Risk Level</span>
-                      </div>
-                      <div className="grid grid-cols-4 gap-4 text-xs">
-                        <span className="text-neutral-300">ABC Orthopedics</span>
-                        <span className="text-neutral-400 font-mono">$1.2M</span>
-                        <span className="text-neutral-400 font-mono">14.2%</span>
-                        <span className="text-red-400 font-semibold">Critical</span>
-                      </div>
-                      <div className="grid grid-cols-4 gap-4 text-xs">
-                        <span className="text-neutral-300">Regional Medical Center</span>
-                        <span className="text-neutral-400 font-mono">$2.8M</span>
-                        <span className="text-neutral-400 font-mono">33.1%</span>
-                        <span className="text-red-400 font-semibold">Critical</span>
-                      </div>
-                      <div className="grid grid-cols-4 gap-4 text-xs">
-                        <span className="text-neutral-300">Valley ASC Network</span>
-                        <span className="text-neutral-400 font-mono">$840K</span>
-                        <span className="text-neutral-400 font-mono">9.9%</span>
-                        <span className="text-amber-400 font-semibold">High</span>
-                      </div>
-                      <div className="grid grid-cols-4 gap-4 text-xs">
-                        <span className="text-neutral-300">City Imaging Centers</span>
-                        <span className="text-neutral-400 font-mono">$420K</span>
-                        <span className="text-neutral-400 font-mono">5.0%</span>
-                        <span className="text-blue-400 font-semibold">Medium</span>
-                      </div>
-                    </div>
-                  </div>
-
-                  <div className="bg-neutral-800/50 rounded-lg p-6">
-                    <h3 className="font-semibold mb-4 text-emerald-400">Scenario Modeling Output</h3>
-                    <div className="space-y-4 text-sm">
-                      <div className="border border-neutral-700 rounded p-4">
-                        <div className="font-semibold mb-2 text-neutral-200">Scenario: ABC Orthopedics Exits Network</div>
-                        <div className="space-y-2 text-xs">
-                          <div className="flex justify-between">
-                            <span className="text-neutral-400">Current annual spend (in-network):</span>
-                            <span className="text-neutral-300 font-mono">$1.2M</span>
-                          </div>
-                          <div className="flex justify-between">
-                            <span className="text-neutral-400">Projected OON spend (280% of allowed):</span>
-                            <span className="text-red-400 font-mono">$2.02M</span>
-                          </div>
-                          <div className="flex justify-between">
-                            <span className="text-neutral-400">Alternative: Switch to Network B (group in-network):</span>
-                            <span className="text-blue-400 font-mono">$1.38M</span>
-                          </div>
-                          <div className="flex justify-between">
-                            <span className="text-neutral-400">Alternative: Direct contract at 140% Medicare:</span>
-                            <span className="text-emerald-400 font-mono">$1.26M</span>
-                          </div>
-                          <div className="flex justify-between font-semibold pt-2 border-t border-neutral-700">
-                            <span className="text-neutral-200">Recommended: Direct Contract</span>
-                            <span className="text-emerald-400">Saves $760K vs OON</span>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          )}
-
-          {activeTab === "use-cases" && (
-            <div className="space-y-6">
-              <div className="bg-neutral-900/50 border border-neutral-800 rounded-lg p-8">
-                <h2 className="text-2xl font-display font-bold mb-6">Strategic Applications</h2>
-                <div className="space-y-6">
-                  <div className="border-l-4 border-emerald-400 pl-6">
-                    <h3 className="font-semibold text-lg mb-2">Proactive Contract Negotiation</h3>
-                    <p className="text-neutral-400 text-sm mb-3">
-                      When disruption is announced, you have leverage window (60-120 days). Model cost, present scenarios 
-                      to CFO, decide whether to negotiate direct contract, switch networks, or accept cost increase.
-                    </p>
-                    <div className="bg-neutral-800/50 rounded p-3 text-xs text-neutral-400">
-                      <strong className="text-emerald-400">PE Portfolio Co:</strong> Hospital merger announced—modeled 
-                      $1.2M cost increase; negotiated direct carve-out contract before effective date, saved $840K
-                    </div>
-                  </div>
-
-                  <div className="border-l-4 border-blue-400 pl-6">
-                    <h3 className="font-semibold text-lg mb-2">Network RFP Decision</h3>
-                    <p className="text-neutral-400 text-sm mb-3">
-                      Renewal time: carrier proposes 8% increase but key provider leaving network. Model true cost vs. 
-                      switching to competitor with broader network. Disruption modeling reveals hidden cost in renewal proposal.
-                    </p>
-                    <div className="bg-neutral-800/50 rounded p-3 text-xs text-neutral-400">
-                      <strong className="text-blue-400">Manufacturing Client:</strong> Incumbent proposed 6.5% increase; 
-                      modeling revealed network gap = +$680K hidden cost; switched carriers, saved $420K net
-                    </div>
-                  </div>
-
-                  <div className="border-l-4 border-purple-400 pl-6">
-                    <h3 className="font-semibold text-lg mb-2">Multi-Year Financial Planning</h3>
-                    <p className="text-neutral-400 text-sm mb-3">
-                      CFO building 3-year budget: model likely disruptions based on market intelligence (hospital mergers, 
-                      ACO formations). Build contingency reserves for network risk.
-                    </p>
-                    <div className="bg-neutral-800/50 rounded p-3 text-xs text-neutral-400">
-                      <strong className="text-purple-400">Healthcare System:</strong> Modeled 4 likely consolidation scenarios; 
-                      accrued $1.8M reserve for network disruption over 3 years
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          )}
         </div>
       </div>
-
-      <Footer />
-    </>
+    </EngineDetailLayout>
   );
 }

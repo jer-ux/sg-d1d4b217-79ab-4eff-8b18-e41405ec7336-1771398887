@@ -152,10 +152,10 @@ impact = model_provider_exit_impact(top_risk['provider_id'], claims, find_altern
 
 print(f"Provider: {top_risk['provider']} ({top_risk['percent_of_total']:.1%} of spend)")
 print(f"\\nScenario Analysis:")
-print(f"  OON: ${impact['oon_scenario']['annual_cost']:,.0f} (+${impact['oon_scenario']['delta']:,.0f})")
-print(f"  Redirect: ${impact['redirect_scenario']['annual_cost']:,.0f} (+${impact['redirect_scenario']['delta']:,.0f})")
-print(f"  Direct Contract: ${impact['direct_contract_scenario']['annual_cost']:,.0f} (+${impact['direct_contract_scenario']['delta']:,.0f})")
-print(f"\\nRecommendation: Negotiate direct contract (saves ${impact['oon_scenario']['delta'] - impact['direct_contract_scenario']['delta']:,.0f} vs OON)")
+print(f"  OON: \\${impact['oon_scenario']['annual_cost']:,.0f} (+\\${impact['oon_scenario']['delta']:,.0f})")
+print(f"  Redirect: \\${impact['redirect_scenario']['annual_cost']:,.0f} (+\\${impact['redirect_scenario']['delta']:,.0f})")
+print(f"  Direct Contract: \\${impact['direct_contract_scenario']['annual_cost']:,.0f} (+\\${impact['direct_contract_scenario']['delta']:,.0f})")
+print(f"\\nRecommendation: Negotiate direct contract (saves \\${impact['oon_scenario']['delta'] - impact['direct_contract_scenario']['delta']:,.0f} vs OON)")
 `}
         </VegasCodeBlock>
       </VegasSection>

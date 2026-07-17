@@ -116,13 +116,13 @@ pop = load_population(10000)
 
 # Scenario 1: Cover diabetes only
 diabetes_only = forecast_glp1_impact(pop, 'diabetes_only', 36)
-print(f"Month 36 PMPM: ${diabetes_only[35]['pmpm_impact']:.2f}")  # ~$42 PMPM
+print(f"Month 36 PMPM: \\${diabetes_only[35]['pmpm_impact']:.2f}")  # ~\\$42 PMPM
 
 # Scenario 2: Cover diabetes + obesity
 full_coverage = forecast_glp1_impact(pop, 'obesity_approved', 36)
-print(f"Month 36 PMPM: ${full_coverage[35]['pmpm_impact']:.2f}")  # ~$138 PMPM
+print(f"Month 36 PMPM: \\${full_coverage[35]['pmpm_impact']:.2f}")  # ~\\$138 PMPM
 
-# Delta: $96 PMPM difference = $11.5M over 3 years for 10K lives
+# Delta: \\$96 PMPM difference = \\$11.5M over 3 years for 10K lives
 `}
         </VegasCodeBlock>
       </VegasSection>

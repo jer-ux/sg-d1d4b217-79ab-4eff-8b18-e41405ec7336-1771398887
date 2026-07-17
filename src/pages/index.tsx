@@ -608,472 +608,552 @@ export default function HomePage() {
           </AnimatedSection>
 
           <motion.div
-            className="grid gap-4 md:grid-cols-2 lg:grid-cols-4 relative z-10"
+            className="grid gap-6 md:grid-cols-2 lg:grid-cols-4 relative z-10"
             variants={staggerContainer}
             initial="hidden"
             whileInView="visible"
             viewport={{ once: true, margin: "-100px" }}>
             
-            
+            {/* Pillar 1: Verified Savings - Blue */}
             <motion.div
               variants={fadeInUpVariants}
-              whileHover={{ y: -4, scale: 1.02 }}
-              className="group relative rounded-lg border-2 border-[#D4AF37]/50 bg-gradient-to-br from-amber-100 via-yellow-50 to-amber-200 p-5 hover:border-[#FFD700] hover:shadow-2xl hover:shadow-[#FFD700]/60 cursor-pointer transition-all duration-300 overflow-hidden">
+              whileHover={{ y: -8, scale: 1.03 }}
+              className="group relative rounded-2xl border-2 border-blue-500/50 bg-gradient-to-br from-blue-950 via-slate-900 to-blue-900 p-6 hover:border-blue-400 hover:shadow-2xl hover:shadow-blue-500/40 cursor-pointer transition-all duration-500 overflow-hidden">
               <Link href="/pillars/verified-savings-documentation" className="absolute inset-0 z-20" />
-              <div className="absolute inset-0 bg-gradient-to-br from-white/60 via-amber-100/30 to-yellow-200/40 pointer-events-none" />
-              <motion.div 
-                className="absolute inset-0 bg-gradient-to-tr from-transparent via-white/80 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none"
-                animate={{
-                  x: ['-100%', '200%'],
-                }}
-                transition={{
-                  duration: 3,
-                  repeat: Infinity,
-                  repeatDelay: 2,
-                  ease: "easeInOut"
-                }}
-              />
-              <motion.div
-                className="absolute top-2 right-2 w-1 h-1 bg-white rounded-full"
-                animate={{
-                  scale: [0, 1.5, 0],
-                  opacity: [0, 1, 0]
-                }}
-                transition={{
-                  duration: 2,
-                  repeat: Infinity,
-                  repeatDelay: 1
-                }}
-              />
-              <motion.div
-                className="absolute top-4 right-6 w-1 h-1 bg-[#FFD700] rounded-full"
-                animate={{
-                  scale: [0, 1.2, 0],
-                  opacity: [0, 1, 0]
-                }}
-                transition={{
-                  duration: 2,
-                  repeat: Infinity,
-                  delay: 0.5,
-                  repeatDelay: 1
-                }}
-              />
               
-              <div className="mb-3 inline-flex rounded bg-amber-900/20 p-2.5 relative z-10">
-                <FileText className="h-5 w-5 text-amber-900" />
+              {/* Animated graph background */}
+              <div className="absolute inset-0 opacity-20">
+                <svg className="w-full h-full" viewBox="0 0 200 200" preserveAspectRatio="none">
+                  <motion.path
+                    d="M0,150 Q50,100 100,120 T200,80"
+                    stroke="#3b82f6"
+                    strokeWidth="3"
+                    fill="none"
+                    initial={{ pathLength: 0, opacity: 0 }}
+                    whileInView={{ pathLength: 1, opacity: 1 }}
+                    transition={{ duration: 2, ease: "easeInOut" }}
+                  />
+                  <motion.path
+                    d="M0,150 Q50,100 100,120 T200,80 L200,200 L0,200 Z"
+                    fill="url(#blueGradient)"
+                    initial={{ opacity: 0 }}
+                    whileInView={{ opacity: 0.3 }}
+                    transition={{ duration: 1.5 }}
+                  />
+                  <defs>
+                    <linearGradient id="blueGradient" x1="0%" y1="0%" x2="0%" y2="100%">
+                      <stop offset="0%" stopColor="#3b82f6" stopOpacity="0.6" />
+                      <stop offset="100%" stopColor="#3b82f6" stopOpacity="0" />
+                    </linearGradient>
+                  </defs>
+                </svg>
               </div>
-              <h3 className="mb-2 text-base font-serif font-bold text-amber-900 relative z-10">Verified Savings Documentation</h3>
-              <p className="text-xs text-amber-800 leading-relaxed relative z-10">
-                Timestamped audit trail documenting contract compliance events, overcharge recoveries, and third-party verification records with complete chain of custody.
+
+              {/* Floating data points */}
+              {[...Array(5)].map((_, i) => (
+                <motion.div
+                  key={i}
+                  className="absolute w-2 h-2 bg-blue-400 rounded-full shadow-lg shadow-blue-500/50"
+                  style={{
+                    left: `${20 + i * 15}%`,
+                    top: `${40 + Math.sin(i) * 20}%`,
+                  }}
+                  animate={{
+                    y: [-5, 5, -5],
+                    scale: [1, 1.2, 1],
+                    opacity: [0.5, 1, 0.5]
+                  }}
+                  transition={{
+                    duration: 2 + i * 0.3,
+                    repeat: Infinity,
+                    delay: i * 0.2
+                  }}
+                />
+              ))}
+              
+              <div className="mb-4 inline-flex rounded-xl bg-blue-500/20 p-3 relative z-10 backdrop-blur-sm border border-blue-400/30">
+                <FileText className="h-6 w-6 text-blue-300" />
+              </div>
+              <h3 className="mb-3 text-lg font-serif font-bold text-blue-100 relative z-10">Verified Savings Documentation</h3>
+              <p className="text-sm text-blue-200/80 leading-relaxed relative z-10 mb-4">
+                Timestamped audit trail documenting contract compliance events with complete chain of custody.
               </p>
-              <div className="mt-3 flex items-center gap-1 text-xs font-semibold text-amber-900 group-hover:text-amber-950 relative z-10">
-                Review documentation standards <ChevronRight className="h-3.5 w-3.5" />
+              
+              {/* Mini bar chart */}
+              <div className="flex items-end gap-1 h-12 mb-3 relative z-10">
+                {[65, 85, 72, 95, 88].map((height, i) => (
+                  <motion.div
+                    key={i}
+                    className="flex-1 bg-gradient-to-t from-blue-600 to-blue-400 rounded-t"
+                    initial={{ height: 0 }}
+                    whileInView={{ height: `${height}%` }}
+                    transition={{ duration: 0.8, delay: i * 0.1 }}
+                  />
+                ))}
+              </div>
+              
+              <div className="flex items-center gap-2 text-xs font-semibold text-blue-300 group-hover:text-blue-200 relative z-10">
+                Review documentation <ChevronRight className="h-3.5 w-3.5" />
               </div>
             </motion.div>
 
+            {/* Pillar 2: Financial Impact - Emerald */}
             <motion.div
               variants={fadeInUpVariants}
-              whileHover={{ y: -4, scale: 1.02 }}
-              className="group relative rounded-lg border-2 border-[#D4AF37]/50 bg-gradient-to-br from-amber-100 via-yellow-50 to-amber-200 p-5 hover:border-[#FFD700] hover:shadow-2xl hover:shadow-[#FFD700]/60 cursor-pointer transition-all duration-300 overflow-hidden">
+              whileHover={{ y: -8, scale: 1.03 }}
+              className="group relative rounded-2xl border-2 border-emerald-500/50 bg-gradient-to-br from-emerald-950 via-slate-900 to-emerald-900 p-6 hover:border-emerald-400 hover:shadow-2xl hover:shadow-emerald-500/40 cursor-pointer transition-all duration-500 overflow-hidden">
               <Link href="/pillars/financial-impact-analysis" className="absolute inset-0 z-20" />
-              <div className="absolute inset-0 bg-gradient-to-br from-white/60 via-amber-100/30 to-yellow-200/40 pointer-events-none" />
-              <motion.div 
-                className="absolute inset-0 bg-gradient-to-tr from-transparent via-white/80 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none"
-                animate={{
-                  x: ['-100%', '200%'],
-                }}
-                transition={{
-                  duration: 3,
-                  repeat: Infinity,
-                  repeatDelay: 2,
-                  ease: "easeInOut",
-                  delay: 0.3
-                }}
-              />
-              <motion.div
-                className="absolute top-3 right-3 w-1 h-1 bg-white rounded-full"
-                animate={{
-                  scale: [0, 1.5, 0],
-                  opacity: [0, 1, 0]
-                }}
-                transition={{
-                  duration: 2,
-                  repeat: Infinity,
-                  delay: 0.2,
-                  repeatDelay: 1
-                }}
-              />
-              <motion.div
-                className="absolute top-5 right-7 w-1 h-1 bg-[#FFD700] rounded-full"
-                animate={{
-                  scale: [0, 1.2, 0],
-                  opacity: [0, 1, 0]
-                }}
-                transition={{
-                  duration: 2,
-                  repeat: Infinity,
-                  delay: 0.7,
-                  repeatDelay: 1
-                }}
-              />
               
-              <div className="mb-3 inline-flex rounded bg-amber-900/20 p-2.5 relative z-10">
-                <Shield className="h-5 w-5 text-amber-900" />
+              {/* Animated pie chart background */}
+              <div className="absolute right-4 top-4 opacity-20">
+                <svg width="120" height="120" viewBox="0 0 120 120">
+                  <motion.circle
+                    cx="60"
+                    cy="60"
+                    r="50"
+                    fill="none"
+                    stroke="#10b981"
+                    strokeWidth="20"
+                    strokeDasharray="157 314"
+                    initial={{ strokeDashoffset: 314 }}
+                    whileInView={{ strokeDashoffset: 0 }}
+                    transition={{ duration: 2, ease: "easeOut" }}
+                  />
+                  <motion.circle
+                    cx="60"
+                    cy="60"
+                    r="50"
+                    fill="none"
+                    stroke="#34d399"
+                    strokeWidth="20"
+                    strokeDasharray="94 314"
+                    strokeDashoffset="-157"
+                    initial={{ strokeDashoffset: 314 }}
+                    whileInView={{ strokeDashoffset: -157 }}
+                    transition={{ duration: 2, ease: "easeOut", delay: 0.3 }}
+                  />
+                </svg>
               </div>
-              <h3 className="mb-2 text-base font-serif font-bold text-amber-900 relative z-10">Financial Impact Analysis</h3>
-              <p className="text-xs text-amber-800 leading-relaxed relative z-10">
-                Quantitative assessment of pharmacy benefit optimization on enterprise profitability. Direct measurement of prescription cost containment effects on operating margins.
+
+              {/* Percentage indicator */}
+              <motion.div
+                className="absolute top-6 right-6 text-3xl font-bold text-emerald-300/40"
+                initial={{ opacity: 0, scale: 0.5 }}
+                whileInView={{ opacity: 1, scale: 1 }}
+                transition={{ duration: 0.8 }}
+              >
+                87%
+              </motion.div>
+              
+              <div className="mb-4 inline-flex rounded-xl bg-emerald-500/20 p-3 relative z-10 backdrop-blur-sm border border-emerald-400/30">
+                <Shield className="h-6 w-6 text-emerald-300" />
+              </div>
+              <h3 className="mb-3 text-lg font-serif font-bold text-emerald-100 relative z-10">Financial Impact Analysis</h3>
+              <p className="text-sm text-emerald-200/80 leading-relaxed relative z-10 mb-4">
+                Quantitative assessment of pharmacy benefit optimization on enterprise profitability.
               </p>
-              <div className="mt-3 flex items-center gap-1 text-xs font-semibold text-amber-900 group-hover:text-amber-950 relative z-10">
-                Review financial methodology <ChevronRight className="h-3.5 w-3.5" />
+              
+              {/* Line trend */}
+              <div className="h-12 mb-3 relative z-10">
+                <svg className="w-full h-full" viewBox="0 0 200 50">
+                  <motion.path
+                    d="M0,40 L40,30 L80,35 L120,15 L160,20 L200,5"
+                    stroke="#10b981"
+                    strokeWidth="2"
+                    fill="none"
+                    initial={{ pathLength: 0 }}
+                    whileInView={{ pathLength: 1 }}
+                    transition={{ duration: 1.5 }}
+                  />
+                </svg>
+              </div>
+              
+              <div className="flex items-center gap-2 text-xs font-semibold text-emerald-300 group-hover:text-emerald-200 relative z-10">
+                Review methodology <ChevronRight className="h-3.5 w-3.5" />
               </div>
             </motion.div>
 
+            {/* Pillar 3: Multi-Source Data - Purple */}
             <motion.div
               variants={fadeInUpVariants}
-              whileHover={{ y: -4, scale: 1.02 }}
-              className="group relative rounded-lg border-2 border-[#D4AF37]/50 bg-gradient-to-br from-amber-100 via-yellow-50 to-amber-200 p-5 hover:border-[#FFD700] hover:shadow-2xl hover:shadow-[#FFD700]/60 cursor-pointer transition-all duration-300 overflow-hidden">
+              whileHover={{ y: -8, scale: 1.03 }}
+              className="group relative rounded-2xl border-2 border-purple-500/50 bg-gradient-to-br from-purple-950 via-slate-900 to-purple-900 p-6 hover:border-purple-400 hover:shadow-2xl hover:shadow-purple-500/40 cursor-pointer transition-all duration-500 overflow-hidden">
               <Link href="/pillars/multi-source-data-reconciliation" className="absolute inset-0 z-20" />
-              <div className="absolute inset-0 bg-gradient-to-br from-white/60 via-amber-100/30 to-yellow-200/40 pointer-events-none" />
-              <motion.div 
-                className="absolute inset-0 bg-gradient-to-tr from-transparent via-white/80 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none"
-                animate={{
-                  x: ['-100%', '200%'],
-                }}
-                transition={{
-                  duration: 3,
-                  repeat: Infinity,
-                  repeatDelay: 2,
-                  ease: "easeInOut",
-                  delay: 0.6
-                }}
-              />
-              <motion.div
-                className="absolute top-2 right-4 w-1 h-1 bg-white rounded-full"
-                animate={{
-                  scale: [0, 1.5, 0],
-                  opacity: [0, 1, 0]
-                }}
-                transition={{
-                  duration: 2,
-                  repeat: Infinity,
-                  delay: 0.4,
-                  repeatDelay: 1
-                }}
-              />
-              <motion.div
-                className="absolute top-6 right-2 w-1 h-1 bg-[#FFD700] rounded-full"
-                animate={{
-                  scale: [0, 1.2, 0],
-                  opacity: [0, 1, 0]
-                }}
-                transition={{
-                  duration: 2,
-                  repeat: Infinity,
-                  delay: 0.9,
-                  repeatDelay: 1
-                }}
-              />
               
-              <div className="mb-3 inline-flex rounded bg-amber-900/20 p-2.5 relative z-10">
-                <Database className="h-5 w-5 text-amber-900" />
+              {/* Database network visualization */}
+              <div className="absolute inset-0 opacity-10">
+                {[...Array(8)].map((_, i) => (
+                  <motion.div
+                    key={i}
+                    className="absolute w-8 h-8 border-2 border-purple-400 rounded-full"
+                    style={{
+                      left: `${30 + (i % 3) * 25}%`,
+                      top: `${20 + Math.floor(i / 3) * 25}%`,
+                    }}
+                    animate={{
+                      scale: [1, 1.1, 1],
+                      opacity: [0.3, 0.6, 0.3]
+                    }}
+                    transition={{
+                      duration: 2,
+                      repeat: Infinity,
+                      delay: i * 0.2
+                    }}
+                  />
+                ))}
               </div>
-              <h3 className="mb-2 text-base font-serif font-bold text-amber-900 relative z-10">Multi-Source Data Reconciliation</h3>
-              <p className="text-xs text-amber-800 leading-relaxed relative z-10">
-                Integration and normalization of claims data, contract formularies, and pricing benchmarks across disparate healthcare data sources for actuarial analysis.
+              
+              <div className="mb-4 inline-flex rounded-xl bg-purple-500/20 p-3 relative z-10 backdrop-blur-sm border border-purple-400/30">
+                <Database className="h-6 w-6 text-purple-300" />
+              </div>
+              <h3 className="mb-3 text-lg font-serif font-bold text-purple-100 relative z-10">Multi-Source Data Reconciliation</h3>
+              <p className="text-sm text-purple-200/80 leading-relaxed relative z-10 mb-4">
+                Integration and normalization across disparate healthcare data sources.
               </p>
-              <div className="mt-3 flex items-center gap-1 text-xs font-semibold text-amber-900 group-hover:text-amber-950 relative z-10">
-                Review integration protocols <ChevronRight className="h-3.5 w-3.5" />
+              
+              {/* Stacked area chart */}
+              <div className="h-12 mb-3 relative z-10">
+                <svg className="w-full h-full" viewBox="0 0 200 50" preserveAspectRatio="none">
+                  <motion.path
+                    d="M0,40 Q50,35 100,38 T200,30 L200,50 L0,50 Z"
+                    fill="url(#purpleGrad1)"
+                    initial={{ opacity: 0 }}
+                    whileInView={{ opacity: 0.6 }}
+                    transition={{ duration: 1 }}
+                  />
+                  <motion.path
+                    d="M0,30 Q50,25 100,28 T200,20 L200,50 L0,50 Z"
+                    fill="url(#purpleGrad2)"
+                    initial={{ opacity: 0 }}
+                    whileInView={{ opacity: 0.4 }}
+                    transition={{ duration: 1, delay: 0.2 }}
+                  />
+                  <defs>
+                    <linearGradient id="purpleGrad1" x1="0%" y1="0%" x2="0%" y2="100%">
+                      <stop offset="0%" stopColor="#a855f7" stopOpacity="0.8" />
+                      <stop offset="100%" stopColor="#a855f7" stopOpacity="0" />
+                    </linearGradient>
+                    <linearGradient id="purpleGrad2" x1="0%" y1="0%" x2="0%" y2="100%">
+                      <stop offset="0%" stopColor="#c084fc" stopOpacity="0.6" />
+                      <stop offset="100%" stopColor="#c084fc" stopOpacity="0" />
+                    </linearGradient>
+                  </defs>
+                </svg>
+              </div>
+              
+              <div className="flex items-center gap-2 text-xs font-semibold text-purple-300 group-hover:text-purple-200 relative z-10">
+                Review protocols <ChevronRight className="h-3.5 w-3.5" />
               </div>
             </motion.div>
 
+            {/* Pillar 4: Contract Intelligence - Cyan */}
             <motion.div
               variants={fadeInUpVariants}
-              whileHover={{ y: -4, scale: 1.02 }}
-              className="group relative rounded-lg border-2 border-[#D4AF37]/50 bg-gradient-to-br from-amber-100 via-yellow-50 to-amber-200 p-5 hover:border-[#FFD700] hover:shadow-2xl hover:shadow-[#FFD700]/60 cursor-pointer transition-all duration-300 overflow-hidden">
+              whileHover={{ y: -8, scale: 1.03 }}
+              className="group relative rounded-2xl border-2 border-cyan-500/50 bg-gradient-to-br from-cyan-950 via-slate-900 to-cyan-900 p-6 hover:border-cyan-400 hover:shadow-2xl hover:shadow-cyan-500/40 cursor-pointer transition-all duration-500 overflow-hidden">
               <Link href="/pillars/contract-intelligence-compliance" className="absolute inset-0 z-20" />
-              <div className="absolute inset-0 bg-gradient-to-br from-white/60 via-amber-100/30 to-yellow-200/40 pointer-events-none" />
-              <motion.div 
-                className="absolute inset-0 bg-gradient-to-tr from-transparent via-white/80 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none"
-                animate={{
-                  x: ['-100%', '200%'],
-                }}
-                transition={{
-                  duration: 3,
-                  repeat: Infinity,
-                  repeatDelay: 2,
-                  ease: "easeInOut",
-                  delay: 0.9
-                }}
-              />
-              <motion.div
-                className="absolute top-4 right-5 w-1 h-1 bg-white rounded-full"
-                animate={{
-                  scale: [0, 1.5, 0],
-                  opacity: [0, 1, 0]
-                }}
-                transition={{
-                  duration: 2,
-                  repeat: Infinity,
-                  delay: 0.6,
-                  repeatDelay: 1
-                }}
-              />
-              <motion.div
-                className="absolute top-2 right-8 w-1 h-1 bg-[#FFD700] rounded-full"
-                animate={{
-                  scale: [0, 1.2, 0],
-                  opacity: [0, 1, 0]
-                }}
-                transition={{
-                  duration: 2,
-                  repeat: Infinity,
-                  delay: 1.1,
-                  repeatDelay: 1
-                }}
-              />
               
-              <div className="mb-3 inline-flex rounded bg-amber-900/20 p-2.5 relative z-10">
-                <FileText className="h-5 w-5 text-amber-900" />
+              {/* Radar chart visualization */}
+              <div className="absolute right-4 top-4 opacity-20">
+                <svg width="100" height="100" viewBox="0 0 100 100">
+                  <motion.polygon
+                    points="50,10 80,30 80,70 50,90 20,70 20,30"
+                    fill="none"
+                    stroke="#06b6d4"
+                    strokeWidth="2"
+                    initial={{ scale: 0 }}
+                    whileInView={{ scale: 1 }}
+                    transition={{ duration: 1 }}
+                  />
+                  <motion.polygon
+                    points="50,25 70,35 70,65 50,75 30,65 30,35"
+                    fill="#06b6d4"
+                    fillOpacity="0.3"
+                    initial={{ scale: 0 }}
+                    whileInView={{ scale: 1 }}
+                    transition={{ duration: 1, delay: 0.3 }}
+                  />
+                </svg>
               </div>
-              <h3 className="mb-2 text-base font-serif font-bold text-amber-900 relative z-10">Contract Intelligence & Compliance</h3>
-              <p className="text-xs text-amber-800 leading-relaxed relative z-10">
-                Automated PBM contract clause extraction, fiduciary scoring, and continuous monitoring of contractual guarantee fulfillment against actual performance metrics.
+              
+              <div className="mb-4 inline-flex rounded-xl bg-cyan-500/20 p-3 relative z-10 backdrop-blur-sm border border-cyan-400/30">
+                <FileText className="h-6 w-6 text-cyan-300" />
+              </div>
+              <h3 className="mb-3 text-lg font-serif font-bold text-cyan-100 relative z-10">Contract Intelligence</h3>
+              <p className="text-sm text-cyan-200/80 leading-relaxed relative z-10 mb-4">
+                Automated PBM contract clause extraction and continuous monitoring.
               </p>
-              <div className="mt-3 flex items-center gap-1 text-xs font-semibold text-amber-900 group-hover:text-amber-950 relative z-10">
-                Review contract monitoring <ChevronRight className="h-3.5 w-3.5" />
+              
+              {/* Progress bars */}
+              <div className="space-y-2 mb-3 relative z-10">
+                {[92, 78, 85].map((value, i) => (
+                  <div key={i} className="flex items-center gap-2">
+                    <div className="flex-1 h-1.5 bg-cyan-900/30 rounded-full overflow-hidden">
+                      <motion.div
+                        className="h-full bg-gradient-to-r from-cyan-600 to-cyan-400"
+                        initial={{ width: 0 }}
+                        whileInView={{ width: `${value}%` }}
+                        transition={{ duration: 1, delay: i * 0.2 }}
+                      />
+                    </div>
+                    <span className="text-xs text-cyan-400 font-mono w-8">{value}%</span>
+                  </div>
+                ))}
+              </div>
+              
+              <div className="flex items-center gap-2 text-xs font-semibold text-cyan-300 group-hover:text-cyan-200 relative z-10">
+                Review monitoring <ChevronRight className="h-3.5 w-3.5" />
               </div>
             </motion.div>
 
+            {/* Pillar 5: Actuarial Risk - Orange */}
             <motion.div
               variants={fadeInUpVariants}
-              whileHover={{ y: -4, scale: 1.02 }}
-              className="group relative rounded-lg border-2 border-[#D4AF37]/50 bg-gradient-to-br from-amber-100 via-yellow-50 to-amber-200 p-5 hover:border-[#FFD700] hover:shadow-2xl hover:shadow-[#FFD700]/60 cursor-pointer transition-all duration-300 overflow-hidden">
+              whileHover={{ y: -8, scale: 1.03 }}
+              className="group relative rounded-2xl border-2 border-orange-500/50 bg-gradient-to-br from-orange-950 via-slate-900 to-orange-900 p-6 hover:border-orange-400 hover:shadow-2xl hover:shadow-orange-500/40 cursor-pointer transition-all duration-500 overflow-hidden">
               <Link href="/pillars/actuarial-risk-modeling" className="absolute inset-0 z-20" />
-              <div className="absolute inset-0 bg-gradient-to-br from-white/60 via-amber-100/30 to-yellow-200/40 pointer-events-none" />
-              <motion.div 
-                className="absolute inset-0 bg-gradient-to-tr from-transparent via-white/80 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none"
-                animate={{
-                  x: ['-100%', '200%'],
-                }}
-                transition={{
-                  duration: 3,
-                  repeat: Infinity,
-                  repeatDelay: 2,
-                  ease: "easeInOut",
-                  delay: 1.2
-                }}
-              />
-              <motion.div
-                className="absolute top-3 right-6 w-1 h-1 bg-white rounded-full"
-                animate={{
-                  scale: [0, 1.5, 0],
-                  opacity: [0, 1, 0]
-                }}
-                transition={{
-                  duration: 2,
-                  repeat: Infinity,
-                  delay: 0.8,
-                  repeatDelay: 1
-                }}
-              />
-              <motion.div
-                className="absolute top-5 right-3 w-1 h-1 bg-[#FFD700] rounded-full"
-                animate={{
-                  scale: [0, 1.2, 0],
-                  opacity: [0, 1, 0]
-                }}
-                transition={{
-                  duration: 2,
-                  repeat: Infinity,
-                  delay: 1.3,
-                  repeatDelay: 1
-                }}
-              />
               
-              <div className="mb-3 inline-flex rounded bg-amber-900/20 p-2.5 relative z-10">
-                <TrendingUp className="h-5 w-5 text-amber-900" />
+              {/* Wave pattern */}
+              <div className="absolute inset-0 opacity-10">
+                <svg className="w-full h-full" viewBox="0 0 200 200" preserveAspectRatio="none">
+                  <motion.path
+                    d="M0,100 Q25,80 50,100 T100,100 T150,100 T200,100"
+                    stroke="#f97316"
+                    strokeWidth="2"
+                    fill="none"
+                    animate={{
+                      d: [
+                        "M0,100 Q25,80 50,100 T100,100 T150,100 T200,100",
+                        "M0,100 Q25,120 50,100 T100,100 T150,100 T200,100",
+                        "M0,100 Q25,80 50,100 T100,100 T150,100 T200,100"
+                      ]
+                    }}
+                    transition={{ duration: 3, repeat: Infinity }}
+                  />
+                </svg>
               </div>
-              <h3 className="mb-2 text-base font-serif font-bold text-amber-900 relative z-10">Actuarial Risk Modeling</h3>
-              <p className="text-xs text-amber-800 leading-relaxed relative z-10">
-                Monte Carlo simulation engines for benefit cost forecasting, stop-loss optimization, and multi-year trend projection with confidence intervals and scenario planning.
+              
+              <div className="mb-4 inline-flex rounded-xl bg-orange-500/20 p-3 relative z-10 backdrop-blur-sm border border-orange-400/30">
+                <TrendingUp className="h-6 w-6 text-orange-300" />
+              </div>
+              <h3 className="mb-3 text-lg font-serif font-bold text-orange-100 relative z-10">Actuarial Risk Modeling</h3>
+              <p className="text-sm text-orange-200/80 leading-relaxed relative z-10 mb-4">
+                Monte Carlo simulation engines for benefit cost forecasting.
               </p>
-              <div className="mt-3 flex items-center gap-1 text-xs font-semibold text-amber-900 group-hover:text-amber-950 relative z-10">
-                Review risk methodology <ChevronRight className="h-3.5 w-3.5" />
+              
+              {/* Scatter plot dots */}
+              <div className="h-12 mb-3 relative z-10">
+                {[...Array(20)].map((_, i) => (
+                  <motion.div
+                    key={i}
+                    className="absolute w-1.5 h-1.5 bg-orange-400 rounded-full"
+                    style={{
+                      left: `${(i % 10) * 10}%`,
+                      bottom: `${20 + Math.random() * 60}%`,
+                    }}
+                    initial={{ opacity: 0, scale: 0 }}
+                    whileInView={{ opacity: 0.8, scale: 1 }}
+                    transition={{ duration: 0.5, delay: i * 0.05 }}
+                  />
+                ))}
+              </div>
+              
+              <div className="flex items-center gap-2 text-xs font-semibold text-orange-300 group-hover:text-orange-200 relative z-10">
+                Review methodology <ChevronRight className="h-3.5 w-3.5" />
               </div>
             </motion.div>
 
+            {/* Pillar 6: Real-Time Claims - Red */}
             <motion.div
               variants={fadeInUpVariants}
-              whileHover={{ y: -4, scale: 1.02 }}
-              className="group relative rounded-lg border-2 border-[#D4AF37]/50 bg-gradient-to-br from-amber-100 via-yellow-50 to-amber-200 p-5 hover:border-[#FFD700] hover:shadow-2xl hover:shadow-[#FFD700]/60 cursor-pointer transition-all duration-300 overflow-hidden">
+              whileHover={{ y: -8, scale: 1.03 }}
+              className="group relative rounded-2xl border-2 border-red-500/50 bg-gradient-to-br from-red-950 via-slate-900 to-red-900 p-6 hover:border-red-400 hover:shadow-2xl hover:shadow-red-500/40 cursor-pointer transition-all duration-500 overflow-hidden">
               <Link href="/pillars/realtime-claims-surveillance" className="absolute inset-0 z-20" />
-              <div className="absolute inset-0 bg-gradient-to-br from-white/60 via-amber-100/30 to-yellow-200/40 pointer-events-none" />
-              <motion.div 
-                className="absolute inset-0 bg-gradient-to-tr from-transparent via-white/80 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none"
-                animate={{
-                  x: ['-100%', '200%'],
-                }}
-                transition={{
-                  duration: 3,
-                  repeat: Infinity,
-                  repeatDelay: 2,
-                  ease: "easeInOut",
-                  delay: 1.5
-                }}
-              />
-              <motion.div
-                className="absolute top-2 right-7 w-1 h-1 bg-white rounded-full"
-                animate={{
-                  scale: [0, 1.5, 0],
-                  opacity: [0, 1, 0]
-                }}
-                transition={{
-                  duration: 2,
-                  repeat: Infinity,
-                  delay: 1.0,
-                  repeatDelay: 1
-                }}
-              />
-              <motion.div
-                className="absolute top-6 right-4 w-1 h-1 bg-[#FFD700] rounded-full"
-                animate={{
-                  scale: [0, 1.2, 0],
-                  opacity: [0, 1, 0]
-                }}
-                transition={{
-                  duration: 2,
-                  repeat: Infinity,
-                  delay: 1.5,
-                  repeatDelay: 1
-                }}
-              />
               
-              <div className="mb-3 inline-flex rounded bg-amber-900/20 p-2.5 relative z-10">
-                <Activity className="h-5 w-5 text-amber-900" />
+              {/* Pulse waves */}
+              <div className="absolute inset-0 opacity-20">
+                <svg className="w-full h-full" viewBox="0 0 200 100">
+                  <motion.path
+                    d="M0,50 L30,50 L40,20 L50,80 L60,50 L200,50"
+                    stroke="#ef4444"
+                    strokeWidth="2"
+                    fill="none"
+                    animate={{
+                      opacity: [0.3, 1, 0.3]
+                    }}
+                    transition={{ duration: 2, repeat: Infinity }}
+                  />
+                </svg>
               </div>
-              <h3 className="mb-2 text-base font-serif font-bold text-amber-900 relative z-10">Real-Time Claims Surveillance</h3>
-              <p className="text-xs text-amber-800 leading-relaxed relative z-10">
-                Live streaming anomaly detection for prescription claims processing, flagging formulary violations, spread pricing irregularities, and specialty drug overcharges as they occur.
+
+              {/* Live indicator */}
+              <motion.div
+                className="absolute top-6 right-6 flex items-center gap-2"
+                animate={{ opacity: [0.5, 1, 0.5] }}
+                transition={{ duration: 1.5, repeat: Infinity }}
+              >
+                <div className="w-2 h-2 bg-red-400 rounded-full shadow-lg shadow-red-500/50" />
+                <span className="text-xs text-red-300 font-mono">LIVE</span>
+              </motion.div>
+              
+              <div className="mb-4 inline-flex rounded-xl bg-red-500/20 p-3 relative z-10 backdrop-blur-sm border border-red-400/30">
+                <Activity className="h-6 w-6 text-red-300" />
+              </div>
+              <h3 className="mb-3 text-lg font-serif font-bold text-red-100 relative z-10">Real-Time Claims Surveillance</h3>
+              <p className="text-sm text-red-200/80 leading-relaxed relative z-10 mb-4">
+                Live streaming anomaly detection for prescription claims processing.
               </p>
-              <div className="mt-3 flex items-center gap-1 text-xs font-semibold text-amber-900 group-hover:text-amber-950 relative z-10">
-                Review surveillance protocols <ChevronRight className="h-3.5 w-3.5" />
+              
+              {/* Activity monitor */}
+              <div className="flex items-end gap-0.5 h-12 mb-3 relative z-10">
+                {[...Array(30)].map((_, i) => (
+                  <motion.div
+                    key={i}
+                    className="flex-1 bg-gradient-to-t from-red-600 to-red-400 rounded-t"
+                    animate={{
+                      height: [`${20 + Math.random() * 80}%`, `${20 + Math.random() * 80}%`]
+                    }}
+                    transition={{
+                      duration: 1.5,
+                      repeat: Infinity,
+                      delay: i * 0.05
+                    }}
+                  />
+                ))}
+              </div>
+              
+              <div className="flex items-center gap-2 text-xs font-semibold text-red-300 group-hover:text-red-200 relative z-10">
+                Review protocols <ChevronRight className="h-3.5 w-3.5" />
               </div>
             </motion.div>
 
+            {/* Pillar 7: Regulatory Framework - Indigo */}
             <motion.div
               variants={fadeInUpVariants}
-              whileHover={{ y: -4, scale: 1.02 }}
-              className="group relative rounded-lg border-2 border-[#D4AF37]/50 bg-gradient-to-br from-amber-100 via-yellow-50 to-amber-200 p-5 hover:border-[#FFD700] hover:shadow-2xl hover:shadow-[#FFD700]/60 cursor-pointer transition-all duration-300 overflow-hidden">
+              whileHover={{ y: -8, scale: 1.03 }}
+              className="group relative rounded-2xl border-2 border-indigo-500/50 bg-gradient-to-br from-indigo-950 via-slate-900 to-indigo-900 p-6 hover:border-indigo-400 hover:shadow-2xl hover:shadow-indigo-500/40 cursor-pointer transition-all duration-500 overflow-hidden">
               <Link href="/pillars/regulatory-legal-framework" className="absolute inset-0 z-20" />
-              <div className="absolute inset-0 bg-gradient-to-br from-white/60 via-amber-100/30 to-yellow-200/40 pointer-events-none" />
-              <motion.div 
-                className="absolute inset-0 bg-gradient-to-tr from-transparent via-white/80 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none"
-                animate={{
-                  x: ['-100%', '200%'],
-                }}
-                transition={{
-                  duration: 3,
-                  repeat: Infinity,
-                  repeatDelay: 2,
-                  ease: "easeInOut",
-                  delay: 1.8
-                }}
-              />
-              <motion.div
-                className="absolute top-4 right-2 w-1 h-1 bg-white rounded-full"
-                animate={{
-                  scale: [0, 1.5, 0],
-                  opacity: [0, 1, 0]
-                }}
-                transition={{
-                  duration: 2,
-                  repeat: Infinity,
-                  delay: 1.2,
-                  repeatDelay: 1
-                }}
-              />
-              <motion.div
-                className="absolute top-2 right-5 w-1 h-1 bg-[#FFD700] rounded-full"
-                animate={{
-                  scale: [0, 1.2, 0],
-                  opacity: [0, 1, 0]
-                }}
-                transition={{
-                  duration: 2,
-                  repeat: Infinity,
-                  delay: 1.7,
-                  repeatDelay: 1
-                }}
-              />
               
-              <div className="mb-3 inline-flex rounded bg-amber-900/20 p-2.5 relative z-10">
-                <Award className="h-5 w-5 text-amber-900" />
+              {/* Shield pattern */}
+              <div className="absolute right-0 top-0 opacity-10">
+                <svg width="150" height="150" viewBox="0 0 150 150">
+                  <motion.path
+                    d="M75,20 L120,40 L120,80 Q120,120 75,130 Q30,120 30,80 L30,40 Z"
+                    fill="none"
+                    stroke="#6366f1"
+                    strokeWidth="2"
+                    initial={{ pathLength: 0 }}
+                    whileInView={{ pathLength: 1 }}
+                    transition={{ duration: 2 }}
+                  />
+                </svg>
               </div>
-              <h3 className="mb-2 text-base font-serif font-bold text-amber-900 relative z-10">Regulatory & Legal Framework</h3>
-              <p className="text-xs text-amber-800 leading-relaxed relative z-10">
-                ERISA fiduciary compliance validation, DOL audit readiness, and CAA transparency requirements enforcement with automated legal documentation and evidence preservation.
+              
+              <div className="mb-4 inline-flex rounded-xl bg-indigo-500/20 p-3 relative z-10 backdrop-blur-sm border border-indigo-400/30">
+                <Award className="h-6 w-6 text-indigo-300" />
+              </div>
+              <h3 className="mb-3 text-lg font-serif font-bold text-indigo-100 relative z-10">Regulatory Framework</h3>
+              <p className="text-sm text-indigo-200/80 leading-relaxed relative z-10 mb-4">
+                ERISA fiduciary compliance validation and DOL audit readiness.
               </p>
-              <div className="mt-3 flex items-center gap-1 text-xs font-semibold text-amber-900 group-hover:text-amber-950 relative z-10">
-                Review compliance standards <ChevronRight className="h-3.5 w-3.5" />
+              
+              {/* Compliance checkmarks */}
+              <div className="space-y-2 mb-3 relative z-10">
+                {['ERISA 404', 'DOL Ready', 'CAA Compliant'].map((item, i) => (
+                  <motion.div
+                    key={i}
+                    className="flex items-center gap-2"
+                    initial={{ opacity: 0, x: -10 }}
+                    whileInView={{ opacity: 1, x: 0 }}
+                    transition={{ duration: 0.5, delay: i * 0.1 }}
+                  >
+                    <CheckCircle2 className="h-3.5 w-3.5 text-indigo-400" />
+                    <span className="text-xs text-indigo-300">{item}</span>
+                  </motion.div>
+                ))}
+              </div>
+              
+              <div className="flex items-center gap-2 text-xs font-semibold text-indigo-300 group-hover:text-indigo-200 relative z-10">
+                Review standards <ChevronRight className="h-3.5 w-3.5" />
               </div>
             </motion.div>
 
+            {/* Pillar 8: Predictive Analytics - Teal */}
             <motion.div
               variants={fadeInUpVariants}
-              whileHover={{ y: -4, scale: 1.02 }}
-              className="group relative rounded-lg border-2 border-[#D4AF37]/50 bg-gradient-to-br from-amber-100 via-yellow-50 to-amber-200 p-5 hover:border-[#FFD700] hover:shadow-2xl hover:shadow-[#FFD700]/60 cursor-pointer transition-all duration-300 overflow-hidden">
+              whileHover={{ y: -8, scale: 1.03 }}
+              className="group relative rounded-2xl border-2 border-teal-500/50 bg-gradient-to-br from-teal-950 via-slate-900 to-teal-900 p-6 hover:border-teal-400 hover:shadow-2xl hover:shadow-teal-500/40 cursor-pointer transition-all duration-500 overflow-hidden">
               <Link href="/pillars/predictive-cost-analytics" className="absolute inset-0 z-20" />
-              <div className="absolute inset-0 bg-gradient-to-br from-white/60 via-amber-100/30 to-yellow-200/40 pointer-events-none" />
-              <motion.div 
-                className="absolute inset-0 bg-gradient-to-tr from-transparent via-white/80 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none"
-                animate={{
-                  x: ['-100%', '200%'],
-                }}
-                transition={{
-                  duration: 3,
-                  repeat: Infinity,
-                  repeatDelay: 2,
-                  ease: "easeInOut",
-                  delay: 2.1
-                }}
-              />
-              <motion.div
-                className="absolute top-3 right-4 w-1 h-1 bg-white rounded-full"
-                animate={{
-                  scale: [0, 1.5, 0],
-                  opacity: [0, 1, 0]
-                }}
-                transition={{
-                  duration: 2,
-                  repeat: Infinity,
-                  delay: 1.4,
-                  repeatDelay: 1
-                }}
-              />
-              <motion.div
-                className="absolute top-5 right-8 w-1 h-1 bg-[#FFD700] rounded-full"
-                animate={{
-                  scale: [0, 1.2, 0],
-                  opacity: [0, 1, 0]
-                }}
-                transition={{
-                  duration: 2,
-                  repeat: Infinity,
-                  delay: 1.9,
-                  repeatDelay: 1
-                }}
-              />
               
-              <div className="mb-3 inline-flex rounded bg-amber-900/20 p-2.5 relative z-10">
-                <BarChart3 className="h-5 w-5 text-amber-900" />
+              {/* Forecast curve */}
+              <div className="absolute inset-0 opacity-15">
+                <svg className="w-full h-full" viewBox="0 0 200 200" preserveAspectRatio="none">
+                  <motion.path
+                    d="M0,150 Q50,120 100,130 T200,90"
+                    stroke="#14b8a6"
+                    strokeWidth="3"
+                    fill="none"
+                    strokeDasharray="5,5"
+                    initial={{ pathLength: 0 }}
+                    whileInView={{ pathLength: 1 }}
+                    transition={{ duration: 2, ease: "easeInOut" }}
+                  />
+                  <motion.circle
+                    cx="200"
+                    cy="90"
+                    r="8"
+                    fill="#14b8a6"
+                    initial={{ scale: 0 }}
+                    whileInView={{ scale: 1 }}
+                    transition={{ duration: 0.5, delay: 1.5 }}
+                  />
+                </svg>
               </div>
-              <h3 className="mb-2 text-base font-serif font-bold text-amber-900 relative z-10">Predictive Cost Analytics</h3>
-              <p className="text-xs text-amber-800 leading-relaxed relative z-10">
-                Machine learning models for future spend forecasting, therapeutic substitution impact analysis, and proactive intervention opportunity identification to prevent cost escalation.
+
+              {/* Trend arrow */}
+              <motion.div
+                className="absolute top-6 right-6 text-teal-400"
+                animate={{ y: [-2, 2, -2] }}
+                transition={{ duration: 2, repeat: Infinity }}
+              >
+                <TrendingUp className="h-8 w-8 opacity-30" />
+              </motion.div>
+              
+              <div className="mb-4 inline-flex rounded-xl bg-teal-500/20 p-3 relative z-10 backdrop-blur-sm border border-teal-400/30">
+                <BarChart3 className="h-6 w-6 text-teal-300" />
+              </div>
+              <h3 className="mb-3 text-lg font-serif font-bold text-teal-100 relative z-10">Predictive Cost Analytics</h3>
+              <p className="text-sm text-teal-200/80 leading-relaxed relative z-10 mb-4">
+                Machine learning models for future spend forecasting.
               </p>
-              <div className="mt-3 flex items-center gap-1 text-xs font-semibold text-amber-900 group-hover:text-amber-950 relative z-10">
-                Review predictive models <ChevronRight className="h-3.5 w-3.5" />
+              
+              {/* Prediction curve */}
+              <div className="h-12 mb-3 relative z-10">
+                <svg className="w-full h-full" viewBox="0 0 200 50">
+                  <motion.path
+                    d="M0,45 Q50,40 100,35 T200,15"
+                    stroke="#14b8a6"
+                    strokeWidth="2"
+                    fill="none"
+                    initial={{ pathLength: 0 }}
+                    whileInView={{ pathLength: 1 }}
+                    transition={{ duration: 1.5 }}
+                  />
+                  <motion.path
+                    d="M100,35 L200,15"
+                    stroke="#14b8a6"
+                    strokeWidth="2"
+                    strokeDasharray="4,4"
+                    fill="none"
+                    initial={{ opacity: 0 }}
+                    whileInView={{ opacity: 0.5 }}
+                    transition={{ duration: 1, delay: 1 }}
+                  />
+                </svg>
+              </div>
+              
+              <div className="flex items-center gap-2 text-xs font-semibold text-teal-300 group-hover:text-teal-200 relative z-10">
+                Review models <ChevronRight className="h-3.5 w-3.5" />
               </div>
             </motion.div>
 

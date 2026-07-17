@@ -147,11 +147,11 @@ def calculate_migration_opportunity(claims_data, utilization_history):
 claims = load_claims('2024')
 result = calculate_migration_opportunity(claims, population=10000)
 
-print("Total Annual Savings: ${:,.0f}".format(result['total_annual_savings']))
-print("PMPM Reduction: ${:.2f}".format(result['pmpm_impact']))
+print("Total Annual Savings: {:,.0f}".format(result['total_annual_savings']))
+print("PMPM Reduction: {:.2f}".format(result['pmpm_impact']))
 print("\\nTop 5 Opportunities:")
 for opp in result['top_opportunities'][:5]:
-    print("  {}: ${:,.0f}/year ({} procedures)".format(
+    print("  {}: {:,.0f}/year ({} procedures)".format(
         opp['procedure'], opp['annual_savings'], opp['current_volume']))
 `}
         </VegasCodeBlock>

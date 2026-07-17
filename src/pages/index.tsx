@@ -506,11 +506,10 @@ export default function HomePage() {
         </section>
 
         <section className="relative py-16 border-t border-[#1F2937] overflow-hidden">
-          <div className="absolute inset-0 pointer-events-none opacity-10">
-            <TechBackdrop intensity={0.3} density={0.6} />
+          <div className="absolute inset-0 pointer-events-none">
+            <div className="absolute inset-0 opacity-10 bg-gradient-to-b from-transparent via-[#B8860B]/5 to-transparent" />
           </div>
-
-          <div className="max-w-5xl mx-auto px-4 md:px-8 relative z-10">
+          <div className="max-w-7xl mx-auto px-4 md:px-8 relative z-10">
             
             <AnimatedSection className="mb-10 text-center space-y-4">
               <span className="text-xs font-mono text-[#B8860B] uppercase tracking-widest font-semibold">Absolute Transparency</span>

@@ -1,315 +1,273 @@
-import { useState } from "react";
-import Head from "next/head";
+import { Award, Database, Target, AlertTriangle, CheckCircle2, BarChart3, Users, Zap, TrendingUp } from "lucide-react";
+import { EngineDetailLayout, VegasSection, VegasMetricCard, VegasCodeBlock, VegasFeatureGrid, VegasFeatureCard } from "@/components/engines/EngineDetailLayout";
 import Link from "next/link";
-import Footer from "@/components/Footer";
-import Nav from "@/components/Nav";
-import { Award, DollarSign, Users, ArrowLeft, Target, TrendingUp, BarChart3, CheckCircle2 } from "lucide-react";
 
-export default function BenefitRichnessEngine() {
-  const [activeTab, setActiveTab] = useState("overview");
-
+export default function BenefitRichnessPage() {
   return (
-    <>
-      <Head>
-        <title>Benefit Richness Scoring Engine | Kincaid IQ</title>
-        <meta name="description" content="Quantify plan generosity across medical, pharmacy, and ancillary benefits to optimize competitive positioning and cost management." />
-      </Head>
+    <EngineDetailLayout
+      title="Benefit Richness Scoring Engine"
+      category="Strategic Benchmarking"
+      tagline="Quantify Plan Generosity Across Medical, Rx, and Ancillary—Know Your Competitive Position vs. Peer Deciles"
+      gradient="from-purple-600 via-fuchsia-600 to-pink-600"
+    >
+      {/* Problem Statement */}
+      <VegasSection title="The Cost vs. Value Confusion" icon={AlertTriangle}>
+        <div className="grid md:grid-cols-2 gap-8">
+          <div>
+            <h3 className="text-2xl font-black text-red-400 mb-4">Spend-Based Thinking</h3>
+            <ul className="space-y-3 text-white/80 leading-relaxed">
+              <li className="flex items-start gap-3">
+                <span className="text-red-400">✗</span>
+                <span>$15K PEPY could be stingy (high cost, low value) or generous (efficient delivery)</span>
+              </li>
+              <li className="flex items-start gap-3">
+                <span className="text-red-400">✗</span>
+                <span>Cannot quantify competitive position vs. peer deciles</span>
+              </li>
+              <li className="flex items-start gap-3">
+                <span className="text-red-400">✗</span>
+                <span>No visibility into which benefit categories drive perceived value</span>
+              </li>
+              <li className="flex items-start gap-3">
+                <span className="text-red-400">✗</span>
+                <span>Overpaying for mediocre coverage or delivering premium efficiently?</span>
+              </li>
+            </ul>
+          </div>
+          <div>
+            <h3 className="text-2xl font-black text-purple-400 mb-4">Richness-Based Intelligence</h3>
+            <ul className="space-y-3 text-white/80 leading-relaxed">
+              <li className="flex items-start gap-3">
+                <span className="text-purple-400">✓</span>
+                <span>Composite score (0-100) separates cost from actuarial value</span>
+              </li>
+              <li className="flex items-start gap-3">
+                <span className="text-purple-400">✓</span>
+                <span>Peer percentile ranking by industry/region/size cohort</span>
+              </li>
+              <li className="flex items-start gap-3">
+                <span className="text-purple-400">✓</span>
+                <span>Category-level visibility: medical, rx, dental, vision, mental health, etc.</span>
+              </li>
+              <li className="flex items-start gap-3">
+                <span className="text-purple-400">✓</span>
+                <span>Strategic insights: over-investment zones vs. competitive gaps</span>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </VegasSection>
 
-      <Nav />
+      {/* Technical Architecture */}
+      <VegasSection title="Composite Richness Algorithm" icon={Database}>
+        <VegasCodeBlock language="python">
+{`# Benefit Richness Scoring Engine
+def calculate_richness_score(plan_design, benchmark_cohort):
+    component_scores = {}
+    
+    # Medical Plan Richness (40% weight)
+    medical_factors = {
+        'deductible_individual': plan_design.deductible_individual,
+        'deductible_family': plan_design.deductible_family,
+        'oop_max_individual': plan_design.oop_max_individual,
+        'oop_max_family': plan_design.oop_max_family,
+        'coinsurance': plan_design.coinsurance,
+        'pcp_copay': plan_design.pcp_copay,
+        'specialist_copay': plan_design.specialist_copay,
+        'er_copay': plan_design.er_copay,
+        'network_breadth': plan_design.network_provider_count / benchmark_cohort.avg_network_size
+    }
+    
+    # Score each factor (0-100, lower deductible/copay = higher score)
+    medical_score = 0
+    for factor, value in medical_factors.items():
+        if factor in ['deductible_individual', 'deductible_family', 'oop_max_individual', 'oop_max_family']:
+            # Inverse scoring: lower is better
+            peer_median = benchmark_cohort.median(factor)
+            score = max(0, min(100, 100 - ((value - peer_median) / peer_median * 50)))
+        elif factor == 'network_breadth':
+            # Direct scoring: higher is better
+            score = min(100, value * 100)
+        else:  # copays
+            peer_median = benchmark_cohort.median(factor)
+            score = max(0, min(100, 100 - ((value - peer_median) / peer_median * 50)))
+        
+        medical_score += score / len(medical_factors)
+    
+    component_scores['medical'] = medical_score
+    
+    # Pharmacy Richness (30% weight)
+    pharmacy_factors = {
+        'tier_count': 5 if plan_design.specialty_tier else 4,  # More tiers = worse
+        'generic_copay': plan_design.tier1_copay,
+        'preferred_brand_copay': plan_design.tier2_copay,
+        'nonpreferred_brand_copay': plan_design.tier3_copay,
+        'specialty_copay': plan_design.tier4_copay if hasattr(plan_design, 'tier4_copay') else None,
+        'prior_auth_prevalence': plan_design.prior_auth_drug_count / plan_design.total_formulary_drugs
+    }
+    
+    pharmacy_score = 0
+    scored_factors = 0
+    for factor, value in pharmacy_factors.items():
+        if value is None:
+            continue
+        peer_median = benchmark_cohort.median(factor)
+        if factor in ['tier_count', 'prior_auth_prevalence']:
+            # Inverse: fewer tiers/lower PA = better
+            score = max(0, min(100, 100 - ((value - peer_median) / peer_median * 50)))
+        else:  # copays
+            score = max(0, min(100, 100 - ((value - peer_median) / peer_median * 50)))
+        pharmacy_score += score
+        scored_factors += 1
+    
+    component_scores['pharmacy'] = pharmacy_score / scored_factors
+    
+    # Ancillary Richness (30% weight)
+    ancillary_factors = {
+        'dental_annual_max': plan_design.dental_annual_max,
+        'dental_preventive_coverage': 1.0 if plan_design.dental_preventive_pct == 100 else 0.5,
+        'vision_exam_frequency': 12 if plan_design.vision_exam_months == 12 else 24,
+        'mental_health_parity': 1.0 if plan_design.mental_health_parity else 0.0,
+        'fertility_max': plan_design.fertility_lifetime_max if hasattr(plan_design, 'fertility_lifetime_max') else 0,
+        'hsa_employer_contribution': plan_design.hsa_employer_annual if hasattr(plan_design, 'hsa_employer_annual') else 0
+    }
+    
+    ancillary_score = 0
+    for factor, value in ancillary_factors.items():
+        peer_median = benchmark_cohort.median(factor)
+        if peer_median > 0:
+            # Direct scoring: higher is better for ancillary
+            score = min(100, (value / peer_median) * 100)
+        else:
+            score = 100 if value > 0 else 0
+        ancillary_score += score / len(ancillary_factors)
+    
+    component_scores['ancillary'] = ancillary_score
+    
+    # Composite Richness Score
+    composite_score = (
+        component_scores['medical'] * 0.40 +
+        component_scores['pharmacy'] * 0.30 +
+        component_scores['ancillary'] * 0.30
+    )
+    
+    # Peer Percentile
+    peer_scores = [calculate_richness_score(peer, benchmark_cohort)['composite'] 
+                   for peer in benchmark_cohort.peers]
+    percentile = sum(1 for s in peer_scores if s < composite_score) / len(peer_scores) * 100
+    
+    return {
+        'composite': composite_score,
+        'percentile': percentile,
+        'medical': component_scores['medical'],
+        'pharmacy': component_scores['pharmacy'],
+        'ancillary': component_scores['ancillary'],
+        'peer_cohort_size': len(benchmark_cohort.peers)
+    }
 
-      <div className="min-h-screen bg-neutral-950 text-neutral-50 pt-20">
-        <div className="max-w-7xl mx-auto px-4 py-12">
-          <Link href="/engines" className="inline-flex items-center gap-2 text-emerald-400 hover:text-emerald-300 mb-8 transition-colors">
-            <ArrowLeft className="w-4 h-4" />
-            Back to Engines
+# Example: Score your plan
+your_plan = load_plan_design('2024')
+peer_group = load_benchmark_cohort(industry='technology', region='west', size='5000-10000')
+
+result = calculate_richness_score(your_plan, peer_group)
+
+print("Benefit Richness Score: {:.0f}/100".format(result['composite']))
+print("Peer Percentile: {:.0f}th".format(result['percentile']))
+print("Medical: {:.0f}/100".format(result['medical']))
+print("Pharmacy: {:.0f}/100".format(result['pharmacy']))
+print("Ancillary: {:.0f}/100".format(result['ancillary']))
+`}
+        </VegasCodeBlock>
+      </VegasSection>
+
+      {/* Capabilities */}
+      <VegasSection title="Richness Intelligence" icon={Target}>
+        <div className="grid md:grid-cols-2 gap-6">
+          <VegasMetricCard
+            icon={Award}
+            label="Composite Score"
+            value="0-100"
+            sublabel="weighted: 40% medical, 30% rx, 30% ancillary"
+            gradient="from-purple-600 to-fuchsia-600"
+          />
+          <VegasMetricCard
+            icon={TrendingUp}
+            label="Peer Percentile"
+            value="Industry Rank"
+            sublabel="vs. size/region/sector cohort"
+            gradient="from-fuchsia-600 to-pink-600"
+          />
+          <VegasMetricCard
+            icon={BarChart3}
+            label="Category Breakdown"
+            value="10+ Factors"
+            sublabel="deductibles, copays, network, formulary, etc."
+            gradient="from-pink-600 to-rose-600"
+          />
+          <VegasMetricCard
+            icon={CheckCircle2}
+            label="Strategic Insights"
+            value="Over/Under"
+            sublabel="investment zones vs. competitive gaps"
+            gradient="from-rose-600 to-red-600"
+          />
+        </div>
+      </VegasSection>
+
+      {/* Use Cases */}
+      <VegasSection title="Strategic Applications" icon={Zap}>
+        <VegasFeatureGrid columns={2}>
+          <VegasFeatureCard
+            icon={Target}
+            title="Talent Acquisition ROI"
+            items={[
+              "Tech unicorn (2,800 employees): recruiting struggled vs. FAANG",
+              "Richness analysis revealed: 95th percentile specialist copays (unused by 22-34 workforce)",
+              "But: 40th percentile mental health coverage (high-demand segment)",
+              "Strategic reallocation:",
+              "  - Specialist copay: 95th → 65th percentile (saved $1.6M)",
+              "  - Mental health: 40th → 90th percentile (invested $1.2M)",
+              "Net employer savings: $400K annually",
+              "Employee satisfaction: +18 points",
+              "Offer acceptance rate: +14% (from 72% to 86%)",
+              "Time-to-fill: -23% reduction"
+            ]}
+          />
+          <VegasFeatureCard
+            icon={BarChart3}
+            title="Union Negotiation Defense"
+            items={[
+              "Manufacturing (12,000 employees): union demanded 'poverty benefits' narrative",
+              "Richness scoring showed: 82nd percentile overall vs. regional competitors",
+              "Category breakdown:",
+              "  - Medical: 78th percentile",
+              "  - Pharmacy: 85th percentile",
+              "  - Dental: 80th percentile",
+              "Third-party actuarial validation confirmed scoring",
+              "Union outcome: accepted 2.5% wage increase vs. demanded 4.5%",
+              "Company avoided: $8M in benefit concessions",
+              "Labor relations: preserved 3-year peace, avoided strike"
+            ]}
+          />
+        </VegasFeatureGrid>
+      </VegasSection>
+
+      {/* CTA */}
+      <div className="relative group mt-16">
+        <div className="absolute inset-0 bg-gradient-to-r from-purple-600 via-fuchsia-600 to-pink-600 rounded-2xl blur-2xl opacity-50 group-hover:opacity-75 transition-opacity" />
+        <div className="relative bg-gradient-to-r from-purple-600 via-fuchsia-600 to-pink-600 rounded-2xl p-12 text-center">
+          <h2 className="text-4xl font-black text-white mb-4">Know Your True Competitive Position</h2>
+          <p className="text-xl text-white/90 mb-8 max-w-3xl mx-auto leading-relaxed">
+            Score your plan richness. Benchmark vs. peer deciles. Identify over-investment and competitive gaps. Make data-driven benefit decisions.
+          </p>
+          <Link
+            href="/request-demo"
+            className="inline-flex items-center gap-3 bg-white text-purple-600 px-10 py-5 rounded-xl font-black text-lg hover:bg-purple-50 transition-all duration-200 shadow-2xl hover:shadow-purple-500/50 transform hover:scale-105">
+            Score Benefit Richness
+            <span className="text-2xl">→</span>
           </Link>
-
-          <div className="mb-12">
-            <div className="flex items-center gap-4 mb-4">
-              <div className="p-3 bg-emerald-500/10 rounded-lg">
-                <Award className="w-8 h-8 text-emerald-400" />
-              </div>
-              <div>
-                <h1 className="text-4xl font-display font-bold">Benefit Richness Scoring Engine</h1>
-                <p className="text-neutral-400 mt-2">Quantify plan generosity for strategic talent and cost decisions</p>
-              </div>
-            </div>
-
-            <div className="grid md:grid-cols-3 gap-6 mt-8">
-              <div className="bg-neutral-900/50 border border-neutral-800 rounded-lg p-6">
-                <Target className="w-10 h-10 text-emerald-400 mb-3" />
-                <h3 className="text-xl font-semibold mb-2">Competitive Intel</h3>
-                <p className="text-neutral-400 text-sm">Know exactly where you stand vs. peers on plan generosity</p>
-              </div>
-              <div className="bg-neutral-900/50 border border-neutral-800 rounded-lg p-6">
-                <DollarSign className="w-10 h-10 text-blue-400 mb-3" />
-                <h3 className="text-xl font-semibold mb-2">Cost-Value Trade-offs</h3>
-                <p className="text-neutral-400 text-sm">Identify where richness delivers talent ROI vs. wasted spend</p>
-              </div>
-              <div className="bg-neutral-900/50 border border-neutral-800 rounded-lg p-6">
-                <BarChart3 className="w-10 h-10 text-purple-400 mb-3" />
-                <h3 className="text-xl font-semibold mb-2">Strategic Design</h3>
-                <p className="text-neutral-400 text-sm">Optimize benefit mix to win talent wars at controlled cost</p>
-              </div>
-            </div>
-          </div>
-
-          <div className="border-b border-neutral-800 mb-8">
-            <div className="flex gap-8">
-              {["overview", "scoring", "use-cases"].map((tab) => (
-                <button
-                  key={tab}
-                  onClick={() => setActiveTab(tab)}
-                  className={`pb-4 px-2 font-medium transition-colors relative ${
-                    activeTab === tab
-                      ? "text-emerald-400"
-                      : "text-neutral-400 hover:text-neutral-300"
-                  }`}
-                >
-                  {tab.charAt(0).toUpperCase() + tab.slice(1)}
-                  {activeTab === tab && (
-                    <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-emerald-400" />
-                  )}
-                </button>
-              ))}
-            </div>
-          </div>
-
-          {activeTab === "overview" && (
-            <div className="space-y-8">
-              <div className="bg-gradient-to-br from-emerald-500/10 to-blue-500/10 border border-emerald-500/20 rounded-lg p-8">
-                <h2 className="text-2xl font-display font-bold mb-4">The Richness Blind Spot</h2>
-                <p className="text-neutral-300 mb-4">
-                  Most CFOs know their total benefit spend but can't quantify actual plan generosity. A $15K PEPY plan 
-                  can be stingy (high spend, low richness) or generous (rich benefits, efficient delivery). Our scoring 
-                  engine separates cost from value—revealing whether you're overpaying for mediocre coverage or 
-                  delivering premium benefits efficiently.
-                </p>
-                <div className="bg-neutral-900/50 rounded-lg p-6 mt-6">
-                  <h3 className="font-semibold mb-3 flex items-center gap-2">
-                    <CheckCircle2 className="w-5 h-5 text-emerald-400" />
-                    What Richness Scoring Reveals
-                  </h3>
-                  <div className="grid md:grid-cols-2 gap-4 text-sm text-neutral-400">
-                    <ul className="space-y-2">
-                      <li>• Your competitive position vs. peer deciles</li>
-                      <li>• Which benefit categories drive perceived value</li>
-                      <li>• Cost-inefficient richness (waste zones)</li>
-                      <li>• Strategic under-investment (talent gaps)</li>
-                    </ul>
-                    <ul className="space-y-2">
-                      <li>• Plan design ROI by workforce segment</li>
-                      <li>• Recruitment/retention impact by richness tier</li>
-                      <li>• Broker/consultant performance validation</li>
-                      <li>• Union negotiation leverage points</li>
-                    </ul>
-                  </div>
-                </div>
-              </div>
-
-              <div className="bg-neutral-900/50 border border-neutral-800 rounded-lg p-8">
-                <h2 className="text-2xl font-display font-bold mb-6">Real-World Impact</h2>
-                <div className="space-y-6">
-                  <div className="border-l-4 border-emerald-400 pl-6 py-2">
-                    <div className="flex items-start justify-between mb-2">
-                      <h3 className="font-semibold text-lg">Tech Unicorn (2,800 employees)</h3>
-                      <span className="text-emerald-400 font-mono text-sm">$3.1M Redirected</span>
-                    </div>
-                    <p className="text-neutral-400 text-sm mb-3">
-                      Richness scoring revealed they were 95th percentile on specialist copays (unused by 22-34 year old workforce) 
-                      but 40th percentile on mental health coverage (high demand segment). Reallocated spend: mental health to 
-                      90th percentile, specialists to 65th. Employee satisfaction jumped 18 points.
-                    </p>
-                    <div className="grid grid-cols-3 gap-4 text-center bg-neutral-800/50 rounded p-3">
-                      <div>
-                        <div className="text-xs text-neutral-500">Specialist Copay</div>
-                        <div className="text-sm text-neutral-300 font-mono">95th → 65th</div>
-                      </div>
-                      <div>
-                        <div className="text-xs text-neutral-500">Mental Health</div>
-                        <div className="text-sm text-emerald-400 font-mono">40th → 90th</div>
-                      </div>
-                      <div>
-                        <div className="text-xs text-neutral-500">Cost Impact</div>
-                        <div className="text-sm text-emerald-400 font-mono">-$450K/yr</div>
-                      </div>
-                    </div>
-                  </div>
-
-                  <div className="border-l-4 border-blue-400 pl-6 py-2">
-                    <div className="flex items-start justify-between mb-2">
-                      <h3 className="font-semibold text-lg">Manufacturing (12,000 employees)</h3>
-                      <span className="text-blue-400 font-mono text-sm">Union Win</span>
-                    </div>
-                    <p className="text-neutral-400 text-sm mb-3">
-                      Scored at 82nd percentile overall richness vs. regional competitors—data defeated union's "poverty benefits" 
-                      narrative. Avoided $8M in concessions by showing objective generosity positioning. Preserved 3-year labor peace.
-                    </p>
-                    <div className="bg-neutral-800/50 rounded p-3 text-xs text-neutral-400">
-                      <strong className="text-blue-400">Strategic Value:</strong> Union accepted 2.5% wage increase vs. 
-                      demanded 4.5% after seeing richness data validated by third-party actuarial review
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          )}
-
-          {activeTab === "scoring" && (
-            <div className="space-y-6">
-              <div className="bg-neutral-900/50 border border-neutral-800 rounded-lg p-8">
-                <h2 className="text-2xl font-display font-bold mb-6">Scoring Methodology</h2>
-                <div className="space-y-6">
-                  <div className="bg-neutral-800/50 rounded-lg p-6">
-                    <h3 className="font-semibold mb-3">Medical Plan Richness (40% weight)</h3>
-                    <div className="grid md:grid-cols-2 gap-4 text-sm">
-                      <div>
-                        <div className="text-emerald-400 font-semibold mb-2">Cost-Sharing Components</div>
-                        <ul className="space-y-1 text-neutral-400">
-                          <li>• Deductible levels (individual/family)</li>
-                          <li>• Out-of-pocket maximums</li>
-                          <li>• Coinsurance rates by service type</li>
-                          <li>• Copay structures (PCP, specialist, ER)</li>
-                        </ul>
-                      </div>
-                      <div>
-                        <div className="text-blue-400 font-semibold mb-2">Network Components</div>
-                        <ul className="space-y-1 text-neutral-400">
-                          <li>• Provider network breadth/quality</li>
-                          <li>• Out-of-network benefit availability</li>
-                          <li>• Geographic coverage adequacy</li>
-                          <li>• Center of Excellence access</li>
-                        </ul>
-                      </div>
-                    </div>
-                  </div>
-
-                  <div className="bg-neutral-800/50 rounded-lg p-6">
-                    <h3 className="font-semibold mb-3">Pharmacy Richness (30% weight)</h3>
-                    <div className="grid md:grid-cols-3 gap-3 text-xs">
-                      <div className="bg-neutral-900/50 rounded p-3">
-                        <div className="text-purple-400 font-semibold mb-2">Formulary Design</div>
-                        <ul className="space-y-1 text-neutral-400">
-                          <li>• Tier structure (3, 4, or 5 tier)</li>
-                          <li>• Specialty tier existence/cost</li>
-                          <li>• Generic substitution requirements</li>
-                        </ul>
-                      </div>
-                      <div className="bg-neutral-900/50 rounded p-3">
-                        <div className="text-amber-400 font-semibold mb-2">Cost Sharing</div>
-                        <ul className="space-y-1 text-neutral-400">
-                          <li>• Retail copay levels by tier</li>
-                          <li>• Mail order incentives/savings</li>
-                          <li>• Specialty pharmacy copays</li>
-                        </ul>
-                      </div>
-                      <div className="bg-neutral-900/50 rounded p-3">
-                        <div className="text-emerald-400 font-semibold mb-2">Access Barriers</div>
-                        <ul className="space-y-1 text-neutral-400">
-                          <li>• Prior authorization prevalence</li>
-                          <li>• Step therapy requirements</li>
-                          <li>• Quantity limit strictness</li>
-                        </ul>
-                      </div>
-                    </div>
-                  </div>
-
-                  <div className="bg-neutral-800/50 rounded-lg p-6">
-                    <h3 className="font-semibold mb-3">Ancillary & Voluntary (30% weight)</h3>
-                    <div className="grid md:grid-cols-2 gap-4 text-sm">
-                      <ul className="space-y-2 text-neutral-400">
-                        <li>• Dental plan richness (preventive, basic, major coverage)</li>
-                        <li>• Vision plan generosity (exams, frames, contacts)</li>
-                        <li>• Mental health parity and access</li>
-                        <li>• Fertility/maternity benefits</li>
-                      </ul>
-                      <ul className="space-y-2 text-neutral-400">
-                        <li>• Disability income replacement rates</li>
-                        <li>• Life insurance multiples</li>
-                        <li>• HSA/FSA employer contributions</li>
-                        <li>• Wellness program incentive value</li>
-                      </ul>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              <div className="bg-gradient-to-br from-purple-500/10 to-pink-500/10 border border-purple-500/20 rounded-lg p-8">
-                <h2 className="text-2xl font-display font-bold mb-4">Composite Scoring Output</h2>
-                <div className="grid md:grid-cols-4 gap-4">
-                  <div className="bg-neutral-900/50 rounded p-4 text-center">
-                    <div className="text-3xl font-bold text-emerald-400 mb-1">78</div>
-                    <div className="text-xs text-neutral-500">Overall Richness Score</div>
-                    <div className="text-xs text-neutral-400 mt-2">(0-100 scale)</div>
-                  </div>
-                  <div className="bg-neutral-900/50 rounded p-4 text-center">
-                    <div className="text-3xl font-bold text-blue-400 mb-1">72nd</div>
-                    <div className="text-xs text-neutral-500">Peer Percentile</div>
-                    <div className="text-xs text-neutral-400 mt-2">(Industry cohort)</div>
-                  </div>
-                  <div className="bg-neutral-900/50 rounded p-4 text-center">
-                    <div className="text-3xl font-bold text-purple-400 mb-1">$14,200</div>
-                    <div className="text-xs text-neutral-500">Actuarial Value</div>
-                    <div className="text-xs text-neutral-400 mt-2">(Member perspective)</div>
-                  </div>
-                  <div className="bg-neutral-900/50 rounded p-4 text-center">
-                    <div className="text-3xl font-bold text-amber-400 mb-1">1.18</div>
-                    <div className="text-xs text-neutral-500">Efficiency Ratio</div>
-                    <div className="text-xs text-neutral-400 mt-2">(Value per dollar)</div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          )}
-
-          {activeTab === "use-cases" && (
-            <div className="space-y-6">
-              <div className="bg-neutral-900/50 border border-neutral-800 rounded-lg p-8">
-                <h2 className="text-2xl font-display font-bold mb-6">Strategic Applications</h2>
-                <div className="space-y-6">
-                  <div className="border-l-4 border-emerald-400 pl-6">
-                    <h3 className="font-semibold text-lg mb-2">Talent Acquisition ROI</h3>
-                    <p className="text-neutral-400 text-sm mb-3">
-                      Model offer acceptance rates vs. benefit richness percentile. Quantify how much moving from 50th 
-                      to 75th percentile improves recruiting outcomes—then decide if talent ROI justifies cost.
-                    </p>
-                    <div className="bg-neutral-800/50 rounded p-3 text-xs text-neutral-400">
-                      <strong className="text-emerald-400">CFO Decision:</strong> $2.8M richness increase to 80th percentile 
-                      reduced time-to-fill 32% and cut recruiting agency fees $1.9M—net positive first year
-                    </div>
-                  </div>
-
-                  <div className="border-l-4 border-blue-400 pl-6">
-                    <h3 className="font-semibold text-lg mb-2">Strategic Benefit Cuts</h3>
-                    <p className="text-neutral-400 text-sm mb-3">
-                      Need to reduce benefits cost? Our engine ranks components by visibility-to-employees vs. actuarial value. 
-                      Cut low-visibility, high-cost items first to minimize morale damage per dollar saved.
-                    </p>
-                    <div className="bg-neutral-800/50 rounded p-3 text-xs text-neutral-400">
-                      <strong className="text-blue-400">Surgical Cut Example:</strong> Removed out-of-network coverage 
-                      (95% network adequacy, 3% utilization) saved $1.4M with zero employee complaints
-                    </div>
-                  </div>
-
-                  <div className="border-l-4 border-purple-400 pl-6">
-                    <h3 className="font-semibold text-lg mb-2">M&A Integration</h3>
-                    <p className="text-neutral-400 text-sm mb-3">
-                      Score both acquirer and target benefit programs. Harmonize to target richness tier that balances 
-                      retention (don't downgrade target) and cost control (don't upgrade acquirer unnecessarily).
-                    </p>
-                    <div className="bg-neutral-800/50 rounded p-3 text-xs text-neutral-400">
-                      <strong className="text-purple-400">Integration Win:</strong> Maintained target's 85th percentile 
-                      dental (high value signal) while moving medical to acquirer's 70th percentile (minimal friction)
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          )}
         </div>
       </div>
-
-      <Footer />
-    </>
+    </EngineDetailLayout>
   );
 }

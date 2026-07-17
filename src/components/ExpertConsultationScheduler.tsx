@@ -21,7 +21,7 @@ export function ExpertConsultationScheduler({
       duration: "60 minutes",
       description: "Executive-level discussion with FSA/MAAA actuaries on strategic planning and risk management",
       icon: Users,
-      url: "https://calendly.com/jer-kincaidrmc/60min",
+      url: "https://calendly.com/jer-kincaidrmc/new-meeting",
     },
     {
       id: "technical" as const,
@@ -29,7 +29,7 @@ export function ExpertConsultationScheduler({
       duration: "90 minutes",
       description: "In-depth technical review with ASA/FCA consultants on implementation and analytics",
       icon: MessageSquare,
-      url: "https://calendly.com/jer-kincaidrmc/90min",
+      url: "https://calendly.com/jer-kincaidrmc/new-meeting",
     },
     {
       id: "implementation" as const,
@@ -37,7 +37,7 @@ export function ExpertConsultationScheduler({
       duration: "45 minutes",
       description: "Practical roadmap session with CEBS/RHU specialists for deployment planning",
       icon: CheckCircle2,
-      url: "https://calendly.com/jer-kincaidrmc/30min",
+      url: "https://calendly.com/jer-kincaidrmc/new-meeting",
     },
   ];
 

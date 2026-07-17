@@ -20,7 +20,7 @@ export function FounderContactButton() {
     {
       icon: Calendar,
       label: "Schedule a Call",
-      href: "https://calendly.com/jer-kincaidrmc/30min",
+      href: "https://calendly.com/jer-kincaidrmc/new-meeting",
       color: "bg-cyan-500 hover:bg-cyan-600",
     },
     {

@@ -310,7 +310,7 @@ export default function HomePage() {
                   whileTap={{ scale: 0.98 }}
                 >
                   <CalendlyWidget 
-                    url="https://calendly.com/jer-kincaidrmc/30min"
+                    url="https://calendly.com/jer-kincaidrmc/new-meeting"
                     buttonText="Book Your Free Fiduciary Audit"
                     className="relative group bg-gradient-to-r from-[#1A3A52] to-[#234766] hover:from-[#234766] hover:to-[#2A5A82] text-white font-bold text-base px-8 py-4 rounded-xl transition-all duration-300 shadow-2xl shadow-[#1A3A52]/50 hover:shadow-[#1A3A52]/80 w-full sm:w-auto overflow-hidden"
                   />

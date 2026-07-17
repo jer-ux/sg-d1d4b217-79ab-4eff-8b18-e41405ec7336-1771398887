@@ -150,12 +150,16 @@ concentration = analyze_network_concentration(claims, network)
 top_risk = concentration[0]  # ABC Orthopedics
 impact = model_provider_exit_impact(top_risk['provider_id'], claims, find_alternatives('orthopedics'))
 
-print(f"Provider: {top_risk['provider']} ({top_risk['percent_of_total']:.1%} of spend)")
-print(f"\\nScenario Analysis:")
-print(f"  OON: \\${impact['oon_scenario']['annual_cost']:,.0f} (+\\${impact['oon_scenario']['delta']:,.0f})")
-print(f"  Redirect: \\${impact['redirect_scenario']['annual_cost']:,.0f} (+\\${impact['redirect_scenario']['delta']:,.0f})")
-print(f"  Direct Contract: \\${impact['direct_contract_scenario']['annual_cost']:,.0f} (+\\${impact['direct_contract_scenario']['delta']:,.0f})")
-print(f"\\nRecommendation: Negotiate direct contract (saves \\${impact['oon_scenario']['delta'] - impact['direct_contract_scenario']['delta']:,.0f} vs OON)")
+print("Provider: {} ({:.1%} of spend)".format(top_risk['provider'], top_risk['percent_of_total']))
+print("\\nScenario Analysis:")
+print("  OON: ${:,.0f} (+${:,.0f})".format(
+    impact['oon_scenario']['annual_cost'], impact['oon_scenario']['delta']))
+print("  Redirect: ${:,.0f} (+${:,.0f})".format(
+    impact['redirect_scenario']['annual_cost'], impact['redirect_scenario']['delta']))
+print("  Direct Contract: ${:,.0f} (+${:,.0f})".format(
+    impact['direct_contract_scenario']['annual_cost'], impact['direct_contract_scenario']['delta']))
+delta_savings = impact['oon_scenario']['delta'] - impact['direct_contract_scenario']['delta']
+print("\\nRecommendation: Negotiate direct contract (saves ${:,.0f} vs OON)".format(delta_savings))
 `}
         </VegasCodeBlock>
       </VegasSection>

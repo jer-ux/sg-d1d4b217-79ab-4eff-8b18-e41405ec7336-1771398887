@@ -1,294 +1,241 @@
-import { useState } from "react";
-import Head from "next/head";
+import { Users, Database, TrendingUp, AlertTriangle, CheckCircle2, Target, BarChart3, Zap } from "lucide-react";
+import { EngineDetailLayout, VegasSection, VegasMetricCard, VegasCodeBlock, VegasFeatureGrid, VegasFeatureCard } from "@/components/engines/EngineDetailLayout";
 import Link from "next/link";
-import Footer from "@/components/Footer";
-import Nav from "@/components/Nav";
-import { Users, DollarSign, TrendingUp, ArrowLeft, BarChart3, Target, Calendar, CheckCircle2, AlertTriangle } from "lucide-react";
 
-export default function PEPYNormalizationEngine() {
-  const [activeTab, setActiveTab] = useState("overview");
-
+export default function PEPYNormalizationPage() {
   return (
-    <>
-      <Head>
-        <title>PEPY Normalization Engine | Kincaid IQ</title>
-        <meta name="description" content="Normalize per-employee-per-year costs across different workforce sizes and demographics for accurate benchmarking and trend analysis." />
-      </Head>
+    <EngineDetailLayout
+      title="PEPY Normalization Engine"
+      category="Workforce Analytics"
+      tagline="Convert PMPM to Per-Employee-Per-Year—Account for Dependent Ratios, Part-Time Mix, and Coverage Tier Distribution"
+      gradient="from-cyan-600 via-blue-600 to-indigo-600"
+    >
+      {/* Problem Statement */}
+      <VegasSection title="The PMPM vs. PEPY Confusion" icon={AlertTriangle}>
+        <div className="grid md:grid-cols-2 gap-8">
+          <div>
+            <h3 className="text-2xl font-black text-red-400 mb-4">PMPM Misinterpretation</h3>
+            <ul className="space-y-3 text-white/80 leading-relaxed">
+              <li className="flex items-start gap-3">
+                <span className="text-red-400">✗</span>
+                <span>CFOs compare $450 PMPM across companies without adjusting for dependent coverage</span>
+              </li>
+              <li className="flex items-start gap-3">
+                <span className="text-red-400">✗</span>
+                <span>Company A: 70% single coverage vs. Company B: 55% family coverage (not apples-to-apples)</span>
+              </li>
+              <li className="flex items-start gap-3">
+                <span className="text-red-400">✗</span>
+                <span>Part-time employees skew PMPM calculations (50% FTE with full benefits)</span>
+              </li>
+              <li className="flex items-start gap-3">
+                <span className="text-red-400">✗</span>
+                <span>Cannot compare healthcare cost as % of payroll without PEPY conversion</span>
+              </li>
+            </ul>
+          </div>
+          <div>
+            <h3 className="text-2xl font-black text-cyan-400 mb-4">PEPY Normalization</h3>
+            <ul className="space-y-3 text-white/80 leading-relaxed">
+              <li className="flex items-start gap-3">
+                <span className="text-cyan-400">✓</span>
+                <span>Convert PMPM → PEPY using actual coverage tier distribution (single, +spouse, +children, family)</span>
+              </li>
+              <li className="flex items-start gap-3">
+                <span className="text-cyan-400">✓</span>
+                <span>Adjust for dependent ratios: 2.2 covered lives per family tier vs. 1.0 for single</span>
+              </li>
+              <li className="flex items-start gap-3">
+                <span className="text-cyan-400">✓</span>
+                <span>FTE normalization: part-time employee cost allocated correctly</span>
+              </li>
+              <li className="flex items-start gap-3">
+                <span className="text-cyan-400">✓</span>
+                <span>Apples-to-apples benchmarking across employers with different coverage patterns</span>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </VegasSection>
 
-      <Nav />
+      {/* Technical Architecture */}
+      <VegasSection title="PMPM to PEPY Conversion Algorithm" icon={Database}>
+        <VegasCodeBlock language="python">
+{`# PEPY Normalization from PMPM
+def convert_pmpm_to_pepy(claims_data, enrollment_data):
+    # Step 1: Calculate total cost and member months
+    total_cost = claims_data.total_paid_claims
+    total_member_months = claims_data.total_member_months
+    pmpm = total_cost / total_member_months
+    
+    # Step 2: Analyze coverage tier distribution
+    tier_distribution = enrollment_data.groupby('coverage_tier').agg({
+        'employee_count': 'count',
+        'covered_lives': 'sum'
+    })
+    
+    # Coverage Tier Typical Ratios:
+    # Single: 1.0 life per employee
+    # Employee + Spouse: 2.0 lives per employee
+    # Employee + Children: 2.8 lives per employee (avg 1.8 kids)
+    # Family: 3.2 lives per employee (spouse + 2.2 kids avg)
+    
+    tier_ratios = {
+        'single': 1.0,
+        'employee_spouse': 2.0,
+        'employee_children': 2.8,
+        'family': 3.2
+    }
+    
+    # Step 3: Calculate average lives per employee
+    total_employees = tier_distribution['employee_count'].sum()
+    total_covered_lives = tier_distribution['covered_lives'].sum()
+    avg_lives_per_employee = total_covered_lives / total_employees
+    
+    # Step 4: Convert PMPM to PEPY
+    # PEPY = PMPM × 12 months × avg_lives_per_employee
+    pepy = pmpm * 12 * avg_lives_per_employee
+    
+    # Step 5: FTE Adjustment (if applicable)
+    if 'fte_status' in enrollment_data.columns:
+        avg_fte = enrollment_data['fte_hours'].mean() / 2080  # 2080 = full-time annual hours
+        pepy_fte_adjusted = pepy / avg_fte
+    else:
+        pepy_fte_adjusted = pepy
+    
+    return {
+        'pmpm': pmpm,
+        'avg_lives_per_employee': avg_lives_per_employee,
+        'pepy': pepy,
+        'pepy_fte_adjusted': pepy_fte_adjusted,
+        'tier_distribution': tier_distribution,
+        'total_employees': total_employees,
+        'total_covered_lives': total_covered_lives
+    }
 
-      <div className="min-h-screen bg-neutral-950 text-neutral-50 pt-20">
-        <div className="max-w-7xl mx-auto px-4 py-12">
-          <Link href="/engines" className="inline-flex items-center gap-2 text-emerald-400 hover:text-emerald-300 mb-8 transition-colors">
-            <ArrowLeft className="w-4 h-4" />
-            Back to Engines
+# Benchmarking Example
+def compare_pepy_across_employers(company_a, company_b):
+    a_result = convert_pmpm_to_pepy(company_a.claims, company_a.enrollment)
+    b_result = convert_pmpm_to_pepy(company_b.claims, company_b.enrollment)
+    
+    return {
+        'company_a': {
+            'pmpm': a_result['pmpm'],
+            'pepy': a_result['pepy'],
+            'lives_per_employee': a_result['avg_lives_per_employee']
+        },
+        'company_b': {
+            'pmpm': b_result['pmpm'],
+            'pepy': b_result['pepy'],
+            'lives_per_employee': b_result['avg_lives_per_employee']
+        },
+        'variance': {
+            'pmpm_diff': ((b_result['pmpm'] / a_result['pmpm']) - 1) * 100,
+            'pepy_diff': ((b_result['pepy'] / a_result['pepy']) - 1) * 100
+        }
+    }
+
+# Example Output:
+# Company A (Tech, 75% single coverage):
+#   PMPM: $420
+#   Avg Lives/Employee: 1.4
+#   PEPY: $7,056
+# 
+# Company B (Manufacturing, 60% family coverage):
+#   PMPM: $485 (+15.5% vs. A)
+#   Avg Lives/Employee: 2.6
+#   PEPY: $15,132 (+114% vs. A)
+# 
+# Interpretation: Company B's PMPM looks 15% higher, but PEPY is 114% higher
+# due to much higher dependent coverage. True cost per employee is far worse.
+`}
+        </VegasCodeBlock>
+      </VegasSection>
+
+      {/* Capabilities */}
+      <VegasSection title="Normalization Intelligence" icon={Target}>
+        <div className="grid md:grid-cols-2 gap-6">
+          <VegasMetricCard
+            icon={Users}
+            label="Coverage Tiers"
+            value="4 Types"
+            sublabel="single, +spouse, +children, family"
+            gradient="from-cyan-600 to-blue-600"
+          />
+          <VegasMetricCard
+            icon={TrendingUp}
+            label="Typical Lives/Employee"
+            value="1.6-2.4"
+            sublabel="depends on industry and demographics"
+            gradient="from-blue-600 to-indigo-600"
+          />
+          <VegasMetricCard
+            icon={BarChart3}
+            label="FTE Adjustment"
+            value="Automated"
+            sublabel="part-time workforce normalization"
+            gradient="from-indigo-600 to-violet-600"
+          />
+          <VegasMetricCard
+            icon={CheckCircle2}
+            label="Benchmarking"
+            value="Apples-to-Apples"
+            sublabel="vs. industry peers"
+            gradient="from-violet-600 to-purple-600"
+          />
+        </div>
+      </VegasSection>
+
+      {/* Use Cases */}
+      <VegasSection title="Real-World Applications" icon={Zap}>
+        <VegasFeatureGrid columns={2}>
+          <VegasFeatureCard
+            icon={Target}
+            title="Misleading PMPM Benchmark"
+            items={[
+              "CFO saw industry PMPM benchmark: $425",
+              "Company's PMPM: $485 (14% above benchmark, looked bad)",
+              "PEPY analysis revealed:",
+              "  - Company: 62% family coverage (avg 2.5 lives/employee)",
+              "  - Benchmark: 70% single coverage (avg 1.5 lives/employee)",
+              "Company PEPY: $14,550",
+              "Benchmark PEPY: $7,650 (adjusted for coverage mix)",
+              "True variance: +90% (much worse than PMPM suggested)",
+              "Triggered benefits redesign to reduce family-tier uptake"
+            ]}
+          />
+          <VegasFeatureCard
+            icon={BarChart3}
+            title="Part-Time Workforce PEPY"
+            items={[
+              "Retail employer: 40% part-time workforce (avg 0.6 FTE)",
+              "PMPM: $380 (looked competitive)",
+              "PEPY unadjusted: $6,840",
+              "PEPY FTE-adjusted: $11,400 (true cost per full-time equivalent)",
+              "Comparison: peer full-time employers at $9,200 PEPY FTE-adjusted",
+              "Company was actually 24% more expensive per FTE",
+              "Redesigned part-time eligibility rules, saved $1.8M annually"
+            ]}
+          />
+        </VegasFeatureGrid>
+      </VegasSection>
+
+      {/* CTA */}
+      <div className="relative group mt-16">
+        <div className="absolute inset-0 bg-gradient-to-r from-cyan-600 via-blue-600 to-indigo-600 rounded-2xl blur-2xl opacity-50 group-hover:opacity-75 transition-opacity" />
+        <div className="relative bg-gradient-to-r from-cyan-600 via-blue-600 to-indigo-600 rounded-2xl p-12 text-center">
+          <h2 className="text-4xl font-black text-white mb-4">Stop Comparing PMPM Without Context</h2>
+          <p className="text-xl text-white/90 mb-8 max-w-3xl mx-auto leading-relaxed">
+            Convert PMPM to PEPY. Account for dependent ratios and part-time mix. Compare apples-to-apples. Know your true cost per employee.
+          </p>
+          <Link
+            href="/request-demo"
+            className="inline-flex items-center gap-3 bg-white text-cyan-600 px-10 py-5 rounded-xl font-black text-lg hover:bg-cyan-50 transition-all duration-200 shadow-2xl hover:shadow-cyan-500/50 transform hover:scale-105">
+            Normalize to PEPY
+            <span className="text-2xl">→</span>
           </Link>
-
-          <div className="mb-12">
-            <div className="flex items-center gap-4 mb-4">
-              <div className="p-3 bg-emerald-500/10 rounded-lg">
-                <Users className="w-8 h-8 text-emerald-400" />
-              </div>
-              <div>
-                <h1 className="text-4xl font-display font-bold">PEPY Normalization Engine</h1>
-                <p className="text-neutral-400 mt-2">Fair per-employee comparisons across diverse workforces</p>
-              </div>
-            </div>
-
-            <div className="grid md:grid-cols-3 gap-6 mt-8">
-              <div className="bg-neutral-900/50 border border-neutral-800 rounded-lg p-6">
-                <DollarSign className="w-10 h-10 text-emerald-400 mb-3" />
-                <h3 className="text-xl font-semibold mb-2">Apples-to-Apples</h3>
-                <p className="text-neutral-400 text-sm">Compare healthcare costs fairly across divisions, locations, and peer companies</p>
-              </div>
-              <div className="bg-neutral-900/50 border border-neutral-800 rounded-lg p-6">
-                <TrendingUp className="w-10 h-10 text-blue-400 mb-3" />
-                <h3 className="text-xl font-semibold mb-2">Trend Isolation</h3>
-                <p className="text-neutral-400 text-sm">Separate real cost trends from headcount changes and workforce shifts</p>
-              </div>
-              <div className="bg-neutral-900/50 border border-neutral-800 rounded-lg p-6">
-                <BarChart3 className="w-10 h-10 text-purple-400 mb-3" />
-                <h3 className="text-xl font-semibold mb-2">Benchmarking</h3>
-                <p className="text-neutral-400 text-sm">Position accurately against industry standards with normalized metrics</p>
-              </div>
-            </div>
-          </div>
-
-          <div className="border-b border-neutral-800 mb-8">
-            <div className="flex gap-8">
-              {["overview", "capabilities", "use-cases"].map((tab) => (
-                <button
-                  key={tab}
-                  onClick={() => setActiveTab(tab)}
-                  className={`pb-4 px-2 font-medium transition-colors relative ${
-                    activeTab === tab
-                      ? "text-emerald-400"
-                      : "text-neutral-400 hover:text-neutral-300"
-                  }`}
-                >
-                  {tab.charAt(0).toUpperCase() + tab.slice(1).replace("-", " ")}
-                  {activeTab === tab && (
-                    <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-emerald-400" />
-                  )}
-                </button>
-              ))}
-            </div>
-          </div>
-
-          {activeTab === "overview" && (
-            <div className="space-y-8">
-              <div className="bg-gradient-to-br from-emerald-500/10 to-blue-500/10 border border-emerald-500/20 rounded-lg p-8">
-                <h2 className="text-2xl font-display font-bold mb-4">Why PEPY Normalization Matters</h2>
-                <p className="text-neutral-300 mb-4">
-                  Raw per-employee-per-year (PEPY) cost comparisons are distorted by headcount volatility, seasonal hiring, and demographic differences. 
-                  Our normalization engine creates fair, stable benchmarks by adjusting for these confounders—revealing true cost performance.
-                </p>
-                <div className="grid md:grid-cols-2 gap-6 mt-6">
-                  <div className="bg-neutral-900/50 rounded-lg p-6">
-                    <h3 className="font-semibold mb-3 flex items-center gap-2">
-                      <AlertTriangle className="w-5 h-5 text-amber-400" />
-                      Without Normalization
-                    </h3>
-                    <ul className="space-y-2 text-sm text-neutral-400">
-                      <li>• Misleading trends during workforce expansion</li>
-                      <li>• Apples-to-oranges peer comparisons</li>
-                      <li>• False alarms from seasonal headcount shifts</li>
-                      <li>• Hidden cost drivers obscured by growth</li>
-                    </ul>
-                  </div>
-                  <div className="bg-neutral-900/50 rounded-lg p-6">
-                    <h3 className="font-semibold mb-3 flex items-center gap-2">
-                      <CheckCircle2 className="w-5 h-5 text-emerald-400" />
-                      With Normalization
-                    </h3>
-                    <ul className="space-y-2 text-sm text-neutral-400">
-                      <li>• Stable benchmarks across volatile periods</li>
-                      <li>• Fair comparisons with different-sized peers</li>
-                      <li>• Isolated cost trends vs. headcount effects</li>
-                      <li>• Actionable insights for strategic decisions</li>
-                    </ul>
-                  </div>
-                </div>
-              </div>
-
-              <div className="bg-neutral-900/50 border border-neutral-800 rounded-lg p-8">
-                <h2 className="text-2xl font-display font-bold mb-6">Real-World Impact</h2>
-                <div className="space-y-6">
-                  <div className="border-l-4 border-emerald-400 pl-6 py-2">
-                    <div className="flex items-start justify-between mb-2">
-                      <h3 className="font-semibold text-lg">Multi-Site Manufacturing</h3>
-                      <span className="text-emerald-400 font-mono text-sm">$2.1M Identified</span>
-                    </div>
-                    <p className="text-neutral-400 text-sm mb-3">
-                      Normalized PEPY revealed Plant B's costs were 18% higher than Plant A—masked by different headcount profiles. 
-                      Root cause: higher specialty Rx utilization. Intervention delivered $2.1M annual savings.
-                    </p>
-                    <div className="grid grid-cols-3 gap-4 text-center bg-neutral-800/50 rounded p-3">
-                      <div>
-                        <div className="text-xs text-neutral-500">Before Normalization</div>
-                        <div className="text-sm text-neutral-300 font-mono">$12,400 PEPY</div>
-                      </div>
-                      <div>
-                        <div className="text-xs text-neutral-500">After Normalization</div>
-                        <div className="text-sm text-emerald-400 font-mono">$14,640 PEPY</div>
-                      </div>
-                      <div>
-                        <div className="text-xs text-neutral-500">Variance Identified</div>
-                        <div className="text-sm text-amber-400 font-mono">+18%</div>
-                      </div>
-                    </div>
-                  </div>
-
-                  <div className="border-l-4 border-blue-400 pl-6 py-2">
-                    <div className="flex items-start justify-between mb-2">
-                      <h3 className="font-semibold text-lg">Retail Chain Growth Period</h3>
-                      <span className="text-blue-400 font-mono text-sm">Trend Clarity</span>
-                    </div>
-                    <p className="text-neutral-400 text-sm mb-3">
-                      During 40% headcount expansion, raw PEPY showed declining costs—creating false confidence. 
-                      Normalized view revealed 8% underlying medical inflation being masked by new hire demographics.
-                    </p>
-                    <div className="bg-neutral-800/50 rounded p-3 text-xs text-neutral-400">
-                      <strong className="text-blue-400">Executive Action:</strong> CFO redirected $4M reserve allocation 
-                      from workforce growth to stop-loss premium increases, avoiding Q4 budget shortfall
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          )}
-
-          {activeTab === "capabilities" && (
-            <div className="space-y-6">
-              <div className="bg-neutral-900/50 border border-neutral-800 rounded-lg p-8">
-                <h2 className="text-2xl font-display font-bold mb-6">Normalization Framework</h2>
-                <div className="grid md:grid-cols-2 gap-6">
-                  <div className="bg-neutral-800/50 rounded-lg p-6">
-                    <Target className="w-8 h-8 text-emerald-400 mb-3" />
-                    <h3 className="font-semibold mb-3">Headcount Adjustments</h3>
-                    <ul className="space-y-2 text-sm text-neutral-400">
-                      <li>• Average vs. ending headcount reconciliation</li>
-                      <li>• Partial-month employment weighting</li>
-                      <li>• Seasonal worker normalization</li>
-                      <li>• FTE vs. total employee conversions</li>
-                    </ul>
-                  </div>
-
-                  <div className="bg-neutral-800/50 rounded-lg p-6">
-                    <Users className="w-8 h-8 text-blue-400 mb-3" />
-                    <h3 className="font-semibold mb-3">Demographic Standardization</h3>
-                    <ul className="space-y-2 text-sm text-neutral-400">
-                      <li>• Age/gender risk adjustment factors</li>
-                      <li>• Family status normalization</li>
-                      <li>• Geographic cost index weighting</li>
-                      <li>• Industry standard population models</li>
-                    </ul>
-                  </div>
-
-                  <div className="bg-neutral-800/50 rounded-lg p-6">
-                    <Calendar className="w-8 h-8 text-purple-400 mb-3" />
-                    <h3 className="font-semibold mb-3">Temporal Consistency</h3>
-                    <ul className="space-y-2 text-sm text-neutral-400">
-                      <li>• Annualization of partial-year data</li>
-                      <li>• Seasonality smoothing</li>
-                      <li>• Plan year vs. calendar year alignment</li>
-                      <li>• Run-out period adjustments</li>
-                    </ul>
-                  </div>
-
-                  <div className="bg-neutral-800/50 rounded-lg p-6">
-                    <BarChart3 className="w-8 h-8 text-amber-400 mb-3" />
-                    <h3 className="font-semibold mb-3">Peer Benchmarking</h3>
-                    <ul className="space-y-2 text-sm text-neutral-400">
-                      <li>• Industry peer group selection</li>
-                      <li>• Plan design richness adjustment</li>
-                      <li>• Geographic market normalization</li>
-                      <li>• Company size cohort matching</li>
-                    </ul>
-                  </div>
-                </div>
-              </div>
-
-              <div className="bg-gradient-to-br from-purple-500/10 to-pink-500/10 border border-purple-500/20 rounded-lg p-8">
-                <h2 className="text-2xl font-display font-bold mb-4">Advanced Analytics</h2>
-                <div className="grid md:grid-cols-3 gap-4 text-sm">
-                  <div className="bg-neutral-900/50 rounded p-4">
-                    <div className="font-semibold text-emerald-400 mb-2">Variance Attribution</div>
-                    <p className="text-neutral-400">Decompose PEPY changes into headcount, demographics, utilization, and unit cost components</p>
-                  </div>
-                  <div className="bg-neutral-900/50 rounded p-4">
-                    <div className="font-semibold text-blue-400 mb-2">Rolling Baselines</div>
-                    <p className="text-neutral-400">12-month normalized averages for stable trend tracking through volatility</p>
-                  </div>
-                  <div className="bg-neutral-900/50 rounded p-4">
-                    <div className="font-semibold text-purple-400 mb-2">Synthetic Cohorts</div>
-                    <p className="text-neutral-400">Create virtual comparison groups matched to your exact demographics</p>
-                  </div>
-                </div>
-              </div>
-            </div>
-          )}
-
-          {activeTab === "use-cases" && (
-            <div className="space-y-6">
-              <div className="bg-neutral-900/50 border border-neutral-800 rounded-lg p-8">
-                <h2 className="text-2xl font-display font-bold mb-6">Executive Use Cases</h2>
-                <div className="space-y-6">
-                  <div className="border-l-4 border-emerald-400 pl-6">
-                    <h3 className="font-semibold text-lg mb-2">M&A Due Diligence</h3>
-                    <p className="text-neutral-400 text-sm mb-3">
-                      Normalize target company's healthcare costs to acquirer's demographics before valuing synergies. 
-                      Avoid overpaying for artificially low PEPY driven by younger workforce that will age into your benefits.
-                    </p>
-                    <div className="bg-neutral-800/50 rounded p-3 text-xs text-neutral-400">
-                      <strong className="text-emerald-400">CFO Value:</strong> Prevented $8M overvaluation by revealing 
-                      target's "low costs" were due to 28-year median age vs. 41-year acquirer median
-                    </div>
-                  </div>
-
-                  <div className="border-l-4 border-blue-400 pl-6">
-                    <h3 className="font-semibold text-lg mb-2">Multi-Year Budget Planning</h3>
-                    <p className="text-neutral-400 text-sm mb-3">
-                      Project forward costs using normalized trends independent of planned headcount changes. 
-                      Build flexible budgets that hold true whether you hire 100 or 1,000 employees.
-                    </p>
-                    <div className="bg-neutral-800/50 rounded p-3 text-xs text-neutral-400">
-                      <strong className="text-blue-400">Strategic Planning:</strong> Board approved $22M healthcare 
-                      budget for 3-year growth plan with confidence in normalized 6.8% annual trend assumption
-                    </div>
-                  </div>
-
-                  <div className="border-l-4 border-purple-400 pl-6">
-                    <h3 className="font-semibold text-lg mb-2">Broker/Consultant RFP</h3>
-                    <p className="text-neutral-400 text-sm mb-3">
-                      Demand normalized PEPY in all vendor proposals to compare apples-to-apples. 
-                      Brokers often cherry-pick favorable headcount periods to inflate savings claims.
-                    </p>
-                    <div className="bg-neutral-800/50 rounded p-3 text-xs text-neutral-400">
-                      <strong className="text-purple-400">Risk Mitigation:</strong> Caught broker claiming 12% savings 
-                      when normalized analysis showed 2% improvement—saved $900K in misdirected fees
-                    </div>
-                  </div>
-
-                  <div className="border-l-4 border-amber-400 pl-6">
-                    <h3 className="font-semibold text-lg mb-2">Internal Division Benchmarking</h3>
-                    <p className="text-neutral-400 text-sm mb-3">
-                      Compare healthcare performance across business units fairly. Identify best practices from 
-                      low-cost divisions and export to high-cost locations.
-                    </p>
-                    <div className="bg-neutral-800/50 rounded p-3 text-xs text-neutral-400">
-                      <strong className="text-amber-400">Operational Excellence:</strong> Midwest region's PCP utilization 
-                      model scaled to Southeast, reducing ER visits 22% and lowering normalized PEPY $780
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          )}
         </div>
       </div>
-
-      <Footer />
-    </>
+    </EngineDetailLayout>
   );
 }

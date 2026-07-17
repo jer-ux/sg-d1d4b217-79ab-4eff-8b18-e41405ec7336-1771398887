@@ -1237,41 +1237,6 @@ export default function HomePage() {
           </div>
         </section>
 
-        <TimeSavingsComparison
-          savings={[
-          {
-            task: "PBM Contract Forensic Audit",
-            manual: "12 weeks",
-            automated: "4 hours",
-            savings: "11.98 weeks"
-          },
-          {
-            task: "Rebate Reconciliation Report",
-            manual: "6 weeks",
-            automated: "2 hours",
-            savings: "5.9 weeks"
-          },
-          {
-            task: "Spread Pricing Analysis",
-            manual: "8 weeks",
-            automated: "4 hours",
-            savings: "7.8 weeks"
-          },
-          {
-            task: "Board-Ready Compliance Report",
-            manual: "4 weeks",
-            automated: "30 minutes",
-            savings: "3.9 weeks"
-          },
-          {
-            task: "M&A Due Diligence Audit",
-            manual: "10 weeks",
-            automated: "1 hour",
-            savings: "9.99 weeks"
-          }]
-          } />
-        
-
         <QuantifiedTestimonials />
 
         {/* Platform Preview */}

@@ -1,12 +1,11 @@
 import Head from "next/head";
-import { motion, useScroll, useTransform } from "framer-motion";
+import { motion } from "framer-motion";
 import Link from "next/link";
 import Nav from "@/components/Nav";
 import Footer from "@/components/Footer";
 import { Badge } from "@/components/ui/badge";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { ParticleField3D } from "@/components/premium/ParticleField3D";
 import { SEO } from "@/components/SEO";
 import {
   TrendingUp,
@@ -18,15 +17,12 @@ import {
   Activity,
   Users,
   DollarSign,
-  BarChart3,
+  ArrowRight,
+  Sparkles,
   Brain,
   Target,
-  Cpu,
-  Search,
-  ArrowRight,
 } from "lucide-react";
 import { useState } from "react";
-import { Input } from "@/components/ui/input";
 
 const engineCategories = [
   {
@@ -34,6 +30,8 @@ const engineCategories = [
     label: "Forecasting & Trend",
     icon: TrendingUp,
     color: "blue",
+    gradient: "from-blue-500 to-cyan-500",
+    bgGradient: "from-blue-950 via-slate-900 to-cyan-900",
     engines: [
       {
         id: "medical-trend-forecasting",
@@ -114,6 +112,8 @@ const engineCategories = [
     label: "Data Normalization",
     icon: Database,
     color: "purple",
+    gradient: "from-purple-500 to-fuchsia-500",
+    bgGradient: "from-purple-950 via-slate-900 to-fuchsia-900",
     engines: [
       {
         id: "geographic-normalization",
@@ -170,6 +170,8 @@ const engineCategories = [
     label: "Risk Analytics",
     icon: Shield,
     color: "red",
+    gradient: "from-red-500 to-orange-500",
+    bgGradient: "from-red-950 via-slate-900 to-orange-900",
     engines: [
       {
         id: "high-cost-claimant-prediction",
@@ -237,7 +239,9 @@ const engineCategories = [
     id: "interventions",
     label: "Interventions",
     icon: Zap,
-    color: "green",
+    color: "emerald",
+    gradient: "from-emerald-500 to-green-500",
+    bgGradient: "from-emerald-950 via-slate-900 to-green-900",
     engines: [
       {
         id: "glp1-financial-impact",
@@ -318,6 +322,8 @@ const engineCategories = [
     label: "Pharmacy Intelligence",
     icon: Pill,
     color: "indigo",
+    gradient: "from-indigo-500 to-violet-500",
+    bgGradient: "from-indigo-950 via-slate-900 to-violet-900",
     engines: [
       {
         id: "specialty-pharmacy-economics",
@@ -379,7 +385,9 @@ const engineCategories = [
     id: "governance",
     label: "Governance & Compliance",
     icon: FileCheck,
-    color: "yellow",
+    color: "amber",
+    gradient: "from-amber-500 to-yellow-500",
+    bgGradient: "from-amber-950 via-slate-900 to-yellow-900",
     engines: [
       {
         id: "erisa-fiduciary-risk-scoring",
@@ -448,6 +456,8 @@ const engineCategories = [
     label: "Clinical Intelligence",
     icon: Activity,
     color: "teal",
+    gradient: "from-teal-500 to-cyan-500",
+    bgGradient: "from-teal-950 via-slate-900 to-cyan-900",
     engines: [
       {
         id: "ibnr-reserve-modeling",
@@ -504,6 +514,8 @@ const engineCategories = [
     label: "Workforce Analytics",
     icon: Users,
     color: "pink",
+    gradient: "from-pink-500 to-rose-500",
+    bgGradient: "from-pink-950 via-slate-900 to-rose-900",
     engines: [
       {
         id: "workforce-health-risk",
@@ -554,6 +566,8 @@ const engineCategories = [
     label: "Enterprise Value",
     icon: DollarSign,
     color: "orange",
+    gradient: "from-orange-500 to-amber-500",
+    bgGradient: "from-orange-950 via-slate-900 to-amber-900",
     engines: [
       {
         id: "ebitda-enhancement",
@@ -595,9 +609,27 @@ const engineCategories = [
   },
 ];
 
+const staggerContainer = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: {
+      staggerChildren: 0.1
+    }
+  }
+};
+
+const fadeInUpVariants = {
+  hidden: { opacity: 0, y: 30 },
+  visible: { 
+    opacity: 1, 
+    y: 0,
+    transition: { duration: 0.6 }
+  }
+};
+
 export default function EnginesPage() {
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
-  const [searchQuery, setSearchQuery] = useState("");
 
   const filteredEngines = selectedCategory
     ? engineCategories.filter((cat) => cat.id === selectedCategory)
@@ -624,195 +656,272 @@ export default function EnginesPage() {
 
       <Nav />
 
-      <div className="min-h-screen bg-gradient-to-b from-black via-slate-950 to-black relative overflow-hidden">
-        <ParticleField3D />
-        
-        {/* Animated background orbs */}
+      <div className="min-h-screen bg-black relative overflow-hidden">
+        {/* Animated particle field */}
+        <div className="fixed inset-0 pointer-events-none">
+          {[...Array(50)].map((_, i) => (
+            <motion.div
+              key={i}
+              className="absolute w-1 h-1 bg-blue-400/30 rounded-full"
+              style={{
+                left: `${Math.random() * 100}%`,
+                top: `${Math.random() * 100}%`,
+              }}
+              animate={{
+                y: [-20, 20, -20],
+                x: [-10, 10, -10],
+                opacity: [0.2, 0.6, 0.2],
+                scale: [1, 1.5, 1]
+              }}
+              transition={{
+                duration: 3 + Math.random() * 2,
+                repeat: Infinity,
+                delay: Math.random() * 2
+              }}
+            />
+          ))}
+        </div>
+
+        {/* Premium gradient orbs */}
         <div className="fixed inset-0 pointer-events-none overflow-hidden">
           <motion.div
-            className="absolute top-1/4 left-1/4 w-[800px] h-[800px] bg-gradient-radial from-cyan-500/15 via-cyan-500/5 to-transparent rounded-full blur-3xl"
+            className="absolute top-0 left-1/4 w-[800px] h-[800px] bg-gradient-radial from-violet-500/20 via-violet-500/5 to-transparent rounded-full blur-3xl"
             animate={{ 
-              x: [0, 80, 0],
-              y: [0, -50, 0],
-              scale: [1, 1.2, 1],
-              opacity: [0.3, 0.5, 0.3]
+              x: [0, 100, 0],
+              y: [0, -80, 0],
+              scale: [1, 1.3, 1],
             }}
-            transition={{ duration: 18, repeat: Infinity, ease: "easeInOut" }}
+            transition={{ duration: 20, repeat: Infinity }}
           />
           <motion.div
-            className="absolute bottom-1/3 right-1/4 w-[700px] h-[700px] bg-gradient-radial from-blue-500/15 via-blue-500/5 to-transparent rounded-full blur-3xl"
+            className="absolute bottom-0 right-1/4 w-[700px] h-[700px] bg-gradient-radial from-blue-500/20 via-blue-500/5 to-transparent rounded-full blur-3xl"
             animate={{ 
-              x: [0, -60, 0],
-              y: [0, 40, 0],
-              scale: [1, 1.15, 1],
-              opacity: [0.25, 0.45, 0.25]
+              x: [0, -80, 0],
+              y: [0, 60, 0],
+              scale: [1, 1.2, 1],
             }}
-            transition={{ duration: 20, repeat: Infinity, ease: "easeInOut", delay: 4 }}
+            transition={{ duration: 18, repeat: Infinity, delay: 5 }}
+          />
+          <motion.div
+            className="absolute top-1/2 right-1/3 w-[600px] h-[600px] bg-gradient-radial from-fuchsia-500/15 via-fuchsia-500/3 to-transparent rounded-full blur-3xl"
+            animate={{ 
+              x: [0, 60, 0],
+              y: [0, -40, 0],
+              scale: [1, 1.15, 1],
+            }}
+            transition={{ duration: 22, repeat: Infinity, delay: 10 }}
           />
         </div>
 
-        <main className="container mx-auto px-4 py-16 lg:py-24 max-w-6xl relative z-10">
-          <div className="max-w-6xl mx-auto text-center mb-16">
-            {/* Hero Section */}
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8 }}
-              className="max-w-6xl mx-auto text-center mb-16"
-            >
-              <Badge className="mb-6 bg-violet-500/10 text-violet-400 border-violet-500/20 text-sm px-4 py-2">
-                Universal Intelligence Platform
-              </Badge>
-              <motion.h1
-                initial={{ opacity: 0, scale: 0.95 }}
-                animate={{ opacity: 1, scale: 1 }}
-                transition={{ duration: 0.6, delay: 0.2 }}
-                className="text-5xl md:text-7xl font-black mb-6 bg-gradient-to-r from-violet-400 via-purple-400 to-fuchsia-400 bg-clip-text text-transparent leading-tight"
-              >
-                Intelligence Engines
-              </motion.h1>
-              <p className="text-xl md:text-2xl text-gray-300 mb-4 max-w-4xl mx-auto">
-                {totalEngines} Specialized Actuarial Engines for Healthcare
-                Analytics
-              </p>
-              <p className="text-lg text-gray-400 mb-12 max-w-3xl mx-auto">
-                Modular, composable intelligence for forecasting, risk modeling,
-                and decision automation
-              </p>
-
-              {/* Key Stats */}
-              <div className="grid grid-cols-2 md:grid-cols-4 gap-4 max-w-5xl mx-auto">
-                {[
-                  {
-                    value: `${totalEngines}+`,
-                    label: "Specialized Engines",
-                    color: "violet",
-                  },
-                  {
-                    value: `${engineCategories.length}`,
-                    label: "Engine Categories",
-                    color: "purple",
-                  },
-                  {
-                    value: "API",
-                    label: "First Architecture",
-                    color: "fuchsia",
-                  },
-                  {
-                    value: "Real-time",
-                    label: "Orchestration",
-                    color: "pink",
-                  },
-                ].map((stat, idx) => (
-                  <motion.div
-                    key={idx}
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.5, delay: 0.4 + idx * 0.1 }}
-                    whileHover={{ scale: 1.05, rotateY: 5 }}
-                    className="perspective-1000"
-                  >
-                    <Card className="border-slate-700 bg-slate-900/50 backdrop-blur-sm transform-gpu transition-all duration-300 hover:shadow-xl hover:shadow-violet-500/20">
-                      <CardContent className="pt-6 pb-6 text-center">
-                        <div
-                          className={`text-3xl font-bold text-${stat.color}-400 mb-1`}
-                        >
-                          {stat.value}
-                        </div>
-                        <div className="text-xs text-slate-400">
-                          {stat.label}
-                        </div>
-                      </CardContent>
-                    </Card>
-                  </motion.div>
-                ))}
-              </div>
-            </motion.div>
-
-            {/* Category Filter */}
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.6 }}
-              className="flex flex-wrap gap-3 justify-center mb-16"
-            >
-              <Button
-                variant={selectedCategory === null ? "default" : "outline"}
-                onClick={() => setSelectedCategory(null)}
-                className="rounded-full"
-              >
-                All Engines
-              </Button>
-              {engineCategories.map((category) => (
-                <Button
-                  key={category.id}
-                  variant={
-                    selectedCategory === category.id ? "default" : "outline"
-                  }
-                  onClick={() => setSelectedCategory(category.id)}
-                  className="rounded-full"
+        <main className="container mx-auto px-4 py-16 lg:py-24 max-w-7xl relative z-10">
+          {/* Hero Section */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8 }}
+            className="max-w-5xl mx-auto text-center mb-16"
+          >
+            {/* Animated icons */}
+            <div className="flex justify-center gap-4 mb-8">
+              {[Brain, Sparkles, Target].map((Icon, i) => (
+                <motion.div
+                  key={i}
+                  animate={{
+                    y: [-5, 5, -5],
+                    rotate: [0, 10, 0, -10, 0],
+                    scale: [1, 1.1, 1]
+                  }}
+                  transition={{
+                    duration: 3,
+                    repeat: Infinity,
+                    delay: i * 0.3
+                  }}
                 >
-                  <category.icon className="w-4 h-4 mr-2" />
-                  {category.label}
-                </Button>
+                  <Icon className="w-8 h-8 text-violet-400/60" />
+                </motion.div>
+              ))}
+            </div>
+
+            <Badge className="mb-6 bg-gradient-to-r from-violet-500/10 to-fuchsia-500/10 text-violet-300 border-violet-500/30 text-sm px-6 py-2">
+              <Sparkles className="w-3 h-3 mr-2 inline" />
+              Universal Intelligence Platform
+            </Badge>
+            
+            <motion.h1
+              initial={{ opacity: 0, scale: 0.95 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ duration: 0.6, delay: 0.2 }}
+              className="text-5xl md:text-7xl font-black mb-6 leading-tight"
+            >
+              <span className="bg-gradient-to-r from-violet-400 via-fuchsia-400 to-purple-400 bg-clip-text text-transparent">
+                Intelligence Engines
+              </span>
+            </motion.h1>
+            
+            <p className="text-xl md:text-2xl text-gray-300 mb-4 max-w-4xl mx-auto font-medium">
+              {totalEngines} Specialized Actuarial Engines for Healthcare Analytics
+            </p>
+            <p className="text-lg text-gray-400 mb-12 max-w-3xl mx-auto">
+              Modular, composable intelligence for forecasting, risk modeling, and decision automation
+            </p>
+
+            {/* Animated stats grid */}
+            <motion.div 
+              className="grid grid-cols-2 md:grid-cols-4 gap-4 max-w-5xl mx-auto"
+              variants={staggerContainer}
+              initial="hidden"
+              animate="visible"
+            >
+              {[
+                { value: `${totalEngines}+`, label: "Active Engines", icon: Brain, gradient: "from-violet-500 to-purple-500" },
+                { value: `${engineCategories.length}`, label: "Categories", icon: Target, gradient: "from-blue-500 to-cyan-500" },
+                { value: "Real-time", label: "Orchestration", icon: Zap, gradient: "from-fuchsia-500 to-pink-500" },
+                { value: "API-First", label: "Architecture", icon: Database, gradient: "from-emerald-500 to-teal-500" },
+              ].map((stat, idx) => (
+                <motion.div
+                  key={idx}
+                  variants={fadeInUpVariants}
+                  whileHover={{ scale: 1.05, y: -5 }}
+                  className="relative group"
+                >
+                  <div className="absolute inset-0 bg-gradient-to-br from-white/5 to-white/0 rounded-2xl blur-xl group-hover:blur-2xl transition-all" />
+                  <Card className="relative border-2 border-slate-800 bg-gradient-to-br from-slate-900/80 via-slate-900/50 to-slate-900/80 backdrop-blur-sm hover:border-violet-500/50 transition-all duration-300">
+                    <CardContent className="pt-6 pb-6 text-center">
+                      <motion.div
+                        className={`w-12 h-12 bg-gradient-to-r ${stat.gradient} rounded-xl flex items-center justify-center mx-auto mb-3`}
+                        animate={{
+                          boxShadow: [
+                            "0 0 20px rgba(139, 92, 246, 0.3)",
+                            "0 0 40px rgba(139, 92, 246, 0.5)",
+                            "0 0 20px rgba(139, 92, 246, 0.3)"
+                          ]
+                        }}
+                        transition={{ duration: 2, repeat: Infinity }}
+                      >
+                        <stat.icon className="w-6 h-6 text-white" />
+                      </motion.div>
+                      <div className="text-3xl font-bold bg-gradient-to-r from-violet-400 to-fuchsia-400 bg-clip-text text-transparent mb-1">
+                        {stat.value}
+                      </div>
+                      <div className="text-xs text-slate-400">{stat.label}</div>
+                    </CardContent>
+                  </Card>
+                </motion.div>
               ))}
             </motion.div>
+          </motion.div>
 
-            {/* Engine Categories */}
-            <div className="space-y-16 max-w-7xl mx-auto">
-              {filteredEngines.map((category, categoryIdx) => {
-                const CategoryIcon = category.icon;
-                return (
-                  <motion.div
-                    key={category.id}
-                    initial={{ opacity: 0, y: 30 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.6, delay: categoryIdx * 0.1 }}
-                    viewport={{ once: true }}
-                  >
+          {/* Category Filters */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.6 }}
+            className="flex flex-wrap gap-3 justify-center mb-16"
+          >
+            <Button
+              variant={selectedCategory === null ? "default" : "outline"}
+              onClick={() => setSelectedCategory(null)}
+              className={`rounded-full ${selectedCategory === null ? 'bg-gradient-to-r from-violet-600 to-fuchsia-600 border-0' : 'border-slate-700 hover:border-violet-500'}`}
+            >
+              All Engines ({totalEngines})
+            </Button>
+            {engineCategories.map((category) => {
+              const Icon = category.icon;
+              return (
+                <Button
+                  key={category.id}
+                  variant={selectedCategory === category.id ? "default" : "outline"}
+                  onClick={() => setSelectedCategory(category.id)}
+                  className={`rounded-full ${
+                    selectedCategory === category.id 
+                      ? `bg-gradient-to-r ${category.gradient} border-0` 
+                      : 'border-slate-700 hover:border-violet-500'
+                  }`}
+                >
+                  <Icon className="w-4 h-4 mr-2" />
+                  {category.label}
+                </Button>
+              );
+            })}
+          </motion.div>
+
+          {/* Engine Categories */}
+          <div className="space-y-12 max-w-7xl mx-auto">
+            {filteredEngines.map((category, categoryIdx) => {
+              const CategoryIcon = category.icon;
+              return (
+                <motion.div
+                  key={category.id}
+                  initial={{ opacity: 0, y: 30 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.6, delay: categoryIdx * 0.05 }}
+                  viewport={{ once: true, margin: "-50px" }}
+                  className="relative"
+                >
+                  {/* Category card with premium styling */}
+                  <div className={`relative rounded-3xl border-2 border-${category.color}-500/30 bg-gradient-to-br ${category.bgGradient} p-8 overflow-hidden`}>
+                    {/* Animated background pattern */}
+                    <div className="absolute inset-0 opacity-5">
+                      <svg className="w-full h-full" viewBox="0 0 400 400">
+                        {[...Array(20)].map((_, i) => (
+                          <motion.circle
+                            key={i}
+                            cx={100 + (i % 4) * 100}
+                            cy={100 + Math.floor(i / 4) * 100}
+                            r="30"
+                            fill="none"
+                            stroke="currentColor"
+                            strokeWidth="1"
+                            animate={{
+                              scale: [1, 1.2, 1],
+                              opacity: [0.3, 0.6, 0.3]
+                            }}
+                            transition={{
+                              duration: 3,
+                              repeat: Infinity,
+                              delay: i * 0.1
+                            }}
+                          />
+                        ))}
+                      </svg>
+                    </div>
+
                     {/* Category Header */}
-                    <div className="flex items-center gap-4 mb-8">
-                      <div
-                        className={`w-12 h-12 bg-${category.color}-500/10 rounded-xl flex items-center justify-center`}
+                    <div className="flex items-center gap-4 mb-8 relative z-10">
+                      <motion.div
+                        className={`w-16 h-16 bg-gradient-to-r ${category.gradient} rounded-2xl flex items-center justify-center shadow-xl`}
+                        whileHover={{ rotate: 360, scale: 1.1 }}
+                        transition={{ duration: 0.6 }}
                       >
-                        <CategoryIcon
-                          className={`w-6 h-6 text-${category.color}-400`}
-                        />
-                      </div>
+                        <CategoryIcon className="w-8 h-8 text-white" />
+                      </motion.div>
                       <div>
-                        <h2
-                          className={`text-2xl font-bold text-${category.color}-400`}
-                        >
+                        <h2 className={`text-3xl font-bold bg-gradient-to-r ${category.gradient} bg-clip-text text-transparent`}>
                           {category.label}
                         </h2>
-                        <p className="text-sm text-slate-400">
-                          {category.engines.length} engines
+                        <p className="text-sm text-slate-400 mt-1">
+                          {category.engines.length} specialized engines
                         </p>
                       </div>
                     </div>
 
-                    {/* Engines List */}
-                    <div className="space-y-3">
+                    {/* Engines Grid */}
+                    <div className="grid md:grid-cols-2 gap-3 relative z-10">
                       {category.engines.map((engine, index) => (
                         <motion.div
                           key={engine.id}
                           initial={{ opacity: 0, y: 20 }}
-                          animate={{ opacity: 1, y: 0 }}
-                          transition={{ duration: 0.4, delay: index * 0.02 }}
-                          whileHover={{ scale: 1.01, x: 5 }}
+                          whileInView={{ opacity: 1, y: 0 }}
+                          transition={{ duration: 0.4, delay: index * 0.03 }}
+                          viewport={{ once: true }}
+                          whileHover={{ scale: 1.02, x: 5 }}
                         >
                           <Link href={engine.href}>
-                            <Card className="group relative overflow-hidden bg-slate-900/50 border-slate-800 hover:border-cyan-500/50 transition-all cursor-pointer backdrop-blur-sm">
-                              {/* Hover gradient */}
-                              <motion.div
-                                className="absolute inset-0 bg-gradient-to-r from-cyan-500/5 via-blue-500/5 to-purple-500/5 opacity-0 group-hover:opacity-100 transition-opacity"
-                                initial={false}
-                              />
-                              
+                            <Card className="group relative overflow-hidden bg-slate-900/70 border-slate-800 hover:border-violet-500/50 transition-all cursor-pointer backdrop-blur-sm h-full">
                               {/* Shimmer effect */}
                               <div className="absolute inset-0 opacity-0 group-hover:opacity-100 pointer-events-none">
                                 <motion.div
-                                  className="absolute inset-0 bg-gradient-to-r from-transparent via-white/5 to-transparent"
+                                  className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent"
                                   animate={{ x: ["-100%", "200%"] }}
                                   transition={{ duration: 1.5, repeat: Infinity, repeatDelay: 3 }}
                                 />
@@ -820,42 +929,30 @@ export default function EnginesPage() {
 
                               <CardContent className="p-4 relative z-10">
                                 <div className="flex items-start gap-4">
-                                  {/* Number badge with animation */}
+                                  {/* Animated number badge */}
                                   <motion.div 
-                                    className="text-cyan-400/60 font-mono text-sm min-w-[2rem] pt-0.5 font-bold"
-                                    whileHover={{ scale: 1.1, color: "rgb(34, 211, 238)" }}
+                                    className={`text-${category.color}-400/60 font-mono text-sm min-w-[2rem] pt-0.5 font-bold`}
+                                    whileHover={{ scale: 1.2, rotate: 5 }}
                                   >
-                                    {index + 1}
+                                    {String(index + 1).padStart(2, '0')}
                                   </motion.div>
                                   
                                   <div className="flex-1 min-w-0">
-                                    <div className="flex items-start justify-between gap-4">
-                                      <div className="flex-1 min-w-0">
-                                        <h3 className="font-semibold text-base mb-1 text-white group-hover:text-cyan-400 transition-colors">
-                                          {engine.name}
-                                        </h3>
-                                        <p className="text-sm text-slate-400 group-hover:text-slate-300 transition-colors">
-                                          {engine.description}
-                                        </p>
-                                      </div>
-                                      <div className="flex items-center gap-2 flex-shrink-0">
-                                        <Badge 
-                                          variant="outline" 
-                                          className="text-xs bg-slate-800/50 border-slate-700 group-hover:border-cyan-500/50 transition-colors"
-                                        >
-                                          {category.label}
-                                        </Badge>
-                                        <motion.div
-                                          initial={{ x: 0 }}
-                                          className="text-slate-600 group-hover:text-cyan-400 transition-colors"
-                                          animate={{ x: 0 }}
-                                          whileHover={{ x: 5 }}
-                                        >
-                                          <ArrowRight className="w-4 h-4" />
-                                        </motion.div>
-                                      </div>
-                                    </div>
+                                    <h3 className={`font-semibold text-base mb-1 text-white group-hover:text-${category.color}-300 transition-colors`}>
+                                      {engine.name}
+                                    </h3>
+                                    <p className="text-sm text-slate-400 group-hover:text-slate-300 transition-colors line-clamp-2">
+                                      {engine.description}
+                                    </p>
                                   </div>
+                                  
+                                  <motion.div
+                                    className={`text-slate-600 group-hover:text-${category.color}-400 transition-colors flex-shrink-0`}
+                                    animate={{ x: 0 }}
+                                    whileHover={{ x: 5 }}
+                                  >
+                                    <ArrowRight className="w-5 h-5" />
+                                  </motion.div>
                                 </div>
                               </CardContent>
                             </Card>
@@ -863,61 +960,32 @@ export default function EnginesPage() {
                         </motion.div>
                       ))}
                     </div>
-                  </motion.div>
-                );
-              })}
-            </div>
+                  </div>
+                </motion.div>
+              );
+            })}
           </div>
-        </main>
 
-        {/* No Results */}
-        {filteredEngines.length === 0 && (
+          {/* Bottom Stats */}
           <motion.div 
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            className="text-center py-12"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 1 }}
+            className="mt-20 text-center"
           >
-            <div className="w-16 h-16 bg-slate-800/50 rounded-full flex items-center justify-center mx-auto mb-4">
-              <Search className="w-8 h-8 text-slate-600" />
-            </div>
-            <p className="text-slate-400">
-              No engines found matching "{searchQuery}"
-            </p>
-          </motion.div>
-        )}
-
-        {/* Footer Stats */}
-        <motion.div 
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.8 }}
-          className="mt-16 pt-8 border-t border-slate-800 max-w-6xl mx-auto"
-        >
-          <div className="grid grid-cols-3 gap-6 mb-8">
-            {[
-              { label: "Active Engines", value: totalEngines, icon: Cpu, color: "cyan" },
-              { label: "Categories", value: engineCategories.length.toString(), icon: Target, color: "blue" },
-              { label: "Real-time", value: "99.9%", icon: Zap, color: "purple" }
-            ].map((stat, idx) => (
+            <div className="inline-flex items-center gap-3 px-6 py-3 rounded-full bg-gradient-to-r from-slate-900/80 to-slate-800/80 border border-slate-700 backdrop-blur-sm">
               <motion.div
-                key={idx}
-                initial={{ opacity: 0, scale: 0.9 }}
-                animate={{ opacity: 1, scale: 1 }}
-                transition={{ delay: 0.9 + idx * 0.1 }}
-                className="text-center group"
+                animate={{ rotate: 360 }}
+                transition={{ duration: 3, repeat: Infinity, ease: "linear" }}
               >
-                <div className={`w-12 h-12 bg-${stat.color}-500/10 rounded-xl flex items-center justify-center mx-auto mb-3 group-hover:scale-110 transition-transform`}>
-                  <stat.icon className={`w-6 h-6 text-${stat.color}-400`} />
-                </div>
-                <div className={`text-2xl font-bold text-${stat.color}-400 mb-1`}>{stat.value}</div>
-                <div className="text-xs text-slate-500">{stat.label}</div>
+                <Sparkles className="w-5 h-5 text-violet-400" />
               </motion.div>
-            ))}
-          </div>
-          <p className="text-sm text-slate-500 text-center">
-            Showing {totalEngines} engines across {engineCategories.length} categories
-          </p>
-        </motion.div>
+              <span className="text-sm text-slate-300">
+                Showing <span className="font-bold text-violet-400">{totalEngines}</span> engines across <span className="font-bold text-violet-400">{engineCategories.length}</span> categories
+              </span>
+            </div>
+          </motion.div>
+        </main>
       </div>
 
       <Footer />

@@ -32,6 +32,7 @@ import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { useState, useMemo } from "react";
 import { CFOContractDashboard } from "@/components/warroom/CFOContractDashboard";
+import { ClaimsTelemetryMeter } from "@/components/warroom/ClaimsTelemetryMeter";
 
 const fadeInUp = {
   initial: { opacity: 0, y: 30 },
@@ -495,6 +496,162 @@ export default function CFOPage() {
               transition={{ duration: 0.8, delay: 0.2 }}
             >
               <CFOContractDashboard />
+            </motion.div>
+          </div>
+        </section>
+
+        {/* Continuous Intelligence vs Point-in-Time Audits */}
+        <section className="relative py-32 px-6 bg-gradient-to-b from-black via-slate-950 to-black">
+          <div className="max-w-7xl mx-auto">
+            <motion.div
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8 }}
+              className="text-center mb-16"
+            >
+              <div className="inline-flex items-center gap-2 px-4 py-2 bg-blue-500/10 border border-blue-400/30 rounded-full mb-6">
+                <Zap className="w-4 h-4 text-blue-400" />
+                <span className="text-sm font-bold text-blue-300 uppercase tracking-wider">Real-Time Intelligence</span>
+              </div>
+              <h2 className="text-4xl md:text-5xl font-black mb-6 bg-gradient-to-r from-blue-200 to-cyan-200 bg-clip-text text-transparent font-serif">
+                Continuous Intelligence vs Point-in-Time Audits
+              </h2>
+              <p className="text-xl text-blue-300/80 max-w-3xl mx-auto">
+                Traditional audits give you a snapshot. We give you a live feed of every claim as it happens.
+              </p>
+            </motion.div>
+
+            {/* Comparison Grid */}
+            <div className="grid lg:grid-cols-2 gap-8 mb-16">
+              <motion.div
+                initial={{ opacity: 0, x: -30 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                transition={{ duration: 0.8 }}
+              >
+                <Card className="bg-gradient-to-br from-red-950/40 to-orange-950/40 border-2 border-red-500/30 p-8 h-full">
+                  <div className="flex items-center gap-3 mb-6">
+                    <div className="p-3 bg-red-500/20 rounded-xl border border-red-400/30">
+                      <FileText className="w-6 h-6 text-red-400" />
+                    </div>
+                    <div>
+                      <h3 className="text-2xl font-bold text-white">Point-in-Time Audits</h3>
+                      <p className="text-sm text-red-300/70">Traditional Approach</p>
+                    </div>
+                  </div>
+                  
+                  <div className="space-y-4">
+                    <div className="flex items-start gap-3">
+                      <div className="w-5 h-5 rounded-full bg-red-500/20 border border-red-500/40 flex items-center justify-center flex-shrink-0 mt-0.5">
+                        <div className="w-2 h-2 bg-red-400" />
+                      </div>
+                      <p className="text-sm text-slate-300">Annual or quarterly sampling of claims</p>
+                    </div>
+                    <div className="flex items-start gap-3">
+                      <div className="w-5 h-5 rounded-full bg-red-500/20 border border-red-500/40 flex items-center justify-center flex-shrink-0 mt-0.5">
+                        <div className="w-2 h-2 bg-red-400" />
+                      </div>
+                      <p className="text-sm text-slate-300">Issues discovered months after they occur</p>
+                    </div>
+                    <div className="flex items-start gap-3">
+                      <div className="w-5 h-5 rounded-full bg-red-500/20 border border-red-500/40 flex items-center justify-center flex-shrink-0 mt-0.5">
+                        <div className="w-2 h-2 bg-red-400" />
+                      </div>
+                      <p className="text-sm text-slate-300">Recoveries limited to audit sample period</p>
+                    </div>
+                    <div className="flex items-start gap-3">
+                      <div className="w-5 h-5 rounded-full bg-red-500/20 border border-red-500/40 flex items-center justify-center flex-shrink-0 mt-0.5">
+                        <div className="w-2 h-2 bg-red-400" />
+                      </div>
+                      <p className="text-sm text-slate-300">No prevention—only retrospective detection</p>
+                    </div>
+                    <div className="flex items-start gap-3">
+                      <div className="w-5 h-5 rounded-full bg-red-500/20 border border-red-500/40 flex items-center justify-center flex-shrink-0 mt-0.5">
+                        <div className="w-2 h-2 bg-red-400" />
+                      </div>
+                      <p className="text-sm text-slate-300">Expensive third-party audit fees</p>
+                    </div>
+                  </div>
+                </Card>
+              </motion.div>
+
+              <motion.div
+                initial={{ opacity: 0, x: 30 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                transition={{ duration: 0.8 }}
+              >
+                <Card className="bg-gradient-to-br from-emerald-950/40 to-green-950/40 border-2 border-emerald-500/30 p-8 h-full">
+                  <div className="flex items-center gap-3 mb-6">
+                    <div className="p-3 bg-emerald-500/20 rounded-xl border border-emerald-400/30">
+                      <Zap className="w-6 h-6 text-emerald-400" />
+                    </div>
+                    <div>
+                      <h3 className="text-2xl font-bold text-white">Continuous Intelligence</h3>
+                      <p className="text-sm text-emerald-300/70">Kincaid Health Approach</p>
+                    </div>
+                  </div>
+                  
+                  <div className="space-y-4">
+                    <div className="flex items-start gap-3">
+                      <CheckCircle2 className="w-5 h-5 text-emerald-400 flex-shrink-0 mt-0.5" />
+                      <p className="text-sm text-slate-300">100% of claims monitored in real-time</p>
+                    </div>
+                    <div className="flex items-start gap-3">
+                      <CheckCircle2 className="w-5 h-5 text-emerald-400 flex-shrink-0 mt-0.5" />
+                      <p className="text-sm text-slate-300">Issues flagged within hours of occurrence</p>
+                    </div>
+                    <div className="flex items-start gap-3">
+                      <CheckCircle2 className="w-5 h-5 text-emerald-400 flex-shrink-0 mt-0.5" />
+                      <p className="text-sm text-slate-300">Full recovery potential across all claims</p>
+                    </div>
+                    <div className="flex items-start gap-3">
+                      <CheckCircle2 className="w-5 h-5 text-emerald-400 flex-shrink-0 mt-0.5" />
+                      <p className="text-sm text-slate-300">Predictive alerts prevent future overpayments</p>
+                    </div>
+                    <div className="flex items-start gap-3">
+                      <CheckCircle2 className="w-5 h-5 text-emerald-400 flex-shrink-0 mt-0.5" />
+                      <p className="text-sm text-slate-300">Included in platform—no extra audit costs</p>
+                    </div>
+                  </div>
+                </Card>
+              </motion.div>
+            </div>
+
+            {/* Live Telemetry Display */}
+            <motion.div
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8, delay: 0.2 }}
+            >
+              <div className="text-center mb-8">
+                <h3 className="text-2xl font-bold text-white mb-2">Live Claims Telemetry</h3>
+                <p className="text-sm text-slate-400">Watch claims being monitored and verified in real-time</p>
+              </div>
+              <ClaimsTelemetryMeter />
+            </motion.div>
+
+            {/* Impact Stats */}
+            <motion.div
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8, delay: 0.4 }}
+              className="mt-16"
+            >
+              <Card className="bg-gradient-to-br from-slate-950/80 to-emerald-950/40 border-2 border-emerald-500/30 p-8">
+                <div className="grid md:grid-cols-3 gap-8 text-center">
+                  <div>
+                    <div className="text-4xl font-black text-emerald-400 mb-2">24/7</div>
+                    <div className="text-sm text-slate-300">Continuous monitoring—never offline</div>
+                  </div>
+                  <div>
+                    <div className="text-4xl font-black text-emerald-400 mb-2">100%</div>
+                    <div className="text-sm text-slate-300">All claims verified, not just samples</div>
+                  </div>
+                  <div>
+                    <div className="text-4xl font-black text-emerald-400 mb-2">&lt;2hr</div>
+                    <div className="text-sm text-slate-300">Average issue detection time</div>
+                  </div>
+                </div>
+              </Card>
             </motion.div>
           </div>
         </section>

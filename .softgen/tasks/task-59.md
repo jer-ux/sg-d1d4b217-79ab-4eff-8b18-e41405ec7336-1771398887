@@ -1,6 +1,6 @@
 ---
 title: CFO Contract Obligations Dashboard
-status: in_progress
+status: done
 priority: high
 type: feature
 tags: [cfo, contracts, compliance, evidence]

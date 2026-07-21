@@ -31,6 +31,7 @@ import Footer from "@/components/Footer";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { useState, useMemo } from "react";
+import { CFOContractDashboard } from "@/components/warroom/CFOContractDashboard";
 
 const fadeInUp = {
   initial: { opacity: 0, y: 30 },
@@ -465,6 +466,37 @@ export default function CFOPage() {
               animation: gradient 3s linear infinite;
             }
           `}</style>
+        </section>
+
+        {/* CFO Contract Obligations Dashboard */}
+        <section className="relative py-32 px-6 bg-gradient-to-b from-slate-950 via-black to-slate-950">
+          <div className="max-w-7xl mx-auto">
+            <motion.div
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8 }}
+              className="text-center mb-16"
+            >
+              <div className="inline-flex items-center gap-2 px-4 py-2 bg-emerald-500/10 border border-emerald-400/30 rounded-full mb-6">
+                <Shield className="w-4 h-4 text-emerald-400" />
+                <span className="text-sm font-bold text-emerald-300 uppercase tracking-wider">Contract Intelligence</span>
+              </div>
+              <h2 className="text-4xl md:text-5xl font-black mb-6 bg-gradient-to-r from-emerald-200 to-green-200 bg-clip-text text-transparent font-serif">
+                4-Square Contract Command Center
+              </h2>
+              <p className="text-xl text-emerald-300/80 max-w-3xl mx-auto">
+                Compliance status, cost performance, root cause analysis, and evidence lineage—all at a glance
+              </p>
+            </motion.div>
+
+            <motion.div
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8, delay: 0.2 }}
+            >
+              <CFOContractDashboard />
+            </motion.div>
+          </div>
         </section>
 
         {/* Live Interactive EBITDA Leakage Simulator Sandbox */}

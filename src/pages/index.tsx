@@ -398,6 +398,37 @@ export default function HomePage() {
           </motion.div>
         </section>
 
+        {/* Live Overcharge Detection Feed */}
+        <section className="relative py-24 px-6 bg-gradient-to-b from-slate-950 via-black to-slate-950">
+          <div className="max-w-7xl mx-auto">
+            <motion.div
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8 }}
+              className="text-center mb-16"
+            >
+              <div className="inline-flex items-center gap-2 px-4 py-2 bg-red-500/10 border border-red-400/30 rounded-full mb-6">
+                <Activity className="w-4 h-4 text-red-400" />
+                <span className="text-sm font-bold text-red-300 uppercase tracking-wider">Live Detection</span>
+              </div>
+              <h2 className="text-4xl md:text-5xl font-black mb-6 bg-gradient-to-r from-red-200 to-orange-200 bg-clip-text text-transparent font-serif">
+                Watch Overcharges Get Caught in Real-Time
+              </h2>
+              <p className="text-xl text-red-300/80 max-w-3xl mx-auto">
+                See PBM spreads, GPO rebates, and specialty markups flagged as they happen—not months later.
+              </p>
+            </motion.div>
+
+            <motion.div
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8, delay: 0.2 }}
+            >
+              <InteractiveHeroDashboard />
+            </motion.div>
+          </div>
+        </section>
+
         <section className="py-12 border-t border-neutral-800 bg-neutral-900/30">
           <div className="container mx-auto px-4 max-w-6xl">
             <AnimatedSection>

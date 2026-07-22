@@ -415,7 +415,7 @@ export default function HomePage() {
                 </div>
                 <div>
                   <h3 className="text-xl font-bold text-white mb-1">
-                    New: Contract Clarity 360° Report
+                    New: PBM Contract Clarity 360° Report
                   </h3>
                   <p className="text-sm text-white/70">
                     Comprehensive PBM forensic analysis revealing spread pricing, rebate retention, and hidden leakage

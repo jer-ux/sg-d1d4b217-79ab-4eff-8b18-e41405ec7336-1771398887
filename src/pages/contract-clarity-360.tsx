@@ -31,7 +31,7 @@ export default function ContractClarity360() {
             </Badge>
             
             <h1 className="text-5xl md:text-7xl font-bold text-white mb-6 leading-tight">
-              Contract Clarity 360°
+              PBM Contract Clarity 360°
             </h1>
             
             <p className="text-xl md:text-2xl text-slate-300 mb-8 leading-relaxed">
@@ -79,7 +79,7 @@ export default function ContractClarity360() {
           <div className="rounded-3xl border border-white/10 bg-white/5 p-8 md:p-12">
             <div className="text-center mb-8">
               <h2 className="text-3xl font-bold text-white mb-4">
-                Get Your Contract Clarity 360° Report
+                Get Your PBM Contract Clarity 360° Report
               </h2>
               <p className="text-lg text-white/70">
                 Schedule a 30-minute session to walk through your specific contract forensics
@@ -119,7 +119,7 @@ export default function ContractClarity360() {
                         Schedule to Unlock
                       </h4>
                       <p className="text-sm text-white/70 mb-4">
-                        Book a 30-minute walkthrough to receive immediate access to the full Contract Clarity 360° report
+                        Book a 30-minute walkthrough to receive immediate access to the full PBM Contract Clarity 360° report
                       </p>
                       <CalendlyPopupButton 
                         url="https://calendly.com/jer-kincaidrmc/contract-clarity-360"
@@ -145,7 +145,7 @@ export default function ContractClarity360() {
                         You're all set!
                       </h4>
                       <p className="text-sm text-white/70 mb-4">
-                        Download your Contract Clarity 360° report below
+                        Download your PBM Contract Clarity 360° report below
                       </p>
                     </div>
 
@@ -222,7 +222,7 @@ export default function ContractClarity360() {
             Ready to Audit Your PBM Contract?
           </h2>
           <p className="text-lg text-white/70 mb-8">
-            Get your personalized Contract Clarity 360° analysis in our next walkthrough
+            Get your personalized PBM Contract Clarity 360° analysis in our next walkthrough
           </p>
           <div className="flex flex-wrap justify-center gap-4">
             <CalendlyPopupButton 

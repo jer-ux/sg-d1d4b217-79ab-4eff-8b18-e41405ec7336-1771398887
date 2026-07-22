@@ -35,6 +35,8 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { ClaimsTelemetryMeter } from "@/components/warroom/ClaimsTelemetryMeter";
+import { BoardReportGenerator } from "@/components/cfo/BoardReportGenerator";
+import { CashFlowTimeline } from "@/components/cfo/CashFlowTimeline";
 
 const mockAudits = [
 { company: "Midwest Logistics", lives: 420, issue: "Generic Spread Markup", savings: "$142,500", severity: "high" },
@@ -1211,6 +1213,15 @@ export default function HomePage() {
                         LIVE FINANCIAL DATA
                       </Badge>
                     </motion.div>
+                  </div>
+
+                  <div className="grid gap-6 mb-8">
+                    <ClaimsTelemetryMeter />
+                  </div>
+
+                  <div className="grid md:grid-cols-2 gap-6 mb-8">
+                    <BoardReportGenerator />
+                    <CashFlowTimeline />
                   </div>
 
                   <div className="relative">

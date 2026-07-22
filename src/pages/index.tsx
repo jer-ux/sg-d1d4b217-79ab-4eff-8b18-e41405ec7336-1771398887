@@ -400,6 +400,39 @@ export default function HomePage() {
           </motion.div>
         </section>
 
+        {/* Contract Clarity 360 Banner - NEW */}
+        <section className="relative py-8 px-6 border-y border-amber-500/30 bg-gradient-to-r from-amber-900/10 via-slate-950 to-amber-900/10">
+          <div className="max-w-7xl mx-auto">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8 }}
+              className="flex flex-col md:flex-row items-center justify-between gap-6"
+            >
+              <div className="flex items-center gap-4">
+                <div className="w-12 h-12 bg-amber-500/20 rounded-xl flex items-center justify-center border border-amber-500/30">
+                  <FileText className="w-6 h-6 text-amber-400" />
+                </div>
+                <div>
+                  <h3 className="text-xl font-bold text-white mb-1">
+                    New: Contract Clarity 360° Report
+                  </h3>
+                  <p className="text-sm text-white/70">
+                    Comprehensive PBM forensic analysis revealing spread pricing, rebate retention, and hidden leakage
+                  </p>
+                </div>
+              </div>
+              <Link
+                href="/contract-clarity-360"
+                className="group flex items-center gap-2 bg-amber-500 hover:bg-amber-600 text-black font-bold px-6 py-3 rounded-xl transition-all duration-300 shadow-lg hover:shadow-amber-500/50"
+              >
+                <span>Get Your Report</span>
+                <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+              </Link>
+            </motion.div>
+          </div>
+        </section>
+
         {/* Live Overcharge Detection Feed */}
         <section className="relative py-24 px-6 bg-gradient-to-b from-slate-950 via-black to-slate-950">
           <div className="max-w-7xl mx-auto">

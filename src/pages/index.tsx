@@ -1177,7 +1177,7 @@ export default function HomePage() {
               </div>
             </AnimatedSection>
 
-            <AnimatedSection className="rounded-xl border border-[#2A3F54] bg-gradient-to-br from-[#0C1117] via-[#0F1419] to-[#0C1117] p-6 relative overflow-hidden shadow-2xl">
+            <AnimatedSection className="rounded-xl border border-[#2A3F54] bg-gradient-to-br from-[#0C1117] via-[#0F1419] to-[#0C1117] p-4 relative overflow-hidden shadow-2xl">
               <motion.div
                 className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-[#B8860B] to-transparent"
                 animate={{
@@ -1191,13 +1191,13 @@ export default function HomePage() {
               <div className="absolute bottom-0 right-0 w-32 h-32 bg-[#B8860B] opacity-10 blur-3xl" />
               
               {activeWarRoomRole === "cfo" &&
-              <div className="space-y-6 relative z-10">
-                  <div className="flex items-center justify-between mb-6">
+              <div className="space-y-3 relative z-10">
+                  <div className="flex items-center justify-between mb-3">
                     <div>
-                      <h3 className="text-2xl font-serif font-bold bg-gradient-to-r from-white to-neutral-300 bg-clip-text text-transparent">
+                      <h3 className="text-xl font-serif font-bold bg-gradient-to-r from-white to-neutral-300 bg-clip-text text-transparent">
                         CFO Command Center
                       </h3>
-                      <p className="text-xs text-neutral-400 mt-1">Financial impact & EBITDA defense metrics</p>
+                      <p className="text-xs text-neutral-400">Financial impact & EBITDA defense metrics</p>
                     </div>
                     <motion.div
                     animate={{
@@ -1209,17 +1209,17 @@ export default function HomePage() {
                     }}
                     transition={{ duration: 2, repeat: Infinity }}>
                     
-                      <Badge className="bg-gradient-to-r from-[#1A3A52] to-[#234766] text-[#B8860B] border border-[#B8860B]/30 px-3 py-1 text-xs font-bold shadow-lg">
+                      <Badge className="bg-gradient-to-r from-[#1A3A52] to-[#234766] text-[#B8860B] border border-[#B8860B]/30 px-2 py-0.5 text-xs font-bold shadow-lg">
                         LIVE
                       </Badge>
                     </motion.div>
                   </div>
 
-                  <div className="grid gap-4 mb-4">
+                  <div className="grid gap-3">
                     <ClaimsTelemetryMeter />
                   </div>
 
-                  <div className="grid md:grid-cols-2 gap-4 mb-4">
+                  <div className="grid md:grid-cols-2 gap-3">
                     <BoardReportGenerator />
                     <CashFlowTimeline />
                   </div>

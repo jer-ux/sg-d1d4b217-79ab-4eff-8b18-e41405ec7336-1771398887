@@ -122,7 +122,7 @@ export default function ContractClarity360() {
                         Book a 30-minute walkthrough to receive immediate access to the full PBM Contract Clarity 360° report
                       </p>
                       <CalendlyPopupButton 
-                        url="https://calendly.com/jer-kincaidrmc/contract-clarity-360"
+                        url="https://siriusb.ai/board-of-directors"
                         className="w-full bg-amber-500 hover:bg-amber-600 text-black font-semibold"
                       >
                         <Calendar className="w-4 h-4 mr-2" />
@@ -226,7 +226,7 @@ export default function ContractClarity360() {
           </p>
           <div className="flex flex-wrap justify-center gap-4">
             <CalendlyPopupButton 
-              url="https://calendly.com/jer-kincaidrmc/contract-clarity-360"
+              url="https://siriusb.ai/board-of-directors"
               className="bg-amber-500 hover:bg-amber-600 text-black font-semibold"
             >
               <Calendar className="w-4 h-4 mr-2" />

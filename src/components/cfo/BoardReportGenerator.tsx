@@ -225,6 +225,15 @@ export function BoardReportGenerator() {
     printWindow.document.close();
   };
 
+  const handleDownloadRxDefense = () => {
+    const link = document.createElement("a");
+    link.href = "/Kincaid-IQ-Rx-Defense-IQ-2026-07-21_1_.pdf";
+    link.download = "Kincaid-IQ-Rx-Defense-Report-2026.pdf";
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  };
+
   const generateReportHTML = () => {
     return `
       <div class="header">
@@ -381,6 +390,17 @@ export function BoardReportGenerator() {
             title={!reportGenerated ? "Generate report first" : "Download as PDF"}
           >
             <Download className="w-4 h-4" />
+          </Button>
+        </div>
+
+        <div className="mt-4 flex gap-3">
+          <Button
+            onClick={handleDownloadRxDefense}
+            variant="outline"
+            className="flex-1 border-emerald-600 hover:bg-emerald-950 text-emerald-300 font-semibold"
+          >
+            <Download className="w-4 h-4 mr-2" />
+            Download Rx Defense IQ Report
           </Button>
         </div>
 

@@ -8,6 +8,7 @@ import { CalendlyPopupButton } from "@/components/calendly/CalendlyPopupButton";
 
 export default function ContractClarity360() {
   const [hasBooked, setHasBooked] = useState(false);
+  const [selectedReport, setSelectedReport] = useState<string | null>(null);
 
   const reports = [
     { name: "PBM Contract Clarity 360°", file: "/Kincaid_Health_PBM_Contract_Clarity_360_Report.pdf", size: "2.4 MB" },
@@ -21,11 +22,16 @@ export default function ContractClarity360() {
     { name: "Claims Recovery IQ", file: "/Claims_Recovery_IQ.pdf", size: "1.8 MB" },
     { name: "ERISA Fiduciary IQ", file: "/ERISA_Fiduciary_IQ.pdf", size: "2.0 MB" },
     { name: "Network Leakage Report", file: "/Network_Leakage_Report.pdf", size: "1.4 MB" },
+    { name: "PBM Contract Clarity 360°", file: "/PBM_Contract_Clarity_360.pdf", size: "1.6 MB" },
   ];
 
-  const handleDownload = (fileUrl: string) => {
-    if (hasBooked) {
-      window.open(fileUrl, "_blank");
+  const handleSelectReport = (fileUrl: string) => {
+    setSelectedReport(fileUrl);
+  };
+
+  const handleDownload = () => {
+    if (selectedReport) {
+      window.open(selectedReport, "_blank");
     }
   };
 
@@ -130,17 +136,17 @@ export default function ContractClarity360() {
                     <div className="rounded-2xl border border-amber-500/20 bg-amber-500/5 p-6">
                       <Lock className="w-8 h-8 text-amber-400 mb-3" />
                       <h4 className="text-lg font-semibold text-white mb-2">
-                        Schedule to Unlock
+                        Book an Appointment with Jeremiah
                       </h4>
                       <p className="text-sm text-white/70 mb-4">
-                        Book a 30-minute walkthrough to receive immediate access to all {reports.length} intelligence reports
+                        Schedule a 30-minute session to pick one of 12 intelligence reports to download
                       </p>
                       <CalendlyPopupButton 
                         url="https://siriusb.ai/board-of-directors"
                         className="w-full bg-amber-500 hover:bg-amber-600 text-black font-semibold"
                       >
                         <Calendar className="w-4 h-4 mr-2" />
-                        Schedule Walkthrough
+                        Book with Jeremiah
                       </CalendlyPopupButton>
                     </div>
 
@@ -151,15 +157,15 @@ export default function ContractClarity360() {
                       Already booked? Click here
                     </button>
                   </div>
-                ) : (
+                ) : !selectedReport ? (
                   <div className="space-y-4">
                     <div className="rounded-2xl border border-emerald-500/20 bg-emerald-500/5 p-6 text-center">
                       <CheckCircle2 className="w-12 h-12 text-emerald-400 mx-auto mb-3" />
                       <h4 className="text-lg font-semibold text-white mb-2">
-                        You're all set!
+                        Select Your Report
                       </h4>
                       <p className="text-sm text-white/70 mb-4">
-                        Download all {reports.length} intelligence reports below
+                        Choose one of {reports.length} intelligence reports to download
                       </p>
                     </div>
 
@@ -167,8 +173,8 @@ export default function ContractClarity360() {
                       {reports.map((report, idx) => (
                         <button
                           key={idx}
-                          onClick={() => handleDownload(report.file)}
-                          className="w-full flex items-center justify-between p-3 rounded-lg border border-white/10 bg-white/5 hover:bg-white/10 transition-colors group"
+                          onClick={() => handleSelectReport(report.file)}
+                          className="w-full flex items-center justify-between p-3 rounded-lg border border-white/10 bg-white/5 hover:bg-amber-500/20 hover:border-amber-500/30 transition-colors group"
                         >
                           <div className="flex items-center gap-3 text-left">
                             <FileText className="w-5 h-5 text-amber-400 flex-shrink-0" />
@@ -179,14 +185,53 @@ export default function ContractClarity360() {
                               <div className="text-xs text-white/50">{report.size}</div>
                             </div>
                           </div>
-                          <Download className="w-4 h-4 text-white/50 group-hover:text-amber-400 transition-colors flex-shrink-0" />
+                          <div className="text-xs text-amber-400 opacity-0 group-hover:opacity-100 transition-opacity">
+                            Select →
+                          </div>
                         </button>
                       ))}
                     </div>
+                  </div>
+                ) : (
+                  <div className="space-y-4">
+                    <div className="rounded-2xl border border-emerald-500/20 bg-emerald-500/5 p-6">
+                      <CheckCircle2 className="w-12 h-12 text-emerald-400 mx-auto mb-3" />
+                      <h4 className="text-lg font-semibold text-white mb-2 text-center">
+                        Ready to Download
+                      </h4>
+                      <p className="text-sm text-white/70 mb-4 text-center">
+                        Your selected report is ready
+                      </p>
+                      
+                      <div className="mb-4 p-3 rounded-lg border border-white/10 bg-white/5">
+                        <div className="flex items-center gap-3">
+                          <FileText className="w-5 h-5 text-amber-400 flex-shrink-0" />
+                          <div className="flex-1">
+                            <div className="text-sm font-medium text-white">
+                              {reports.find(r => r.file === selectedReport)?.name}
+                            </div>
+                            <div className="text-xs text-white/50">
+                              {reports.find(r => r.file === selectedReport)?.size}
+                            </div>
+                          </div>
+                        </div>
+                      </div>
 
-                    <p className="text-xs text-white/50 text-center pt-2">
-                      {reports.length} reports • Updated July 2026
-                    </p>
+                      <button
+                        onClick={handleDownload}
+                        className="w-full bg-amber-500 hover:bg-amber-600 text-black font-semibold py-3 px-4 rounded-lg flex items-center justify-center gap-2 transition-colors"
+                      >
+                        <Download className="w-4 h-4" />
+                        Download Report
+                      </button>
+
+                      <button
+                        onClick={() => setSelectedReport(null)}
+                        className="w-full text-sm text-white/50 hover:text-white/70 underline mt-3"
+                      >
+                        Choose a different report
+                      </button>
+                    </div>
                   </div>
                 )}
               </div>
@@ -249,7 +294,7 @@ export default function ContractClarity360() {
             Ready to Audit Your PBM Contract?
           </h2>
           <p className="text-lg text-white/70 mb-8">
-            Get your personalized PBM Contract Clarity 360° analysis in our next walkthrough
+            Book an appointment with Jeremiah to access your intelligence report
           </p>
           <div className="flex flex-wrap justify-center gap-4">
             <CalendlyPopupButton 
@@ -257,7 +302,7 @@ export default function ContractClarity360() {
               className="bg-amber-500 hover:bg-amber-600 text-black font-semibold"
             >
               <Calendar className="w-4 h-4 mr-2" />
-              Schedule Analysis
+              Book with Jeremiah
             </CalendlyPopupButton>
             <Link href="/solutions/rx-defense">
               <Button variant="outline" className="border-white/20 text-white hover:bg-white/10">

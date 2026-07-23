@@ -9,9 +9,23 @@ import { CalendlyPopupButton } from "@/components/calendly/CalendlyPopupButton";
 export default function ContractClarity360() {
   const [hasBooked, setHasBooked] = useState(false);
 
-  const handleDownload = () => {
+  const reports = [
+    { name: "PBM Contract Clarity 360°", file: "/Kincaid_Health_PBM_Contract_Clarity_360_Report.pdf", size: "2.4 MB" },
+    { name: "Stop-Loss Study", file: "/Stop-Loss_Study.pdf", size: "1.2 MB" },
+    { name: "Stop-Loss Replacement Study", file: "/Stop-Loss_Replacement_Study.pdf", size: "1.8 MB" },
+    { name: "Broker Compensation Study", file: "/Broker_Compensation_Study.pdf", size: "1.5 MB" },
+    { name: "Stop-Loss IQ", file: "/Stop-Loss_IQ.pdf", size: "2.1 MB" },
+    { name: "Stewardship Report IQ", file: "/Stewardship_Report_IQ.pdf", size: "1.9 MB" },
+    { name: "Employer Health Score", file: "/Employer_Health_Score.pdf", size: "1.7 MB" },
+    { name: "Network IQ", file: "/Network_IQ.pdf", size: "1.6 MB" },
+    { name: "Claims Recovery IQ", file: "/Claims_Recovery_IQ.pdf", size: "1.8 MB" },
+    { name: "ERISA Fiduciary IQ", file: "/ERISA_Fiduciary_IQ.pdf", size: "2.0 MB" },
+    { name: "Network Leakage Report", file: "/Network_Leakage_Report.pdf", size: "1.4 MB" },
+  ];
+
+  const handleDownload = (fileUrl: string) => {
     if (hasBooked) {
-      window.open("/Kincaid_Health_PBM_Contract_Clarity_360_Report.pdf", "_blank");
+      window.open(fileUrl, "_blank");
     }
   };
 
@@ -119,7 +133,7 @@ export default function ContractClarity360() {
                         Schedule to Unlock
                       </h4>
                       <p className="text-sm text-white/70 mb-4">
-                        Book a 30-minute walkthrough to receive immediate access to the full PBM Contract Clarity 360° report
+                        Book a 30-minute walkthrough to receive immediate access to all {reports.length} intelligence reports
                       </p>
                       <CalendlyPopupButton 
                         url="https://siriusb.ai/board-of-directors"
@@ -145,20 +159,33 @@ export default function ContractClarity360() {
                         You're all set!
                       </h4>
                       <p className="text-sm text-white/70 mb-4">
-                        Download your PBM Contract Clarity 360° report below
+                        Download all {reports.length} intelligence reports below
                       </p>
                     </div>
 
-                    <Button
-                      onClick={handleDownload}
-                      className="w-full bg-emerald-500 hover:bg-emerald-600 text-black font-semibold"
-                    >
-                      <Download className="w-4 h-4 mr-2" />
-                      Download Report (PDF)
-                    </Button>
+                    <div className="space-y-2 max-h-96 overflow-y-auto pr-2">
+                      {reports.map((report, idx) => (
+                        <button
+                          key={idx}
+                          onClick={() => handleDownload(report.file)}
+                          className="w-full flex items-center justify-between p-3 rounded-lg border border-white/10 bg-white/5 hover:bg-white/10 transition-colors group"
+                        >
+                          <div className="flex items-center gap-3 text-left">
+                            <FileText className="w-5 h-5 text-amber-400 flex-shrink-0" />
+                            <div>
+                              <div className="text-sm font-medium text-white group-hover:text-amber-400 transition-colors">
+                                {report.name}
+                              </div>
+                              <div className="text-xs text-white/50">{report.size}</div>
+                            </div>
+                          </div>
+                          <Download className="w-4 h-4 text-white/50 group-hover:text-amber-400 transition-colors flex-shrink-0" />
+                        </button>
+                      ))}
+                    </div>
 
-                    <p className="text-xs text-white/50 text-center">
-                      13 pages • 2.4 MB • Updated July 2026
+                    <p className="text-xs text-white/50 text-center pt-2">
+                      {reports.length} reports • Updated July 2026
                     </p>
                   </div>
                 )}

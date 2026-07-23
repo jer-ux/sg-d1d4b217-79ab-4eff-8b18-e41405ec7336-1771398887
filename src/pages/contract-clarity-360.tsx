@@ -11,7 +11,7 @@ export default function ContractClarity360() {
 
   const handleDownload = () => {
     if (hasBooked) {
-      window.open("/Kincaid-IQ-Rx-Defense-IQ-2026-07-21_1_.pdf", "_blank");
+      window.open("/Kincaid_Health_PBM_Contract_Clarity_360_Report.pdf", "_blank");
     }
   };
 

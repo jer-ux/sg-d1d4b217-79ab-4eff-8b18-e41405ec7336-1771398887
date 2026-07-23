@@ -96,11 +96,41 @@ export default function RxDefensePage() {
         <section className={`${isFullscreen ? 'fixed inset-0 z-50 bg-black' : 'relative'} px-4 py-8`}>
           <div className={`${isFullscreen ? 'w-full h-full' : 'max-w-7xl mx-auto'}`}>
             <div className={`bg-slate-900/50 border border-slate-800 rounded-xl overflow-hidden ${isFullscreen ? 'h-full' : 'h-[calc(100vh-280px)] min-h-[800px]'}`}>
-              <iframe
-                src="/Kincaid_Health_PBM_Contract_Clarity_360_Report.pdf#toolbar=1&navpanes=1&scrollbar=1"
+              <object
+                data="/Kincaid_Health_PBM_Contract_Clarity_360_Report.pdf#toolbar=1&navpanes=1&scrollbar=1"
+                type="application/pdf"
                 className="w-full h-full"
                 title="PBM Contract Clarity 360° Report"
-              />
+              >
+                <div className="flex flex-col items-center justify-center h-full p-8 text-center">
+                  <FileText className="w-16 h-16 text-amber-400 mb-4" />
+                  <h3 className="text-xl font-bold text-white mb-2">
+                    PDF Viewer Not Available
+                  </h3>
+                  <p className="text-slate-400 mb-6 max-w-md">
+                    Your browser doesn't support embedded PDFs. Please download the report or open it in a new tab.
+                  </p>
+                  <div className="flex gap-4">
+                    <a
+                      href="/Kincaid_Health_PBM_Contract_Clarity_360_Report.pdf"
+                      download
+                      className="inline-flex items-center justify-center gap-2 px-6 py-3 bg-amber-500 hover:bg-amber-600 text-black rounded-lg transition-colors font-semibold"
+                    >
+                      <Download className="w-4 h-4" />
+                      Download PDF
+                    </a>
+                    <a
+                      href="/Kincaid_Health_PBM_Contract_Clarity_360_Report.pdf"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center justify-center gap-2 px-6 py-3 border border-slate-700 text-white hover:bg-slate-900 rounded-lg transition-colors font-semibold"
+                    >
+                      <ExternalLink className="w-4 h-4" />
+                      Open in New Tab
+                    </a>
+                  </div>
+                </div>
+              </object>
             </div>
           </div>
         </section>

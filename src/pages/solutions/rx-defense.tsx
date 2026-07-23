@@ -28,7 +28,6 @@ import {
 import { RxDefenseHero } from "@/components/rx-defense/RxDefenseHero";
 import { ProblemStatement } from "@/components/rx-defense/ProblemStatement";
 import { ProvisionCard } from "@/components/rx-defense/ProvisionCard";
-import { ROICalculator } from "@/components/rx-defense/ROICalculator";
 import { FAQSection } from "@/components/rx-defense/FAQSection";
 import { ParticleField3D } from "@/components/premium/ParticleField3D";
 import { motion } from "framer-motion";
@@ -208,25 +207,6 @@ export default function RxDefensePage() {
                 ]}
               />
             </div>
-          </div>
-        </section>
-
-        {/* ROI Calculator */}
-        <section className="py-20 border-t border-slate-800 bg-gradient-to-b from-slate-950 to-black">
-          <div className="max-w-7xl mx-auto px-6">
-            <div className="text-center mb-16">
-              <Badge className="bg-emerald-500/10 text-emerald-400 border border-emerald-500/30 mb-4">
-                CALCULATE YOUR IMPACT
-              </Badge>
-              <h2 className="text-4xl md:text-5xl font-bold text-white mb-6">
-                PBM Contract Clarity ROI Calculator
-              </h2>
-              <p className="text-xl text-slate-400 max-w-3xl mx-auto">
-                Estimate the potential contractual leakage in your pharmacy benefit program based on industry benchmarks and forensic audit findings.
-              </p>
-            </div>
-
-            <ROICalculator />
           </div>
         </section>
 

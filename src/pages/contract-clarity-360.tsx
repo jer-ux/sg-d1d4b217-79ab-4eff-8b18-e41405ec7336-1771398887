@@ -142,7 +142,7 @@ export default function ContractClarity360() {
                         Schedule a 30-minute session to pick one of 12 intelligence reports to download
                       </p>
                       <CalendlyPopupButton 
-                        url="https://siriusb.ai/board-of-directors"
+                        url="https://calendly.com/jer-kincaidrmc/contract-clarity-360"
                         className="w-full bg-amber-500 hover:bg-amber-600 text-black font-semibold"
                       >
                         <Calendar className="w-4 h-4 mr-2" />
@@ -298,7 +298,7 @@ export default function ContractClarity360() {
           </p>
           <div className="flex flex-wrap justify-center gap-4">
             <CalendlyPopupButton 
-              url="https://siriusb.ai/board-of-directors"
+              url="https://calendly.com/jer-kincaidrmc/contract-clarity-360"
               className="bg-amber-500 hover:bg-amber-600 text-black font-semibold"
             >
               <Calendar className="w-4 h-4 mr-2" />

@@ -8,7 +8,7 @@ import { DemoGateModal } from "@/components/marketing/DemoGateModal";
 export function TerminalInviteCTA() {
   const [open, setOpen] = React.useState(false);
 
-  const calendlyUrl = "https://calendly.com/jer-kincaidrmc/new-meeting";
+  const calendlyUrl = "https://calendly.com/jer-kincaidrmc/new-meeting?month=2026-07";
 
   return (
     <>

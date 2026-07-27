@@ -347,7 +347,7 @@ export function LandingUploader() {
 
                 <div className="flex items-center gap-3 pt-2">
                   <a
-                    href="https://calendly.com/jer-kincaidrmc/new-meeting"
+                    href="https://calendly.com/jer-kincaidrmc/new-meeting?month=2026-07"
                     target="_blank"
                     rel="noopener noreferrer"
                     className="flex-1 bg-[#1A3A52] hover:bg-[#234766] text-white font-semibold text-center text-xs py-3 rounded transition-all"

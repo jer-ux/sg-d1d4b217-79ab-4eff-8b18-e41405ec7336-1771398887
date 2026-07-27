@@ -16,7 +16,7 @@ export function FounderContactButton() {
     {
       icon: Calendar,
       label: "Schedule a Meeting",
-      href: "https://calendly.com/jer-kincaidrmc/new-meeting",
+      href: "https://calendly.com/jer-kincaidrmc/new-meeting?month=2026-07",
       color: "bg-cyan-500 hover:bg-cyan-600",
       description: "Book a time on my calendar",
     },

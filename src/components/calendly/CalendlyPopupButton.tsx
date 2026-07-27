@@ -8,7 +8,7 @@ interface CalendlyPopupButtonProps {
 }
 
 export function CalendlyPopupButton({ 
-  url = "https://calendly.com/jer-kincaidrmc/new-meeting", 
+  url = "https://calendly.com/jer-kincaidrmc/new-meeting?month=2026-07", 
   children, 
   className 
 }: CalendlyPopupButtonProps) {

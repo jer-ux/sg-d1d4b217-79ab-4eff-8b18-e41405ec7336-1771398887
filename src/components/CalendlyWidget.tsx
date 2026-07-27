@@ -13,7 +13,7 @@ interface CalendlyWidgetProps {
 }
 
 export function CalendlyWidget({ 
-  url = "https://calendly.com/jer-kincaidrmc/new-meeting",
+  url = "https://calendly.com/jer-kincaidrmc/new-meeting?month=2026-07",
   className = "",
   buttonText = "Book Your Free Fiduciary Audit",
   buttonVariant = "default"
